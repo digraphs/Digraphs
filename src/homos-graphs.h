@@ -20,6 +20,17 @@
 #include "digraphs-debug.h"  // for DIGRAPHS_ASSERT
 #include "perms.h"           // for PermColl
 
+#ifdef DIGRAPHS_WITH_INCLUDED_BLISS
+#include "bliss-0.73/bliss_C.h"  // for bliss_digraphs_release, . . .
+#else
+#include "bliss/bliss_C.h"
+#define bliss_digraphs_add_edge bliss_add_edge
+#define bliss_digraphs_new bliss_new
+#define bliss_digraphs_add_vertex bliss_add_vertex
+#define bliss_digraphs_find_canonical_labeling bliss_find_canonical_labeling
+#define bliss_digraphs_release bliss_release
+#endif
+
 ////////////////////////////////////////////////////////////////////////
 // Directed graphs (digraphs)
 ////////////////////////////////////////////////////////////////////////
@@ -47,9 +58,16 @@ static inline bool is_adjacent_digraph(Digraph const* const digraph,
   return get_bit_array(digraph->out_neighbours[i], j);
 }
 
+#ifdef DIGRAPHS_WITH_INCLUDED_BLISS
+void automorphisms_digraph(Digraph const* const,
+                           uint16_t const* const,
+                           PermColl*,
+                           BlissGraph*);
+#else
 void automorphisms_digraph(Digraph const* const,
                            uint16_t const* const,
                            PermColl*);
+#endif
 
 ////////////////////////////////////////////////////////////////////////
 // Undirected graphs (graphs)
@@ -77,6 +95,13 @@ static inline bool is_adjacent_graph(Graph const* const graph,
   return get_bit_array(graph->neighbours[i], j);
 }
 
+#ifdef DIGRAPHS_WITH_INCLUDED_BLISS
+void automorphisms_graph(Graph const* const,
+                         uint16_t const* const,
+                         PermColl*,
+                         BlissGraph*);
+#else
 void automorphisms_graph(Graph const* const, uint16_t const* const, PermColl*);
+#endif
 
 #endif  // DIGRAPHS_SRC_HOMOS_GRAPHS_H_

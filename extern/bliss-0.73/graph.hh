@@ -4,9 +4,9 @@
 /*
   Copyright (c) 2003-2015 Tommi Junttila
   Released under the GNU Lesser General Public License version 3.
-  
+
   This file is part of bliss.
-  
+
   bliss is free software: you can redistribute it and/or modify
   it under the terms of the GNU Lesser General Public License as published by
   the Free Software Foundation, version 3 of the License.
@@ -40,6 +40,8 @@ namespace bliss_digraphs {
 #include "uintseqhash.hh"
 
 namespace bliss_digraphs {
+  typedef std::vector<unsigned int>::iterator uint_pointer_substitute;
+  typedef std::vector<unsigned int>::const_iterator uint_pointer_to_const_substitute;
 
 /**
  * \brief Statistics returned by the bliss search algorithm.
@@ -235,7 +237,7 @@ public:
    * of bliss as well as on some other options (for instance, the splitting
    * heuristic selected with bliss::Graph::set_splitting_heuristic()).
    */
-  const unsigned int* canonical_form(Stats& stats,
+  uint_pointer_to_const_substitute canonical_form(Stats& stats,
 				     void (*hook)(void* user_param,
 						  unsigned int n,
 						  const unsigned int* aut),
@@ -268,7 +270,7 @@ public:
   /**
    * Get a hash value for the graph.
    * \return  the hash value
-   */ 
+   */
   virtual unsigned int get_hash() = 0;
 
   /**
@@ -363,8 +365,8 @@ protected:
   static const unsigned int long_prune_options_max_stored_auts = 100;
 
   unsigned int long_prune_max_stored_autss;
-  std::vector<std::vector<bool> *> long_prune_fixed;
-  std::vector<std::vector<bool> *> long_prune_mcrs;
+  std::vector<std::vector<bool> >  long_prune_fixed;
+  std::vector<std::vector<bool> > long_prune_mcrs;
   std::vector<bool> long_prune_temp;
   unsigned int long_prune_begin;
   unsigned int long_prune_end;
@@ -376,7 +378,7 @@ protected:
    * Release the memory allocated for "long prune" data structures.
    */
   void long_prune_deallocate();
-  void long_prune_add_automorphism(const unsigned int *aut);
+  void long_prune_add_automorphism(uint_pointer_to_const_substitute aut);
   std::vector<bool>& long_prune_get_fixed(const unsigned int index);
   std::vector<bool>& long_prune_allocget_fixed(const unsigned int index);
   std::vector<bool>& long_prune_get_mcrs(const unsigned int index);
@@ -418,25 +420,33 @@ protected:
    */
   virtual bool is_equitable() const = 0;
 
-  unsigned int *first_path_labeling;
-  unsigned int *first_path_labeling_inv;
-  Orbit         first_path_orbits;
-  unsigned int *first_path_automorphism;
+  std::vector<unsigned int> first_path_labeling_vec;
+  uint_pointer_substitute             first_path_labeling;
+  std::vector<unsigned int> first_path_labeling_inv_vec;
+  uint_pointer_substitute             first_path_labeling_inv;
+  Orbit                     first_path_orbits;
 
-  unsigned int *best_path_labeling;
-  unsigned int *best_path_labeling_inv;
+  std::vector<unsigned int> first_path_automorphism_vec;
+  uint_pointer_substitute             first_path_automorphism;
+
+  std::vector<unsigned int> best_path_labeling_vec;
+  uint_pointer_substitute             best_path_labeling;
+  std::vector<unsigned int> best_path_labeling_inv_vec;
+  uint_pointer_substitute             best_path_labeling_inv;
   Orbit         best_path_orbits;
-  unsigned int *best_path_automorphism;
 
-  void update_labeling(unsigned int * const lab);
-  void update_labeling_and_its_inverse(unsigned int * const lab,
-				       unsigned int * const lab_inv);
-  void update_orbit_information(Orbit &o, const unsigned int *perm);
+  std::vector<unsigned int> best_path_automorphism_vec;
+  uint_pointer_substitute             best_path_automorphism;
 
-  void reset_permutation(unsigned int *perm);
+  void update_labeling(uint_pointer_substitute  const lab);
+  void update_labeling_and_its_inverse(uint_pointer_substitute  const lab,
+				       uint_pointer_substitute  const lab_inv);
+  void update_orbit_information(Orbit &o, uint_pointer_substitute perm);
+
+  void reset_permutation(uint_pointer_substitute perm);
 
   /* Mainly for debugging purposes */
-  virtual bool is_automorphism(unsigned int* const perm);
+  virtual bool is_automorphism(uint_pointer_substitute const perm);
 
   std::vector<unsigned int> certificate_current_path;
   std::vector<unsigned int> certificate_first_path;
@@ -515,10 +525,6 @@ protected:
    * The number of vertices in the component \a cr_component
    */
   unsigned int cr_component_elements;
-
-
-
-
 };
 
 
@@ -575,12 +581,23 @@ protected:
 
     unsigned int color;
     std::vector<unsigned int> edges;
+    void clear() {
+      edges.clear();
+    }
     unsigned int nof_edges() const {return edges.size(); }
   };
   std::vector<Vertex> vertices;
   void sort_edges();
   void remove_duplicate_edges();
-
+public:
+  void clear() {
+    for (std::vector<Vertex>::iterator it = vertices.begin();
+         it < vertices.end();
+         ++it) {
+      it->clear();
+    }
+  }
+protected:
   /** \internal
    * Partition independent invariant.
    * Returns the color of the vertex.
@@ -633,8 +650,8 @@ protected:
   void make_initial_equitable_partition();
 
   void initialize_certificate();
-  
-  bool is_automorphism(unsigned int* const perm);
+
+  bool is_automorphism(uint_pointer_substitute const perm);
 
 
   bool nucr_find_first_component(const unsigned int level);
@@ -697,7 +714,7 @@ public:
 
   /**
    * \copydoc AbstractGraph::get_hash()
-   */ 
+   */
   virtual unsigned int get_hash();
 
   /**
@@ -710,7 +727,7 @@ public:
    */
   Graph* permute(const unsigned int* const perm) const;
   Graph* permute(const std::vector<unsigned int>& perm) const;
-  
+
   /**
    * Add a new vertex with color \a color in the graph and return its index.
    */
@@ -746,7 +763,7 @@ public:
    * for both graphs.
    */
   void set_splitting_heuristic(const SplittingHeuristic shs) {sh = shs; }
-  
+
 
 };
 
@@ -807,8 +824,22 @@ protected:
     std::vector<unsigned int> edges_in;
     unsigned int nof_edges_in() const {return edges_in.size(); }
     unsigned int nof_edges_out() const {return edges_out.size(); }
+    void clear() {
+      edges_out.clear();
+      edges_in.clear();
+    }
   };
   std::vector<Vertex> vertices;
+
+public:
+  void clear() {
+    for (std::vector<Vertex>::iterator it = vertices.begin();
+         it < vertices.end();
+         ++it) {
+      it->clear();
+    }
+  }
+protected:
   void remove_duplicate_edges();
 
   /** \internal
@@ -875,7 +906,7 @@ protected:
 
   void initialize_certificate();
 
-  bool is_automorphism(unsigned int* const perm);
+  bool is_automorphism(uint_pointer_substitute const perm);
 
   void sort_edges();
 
@@ -936,14 +967,14 @@ public:
 
   /**
    * \copydoc AbstractGraph::get_hash()
-   */ 
+   */
   virtual unsigned int get_hash();
 
   /**
    * Return the number of vertices in the graph.
    */
   unsigned int get_nof_vertices() const {return vertices.size(); }
-  
+
   /**
    * Add a new vertex with color 'color' in the graph and return its index.
    */
@@ -983,7 +1014,7 @@ public:
   /**
    * \copydoc AbstractGraph::permute(const unsigned int* const perm) const
    */
-  Digraph* permute(const unsigned int* const perm) const;  
+  Digraph* permute(const unsigned int* const perm) const;
   Digraph* permute(const std::vector<unsigned int>& perm) const;
 };
 

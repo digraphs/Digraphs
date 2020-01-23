@@ -4,9 +4,9 @@
 /*
   Copyright (c) 2003-2015 Tommi Junttila
   Released under the GNU Lesser General Public License version 3.
-  
+
   This file is part of bliss.
-  
+
   bliss is free software: you can redistribute it and/or modify
   it under the terms of the GNU Lesser General Public License as published by
   the Free Software Foundation, version 3 of the License.
@@ -109,6 +109,8 @@ void bliss_digraphs_write_dimacs(BlissGraph *graph, FILE *fp);
  */
 void bliss_digraphs_release(BlissGraph *graph);
 
+void bliss_digraphs_clear(BlissGraph *graph);
+void bliss_digraphs_change_color(BlissGraph* graph, const unsigned int vertex, const unsigned int color);
 
 /**
  * Print the graph in graphviz dot format.

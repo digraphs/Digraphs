@@ -4,9 +4,9 @@
 /*
   Copyright (c) 2003-2015 Tommi Junttila
   Released under the GNU Lesser General Public License version 3.
-  
+
   This file is part of bliss.
-  
+
   bliss is free software: you can redistribute it and/or modify
   it under the terms of the GNU Lesser General Public License as published by
   the Free Software Foundation, version 3 of the License.
@@ -148,23 +148,37 @@ public:
 
 private:
   unsigned int N;
-  Cell* cells;
+  std::vector<Cell> cells_vec;
+  typedef std::vector<Cell>::iterator cell_pointer_substitute;
+  cell_pointer_substitute cells;
   Cell* free_cells;
   unsigned int discrete_cell_count;
 public:
   Cell* first_cell;
   Cell* first_nonsingleton_cell;
-  unsigned int *elements;
+
+  typedef std::vector<unsigned int>::iterator uint_pointer_substitute;
+  typedef std::vector<unsigned int>::const_iterator
+                            uint_pointer_to_const_substitute;
+  std::vector<unsigned int> elements_vec;
+  uint_pointer_substitute elements;
   /* invariant_values[e] gives the invariant value of the element e */
-  unsigned int *invariant_values;
+  std::vector<unsigned int> invariant_values_vec;
+  uint_pointer_substitute invariant_values;
   /* element_to_cell_map[e] gives the cell of the element e */
-  Cell **element_to_cell_map;
+
+  typedef std::vector<Cell*>::iterator
+      cell_pointer_pointer_substitute;
+
+  std::vector<Cell*> element_to_cell_map_vec;
+  cell_pointer_pointer_substitute element_to_cell_map;
   /** Get the cell of the element \a e */
   Cell* get_cell(const unsigned int e) const {
-    return element_to_cell_map[e];
+    return element_to_cell_map_vec[e];
   }
   /* in_pos[e] points to the elements array s.t. *in_pos[e] = e  */
-  unsigned int **in_pos;
+  std::vector<uint_pointer_substitute> in_pos_vec;
+  std::vector<uint_pointer_substitute>::iterator in_pos;
 
   Partition();
   ~Partition();
@@ -242,8 +256,14 @@ private:
       prev_next_ptr = 0;
     }
   };
-  CRCell* cr_cells;
-  CRCell** cr_levels;
+  typedef std::vector<CRCell>::iterator crcell_pointer_substitute;
+  std::vector<CRCell> cr_cells_vec;
+  crcell_pointer_substitute cr_cells;
+
+  typedef std::vector<CRCell*>::iterator crcell_pointer_pointer_substitute;
+  std::vector<CRCell*> cr_levels_vec;
+  crcell_pointer_pointer_substitute cr_levels;
+
   class CR_BTInfo {
   public:
     unsigned int created_trail_index;

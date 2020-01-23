@@ -7,9 +7,9 @@
 /*
   Copyright (c) 2003-2015 Tommi Junttila
   Released under the GNU Lesser General Public License version 3.
-  
+
   This file is part of bliss.
-  
+
   bliss is free software: you can redistribute it and/or modify
   it under the terms of the GNU Lesser General Public License as published by
   the Free Software Foundation, version 3 of the License.
@@ -28,12 +28,7 @@ namespace bliss_digraphs {
 Partition::Partition()
 {
   N = 0;
-  elements = 0;
-  in_pos = 0;
-  invariant_values = 0;
-  cells = 0;
   free_cells = 0;
-  element_to_cell_map = 0;
   graph = 0;
   discrete_cell_count = 0;
   /* Initialize a distribution count sorting array. */
@@ -41,19 +36,12 @@ Partition::Partition()
     dcs_count[i] = 0;
 
   cr_enabled = false;
-  cr_cells = 0;
-  cr_levels = 0;
 }
 
 
 
 Partition::~Partition()
 {
-  if(elements)            {free(elements); elements = 0; }
-  if(cells)               {free(cells); cells = 0; }
-  if(element_to_cell_map) {free(element_to_cell_map); element_to_cell_map = 0; }
-  if(in_pos)              {free(in_pos); in_pos = 0; }
-  if(invariant_values)    {free(invariant_values); invariant_values = 0; }
   N = 0;
 }
 
@@ -64,40 +52,39 @@ void Partition::init(const unsigned int M)
   assert(M > 0);
   N = M;
 
-  if(elements)
-    free(elements);
-  elements = (unsigned int*)malloc(N * sizeof(unsigned int));
+  elements_vec.clear();
+  elements_vec.resize(N);
   for(unsigned int i = 0; i < N; i++)
-    elements[i] = i;
+    elements_vec[i] = i;
+  elements = elements_vec.begin();
 
-  if(in_pos)
-    free(in_pos);
-  in_pos = (unsigned int**)malloc(N * sizeof(unsigned int*));
+  in_pos_vec.clear();
+  in_pos_vec.resize(N);
   for(unsigned int i = 0; i < N; i++)
-    in_pos[i] = elements + i;
+    in_pos_vec[i] = elements + i;
+  in_pos = in_pos_vec.begin();
 
-  if(invariant_values)
-    free(invariant_values);
-  invariant_values = (unsigned int*)malloc(N * sizeof(unsigned int));
+  invariant_values_vec.clear();
+  invariant_values_vec.resize(N);
   for(unsigned int i = 0; i < N; i++)
-    invariant_values[i] = 0;
+    invariant_values_vec[i] = 0;
+  invariant_values = invariant_values_vec.begin();
 
-  if(cells)
-    free(cells);
-  cells = (Cell*)malloc(N * sizeof(Cell));
+  cells_vec.clear();
+  cells_vec.resize(N);
 
-  cells[0].first = 0;
-  cells[0].length = N;
-  cells[0].max_ival = 0;
-  cells[0].max_ival_count = 0;
-  cells[0].in_splitting_queue = false;
-  cells[0].in_neighbour_heap = false;
-  cells[0].prev = 0;
-  cells[0].next = 0;
-  cells[0].next_nonsingleton = 0;
-  cells[0].prev_nonsingleton = 0;
-  cells[0].split_level = 0;
-  first_cell = &cells[0];
+  cells_vec[0].first = 0;
+  cells_vec[0].length = N;
+  cells_vec[0].max_ival = 0;
+  cells_vec[0].max_ival_count = 0;
+  cells_vec[0].in_splitting_queue = false;
+  cells_vec[0].in_neighbour_heap = false;
+  cells_vec[0].prev = 0;
+  cells_vec[0].next = 0;
+  cells_vec[0].next_nonsingleton = 0;
+  cells_vec[0].prev_nonsingleton = 0;
+  cells_vec[0].split_level = 0;
+  first_cell = &cells_vec[0];
   if(N == 1)
     {
       first_nonsingleton_cell = 0;
@@ -105,33 +92,34 @@ void Partition::init(const unsigned int M)
     }
   else
     {
-      first_nonsingleton_cell = &cells[0];
+      first_nonsingleton_cell = &cells_vec[0];
       discrete_cell_count = 0;
     }
 
   for(unsigned int i = 1; i < N; i++)
     {
-      cells[i].first = 0;
-      cells[i].length = 0;
-      cells[i].max_ival = 0;
-      cells[i].max_ival_count = 0;
-      cells[i].in_splitting_queue = false;
-      cells[i].in_neighbour_heap = false;
-      cells[i].prev = 0;
-      cells[i].next = (i < N-1)?&cells[i+1]:0;
-      cells[i].next_nonsingleton = 0;
-      cells[i].prev_nonsingleton = 0;
+      cells_vec[i].first = 0;
+      cells_vec[i].length = 0;
+      cells_vec[i].max_ival = 0;
+      cells_vec[i].max_ival_count = 0;
+      cells_vec[i].in_splitting_queue = false;
+      cells_vec[i].in_neighbour_heap = false;
+      cells_vec[i].prev = 0;
+      cells_vec[i].next = (i < N-1)?&cells_vec[i+1]:0;
+      cells_vec[i].next_nonsingleton = 0;
+      cells_vec[i].prev_nonsingleton = 0;
     }
+  cells = cells_vec.begin();
   if(N > 1)
-    free_cells = &cells[1];
+    free_cells = &cells_vec[1];
   else
     free_cells = 0;
 
-  if(element_to_cell_map)
-    free(element_to_cell_map);
-  element_to_cell_map = (Cell **)malloc(N * sizeof(Cell *));
+  element_to_cell_map_vec.clear();
+  element_to_cell_map_vec.resize(N);
   for(unsigned int i = 0; i < N; i++)
-    element_to_cell_map[i] = first_cell;
+    element_to_cell_map_vec[i] = first_cell;
+  element_to_cell_map = element_to_cell_map_vec.begin();
 
   splitting_queue.init(N);
   refinement_stack.init(N);
@@ -169,14 +157,14 @@ Partition::goto_backtrack_point(BacktrackPoint p)
     cr_goto_backtrack_point(info.cr_backtrack_point);
 
   const unsigned int dest_refinement_stack_size = info.refinement_stack_size;
-  
+
   assert(refinement_stack.size() >= dest_refinement_stack_size);
   while(refinement_stack.size() > dest_refinement_stack_size)
     {
       RefInfo i = refinement_stack.pop();
       const unsigned int first = i.split_cell_first;
       Cell* cell = get_cell(elements[first]);
-      
+
       if(cell->first != first)
 	{
 	  assert(cell->first < first);
@@ -200,8 +188,8 @@ Partition::goto_backtrack_point(BacktrackPoint p)
 	  if(next_cell->length == 1)
 	    discrete_cell_count--;
 	  /* Update element_to_cell_map values of elements added in cell */
-	  unsigned int* ep = elements + next_cell->first;
-	  unsigned int* const lp = ep + next_cell->length;
+	  uint_pointer_substitute ep = elements + next_cell->first;
+	  uint_pointer_substitute const lp = ep + next_cell->length;
 	  for( ; ep < lp; ep++)
 	    element_to_cell_map[*ep] = cell;
 	  /* Update cell parameters */
@@ -253,19 +241,19 @@ Partition::individualize(Partition::Cell * const cell,
 			 const unsigned int element)
 {
 
-  unsigned int * const pos = in_pos[element];
+  uint_pointer_substitute const pos = in_pos[element];
 
   const unsigned int last = cell->first + cell->length - 1;
   *pos = elements[last];
   in_pos[*pos] = pos;
   elements[last] = element;
   in_pos[element] = elements + last;
-  
+
   Partition::Cell * const new_cell = aux_split_in_two(cell, cell->length-1);
   element_to_cell_map[element] = new_cell;
 
   return new_cell;
-} 
+}
 
 
 
@@ -336,7 +324,7 @@ Partition::aux_split_in_two(Partition::Cell* const cell,
     }
 
   return new_cell;
-} 
+}
 
 
 
@@ -394,7 +382,7 @@ Partition::splitting_queue_add(Cell* const cell)
   if(cell->length <= smallish_cell_threshold)
     splitting_queue.push_front(cell);
   else
-    splitting_queue.push_back(cell);    
+    splitting_queue.push_back(cell);
 }
 
 
@@ -443,12 +431,12 @@ Partition::sort_and_split_cell1(Partition::Cell* const cell)
 
 #define NEW_SORT1
 #ifdef NEW_SORT1
-      unsigned int *ep0 = elements + cell->first;
-      unsigned int *ep1 = ep0 + cell->length - cell->max_ival_count;
+      uint_pointer_substitute ep0 = elements + cell->first;
+      uint_pointer_substitute ep1 = ep0 + cell->length - cell->max_ival_count;
       if(cell->max_ival_count > cell->length / 2)
 	{
 	  /* There are more ones than zeros, only move zeros */
-	  unsigned int * const end = ep0 + cell->length;
+	  uint_pointer_substitute const end = ep0 + cell->length;
 	  while(ep1 < end)
 	    {
 	      while(invariant_values[*ep1] == 0)
@@ -468,7 +456,7 @@ Partition::sort_and_split_cell1(Partition::Cell* const cell)
       else
 	{
 	  /* There are more zeros than ones, only move ones */
-	  unsigned int * const end = ep1;
+	  uint_pointer_substitute  const end = ep1;
 	  while(ep0 < end)
 	    {
 	      while(invariant_values[*ep0] != 0)
@@ -627,7 +615,7 @@ Partition::sort_and_split_cell1(Partition::Cell* const cell)
  * dcs_start[0] = 0 and dcs_start[i+1] = dcs_start[i] + dcs_count[i].
  */
 void
-Partition::dcs_cumulate_count(const unsigned int max) 
+Partition::dcs_cumulate_count(const unsigned int max)
 {
   unsigned int* count_p = dcs_count;
   unsigned int* start_p = dcs_start;
@@ -656,7 +644,7 @@ Partition::sort_and_split_cell255(Partition::Cell* const cell,
       invariant_values[elements[cell->first]] = 0;
       return cell;
     }
-  
+
 #ifdef BLISS_CONSISTENCY_CHECKS
   for(unsigned int i = 0; i < 256; i++)
     assert(dcs_count[i] == 0);
@@ -666,7 +654,7 @@ Partition::sort_and_split_cell255(Partition::Cell* const cell,
    * Compute the distribution of invariant values to the count array
    */
   {
-    const unsigned int *ep = elements + cell->first;
+    uint_pointer_to_const_substitute ep = elements + cell->first;
     const unsigned int ival = invariant_values[*ep];
     dcs_count[ival]++;
     ep++;
@@ -702,7 +690,7 @@ Partition::sort_and_split_cell255(Partition::Cell* const cell,
   /* Do the sorting */
   for(unsigned int i = 0; i <= max_ival; i++)
     {
-      unsigned int *ep = elements + cell->first + dcs_start[i];
+      uint_pointer_substitute ep = elements + cell->first + dcs_start[i];
       for(unsigned int j = dcs_count[i]; j > 0; j--)
 	{
 	  while(true)
@@ -742,7 +730,7 @@ bool
 Partition::shellsort_cell(Partition::Cell* const cell)
 {
   unsigned int h;
-  unsigned int* ep;
+  uint_pointer_substitute  ep;
 
 
   if(cell->is_unit())
@@ -790,7 +778,7 @@ Partition::shellsort_cell(Partition::Cell* const cell)
 void
 Partition::clear_ivs(Cell* const cell)
 {
-  unsigned int* ep = elements + cell->first;
+  uint_pointer_substitute  ep = elements + cell->first;
   for(unsigned int i = cell->length; i > 0; i--, ep++)
     invariant_values[*ep] = 0;
 }
@@ -808,10 +796,10 @@ Partition::split_cell(Partition::Cell* const original_cell)
     original_cell->in_splitting_queue;
   Cell* largest_new_cell = 0;
 
-  while(true) 
+  while(true)
     {
-      unsigned int* ep = elements + cell->first;
-      const unsigned int* const lp = ep + cell->length;
+      uint_pointer_substitute  ep = elements + cell->first;
+      uint_pointer_to_const_substitute  const lp = ep + cell->length;
       const unsigned int ival = invariant_values[*ep];
       invariant_values[*ep] = 0;
       element_to_cell_map[*ep] = cell;
@@ -829,17 +817,17 @@ Partition::split_cell(Partition::Cell* const original_cell)
 	}
       if(ep == lp)
 	break;
-      
+
       Cell* const new_cell = aux_split_in_two(cell,
 					      (ep - elements) - cell->first);
-      
+
       if(graph and graph->compute_eqref_hash)
 	{
 	  graph->eqref_hash.update(new_cell->first);
 	  graph->eqref_hash.update(new_cell->length);
 	  graph->eqref_hash.update(ival);
 	}
-      
+
       /* Add cells in splitting_queue */
       assert(!new_cell->is_in_splitting_queue());
       if(original_cell_was_in_splitting_queue)
@@ -868,7 +856,7 @@ Partition::split_cell(Partition::Cell* const original_cell)
       cell = new_cell;
     }
 
-  
+
   if(original_cell == cell) {
     /* All the elements in cell had the same invariant value */
     return cell;
@@ -911,7 +899,7 @@ Partition::zplit_cell(Partition::Cell* const cell,
       /* Compute max_ival info */
       assert(cell->max_ival == 0);
       assert(cell->max_ival_count == 0);
-      unsigned int *ep = elements + cell->first;
+      uint_pointer_substitute ep = elements + cell->first;
       for(unsigned int i = cell->length; i > 0; i--, ep++)
 	{
 	  const unsigned int ival = invariant_values[*ep];
@@ -1001,21 +989,11 @@ Partition::cr_init()
 
   cr_enabled = true;
 
-  if (cr_cells) {
-    free(cr_cells);
-  }
-  cr_cells = (CRCell*)malloc(N * sizeof(CRCell));
-  if (!cr_cells) {
-    assert(false && "Mem out");
-  }
+  cr_cells_vec.resize(N);
+  cr_cells = cr_cells_vec.begin();
 
-  if (cr_levels) {
-    free(cr_levels);
-  }
-  cr_levels = (CRCell**)malloc(N * sizeof(CRCell*));
-  if (!cr_levels) {
-    assert(false && "Mem out");
-  }
+  cr_levels_vec.resize(N);
+  cr_levels = cr_levels_vec.begin();
 
   for(unsigned int i = 0; i < N; i++) {
     cr_levels[i] = 0;
@@ -1034,9 +1012,6 @@ Partition::cr_init()
 void
 Partition::cr_free()
 {
-  if(cr_cells) {free(cr_cells); cr_cells = 0; }
-  if(cr_levels) {free(cr_levels); cr_levels = 0; }
-
   cr_created_trail.clear();
   cr_splitted_level_trail.clear();
   cr_bt_info.clear();
@@ -1103,7 +1078,7 @@ Partition::cr_goto_backtrack_point(const unsigned int btpoint)
       while(cr_levels[cr_max_level]) {
 	CRCell *cr_cell = cr_levels[cr_max_level];
 	cr_cell->detach();
-	cr_create_at_level(cr_cell - cr_cells, dest_level);
+	cr_create_at_level(cr_cell - &(*cr_cells), dest_level);
       }
       cr_max_level--;
     }
