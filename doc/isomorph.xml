@@ -790,7 +790,7 @@ gap> OutNeighbours(canon);
     represent vertex colourings; see 
     <Ref Oper="AutomorphismGroup" Label="for a digraph and a homogeneous list"/> 
     for details of the permissible values for
-    these argument. The homomorphism must then also have the property:
+    these arguments. The homomorphism must then also have the property:
   
     <List>
       <Item>
