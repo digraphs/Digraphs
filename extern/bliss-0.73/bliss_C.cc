@@ -130,6 +130,20 @@ BlissGraph *bliss_digraphs_permute(BlissGraph *graph, const unsigned int *perm)
   return permuted_graph;
 }
 
+void fill_size(BlissStats* stats, const bliss_digraphs::Stats& s)
+{
+#ifdef BLISS_IN_GAP
+   std::vector<int> sizes = s.get_group_size().get_mults();
+   stats->group_size = (int*)malloc(sizes.size() * sizeof(int));
+   stats->group_size_len = sizes.size();
+   for(int i = 0; i < sizes.size(); ++i) {
+       stats->group_size[i] = sizes[i];
+   }
+#endif
+}
+
+
+
 extern "C"
 void
 bliss_digraphs_find_automorphisms(BlissGraph *graph,
@@ -153,6 +167,7 @@ bliss_digraphs_find_automorphisms(BlissGraph *graph,
       stats->nof_canupdates = s.get_nof_canupdates();
       stats->nof_generators = s.get_nof_generators();
       stats->max_level = s.get_max_level();
+      fill_size(stats, s);
     }
 }
 
@@ -182,7 +197,18 @@ bliss_digraphs_find_canonical_labeling(BlissGraph *graph,
       stats->nof_canupdates = s.get_nof_canupdates();
       stats->nof_generators = s.get_nof_generators();
       stats->max_level = s.get_max_level();
+      fill_size(stats, s);
+
     }
 
   return canonical_labeling;
+}
+
+
+extern "C"
+void bliss_digraphs_free_blissstats(BlissStats *stats)
+{
+#ifdef BLISS_IN_GAP
+    free(stats->group_size);
+#endif
 }

@@ -78,5 +78,4 @@ static inline bool is_adjacent_graph(Graph const* const graph,
 }
 
 void automorphisms_graph(Graph const* const, uint16_t const* const, PermColl*);
-
 #endif  // DIGRAPHS_SRC_HOMOS_GRAPHS_H_

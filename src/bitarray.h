@@ -295,7 +295,7 @@ static inline void init_bit_array(BitArray* const bit_array,
   uint16_t const nr_blocks = NR_BLOCKS_LOOKUP[nr_bits];
   if (val) {
     memset((void*) bit_array->blocks,
-           (Block) ~0ul,
+           ~0,
            (size_t) sizeof(Block) * nr_blocks);
   } else {
     memset((void*) bit_array->blocks, 0, (size_t) sizeof(Block) * nr_blocks);

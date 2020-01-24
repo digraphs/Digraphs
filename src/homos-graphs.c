@@ -34,6 +34,8 @@
 #define bliss_digraphs_find_automorphisms       bliss_find_automorphisms
 #endif
 
+extern Obj GeneratorsOfGroup;
+
 Digraph* new_digraph(uint16_t const nr_verts) {
   DIGRAPHS_ASSERT(nr_verts <= MAXVERTS);
   Digraph* digraph        = malloc(sizeof(Digraph));

@@ -902,6 +902,97 @@ gap> HomomorphismDigraphsFinder(gr1, gr2, fail, [], infinity, fail, 1,
 [ IdentityTransformation, Transformation( [ 1, 3, 3 ] ), 
   Transformation( [ 2, 1 ] ), Transformation( [ 3, 1, 3 ] ) ]
 
+# HomomorphismDigraphsFinder: using a subgroup of automorphisms
+gap> HomomorphismDigraphsFinder(NullDigraph(4), CompleteDigraph(4),
+> fail, [], infinity, fail, 1, [1 .. 4], [], fail, fail,
+> Group(()));
+[ IdentityTransformation, Transformation( [ 1, 2, 4, 3 ] ), 
+  Transformation( [ 1, 3, 2 ] ), Transformation( [ 1, 3, 4, 2 ] ), 
+  Transformation( [ 1, 4, 2, 3 ] ), Transformation( [ 1, 4, 3, 2 ] ), 
+  Transformation( [ 2, 1 ] ), Transformation( [ 2, 1, 4, 3 ] ), 
+  Transformation( [ 2, 3, 1 ] ), Transformation( [ 2, 3, 4, 1 ] ), 
+  Transformation( [ 2, 4, 1, 3 ] ), Transformation( [ 2, 4, 3, 1 ] ), 
+  Transformation( [ 3, 1, 2 ] ), Transformation( [ 3, 1, 4, 2 ] ), 
+  Transformation( [ 3, 2, 1 ] ), Transformation( [ 3, 2, 4, 1 ] ), 
+  Transformation( [ 3, 4, 1, 2 ] ), Transformation( [ 3, 4, 2, 1 ] ), 
+  Transformation( [ 4, 1, 2, 3 ] ), Transformation( [ 4, 1, 3, 2 ] ), 
+  Transformation( [ 4, 2, 1, 3 ] ), Transformation( [ 4, 2, 3, 1 ] ), 
+  Transformation( [ 4, 3, 1, 2 ] ), Transformation( [ 4, 3, 2, 1 ] ) ]
+gap> HomomorphismDigraphsFinder(NullDigraph(4), CompleteDigraph(4),
+> fail, [], infinity, fail, 1, [1 .. 4], [], fail, fail,
+> Group((2, 3)));
+[ IdentityTransformation, Transformation( [ 1, 2, 4, 3 ] ), 
+  Transformation( [ 1, 4, 2, 3 ] ), Transformation( [ 2, 1 ] ), 
+  Transformation( [ 2, 1, 4, 3 ] ), Transformation( [ 2, 3, 1 ] ), 
+  Transformation( [ 2, 3, 4, 1 ] ), Transformation( [ 2, 4, 1, 3 ] ), 
+  Transformation( [ 2, 4, 3, 1 ] ), Transformation( [ 4, 1, 2, 3 ] ), 
+  Transformation( [ 4, 2, 1, 3 ] ), Transformation( [ 4, 2, 3, 1 ] ) ]
+gap> HomomorphismDigraphsFinder(NullDigraph(4), CompleteDigraph(4),
+> fail, [], infinity, fail, 1, [1 .. 4], [], fail, fail,
+> Group((1, 2, 3)));
+[ IdentityTransformation, Transformation( [ 1, 2, 4, 3 ] ), 
+  Transformation( [ 1, 3, 2 ] ), Transformation( [ 1, 3, 4, 2 ] ), 
+  Transformation( [ 1, 4, 2, 3 ] ), Transformation( [ 1, 4, 3, 2 ] ), 
+  Transformation( [ 4, 1, 2, 3 ] ), Transformation( [ 4, 1, 3, 2 ] ) ]
+gap> HomomorphismDigraphsFinder(NullDigraph(4), CompleteDigraph(4),
+> fail, [], infinity, fail, 2, [1 .. 4], [], fail, fail,
+> Group((2, 3)));
+[  ]
+gap> HomomorphismDigraphsFinder(NullDigraph(4), CompleteDigraph(4),
+> fail, [], infinity, fail, 0, [1 .. 4], [], fail, fail, 
+> Group((1, 2), (2, 3)));
+[ IdentityTransformation, Transformation( [ 1, 2, 3, 1 ] ), 
+  Transformation( [ 1, 2, 3, 2 ] ), Transformation( [ 1, 2, 3, 3 ] ), 
+  Transformation( [ 1, 2, 4, 3 ] ), Transformation( [ 1, 2, 4, 1 ] ), 
+  Transformation( [ 1, 2, 4, 2 ] ), Transformation( [ 1, 2, 4, 4 ] ), 
+  Transformation( [ 1, 2, 1, 3 ] ), Transformation( [ 1, 2, 1 ] ), 
+  Transformation( [ 1, 2, 1, 1 ] ), Transformation( [ 1, 2, 1, 2 ] ), 
+  Transformation( [ 1, 2, 2, 3 ] ), Transformation( [ 1, 2, 2 ] ), 
+  Transformation( [ 1, 2, 2, 1 ] ), Transformation( [ 1, 2, 2, 2 ] ), 
+  Transformation( [ 1, 4, 2, 3 ] ), Transformation( [ 1, 4, 2, 1 ] ), 
+  Transformation( [ 1, 4, 2, 2 ] ), Transformation( [ 1, 4, 2, 4 ] ), 
+  Transformation( [ 1, 4, 1, 2 ] ), Transformation( [ 1, 4, 1, 1 ] ), 
+  Transformation( [ 1, 4, 1, 4 ] ), Transformation( [ 1, 4, 4, 2 ] ), 
+  Transformation( [ 1, 4, 4, 1 ] ), Transformation( [ 1, 4, 4, 4 ] ), 
+  Transformation( [ 1, 1, 2, 3 ] ), Transformation( [ 1, 1, 2 ] ), 
+  Transformation( [ 1, 1, 2, 1 ] ), Transformation( [ 1, 1, 2, 2 ] ), 
+  Transformation( [ 1, 1, 4, 2 ] ), Transformation( [ 1, 1, 4, 1 ] ), 
+  Transformation( [ 1, 1, 4, 4 ] ), Transformation( [ 1, 1, 1, 2 ] ), 
+  Transformation( [ 1, 1, 1 ] ), Transformation( [ 1, 1, 1, 1 ] ), 
+  Transformation( [ 4, 1, 2, 3 ] ), Transformation( [ 4, 1, 2, 1 ] ), 
+  Transformation( [ 4, 1, 2, 2 ] ), Transformation( [ 4, 1, 2, 4 ] ), 
+  Transformation( [ 4, 1, 1, 2 ] ), Transformation( [ 4, 1, 1, 1 ] ), 
+  Transformation( [ 4, 1, 1, 4 ] ), Transformation( [ 4, 1, 4, 2 ] ), 
+  Transformation( [ 4, 1, 4, 1 ] ), Transformation( [ 4, 1, 4, 4 ] ), 
+  Transformation( [ 4, 4, 1, 2 ] ), Transformation( [ 4, 4, 1, 1 ] ), 
+  Transformation( [ 4, 4, 1, 4 ] ), Transformation( [ 4, 4, 4, 1 ] ), 
+  Transformation( [ 4, 4, 4, 4 ] ) ]
+gap> HomomorphismDigraphsFinder(NullDigraph(4), CompleteDigraph(4),
+> fail, [], infinity, fail, 0, [1 .. 4], [], fail, fail,
+> Group((1, 2, 3, 4), (1, 2)));
+[ IdentityTransformation, Transformation( [ 1, 2, 3, 1 ] ), 
+  Transformation( [ 1, 2, 3, 2 ] ), Transformation( [ 1, 2, 3, 3 ] ), 
+  Transformation( [ 1, 2, 1, 3 ] ), Transformation( [ 1, 2, 1, 1 ] ), 
+  Transformation( [ 1, 2, 1, 2 ] ), Transformation( [ 1, 2, 2, 3 ] ), 
+  Transformation( [ 1, 2, 2, 1 ] ), Transformation( [ 1, 2, 2, 2 ] ), 
+  Transformation( [ 1, 1, 2, 3 ] ), Transformation( [ 1, 1, 2, 1 ] ), 
+  Transformation( [ 1, 1, 2, 2 ] ), Transformation( [ 1, 1, 1, 2 ] ), 
+  Transformation( [ 1, 1, 1, 1 ] ) ]
+gap> HomomorphismDigraphsFinder(NullDigraph(4), CompleteDigraph(4),
+> fail, [], infinity, fail, 0, [1 .. 4], [], fail, fail);
+[ IdentityTransformation, Transformation( [ 1, 2, 3, 1 ] ), 
+  Transformation( [ 1, 2, 3, 2 ] ), Transformation( [ 1, 2, 3, 3 ] ), 
+  Transformation( [ 1, 2, 1, 3 ] ), Transformation( [ 1, 2, 1, 1 ] ), 
+  Transformation( [ 1, 2, 1, 2 ] ), Transformation( [ 1, 2, 2, 3 ] ), 
+  Transformation( [ 1, 2, 2, 1 ] ), Transformation( [ 1, 2, 2, 2 ] ), 
+  Transformation( [ 1, 1, 2, 3 ] ), Transformation( [ 1, 1, 2, 1 ] ), 
+  Transformation( [ 1, 1, 2, 2 ] ), Transformation( [ 1, 1, 1, 2 ] ), 
+  Transformation( [ 1, 1, 1, 1 ] ) ]
+gap> HomomorphismDigraphsFinder(CompleteDigraph(3), CompleteDigraph(3),
+> fail, [], infinity, fail, 1, [1 .. 3], [], fail, fail, 
+> Group((1, 2, 3)));
+[ IdentityTransformation, Transformation( [ 1, 3, 2 ] ) ]
+
 #  DigraphHomomorphism
 gap> gr1 := Digraph([[], [3], []]);;
 gap> gr2 := EmptyDigraph(10);;
@@ -2080,7 +2171,8 @@ Error, the 11th argument <colors2> must be a list or fail, not boolean or fail\
 ,
 gap> HomomorphismDigraphsFinder(NullDigraph(1), NullDigraph(510), fail, [], 1,
 > fail, true, [1, 2, 3], [1], fail, fail, true);
-Error, the 12th argument <order> must be a list or fail, not boolean or fail,
+Error, the 12th or 13th argument <aut_grp> must be a permutation group or fail\
+, not boolean or fail,
 gap> HomomorphismDigraphsFinder(NullDigraph(10), NullDigraph(510), fail, [], 1,
 > fail, true, [1, 2, 3], [1], fail, fail, [1]);
 Error, the 12th argument <order> must be a list of length 10, not 1,
@@ -2100,6 +2192,36 @@ gap> HomomorphismDigraphsFinder(NullDigraph(3), NullDigraph(510), fail, [], 1,
 > fail, true, [1, 2, 3], [1], fail, fail, [1, 1, 3]);
 Error, the 12th argument <order> must be duplicate-free, but the value 1 in po\
 sition 2 is a duplicate,
+gap> HomomorphismDigraphsFinder(NullDigraph(3), NullDigraph(510), fail, [], 1,
+> fail, true, [1, 2, 3], [1], fail, fail, 12);
+Error, the 12th or 13th argument <aut_grp> must be a permutation group or fail\
+, not integer,
+gap> HomomorphismDigraphsFinder(NullDigraph(3), NullDigraph(510), fail, [], 1,
+> fail, true, [1, 2, 3], [1], fail, fail, true);
+Error, the 12th or 13th argument <aut_grp> must be a permutation group or fail\
+, not boolean or fail,
+gap> HomomorphismDigraphsFinder(NullDigraph(3), NullDigraph(510), fail, [], 1,
+> fail, true, [1, 2, 3], [1], fail, fail,
+> Group(MappingPermListList([1 .. 1000], [5 .. 1004])));
+Error, expected group of automorphisms, but found a non-automorphism in positi\
+on 1 of the group generators,
+gap> HomomorphismDigraphsFinder(NullDigraph(3), NullDigraph(510), fail, [], 1,
+> fail, true, [1, 2, 3], [1], fail, fail, 
+> Group((1, 2), MappingPermListList([1 .. 1000], [5 .. 1004])));
+Error, expected group of automorphisms, but found a non-automorphism in positi\
+on 2 of the group generators,
+gap> HomomorphismDigraphsFinder(NullDigraph(3), ChainDigraph(3), fail, [], 1,
+> fail, true, [1, 2, 3], [1], fail, fail, Group((1, 2, 3)));
+Error, expected group of automorphisms, but found a non-automorphism in positi\
+on 1 of the group generators,
+gap> HomomorphismDigraphsFinder(NullDigraph(3), NullDigraph(3), fail, [], 1,
+> fail, true, [1, 2, 3], [1], [1, 1, 1], [1, 2, 3], Group((1, 2, 3)));
+Error, expected group of automorphisms, but found a non-automorphism in positi\
+on 1 of the group generators,
+gap> HomomorphismDigraphsFinder(NullDigraph(3), NullDigraph(3), fail, [], 1,
+> fail, true, [1, 2, 3], [1], fail, fail,
+> Group((1, 2, 3), (1, 2), (1, 3)));
+Error, expected at most 2 generators in the 12th or 13th argument but got 3,
 
 #
 gap> D1 := DigraphSymmetricClosure(Digraph([[2], [3], []]));;

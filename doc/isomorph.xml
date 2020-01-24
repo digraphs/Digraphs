@@ -786,11 +786,11 @@ gap> OutNeighbours(canon);
     See also <Ref Attr="AutomorphismGroup" Label="for a digraph"
       />.<P/>
     
-    
     If <A>col1</A> and <A>col2</A>, or <A>col</A>, are given, then they must
-    represent vertex colourings; see <Ref Oper="AutomorphismGroup" Label="for a
-    digraph and a homogeneous list"/> for details of the permissible values for
-    these arguments. The homomorphism must then also have the property:
+    represent vertex colourings; see 
+    <Ref Oper="AutomorphismGroup" Label="for a digraph and a homogeneous list"/> 
+    for details of the permissible values for
+    these argument. The homomorphism must then also have the property:
   
     <List>
       <Item>

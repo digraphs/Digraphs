@@ -10,7 +10,7 @@
 
 <#GAPDoc Label="HomomorphismDigraphsFinder">
 <ManSection>
-  <Func Name="HomomorphismDigraphsFinder" Arg="D1, D2, hook, user_param, max_results, hint, injective, image, partial_map, colors1, colors2[, order]"/>
+  <Func Name="HomomorphismDigraphsFinder" Arg="D1, D2, hook, user_param, max_results, hint, injective, image, partial_map, colors1, colors2[, order, aut_grp]"/>
   <Returns>The argument <A>user_param</A>.</Returns>
   <Description>
     This function finds homomorphisms from the digraph <A>D1</A> to the digraph
@@ -19,7 +19,8 @@
 
     If <C>f</C> and <C>g</C> are homomorphisms found by
     <C>HomomorphismDigraphsFinder</C>, then <C>f</C> cannot be obtained from
-    <C>g</C> by right multiplying by an automorphism of <A>D2</A>.
+    <C>g</C> by right multiplying by an automorphism of <A>D2</A> in
+    <A>aut_grp</A>.
 
     <List>
       <Mark><A>hook</A></Mark>
@@ -125,12 +126,19 @@
       </Item>
       <Mark><A>order</A></Mark>
       <Item>
-        The optional final argument <A>order</A> specifies the order the
+        The optional argument <A>order</A> specifies the order the
         vertices in <A>D1</A> appear in the search for homomorphisms. 
         The value of this parameter can have a large impact
         on the runtime of the function. It seems in many cases to be a good
         idea for this to be the <Ref Attr="DigraphWelshPowellOrder"/>, i.e.
         vertices ordered from highest to lowest degree.
+      </Item>
+      <Item>
+        The optional argument <A>aut_grp</A> should be a subgroup of the
+        automorphism group of <A>D2</A>. This function returns unique
+        representatives of the homomorphisms found up to right multiplication
+        by <A>aut_grp</A>. If this argument is not specific, it defaults to the
+        full automorphism group of <A>D2</A>, which may be costly to calculate.
       </Item>
     </List>
 
@@ -155,7 +163,18 @@ gap> HomomorphismDigraphsFinder(D, D2, func, [Transformation([2, 2])],
 [ Transformation( [ 2, 2 ] ), 
   Transformation( [ 2, 2, 2, 3, 4, 5, 6, 2, 2, 2 ] ), 
   Transformation( [ 2, 2, 2, 3, 4, 5, 6, 2, 2, 3 ] ), 
-  Transformation( [ 2, 2, 2, 3, 4, 5, 6, 2, 2, 4 ] ) ]]]></Example>
+  Transformation( [ 2, 2, 2, 3, 4, 5, 6, 2, 2, 4 ] ) ]
+gap> HomomorphismDigraphsFinder(NullDigraph(2), NullDigraph(3), fail,
+> [], infinity, fail, 1, [1, 2, 3], fail, fail, fail, fail,
+> Group(()));
+[ IdentityTransformation, Transformation( [ 1, 3, 3 ] ), 
+  Transformation( [ 2, 1 ] ), Transformation( [ 2, 3, 3 ] ), 
+  Transformation( [ 3, 1, 3 ] ), Transformation( [ 3, 2, 3 ] ) ]
+gap> HomomorphismDigraphsFinder(NullDigraph(2), NullDigraph(3), fail,
+> [], infinity, fail, 1, [1, 2, 3], fail, fail, fail, fail,
+> Group((1, 2)));
+[ IdentityTransformation, Transformation( [ 1, 3, 3 ] ), 
+  Transformation( [ 3, 1, 3 ] ) ]]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -607,7 +626,8 @@ gap> EmbeddingsDigraphs(D1, D2);
     </List>
     See also <Ref Func="GeneratorsOfEndomorphismMonoid"/>.<P/>
 
-    If <A>col1</A> and <A>col2</A>, or <A>col</A>, are given then they must
+
+    If <A>col1</A> and <A>col2</A>, or <A>col</A>, are given, then they must
     represent vertex colourings; see <Ref Oper="AutomorphismGroup" Label="for a
     digraph and a homogeneous list"/> for details of the permissible values for
     these argument. The homomorphism must then also have the property:
@@ -622,7 +642,7 @@ gap> EmbeddingsDigraphs(D1, D2);
     </List>
 
     See also <Ref Oper="DigraphsRespectsColouring"/>.
-
+    
     <Example><![CDATA[
 gap> src := Digraph([[1], [1, 2], [1, 3]]);
 <immutable digraph with 3 vertices, 5 edges>

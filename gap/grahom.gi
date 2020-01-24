@@ -521,6 +521,7 @@ end);
 InstallMethod(IsDigraphHomomorphism,
 "for a digraph by out-neighbours, a digraph, a transformation, and two lists",
 [IsDigraphByOutNeighboursRep, IsDigraph, IsTransformation, IsList, IsList],
+
 function(src, ran, x, cols1, cols2)
   return IsDigraphHomomorphism(src, ran, x) and
          DigraphsRespectsColouring(src, ran, x, cols1, cols2);
@@ -586,7 +587,7 @@ InstallMethod(IsDigraphMonomorphism, "for digraph, digraph, and perm",
 InstallMethod(IsDigraphMonomorphism, "for digraph, digraph, perm, list, list",
 [IsDigraph, IsDigraph, IsPerm, IsList, IsList],
 function(src, ran, x, cols1, cols2)
-  return IsDigraphMonomorphism(src, ran, x)
+  return IsDigraphHomomorphism(src, ran, x)
     and DigraphsRespectsColouring(src, ran, x, cols1, cols2);
 end);
 

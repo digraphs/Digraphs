@@ -77,6 +77,9 @@ function(digraph, vert_colours, edge_colours)
       data[1] := [()];
     fi;
     data[1] := Group(data[1]);
+    if IsBound(data[3]) then
+        SetSize(data[1], data[3]);
+    fi;
 
     if Length(mults) > 0 then
       edge_gp := Group(Flat(List(mults,
@@ -95,6 +98,9 @@ function(digraph, vert_colours, edge_colours)
       data[1] := [()];
     fi;
     data[1] := Group(data[1]);
+    if IsBound(data[3]) then
+        SetSize(data[1], data[3]);
+    fi;
     return data;
   fi;
 end);

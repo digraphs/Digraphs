@@ -51,6 +51,9 @@ Obj IsSymmetricDigraph;
 Obj GeneratorsOfGroup;
 Obj AutomorphismGroup;
 Obj IsAttributeStoringRepObj;
+Obj IsPermGroup;
+Obj IsDigraphAutomorphism;
+Obj LargestMovedPointPerms;
 
 #if !defined(GAP_KERNEL_MAJOR_VERSION) || GAP_KERNEL_MAJOR_VERSION < 3
 // compatibility with GAP <= 4.9
@@ -73,9 +76,15 @@ Int DigraphNrVertices(Obj D) {
   return LEN_LIST(FuncOutNeighbours(0L, D));
 }
 
+static Int RNamOutNeighbours        = 0;
+
+
 Obj FuncOutNeighbours(Obj self, Obj D) {
-  if (IsbPRec(D, RNamName("OutNeighbours"))) {
-    return ElmPRec(D, RNamName("OutNeighbours"));
+  if (!RNamOutNeighbours) {
+    RNamOutNeighbours = RNamName("OutNeighbours");
+  }
+  if (IsbPRec(D, RNamOutNeighbours)) {
+    return ElmPRec(D, RNamOutNeighbours);
   } else {
     ErrorQuit(
         "the `OutNeighbours` component is not set for this digraph,", 0L, 0L);
@@ -1742,6 +1751,15 @@ void digraph_hook_function(void*               user_param,
   AssPlist(gens, LEN_PLIST(gens) + 1, p);
 }
 
+// Take a list of C integers, and multiply them together into a GAP int
+static Obj MultiplyList(int* vals, int length) {
+  Obj res = INTOBJ_INT(1);
+  for (int i = 0; i < length; ++i) {
+    res = ProdInt(res, INTOBJ_INT(vals[i]));
+  }
+  return res;
+}
+
 static Obj FuncDIGRAPH_AUTOMORPHISMS(Obj self,
                                      Obj digraph,
                                      Obj vert_colours,
@@ -1754,7 +1772,7 @@ static Obj FuncDIGRAPH_AUTOMORPHISMS(Obj self,
 
   graph = buildBlissDigraph(digraph, vert_colours, edge_colours);
 
-  autos = NEW_PLIST(T_PLIST, 2);
+  autos = NEW_PLIST(T_PLIST, 3);
   n     = INTOBJ_INT(DigraphNrVertices(digraph));
 
   SET_ELM_PLIST(autos, 1, NEW_PLIST(T_PLIST, 0));  // perms of the vertices
@@ -1762,8 +1780,10 @@ static Obj FuncDIGRAPH_AUTOMORPHISMS(Obj self,
   SET_ELM_PLIST(autos, 2, n);
   SET_LEN_PLIST(autos, 2);
 
+  BlissStats stats;
+
   canon = bliss_digraphs_find_canonical_labeling(
-      graph, digraph_hook_function, autos, 0);
+      graph, digraph_hook_function, autos, &stats);
 
   p   = NEW_PERM4(INT_INTOBJ(n));
   ptr = ADDR_PERM4(p);
@@ -1779,6 +1799,14 @@ static Obj FuncDIGRAPH_AUTOMORPHISMS(Obj self,
     SortDensePlist(ELM_PLIST(autos, 1));
     RemoveDupsDensePlist(ELM_PLIST(autos, 1));
   }
+
+#ifdef DIGRAPHS_WITH_INCLUDED_BLISS
+  Obj size = MultiplyList(stats.group_size, stats.group_size_len);
+  bliss_digraphs_free_blissstats(&stats);
+
+  SET_LEN_PLIST(autos, 3);
+  SET_ELM_PLIST(autos, 3, size);
+#endif
 
   return autos;
 }
@@ -1883,12 +1911,14 @@ static Obj FuncMULTIDIGRAPH_AUTOMORPHISMS(Obj self, Obj digraph, Obj colours) {
   CHANGED_BAG(autos);
   SET_ELM_PLIST(autos, 4, INTOBJ_INT(DigraphNrEdges(digraph)));
 
+  BlissStats stats;
+
   if (colours == False) {
     canon = bliss_digraphs_find_canonical_labeling(
-        graph, multidigraph_hook_function, autos, 0);
+        graph, multidigraph_hook_function, autos, &stats);
   } else {
     canon = bliss_digraphs_find_canonical_labeling(
-        graph, multidigraph_colours_hook_function, autos, 0);
+        graph, multidigraph_colours_hook_function, autos, &stats);
   }
 
   // Get canonical labeling as GAP perms
@@ -1937,6 +1967,15 @@ static Obj FuncMULTIDIGRAPH_AUTOMORPHISMS(Obj self, Obj digraph, Obj colours) {
     SortDensePlist(ELM_PLIST(autos, 3));
     RemoveDupsDensePlist(ELM_PLIST(autos, 3));
   }
+
+#ifdef DIGRAPHS_WITH_INCLUDED_BLISS
+  Obj size = MultiplyList(stats.group_size, stats.group_size_len);
+  bliss_digraphs_free_blissstats(&stats);
+
+  SET_LEN_PLIST(autos, 4);
+  SET_ELM_PLIST(autos, 4, size);
+#endif
+
   return autos;
 }
 
@@ -2280,6 +2319,9 @@ static Int InitKernel(StructInitInfo* module) {
   ImportGVarFromLibrary("AutomorphismGroup", &AutomorphismGroup);
   ImportGVarFromLibrary("GeneratorsOfGroup", &GeneratorsOfGroup);
   ImportGVarFromLibrary("IsAttributeStoringRep", &IsAttributeStoringRepObj);
+  ImportGVarFromLibrary("IsPermGroup", &IsPermGroup);
+  ImportGVarFromLibrary("IsDigraphAutomorphism", &IsDigraphAutomorphism);
+  ImportGVarFromLibrary("LargestMovedPointPerms", &LargestMovedPointPerms);
   /* return success                                                      */
   return 0;
 }
