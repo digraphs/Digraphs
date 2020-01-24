@@ -5,9 +5,9 @@
 /*
   Copyright (c) 2003-2015 Tommi Junttila
   Released under the GNU Lesser General Public License version 3.
-  
+
   This file is part of bliss.
-  
+
   bliss is free software: you can redistribute it and/or modify
   it under the terms of the GNU Lesser General Public License as published by
   the Free Software Foundation, version 3 of the License.
@@ -34,7 +34,7 @@ void Timer::reset()
 {
   struct tms clkticks;
 
-  times(&clkticks);
+//  times(&clkticks);
   start_time =
     ((double) clkticks.tms_utime + (double) clkticks.tms_stime) /
     numTicksPerSec;
@@ -45,8 +45,8 @@ double Timer::get_duration()
 {
   struct tms clkticks;
 
-  times(&clkticks);
-  double intermediate = 
+//  times(&clkticks);
+  double intermediate =
     ((double) clkticks.tms_utime + (double) clkticks.tms_stime) /
     numTicksPerSec;
   return intermediate - start_time;

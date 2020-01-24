@@ -7,9 +7,9 @@
 /*
   Copyright (c) 2003-2015 Tommi Junttila
   Released under the GNU Lesser General Public License version 3.
-  
+
   This file is part of bliss.
-  
+
   bliss is free software: you can redistribute it and/or modify
   it under the terms of the GNU Lesser General Public License as published by
   the Free Software Foundation, version 3 of the License.
@@ -27,13 +27,6 @@ namespace bliss_digraphs {
 
 Heap::~Heap()
 {
-  if(array)
-    {
-      free(array);
-      array = 0;
-      n = 0;
-      N = 0;
-    }
 }
 
 void Heap::upheap(unsigned int index)
@@ -69,9 +62,8 @@ void Heap::init(const unsigned int size)
 {
   if(size > N)
     {
-      if(array)
-	free(array);
-      array = (unsigned int*)malloc((size + 1) * sizeof(unsigned int));
+      array_vec.resize(size + 1);
+      array = array_vec.begin();
       N = size;
     }
   n = 0;

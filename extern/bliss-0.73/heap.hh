@@ -1,12 +1,14 @@
 #ifndef BLISS_HEAP_HH
 #define BLISS_HEAP_HH
 
+#include <vector>
+
 /*
   Copyright (c) 2003-2015 Tommi Junttila
   Released under the GNU Lesser General Public License version 3.
-  
+
   This file is part of bliss.
-  
+
   bliss is free software: you can redistribute it and/or modify
   it under the terms of the GNU Lesser General Public License as published by
   the Free Software Foundation, version 3 of the License.
@@ -30,7 +32,10 @@ class Heap
 {
   unsigned int N;
   unsigned int n;
-  unsigned int *array;
+  std::vector<unsigned int> array_vec;
+
+  typedef std::vector<unsigned int>::iterator uint_pointer_substitute;
+  uint_pointer_substitute array;
   void upheap(unsigned int k);
   void downheap(unsigned int k);
 public:
@@ -38,7 +43,7 @@ public:
    * Create a new heap.
    * init() must be called after this.
    */
-  Heap() {array = 0; n = 0; N = 0; }
+  Heap() { n = 0; N = 0; }
   ~Heap();
 
   /**

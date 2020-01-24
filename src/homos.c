@@ -47,6 +47,17 @@
 #include "perms.h"            // for MAXVERTS, UNDEFINED, PermColl, Perm
 #include "schreier-sims.h"    // for PermColl, . . .
 
+#ifdef DIGRAPHS_WITH_INCLUDED_BLISS
+#include "bliss-0.73/bliss_C.h"  // for bliss_digraphs_release, . . .
+#else
+#include "bliss/bliss_C.h"
+#define bliss_digraphs_add_edge bliss_add_edge
+#define bliss_digraphs_new bliss_new
+#define bliss_digraphs_add_vertex bliss_add_vertex
+#define bliss_digraphs_find_canonical_labeling bliss_find_canonical_labeling
+#define bliss_digraphs_release bliss_release
+#endif
+
 ////////////////////////////////////////////////////////////////////////////////
 // 1. Macros
 ////////////////////////////////////////////////////////////////////////////////
@@ -164,6 +175,8 @@ static Digraph* DIGRAPH2;
 
 static Graph* GRAPH1;  // Graphs to hold incoming GAP symmetric digraphs
 static Graph* GRAPH2;
+
+static BlissGraph* BLISS_GRAPH[3 * MAXVERTS];
 
 static uint16_t MAP[MAXVERTS];            // partial image list
 static uint16_t COLORS2[MAXVERTS];        // colors of range (di)graph
@@ -397,10 +410,13 @@ static bool compute_stabs_and_orbit_reps(uint16_t const nr_nodes_1,
                                          uint16_t const nr_nodes_2,
                                          uint16_t const rep_depth,
                                          uint16_t const depth,
-                                         uint16_t const pt) {
+                                         uint16_t const pt,
+                                         bool const     first_call) {
   DIGRAPHS_ASSERT(rep_depth <= depth + 1);
-
-  if (depth == nr_nodes_1 - 1) {
+  if (depth == nr_nodes_1 - 1 && !first_call) {
+    // first_call is required in the case that nr_nodes_1 is 1, since without
+    // first_call this function returns false (in the next line) and REPS is
+    // not initialised.
     return false;  // This doesn't really say anything about the stabiliser
   } else if (rep_depth > 0) {
     point_stabilizer(
@@ -416,7 +432,6 @@ static bool compute_stabs_and_orbit_reps(uint16_t const nr_nodes_1,
       return true;  // the stabiliser is trivial
     }
   }
-
   init_bit_array(REPS[rep_depth], false, nr_nodes_2);
   copy_bit_array(ORB_LOOKUP, VALS, nr_nodes_2);
   uint16_t fst = 0;
@@ -529,9 +544,9 @@ static void set_automorphisms(Obj aut_grp_obj, PermColl* out) {
 
 // Helper for the main recursive homomorphism function.
 static ALWAYS_INLINE uint16_t
-                     graph_homo_update_conditions(uint16_t const depth,
-                                                  uint16_t const last_defined,
-                                                  uint16_t const vertex) {
+graph_homo_update_conditions(uint16_t const depth,
+                             uint16_t const last_defined,
+                             uint16_t const vertex) {
   push_conditions(
       CONDITIONS, depth, vertex, GRAPH2->neighbours[MAP[last_defined]]);
   store_size_conditions(CONDITIONS, vertex);
@@ -645,7 +660,8 @@ static void find_graph_homos(uint16_t        depth,
                                                       GRAPH2->nr_vertices,
                                                       rep_depth + 1,
                                                       depth,
-                                                      i),
+                                                      i,
+                                                      false),
                          rank + 1,
                          max_results,
                          hint,
@@ -689,9 +705,9 @@ static void find_graph_homos(uint16_t        depth,
 
 // Helper for the main recursive monomorphism function.
 static ALWAYS_INLINE uint16_t
-                     graph_mono_update_conditions(uint16_t const depth,
-                                                  uint16_t const last_defined,
-                                                  uint16_t const vertex) {
+graph_mono_update_conditions(uint16_t const depth,
+                             uint16_t const last_defined,
+                             uint16_t const vertex) {
   push_conditions(
       CONDITIONS, depth, vertex, GRAPH2->neighbours[MAP[last_defined]]);
   store_size_conditions(CONDITIONS, vertex);
@@ -791,7 +807,8 @@ static void find_graph_monos(uint16_t        depth,
                                                     GRAPH2->nr_vertices,
                                                     rep_depth + 1,
                                                     depth,
-                                                    i),
+                                                    i,
+                                                    false),
                        max_results,
                        count);
     } else {
@@ -921,7 +938,8 @@ static void find_graph_embeddings(uint16_t        depth,
                                                          GRAPH2->nr_vertices,
                                                          rep_depth + 1,
                                                          depth,
-                                                         MAP[next]),
+                                                         MAP[next],
+                                                         false),
                             max_results,
                             count);
     } else {
@@ -1027,7 +1045,8 @@ static void init_partial_map_and_find_graph_homos(Obj partial_map_obj,
                                            GRAPH2->nr_vertices,
                                            rep_depth + 1,
                                            depth,
-                                           MAP[next]);
+                                           MAP[next],
+                                           false);
           rep_depth++;
         }
         depth++;
@@ -1064,9 +1083,9 @@ static void init_partial_map_and_find_graph_homos(Obj partial_map_obj,
 
 // Helper for the main recursive homomorphism of digraphs function.
 static ALWAYS_INLINE uint16_t
-                     digraph_homo_update_conditions(uint16_t const depth,
-                                                    uint16_t const last_defined,
-                                                    uint16_t const vertex) {
+digraph_homo_update_conditions(uint16_t const depth,
+                               uint16_t const last_defined,
+                               uint16_t const vertex) {
   if (is_adjacent_digraph(DIGRAPH1, last_defined, vertex)) {
     push_conditions(
         CONDITIONS, depth, vertex, DIGRAPH2->out_neighbours[MAP[last_defined]]);
@@ -1177,7 +1196,8 @@ static void find_digraph_homos(uint16_t        depth,
                                                         DIGRAPH2->nr_vertices,
                                                         rep_depth + 1,
                                                         depth,
-                                                        i),
+                                                        i,
+                                                        false),
                            rank + 1,
                            max_results,
                            hint,
@@ -1221,9 +1241,9 @@ static void find_digraph_homos(uint16_t        depth,
 
 // Helper for the main recursive monomorphism of digraphs function.
 static ALWAYS_INLINE uint16_t
-                     digraph_mono_update_conditions(uint16_t const depth,
-                                                    uint16_t const last_defined,
-                                                    uint16_t const vertex) {
+digraph_mono_update_conditions(uint16_t const depth,
+                               uint16_t const last_defined,
+                               uint16_t const vertex) {
   push_conditions(CONDITIONS, depth, vertex, NULL);
   if (is_adjacent_digraph(DIGRAPH1, last_defined, vertex)) {
     intersect_bit_arrays(get_conditions(CONDITIONS, vertex),
@@ -1320,7 +1340,8 @@ static void find_digraph_monos(uint16_t        depth,
                                                       DIGRAPH2->nr_vertices,
                                                       rep_depth + 1,
                                                       depth,
-                                                      i),
+                                                      i,
+                                                      false),
                          max_results,
                          count);
     } else {
@@ -1336,9 +1357,9 @@ static void find_digraph_monos(uint16_t        depth,
 
 // Helper for the main recursive embedding digraphs function.
 static ALWAYS_INLINE uint16_t
-                     digraph_embed_update_conditions(uint16_t const depth,
-                                                     uint16_t const last_def,
-                                                     uint16_t const vertex) {
+digraph_embed_update_conditions(uint16_t const depth,
+                                uint16_t const last_def,
+                                uint16_t const vertex) {
   push_conditions(CONDITIONS, depth, vertex, NULL);
   if (is_adjacent_digraph(DIGRAPH1, last_def, vertex)) {
     intersect_bit_arrays(get_conditions(CONDITIONS, vertex),
@@ -1444,7 +1465,8 @@ static void find_digraph_embeddings(uint16_t        depth,
                                        DIGRAPH2->nr_vertices,
                                        rep_depth + 1,
                                        depth,
-                                       i),
+                                       i,
+                                       false),
           max_results,
           count);
     } else {
@@ -1520,7 +1542,8 @@ static void init_partial_map_and_find_digraph_homos(Obj partial_map_obj,
                                            DIGRAPH2->nr_vertices,
                                            rep_depth + 1,
                                            depth,
-                                           MAP[next]);
+                                           MAP[next],
+                                           false);
           rep_depth++;
         }
         depth++;
@@ -1596,6 +1619,7 @@ static bool init_data_from_args(Obj digraph1_obj,
     ORB_LOOKUP     = new_bit_array(MAXVERTS);
     REPS           = malloc(MAXVERTS * sizeof(BitArray*));
     for (uint16_t i = 0; i < MAXVERTS; i++) {
+      BLISS_GRAPH[i]      = bliss_digraphs_new(i);
       REPS[i]             = new_bit_array(MAXVERTS);
       BIT_ARRAY_BUFFER[i] = new_bit_array(MAXVERTS);
       MAP_UNDEFINED[i]    = new_bit_array(MAXVERTS);
@@ -1772,18 +1796,23 @@ static bool init_data_from_args(Obj digraph1_obj,
   // orbit reps
   PERM_DEGREE = nr2;
   if (aut_grp_obj == Fail) {
-    if (colors == NULL) {
-      get_automorphism_group_from_gap(digraph2_obj, STAB_GENS[0]);
-    } else if (is_undirected) {
-      automorphisms_graph(GRAPH2, colors, STAB_GENS[0]);
-    } else {
-      automorphisms_digraph(DIGRAPH2, colors, STAB_GENS[0]);
-    }
+  if (colors == NULL) {
+    get_automorphism_group_from_gap(digraph2_obj, STAB_GENS[0]);
+  } else if (is_undirected) {
+#ifdef DIGRAPHS_WITH_INCLUDED_BLISS
+    automorphisms_graph(GRAPH2, colors, STAB_GENS[0], BLISS_GRAPH[PERM_DEGREE]);
+#else
+    automorphisms_graph(GRAPH2, colors, STAB_GENS[0]);
+#endif
   } else {
-    set_automorphisms(aut_grp_obj, STAB_GENS[0]);
+#ifdef DIGRAPHS_WITH_INCLUDED_BLISS
+    automorphisms_digraph(
+        DIGRAPH2, colors, STAB_GENS[0], BLISS_GRAPH[3 * PERM_DEGREE]);
+#else
+    automorphisms_digraph(DIGRAPH2, colors, STAB_GENS[0]);
+#endif
   }
-
-  compute_stabs_and_orbit_reps(nr1, nr2, 0, 0, UNDEFINED);
+  compute_stabs_and_orbit_reps(nr1, nr2, 0, 0, UNDEFINED, true);
   return true;
 }
 

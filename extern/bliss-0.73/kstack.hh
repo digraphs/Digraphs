@@ -4,9 +4,9 @@
 /*
   Copyright (c) 2003-2015 Tommi Junttila
   Released under the GNU Lesser General Public License version 3.
-  
+
   This file is part of bliss.
-  
+
   bliss is free software: you can redistribute it and/or modify
   it under the terms of the GNU Lesser General Public License as published by
   the Free Software Foundation, version 3 of the License.
@@ -98,16 +98,16 @@ public:
   int capacity() {return kapacity; }
 private:
   int kapacity;
-  Type *entries;
-  Type *cursor;
+  typedef typename std::vector<Type>::iterator entries_pointer_substitute;
+  std::vector<Type> entries_vec;
+  entries_pointer_substitute entries;
+  entries_pointer_substitute cursor;
 };
 
 template <class Type>
 KStack<Type>::KStack()
 {
   kapacity = 0;
-  entries = 0;
-  cursor = 0;
 }
 
 template <class Type>
@@ -115,7 +115,8 @@ KStack<Type>::KStack(int k)
 {
   assert(k > 0);
   kapacity = k;
-  entries = (Type*)malloc((k+1) * sizeof(Type));
+  entries_vec.resize(k + 1);
+  entries = entries_vec.begin();
   cursor = entries;
 }
 
@@ -123,17 +124,15 @@ template <class Type>
 void KStack<Type>::init(int k)
 {
   assert(k > 0);
-  if(entries)
-    free(entries);
   kapacity = k;
-  entries = (Type*)malloc((k+1) * sizeof(Type));
+  entries_vec.resize(k + 1);
+  entries = entries_vec.begin();
   cursor = entries;
 }
 
 template <class Type>
 KStack<Type>::~KStack()
 {
-  free(entries);
 }
 
 } // namespace bliss_digraphs

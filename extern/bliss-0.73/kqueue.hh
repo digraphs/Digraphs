@@ -4,9 +4,9 @@
 /*
   Copyright (c) 2003-2015 Tommi Junttila
   Released under the GNU Lesser General Public License version 3.
-  
+
   This file is part of bliss.
-  
+
   bliss is free software: you can redistribute it and/or modify
   it under the terms of the GNU Lesser General Public License as published by
   the Free Software Foundation, version 3 of the License.
@@ -36,6 +36,8 @@ public:
    * Create a new queue with capacity zero.
    * The function init() should be called next.
    */
+  typedef typename std::vector<Type>::iterator type_pointer_substitute;
+
   KQueue();
 
   ~KQueue();
@@ -44,7 +46,7 @@ public:
    * Initialize the queue to have the capacity to hold at most \a N elements.
    */
   void init(const unsigned int N);
-  
+
   /** Is the queue empty? */
   bool is_empty() const;
 
@@ -69,33 +71,27 @@ public:
   /** Push the element \a e in the back of the queue. */
   void push_back(Type e);
 private:
-  Type *entries, *end;
-  Type *head, *tail;
+  type_pointer_substitute entries, end;
+  type_pointer_substitute head, tail;
+  std::vector<Type> entries_vec;
 };
 
 template <class Type>
 KQueue<Type>::KQueue()
 {
-  entries = 0;
-  end = 0;
-  head = 0;
-  tail = 0;
 }
 
 template <class Type>
 KQueue<Type>::~KQueue()
 {
-  if(entries)
-    free(entries);
 }
 
 template <class Type>
 void KQueue<Type>::init(const unsigned int k)
 {
   assert(k > 0);
-  if(entries)
-    free(entries);
-  entries = (Type*)malloc((k + 1) * sizeof(Type));
+  entries_vec.resize(k + 1);
+  entries = entries_vec.begin();
   end = entries + k + 1;
   head = entries;
   tail = head;
@@ -131,7 +127,7 @@ Type KQueue<Type>::front() const
 template <class Type>
 Type KQueue<Type>::pop_front()
 {
-  Type *old_head = head;
+  type_pointer_substitute old_head = head;
   head++;
   if(head == end)
     head = entries;

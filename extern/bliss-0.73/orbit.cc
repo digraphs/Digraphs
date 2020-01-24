@@ -6,9 +6,9 @@
 /*
   Copyright (c) 2003-2015 Tommi Junttila
   Released under the GNU Lesser General Public License version 3.
-  
+
   This file is part of bliss.
-  
+
   bliss is free software: you can redistribute it and/or modify
   it under the terms of the GNU Lesser General Public License as published by
   the Free Software Foundation, version 3 of the License.
@@ -26,35 +26,22 @@ namespace bliss_digraphs {
 
 Orbit::Orbit()
 {
-  orbits = 0;
-  in_orbit = 0;
   nof_elements = 0;
 }
 
 
 Orbit::~Orbit()
 {
-  if(orbits)
-    {
-      free(orbits);
-      orbits = 0;
-    }
-  if(in_orbit)
-    {
-      free(in_orbit);
-      in_orbit = 0;
-    }
-  nof_elements = 0;
 }
 
 
 void Orbit::init(const unsigned int n)
 {
   assert(n > 0);
-  if(orbits) free(orbits);
-  orbits = (OrbitEntry*)malloc(n * sizeof(OrbitEntry));
-  if(in_orbit) free(in_orbit);
-  in_orbit = (OrbitEntry**)malloc(n * sizeof(OrbitEntry*));
+  orbits_vec.resize(n);
+  orbits = orbits_vec.begin();
+  in_orbit_vec.resize(n);
+  in_orbit = in_orbit_vec.begin();
   nof_elements = n;
 
   reset();
@@ -63,8 +50,8 @@ void Orbit::init(const unsigned int n)
 
 void Orbit::reset()
 {
-  assert(orbits);
-  assert(in_orbit);
+  assert(!orbits_vec.empty());
+  assert(!in_orbit_vec.empty());
 
   for(unsigned int i = 0; i < nof_elements; i++)
     {
@@ -136,7 +123,7 @@ unsigned int Orbit::get_minimal_representative(unsigned int element) const
 
 unsigned int Orbit::orbit_size(unsigned int element) const
 {
-  
+
   return(in_orbit[element]->size);
 }
 
