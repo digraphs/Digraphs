@@ -727,13 +727,9 @@ end);
 InstallMethod(IsDigraphIsomorphism,
 "for digraph, digraph, permutation, list, and list",
 [IsDigraph, IsDigraph, IsPerm, IsList, IsList],
-function(src, ran, x, c1, c2)
-  if IsMultiDigraph(src) or IsMultiDigraph(ran) then
-    ErrorNoReturn("the 1st and 2nd arguments <src> and <ran> must not have ",
-                  "multiple edges,");
-  fi;
-  return IsDigraphHomomorphism(src, ran, x, c1, c2)
-     and IsDigraphHomomorphism(ran, src, x ^ -1, c1, c2);
+function(src, ran, x, cols1, cols2)
+  return IsDigraphIsomorphism(src, ran, x)
+    and DigraphsRespectsColouring(src, ran, x, cols1, cols2);
 end);
 
 InstallMethod(IsDigraphAutomorphism, "for a digraph and a permutation",
@@ -759,13 +755,9 @@ end);
 InstallMethod(IsDigraphIsomorphism,
 "for digraph, digraph, transformation, list, and list",
 [IsDigraph, IsDigraph, IsTransformation, IsList, IsList],
-function(src, ran, x, c1, c2)
-  local y;
-  y := AsPermutation(RestrictedTransformation(x, DigraphVertices(src)));
-  if y = fail then
-    return false;
-  fi;
-  return IsDigraphIsomorphism(src, ran, y, c1, c2);
+function(src, ran, x, cols1, cols2)
+  return IsDigraphIsomorphism(src, ran, x)
+    and DigraphsRespectsColouring(src, ran, x, cols1, cols2);
 end);
 
 InstallMethod(IsDigraphAutomorphism, "for a digraph and a transformation",

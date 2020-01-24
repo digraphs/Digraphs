@@ -62,6 +62,7 @@ from} $E_a$ \emph{to} $E_b$. In this case we say that $E_a$ and $E_b$ are
     <#Include Label="EmbeddingsDigraphs">
     <#Include Label="IsDigraphHomomorphism">
     <#Include Label="IsDigraphEmbedding">
+    <#Include Label="DigraphsRespectsColouring">
     <#Include Label="GeneratorsOfEndomorphismMonoid">
     <#Include Label="DigraphColouring">
     <#Include Label="DigraphGreedyColouring">
