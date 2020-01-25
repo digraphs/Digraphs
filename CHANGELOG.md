@@ -1,8 +1,58 @@
 # CHANGELOG – Digraphs package for GAP
-Copyright © 2014-19 by Jan De Beule, Julius Jonušas, James D. Mitchell, Michael
+Copyright © 2014-20 by Jan De Beule, Julius Jonušas, James D. Mitchell, Michael
 Torpey, Wilf A. Wilson et al.
 
 Licensing information can be found in the `LICENSE` file.
+
+## Version 1.1.0 (released ??/01/2020)
+
+This is a minor release that includes some new features and some performance
+improvements. 
+
+The following issues were resolve, pull requests merged, or new features added:
+
+* [Issue #40](https://github.com/gap-packages/Digraphs/issues/40): If [bliss][]
+  is used to compute the automorphism group of a digraph, then the size of the
+  automorphism group is returned from [bliss][] to GAP and the group object in
+  GAP does not have to recalculate this size. This was reported and fixed (in
+  [PR #278](https://github.com/gap-packages/Digraphs/pull/278) by
+  [Chris Jefferson][].
+
+* [Issue #279](https://github.com/gap-packages/Digraphs/issues/279):
+  In the function `HomomorphismDigraphsFinder` it is now possible to specify a
+  subgroup of the automorphism group of the range digraph. This way the
+  automorphism group of the range digraph is not computed by
+  `HomomorphismDigraphsFinder`.  This can result in a performance improvement
+  in some cases. This was reported and fixed (in 
+  [PR #285](https://github.com/gap-packages/Digraphs/pull/285) by 
+  [Finn Smith][].
+
+* [Issue #284](https://github.com/gap-packages/Digraphs/issues/284): 
+  The function `HomomorphismDigraphsFinder` sometimes did not return any
+  homomorphisms when the source digraph had exactly 1 vertex. This was caused
+  by the data structures used by `HomomorphismDigraphsFinder` not being
+  correctly initialised in this case. This issue was reported by [Finn Smith][]
+  and fixed by [James D. Mitchell][] in
+  [PR #286](https://github.com/gap-packages/Digraphs/pull/286).
+
+* In [PR #283](https://github.com/gap-packages/Digraphs/pull/283), [Finn Smith][]
+  added the new operation `DigraphsRespectsColouring` which can be used to
+  check if a transformation or permutation between digraphs respects given
+  colourings. New versions of `IsDigraphHomomorphism`, and friends, were added
+  that accept colourings as arguments and which use
+  `DigraphsRespectsColouring`.
+
+* The version of [bliss][] included in Digraphs was updated to allow all of its
+  data structures to be modified in-place rather than allocated and deallocated
+  repeatedly. The function `HomomorphismDigraphsFinder` was modified to make
+  use of this new functionality in [bliss][] and subsequently the performance
+  of `HomomorphismDigraphsFinder` has been improved (in particular, in cases
+  where many homomorphisms between distinct small digraphs are found).  This
+  was done by [James D. Mitchell][] in
+  [PR #282](https://github.com/gap-packages/Digraphs/pull/282).
+
+* Some further minor performance improvements were made and a compiler warning
+  was fixed. 
 
 ## Version 1.0.3 (released 29/11/2019)
 
@@ -677,3 +727,4 @@ Pre-release version that was not made publicly available.
 [Jan De Beule]: http://homepages.vub.ac.be/~jdbeule
 [Markus Pfeiffer]: https://www.morphism.de/~markusp
 [Chris Jefferson]: https://caj.host.cs.st-andrews.ac.uk
+[bliss]: http://www.tcs.hut.fi/Software/bliss/
