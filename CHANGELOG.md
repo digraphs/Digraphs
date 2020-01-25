@@ -1,8 +1,59 @@
 # CHANGELOG – Digraphs package for GAP
-Copyright © 2014-19 by Jan De Beule, Julius Jonušas, James D. Mitchell, Michael
+Copyright © 2014-20 by Jan De Beule, Julius Jonušas, James D. Mitchell, Michael
 Torpey, Wilf A. Wilson et al.
 
 Licensing information can be found in the `LICENSE` file.
+
+## Version 1.1.0 (released 25/01/2020)
+
+This is a minor release that includes some new features and some performance
+improvements.
+
+The following issues were resolved, pull requests merged, or new features added:
+
+* [Issue #40](https://github.com/gap-packages/Digraphs/issues/40): If [bliss][]
+  is used to compute the automorphism group of a digraph, then the size of the
+  automorphism group is returned from [bliss][] to GAP, and the group object in
+  GAP immediately knows its size. In particular, it is not necessary to
+  recalculate this size. This was reported and fixed in
+  [PR #278](https://github.com/gap-packages/Digraphs/pull/278) by
+  [Chris Jefferson][].
+
+* [Issue #279](https://github.com/gap-packages/Digraphs/issues/279):
+  In the function `HomomorphismDigraphsFinder`, it is now possible to specify a
+  subgroup of the automorphism group of the range digraph. This way, the
+  automorphism group of the range digraph is not computed by
+  `HomomorphismDigraphsFinder`.  This can result in a performance improvement
+  in some cases. This was reported and fixed in
+  [PR #285](https://github.com/gap-packages/Digraphs/pull/285) by
+  Finn Smith.
+
+* [Issue #284](https://github.com/gap-packages/Digraphs/issues/284):
+  The function `HomomorphismDigraphsFinder` sometimes did not return any
+  homomorphisms when the source digraph had exactly one vertex. This was caused
+  by the data structures used by `HomomorphismDigraphsFinder` not being
+  correctly initialised in this case. This issue was reported by Finn Smith
+  and fixed by [James D. Mitchell][] in
+  [PR #286](https://github.com/gap-packages/Digraphs/pull/286).
+
+* In [PR #283](https://github.com/gap-packages/Digraphs/pull/283), Finn Smith
+  added the new operation `DigraphsRespectsColouring`, which can be used to
+  check whether a transformation or permutation between digraphs respects given
+  colourings. New versions of `IsDigraphHomomorphism`, and friends, were added
+  that accept colourings as arguments and which use
+  `DigraphsRespectsColouring`.
+
+* The version of [bliss][] included in Digraphs was updated to allow all of its
+  data structures to be modified in-place rather than allocated and deallocated
+  repeatedly. The function `HomomorphismDigraphsFinder` was modified to make
+  use of this new functionality in [bliss][], and subsequently the performance
+  of `HomomorphismDigraphsFinder` has been improved (particularly in cases
+  where many homomorphisms between distinct small digraphs are found).  This
+  was done by [James D. Mitchell][] in
+  [PR #282](https://github.com/gap-packages/Digraphs/pull/282).
+
+* Some further minor performance improvements were made, and a compiler warning
+  was fixed.
 
 ## Version 1.0.3 (released 29/11/2019)
 
@@ -528,14 +579,14 @@ Smith as an author.
 
 This release contains a new technique for encoding a vertex-coloured digraph as a vertex-coloured (undirected) graph while preserving the automorphism group, in order to calculate the automorphism group using bliss. These changes were made by Finn Smith. The previous technique involved adding two intermediate vertices for every edge; on a digraph with `n` vertices this could add `2n(n-1)` new vertices. The new technique encodes a digraph with `n` vertices as a graph with `3n` vertices. In certain cases, this can lead to a dramatic improvement in the time taken to calculate the automorphism group.
 
-The new reduction is based on two techniques in: 
+The new reduction is based on two techniques in:
 
 > David Bremner, Mathieu Dutour Sikiric, Dmitrii V. Pasechnik, Thomas Rehn, Achill Schürmann. Computing symmetry groups of polyhedra. https://arxiv.org/abs/1210.0206v3
 
 Namely, "Dealing with digraphs" followed by "Reduction by superposition". From the graph obtained by these techniques, `n` vertices which are irrelevant to automorphism finding are removed.
 
-The actual reduction used is as follows: Given a digraph `D=(V=[]1 .. n],E,c)`, create three copies `V1`, `V2`, `V3` of the vertex set `V`. Colour `V1` according to the colouring `c` of `D`, and `V2`, `V3` with two distinct colours that do not occur in `D`. Connect each vertex in `V1` to the corresponding vertices in `V2`, `V3`. For every arc `(x,y)` in `E`, put an edge between the copy of `x` in `V2`, and the copy of `y` in `V3`. Automorphisms of this graph, when restricted to `V`, are precisely the automorphisms of `D`. 
-Because this changes the graph used to calculate automorphisms, the results sometimes nominally differ from the previous version - especially in the case of canonical labelling, where unrecognisably different results may appear. Generators also often appear in different orders. 
+The actual reduction used is as follows: Given a digraph `D=(V=[]1 .. n],E,c)`, create three copies `V1`, `V2`, `V3` of the vertex set `V`. Colour `V1` according to the colouring `c` of `D`, and `V2`, `V3` with two distinct colours that do not occur in `D`. Connect each vertex in `V1` to the corresponding vertices in `V2`, `V3`. For every arc `(x,y)` in `E`, put an edge between the copy of `x` in `V2`, and the copy of `y` in `V3`. Automorphisms of this graph, when restricted to `V`, are precisely the automorphisms of `D`.
+Because this changes the graph used to calculate automorphisms, the results sometimes nominally differ from the previous version - especially in the case of canonical labelling, where unrecognisably different results may appear. Generators also often appear in different orders.
 
 The performance improvements are most noticeable on large, quite dense digraphs. On random digraphs with 5000 vertices and 0.5 edge probability, 200-400x speedups were common. When calculating the automorphism group of the complete digraph on 1000 vertices, with vertex `i` having colour `i mod 2 + 1`, we obtain a 66x speedup. When the vertex `i` is assigned colour `i mod 7 + 1`, this becomes a 400x speedup.
 
@@ -677,3 +728,4 @@ Pre-release version that was not made publicly available.
 [Jan De Beule]: http://homepages.vub.ac.be/~jdbeule
 [Markus Pfeiffer]: https://www.morphism.de/~markusp
 [Chris Jefferson]: https://caj.host.cs.st-andrews.ac.uk
+[bliss]: http://www.tcs.hut.fi/Software/bliss/

@@ -74,7 +74,7 @@
   is not. A digraph is bipartite if and only if the vertices of [3Xdigraph[103X can be
   partitioned  into  two  non-empty sets such that the source and range of any
   edge  of  [3Xdigraph[103X lie in distinct sets. Equivalently, a digraph is bipartite
-  if and only if it is 2-colorable; see [2XDigraphGreedyColouring[102X ([14X7.3-14[114X).[133X
+  if and only if it is 2-colorable; see [2XDigraphGreedyColouring[102X ([14X7.3-15[114X).[133X
   
   [33X[0;0YSee also [2XDigraphBicomponents[102X ([14X5.3-13[114X).[133X
   

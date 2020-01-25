@@ -3,7 +3,7 @@
                                     [1X[5XDigraphs[105X[101X
   
   
-                                 Version 1.0.3
+                                 Version 1.1.0
   
   
                                   Jan De Beule
@@ -60,7 +60,7 @@
   
   -------------------------------------------------------
   [1XCopyright[101X
-  [33X[0;0Y©  2014-19  by  Jan  De  Beule,  Julius  Jonušas, James D. Mitchell, Michael
+  [33X[0;0Y©  2014-20  by  Jan  De  Beule,  Julius  Jonušas, James D. Mitchell, Michael
   Torpey, Wilf A. Wilson et al.[133X
   
   [33X[0;0Y[5XDigraphs[105X  is  free  software; you can redistribute it and/or modify it under
@@ -333,12 +333,13 @@
       7.3-9 EmbeddingsDigraphs
       7.3-10 IsDigraphHomomorphism
       7.3-11 IsDigraphEmbedding
-      7.3-12 GeneratorsOfEndomorphismMonoid
-      7.3-13 DigraphColouring
-      7.3-14 DigraphGreedyColouring
-      7.3-15 DigraphWelshPowellOrder
-      7.3-16 ChromaticNumber
-      7.3-17 DigraphCore
+      7.3-12 DigraphsRespectsColouring
+      7.3-13 GeneratorsOfEndomorphismMonoid
+      7.3-14 DigraphColouring
+      7.3-15 DigraphGreedyColouring
+      7.3-16 DigraphWelshPowellOrder
+      7.3-17 ChromaticNumber
+      7.3-18 DigraphCore
   8 [33X[0;0YFinding cliques and independent sets[133X
     8.1 [33X[0;0YFinding cliques[133X
       8.1-1 IsClique
