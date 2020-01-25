@@ -583,13 +583,17 @@ gap> EmbeddingsDigraphs(D1, D2);
 
 <#GAPDoc Label="IsDigraphHomomorphism">
 <ManSection>
-  <Oper Name="IsDigraphHomomorphism" Arg="src, ran, x"/>
+  <Oper Name="IsDigraphHomomorphism" Arg="src, ran, x" 
+        Label="for digraphs and a permutation or transformation"/>
   <Oper Name="IsDigraphHomomorphism" Arg="src, ran, x, col1, col2"/>
-  <Oper Name="IsDigraphEpimorphism" Arg="src, ran, x"/>
+  <Oper Name="IsDigraphEpimorphism" Arg="src, ran, x"
+        Label="for digraphs and a permutation or transformation"/>
   <Oper Name="IsDigraphEpimorphism" Arg="src, ran, x, col1, col2"/>
-  <Oper Name="IsDigraphMonomorphism" Arg="src, ran, x"/>
+  <Oper Name="IsDigraphMonomorphism" Arg="src, ran, x"
+        Label="for digraphs and a permutation or transformation"/>
   <Oper Name="IsDigraphMonomorphism" Arg="src, ran, x, col1, col2"/>
-  <Oper Name="IsDigraphEndomorphism" Arg="digraph, x"/>
+  <Oper Name="IsDigraphEndomorphism" Arg="digraph, x"
+        Label="for digraphs and a permutation or transformation"/>
   <Oper Name="IsDigraphEndomorphism" Arg="digraph, x, col"/>
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
@@ -628,9 +632,10 @@ gap> EmbeddingsDigraphs(D1, D2);
 
 
     If <A>col1</A> and <A>col2</A>, or <A>col</A>, are given, then they must
-    represent vertex colourings; see <Ref Oper="AutomorphismGroup" Label="for a
-    digraph and a homogeneous list"/> for details of the permissible values for
-    these argument. The homomorphism must then also have the property:
+    represent vertex colourings; see 
+    <Ref Oper="AutomorphismGroup" Label="for a digraph and a homogeneous list"/> 
+    for details of the permissible values for these argument. The
+    homomorphism must then also have the property:
   
     <List>
       <Item>
@@ -682,7 +687,8 @@ true]]></Example>
 
 <#GAPDoc Label="IsDigraphEmbedding">
 <ManSection>
-  <Oper Name="IsDigraphEmbedding" Arg="src, ran, x"/>
+  <Oper Name="IsDigraphEmbedding" Arg="src, ran, x"
+        Label="for digraphs and a permutation or transformation"/>
   <Oper Name="IsDigraphEmbedding" Arg="src, ran, x, col1, col2"/>
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
