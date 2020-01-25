@@ -1796,22 +1796,27 @@ static bool init_data_from_args(Obj digraph1_obj,
   // orbit reps
   PERM_DEGREE = nr2;
   if (aut_grp_obj == Fail) {
-  if (colors == NULL) {
-    get_automorphism_group_from_gap(digraph2_obj, STAB_GENS[0]);
-  } else if (is_undirected) {
+    if (colors == NULL) {
+      get_automorphism_group_from_gap(digraph2_obj, STAB_GENS[0]);
+    } else if (is_undirected) {
 #ifdef DIGRAPHS_WITH_INCLUDED_BLISS
-    automorphisms_graph(GRAPH2, colors, STAB_GENS[0], BLISS_GRAPH[PERM_DEGREE]);
+      automorphisms_graph(
+          GRAPH2, colors, STAB_GENS[0], BLISS_GRAPH[PERM_DEGREE]);
 #else
-    automorphisms_graph(GRAPH2, colors, STAB_GENS[0]);
+      automorphisms_graph(GRAPH2, colors, STAB_GENS[0]);
 #endif
+    } else {
+#ifdef DIGRAPHS_WITH_INCLUDED_BLISS
+      automorphisms_digraph(
+          DIGRAPH2, colors, STAB_GENS[0], BLISS_GRAPH[3 * PERM_DEGREE]);
+#else
+      automorphisms_digraph(DIGRAPH2, colors, STAB_GENS[0]);
+#endif
+    }
   } else {
-#ifdef DIGRAPHS_WITH_INCLUDED_BLISS
-    automorphisms_digraph(
-        DIGRAPH2, colors, STAB_GENS[0], BLISS_GRAPH[3 * PERM_DEGREE]);
-#else
-    automorphisms_digraph(DIGRAPH2, colors, STAB_GENS[0]);
-#endif
+    set_automorphisms(aut_grp_obj, STAB_GENS[0]);
   }
+
   compute_stabs_and_orbit_reps(nr1, nr2, 0, 0, UNDEFINED, true);
   return true;
 }
