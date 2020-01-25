@@ -246,7 +246,7 @@ void automorphisms_digraph(Digraph const* const  digraph,
                            uint16_t const* const colors,
                            PermColl*             out,
                            BlissGraph*           bg) {
-  DIGRAPHS_ASSERT(graph != NULL);
+  DIGRAPHS_ASSERT(digraph != NULL);
   DIGRAPHS_ASSERT(out != NULL);
   DIGRAPHS_ASSERT(bg != NULL);
   clear_perm_coll(out);
