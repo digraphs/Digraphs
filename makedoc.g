@@ -7,7 +7,7 @@
 ##
 
 PACKAGE := "Digraphs";
-PrintTo("VERSION", PackageInfo(PACKAGE)[1].Version, "\n");
+PrintTo(".VERSION", PackageInfo(PACKAGE)[1].Version, "\n");
 LoadPackage("GAPDoc");
 
 _DocXMLFiles := ["attr.xml",
