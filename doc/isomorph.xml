@@ -752,9 +752,11 @@ gap> OutNeighbours(canon);
 
 <#GAPDoc Label="IsDigraphAutomorphism">
 <ManSection>
-  <Oper Name="IsDigraphIsomorphism" Arg="src, ran, x"/>
+  <Oper Name="IsDigraphIsomorphism" Arg="src, ran, x" 
+        Label="for digraphs and transformation or permutation"/>
   <Oper Name="IsDigraphIsomorphism" Arg="src, ran, x, col1, col2"/>
-  <Oper Name="IsDigraphAutomorphism" Arg="digraph, x"/>
+  <Oper Name="IsDigraphAutomorphism" Arg="digraph, x" 
+        Label="for a digraph and a transformation or permutation"/>
   <Oper Name="IsDigraphAutomorphism" Arg="digraph, x, col"/>
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
