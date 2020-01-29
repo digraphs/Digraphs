@@ -135,7 +135,7 @@ static void init_bliss_graph_from_digraph(Digraph const* const  digraph,
   uint16_t       out_color = 0;
   uint16_t const n         = digraph->nr_vertices;
   for (uint16_t i = 0; i < n; i++) {
-    out_color = (colors[i] > out_color ? colors[i] + 1 : out_color);
+    out_color = (colors[i] >= out_color ? colors[i] + 1 : out_color);
     bliss_digraphs_change_color(bg, i, colors[i]);
   }
   uint16_t const in_color = out_color + 1;
@@ -163,7 +163,7 @@ static BlissGraph* new_bliss_graph_from_digraph(Digraph const* const  digraph,
   uint16_t const n         = digraph->nr_vertices;
   bg                       = bliss_digraphs_new(0);
   for (uint16_t i = 0; i < n; i++) {
-    out_color = (colors[i] > out_color ? colors[i] + 1 : out_color);
+    out_color = (colors[i] >= out_color ? colors[i] + 1 : out_color);
     bliss_digraphs_add_vertex(bg, colors[i]);
   }
   uint16_t const in_color = out_color + 1;
@@ -233,6 +233,7 @@ static void bliss_hook(void*               user_param_arg,  // perm_coll!
   Perm               p   = new_perm(PERM_DEGREE);
   unsigned int const min = (N < PERM_DEGREE ? N : PERM_DEGREE);
   for (uint16_t i = 0; i < min; i++) {
+    DIGRAPHS_ASSERT(aut[i] < min);
     p[i] = aut[i];
   }
   for (uint16_t i = min; i < PERM_DEGREE; i++) {
