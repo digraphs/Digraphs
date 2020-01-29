@@ -1,6 +1,6 @@
 name: Digraphs
-version: 1.1.0
-date: 2020-01-25
+version: 1.1.1
+date: 2020-01-29
 description: |
     Graphs, digraphs, and multidigraphs in GAP
 
@@ -69,7 +69,7 @@ packageinfo: https://gap-packages.github.io/Digraphs/PackageInfo.g
 
 downloads:
     - name: .tar.gz
-      url: https://github.com/gap-packages/Digraphs/releases/download/v1.1.0/digraphs-1.1.0.tar.gz
+      url: https://github.com/gap-packages/Digraphs/releases/download/v1.1.1/digraphs-1.1.1.tar.gz
 
 abstract: |
     The <b>Digraphs</b> package is a <b>GAP</b> package for digraphs and multidigraphs.
