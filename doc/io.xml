@@ -164,7 +164,7 @@ gap> ReadDigraphs(file, 9);
   <Returns>A string.</Returns>
   <Description>
     Returns a string <C>string</C> such that <C>EvalString(string)</C>
-    is equal to <A>digraph</A>, and has the same immutability.
+    is equal to <A>digraph</A>, and has the same mutability.
     See <Ref Func="EvalString" BookName="ref" />.
     <P/>
 
