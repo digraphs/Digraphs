@@ -4,6 +4,12 @@ Torpey, Wilf A. Wilson et al.
 
 Licensing information can be found in the `LICENSE` file.
 
+## Version 1.1.1 (released 29/01/2020)
+
+This release fixes a bug in `HomomorphismDigraphsFinder` that was introduced
+in version 1.1.0.  The bug was found and fixed by [James D. Mitchell][];
+see [PR #290](https://github.com/gap-packages/Digraphs/pull/290).
+
 ## Version 1.1.0 (released 25/01/2020)
 
 This is a minor release that includes some new features and some performance
