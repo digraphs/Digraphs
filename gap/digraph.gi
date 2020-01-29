@@ -576,9 +576,7 @@ function(D)
   return str;
 end);
 
-InstallMethod(PrintString, "for a digraph",
-[IsDigraph],
-D -> String(D));
+InstallMethod(PrintString, "for a digraph", [IsDigraph], String);
 
 InstallMethod(String, "for a digraph",
 [IsDigraph],
@@ -586,11 +584,11 @@ function(D)
   local n, N, i, mut, streps, outnbs_rep, lengths, strings, creators_streps,
         creators_props, props;
   if IsMutableDigraph(D) then
-    mut := Concatenation("IsMutableDigraph", ", ");
+    mut := "IsMutableDigraph, ";
   else
     mut := "";
   fi;
-  if IsSymmetricDigraph(D) and (not DigraphHasLoops(D)) then
+  if IsSymmetricDigraph(D) and not DigraphHasLoops(D) then
     streps := [Graph6String, Sparse6String];
     creators_streps := ["DigraphFromGraph6String",
                         "DigraphFromSparse6String"];
@@ -603,10 +601,10 @@ function(D)
   strings := [];
   for n in [1 .. Length(streps)] do
     Add(strings, Concatenation(creators_streps[n], "(", mut, "\"",
-                 ReplacedString(streps[n], "\\", "\\\\"), "\"", ");"));
+                 ReplacedString(streps[n], "\\", "\\\\"), "\"", ")"));
   od;
 
-  outnbs_rep := Concatenation("Digraph(", mut, String(OutNeighbours(D)), ");");
+  outnbs_rep := Concatenation("Digraph(", mut, String(OutNeighbours(D)), ")");
   Add(strings, String(outnbs_rep));
 
   N              := DigraphNrVertices(D);
@@ -616,7 +614,7 @@ function(D)
                      "EmptyDigraph"];
   for i in [1 .. Length(props)] do
     if props[i](D) then
-      Add(strings, Concatenation(creators_props[i], "(", mut, String(N), ");"));
+      Add(strings, Concatenation(creators_props[i], "(", mut, String(N), ")"));
     fi;
   od;
 

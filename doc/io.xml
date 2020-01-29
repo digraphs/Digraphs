@@ -159,19 +159,26 @@ gap> ReadDigraphs(file, 9);
 
 <#GAPDoc Label="String">
 <ManSection>
-  <Oper Name="String" Arg="digraph"/>
+  <Attr Name="String" Arg="digraph"/>
+  <Oper Name="PrintString" Arg="digraph"/>
   <Returns>A string.</Returns>
   <Description>
-    Returns a string of minimal character length <C>string</C>
-    containing a function and a representation of <A>digraph</A>
-    related to that function, such that when the output of
-    <C>Print(string)</C> is run, <A>digraph</A> is returned.<P/>
+    Returns a string <C>string</C> such that <C>EvalString(string)</C>
+    is equal to <A>digraph</A>, and has the same immutability.
+    See <Ref Func="EvalString" BookName="ref" />.
+    <P/>
 
-    Note that it is necessary to <C>Print</C> the output of this
-    function to be able to copy, paste and run the output to create
-    <A>digraph</A>, due to character escaping in the strings involved.
-    One can also run <C>Print</C> directly on <A>digraph</A> to achieve
-    this.
+    The methods installed for <C>String</C> make some attempts to
+    ensure that <C>string</C> has as short a length as possible, but
+    there may exist shorter strings that also evaluate to <A>digraph</A>.
+    <P/>
+
+    It is possible that <C>string</C> may contain escaped special
+    characters. To obtain a representation of <A>digraph</A> that
+    can be entered as GAP input, please use
+    <Ref Func="Print" BookName="ref" />.
+    Note that <C>Print</C> for a digraph  delegates to
+    <C>PrintString</C>, which delegates to <C>String</C>.
     <Log><![CDATA[
 gap> D := CycleDigraph(3);
 <immutable cycle digraph with 3 vertices>

@@ -1028,9 +1028,9 @@ gap> gr1 := EmptyDigraph(0);;
 gap> gr2 := DigraphCopy(gr1);
 <immutable empty digraph with 0 vertices>
 gap> String(gr2);
-"Digraph([ ]);"
+"Digraph([ ])"
 gap> PrintString(gr2);
-"Digraph([ ]);"
+"Digraph([ ])"
 
 # Tests for DigraphCopy originally located in oper.tst
 gap> gr := Digraph([[6, 1, 2, 3], [6], [2, 2, 3], [1, 1], [6, 5],
@@ -1213,7 +1213,7 @@ gap> list := [[1, 2], []];
 gap> D := DigraphNC(IsMutableDigraph, list);
 <mutable digraph with 2 vertices, 2 edges>
 gap> PrintString(D);
-"Digraph(IsMutableDigraph, [ [ 1, 2 ], [ ] ]);"
+"Digraph(IsMutableDigraph, [ [ 1, 2 ], [ ] ])"
 gap> EvalString(String(D)) = D;
 true
 gap> DigraphByAdjacencyMatrix(IsMutableDigraph, []);
@@ -1647,7 +1647,7 @@ gap> D;
 gap> D := CycleDigraph(3);
 <immutable cycle digraph with 3 vertices>
 gap> String(D);
-"CycleDigraph(3);"
+"CycleDigraph(3)"
 gap> D := CycleDigraph(IsMutableDigraph, 16);
 <mutable digraph with 16 vertices, 16 edges>
 gap> DigraphAddVertex(D, 17);
@@ -1655,19 +1655,25 @@ gap> DigraphAddVertex(D, 17);
 gap> DigraphAddEdge(D, [17, 1]);
 <mutable digraph with 17 vertices, 17 edges>
 gap> String(D);
-"DigraphFromDiSparse6String(IsMutableDigraph, \".Pn?_p_`abcdefghijklm\");"
+"DigraphFromDiSparse6String(IsMutableDigraph, \".Pn?_p_`abcdefghijklm\")"
 gap> G := CompleteBipartiteDigraph(IsMutableDigraph, 5, 5);
 <mutable digraph with 10 vertices, 50 edges>
 gap> String(G);
-"DigraphFromGraph6String(IsMutableDigraph, \"I?B~vrw}?\");"
+"DigraphFromGraph6String(IsMutableDigraph, \"I?B~vrw}?\")"
 gap> D := Digraph([]);
 <immutable empty digraph with 0 vertices>
 gap> String(D);
-"Digraph([ ]);"
+"Digraph([ ])"
 gap> D := CompleteDigraph(7);
 <immutable complete digraph with 7 vertices>
 gap> String(D);
-"CompleteDigraph(7);"
+"CompleteDigraph(7)"
+gap> D := EvalString(
+> "DigraphFromDigraph6String(\"&N~~nf~v~~~~u\\\\mvf~vvv~Zzv|vNxuxVw~|v~Lro\")"
+> );
+<immutable digraph with 15 vertices, 182 edges>
+gap> String(D);
+"DigraphFromDigraph6String(\"&N~~nf~v~~~~u\\\\mvf~vvv~Zzv|vNxuxVw~|v~Lro\")"
 
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(G);
