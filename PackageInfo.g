@@ -9,12 +9,12 @@
 ##
 
 ##  <#GAPDoc Label="PKGVERSIONDATA">
-##  <!ENTITY VERSION        "1.1.0">
+##  <!ENTITY VERSION        "1.1.1">
 ##  <!ENTITY GAPVERS        "4.9.0">
 ##  <!ENTITY GRAPEVERS      "4.8.1">
 ##  <!ENTITY IOVERS         "4.5.1">
 ##  <!ENTITY ORBVERS        "4.8.2">
-##  <!ENTITY ARCHIVENAME    "digraphs-1.1.0">
+##  <!ENTITY ARCHIVENAME    "digraphs-1.1.1">
 ##  <!ENTITY COPYRIGHTYEARS "2014-20">
 ##  <#/GAPDoc>
 
@@ -27,7 +27,7 @@ SetPackageInfo(rec(
 PackageName := "Digraphs",
 Subtitle := "Graphs, digraphs, and multidigraphs in GAP",
 Version := "1.2.0dev",
-Date := "25/01/2020",  # dd/mm/yyyy format
+Date := "29/01/2020",  # dd/mm/yyyy format
 License := "GPL-3.0-or-later",
 ArchiveFormats := ".tar.gz",
 
