@@ -576,36 +576,50 @@ function(D)
   return str;
 end);
 
-InstallMethod(PrintString, "for an immutable digraph by out-neighbours",
-[IsImmutableDigraph and IsDigraphByOutNeighboursRep],
-function(D)
-  return Concatenation("Digraph( IsImmutableDigraph, ",
-                       PrintString(OutNeighbours(D)),
-                       " )");
-end);
+InstallMethod(PrintString, "for a digraph", [IsDigraph], String);
 
-InstallMethod(PrintString, "for a mutable digraph by out-neighbours",
-[IsMutableDigraph and IsDigraphByOutNeighboursRep],
+InstallMethod(String, "for a digraph",
+[IsDigraph],
 function(D)
-  return Concatenation("Digraph( IsMutableDigraph, ",
-                       PrintString(OutNeighbours(D)),
-                       " )");
-end);
+  local n, N, i, mut, streps, outnbs_rep, lengths, strings, creators_streps,
+        creators_props, props;
+  if IsMutableDigraph(D) then
+    mut := "IsMutableDigraph, ";
+  else
+    mut := "";
+  fi;
+  if IsSymmetricDigraph(D) and not DigraphHasLoops(D) then
+    streps := [Graph6String, Sparse6String];
+    creators_streps := ["DigraphFromGraph6String",
+                        "DigraphFromSparse6String"];
+  else
+    streps := [Digraph6String, DiSparse6String];
+    creators_streps := ["DigraphFromDigraph6String",
+                        "DigraphFromDiSparse6String"];
+  fi;
+  streps  := List(streps, f -> f(D));
+  strings := [];
+  for n in [1 .. Length(streps)] do
+    Add(strings, Concatenation(creators_streps[n], "(", mut, "\"",
+                 ReplacedString(streps[n], "\\", "\\\\"), "\"", ")"));
+  od;
 
-InstallMethod(String, "for an immutable digraph by out-neighbours",
-[IsImmutableDigraph and IsDigraphByOutNeighboursRep],
-function(D)
-  return Concatenation("Digraph( IsImmutableDigraph, ",
-                       String(OutNeighbours(D)),
-                       " )");
-end);
+  outnbs_rep := Concatenation("Digraph(", mut, String(OutNeighbours(D)), ")");
+  Add(strings, String(outnbs_rep));
 
-InstallMethod(String, "for a mutable digraph by out-neighbours",
-[IsMutableDigraph and IsDigraphByOutNeighboursRep],
-function(D)
-  return Concatenation("Digraph( IsMutableDigraph, ",
-                       String(OutNeighbours(D)),
-                       " )");
+  N              := DigraphNrVertices(D);
+  props          := [IsCycleDigraph, IsCompleteDigraph, IsChainDigraph,
+                     IsEmptyDigraph];
+  creators_props := ["CycleDigraph", "CompleteDigraph", "ChainDigraph",
+                     "EmptyDigraph"];
+  for i in [1 .. Length(props)] do
+    if props[i](D) then
+      Add(strings, Concatenation(creators_props[i], "(", mut, String(N), ")"));
+    fi;
+  od;
+
+  lengths := List(strings, x -> Length(x));
+  return strings[Position(lengths, Minimum(lengths))];
 end);
 
 ########################################################################

@@ -157,6 +157,46 @@ gap> ReadDigraphs(file, 9);
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="String">
+<ManSection>
+  <Attr Name="String" Arg="digraph"/>
+  <Oper Name="PrintString" Arg="digraph"/>
+  <Returns>A string.</Returns>
+  <Description>
+    Returns a string <C>string</C> such that <C>EvalString(string)</C>
+    is equal to <A>digraph</A>, and has the same mutability.
+    See <Ref Func="EvalString" BookName="ref" />.
+    <P/>
+
+    The methods installed for <C>String</C> make some attempts to
+    ensure that <C>string</C> has as short a length as possible, but
+    there may exist shorter strings that also evaluate to <A>digraph</A>.
+    <P/>
+
+    It is possible that <C>string</C> may contain escaped special
+    characters. To obtain a representation of <A>digraph</A> that
+    can be entered as GAP input, please use
+    <Ref Func="Print" BookName="ref" />.
+    Note that <C>Print</C> for a digraph  delegates to
+    <C>PrintString</C>, which delegates to <C>String</C>.
+    <Log><![CDATA[
+gap> D := CycleDigraph(3);
+<immutable cycle digraph with 3 vertices>
+gap> Print(D);
+CycleDigraph(3);
+gap> G := PetersenGraph(IsMutableDigraph);
+<mutable digraph with 10 vertices, 30 edges>
+gap> String(G);
+"DigraphFromGraph6String(IsMutableDigraph, \"IheA@GUAo\");"
+gap> Print(last);
+DigraphFromGraph6String(IsMutableDigraph, "IheA@GUAo");
+gap> DigraphFromGraph6String(IsMutableDigraph, "IheA@GUAo");
+<mutable digraph with 10 vertices, 30 edges>
+]]></Log>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="DigraphFromGraph6String">
 <ManSection>
   <Oper Name="DigraphFromGraph6String"    Arg="[filt, ]str"/>
