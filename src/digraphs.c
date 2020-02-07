@@ -21,6 +21,7 @@
 
 #include "digraphs-debug.h"  // for DIGRAPHS_ASSERT
 #include "homos.h"           // for FuncHomomorphismDigraphsFinder
+#include "cliques.h"
 #include "planar.h"          // for FUNC_IS_PLANAR, . . .
 
 #ifdef DIGRAPHS_WITH_INCLUDED_BLISS
@@ -2249,6 +2250,13 @@ static StructGVarFunc GVarFuncs[] = {
      "injective, image, partial_map, colors1, colors2",
      FuncHomomorphismDigraphsFinder,
      "src/homos.c:FuncHomomorphismDigraphsFinder"},
+
+    {"DigraphsCliqueFinder",
+     -1,
+     "digraph, hook, user_param, limit, include, "
+     "exclude, max, size",
+     FuncDigraphsCliqueFinder,
+     "src/cliques.c:FuncDigraphsCliqueFinder"},
 
     {"IS_PLANAR", 1, "digraph", FuncIS_PLANAR, "src/planar.c:FuncIS_PLANAR"},
 
