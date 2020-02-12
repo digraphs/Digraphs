@@ -85,7 +85,7 @@ for PKG in "${PKGS[@]}"; do
   tar xf $PKG-$VERSION.tar.gz && rm $PKG-$VERSION.tar.gz
 
   if [ -f $PKG-$VERSION/configure ]; then
-    if [ "$PKG" == "orb" ] || [ "$PKG" == "grape" ]; then
+    if [ "$PKG" == "orb" ] || [ "$PKG" == "grape" ] || [ "$PKG" == "datastructures" ]; then
       cd $PKG-$VERSION && ./configure && make # orb/grape don't accept flags
     else
       cd $PKG-$VERSION && ./configure $PKG_FLAGS && make
