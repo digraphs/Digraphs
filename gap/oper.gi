@@ -1314,11 +1314,11 @@ InstallMethod(DigraphDijkstraS, "for a digraph, and a vertex",
 InstallMethod(DigraphDijkstraST, "for a digraph, a vertex, and a vertex",
 [IsDigraph, IsPosInt, IsPosInt],
 function(digraph, source, target)
-    local vertices, dist, prev, queue, u, v, alt;
+    local dist, prev, queue, u, v, alt;
 
     dist := [];
     prev := [];
-    queue := BinaryHeap({x,y} -> x[1] < y[1]);
+    queue := BinaryHeap({x, y} -> x[1] < y[1]);
 
     for v in DigraphVertices(digraph) do
         dist[v] := infinity;
