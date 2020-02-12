@@ -61,7 +61,7 @@ CURL="curl --connect-timeout 5 --max-time 10 --retry 5 --retry-delay 0 --retry-m
 
 ################################################################################
 # Install grape, io, orb, and profiling
-PKGS=( "io" "orb" )
+PKGS=( "io" "orb" "datastructures" )
 if [ "$GRAPE" != "no" ]; then
   PKGS+=( "grape" )
 fi
@@ -85,7 +85,7 @@ for PKG in "${PKGS[@]}"; do
   tar xf $PKG-$VERSION.tar.gz && rm $PKG-$VERSION.tar.gz
 
   if [ -f $PKG-$VERSION/configure ]; then
-    if [ "$PKG" == "orb" ] || [ "$PKG" == "grape" ]; then
+    if [ "$PKG" == "orb" ] || [ "$PKG" == "grape" ] || [ "$PKG" == "datastructures" ]; then
       cd $PKG-$VERSION && ./configure && make # orb/grape don't accept flags
     else
       cd $PKG-$VERSION && ./configure $PKG_FLAGS && make
