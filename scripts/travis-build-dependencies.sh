@@ -61,7 +61,7 @@ CURL="curl --connect-timeout 5 --max-time 10 --retry 5 --retry-delay 0 --retry-m
 
 ################################################################################
 # Install grape, io, orb, and profiling
-PKGS=( "io" "orb" )
+PKGS=( "io" "orb" "datastructures" )
 if [ "$GRAPE" != "no" ]; then
   PKGS+=( "grape" )
 fi
