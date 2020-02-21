@@ -2218,7 +2218,7 @@ true
     For the definition of a maximum matching, see <Ref Oper="IsMaximumMatching"/>.
     If <A>digraph</A> is bipartite (see <Ref Oper="IsBipartiteDigraph"/>), then 
     the algorithm used has complexity <C>O(m*sqrt(n))</C>. Otherwise for general 
-    graphs the complexity is <C>O(m*n)</C>. Here <C>n</C> is the number of vertices 
+    graphs the complexity is <C>O(m*n*log(n))</C>. Here <C>n</C> is the number of vertices 
     and <C>m</C> is the number of edges.
 
     <Example><![CDATA[
@@ -2228,12 +2228,14 @@ gap> M := DigraphMaximumMatching(D);; IsMaximalMatching(D, M);
 true
 gap> Length(M);
 5
-gap> D := Digraph([[5, 6, 7, 8], [6, 7, 8], [7, 8], [8], [], [], [], []]);;
+gap> D := Digraph([[5, 6, 7, 8], [6, 7, 8], [7, 8], [8], 
+>                  [], [], [], []]);;
 gap> M := DigraphMaximumMatching(D);
 [ [ 1, 5 ], [ 2, 6 ], [ 3, 7 ], [ 4, 8 ] ]
 gap> D := GeneralisedPetersenGraph(IsMutableDigraph, 9, 2);
 <mutable digraph with 18 vertices, 54 edges>
-gap> IsMaximalMatching(D, DigraphMaximumMatching(D));
+gap> M := DigraphMaximumMatching(D);;
+gap> IsMaximalMatching(D, M);
 true
 gap> Length(M);
 9
