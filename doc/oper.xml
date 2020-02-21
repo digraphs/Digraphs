@@ -1665,13 +1665,13 @@ true
     of <A>digraph</A>.  Note that this definition allows a matching to contain
     loops.  See <Ref Prop="DigraphHasLoops" />.  The matching <C>M</C> is
     <E>maximal</E> if it is contained in no larger matching of the digraph,
-    is <E>maximum</E> if it has the greatest cardinality among all mathings and
+    is <E>maximum</E> if it has the greatest cardinality among all matchings and
     is <E>perfect</E> if every vertex of the digraph is incident to an edge in
     the matching.  Every maximum or perfect matching is maximal. Note however
     that for digraphs with loops, not every perfect matching will be maximum.
 
     <Example><![CDATA[
-gap> D := Digraph([[2], [1], [2, 3, 4], [3, 5], [1]]);
+gap> D := Digraph([[1, 2], [1, 2], [2, 3, 4], [3, 5], [1]]);
 <immutable digraph with 5 vertices, 8 edges>
 gap> IsMatching(D, [[2, 1], [3, 2]]);
 false
@@ -1680,13 +1680,18 @@ gap> IsMatching(D, edges);
 true
 gap> IsMaximalMatching(D, edges);
 false
-gap> edges := [[5, 1], [3, 3]];;
+gap> edges := [[2, 1], [3, 4]];;
 gap> IsMaximalMatching(D, edges);
 true
 gap> IsPerfectMatching(D, edges);
 false
 gap> edges := [[1, 2], [3, 3], [4, 5]];;
 gap> IsPerfectMatching(D, edges);
+true
+gap> IsMaximumMatching(D, edges);
+false
+gap> edges := [[1, 1], [2, 2], [3, 3], [4, 5]];;
+gap> IsMaximumMatching(D, edges);
 true
 ]]></Example>
   </Description>
