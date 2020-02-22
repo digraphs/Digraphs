@@ -1739,6 +1739,16 @@ gap> edges := [[1, 1], [2, 3]];
 gap> IsMaximalMatching(gr, edges);
 true
 
+# IsMaximumMatching
+gap> D := Digraph([[1, 2], [1, 2], [2, 3, 4], [3, 5], [1]]);
+<immutable digraph with 5 vertices, 10 edges>
+gap> IsMaximumMatching(D, [[1, 2], [3, 3], [4, 5]]);
+false
+gap> IsMaximumMatching(D, [[1, 1], [2, 2], [3, 3], [4, 5]]);
+true
+gap> IsMaximumMatching(D, [[1, 1], [1, 2], [2, 2], [3, 3], [4, 5]]);
+false
+
 # DigraphShortestPath
 gap> gr := Digraph([[1], [3, 4], [5, 6], [4, 2, 3], [4, 5], [1]]);;
 gap> DigraphShortestPath(gr, 1, 6);

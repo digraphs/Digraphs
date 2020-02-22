@@ -2210,6 +2210,42 @@ gap> P := DigraphRemoveAllMultipleEdges(ReducedDigraph(OnDigraphs(D, proj[2])));
 gap> IsIsomorphicDigraph(H, P);
 true
 
+# DigraphMaximalMatching
+gap> D := RandomDigraph(100);;
+gap> M := DigraphMaximalMatching(D);; IsMaximalMatching(D, M);
+true
+gap> D := RandomDigraph(IsMutable, 100);;
+gap> M := DigraphMaximalMatching(D);; IsMaximalMatching(D, M);
+true
+gap> D := Digraph(IsMutable, [[2], [3], [4], [1]]);
+<mutable digraph with 4 vertices, 4 edges>
+gap> M := DigraphMaximalMatching(D);;
+gap> M = [[1, 2], [3, 4]] or M = [[2, 3], [4, 1]];
+true
+gap> D;
+<mutable digraph with 4 vertices, 4 edges>
+
+# DigraphMaximumMatching
+gap> D := RandomDigraph(100);;
+gap> M := DigraphMaximumMatching(D);; IsMaximalMatching(D, M);
+true
+gap> D := DigraphFromDiSparse6String(".]cBn@kqAlt?EpclQp|M}bAgFjHkoDsIuACyCM_Hj");
+<immutable digraph with 30 vertices, 26 edges>
+gap> M := DigraphMaximumMatching(D);; IsMaximalMatching(D, M);
+true
+gap> Length(M);
+14
+gap> D := Digraph([[5, 6, 7, 8], [6, 7, 8], [7, 8], [8], [], [], [], []]);
+<immutable digraph with 8 vertices, 10 edges>
+gap> DigraphMaximumMatching(D);
+[ [ 1, 5 ], [ 2, 6 ], [ 3, 7 ], [ 4, 8 ] ]
+gap> D := Digraph(IsMutable, [[2, 3], [1, 4], [2, 4], [5], [3, 5]]);
+<mutable digraph with 5 vertices, 9 edges>
+gap> M := DigraphMaximumMatching(D);; IsMaximalMatching(D, M);
+true
+gap> Length(M);
+3
+
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(adj);
 gap> Unbind(adj1);

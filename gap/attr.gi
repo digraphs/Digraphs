@@ -2251,9 +2251,10 @@ D -> DIGRAPHS_MateToMatching(D, DIGRAPHS_MaximalMatching(D)));
 
 InstallMethod(DigraphMaximumMatching, "for a digraph", [IsDigraph],
 function(D)
-  local mateG, mateD, G, M, i;
+  local mateG, mateD, G, M, i, lab;
   G     := DigraphImmutableCopy(D);
   G     := InducedSubdigraph(G, Difference(DigraphVertices(G), DigraphLoops(G)));
+  lab   := DigraphVertexLabels(G);
   G     := DigraphSymmetricClosure(G);
   mateG := DIGRAPHS_MaximalMatching(G);
   if IsBipartiteDigraph(G) then
@@ -2264,7 +2265,7 @@ function(D)
   mateD := List(DigraphVertices(D), x -> 0);
   for i in DigraphVertices(G) do
     if mateG[i] <> 0 then
-      mateD[DigraphVertexLabel(G, i)] := DigraphVertexLabel(G, mateG[i]);
+      mateD[lab[i]] := lab[mateG[i]];
     fi;
   od;
   M := List(DigraphLoops(D), x -> [x, x]);
