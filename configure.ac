@@ -122,6 +122,20 @@ fi
 
 AX_CHECK_BLISS()
 
+# Check whether to use -march=native -mpopcnt and __builtin_ctzl
+AC_ARG_WITH([intrinsics],
+            [AS_HELP_STRING([--without-intrinsics], 
+                            [do not use compiler intrinsics even if available])]
+           )
+
+AS_IF([test "x$with_intrinsics" == "xno" ],
+      [AC_MSG_NOTICE([compiler intrinsics will not be used even if available])])
+
+AS_IF([test "x$with_intrinsics" != "xno"],
+      [AX_CHECK_COMPILE_FLAG(-march=native, AX_APPEND_FLAG(-march=native))
+       AX_CHECK_COMPILE_FLAG(-mpopcnt, AX_APPEND_FLAG(-mpopcnt))
+      ])
+
 dnl compiler builtins
 AC_DEFUN([CHECK_COMPILER_BUILTIN],
 [AC_MSG_CHECKING([for $1])
@@ -140,7 +154,8 @@ AC_DEFUN([CHECK_COMPILER_BUILTIN],
             [Define to 1 if the system has the `]$1[' built-in function])], []
         )])
 
-CHECK_COMPILER_BUILTIN([__builtin_ctzll],[0]);
+AS_IF([test "x$with_intrinsics" != "xno"],
+      [CHECK_COMPILER_BUILTIN([__builtin_ctzll],[0])])
 
 dnl ##
 dnl ## Output everything
