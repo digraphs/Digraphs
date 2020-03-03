@@ -55,8 +55,8 @@ extern Obj LargestMovedPointPerms;
 static Obj GAP_FUNC;  // Variable to hold a GAP level hook function
 
 static Obj (*HOOK)(void*,  // HOOK function applied to every homo found
-                   const uint16_t,
-                   const uint8_t*);
+                   const BitArray*,
+                   const uint16_t);
 static void* USER_PARAM;  // a USER_PARAM for the hook
 
 // Values in MAP are restricted to those positions in IMAGE_RESTRICT
@@ -67,20 +67,51 @@ static Digraph* DIGRAPH;  // Digraphs to hold incoming GAP digraphs
 
 static Graph* GRAPH;  // Graphs to hold incoming GAP symmetric digraphs
 
+static BitArray*  CLIQUE;
+static Conditions*  TRY;
+static Conditions*  BAN;
+
 
 ////////////////////////////////////////////////////////////////////////////////
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-static void BronKerbosch() {
-                             
- // TODO
+static void BronKerbosch(uint16_t depth) {
 
+  uint16_t nr = GRAPH->nr_vertices;
+
+  if (size_bit_array(get_conditions(TRY, 0), nr) == 0 && size_bit_array(get_conditions(BAN,0), nr) ==0) {
+    // <CLIQUE> is a maximal clique
+    HOOK(USER_PARAM, CLIQUE, nr);
+    return;
+  } 
+
+  BitArray* try = get_conditions(TRY, 0);
+  for (uint16_t i = 0; i < nr; i++) {
+    if (get_bit_array(try, i)){
+      set_bit_array(CLIQUE, i, true);
+
+
+      push_conditions(TRY, depth + 1, 0, GRAPH->neighbours[i]);
+      push_conditions(BAN, depth + 1, 0, GRAPH->neighbours[i]);
+
+      // recurse
+      BronKerbosch(depth + 1);
+
+      pop_conditions(TRY, depth + 1);
+      pop_conditions(BAN, depth + 1);
+      set_bit_array(CLIQUE, i, false);
+
+      set_bit_array(get_conditions(TRY, 0), i , false);
+
+      set_bit_array(get_conditions(BAN, 0), i , true);
+
+    }
+  }
 }
 
 
-static Obj clique_hook_collect(void* user_param, uint16_t const nr, uint8_t const* clique) {
-  UInt2* ptr;
+static Obj clique_hook_collect(void* user_param, const BitArray* clique, const uint16_t nr) {
   UInt   i;
   Obj    c;
 
@@ -88,23 +119,26 @@ static Obj clique_hook_collect(void* user_param, uint16_t const nr, uint8_t cons
     RetypeBag(user_param, T_PLIST);
   }
 
-  c = NewEmptyPlist();
-  for(i = 0; i < nr; i++) {
-    PushPlist(c, ObjInt_UInt8(clique[i]));
+  c = NEW_PLIST(T_PLIST, nr); 
+  for(i = 1; i <= nr; i++) {
+    if (get_bit_array(clique, i - 1)){ 
+      PushPlist(c, ObjInt_UInt(i));
+    }
   }
 
   ASS_LIST(user_param, LEN_LIST(user_param) + 1, c);
   return False;
 }
 
-static Obj clique_hook_gap(void* user_param, uint16_t const nr, uint8_t const* clique) {
-  UInt2* ptr;
+static Obj clique_hook_gap(void* user_param, const BitArray* clique, const uint16_t nr) {
   UInt   i;
   Obj    c;
   
-  c = NewEmptyPlist();
-  for(i = 0; i < nr; i++) {
-    PushPlist(c, ObjInt_UInt8(clique[i]));
+  c = NEW_PLIST(T_PLIST, nr); 
+  for(i = 1; i <= nr; i++) {
+    if (get_bit_array(clique, i-1)) {
+      PushPlist(c, ObjInt_UInt(i + 1));
+    }
   }
 
   return CALL_2ARGS(GAP_FUNC, user_param, c);
@@ -167,9 +201,20 @@ static bool init_clique_data_from_args(Obj digraph_obj,
     DIGRAPH = new_digraph(MAXVERTS);
 
     GRAPH = new_graph(MAXVERTS);
+
+    // Currently Conditions are a nr1 x nr1 array of BitArrays, so both
+    // values have to be set to MAXVERTS
+    CLIQUE = new_bit_array(MAXVERTS); 
+    TRY    = new_conditions(MAXVERTS, MAXVERTS); 
+    BAN    = new_conditions(MAXVERTS, MAXVERTS); 
   }
 
   uint16_t nr = DigraphNrVertices(digraph_obj);
+  init_bit_array(CLIQUE, false, nr);
+  clear_conditions(TRY, nr + 1, nr);
+  clear_conditions(BAN, nr + 1, nr);
+  init_bit_array(BAN->bit_array[0], false, nr);
+
 
   bool is_undirected;
   if (CALL_1ARGS(IsSymmetricDigraph, digraph_obj) == True) {
@@ -269,8 +314,9 @@ Obj FuncDigraphsCliqueFinder(Obj self, Obj args) {
 
 
   // go!
+
   if (setjmp(OUTOFHERE) == 0) {
-    BronKerbosch();
+    BronKerbosch(0); 
   }
 
   return user_param_obj;
