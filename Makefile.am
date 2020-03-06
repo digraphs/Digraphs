@@ -70,14 +70,12 @@ endif
 digraphs_la_CPPFLAGS =  $(GAP_CPPFLAGS)
 digraphs_la_CPPFLAGS += $(CODE_COVERAGE_CPPFLAGS)
 
-digraphs_la_CXXFLAGS =  -O3 -march=native -mpopcnt
-digraphs_la_CXXFLAGS += $(PLANAR_INCLUDE) $(DIGRAPHS_INCLUDE) 
+digraphs_la_CXXFLAGS =  $(PLANAR_INCLUDE) $(DIGRAPHS_INCLUDE) 
 digraphs_la_CXXFLAGS += $(CODE_COVERAGE_CXXFLAGS)
 digraphs_la_CXXFLAGS += $(WARNING_CXXFLAGS)
 
-digraphs_la_CFLAGS   =  -O3 -march=native -mpopcnt
-digraphs_la_CFLAGS   += $(GAP_CFLAGS) $(PLANAR_INCLUDE) $(DIGRAPHS_INCLUDE)
-digraphs_la_CFLAGS   += $(CODE_COVERAGE_CFLAGS)
+digraphs_la_CFLAGS =  $(GAP_CFLAGS) $(PLANAR_INCLUDE) $(DIGRAPHS_INCLUDE)
+digraphs_la_CFLAGS += $(CODE_COVERAGE_CFLAGS)
 digraphs_la_CFLAGS += $(WARNING_CFLAGS)
 
 digraphs_la_LDFLAGS  =  $(GAP_LDFLAGS) -module -avoid-version
