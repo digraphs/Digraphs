@@ -1307,6 +1307,47 @@ function(D, u, v)
     return fail;
 end);
 
+InstallMethod(DigraphDijkstraS, "for a digraph, and a vertex",
+[IsDigraph, IsPosInt],
+{digraph, source} -> DigraphDijkstraST(digraph, source, fail));
+
+InstallMethod(DigraphDijkstraST, "for a digraph, a vertex, and a vertex",
+[IsDigraph, IsPosInt, IsPosInt],
+function(digraph, source, target)
+    local dist, prev, queue, u, v, alt;
+
+    dist := [];
+    prev := [];
+    queue := BinaryHeap({x, y} -> x[1] < y[1]);
+
+    for v in DigraphVertices(digraph) do
+        dist[v] := infinity;
+        prev[v] := -1;
+    od;
+
+    dist[source] := 0;
+    Push(queue, [0, source]);
+
+    while not IsEmpty(queue) do
+        u := Pop(queue);
+        u := u[2];
+        # TODO: this has a small performance impact for DigraphDijkstraS,
+        #       but do we care?
+        if u = target then
+            return [dist, prev];
+        fi;
+        for v in OutNeighbours(digraph)[u] do
+            alt := dist[u] + DigraphEdgeLabel(digraph, u, v);
+            if alt < dist[v] then
+                dist[v] := alt;
+                prev[v] := u;
+                Push(queue, [dist[v], v]);
+            fi;
+        od;
+    od;
+    return [dist, prev];
+end);
+
 InstallMethod(IteratorOfPaths,
 "for a digraph by out-neighbours and two pos ints",
 [IsDigraphByOutNeighboursRep, IsPosInt, IsPosInt],

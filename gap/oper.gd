@@ -93,6 +93,10 @@ DeclareOperation("IsPerfectMatching", [IsDigraph, IsHomogeneousList]);
 # 9. Connectivity . . .
 DeclareOperation("DigraphFloydWarshall",
                  [IsDigraph, IsFunction, IsObject, IsObject]);
+DeclareOperation("DigraphDijkstraS",
+                 [IsDigraph, IsPosInt]);
+DeclareOperation("DigraphDijkstraST",
+                 [IsDigraph, IsPosInt, IsPosInt]);
 
 DeclareOperation("DigraphConnectedComponent", [IsDigraph, IsPosInt]);
 DeclareOperation("DigraphStronglyConnectedComponent", [IsDigraph, IsPosInt]);
