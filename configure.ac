@@ -34,6 +34,7 @@ AC_PREFIX_DEFAULT('${abs_top_builddir}/../../bin/')
 dnl ##
 dnl ## Set the language
 dnl ##
+AC_PROG_CC_C99
 AC_PROG_CXX
 AC_LANG([C++])
 
