@@ -2245,6 +2245,181 @@ gap> M := DigraphMaximumMatching(D);; IsMaximalMatching(D, M);
 true
 gap> Length(M);
 3
+gap> D := DigraphFromDiSparse6String("\
+> .~?B]zsE?cB?kH?cK?{M?{O?SIaWHaoQ_{X??@?wJ@gT`{[BKF@s^BG[_OOAca?{@@gXB_^bK?A\
+> gXbGc_gF@o\\dGG`gXC[X`K__OC?oG@GI@wOAGQAWSAoWBOZBo_CGgDGkDk?BGd_wMBgfdsFC{Q\
+> Ao]CGmdsJBGbC_ebGdD{ZDsXCgnEsC?oHAWkDsFbK@BGb`?PDsD?wfcGmE[Fb?ZD?mEWsE{LBGb\
+> DSmEW~aOmE[XB_^C[XbKmEW~G[gDp@_x?dop_wfdosGKWDp@dsJBGt`wYDopFHJH{FA{F_waG@I\
+> I[OC?mbGtdsUDor`?IAG_DGmFhVbWgDovGHH_GXBwbFcFCwqdpVJKXG{XGx]_wVISC?omFKXF[X\
+> CkFCP?IXSaOmEXCbGtIsXGs?BGddpP_xS_wKAwfIP_dpVJH\\_?TBGdDWnEowFXEGx]JxaKXfLC\
+> mEHJIKUDorJCFL[XDXfLkWDosGHLHpY`GkDox`WXEhOIsmEW~dorFxtbGjLhpcGmEW~MkA?_E@?\
+> H@ONA?PAWSBO_DGkDgmEGxFhJHxPIhVJH\\KHhL`mM[A@?IA?PA__DGlDo|IhVJH\\L`x_WF`wY\
+> DpPNKQAo]DorFxCJ@dL{IAGmJHkNHydopHxPNKUDorNkgDp@JS?BGdL@lbGeEk@@WLBG[BwbC_e\
+> DOtF`AGhOIpZKplMaBcGmEW~c?lDpxNSFdorFxBHCFL[mIHhNKmFHx_wfEP[aOUB?ZBo`D?mEWs\
+> Ew~GHBG`GHHLHpWJPdLxqMhuN@xNi?OIDPCSC?mNHybGbDPDOcFNYFbGbOaN_waIcF_wyQ[FLYH\
+> do|JHxNSFHPSLSmEW~OiLbOmIHhLpxPSF@`jaWmFHx__E@GNAWYD_mEGxHXNIH`LHmMXxNP{NyI\
+> PYXR[XChbLkXCgnKXlRkmGHMMQLdo|JHxNQUaWmFHxPY[dp@JQLbWmEx@HHYPkmFHxPY[SKFAxj\
+> PITdp@HhqPi^a?_DpTNHydp@JQLSSXEhUKqC_WFFQS_yFQCB?waFP?HPRI`cLPzOyOQQRQaVTQj\
+> dp@JQLSQbTCD?wK@oVBgfE?qFpKIP[K@jMAHPaTRQdTcFCxKJam_xSLQVTc_DgmNHyOsmGHMMQL\
+> dorNi?PkXCotOYCbHEKPfLk]DorNi?PkgDp@HHYPkFCw}HamT{FQYkdorFyDPiWdosGHLMQL_WF\
+> NYkdp@JQ@PkRDoxNIZRcAC?lDpxNSmGHqPi^SsWDp@MQLbGzJpaLkXC_tKqCagXChl_?TBGdLjC\
+> cGmEW~NALbGcEiCW[FIXSKak_WFFPSNYFQARQaiTYkVI{_gFCwoFqmb?mGHqPj@dp@JQ@Pi|a__\
+> DpTNHyPsmHxPNH~RcmEW~GXtMqLbGdDWzGpFJp^KPfLhpMytWSXCYCPyP_waIaQTcFLXoQimdor\
+> Ni?Pir_yRTaxXKF@`jRQm_x?HPSTc??GB?gF@WK@gMAgVBG[Bg^CObC_dCofDOjDonE?qEguF?y\
+> FW{Fp?GPDGpFHPKI@QIXSIpZJ`]Jx_KPbK`eKxgLPjLhoMHsMxzOQBOaFPIKPyOQIQQYSQiVRQ\\
+> \RqdTIiTYkTqnUAsUiwVI{WRBWbDWzGXJIYBPYRRYjUY{GDGmJHxNSAC?mNHyV{mGHMMQLUS]Do\
+> rNiLUsFLXoTrRYrW");;
+gap> M := DigraphMaximumMatching(D);; IsMaximalMatching(D, M);
+true
+gap> Length(M);
+111
+gap> M1 := [
+> [1, 198], [2, 61], [3, 219], [4, 189], [5, 10], [6, 63], [7, 98], [8, 26], 
+> [9, 62], [11, 18], [12, 81], [13, 155], [14, 67], [15, 30], [16, 125], 
+> [17, 168], [19, 23], [20, 162], [21, 143], [22, 197], [24, 166], [25, 79], 
+> [27, 154], [28, 56], [29, 70], [31, 221], [32, 92], [33, 90], [34, 134], 
+> [35, 101], [36, 54], [37, 39], [38, 209], [40, 108], [41, 130], [42, 218], 
+> [43, 144], [44, 120], [45, 116], [46, 192], [47, 217], [48, 159], [49, 203], 
+> [50, 128], [51, 141], [52, 66], [53, 188], [55, 57], [58, 82], [59, 171], 
+> [60, 99], [64, 126], [65, 216], [68, 208], [69, 102], [71, 182], [72, 96], 
+> [73, 137], [74, 184], [75, 152], [76, 111], [77, 185], [78, 167], [80, 207], 
+> [83, 97], [84, 201], [85, 202], [86, 206], [87, 117], [88, 94], [89, 112], 
+> [91, 115], [93, 176], [95, 195], [100, 158], [103, 170], [104, 114], 
+> [105, 131], [106, 139], [107, 177], [109, 127], [110, 133], [113, 212], 
+> [118, 119], [121, 199], [122, 142], [123, 157], [124, 145], [129, 183], 
+> [132, 181], [135, 178], [136, 172], [138, 150], [140, 165], [146, 210], 
+> [147, 211], [148, 149], [151, 161], [153, 187], [156, 191], [160, 193], 
+> [163, 169], [164, 174], [173, 175], [179, 220], [180, 213], [186, 214],
+> [190, 205], [194, 204], [196, 200], [215, 222]];;
+gap> M = M1;
+true
+gap> D := DigraphFromDiSparse6String("\
+> .~?@}~ggEb?eM@X?@_?CC@OWIAowO_PEPdOOPcX_HBHaPDgWICW[GAOoLE@e?@`ESbp]PfG_[cP\
+> M?@_gMCPk\\_OOJC@CQDPWYd@yHB@_[`pqPD`gdcQA[IH_XFHCUEaShapCd_?SEA_wPCpk\\GAK\
+> cHQiPJwMPHQeGFAE^frQPCqKn_OOJCPSUEaShJQwq__MA?o[GAOoLBpCSDp_XF@w^GQGeHq_jJB\
+> CrLBSwfrOtMWSMCQ}@CPGdfBePDaShKb]PCq{u_?SEA_wPEpscJrm]MW{^MXCdIRGvNgCPCaS{`\
+> os[IAkxNXCiJrAFFA_xPXCRGAgnKCYPGAgnQGOJCPSdIQwv_@C\\HA|?_PCdNCQA?pwpMBe@C@C\
+> db`CnOGCPHWCPHSPK_rCxRWs[IBc|PX[^MW_[GbeSFbd@`@CTHQwvQgkPHQwvQgGBBpOVF@w^Hb\
+> CsLR_xMcDARTHSTgCOCQTMbp{sMSHXdp{xTDe@CQTO_b_xRTeDB`CnMsA^MTPXVGGBD@w^HbCwM\
+> SDLSdXXVg_WFACaKrdTaP_XFAoxcPKnNx[^MTd[a?cKE@c[GQGfJBKxPTTaWwCOCQTCRd@YVWs[\
+> MSTRdp{xUTpdfbd@Tdd`fACrMUHeb`CnOC|^bp{sLRcyOddZVHCRJr|cfrdSUTp_b`CnOC|kcQ{\
+> oPca@CQTMSDtffBc|PTMPCqKnLhCRGAKiJr?uNs@EQCdcZfDsd@weMTd`_PCQHRpC`pogMSTF_P\
+> CdPCpPfA_jMSULFBdDSuaFFA_jMSTyfBc|PTLr]~");;
+gap> M := DigraphMaximumMatching(D);; IsMaximalMatching(D, M);
+true
+gap> Length(M);
+63
+gap> M1 := [
+> [1, 76], [2, 56], [3, 95], [4, 57], [5, 22], [6, 60], [7, 30], [8, 125], 
+> [9, 52], [10, 100], [11, 28], [12, 89], [13, 40], [14, 105], [15, 37], 
+> [16, 67], [17, 91], [18, 58], [19, 120], [20, 73], [21, 87], [23, 63], 
+> [24, 85], [25, 99], [26, 45], [27, 46], [29, 90], [31, 78], [32, 98], 
+> [33, 74], [34, 108], [35, 86], [36, 117], [38, 48], [39, 119], [41, 84], 
+> [42, 75], [43, 71], [44, 123], [47, 88], [49, 114], [50, 83], [51, 68], 
+> [53, 92], [54, 59], [55, 64], [61, 77], [62, 116], [65, 118], [66, 107], 
+> [69, 104], [70, 103], [72, 121], [79, 115], [80, 113], [81, 94], [82, 122], 
+> [93, 110], [96, 109], [97, 112], [101, 111], [102, 106], [124, 126]];;
+gap> M = M1;
+true
+gap> D := DigraphFromDiSparse6String("\
+> .~?BG`WHawSbOT_wJbwYcOOcgCCS`d?SBkj?gedo_`sp?OOdSuCCC?o^bS[cwgdD?A[wdC}gofF\
+> [FGLJA_\\GhIi?uio_j?RF[bH|OaGyjgjjwOFdAHXYdhMbSQIDdE`KKTf?PalGh__jIKYHXPe@H\
+> gD]kLfdXcekPA`pmoSfslG[[n_CCGx_gpGd~CGdDhfic}IKBAhPbS@?XJJpnbogGHdg\\_kXslS\
+> aHeKJKaeXphhqk@pqOODABe[fKHgqoTfCKEPOrOSFxEHHqNQKr`qd@|cTc`YSqMb@G]CsRptl`h\
+> LSc@G`QrSZSS@?G~h`hPKD@X@GpTTLiMifSyjc@[NYUmq@PAOp[D?o]bG\\Gq[T|uiMvCq]Ryjv\
+> H^LUbchZKejUsoRC]mqga`}RaocpHH`wNczJ@WPY]hHPJ|DKa@OqHUK@DhMNYbij@axmQr@xCJ@\
+> KP@sVAcYAkA?wJboOcOOcgabSgBkjCsmCCMCkP_Sieo__cCb_ifWggGwdC}gofF[FGLJBhDHSMh\
+> oMi?uiONHSCH|U@w_fcocXNfhOaLBjwCAD`Dk~ILOkhKKTf?PSKThDLPbSoHKPGD]m@fkctaGUM\
+> LYmoSC{}LklG\\{CGxnw`K|SfsBAmCBp]L{gGHd_@BJ{jKDbg@bLSaHXKpgafS@BpijxpqOADAB\
+> eWycxHKHgNeUAmW@_qI@YhCSFxEHHqr`^MSgN@|cOokeSqMb@?WBoeaXHptl`hLSc@GdkRSZfxw\
+> pIc_gJGHEIiblHiMijc@CN[_OIGQCNOYJuWXBhERancXuuy^nSZCxis[VChZK`ddijvo]H@YLYV\
+> dPuaaohHKNCzJ@WKY]w`DOIH_GHDhzS\\TTlmQv");;
+gap> M := DigraphMaximumMatching(D);; IsMaximalMatching(D, M);
+true
+gap> Length(M);
+96
+gap> D := DigraphFromDiSparse6String("\
+> .~?BZ_O?__B_SF?CE_kC_[A@[M@KP?sDACC@{M_OL`cJ`OV`GU`?T_{EA[DASCAKB_O]_GMBk?@\
+> g[b[JBSIBKHBCGA{FC{TCsDAcCAWc_WQ_OP_G`_?_`sL`_\\`W[D{IDsHBOl`?XDcFB?ja{U__g\
+> _WSC{AAWe_GQCgy_?PC_xa?w`waE{MCGuekKB{JBor`O\\ESH`?ZdxE_oXDpDb?lGcVD`B_WUDX\
+> A_OTDSSDH?_?RDCfFsPCo|cg{c_z`obFPR`gaFHQ`_wIK_ExO`O^H{HEhM`?\\Ecr_oZESDBOpH\
+> SCBGob?nHCVDpF_GUDhE_?TGh_a_jJ{idHAJkPD@@JcOCx?J[NCo~JSMFsLJCb`WaIsICGyIk_F\
+> HS`?wI[FBovL{uIKDB_tLkCBWsHxk_WYHpjhk@EHKLK?AwoHXgdxIK{THLdaWkGxcaOjK[PDPDK\
+> SODHCKKgGX_cxAJx}`geGL{`[ICXZ`GaJPx`?`NC_JC^FPVMsDBoxIpt__wIhs_W[ExrbWu_GY_\
+> ?XIKWEXOL{VEPNLqNaopHplPsTLaLa_nHaKaWmH[lHPhPSPPKODXfPCNDPFKshGpdOsgGhc`_fG\
+> aCgXaO[ICh`OScKCGCX?Jy?_waF{ECH\\NsDC?|J`|SCCBw{JX{R{BBozJQ]bhXNQ\\fHWNI[_?\
+> ZF@VNAZexUMyYbGuIhuRKWEhSMiWawsIXsQ{UIPrQsTEPPMQTa_pMIShyRaOnHpnaGmLqPdhKLi\
+> O`wkHXkP{MDXILYMU[LDPHLShHAp`WgGxgUCfPQn`GeGhePImchCPAlc`BKaFTcECXbOt@KQDTS\
+> CCH?KIhc?~KABTCAFp^OQf_G]Fh]Ss?Bg{OAdbacfPZNqbfHYNiajI`b@zSCVNREehUNI]WkTIh\
+> wWcSI`vRbBaWqIXuRZAaOpIPtRR@aGoIHsWCnI@rRA~dpNMQV`olHppQq|`gkHhoQi{`_jH`nV[\
+> JDPJLqRVSIDHILiQVKHD@HLcfQAvcpFPyu_pELIM_hDUfZ__B_o@_CE`WB_OJ_GI_CG_{EaWC_[\
+> A@k@@c?@[V`GUakFAcEaSCAKBACA@{@Bk?@g[`_Z`[I`GW`CFAof_oT_gd_cQC[AAGa_GOCK?@w\
+> _b{]`_\\ECJB_n`OZDsHBOl`?XDcFBCEAwi_gUDKTDCSf[@AOd_?Pa?bFCNCOvcGu`g_EkKBws`\
+> W]`O\\ESHB_pbWo_wYDxE_om_glGcCAwkG[BD[AAgiGK@GCRF{QFsPCsOCkNC_zfPR`gaFHQ`_`\
+> F@P`W_ExOepNbotHssHkFB`K_oqH\\IbHH_WWDxG_OVG{@Aold`DKCjGcRGX]aPAJkPGKOG@Z`w\
+> eF{MCg}JKLC_|JCKF`VcOz`O`FPT`G_IcGBww_wvIPn_o\\EpPLsDB`OLkZHxk_WrHpj_OXEPib\
+> C?H[UHSmKsSDhGKkRD`caPEaHDKSODHCKKND@BKCMNt]NkKCh?JkcFx[N[ICW}JXy`GaFhYNKGF\
+> `X_w_FXWM{EBwyIxu_g]FHUbhTMcBB_vI`r_OZEpRMS@BOtIPpbGsIHob?rI@nawqHxmaopHsTE\
+> @LLcSDxKLYKaXJLQJaOlHQIaGkHHgdXGK{NDQF`ohGqE`ggKaD`_fK[JCpa`OdGP`OSHC`@OKGJ\
+> {FCO~Jp~cG}Jh}fh[Ni___^JX{R{]FXYN[AFPX_G[FI[_?ZF@VR[YExUM{XEpTRKtIaWawsIYVa\
+> oragqQkpI@paWoHxoQ[QDxMLyQaGmHhmQKODhKLkND`JLaN`ojLYr`giHILUSKDHhPap`XFLAJ`\
+> OfGpfPQncpDKsGKiG_xBKaFTdAKYET[DCPa__`G@`Oah_W_KAg_O^JyAS{]Fi@Ss?F`\\OC[FX[\
+> NycbXZNqbbOxNkXF@{SKWExWSCuIxyR{UIpxWksIi\\WcrI`vRbBaXuRZAaPQMkPIIXa?nIAW`w\
+> mHxqQy}dhMMIUVkLD`LQkjH`nQdJQ[IDHlVKHD@HLaPVCGCxGL[FCpiUsEChELIMUkDC`DLALUf\
+> ");;
+gap> M := DigraphMaximumMatching(D);; IsMaximalMatching(D, M);
+true
+gap> Length(M);
+109
+gap> D := DigraphFromDiSparse6String("\
+> .~?B]`?C`OFc?B`kbBcd@cf@si@sXeWDCswCczE{|A{~?wGgGRgWeF|E?tJBs_DtP??HC?le_xi\
+> `DipFj?kctZEozd\\LkGNGdbDT\\kxAh|BlWdlgHlwME[CapkcpAm_ompin?JeD{DD]ap[jeAAO\
+> kDpcOK@FX\\KxsN{SooKA}GE?zK[@G@Mp_@?x?fqA`?~GeO?gOA?kk{^B|CIMT?xWcpyP}ZE[TI\
+> [Ps@QNdyc@}R[He@^mLYh|xc`gNtpQ[XCgxGi^tgnNIgnMoBimbXHhYAep\\Lq\\uoYQ[YNUE_I\
+> YiDFf@zNsoG]~BPLc}EwW{OcSTUIoB@s|lV[NAG~skIFPA`PedGiIAOu[ByP[LyKpL\\lJGivJi\
+> xePSzJ{}H`zPAmuAoap]_HxYN]`gJbOTc?BcgKcKMbsjBKm?[r?kyDoqe{~?wG@|@A\\BF|KCCh\
+> iG?DlS?wXGlUAXF`czIDYBCzkGNGdbDT\\e\\fGTNlWdlgHgcA@omE[Yapkm_`mpi`wUnHHkD|J\
+> sUJeADpc_GWKxsN|XnCap?[E@H_MK?x?fpD`?fF{FB{DADfbw^geT?xNJEN`MXCU[AgUs@QOTyc\
+> AP`KoK\\_gdN_HxNLgmKXCgxGi^tgCJHxTEoBimhKDOSuJhmRk]M}uBPfQ[YNUE_IYvXFf@zNso\
+> G]~BPLc}ER|wocSPQiwq?x@lV[NAIrskyGQ|kshGhOxxFyHDNaTj`ny`\\lJGf@UcDVfX^fpKN\\
+> \qUD]nJP");;
+gap> M := DigraphMaximumMatching(D);; IsMaximalMatching(D, M);
+true
+gap> Length(M);
+97
+gap> D := DigraphFromDiSparse6String("\
+> .~?B]_O?__B_S@`?E_kC_[A@[I_?H`CF_sD_cB@sA`c?@[IA{Y@CFAcE_gQ__Pc?A@{@BkLBcKB\
+> [J`SW`?VasEAge_gSCkC_WQC[AAGa_GOCK?CCp@g]eCJD{IBWm`Gl`?XDcwAwi_gUDKTDCBA_fa\
+> WeF[QCgy_?PCcOC[NCSMCK_`_^EcJBor`Oq`G[EKG_wn_om_gWDkCAwkG[BApA_OTDP@_GSDH?_\
+> ?RD?~cw}aGeFkO`wcF[MCWy`hQ`_w`W_E{IBxNbotHsGBhL_w[E[EBXJ_gYEHI__XECBB?nHCAA\
+> xFdhE_?TD`DKCSDXCJ{RDPBdHAJkPD@@JcOG@Z`{MCg}`gcFhW`_bF`V`WaF[y`KGBwwI[]ExQL\
+> {EBhPLsDEhO__ZE`NLcrHpj_OX_GWEHKLKVE@JLCnHPfdpHa_lH@dd`FKdbaGiKShG``dCMCxAJ\
+> {LCp|`_dJh{`W~J`z`ObFpZNSHCPx`?`F`X_w_J@vbwyIxuboxIptf@T_W[Exr_OZEpRMSYEhQM\
+> K?IHob?rI@nhyNhsoHhkPljPcmHXiP[QDhILIIaHHLAHhCiGxedHEKiE`ggGhcOlCKYCgXaO[IC\
+> hAKIA`GcKA@`?bG@^cP]_o`Fp\\_g|J`|SCCBw{JX{R{BNY]_O\\FPyRk@B_xNK?NAZbQYbKWEh\
+> SMkVE`RQ{UEXQQsqIHqQkSEHOMISaWoHxoQ[nHpnaHLLqPa?lHaO`xJLaNdXjPqr`hHLQLh@hPa\
+> p`WgLCICxfT{HGiHTsGChCKiGTkFC`BKak_obGPbT[aGHaOii__`G@`TKBC?~KABTC}JyAS{@Bo\
+> |Jq@_?{OAdb_zJ`~ScZFP}S[YFH|SSXF@XNa`exWNY_awuI{UIpxRrDe`TNBCa_rI`vRcRIXuRZ\
+> AaOpIPtWKPE@sRKODxOMYWV|NMQ}`olHqUVkkHhoQi{`_jH`nV[JDPJLsIDHlQQx`HHLaPVFWGx\
+> i_odGqMUkcLALUcbG`fPar_WaGXeURZgPdPQpZV]_O?__B_o@_CE_kK@[@@S?`CP?sDACC@{B@s\
+> A@k@@c?@[I`GU`?T_wS_oR_k^?WO_ONBs@@s?`cJBSIBKH`CFAof_oTCsDCkRCcBC[AAGa_K?@w\
+> _`o^bsKBgobcm`GY`?XDcFB?j_oVDSUDKCDCBC{AAWeF[@AOdFS?AGcFKOFCv`o`EsLC?t`_^Ec\
+> JE[\\b_p`?ZECYDxE_oXGkWDhC__kG[jGSAAgiGK@A_hGC?AWgaOffkOCg{c_zi[aFHQ`_`F@Pc\
+> @ObwuH{HBot`?sHlK_oZEPJbOpHTH_WnHCAAwm_GUDhEd`DKCSG`^dPBJsQDHAJkPD@@JcfG@Z`\
+> weFxY`odJKcFhW``V`WzIsICHT`G_FHS`?wI[FBovIPnbguIHmb_tLkCBWs_WYL[XEPLLS@B@KL\
+> K?AxJaonK{TKslKkRDcQDXEK[PDPDKSO`xBKCfGP^NsLCp@JsKG@\\NcJC_~J`z`ObFsHCO|JPx\
+> `?{JHw_w_F[EBxVMsDBoxIpt__\\IhsexSM\\R_GtISXE`oeXnawqHxmaopLiMahka_nH`jPcRH\
+> YJaOlPSPDcODXGKyG`wiGxeO{MGpdOtDKcKCxCOcJCpachAgH_OL^OCFCO~N{`Fp}_g_Fh|SCCF\
+> a^_W]FXYNY]bgyJLWRc?BWwIxwR[YExUMyYepTMqXb@SRCVE`RMcUIPrQsTEPPMSSe@NMARaPnQ\
+> SPDpLLqPdhKLiO`wkLcMHSLDPiUSKDHGPcJD@FLAJUCICxEKyIT{HCpeTsGChd_wcGYFTcEGPbO\
+> qj_gaGHaOii__`GACTKBC?~O[ABx^OS@Bp]OIe_?\\Ji?Sk[FX[NycbWyJ[YFHYNiaf@XNa`b?v\
+> JA_epVNQ^WstRrDagsIi\\WcrRbBePRMqZaOpRR@aHPMaXWCnMYWV{NDpNMQVVsMDhpVkLD`LMA\
+> TVcKHaSV[JDPmQYy`OhHPlVKHD@kQKGCxGLYOU{FCpFLQNUsEGphPsDC`DPkCKyKU[BPYqZ[ACH\
+> APRY");;
+gap> M := DigraphMaximumMatching(D);; IsMaximalMatching(D, M);
+true
+gap> Length(M);
+111
 
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(adj);

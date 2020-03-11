@@ -2045,10 +2045,11 @@ InstallMethod(DigraphMycielskian,
 InstallMethod(DigraphMycielskianAttr, "for an immutable digraph",
 [IsImmutableDigraph], DigraphMycielskian);
 
+# Uses a simple greedy algorithm.
 BindGlobal("DIGRAPHS_MaximalMatching",
 function(D)
   local mate, u, v;
-  mate := List(DigraphVertices(D), x -> 0);
+  mate := ListWithIdenticalEntries(DigraphNrVertices(D), 0);
   for v in DigraphVertices(D) do
     if mate[v] = 0 then
       for u in OutNeighboursOfVertex(D, v) do
@@ -2063,6 +2064,8 @@ function(D)
   return mate;
 end);
 
+# For bipartite digraphs implements the Hopcroft-Karp matching algorithm,
+# complexity O(m*sqrt(n))
 BindGlobal("DIGRAPHS_BipartiteMatching",
 function(D, mate)
   local U, dist, inf, dfs, bfs, u;
@@ -2115,7 +2118,7 @@ function(D, mate)
   end;
 
   inf  := DigraphNrVertices(D) + 1;
-  dist := List([1 .. inf], x -> inf);
+  dist := ListWithIdenticalEntries(inf, inf);
   for u in [1 .. Length(mate)] do
     if mate[u] = 0 then
       mate[u] := inf;
@@ -2138,6 +2141,8 @@ function(D, mate)
   return mate;
 end);
 
+# For general digraphs implements a modified version of Gabow's maximum matching
+# algorithm, complexity O(m*n*log(n)).
 BindGlobal("DIGRAPHS_GeneralMatching",
 function(D, mate)
   local blos, pred, time, t, tj, u, dfs, mark, blosfind;
@@ -2213,18 +2218,18 @@ function(D, mate)
     return false;
   end;
 
-  time := List(DigraphVertices(D), x -> 0);
-  blos := ShallowCopy(DigraphVertices(D));
-  pred := List(DigraphVertices(D), x -> 0);
+  time := ListWithIdenticalEntries(DigraphNrVertices(D), 0);
+  blos := [1 .. DigraphNrVertices(D)];
+  pred := ListWithIdenticalEntries(DigraphNrVertices(D), 0);
   t    := 0;
   for u in DigraphVertices(D) do
     if mate[u] = 0 then
       t       := t + 1;
       time[u] := t;
       if dfs(u) then
-        time := List(DigraphVertices(D), x -> 0);
-        pred := List(DigraphVertices(D), x -> 0);
-        blos := ShallowCopy(DigraphVertices(D));
+        time := ListWithIdenticalEntries(DigraphNrVertices(D), 0);
+        blos := [1 .. DigraphNrVertices(D)];
+        pred := ListWithIdenticalEntries(DigraphNrVertices(D), 0);
       fi;
     fi;
   od;
@@ -2238,12 +2243,14 @@ function(D, mate)
   M := [];
   for u in DigraphVertices(D) do
     if u <= mate[u] then
-      if IsDigraphEdge(D, u, mate[u]) then Add(M, [u, mate[u]]);
-      elif IsDigraphEdge(D, mate[u], u) then Add(M, [mate[u], u]);
+      if IsDigraphEdge(D, u, mate[u]) then
+        Add(M, [u, mate[u]]);
+      elif IsDigraphEdge(D, mate[u], u) then
+        Add(M, [mate[u], u]);
       fi;
     fi;
   od;
-  return Unique(M);
+  return Set(M);
 end);
 
 InstallMethod(DigraphMaximalMatching, "for a digraph", [IsDigraph],
@@ -2262,7 +2269,7 @@ function(D)
   else
     mateG := DIGRAPHS_GeneralMatching(G, mateG);
   fi;
-  mateD := List(DigraphVertices(D), x -> 0);
+  mateD := ListWithIdenticalEntries(DigraphNrVertices(D), 0);
   for i in DigraphVertices(G) do
     if mateG[i] <> 0 then
       mateD[lab[i]] := lab[mateG[i]];

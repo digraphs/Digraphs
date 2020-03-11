@@ -1653,10 +1653,12 @@ true
   <Description>
     If <A>digraph</A> is a digraph and <A>list</A> is a list of pairs of
     vertices of <A>digraph</A>, then <C>IsMatching</C> returns <K>true</K> if
-    <A>list</A> is a matching of <A>digraph</A>.  The operations
-    <C>IsMaximalMatching</C>, <C>IsMaximumMatching</C> and <C>IsPerfectMatching</C> 
-    return <K>true</K> if <A>list</A> is a maximal, maximum or perfect, matching 
-    of <A>digraph</A>, respectively.  Otherwise, these operations return <K>false</K>.
+    <A>list</A> is a matching of <A>digraph</A>.  The operation
+    <C>IsMaximalMatching</C> returns <K>true</K> if <A>list</A> is a maximal 
+    matching, <C>IsMaximumMatching</C> returns <K>true</K> if <A>list</A> is a
+    maximum matching and <C>IsPerfectMatching</C> returns <K>true</K> if 
+    <A>list</A> is a perfect, matching of <A>digraph</A>, respectively.  
+    Otherwise, each of these operations return <K>false</K>.
     <P/>
 
     A <E>matching</E> <C>M</C> of a digraph <A>digraph</A> is a subset of the
@@ -1667,8 +1669,8 @@ true
     <E>maximal</E> if it is contained in no larger matching of the digraph,
     is <E>maximum</E> if it has the greatest cardinality among all matchings and
     is <E>perfect</E> if every vertex of the digraph is incident to an edge in
-    the matching.  Every maximum or perfect matching is maximal. Note however
-    that for digraphs with loops, not every perfect matching will be maximum.
+    the matching.  Every maximum or perfect matching is maximal. Note, however,
+    that that not every perfect matching of digraphs with loops is maximum.
 
     <Example><![CDATA[
 gap> D := Digraph([[1, 2], [1, 2], [2, 3, 4], [3, 5], [1]]);
