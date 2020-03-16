@@ -1670,7 +1670,7 @@ true
     is <E>maximum</E> if it has the greatest cardinality among all matchings and
     is <E>perfect</E> if every vertex of the digraph is incident to an edge in
     the matching.  Every maximum or perfect matching is maximal. Note, however,
-    that that not every perfect matching of digraphs with loops is maximum.
+    that not every perfect matching of digraphs with loops is maximum.
 
     <Example><![CDATA[
 gap> D := Digraph([[1, 2], [1, 2], [2, 3, 4], [3, 5], [1]]);
