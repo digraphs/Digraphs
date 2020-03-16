@@ -114,3 +114,6 @@ DeclareAttribute("DigraphMycielskianAttr", IsDigraph);
 
 DeclareAttribute("DigraphCartesianProductProjections", IsDigraph);
 DeclareAttribute("DigraphDirectProductProjections", IsDigraph);
+
+DeclareAttribute("DigraphMaximalMatching", IsDigraph);
+DeclareAttribute("DigraphMaximumMatching", IsDigraph);

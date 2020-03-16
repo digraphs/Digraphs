@@ -2044,3 +2044,237 @@ InstallMethod(DigraphMycielskian,
 
 InstallMethod(DigraphMycielskianAttr, "for an immutable digraph",
 [IsImmutableDigraph], DigraphMycielskian);
+
+# Uses a simple greedy algorithm.
+BindGlobal("DIGRAPHS_MaximalMatching",
+function(D)
+  local mate, u, v;
+  mate := ListWithIdenticalEntries(DigraphNrVertices(D), 0);
+  for v in DigraphVertices(D) do
+    if mate[v] = 0 then
+      for u in OutNeighboursOfVertex(D, v) do
+        if mate[u] = 0 then
+          mate[u] := v;
+          mate[v] := u;
+          break;
+        fi;
+      od;
+    fi;
+  od;
+  return mate;
+end);
+
+# For bipartite digraphs implements the Hopcroft-Karp matching algorithm,
+# complexity O(m*sqrt(n))
+BindGlobal("DIGRAPHS_BipartiteMatching",
+function(D, mate)
+  local U, dist, inf, dfs, bfs, u;
+
+  U := DigraphBicomponents(D);
+  U := U[PositionMinimum(U, Length)];
+
+  bfs := function()
+    local v, que, q;
+    que := [];
+    for v in U do
+      if mate[v] = inf then
+        dist[v] := 0;
+        Add(que, v);
+      else
+        dist[v] := inf;
+      fi;
+    od;
+    dist[inf] := inf;
+
+    q := 1;
+    while q <= Length(que) do
+      if dist[que[q]] < dist[inf] then
+        for v in OutNeighborsOfVertex(D, que[q]) do
+          if dist[mate[v]] = inf then
+            dist[mate[v]] := dist[que[q]] + 1;
+            Add(que, mate[v]);
+          fi;
+        od;
+      fi;
+      q := q + 1;
+    od;
+    return dist[inf] <> inf;
+  end;
+
+  dfs := function(u)
+    local v;
+    if u = inf then
+      return true;
+    fi;
+    for v in OutNeighborsOfVertex(D, u) do
+      if dist[mate[v]] = dist[u] + 1 and dfs(mate[v]) then
+        mate[v] := u;
+        mate[u] := v;
+        return true;
+      fi;
+    od;
+    dist[u] := inf;
+    return false;
+  end;
+
+  inf  := DigraphNrVertices(D) + 1;
+  dist := ListWithIdenticalEntries(inf, inf);
+  for u in [1 .. Length(mate)] do
+    if mate[u] = 0 then
+      mate[u] := inf;
+    fi;
+  od;
+
+  while bfs() do
+    for u in U do
+      if mate[u] = inf then dfs(u);
+      fi;
+    od;
+  od;
+
+  for u in [1 .. DigraphNrVertices(D)] do
+    if mate[u] = inf then
+      mate[u] := 0;
+    fi;
+  od;
+
+  return mate;
+end);
+
+# For general digraphs implements a modified version of Gabow's maximum matching
+# algorithm, complexity O(m*n*log(n)).
+BindGlobal("DIGRAPHS_GeneralMatching",
+function(D, mate)
+  local blos, pred, time, t, tj, u, dfs, mark, blosfind;
+
+  blosfind := function(x)
+    if x <> blos[x] then
+      blos[x] := blosfind(blos[x]);
+    fi;
+    return blos[x];
+  end;
+
+  mark := function(v, x, b, path)
+    while blosfind(v) <> b do
+      pred[v] := x;
+      x       := mate[v];
+      Add(tj, v);
+      Add(tj, x);
+      if time[x] = 0 then
+        t       := t + 1;
+        time[x] := t;
+        Add(path, x);
+      fi;
+      v := pred[x];
+    od;
+  end;
+
+  dfs := function(v)
+    local x, bx, bv, b, y, z, path;
+    for x in OutNeighboursOfVertex(D, v) do
+      bv := blosfind(v);
+      bx := blosfind(x);
+      if bx <> bv then
+        if time[x] > 0 then
+          path := [];
+          tj   := [];
+          if time[bx] < time[bv] then
+            b := bx;
+            mark(v, x, b, path);
+          else
+            b := bv;
+            mark(x, v, b, path);
+          fi;
+          for z in tj do
+            blos[z] := b;
+          od;
+          for z in path do
+            if dfs(z) then
+              return true;
+            fi;
+          od;
+        elif pred[x] = 0 then
+          pred[x] := v;
+          if mate[x] = 0 then
+            while x <> 0 do
+              y       := pred[x];
+              v       := mate[y];
+              mate[y] := x;
+              mate[x] := y;
+              x       := v;
+            od;
+            return true;
+          fi;
+          if time[mate[x]] = 0 then
+            t             := t + 1;
+            time[mate[x]] := t;
+            if dfs(mate[x]) then
+              return true;
+            fi;
+          fi;
+        fi;
+      fi;
+    od;
+    return false;
+  end;
+
+  time := ListWithIdenticalEntries(DigraphNrVertices(D), 0);
+  blos := [1 .. DigraphNrVertices(D)];
+  pred := ListWithIdenticalEntries(DigraphNrVertices(D), 0);
+  t    := 0;
+  for u in DigraphVertices(D) do
+    if mate[u] = 0 then
+      t       := t + 1;
+      time[u] := t;
+      if dfs(u) then
+        time := ListWithIdenticalEntries(DigraphNrVertices(D), 0);
+        blos := [1 .. DigraphNrVertices(D)];
+        pred := ListWithIdenticalEntries(DigraphNrVertices(D), 0);
+      fi;
+    fi;
+  od;
+
+  return mate;
+end);
+
+BindGlobal("DIGRAPHS_MateToMatching",
+function(D, mate)
+  local u, M;
+  M := [];
+  for u in DigraphVertices(D) do
+    if u <= mate[u] then
+      if IsDigraphEdge(D, u, mate[u]) then
+        Add(M, [u, mate[u]]);
+      elif IsDigraphEdge(D, mate[u], u) then
+        Add(M, [mate[u], u]);
+      fi;
+    fi;
+  od;
+  return Set(M);
+end);
+
+InstallMethod(DigraphMaximalMatching, "for a digraph", [IsDigraph],
+D -> DIGRAPHS_MateToMatching(D, DIGRAPHS_MaximalMatching(D)));
+
+InstallMethod(DigraphMaximumMatching, "for a digraph", [IsDigraph],
+function(D)
+  local mateG, mateD, G, M, i, lab;
+  G     := DigraphImmutableCopy(D);
+  G     := InducedSubdigraph(G, Difference(DigraphVertices(G), DigraphLoops(G)));
+  lab   := DigraphVertexLabels(G);
+  G     := DigraphSymmetricClosure(G);
+  mateG := DIGRAPHS_MaximalMatching(G);
+  if IsBipartiteDigraph(G) then
+    mateG := DIGRAPHS_BipartiteMatching(G, mateG);
+  else
+    mateG := DIGRAPHS_GeneralMatching(G, mateG);
+  fi;
+  mateD := ListWithIdenticalEntries(DigraphNrVertices(D), 0);
+  for i in DigraphVertices(G) do
+    if mateG[i] <> 0 then
+      mateD[lab[i]] := lab[mateG[i]];
+    fi;
+  od;
+  M := List(DigraphLoops(D), x -> [x, x]);
+  return Union(M, DIGRAPHS_MateToMatching(D, mateD));
+end);

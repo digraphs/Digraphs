@@ -2179,3 +2179,67 @@ true
   </Description>
 </ManSection>
 <#/GAPDoc>
+
+<#GAPDoc Label="DigraphMaximalMatching">
+<ManSection>
+  <Attr Name="DigraphMaximalMatching" Arg="digraph"/>
+  <Returns>A list of pairs of vertices.</Returns>
+  <Description>
+    This function returns a maximal matching of the digraph <A>digraph</A>.
+    <P/>
+
+    For the definition of a maximal matching, see <Ref Oper="IsMaximalMatching"/>. 
+
+    <Example><![CDATA[
+gap> D := DigraphFromDiSparse6String(".IeAoXCJU@|SHAe?d");
+<immutable digraph with 10 vertices, 13 edges>
+gap> M := DigraphMaximalMatching(D);; IsMaximalMatching(D, M);
+true
+gap> D := RandomDigraph(100);;
+gap> IsMaximalMatching(D, DigraphMaximalMatching(D));
+true
+gap> D := GeneralisedPetersenGraph(IsMutableDigraph, 9, 2);
+<mutable digraph with 18 vertices, 54 edges>
+gap> IsMaximalMatching(D, DigraphMaximalMatching(D));
+true
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphMaximumMatching">
+<ManSection>
+  <Attr Name="DigraphMaximumMatching" Arg="digraph"/>
+  <Returns>A list of pairs of vertices.</Returns>
+  <Description>
+    This function returns a maximum matching of the digraph <A>digraph</A>.
+    <P/>
+
+    For the definition of a maximum matching, see <Ref Oper="IsMaximumMatching"/>.
+    If <A>digraph</A> is bipartite (see <Ref Oper="IsBipartiteDigraph"/>), then 
+    the algorithm used has complexity <C>O(m*sqrt(n))</C>. Otherwise for general 
+    graphs the complexity is <C>O(m*n*log(n))</C>. Here <C>n</C> is the number of vertices 
+    and <C>m</C> is the number of edges.
+
+    <Example><![CDATA[
+gap> D := DigraphFromDigraph6String("&I@EA_A?AdDp[_c??OO");
+<immutable digraph with 10 vertices, 23 edges>
+gap> M := DigraphMaximumMatching(D);; IsMaximalMatching(D, M);
+true
+gap> Length(M);
+5
+gap> D := Digraph([[5, 6, 7, 8], [6, 7, 8], [7, 8], [8], 
+>                  [], [], [], []]);;
+gap> M := DigraphMaximumMatching(D);
+[ [ 1, 5 ], [ 2, 6 ], [ 3, 7 ], [ 4, 8 ] ]
+gap> D := GeneralisedPetersenGraph(IsMutableDigraph, 9, 2);
+<mutable digraph with 18 vertices, 54 edges>
+gap> M := DigraphMaximumMatching(D);;
+gap> IsMaximalMatching(D, M);
+true
+gap> Length(M);
+9
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>

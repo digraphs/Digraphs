@@ -88,6 +88,7 @@ DeclareOperation("IsUndirectedSpanningForest", [IsDigraph, IsDigraph]);
 
 DeclareOperation("IsMatching", [IsDigraph, IsHomogeneousList]);
 DeclareOperation("IsMaximalMatching", [IsDigraph, IsHomogeneousList]);
+DeclareOperation("IsMaximumMatching", [IsDigraph, IsHomogeneousList]);
 DeclareOperation("IsPerfectMatching", [IsDigraph, IsHomogeneousList]);
 
 # 9. Connectivity . . .

@@ -1108,6 +1108,13 @@ function(D, edges)
   return SizeBlist(seen) = DigraphNrVertices(D);
 end);
 
+InstallMethod(IsMaximumMatching, "for a digraph and a list",
+[IsDigraph, IsHomogeneousList],
+function(D, edges)
+  return IsMatching(D, edges)
+          and Length(edges) = Length(DigraphMaximumMatching(D));
+end);
+
 InstallMethod(IsMaximalMatching, "for a digraph and a list",
 [IsDigraphByOutNeighboursRep, IsHomogeneousList],
 function(D, edges)
