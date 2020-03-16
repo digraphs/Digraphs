@@ -47,6 +47,7 @@
 <div class="ContSSBlock">
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap2_mj.html#X86AF4DAE80B978DA">2.5-1 DigraphsTestInstall</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap2_mj.html#X7A20088B7C406C4A">2.5-2 DigraphsTestStandard</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap2_mj.html#X7885EF3E785D4298">2.5-3 DigraphsTestExtreme</a></span>
 </div></div>
 </div>
 
@@ -73,16 +74,16 @@
 <li><p><strong class="button">This step is optional:</strong> certain functions in <strong class="pkg">Digraphs</strong> require the <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span> package to be available; see Section <a href="chap2_mj.html#X8493C7587FCF6D8B"><span class="RefLink">2.2-1</span></a> for full details. To use these functions make sure that the <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span> package version 4.8.1 or higher is available. If <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span> is not available, then <strong class="pkg">Digraphs</strong> can be used as normal with the exception that the functions listed in Subsection <a href="chap2_mj.html#X8493C7587FCF6D8B"><span class="RefLink">2.2-1</span></a> will not work.</p>
 
 </li>
-<li><p>download the package archive <code class="file">digraphs-0.15.3.tar.gz</code> from <span class="URL"><a href="http://gap-packages.github.io/Digraphs/">the Digraph package webpage</a></span>.</p>
+<li><p>download the package archive <code class="file">digraphs-1.1.1.tar.gz</code> from <span class="URL"><a href="http://gap-packages.github.io/Digraphs/">the Digraph package webpage</a></span>.</p>
 
 </li>
-<li><p>unzip and untar the file, this should create a directory called <code class="file">digraphs-0.15.3</code>.</p>
+<li><p>unzip and untar the file, this should create a directory called <code class="file">digraphs-1.1.1</code>.</p>
 
 </li>
-<li><p>locate the <code class="file">pkg</code> directory of your <strong class="pkg">GAP</strong> directory, which contains the directories <code class="file">lib</code>, <code class="file">doc</code> and so on. Move the directory <code class="file">digraphs-0.15.3</code> into the <code class="file">pkg</code> directory.</p>
+<li><p>locate the <code class="file">pkg</code> directory of your <strong class="pkg">GAP</strong> directory, which contains the directories <code class="file">lib</code>, <code class="file">doc</code> and so on. Move the directory <code class="file">digraphs-1.1.1</code> into the <code class="file">pkg</code> directory.</p>
 
 </li>
-<li><p>it is necessary to compile the <strong class="pkg">Digraphs</strong> package. Inside the <code class="file">pkg/digraphs-0.15.3</code> directory, type</p>
+<li><p>it is necessary to compile the <strong class="pkg">Digraphs</strong> package. Inside the <code class="file">pkg/digraphs-1.1.1</code> directory, type</p>
 
 
 <div class="example"><pre>
@@ -121,7 +122,7 @@ make</pre></div>
 <li><p><code class="func">AsGraph</code> (<a href="chap3_mj.html#X7C4F13E080EC16B0"><span class="RefLink">3.2-4</span></a>) with a digraph argument</p>
 
 </li>
-<li><p><code class="func">Digraph</code> (<a href="chap3_mj.html#X834843057CE86655"><span class="RefLink">3.1-5</span></a>) with a <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span> graph argument</p>
+<li><p><code class="func">Digraph</code> (<a href="chap3_mj.html#X834843057CE86655"><span class="RefLink">3.1-7</span></a>) with a <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span> graph argument</p>
 
 </li>
 </ul>
@@ -135,7 +136,7 @@ make</pre></div>
 
 <p>It is not possible to use the <strong class="pkg">Digraphs</strong> package without compiling it.</p>
 
-<p>To compile the kernel component inside the <code class="file">pkg/digraphs-0.15.3</code> directory, type</p>
+<p>To compile the kernel component inside the <code class="file">pkg/digraphs-1.1.1</code> directory, type</p>
 
 
 <div class="example"><pre>
@@ -145,13 +146,13 @@ make</pre></div>
 
 <p>If you installed the package in another 'pkg' directory than the standard 'pkg' directory in your <strong class="pkg">GAP</strong> installation, then you have to do two things. Firstly during compilation you have to use the option '--with-gaproot=PATH' of the 'configure' script where 'PATH' is a path to the main GAP root directory (if not given the default '../..' is assumed).</p>
 
-<p>If you installed <strong class="pkg">GAP</strong> on several architectures, you must execute the configure/make step for each of the architectures. You can either do this immediately after configuring and compiling GAP itself on this architecture, or alternatively (when using version 4.5 of GAP or newer) set the environment variable 'CONFIGNAME' to the name of the configuration you used when compiling GAP before running './configure'. Note however that your compiler choice and flags (environment variables 'CC' and 'CFLAGS') need to be chosen to match the setup of the original GAP compilation. For example you have to specify 32-bit or 64-bit mode correctly!</p>
+<p>If you installed <strong class="pkg">GAP</strong> on several architectures, you must execute the configure/make step for each of the architectures. You can either do this immediately after configuring and compiling GAP itself on this architecture, or alternatively set the environment variable 'CONFIGNAME' to the name of the configuration you used when compiling GAP before running './configure'. Note however that your compiler choice and flags (environment variables 'CC' and 'CFLAGS') need to be chosen to match the setup of the original GAP compilation. For example you have to specify 32-bit or 64-bit mode correctly!</p>
 
 <p><a id="X857CBE5484CF703A" name="X857CBE5484CF703A"></a></p>
 
 <h4>2.4 <span class="Heading">Rebuilding the documentation</span></h4>
 
-<p>The <strong class="pkg">Digraphs</strong> package comes complete with pdf, html, and text versions of the documentation. However, you might find it necessary, at some point, to rebuild the documentation. To rebuild the documentation use the <code class="func">DigraphsMakeDoc</code> (<a href="chap2_mj.html#X870631C38610AC25"><span class="RefLink">2.4-1</span></a>).</p>
+<p>The <strong class="pkg">Digraphs</strong> package comes complete with pdf, html, and text versions of the documentation. However, you might find it necessary, at some point, to rebuild the documentation. To rebuild the documentation, please use the function <code class="func">DigraphsMakeDoc</code> (<a href="chap2_mj.html#X870631C38610AC25"><span class="RefLink">2.4-1</span></a>).</p>
 
 <p><a id="X870631C38610AC25" name="X870631C38610AC25"></a></p>
 
@@ -177,7 +178,7 @@ make</pre></div>
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphsTestInstall</code>(  )</td><td class="tdright">(&nbsp;function&nbsp;)</td></tr></table></div>
 <p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
 
-<p>This function should be called with no argument to test your installation of <strong class="pkg">Digraphs</strong> is working correctly. These tests should take no more than a fraction of a second to complete. To test more comprehensively that <strong class="pkg">Digraphs</strong> is working correctly, use <code class="func">DigraphsTestStandard</code> (<a href="chap2_mj.html#X7A20088B7C406C4A"><span class="RefLink">2.5-2</span></a>).</p>
+<p>This function can be called without arguments to test your installation of <strong class="pkg">Digraphs</strong> is working correctly. These tests should take no more than a few seconds to complete. To test more comprehensively that <strong class="pkg">Digraphs</strong> is working correctly, use <code class="func">DigraphsTestStandard</code> (<a href="chap2_mj.html#X7A20088B7C406C4A"><span class="RefLink">2.5-2</span></a>).</p>
 
 <p><a id="X7A20088B7C406C4A" name="X7A20088B7C406C4A"></a></p>
 
@@ -186,9 +187,20 @@ make</pre></div>
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphsTestStandard</code>(  )</td><td class="tdright">(&nbsp;function&nbsp;)</td></tr></table></div>
 <p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
 
-<p>This function should be called to test all the methods included in <strong class="pkg">Digraphs</strong>. These tests should take only a few seconds to complete.</p>
+<p>This function can be called without arguments to test all of the methods included in <strong class="pkg">Digraphs</strong>. These tests should take less than a minute to complete.</p>
 
-<p>To quickly test that <strong class="pkg">Digraphs</strong> is installed correctly use <code class="func">DigraphsTestInstall</code> (<a href="chap2_mj.html#X86AF4DAE80B978DA"><span class="RefLink">2.5-1</span></a>). For a more thorough test, use <code class="func">DigraphsTestStandard</code>.</p>
+<p>To quickly test that <strong class="pkg">Digraphs</strong> is installed correctly use <code class="func">DigraphsTestInstall</code> (<a href="chap2_mj.html#X86AF4DAE80B978DA"><span class="RefLink">2.5-1</span></a>). For a more thorough test, use <code class="func">DigraphsTestExtreme</code> (<a href="chap2_mj.html#X7885EF3E785D4298"><span class="RefLink">2.5-3</span></a>).</p>
+
+<p><a id="X7885EF3E785D4298" name="X7885EF3E785D4298"></a></p>
+
+<h5>2.5-3 DigraphsTestExtreme</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphsTestExtreme</code>(  )</td><td class="tdright">(&nbsp;function&nbsp;)</td></tr></table></div>
+<p>Returns: Nothing.</p>
+
+<p>This function should be called with no argument. It executes a series of very demanding tests, which measure the performance of a variety of functions on large examples. These tests take a long time to complete, at least several minutes.</p>
+
+<p>For these tests to complete, the digraphs library <code class="code">digraphs-lib</code> must be downloaded and placed in the <code class="code">digraphs</code> directory in a subfolder named <code class="file">digraphs-lib</code>. This library can be found on the <strong class="pkg">Digraphs</strong> website.</p>
 
 
 <div class="chlinkprevnextbot">&nbsp;<a href="chap0_mj.html">[Top of Book]</a>&nbsp;  <a href="chap0_mj.html#contents">[Contents]</a>&nbsp;  &nbsp;<a href="chap1_mj.html">[Previous Chapter]</a>&nbsp;  &nbsp;<a href="chap3_mj.html">[Next Chapter]</a>&nbsp;  </div>

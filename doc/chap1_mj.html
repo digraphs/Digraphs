@@ -45,7 +45,7 @@
 
 <h4>1.1 <span class="Heading">Introduction</span></h4>
 
-<p>This is the manual for the <strong class="pkg">Digraphs</strong> package version 0.15.3. This package was developed at the University of St Andrews by:</p>
+<p>This is the manual for version 1.1.1 of the <strong class="pkg">Digraphs</strong> package. This package was developed at the University of St Andrews by:</p>
 
 
 <ul>
@@ -72,7 +72,13 @@
 <li><p>Stuart Burrell,</p>
 
 </li>
+<li><p>Reinis Cirpons,</p>
+
+</li>
 <li><p>Luke Elliott,</p>
+
+</li>
+<li><p>Max Horn,</p>
 
 </li>
 <li><p>Christopher Jefferson,</p>
@@ -81,18 +87,23 @@
 <li><p>Markus Pfeiffer,</p>
 
 </li>
-<li><p>Chris Russell, and</p>
+<li><p>Chris Russell,</p>
 
 </li>
-<li><p>Finn Smith.</p>
+<li><p>Finn Smith, and</p>
+
+</li>
+<li><p>Murray Whyte.</p>
 
 </li>
 </ul>
-<p>The <strong class="pkg">Digraphs</strong> package contains a variety of methods for efficiently creating and storing digraphs and computing information about them. Full explanations of all the functions contained in the package are provided below.</p>
+<p>The <strong class="pkg">Digraphs</strong> package contains a variety of methods for efficiently creating and storing mutable and immutable digraphs and computing information about them. Full explanations of all the functions contained in the package are provided below.</p>
 
-<p>If the <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span> package is available, it will be loaded automatically. Digraphs created with the <strong class="pkg">Digraphs</strong> package can be converted to <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span> graphs with <code class="func">Graph</code> (<a href="chap3_mj.html#X7B335342839E5146"><span class="RefLink">3.2-3</span></a>), and conversely <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span> graphs can be converted to <strong class="pkg">Digraphs</strong> objects with <code class="func">Digraph</code> (<a href="chap3_mj.html#X834843057CE86655"><span class="RefLink">3.1-5</span></a>). <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span> is not required for <strong class="pkg">Digraphs</strong> to run.</p>
+<p>If the <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span> package is available, it will be loaded automatically. Digraphs created with the <strong class="pkg">Digraphs</strong> package can be converted to <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span> graphs with <code class="func">Graph</code> (<a href="chap3_mj.html#X7B335342839E5146"><span class="RefLink">3.2-3</span></a>), and conversely <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span> graphs can be converted to <strong class="pkg">Digraphs</strong> objects with <code class="func">Digraph</code> (<a href="chap3_mj.html#X834843057CE86655"><span class="RefLink">3.1-7</span></a>). <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span> is not required for <strong class="pkg">Digraphs</strong> to run.</p>
 
-<p>The <span class="URL"><a href="http://www.tcs.tkk.fi/Software/bliss/">bliss</a></span> tool <a href="chapBib_mj.html#biBJunttilaKaski">[JK07]</a> is included in this package. It is an open-source tool for computing automorphism groups and canonical forms of graphs, written by Tommi Junttila and Petteri Kaski. Several of the methods in the <strong class="pkg">Digraphs</strong> package rely on <span class="URL"><a href="http://www.tcs.tkk.fi/Software/bliss/">bliss</a></span>. If the <span class="URL"><a href="https://github.com/sebasguts/NautyTracesInterface">NautyTracesInterface</a></span> package for GAP is available then it is also possible to use <span class="URL"><a href="http://pallini.di.uniroma1.it/">nauty</a></span> <a href="chapBib_mj.html#biBMcKay201494">[MP14]</a> for computing automorphism groups and canonical forms in <strong class="pkg">Digraphs</strong>. See Section <a href="chap7_mj.html#X7E48B9F87A0F22D4"><span class="RefLink">7.2</span></a> for more details.</p>
+<p>The <span class="URL"><a href="http://www.tcs.tkk.fi/Software/bliss/">bliss</a></span> tool <a href="chapBib_mj.html#biBJK07">[JK07]</a> is included in this package. It is an open-source tool for computing automorphism groups and canonical forms of graphs, written by Tommi Junttila and Petteri Kaski. Several of the methods in the <strong class="pkg">Digraphs</strong> package rely on <span class="URL"><a href="http://www.tcs.tkk.fi/Software/bliss/">bliss</a></span>. If the <span class="URL"><a href="https://github.com/sebasguts/NautyTracesInterface">NautyTracesInterface</a></span> package for GAP is available then it is also possible to use <span class="URL"><a href="http://pallini.di.uniroma1.it/">nauty</a></span> <a href="chapBib_mj.html#biBMP14">[MP14]</a> for computing automorphism groups and canonical forms in <strong class="pkg">Digraphs</strong>. See Section <a href="chap7_mj.html#X7E48B9F87A0F22D4"><span class="RefLink">7.2</span></a> for more details.</p>
+
+<p>From version 1.0.0 of this package, digraphs can be either mutable or immutable. Mutable digraphs can be changed in-place by many of the methods in the package, which avoids unnecessary copying. Immutable digraphs cannot be changed in-place, but their advantage is that the value of an attribute of an immutable digraph is only ever computed once. Mutable digraphs can be converted into immutable digraphs in-place using <code class="func">MakeImmutable</code> (<a href="https://www.gap-system.org/Manuals/doc/ref/chap12_mj.html#X80CE136D804097C7"><span class="RefLink">Reference: MakeImmutable</span></a>). One of the motivations for introducing mutable digraphs in version 1.0.0 was that in practice the authors often wanted to create a digraph and immediately modify it (removing certain edges, loops, and so on). Before version 1.0.0, this involved copying the digraph several times, with each copy being discarded almost immediately. From version 1.0.0, this unnecessary copying can be eliminated by first creating a mutable digraph, then changing it in-place, and finally converting the mutable digraph to an immutable one in-place (if desirable).</p>
 
 <p><a id="X84541F61810C741D" name="X84541F61810C741D"></a></p>
 

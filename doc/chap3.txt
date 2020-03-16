@@ -10,40 +10,74 @@
   
   [33X[1;0Y[29X[2XIsDigraph[102X[32X Category[133X
   
-  [33X[0;0YEvery   digraph  in  [5XDigraphs[105X  belongs  to  the  category  [10XIsDigraph[110X.  Basic
-  attributes   and  operations  for  digraphs  are:  [2XDigraphVertices[102X  ([14X5.1-1[114X),
-  [2XDigraphRange[102X  ([14X5.2-5[114X),  [2XDigraphSource[102X  ([14X5.2-5[114X),  [2XOutNeighbours[102X  ([14X5.2-6[114X), and
-  [2XDigraphEdges[102X ([14X5.1-3[114X).[133X
+  [33X[0;0YEvery  digraph  in  [5XDigraphs[105X  belongs  to the category [10XIsDigraph[110X. Some basic
+  attributes   and   operations  for  digraphs  are  [2XDigraphVertices[102X  ([14X5.1-1[114X),
+  [2XDigraphEdges[102X ([14X5.1-3[114X), and [2XOutNeighbours[102X ([14X5.2-6[114X).[133X
   
-  [1X3.1-2 IsCayleyDigraph[101X
+  [1X3.1-2 IsMutableDigraph[101X
+  
+  [33X[1;0Y[29X[2XIsMutableDigraph[102X[32X Category[133X
+  
+  [33X[0;0Y[10XIsMutableDigraph[110X   is   a   synonym  for  [2XIsDigraph[102X  ([14X3.1-1[114X)  and  [2XIsMutable[102X
+  ([14XReference: IsMutable[114X). A mutable digraph may be changed in-place by methods
+  in   the   [5XDigraphs[105X   package,   and   is   not   attribute-storing   –  see
+  [2XIsAttributeStoringRep[102X ([14XReference: IsAttributeStoringRep[114X).[133X
+  
+  [33X[0;0YA  mutable  digraph  may  be  converted  into an immutable attribute-storing
+  digraph by calling [2XMakeImmutable[102X ([14XReference: MakeImmutable[114X) on the digraph.[133X
+  
+  [1X3.1-3 IsImmutableDigraph[101X
+  
+  [33X[1;0Y[29X[2XIsImmutableDigraph[102X[32X Category[133X
+  
+  [33X[0;0Y[10XIsImmutableDigraph[110X  is a subcategory of [2XIsDigraph[102X ([14X3.1-1[114X). Digraphs that lie
+  in  [10XIsImmutableDigraph[110X  are  immutable and attribute-storing. In particular,
+  they lie in [2XIsAttributeStoringRep[102X ([14XReference: IsAttributeStoringRep[114X).[133X
+  
+  [33X[0;0YA  mutable digraph may be converted to an immutable digraph that lies in the
+  category    [10XIsImmutableDigraph[110X    by   calling   [2XMakeImmutable[102X   ([14XReference:
+  MakeImmutable[114X) on the digraph.[133X
+  
+  [33X[0;0YThe  operation [2XDigraphMutableCopy[102X ([14X3.3-1[114X) can be used to construct a mutable
+  copy  of  an  immutable  digraph.  It  is however not possible to convert an
+  immutable digraph into a mutable digraph in-place.[133X
+  
+  [1X3.1-4 IsCayleyDigraph[101X
   
   [33X[1;0Y[29X[2XIsCayleyDigraph[102X[32X Category[133X
   
   [33X[0;0Y[10XIsCayleyDigraph[110X  is  a  subcategory  of  [10XIsDigraph[110X. Digraphs that are Cayley
   digraphs  of a group and that are constructed by the operation [2XCayleyDigraph[102X
-  ([14X3.1-10[114X) are constructed in this category.[133X
+  ([14X3.1-12[114X) are constructed in this category, and are always immutable.[133X
   
-  [1X3.1-3 IsDigraphWithAdjacencyFunction[101X
+  [1X3.1-5 IsDigraphWithAdjacencyFunction[101X
   
   [33X[1;0Y[29X[2XIsDigraphWithAdjacencyFunction[102X[32X Category[133X
   
   [33X[0;0Y[10XIsDigraphWithAdjacencyFunction[110X  is a subcategory of [10XIsDigraph[110X. Digraphs that
   are [13Xcreated[113X using an adjacency function are constructed in this category.[133X
   
-  [1X3.1-4 DigraphType[101X
+  [1X3.1-6 DigraphByOutNeighboursType[101X
   
-  [33X[1;0Y[29X[2XDigraphType[102X[32X global variable[133X
+  [33X[1;0Y[29X[2XDigraphByOutNeighboursType[102X[32X global variable[133X
   [33X[1;0Y[29X[2XDigraphFamily[102X[32X family[133X
   
-  [33X[0;0YThe  type  of  all  digraphs  is  [10XDigraphType[110X. The family of all digraphs is
-  [10XDigraphFamily[110X.[133X
+  [33X[0;0YThe  type  of  all digraphs is [10XDigraphByOutNeighboursType[110X. The family of all
+  digraphs is [10XDigraphFamily[110X.[133X
   
-  [1X3.1-5 Digraph[101X
+  [1X3.1-7 Digraph[101X
   
-  [33X[1;0Y[29X[2XDigraph[102X( [3Xobj[103X[, [3Xsource[103X, [3Xrange[103X] ) [32X operation[133X
-  [33X[1;0Y[29X[2XDigraph[102X( [3Xlist[103X, [3Xfunc[103X ) [32X operation[133X
-  [33X[1;0Y[29X[2XDigraph[102X( [3XG[103X, [3Xlist[103X, [3Xact[103X, [3Xadj[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XDigraph[102X( [[3Xfilt[103X, ][3Xobj[103X[, [3Xsource[103X, [3Xrange[103X] ) [32X operation[133X
+  [33X[1;0Y[29X[2XDigraph[102X( [[3Xfilt[103X, ][3Xlist[103X, [3Xfunc[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XDigraph[102X( [[3Xfilt[103X, ][3XG[103X, [3Xlist[103X, [3Xact[103X, [3Xadj[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
+  
+  [33X[0;0YIf the optional first argument [3Xfilt[103X is present, then this should specify the
+  category  or  representation  the  digraph being created will belong to. For
+  example, if [3Xfilt[103X is [2XIsMutableDigraph[102X ([14X3.1-2[114X), then the digraph being created
+  will  be  mutable,  if  [3Xfilt[103X is [2XIsImmutableDigraph[102X ([14X3.1-3[114X), then the digraph
+  will  be immutable. If the optional first argument [3Xfilt[103X is not present, then
+  [2XIsImmutableDigraph[102X ([14X3.1-3[114X) is used by default.[133X
   
   [8Xfor a list (i.e. an adjacency list)[108X
         [33X[0;6Yif  [3Xobj[103X is a list of lists of positive integers in the range from [10X1[110X to
@@ -92,7 +126,7 @@
         objects of [3Xlist[103X and directed edges [10X[x, y][110X when [10Xf(x, y)[110X is [10Xtrue[110X.[133X
   
         [33X[0;6YThe  action  of  the  group  [3XG[103X on the objects in [3Xlist[103X is stored in the
-        attribute  [2XDigraphGroup[102X  ([14X7.2-9[114X),  and  is used to speed up operations
+        attribute  [2XDigraphGroup[102X  ([14X7.2-10[114X),  and is used to speed up operations
         like [2XDigraphDiameter[102X ([14X5.3-1[114X).[133X
   
   [8Xfor a Grape package graph[108X
@@ -112,22 +146,17 @@
     [4X[25X>[125X [27X[2, 5, 8, 10], [2, 3, 4, 2, 5, 6, 8, 9, 10], [1],[127X[104X
     [4X[25X>[125X [27X[3, 5, 7, 8, 10], [2, 5, 7], [3, 6, 7, 9, 10], [1, 4],[127X[104X
     [4X[25X>[125X [27X[1, 5, 9], [1, 2, 7, 8], [3, 5]]);[127X[104X
-    [4X[28X<multidigraph with 10 vertices, 38 edges>[128X[104X
+    [4X[28X<immutable multidigraph with 10 vertices, 38 edges>[128X[104X
     [4X[25Xgap>[125X [27Xgr := Digraph(["a", "b", "c"], ["a"], ["b"]);[127X[104X
-    [4X[28X<digraph with 3 vertices, 1 edge>[128X[104X
+    [4X[28X<immutable digraph with 3 vertices, 1 edge>[128X[104X
     [4X[25Xgap>[125X [27Xgr := Digraph(5, [1, 2, 2, 4, 1, 1], [2, 3, 5, 5, 1, 1]);[127X[104X
-    [4X[28X<multidigraph with 5 vertices, 6 edges>[128X[104X
+    [4X[28X<immutable multidigraph with 5 vertices, 6 edges>[128X[104X
     [4X[25Xgap>[125X [27XPetersen := Graph(SymmetricGroup(5), [[1, 2]], OnSets,[127X[104X
     [4X[25X>[125X [27Xfunction(x, y) return Intersection(x, y) = []; end);;[127X[104X
     [4X[25Xgap>[125X [27XDigraph(Petersen);[127X[104X
-    [4X[28X<digraph with 10 vertices, 30 edges>[128X[104X
-    [4X[25Xgap>[125X [27Xb := BinaryRelationOnPoints([127X[104X
-    [4X[25X>[125X [27X[[3], [1, 3, 5], [1], [1, 2, 4], [2, 3, 5]]);[127X[104X
-    [4X[28XBinary Relation on 5 points[128X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph(b);[127X[104X
-    [4X[28X<digraph with 5 vertices, 11 edges>[128X[104X
+    [4X[28X<immutable digraph with 10 vertices, 30 edges>[128X[104X
     [4X[25Xgap>[125X [27Xgr := Digraph([1 .. 10], ReturnTrue);[127X[104X
-    [4X[28X<digraph with 10 vertices, 100 edges>[128X[104X
+    [4X[28X<immutable digraph with 10 vertices, 100 edges>[128X[104X
   [4X[32X[104X
   
   [33X[0;0YThe  next  example  illustrates the uses of the fourth and fifth variants of
@@ -154,26 +183,33 @@
     [4X[25X>[125X [27Xend;[127X[104X
     [4X[28Xfunction( x, y ) ... end[128X[104X
     [4X[25Xgap>[125X [27Xdigraph := Digraph(AsList(f), adj);[127X[104X
-    [4X[28X<digraph with 81 vertices, 2430 edges>[128X[104X
+    [4X[28X<immutable digraph with 81 vertices, 2430 edges>[128X[104X
     [4X[25Xgap>[125X [27Xgroup := Group(Z(3));[127X[104X
     [4X[28X<group with 1 generators>[128X[104X
     [4X[25Xgap>[125X [27Xact := \*;[127X[104X
     [4X[28X<Operation "*">[128X[104X
     [4X[25Xgap>[125X [27Xdigraph := Digraph(group, List(f), act, adj);[127X[104X
-    [4X[28X<digraph with 81 vertices, 2430 edges>[128X[104X
+    [4X[28X<immutable digraph with 81 vertices, 2430 edges>[128X[104X
   [4X[32X[104X
   
-  [1X3.1-6 DigraphByAdjacencyMatrix[101X
+  [1X3.1-8 DigraphByAdjacencyMatrix[101X
   
-  [33X[1;0Y[29X[2XDigraphByAdjacencyMatrix[102X( [3Xadj[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XDigraphByAdjacencyMatrix[102X( [[3Xfilt[103X, ][3Xlist[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
-  [33X[0;0YIf  [3Xadj[103X is the adjacency matrix of a digraph in the sense of [2XAdjacencyMatrix[102X
-  ([14X5.2-1[114X), then this operation returns the digraph which is defined by [3Xadj[103X.[133X
+  [33X[0;0YIf the optional first argument [3Xfilt[103X is present, then this should specify the
+  category  or  representation  the  digraph being created will belong to. For
+  example, if [3Xfilt[103X is [2XIsMutableDigraph[102X ([14X3.1-2[114X), then the digraph being created
+  will  be  mutable,  if  [3Xfilt[103X is [2XIsImmutableDigraph[102X ([14X3.1-3[114X), then the digraph
+  will  be immutable. If the optional first argument [3Xfilt[103X is not present, then
+  [2XIsImmutableDigraph[102X ([14X3.1-3[114X) is used by default.[133X
   
-  [33X[0;0YAlternatively,  if  [3Xadj[103X  is  a  square  boolean  matrix, then this operation
-  returns  the  digraph  with [10XLength([110X[3Xadj[103X[10X)[110X vertices which has the edge [10X[i,j][110X if
-  and only if [3Xadj[103X[10X[i][j][110X is [9Xtrue[109X.[133X
+  [33X[0;0YIf [3Xlist[103X is the adjacency matrix of a digraph in the sense of [2XAdjacencyMatrix[102X
+  ([14X5.2-1[114X), then this operation returns the digraph which is defined by [3Xlist[103X.[133X
+  
+  [33X[0;0YAlternatively,  if  [3Xlist[103X  is  a  square  boolean matrix, then this operation
+  returns  the  digraph with [10XLength([110X[3Xlist[103X[10X)[110X vertices which has the edge [10X[i,j][110X if
+  and only if [3Xlist[103X[10X[i][j][110X is [9Xtrue[109X.[133X
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27XDigraphByAdjacencyMatrix([[127X[104X
@@ -182,28 +218,40 @@
     [4X[25X>[125X [27X[0, 3, 2, 1, 1],[127X[104X
     [4X[25X>[125X [27X[0, 0, 1, 0, 1],[127X[104X
     [4X[25X>[125X [27X[2, 0, 0, 0, 0]]);[127X[104X
-    [4X[28X<multidigraph with 5 vertices, 18 edges>[128X[104X
-    [4X[25Xgap>[125X [27Xgr := DigraphByAdjacencyMatrix([[127X[104X
+    [4X[28X<immutable multidigraph with 5 vertices, 18 edges>[128X[104X
+    [4X[25Xgap>[125X [27XD := DigraphByAdjacencyMatrix([[127X[104X
     [4X[25X>[125X [27X[true, false, true],[127X[104X
     [4X[25X>[125X [27X[false, false, true],[127X[104X
     [4X[25X>[125X [27X[false, true, false]]);[127X[104X
-    [4X[28X<digraph with 3 vertices, 4 edges>[128X[104X
-    [4X[25Xgap>[125X [27XOutNeighbours(gr);[127X[104X
+    [4X[28X<immutable digraph with 3 vertices, 4 edges>[128X[104X
+    [4X[25Xgap>[125X [27XOutNeighbours(D);[127X[104X
     [4X[28X[ [ 1, 3 ], [ 3 ], [ 2 ] ][128X[104X
+    [4X[25Xgap>[125X [27XD := DigraphByAdjacencyMatrix(IsMutableDigraph, [127X[104X
+    [4X[25X>[125X [27X[[true, false, true],[127X[104X
+    [4X[25X>[125X [27X [false, false, true],[127X[104X
+    [4X[25X>[125X [27X [false, true, false]]);[127X[104X
+    [4X[28X<mutable digraph with 3 vertices, 4 edges>[128X[104X
   [4X[32X[104X
   
-  [1X3.1-7 DigraphByEdges[101X
+  [1X3.1-9 DigraphByEdges[101X
   
-  [33X[1;0Y[29X[2XDigraphByEdges[102X( [3Xedges[103X[, [3Xn[103X] ) [32X operation[133X
+  [33X[1;0Y[29X[2XDigraphByEdges[102X( [[3Xfilt[103X, ][3Xlist[103X[, [3Xn[103X] ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
-  [33X[0;0YIf  [3Xedges[103X  is list of pairs of positive integers, then this function returns
-  the  digraph with the minimum number of vertices [10Xm[110X such that its edges equal
-  [3Xedges[103X.[133X
+  [33X[0;0YIf the optional first argument [3Xfilt[103X is present, then this should specify the
+  category  or  representation  the  digraph being created will belong to. For
+  example, if [3Xfilt[103X is [2XIsMutableDigraph[102X ([14X3.1-2[114X), then the digraph being created
+  will  be  mutable,  if  [3Xfilt[103X is [2XIsImmutableDigraph[102X ([14X3.1-3[114X), then the digraph
+  will  be immutable. If the optional first argument [3Xfilt[103X is not present, then
+  [2XIsImmutableDigraph[102X ([14X3.1-3[114X) is used by default.[133X
+  
+  [33X[0;0YIf  [3Xlist[103X  is  list of pairs of positive integers, then this function returns
+  the  digraph  with the minimum number of vertices [10Xm[110X such that its list equal
+  [3Xlist[103X.[133X
   
   [33X[0;0YIf  the optional second argument [3Xn[103X is a positive integer with [10X[3Xn[103X[10X >= m[110X (with [10Xm[110X
   defined  as  above),  then this function returns the digraph with [3Xn[103X vertices
-  and edges [3Xedges[103X.[133X
+  and list [3Xlist[103X.[133X
   
   [33X[0;0YSee [2XDigraphEdges[102X ([14X5.1-3[114X).[133X
   
@@ -211,22 +259,26 @@
     [4X[25Xgap>[125X [27XDigraphByEdges([127X[104X
     [4X[25X>[125X [27X[[1, 3], [2, 1], [2, 3], [2, 5], [3, 6],[127X[104X
     [4X[25X>[125X [27X [4, 6], [5, 2], [5, 4], [5, 6], [6, 6]]);[127X[104X
-    [4X[28X<digraph with 6 vertices, 10 edges>[128X[104X
+    [4X[28X<immutable digraph with 6 vertices, 10 edges>[128X[104X
     [4X[25Xgap>[125X [27XDigraphByEdges([127X[104X
     [4X[25X>[125X [27X[[1, 3], [2, 1], [2, 3], [2, 5], [3, 6],[127X[104X
     [4X[25X>[125X [27X [4, 6], [5, 2], [5, 4], [5, 6], [6, 6]], 12);[127X[104X
-    [4X[28X<digraph with 12 vertices, 10 edges>[128X[104X
+    [4X[28X<immutable digraph with 12 vertices, 10 edges>[128X[104X
+    [4X[25Xgap>[125X [27XDigraphByEdges(IsMutableDigraph, [127X[104X
+    [4X[25X>[125X [27X[[1, 3], [2, 1], [2, 3], [2, 5], [3, 6],[127X[104X
+    [4X[25X>[125X [27X [4, 6], [5, 2], [5, 4], [5, 6], [6, 6]], 12);[127X[104X
+    [4X[28X<mutable digraph with 12 vertices, 10 edges>[128X[104X
   [4X[32X[104X
   
-  [1X3.1-8 EdgeOrbitsDigraph[101X
+  [1X3.1-10 EdgeOrbitsDigraph[101X
   
   [33X[1;0Y[29X[2XEdgeOrbitsDigraph[102X( [3XG[103X, [3Xedges[103X[, [3Xn[103X] ) [32X operation[133X
-  [6XReturns:[106X  [33X[0;10YA new digraph.[133X
+  [6XReturns:[106X  [33X[0;10YAn immutable digraph.[133X
   
   [33X[0;0YIf  [3XG[103X  is a permutation group, [3Xedges[103X is an edge or list of edges, and [3Xn[103X is a
   non-negative integer such that [3XG[103X fixes [10X[1 .. [3Xn[103X[10X][110X setwise, then this operation
-  returns  a  new  digraph  with [3Xn[103X vertices and the union of the orbits of the
-  edges  in  [3X  edges  [103X under the action of the permutation group [3XG[103X. An edge in
+  returns  an immutable digraph with [3Xn[103X vertices and the union of the orbits of
+  the edges in [3X edges [103X under the action of the permutation group [3XG[103X. An edge in
   this context is simply a pair of positive integers.[133X
   
   [33X[0;0YIf  the  optional  third  argument  [3Xn[103X is not present, then the largest moved
@@ -235,66 +287,82 @@
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27Xdigraph := EdgeOrbitsDigraph(Group((1, 3), (1, 2)(3, 4)),[127X[104X
     [4X[25X>[125X [27X                                [[1, 2], [4, 5]], 5);[127X[104X
-    [4X[28X<digraph with 5 vertices, 12 edges>[128X[104X
+    [4X[28X<immutable digraph with 5 vertices, 12 edges>[128X[104X
     [4X[25Xgap>[125X [27XOutNeighbours(digraph);[127X[104X
     [4X[28X[ [ 2, 4, 5 ], [ 1, 3, 5 ], [ 2, 4, 5 ], [ 1, 3, 5 ], [  ] ][128X[104X
     [4X[25Xgap>[125X [27XRepresentativeOutNeighbours(digraph);[127X[104X
     [4X[28X[ [ 2, 4, 5 ], [  ] ][128X[104X
   [4X[32X[104X
   
-  [1X3.1-9 DigraphByInNeighbours[101X
+  [1X3.1-11 DigraphByInNeighbours[101X
   
-  [33X[1;0Y[29X[2XDigraphByInNeighbours[102X( [3Xin[103X ) [32X operation[133X
-  [33X[1;0Y[29X[2XDigraphByInNeighbors[102X( [3Xin[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XDigraphByInNeighbours[102X( [[3Xfilt[103X, ][3Xlist[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XDigraphByInNeighbors[102X( [[3Xfilt[103X, ][3Xlist[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
-  [33X[0;0YIf  [3Xin[103X  is  a  list  of  lists  of  positive  integers  in  the  range [10X[1 ..
-  Length([3Xin[103X[10X)][110X,  then this function returns the digraph with vertices [22XE^0=[122X[10X[1 ..
-  Length([3Xin[103X[10X)][110X,  and  edges corresponding to the entries of [3Xin[103X. More precisely,
-  there is an edge with source vertex [10Xi[110X and range vertex [10Xj[110X if [10Xi[110X is in [10X[3Xin[103X[10X[j][110X.[133X
+  [33X[0;0YIf the optional first argument [3Xfilt[103X is present, then this should specify the
+  category  or  representation  the  digraph being created will belong to. For
+  example, if [3Xfilt[103X is [2XIsMutableDigraph[102X ([14X3.1-2[114X), then the digraph being created
+  will  be  mutable,  if  [3Xfilt[103X is [2XIsImmutableDigraph[102X ([14X3.1-3[114X), then the digraph
+  will  be immutable. If the optional first argument [3Xfilt[103X is not present, then
+  [2XIsImmutableDigraph[102X ([14X3.1-3[114X) is used by default.[133X
   
-  [33X[0;0YIf  [10Xi[110X  occurs  in [10X[3Xin[103X[10X[j][110X with multiplicity [10Xk[110X, then there are [10Xk[110X multiple edges
-  from [10Xi[110X to [10Xj[110X.[133X
+  [33X[0;0YIf  [3Xlist[103X  is  a  list  of  lists  of  positive integers list the range [10X[1 ..
+  Length([3Xlist[103X[10X)][110X,  then  this function returns the digraph with vertices [22XE^0=[122X[10X[1
+  ..  Length([3Xlist[103X[10X)][110X,  and  edges  corresponding  to  the entries of [3Xlist[103X. More
+  precisely,  there is an edge with source vertex [10Xi[110X and range vertex [10Xj[110X if [10Xi[110X is
+  list [10X[3Xlist[103X[10X[j][110X.[133X
+  
+  [33X[0;0YIf  [10Xi[110X  occurs  list  [10X[3Xlist[103X[10X[j][110X  with multiplicity [10Xk[110X, then there are [10Xk[110X multiple
+  edges from [10Xi[110X to [10Xj[110X.[133X
   
   [33X[0;0YSee [2XInNeighbours[102X ([14X5.2-7[114X).[133X
   
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr := DigraphByInNeighbours([[127X[104X
+    [4X[25Xgap>[125X [27XD := DigraphByInNeighbours([[127X[104X
     [4X[25X>[125X [27X[2, 5, 8, 10], [2, 3, 4, 5, 6, 8, 9, 10],[127X[104X
     [4X[25X>[125X [27X[1], [3, 5, 7, 8, 10], [2, 5, 7], [3, 6, 7, 9, 10], [1, 4],[127X[104X
     [4X[25X>[125X [27X[1, 5, 9], [1, 2, 7, 8], [3, 5]]);[127X[104X
-    [4X[28X<digraph with 10 vertices, 37 edges>[128X[104X
-    [4X[25Xgap>[125X [27Xgr := DigraphByInNeighbours([[2, 3, 2], [1], [1, 2, 3]]);[127X[104X
-    [4X[28X<multidigraph with 3 vertices, 7 edges>[128X[104X
+    [4X[28X<immutable digraph with 10 vertices, 37 edges>[128X[104X
+    [4X[25Xgap>[125X [27XD := DigraphByInNeighbours([[2, 3, 2], [1], [1, 2, 3]]);[127X[104X
+    [4X[28X<immutable multidigraph with 3 vertices, 7 edges>[128X[104X
+    [4X[25Xgap>[125X [27XD := DigraphByInNeighbours(IsMutableDigraph, [127X[104X
+    [4X[25X>[125X [27X                              [[2, 3, 2], [1], [1, 2, 3]]);[127X[104X
+    [4X[28X<mutable multidigraph with 3 vertices, 7 edges>[128X[104X
   [4X[32X[104X
   
-  [1X3.1-10 CayleyDigraph[101X
+  [1X3.1-12 CayleyDigraph[101X
   
   [33X[1;0Y[29X[2XCayleyDigraph[102X( [3XG[103X[, [3Xgens[103X] ) [32X operation[133X
-  [6XReturns:[106X  [33X[0;10YA digraph.[133X
+  [6XReturns:[106X  [33X[0;10YAn immutable digraph.[133X
   
-  [33X[0;0YLet  [3XG[103X  be  any group and let [3Xgens[103X be a list of elements of [3XG[103X. This function
-  returns  the  Cayley  graph of the group with respect [3Xgens[103X. The vertices are
-  the elements of [3XG[103X. There exists an edge from the vertex [10Xu[110X to the vertex [10Xv[110X if
-  and only if there exists a generator [10Xg[110X in [3Xgens[103X such that [10Xx * g = y[110X.[133X
+  [33X[0;0YLet  [3XG[103X  be any group and let [3Xgens[103X be a list of elements of [3XG[103X. This operation
+  returns  an immutable digraph that corresponds to the Cayley graph of [3XG[103X with
+  respect  [3Xgens[103X. The vertices are the elements of [3XG[103X. There exists an edge from
+  the  vertex  [10Xu[110X  to the vertex [10Xv[110X if and only if there exists a generator [10Xg[110X in
+  [3Xgens[103X such that [10Xx * g = y[110X.[133X
   
   [33X[0;0YIf  the optional second argument [3Xgens[103X is not present, then the generators of
-  [3XG[103X  are used by default. The digraph created by this operation belongs to the
-  category  [2XIsCayleyDigraph[102X  ([14X3.1-2[114X),  the  group  [3XG[103X can be recovered from the
-  digraph  using  [2XGroupOfCayleyDigraph[102X ([14X5.4-1[114X), and the generators [3Xgens[103X can be
-  obtained using [2XGeneratorsOfCayleyDigraph[102X ([14X5.4-2[114X).[133X
+  [3XG[103X are used by default.[133X
+  
+  [33X[0;0YThe   digraph   created   by   this   operation   belongs  to  the  category
+  [2XIsCayleyDigraph[102X ([14X3.1-4[114X), the group [3XG[103X can be recovered from the digraph using
+  [2XGroupOfCayleyDigraph[102X  ([14X5.4-1[114X), and the generators [3Xgens[103X can be obtained using
+  [2XGeneratorsOfCayleyDigraph[102X ([14X5.4-2[114X).[133X
+  
+  [33X[0;0YNote that this function can only return an immutable digraph.[133X
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27XG := DihedralGroup(8);[127X[104X
     [4X[28X<pc group of size 8 with 3 generators>[128X[104X
     [4X[25Xgap>[125X [27XCayleyDigraph(G);[127X[104X
-    [4X[28X<digraph with 8 vertices, 24 edges>[128X[104X
+    [4X[28X<immutable digraph with 8 vertices, 24 edges>[128X[104X
     [4X[25Xgap>[125X [27XG := DihedralGroup(IsPermGroup, 8);[127X[104X
     [4X[28XGroup([ (1,2,3,4), (2,4) ])[128X[104X
     [4X[25Xgap>[125X [27XCayleyDigraph(G);[127X[104X
-    [4X[28X<digraph with 8 vertices, 16 edges>[128X[104X
+    [4X[28X<immutable digraph with 8 vertices, 16 edges>[128X[104X
     [4X[25Xgap>[125X [27Xdigraph := CayleyDigraph(G, [()]);[127X[104X
-    [4X[28X<digraph with 8 vertices, 8 edges>[128X[104X
+    [4X[28X<immutable digraph with 8 vertices, 8 edges>[128X[104X
     [4X[25Xgap>[125X [27XGroupOfCayleyDigraph(digraph) = G;[127X[104X
     [4X[28Xtrue[128X[104X
     [4X[25Xgap>[125X [27XGeneratorsOfCayleyDigraph(digraph);[127X[104X
@@ -315,21 +383,28 @@
   edge in [3Xdigraph[103X.[133X
   
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph([[3, 2], [1, 2], [2], [3, 4]]);[127X[104X
-    [4X[28X<digraph with 4 vertices, 7 edges>[128X[104X
-    [4X[25Xgap>[125X [27XAsBinaryRelation(gr);[127X[104X
+    [4X[25Xgap>[125X [27XD := Digraph([[3, 2], [1, 2], [2], [3, 4]]);[127X[104X
+    [4X[28X<immutable digraph with 4 vertices, 7 edges>[128X[104X
+    [4X[25Xgap>[125X [27XAsBinaryRelation(D);[127X[104X
     [4X[28XBinary Relation on 4 points[128X[104X
   [4X[32X[104X
   
   [1X3.2-2 AsDigraph[101X
   
-  [33X[1;0Y[29X[2XAsDigraph[102X( [3Xtrans[103X[, [3Xn[103X] ) [32X operation[133X
+  [33X[1;0Y[29X[2XAsDigraph[102X( [[3Xfilt[103X, ][3Xtrans[103X[, [3Xn[103X] ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA digraph, or [9Xfail[109X.[133X
+  
+  [33X[0;0YIf the optional first argument [3Xfilt[103X is present, then this should specify the
+  category  or  representation  the  digraph being created will belong to. For
+  example, if [3Xfilt[103X is [2XIsMutableDigraph[102X ([14X3.1-2[114X), then the digraph being created
+  will  be  mutable,  if  [3Xfilt[103X is [2XIsImmutableDigraph[102X ([14X3.1-3[114X), then the digraph
+  will  be immutable. If the optional first argument [3Xfilt[103X is not present, then
+  [2XIsImmutableDigraph[102X ([14X3.1-3[114X) is used by default.[133X
   
   [33X[0;0YIf  [3Xtrans[103X is a transformation, and [3Xn[103X is a non-negative integer such that the
   restriction  of [3Xtrans[103X to [10X[1 .. [3Xn[103X[10X][110X defines a transformation of [10X[1 .. [3Xn[103X[10X][110X, then
   [10XAsDigraph[110X  returns  the functional digraph with [3Xn[103X vertices defined by [3Xtrans[103X.
-  See [2XIsFunctionalDigraph[102X ([14X6.1-7[114X).[133X
+  See [2XIsFunctionalDigraph[102X ([14X6.1-9[114X).[133X
   
   [33X[0;0YSpecifically, the digraph returned by [10XAsDigraph[110X has [3Xn[103X edges: for each vertex
   [10Xx[110X  in  [10X[1  ..  [3Xn[103X[10X][110X, there is a unique edge with source [10Xx[110X; this edge has range
@@ -344,11 +419,16 @@
     [4X[25Xgap>[125X [27Xf := Transformation([4, 3, 3, 1, 7, 9, 10, 4, 2, 3]);[127X[104X
     [4X[28XTransformation( [ 4, 3, 3, 1, 7, 9, 10, 4, 2, 3 ] )[128X[104X
     [4X[25Xgap>[125X [27XAsDigraph(f);[127X[104X
-    [4X[28X<digraph with 10 vertices, 10 edges>[128X[104X
+    [4X[28X<immutable functional digraph with 10 vertices>[128X[104X
     [4X[25Xgap>[125X [27XAsDigraph(f, 4);[127X[104X
-    [4X[28X<digraph with 4 vertices, 4 edges>[128X[104X
+    [4X[28X<immutable functional digraph with 4 vertices>[128X[104X
     [4X[25Xgap>[125X [27XAsDigraph(f, 5);[127X[104X
     [4X[28Xfail[128X[104X
+    [4X[25Xgap>[125X [27Xb := BinaryRelationOnPoints([127X[104X
+    [4X[25X>[125X [27X[[3], [1, 3, 5], [1], [1, 2, 4], [2, 3, 5]]);[127X[104X
+    [4X[28XBinary Relation on 5 points[128X[104X
+    [4X[25Xgap>[125X [27XD := AsDigraph(b);[127X[104X
+    [4X[28X<immutable digraph with 5 vertices, 11 edges>[128X[104X
   [4X[32X[104X
   
   [1X3.2-3 Graph[101X
@@ -356,8 +436,8 @@
   [33X[1;0Y[29X[2XGraph[102X( [3Xdigraph[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA [5XGrape[105X package graph.[133X
   
-  [33X[0;0YIf  [3Xdigraph[103X is a digraph without multiple edges, then this operation returns
-  a [5XGrape[105X package graph that is isomorphic to [3Xdigraph[103X.[133X
+  [33X[0;0YIf  [3Xdigraph[103X  is  a mutable or immutable digraph without multiple edges, then
+  this operation returns a [5XGrape[105X package graph that is isomorphic to [3Xdigraph[103X.[133X
   
   [33X[0;0YIf  [3Xdigraph[103X  is  a  multidigraph, then since [5XGrape[105X does not support multiple
   edges, the multiple edges will be reduced to a single edge in the result. In
@@ -380,7 +460,7 @@
     [4X[28X  representatives := [ 1 ],[128X[104X
     [4X[28X  schreierVector := [ -1, 1, 1, 2, 1, 1, 1, 1, 2, 2 ] )[128X[104X
     [4X[25Xgap>[125X [27XDigraph(Petersen);[127X[104X
-    [4X[28X<digraph with 10 vertices, 30 edges>[128X[104X
+    [4X[28X<immutable digraph with 10 vertices, 30 edges>[128X[104X
     [4X[25Xgap>[125X [27XGraph(last) = Petersen;[127X[104X
     [4X[28Xtrue[128X[104X
   [4X[32X[104X
@@ -391,15 +471,14 @@
   [6XReturns:[106X  [33X[0;10YA [5XGrape[105X package graph.[133X
   
   [33X[0;0YIf [3Xdigraph[103X is a digraph, then this method returns the same as [2XGraph[102X ([14X3.2-3[114X),
-  except that the result will be stored as a mutable attribute of [3Xdigraph[103X.[133X
-  
-  [33X[0;0YIf [10XAsGraph([110X[3Xdigraph[103X[10X)[110X is called subsequently, then the same [5XGAP[105X object will be
-  returned as before.[133X
+  except  that  if  [3Xdigraph[103X  is immutable, then the result will be stored as a
+  mutable  attribute of [3Xdigraph[103X. In this latter case, when [10XAsGraph([110X[3Xdigraph[103X[10X)[110X is
+  called subsequently, the same [5XGAP[105X object will be returned as before.[133X
   
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xd := Digraph([[1, 2], [3], []]);[127X[104X
-    [4X[28X<digraph with 3 vertices, 3 edges>[128X[104X
-    [4X[25Xgap>[125X [27Xg := AsGraph(d);[127X[104X
+    [4X[25Xgap>[125X [27XD := Digraph([[1, 2], [3], []]);[127X[104X
+    [4X[28X<immutable digraph with 3 vertices, 3 edges>[128X[104X
+    [4X[25Xgap>[125X [27XG := AsGraph(D);[127X[104X
     [4X[28Xrec( adjacencies := [ [ 1, 2 ], [ 3 ], [  ] ], group := Group(()), [128X[104X
     [4X[28X  isGraph := true, names := [ 1 .. 3 ], order := 3, [128X[104X
     [4X[28X  representatives := [ 1, 2, 3 ], schreierVector := [ -1, -2, -3 ] )[128X[104X
@@ -411,7 +490,7 @@
   [6XReturns:[106X  [33X[0;10YA transformation, or [9Xfail[109X[133X
   
   [33X[0;0YIf  [3Xdigraph[103X  is  a  functional  digraph,  then  [10XAsTransformation[110X returns the
-  transformation which is defined by [3Xdigraph[103X. See [2XIsFunctionalDigraph[102X ([14X6.1-7[114X).
+  transformation which is defined by [3Xdigraph[103X. See [2XIsFunctionalDigraph[102X ([14X6.1-9[114X).
   Otherwise, [10XAsTransformation([110X[3Xdigraph[103X[10X)[110X returns [9Xfail[109X.[133X
   
   [33X[0;0YIf    [3Xdigraph[103X    is   a   functional   digraph   with   [22Xn[122X   vertices,   then
@@ -420,39 +499,111 @@
   vertex [10Xi[110X in [3Xdigraph[103X.[133X
   
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph([[1], [3], [2]]);[127X[104X
-    [4X[28X<digraph with 3 vertices, 3 edges>[128X[104X
-    [4X[25Xgap>[125X [27Xgr := CycleDigraph(3);[127X[104X
-    [4X[28X<digraph with 3 vertices, 3 edges>[128X[104X
-    [4X[25Xgap>[125X [27XAsTransformation(gr);[127X[104X
+    [4X[25Xgap>[125X [27XD := Digraph([[1], [3], [2]]);[127X[104X
+    [4X[28X<immutable digraph with 3 vertices, 3 edges>[128X[104X
+    [4X[25Xgap>[125X [27XAsTransformation(D);[127X[104X
+    [4X[28XTransformation( [ 1, 3, 2 ] )[128X[104X
+    [4X[25Xgap>[125X [27XD := CycleDigraph(IsMutableDigraph, 3);[127X[104X
+    [4X[28X<mutable digraph with 3 vertices, 3 edges>[128X[104X
+    [4X[25Xgap>[125X [27XAsTransformation(D);[127X[104X
     [4X[28XTransformation( [ 2, 3, 1 ] )[128X[104X
     [4X[25Xgap>[125X [27XAsPermutation(last);[127X[104X
     [4X[28X(1,2,3)[128X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph([[2, 3], [], []]);[127X[104X
-    [4X[28X<digraph with 3 vertices, 2 edges>[128X[104X
-    [4X[25Xgap>[125X [27XAsTransformation(gr);[127X[104X
+    [4X[25Xgap>[125X [27XD := Digraph([[2, 3], [], []]);[127X[104X
+    [4X[28X<immutable digraph with 3 vertices, 2 edges>[128X[104X
+    [4X[25Xgap>[125X [27XAsTransformation(D);[127X[104X
     [4X[28Xfail[128X[104X
   [4X[32X[104X
   
   
   [1X3.3 [33X[0;0YNew digraphs from old[133X[101X
   
-  [1X3.3-1 DigraphCopy[101X
+  [1X3.3-1 DigraphImmutableCopy[101X
   
+  [33X[1;0Y[29X[2XDigraphImmutableCopy[102X( [3Xdigraph[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XDigraphMutableCopy[102X( [3Xdigraph[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XDigraphCopySameMutability[102X( [3Xdigraph[103X ) [32X operation[133X
   [33X[1;0Y[29X[2XDigraphCopy[102X( [3Xdigraph[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
-  [33X[0;0YThis  function  returns  a  new  copy  of  [3Xdigraph[103X,  retaining  none  of the
-  attributes or properties of [3Xdigraph[103X.[133X
+  [33X[0;0YEach  of  these operations returns a new copy of [3Xdigraph[103X, of the appropriate
+  mutability, retaining none of the attributes or properties of [3Xdigraph[103X.[133X
+  
+  [33X[0;0Y[10XDigraphCopy[110X is a synonym for [10XDigraphCopySameMutability[110X.[133X
   
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr := CycleDigraph(10);[127X[104X
-    [4X[28X<digraph with 10 vertices, 10 edges>[128X[104X
-    [4X[25Xgap>[125X [27XDigraphCopy(gr) = gr;[127X[104X
+    [4X[25Xgap>[125X [27XD := CycleDigraph(10);[127X[104X
+    [4X[28X<immutable cycle digraph with 10 vertices>[128X[104X
+    [4X[25Xgap>[125X [27XDigraphCopy(D) = D;[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XIsIdenticalObj(DigraphCopy(D), D);[127X[104X
+    [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27XDigraphMutableCopy(D);[127X[104X
+    [4X[28X<mutable digraph with 10 vertices, 10 edges>[128X[104X
+  [4X[32X[104X
+  
+  [1X3.3-2 DigraphImmutableCopyIfImmutable[101X
+  
+  [33X[1;0Y[29X[2XDigraphImmutableCopyIfImmutable[102X( [3Xdigraph[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XDigraphImmutableCopyIfMutable[102X( [3Xdigraph[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XDigraphMutableCopyIfMutable[102X( [3Xdigraph[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XDigraphMutableCopyIfImmutable[102X( [3Xdigraph[103X ) [32X operation[133X
+  [6XReturns:[106X  [33X[0;10YA digraph.[133X
+  
+  [33X[0;0YEach  of these operations returns either the original argument [3Xdigraph[103X, or a
+  new  copy  of  [3Xdigraph[103X  of  the  appropriate  mutability,  according  to the
+  mutability of [3Xdigraph[103X.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27XC := CycleDigraph(10);[127X[104X
+    [4X[28X<immutable cycle digraph with 10 vertices>[128X[104X
+    [4X[25Xgap>[125X [27XD := DigraphImmutableCopyIfImmutable(C);[127X[104X
+    [4X[28X<immutable digraph with 10 vertices, 10 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsIdenticalObj(C, D);[127X[104X
+    [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27XC = D;[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XD := DigraphImmutableCopyIfMutable(C);[127X[104X
+    [4X[28X<immutable cycle digraph with 10 vertices>[128X[104X
+    [4X[25Xgap>[125X [27XIsIdenticalObj(C, D);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XC = D;[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XD := DigraphMutableCopyIfMutable(C);[127X[104X
+    [4X[28X<immutable cycle digraph with 10 vertices>[128X[104X
+    [4X[25Xgap>[125X [27XIsMutableDigraph(D);[127X[104X
+    [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27XD := DigraphMutableCopyIfImmutable(C);[127X[104X
+    [4X[28X<mutable digraph with 10 vertices, 10 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsMutableDigraph(D);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XC := CycleDigraph(IsMutableDigraph, 10);[127X[104X
+    [4X[28X<mutable digraph with 10 vertices, 10 edges>[128X[104X
+    [4X[25Xgap>[125X [27XD := DigraphImmutableCopyIfImmutable(C);[127X[104X
+    [4X[28X<mutable digraph with 10 vertices, 10 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsIdenticalObj(C, D);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XC = D;[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XD := DigraphImmutableCopyIfMutable(C);[127X[104X
+    [4X[28X<immutable digraph with 10 vertices, 10 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsIdenticalObj(C, D);[127X[104X
+    [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27XC = D;[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XD := DigraphMutableCopyIfMutable(C);[127X[104X
+    [4X[28X<mutable digraph with 10 vertices, 10 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsMutableDigraph(D);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XD := DigraphMutableCopyIfImmutable(C);[127X[104X
+    [4X[28X<mutable digraph with 10 vertices, 10 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsIdenticalObj(C, D);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XIsMutableDigraph(D);[127X[104X
     [4X[28Xtrue[128X[104X
   [4X[32X[104X
   
-  [1X3.3-2 InducedSubdigraph[101X
+  [1X3.3-3 InducedSubdigraph[101X
   
   [33X[1;0Y[29X[2XInducedSubdigraph[102X( [3Xdigraph[103X, [3Xverts[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
@@ -465,52 +616,74 @@
   [33X[0;0YThe  vertices  of  the  induced  subdigraph  are  [10X[1..Length(verts)][110X but the
   original vertex labels can be accessed via [2XDigraphVertexLabels[102X ([14X5.1-9[114X).[133X
   
+  [33X[0;0YIf  [3Xdigraph[103X belongs to [2XIsMutableDigraph[102X ([14X3.1-2[114X), then [3Xdigraph[103X is modified in
+  place.  If  [3Xdigraph[103X  belongs  to [2XIsImmutableDigraph[102X ([14X3.1-3[114X), a new immutable
+  digraph containing the appropriate vertices and edges is returned.[133X
+  
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph([[1, 1, 2, 3, 4, 4], [1, 3, 4], [3, 1], [1, 1]]);[127X[104X
-    [4X[28X<multidigraph with 4 vertices, 13 edges>[128X[104X
-    [4X[25Xgap>[125X [27XInducedSubdigraph(gr, [1, 3, 4]);[127X[104X
-    [4X[28X<multidigraph with 3 vertices, 9 edges>[128X[104X
+    [4X[25Xgap>[125X [27XD := Digraph([[1, 1, 2, 3, 4, 4], [1, 3, 4], [3, 1], [1, 1]]);[127X[104X
+    [4X[28X<immutable multidigraph with 4 vertices, 13 edges>[128X[104X
+    [4X[25Xgap>[125X [27XInducedSubdigraph(D, [1, 3, 4]);[127X[104X
+    [4X[28X<immutable multidigraph with 3 vertices, 9 edges>[128X[104X
     [4X[25Xgap>[125X [27XDigraphVertices(last);[127X[104X
     [4X[28X[ 1 .. 3 ][128X[104X
+    [4X[25Xgap>[125X [27XD := DigraphMutableCopy(D);[127X[104X
+    [4X[28X<mutable multidigraph with 4 vertices, 13 edges>[128X[104X
+    [4X[25Xgap>[125X [27Xnew := InducedSubdigraph(D, [1, 3, 4]);[127X[104X
+    [4X[28X<mutable multidigraph with 3 vertices, 9 edges>[128X[104X
+    [4X[25Xgap>[125X [27XD = new;[127X[104X
+    [4X[28Xtrue[128X[104X
   [4X[32X[104X
   
-  [1X3.3-3 ReducedDigraph[101X
+  [1X3.3-4 ReducedDigraph[101X
   
-  [33X[1;0Y[29X[2XReducedDigraph[102X( [3Xdigraph[103X ) [32X attribute[133X
+  [33X[1;0Y[29X[2XReducedDigraph[102X( [3Xdigraph[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XReducedDigraphAttr[102X( [3Xdigraph[103X ) [32X attribute[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
   [33X[0;0YThis  function  returns  a  digraph  isomorphic to the subdigraph of [3Xdigraph[103X
   induced  by the set of non-isolated vertices, i.e. the set of those vertices
   of  [3Xdigraph[103X  which  are  the  source  or  range of some edge in [3Xdigraph[103X. See
-  [2XInducedSubdigraph[102X ([14X3.3-2[114X).[133X
+  [2XInducedSubdigraph[102X ([14X3.3-3[114X).[133X
   
-  [33X[0;0YThe  vertex  and edge labels of the graph are preserved. A vertex in the new
-  digraph  can  be matched to the corresponding vertex in [3Xdigraph[103X by using the
-  label.[133X
+  [33X[0;0YThe  ordering  of the remaining vertices of [3Xdigraph[103X is preserved, as are the
+  labels  of the remaining vertices and edges; see [2XDigraphVertexLabels[102X ([14X5.1-9[114X)
+  and  [2XDigraphEdgeLabels[102X ([14X5.1-11[114X). This can allow one to match a vertex in the
+  reduced digraph to the corresponding vertex in [3Xdigraph[103X.[133X
   
-  [33X[0;0YThe ordering of the vertices is preserved.[133X
+  [33X[0;0YIf  [3Xdigraph[103X  is  immutable,  then  a  new  immutable  digraph  is  returned.
+  Otherwise,  the isolated vertices of the mutable digraph [3Xdigraph[103X are removed
+  in-place.[133X
   
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xd := Digraph([[1, 2], [], [], [1, 4], []]);[127X[104X
-    [4X[28X<digraph with 5 vertices, 4 edges>[128X[104X
-    [4X[25Xgap>[125X [27Xr := ReducedDigraph(d);[127X[104X
-    [4X[28X<digraph with 3 vertices, 4 edges>[128X[104X
-    [4X[25Xgap>[125X [27XOutNeighbours(r);[127X[104X
+    [4X[25Xgap>[125X [27XD := Digraph([[1, 2], [], [], [1, 4], []]);[127X[104X
+    [4X[28X<immutable digraph with 5 vertices, 4 edges>[128X[104X
+    [4X[25Xgap>[125X [27XR := ReducedDigraph(D);[127X[104X
+    [4X[28X<immutable digraph with 3 vertices, 4 edges>[128X[104X
+    [4X[25Xgap>[125X [27XOutNeighbours(R);[127X[104X
     [4X[28X[ [ 1, 2 ], [  ], [ 1, 3 ] ][128X[104X
-    [4X[25Xgap>[125X [27XDigraphEdges(d);[127X[104X
+    [4X[25Xgap>[125X [27XDigraphEdges(D);[127X[104X
     [4X[28X[ [ 1, 1 ], [ 1, 2 ], [ 4, 1 ], [ 4, 4 ] ][128X[104X
-    [4X[25Xgap>[125X [27XDigraphEdges(r);[127X[104X
+    [4X[25Xgap>[125X [27XDigraphEdges(R);[127X[104X
     [4X[28X[ [ 1, 1 ], [ 1, 2 ], [ 3, 1 ], [ 3, 3 ] ][128X[104X
-    [4X[25Xgap>[125X [27XDigraphVertexLabel(r, 3);[127X[104X
+    [4X[25Xgap>[125X [27XDigraphVertexLabel(R, 3);[127X[104X
     [4X[28X4[128X[104X
-    [4X[25Xgap>[125X [27XDigraphVertexLabel(r, 2);[127X[104X
+    [4X[25Xgap>[125X [27XDigraphVertexLabel(R, 2);[127X[104X
     [4X[28X2[128X[104X
+    [4X[25Xgap>[125X [27XD := Digraph(IsMutableDigraph, [[], [3], [2]]);[127X[104X
+    [4X[28X<mutable digraph with 3 vertices, 2 edges>[128X[104X
+    [4X[25Xgap>[125X [27XReducedDigraph(D);[127X[104X
+    [4X[28X<mutable digraph with 2 vertices, 2 edges>[128X[104X
+    [4X[25Xgap>[125X [27XD;[127X[104X
+    [4X[28X<mutable digraph with 2 vertices, 2 edges>[128X[104X
   [4X[32X[104X
   
-  [1X3.3-4 MaximalSymmetricSubdigraph[101X
+  [1X3.3-5 MaximalSymmetricSubdigraph[101X
   
-  [33X[1;0Y[29X[2XMaximalSymmetricSubdigraph[102X( [3Xdigraph[103X ) [32X attribute[133X
-  [33X[1;0Y[29X[2XMaximalSymmetricSubdigraphWithoutLoops[102X( [3Xdigraph[103X ) [32X attribute[133X
+  [33X[1;0Y[29X[2XMaximalSymmetricSubdigraph[102X( [3Xdigraph[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XMaximalSymmetricSubdigraphAttr[102X( [3Xdigraph[103X ) [32X attribute[133X
+  [33X[1;0Y[29X[2XMaximalSymmetricSubdigraphWithoutLoops[102X( [3Xdigraph[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XMaximalSymmetricSubdigraphWithoutLoopsAttr[102X( [3Xdigraph[103X ) [32X attribute[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
   [33X[0;0YIf [3Xdigraph[103X is a digraph, then [10XMaximalSymmetricSubdigraph[110X returns a symmetric
@@ -522,57 +695,79 @@
   [33X[0;0YThe  digraph returned by [10XMaximalSymmetricSubdigraphWithoutLoops[110X is the same,
   except that loops are removed.[133X
   
-  [33X[0;0YSee [2XIsSymmetricDigraph[102X ([14X6.1-10[114X), [2XIsMultiDigraph[102X ([14X6.1-8[114X), and [2XDigraphHasLoops[102X
-  ([14X6.1-1[114X) for more information.[133X
+  [33X[0;0YIf  [3Xdigraph[103X  is  immutable,  then  a  new  immutable  digraph  is  returned.
+  Otherwise,  the  mutable  digraph  [3Xdigraph[103X  is  changed in-place into such a
+  digraph described above.[133X
+  
+  [33X[0;0YSee    [2XIsSymmetricDigraph[102X    ([14X6.1-12[114X),    [2XIsMultiDigraph[102X    ([14X6.1-10[114X),    and
+  [2XDigraphHasLoops[102X ([14X6.1-1[114X) for more information.[133X
   
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph([[2, 2], [1, 3], [4], [3, 1]]);[127X[104X
-    [4X[28X<multidigraph with 4 vertices, 7 edges>[128X[104X
-    [4X[25Xgap>[125X [27Xnot IsSymmetricDigraph(gr) and IsMultiDigraph(gr);[127X[104X
+    [4X[25Xgap>[125X [27XD := Digraph([[2, 2], [1, 3], [4], [3, 1]]);[127X[104X
+    [4X[28X<immutable multidigraph with 4 vertices, 7 edges>[128X[104X
+    [4X[25Xgap>[125X [27Xnot IsSymmetricDigraph(D) and IsMultiDigraph(D);[127X[104X
     [4X[28Xtrue[128X[104X
-    [4X[25Xgap>[125X [27XOutNeighbours(gr);[127X[104X
+    [4X[25Xgap>[125X [27XOutNeighbours(D);[127X[104X
     [4X[28X[ [ 2, 2 ], [ 1, 3 ], [ 4 ], [ 3, 1 ] ][128X[104X
-    [4X[25Xgap>[125X [27Xsym := MaximalSymmetricSubdigraph(gr);[127X[104X
-    [4X[28X<digraph with 4 vertices, 4 edges>[128X[104X
-    [4X[25Xgap>[125X [27XIsSymmetricDigraph(sym) and not IsMultiDigraph(sym);[127X[104X
+    [4X[25Xgap>[125X [27XS := MaximalSymmetricSubdigraph(D);[127X[104X
+    [4X[28X<immutable symmetric digraph with 4 vertices, 4 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsSymmetricDigraph(S) and not IsMultiDigraph(S);[127X[104X
     [4X[28Xtrue[128X[104X
-    [4X[25Xgap>[125X [27XOutNeighbours(sym);[127X[104X
+    [4X[25Xgap>[125X [27XOutNeighbours(S);[127X[104X
     [4X[28X[ [ 2 ], [ 1 ], [ 4 ], [ 3 ] ][128X[104X
+    [4X[25Xgap>[125X [27XD := CycleDigraph(IsMutableDigraph, 3);[127X[104X
+    [4X[28X<mutable digraph with 3 vertices, 3 edges>[128X[104X
+    [4X[25Xgap>[125X [27XMaximalSymmetricSubdigraph(D);[127X[104X
+    [4X[28X<mutable empty digraph with 3 vertices>[128X[104X
+    [4X[25Xgap>[125X [27XD;[127X[104X
+    [4X[28X<mutable empty digraph with 3 vertices>[128X[104X
   [4X[32X[104X
   
-  [1X3.3-5 MaximalAntiSymmetricSubdigraph[101X
+  [1X3.3-6 MaximalAntiSymmetricSubdigraph[101X
   
-  [33X[1;0Y[29X[2XMaximalAntiSymmetricSubdigraph[102X( [3Xdigraph[103X ) [32X attribute[133X
+  [33X[1;0Y[29X[2XMaximalAntiSymmetricSubdigraph[102X( [3Xdigraph[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XMaximalAntiSymmetricSubdigraphAttr[102X( [3Xdigraph[103X ) [32X attribute[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
-  [33X[0;0YIf  [3Xdigraph[103X  is  a  digraph,  then  [10XMaximalAntiSymmetricSubdigraph[110X returns a
-  anti-symmetric subdigraph of [3Xdigraph[103X which does not have multiple edges, has
-  the  same  vertex set as [3Xdigraph[103X, and whose edge list is formed from [3Xdigraph[103X
-  by ignoring the multiplicity of edges, and by having either an edge from the
-  vertex  [10Xu[110X  to  the vertex [10Xv[110X, or the edge from [10Xv[110X to [10Xu[110X (but not both) whenever
-  both edges belong to [3Xdigraph[103X.[133X
+  [33X[0;0YIf  [3Xdigraph[103X  is  a  digraph,  then [10XMaximalAntiSymmetricSubdigraph[110X returns an
+  anti-symmetric  subdigraph  of  [3Xdigraph[103X  formed by retaining the vertices of
+  [3Xdigraph[103X,  discarding  any  duplicate edges, and discarding any edge [10X[i,j][110X of
+  [3Xdigraph[103X  where  [10Xi  >  j[110X and the reverse edge [10X[j,i][110X is an edge of [3Xdigraph[103X. In
+  other  words,  for every symmetric pair of edges [10X[i,j][110X and [10X[j,i][110X in [3Xdigraph[103X,
+  where [10Xi[110X and [10Xj[110X are distinct, it discards the the edge [22X[max(i,j),min(i,j)][122X.[133X
+  
+  [33X[0;0YIf  [3Xdigraph[103X  is  immutable,  then  a  new  immutable  digraph  is  returned.
+  Otherwise, the mutable digraph [3Xdigraph[103X is changed in-place.[133X
   
   [33X[0;0YSee [2XIsAntisymmetricDigraph[102X ([14X6.1-2[114X) for more information.[133X
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27XD := Digraph([[2, 2], [1, 3], [4], [3, 1]]);[127X[104X
-    [4X[28X<multidigraph with 4 vertices, 7 edges>[128X[104X
+    [4X[28X<immutable multidigraph with 4 vertices, 7 edges>[128X[104X
     [4X[25Xgap>[125X [27Xnot IsAntiSymmetricDigraph(D) and IsMultiDigraph(D);[127X[104X
     [4X[28Xtrue[128X[104X
     [4X[25Xgap>[125X [27XOutNeighbours(D);[127X[104X
     [4X[28X[ [ 2, 2 ], [ 1, 3 ], [ 4 ], [ 3, 1 ] ][128X[104X
     [4X[25Xgap>[125X [27XD := MaximalAntiSymmetricSubdigraph(D);[127X[104X
-    [4X[28X<digraph with 4 vertices, 4 edges>[128X[104X
+    [4X[28X<immutable antisymmetric digraph with 4 vertices, 4 edges>[128X[104X
     [4X[25Xgap>[125X [27XIsAntiSymmetricDigraph(D) and not IsMultiDigraph(D);[127X[104X
     [4X[28Xtrue[128X[104X
     [4X[25Xgap>[125X [27XOutNeighbours(D);[127X[104X
     [4X[28X[ [ 2 ], [ 3 ], [ 4 ], [ 1 ] ][128X[104X
+    [4X[25Xgap>[125X [27XD := Digraph(IsMutableDigraph, [[2], [1]]);[127X[104X
+    [4X[28X<mutable digraph with 2 vertices, 2 edges>[128X[104X
+    [4X[25Xgap>[125X [27XMaximalAntiSymmetricSubdigraph(D);[127X[104X
+    [4X[28X<mutable digraph with 2 vertices, 1 edge>[128X[104X
+    [4X[25Xgap>[125X [27XD;[127X[104X
+    [4X[28X<mutable digraph with 2 vertices, 1 edge>[128X[104X
   [4X[32X[104X
   
-  [1X3.3-6 UndirectedSpanningTree[101X
+  [1X3.3-7 UndirectedSpanningForest[101X
   
-  [33X[1;0Y[29X[2XUndirectedSpanningTree[102X( [3Xdigraph[103X ) [32X attribute[133X
-  [33X[1;0Y[29X[2XUndirectedSpanningForest[102X( [3Xdigraph[103X ) [32X attribute[133X
+  [33X[1;0Y[29X[2XUndirectedSpanningForest[102X( [3Xdigraph[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XUndirectedSpanningForestAttr[102X( [3Xdigraph[103X ) [32X attribute[133X
+  [33X[1;0Y[29X[2XUndirectedSpanningTree[102X( [3Xdigraph[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XUndirectedSpanningTreeAttr[102X( [3Xdigraph[103X ) [32X attribute[133X
   [6XReturns:[106X  [33X[0;10YA digraph, or [9Xfail[109X.[133X
   
   [33X[0;0YIf    [3Xdigraph[103X    is   a   digraph   with   at   least   one   vertex,   then
@@ -581,130 +776,167 @@
   ([14X4.1-2[114X) for the definition of an undirected spanning forest.[133X
   
   [33X[0;0YIf   [3Xdigraph[103X   is   a   digraph   with   at   least  one  vertex  and  whose
-  [2XMaximalSymmetricSubdigraph[102X  ([14X3.3-4[114X)  is  connected  (see  [2XIsConnectedDigraph[102X
+  [2XMaximalSymmetricSubdigraph[102X  ([14X3.3-5[114X)  is  connected  (see  [2XIsConnectedDigraph[102X
   ([14X6.3-3[114X)), then [10XUndirectedSpanningTree[110X returns an undirected spanning tree of
   [3Xdigraph[103X, otherwise this attribute returns [9Xfail[109X. See [2XIsUndirectedSpanningTree[102X
   ([14X4.1-2[114X) for the definition of an undirected spanning tree.[133X
   
-  [33X[0;0YNote  that for a digraph that has an undirected spanning tree, the attribute
-  [10XUndirectedSpanningTree[110X   returns   the   same   digraph   as  the  attribute
-  [10XUndirectedSpanningForest[110X.[133X
+  [33X[0;0YIf  [3Xdigraph[103X  is immutable, then an immutable digraph is returned. Otherwise,
+  the  mutable digraph [3Xdigraph[103X is changed in-place into an undirected spanning
+  tree of [3Xdigraph[103X.[133X
+  
+  [33X[0;0YNote  that for an immutable digraph that has known undirected spanning tree,
+  the  attribute  [10XUndirectedSpanningTree[110X  returns  the  same  digraph  as  the
+  attribute [10XUndirectedSpanningForest[110X.[133X
   
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph([[1, 2, 1, 3], [1], [4], [3, 4, 3]]);[127X[104X
-    [4X[28X<multidigraph with 4 vertices, 9 edges>[128X[104X
-    [4X[25Xgap>[125X [27XUndirectedSpanningTree(gr);[127X[104X
+    [4X[25Xgap>[125X [27XD := Digraph([[1, 2, 1, 3], [1], [4], [3, 4, 3]]);[127X[104X
+    [4X[28X<immutable multidigraph with 4 vertices, 9 edges>[128X[104X
+    [4X[25Xgap>[125X [27XUndirectedSpanningTree(D);[127X[104X
     [4X[28Xfail[128X[104X
-    [4X[25Xgap>[125X [27Xforest := UndirectedSpanningForest(gr);[127X[104X
-    [4X[28X<digraph with 4 vertices, 4 edges>[128X[104X
+    [4X[25Xgap>[125X [27Xforest := UndirectedSpanningForest(D);[127X[104X
+    [4X[28X<immutable symmetric digraph with 4 vertices, 4 edges>[128X[104X
     [4X[25Xgap>[125X [27XOutNeighbours(forest);[127X[104X
     [4X[28X[ [ 2 ], [ 1 ], [ 4 ], [ 3 ] ][128X[104X
-    [4X[25Xgap>[125X [27XIsUndirectedSpanningForest(gr, forest);[127X[104X
+    [4X[25Xgap>[125X [27XIsUndirectedSpanningForest(D, forest);[127X[104X
     [4X[28Xtrue[128X[104X
     [4X[25Xgap>[125X [27XDigraphConnectedComponents(forest).comps;[127X[104X
     [4X[28X[ [ 1, 2 ], [ 3, 4 ] ][128X[104X
-    [4X[25Xgap>[125X [27XDigraphConnectedComponents(MaximalSymmetricSubdigraph(gr)).comps;[127X[104X
+    [4X[25Xgap>[125X [27XDigraphConnectedComponents(MaximalSymmetricSubdigraph(D)).comps;[127X[104X
     [4X[28X[ [ 1, 2 ], [ 3, 4 ] ][128X[104X
-    [4X[25Xgap>[125X [27XUndirectedSpanningForest(MaximalSymmetricSubdigraph(gr))[127X[104X
+    [4X[25Xgap>[125X [27XUndirectedSpanningForest(MaximalSymmetricSubdigraph(D))[127X[104X
     [4X[25X>[125X [27X= forest;[127X[104X
     [4X[28Xtrue[128X[104X
-    [4X[25Xgap>[125X [27Xgr := CompleteDigraph(4);[127X[104X
-    [4X[28X<digraph with 4 vertices, 12 edges>[128X[104X
-    [4X[25Xgap>[125X [27Xtree := UndirectedSpanningTree(gr);[127X[104X
-    [4X[28X<digraph with 4 vertices, 6 edges>[128X[104X
-    [4X[25Xgap>[125X [27XIsUndirectedSpanningTree(gr, tree);[127X[104X
+    [4X[25Xgap>[125X [27XD := CompleteDigraph(4);[127X[104X
+    [4X[28X<immutable complete digraph with 4 vertices>[128X[104X
+    [4X[25Xgap>[125X [27Xtree := UndirectedSpanningTree(D);[127X[104X
+    [4X[28X<immutable symmetric digraph with 4 vertices, 6 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsUndirectedSpanningTree(D, tree);[127X[104X
     [4X[28Xtrue[128X[104X
-    [4X[25Xgap>[125X [27Xtree = UndirectedSpanningForest(gr);[127X[104X
+    [4X[25Xgap>[125X [27Xtree = UndirectedSpanningForest(D);[127X[104X
     [4X[28Xtrue[128X[104X
     [4X[25Xgap>[125X [27XUndirectedSpanningForest(EmptyDigraph(0));[127X[104X
     [4X[28Xfail[128X[104X
+    [4X[25Xgap>[125X [27XD := PetersenGraph(IsMutableDigraph);[127X[104X
+    [4X[28X<mutable digraph with 10 vertices, 30 edges>[128X[104X
+    [4X[25Xgap>[125X [27XUndirectedSpanningTree(D);[127X[104X
+    [4X[28X<mutable digraph with 10 vertices, 18 edges>[128X[104X
+    [4X[25Xgap>[125X [27XD;[127X[104X
+    [4X[28X<mutable digraph with 10 vertices, 18 edges>[128X[104X
   [4X[32X[104X
   
-  [1X3.3-7 QuotientDigraph[101X
+  [1X3.3-8 QuotientDigraph[101X
   
   [33X[1;0Y[29X[2XQuotientDigraph[102X( [3Xdigraph[103X, [3Xp[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
   [33X[0;0YIf  [3Xdigraph[103X  is  a digraph, and [3Xp[103X is a partition of the vertices of [3Xdigraph[103X,
-  then  this  operation  returns a new digraph constructed by amalgamating all
+  then  this  operation  returns  a  digraph  constructed  by amalgamating all
   vertices of [3Xdigraph[103X which lie in the same part of [3Xp[103X.[133X
   
   [33X[0;0YA  partition  of  the  vertices  of  [3Xdigraph[103X is a list of non-empty disjoint
-  lists,  such  that the union of all the sub-lists is equal to the vertex set
-  of  [3Xdigraph[103X.  In  particular,  each  vertex  must  appear  in  precisely one
-  sub-list.[133X
+  lists,  such  that  the union of all the sub-lists is equal to vertex set of
+  [3Xdigraph[103X. In particular, each vertex must appear in precisely one sub-list.[133X
   
   [33X[0;0YThe vertices of [3Xdigraph[103X in part [10Xi[110X of [3Xp[103X will become vertex [10Xi[110X in the quotient,
-  and  every edge of [3Xdigraph[103X with source in part [10Xi[110X and range in part [10Xj[110X becomes
-  an  edge  from  [10Xi[110X  to  [10Xj[110X in the quotient. In particular, this means that the
-  quotient of a digraph without multiple edges can have multiple edges.[133X
+  and  there  exists  some  edge in [3Xdigraph[103X with source in part [10Xi[110X and range in
+  part  [10Xj[110X  if  and  only  if  there is an edge from [10Xi[110X to [10Xj[110X in the quotient. In
+  particular, this means that the quotient of a digraph has no multiple edges.
+  which was a change introduced in version 1.0.0 of the [5XDigraphs[105X package.[133X
+  
+  [33X[0;0YIf  [3Xdigraph[103X belongs to [2XIsMutableDigraph[102X ([14X3.1-2[114X), then [3Xdigraph[103X is modified in
+  place.  If  [3Xdigraph[103X  belongs  to [2XIsImmutableDigraph[102X ([14X3.1-3[114X), a new immutable
+  digraph with the above properties is returned.[133X
   
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph([[2, 1], [4], [1], [1, 3, 4]]);[127X[104X
-    [4X[28X<digraph with 4 vertices, 7 edges>[128X[104X
-    [4X[25Xgap>[125X [27XDigraphVertices(gr);[127X[104X
+    [4X[25Xgap>[125X [27XD := Digraph([[2, 1], [4], [1], [1, 3, 4]]);[127X[104X
+    [4X[28X<immutable digraph with 4 vertices, 7 edges>[128X[104X
+    [4X[25Xgap>[125X [27XDigraphVertices(D);[127X[104X
     [4X[28X[ 1 .. 4 ][128X[104X
-    [4X[25Xgap>[125X [27XDigraphEdges(gr);[127X[104X
+    [4X[25Xgap>[125X [27XDigraphEdges(D);[127X[104X
     [4X[28X[ [ 1, 2 ], [ 1, 1 ], [ 2, 4 ], [ 3, 1 ], [ 4, 1 ], [ 4, 3 ], [128X[104X
     [4X[28X  [ 4, 4 ] ][128X[104X
     [4X[25Xgap>[125X [27Xp := [[1], [2, 4], [3]];[127X[104X
     [4X[28X[ [ 1 ], [ 2, 4 ], [ 3 ] ][128X[104X
-    [4X[25Xgap>[125X [27Xqr := QuotientDigraph(gr, p);[127X[104X
-    [4X[28X<multidigraph with 3 vertices, 7 edges>[128X[104X
-    [4X[25Xgap>[125X [27XDigraphVertices(qr);[127X[104X
+    [4X[25Xgap>[125X [27Xquo := QuotientDigraph(D, p);[127X[104X
+    [4X[28X<immutable digraph with 3 vertices, 6 edges>[128X[104X
+    [4X[25Xgap>[125X [27XDigraphVertices(quo);[127X[104X
     [4X[28X[ 1 .. 3 ][128X[104X
-    [4X[25Xgap>[125X [27XDigraphEdges(qr);[127X[104X
-    [4X[28X[ [ 1, 2 ], [ 1, 1 ], [ 2, 2 ], [ 2, 1 ], [ 2, 3 ], [ 2, 2 ], [128X[104X
-    [4X[28X  [ 3, 1 ] ][128X[104X
+    [4X[25Xgap>[125X [27XDigraphEdges(quo);[127X[104X
+    [4X[28X[ [ 1, 1 ], [ 1, 2 ], [ 2, 1 ], [ 2, 2 ], [ 2, 3 ], [ 3, 1 ] ][128X[104X
     [4X[25Xgap>[125X [27XQuotientDigraph(EmptyDigraph(0), []);[127X[104X
-    [4X[28X<digraph with 0 vertices, 0 edges>[128X[104X
+    [4X[28X<immutable empty digraph with 0 vertices>[128X[104X
   [4X[32X[104X
   
-  [1X3.3-8 DigraphReverse[101X
+  [1X3.3-9 DigraphReverse[101X
   
   [33X[1;0Y[29X[2XDigraphReverse[102X( [3Xdigraph[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XDigraphReverseAttr[102X( [3Xdigraph[103X ) [32X attribute[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
-  [33X[0;0YIf  [3Xdigraph[103X  is a digraph, then this operation returns a digraph constructed
-  from [3Xdigraph[103X by reversing the orientation of every edge.[133X
+  [33X[0;0YThe  reverse of a digraph is the digraph formed by reversing the orientation
+  of  each  of its edges, i.e. for every edge [10X[i, j][110X of a digraph, the reverse
+  contains the corresponding edge [10X[j, i][110X.[133X
+  
+  [33X[0;0Y[10XDigraphReverse[110X  returns  the  reverse  of the digraph [3Xdigraph[103X. If [3Xdigraph[103X is
+  immutable,  then a new immutable digraph is returned. Otherwise, the mutable
+  digraph [3Xdigraph[103X is changed in-place into its reverse.[133X
   
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph([[3], [1, 3, 5], [1], [1, 2, 4], [2, 3, 5]]);[127X[104X
-    [4X[28X<digraph with 5 vertices, 11 edges>[128X[104X
-    [4X[25Xgap>[125X [27XDigraphReverse(gr);[127X[104X
-    [4X[28X<digraph with 5 vertices, 11 edges>[128X[104X
+    [4X[25Xgap>[125X [27XD := Digraph([[3], [1, 3, 5], [1], [1, 2, 4], [2, 3, 5]]);[127X[104X
+    [4X[28X<immutable digraph with 5 vertices, 11 edges>[128X[104X
+    [4X[25Xgap>[125X [27XDigraphReverse(D);[127X[104X
+    [4X[28X<immutable digraph with 5 vertices, 11 edges>[128X[104X
     [4X[25Xgap>[125X [27XOutNeighbours(last);[127X[104X
     [4X[28X[ [ 2, 3, 4 ], [ 4, 5 ], [ 1, 2, 5 ], [ 4 ], [ 2, 5 ] ][128X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph([[2, 4], [1], [4], [3, 4]]);[127X[104X
-    [4X[28X<digraph with 4 vertices, 6 edges>[128X[104X
-    [4X[25Xgap>[125X [27XDigraphEdges(gr);[127X[104X
+    [4X[25Xgap>[125X [27XD := Digraph([[2, 4], [1], [4], [3, 4]]);[127X[104X
+    [4X[28X<immutable digraph with 4 vertices, 6 edges>[128X[104X
+    [4X[25Xgap>[125X [27XDigraphEdges(D);[127X[104X
     [4X[28X[ [ 1, 2 ], [ 1, 4 ], [ 2, 1 ], [ 3, 4 ], [ 4, 3 ], [ 4, 4 ] ][128X[104X
-    [4X[25Xgap>[125X [27XDigraphEdges(DigraphReverse(gr));[127X[104X
+    [4X[25Xgap>[125X [27XDigraphEdges(DigraphReverse(D));[127X[104X
     [4X[28X[ [ 1, 2 ], [ 2, 1 ], [ 3, 4 ], [ 4, 1 ], [ 4, 3 ], [ 4, 4 ] ][128X[104X
+    [4X[25Xgap>[125X [27XD := CycleDigraph(IsMutableDigraph, 3);[127X[104X
+    [4X[28X<mutable digraph with 3 vertices, 3 edges>[128X[104X
+    [4X[25Xgap>[125X [27XOutNeighbours(D);[127X[104X
+    [4X[28X[ [ 2 ], [ 3 ], [ 1 ] ][128X[104X
+    [4X[25Xgap>[125X [27XDigraphReverse(D);[127X[104X
+    [4X[28X<mutable digraph with 3 vertices, 3 edges>[128X[104X
+    [4X[25Xgap>[125X [27XOutNeighbours(D);[127X[104X
+    [4X[28X[ [ 3 ], [ 1 ], [ 2 ] ][128X[104X
   [4X[32X[104X
   
-  [1X3.3-9 DigraphDual[101X
+  [1X3.3-10 DigraphDual[101X
   
-  [33X[1;0Y[29X[2XDigraphDual[102X( [3Xdigraph[103X ) [32X attribute[133X
+  [33X[1;0Y[29X[2XDigraphDual[102X( [3Xdigraph[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XDigraphDualAttr[102X( [3Xdigraph[103X ) [32X attribute[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
-  [33X[0;0YIf  [3Xdigraph[103X  is a digraph without multiple edges, then this returns the [13Xdual[113X
-  of [3Xdigraph[103X. The [13Xdual[113X is sometimes called the [13Xcomplement[113X.[133X
-  
   [33X[0;0YThe  [13Xdual[113X  of [3Xdigraph[103X has the same vertices as [3Xdigraph[103X, and there is an edge
-  in the dual from [10Xi[110X to [10Xj[110X whenever there is no edge from [10Xi[110X to [10Xj[110X in [3Xdigraph[103X.[133X
+  in  the  dual  from [10Xi[110X to [10Xj[110X whenever there is no edge from [10Xi[110X to [10Xj[110X in [3Xdigraph[103X.
+  The [13Xdual[113X is sometimes called the [13Xcomplement[113X.[133X
+  
+  [33X[0;0Y[10XDigraphDual[110X  returns  the  dual  of  the  digraph  [3Xdigraph[103X. If [3Xdigraph[103X is an
+  immutable  digraph, then a new immutable digraph is returned. Otherwise, the
+  mutable digraph [3Xdigraph[103X is changed in-place into its dual.[133X
   
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph([[2, 3], [], [4, 6], [5], [],[127X[104X
+    [4X[25Xgap>[125X [27XD := Digraph([[2, 3], [], [4, 6], [5], [],[127X[104X
     [4X[25X>[125X [27X[7, 8, 9], [], [], []]);[127X[104X
-    [4X[28X<digraph with 9 vertices, 8 edges>[128X[104X
-    [4X[25Xgap>[125X [27XDigraphDual(gr);[127X[104X
-    [4X[28X<digraph with 9 vertices, 73 edges>[128X[104X
+    [4X[28X<immutable digraph with 9 vertices, 8 edges>[128X[104X
+    [4X[25Xgap>[125X [27XDigraphDual(D);[127X[104X
+    [4X[28X<immutable digraph with 9 vertices, 73 edges>[128X[104X
+    [4X[25Xgap>[125X [27XD := CycleDigraph(IsMutableDigraph, 3);[127X[104X
+    [4X[28X<mutable digraph with 3 vertices, 3 edges>[128X[104X
+    [4X[25Xgap>[125X [27XDigraphDual(D);[127X[104X
+    [4X[28X<mutable digraph with 3 vertices, 6 edges>[128X[104X
+    [4X[25Xgap>[125X [27XD;[127X[104X
+    [4X[28X<mutable digraph with 3 vertices, 6 edges>[128X[104X
   [4X[32X[104X
   
-  [1X3.3-10 DigraphSymmetricClosure[101X
+  [1X3.3-11 DigraphSymmetricClosure[101X
   
-  [33X[1;0Y[29X[2XDigraphSymmetricClosure[102X( [3Xdigraph[103X ) [32X attribute[133X
+  [33X[1;0Y[29X[2XDigraphSymmetricClosure[102X( [3Xdigraph[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XDigraphSymmetricClosureAttr[102X( [3Xdigraph[103X ) [32X attribute[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
   [33X[0;0YIf  [3Xdigraph[103X  is  a  digraph, then this attribute gives the minimal symmetric
@@ -713,29 +945,41 @@
   [33X[0;0YA  digraph  is  [13Xsymmetric[113X if its adjacency matrix [2XAdjacencyMatrix[102X ([14X5.2-1[114X) is
   symmetric.  For  a digraph with multiple edges this means that there are the
   same number of edges from a vertex [10Xu[110X to a vertex [10Xv[110X as there are from [10Xv[110X to [10Xu[110X;
-  see [2XIsSymmetricDigraph[102X ([14X6.1-10[114X).[133X
+  see [2XIsSymmetricDigraph[102X ([14X6.1-12[114X).[133X
+  
+  [33X[0;0YIf  [3Xdigraph[103X  is  immutable,  then  a  new  immutable  digraph  is  returned.
+  Otherwise,  the  mutable  digraph  [3Xdigraph[103X  is  changed  in-place  into  its
+  symmetric closure.[133X
   
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph([[1, 2, 3], [2, 4], [1], [3, 4]]);[127X[104X
-    [4X[28X<digraph with 4 vertices, 8 edges>[128X[104X
-    [4X[25Xgap>[125X [27Xgr1 := DigraphSymmetricClosure(gr);[127X[104X
-    [4X[28X<digraph with 4 vertices, 11 edges>[128X[104X
-    [4X[25Xgap>[125X [27XIsSymmetricDigraph(gr1);[127X[104X
+    [4X[25Xgap>[125X [27XD := Digraph([[1, 2, 3], [2, 4], [1], [3, 4]]);[127X[104X
+    [4X[28X<immutable digraph with 4 vertices, 8 edges>[128X[104X
+    [4X[25Xgap>[125X [27XD := DigraphSymmetricClosure(D);[127X[104X
+    [4X[28X<immutable symmetric digraph with 4 vertices, 11 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsSymmetricDigraph(D);[127X[104X
     [4X[28Xtrue[128X[104X
-    [4X[25Xgap>[125X [27XList(OutNeighbours(gr1), AsSet);[127X[104X
+    [4X[25Xgap>[125X [27XList(OutNeighbours(D), AsSet);[127X[104X
     [4X[28X[ [ 1, 2, 3 ], [ 1, 2, 4 ], [ 1, 4 ], [ 2, 3, 4 ] ][128X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph([[2, 2], [1]]);[127X[104X
-    [4X[28X<multidigraph with 2 vertices, 3 edges>[128X[104X
-    [4X[25Xgap>[125X [27Xgr1 := DigraphSymmetricClosure(gr);[127X[104X
-    [4X[28X<multidigraph with 2 vertices, 4 edges>[128X[104X
-    [4X[25Xgap>[125X [27XOutNeighbours(gr1);[127X[104X
+    [4X[25Xgap>[125X [27XD := Digraph([[2, 2], [1]]);[127X[104X
+    [4X[28X<immutable multidigraph with 2 vertices, 3 edges>[128X[104X
+    [4X[25Xgap>[125X [27XD := DigraphSymmetricClosure(D);[127X[104X
+    [4X[28X<immutable symmetric multidigraph with 2 vertices, 4 edges>[128X[104X
+    [4X[25Xgap>[125X [27XOutNeighbours(D);[127X[104X
     [4X[28X[ [ 2, 2 ], [ 1, 1 ] ][128X[104X
+    [4X[25Xgap>[125X [27XD := CycleDigraph(IsMutableDigraph, 3);[127X[104X
+    [4X[28X<mutable digraph with 3 vertices, 3 edges>[128X[104X
+    [4X[25Xgap>[125X [27XDigraphSymmetricClosure(D);[127X[104X
+    [4X[28X<mutable digraph with 3 vertices, 6 edges>[128X[104X
+    [4X[25Xgap>[125X [27XD;[127X[104X
+    [4X[28X<mutable digraph with 3 vertices, 6 edges>[128X[104X
   [4X[32X[104X
   
-  [1X3.3-11 DigraphReflexiveTransitiveClosure[101X
+  [1X3.3-12 DigraphTransitiveClosure[101X
   
-  [33X[1;0Y[29X[2XDigraphReflexiveTransitiveClosure[102X( [3Xdigraph[103X ) [32X attribute[133X
-  [33X[1;0Y[29X[2XDigraphTransitiveClosure[102X( [3Xdigraph[103X ) [32X attribute[133X
+  [33X[1;0Y[29X[2XDigraphTransitiveClosure[102X( [3Xdigraph[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XDigraphTransitiveClosureAttr[102X( [3Xdigraph[103X ) [32X attribute[133X
+  [33X[1;0Y[29X[2XDigraphReflexiveTransitiveClosure[102X( [3Xdigraph[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XDigraphReflexiveTransitiveClosureAttr[102X( [3Xdigraph[103X ) [32X attribute[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
   [33X[0;0YIf [3Xdigraph[103X is a digraph with no multiple edges, then these attributes return
@@ -746,6 +990,10 @@
   an  edge.  The  [13X(reflexive)  transitive  closure[113X of a digraph [3Xdigraph[103X is the
   least (reflexive and) transitive digraph containing [3Xdigraph[103X.[133X
   
+  [33X[0;0YIf  [3Xdigraph[103X  is  immutable,  then  a  new  immutable  digraph  is  returned.
+  Otherwise,  the  mutable  digraph  [3Xdigraph[103X  is  changed  in-place  into  its
+  (reflexive) transitive closure.[133X
+  
   [33X[0;0YLet  [22Xn[122X  be  the  number  of  vertices of [3Xdigraph[103X, and let [22Xm[122X be the number of
   edges.  For an arbitrary digraph, these attributes will use a version of the
   Floyd-Warshall   algorithm,   with   complexity   [22XO(n^3)[122X.   However,  for  a
@@ -754,29 +1002,37 @@
   faster.[133X
   
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr := DigraphFromDiSparse6String(".H`eOWR`Ul^");[127X[104X
-    [4X[28X<digraph with 9 vertices, 8 edges>[128X[104X
-    [4X[25Xgap>[125X [27XIsReflexiveDigraph(gr) or IsTransitiveDigraph(gr);[127X[104X
+    [4X[25Xgap>[125X [27XD := DigraphFromDiSparse6String(".H`eOWR`Ul^");[127X[104X
+    [4X[28X<immutable digraph with 9 vertices, 8 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsReflexiveDigraph(D) or IsTransitiveDigraph(D);[127X[104X
     [4X[28Xfalse[128X[104X
-    [4X[25Xgap>[125X [27XOutNeighbours(gr);[127X[104X
+    [4X[25Xgap>[125X [27XOutNeighbours(D);[127X[104X
     [4X[28X[ [ 4, 6 ], [ 1, 3 ], [  ], [ 5 ], [  ], [ 7, 8, 9 ], [  ], [  ], [128X[104X
     [4X[28X  [  ] ][128X[104X
-    [4X[25Xgap>[125X [27Xtrans := DigraphTransitiveClosure(gr);[127X[104X
-    [4X[28X<digraph with 9 vertices, 18 edges>[128X[104X
-    [4X[25Xgap>[125X [27XOutNeighbours(trans);[127X[104X
-    [4X[28X[ [ 4, 5, 6, 7, 8, 9 ], [ 1, 3, 4, 5, 6, 7, 8, 9 ], [  ], [ 5 ], [128X[104X
+    [4X[25Xgap>[125X [27XT := DigraphTransitiveClosure(D);[127X[104X
+    [4X[28X<immutable transitive digraph with 9 vertices, 18 edges>[128X[104X
+    [4X[25Xgap>[125X [27XOutNeighbours(T);[127X[104X
+    [4X[28X[ [ 4, 6, 5, 7, 8, 9 ], [ 1, 3, 4, 5, 6, 7, 8, 9 ], [  ], [ 5 ], [128X[104X
     [4X[28X  [  ], [ 7, 8, 9 ], [  ], [  ], [  ] ][128X[104X
-    [4X[25Xgap>[125X [27Xreflextrans := DigraphReflexiveTransitiveClosure(gr);[127X[104X
-    [4X[28X<digraph with 9 vertices, 27 edges>[128X[104X
-    [4X[25Xgap>[125X [27XOutNeighbours(reflextrans);[127X[104X
-    [4X[28X[ [ 1, 4, 5, 6, 7, 8, 9 ], [ 1, 2, 3, 4, 5, 6, 7, 8, 9 ], [ 3 ], [128X[104X
-    [4X[28X  [ 4, 5 ], [ 5 ], [ 6, 7, 8, 9 ], [ 7 ], [ 8 ], [ 9 ] ][128X[104X
+    [4X[25Xgap>[125X [27XRT := DigraphReflexiveTransitiveClosure(D);[127X[104X
+    [4X[28X<immutable preorder digraph with 9 vertices, 27 edges>[128X[104X
+    [4X[25Xgap>[125X [27XOutNeighbours(RT);[127X[104X
+    [4X[28X[ [ 4, 6, 5, 7, 8, 9, 1 ], [ 1, 3, 4, 5, 6, 7, 8, 9, 2 ], [ 3 ], [128X[104X
+    [4X[28X  [ 5, 4 ], [ 5 ], [ 7, 8, 9, 6 ], [ 7 ], [ 8 ], [ 9 ] ][128X[104X
+    [4X[25Xgap>[125X [27XD := CycleDigraph(IsMutableDigraph, 3);[127X[104X
+    [4X[28X<mutable digraph with 3 vertices, 3 edges>[128X[104X
+    [4X[25Xgap>[125X [27XDigraphReflexiveTransitiveClosure(D);[127X[104X
+    [4X[28X<mutable digraph with 3 vertices, 9 edges>[128X[104X
+    [4X[25Xgap>[125X [27XD;[127X[104X
+    [4X[28X<mutable digraph with 3 vertices, 9 edges>[128X[104X
   [4X[32X[104X
   
-  [1X3.3-12 DigraphReflexiveTransitiveReduction[101X
+  [1X3.3-13 DigraphTransitiveReduction[101X
   
-  [33X[1;0Y[29X[2XDigraphReflexiveTransitiveReduction[102X( [3Xdigraph[103X ) [32X operation[133X
   [33X[1;0Y[29X[2XDigraphTransitiveReduction[102X( [3Xdigraph[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XDigraphTransitiveReductionAttr[102X( [3Xdigraph[103X ) [32X attribute[133X
+  [33X[1;0Y[29X[2XDigraphReflexiveTransitiveReduction[102X( [3Xdigraph[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XDigraphReflexiveTransitiveReductionAttr[102X( [3Xdigraph[103X ) [32X attribute[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
   [33X[0;0YIf  [3Xdigraph[103X  is a topologically sortable digraph [see [2XDigraphTopologicalSort[102X
@@ -786,128 +1042,177 @@
   [33X[0;0YThe  (reflexive)  transitive reduction of such a digraph is the unique least
   subgraph  such  that  the  (reflexive) transitive closure of the subgraph is
   equal    to   the   (reflexive)   transitive   closure   of   [3Xdigraph[103X   [see
-  [2XDigraphReflexiveTransitiveClosure[102X ([14X3.3-11[114X)]. In order words, it is the least
+  [2XDigraphReflexiveTransitiveClosure[102X ([14X3.3-12[114X)]. In order words, it is the least
   subgraph of [3Xdigraph[103X which retains the same reachability as [3Xdigraph[103X.[133X
+  
+  [33X[0;0YIf  [3Xdigraph[103X  is  immutable,  then  a  new  immutable  digraph  is  returned.
+  Otherwise,  the  mutable  digraph  [3Xdigraph[103X  is  changed  in-place  into  its
+  (reflexive) transitive reduction.[133X
   
   [33X[0;0YLet  [22Xn[122X  be  the number of vertices of an arbitrary digraph, and let [22Xm[122X be the
   number of edges. Then these operations use methods with complexity [22XO(m + n +
   m ⋅ n)[122X.[133X
   
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph([[1, 2, 3], [3], [3]]);;[127X[104X
-    [4X[25Xgap>[125X [27XDigraphHasLoops(gr);[127X[104X
+    [4X[25Xgap>[125X [27XD := Digraph([[1, 2, 3], [3], [3]]);;[127X[104X
+    [4X[25Xgap>[125X [27XDigraphHasLoops(D);[127X[104X
     [4X[28Xtrue[128X[104X
-    [4X[25Xgap>[125X [27Xgr1 := DigraphReflexiveTransitiveReduction(gr);[127X[104X
-    [4X[28X<digraph with 3 vertices, 2 edges>[128X[104X
-    [4X[25Xgap>[125X [27XDigraphHasLoops(gr1);[127X[104X
+    [4X[25Xgap>[125X [27XD1 := DigraphReflexiveTransitiveReduction(D);[127X[104X
+    [4X[28X<immutable digraph with 3 vertices, 2 edges>[128X[104X
+    [4X[25Xgap>[125X [27XDigraphHasLoops(D1);[127X[104X
     [4X[28Xfalse[128X[104X
-    [4X[25Xgap>[125X [27XOutNeighbours(gr1);[127X[104X
+    [4X[25Xgap>[125X [27XOutNeighbours(D1);[127X[104X
     [4X[28X[ [ 2 ], [ 3 ], [  ] ][128X[104X
-    [4X[25Xgap>[125X [27Xgr2 := DigraphTransitiveReduction(gr);[127X[104X
-    [4X[28X<digraph with 3 vertices, 4 edges>[128X[104X
-    [4X[25Xgap>[125X [27XDigraphHasLoops(gr2);[127X[104X
+    [4X[25Xgap>[125X [27XD2 := DigraphTransitiveReduction(D);[127X[104X
+    [4X[28X<immutable digraph with 3 vertices, 4 edges>[128X[104X
+    [4X[25Xgap>[125X [27XDigraphHasLoops(D2);[127X[104X
     [4X[28Xtrue[128X[104X
-    [4X[25Xgap>[125X [27XOutNeighbours(gr2);[127X[104X
+    [4X[25Xgap>[125X [27XOutNeighbours(D2);[127X[104X
     [4X[28X[ [ 2, 1 ], [ 3 ], [ 3 ] ][128X[104X
-    [4X[25Xgap>[125X [27XDigraphReflexiveTransitiveClosure(gr)[127X[104X
-    [4X[25X>[125X [27X = DigraphReflexiveTransitiveClosure(gr1);[127X[104X
+    [4X[25Xgap>[125X [27XDigraphReflexiveTransitiveClosure(D)[127X[104X
+    [4X[25X>[125X [27X = DigraphReflexiveTransitiveClosure(D1);[127X[104X
     [4X[28Xtrue[128X[104X
-    [4X[25Xgap>[125X [27XDigraphTransitiveClosure(gr)[127X[104X
-    [4X[25X>[125X [27X = DigraphTransitiveClosure(gr2);[127X[104X
+    [4X[25Xgap>[125X [27XDigraphTransitiveClosure(D)[127X[104X
+    [4X[25X>[125X [27X = DigraphTransitiveClosure(D2);[127X[104X
     [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XD := Digraph(IsMutableDigraph, [[1], [1], [1, 2, 3]]);[127X[104X
+    [4X[28X<mutable digraph with 3 vertices, 5 edges>[128X[104X
+    [4X[25Xgap>[125X [27XDigraphReflexiveTransitiveReduction(D);[127X[104X
+    [4X[28X<mutable digraph with 3 vertices, 2 edges>[128X[104X
+    [4X[25Xgap>[125X [27XD;[127X[104X
+    [4X[28X<mutable digraph with 3 vertices, 2 edges>[128X[104X
   [4X[32X[104X
   
-  [1X3.3-13 DigraphAddVertex[101X
+  [1X3.3-14 DigraphAddVertex[101X
   
   [33X[1;0Y[29X[2XDigraphAddVertex[102X( [3Xdigraph[103X[, [3Xlabel[103X] ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
-  [33X[0;0YThe  operation  returns  a  new digraph constructed from [3Xdigraph[103X by adding a
-  single new vertex.[133X
+  [33X[0;0YThe  operation returns a digraph constructed from [3Xdigraph[103X by adding a single
+  new vertex, and no new edges.[133X
   
   [33X[0;0YIf  the  optional second argument [3Xlabel[103X is a [5XGAP[105X object, then the new vertex
   will be labelled [3Xlabel[103X.[133X
   
+  [33X[0;0YIf  [3Xdigraph[103X  belongs  to  [2XIsMutableDigraph[102X ([14X3.1-2[114X), then the vertex is added
+  directly  to  [3Xdigraph[103X.  If [3Xdigraph[103X belongs to [2XIsImmutableDigraph[102X ([14X3.1-3[114X), an
+  immutable copy of [3Xdigraph[103X with the additional vertex is returned.[133X
+  
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr := CompleteDigraph(3);[127X[104X
-    [4X[28X<digraph with 3 vertices, 6 edges>[128X[104X
-    [4X[25Xgap>[125X [27Xnew := DigraphAddVertex(gr);[127X[104X
-    [4X[28X<digraph with 4 vertices, 6 edges>[128X[104X
+    [4X[25Xgap>[125X [27XD := CompleteDigraph(3);[127X[104X
+    [4X[28X<immutable complete digraph with 3 vertices>[128X[104X
+    [4X[25Xgap>[125X [27Xnew := DigraphAddVertex(D);[127X[104X
+    [4X[28X<immutable digraph with 4 vertices, 6 edges>[128X[104X
+    [4X[25Xgap>[125X [27XD = new;[127X[104X
+    [4X[28Xfalse[128X[104X
     [4X[25Xgap>[125X [27XDigraphVertices(new);[127X[104X
     [4X[28X[ 1 .. 4 ][128X[104X
-    [4X[25Xgap>[125X [27Xnew := DigraphAddVertex(gr, Group([(1, 2)]));[127X[104X
-    [4X[28X<digraph with 4 vertices, 6 edges>[128X[104X
+    [4X[25Xgap>[125X [27Xnew := DigraphAddVertex(D, Group([(1, 2)]));[127X[104X
+    [4X[28X<immutable digraph with 4 vertices, 6 edges>[128X[104X
     [4X[25Xgap>[125X [27XDigraphVertexLabels(new);[127X[104X
     [4X[28X[ 1, 2, 3, Group([ (1,2) ]) ][128X[104X
-  [4X[32X[104X
-  
-  [1X3.3-14 DigraphAddVertices[101X
-  
-  [33X[1;0Y[29X[2XDigraphAddVertices[102X( [3Xdigraph[103X, [3Xm[103X[, [3Xlabels[103X] ) [32X operation[133X
-  [6XReturns:[106X  [33X[0;10YA digraph.[133X
-  
-  [33X[0;0YFor  a  non-negative  integer  [3Xm[103X,  this  operation  returns  a  new  digraph
-  constructed from [3Xdigraph[103X by adding [3Xm[103X new vertices.[133X
-  
-  [33X[0;0YIf  the  optional  third argument [3Xlabels[103X is a list of length [3Xm[103X consisting of
-  [5XGAP[105X objects, then the new vertices will be labelled according to this list.[133X
-  
-  [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr := CompleteDigraph(3);[127X[104X
-    [4X[28X<digraph with 3 vertices, 6 edges>[128X[104X
-    [4X[25Xgap>[125X [27Xnew := DigraphAddVertices(gr, 3);[127X[104X
-    [4X[28X<digraph with 6 vertices, 6 edges>[128X[104X
-    [4X[25Xgap>[125X [27XDigraphVertices(new);[127X[104X
-    [4X[28X[ 1 .. 6 ][128X[104X
-    [4X[25Xgap>[125X [27Xnew := DigraphAddVertices(gr, 2, [Group([(1, 2)]), "d"]);[127X[104X
-    [4X[28X<digraph with 5 vertices, 6 edges>[128X[104X
-    [4X[25Xgap>[125X [27XDigraphVertexLabels(new);[127X[104X
-    [4X[28X[ 1, 2, 3, Group([ (1,2) ]), "d" ][128X[104X
-    [4X[25Xgap>[125X [27XDigraphAddVertices(gr, 0) = gr;[127X[104X
+    [4X[25Xgap>[125X [27XD := CompleteBipartiteDigraph(IsMutableDigraph, 2, 3);[127X[104X
+    [4X[28X<mutable digraph with 5 vertices, 12 edges>[128X[104X
+    [4X[25Xgap>[125X [27Xnew := DigraphAddVertex(D);[127X[104X
+    [4X[28X<mutable digraph with 6 vertices, 12 edges>[128X[104X
+    [4X[25Xgap>[125X [27XD = new;[127X[104X
     [4X[28Xtrue[128X[104X
   [4X[32X[104X
   
-  [1X3.3-15 DigraphAddEdge[101X
+  [1X3.3-15 DigraphAddVertices[101X
   
-  [33X[1;0Y[29X[2XDigraphAddEdge[102X( [3Xdigraph[103X, [3Xedge[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XDigraphAddVertices[102X( [3Xdigraph[103X, [3Xm[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XDigraphAddVertices[102X( [3Xdigraph[103X, [3Xlabels[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
-  [33X[0;0YIf [3Xedge[103X is a pairs of vertices of [3Xdigraph[103X, then this operation returns a new
-  digraph  constructed  from  [3Xdigraph[103X by adding a new edge with source [3Xedge[103X[10X[1][110X
-  and range [3Xedge[103X[10X[2][110X.[133X
+  [33X[0;0YFor  a  non-negative integer [3Xm[103X, this operation returns a digraph constructed
+  from [3Xdigraph[103X by adding [3Xm[103X new vertices.[133X
+  
+  [33X[0;0YOtherwise,  if  [3Xlabels[103X  is  a  list  consisting  of [10Xk[110X [5XGAP[105X objects, then this
+  operation  returns  a  digraph  constructed  from  [3Xdigraph[103X  by  adding [10Xk[110X new
+  vertices, which are labelled according to this list.[133X
+  
+  [33X[0;0YIf  [3Xdigraph[103X belongs to [2XIsMutableDigraph[102X ([14X3.1-2[114X), then the vertices are added
+  directly  to  [3Xdigraph[103X,  which  is  changed  in-place.  If [3Xdigraph[103X belongs to
+  [2XIsImmutableDigraph[102X  ([14X3.1-3[114X),  then  the  result  is returned as an immutable
+  digraph.[133X
   
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr1 := Digraph([[2], [3], []]);[127X[104X
-    [4X[28X<digraph with 3 vertices, 2 edges>[128X[104X
-    [4X[25Xgap>[125X [27XDigraphEdges(gr1);[127X[104X
-    [4X[28X[ [ 1, 2 ], [ 2, 3 ] ][128X[104X
-    [4X[25Xgap>[125X [27Xgr2 := DigraphAddEdge(gr1, [3, 1]);[127X[104X
-    [4X[28X<digraph with 3 vertices, 3 edges>[128X[104X
-    [4X[25Xgap>[125X [27XDigraphEdges(gr2);[127X[104X
-    [4X[28X[ [ 1, 2 ], [ 2, 3 ], [ 3, 1 ] ][128X[104X
-    [4X[25Xgap>[125X [27Xgr3 := DigraphAddEdge(gr2, [2, 3]);[127X[104X
-    [4X[28X<multidigraph with 3 vertices, 4 edges>[128X[104X
-    [4X[25Xgap>[125X [27XDigraphEdges(gr3);[127X[104X
-    [4X[28X[ [ 1, 2 ], [ 2, 3 ], [ 2, 3 ], [ 3, 1 ] ][128X[104X
+    [4X[25Xgap>[125X [27XD := CompleteDigraph(3);[127X[104X
+    [4X[28X<immutable complete digraph with 3 vertices>[128X[104X
+    [4X[25Xgap>[125X [27Xnew := DigraphAddVertices(D, 3);[127X[104X
+    [4X[28X<immutable digraph with 6 vertices, 6 edges>[128X[104X
+    [4X[25Xgap>[125X [27XDigraphVertices(new);[127X[104X
+    [4X[28X[ 1 .. 6 ][128X[104X
+    [4X[25Xgap>[125X [27Xnew := DigraphAddVertices(D, [Group([(1, 2)]), "d"]);[127X[104X
+    [4X[28X<immutable digraph with 5 vertices, 6 edges>[128X[104X
+    [4X[25Xgap>[125X [27XDigraphVertexLabels(new);[127X[104X
+    [4X[28X[ 1, 2, 3, Group([ (1,2) ]), "d" ][128X[104X
+    [4X[25Xgap>[125X [27XDigraphAddVertices(D, 0) = D;[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XD := CompleteBipartiteDigraph(IsMutableDigraph, 2, 3);[127X[104X
+    [4X[28X<mutable digraph with 5 vertices, 12 edges>[128X[104X
+    [4X[25Xgap>[125X [27Xnew := DigraphAddVertices(D, 4);[127X[104X
+    [4X[28X<mutable digraph with 9 vertices, 12 edges>[128X[104X
+    [4X[25Xgap>[125X [27XD = new;[127X[104X
+    [4X[28Xtrue[128X[104X
   [4X[32X[104X
   
-  [1X3.3-16 DigraphAddEdgeOrbit[101X
+  [1X3.3-16 DigraphAddEdge[101X
+  
+  [33X[1;0Y[29X[2XDigraphAddEdge[102X( [3Xdigraph[103X, [3Xedge[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XDigraphAddEdge[102X( [3Xdigraph[103X, [3Xsrc[103X, [3Xran[103X ) [32X operation[133X
+  [6XReturns:[106X  [33X[0;10YA digraph.[133X
+  
+  [33X[0;0YIf  [3Xedge[103X  is  a  pair of vertices of [3Xdigraph[103X, or [3Xsrc[103X and [3Xran[103X are vertices of
+  [3Xdigraph[103X,  then  this operation returns a digraph constructed from [3Xdigraph[103X by
+  adding a new edge with source [3Xedge[103X[10X[1][110X [[3Xsrc[103X] and range [3Xedge[103X[10X[2][110X [[3Xran[103X].[133X
+  
+  [33X[0;0YIf  [3Xdigraph[103X  belongs  to  [2XIsMutableDigraph[102X  ([14X3.1-2[114X),  then the edge is added
+  directly  to [3Xdigraph[103X. If [3Xdigraph[103X belongs to [2XIsImmutableDigraph[102X ([14X3.1-3[114X), then
+  an immutable copy of [3Xdigraph[103X with the additional edge is returned.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27XD1 := Digraph([[2], [3], []]);[127X[104X
+    [4X[28X<immutable digraph with 3 vertices, 2 edges>[128X[104X
+    [4X[25Xgap>[125X [27XDigraphEdges(D1);[127X[104X
+    [4X[28X[ [ 1, 2 ], [ 2, 3 ] ][128X[104X
+    [4X[25Xgap>[125X [27XD2 := DigraphAddEdge(D1, [3, 1]);[127X[104X
+    [4X[28X<immutable digraph with 3 vertices, 3 edges>[128X[104X
+    [4X[25Xgap>[125X [27XDigraphEdges(D2);[127X[104X
+    [4X[28X[ [ 1, 2 ], [ 2, 3 ], [ 3, 1 ] ][128X[104X
+    [4X[25Xgap>[125X [27XD3 := DigraphAddEdge(D2, [2, 3]);[127X[104X
+    [4X[28X<immutable multidigraph with 3 vertices, 4 edges>[128X[104X
+    [4X[25Xgap>[125X [27XDigraphEdges(D3);[127X[104X
+    [4X[28X[ [ 1, 2 ], [ 2, 3 ], [ 2, 3 ], [ 3, 1 ] ][128X[104X
+    [4X[25Xgap>[125X [27XD := CycleDigraph(IsMutableDigraph, 4);[127X[104X
+    [4X[28X<mutable digraph with 4 vertices, 4 edges>[128X[104X
+    [4X[25Xgap>[125X [27Xnew := DigraphAddEdge(D, [1, 3]);[127X[104X
+    [4X[28X<mutable digraph with 4 vertices, 5 edges>[128X[104X
+    [4X[25Xgap>[125X [27XDigraphEdges(new);[127X[104X
+    [4X[28X[ [ 1, 2 ], [ 1, 3 ], [ 2, 3 ], [ 3, 4 ], [ 4, 1 ] ][128X[104X
+    [4X[25Xgap>[125X [27XD = new;[127X[104X
+    [4X[28Xtrue[128X[104X
+  [4X[32X[104X
+  
+  [1X3.3-17 DigraphAddEdgeOrbit[101X
   
   [33X[1;0Y[29X[2XDigraphAddEdgeOrbit[102X( [3Xdigraph[103X, [3Xedge[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA new digraph.[133X
   
   [33X[0;0YThis  operation  returns  a  new digraph with the same vertices and edges as
   [3Xdigraph[103X  and  with additional edges consisting of the orbit of the edge [3Xedge[103X
-  under  the action of the [2XDigraphGroup[102X ([14X7.2-9[114X) of [3Xdigraph[103X. If [3Xedge[103X is already
-  an edge in [3Xdigraph[103X, then [3Xdigraph[103X is returns unchanged.[133X
+  under the action of the [2XDigraphGroup[102X ([14X7.2-10[114X) of [3Xdigraph[103X. If [3Xedge[103X is already
+  an edge in [3Xdigraph[103X, then [3Xdigraph[103X is returned unchanged. The argument [3Xdigraph[103X
+  must be an immutable digraph.[133X
   
   [33X[0;0YAn edge is simply a pair of vertices of [3Xdigraph[103X.[133X
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27Xgr1 := CayleyDigraph(DihedralGroup(8));[127X[104X
-    [4X[28X<digraph with 8 vertices, 24 edges>[128X[104X
+    [4X[28X<immutable digraph with 8 vertices, 24 edges>[128X[104X
     [4X[25Xgap>[125X [27Xgr2 := DigraphAddEdgeOrbit(gr1, [1, 8]);[127X[104X
-    [4X[28X<digraph with 8 vertices, 32 edges>[128X[104X
+    [4X[28X<immutable digraph with 8 vertices, 32 edges>[128X[104X
     [4X[25Xgap>[125X [27XDigraphEdges(gr1);[127X[104X
     [4X[28X[ [ 1, 2 ], [ 1, 3 ], [ 1, 4 ], [ 2, 1 ], [ 2, 8 ], [ 2, 6 ], [128X[104X
     [4X[28X  [ 3, 5 ], [ 3, 4 ], [ 3, 7 ], [ 4, 6 ], [ 4, 7 ], [ 4, 1 ], [128X[104X
@@ -921,23 +1226,25 @@
     [4X[28X  [ 7, 8 ], [ 7, 1 ], [ 7, 3 ], [ 7, 6 ], [ 8, 7 ], [ 8, 6 ], [128X[104X
     [4X[28X  [ 8, 5 ], [ 8, 1 ] ][128X[104X
     [4X[25Xgap>[125X [27Xgr3 := DigraphRemoveEdgeOrbit(gr2, [1, 8]);[127X[104X
-    [4X[28X<digraph with 8 vertices, 24 edges>[128X[104X
+    [4X[28X<immutable digraph with 8 vertices, 24 edges>[128X[104X
     [4X[25Xgap>[125X [27Xgr3 = gr1;[127X[104X
     [4X[28Xtrue[128X[104X
   [4X[32X[104X
   
-  [1X3.3-17 DigraphAddEdges[101X
+  [1X3.3-18 DigraphAddEdges[101X
   
   [33X[1;0Y[29X[2XDigraphAddEdges[102X( [3Xdigraph[103X, [3Xedges[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
   [33X[0;0YIf  [3Xedges[103X  is  a (possibly empty) list of pairs of vertices of [3Xdigraph[103X, then
-  this  operation returns a new digraph constructed from [3Xdigraph[103X by adding the
+  this  operation  returns  a  digraph  constructed from [3Xdigraph[103X by adding the
   edges  specified  by  [3Xedges[103X.  More precisely, for every [10Xedge[110X in [3Xedges[103X, a new
   edge will be added with source [10Xedge[1][110X and range [10Xedges[2][110X.[133X
   
   [33X[0;0YIf an edge is included in [3Xedges[103X with multiplicity [10Xk[110X, then it will be added [10Xk[110X
-  times.[133X
+  times.  If  [3Xdigraph[103X  belongs to [2XIsMutableDigraph[102X ([14X3.1-2[114X), then the edges are
+  added directly to [3Xdigraph[103X. If [3Xdigraph[103X belongs to [2XIsImmutableDigraph[102X ([14X3.1-3[114X),
+  then the result is returned as an immutable digraph.[133X
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27Xfunc := function(n)[127X[104X
@@ -950,108 +1257,151 @@
     [4X[25X>[125X [27X od;[127X[104X
     [4X[25X>[125X [27X return Digraph(n, source, range);[127X[104X
     [4X[25X>[125X [27Xend;;[127X[104X
-    [4X[25Xgap>[125X [27Xgr := func(1024);[127X[104X
-    [4X[28X<digraph with 1024 vertices, 1022 edges>[128X[104X
-    [4X[25Xgap>[125X [27Xgr := DigraphAddEdges(gr,[127X[104X
+    [4X[25Xgap>[125X [27XD := func(1024);[127X[104X
+    [4X[28X<immutable digraph with 1024 vertices, 1022 edges>[128X[104X
+    [4X[25Xgap>[125X [27Xnew := DigraphAddEdges(D,[127X[104X
     [4X[25X>[125X [27X[[1023, 1024], [1, 1024], [1023, 1024], [1024, 1]]);[127X[104X
-    [4X[28X<multidigraph with 1024 vertices, 1026 edges>[128X[104X
+    [4X[28X<immutable multidigraph with 1024 vertices, 1026 edges>[128X[104X
+    [4X[25Xgap>[125X [27XD = new;[127X[104X
+    [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27XD2 := DigraphMutableCopy(func(1024));[127X[104X
+    [4X[28X<mutable digraph with 1024 vertices, 1022 edges>[128X[104X
+    [4X[25Xgap>[125X [27Xnew := DigraphAddEdges(D2,[127X[104X
+    [4X[25X>[125X [27X[[1023, 1024], [1, 1024], [1023, 1024], [1024, 1]]);[127X[104X
+    [4X[28X<mutable multidigraph with 1024 vertices, 1026 edges>[128X[104X
+    [4X[25Xgap>[125X [27XD2 = new;[127X[104X
+    [4X[28Xtrue[128X[104X
   [4X[32X[104X
   
-  [1X3.3-18 DigraphRemoveVertex[101X
+  [1X3.3-19 DigraphRemoveVertex[101X
   
   [33X[1;0Y[29X[2XDigraphRemoveVertex[102X( [3Xdigraph[103X, [3Xv[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
-  [33X[0;0YIf  [3Xv[103X  is  a  vertex  of  [3Xdigraph[103X, then this operation returns a new digraph
+  [33X[0;0YIf  [3Xv[103X  is  a  vertex  of  [3Xdigraph[103X,  then  this  operation  returns a digraph
   constructed  from  [3Xdigraph[103X  by  removing vertex [3Xv[103X, along with any edge whose
   source or range vertex is [3Xv[103X.[133X
   
-  [33X[0;0YIf  [3Xdigraph[103X  has  [10Xn[110X  vertices,  then  the  vertices  of  the new digraph are
+  [33X[0;0YIf  [3Xdigraph[103X  has  [10Xn[110X  vertices, then the vertices of the returned digraph are
   [10X[1..n-1][110X,  but  the  original labels can be accessed via [2XDigraphVertexLabels[102X
   ([14X5.1-9[114X).[133X
   
+  [33X[0;0YIf  [3Xdigraph[103X  belongs to [2XIsMutableDigraph[102X ([14X3.1-2[114X), then the vertex is removed
+  directly  from [3Xdigraph[103X. If [3Xdigraph[103X belongs to [2XIsImmutableDigraph[102X ([14X3.1-3[114X), an
+  immutable copy of [3Xdigraph[103X without the vertex is returned.[133X
+  
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph(["a", "b", "c"],[127X[104X
+    [4X[25Xgap>[125X [27XD := Digraph(["a", "b", "c"],[127X[104X
     [4X[25X>[125X [27X                 ["a", "a", "b", "c", "c"],[127X[104X
     [4X[25X>[125X [27X                 ["b", "c", "a", "a", "c"]);[127X[104X
-    [4X[28X<digraph with 3 vertices, 5 edges>[128X[104X
-    [4X[25Xgap>[125X [27XDigraphVertexLabels(gr);[127X[104X
+    [4X[28X<immutable digraph with 3 vertices, 5 edges>[128X[104X
+    [4X[25Xgap>[125X [27XDigraphVertexLabels(D);[127X[104X
     [4X[28X[ "a", "b", "c" ][128X[104X
-    [4X[25Xgap>[125X [27XDigraphEdges(gr);[127X[104X
+    [4X[25Xgap>[125X [27XDigraphEdges(D);[127X[104X
     [4X[28X[ [ 1, 2 ], [ 1, 3 ], [ 2, 1 ], [ 3, 1 ], [ 3, 3 ] ][128X[104X
-    [4X[25Xgap>[125X [27Xnew := DigraphRemoveVertex(gr, 2);[127X[104X
-    [4X[28X<digraph with 2 vertices, 3 edges>[128X[104X
+    [4X[25Xgap>[125X [27Xnew := DigraphRemoveVertex(D, 2);[127X[104X
+    [4X[28X<immutable digraph with 2 vertices, 3 edges>[128X[104X
     [4X[25Xgap>[125X [27XDigraphVertexLabels(new);[127X[104X
     [4X[28X[ "a", "c" ][128X[104X
+    [4X[25Xgap>[125X [27XD := CycleDigraph(IsMutableDigraph, 5);[127X[104X
+    [4X[28X<mutable digraph with 5 vertices, 5 edges>[128X[104X
+    [4X[25Xgap>[125X [27Xnew := DigraphRemoveVertex(D, 1);[127X[104X
+    [4X[28X<mutable digraph with 4 vertices, 3 edges>[128X[104X
+    [4X[25Xgap>[125X [27XDigraphVertexLabels(D);[127X[104X
+    [4X[28X[ 2, 3, 4, 5 ][128X[104X
+    [4X[25Xgap>[125X [27XD = new;[127X[104X
+    [4X[28Xtrue[128X[104X
   [4X[32X[104X
   
-  [1X3.3-19 DigraphRemoveVertices [101X
+  [1X3.3-20 DigraphRemoveVertices[101X
   
-  [33X[1;0Y[29X[2XDigraphRemoveVertices [102X( [3Xdigraph[103X, [3Xverts[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XDigraphRemoveVertices[102X( [3Xdigraph[103X, [3Xverts[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
   [33X[0;0YIf  [3Xverts[103X  is a (possibly empty) duplicate-free list of vertices of [3Xdigraph[103X,
-  then  this  operation  returns  a  new  digraph  constructed from [3Xdigraph[103X by
-  removing  every  vertex  in [3Xverts[103X, along with any edge whose source or range
-  vertex is in [3Xverts[103X.[133X
+  then  this  operation returns a digraph constructed from [3Xdigraph[103X by removing
+  every  vertex  in [3Xverts[103X, along with any edge whose source or range vertex is
+  in [3Xverts[103X.[133X
   
   [33X[0;0YIf  [3Xdigraph[103X  has  [10Xn[110X vertices, then the vertices of the new digraph are [10X[1 ..
   n-Length([3Xverts[103X[10X)][110X,   but   the   original   labels   can   be   accessed  via
   [2XDigraphVertexLabels[102X ([14X5.1-9[114X).[133X
   
+  [33X[0;0YIf  [3Xdigraph[103X  belongs  to  [2XIsMutableDigraph[102X  ([14X3.1-2[114X),  then  the vertices are
+  removed  directly  from  [3Xdigraph[103X.  If  [3Xdigraph[103X belongs to [2XIsImmutableDigraph[102X
+  ([14X3.1-3[114X), an immutable copy of [3Xdigraph[103X without the vertices is returned.[133X
+  
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph([[3], [1, 3, 5], [1], [1, 2, 4], [2, 3, 5]]);[127X[104X
-    [4X[28X<digraph with 5 vertices, 11 edges>[128X[104X
-    [4X[25Xgap>[125X [27XSetDigraphVertexLabels(gr, ["a", "b", "c", "d", "e"]);[127X[104X
-    [4X[25Xgap>[125X [27Xnew := DigraphRemoveVertices(gr, [2, 4]);[127X[104X
-    [4X[28X<digraph with 3 vertices, 4 edges>[128X[104X
+    [4X[25Xgap>[125X [27XD := Digraph([[3], [1, 3, 5], [1], [1, 2, 4], [2, 3, 5]]);[127X[104X
+    [4X[28X<immutable digraph with 5 vertices, 11 edges>[128X[104X
+    [4X[25Xgap>[125X [27XSetDigraphVertexLabels(D, ["a", "b", "c", "d", "e"]);[127X[104X
+    [4X[25Xgap>[125X [27Xnew := DigraphRemoveVertices(D, [2, 4]);[127X[104X
+    [4X[28X<immutable digraph with 3 vertices, 4 edges>[128X[104X
     [4X[25Xgap>[125X [27XDigraphVertexLabels(new);[127X[104X
     [4X[28X[ "a", "c", "e" ][128X[104X
+    [4X[25Xgap>[125X [27XD := CycleDigraph(IsMutableDigraph, 5);[127X[104X
+    [4X[28X<mutable digraph with 5 vertices, 5 edges>[128X[104X
+    [4X[25Xgap>[125X [27Xnew := DigraphRemoveVertices(D, [1, 3]);[127X[104X
+    [4X[28X<mutable digraph with 3 vertices, 1 edge>[128X[104X
+    [4X[25Xgap>[125X [27XDigraphVertexLabels(D);[127X[104X
+    [4X[28X[ 2, 4, 5 ][128X[104X
+    [4X[25Xgap>[125X [27XD = new;[127X[104X
+    [4X[28Xtrue[128X[104X
   [4X[32X[104X
   
-  [1X3.3-20 DigraphRemoveEdge[101X
+  [1X3.3-21 DigraphRemoveEdge[101X
   
   [33X[1;0Y[29X[2XDigraphRemoveEdge[102X( [3Xdigraph[103X, [3Xedge[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XDigraphRemoveEdge[102X( [3Xdigraph[103X, [3Xsrc[103X, [3Xran[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
-  [33X[0;0YIf one of the following holds:[133X
+  [33X[0;0YIf  [3Xdigraph[103X  is  a  digraph  with  no  multiple  edges and [3Xedge[103X is a pair of
+  vertices  of  [3Xdigraph[103X,  or  [3Xsrc[103X  and  [3Xran[103X are vertices of [3Xdigraph[103X, then this
+  operation  returns  a  digraph constructed from [3Xdigraph[103X by removing the edge
+  specified by [3Xedge[103X or [3X[src, ran][103X.[133X
   
-  [30X    [33X[0;6Y[3Xdigraph[103X  is  a  digraph  with no multiple edges, and [3Xedge[103X is a pair of
-        vertices of [3Xdigraph[103X, or[133X
+  [33X[0;0YIf  [3Xdigraph[103X  belongs  to  [2XIsMutableDigraph[102X ([14X3.1-2[114X), then the edge is removed
+  directly  from [3Xdigraph[103X. If [3Xdigraph[103X belongs to [2XIsImmutableDigraph[102X ([14X3.1-3[114X), an
+  immutable copy of [3Xdigraph[103X without the edge is returned.[133X
   
-  [30X    [33X[0;6Y[3Xdigraph[103X is any digraph and [3Xedge[103X is the index of an edge of [3Xdigraph[103X,[133X
-  
-  [33X[0;0Ythen  this  operation  returns  a  new  digraph  constructed from [3Xdigraph[103X by
-  removing  the  edges  specified by [3Xedges[103X. If, in the first case, the pair of
-  vertices  [3Xedge[103X  does  not  specify  an  edge  of [3Xdigraph[103X, then a new copy of
-  [3Xdigraph[103X will be returned.[133X
+  [33X[0;0YNote  that if [3Xdigraph[103X belongs to [2XIsImmutableDigraph[102X ([14X3.1-3[114X), then a new copy
+  of  [3Xdigraph[103X  will  be returned even if [3Xedge[103X or [3X[src, ran][103X does not define an
+  edge of [3Xdigraph[103X.[133X
   
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr := CycleDigraph(250000);[127X[104X
-    [4X[28X<digraph with 250000 vertices, 250000 edges>[128X[104X
-    [4X[25Xgap>[125X [27Xgr := DigraphRemoveEdge(gr, [250000, 1]);[127X[104X
-    [4X[28X<digraph with 250000 vertices, 249999 edges>[128X[104X
-    [4X[25Xgap>[125X [27Xgr := DigraphRemoveEdge(gr, 10);[127X[104X
-    [4X[28X<digraph with 250000 vertices, 249998 edges>[128X[104X
+    [4X[25Xgap>[125X [27XD := CycleDigraph(250000);[127X[104X
+    [4X[28X<immutable cycle digraph with 250000 vertices>[128X[104X
+    [4X[25Xgap>[125X [27XD := DigraphRemoveEdge(D, [250000, 1]);[127X[104X
+    [4X[28X<immutable digraph with 250000 vertices, 249999 edges>[128X[104X
+    [4X[25Xgap>[125X [27Xnew := DigraphRemoveEdge(D, [25000, 2]);;[127X[104X
+    [4X[25Xgap>[125X [27Xnew = D;[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XIsIdenticalObj(new, D);[127X[104X
+    [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27XD := DigraphMutableCopy(D);;[127X[104X
+    [4X[25Xgap>[125X [27Xnew := DigraphRemoveEdge(D, 2500, 2);;[127X[104X
+    [4X[25Xgap>[125X [27XIsIdenticalObj(new, D);[127X[104X
+    [4X[28Xtrue[128X[104X
   [4X[32X[104X
   
-  [1X3.3-21 DigraphRemoveEdgeOrbit[101X
+  [1X3.3-22 DigraphRemoveEdgeOrbit[101X
   
   [33X[1;0Y[29X[2XDigraphRemoveEdgeOrbit[102X( [3Xdigraph[103X, [3Xedge[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA new digraph.[133X
   
   [33X[0;0YThis  operation  returns a new digraph with the same vertices as [3Xdigraph[103X and
   with  the  orbit  of  the  edge  [3Xedge[103X  (under the action of the [2XDigraphGroup[102X
-  ([14X7.2-9[114X) of [3Xdigraph[103X) removed. If [3Xedge[103X is not an edge in [3Xdigraph[103X, then [3Xdigraph[103X
-  is returned unchanged.[133X
+  ([14X7.2-10[114X)  of  [3Xdigraph[103X)  removed.  If  [3Xedge[103X  is  not an edge in [3Xdigraph[103X, then
+  [3Xdigraph[103X  is  returned  unchanged.  The argument [3Xdigraph[103X must be an immutable
+  digraph.[133X
   
   [33X[0;0YAn edge is simply a pair of vertices of [3Xdigraph[103X.[133X
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27Xgr1 := CayleyDigraph(DihedralGroup(8));[127X[104X
-    [4X[28X<digraph with 8 vertices, 24 edges>[128X[104X
+    [4X[28X<immutable digraph with 8 vertices, 24 edges>[128X[104X
     [4X[25Xgap>[125X [27Xgr2 := DigraphAddEdgeOrbit(gr1, [1, 8]);[127X[104X
-    [4X[28X<digraph with 8 vertices, 32 edges>[128X[104X
+    [4X[28X<immutable digraph with 8 vertices, 32 edges>[128X[104X
     [4X[25Xgap>[125X [27XDigraphEdges(gr1);[127X[104X
     [4X[28X[ [ 1, 2 ], [ 1, 3 ], [ 1, 4 ], [ 2, 1 ], [ 2, 8 ], [ 2, 6 ], [128X[104X
     [4X[28X  [ 3, 5 ], [ 3, 4 ], [ 3, 7 ], [ 4, 6 ], [ 4, 7 ], [ 4, 1 ], [128X[104X
@@ -1065,12 +1415,12 @@
     [4X[28X  [ 7, 8 ], [ 7, 1 ], [ 7, 3 ], [ 7, 6 ], [ 8, 7 ], [ 8, 6 ], [128X[104X
     [4X[28X  [ 8, 5 ], [ 8, 1 ] ][128X[104X
     [4X[25Xgap>[125X [27Xgr3 := DigraphRemoveEdgeOrbit(gr2, [1, 8]);[127X[104X
-    [4X[28X<digraph with 8 vertices, 24 edges>[128X[104X
+    [4X[28X<immutable digraph with 8 vertices, 24 edges>[128X[104X
     [4X[25Xgap>[125X [27Xgr3 = gr1;[127X[104X
     [4X[28Xtrue[128X[104X
   [4X[32X[104X
   
-  [1X3.3-22 DigraphRemoveEdges[101X
+  [1X3.3-23 DigraphRemoveEdges[101X
   
   [33X[1;0Y[29X[2XDigraphRemoveEdges[102X( [3Xdigraph[103X, [3Xedges[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
@@ -1080,101 +1430,137 @@
   [30X    [33X[0;6Y[3Xdigraph[103X  is  a  digraph with no multiple edges, and [3Xedges[103X is a list of
         pairs of vertices of [3Xdigraph[103X, or[133X
   
-  [30X    [33X[0;6Y[3Xdigraph[103X  is  any  digraph  and  [3Xedges[103X is a list of indices of edges of
-        [3Xdigraph[103X,[133X
+  [30X    [33X[0;6Y[3Xdigraph[103X is a digraph and [3Xedges[103X is an empty list[133X
   
-  [33X[0;0Ythen  this  operation  returns  a  new  digraph  constructed from [3Xdigraph[103X by
-  removing  all  of  the  edges  specified  by  [3Xedges[103X  [see  [2XDigraphRemoveEdge[102X
-  ([14X3.3-20[114X)].[133X
+  [33X[0;0Ythen  this  operation returns a digraph constructed from [3Xdigraph[103X by removing
+  all of the edges specified by [3Xedges[103X (see [2XDigraphRemoveEdge[102X ([14X3.3-21[114X)).[133X
+  
+  [33X[0;0YIf  [3Xdigraph[103X  belongs  to  [2XIsMutableDigraph[102X ([14X3.1-2[114X), then the edge is removed
+  directly from [3Xdigraph[103X. If [3Xdigraph[103X belongs to [2XIsImmutableDigraph[102X ([14X3.1-3[114X), the
+  edge  is  removed  from an immutable copy of [3Xdigraph[103X and this new digraph is
+  returned.[133X
+  
+  [33X[0;0YNote  that if [3Xedges[103X is empty, then this operation will always return [3Xdigraph[103X
+  rather  than a copy. Also, if any element of [3Xedges[103X is invalid (i.e. does not
+  define an edge of [3Xdigraph[103X) then that element will simply be ignored.[133X
   
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr := CycleDigraph(250000);[127X[104X
-    [4X[28X<digraph with 250000 vertices, 250000 edges>[128X[104X
-    [4X[25Xgap>[125X [27Xgr := DigraphRemoveEdges(gr, [[250000, 1]]);[127X[104X
-    [4X[28X<digraph with 250000 vertices, 249999 edges>[128X[104X
-    [4X[25Xgap>[125X [27Xgr := DigraphRemoveEdges(gr, [10]);[127X[104X
-    [4X[28X<digraph with 250000 vertices, 249998 edges>[128X[104X
+    [4X[25Xgap>[125X [27XD := CycleDigraph(250000);[127X[104X
+    [4X[28X<immutable cycle digraph with 250000 vertices>[128X[104X
+    [4X[25Xgap>[125X [27XD := DigraphRemoveEdges(D, [[250000, 1]]);[127X[104X
+    [4X[28X<immutable digraph with 250000 vertices, 249999 edges>[128X[104X
+    [4X[25Xgap>[125X [27XD := DigraphMutableCopy(D);[127X[104X
+    [4X[28X<mutable digraph with 250000 vertices, 249999 edges>[128X[104X
+    [4X[25Xgap>[125X [27Xnew := DigraphRemoveEdges(D, [[1, 2], [2, 3], [3, 100]]);[127X[104X
+    [4X[28X<mutable digraph with 250000 vertices, 249997 edges>[128X[104X
+    [4X[25Xgap>[125X [27Xnew = D;[127X[104X
+    [4X[28Xtrue[128X[104X
   [4X[32X[104X
   
-  [1X3.3-23 DigraphRemoveLoops[101X
+  [1X3.3-24 DigraphRemoveLoops[101X
   
   [33X[1;0Y[29X[2XDigraphRemoveLoops[102X( [3Xdigraph[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XDigraphRemoveLoopsAttr[102X( [3Xdigraph[103X ) [32X attribute[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
-  [33X[0;0YIf  [3Xdigraph[103X  is  a  digraph,  then  this  operation  returns  a  new digraph
-  constructed  from  [3Xdigraph[103X  by  removing  every loop. A loop is an edge with
-  equal source and range.[133X
+  [33X[0;0YIf  [3Xdigraph[103X  is a digraph, then this operation returns a digraph constructed
+  from [3Xdigraph[103X by removing every loop. A loop is an edge with equal source and
+  range.[133X
+  
+  [33X[0;0YIf  [3Xdigraph[103X  is  immutable,  then  a  new  immutable  digraph  is  returned.
+  Otherwise, the loops are removed from the mutable digraph [3Xdigraph[103X in-place.[133X
   
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph([[1, 2, 4], [1, 4], [3, 4], [1, 4, 5], [1, 5]]);[127X[104X
-    [4X[28X<digraph with 5 vertices, 12 edges>[128X[104X
-    [4X[25Xgap>[125X [27XDigraphRemoveLoops(gr);[127X[104X
-    [4X[28X<digraph with 5 vertices, 8 edges>[128X[104X
+    [4X[25Xgap>[125X [27XD := Digraph([[1, 2, 4], [1, 4], [3, 4], [1, 4, 5], [1, 5]]);[127X[104X
+    [4X[28X<immutable digraph with 5 vertices, 12 edges>[128X[104X
+    [4X[25Xgap>[125X [27XDigraphRemoveLoops(D);[127X[104X
+    [4X[28X<immutable digraph with 5 vertices, 8 edges>[128X[104X
+    [4X[25Xgap>[125X [27XD := Digraph(IsMutableDigraph, [[1, 2], [1]]);[127X[104X
+    [4X[28X<mutable digraph with 2 vertices, 3 edges>[128X[104X
+    [4X[25Xgap>[125X [27XDigraphRemoveLoops(D);[127X[104X
+    [4X[28X<mutable digraph with 2 vertices, 2 edges>[128X[104X
+    [4X[25Xgap>[125X [27XD;[127X[104X
+    [4X[28X<mutable digraph with 2 vertices, 2 edges>[128X[104X
   [4X[32X[104X
   
-  [1X3.3-24 DigraphRemoveAllMultipleEdges[101X
+  [1X3.3-25 DigraphRemoveAllMultipleEdges[101X
   
   [33X[1;0Y[29X[2XDigraphRemoveAllMultipleEdges[102X( [3Xdigraph[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XDigraphRemoveAllMultipleEdgesAttr[102X( [3Xdigraph[103X ) [32X attribute[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
-  [33X[0;0YIf  [3Xdigraph[103X  is  a  digraph,  then  this  operation  returns  a  new digraph
-  constructed  from  [3Xdigraph[103X by removing all multiple edges. The result is the
-  largest subdigraph of [3Xdigraph[103X which does not contain multiple edges.[133X
+  [33X[0;0YIf  [3Xdigraph[103X  is a digraph, then this operation returns a digraph constructed
+  from  [3Xdigraph[103X  by  removing  all  multiple  edges. The result is the largest
+  subdigraph of [3Xdigraph[103X which does not contain multiple edges.[133X
+  
+  [33X[0;0YIf  [3Xdigraph[103X  is  immutable,  then  a  new  immutable  digraph  is  returned.
+  Otherwise,  the  multiple  edges  of the mutable digraph [3Xdigraph[103X are removed
+  in-place.[133X
   
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr1 := Digraph([[1, 2, 3, 2], [1, 1, 3], [2, 2, 2]]);[127X[104X
-    [4X[28X<multidigraph with 3 vertices, 10 edges>[128X[104X
-    [4X[25Xgap>[125X [27Xgr2 := DigraphRemoveAllMultipleEdges(gr1);[127X[104X
-    [4X[28X<digraph with 3 vertices, 6 edges>[128X[104X
-    [4X[25Xgap>[125X [27XOutNeighbours(gr2);[127X[104X
+    [4X[25Xgap>[125X [27XD1 := Digraph([[1, 2, 3, 2], [1, 1, 3], [2, 2, 2]]);[127X[104X
+    [4X[28X<immutable multidigraph with 3 vertices, 10 edges>[128X[104X
+    [4X[25Xgap>[125X [27XD2 := DigraphRemoveAllMultipleEdges(D1);[127X[104X
+    [4X[28X<immutable digraph with 3 vertices, 6 edges>[128X[104X
+    [4X[25Xgap>[125X [27XOutNeighbours(D2);[127X[104X
     [4X[28X[ [ 1, 2, 3 ], [ 1, 3 ], [ 2 ] ][128X[104X
+    [4X[25Xgap>[125X [27XD := Digraph(IsMutableDigraph, [[2, 2], [1]]);[127X[104X
+    [4X[28X<mutable multidigraph with 2 vertices, 3 edges>[128X[104X
+    [4X[25Xgap>[125X [27XDigraphRemoveAllMultipleEdges(D);[127X[104X
+    [4X[28X<mutable digraph with 2 vertices, 2 edges>[128X[104X
+    [4X[25Xgap>[125X [27XD;[127X[104X
+    [4X[28X<mutable digraph with 2 vertices, 2 edges>[128X[104X
   [4X[32X[104X
   
-  [1X3.3-25 DigraphReverseEdges[101X
+  [1X3.3-26 DigraphReverseEdges[101X
   
   [33X[1;0Y[29X[2XDigraphReverseEdges[102X( [3Xdigraph[103X, [3Xedges[103X ) [32X operation[133X
   [33X[1;0Y[29X[2XDigraphReverseEdge[102X( [3Xdigraph[103X, [3Xedge[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XDigraphReverseEdge[102X( [3Xdigraph[103X, [3Xsrc[103X, [3Xran[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
-  [33X[0;0YIf [3Xdigraph[103X is a digraph without multiple edges, and [3Xedges[103X is either:[133X
-  
-  [30X    [33X[0;6Ya  list  of  pairs  of  vertices  of [3Xdigraph[103X (the entries of each pair
-        corresponding to the source and the range of an edge, respectively),[133X
-  
-  [30X    [33X[0;6Ya list of positions of elements in the list [2XDigraphEdges[102X ([14X5.1-3[114X),[133X
-  
-  [33X[0;0Ythen  [10XDigraphReverseEdges[110X  returns a new digraph constructed from [3Xdigraph[103X by
-  reversing the orientation of every edge specified by [3Xedges[103X. If only one edge
-  is  to  be  reversed,  then  [10XDigraphReverseEdge[110X can be used instead. In this
-  case,  the  second  argument should just be a single vertex-pair or a single
-  position.[133X
+  [33X[0;0YIf [3Xdigraph[103X is a digraph without multiple edges, and [3Xedges[103X is a list of pairs
+  of vertices of [3Xdigraph[103X (the entries of each pair corresponding to the source
+  and  the range of an edge, respectively), then [10XDigraphReverseEdges[110X returns a
+  digraph  constructed from [3Xdigraph[103X by reversing the orientation of every edge
+  specified   by   [3Xedges[103X.   If   only   one  edge  is  to  be  reversed,  then
+  [10XDigraphReverseEdge[110X  can  be  used instead. In this case, the second argument
+  should  just  be  a  single  vertex-pair,  or the second and third arguments
+  should be the source and range of an edge respectively.[133X
   
   [33X[0;0YNote  that  even  though  [3Xdigraph[103X cannot have multiple edges, the output may
   have multiple edges.[133X
   
+  [33X[0;0YIf  [3Xdigraph[103X belongs to [2XIsMutableDigraph[102X ([14X3.1-2[114X), then the edges are reversed
+  in  [3Xdigraph[103X.  If [3Xdigraph[103X belongs to [2XIsImmutableDigraph[102X ([14X3.1-3[114X), an immutable
+  copy of [3Xdigraph[103X with the specified edges reversed is returned.[133X
+  
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr := DigraphFromDiSparse6String(".Tg?i@s?t_e?_qEsC");[127X[104X
-    [4X[28X<digraph with 21 vertices, 8 edges>[128X[104X
-    [4X[25Xgap>[125X [27XDigraphEdges(gr);[127X[104X
+    [4X[25Xgap>[125X [27XD := DigraphFromDiSparse6String(".Tg?i@s?t_e?_qEsC");[127X[104X
+    [4X[28X<immutable digraph with 21 vertices, 8 edges>[128X[104X
+    [4X[25Xgap>[125X [27XDigraphEdges(D);[127X[104X
     [4X[28X[ [ 1, 2 ], [ 1, 7 ], [ 1, 8 ], [ 5, 21 ], [ 7, 19 ], [ 9, 1 ], [128X[104X
     [4X[28X  [ 11, 2 ], [ 21, 1 ] ][128X[104X
-    [4X[25Xgap>[125X [27Xgr2 := DigraphReverseEdges(gr, [1, 2, 4]);[127X[104X
-    [4X[28X<digraph with 21 vertices, 8 edges>[128X[104X
-    [4X[25Xgap>[125X [27Xgr = DigraphReverseEdges(gr2, [[7, 1], [2, 1], [21, 5]]);[127X[104X
+    [4X[25Xgap>[125X [27Xnew := DigraphReverseEdge(D, [7, 19]);[127X[104X
+    [4X[28X<immutable digraph with 21 vertices, 8 edges>[128X[104X
+    [4X[25Xgap>[125X [27XDigraphEdges(new);[127X[104X
+    [4X[28X[ [ 1, 2 ], [ 1, 7 ], [ 1, 8 ], [ 5, 21 ], [ 9, 1 ], [ 11, 2 ], [128X[104X
+    [4X[28X  [ 19, 7 ], [ 21, 1 ] ][128X[104X
+    [4X[25Xgap>[125X [27XD2 := DigraphMutableCopy(new);;[127X[104X
+    [4X[25Xgap>[125X [27Xnew := DigraphReverseEdges(D2, [[19, 7]]);;[127X[104X
+    [4X[25Xgap>[125X [27XD2 = new;[127X[104X
     [4X[28Xtrue[128X[104X
-    [4X[25Xgap>[125X [27Xgr2 := DigraphReverseEdge(gr, 5);[127X[104X
-    [4X[28X<digraph with 21 vertices, 8 edges>[128X[104X
-    [4X[25Xgap>[125X [27Xgr2 = DigraphReverseEdge(gr, [7, 19]);[127X[104X
+    [4X[25Xgap>[125X [27XD = new;[127X[104X
     [4X[28Xtrue[128X[104X
   [4X[32X[104X
   
-  [1X3.3-26 DigraphDisjointUnion[101X
+  [1X3.3-27 DigraphDisjointUnion[101X
   
-  [33X[1;0Y[29X[2XDigraphDisjointUnion[102X( [3Xgr1[103X, [3Xgr2[103X, [3X...[103X ) [32X function[133X
+  [33X[1;0Y[29X[2XDigraphDisjointUnion[102X( [3XD1[103X, [3XD2[103X, [3X...[103X ) [32X function[133X
   [33X[1;0Y[29X[2XDigraphDisjointUnion[102X( [3Xlist[103X ) [32X function[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
-  [33X[0;0YIn the first form, if [3Xgr1[103X, [3Xgr2[103X, etc. are digraphs, then [10XDigraphDisjointUnion[110X
+  [33X[0;0YIn  the  first form, if [3XD1[103X, [3XD2[103X, etc. are digraphs, then [10XDigraphDisjointUnion[110X
   returns  their  disjoint  union.  In the second form, if [3Xlist[103X is a non-empty
   list  of  digraphs,  then [10XDigraphDisjointUnion[110X returns the disjoint union of
   the digraphs contained in the list.[133X
@@ -1182,38 +1568,43 @@
   [33X[0;0YFor  a  disjoint  union of digraphs, the vertex set is the disjoint union of
   the vertex sets, and the edge list is the disjoint union of the edge lists.[133X
   
-  [33X[0;0YMore  specifically, for a collection of digraphs [3Xgr1[103X, [3Xgr2[103X, [10X...[110X, the disjoint
-  union  with  have  [10XDigraphNrVertices([110X[3Xgr1[103X[10X)[110X  [10X+[110X  [10XDigraphNrVertices([110X[3Xgr2[103X[10X)[110X  [10X+[110X  [10X...[110X
-  vertices.  The  edges  of [3Xgr1[103X will remain unchanged, whilst the edges of the
-  [10Xi[110Xth  digraph,  [3Xgr[103X[10X[i][110X, will be changed so that they belong to the vertices of
-  the disjoint union corresponding to [3Xgr[103X[10X[i][110X. In particular, the edges of [3Xgr[103X[10X[i][110X
-  will have their source and range increased by [10XDigraphNrVertices([110X[3Xgr1[103X[10X)[110X [10X+[110X [10X...[110X [10X+[110X
-  [10XDigraphNrVertices([110X[3Xgr[103X[10X[i-1])[110X.[133X
+  [33X[0;0YMore  specifically,  for  a collection of digraphs [3XD1[103X, [3XD2[103X, [10X...[110X, the disjoint
+  union   with   have  [10XDigraphNrVertices([110X[3XD1[103X[10X)[110X  [10X+[110X  [10XDigraphNrVertices([110X[3XD2[103X[10X)[110X  [10X+[110X  [10X...[110X
+  vertices. The edges of [3XD1[103X will remain unchanged, whilst the edges of the [10Xi[110Xth
+  digraph,  [3XD[103X[10X[i][110X,  will  be changed so that they belong to the vertices of the
+  disjoint  union corresponding to [3XD[103X[10X[i][110X. In particular, the edges of [3XD[103X[10X[i][110X will
+  have  their  source  and  range  increased  by [10XDigraphNrVertices([110X[3XD1[103X[10X)[110X [10X+[110X [10X...[110X [10X+[110X
+  [10XDigraphNrVertices([110X[3XD[103X[10X[i-1])[110X.[133X
   
   [33X[0;0YNote that previously set [2XDigraphVertexLabels[102X ([14X5.1-9[114X) will be lost.[133X
   
+  [33X[0;0YIf  the first digraph [3XD1[103X [[3Xlist[1][103X] belongs to [2XIsMutableDigraph[102X ([14X3.1-2[114X), then
+  [3XD1[103X  [[3Xlist[1][103X]  is  modified in place to contain the appropriate vertices and
+  edges.  If  [3Xdigraph[103X  belongs  to [2XIsImmutableDigraph[102X ([14X3.1-3[114X), a new immutable
+  digraph containing the appropriate vertices and edges is returned.[133X
+  
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr1 := CycleDigraph(3);[127X[104X
-    [4X[28X<digraph with 3 vertices, 3 edges>[128X[104X
-    [4X[25Xgap>[125X [27XOutNeighbours(gr1);[127X[104X
+    [4X[25Xgap>[125X [27XD1 := CycleDigraph(3);[127X[104X
+    [4X[28X<immutable cycle digraph with 3 vertices>[128X[104X
+    [4X[25Xgap>[125X [27XOutNeighbours(D1);[127X[104X
     [4X[28X[ [ 2 ], [ 3 ], [ 1 ] ][128X[104X
-    [4X[25Xgap>[125X [27Xgr2 := CompleteDigraph(3);[127X[104X
-    [4X[28X<digraph with 3 vertices, 6 edges>[128X[104X
-    [4X[25Xgap>[125X [27XOutNeighbours(gr2);[127X[104X
+    [4X[25Xgap>[125X [27XD2 := CompleteDigraph(3);[127X[104X
+    [4X[28X<immutable complete digraph with 3 vertices>[128X[104X
+    [4X[25Xgap>[125X [27XOutNeighbours(D2);[127X[104X
     [4X[28X[ [ 2, 3 ], [ 1, 3 ], [ 1, 2 ] ][128X[104X
-    [4X[25Xgap>[125X [27Xunion := DigraphDisjointUnion(gr1, gr2);[127X[104X
-    [4X[28X<digraph with 6 vertices, 9 edges>[128X[104X
+    [4X[25Xgap>[125X [27Xunion := DigraphDisjointUnion(D1, D2);[127X[104X
+    [4X[28X<immutable digraph with 6 vertices, 9 edges>[128X[104X
     [4X[25Xgap>[125X [27XOutNeighbours(union);[127X[104X
     [4X[28X[ [ 2 ], [ 3 ], [ 1 ], [ 5, 6 ], [ 4, 6 ], [ 4, 5 ] ][128X[104X
   [4X[32X[104X
   
-  [1X3.3-27 DigraphEdgeUnion[101X
+  [1X3.3-28 DigraphEdgeUnion[101X
   
-  [33X[1;0Y[29X[2XDigraphEdgeUnion[102X( [3Xgr1[103X, [3Xgr2[103X, [3X...[103X ) [32X function[133X
+  [33X[1;0Y[29X[2XDigraphEdgeUnion[102X( [3XD1[103X, [3XD2[103X, [3X...[103X ) [32X function[133X
   [33X[1;0Y[29X[2XDigraphEdgeUnion[102X( [3Xlist[103X ) [32X function[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
-  [33X[0;0YIn  the  first  form,  if [3Xgr1[103X, [3Xgr2[103X, etc. are digraphs, then [10XDigraphEdgeUnion[110X
+  [33X[0;0YIn  the  first  form,  if  [3XD1[103X,  [3XD2[103X, etc. are digraphs, then [10XDigraphEdgeUnion[110X
   returns their edge union. In the second form, if [3Xlist[103X is a non-empty list of
   digraphs,  then  [10XDigraphEdgeUnion[110X  returns  the  edge  union of the digraphs
   contained in the list.[133X
@@ -1227,56 +1618,229 @@
   
   [33X[0;0YNote that previously set [2XDigraphVertexLabels[102X ([14X5.1-9[114X) will be lost.[133X
   
+  [33X[0;0YIf  the first digraph [3XD1[103X [[3Xlist[1][103X] belongs to [2XIsMutableDigraph[102X ([14X3.1-2[114X), then
+  [3XD1[103X  [[3Xlist[1][103X]  is  modified in place to contain the appropriate vertices and
+  edges.  If  [3Xdigraph[103X  belongs  to [2XIsImmutableDigraph[102X ([14X3.1-3[114X), a new immutable
+  digraph containing the appropriate vertices and edges is returned.[133X
+  
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr := CycleDigraph(10);[127X[104X
-    [4X[28X<digraph with 10 vertices, 10 edges>[128X[104X
-    [4X[25Xgap>[125X [27XDigraphEdgeUnion(gr, gr);[127X[104X
-    [4X[28X<multidigraph with 10 vertices, 20 edges>[128X[104X
-    [4X[25Xgap>[125X [27Xgr1 := Digraph([[2], [1]]);[127X[104X
-    [4X[28X<digraph with 2 vertices, 2 edges>[128X[104X
-    [4X[25Xgap>[125X [27Xgr2 := Digraph([[2, 3], [2], [1]]);[127X[104X
-    [4X[28X<digraph with 3 vertices, 4 edges>[128X[104X
-    [4X[25Xgap>[125X [27Xunion := DigraphEdgeUnion(gr1, gr2);[127X[104X
-    [4X[28X<multidigraph with 3 vertices, 6 edges>[128X[104X
+    [4X[25Xgap>[125X [27XD := CycleDigraph(10);[127X[104X
+    [4X[28X<immutable cycle digraph with 10 vertices>[128X[104X
+    [4X[25Xgap>[125X [27XDigraphEdgeUnion(D, D);[127X[104X
+    [4X[28X<immutable multidigraph with 10 vertices, 20 edges>[128X[104X
+    [4X[25Xgap>[125X [27XD1 := Digraph([[2], [1]]);[127X[104X
+    [4X[28X<immutable digraph with 2 vertices, 2 edges>[128X[104X
+    [4X[25Xgap>[125X [27XD2 := Digraph([[2, 3], [2], [1]]);[127X[104X
+    [4X[28X<immutable digraph with 3 vertices, 4 edges>[128X[104X
+    [4X[25Xgap>[125X [27Xunion := DigraphEdgeUnion(D1, D2);[127X[104X
+    [4X[28X<immutable multidigraph with 3 vertices, 6 edges>[128X[104X
     [4X[25Xgap>[125X [27XOutNeighbours(union);[127X[104X
     [4X[28X[ [ 2, 2, 3 ], [ 1, 2 ], [ 1 ] ][128X[104X
     [4X[25Xgap>[125X [27Xunion = DigraphByEdges([127X[104X
-    [4X[25X>[125X [27XConcatenation(DigraphEdges(gr1), DigraphEdges(gr2)));[127X[104X
+    [4X[25X>[125X [27XConcatenation(DigraphEdges(D1), DigraphEdges(D2)));[127X[104X
     [4X[28Xtrue[128X[104X
   [4X[32X[104X
   
-  [1X3.3-28 DigraphJoin[101X
+  [1X3.3-29 DigraphJoin[101X
   
-  [33X[1;0Y[29X[2XDigraphJoin[102X( [3Xgr1[103X, [3Xgr2[103X, [3X...[103X ) [32X function[133X
+  [33X[1;0Y[29X[2XDigraphJoin[102X( [3XD1[103X, [3XD2[103X, [3X...[103X ) [32X function[133X
   [33X[1;0Y[29X[2XDigraphJoin[102X( [3Xlist[103X ) [32X function[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
-  [33X[0;0YIn  the first form, if [3Xgr1[103X, [3Xgr2[103X, etc. are digraphs, then [10XDigraphJoin[110X returns
+  [33X[0;0YIn  the  first  form, if [3XD1[103X, [3XD2[103X, etc. are digraphs, then [10XDigraphJoin[110X returns
   their  join.  In  the  second form, if [3Xlist[103X is a non-empty list of digraphs,
   then [10XDigraphJoin[110X returns the join of the digraphs contained in the list.[133X
   
-  [33X[0;0YThe join of a collection of digraphs [3Xgr1[103X, [3Xgr2[103X, [10X...[110X is formed by first taking
-  the  [2XDigraphDisjointUnion[102X ([14X3.3-26[114X) of the collection. In the disjoint union,
+  [33X[0;0YThe  join  of a collection of digraphs [3XD1[103X, [3XD2[103X, [10X...[110X is formed by first taking
+  the  [2XDigraphDisjointUnion[102X ([14X3.3-27[114X) of the collection. In the disjoint union,
   if  [22Xi ≠ j[122X then there are no edges between vertices corresponding to digraphs
-  [3Xgr[103X[10X[i][110X and [3Xgr[103X[10X[j][110X in the collection; the join is created by including all such
+  [3XD[103X[10X[i][110X  and  [3XD[103X[10X[j][110X in the collection; the join is created by including all such
   edges.[133X
   
   [33X[0;0YFor example, the join of two empty digraphs is a complete bipartite digraph.[133X
   
   [33X[0;0YNote that previously set [2XDigraphVertexLabels[102X ([14X5.1-9[114X) will be lost.[133X
   
+  [33X[0;0YIf  the first digraph [3XD1[103X [[3Xlist[1][103X] belongs to [2XIsMutableDigraph[102X ([14X3.1-2[114X), then
+  [3XD1[103X  [[3Xlist[1][103X]  is  modified in place to contain the appropriate vertices and
+  edges.  If  [3Xdigraph[103X  belongs  to [2XIsImmutableDigraph[102X ([14X3.1-3[114X), a new immutable
+  digraph containing the appropriate vertices and edges is returned.[133X
+  
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr := CompleteDigraph(3);[127X[104X
-    [4X[28X<digraph with 3 vertices, 6 edges>[128X[104X
-    [4X[25Xgap>[125X [27XIsCompleteDigraph(DigraphJoin(gr, gr));[127X[104X
+    [4X[25Xgap>[125X [27XD := CompleteDigraph(3);[127X[104X
+    [4X[28X<immutable complete digraph with 3 vertices>[128X[104X
+    [4X[25Xgap>[125X [27XIsCompleteDigraph(DigraphJoin(D, D));[127X[104X
     [4X[28Xtrue[128X[104X
-    [4X[25Xgap>[125X [27Xgr2 := CycleDigraph(3);[127X[104X
-    [4X[28X<digraph with 3 vertices, 3 edges>[128X[104X
-    [4X[25Xgap>[125X [27XDigraphJoin(gr, gr2);[127X[104X
-    [4X[28X<digraph with 6 vertices, 27 edges>[128X[104X
+    [4X[25Xgap>[125X [27XD2 := CycleDigraph(3);[127X[104X
+    [4X[28X<immutable cycle digraph with 3 vertices>[128X[104X
+    [4X[25Xgap>[125X [27XDigraphJoin(D, D2);[127X[104X
+    [4X[28X<immutable digraph with 6 vertices, 27 edges>[128X[104X
   [4X[32X[104X
   
-  [1X3.3-29 LineDigraph[101X
+  [1X3.3-30 DigraphCartesianProduct[101X
+  
+  [33X[1;0Y[29X[2XDigraphCartesianProduct[102X( [3Xgr1[103X, [3Xgr2[103X, [3X...[103X ) [32X function[133X
+  [33X[1;0Y[29X[2XDigraphCartesianProduct[102X( [3Xlist[103X ) [32X function[133X
+  [6XReturns:[106X  [33X[0;10YA digraph.[133X
+  
+  [33X[0;0YIn    the   first   form,   if   [3Xgr1[103X,   [3Xgr2[103X,   etc.   are   digraphs,   then
+  [10XDigraphCartesianProduct[110X  returns  a  digraph  isomorphic  to their Cartesian
+  product.[133X
+  
+  [33X[0;0YIn  the  second  form,  if  [3Xlist[103X  is  a  non-empty  list  of  digraphs, then
+  [10XDigraphCartesianProduct[110X  returns  a  digraph  isomorphic  to  the  Cartesian
+  product of the digraphs contained in the list.[133X
+  
+  [33X[0;0YMathematically, the Cartesian product of two digraphs [10XG[110X, [10XH[110X is a digraph with
+  vertex set [10XCartesian(DigraphVertices(G), DigraphVertices(H))[110X such that there
+  is  an edge from [10X[u, u'][110X to [10X[v, v'][110X iff [10X u = v [110X and there is an edge from [10Xu'[110X
+  to [10Xv'[110X in [10XH[110X or [10X u' = v'[110X and there is an edge from [10Xu[110X to [10Xv[110X in [10XG[110X.[133X
+  
+  [33X[0;0YDue  to technical reasons, the digraph [10XD[110X returned by [10XDigraphCartesianProduct[110X
+  has vertex set [10X[1 .. DigraphNrVertices(G)*DigraphNrVertices(H)][110X instead, and
+  the   exact   method   of  encoding  pairs  of  vertices  into  integers  is
+  implementation  specific.  The original vertex pair can be somewhat regained
+  by   using   [2XDigraphCartesianProductProjections[102X   ([14X3.3-32[114X).   In   addition,
+  [2XDigraphVertexLabels[102X ([14X5.1-9[114X) are preserved: if vertex pair [10X[u,u'][110X was encoded
+  as  [10Xi[110X  then the vertex label of [10Xi[110X will be the pair of vertex labels of [10Xu[110X and
+  [10Xu'[110X      i.e.     [10XDigraphVertexLabel(D,i)     =     [DigraphVertexLabel(G,u),
+  DigraphVertexLabel(H,u')][110X.[133X
+  
+  [33X[0;0YAs  the  Cartesian  product  is  associative,  the  Cartesian  product  of a
+  collection of digraphs [3Xgr1[103X, [3Xgr2[103X, [10X...[110X is computed in the obvious fashion.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xgr := ChainDigraph(4);[127X[104X
+    [4X[28X<immutable chain digraph with 4 vertices>[128X[104X
+    [4X[25Xgap>[125X [27Xgr2 := CycleDigraph(3);[127X[104X
+    [4X[28X<immutable cycle digraph with 3 vertices>[128X[104X
+    [4X[25Xgap>[125X [27Xgr3 := DigraphCartesianProduct(gr, gr2);[127X[104X
+    [4X[28X<immutable digraph with 12 vertices, 21 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsIsomorphicDigraph(gr3, [127X[104X
+    [4X[25X>[125X [27XDigraph([[2, 5], [3, 6], [4, 7], [8], [127X[104X
+    [4X[25X>[125X [27X         [6, 9], [7, 10], [8, 11], [12],[127X[104X
+    [4X[25X>[125X [27X         [10, 1], [11, 2], [12, 3], [4]]));[127X[104X
+    [4X[28Xtrue[128X[104X
+  [4X[32X[104X
+  
+  [1X3.3-31 DigraphDirectProduct[101X
+  
+  [33X[1;0Y[29X[2XDigraphDirectProduct[102X( [3Xgr1[103X, [3Xgr2[103X, [3X...[103X ) [32X function[133X
+  [33X[1;0Y[29X[2XDigraphDirectProduct[102X( [3Xlist[103X ) [32X function[133X
+  [6XReturns:[106X  [33X[0;10YA digraph.[133X
+  
+  [33X[0;0YIn the first form, if [3Xgr1[103X, [3Xgr2[103X, etc. are digraphs, then [10XDigraphDirectProduct[110X
+  returns a digraph isomorphic to their direct product.[133X
+  
+  [33X[0;0YIn  the  second  form,  if  [3Xlist[103X  is  a  non-empty  list  of  digraphs, then
+  [10XDigraphDirectProduct[110X  returns  a digraph isomorphic to the direct product of
+  the digraphs contained in the list.[133X
+  
+  [33X[0;0YMathematically,  the  direct  product of two digraphs [10XG[110X, [10XH[110X is a digraph with
+  vertex set [10XCartesian(DigraphVertices(G), DigraphVertices(H))[110X such that there
+  is an edge from [10X[u, u'][110X to [10X[v, v'][110X iff there is an edge from [10Xu[110X to [10Xv[110X in [10XG[110X and
+  an edge from [10Xu'[110X to [10Xv'[110X in [10XH[110X.[133X
+  
+  [33X[0;0YDue to technical reasons, the digraph [10XD[110X returned by [10XDigraphDirectProduct[110X has
+  vertex set [10X[1 .. DigraphNrVertices(G)*DigraphNrVertices(H)][110X instead, and the
+  exact  method  of encoding pairs of vertices into integers is implementation
+  specific.  The  original  vertex  pair  can  be  somewhat  regained by using
+  [2XDigraphDirectProductProjections[102X  ([14X3.3-33[114X).  In  addition [2XDigraphVertexLabels[102X
+  ([14X5.1-9[114X)  are  preserved:  if  vertex  pair  [10X[u,u'][110X was encoded as [10Xi[110X then the
+  vertex  label  of  [10Xi[110X  will  be  the  pair  of vertex labels of [10Xu[110X and [10Xu'[110X i.e.
+  [10XDigraphVertexLabel(D,i)              =             [DigraphVertexLabel(G,u),
+  DigraphVertexLabel(H,u')][110X.[133X
+  
+  [33X[0;0YAs  the direct product is associative, the direct product of a collection of
+  digraphs [3Xgr1[103X, [3Xgr2[103X, [10X...[110X is computed in the obvious fashion.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xgr := ChainDigraph(4);[127X[104X
+    [4X[28X<immutable chain digraph with 4 vertices>[128X[104X
+    [4X[25Xgap>[125X [27Xgr2 := CycleDigraph(3);[127X[104X
+    [4X[28X<immutable cycle digraph with 3 vertices>[128X[104X
+    [4X[25Xgap>[125X [27Xgr3 := DigraphDirectProduct(gr, gr2);[127X[104X
+    [4X[28X<immutable digraph with 12 vertices, 9 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsIsomorphicDigraph(gr3, [127X[104X
+    [4X[25X>[125X [27XDigraph([[6], [7], [8], [], [127X[104X
+    [4X[25X>[125X [27X         [10], [11], [12], [],[127X[104X
+    [4X[25X>[125X [27X         [2], [3], [4], []]));[127X[104X
+    [4X[28Xtrue[128X[104X
+  [4X[32X[104X
+  
+  [1X3.3-32 DigraphCartesianProductProjections[101X
+  
+  [33X[1;0Y[29X[2XDigraphCartesianProductProjections[102X( [3Xdigraph[103X ) [32X attribute[133X
+  [6XReturns:[106X  [33X[0;10YA list of transformations.[133X
+  
+  [33X[0;0YIf    [3Xdigraph[103X    is    a    Cartesian    product    digraph,    [10Xdigraph    =
+  DigraphCartesianProduct(gr_1,         gr_2,        ...        )[110X,        then
+  [10XDigraphCartesianProductProjections[110X  returns a list [10Xproj[110X such that [10Xproj[i][110X is
+  the projection onto the [10Xi[110X-th coordinate of the product.[133X
+  
+  [33X[0;0YA  projection is an idempotent endomorphism of [3Xdigraph[103X. If [10Xgr1, gr2, ...[110X are
+  all  loopless  digraphs, then the induced subdigraph of [3Xdigraph[103X on the image
+  of [10Xproj[i][110X is isomorphic to [10Xgr_i[110X.[133X
+  
+  [33X[0;0YCurrently  this attribute is only set upon creating an immutable digraph via
+  [10XDigraphCartesianProduct[110X  and  there  is  no  way of calculating it for other
+  digraphs.[133X
+  
+  [33X[0;0YFor more information see [2XDigraphCartesianProduct[102X ([14X3.3-30[114X)[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27XD := DigraphCartesianProduct(ChainDigraph(3), CycleDigraph(4),[127X[104X
+    [4X[25X>[125X [27XDigraph([[2], [2]]));;[127X[104X
+    [4X[25Xgap>[125X [27XHasDigraphCartesianProductProjections(D);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27Xproj := DigraphCartesianProductProjections(D);; Length(proj);[127X[104X
+    [4X[28X3[128X[104X
+    [4X[25Xgap>[125X [27XIsIdempotent(proj[2]);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XRankOfTransformation(proj[3]);[127X[104X
+    [4X[28X2[128X[104X
+    [4X[25Xgap>[125X [27XS := ImageSetOfTransformation(proj[2]);;[127X[104X
+    [4X[25Xgap>[125X [27XIsIsomorphicDigraph(CycleDigraph(4), InducedSubdigraph(D, S));[127X[104X
+    [4X[28Xtrue[128X[104X
+  [4X[32X[104X
+  
+  [1X3.3-33 DigraphDirectProductProjections[101X
+  
+  [33X[1;0Y[29X[2XDigraphDirectProductProjections[102X( [3Xdigraph[103X ) [32X attribute[133X
+  [6XReturns:[106X  [33X[0;10YA list of transformations.[133X
+  
+  [33X[0;0YIf [3Xdigraph[103X is a direct product digraph, [10Xdigraph = DigraphDirectProduct(gr_1,
+  gr_2,  ...  )[110X, then [10XDigraphDirectProductProjections[110X returns a list [10Xproj[110X such
+  that [10Xproj[i][110X is the projection onto the [10Xi[110X-th coordinate of the product.[133X
+  
+  [33X[0;0YA  projection is an idempotent endomorphism of [3Xdigraph[103X. If [10Xgr1, gr2, ...[110X are
+  all loopless digraphs, then the image of [3Xdigraph[103X under [10Xproj[i][110X is isomorphic
+  to [10Xgr_i[110X.[133X
+  
+  [33X[0;0YCurrently  this attribute is only set upon creating an immutable digraph via
+  [10XDigraphDirectProduct[110X  and  there  is  no  way  of  calculating  it for other
+  digraphs.[133X
+  
+  [33X[0;0YFor more information, see [2XDigraphDirectProduct[102X ([14X3.3-31[114X)[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27XD := DigraphDirectProduct(ChainDigraph(3), CycleDigraph(4),[127X[104X
+    [4X[25X>[125X [27XDigraph([[2], [2]]));;[127X[104X
+    [4X[25Xgap>[125X [27XHasDigraphDirectProductProjections(D);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27Xproj := DigraphDirectProductProjections(D);; Length(proj);[127X[104X
+    [4X[28X3[128X[104X
+    [4X[25Xgap>[125X [27XIsIdempotent(proj[2]);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XRankOfTransformation(proj[3]);[127X[104X
+    [4X[28X2[128X[104X
+    [4X[25Xgap>[125X [27XP := DigraphRemoveAllMultipleEdges([127X[104X
+    [4X[25X>[125X [27XReducedDigraph(OnDigraphs(D, proj[2])));; [127X[104X
+    [4X[25Xgap>[125X [27XIsIsomorphicDigraph(CycleDigraph(4), P);[127X[104X
+    [4X[28Xtrue[128X[104X
+  [4X[32X[104X
+  
+  [1X3.3-34 LineDigraph[101X
   
   [33X[1;0Y[29X[2XLineDigraph[102X( [3Xdigraph[103X ) [32X operation[133X
   [33X[1;0Y[29X[2XEdgeDigraph[102X( [3Xdigraph[103X ) [32X operation[133X
@@ -1287,14 +1851,17 @@
   vertex  [9Xv[109X  to  a  vertex  [9Xu[109X  if  and only if the terminal vertex of the edge
   associated with [9Xv[109X is the start vertex of the edge associated with [9Xu[109X.[133X
   
+  [33X[0;0YNote  that  the  returned digraph is always a new immutable digraph, and the
+  argument [3Xdigraph[103X is never modified.[133X
+  
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27XLineDigraph(CompleteDigraph(3));[127X[104X
-    [4X[28X<digraph with 6 vertices, 12 edges>[128X[104X
+    [4X[28X<immutable digraph with 6 vertices, 12 edges>[128X[104X
     [4X[25Xgap>[125X [27XLineDigraph(ChainDigraph(3));[127X[104X
-    [4X[28X<digraph with 2 vertices, 1 edge>[128X[104X
+    [4X[28X<immutable digraph with 2 vertices, 1 edge>[128X[104X
   [4X[32X[104X
   
-  [1X3.3-30 LineUndirectedDigraph[101X
+  [1X3.3-35 LineUndirectedDigraph[101X
   
   [33X[1;0Y[29X[2XLineUndirectedDigraph[102X( [3Xdigraph[103X ) [32X operation[133X
   [33X[1;0Y[29X[2XEdgeUndirectedDigraph[102X( [3Xdigraph[103X ) [32X operation[133X
@@ -1305,14 +1872,17 @@
   directions and multiplicites, and adding an edge between two vertices if and
   only if the corresponding edges have a vertex in common.[133X
   
+  [33X[0;0YNote  that  the  returned digraph is always a new immutable digraph, and the
+  argument [3Xdigraph[103X is never modified.[133X
+  
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27XLineUndirectedDigraph(CompleteDigraph(3));[127X[104X
-    [4X[28X<digraph with 3 vertices, 6 edges>[128X[104X
+    [4X[28X<immutable digraph with 3 vertices, 6 edges>[128X[104X
     [4X[25Xgap>[125X [27XLineUndirectedDigraph(DigraphSymmetricClosure(ChainDigraph(3)));[127X[104X
-    [4X[28X<digraph with 2 vertices, 2 edges>[128X[104X
+    [4X[28X<immutable digraph with 2 vertices, 2 edges>[128X[104X
   [4X[32X[104X
   
-  [1X3.3-31 DoubleDigraph[101X
+  [1X3.3-36 DoubleDigraph[101X
   
   [33X[1;0Y[29X[2XDoubleDigraph[102X( [3Xdigraph[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
@@ -1323,57 +1893,77 @@
   v_1][110X if and only if [10X[u, v][110X is an edge in [3Xdigraph[103X, together with the original
   edges and their duplicates.[133X
   
+  [33X[0;0YIf  [3Xdigraph[103X  is  mutable,  then  [3Xdigraph[103X is modified in-place. If [3Xdigraph[103X is
+  immutable,  then  a  new immutable digraph constructed as described above is
+  returned.[133X
+  
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27Xgamma := Digraph([[2], [3], [1]]);[127X[104X
-    [4X[28X<digraph with 3 vertices, 3 edges>[128X[104X
+    [4X[28X<immutable digraph with 3 vertices, 3 edges>[128X[104X
     [4X[25Xgap>[125X [27XDoubleDigraph(gamma);[127X[104X
-    [4X[28X<digraph with 6 vertices, 12 edges>[128X[104X
+    [4X[28X<immutable digraph with 6 vertices, 12 edges>[128X[104X
   [4X[32X[104X
   
-  [1X3.3-32 BipartiteDoubleDigraph[101X
+  [1X3.3-37 BipartiteDoubleDigraph[101X
   
   [33X[1;0Y[29X[2XBipartiteDoubleDigraph[102X( [3Xdigraph[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
   [33X[0;0YLet  [3Xdigraph[103X  be  a  digraph  with  vertex  set [10XV[110X. This function returns the
   bipartite double digraph of [3Xdigraph[103X. The vertex set of the double digraph is
-  the  orginal  vertex set together with a duplicate. The edges are [10X[u_1, v_2][110X
+  the  original vertex set together with a duplicate. The edges are [10X[u_1, v_2][110X
   and  [10X[u_2,  v_1][110X  if and only if [10X[u, v][110X is an edge in [3Xdigraph[103X. The resulting
   graph  is  bipartite,  since  the  orignal  edges  are  not  included in the
   resulting digraph.[133X
   
+  [33X[0;0YIf  [3Xdigraph[103X  is  mutable,  then  [3Xdigraph[103X is modified in-place. If [3Xdigraph[103X is
+  immutable,  then  a  new immutable digraph constructed as described above is
+  returned.[133X
+  
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27Xgamma := Digraph([[2], [3], [1]]);[127X[104X
-    [4X[28X<digraph with 3 vertices, 3 edges>[128X[104X
+    [4X[28X<immutable digraph with 3 vertices, 3 edges>[128X[104X
     [4X[25Xgap>[125X [27XBipartiteDoubleDigraph(gamma);[127X[104X
-    [4X[28X<digraph with 6 vertices, 6 edges>[128X[104X
+    [4X[28X<immutable digraph with 6 vertices, 6 edges>[128X[104X
   [4X[32X[104X
   
-  [1X3.3-33 DigraphAddAllLoops[101X
+  [1X3.3-38 DigraphAddAllLoops[101X
   
   [33X[1;0Y[29X[2XDigraphAddAllLoops[102X( [3Xdigraph[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XDigraphAddAllLoopsAttr[102X( [3Xdigraph[103X ) [32X attribute[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
-  [33X[0;0YFor  a  digraph  [3Xdigraph[103X this operation return a copy of [3Xdigraph[103X such that a
-  loop is added for every vertex which did not have a loop in [3Xdigraph[103X.[133X
+  [33X[0;0YFor  a digraph [3Xdigraph[103X this operation returns a new digraph constructed from
+  [3Xdigraph[103X,  such  that  a  loop is added for every vertex which did not have a
+  loop in [3Xdigraph[103X.[133X
+  
+  [33X[0;0YIf  [3Xdigraph[103X  is  immutable,  then  a  new  immutable  digraph  is  returned.
+  Otherwise,  the  loops  are  added  to  the loopless vertices of the mutable
+  digraph [3Xdigraph[103X in-place.[133X
   
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr := EmptyDigraph(13);[127X[104X
-    [4X[28X<digraph with 13 vertices, 0 edges>[128X[104X
-    [4X[25Xgap>[125X [27Xgr := DigraphAddAllLoops(gr);[127X[104X
-    [4X[28X<digraph with 13 vertices, 13 edges>[128X[104X
-    [4X[25Xgap>[125X [27XOutNeighbours(gr);[127X[104X
+    [4X[25Xgap>[125X [27XD := EmptyDigraph(13);[127X[104X
+    [4X[28X<immutable empty digraph with 13 vertices>[128X[104X
+    [4X[25Xgap>[125X [27XD := DigraphAddAllLoops(D);[127X[104X
+    [4X[28X<immutable reflexive digraph with 13 vertices, 13 edges>[128X[104X
+    [4X[25Xgap>[125X [27XOutNeighbours(D);[127X[104X
     [4X[28X[ [ 1 ], [ 2 ], [ 3 ], [ 4 ], [ 5 ], [ 6 ], [ 7 ], [ 8 ], [ 9 ], [128X[104X
     [4X[28X  [ 10 ], [ 11 ], [ 12 ], [ 13 ] ][128X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph([[1, 2, 3], [1, 3], [1]]);[127X[104X
-    [4X[28X<digraph with 3 vertices, 6 edges>[128X[104X
-    [4X[25Xgap>[125X [27Xgr := DigraphAddAllLoops(gr);[127X[104X
-    [4X[28X<digraph with 3 vertices, 8 edges>[128X[104X
-    [4X[25Xgap>[125X [27XOutNeighbours(gr);[127X[104X
+    [4X[25Xgap>[125X [27XD := Digraph([[1, 2, 3], [1, 3], [1]]);[127X[104X
+    [4X[28X<immutable digraph with 3 vertices, 6 edges>[128X[104X
+    [4X[25Xgap>[125X [27XD := DigraphAddAllLoops(D);[127X[104X
+    [4X[28X<immutable reflexive digraph with 3 vertices, 8 edges>[128X[104X
+    [4X[25Xgap>[125X [27XOutNeighbours(D);[127X[104X
     [4X[28X[ [ 1, 2, 3 ], [ 1, 3, 2 ], [ 1, 3 ] ][128X[104X
+    [4X[25Xgap>[125X [27XD := CycleDigraph(IsMutableDigraph, 3);[127X[104X
+    [4X[28X<mutable digraph with 3 vertices, 3 edges>[128X[104X
+    [4X[25Xgap>[125X [27XDigraphAddAllLoops(D);[127X[104X
+    [4X[28X<mutable digraph with 3 vertices, 6 edges>[128X[104X
+    [4X[25Xgap>[125X [27XD;[127X[104X
+    [4X[28X<mutable digraph with 3 vertices, 6 edges>[128X[104X
   [4X[32X[104X
   
-  [1X3.3-34 DistanceDigraph[101X
+  [1X3.3-39 DistanceDigraph[101X
   
   [33X[1;0Y[29X[2XDistanceDigraph[102X( [3Xdigraph[103X, [3Xi[103X ) [32X operation[133X
   [33X[1;0Y[29X[2XDistanceDigraph[102X( [3Xdigraph[103X, [3Xlist[103X ) [32X operation[133X
@@ -1385,38 +1975,82 @@
   only  if  the  distance  between  them in [3Xdigraph[103X equals [3Xi[103X or is a number in
   [3Xlist[103X. See [2XDigraphShortestDistance[102X ([14X5.3-2[114X).[133X
   
+  [33X[0;0YIf  [3Xdigraph[103X  is  mutable,  then  [3Xdigraph[103X is modified in-place. If [3Xdigraph[103X is
+  immutable,  then  a  new immutable digraph constructed as described above is
+  returned.[133X
+  
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27Xdigraph := DigraphFromSparse6String([127X[104X
     [4X[25X>[125X [27X":]n?AL`BC_DEbEF`GIaGHdIJeGKcKL_@McDHfILaBJfHMjKM");[127X[104X
-    [4X[28X<digraph with 30 vertices, 90 edges>[128X[104X
+    [4X[28X<immutable digraph with 30 vertices, 90 edges>[128X[104X
     [4X[25Xgap>[125X [27XDistanceDigraph(digraph, 1);[127X[104X
-    [4X[28X<digraph with 30 vertices, 90 edges>[128X[104X
+    [4X[28X<immutable digraph with 30 vertices, 90 edges>[128X[104X
     [4X[25Xgap>[125X [27XDistanceDigraph(digraph, [1, 2]);[127X[104X
-    [4X[28X<digraph with 30 vertices, 270 edges>[128X[104X
+    [4X[28X<immutable digraph with 30 vertices, 270 edges>[128X[104X
   [4X[32X[104X
   
-  [1X3.3-35 DigraphClosure[101X
+  [1X3.3-40 DigraphClosure[101X
   
   [33X[1;0Y[29X[2XDigraphClosure[102X( [3Xdigraph[103X, [3Xk[103X ) [32X operation[133X
-  [6XReturns:[106X  [33X[0;10YA digraph[133X
+  [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
   [33X[0;0YGiven  a  symmetric  loopless  digraph  with  no multiple edges [3Xdigraph[103X, the
   [13X[3Xk[103X-closure of [3Xdigraph[103X[113X is defined to be the unique smallest symmetric loopless
   digraph  [10XC[110X  with  no multiple edges on the vertices of [3Xdigraph[103X that contains
   all  the  edges  of  [3Xdigraph[103X  and satsifies the property that the sum of the
   degrees  of  every  two  non-adjacenct  vertices  in  [10XC[110X  is less than [3Xk[103X. See
-  [2XIsSymmetricDigraph[102X   ([14X6.1-10[114X),   [2XDigraphHasLoops[102X   ([14X6.1-1[114X),   [2XIsMultiDigraph[102X
-  ([14X6.1-8[114X), and [2XOutDegreeOfVertex[102X ([14X5.2-10[114X).[133X
+  [2XIsSymmetricDigraph[102X   ([14X6.1-12[114X),   [2XDigraphHasLoops[102X   ([14X6.1-1[114X),   [2XIsMultiDigraph[102X
+  ([14X6.1-10[114X), and [2XOutDegreeOfVertex[102X ([14X5.2-10[114X).[133X
   
   [33X[0;0YThe operation [10XDigraphClosure[110X returns the [3Xk[103X-closure of [3Xdigraph[103X.[133X
   
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr := CompleteDigraph(6);;[127X[104X
-    [4X[25Xgap>[125X [27XDigraphRemoveEdges(gr, [[1, 2], [2, 1]]);;[127X[104X
-    [4X[25Xgap>[125X [27Xclosure := DigraphClosure(gr, 6);[127X[104X
-    [4X[28X<digraph with 6 vertices, 30 edges>[128X[104X
+    [4X[25Xgap>[125X [27XD := CompleteDigraph(6);[127X[104X
+    [4X[28X<immutable complete digraph with 6 vertices>[128X[104X
+    [4X[25Xgap>[125X [27XD := DigraphRemoveEdges(D, [[1, 2], [2, 1]]);[127X[104X
+    [4X[28X<immutable digraph with 6 vertices, 28 edges>[128X[104X
+    [4X[25Xgap>[125X [27Xclosure := DigraphClosure(D, 6);[127X[104X
+    [4X[28X<immutable digraph with 6 vertices, 30 edges>[128X[104X
     [4X[25Xgap>[125X [27XIsCompleteDigraph(closure);[127X[104X
     [4X[28Xtrue[128X[104X
+  [4X[32X[104X
+  
+  [1X3.3-41 DigraphMycielskian[101X
+  
+  [33X[1;0Y[29X[2XDigraphMycielskian[102X( [3Xdigraph[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XDigraphMycielskianAttr[102X( [3Xdigraph[103X ) [32X attribute[133X
+  [6XReturns:[106X  [33X[0;10YA digraph.[133X
+  
+  [33X[0;0YIf  [3Xdigraph[103X  is  a  symmetric  digraph,  then [10XDigraphMycielskian[110X returns the
+  Mycielskian of [3Xdigraph[103X.[133X
+  
+  [33X[0;0YThe  Mycielskian  of  a  symmetric  digraph  is  a  larger symmetric digraph
+  constructed  from  it,  which  has  a  larger  chromatic number. For further
+  information, see [7Xhttps://en.wikipedia.org/wiki/Mycielskian[107X.[133X
+  
+  [33X[0;0YIf  [3Xdigraph[103X  is  immutable,  then  a  new  immutable  digraph  is  returned.
+  Otherwise,  the  mutable  digraph  [3Xdigraph[103X  is  changed  in-place  into  its
+  Mycielskian.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27XD := CycleDigraph(2);[127X[104X
+    [4X[28X<immutable cycle digraph with 2 vertices>[128X[104X
+    [4X[25Xgap>[125X [27XChromaticNumber(D);[127X[104X
+    [4X[28X2[128X[104X
+    [4X[25Xgap>[125X [27XD := DigraphMycielskian(D);[127X[104X
+    [4X[28X<immutable digraph with 5 vertices, 10 edges>[128X[104X
+    [4X[25Xgap>[125X [27XChromaticNumber(D);[127X[104X
+    [4X[28X3[128X[104X
+    [4X[25Xgap>[125X [27XD := DigraphMycielskian(D);[127X[104X
+    [4X[28X<immutable digraph with 11 vertices, 40 edges>[128X[104X
+    [4X[25Xgap>[125X [27XChromaticNumber(D);[127X[104X
+    [4X[28X4[128X[104X
+    [4X[25Xgap>[125X [27XD := CompleteBipartiteDigraph(IsMutable, 2, 3);[127X[104X
+    [4X[28X<mutable digraph with 5 vertices, 12 edges>[128X[104X
+    [4X[25Xgap>[125X [27XDigraphMycielskian(D);[127X[104X
+    [4X[28X<mutable digraph with 11 vertices, 46 edges>[128X[104X
+    [4X[25Xgap>[125X [27XD;[127X[104X
+    [4X[28X<mutable digraph with 11 vertices, 46 edges>[128X[104X
   [4X[32X[104X
   
   
@@ -1424,8 +2058,15 @@
   
   [1X3.4-1 RandomDigraph[101X
   
-  [33X[1;0Y[29X[2XRandomDigraph[102X( [3Xn[103X[, [3Xp[103X] ) [32X operation[133X
+  [33X[1;0Y[29X[2XRandomDigraph[102X( [[3Xfilt[103X, ][3Xn[103X[, [3Xp[103X] ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
+  
+  [33X[0;0YIf the optional first argument [3Xfilt[103X is present, then this should specify the
+  category  or  representation  the  digraph being created will belong to. For
+  example, if [3Xfilt[103X is [2XIsMutableDigraph[102X ([14X3.1-2[114X), then the digraph being created
+  will  be  mutable,  if  [3Xfilt[103X is [2XIsImmutableDigraph[102X ([14X3.1-3[114X), then the digraph
+  will  be immutable. If the optional first argument [3Xfilt[103X is not present, then
+  [2XIsImmutableDigraph[102X ([14X3.1-3[114X) is used by default.[133X
   
   [33X[0;0YIf [3Xn[103X is a positive integer, then this function returns a random digraph with
   [3Xn[103X vertices and without multiple edges. The result may or may not have loops.[133X
@@ -1437,9 +2078,11 @@
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27XRandomDigraph(1000);[127X[104X
-    [4X[28X<digraph with 1000 vertices, 364444 edges>[128X[104X
+    [4X[28X<immutable digraph with 1000 vertices, 364444 edges>[128X[104X
     [4X[25Xgap>[125X [27XRandomDigraph(10000, 0.023);[127X[104X
-    [4X[28X<digraph with 10000 vertices, 2300438 edges>[128X[104X
+    [4X[28X<immutable digraph with 10000 vertices, 2300438 edges>[128X[104X
+    [4X[25Xgap>[125X [27XRandomDigraph(IsMutableDigraph, 1000, 1 / 2);[127X[104X
+    [4X[28X<mutable digraph with 1000 vertices, 499739 edges>[128X[104X
   [4X[32X[104X
   
   [1X3.4-2 RandomMultiDigraph[101X
@@ -1460,22 +2103,54 @@
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27XRandomMultiDigraph(1000);[127X[104X
-    [4X[28X<multidigraph with 1000 vertices, 216659 edges>[128X[104X
+    [4X[28X<immutable multidigraph with 1000 vertices, 216659 edges>[128X[104X
     [4X[25Xgap>[125X [27XRandomMultiDigraph(1000, 950);[127X[104X
-    [4X[28X<multidigraph with 1000 vertices, 950 edges>[128X[104X
+    [4X[28X<immutable multidigraph with 1000 vertices, 950 edges>[128X[104X
   [4X[32X[104X
   
   [1X3.4-3 RandomTournament[101X
   
-  [33X[1;0Y[29X[2XRandomTournament[102X( [3Xn[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XRandomTournament[102X( [[3Xfilt[103X, ][3Xn[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
+  [33X[0;0YIf the optional first argument [3Xfilt[103X is present, then this should specify the
+  category  or  representation  the  digraph being created will belong to. For
+  example, if [3Xfilt[103X is [2XIsMutableDigraph[102X ([14X3.1-2[114X), then the digraph being created
+  will  be  mutable,  if  [3Xfilt[103X is [2XIsImmutableDigraph[102X ([14X3.1-3[114X), then the digraph
+  will  be immutable. If the optional first argument [3Xfilt[103X is not present, then
+  [2XIsImmutableDigraph[102X ([14X3.1-3[114X) is used by default.[133X
+  
   [33X[0;0YIf  [3Xn[103X  is  a non-negative integer, this function returns a random tournament
-  with [3Xn[103X vertices. See [2XIsTournament[102X ([14X6.1-11[114X).[133X
+  with [3Xn[103X vertices. See [2XIsTournament[102X ([14X6.1-13[114X).[133X
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27XRandomTournament(10);[127X[104X
-    [4X[28X<digraph with 10 vertices, 45 edges>[128X[104X
+    [4X[28X<immutable tournament with 10 vertices>[128X[104X
+    [4X[25Xgap>[125X [27XRandomTournament(IsMutableDigraph, 10);[127X[104X
+    [4X[28X<mutable digraph with 1000 vertices, 500601 edges>[128X[104X
+  [4X[32X[104X
+  
+  [1X3.4-4 RandomLattice[101X
+  
+  [33X[1;0Y[29X[2XRandomLattice[102X( [3Xn[103X ) [32X operation[133X
+  [6XReturns:[106X  [33X[0;10YA digraph.[133X
+  
+  [33X[0;0YIf the optional first argument [3Xfilt[103X is present, then this should specify the
+  category  or  representation  the  digraph being created will belong to. For
+  example, if [3Xfilt[103X is [2XIsMutableDigraph[102X ([14X3.1-2[114X), then the digraph being created
+  will  be  mutable,  if  [3Xfilt[103X is [2XIsImmutableDigraph[102X ([14X3.1-3[114X), then the digraph
+  will  be immutable. If the optional first argument [3Xfilt[103X is not present, then
+  [2XIsImmutableDigraph[102X ([14X3.1-3[114X) is used by default.[133X
+  
+  [33X[0;0YIf  [3Xn[103X  is  a  positive integer, this function return a random lattice with [10Xm[110X
+  vertices,  where  it  is  guaranteed  that  [10Xm[110X  is  between  [3Xn[103X and [10X2 * [3Xn[103X[10X[110X. See
+  [2XIsLatticeDigraph[102X ([14X6.1-17[114X).[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27XRandomLattice(10);[127X[104X
+    [4X[28X<immutable lattice digraph with 10 vertices, 39 edges>[128X[104X
+    [4X[25Xgap>[125X [27XRandomLattice(IsMutableDigraph, 10);[127X[104X
+    [4X[28X<mutable digraph with 12 vertices, 52 edges>[128X[104X
   [4X[32X[104X
   
   
@@ -1483,37 +2158,55 @@
   
   [1X3.5-1 ChainDigraph[101X
   
-  [33X[1;0Y[29X[2XChainDigraph[102X( [3Xn[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XChainDigraph[102X( [[3Xfilt[103X, ][3Xn[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
   [33X[0;0YIf  [3Xn[103X  is  a positive integer, this function returns a chain with [3Xn[103X vertices
   and  [10X[3Xn[103X[10X  -  1[110X edges. Specifically, for each vertex [10Xi[110X (with [10Xi[110X < [10Xn[110X), there is a
   directed edge with source [10Xi[110X and range [10Xi + 1[110X.[133X
   
-  [33X[0;0YThe [2XDigraphReflexiveTransitiveClosure[102X ([14X3.3-11[114X) of a chain represents a total
+  [33X[0;0YIf the optional first argument [3Xfilt[103X is present, then this should specify the
+  category  or  representation  the  digraph being created will belong to. For
+  example, if [3Xfilt[103X is [2XIsMutableDigraph[102X ([14X3.1-2[114X), then the digraph being created
+  will  be  mutable,  if  [3Xfilt[103X is [2XIsImmutableDigraph[102X ([14X3.1-3[114X), then the digraph
+  will  be immutable. If the optional first argument [3Xfilt[103X is not present, then
+  [2XIsImmutableDigraph[102X ([14X3.1-3[114X) is used by default.[133X
+  
+  [33X[0;0YThe [2XDigraphReflexiveTransitiveClosure[102X ([14X3.3-12[114X) of a chain represents a total
   order.[133X
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27XChainDigraph(42);[127X[104X
-    [4X[28X<digraph with 42 vertices, 41 edges>[128X[104X
+    [4X[28X<immutable chain digraph with 42 vertices>[128X[104X
+    [4X[25Xgap>[125X [27XChainDigraph(IsMutableDigraph, 10);[127X[104X
+    [4X[28X<mutable digraph with 10 vertices, 9 edges>[128X[104X
   [4X[32X[104X
   
   [1X3.5-2 CompleteDigraph[101X
   
-  [33X[1;0Y[29X[2XCompleteDigraph[102X( [3Xn[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XCompleteDigraph[102X( [[3Xfilt[103X, ][3Xn[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
   [33X[0;0YIf  [3Xn[103X  is a non-negative integer, this function returns the complete digraph
   with [3Xn[103X vertices. See [2XIsCompleteDigraph[102X ([14X6.1-5[114X).[133X
   
+  [33X[0;0YIf the optional first argument [3Xfilt[103X is present, then this should specify the
+  category  or  representation  the  digraph being created will belong to. For
+  example, if [3Xfilt[103X is [2XIsMutableDigraph[102X ([14X3.1-2[114X), then the digraph being created
+  will  be  mutable,  if  [3Xfilt[103X is [2XIsImmutableDigraph[102X ([14X3.1-3[114X), then the digraph
+  will  be immutable. If the optional first argument [3Xfilt[103X is not present, then
+  [2XIsImmutableDigraph[102X ([14X3.1-3[114X) is used by default.[133X
+  
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27XCompleteDigraph(20);[127X[104X
-    [4X[28X<digraph with 20 vertices, 380 edges>[128X[104X
+    [4X[28X<immutable complete digraph with 20 vertices>[128X[104X
+    [4X[25Xgap>[125X [27XCompleteDigraph(IsMutableDigraph, 10);[127X[104X
+    [4X[28X<mutable digraph with 10 vertices, 90 edges>[128X[104X
   [4X[32X[104X
   
   [1X3.5-3 CompleteBipartiteDigraph[101X
   
-  [33X[1;0Y[29X[2XCompleteBipartiteDigraph[102X( [3Xm[103X, [3Xn[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XCompleteBipartiteDigraph[102X( [[3Xfilt[103X, ][3Xm[103X, [3Xn[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
   [33X[0;0YA  complete bipartite digraph is a digraph whose vertices can be partitioned
@@ -1524,14 +2217,23 @@
   bipartite digraph with vertex sets of sizes [3Xm[103X (containing the vertices [10X[1 ..
   m][110X) and [3Xn[103X (containing the vertices [10X[m + 1 .. m + n][110X).[133X
   
+  [33X[0;0YIf the optional first argument [3Xfilt[103X is present, then this should specify the
+  category  or  representation  the  digraph being created will belong to. For
+  example, if [3Xfilt[103X is [2XIsMutableDigraph[102X ([14X3.1-2[114X), then the digraph being created
+  will  be  mutable,  if  [3Xfilt[103X is [2XIsImmutableDigraph[102X ([14X3.1-3[114X), then the digraph
+  will  be immutable. If the optional first argument [3Xfilt[103X is not present, then
+  [2XIsImmutableDigraph[102X ([14X3.1-3[114X) is used by default.[133X
+  
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27XCompleteBipartiteDigraph(2, 3);[127X[104X
-    [4X[28X<digraph with 5 vertices, 12 edges>[128X[104X
+    [4X[28X<immutable complete bipartite digraph with bicomponent sizes 2 and 3>[128X[104X
+    [4X[25Xgap>[125X [27XCompleteBipartiteDigraph(IsMutableDigraph, 3, 2);[127X[104X
+    [4X[28X<mutable digraph with 5 vertices, 12 edges>[128X[104X
   [4X[32X[104X
   
   [1X3.5-4 CompleteMultipartiteDigraph[101X
   
-  [33X[1;0Y[29X[2XCompleteMultipartiteDigraph[102X( [3Xorders[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XCompleteMultipartiteDigraph[102X( [[3Xfilt[103X, ][3Xorders[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
   [33X[0;0YFor  a list [3Xorders[103X of [10Xn[110X positive integers, this function returns the digraph
@@ -1539,14 +2241,23 @@
   Moreover,  each  vertex is adjacent to every other not contained in the same
   independent set.[133X
   
+  [33X[0;0YIf the optional first argument [3Xfilt[103X is present, then this should specify the
+  category  or  representation  the  digraph being created will belong to. For
+  example, if [3Xfilt[103X is [2XIsMutableDigraph[102X ([14X3.1-2[114X), then the digraph being created
+  will  be  mutable,  if  [3Xfilt[103X is [2XIsImmutableDigraph[102X ([14X3.1-3[114X), then the digraph
+  will  be immutable. If the optional first argument [3Xfilt[103X is not present, then
+  [2XIsImmutableDigraph[102X ([14X3.1-3[114X) is used by default.[133X
+  
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27XCompleteMultipartiteDigraph([5, 4, 2]);[127X[104X
-    [4X[28X<digraph with 11 vertices, 76 edges>[128X[104X
+    [4X[28X<immutable complete multipartite digraph with 11 vertices, 76 edges>[128X[104X
+    [4X[25Xgap>[125X [27XCompleteMultipartiteDigraph(IsMutableDigraph, [5, 4, 2]);[127X[104X
+    [4X[28X<mutable digraph with 11 vertices, 76 edges>[128X[104X
   [4X[32X[104X
   
   [1X3.5-5 CycleDigraph[101X
   
-  [33X[1;0Y[29X[2XCycleDigraph[102X( [3Xn[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XCycleDigraph[102X( [[3Xfilt[103X, ][3Xn[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
   [33X[0;0YIf  [3Xn[103X  is  a  positive integer, this function returns a [13Xcycle[113X digraph with [3Xn[103X
@@ -1554,38 +2265,63 @@
   a directed edge with source [10Xi[110X and range [10Xi + 1[110X. In addition, there is an edge
   with source [10Xn[110X and range [10X1[110X.[133X
   
+  [33X[0;0YIf the optional first argument [3Xfilt[103X is present, then this should specify the
+  category  or  representation  the  digraph being created will belong to. For
+  example, if [3Xfilt[103X is [2XIsMutableDigraph[102X ([14X3.1-2[114X), then the digraph being created
+  will  be  mutable,  if  [3Xfilt[103X is [2XIsImmutableDigraph[102X ([14X3.1-3[114X), then the digraph
+  will  be immutable. If the optional first argument [3Xfilt[103X is not present, then
+  [2XIsImmutableDigraph[102X ([14X3.1-3[114X) is used by default.[133X
+  
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27XCycleDigraph(1);[127X[104X
-    [4X[28X<digraph with 1 vertex, 1 edge>[128X[104X
+    [4X[28X<immutable digraph with 1 vertex, 1 edge>[128X[104X
     [4X[25Xgap>[125X [27XCycleDigraph(123);[127X[104X
-    [4X[28X<digraph with 123 vertices, 123 edges>[128X[104X
+    [4X[28X<immutable cycle digraph with 123 vertices>[128X[104X
+    [4X[25Xgap>[125X [27XCycleDigraph(IsMutableDigraph, 10);[127X[104X
+    [4X[28X<mutable digraph with 10 vertices, 10 edges>[128X[104X
   [4X[32X[104X
   
   [1X3.5-6 EmptyDigraph[101X
   
-  [33X[1;0Y[29X[2XEmptyDigraph[102X( [3Xn[103X ) [32X operation[133X
-  [33X[1;0Y[29X[2XNullDigraph[102X( [3Xn[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XEmptyDigraph[102X( [[3Xfilt[103X, ][3Xn[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XNullDigraph[102X( [[3Xfilt[103X, ][3Xn[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
   [33X[0;0YIf  [3Xn[103X  is  a  non-negative  integer, this function returns the [13Xempty[113X or [13Xnull[113X
   digraph with [3Xn[103X vertices. An empty digraph is one with no edges.[133X
   
+  [33X[0;0YIf the optional first argument [3Xfilt[103X is present, then this should specify the
+  category  or  representation  the  digraph being created will belong to. For
+  example, if [3Xfilt[103X is [2XIsMutableDigraph[102X ([14X3.1-2[114X), then the digraph being created
+  will  be  mutable,  if  [3Xfilt[103X is [2XIsImmutableDigraph[102X ([14X3.1-3[114X), then the digraph
+  will  be immutable. If the optional first argument [3Xfilt[103X is not present, then
+  [2XIsImmutableDigraph[102X ([14X3.1-3[114X) is used by default.[133X
+  
   [33X[0;0Y[10XNullDigraph[110X is a synonym for [10XEmptyDigraph[110X.[133X
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27XEmptyDigraph(20);[127X[104X
-    [4X[28X<digraph with 20 vertices, 0 edges>[128X[104X
+    [4X[28X<immutable empty digraph with 20 vertices>[128X[104X
     [4X[25Xgap>[125X [27XNullDigraph(10);[127X[104X
-    [4X[28X<digraph with 10 vertices, 0 edges>[128X[104X
+    [4X[28X<immutable empty digraph with 10 vertices>[128X[104X
+    [4X[25Xgap>[125X [27XEmptyDigraph(IsMutableDigraph, 10);[127X[104X
+    [4X[28X<mutable empty digraph with 10 vertices>[128X[104X
   [4X[32X[104X
   
   [1X3.5-7 JohnsonDigraph[101X
   
-  [33X[1;0Y[29X[2XJohnsonDigraph[102X( [3Xn[103X, [3Xk[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XJohnsonDigraph[102X( [[3Xfilt[103X, ][3Xn[103X, [3Xk[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
   [33X[0;0YIf  [3Xn[103X  and  [3Xk[103X  are  non-negative  integers,  then  this  operation returns a
   symmetric digraph which corresponds to the undirected [13XJohnson graph[113X [22XJ(n, k)[122X.[133X
+  
+  [33X[0;0YIf the optional first argument [3Xfilt[103X is present, then this should specify the
+  category  or  representation  the  digraph being created will belong to. For
+  example, if [3Xfilt[103X is [2XIsMutableDigraph[102X ([14X3.1-2[114X), then the digraph being created
+  will  be  mutable,  if  [3Xfilt[103X is [2XIsImmutableDigraph[102X ([14X3.1-3[114X), then the digraph
+  will  be immutable. If the optional first argument [3Xfilt[103X is not present, then
+  [2XIsImmutableDigraph[102X ([14X3.1-3[114X) is used by default.[133X
   
   [33X[0;0YThe  [13XJohnson  graph[113X  [22XJ(n,  k)[122X has vertices given by all the [3Xk[103X-subsets of the
   range  [10X[1  ..  [3Xn[103X[10X][110X,  and  two  vertices  are  connected  by an edge iff their
@@ -1593,15 +2329,85 @@
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27Xgr := JohnsonDigraph(3, 1);[127X[104X
-    [4X[28X<digraph with 3 vertices, 6 edges>[128X[104X
+    [4X[28X<immutable symmetric digraph with 3 vertices, 6 edges>[128X[104X
     [4X[25Xgap>[125X [27XOutNeighbours(gr);[127X[104X
     [4X[28X[ [ 2, 3 ], [ 1, 3 ], [ 1, 2 ] ][128X[104X
     [4X[25Xgap>[125X [27Xgr := JohnsonDigraph(4, 2);[127X[104X
-    [4X[28X<digraph with 6 vertices, 24 edges>[128X[104X
+    [4X[28X<immutable symmetric digraph with 6 vertices, 24 edges>[128X[104X
     [4X[25Xgap>[125X [27XOutNeighbours(gr);[127X[104X
     [4X[28X[ [ 2, 3, 4, 5 ], [ 1, 3, 4, 6 ], [ 1, 2, 5, 6 ], [ 1, 2, 5, 6 ], [128X[104X
     [4X[28X  [ 1, 3, 4, 6 ], [ 2, 3, 4, 5 ] ][128X[104X
     [4X[25Xgap>[125X [27XJohnsonDigraph(1, 0);[127X[104X
-    [4X[28X<digraph with 1 vertex, 0 edges>[128X[104X
+    [4X[28X<immutable empty digraph with 1 vertex>[128X[104X
+    [4X[25Xgap>[125X [27XJohnsonDigraph(IsMutableDigraph, 1, 0);[127X[104X
+    [4X[28X<mutable empty digraph with 1 vertex>[128X[104X
+  [4X[32X[104X
+  
+  [1X3.5-8 PetersenGraph[101X
+  
+  [33X[1;0Y[29X[2XPetersenGraph[102X( [[3Xfilt[103X] ) [32X operation[133X
+  [6XReturns:[106X  [33X[0;10YA digraph.[133X
+  
+  [33X[0;0YFrom [7Xhttps://en.wikipedia.org/wiki/Petersen_graph[107X:[133X
+  
+  [33X[0;0Y[21XThe  Petersen graph is an undirected graph with 10 vertices and 15 edges. It
+  is a small graph that serves as a useful example and counterexample for many
+  problems in graph theory. The Petersen graph is named after Julius Petersen,
+  who in 1898 constructed it to be the smallest bridgeless cubic graph with no
+  three-edge-coloring.[121X[133X
+  
+  [33X[0;0YIf the optional first argument [3Xfilt[103X is present, then this should specify the
+  category  or  representation  the  digraph being created will belong to. For
+  example, if [3Xfilt[103X is [2XIsMutableDigraph[102X ([14X3.1-2[114X), then the digraph being created
+  will  be  mutable,  if  [3Xfilt[103X is [2XIsImmutableDigraph[102X ([14X3.1-3[114X), then the digraph
+  will  be immutable. If the optional first argument [3Xfilt[103X is not present, then
+  [2XIsImmutableDigraph[102X ([14X3.1-3[114X) is used by default.[133X
+  
+  [33X[0;0YSee also [2XGeneralisedPetersenGraph[102X ([14X3.5-9[114X).[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27XChromaticNumber(PetersenGraph());[127X[104X
+    [4X[28X3[128X[104X
+    [4X[25Xgap>[125X [27XPetersenGraph(IsMutableDigraph);[127X[104X
+    [4X[28X<mutable digraph with 10 vertices, 30 edges>[128X[104X
+  [4X[32X[104X
+  
+  [1X3.5-9 GeneralisedPetersenGraph[101X
+  
+  [33X[1;0Y[29X[2XGeneralisedPetersenGraph[102X( [[3Xfilt[103X, ][3Xn[103X, [3Xk[103X ) [32X operation[133X
+  [6XReturns:[106X  [33X[0;10YA digraph.[133X
+  
+  [33X[0;0YIf  [3Xn[103X is a positive integer and [3Xk[103X is a non-negative integer less than [10X[3Xn[103X[10X / 2[110X,
+  then this operation returns the [13Xgeneralised Petersen graph[113X [22XGPG([3Xn[103X, k)[122X.[133X
+  
+  [33X[0;0YFrom [7Xhttps://en.wikipedia.org/wiki/Generalized_Petersen_graph[107X:[133X
+  
+  [33X[0;0Y[21XThe  generalized  Petersen  graphs  are  a  family of cubic graphs formed by
+  connecting  the  vertices of a regular polygon to the corresponding vertices
+  of a star polygon. They include the Petersen graph and generalize one of the
+  ways  of  constructing  the  Petersen  graph. The generalized Petersen graph
+  family  was introduced in 1950 by H. S. M. Coxeter and was given its name in
+  1969 by Mark Watkins.[121X[133X
+  
+  [33X[0;0YIf the optional first argument [3Xfilt[103X is present, then this should specify the
+  category  or  representation  the  digraph being created will belong to. For
+  example, if [3Xfilt[103X is [2XIsMutableDigraph[102X ([14X3.1-2[114X), then the digraph being created
+  will  be  mutable,  if  [3Xfilt[103X is [2XIsImmutableDigraph[102X ([14X3.1-3[114X), then the digraph
+  will  be immutable. If the optional first argument [3Xfilt[103X is not present, then
+  [2XIsImmutableDigraph[102X ([14X3.1-3[114X) is used by default.[133X
+  
+  [33X[0;0YSee also [2XPetersenGraph[102X ([14X3.5-8[114X).[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27XGeneralisedPetersenGraph(7, 2);[127X[104X
+    [4X[28X<immutable symmetric digraph with 14 vertices, 42 edges>[128X[104X
+    [4X[25Xgap>[125X [27XGeneralisedPetersenGraph(40, 1);[127X[104X
+    [4X[28X<immutable symmetric digraph with 80 vertices, 240 edges>[128X[104X
+    [4X[25Xgap>[125X [27XD := GeneralisedPetersenGraph(5, 2);[127X[104X
+    [4X[28X<immutable symmetric digraph with 10 vertices, 30 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsIsomorphicDigraph(D, PetersenGraph());[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XGeneralisedPetersenGraph(IsMutableDigraph, 9, 4);[127X[104X
+    [4X[28X<mutable digraph with 18 vertices, 54 edges>[128X[104X
   [4X[32X[104X
   

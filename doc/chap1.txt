@@ -4,8 +4,8 @@
   
   [1X1.1 [33X[0;0YIntroduction[133X[101X
   
-  [33X[0;0YThis is the manual for the [5XDigraphs[105X package version 0.15.3. This package was
-  developed at the University of St Andrews by:[133X
+  [33X[0;0YThis  is  the manual for version 1.1.1 of the [5XDigraphs[105X package. This package
+  was developed at the University of St Andrews by:[133X
   
   [30X    [33X[0;6YJan De Beule,[133X
   
@@ -21,24 +21,31 @@
   
   [30X    [33X[0;6YStuart Burrell,[133X
   
+  [30X    [33X[0;6YReinis Cirpons,[133X
+  
   [30X    [33X[0;6YLuke Elliott,[133X
+  
+  [30X    [33X[0;6YMax Horn,[133X
   
   [30X    [33X[0;6YChristopher Jefferson,[133X
   
   [30X    [33X[0;6YMarkus Pfeiffer,[133X
   
-  [30X    [33X[0;6YChris Russell, and[133X
+  [30X    [33X[0;6YChris Russell,[133X
   
-  [30X    [33X[0;6YFinn Smith.[133X
+  [30X    [33X[0;6YFinn Smith, and[133X
+  
+  [30X    [33X[0;6YMurray Whyte.[133X
   
   [33X[0;0YThe  [5XDigraphs[105X package contains a variety of methods for efficiently creating
-  and storing digraphs and computing information about them. Full explanations
-  of all the functions contained in the package are provided below.[133X
+  and  storing  mutable and immutable digraphs and computing information about
+  them.  Full  explanations  of all the functions contained in the package are
+  provided below.[133X
   
   [33X[0;0YIf the [5XGrape[105X package is available, it will be loaded automatically. Digraphs
   created  with  the  [5XDigraphs[105X  package  can be converted to [5XGrape[105X graphs with
   [2XGraph[102X  ([14X3.2-3[114X),  and  conversely  [5XGrape[105X  graphs can be converted to [5XDigraphs[105X
-  objects with [2XDigraph[102X ([14X3.1-5[114X). [5XGrape[105X is not required for [5XDigraphs[105X to run.[133X
+  objects with [2XDigraph[102X ([14X3.1-7[114X). [5XGrape[105X is not required for [5XDigraphs[105X to run.[133X
   
   [33X[0;0YThe [5Xbliss[105X tool [JK07] is included in this package. It is an open-source tool
   for  computing automorphism groups and canonical forms of graphs, written by
@@ -47,6 +54,21 @@
   available  then  it  is  also  possible  to  use  [5Xnauty[105X [MP14] for computing
   automorphism  groups  and  canonical  forms in [5XDigraphs[105X. See Section [14X7.2[114X for
   more details.[133X
+  
+  [33X[0;0YFrom  version  1.0.0  of  this  package,  digraphs  can be either mutable or
+  immutable.  Mutable  digraphs can be changed in-place by many of the methods
+  in  the package, which avoids unnecessary copying. Immutable digraphs cannot
+  be  changed  in-place, but their advantage is that the value of an attribute
+  of  an immutable digraph is only ever computed once. Mutable digraphs can be
+  converted  into  immutable digraphs in-place using [2XMakeImmutable[102X ([14XReference:
+  MakeImmutable[114X).  One  of the motivations for introducing mutable digraphs in
+  version  1.0.0  was  that  in  practice the authors often wanted to create a
+  digraph  and  immediately  modify  it (removing certain edges, loops, and so
+  on).  Before version 1.0.0, this involved copying the digraph several times,
+  with  each copy being discarded almost immediately. From version 1.0.0, this
+  unnecessary  copying  can be eliminated by first creating a mutable digraph,
+  then  changing it in-place, and finally converting the mutable digraph to an
+  immutable one in-place (if desirable).[133X
   
   
   [1X1.1-1 [33X[0;0YDefinitions[133X[101X

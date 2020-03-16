@@ -1,6 +1,6 @@
 name: Digraphs
-version: 0.15.3
-date: 2019-06-12
+version: 1.1.1
+date: 2020-01-29
 description: |
     Graphs, digraphs, and multidigraphs in GAP
 
@@ -8,23 +8,25 @@ authors:
     - name: Jan De Beule
       url: http://homepages.vub.ac.be/~jdbeule/
     - name: Julius Jonusas
-      url: http://julius.jonusas.work/
+      url: http://julius.jonusas.work
     - name: James Mitchell
-      url: http://goo.gl/ZtViV6
+      url: http://www-groups.mcs.st-andrews.ac.uk/~jamesm
     - name: Michael Torpey
-      url: http://www-groups.mcs.st-andrews.ac.uk/~mct25/
+      url: https://mtorpey.github.io
     - name: Wilf Wilson
       url: http://wilf.me
 
 maintainers:
     - name: James Mitchell
-      url: http://goo.gl/ZtViV6
+      url: http://www-groups.mcs.st-andrews.ac.uk/~jamesm
     - name: Wilf Wilson
       url: http://wilf.me
 
 contributors:
     - name: Stuart Burrell
       url: mailto:sb235@st-andrews.ac.uk
+    - name: Reinis Cirpons
+      url: mailto:rc234@st-andrews.ac.uk
     - name: Luke Elliott
       url: mailto:le27@st-andrews.ac.uk
     - name: Max Horn
@@ -32,7 +34,7 @@ contributors:
     - name: Christopher Jefferson
       url: http://caj.host.cs.st-andrews.ac.uk
     - name: Markus Pfeiffer
-      url: https://www.morphism.de/~markusp/
+      url: https://www.morphism.de/~markusp
     - name: Christopher Russell
       url: mailto:cr66@st-andrews.ac.uk
     - name: Finn Smith
@@ -67,7 +69,7 @@ packageinfo: https://gap-packages.github.io/Digraphs/PackageInfo.g
 
 downloads:
     - name: .tar.gz
-      url: https://github.com/gap-packages/Digraphs/releases/download/v0.15.3/digraphs-0.15.3.tar.gz
+      url: https://github.com/gap-packages/Digraphs/releases/download/v1.1.1/digraphs-1.1.1.tar.gz
 
 abstract: |
     The <b>Digraphs</b> package is a <b>GAP</b> package for digraphs and multidigraphs.

@@ -12,23 +12,31 @@
   [33X[0;0YReturns  [9Xtrue[109X  if the digraph [3Xdigraph[103X has loops, and [9Xfalse[109X if it does not. A
   loop is an edge with equal source and range.[133X
   
+  [33X[0;0YIf  the  argument [3Xdigraph[103X is mutable, then the return value of this property
+  is recomputed every time it is called.[133X
+  
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph([[1, 2], [2]]);[127X[104X
-    [4X[28X<digraph with 2 vertices, 3 edges>[128X[104X
-    [4X[25Xgap>[125X [27XDigraphEdges(gr);[127X[104X
+    [4X[25Xgap>[125X [27XD := Digraph([[1, 2], [2]]);[127X[104X
+    [4X[28X<immutable digraph with 2 vertices, 3 edges>[128X[104X
+    [4X[25Xgap>[125X [27XDigraphEdges(D);[127X[104X
     [4X[28X[ [ 1, 1 ], [ 1, 2 ], [ 2, 2 ] ][128X[104X
-    [4X[25Xgap>[125X [27XDigraphHasLoops(gr);[127X[104X
+    [4X[25Xgap>[125X [27XDigraphHasLoops(D);[127X[104X
     [4X[28Xtrue[128X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph([[2, 3], [1], [2]]);[127X[104X
-    [4X[28X<digraph with 3 vertices, 4 edges>[128X[104X
-    [4X[25Xgap>[125X [27XDigraphEdges(gr);[127X[104X
+    [4X[25Xgap>[125X [27XD := Digraph([[2, 3], [1], [2]]);[127X[104X
+    [4X[28X<immutable digraph with 3 vertices, 4 edges>[128X[104X
+    [4X[25Xgap>[125X [27XDigraphEdges(D);[127X[104X
     [4X[28X[ [ 1, 2 ], [ 1, 3 ], [ 2, 1 ], [ 3, 2 ] ][128X[104X
-    [4X[25Xgap>[125X [27XDigraphHasLoops(gr);[127X[104X
+    [4X[25Xgap>[125X [27XDigraphHasLoops(D);[127X[104X
+    [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27XD := CompleteDigraph(IsMutableDigraph, 4);[127X[104X
+    [4X[28X<mutable digraph with 4 vertices, 12 edges>[128X[104X
+    [4X[25Xgap>[125X [27XDigraphHasLoops(D);[127X[104X
     [4X[28Xfalse[128X[104X
   [4X[32X[104X
   
-  [1X6.1-2 IsAntisymmetricDigraph[101X
+  [1X6.1-2 IsAntiSymmetricDigraph[101X
   
+  [33X[1;0Y[29X[2XIsAntiSymmetricDigraph[102X( [3Xdigraph[103X ) [32X property[133X
   [33X[1;0Y[29X[2XIsAntisymmetricDigraph[102X( [3Xdigraph[103X ) [32X property[133X
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
   
@@ -39,15 +47,18 @@
   range  [10Xv[110X,  and  an edge with source [10Xv[110X and range [10Xu[110X, then the vertices [10Xu[110X and [10Xv[110X
   are equal.[133X
   
+  [33X[0;0YIf  the  argument [3Xdigraph[103X is mutable, then the return value of this property
+  is recomputed every time it is called.[133X
+  
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27Xgr1 := Digraph([[2], [1, 3], [2, 3]]);[127X[104X
-    [4X[28X<digraph with 3 vertices, 5 edges>[128X[104X
+    [4X[28X<immutable digraph with 3 vertices, 5 edges>[128X[104X
     [4X[25Xgap>[125X [27XIsAntisymmetricDigraph(gr1);[127X[104X
     [4X[28Xfalse[128X[104X
     [4X[25Xgap>[125X [27XDigraphEdges(gr1){[1, 2]};[127X[104X
     [4X[28X[ [ 1, 2 ], [ 2, 1 ] ][128X[104X
     [4X[25Xgap>[125X [27Xgr2 := Digraph([[1, 2], [3, 3], [1]]);[127X[104X
-    [4X[28X<multidigraph with 3 vertices, 5 edges>[128X[104X
+    [4X[28X<immutable multidigraph with 3 vertices, 5 edges>[128X[104X
     [4X[25Xgap>[125X [27XIsAntisymmetricDigraph(gr2);[127X[104X
     [4X[28Xtrue[128X[104X
     [4X[25Xgap>[125X [27XDigraphEdges(gr2);[127X[104X
@@ -63,19 +74,26 @@
   is not. A digraph is bipartite if and only if the vertices of [3Xdigraph[103X can be
   partitioned  into  two  non-empty sets such that the source and range of any
   edge  of  [3Xdigraph[103X lie in distinct sets. Equivalently, a digraph is bipartite
-  if and only if it is 2-colorable; see [2XDigraphGreedyColouring[102X ([14X7.3-14[114X).[133X
+  if and only if it is 2-colorable; see [2XDigraphGreedyColouring[102X ([14X7.3-15[114X).[133X
   
-  [33X[0;0YSee also [2XDigraphBicomponents[102X ([14X5.3-12[114X).[133X
+  [33X[0;0YSee also [2XDigraphBicomponents[102X ([14X5.3-13[114X).[133X
+  
+  [33X[0;0YIf  the  argument [3Xdigraph[103X is mutable, then the return value of this property
+  is recomputed every time it is called.[133X
   
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr := ChainDigraph(4);[127X[104X
-    [4X[28X<digraph with 4 vertices, 3 edges>[128X[104X
-    [4X[25Xgap>[125X [27XIsBipartiteDigraph(gr);[127X[104X
+    [4X[25Xgap>[125X [27XD := ChainDigraph(4);[127X[104X
+    [4X[28X<immutable chain digraph with 4 vertices>[128X[104X
+    [4X[25Xgap>[125X [27XIsBipartiteDigraph(D);[127X[104X
     [4X[28Xtrue[128X[104X
-    [4X[25Xgap>[125X [27Xgr := CycleDigraph(3);[127X[104X
-    [4X[28X<digraph with 3 vertices, 3 edges>[128X[104X
-    [4X[25Xgap>[125X [27XIsBipartiteDigraph(gr);[127X[104X
+    [4X[25Xgap>[125X [27XD := CycleDigraph(3);[127X[104X
+    [4X[28X<immutable cycle digraph with 3 vertices>[128X[104X
+    [4X[25Xgap>[125X [27XIsBipartiteDigraph(D);[127X[104X
     [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27XD := CompleteBipartiteDigraph(IsMutableDigraph, 5, 4);[127X[104X
+    [4X[28X<mutable digraph with 9 vertices, 40 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsBipartiteDigraph(D);[127X[104X
+    [4X[28Xtrue[128X[104X
   [4X[32X[104X
   
   [1X6.1-4 IsCompleteBipartiteDigraph[101X
@@ -89,24 +107,31 @@
   [33X[0;0YA  digraph  is  a  [13Xcomplete  bipartite  digraph[113X  if  it  is  bipartite,  see
   [2XIsBipartiteDigraph[102X ([14X6.1-3[114X), and there exists a unique edge with source [10Xi[110X and
   range [10Xj[110X if and only if [10Xi[110X and [10Xj[110X lie in different bicomponents of [3Xdigraph[103X, see
-  [2XDigraphBicomponents[102X ([14X5.3-12[114X).[133X
+  [2XDigraphBicomponents[102X ([14X5.3-13[114X).[133X
   
   [33X[0;0YEquivalently,  a  bipartite  digraph  with  bicomponents  of size [22Xm[122X and [22Xn[122X is
   complete precisely when it has [22X2mn[122X edges, none of which are multiple edges.[133X
   
   [33X[0;0YSee also [2XCompleteBipartiteDigraph[102X ([14X3.5-3[114X).[133X
   
+  [33X[0;0YIf  the  argument [3Xdigraph[103X is mutable, then the return value of this property
+  is recomputed every time it is called.[133X
+  
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr := CycleDigraph(2);[127X[104X
-    [4X[28X<digraph with 2 vertices, 2 edges>[128X[104X
-    [4X[25Xgap>[125X [27XIsCompleteBipartiteDigraph(gr);[127X[104X
+    [4X[25Xgap>[125X [27XD := CycleDigraph(2);[127X[104X
+    [4X[28X<immutable cycle digraph with 2 vertices>[128X[104X
+    [4X[25Xgap>[125X [27XIsCompleteBipartiteDigraph(D);[127X[104X
     [4X[28Xtrue[128X[104X
-    [4X[25Xgap>[125X [27Xgr := CycleDigraph(4);[127X[104X
-    [4X[28X<digraph with 4 vertices, 4 edges>[128X[104X
-    [4X[25Xgap>[125X [27XIsBipartiteDigraph(gr);[127X[104X
+    [4X[25Xgap>[125X [27XD := CycleDigraph(4);[127X[104X
+    [4X[28X<immutable cycle digraph with 4 vertices>[128X[104X
+    [4X[25Xgap>[125X [27XIsBipartiteDigraph(D);[127X[104X
     [4X[28Xtrue[128X[104X
-    [4X[25Xgap>[125X [27XIsCompleteBipartiteDigraph(gr);[127X[104X
+    [4X[25Xgap>[125X [27XIsCompleteBipartiteDigraph(D);[127X[104X
     [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27XD := CompleteBipartiteDigraph(IsMutableDigraph, 5, 4);[127X[104X
+    [4X[28X<mutable digraph with 9 vertices, 40 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsCompleteBipartiteDigraph(D);[127X[104X
+    [4X[28Xtrue[128X[104X
   [4X[32X[104X
   
   [1X6.1-5 IsCompleteDigraph[101X
@@ -121,18 +146,52 @@
   digraph with [22Xn[122X vertices is complete precisely when it has [22Xn(n - 1)[122X edges, no
   loops, and no multiple edges.[133X
   
+  [33X[0;0YIf  the  argument [3Xdigraph[103X is mutable, then the return value of this property
+  is recomputed every time it is called.[133X
+  
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph([[2, 3], [1, 3], [1, 2]]);[127X[104X
-    [4X[28X<digraph with 3 vertices, 6 edges>[128X[104X
-    [4X[25Xgap>[125X [27XIsCompleteDigraph(gr);[127X[104X
+    [4X[25Xgap>[125X [27XD := Digraph([[2, 3], [1, 3], [1, 2]]);[127X[104X
+    [4X[28X<immutable digraph with 3 vertices, 6 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsCompleteDigraph(D);[127X[104X
     [4X[28Xtrue[128X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph([[2, 2], [1]]);[127X[104X
-    [4X[28X<multidigraph with 2 vertices, 3 edges>[128X[104X
-    [4X[25Xgap>[125X [27XIsCompleteDigraph(gr);[127X[104X
+    [4X[25Xgap>[125X [27XD := Digraph([[2, 2], [1]]);[127X[104X
+    [4X[28X<immutable multidigraph with 2 vertices, 3 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsCompleteDigraph(D);[127X[104X
+    [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27XD := CompleteBipartiteDigraph(IsMutableDigraph, 5, 4);[127X[104X
+    [4X[28X<mutable digraph with 9 vertices, 40 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsCompleteDigraph(D);[127X[104X
     [4X[28Xfalse[128X[104X
   [4X[32X[104X
   
-  [1X6.1-6 IsEmptyDigraph[101X
+  [1X6.1-6 IsCompleteMultipartiteDigraph[101X
+  
+  [33X[1;0Y[29X[2XIsCompleteMultipartiteDigraph[102X( [3Xdigraph[103X ) [32X property[133X
+  [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
+  
+  [33X[0;0YThis  property  returns  [9Xtrue[109X if [3Xdigraph[103X is a complete multipartite digraph,
+  and [9Xfalse[109X if not.[133X
+  
+  [33X[0;0YA digraph is a [13Xcomplete multipartite digraph[113X if and only if its vertices can
+  be  partitioned  into  at  least  two  maximal independent sets, where every
+  possible  edge  between these independent sets occurs in the digraph exactly
+  once.[133X
+  
+  [33X[0;0YIf  the  argument [3Xdigraph[103X is mutable, then the return value of this property
+  is recomputed every time it is called.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27XD := CompleteMultipartiteDigraph([2, 4, 6]);[127X[104X
+    [4X[28X<immutable complete multipartite digraph with 12 vertices, 88 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsCompleteMultipartiteDigraph(D);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XD := CompleteBipartiteDigraph(IsMutableDigraph, 5, 4);[127X[104X
+    [4X[28X<mutable digraph with 9 vertices, 40 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsCompleteMultipartiteDigraph(D);[127X[104X
+    [4X[28Xtrue[128X[104X
+  [4X[32X[104X
+  
+  [1X6.1-7 IsEmptyDigraph[101X
   
   [33X[1;0Y[29X[2XIsEmptyDigraph[102X( [3Xdigraph[103X ) [32X property[133X
   [33X[1;0Y[29X[2XIsNullDigraph[102X( [3Xdigraph[103X ) [32X property[133X
@@ -143,22 +202,45 @@
   
   [33X[0;0Y[10XIsNullDigraph[110X is a synonym for [10XIsEmptyDigraph[110X.[133X
   
+  [33X[0;0YIf  the  argument [3Xdigraph[103X is mutable, then the return value of this property
+  is recomputed every time it is called.[133X
+  
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph([[], []]);[127X[104X
-    [4X[28X<digraph with 2 vertices, 0 edges>[128X[104X
-    [4X[25Xgap>[125X [27XIsEmptyDigraph(gr);[127X[104X
+    [4X[25Xgap>[125X [27XD := Digraph([[], []]);[127X[104X
+    [4X[28X<immutable empty digraph with 2 vertices>[128X[104X
+    [4X[25Xgap>[125X [27XIsEmptyDigraph(D);[127X[104X
     [4X[28Xtrue[128X[104X
-    [4X[25Xgap>[125X [27XIsNullDigraph(gr);[127X[104X
+    [4X[25Xgap>[125X [27XIsNullDigraph(D);[127X[104X
     [4X[28Xtrue[128X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph([[], [1]]);[127X[104X
-    [4X[28X<digraph with 2 vertices, 1 edge>[128X[104X
-    [4X[25Xgap>[125X [27XIsEmptyDigraph(gr);[127X[104X
+    [4X[25Xgap>[125X [27XD := Digraph([[], [1]]);[127X[104X
+    [4X[28X<immutable digraph with 2 vertices, 1 edge>[128X[104X
+    [4X[25Xgap>[125X [27XIsEmptyDigraph(D);[127X[104X
     [4X[28Xfalse[128X[104X
-    [4X[25Xgap>[125X [27XIsNullDigraph(gr);[127X[104X
+    [4X[25Xgap>[125X [27XIsNullDigraph(D);[127X[104X
     [4X[28Xfalse[128X[104X
   [4X[32X[104X
   
-  [1X6.1-7 IsFunctionalDigraph[101X
+  [1X6.1-8 IsEquivalenceDigraph[101X
+  
+  [33X[1;0Y[29X[2XIsEquivalenceDigraph[102X( [3Xdigraph[103X ) [32X property[133X
+  [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
+  
+  [33X[0;0YA  digraph  is  an equivalence digraph if and only if the digraph satisifies
+  all   of   [2XIsReflexiveDigraph[102X   ([14X6.1-11[114X),  [2XIsSymmetricDigraph[102X  ([14X6.1-12[114X)  and
+  [2XIsTransitiveDigraph[102X  ([14X6.1-14[114X).  A  partial  order  [3Xdigraph[103X corresponds to an
+  equivalence relation.[133X
+  
+  [33X[0;0YIf  the  argument [3Xdigraph[103X is mutable, then the return value of this property
+  is recomputed every time it is called.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27XD := Digraph([[1, 3], [2], [1, 3]]);[127X[104X
+    [4X[28X<immutable digraph with 3 vertices, 5 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsEquivalenceDigraph(D);[127X[104X
+    [4X[28Xtrue[128X[104X
+  [4X[32X[104X
+  
+  [1X6.1-9 IsFunctionalDigraph[101X
   
   [33X[1;0Y[29X[2XIsFunctionalDigraph[102X( [3Xdigraph[103X ) [32X property[133X
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
@@ -167,22 +249,25 @@
   
   [33X[0;0YA digraph is [13Xfunctional[113X if every vertex is the source of a unique edge.[133X
   
+  [33X[0;0YIf  the  argument [3Xdigraph[103X is mutable, then the return value of this property
+  is recomputed every time it is called.[133X
+  
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27Xgr1 := Digraph([[3], [2], [2], [1], [6], [5]]);[127X[104X
-    [4X[28X<digraph with 6 vertices, 6 edges>[128X[104X
+    [4X[28X<immutable digraph with 6 vertices, 6 edges>[128X[104X
     [4X[25Xgap>[125X [27XIsFunctionalDigraph(gr1);[127X[104X
     [4X[28Xtrue[128X[104X
     [4X[25Xgap>[125X [27Xgr2 := Digraph([[1, 2], [1]]);[127X[104X
-    [4X[28X<digraph with 2 vertices, 3 edges>[128X[104X
+    [4X[28X<immutable digraph with 2 vertices, 3 edges>[128X[104X
     [4X[25Xgap>[125X [27XIsFunctionalDigraph(gr2);[127X[104X
     [4X[28Xfalse[128X[104X
     [4X[25Xgap>[125X [27Xgr3 := Digraph(3, [1, 2, 3], [2, 3, 1]);[127X[104X
-    [4X[28X<digraph with 3 vertices, 3 edges>[128X[104X
+    [4X[28X<immutable digraph with 3 vertices, 3 edges>[128X[104X
     [4X[25Xgap>[125X [27XIsFunctionalDigraph(gr3);[127X[104X
     [4X[28Xtrue[128X[104X
   [4X[32X[104X
   
-  [1X6.1-8 IsMultiDigraph[101X
+  [1X6.1-10 IsMultiDigraph[101X
   
   [33X[1;0Y[29X[2XIsMultiDigraph[102X( [3Xdigraph[103X ) [32X property[133X
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
@@ -190,26 +275,33 @@
   [33X[0;0YA  [13Xmultidigraph[113X  is  one  that  has at least two edges with equal source and
   range.[133X
   
+  [33X[0;0YIf  the  argument [3Xdigraph[103X is mutable, then the return value of this property
+  is recomputed every time it is called.[133X
+  
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph(["a", "b", "c"], ["a", "b", "b"], ["b", "c", "a"]);[127X[104X
-    [4X[28X<digraph with 3 vertices, 3 edges>[128X[104X
-    [4X[25Xgap>[125X [27XIsMultiDigraph(gr);[127X[104X
+    [4X[25Xgap>[125X [27XD := Digraph(["a", "b", "c"], ["a", "b", "b"], ["b", "c", "a"]);[127X[104X
+    [4X[28X<immutable digraph with 3 vertices, 3 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsMultiDigraph(D);[127X[104X
     [4X[28Xfalse[128X[104X
-    [4X[25Xgap>[125X [27Xgr := DigraphFromDigraph6String("&Bug");[127X[104X
-    [4X[28X<digraph with 3 vertices, 6 edges>[128X[104X
-    [4X[25Xgap>[125X [27XIsDuplicateFree(DigraphEdges(gr));[127X[104X
+    [4X[25Xgap>[125X [27XD := DigraphFromDigraph6String("&Bug");[127X[104X
+    [4X[28X<immutable digraph with 3 vertices, 6 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsDuplicateFree(DigraphEdges(D));[127X[104X
     [4X[28Xtrue[128X[104X
-    [4X[25Xgap>[125X [27XIsMultiDigraph(gr);[127X[104X
+    [4X[25Xgap>[125X [27XIsMultiDigraph(D);[127X[104X
     [4X[28Xfalse[128X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph([[1, 2, 3, 2], [2, 1], [3]]);[127X[104X
-    [4X[28X<multidigraph with 3 vertices, 7 edges>[128X[104X
-    [4X[25Xgap>[125X [27XIsDuplicateFree(DigraphEdges(gr));[127X[104X
+    [4X[25Xgap>[125X [27XD := Digraph([[1, 2, 3, 2], [2, 1], [3]]);[127X[104X
+    [4X[28X<immutable multidigraph with 3 vertices, 7 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsDuplicateFree(DigraphEdges(D));[127X[104X
     [4X[28Xfalse[128X[104X
-    [4X[25Xgap>[125X [27XIsMultiDigraph(gr);[127X[104X
+    [4X[25Xgap>[125X [27XIsMultiDigraph(D);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XD := DigraphMutableCopy(D); [127X[104X
+    [4X[28X<mutable multidigraph with 3 vertices, 7 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsMultiDigraph(D);[127X[104X
     [4X[28Xtrue[128X[104X
   [4X[32X[104X
   
-  [1X6.1-9 IsReflexiveDigraph[101X
+  [1X6.1-11 IsReflexiveDigraph[101X
   
   [33X[1;0Y[29X[2XIsReflexiveDigraph[102X( [3Xdigraph[103X ) [32X property[133X
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
@@ -217,18 +309,21 @@
   [33X[0;0YThis  property  is [9Xtrue[109X if the digraph [3Xdigraph[103X is reflexive, and [9Xfalse[109X if it
   is not. A digraph is [13Xreflexive[113X if it has a loop at every vertex.[133X
   
+  [33X[0;0YIf  the  argument [3Xdigraph[103X is mutable, then the return value of this property
+  is recomputed every time it is called.[133X
+  
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph([[1, 2], [2]]);[127X[104X
-    [4X[28X<digraph with 2 vertices, 3 edges>[128X[104X
-    [4X[25Xgap>[125X [27XIsReflexiveDigraph(gr);[127X[104X
+    [4X[25Xgap>[125X [27XD := Digraph([[1, 2], [2]]);[127X[104X
+    [4X[28X<immutable digraph with 2 vertices, 3 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsReflexiveDigraph(D);[127X[104X
     [4X[28Xtrue[128X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph([[3, 1], [4, 2], [3], [2, 1]]);[127X[104X
-    [4X[28X<digraph with 4 vertices, 7 edges>[128X[104X
-    [4X[25Xgap>[125X [27XIsReflexiveDigraph(gr);[127X[104X
+    [4X[25Xgap>[125X [27XD := Digraph([[3, 1], [4, 2], [3], [2, 1]]);[127X[104X
+    [4X[28X<immutable digraph with 4 vertices, 7 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsReflexiveDigraph(D);[127X[104X
     [4X[28Xfalse[128X[104X
   [4X[32X[104X
   
-  [1X6.1-10 IsSymmetricDigraph[101X
+  [1X6.1-12 IsSymmetricDigraph[101X
   
   [33X[1;0Y[29X[2XIsSymmetricDigraph[102X( [3Xdigraph[103X ) [32X property[133X
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
@@ -242,9 +337,12 @@
   with  source  [10Xv[110X  and  range  [10Xu[110X.  In  other  words, a symmetric digraph has a
   symmetric adjacency matrix [2XAdjacencyMatrix[102X ([14X5.2-1[114X).[133X
   
+  [33X[0;0YIf  the  argument [3Xdigraph[103X is mutable, then the return value of this property
+  is recomputed every time it is called.[133X
+  
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27Xgr1 := Digraph([[2], [1, 3], [2, 3]]);[127X[104X
-    [4X[28X<digraph with 3 vertices, 5 edges>[128X[104X
+    [4X[28X<immutable digraph with 3 vertices, 5 edges>[128X[104X
     [4X[25Xgap>[125X [27XIsSymmetricDigraph(gr1);[127X[104X
     [4X[28Xtrue[128X[104X
     [4X[25Xgap>[125X [27Xadj1 := AdjacencyMatrix(gr1);;[127X[104X
@@ -257,7 +355,7 @@
     [4X[25Xgap>[125X [27Xgr1 = DigraphReverse(gr1);[127X[104X
     [4X[28Xtrue[128X[104X
     [4X[25Xgap>[125X [27Xgr2 := Digraph([[2, 3], [1, 3], [2, 3]]);[127X[104X
-    [4X[28X<digraph with 3 vertices, 6 edges>[128X[104X
+    [4X[28X<immutable digraph with 3 vertices, 6 edges>[128X[104X
     [4X[25Xgap>[125X [27XIsSymmetricDigraph(gr2);[127X[104X
     [4X[28Xfalse[128X[104X
     [4X[25Xgap>[125X [27Xadj2 := AdjacencyMatrix(gr2);;[127X[104X
@@ -269,7 +367,7 @@
     [4X[28Xfalse[128X[104X
   [4X[32X[104X
   
-  [1X6.1-11 IsTournament[101X
+  [1X6.1-13 IsTournament[101X
   
   [33X[1;0Y[29X[2XIsTournament[102X( [3Xdigraph[103X ) [32X property[133X
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
@@ -281,18 +379,29 @@
   Specifically, a tournament is a digraph which has a unique directed edge (of
   some orientation) between any pair of distinct vertices, and no loops.[133X
   
+  [33X[0;0YIf  the  argument [3Xdigraph[103X is mutable, then the return value of this property
+  is recomputed every time it is called.[133X
+  
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph([[2, 3, 4], [3, 4], [4], []]);[127X[104X
-    [4X[28X<digraph with 4 vertices, 6 edges>[128X[104X
-    [4X[25Xgap>[125X [27XIsTournament(gr);[127X[104X
+    [4X[25Xgap>[125X [27XD := Digraph([[2, 3, 4], [3, 4], [4], []]);[127X[104X
+    [4X[28X<immutable digraph with 4 vertices, 6 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsTournament(D);[127X[104X
     [4X[28Xtrue[128X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph([[2], [1], [3]]);[127X[104X
-    [4X[28X<digraph with 3 vertices, 3 edges>[128X[104X
-    [4X[25Xgap>[125X [27XIsTournament(gr);[127X[104X
+    [4X[25Xgap>[125X [27XD := Digraph([[2], [1], [3]]);[127X[104X
+    [4X[28X<immutable digraph with 3 vertices, 3 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsTournament(D);[127X[104X
+    [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27XD := CycleDigraph(IsMutableDigraph, 3);[127X[104X
+    [4X[28X<mutable digraph with 3 vertices, 3 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsTournament(D);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XDigraphRemoveEdge(D, 1, 2);[127X[104X
+    [4X[28X<mutable digraph with 3 vertices, 2 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsTournament(D);[127X[104X
     [4X[28Xfalse[128X[104X
   [4X[32X[104X
   
-  [1X6.1-12 IsTransitiveDigraph[101X
+  [1X6.1-14 IsTransitiveDigraph[101X
   
   [33X[1;0Y[29X[2XIsTransitiveDigraph[102X( [3Xdigraph[103X ) [32X property[133X
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
@@ -308,80 +417,89 @@
   [[2XDigraphTopologicalSort[102X ([14X5.1-7[114X)], then methods with complexity [22XO(m + n + m ⋅
   n)[122X will be used when appropriate.[133X
   
+  [33X[0;0YIf  the  argument [3Xdigraph[103X is mutable, then the return value of this property
+  is recomputed every time it is called.[133X
+  
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph([[1, 2], [3], [3]]);[127X[104X
-    [4X[28X<digraph with 3 vertices, 4 edges>[128X[104X
-    [4X[25Xgap>[125X [27XIsTransitiveDigraph(gr);[127X[104X
+    [4X[25Xgap>[125X [27XD := Digraph([[1, 2], [3], [3]]);[127X[104X
+    [4X[28X<immutable digraph with 3 vertices, 4 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsTransitiveDigraph(D);[127X[104X
     [4X[28Xfalse[128X[104X
     [4X[25Xgap>[125X [27Xgr2 := Digraph([[1, 2, 3], [3], [3]]);[127X[104X
-    [4X[28X<digraph with 3 vertices, 5 edges>[128X[104X
+    [4X[28X<immutable digraph with 3 vertices, 5 edges>[128X[104X
     [4X[25Xgap>[125X [27XIsTransitiveDigraph(gr2);[127X[104X
     [4X[28Xtrue[128X[104X
-    [4X[25Xgap>[125X [27Xgr2 = DigraphTransitiveClosure(gr);[127X[104X
+    [4X[25Xgap>[125X [27Xgr2 = DigraphTransitiveClosure(D);[127X[104X
     [4X[28Xtrue[128X[104X
     [4X[25Xgap>[125X [27Xgr3 := Digraph([[1, 2, 2, 3], [3, 3], [3]]);[127X[104X
-    [4X[28X<multidigraph with 3 vertices, 7 edges>[128X[104X
+    [4X[28X<immutable multidigraph with 3 vertices, 7 edges>[128X[104X
     [4X[25Xgap>[125X [27XIsTransitiveDigraph(gr3);[127X[104X
     [4X[28Xtrue[128X[104X
   [4X[32X[104X
   
-  [1X6.1-13 IsPreorderDigraph[101X
+  [1X6.1-15 IsPreorderDigraph[101X
   
   [33X[1;0Y[29X[2XIsPreorderDigraph[102X( [3Xdigraph[103X ) [32X property[133X
   [33X[1;0Y[29X[2XIsQuasiorderDigraph[102X( [3Xdigraph[103X ) [32X property[133X
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
   
   [33X[0;0YA  digraph  is a preorder digraph if and only if the digraph satisifies both
-  [2XIsReflexiveDigraph[102X  ([14X6.1-9[114X)  and  [2XIsTransitiveDigraph[102X  ([14X6.1-12[114X).  A preorder
+  [2XIsReflexiveDigraph[102X  ([14X6.1-11[114X)  and  [2XIsTransitiveDigraph[102X  ([14X6.1-14[114X). A preorder
   digraph (or quasiorder digraph) [3Xdigraph[103X corresponds to the preorder relation
   [22X≤[122X defined by [22Xx ≤ y[122X if and only if [10X[x, y][110X is an edge of [3Xdigraph[103X.[133X
   
+  [33X[0;0YIf  the  argument [3Xdigraph[103X is mutable, then the return value of this property
+  is recomputed every time it is called.[133X
+  
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph([[1], [2, 3], [2, 3]]);[127X[104X
-    [4X[28X<digraph with 3 vertices, 5 edges>[128X[104X
-    [4X[25Xgap>[125X [27XIsPreorderDigraph(gr);[127X[104X
+    [4X[25Xgap>[125X [27XD := Digraph([[1], [2, 3], [2, 3]]);[127X[104X
+    [4X[28X<immutable digraph with 3 vertices, 5 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsPreorderDigraph(D);[127X[104X
     [4X[28Xtrue[128X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph([[1 .. 4], [1 .. 4], [1 .. 4], [1 .. 4]]);[127X[104X
-    [4X[28X<digraph with 4 vertices, 16 edges>[128X[104X
-    [4X[25Xgap>[125X [27XIsPreorderDigraph(gr);[127X[104X
+    [4X[25Xgap>[125X [27XD := Digraph([[1 .. 4], [1 .. 4], [1 .. 4], [1 .. 4]]);[127X[104X
+    [4X[28X<immutable digraph with 4 vertices, 16 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsPreorderDigraph(D);[127X[104X
     [4X[28Xtrue[128X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph([[2], [3], [4], [5], [1]]);[127X[104X
-    [4X[28X<digraph with 5 vertices, 5 edges>[128X[104X
-    [4X[25Xgap>[125X [27XIsPreorderDigraph(gr);[127X[104X
+    [4X[25Xgap>[125X [27XD := Digraph([[2], [3], [4], [5], [1]]);[127X[104X
+    [4X[28X<immutable digraph with 5 vertices, 5 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsPreorderDigraph(D);[127X[104X
     [4X[28Xfalse[128X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph([[1], [1, 2], [2, 3]]);[127X[104X
-    [4X[28X<digraph with 3 vertices, 5 edges>[128X[104X
-    [4X[25Xgap>[125X [27XIsPreorderDigraph(gr);[127X[104X
+    [4X[25Xgap>[125X [27XD := Digraph([[1], [1, 2], [2, 3]]);[127X[104X
+    [4X[28X<immutable digraph with 3 vertices, 5 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsQuasiorderDigraph(D);[127X[104X
     [4X[28Xfalse[128X[104X
   [4X[32X[104X
   
-  [1X6.1-14 IsPartialOrderDigraph[101X
+  [1X6.1-16 IsPartialOrderDigraph[101X
   
   [33X[1;0Y[29X[2XIsPartialOrderDigraph[102X( [3Xdigraph[103X ) [32X property[133X
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
   
   [33X[0;0YA  digraph  is a partial order digraph if and only if the digraph satisifies
-  all   of  [2XIsReflexiveDigraph[102X  ([14X6.1-9[114X),  [2XIsAntisymmetricDigraph[102X  ([14X6.1-2[114X)  and
-  [2XIsTransitiveDigraph[102X  ([14X6.1-12[114X).  A  partial  order [3Xdigraph[103X corresponds to the
+  all  of  [2XIsReflexiveDigraph[102X  ([14X6.1-11[114X),  [2XIsAntisymmetricDigraph[102X  ([14X6.1-2[114X)  and
+  [2XIsTransitiveDigraph[102X  ([14X6.1-14[114X).  A  partial  order [3Xdigraph[103X corresponds to the
   partial  order  relation [22X≤[122X defined by [22Xx ≤ y[122X if and only if [10X[x, y][110X is an edge
   of [3Xdigraph[103X.[133X
   
+  [33X[0;0YIf  the  argument [3Xdigraph[103X is mutable, then the return value of this property
+  is recomputed every time it is called.[133X
+  
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph([[1, 3], [2, 3], [3]]);[127X[104X
-    [4X[28X<digraph with 3 vertices, 5 edges>[128X[104X
-    [4X[25Xgap>[125X [27XIsPartialOrderDigraph(gr);[127X[104X
+    [4X[25Xgap>[125X [27XD := Digraph([[1, 3], [2, 3], [3]]);[127X[104X
+    [4X[28X<immutable digraph with 3 vertices, 5 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsPartialOrderDigraph(D);[127X[104X
     [4X[28Xtrue[128X[104X
-    [4X[25Xgap>[125X [27Xgr := CycleDigraph(5);[127X[104X
-    [4X[28X<digraph with 5 vertices, 5 edges>[128X[104X
-    [4X[25Xgap>[125X [27XIsPartialOrderDigraph(gr);[127X[104X
+    [4X[25Xgap>[125X [27XD := CycleDigraph(5);[127X[104X
+    [4X[28X<immutable cycle digraph with 5 vertices>[128X[104X
+    [4X[25Xgap>[125X [27XIsPartialOrderDigraph(D);[127X[104X
     [4X[28Xfalse[128X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph([[1, 1], [1, 1, 2], [3], [3, 3, 4, 4]]);[127X[104X
-    [4X[28X<multidigraph with 4 vertices, 10 edges>[128X[104X
-    [4X[25Xgap>[125X [27XIsPartialOrderDigraph(gr);[127X[104X
+    [4X[25Xgap>[125X [27XD := Digraph([[1, 1], [1, 1, 2], [3], [3, 3, 4, 4]]);[127X[104X
+    [4X[28X<immutable multidigraph with 4 vertices, 10 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsPartialOrderDigraph(D);[127X[104X
     [4X[28Xtrue[128X[104X
   [4X[32X[104X
   
-  [1X6.1-15 IsMeetSemilatticeDigraph[101X
+  [1X6.1-17 IsMeetSemilatticeDigraph[101X
   
   [33X[1;0Y[29X[2XIsMeetSemilatticeDigraph[102X( [3Xdigraph[103X ) [32X property[133X
   [33X[1;0Y[29X[2XIsJoinSemilatticeDigraph[102X( [3Xdigraph[103X ) [32X property[133X
@@ -393,7 +511,7 @@
   a join semilattice; and [10XIsLatticeDigraph[110X returns [9Xtrue[109X if the digraph [3Xdigraph[103X
   is both a meet and a join semilattice.[133X
   
-  [33X[0;0YFor a partial order digraph [2XIsPartialOrderDigraph[102X ([14X6.1-14[114X) the corresponding
+  [33X[0;0YFor a partial order digraph [2XIsPartialOrderDigraph[102X ([14X6.1-16[114X) the corresponding
   partial  order  is the relation [22X≤[122X, defined by [22Xx ≤ y[122X if and only if [10X[x, y][110X is
   an  edge. A digraph is a [13Xmeet semilattice[113X if it is a partial order and every
   pair  of  vertices  has  a  greatest  lower bound (meet) with respect to the
@@ -401,39 +519,42 @@
   pair  of  vertices  has  a  least  upper  bound  (join)  with respect to the
   relation.[133X
   
+  [33X[0;0YIf  the  argument [3Xdigraph[103X is mutable, then the return value of this property
+  is recomputed every time it is called.[133X
+  
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph([[1, 3], [2, 3], [3]]);[127X[104X
-    [4X[28X<digraph with 3 vertices, 5 edges>[128X[104X
-    [4X[25Xgap>[125X [27XIsMeetSemilatticeDigraph(gr);[127X[104X
+    [4X[25Xgap>[125X [27XD := Digraph([[1, 3], [2, 3], [3]]);[127X[104X
+    [4X[28X<immutable digraph with 3 vertices, 5 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsMeetSemilatticeDigraph(D);[127X[104X
     [4X[28Xfalse[128X[104X
-    [4X[25Xgap>[125X [27XIsJoinSemilatticeDigraph(gr);[127X[104X
+    [4X[25Xgap>[125X [27XIsJoinSemilatticeDigraph(D);[127X[104X
     [4X[28Xtrue[128X[104X
-    [4X[25Xgap>[125X [27XIsLatticeDigraph(gr);[127X[104X
+    [4X[25Xgap>[125X [27XIsLatticeDigraph(D);[127X[104X
     [4X[28Xfalse[128X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph([[1], [2], [1 .. 3]]);[127X[104X
-    [4X[28X<digraph with 3 vertices, 5 edges>[128X[104X
-    [4X[25Xgap>[125X [27XIsJoinSemilatticeDigraph(gr);[127X[104X
+    [4X[25Xgap>[125X [27XD := Digraph([[1], [2], [1 .. 3]]);[127X[104X
+    [4X[28X<immutable digraph with 3 vertices, 5 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsJoinSemilatticeDigraph(D);[127X[104X
     [4X[28Xfalse[128X[104X
-    [4X[25Xgap>[125X [27XIsMeetSemilatticeDigraph(gr);[127X[104X
+    [4X[25Xgap>[125X [27XIsMeetSemilatticeDigraph(D);[127X[104X
     [4X[28Xtrue[128X[104X
-    [4X[25Xgap>[125X [27XIsLatticeDigraph(gr);[127X[104X
+    [4X[25Xgap>[125X [27XIsLatticeDigraph(D);[127X[104X
     [4X[28Xfalse[128X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph([[1 .. 4], [2, 4], [3, 4], [4]]);[127X[104X
-    [4X[28X<digraph with 4 vertices, 9 edges>[128X[104X
-    [4X[25Xgap>[125X [27XIsMeetSemilatticeDigraph(gr);[127X[104X
+    [4X[25Xgap>[125X [27XD := Digraph([[1 .. 4], [2, 4], [3, 4], [4]]);[127X[104X
+    [4X[28X<immutable digraph with 4 vertices, 9 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsMeetSemilatticeDigraph(D);[127X[104X
     [4X[28Xtrue[128X[104X
-    [4X[25Xgap>[125X [27XIsJoinSemilatticeDigraph(gr);[127X[104X
+    [4X[25Xgap>[125X [27XIsJoinSemilatticeDigraph(D);[127X[104X
     [4X[28Xtrue[128X[104X
-    [4X[25Xgap>[125X [27XIsLatticeDigraph(gr);[127X[104X
+    [4X[25Xgap>[125X [27XIsLatticeDigraph(D);[127X[104X
     [4X[28Xtrue[128X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph([[1, 1, 1], [1, 1, 2, 2],[127X[104X
+    [4X[25Xgap>[125X [27XD := Digraph([[1, 1, 1], [1, 1, 2, 2],[127X[104X
     [4X[25X>[125X [27X                  [1, 3, 3], [1, 2, 3, 3, 4]]);[127X[104X
-    [4X[28X<multidigraph with 4 vertices, 15 edges>[128X[104X
-    [4X[25Xgap>[125X [27XIsMeetSemilatticeDigraph(gr);[127X[104X
+    [4X[28X<immutable multidigraph with 4 vertices, 15 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsMeetSemilatticeDigraph(D);[127X[104X
     [4X[28Xtrue[128X[104X
-    [4X[25Xgap>[125X [27XIsJoinSemilatticeDigraph(gr);[127X[104X
+    [4X[25Xgap>[125X [27XIsJoinSemilatticeDigraph(D);[127X[104X
     [4X[28Xtrue[128X[104X
-    [4X[25Xgap>[125X [27XIsLatticeDigraph(gr);[127X[104X
+    [4X[25Xgap>[125X [27XIsLatticeDigraph(D);[127X[104X
     [4X[28Xtrue[128X[104X
   [4X[32X[104X
   
@@ -449,6 +570,9 @@
   of  digraph  [3Xdigraph[103X  there  are  exactly [10Xn[110X edges terminating in [10Xv[110X. See also
   [2XIsOutRegularDigraph[102X ([14X6.2-2[114X) and [2XIsRegularDigraph[102X ([14X6.2-3[114X).[133X
   
+  [33X[0;0YIf  the  argument [3Xdigraph[103X is mutable, then the return value of this property
+  is recomputed every time it is called.[133X
+  
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27XIsInRegularDigraph(CompleteDigraph(4));[127X[104X
     [4X[28Xtrue[128X[104X
@@ -462,8 +586,12 @@
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
   
   [33X[0;0YThis  property is [9Xtrue[109X if there is an integer [10Xn[110X such that for every vertex [10Xv[110X
-  of  digraph  [3Xdigraph[103X  there  are  exactly  [10Xn[110X  edges  starting at [10Xv[110X. See also
-  [2XIsInRegularDigraph[102X ([14X6.2-1[114X) and [2XIsRegularDigraph[102X ([14X6.2-3[114X).[133X
+  of digraph [3Xdigraph[103X there are exactly [10Xn[110X edges starting at [10Xv[110X.[133X
+  
+  [33X[0;0YSee also [2XIsInRegularDigraph[102X ([14X6.2-1[114X) and [2XIsRegularDigraph[102X ([14X6.2-3[114X).[133X
+  
+  [33X[0;0YIf  the  argument [3Xdigraph[103X is mutable, then the return value of this property
+  is recomputed every time it is called.[133X
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27XIsOutRegularDigraph(CompleteDigraph(4));[127X[104X
@@ -482,6 +610,9 @@
   In  other  words, the property is [9Xtrue[109X if [3Xdigraph[103X is both in-regular and and
   out-regular.  See  also  [2XIsInRegularDigraph[102X  ([14X6.2-1[114X) and [2XIsOutRegularDigraph[102X
   ([14X6.2-2[114X).[133X
+  
+  [33X[0;0YIf  the  argument [3Xdigraph[103X is mutable, then the return value of this property
+  is recomputed every time it is called.[133X
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27XIsRegularDigraph(CompleteDigraph(4));[127X[104X
@@ -511,13 +642,16 @@
   [33X[0;0YIn the case where [3Xdigraph[103X is not symmetric or not connected, the property is
   [9Xfalse[109X.[133X
   
+  [33X[0;0YIf  the  argument [3Xdigraph[103X is mutable, then the return value of this property
+  is recomputed every time it is called.[133X
+  
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr := DigraphSymmetricClosure(ChainDigraph(5));;[127X[104X
-    [4X[25Xgap>[125X [27XIsDistanceRegularDigraph(gr);[127X[104X
+    [4X[25Xgap>[125X [27XD := DigraphSymmetricClosure(ChainDigraph(5));;[127X[104X
+    [4X[25Xgap>[125X [27XIsDistanceRegularDigraph(D);[127X[104X
     [4X[28Xfalse[128X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph([[2, 3, 4], [1, 3, 4], [1, 2, 4], [1, 2, 3]]);[127X[104X
-    [4X[28X<digraph with 4 vertices, 12 edges>[128X[104X
-    [4X[25Xgap>[125X [27XIsDistanceRegularDigraph(gr);[127X[104X
+    [4X[25Xgap>[125X [27XD := Digraph([[2, 3, 4], [1, 3, 4], [1, 2, 4], [1, 2, 3]]);[127X[104X
+    [4X[28X<immutable digraph with 4 vertices, 12 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsDistanceRegularDigraph(D);[127X[104X
     [4X[28Xtrue[128X[104X
   [4X[32X[104X
   
@@ -538,22 +672,29 @@
   number  of  edges  (counting  multiple  edges as one) and [22Xn[122X is the number of
   vertices in the digraph.[133X
   
+  [33X[0;0YIf  the  argument [3Xdigraph[103X is mutable, then the return value of this property
+  is recomputed every time it is called.[133X
+  
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27XPetersen := Graph(SymmetricGroup(5), [[1, 2]], OnSets,[127X[104X
     [4X[25X>[125X [27Xfunction(x, y)[127X[104X
     [4X[25X>[125X [27X  return IsEmpty(Intersection(x, y));[127X[104X
     [4X[25X>[125X [27Xend);;[127X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph(Petersen);[127X[104X
-    [4X[28X<digraph with 10 vertices, 30 edges>[128X[104X
-    [4X[25Xgap>[125X [27XIsAcyclicDigraph(gr);[127X[104X
+    [4X[25Xgap>[125X [27XD := Digraph(Petersen);[127X[104X
+    [4X[28X<immutable digraph with 10 vertices, 30 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsAcyclicDigraph(D);[127X[104X
     [4X[28Xfalse[128X[104X
-    [4X[25Xgap>[125X [27Xgr := DigraphFromDiSparse6String([127X[104X
+    [4X[25Xgap>[125X [27XD := DigraphFromDiSparse6String([127X[104X
     [4X[25X>[125X [27X".b_OGCIDBaPGkULEbQHCeRIdrHcuZMfRyDAbPhTi|zF");[127X[104X
-    [4X[28X<digraph with 35 vertices, 34 edges>[128X[104X
-    [4X[25Xgap>[125X [27XIsAcyclicDigraph(gr);[127X[104X
+    [4X[28X<immutable digraph with 35 vertices, 34 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsAcyclicDigraph(D);[127X[104X
     [4X[28Xtrue[128X[104X
     [4X[25Xgap>[125X [27XIsAcyclicDigraph(ChainDigraph(10));[127X[104X
     [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XD := CompleteDigraph(IsMutableDigraph, 4);[127X[104X
+    [4X[28X<mutable digraph with 4 vertices, 12 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsAcyclicDigraph(D);[127X[104X
+    [4X[28Xfalse[128X[104X
     [4X[25Xgap>[125X [27XIsAcyclicDigraph(CycleDigraph(10));[127X[104X
     [4X[28Xfalse[128X[104X
   [4X[32X[104X
@@ -571,18 +712,29 @@
   vertex has out degree at most one; see [2XIsDirectedTree[102X ([14X6.3-7[114X) and [2XOutDegrees[102X
   ([14X5.2-8[114X).[133X
   
+  [33X[0;0YIf  the  argument [3Xdigraph[103X is mutable, then the return value of this property
+  is recomputed every time it is called.[133X
+  
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph([[1, 3], [2, 3], [3]]);[127X[104X
-    [4X[28X<digraph with 3 vertices, 5 edges>[128X[104X
-    [4X[25Xgap>[125X [27XIsChainDigraph(gr);[127X[104X
+    [4X[25Xgap>[125X [27XD := Digraph([[1, 3], [2, 3], [3]]);[127X[104X
+    [4X[28X<immutable digraph with 3 vertices, 5 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsChainDigraph(D);[127X[104X
     [4X[28Xfalse[128X[104X
-    [4X[25Xgap>[125X [27Xgr := ChainDigraph(5);[127X[104X
-    [4X[28X<digraph with 5 vertices, 4 edges>[128X[104X
-    [4X[25Xgap>[125X [27XIsChainDigraph(gr);[127X[104X
+    [4X[25Xgap>[125X [27XD := ChainDigraph(5);[127X[104X
+    [4X[28X<immutable chain digraph with 5 vertices>[128X[104X
+    [4X[25Xgap>[125X [27XIsChainDigraph(D);[127X[104X
     [4X[28Xtrue[128X[104X
-    [4X[25Xgap>[125X [27Xgr := DigraphReverse(gr);[127X[104X
-    [4X[28X<digraph with 5 vertices, 4 edges>[128X[104X
-    [4X[25Xgap>[125X [27XIsChainDigraph(gr);[127X[104X
+    [4X[25Xgap>[125X [27XD := DigraphReverse(D);[127X[104X
+    [4X[28X<immutable digraph with 5 vertices, 4 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsChainDigraph(D);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XD := ChainDigraph(IsMutableDigraph, 5);[127X[104X
+    [4X[28X<mutable digraph with 5 vertices, 4 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsChainDigraph(D);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XDigraphReverse(D);[127X[104X
+    [4X[28X<mutable digraph with 5 vertices, 4 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsChainDigraph(D);[127X[104X
     [4X[28Xtrue[128X[104X
   [4X[32X[104X
   
@@ -601,12 +753,21 @@
   (where  [22Xm[122X  is  the  number  of  edges and [22Xn[122X is the number of vertices of the
   digraph).[133X
   
+  [33X[0;0YIf  the  argument [3Xdigraph[103X is mutable, then the return value of this property
+  is recomputed every time it is called.[133X
+  
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph([[2], [3], []]);;[127X[104X
-    [4X[25Xgap>[125X [27XIsConnectedDigraph(gr);[127X[104X
+    [4X[25Xgap>[125X [27XD := Digraph([[2], [3], []]);;[127X[104X
+    [4X[25Xgap>[125X [27XIsConnectedDigraph(D);[127X[104X
     [4X[28Xtrue[128X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph([[1, 3], [4], [3], []]);;[127X[104X
-    [4X[25Xgap>[125X [27XIsConnectedDigraph(gr);[127X[104X
+    [4X[25Xgap>[125X [27XD := Digraph([[1, 3], [4], [3], []]);;[127X[104X
+    [4X[25Xgap>[125X [27XIsConnectedDigraph(D);[127X[104X
+    [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27XD := Digraph(IsMutableDigraph, [[2], [3], []]);;[127X[104X
+    [4X[25Xgap>[125X [27XIsConnectedDigraph(D);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XD := Digraph(IsMutableDigraph, [[1, 3], [4], [3], []]);;[127X[104X
+    [4X[25Xgap>[125X [27XIsConnectedDigraph(D);[127X[104X
     [4X[28Xfalse[128X[104X
   [4X[32X[104X
   
@@ -625,17 +786,25 @@
   
   [33X[0;0YThe  method  used  in  this  operation  has complexity [22XO(m+n)[122X where [22Xm[122X is the
   number of edges (counting multiple edges as one, and not counting loops) and
-  [22Xn[122X  is  the  number  of  vertices in the digraph. See also [2XArticulationPoints[102X
-  ([14X5.3-13[114X).[133X
+  [22Xn[122X is the number of vertices in the digraph.[133X
+  
+  [33X[0;0YSee also [2XArticulationPoints[102X ([14X5.3-14[114X).[133X
+  
+  [33X[0;0YIf  the  argument [3Xdigraph[103X is mutable, then the return value of this property
+  is recomputed every time it is called.[133X
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27XIsBiconnectedDigraph(Digraph([[1, 3], [2, 3], [3]]));[127X[104X
     [4X[28Xfalse[128X[104X
     [4X[25Xgap>[125X [27XIsBiconnectedDigraph(CycleDigraph(5));[127X[104X
     [4X[28Xtrue[128X[104X
-    [4X[25Xgap>[125X [27Xdigraph := Digraph([[1, 1], [1, 1, 2], [3], [3, 3, 4, 4]]);;[127X[104X
-    [4X[25Xgap>[125X [27XIsBiconnectedDigraph(digraph);[127X[104X
+    [4X[25Xgap>[125X [27XD := Digraph([[1, 1], [1, 1, 2], [3], [3, 3, 4, 4]]);;[127X[104X
+    [4X[25Xgap>[125X [27XIsBiconnectedDigraph(D);[127X[104X
     [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27XD := CompleteBipartiteDigraph(IsMutableDigraph, 5, 4);[127X[104X
+    [4X[28X<mutable digraph with 9 vertices, 40 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsBiconnectedDigraph(D);[127X[104X
+    [4X[28Xtrue[128X[104X
   [4X[32X[104X
   
   [1X6.3-5 IsStronglyConnectedDigraph[101X
@@ -654,14 +823,25 @@
   has  complexity  [22XO(m+n)[122X,  where  [22Xm[122X is the number of edges (counting multiple
   edges as one) and [22Xn[122X is the number of vertices in the digraph.[133X
   
+  [33X[0;0YIf  the  argument [3Xdigraph[103X is mutable, then the return value of this property
+  is recomputed every time it is called.[133X
+  
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr := CycleDigraph(250000);[127X[104X
-    [4X[28X<digraph with 250000 vertices, 250000 edges>[128X[104X
-    [4X[25Xgap>[125X [27XIsStronglyConnectedDigraph(gr);[127X[104X
+    [4X[25Xgap>[125X [27XD := CycleDigraph(250000);[127X[104X
+    [4X[28X<immutable cycle digraph with 250000 vertices>[128X[104X
+    [4X[25Xgap>[125X [27XIsStronglyConnectedDigraph(D);[127X[104X
     [4X[28Xtrue[128X[104X
-    [4X[25Xgap>[125X [27Xgr := DigraphRemoveEdges(gr, [[250000, 1]]);[127X[104X
-    [4X[28X<digraph with 250000 vertices, 249999 edges>[128X[104X
-    [4X[25Xgap>[125X [27XIsStronglyConnectedDigraph(gr);[127X[104X
+    [4X[25Xgap>[125X [27XD := DigraphRemoveEdges(D, [[250000, 1]]);[127X[104X
+    [4X[28X<immutable digraph with 250000 vertices, 249999 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsStronglyConnectedDigraph(D);[127X[104X
+    [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27XD := CycleDigraph(IsMutableDigraph, 250000);[127X[104X
+    [4X[28X<mutable digraph with 250000 vertices, 250000 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsStronglyConnectedDigraph(D);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XDigraphRemoveEdge(D, [250000, 1]);[127X[104X
+    [4X[28X<mutable digraph with 250000 vertices, 249999 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsStronglyConnectedDigraph(D);[127X[104X
     [4X[28Xfalse[128X[104X
   [4X[32X[104X
   
@@ -671,16 +851,23 @@
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
   
   [33X[0;0YThis  property  is  [9Xtrue[109X  if  the  digraph [3Xdigraph[103X is aperiodic, i.e. if its
-  [2XDigraphPeriod[102X ([14X5.3-14[114X) is equal to 1. Otherwise, the property is [9Xfalse[109X.[133X
+  [2XDigraphPeriod[102X ([14X5.3-15[114X) is equal to 1. Otherwise, the property is [9Xfalse[109X.[133X
+  
+  [33X[0;0YIf  the  argument [3Xdigraph[103X is mutable, then the return value of this property
+  is recomputed every time it is called.[133X
   
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph([[6], [1], [2], [3], [4, 4], [5]]);[127X[104X
-    [4X[28X<multidigraph with 6 vertices, 7 edges>[128X[104X
-    [4X[25Xgap>[125X [27XIsAperiodicDigraph(gr);[127X[104X
+    [4X[25Xgap>[125X [27XD := Digraph([[6], [1], [2], [3], [4, 4], [5]]);[127X[104X
+    [4X[28X<immutable multidigraph with 6 vertices, 7 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsAperiodicDigraph(D);[127X[104X
     [4X[28Xfalse[128X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph([[2], [3, 5], [4], [5], [1, 2]]);[127X[104X
-    [4X[28X<digraph with 5 vertices, 7 edges>[128X[104X
-    [4X[25Xgap>[125X [27XIsAperiodicDigraph(gr);[127X[104X
+    [4X[25Xgap>[125X [27XD := Digraph([[2], [3, 5], [4], [5], [1, 2]]);[127X[104X
+    [4X[28X<immutable digraph with 5 vertices, 7 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsAperiodicDigraph(D);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XD := Digraph(IsMutableDigraph, [[2], [3, 5], [4], [5], [1, 2]]);[127X[104X
+    [4X[28X<mutable digraph with 5 vertices, 7 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsAperiodicDigraph(D);[127X[104X
     [4X[28Xtrue[128X[104X
   [4X[32X[104X
   
@@ -698,22 +885,25 @@
   
   [33X[0;0YSee also [2XDigraphSources[102X ([14X5.1-6[114X).[133X
   
+  [33X[0;0YIf  the  argument [3Xdigraph[103X is mutable, then the return value of this property
+  is recomputed every time it is called.[133X
+  
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph([[], [2]]);[127X[104X
-    [4X[28X<digraph with 2 vertices, 1 edge>[128X[104X
-    [4X[25Xgap>[125X [27XIsDirectedTree(gr);[127X[104X
+    [4X[25Xgap>[125X [27XD := Digraph([[], [2]]);[127X[104X
+    [4X[28X<immutable digraph with 2 vertices, 1 edge>[128X[104X
+    [4X[25Xgap>[125X [27XIsDirectedTree(D);[127X[104X
     [4X[28Xfalse[128X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph([[3], [3], []]);[127X[104X
-    [4X[28X<digraph with 3 vertices, 2 edges>[128X[104X
-    [4X[25Xgap>[125X [27XIsDirectedTree(gr);[127X[104X
+    [4X[25Xgap>[125X [27XD := Digraph([[3], [3], []]);[127X[104X
+    [4X[28X<immutable digraph with 3 vertices, 2 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsDirectedTree(D);[127X[104X
     [4X[28Xfalse[128X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph([[2], [3], []]);[127X[104X
-    [4X[28X<digraph with 3 vertices, 2 edges>[128X[104X
-    [4X[25Xgap>[125X [27XIsDirectedTree(gr);[127X[104X
+    [4X[25Xgap>[125X [27XD := Digraph([[2], [3], []]);[127X[104X
+    [4X[28X<immutable digraph with 3 vertices, 2 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsDirectedTree(D);[127X[104X
     [4X[28Xtrue[128X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph([[2, 3], [6], [4, 5], [], [], []]);[127X[104X
-    [4X[28X<digraph with 6 vertices, 5 edges>[128X[104X
-    [4X[25Xgap>[125X [27XIsDirectedTree(gr);[127X[104X
+    [4X[25Xgap>[125X [27XD := Digraph([[2, 3], [6], [4, 5], [], [], []]);[127X[104X
+    [4X[28X<immutable digraph with 6 vertices, 5 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsDirectedTree(D);[127X[104X
     [4X[28Xtrue[128X[104X
   [4X[32X[104X
   
@@ -729,39 +919,42 @@
   
   [33X[0;0YAn  [13Xundirected  tree[113X  is a symmetric digraph without loops, in which for any
   pair of distinct vertices [10Xu[110X and [10Xv[110X, there is exactly one directed path from [10Xu[110X
-  to  [10Xv[110X.  See [2XIsSymmetricDigraph[102X ([14X6.1-10[114X) and [2XDigraphHasLoops[102X ([14X6.1-1[114X), and see
+  to  [10Xv[110X.  See [2XIsSymmetricDigraph[102X ([14X6.1-12[114X) and [2XDigraphHasLoops[102X ([14X6.1-1[114X), and see
   section  [14X1.1-1[114X  for the definition of directed path. This definition implies
   that an undirected tree has no multiple edges.[133X
   
   [33X[0;0YAn  [13Xundirected forest[113X is a digraph, each of whose connected components is an
   undirected  tree.  In  other  words, an undirected forest is isomorphic to a
-  disjoint  union  of undirected trees. See [2XDigraphConnectedComponents[102X ([14X5.3-8[114X)
-  and  [2XDigraphDisjointUnion[102X  ([14X3.3-26[114X). In particular, every undirected tree is
+  disjoint  union  of undirected trees. See [2XDigraphConnectedComponents[102X ([14X5.3-9[114X)
+  and  [2XDigraphDisjointUnion[102X  ([14X3.3-27[114X). In particular, every undirected tree is
   an undirected forest.[133X
   
   [33X[0;0YPlease  note that the digraph with zero vertices is considered to be neither
   an undirected tree nor an undirected forest.[133X
   
+  [33X[0;0YIf  the  argument [3Xdigraph[103X is mutable, then the return value of this property
+  is recomputed every time it is called.[133X
+  
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph([[3], [3], [1, 2]]);[127X[104X
-    [4X[28X<digraph with 3 vertices, 4 edges>[128X[104X
-    [4X[25Xgap>[125X [27XIsUndirectedTree(gr);[127X[104X
+    [4X[25Xgap>[125X [27XD := Digraph([[3], [3], [1, 2]]);[127X[104X
+    [4X[28X<immutable digraph with 3 vertices, 4 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsUndirectedTree(D);[127X[104X
     [4X[28Xtrue[128X[104X
-    [4X[25Xgap>[125X [27XIsSymmetricDigraph(gr) and not DigraphHasLoops(gr);[127X[104X
+    [4X[25Xgap>[125X [27XIsSymmetricDigraph(D) and not DigraphHasLoops(D);[127X[104X
     [4X[28Xtrue[128X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph([[3], [5], [1, 4], [3], [2]]);[127X[104X
-    [4X[28X<digraph with 5 vertices, 6 edges>[128X[104X
-    [4X[25Xgap>[125X [27XIsConnectedDigraph(gr);[127X[104X
+    [4X[25Xgap>[125X [27XD := Digraph([[3], [5], [1, 4], [3], [2]]);[127X[104X
+    [4X[28X<immutable digraph with 5 vertices, 6 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsConnectedDigraph(D);[127X[104X
     [4X[28Xfalse[128X[104X
-    [4X[25Xgap>[125X [27XIsUndirectedTree(gr);[127X[104X
+    [4X[25Xgap>[125X [27XIsUndirectedTree(D);[127X[104X
     [4X[28Xfalse[128X[104X
-    [4X[25Xgap>[125X [27XIsUndirectedForest(gr);[127X[104X
+    [4X[25Xgap>[125X [27XIsUndirectedForest(D);[127X[104X
     [4X[28Xtrue[128X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph([[1, 2], [1], [2]]);[127X[104X
-    [4X[28X<digraph with 3 vertices, 4 edges>[128X[104X
-    [4X[25Xgap>[125X [27XIsUndirectedTree(gr) or IsUndirectedForest(gr);[127X[104X
+    [4X[25Xgap>[125X [27XD := Digraph([[1, 2], [1], [2]]);[127X[104X
+    [4X[28X<immutable digraph with 3 vertices, 4 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsUndirectedTree(D) or IsUndirectedForest(D);[127X[104X
     [4X[28Xfalse[128X[104X
-    [4X[25Xgap>[125X [27XIsSymmetricDigraph(gr) or not DigraphHasLoops(gr);[127X[104X
+    [4X[25Xgap>[125X [27XIsSymmetricDigraph(D) or not DigraphHasLoops(D);[127X[104X
     [4X[28Xfalse[128X[104X
   [4X[32X[104X
   
@@ -772,26 +965,30 @@
   
   [33X[0;0YThis property returns true if the digraph [3Xdigraph[103X is Eulerian.[133X
   
-  [33X[0;0YA  digraph  is  called  [13XEulerian[113X  if  there exists a directed circuit on the
-  digraph  which  includes  every edge exactly once. See section [14X1.1-1[114X for the
-  definition of a directed circuit.[133X
+  [33X[0;0YA connected digraph is called [13XEulerian[113X if there exists a directed circuit on
+  the  digraph  which  includes every edge exactly once. See section [14X1.1-1[114X for
+  the  definition  of  a directed circuit. Note that the empty digraph with at
+  most one vertex is considered to be Eulerian.[133X
+  
+  [33X[0;0YIf  the  argument [3Xdigraph[103X is mutable, then the return value of this property
+  is recomputed every time it is called.[133X
   
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph([[]]);[127X[104X
-    [4X[28X<digraph with 1 vertex, 0 edges>[128X[104X
-    [4X[25Xgap>[125X [27XIsEulerianDigraph(gr);[127X[104X
+    [4X[25Xgap>[125X [27XD := Digraph([[]]);[127X[104X
+    [4X[28X<immutable empty digraph with 1 vertex>[128X[104X
+    [4X[25Xgap>[125X [27XIsEulerianDigraph(D);[127X[104X
     [4X[28Xtrue[128X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph([[2], []]);[127X[104X
-    [4X[28X<digraph with 2 vertices, 1 edge>[128X[104X
-    [4X[25Xgap>[125X [27XIsEulerianDigraph(gr);[127X[104X
+    [4X[25Xgap>[125X [27XD := Digraph([[2], []]);[127X[104X
+    [4X[28X<immutable digraph with 2 vertices, 1 edge>[128X[104X
+    [4X[25Xgap>[125X [27XIsEulerianDigraph(D);[127X[104X
     [4X[28Xfalse[128X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph([[3], [], [2]]);[127X[104X
-    [4X[28X<digraph with 3 vertices, 2 edges>[128X[104X
-    [4X[25Xgap>[125X [27XIsEulerianDigraph(gr);[127X[104X
+    [4X[25Xgap>[125X [27XD := Digraph([[3], [], [2]]);[127X[104X
+    [4X[28X<immutable digraph with 3 vertices, 2 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsEulerianDigraph(D);[127X[104X
     [4X[28Xfalse[128X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph([[2], [3], [1]]);[127X[104X
-    [4X[28X<digraph with 3 vertices, 3 edges>[128X[104X
-    [4X[25Xgap>[125X [27XIsEulerianDigraph(gr);[127X[104X
+    [4X[25Xgap>[125X [27XD := Digraph([[2], [3], [1]]);[127X[104X
+    [4X[28X<immutable digraph with 3 vertices, 3 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsEulerianDigraph(D);[127X[104X
     [4X[28Xtrue[128X[104X
   [4X[32X[104X
   
@@ -810,21 +1007,24 @@
   [33X[0;0YThe  method  used  in  this  operation  has  the  worst  case  complexity as
   [2XDigraphMonomorphism[102X ([14X7.3-4[114X).[133X
   
+  [33X[0;0YIf  the  argument [3Xdigraph[103X is mutable, then the return value of this property
+  is recomputed every time it is called.[133X
+  
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27Xg := Digraph([[]]);[127X[104X
-    [4X[28X<digraph with 1 vertex, 0 edges>[128X[104X
+    [4X[28X<immutable empty digraph with 1 vertex>[128X[104X
     [4X[25Xgap>[125X [27XIsHamiltonianDigraph(g);[127X[104X
     [4X[28Xtrue[128X[104X
     [4X[25Xgap>[125X [27Xg := Digraph([[2], [1]]);[127X[104X
-    [4X[28X<digraph with 2 vertices, 2 edges>[128X[104X
+    [4X[28X<immutable digraph with 2 vertices, 2 edges>[128X[104X
     [4X[25Xgap>[125X [27XIsHamiltonianDigraph(g);[127X[104X
     [4X[28Xtrue[128X[104X
     [4X[25Xgap>[125X [27Xg := Digraph([[3], [], [2]]);[127X[104X
-    [4X[28X<digraph with 3 vertices, 2 edges>[128X[104X
+    [4X[28X<immutable digraph with 3 vertices, 2 edges>[128X[104X
     [4X[25Xgap>[125X [27XIsHamiltonianDigraph(g);[127X[104X
     [4X[28Xfalse[128X[104X
     [4X[25Xgap>[125X [27Xg := Digraph([[2], [3], [1]]);[127X[104X
-    [4X[28X<digraph with 3 vertices, 3 edges>[128X[104X
+    [4X[28X<immutable digraph with 3 vertices, 3 edges>[128X[104X
     [4X[25Xgap>[125X [27XIsHamiltonianDigraph(g);[127X[104X
     [4X[28Xtrue[128X[104X
   [4X[32X[104X
@@ -841,20 +1041,23 @@
   [33X[0;0YA  digraph  is  a  [13Xcycle[113X if and only if it is strongly connected and has the
   same number of edges as vertices.[133X
   
+  [33X[0;0YIf  the  argument [3Xdigraph[103X is mutable, then the return value of this property
+  is recomputed every time it is called.[133X
+  
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27Xgr := Digraph([[1, 3], [2, 3], [3]]);[127X[104X
-    [4X[28X<digraph with 3 vertices, 5 edges>[128X[104X
-    [4X[25Xgap>[125X [27XIsCycleDigraph(gr);[127X[104X
+    [4X[25Xgap>[125X [27XD := Digraph([[1, 3], [2, 3], [3]]);[127X[104X
+    [4X[28X<immutable digraph with 3 vertices, 5 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsCycleDigraph(D);[127X[104X
     [4X[28Xfalse[128X[104X
-    [4X[25Xgap>[125X [27Xgr := CycleDigraph(5);[127X[104X
-    [4X[28X<digraph with 5 vertices, 5 edges>[128X[104X
-    [4X[25Xgap>[125X [27XIsCycleDigraph(gr);[127X[104X
+    [4X[25Xgap>[125X [27XD := CycleDigraph(5);[127X[104X
+    [4X[28X<immutable cycle digraph with 5 vertices>[128X[104X
+    [4X[25Xgap>[125X [27XIsCycleDigraph(D);[127X[104X
     [4X[28Xtrue[128X[104X
-    [4X[25Xgap>[125X [27Xgr := OnDigraphs(gr, (1, 2, 3));[127X[104X
-    [4X[28X<digraph with 5 vertices, 5 edges>[128X[104X
-    [4X[25Xgap>[125X [27Xgr = CycleDigraph(5);[127X[104X
+    [4X[25Xgap>[125X [27XD := OnDigraphs(D, (1, 2, 3));[127X[104X
+    [4X[28X<immutable digraph with 5 vertices, 5 edges>[128X[104X
+    [4X[25Xgap>[125X [27XD = CycleDigraph(5);[127X[104X
     [4X[28Xfalse[128X[104X
-    [4X[25Xgap>[125X [27XIsCycleDigraph(gr);[127X[104X
+    [4X[25Xgap>[125X [27XIsCycleDigraph(D);[127X[104X
     [4X[28Xtrue[128X[104X
   [4X[32X[104X
   
@@ -891,6 +1094,14 @@
     [4X[28Xtrue[128X[104X
     [4X[25Xgap>[125X [27XIsPlanarDigraph(CompleteBipartiteDigraph(3, 3));[127X[104X
     [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27XIsPlanarDigraph(CompleteDigraph(IsMutableDigraph, 4));[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XIsPlanarDigraph(CompleteDigraph(IsMutableDigraph, 5));[127X[104X
+    [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27XIsPlanarDigraph(CompleteBipartiteDigraph(IsMutableDigraph, 2, 3));[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XIsPlanarDigraph(CompleteBipartiteDigraph(IsMutableDigraph, 3, 3));[127X[104X
+    [4X[28Xfalse[128X[104X
   [4X[32X[104X
   
   [1X6.4-2 IsOuterPlanarDigraph[101X
@@ -924,5 +1135,89 @@
     [4X[28Xfalse[128X[104X
     [4X[25Xgap>[125X [27XIsOuterPlanarDigraph(CycleDigraph(10));[127X[104X
     [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XIsOuterPlanarDigraph(CompleteDigraph(IsMutableDigraph, 4));[127X[104X
+    [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27XIsOuterPlanarDigraph(CompleteDigraph(IsMutableDigraph, 5));[127X[104X
+    [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27XIsOuterPlanarDigraph(CompleteBipartiteDigraph(IsMutableDigraph,[127X[104X
+    [4X[25X>[125X [27X                                                 2, 3));[127X[104X
+    [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27XIsOuterPlanarDigraph(CompleteBipartiteDigraph(IsMutableDigraph,[127X[104X
+    [4X[25X>[125X [27X                                                 3, 3));[127X[104X
+    [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27XIsOuterPlanarDigraph(CycleDigraph(IsMutableDigraph, 10));[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[28X[128X[104X
+  [4X[32X[104X
+  
+  
+  [1X6.5 [33X[0;0YHomomorphisms and transformations[133X[101X
+  
+  [1X6.5-1 IsDigraphCore[101X
+  
+  [33X[1;0Y[29X[2XIsDigraphCore[102X( [3Xdigraph[103X ) [32X property[133X
+  [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
+  
+  [33X[0;0YThis property returns [9Xtrue[109X if [3Xdigraph[103X is a core, and [9Xfalse[109X if it is not.[133X
+  
+  [33X[0;0YA  digraph  [10XD[110X  is  a [13Xcore[113X if and only if it has no proper subdigraphs [10XA[110X such
+  that there exists a homomorphism from [10XD[110X to [10XA[110X. In other words, a digraph [10XD[110X is
+  a core if and only if every endomorphism on [10XD[110X is an automorphism on [10XD[110X.[133X
+  
+  [33X[0;0YIf  the  argument [3Xdigraph[103X is mutable, then the return value of this property
+  is recomputed every time it is called.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27XD := CompleteDigraph(6);[127X[104X
+    [4X[28X<immutable complete digraph with 6 vertices>[128X[104X
+    [4X[25Xgap>[125X [27XIsDigraphCore(D);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XD := DigraphSymmetricClosure(CycleDigraph(6));[127X[104X
+    [4X[28X<immutable symmetric digraph with 6 vertices, 12 edges>[128X[104X
+    [4X[25Xgap>[125X [27XDigraphHomomorphism(D, CompleteDigraph(2));[127X[104X
+    [4X[28XTransformation( [ 1, 2, 1, 2, 1, 2 ] )[128X[104X
+    [4X[25Xgap>[125X [27XIsDigraphCore(D);[127X[104X
+    [4X[28Xfalse[128X[104X
+  [4X[32X[104X
+  
+  [1X6.5-2 IsEdgeTransitive[101X
+  
+  [33X[1;0Y[29X[2XIsEdgeTransitive[102X( [3Xdigraph[103X ) [32X property[133X
+  [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
+  
+  [33X[0;0YIf  [3Xdigraph[103X  is  a  digraph  without  multiple  edges, then [10XIsEdgeTransitive[110X
+  returns  [9Xtrue[109X  if [3Xdigraph[103X is edge transitive, and [9Xfalse[109X otherwise. A digraph
+  is  [13Xedge transitive[113X if its automorphism group acts transitively on its edges
+  (via the action [2XOnPairs[102X ([14XReference: OnPairs[114X)).[133X
+  
+  [33X[0;0YIf  the  argument [3Xdigraph[103X is mutable, then the return value of this property
+  is recomputed every time it is called.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27XIsEdgeTransitive(CompleteDigraph(2));[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XIsEdgeTransitive(ChainDigraph(3));[127X[104X
+    [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27XIsEdgeTransitive(Digraph([[2], [3, 3, 3], []]));[127X[104X
+    [4X[28XError, the argument <D> must be a digraph with no multiple edges,[128X[104X
+  [4X[32X[104X
+  
+  [1X6.5-3 IsVertexTransitive[101X
+  
+  [33X[1;0Y[29X[2XIsVertexTransitive[102X( [3Xdigraph[103X ) [32X property[133X
+  [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
+  
+  [33X[0;0YIf  [3Xdigraph[103X is a digraph, then [10XIsVertexTransitive[110X returns [9Xtrue[109X if [3Xdigraph[103X is
+  vertex  transitive,  and  [9Xfalse[109X otherwise. A digraph is [13Xvertex transitive[113X if
+  its automorphism group acts transitively on its vertices.[133X
+  
+  [33X[0;0YIf  the  argument [3Xdigraph[103X is mutable, then the return value of this property
+  is recomputed every time it is called.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27XIsVertexTransitive(CompleteDigraph(2));[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XIsVertexTransitive(ChainDigraph(3));[127X[104X
+    [4X[28Xfalse[128X[104X
   [4X[32X[104X
   
