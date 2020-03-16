@@ -2211,32 +2211,14 @@ gap> IsIsomorphicDigraph(H, P);
 true
 
 # DigraphMaximalMatching
-gap> D := DigraphFromDigraph6String("\
-> &~?@c~Bn^F~]bj\\[~~FOqv^~z^IJrzN~^nn|l|\\^n]{|]}vp~ZVdt^k~z~~H]]r|mz`\\r{tv}jvu\  
-> }{^trz~smXZxz~xr|jm~}~Z~|z~[y^~zzf^Lx~tHuu|^~y|}txZec~\\uen|t|v~~~L}vvlnvZK^^~~M\  
-> N~^}}~n^b~~}~Zl~tWj|vn^}r~x_}n]}n~}]}h\\^}vvzv]^vzn^UI}h~xM^hn~~~n~_{vYvz|~n~z~]\  
-> {~j~nN|^V}nu\\vv}t~z\\}rt}vuy~|nL^~^}z~|{}^~Nlvn}N~b~z^hn|l||^~|evM~rzz^U^N~}^}S\  
-> xMf|k^uD~e^k~\\~R~ylrFkzxzb~xvl{~~XtU~MN}n~n~s~\\~rj\\}~xLvsjDzk}~M^vjqfr]~Unynk\  
-> ~Mny~~jql}tH\\}\\nj^Pvc~|^|v~~f}`XL~XvU~VjKy^Ln~qkT|U}~z^zV|yV~vxovYr~^~|zVz}AX}\  
-> nr^gNnx|}^~Zzvnkz}j^Vi~~}Z~qz~|mUMz~~~nnnrn|~|V\\n~}|^N]}np}t}nnyte^y]^~~xj[~x|}\  
-> ~f~]^t^tvNiD|~sc}zk~s}z|ZU~t~znwj^~_lN|z]~vUn~~~zD}]f^f}vjC^}~b|u~z]}Ny}zX}Zmzpr\  
-> ~Z^|{Vh^Grf~z~~~vtuZvnzvyjJzpz^~}~VZny^mzjnz~|w^~Vxozb~n~f|}[Fx}]FSvruoz~xz}x~Nv\  
-> vZ|\\U~{~|wv|^~N~yv|m]l~^yx~Vhv]jwN~udz|vp^~x~{ul{~Z~XnbT}tT^}]vzX|vz^|^~zwfFy~z\  
-> t^z~\\v^uV}v~tK}kT}zN|~m~ld}V|nv{r~^}n\\lcNwfqv~~ezvW^{^~e}u[|^{}~~|n~{vvHk]H\\r\  
-> ZVvt~lwJZz~d|n}]~~~kw^r|v~}}Zm~hzZzvx~|\\yuZNntXVx~m~~|n|nzT}~^v|^|Zn^}{N^n|~vx\   
-> \\T[}Sf~ub{~]^j|ZVN~z~}vvz~hrT~vnyij~z}RNX|njzy\\xNjn~nx{}v~fene~^~|^nv~}th^v|~M\  
-> ngD{||~zy}y{Nv\\Z}nSk~}r^nc~}ldZkh~z~V|qtv~~~N\\FVN~|~z|zXyvz{}R~]}{S^zJv~vblL~l\  
-> z~~zMXNJVz~z^^YnB~kzu~oL]}|vfo|nQN[}iz}v}jn}psmm\\Rrd}^x]||~\\\\YT]vvnZtzuVm{j~y\  
-> ^l|t[~jzzt~uGg|]rk}Zhn~ZL^^z^[T~nzznjzzjrf^L|{}~}z}~~]znM^nvZAt|EzyvRz}VAnV{agZr\  
-> uXxy\\}ovv~y~}~^H~XHnnQ}j|}zr]ku[~^\\}~~}nx{|Mzv~j~by^|n}zzlZc~}~z`n^Lx^|}vy]^x^\  
-> M{kzUiu\\sNV^}vN~panv||g^b~zIl}FbaZWDn[z|^txkvvUuD~~w~~~nzU}Mt|~xMnz]w^vw^[f~z@|\  
-> ZyN~^j^~f^~kZ~zvy~Nn^{~N|v^~~|j}znv^flyzvizyj|^M~J^Nazi~yxnjpyxz}}va~MdFmrLE~\\w\  
-> nzn|lsv|~vz[m|v~~\\|U}~j~Y||v}NnnZl}|~E~v~J}fT~|vy|v{|ifJNef^[V{vnm~^xvw^Tvl^wmx\  
-> dnl~ynl~y~{nZ~^v~n}F}~bVJvNzZ~x|~vT^n|n^m}^[NF\\v~~~zxRlY^Znl|x}[zm^vz|Zv{^Nzv[b\  
-> l~^Z^^m~}N~ZYuzM}|lzVYS~s");
+gap> D := DigraphFromDigraph6String("&Sq_MN|bDCLy~Xj}u}GxOLlGfqJtnSQ|l\
+> Q?lYvjbqN~XNNAQYDJE[UHOhyGOqtsjCWJy[");
+<immutable digraph with 20 vertices, 205 edges>
 gap> M := DigraphMaximalMatching(D);; IsMaximalMatching(D, M);
 true
-gap> D := RandomDigraph(IsMutable, 100);;
+gap> D := DigraphFromDigraph6String(IsMutable, "&Sq_MN|bDCLy~Xj}u}GxOLlGfqJtnSQ|l\
+> Q?lYvjbqN~XNNAQYDJE[UHOhyGOqtsjCWJy[");
+<mutable digraph with 20 vertices, 205 edges>
 gap> M := DigraphMaximalMatching(D);; IsMaximalMatching(D, M);
 true
 gap> D := Digraph(IsMutable, [[2], [3], [4], [1]]);
