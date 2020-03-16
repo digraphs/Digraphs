@@ -29,18 +29,18 @@
         used  as  normal  with  the  exception  that  the  functions listed in
         Subsection [14X2.2-1[114X will not work.[133X
   
-  [30X    [33X[0;6Ydownload  the  package  archive [11Xdigraphs-1.1.1.tar.gz[111X from the Digraph
+  [30X    [33X[0;6Ydownload  the  package  archive [11Xdigraphs-1.1.2.tar.gz[111X from the Digraph
         package webpage ([7Xhttp://gap-packages.github.io/Digraphs/[107X).[133X
   
   [30X    [33X[0;6Yunzip  and  untar  the  file,  this  should  create a directory called
-        [11Xdigraphs-1.1.1[111X.[133X
+        [11Xdigraphs-1.1.2[111X.[133X
   
   [30X    [33X[0;6Ylocate  the  [11Xpkg[111X  directory  of your [5XGAP[105X directory, which contains the
-        directories [11Xlib[111X, [11Xdoc[111X and so on. Move the directory [11Xdigraphs-1.1.1[111X into
+        directories [11Xlib[111X, [11Xdoc[111X and so on. Move the directory [11Xdigraphs-1.1.2[111X into
         the [11Xpkg[111X directory.[133X
   
   [30X    [33X[0;6Yit   is   necessary  to  compile  the  [5XDigraphs[105X  package.  Inside  the
-        [11Xpkg/digraphs-1.1.1[111X directory, type[133X
+        [11Xpkg/digraphs-1.1.2[111X directory, type[133X
   
   [4X      [32X[104X
           [4X./configure[104X
@@ -87,7 +87,7 @@
   
   [33X[0;0YIt is not possible to use the [5XDigraphs[105X package without compiling it.[133X
   
-  [33X[0;0YTo  compile  the  kernel  component inside the [11Xpkg/digraphs-1.1.1[111X directory,
+  [33X[0;0YTo  compile  the  kernel  component inside the [11Xpkg/digraphs-1.1.2[111X directory,
   type[133X
   
   [4X[32X[104X
