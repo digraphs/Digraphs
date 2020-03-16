@@ -1,3 +1,6 @@
+os:
+  linux
+
 dist:
   xenial
 
@@ -6,6 +9,11 @@ language:
 
 compiler:
   gcc
+
+branches:
+  only:
+  - master
+  - /^stable-\d+\.\d+/
 
 env:
   global:
@@ -17,7 +25,7 @@ env:
 # pkgs:   latest | 64- & 32-bit |   32-bit |        - |       - |        - |
 # pkgs: required |  coverage-64 | 64-conda |   64-bit |  32-bit |  64--bit |
 
-matrix:
+jobs:
   include:
     - env:
       - SUITE=test
