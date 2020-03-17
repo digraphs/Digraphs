@@ -4,6 +4,14 @@ Torpey, Wilf A. Wilson et al.
 
 Licensing information can be found in the `LICENSE` file.
 
+## Version 1.2.0 (released 27/03/2020)
+
+This is a minor release adding some new features to Digraphs, principally
+functionality relating to computing matchings by Reinis Ciprons, and an
+implementation of Dijkstra's algorithm for shortest paths by 
+[Markus Pfeiffer][] and [Maria Tsalakou][], and methods for producing a concise
+string representation of a digraph by Murray Whyte.
+
 ## Version 1.1.2 (released 16/03/2020)
 
 This is a minor release adding the new configuration flag
@@ -739,5 +747,6 @@ Pre-release version that was not made publicly available.
 [Julius Jonusas]: http://julius.jonusas.work
 [Jan De Beule]: http://homepages.vub.ac.be/~jdbeule
 [Markus Pfeiffer]: https://www.morphism.de/~markusp
+[Maria Tsalakou]: https://mariatsalakou.github.io
 [Chris Jefferson]: https://caj.host.cs.st-andrews.ac.uk
 [bliss]: http://www.tcs.hut.fi/Software/bliss/
