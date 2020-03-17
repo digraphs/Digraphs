@@ -4,6 +4,12 @@ Torpey, Wilf A. Wilson et al.
 
 Licensing information can be found in the `LICENSE` file.
 
+## Version 1.1.2 (released 16/03/2020)
+
+This is a minor release adding the new configuration flag
+`--without-intrinsics` and checking that the compiler is in C99 mode by using
+`AC_PROG_CC_C99` in `configure.ac`.
+
 ## Version 1.1.1 (released 29/01/2020)
 
 This release fixes a bug in `HomomorphismDigraphsFinder` that was introduced
