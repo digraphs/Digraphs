@@ -94,9 +94,9 @@ DeclareOperation("IsPerfectMatching", [IsDigraph, IsHomogeneousList]);
 # 9. Connectivity . . .
 DeclareOperation("DigraphFloydWarshall",
                  [IsDigraph, IsFunction, IsObject, IsObject]);
-DeclareOperation("DigraphDijkstraS",
+DeclareOperation("DigraphDijkstra",
                  [IsDigraph, IsPosInt]);
-DeclareOperation("DigraphDijkstraST",
+DeclareOperation("DigraphDijkstra",
                  [IsDigraph, IsPosInt, IsPosInt]);
 
 DeclareOperation("DigraphConnectedComponent", [IsDigraph, IsPosInt]);
