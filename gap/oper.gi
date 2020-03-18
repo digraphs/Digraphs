@@ -1314,46 +1314,56 @@ function(D, u, v)
     return fail;
 end);
 
-InstallMethod(DigraphDijkstraS, "for a digraph, and a vertex",
-[IsDigraph, IsPosInt],
-{digraph, source} -> DigraphDijkstraST(digraph, source, fail));
-
-InstallMethod(DigraphDijkstraST, "for a digraph, a vertex, and a vertex",
-[IsDigraph, IsPosInt, IsPosInt],
+BindGlobal("DIGRAPHS_DijkstraST",
 function(digraph, source, target)
-    local dist, prev, queue, u, v, alt;
+  local dist, prev, queue, u, v, alt;
 
-    dist := [];
-    prev := [];
-    queue := BinaryHeap({x, y} -> x[1] < y[1]);
+  if not source in DigraphVertices(digraph) then
+    ErrorNoReturn("the 2nd argument <source> must be a vertex of the ",
+                  "1st argument <digraph>");
+  elif target <> fail and not target in DigraphVertices(digraph) then
+    ErrorNoReturn("the 3rd argument <target> must be a vertex of the ",
+                  "1st argument <digraph>");
+  fi;
 
-    for v in DigraphVertices(digraph) do
-        dist[v] := infinity;
-        prev[v] := -1;
+  dist := [];
+  prev := [];
+  queue := BinaryHeap({x, y} -> x[1] < y[1]);
+
+  for v in DigraphVertices(digraph) do
+    dist[v] := infinity;
+    prev[v] := -1;
+  od;
+
+  dist[source] := 0;
+  Push(queue, [0, source]);
+
+  while not IsEmpty(queue) do
+    u := Pop(queue);
+    u := u[2];
+    # TODO: this has a small performance impact for DigraphDijkstraS,
+    #       but do we care?
+    if u = target then
+      return [dist, prev];
+    fi;
+    for v in OutNeighbours(digraph)[u] do
+      alt := dist[u] + DigraphEdgeLabel(digraph, u, v);
+      if alt < dist[v] then
+        dist[v] := alt;
+        prev[v] := u;
+        Push(queue, [dist[v], v]);
+      fi;
     od;
-
-    dist[source] := 0;
-    Push(queue, [0, source]);
-
-    while not IsEmpty(queue) do
-        u := Pop(queue);
-        u := u[2];
-        # TODO: this has a small performance impact for DigraphDijkstraS,
-        #       but do we care?
-        if u = target then
-            return [dist, prev];
-        fi;
-        for v in OutNeighbours(digraph)[u] do
-            alt := dist[u] + DigraphEdgeLabel(digraph, u, v);
-            if alt < dist[v] then
-                dist[v] := alt;
-                prev[v] := u;
-                Push(queue, [dist[v], v]);
-            fi;
-        od;
-    od;
-    return [dist, prev];
+  od;
+  return [dist, prev];
 end);
+
+InstallMethod(DigraphDijkstra, "for a digraph, a vertex, and a vertex",
+[IsDigraph, IsPosInt, IsPosInt], DIGRAPHS_DijkstraST);
+
+InstallMethod(DigraphDijkstra, "for a digraph, and a vertex",
+[IsDigraph, IsPosInt],
+{digraph, source} -> DIGRAPHS_DijkstraST(digraph, source, fail));
 
 InstallMethod(IteratorOfPaths,
 "for a digraph by out-neighbours and two pos ints",

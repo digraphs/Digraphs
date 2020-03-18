@@ -67,6 +67,7 @@
     <#Include Label="DigraphDegeneracyOrdering">
     <#Include Label="HamiltonianPath">
     <#Include Label="NrSpanningTrees">
+    <#Include Label="DigraphDijkstra">
   </Section>
 
   <Section><Heading>Cayley graphs of groups</Heading>
