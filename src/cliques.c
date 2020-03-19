@@ -79,18 +79,39 @@ static Conditions*  BAN;
 static void BronKerbosch(uint16_t depth) {
 
   uint16_t nr = GRAPH->nr_vertices;
+  BitArray* try = get_conditions(TRY, 0);
+  BitArray* ban = get_conditions(BAN, 0);
 
-  if (size_bit_array(get_conditions(TRY, 0), nr) == 0 && size_bit_array(get_conditions(BAN,0), nr) ==0) {
+  if (size_bit_array(try, nr) == 0 && size_bit_array(ban, nr) ==0) {
     // <CLIQUE> is a maximal clique
     HOOK(USER_PARAM, CLIQUE, nr);
     return;
   } 
 
-  BitArray* try = get_conditions(TRY, 0);
-  for (uint16_t i = 0; i < nr; i++) {
-    if (get_bit_array(try, i)){
-      set_bit_array(CLIQUE, i, true);
+  // Choose a pivot with as a many neighbours in <try> as possible 
+  uint16_t pivot = 0;
+  int max_neighbours = -1; 
+  for (uint16_t i = 0; i < nr; i++){
+    if (get_bit_array(try, i) || get_bit_array(ban, i)){
+      BitArray* copy_try = new_bit_array(MAXVERTS); // reuse it!
+      copy_bit_array(copy_try, try, nr);
+      intersect_bit_arrays(copy_try, GRAPH->neighbours[i], nr);
+      uint16_t num_neighbours = size_bit_array(copy_try, nr);
+      if (num_neighbours > max_neighbours) {
+        pivot = i;
+        max_neighbours = num_neighbours;
+      }
+    }
+  }
 
+  // Try adding vertices from <try> minus neighbours of <pivot> 
+  BitArray* to_try = new_bit_array(MAXVERTS);
+  init_bit_array(to_try, 1, nr);
+  complement_bit_arrays(to_try, GRAPH->neighbours[pivot], nr);
+  intersect_bit_arrays(to_try, try, nr); 
+  for (uint16_t i = 0; i < nr; i++) {
+    if (get_bit_array(to_try, i)){
+      set_bit_array(CLIQUE, i, true);
 
       push_conditions(TRY, depth + 1, 0, GRAPH->neighbours[i]);
       push_conditions(BAN, depth + 1, 0, GRAPH->neighbours[i]);
@@ -103,9 +124,7 @@ static void BronKerbosch(uint16_t depth) {
       set_bit_array(CLIQUE, i, false);
 
       set_bit_array(get_conditions(TRY, 0), i , false);
-
       set_bit_array(get_conditions(BAN, 0), i , true);
-
     }
   }
 }
