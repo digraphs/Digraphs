@@ -36,6 +36,7 @@
 // Defined in digraphs.h
 Int DigraphNrVertices(Obj);
 Obj FuncOutNeighbours(Obj, Obj);
+Obj FuncADJACENCY_MATRIX(Obj, Obj);
 
 // GAP level things, imported in digraphs.c
 extern Obj IsDigraph;
@@ -61,9 +62,6 @@ static void* USER_PARAM;  // a USER_PARAM for the hook
 
 // Values in MAP are restricted to those positions in IMAGE_RESTRICT
 static jmp_buf OUTOFHERE;  // so we can jump out of the deepest
-
-
-static Digraph* DIGRAPH;  // Digraphs to hold incoming GAP digraphs
 
 static Graph* GRAPH;  // Graphs to hold incoming GAP symmetric digraphs
 
@@ -168,39 +166,23 @@ static void init_clique_graph_from_digraph_obj(Graph* const graph,
                                         Obj          digraph_obj) {
   DIGRAPHS_ASSERT(graph != NULL);
   DIGRAPHS_ASSERT(CALL_1ARGS(IsDigraph, digraph_obj) == True);
-  DIGRAPHS_ASSERT(CALL_1ARGS(IsSymmetricDigraph, digraph_obj) == True);
   UInt const nr  = DigraphNrVertices(digraph_obj);
   Obj        out = FuncOutNeighbours(0L, digraph_obj);
+  Obj    adj_mat = FuncADJACENCY_MATRIX(0L, digraph_obj);
   DIGRAPHS_ASSERT(nr < MAXVERTS);
   DIGRAPHS_ASSERT(IS_PLIST(out));
   clear_graph(graph, nr);
 
-  for (uint16_t i = 1; i <= nr; i++) {
-    Obj nbs = ELM_PLIST(out, i);
-    DIGRAPHS_ASSERT(IS_LIST(nbs));
-    for (uint16_t j = 1; j <= LEN_LIST(nbs); j++) {
-      DIGRAPHS_ASSERT(IS_INTOBJ(ELM_LIST(nbs, j)));
-      add_edge_graph(graph, i - 1, INT_INTOBJ(ELM_LIST(nbs, j)) - 1);
-    }
-  }
-}
+  
 
-static void init_clique_digraph_from_digraph_obj(Digraph* const digraph,
-                                          Obj            digraph_obj) {
-  DIGRAPHS_ASSERT(digraph != NULL);
-  DIGRAPHS_ASSERT(CALL_1ARGS(IsDigraph, digraph_obj) == True);
-  UInt const nr  = DigraphNrVertices(digraph_obj);
-  Obj        out = FuncOutNeighbours(0L, digraph_obj);
-  DIGRAPHS_ASSERT(nr < MAXVERTS);
-  DIGRAPHS_ASSERT(IS_PLIST(out));
-  clear_digraph(digraph, nr);
-
+  // Only include symmetric edges
   for (uint16_t i = 1; i <= nr; i++) {
-    Obj nbs = ELM_PLIST(out, i);
-    DIGRAPHS_ASSERT(IS_LIST(nbs));
-    for (uint16_t j = 1; j <= LEN_LIST(nbs); j++) {
-      DIGRAPHS_ASSERT(IS_INTOBJ(ELM_LIST(nbs, j)));
-      add_edge_digraph(digraph, i - 1, INT_INTOBJ(ELM_LIST(nbs, j)) - 1);
+    Obj row = ELM_PLIST(adj_mat, i);
+    DIGRAPHS_ASSERT(IS_LIST(row));
+    for (uint16_t j = 1; j <= nr; j++) {
+      if (ELM_PLIST(row, j) != INTOBJ_INT(0) && ELM_PLIST(ELM_PLIST(adj_mat,j) ,i) != INTOBJ_INT(0)){
+        add_edge_graph(graph, i - 1, j - 1);
+      }
     }
   }
 }
@@ -216,8 +198,6 @@ static bool init_clique_data_from_args(Obj digraph_obj,
   static bool is_initialized = false;
   if (!is_initialized) {
     is_initialized = true;
-
-    DIGRAPH = new_digraph(MAXVERTS);
 
     GRAPH = new_graph(MAXVERTS);
 
@@ -235,14 +215,8 @@ static bool init_clique_data_from_args(Obj digraph_obj,
   init_bit_array(BAN->bit_array[0], false, nr);
 
 
-  bool is_undirected;
-  if (CALL_1ARGS(IsSymmetricDigraph, digraph_obj) == True) {
-    init_clique_graph_from_digraph_obj(GRAPH, digraph_obj);
-    is_undirected = true;
-  } else {
-    init_clique_digraph_from_digraph_obj(DIGRAPH, digraph_obj);
-    is_undirected = false;
-  }
+  // TODO: deal with non-symmetricity
+  init_clique_graph_from_digraph_obj(GRAPH, digraph_obj);
 
   if (hook_obj != Fail) {
     GAP_FUNC = hook_obj;
@@ -269,7 +243,7 @@ Obj FuncDigraphsCliqueFinder(Obj self, Obj args) {
   Obj max_obj        = ELM_PLIST(args, 7);
   Obj size_obj       = ELM_PLIST(args, 8);
 
- // Validate the arguments
+  // Validate the arguments
   if (CALL_1ARGS(IsDigraph, digraph_obj) != True) {
     ErrorQuit("the 1st argument <digraph> must be a digraph, not %s,",
               (Int) TNAM_OBJ(digraph_obj),
