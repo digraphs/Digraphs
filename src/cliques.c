@@ -69,44 +69,66 @@ static BitArray*  CLIQUE;
 static Conditions*  TRY;
 static Conditions*  BAN;
 
-
 ////////////////////////////////////////////////////////////////////////////////
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-static void BronKerbosch(uint16_t depth) {
+static void BronKerbosch(uint16_t  depth, 
+                         uint16_t  limit,
+                         uint16_t* nr_found,
+                         bool      max,
+                         uint16_t  size) {
 
   uint16_t nr = GRAPH->nr_vertices;
   BitArray* try = get_conditions(TRY, 0);
   BitArray* ban = get_conditions(BAN, 0);
 
-  if (size_bit_array(try, nr) == 0 && size_bit_array(ban, nr) ==0) {
-    // <CLIQUE> is a maximal clique
+  if (depth > 0 && !max && ( size == 0 || size == depth)) {
+    // We are not looking for maximal cliques
     HOOK(USER_PARAM, CLIQUE, nr);
+    *nr_found += 1;
+    if (*nr_found >= limit) {
+      longjmp(OUTOFHERE, 1);
+    }
+  } else if (size_bit_array(try, nr) == 0 && size_bit_array(ban, nr) == 0) {
+    // <CLIQUE> is a maximal clique
+    if (size == 0 || size == depth) {
+      HOOK(USER_PARAM, CLIQUE, nr);
+      *nr_found += 1;
+      if (*nr_found >= limit) {
+        longjmp(OUTOFHERE, 1);
+      }
+    } 
     return;
   } 
 
-  // Choose a pivot with as a many neighbours in <try> as possible 
-  uint16_t pivot = 0;
-  int max_neighbours = -1; 
-  for (uint16_t i = 0; i < nr; i++){
-    if (get_bit_array(try, i) || get_bit_array(ban, i)){
-      BitArray* copy_try = new_bit_array(MAXVERTS); // reuse it!
-      copy_bit_array(copy_try, try, nr);
-      intersect_bit_arrays(copy_try, GRAPH->neighbours[i], nr);
-      uint16_t num_neighbours = size_bit_array(copy_try, nr);
-      if (num_neighbours > max_neighbours) {
-        pivot = i;
-        max_neighbours = num_neighbours;
+  BitArray* to_try = new_bit_array(MAXVERTS);
+  if (max) {
+    // Choose a pivot with as a many neighbours in <try> as possible 
+    uint16_t pivot = 0;
+    int max_neighbours = -1; 
+    for (uint16_t i = 0; i < nr; i++){
+      if (get_bit_array(try, i) || get_bit_array(ban, i)){
+        BitArray* copy_try = new_bit_array(MAXVERTS); // reuse it!
+        copy_bit_array(copy_try, try, nr);
+        intersect_bit_arrays(copy_try, GRAPH->neighbours[i], nr);
+        uint16_t num_neighbours = size_bit_array(copy_try, nr);
+        if (num_neighbours > max_neighbours) {
+          pivot = i;
+          max_neighbours = num_neighbours;
+        }
       }
     }
+
+    // Try adding vertices from <try> minus neighbours of <pivot> 
+    init_bit_array(to_try, 1, nr);
+    complement_bit_arrays(to_try, GRAPH->neighbours[pivot], nr);
+    intersect_bit_arrays(to_try, try, nr); 
+  } else {
+    // If we are not looking for maximal cliques, a pivot cannot be used
+    copy_bit_array(to_try, try, nr); 
   }
 
-  // Try adding vertices from <try> minus neighbours of <pivot> 
-  BitArray* to_try = new_bit_array(MAXVERTS);
-  init_bit_array(to_try, 1, nr);
-  complement_bit_arrays(to_try, GRAPH->neighbours[pivot], nr);
-  intersect_bit_arrays(to_try, try, nr); 
   for (uint16_t i = 0; i < nr; i++) {
     if (get_bit_array(to_try, i)){
       set_bit_array(CLIQUE, i, true);
@@ -115,7 +137,7 @@ static void BronKerbosch(uint16_t depth) {
       push_conditions(BAN, depth + 1, 0, GRAPH->neighbours[i]);
 
       // recurse
-      BronKerbosch(depth + 1);
+      BronKerbosch(depth + 1, limit, nr_found, max, size);
 
       pop_conditions(TRY, depth + 1);
       pop_conditions(BAN, depth + 1);
@@ -190,7 +212,6 @@ static void init_clique_graph_from_digraph_obj(Graph* const graph,
 static bool init_clique_data_from_args(Obj digraph_obj, 
                                        Obj hook_obj, 
                                        Obj user_param_obj, 
-                                       Obj limit_obj, 
                                        Obj include_obj, 
                                        Obj exclude_obj, 
                                        Obj max_obj, 
@@ -214,8 +235,6 @@ static bool init_clique_data_from_args(Obj digraph_obj,
   clear_conditions(BAN, nr + 1, nr);
   init_bit_array(BAN->bit_array[0], false, nr);
 
-
-  // TODO: deal with non-symmetricity
   init_clique_graph_from_digraph_obj(GRAPH, digraph_obj);
 
   if (hook_obj != Fail) {
@@ -265,9 +284,9 @@ Obj FuncDigraphsCliqueFinder(Obj self, Obj args) {
     ErrorQuit(
         "the 2rd argument <hook> must be a function with 2 arguments,", 0L, 0L);
   }
-  if (!IS_INTOBJ(limit_obj) && limit_obj != Fail) {
+  if (!IS_INTOBJ(limit_obj) && limit_obj != Infinity) {
     ErrorQuit("the 4th argument <limit_obj> must be an integer "
-              "or fail, not %s,",
+              "or infinity, not %s,",
               (Int) TNAM_OBJ(limit_obj),
               0L);
   } else if (IS_INTOBJ(limit_obj) && INT_INTOBJ(limit_obj) <= 0) {
@@ -297,7 +316,6 @@ Obj FuncDigraphsCliqueFinder(Obj self, Obj args) {
   if (!init_clique_data_from_args(digraph_obj, 
                                   hook_obj, 
                                   user_param_obj, 
-                                  limit_obj, 
                                   include_obj, 
                                   exclude_obj, 
                                   max_obj, 
@@ -305,14 +323,18 @@ Obj FuncDigraphsCliqueFinder(Obj self, Obj args) {
     return user_param_obj;
   }
 
+  uint16_t nr_found = 0;
+  uint16_t limit = (limit_obj == Infinity ? MAXVERTS : INT_INTOBJ(limit_obj));
+  uint16_t size  = (size_obj == Fail ? 0 : INT_INTOBJ(size_obj));
+  bool max = (max_obj == True ? true : false); 
+  if (size > GRAPH->nr_vertices) {
+    return user_param_obj;
+  }
 
   // go!
-
   if (setjmp(OUTOFHERE) == 0) {
-    BronKerbosch(0); 
+    BronKerbosch(0, limit, &nr_found, max, size); 
   }
 
   return user_param_obj;
 }
-
-
