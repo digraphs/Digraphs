@@ -25,7 +25,7 @@
 
 <h1><strong class="pkg">Digraphs</strong></h1>
 
-<p>Version 1.1.2</p>
+<p>Version 1.2.0</p>
 
 </div>
 <p><b>Jan De Beule
@@ -244,6 +244,8 @@
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X7BECFE6687ECD028">5.1-13 DigraphOutEdges</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X7BB8ED88835F07B4">5.1-14 IsDigraphEdge</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X848FED0B7B4ACD1F">5.1-15 IsMatching</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X7B7A67277B1C9A02">5.1-16 DigraphMaximalMatching</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X78E9847A858788D1">5.1-17 DigraphMaximumMatching</a></span>
 </div></div>
 <div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap5.html#X7D7CE8328187D0DF">5.2 <span class="Heading">Neighbours and degree</span></a>
 </span>
@@ -296,6 +298,7 @@
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X827C2BD17A4547E3">5.3-25 DigraphDegeneracyOrdering</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X863FDFC4839A3B82">5.3-26 HamiltonianPath</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X82F30D5681466BC6">5.3-27 NrSpanningTrees</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X7E0A356D79C9443F">5.3-28 DigraphDijkstra</a></span>
 </div></div>
 <div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap5.html#X82F900777D677F55">5.4 <span class="Heading">Cayley graphs of groups</span></a>
 </span>
@@ -465,19 +468,20 @@
 <div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap9.html#X81C9B1DC791C0BBD">9.2 <span class="Heading">Reading and writing digraphs to a file</span></a>
 </span>
 <div class="ContSSBlock">
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9.html#X873D6EB8836A3C61">9.2-1 DigraphFromGraph6String</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9.html#X782A052979EA2376">9.2-2 Graph6String</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9.html#X7845ACDA7D4D333D">9.2-3 DigraphFile</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9.html#X7E8142007ED0CB9F">9.2-4 ReadDigraphs</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9.html#X82A4F0767C9EFC87">9.2-5 WriteDigraphs</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9.html#X86D531B287733561">9.2-6 IteratorFromDigraphFile</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9.html#X7AAA35867B5D8BF4">9.2-7 DigraphPlainTextLineEncoder</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9.html#X7808D99079295C22">9.2-8 TournamentLineDecoder</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9.html#X7DF22D1687D096D6">9.2-9 AdjacencyMatrixUpperTriangleLineDecoder</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9.html#X875393338486D77D">9.2-10 TCodeDecoder</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9.html#X8540FC21796A793F">9.2-11 PlainTextString</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9.html#X81BD23697857B244">9.2-12 WritePlainTextDigraph</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9.html#X804FDF6A7ED64049">9.2-13 WriteDIMACSDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9.html#X81FB5BE27903EC32">9.2-1 String</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9.html#X873D6EB8836A3C61">9.2-2 DigraphFromGraph6String</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9.html#X782A052979EA2376">9.2-3 Graph6String</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9.html#X7845ACDA7D4D333D">9.2-4 DigraphFile</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9.html#X7E8142007ED0CB9F">9.2-5 ReadDigraphs</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9.html#X82A4F0767C9EFC87">9.2-6 WriteDigraphs</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9.html#X86D531B287733561">9.2-7 IteratorFromDigraphFile</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9.html#X7AAA35867B5D8BF4">9.2-8 DigraphPlainTextLineEncoder</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9.html#X7808D99079295C22">9.2-9 TournamentLineDecoder</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9.html#X7DF22D1687D096D6">9.2-10 AdjacencyMatrixUpperTriangleLineDecoder</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9.html#X875393338486D77D">9.2-11 TCodeDecoder</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9.html#X8540FC21796A793F">9.2-12 PlainTextString</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9.html#X81BD23697857B244">9.2-13 WritePlainTextDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9.html#X804FDF6A7ED64049">9.2-14 WriteDIMACSDigraph</a></span>
 </div></div>
 </div>
 <div class="ContChap"><a href="chapA.html#X800DAF137BA8E25B">A <span class="Heading">

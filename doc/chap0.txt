@@ -3,7 +3,7 @@
                                     [1X[5XDigraphs[105X[101X
   
   
-                                 Version 1.1.2
+                                 Version 1.2.0
   
   
                                   Jan De Beule
@@ -194,6 +194,8 @@
       5.1-13 DigraphOutEdges
       5.1-14 IsDigraphEdge
       5.1-15 IsMatching
+      5.1-16 DigraphMaximalMatching
+      5.1-17 DigraphMaximumMatching
     5.2 [33X[0;0YNeighbours and degree[133X
       5.2-1 AdjacencyMatrix
       5.2-2 CharacteristicPolynomial
@@ -240,6 +242,7 @@
       5.3-25 DigraphDegeneracyOrdering
       5.3-26 HamiltonianPath
       5.3-27 NrSpanningTrees
+      5.3-28 DigraphDijkstra
     5.4 [33X[0;0YCayley graphs of groups[133X
       5.4-1 GroupOfCayleyDigraph
       5.4-2 GeneratorsOfCayleyDigraph
@@ -360,19 +363,20 @@
       9.1-5 DotPreorderDigraph
       9.1-6 DotHighlightedDigraph
     9.2 [33X[0;0YReading and writing digraphs to a file[133X
-      9.2-1 DigraphFromGraph6String
-      9.2-2 Graph6String
-      9.2-3 DigraphFile
-      9.2-4 ReadDigraphs
-      9.2-5 WriteDigraphs
-      9.2-6 IteratorFromDigraphFile
-      9.2-7 DigraphPlainTextLineEncoder
-      9.2-8 TournamentLineDecoder
-      9.2-9 AdjacencyMatrixUpperTriangleLineDecoder
-      9.2-10 TCodeDecoder
-      9.2-11 PlainTextString
-      9.2-12 WritePlainTextDigraph
-      9.2-13 WriteDIMACSDigraph
+      9.2-1 String
+      9.2-2 DigraphFromGraph6String
+      9.2-3 Graph6String
+      9.2-4 DigraphFile
+      9.2-5 ReadDigraphs
+      9.2-6 WriteDigraphs
+      9.2-7 IteratorFromDigraphFile
+      9.2-8 DigraphPlainTextLineEncoder
+      9.2-9 TournamentLineDecoder
+      9.2-10 AdjacencyMatrixUpperTriangleLineDecoder
+      9.2-11 TCodeDecoder
+      9.2-12 PlainTextString
+      9.2-13 WritePlainTextDigraph
+      9.2-14 WriteDIMACSDigraph
   A [33X[0;0YGrape to Digraphs Command Map[133X
     A.1 [33X[0;0YFunctions to construct and modify graphs[133X
     A.2 [33X[0;0YFunctions to inspect graphs, vertices and edges[133X

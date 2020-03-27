@@ -40,6 +40,8 @@
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X7BECFE6687ECD028">5.1-13 DigraphOutEdges</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X7BB8ED88835F07B4">5.1-14 IsDigraphEdge</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X848FED0B7B4ACD1F">5.1-15 IsMatching</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X7B7A67277B1C9A02">5.1-16 DigraphMaximalMatching</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X78E9847A858788D1">5.1-17 DigraphMaximumMatching</a></span>
 </div></div>
 <div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap5.html#X7D7CE8328187D0DF">5.2 <span class="Heading">Neighbours and degree</span></a>
 </span>
@@ -92,6 +94,7 @@
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X827C2BD17A4547E3">5.3-25 DigraphDegeneracyOrdering</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X863FDFC4839A3B82">5.3-26 HamiltonianPath</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X82F30D5681466BC6">5.3-27 NrSpanningTrees</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X7E0A356D79C9443F">5.3-28 DigraphDijkstra</a></span>
 </div></div>
 <div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap5.html#X82F900777D677F55">5.4 <span class="Heading">Cayley graphs of groups</span></a>
 </span>
@@ -540,17 +543,18 @@ false
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsMatching</code>( <var class="Arg">digraph</var>, <var class="Arg">list</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsMaximalMatching</code>( <var class="Arg">digraph</var>, <var class="Arg">list</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsMaximumMatching</code>( <var class="Arg">digraph</var>, <var class="Arg">list</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsPerfectMatching</code>( <var class="Arg">digraph</var>, <var class="Arg">list</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
 
-<p>If <var class="Arg">digraph</var> is a digraph and <var class="Arg">list</var> is a list of pairs of vertices of <var class="Arg">digraph</var>, then <code class="code">IsMatching</code> returns <code class="keyw">true</code> if <var class="Arg">list</var> is a matching of <var class="Arg">digraph</var>. The operations <code class="code">IsMaximalMatching</code> and <code class="code">IsPerfectMatching</code> return <code class="keyw">true</code> if <var class="Arg">list</var> is a maximal, or perfect, matching of <var class="Arg">digraph</var>, respectively. Otherwise, these operations return <code class="keyw">false</code>.</p>
+<p>If <var class="Arg">digraph</var> is a digraph and <var class="Arg">list</var> is a list of pairs of vertices of <var class="Arg">digraph</var>, then <code class="code">IsMatching</code> returns <code class="keyw">true</code> if <var class="Arg">list</var> is a matching of <var class="Arg">digraph</var>. The operation <code class="code">IsMaximalMatching</code> returns <code class="keyw">true</code> if <var class="Arg">list</var> is a maximal matching, <code class="code">IsMaximumMatching</code> returns <code class="keyw">true</code> if <var class="Arg">list</var> is a maximum matching and <code class="code">IsPerfectMatching</code> returns <code class="keyw">true</code> if <var class="Arg">list</var> is a perfect, matching of <var class="Arg">digraph</var>, respectively. Otherwise, each of these operations return <code class="keyw">false</code>.</p>
 
-<p>A <em>matching</em> <code class="code">M</code> of a digraph <var class="Arg">digraph</var> is a subset of the edges of <var class="Arg">digraph</var>, i.e. <code class="code">DigraphEdges(<var class="Arg">digraph</var>)</code>, such that no pair of distinct edges in <code class="code">M</code> are incident to the same vertex of <var class="Arg">digraph</var>. Note that this definition allows a matching to contain loops. See <code class="func">DigraphHasLoops</code> (<a href="chap6.html#X7D92935C7D535187"><span class="RefLink">6.1-1</span></a>). The matching <code class="code">M</code> is <em>maximal</em> if it is contained in no larger matching of the digraph, and is <em>perfect</em> if every vertex of the digraph is incident to an edge in the matching. Every perfect matching is maximal.</p>
+<p>A <em>matching</em> <code class="code">M</code> of a digraph <var class="Arg">digraph</var> is a subset of the edges of <var class="Arg">digraph</var>, i.e. <code class="code">DigraphEdges(<var class="Arg">digraph</var>)</code>, such that no pair of distinct edges in <code class="code">M</code> are incident to the same vertex of <var class="Arg">digraph</var>. Note that this definition allows a matching to contain loops. See <code class="func">DigraphHasLoops</code> (<a href="chap6.html#X7D92935C7D535187"><span class="RefLink">6.1-1</span></a>). The matching <code class="code">M</code> is <em>maximal</em> if it is contained in no larger matching of the digraph, is <em>maximum</em> if it has the greatest cardinality among all matchings and is <em>perfect</em> if every vertex of the digraph is incident to an edge in the matching. Every maximum or perfect matching is maximal. Note, however, that not every perfect matching of digraphs with loops is maximum.</p>
 
 
 <div class="example"><pre>
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">D := Digraph([[2], [1], [2, 3, 4], [3, 5], [1]]);</span>
-&lt;immutable digraph with 5 vertices, 8 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">D := Digraph([[1, 2], [1, 2], [2, 3, 4], [3, 5], [1]]);</span>
+&lt;immutable digraph with 5 vertices, 10 edges&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsMatching(D, [[2, 1], [3, 2]]);</span>
 false
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">edges := [[3, 2]];;</span>
@@ -558,7 +562,7 @@ false
 true
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsMaximalMatching(D, edges);</span>
 false
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">edges := [[5, 1], [3, 3]];;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">edges := [[2, 1], [3, 4]];;</span>
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsMaximalMatching(D, edges);</span>
 true
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsPerfectMatching(D, edges);</span>
@@ -566,6 +570,69 @@ false
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">edges := [[1, 2], [3, 3], [4, 5]];;</span>
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsPerfectMatching(D, edges);</span>
 true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsMaximumMatching(D, edges);</span>
+false
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">edges := [[1, 1], [2, 2], [3, 3], [4, 5]];;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsMaximumMatching(D, edges);</span>
+true
+</pre></div>
+
+<p><a id="X7B7A67277B1C9A02" name="X7B7A67277B1C9A02"></a></p>
+
+<h5>5.1-16 DigraphMaximalMatching</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphMaximalMatching</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
+<p>Returns: A list of pairs of vertices.</p>
+
+<p>This function returns a maximal matching of the digraph <var class="Arg">digraph</var>.</p>
+
+<p>For the definition of a maximal matching, see <code class="func">IsMaximalMatching</code> (<a href="chap5.html#X848FED0B7B4ACD1F"><span class="RefLink">5.1-15</span></a>).</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">D := DigraphFromDiSparse6String(".IeAoXCJU@|SHAe?d");</span>
+&lt;immutable digraph with 10 vertices, 13 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">M := DigraphMaximalMatching(D);; IsMaximalMatching(D, M);</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">D := RandomDigraph(100);;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsMaximalMatching(D, DigraphMaximalMatching(D));</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">D := GeneralisedPetersenGraph(IsMutableDigraph, 9, 2);</span>
+&lt;mutable digraph with 18 vertices, 54 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsMaximalMatching(D, DigraphMaximalMatching(D));</span>
+true
+</pre></div>
+
+<p><a id="X78E9847A858788D1" name="X78E9847A858788D1"></a></p>
+
+<h5>5.1-17 DigraphMaximumMatching</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphMaximumMatching</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
+<p>Returns: A list of pairs of vertices.</p>
+
+<p>This function returns a maximum matching of the digraph <var class="Arg">digraph</var>.</p>
+
+<p>For the definition of a maximum matching, see <code class="func">IsMaximumMatching</code> (<a href="chap5.html#X848FED0B7B4ACD1F"><span class="RefLink">5.1-15</span></a>). If <var class="Arg">digraph</var> is bipartite (see <code class="func">IsBipartiteDigraph</code> (<a href="chap6.html#X860CFB0C8665F356"><span class="RefLink">6.1-3</span></a>)), then the algorithm used has complexity <code class="code">O(m*sqrt(n))</code>. Otherwise for general graphs the complexity is <code class="code">O(m*n*log(n))</code>. Here <code class="code">n</code> is the number of vertices and <code class="code">m</code> is the number of edges.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">D := DigraphFromDigraph6String("&amp;I@EA_A?AdDp[_c??OO");</span>
+&lt;immutable digraph with 10 vertices, 23 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">M := DigraphMaximumMatching(D);; IsMaximalMatching(D, M);</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">Length(M);</span>
+5
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">D := Digraph([[5, 6, 7, 8], [6, 7, 8], [7, 8], [8], </span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">                 [], [], [], []]);;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">M := DigraphMaximumMatching(D);</span>
+[ [ 1, 5 ], [ 2, 6 ], [ 3, 7 ], [ 4, 8 ] ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">D := GeneralisedPetersenGraph(IsMutableDigraph, 9, 2);</span>
+&lt;mutable digraph with 18 vertices, 54 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">M := DigraphMaximumMatching(D);;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsMaximalMatching(D, M);</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">Length(M);</span>
+9
 </pre></div>
 
 <p><a id="X7D7CE8328187D0DF" name="X7D7CE8328187D0DF"></a></p>
@@ -1982,6 +2049,32 @@ fail
 &lt;mutable digraph with 18 vertices, 54 edges&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">NrSpanningTrees(D);</span>
 1134225
+</pre></div>
+
+<p><a id="X7E0A356D79C9443F" name="X7E0A356D79C9443F"></a></p>
+
+<h5>5.3-28 DigraphDijkstra</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphDijkstra</code>( <var class="Arg">digraph</var>, <var class="Arg">source</var>, <var class="Arg">target</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphDijkstra</code>( <var class="Arg">digraph</var>, <var class="Arg">source</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
+<p>Returns: Two lists.</p>
+
+<p>If <var class="Arg">digraph</var> is a digraph and <var class="Arg">source</var> and <var class="Arg">target</var> are vertices of <var class="Arg">digraph</var>, then <code class="code">DigraphDijkstra</code> calculates the length of the shortest path from <var class="Arg">source</var> to <var class="Arg">target</var> and returns two lists. Each element of the first list is the distance of the corresponding element from <var class="Arg">source</var>. If a vertex was not visited in the process of calculating the shortest distance to <var class="Arg">target</var> or if there is no path connecting that vertex with <var class="Arg">source</var>, then the corresponding distance is <code class="keyw">infinity</code>. Each element of the second list gives the previous vertex in the shortest path from <var class="Arg">source</var> to the corresponding vertex. For <var class="Arg">source</var> and for any vertices that remained unvisited this will be <code class="code">-1</code>.</p>
+
+<p>If the optional second argument <var class="Arg">target</var> is not present, then <code class="code">DigraphDijkstra</code> returns the shortest path from <var class="Arg">source</var> to every vertex that is reachable from <var class="Arg">source</var>.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">mat := [[0, 1, 1], [0, 0, 1], [0, 0, 0]];</span>
+[ [ 0, 1, 1 ], [ 0, 0, 1 ], [ 0, 0, 0 ] ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">D := DigraphByAdjacencyMatrix(mat);</span>
+&lt;immutable digraph with 3 vertices, 3 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphDijkstra(D, 2, 3);</span>
+[ [ infinity, 0, 1 ], [ -1, -1, 2 ] ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphDijkstra(D, 1, 3);</span>
+[ [ 0, 1, 1 ], [ -1, 1, 1 ] ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphDijkstra(D, 1, 2);</span>
+[ [ 0, 1, 1 ], [ -1, 1, 1 ] ]
 </pre></div>
 
 <p><a id="X82F900777D677F55" name="X82F900777D677F55"></a></p>

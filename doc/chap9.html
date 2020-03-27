@@ -35,19 +35,20 @@
 <div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap9.html#X81C9B1DC791C0BBD">9.2 <span class="Heading">Reading and writing digraphs to a file</span></a>
 </span>
 <div class="ContSSBlock">
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9.html#X873D6EB8836A3C61">9.2-1 DigraphFromGraph6String</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9.html#X782A052979EA2376">9.2-2 Graph6String</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9.html#X7845ACDA7D4D333D">9.2-3 DigraphFile</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9.html#X7E8142007ED0CB9F">9.2-4 ReadDigraphs</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9.html#X82A4F0767C9EFC87">9.2-5 WriteDigraphs</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9.html#X86D531B287733561">9.2-6 IteratorFromDigraphFile</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9.html#X7AAA35867B5D8BF4">9.2-7 DigraphPlainTextLineEncoder</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9.html#X7808D99079295C22">9.2-8 TournamentLineDecoder</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9.html#X7DF22D1687D096D6">9.2-9 AdjacencyMatrixUpperTriangleLineDecoder</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9.html#X875393338486D77D">9.2-10 TCodeDecoder</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9.html#X8540FC21796A793F">9.2-11 PlainTextString</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9.html#X81BD23697857B244">9.2-12 WritePlainTextDigraph</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9.html#X804FDF6A7ED64049">9.2-13 WriteDIMACSDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9.html#X81FB5BE27903EC32">9.2-1 String</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9.html#X873D6EB8836A3C61">9.2-2 DigraphFromGraph6String</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9.html#X782A052979EA2376">9.2-3 Graph6String</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9.html#X7845ACDA7D4D333D">9.2-4 DigraphFile</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9.html#X7E8142007ED0CB9F">9.2-5 ReadDigraphs</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9.html#X82A4F0767C9EFC87">9.2-6 WriteDigraphs</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9.html#X86D531B287733561">9.2-7 IteratorFromDigraphFile</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9.html#X7AAA35867B5D8BF4">9.2-8 DigraphPlainTextLineEncoder</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9.html#X7808D99079295C22">9.2-9 TournamentLineDecoder</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9.html#X7DF22D1687D096D6">9.2-10 AdjacencyMatrixUpperTriangleLineDecoder</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9.html#X875393338486D77D">9.2-11 TCodeDecoder</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9.html#X8540FC21796A793F">9.2-12 PlainTextString</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9.html#X81BD23697857B244">9.2-13 WritePlainTextDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap9.html#X804FDF6A7ED64049">9.2-14 WriteDIMACSDigraph</a></span>
 </div></div>
 </div>
 
@@ -254,9 +255,39 @@ true
 
 </dd>
 </dl>
+<p><a id="X81FB5BE27903EC32" name="X81FB5BE27903EC32"></a></p>
+
+<h5>9.2-1 String</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; String</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; PrintString</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
+<p>Returns: A string.</p>
+
+<p>Returns a string <code class="code">string</code> such that <code class="code">EvalString(string)</code> is equal to <var class="Arg">digraph</var>, and has the same mutability. See <code class="func">EvalString</code> (<a href="https://www.gap-system.org/Manuals/doc/ref/chap27_mj.html#X7DE4CCD285440659"><span class="RefLink">Reference: EvalString</span></a>).</p>
+
+<p>The methods installed for <code class="code">String</code> make some attempts to ensure that <code class="code">string</code> has as short a length as possible, but there may exist shorter strings that also evaluate to <var class="Arg">digraph</var>.</p>
+
+<p>It is possible that <code class="code">string</code> may contain escaped special characters. To obtain a representation of <var class="Arg">digraph</var> that can be entered as GAP input, please use <code class="func">Print</code> (<a href="https://www.gap-system.org/Manuals/doc/ref/chap6_mj.html#X7AFA64D97A1F39A3"><span class="RefLink">Reference: Print</span></a>). Note that <code class="code">Print</code> for a digraph delegates to <code class="code">PrintString</code>, which delegates to <code class="code">String</code>.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">D := CycleDigraph(3);</span>
+&lt;immutable cycle digraph with 3 vertices&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">Print(D);</span>
+CycleDigraph(3);
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">G := PetersenGraph(IsMutableDigraph);</span>
+&lt;mutable digraph with 10 vertices, 30 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">String(G);</span>
+"DigraphFromGraph6String(IsMutableDigraph, \"IheA@GUAo\");"
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">Print(last);</span>
+DigraphFromGraph6String(IsMutableDigraph, "IheA@GUAo");
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphFromGraph6String(IsMutableDigraph, "IheA@GUAo");</span>
+&lt;mutable digraph with 10 vertices, 30 edges&gt;
+</pre></div>
+
 <p><a id="X873D6EB8836A3C61" name="X873D6EB8836A3C61"></a></p>
 
-<h5>9.2-1 DigraphFromGraph6String</h5>
+<h5>9.2-2 DigraphFromGraph6String</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphFromGraph6String</code>( [<var class="Arg">filt</var>, ]<var class="Arg">str</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphFromDigraph6String</code>( [<var class="Arg">filt</var>, ]<var class="Arg">str</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
@@ -290,7 +321,7 @@ true
 
 <p><a id="X782A052979EA2376" name="X782A052979EA2376"></a></p>
 
-<h5>9.2-2 Graph6String</h5>
+<h5>9.2-3 Graph6String</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; Graph6String</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; Digraph6String</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
@@ -302,7 +333,7 @@ true
 
 <p>Graph6 and Digraph6 are formats best used on small, dense graphs, if applicable. For larger, sparse graphs use <em>Sparse6</em> and <em>Disparse6</em> (this latter also preserves multiple edges).</p>
 
-<p>See <code class="func">WriteDigraphs</code> (<a href="chap9.html#X82A4F0767C9EFC87"><span class="RefLink">9.2-5</span></a>).</p>
+<p>See <code class="func">WriteDigraphs</code> (<a href="chap9.html#X82A4F0767C9EFC87"><span class="RefLink">9.2-6</span></a>).</p>
 
 
 <div class="example"><pre>
@@ -316,7 +347,7 @@ true
 
 <p><a id="X7845ACDA7D4D333D" name="X7845ACDA7D4D333D"></a></p>
 
-<h5>9.2-3 DigraphFile</h5>
+<h5>9.2-4 DigraphFile</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphFile</code>( <var class="Arg">filename</var>[, <var class="Arg">coder</var>][, <var class="Arg">mode</var>] )</td><td class="tdright">(&nbsp;function&nbsp;)</td></tr></table></div>
 <p>Returns: An IO file object.</p>
@@ -329,7 +360,7 @@ true
 
 <p>If <var class="Arg">filename</var> ends in one of: <code class="code">.gz</code>, <code class="code">.bz2</code>, or <code class="code">.xz</code>, then the digraphs which are read from, or written to, the returned file object are decompressed, or compressed, appropriately.</p>
 
-<p>The file object returned by <code class="code">DigraphFile</code> can be given as the first argument for either of the functions <code class="func">ReadDigraphs</code> (<a href="chap9.html#X7E8142007ED0CB9F"><span class="RefLink">9.2-4</span></a>) or <code class="func">WriteDigraphs</code> (<a href="chap9.html#X82A4F0767C9EFC87"><span class="RefLink">9.2-5</span></a>). The purpose of this is to reduce the overhead of recreating the file object inside the functions <code class="func">ReadDigraphs</code> (<a href="chap9.html#X7E8142007ED0CB9F"><span class="RefLink">9.2-4</span></a>) or <code class="func">WriteDigraphs</code> (<a href="chap9.html#X82A4F0767C9EFC87"><span class="RefLink">9.2-5</span></a>) when, for example, reading or writing many digraphs in a loop.</p>
+<p>The file object returned by <code class="code">DigraphFile</code> can be given as the first argument for either of the functions <code class="func">ReadDigraphs</code> (<a href="chap9.html#X7E8142007ED0CB9F"><span class="RefLink">9.2-5</span></a>) or <code class="func">WriteDigraphs</code> (<a href="chap9.html#X82A4F0767C9EFC87"><span class="RefLink">9.2-6</span></a>). The purpose of this is to reduce the overhead of recreating the file object inside the functions <code class="func">ReadDigraphs</code> (<a href="chap9.html#X7E8142007ED0CB9F"><span class="RefLink">9.2-5</span></a>) or <code class="func">WriteDigraphs</code> (<a href="chap9.html#X82A4F0767C9EFC87"><span class="RefLink">9.2-6</span></a>) when, for example, reading or writing many digraphs in a loop.</p>
 
 <p>The currently supported file formats, and associated filename extensions, are:</p>
 
@@ -354,7 +385,7 @@ true
 <dt><strong class="Mark">plain text (.txt)</strong></dt>
 <dd><p>This is a human-readable format which stores graphs in the form <code class="code">0 7 0 8 1 7 2 8 3 8 4 8 5 8 6 8</code> i.e. pairs of vertices describing edges in a graph. More specifically, the vertices making up one edge must be separated by a single space, and pairs of vertices must be separated by two spaces.</p>
 
-<p>See <code class="func">ReadPlainTextDigraph</code> (<a href="chap9.html#X81BD23697857B244"><span class="RefLink">9.2-12</span></a>) for a more flexible way to store digraphs in a plain text file.</p>
+<p>See <code class="func">ReadPlainTextDigraph</code> (<a href="chap9.html#X81BD23697857B244"><span class="RefLink">9.2-13</span></a>) for a more flexible way to store digraphs in a plain text file.</p>
 
 </dd>
 <dt><strong class="Mark">pickled (<code class="file">.p</code> or <code class="file">.pickle</code>)</strong></dt>
@@ -376,18 +407,18 @@ true
 
 <p><a id="X7E8142007ED0CB9F" name="X7E8142007ED0CB9F"></a></p>
 
-<h5>9.2-4 ReadDigraphs</h5>
+<h5>9.2-5 ReadDigraphs</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; ReadDigraphs</code>( <var class="Arg">filename</var>[, <var class="Arg">decoder</var>][, <var class="Arg">n</var>] )</td><td class="tdright">(&nbsp;function&nbsp;)</td></tr></table></div>
 <p>Returns: A digraph, or a list of digraphs.</p>
 
-<p>If <var class="Arg">filename</var> is a string containing the name of a file containing encoded digraphs or an <span class="URL"><a href=" http://gap-packages.github.io/io/ ">IO</a></span> file object created using <code class="func">DigraphFile</code> (<a href="chap9.html#X7845ACDA7D4D333D"><span class="RefLink">9.2-3</span></a>), then <code class="code">ReadDigraphs</code> returns the digraphs encoded in the file as a list. Note that if <var class="Arg">filename</var> is a compressed file, which has been compressed appropriately to give a filename extension of <code class="code">.gz</code>, <code class="code">.bz2</code>, or <code class="code">.xz</code>, then <code class="code">ReadDigraphs</code> can read <var class="Arg">filename</var> without it first needing to be decompressed.</p>
+<p>If <var class="Arg">filename</var> is a string containing the name of a file containing encoded digraphs or an <span class="URL"><a href=" http://gap-packages.github.io/io/ ">IO</a></span> file object created using <code class="func">DigraphFile</code> (<a href="chap9.html#X7845ACDA7D4D333D"><span class="RefLink">9.2-4</span></a>), then <code class="code">ReadDigraphs</code> returns the digraphs encoded in the file as a list. Note that if <var class="Arg">filename</var> is a compressed file, which has been compressed appropriately to give a filename extension of <code class="code">.gz</code>, <code class="code">.bz2</code>, or <code class="code">.xz</code>, then <code class="code">ReadDigraphs</code> can read <var class="Arg">filename</var> without it first needing to be decompressed.</p>
 
 <p>If the optional argument <var class="Arg">decoder</var> is specified and is a function which decodes a string into a digraph, then <code class="code">ReadDigraphs</code> will use <var class="Arg">decoder</var> to decode the digraphs contained in <var class="Arg">filename</var>.</p>
 
 <p>If the optional argument <var class="Arg">n</var> is specified, then <code class="code">ReadDigraphs</code> returns the <var class="Arg">n</var>th digraph encoded in the file <var class="Arg">filename</var>.</p>
 
-<p>If the optional argument <var class="Arg">decoder</var> is not specified, then <code class="code">ReadDigraphs</code> will deduce which decoder to use based on the filename extension of <var class="Arg">filename</var> (after removing the compression-related filename extensions <code class="code">.gz</code>, <code class="code">.bz2</code>, and <code class="code">.xz</code>). For example, if the filename extension is <code class="code">.g6</code>, then <code class="code">ReadDigraphs</code> will use the graph6 decoder <code class="func">DigraphFromGraph6String</code> (<a href="chap9.html#X873D6EB8836A3C61"><span class="RefLink">9.2-1</span></a>).</p>
+<p>If the optional argument <var class="Arg">decoder</var> is not specified, then <code class="code">ReadDigraphs</code> will deduce which decoder to use based on the filename extension of <var class="Arg">filename</var> (after removing the compression-related filename extensions <code class="code">.gz</code>, <code class="code">.bz2</code>, and <code class="code">.xz</code>). For example, if the filename extension is <code class="code">.g6</code>, then <code class="code">ReadDigraphs</code> will use the graph6 decoder <code class="func">DigraphFromGraph6String</code> (<a href="chap9.html#X873D6EB8836A3C61"><span class="RefLink">9.2-2</span></a>).</p>
 
 <p>The currently supported file formats, and associated filename extensions, are:</p>
 
@@ -412,7 +443,7 @@ true
 <dt><strong class="Mark">plain text (.txt)</strong></dt>
 <dd><p>This is a human-readable format which stores graphs in the form <code class="code">0 7 0 8 1 7 2 8 3 8 4 8 5 8 6 8</code> i.e. pairs of vertices describing edges in a graph. More specifically, the vertices making up one edge must be separated by a single space, and pairs of vertices must be separated by two spaces.</p>
 
-<p>See <code class="func">ReadPlainTextDigraph</code> (<a href="chap9.html#X81BD23697857B244"><span class="RefLink">9.2-12</span></a>) for a more flexible way to store digraphs in a plain text file.</p>
+<p>See <code class="func">ReadPlainTextDigraph</code> (<a href="chap9.html#X81BD23697857B244"><span class="RefLink">9.2-13</span></a>) for a more flexible way to store digraphs in a plain text file.</p>
 
 </dd>
 <dt><strong class="Mark">pickled (<code class="file">.p</code> or <code class="file">.pickle</code>)</strong></dt>
@@ -447,10 +478,10 @@ true
 
 <p><a id="X82A4F0767C9EFC87" name="X82A4F0767C9EFC87"></a></p>
 
-<h5>9.2-5 WriteDigraphs</h5>
+<h5>9.2-6 WriteDigraphs</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; WriteDigraphs</code>( <var class="Arg">filename</var>, <var class="Arg">digraphs</var>[, <var class="Arg">encoder</var>][, <var class="Arg">mode</var>] )</td><td class="tdright">(&nbsp;function&nbsp;)</td></tr></table></div>
-<p>If <var class="Arg">digraphs</var> is a list of digraphs or a digraph and <var class="Arg">filename</var> is a string or an <span class="URL"><a href=" http://gap-packages.github.io/io/ ">IO</a></span> file object created using <code class="func">DigraphFile</code> (<a href="chap9.html#X7845ACDA7D4D333D"><span class="RefLink">9.2-3</span></a>), then <code class="code">WriteDigraphs</code> writes the digraphs to the file represented by <var class="Arg">filename</var>. If the supplied filename ends in one of the extensions <code class="code">.gz</code>, <code class="code">.bz2</code>, or <code class="code">.xz</code>, then the file will be compressed appropriately. Excluding these extensions, if the file ends with an extension in the list below, the corresponding graph format will be used to encode it. If such an extension is not included, an appropriate format will be chosen intelligently, and an extension appended, to minimise file size.</p>
+<p>If <var class="Arg">digraphs</var> is a list of digraphs or a digraph and <var class="Arg">filename</var> is a string or an <span class="URL"><a href=" http://gap-packages.github.io/io/ ">IO</a></span> file object created using <code class="func">DigraphFile</code> (<a href="chap9.html#X7845ACDA7D4D333D"><span class="RefLink">9.2-4</span></a>), then <code class="code">WriteDigraphs</code> writes the digraphs to the file represented by <var class="Arg">filename</var>. If the supplied filename ends in one of the extensions <code class="code">.gz</code>, <code class="code">.bz2</code>, or <code class="code">.xz</code>, then the file will be compressed appropriately. Excluding these extensions, if the file ends with an extension in the list below, the corresponding graph format will be used to encode it. If such an extension is not included, an appropriate format will be chosen intelligently, and an extension appended, to minimise file size.</p>
 
 <p>For more verbose information on the progress of the function, set the info level of <var class="Arg">InfoDigraphs</var> to 1 or higher, using <code class="code">SetInfoLevel</code>.</p>
 
@@ -477,7 +508,7 @@ true
 <dt><strong class="Mark">plain text (.txt)</strong></dt>
 <dd><p>This is a human-readable format which stores graphs in the form <code class="code">0 7 0 8 1 7 2 8 3 8 4 8 5 8 6 8</code> i.e. pairs of vertices describing edges in a graph. More specifically, the vertices making up one edge must be separated by a single space, and pairs of vertices must be separated by two spaces.</p>
 
-<p>See <code class="func">ReadPlainTextDigraph</code> (<a href="chap9.html#X81BD23697857B244"><span class="RefLink">9.2-12</span></a>) for a more flexible way to store digraphs in a plain text file.</p>
+<p>See <code class="func">ReadPlainTextDigraph</code> (<a href="chap9.html#X81BD23697857B244"><span class="RefLink">9.2-13</span></a>) for a more flexible way to store digraphs in a plain text file.</p>
 
 </dd>
 <dt><strong class="Mark">pickled (<code class="file">.p</code> or <code class="file">.pickle</code>)</strong></dt>
@@ -508,7 +539,7 @@ IO_OK
 
 <p><a id="X86D531B287733561" name="X86D531B287733561"></a></p>
 
-<h5>9.2-6 IteratorFromDigraphFile</h5>
+<h5>9.2-7 IteratorFromDigraphFile</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IteratorFromDigraphFile</code>( <var class="Arg">filename</var>[, <var class="Arg">decoder</var>] )</td><td class="tdright">(&nbsp;function&nbsp;)</td></tr></table></div>
 <p>Returns: An iterator.</p>
@@ -519,7 +550,7 @@ IO_OK
 
 <p>The purpose of this function is to easily allow looping over digraphs encoded in a file when loading all of the encoded digraphs would require too much memory.</p>
 
-<p>To see what file types are available, see <code class="func">WriteDigraphs</code> (<a href="chap9.html#X82A4F0767C9EFC87"><span class="RefLink">9.2-5</span></a>).</p>
+<p>To see what file types are available, see <code class="func">WriteDigraphs</code> (<a href="chap9.html#X82A4F0767C9EFC87"><span class="RefLink">9.2-6</span></a>).</p>
 
 
 <div class="example"><pre>
@@ -536,7 +567,7 @@ IO_OK
 
 <p><a id="X7AAA35867B5D8BF4" name="X7AAA35867B5D8BF4"></a></p>
 
-<h5>9.2-7 DigraphPlainTextLineEncoder</h5>
+<h5>9.2-8 DigraphPlainTextLineEncoder</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphPlainTextLineEncoder</code>( <var class="Arg">delimiter1</var>[, <var class="Arg">delimiter2</var>], <var class="Arg">offset</var> )</td><td class="tdright">(&nbsp;function&nbsp;)</td></tr></table></div>
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphPlainTextLineDecoder</code>( <var class="Arg">delimiter1</var>[, <var class="Arg">delimiter2</var>], <var class="Arg">offset</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
@@ -566,7 +597,7 @@ IO_OK
 
 <p><a id="X7808D99079295C22" name="X7808D99079295C22"></a></p>
 
-<h5>9.2-8 TournamentLineDecoder</h5>
+<h5>9.2-9 TournamentLineDecoder</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; TournamentLineDecoder</code>( <var class="Arg">str</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: A digraph.</p>
@@ -589,7 +620,7 @@ IO_OK
 
 <p><a id="X7DF22D1687D096D6" name="X7DF22D1687D096D6"></a></p>
 
-<h5>9.2-9 AdjacencyMatrixUpperTriangleLineDecoder</h5>
+<h5>9.2-10 AdjacencyMatrixUpperTriangleLineDecoder</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; AdjacencyMatrixUpperTriangleLineDecoder</code>( <var class="Arg">str</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: A digraph.</p>
@@ -616,7 +647,7 @@ IO_OK
 
 <p><a id="X875393338486D77D" name="X875393338486D77D"></a></p>
 
-<h5>9.2-10 TCodeDecoder</h5>
+<h5>9.2-11 TCodeDecoder</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; TCodeDecoder</code>( <var class="Arg">str</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: A digraph.</p>
@@ -642,7 +673,7 @@ IO_OK
 
 <p><a id="X8540FC21796A793F" name="X8540FC21796A793F"></a></p>
 
-<h5>9.2-11 PlainTextString</h5>
+<h5>9.2-12 PlainTextString</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; PlainTextString</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphFromPlainTextString</code>( <var class="Arg">s</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
@@ -666,7 +697,7 @@ IO_OK
 
 <p><a id="X81BD23697857B244" name="X81BD23697857B244"></a></p>
 
-<h5>9.2-12 WritePlainTextDigraph</h5>
+<h5>9.2-13 WritePlainTextDigraph</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; WritePlainTextDigraph</code>( <var class="Arg">filename</var>, <var class="Arg">digraph</var>, <var class="Arg">delimiter</var>, <var class="Arg">offset</var> )</td><td class="tdright">(&nbsp;function&nbsp;)</td></tr></table></div>
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; ReadPlainTextDigraph</code>( <var class="Arg">filename</var>, <var class="Arg">delimiter</var>, <var class="Arg">offset</var>, <var class="Arg">ignore</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
@@ -688,7 +719,7 @@ IO_OK
 
 <p><a id="X804FDF6A7ED64049" name="X804FDF6A7ED64049"></a></p>
 
-<h5>9.2-13 WriteDIMACSDigraph</h5>
+<h5>9.2-14 WriteDIMACSDigraph</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; WriteDIMACSDigraph</code>( <var class="Arg">filename</var>, <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; ReadDIMACSDigraph</code>( <var class="Arg">filename</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>

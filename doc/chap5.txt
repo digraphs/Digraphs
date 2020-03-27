@@ -432,26 +432,30 @@
   
   [33X[1;0Y[29X[2XIsMatching[102X( [3Xdigraph[103X, [3Xlist[103X ) [32X operation[133X
   [33X[1;0Y[29X[2XIsMaximalMatching[102X( [3Xdigraph[103X, [3Xlist[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XIsMaximumMatching[102X( [3Xdigraph[103X, [3Xlist[103X ) [32X operation[133X
   [33X[1;0Y[29X[2XIsPerfectMatching[102X( [3Xdigraph[103X, [3Xlist[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
   
   [33X[0;0YIf  [3Xdigraph[103X is a digraph and [3Xlist[103X is a list of pairs of vertices of [3Xdigraph[103X,
-  then  [10XIsMatching[110X  returns  [9Xtrue[109X  if  [3Xlist[103X  is  a  matching  of  [3Xdigraph[103X. The
-  operations  [10XIsMaximalMatching[110X and [10XIsPerfectMatching[110X return [9Xtrue[109X if [3Xlist[103X is a
-  maximal,  or  perfect,  matching  of [3Xdigraph[103X, respectively. Otherwise, these
-  operations return [9Xfalse[109X.[133X
+  then [10XIsMatching[110X returns [9Xtrue[109X if [3Xlist[103X is a matching of [3Xdigraph[103X. The operation
+  [10XIsMaximalMatching[110X   returns   [9Xtrue[109X   if   [3Xlist[103X   is   a   maximal  matching,
+  [10XIsMaximumMatching[110X   returns   [9Xtrue[109X   if  [3Xlist[103X  is  a  maximum  matching  and
+  [10XIsPerfectMatching[110X  returns  [9Xtrue[109X  if [3Xlist[103X is a perfect, matching of [3Xdigraph[103X,
+  respectively. Otherwise, each of these operations return [9Xfalse[109X.[133X
   
   [33X[0;0YA  [13Xmatching[113X [10XM[110X of a digraph [3Xdigraph[103X is a subset of the edges of [3Xdigraph[103X, i.e.
   [10XDigraphEdges([3Xdigraph[103X[10X)[110X, such that no pair of distinct edges in [10XM[110X are incident
   to  the  same vertex of [3Xdigraph[103X. Note that this definition allows a matching
   to  contain loops. See [2XDigraphHasLoops[102X ([14X6.1-1[114X). The matching [10XM[110X is [13Xmaximal[113X if
-  it  is  contained  in  no  larger matching of the digraph, and is [13Xperfect[113X if
-  every  vertex  of  the digraph is incident to an edge in the matching. Every
-  perfect matching is maximal.[133X
+  it  is  contained in no larger matching of the digraph, is [13Xmaximum[113X if it has
+  the  greatest cardinality among all matchings and is [13Xperfect[113X if every vertex
+  of  the  digraph  is  incident  to an edge in the matching. Every maximum or
+  perfect  matching is maximal. Note, however, that not every perfect matching
+  of digraphs with loops is maximum.[133X
   
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27XD := Digraph([[2], [1], [2, 3, 4], [3, 5], [1]]);[127X[104X
-    [4X[28X<immutable digraph with 5 vertices, 8 edges>[128X[104X
+    [4X[25Xgap>[125X [27XD := Digraph([[1, 2], [1, 2], [2, 3, 4], [3, 5], [1]]);[127X[104X
+    [4X[28X<immutable digraph with 5 vertices, 10 edges>[128X[104X
     [4X[25Xgap>[125X [27XIsMatching(D, [[2, 1], [3, 2]]);[127X[104X
     [4X[28Xfalse[128X[104X
     [4X[25Xgap>[125X [27Xedges := [[3, 2]];;[127X[104X
@@ -459,7 +463,7 @@
     [4X[28Xtrue[128X[104X
     [4X[25Xgap>[125X [27XIsMaximalMatching(D, edges);[127X[104X
     [4X[28Xfalse[128X[104X
-    [4X[25Xgap>[125X [27Xedges := [[5, 1], [3, 3]];;[127X[104X
+    [4X[25Xgap>[125X [27Xedges := [[2, 1], [3, 4]];;[127X[104X
     [4X[25Xgap>[125X [27XIsMaximalMatching(D, edges);[127X[104X
     [4X[28Xtrue[128X[104X
     [4X[25Xgap>[125X [27XIsPerfectMatching(D, edges);[127X[104X
@@ -467,6 +471,67 @@
     [4X[25Xgap>[125X [27Xedges := [[1, 2], [3, 3], [4, 5]];;[127X[104X
     [4X[25Xgap>[125X [27XIsPerfectMatching(D, edges);[127X[104X
     [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XIsMaximumMatching(D, edges);[127X[104X
+    [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27Xedges := [[1, 1], [2, 2], [3, 3], [4, 5]];;[127X[104X
+    [4X[25Xgap>[125X [27XIsMaximumMatching(D, edges);[127X[104X
+    [4X[28Xtrue[128X[104X
+  [4X[32X[104X
+  
+  [1X5.1-16 DigraphMaximalMatching[101X
+  
+  [33X[1;0Y[29X[2XDigraphMaximalMatching[102X( [3Xdigraph[103X ) [32X attribute[133X
+  [6XReturns:[106X  [33X[0;10YA list of pairs of vertices.[133X
+  
+  [33X[0;0YThis function returns a maximal matching of the digraph [3Xdigraph[103X.[133X
+  
+  [33X[0;0YFor the definition of a maximal matching, see [2XIsMaximalMatching[102X ([14X5.1-15[114X).[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27XD := DigraphFromDiSparse6String(".IeAoXCJU@|SHAe?d");[127X[104X
+    [4X[28X<immutable digraph with 10 vertices, 13 edges>[128X[104X
+    [4X[25Xgap>[125X [27XM := DigraphMaximalMatching(D);; IsMaximalMatching(D, M);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XD := RandomDigraph(100);;[127X[104X
+    [4X[25Xgap>[125X [27XIsMaximalMatching(D, DigraphMaximalMatching(D));[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XD := GeneralisedPetersenGraph(IsMutableDigraph, 9, 2);[127X[104X
+    [4X[28X<mutable digraph with 18 vertices, 54 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsMaximalMatching(D, DigraphMaximalMatching(D));[127X[104X
+    [4X[28Xtrue[128X[104X
+  [4X[32X[104X
+  
+  [1X5.1-17 DigraphMaximumMatching[101X
+  
+  [33X[1;0Y[29X[2XDigraphMaximumMatching[102X( [3Xdigraph[103X ) [32X attribute[133X
+  [6XReturns:[106X  [33X[0;10YA list of pairs of vertices.[133X
+  
+  [33X[0;0YThis function returns a maximum matching of the digraph [3Xdigraph[103X.[133X
+  
+  [33X[0;0YFor the definition of a maximum matching, see [2XIsMaximumMatching[102X ([14X5.1-15[114X). If
+  [3Xdigraph[103X  is  bipartite  (see [2XIsBipartiteDigraph[102X ([14X6.1-3[114X)), then the algorithm
+  used   has   complexity  [10XO(m*sqrt(n))[110X.  Otherwise  for  general  graphs  the
+  complexity  is  [10XO(m*n*log(n))[110X. Here [10Xn[110X is the number of vertices and [10Xm[110X is the
+  number of edges.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27XD := DigraphFromDigraph6String("&I@EA_A?AdDp[_c??OO");[127X[104X
+    [4X[28X<immutable digraph with 10 vertices, 23 edges>[128X[104X
+    [4X[25Xgap>[125X [27XM := DigraphMaximumMatching(D);; IsMaximalMatching(D, M);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XLength(M);[127X[104X
+    [4X[28X5[128X[104X
+    [4X[25Xgap>[125X [27XD := Digraph([[5, 6, 7, 8], [6, 7, 8], [7, 8], [8], [127X[104X
+    [4X[25X>[125X [27X                 [], [], [], []]);;[127X[104X
+    [4X[25Xgap>[125X [27XM := DigraphMaximumMatching(D);[127X[104X
+    [4X[28X[ [ 1, 5 ], [ 2, 6 ], [ 3, 7 ], [ 4, 8 ] ][128X[104X
+    [4X[25Xgap>[125X [27XD := GeneralisedPetersenGraph(IsMutableDigraph, 9, 2);[127X[104X
+    [4X[28X<mutable digraph with 18 vertices, 54 edges>[128X[104X
+    [4X[25Xgap>[125X [27XM := DigraphMaximumMatching(D);;[127X[104X
+    [4X[25Xgap>[125X [27XIsMaximalMatching(D, M);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XLength(M);[127X[104X
+    [4X[28X9[128X[104X
   [4X[32X[104X
   
   
@@ -1970,6 +2035,39 @@
     [4X[28X<mutable digraph with 18 vertices, 54 edges>[128X[104X
     [4X[25Xgap>[125X [27XNrSpanningTrees(D);[127X[104X
     [4X[28X1134225[128X[104X
+  [4X[32X[104X
+  
+  [1X5.3-28 DigraphDijkstra[101X
+  
+  [33X[1;0Y[29X[2XDigraphDijkstra[102X( [3Xdigraph[103X, [3Xsource[103X, [3Xtarget[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XDigraphDijkstra[102X( [3Xdigraph[103X, [3Xsource[103X ) [32X operation[133X
+  [6XReturns:[106X  [33X[0;10YTwo lists.[133X
+  
+  [33X[0;0YIf  [3Xdigraph[103X is a digraph and [3Xsource[103X and [3Xtarget[103X are vertices of [3Xdigraph[103X, then
+  [10XDigraphDijkstra[110X  calculates  the  length of the shortest path from [3Xsource[103X to
+  [3Xtarget[103X and returns two lists. Each element of the first list is the distance
+  of the corresponding element from [3Xsource[103X. If a vertex was not visited in the
+  process  of  calculating  the  shortest distance to [3Xtarget[103X or if there is no
+  path  connecting that vertex with [3Xsource[103X, then the corresponding distance is
+  [9Xinfinity[109X.  Each  element of the second list gives the previous vertex in the
+  shortest  path  from  [3Xsource[103X to the corresponding vertex. For [3Xsource[103X and for
+  any vertices that remained unvisited this will be [10X-1[110X.[133X
+  
+  [33X[0;0YIf  the optional second argument [3Xtarget[103X is not present, then [10XDigraphDijkstra[110X
+  returns the shortest path from [3Xsource[103X to every vertex that is reachable from
+  [3Xsource[103X.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xmat := [[0, 1, 1], [0, 0, 1], [0, 0, 0]];[127X[104X
+    [4X[28X[ [ 0, 1, 1 ], [ 0, 0, 1 ], [ 0, 0, 0 ] ][128X[104X
+    [4X[25Xgap>[125X [27XD := DigraphByAdjacencyMatrix(mat);[127X[104X
+    [4X[28X<immutable digraph with 3 vertices, 3 edges>[128X[104X
+    [4X[25Xgap>[125X [27XDigraphDijkstra(D, 2, 3);[127X[104X
+    [4X[28X[ [ infinity, 0, 1 ], [ -1, -1, 2 ] ][128X[104X
+    [4X[25Xgap>[125X [27XDigraphDijkstra(D, 1, 3);[127X[104X
+    [4X[28X[ [ 0, 1, 1 ], [ -1, 1, 1 ] ][128X[104X
+    [4X[25Xgap>[125X [27XDigraphDijkstra(D, 1, 2);[127X[104X
+    [4X[28X[ [ 0, 1, 1 ], [ -1, 1, 1 ] ][128X[104X
   [4X[32X[104X
   
   
