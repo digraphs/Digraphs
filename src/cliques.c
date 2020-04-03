@@ -38,6 +38,10 @@ Int DigraphNrVertices(Obj);
 Obj FuncOutNeighbours(Obj, Obj);
 Obj FuncADJACENCY_MATRIX(Obj, Obj);
 
+// Defined in homos.c
+void set_automorphisms(Obj, PermColl*);
+void get_automorphism_group_from_gap(Obj, PermColl*);
+
 // GAP level things, imported in digraphs.c
 extern Obj IsDigraph;
 extern Obj DIGRAPHS_ValidateVertexColouring;
@@ -69,11 +73,52 @@ static BitArray*  CLIQUE;
 static Conditions*  TRY;
 static Conditions*  BAN;
 
+static uint16_t ORB[MAXVERTS];    // Array for containing nodes in an orbit.
+static BitArray* ORB_LOOKUP;                  // points in orbit
+static PermColl* STAB_GENS[MAXVERTS];  // stabiliser generators
+static SchreierSims* SCHREIER_SIMS;
+
 ////////////////////////////////////////////////////////////////////////////////
 //
 ////////////////////////////////////////////////////////////////////////////////
 
+// Update a BitArray to only include one vertex per orbit of a group generated
+// by STAB_GENS[rep_depth]
+static void get_orbit_reps_bitarray(BitArray* bit_array, uint16_t const rep_depth) {
+  if (STAB_GENS[rep_depth]->size == 0) {
+    return;
+  }
+
+  uint16_t nr = GRAPH->nr_vertices;
+  uint16_t pt = 0;
+  init_bit_array(ORB_LOOKUP, false, nr);
+  while (pt < nr) {
+    if (get_bit_array(bit_array, pt)) {
+      // Find the orbit of pt and remove all other points of the orbit from bit_array
+      
+      set_bit_array(ORB_LOOKUP, pt, true);
+      ORB[0] = pt;
+      uint16_t n = 1; // lenght of the orbit of pt
+
+      for (uint16_t i = 0; i < n; ++i) {
+        for (uint16_t j = 0; j < STAB_GENS[rep_depth]->size; ++j) {
+          Perm gen = STAB_GENS[rep_depth]->perms[j];
+          uint16_t const img = gen[ORB[i]];
+          if (!get_bit_array(ORB_LOOKUP, img)) {
+            ORB[n++] = img;
+            set_bit_array(ORB_LOOKUP, img, true);
+            set_bit_array(bit_array, img, false);
+          }
+        }
+      }
+    }
+    pt++;
+  }
+}
+
+
 static void BronKerbosch(uint16_t  depth, 
+                         uint16_t  rep_depth,
                          uint16_t  limit,
                          uint16_t* nr_found,
                          bool      max,
@@ -129,23 +174,54 @@ static void BronKerbosch(uint16_t  depth,
     copy_bit_array(to_try, try, nr); 
   }
 
-  for (uint16_t i = 0; i < nr; i++) {
-    if (get_bit_array(to_try, i)){
-      set_bit_array(CLIQUE, i, true);
+  // Get orbit representatives of <to_try>
+  get_orbit_reps_bitarray(to_try, rep_depth);
 
-      push_conditions(TRY, depth + 1, 0, GRAPH->neighbours[i]);
-      push_conditions(BAN, depth + 1, 0, GRAPH->neighbours[i]);
+  for (uint16_t pt = 0; pt < nr; pt++) {
+    if (get_bit_array(to_try, pt)){
+      set_bit_array(CLIQUE, pt, true);
+
+      push_conditions(TRY, depth + 1, 0, GRAPH->neighbours[pt]);
+      push_conditions(BAN, depth + 1, 0, GRAPH->neighbours[pt]);
 
       // recurse
-      BronKerbosch(depth + 1, limit, nr_found, max, size);
+      if (STAB_GENS[rep_depth]->size == 0) {
+        BronKerbosch(depth + 1, rep_depth, limit, nr_found, max, size);
+      } else {
+        // the point_stabilizer is very SLOW!
+        point_stabilizer(SCHREIER_SIMS, STAB_GENS[rep_depth],
+            STAB_GENS[rep_depth + 1], pt);
+        BronKerbosch(depth + 1, rep_depth + 1, limit, nr_found, max, size);
+      }
 
       pop_conditions(TRY, depth + 1);
       pop_conditions(BAN, depth + 1);
-      set_bit_array(CLIQUE, i, false);
+      set_bit_array(CLIQUE, pt, false);
 
-      set_bit_array(get_conditions(TRY, 0), i , false);
-      set_bit_array(get_conditions(BAN, 0), i , true);
+ //     if (STAB_GENS[rep_depth]->size == 0) {
+        set_bit_array(get_conditions(TRY, 0), pt, false);
+        set_bit_array(get_conditions(BAN, 0), pt, true);
+ //     } else {
+ //       init_bit_array(ORB_LOOKUP, false, nr);
+ //       set_bit_array(ORB_LOOKUP, pt, true);
+ //       ORB[0] = pt;
+ //       uint16_t n = 1; // lenght of the orbit of pt
+
+ //       for (uint16_t i = 0; i < n; ++i) {
+ //         for (uint16_t j = 0; j < STAB_GENS[rep_depth]->size; ++j) {
+ //           Perm gen = STAB_GENS[rep_depth]->perms[j];
+ //           uint16_t const img = gen[ORB[i]];
+ //           if (!get_bit_array(ORB_LOOKUP, img)) {
+ //             ORB[n++] = img;
+ //             set_bit_array(ORB_LOOKUP, img, true);
+ //           }
+ //         }
+ //       }
+ //       complement_bit_arrays(get_conditions(TRY,0), ORB_LOOKUP, nr);
+ //       union_bit_arrays(get_conditions(BAN,0), ORB_LOOKUP, nr);
+ //     }
     }
+ 
   }
 }
 
@@ -183,7 +259,6 @@ static Obj clique_hook_gap(void* user_param, const BitArray* clique, const uint1
   return CALL_2ARGS(GAP_FUNC, user_param, c);
 }
 
-
 static void init_clique_graph_from_digraph_obj(Graph* const graph,
                                         Obj          digraph_obj) {
   DIGRAPHS_ASSERT(graph != NULL);
@@ -194,8 +269,6 @@ static void init_clique_graph_from_digraph_obj(Graph* const graph,
   DIGRAPHS_ASSERT(nr < MAXVERTS);
   DIGRAPHS_ASSERT(IS_PLIST(out));
   clear_graph(graph, nr);
-
-  
 
   // Only include symmetric edges
   for (uint16_t i = 1; i <= nr; i++) {
@@ -215,7 +288,8 @@ static bool init_clique_data_from_args(Obj digraph_obj,
                                        Obj include_obj, 
                                        Obj exclude_obj, 
                                        Obj max_obj, 
-                                       Obj size_obj) { 
+                                       Obj size_obj,
+                                       Obj aut_grp_obj) { 
   static bool is_initialized = false;
   if (!is_initialized) {
     is_initialized = true;
@@ -227,6 +301,12 @@ static bool init_clique_data_from_args(Obj digraph_obj,
     CLIQUE = new_bit_array(MAXVERTS); 
     TRY    = new_conditions(MAXVERTS, MAXVERTS); 
     BAN    = new_conditions(MAXVERTS, MAXVERTS); 
+
+    ORB_LOOKUP     = new_bit_array(MAXVERTS);
+    for (uint16_t i = 0; i < MAXVERTS; i++) { 
+      STAB_GENS[i] = new_perm_coll(MAXVERTS, MAXVERTS);
+    }
+    SCHREIER_SIMS = new_schreier_sims();
   }
 
   uint16_t nr = DigraphNrVertices(digraph_obj);
@@ -245,13 +325,23 @@ static bool init_clique_data_from_args(Obj digraph_obj,
   }
   USER_PARAM = user_param_obj;
 
+
+  // Get generators of the automorphism group the graph
+  PERM_DEGREE = nr;
+  if (aut_grp_obj == Fail) {
+    // TODO: should we use BLISS instead? Otherwise drop digraph directions in GAP
+    get_automorphism_group_from_gap(digraph_obj, STAB_GENS[0]);
+  } else {
+    set_automorphisms(aut_grp_obj, STAB_GENS[0]);
+  }
+
   return true;
 }
 
 Obj FuncDigraphsCliqueFinder(Obj self, Obj args) {
-  if (LEN_PLIST(args) != 8) { 
+  if (LEN_PLIST(args) != 8 && LEN_PLIST(args)  != 9) { 
     ErrorQuit(
-        "there must be 8 arguments, found %d,", LEN_PLIST(args), 0L);
+        "there must be 8 or 9 arguments, found %d,", LEN_PLIST(args), 0L);
   }
   Obj digraph_obj    = ELM_PLIST(args, 1);
   Obj hook_obj       = ELM_PLIST(args, 2);
@@ -261,6 +351,11 @@ Obj FuncDigraphsCliqueFinder(Obj self, Obj args) {
   Obj exclude_obj    = ELM_PLIST(args, 6);
   Obj max_obj        = ELM_PLIST(args, 7);
   Obj size_obj       = ELM_PLIST(args, 8);
+  Obj aut_grp_obj    = Fail;
+  if (LEN_PLIST(args) == 9) {
+    aut_grp_obj = ELM_PLIST(args, 9);
+  }
+
 
   // Validate the arguments
   if (CALL_1ARGS(IsDigraph, digraph_obj) != True) {
@@ -312,6 +407,35 @@ Obj FuncDigraphsCliqueFinder(Obj self, Obj args) {
               0L);
   }
 
+  if (aut_grp_obj != Fail) {
+    if (CALL_1ARGS(IsPermGroup, aut_grp_obj) != True) {
+      ErrorQuit(
+          "the 9th argument <aut_grp> must be a permutation group "
+          "or fail, not %s,",
+          (Int) TNAM_OBJ(aut_grp_obj),
+          0L);
+    }
+    Obj gens = CALL_1ARGS(GeneratorsOfGroup, aut_grp_obj);
+    DIGRAPHS_ASSERT(IS_LIST(gens));
+    DIGRAPHS_ASSERT(LEN_LIST(gens) > 0);
+    UInt lmp = INT_INTOBJ(CALL_1ARGS(LargestMovedPointPerms, gens));
+    if (lmp > 0 && LEN_LIST(gens) >= lmp) {
+      ErrorQuit("expected at most %d generators in the 9th argument "
+                "but got %d,",
+                lmp - 1,
+                LEN_LIST(gens));
+    }
+    for (UInt i = 1; i <= LEN_LIST(gens); ++i) {
+      if (CALL_2ARGS(IsDigraphAutomorphism, digraph_obj, ELM_LIST(gens, i))
+            != True) {
+          ErrorQuit("expected group of automorphisms, but found a "
+                    "non-automorphism in position %d of the group generators,",
+                    i,
+                    0L);
+      }
+    }
+  }
+
   // Initialise all the variable which will be used to carry out the recursion
   if (!init_clique_data_from_args(digraph_obj, 
                                   hook_obj, 
@@ -319,7 +443,8 @@ Obj FuncDigraphsCliqueFinder(Obj self, Obj args) {
                                   include_obj, 
                                   exclude_obj, 
                                   max_obj, 
-                                  size_obj)) { 
+                                  size_obj,
+                                  aut_grp_obj)) { 
     return user_param_obj;
   }
 
@@ -333,7 +458,7 @@ Obj FuncDigraphsCliqueFinder(Obj self, Obj args) {
 
   // go!
   if (setjmp(OUTOFHERE) == 0) {
-    BronKerbosch(0, limit, &nr_found, max, size); 
+    BronKerbosch(0, 0, limit, &nr_found, max, size); 
   }
 
   return user_param_obj;
