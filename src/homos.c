@@ -294,7 +294,7 @@ homo_hook_collect(void* user_param, uint16_t const nr, uint16_t const* map) {
 //   printf(" }>");
 // }
 
-static void get_automorphism_group_from_gap(Obj digraph_obj, PermColl* out) {
+void get_automorphism_group_from_gap(Obj digraph_obj, PermColl* out) {
   DIGRAPHS_ASSERT(CALL_1ARGS(IsDigraph, digraph_obj) == True);
   Obj o = CALL_1ARGS(AutomorphismGroup, digraph_obj);
   o     = CALL_1ARGS(GeneratorsOfGroup, o);
@@ -523,7 +523,7 @@ static void internal_order_map_graph(Graph const* const graph) {
   }
 }
 
-static void set_automorphisms(Obj aut_grp_obj, PermColl* out) {
+void set_automorphisms(Obj aut_grp_obj, PermColl* out) {
   DIGRAPHS_ASSERT(out != NULL);
   clear_perm_coll(out);
   out->degree = PERM_DEGREE;
