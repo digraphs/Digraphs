@@ -55,6 +55,7 @@ Obj IsAttributeStoringRepObj;
 Obj IsPermGroup;
 Obj IsDigraphAutomorphism;
 Obj LargestMovedPointPerms;
+Obj IsClique;
 
 #if !defined(GAP_KERNEL_MAJOR_VERSION) || GAP_KERNEL_MAJOR_VERSION < 3
 // compatibility with GAP <= 4.9
@@ -2329,6 +2330,7 @@ static Int InitKernel(StructInitInfo* module) {
   ImportGVarFromLibrary("IsPermGroup", &IsPermGroup);
   ImportGVarFromLibrary("IsDigraphAutomorphism", &IsDigraphAutomorphism);
   ImportGVarFromLibrary("LargestMovedPointPerms", &LargestMovedPointPerms);
+  ImportGVarFromLibrary("IsClique", &IsClique);
   /* return success                                                      */
   return 0;
 }

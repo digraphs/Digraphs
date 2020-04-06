@@ -52,6 +52,7 @@ extern Obj AutomorphismGroup;
 extern Obj IsPermGroup;
 extern Obj IsDigraphAutomorphism;
 extern Obj LargestMovedPointPerms;
+extern Obj IsClique;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Global variables
@@ -149,7 +150,7 @@ static void BronKerbosch(uint16_t  depth,
 
   BitArray* to_try = new_bit_array(MAXVERTS);
   if (max) {
-    // Choose a pivot with as a many neighbours in <try> as possible 
+    // Choose a pivot with as many neighbours in <try> as possible 
     uint16_t pivot = 0;
     int max_neighbours = -1; 
     for (uint16_t i = 0; i < nr; i++){
@@ -198,28 +199,28 @@ static void BronKerbosch(uint16_t  depth,
       pop_conditions(BAN, depth + 1);
       set_bit_array(CLIQUE, pt, false);
 
- //     if (STAB_GENS[rep_depth]->size == 0) {
+      if (STAB_GENS[rep_depth]->size == 0) {
         set_bit_array(get_conditions(TRY, 0), pt, false);
         set_bit_array(get_conditions(BAN, 0), pt, true);
- //     } else {
- //       init_bit_array(ORB_LOOKUP, false, nr);
- //       set_bit_array(ORB_LOOKUP, pt, true);
- //       ORB[0] = pt;
- //       uint16_t n = 1; // lenght of the orbit of pt
+      } else {
+        init_bit_array(ORB_LOOKUP, false, nr);
+        set_bit_array(ORB_LOOKUP, pt, true);
+        ORB[0] = pt;
+        uint16_t n = 1; // lenght of the orbit of pt
 
- //       for (uint16_t i = 0; i < n; ++i) {
- //         for (uint16_t j = 0; j < STAB_GENS[rep_depth]->size; ++j) {
- //           Perm gen = STAB_GENS[rep_depth]->perms[j];
- //           uint16_t const img = gen[ORB[i]];
- //           if (!get_bit_array(ORB_LOOKUP, img)) {
- //             ORB[n++] = img;
- //             set_bit_array(ORB_LOOKUP, img, true);
- //           }
- //         }
- //       }
- //       complement_bit_arrays(get_conditions(TRY,0), ORB_LOOKUP, nr);
- //       union_bit_arrays(get_conditions(BAN,0), ORB_LOOKUP, nr);
- //     }
+        for (uint16_t i = 0; i < n; ++i) {
+          for (uint16_t j = 0; j < STAB_GENS[rep_depth]->size; ++j) {
+            Perm gen = STAB_GENS[rep_depth]->perms[j];
+            uint16_t const img = gen[ORB[i]];
+            if (!get_bit_array(ORB_LOOKUP, img)) {
+              ORB[n++] = img;
+              set_bit_array(ORB_LOOKUP, img, true);
+            }
+          }
+        }
+        complement_bit_arrays(get_conditions(TRY,0), ORB_LOOKUP, nr);
+        union_bit_arrays(get_conditions(BAN,0), ORB_LOOKUP, nr);
+      }
     }
  
   }
@@ -288,7 +289,6 @@ static bool init_clique_data_from_args(Obj digraph_obj,
                                        Obj include_obj, 
                                        Obj exclude_obj, 
                                        Obj max_obj, 
-                                       Obj size_obj,
                                        Obj aut_grp_obj) { 
   static bool is_initialized = false;
   if (!is_initialized) {
@@ -309,13 +309,25 @@ static bool init_clique_data_from_args(Obj digraph_obj,
     SCHREIER_SIMS = new_schreier_sims();
   }
 
+  init_clique_graph_from_digraph_obj(GRAPH, digraph_obj);
+
   uint16_t nr = DigraphNrVertices(digraph_obj);
-  init_bit_array(CLIQUE, false, nr);
   clear_conditions(TRY, nr + 1, nr);
   clear_conditions(BAN, nr + 1, nr);
   init_bit_array(BAN->bit_array[0], false, nr);
 
-  init_clique_graph_from_digraph_obj(GRAPH, digraph_obj);
+  // Update and CLIQUE and TRY using include_obj
+  if (include_obj != Fail) {
+    init_bit_array(CLIQUE, false, nr);
+    set_bit_array_from_gap_list(CLIQUE, include_obj);
+    complement_bit_arrays(get_conditions(TRY, 0), CLIQUE, nr);
+    for (uint16_t i = 1; i <= LEN_LIST(include_obj); ++i) {
+      intersect_bit_arrays(get_conditions(TRY, 0),
+                           GRAPH->neighbours[INT_INTOBJ(ELM_LIST(include_obj, i)) - 1],
+                           nr);
+    }
+  }
+
 
   if (hook_obj != Fail) {
     GAP_FUNC = hook_obj;
@@ -356,7 +368,6 @@ Obj FuncDigraphsCliqueFinder(Obj self, Obj args) {
     aut_grp_obj = ELM_PLIST(args, 9);
   }
 
-
   // Validate the arguments
   if (CALL_1ARGS(IsDigraph, digraph_obj) != True) {
     ErrorQuit("the 1st argument <digraph> must be a digraph, not %s,",
@@ -380,28 +391,80 @@ Obj FuncDigraphsCliqueFinder(Obj self, Obj args) {
         "the 2rd argument <hook> must be a function with 2 arguments,", 0L, 0L);
   }
   if (!IS_INTOBJ(limit_obj) && limit_obj != Infinity) {
-    ErrorQuit("the 4th argument <limit_obj> must be an integer "
+    ErrorQuit("the 4th argument <limit> must be an integer "
               "or infinity, not %s,",
               (Int) TNAM_OBJ(limit_obj),
               0L);
   } else if (IS_INTOBJ(limit_obj) && INT_INTOBJ(limit_obj) <= 0) {
-    ErrorQuit("the 4th argument <limit_obj> must be a positive integer, "
+    ErrorQuit("the 4th argument <limit> must be a positive integer, "
               "not %d,",
               INT_INTOBJ(limit_obj),
               0L);
   }
+  if (!IS_LIST(include_obj) && include_obj != Fail) {
+    ErrorQuit("the 5th argument <include> must be a list or fail, not %s,",
+              (Int) TNAM_OBJ(include_obj),
+              0L);
+  } else if (IS_LIST(include_obj)) {
+    for (Int i = 1; i <= LEN_LIST(include_obj); ++i) {
+      if (!ISB_LIST(include_obj, i)) {
+        ErrorQuit("the 5th argument <include> must be a dense list,", 0L, 0L);
+      } else if (!IS_POS_INT(ELM_LIST(include_obj, i))) {
+        ErrorQuit("the 5th argument <include> must only contain positive "
+                  "integers, but found %s in position %d,",
+                  (Int) TNAM_OBJ(ELM_LIST(include_obj, i)),
+                  i);
+      } else if (INT_INTOBJ(ELM_LIST(include_obj, i)) 
+                 > DigraphNrVertices(digraph_obj)) {
+        ErrorQuit("in the 5th argument <include> position %d is out of range, "
+                  "must be in the range [1, %d],",
+                  i,
+                  DigraphNrVertices(digraph_obj));
+      } else if (INT_INTOBJ(
+                     POS_LIST(include_obj, ELM_LIST(include_obj, i), INTOBJ_INT(0)))
+                 < i) {
+        ErrorQuit("in the 5th argument <include> position %d is a duplicate,", i, 0L);
+      }
+    }
+  }
+  if (!IS_LIST(exclude_obj) && exclude_obj != Fail) {
+    ErrorQuit("the 6th argument <exclude> must be a list or fail, not %s,",
+              (Int) TNAM_OBJ(exclude_obj),
+              0L);
+  } else if (IS_LIST(exclude_obj)) {
+    for (Int i = 1; i <= LEN_LIST(exclude_obj); ++i) {
+      if (!ISB_LIST(exclude_obj, i)) {
+        ErrorQuit("the 6th argument <exclude> must be a dense list,", 0L, 0L);
+      } else if (!IS_POS_INT(ELM_LIST(exclude_obj, i))) {
+        ErrorQuit("the 6th argument <exclude> must only contain positive "
+                  "integers, but found %s in position %d,",
+                  (Int) TNAM_OBJ(ELM_LIST(exclude_obj, i)),
+                  i);
+      } else if (INT_INTOBJ(ELM_LIST(exclude_obj, i)) 
+                 > DigraphNrVertices(digraph_obj)) {
+        ErrorQuit("in the 6th argument <exclude> position %d is out of range, "
+                  "must be in the range [1, %d],",
+                  i,
+                  DigraphNrVertices(digraph_obj));
+      } else if (INT_INTOBJ(
+                     POS_LIST(exclude_obj, ELM_LIST(exclude_obj, i), INTOBJ_INT(0)))
+                 < i) {
+        ErrorQuit("in the 6th argument <exclude> position %d is a duplicate,", i, 0L);
+      }
+    }
+  }
   if (max_obj != True && max_obj != False) {
-    ErrorQuit("the 7th argument <max_obj> must true or false, not %s,",
+    ErrorQuit("the 7th argument <max> must true or false, not %s,",
               (Int) TNAM_OBJ(max_obj),
               0L);
   }
   if (!IS_INTOBJ(size_obj) && size_obj != Fail) {
-    ErrorQuit("the 8th argument <size_obj> must be an integer "
+    ErrorQuit("the 8th argument <size> must be an integer "
               "or fail, not %s,",
               (Int) TNAM_OBJ(size_obj),
               0L);
   } else if (IS_INTOBJ(size_obj) && INT_INTOBJ(size_obj) <= 0) {
-    ErrorQuit("the 8th argument <size_obj> must be a positive integer, "
+    ErrorQuit("the 8th argument <size> must be a positive integer, "
               "not %d,",
               INT_INTOBJ(size_obj),
               0L);
@@ -436,6 +499,40 @@ Obj FuncDigraphsCliqueFinder(Obj self, Obj args) {
     }
   }
 
+  uint16_t size  = (size_obj == Fail ? 0 : INT_INTOBJ(size_obj));
+  uint16_t include_size = (include_obj == Fail ? 0 : LEN_LIST(include_obj));
+  uint16_t exclude_size = (exclude_obj == Fail ? 0 : LEN_LIST(exclude_obj));
+  uint16_t nr = DigraphNrVertices(digraph_obj);
+
+  // Check the trivial cases:
+  // The desired clique is too small
+  if (size != 0 && include_size > size) { 
+      return user_param_obj;
+  } 
+  // The desired clique is too big
+  if (size != 0 && size > nr - exclude_size) {
+    return user_param_obj;
+  }
+  // Check if include and exclude have empty intersection
+  if (include_size != 0 && exclude_size != 0) {
+    bool lookup[MAXVERTS] = {false};
+    for (uint16_t i = 0; i < include_size; ++i) {
+      lookup[INT_INTOBJ(ELM_LIST(include_obj, i)) - 1] = true;
+    }
+    for (uint16_t i = 0; i < exclude_size; ++i) {
+      if (lookup[INT_INTOBJ(ELM_LIST(exclude_obj, i)) - 1]) { 
+        return user_param_obj;
+      }
+    }
+  }
+  // Check if the set we are trying to extend is a clique
+  if (include_obj != Fail && CALL_2ARGS(IsClique, digraph_obj, include_obj) == False) {
+    return user_param_obj;
+  }
+  // 
+  uint16_t nr_found = 0;
+  uint16_t limit = (limit_obj == Infinity ? MAXVERTS : INT_INTOBJ(limit_obj));
+  bool max = (max_obj == True ? true : false); 
   // Initialise all the variable which will be used to carry out the recursion
   if (!init_clique_data_from_args(digraph_obj, 
                                   hook_obj, 
@@ -443,22 +540,14 @@ Obj FuncDigraphsCliqueFinder(Obj self, Obj args) {
                                   include_obj, 
                                   exclude_obj, 
                                   max_obj, 
-                                  size_obj,
                                   aut_grp_obj)) { 
     return user_param_obj;
   }
 
-  uint16_t nr_found = 0;
-  uint16_t limit = (limit_obj == Infinity ? MAXVERTS : INT_INTOBJ(limit_obj));
-  uint16_t size  = (size_obj == Fail ? 0 : INT_INTOBJ(size_obj));
-  bool max = (max_obj == True ? true : false); 
-  if (size > GRAPH->nr_vertices) {
-    return user_param_obj;
-  }
 
   // go!
   if (setjmp(OUTOFHERE) == 0) {
-    BronKerbosch(0, 0, limit, &nr_found, max, size); 
+    BronKerbosch(0, 0, limit, &nr_found, max, (size == 0 ? size : size - include_size)); 
   }
 
   return user_param_obj;
