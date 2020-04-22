@@ -2485,6 +2485,12 @@ true
 gap> IsDigraphFolding(Digraph([[1, 2], [1, 2]]), Digraph([[1, 1], [1]]),       
 > Transformation([1, 1]), Transformation([1, 2, 1, 2]));
 true
+gap> IsDigraphFolding(Digraph([[1, 2], [1, 2]]), Digraph([[1, 1], [1]]),
+> Transformation([1, 1]), Transformation([2, 2, 1, 1]));
+true
+gap> IsDigraphFolding(Digraph([[1, 2, 3], [1, 2], [1, 3]]), Digraph([[1, 1]]), 
+> Transformation([1, 1, 1]), Transformation([1, 2, 2, 1, 2, 1, 2]));
+false
 
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(edges);
