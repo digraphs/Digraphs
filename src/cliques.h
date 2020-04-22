@@ -14,6 +14,6 @@
 // GAP headers
 #include "src/compiled.h"
 
-Obj FuncDigraphsCliqueFinder(Obj self, Obj args);
+Obj FuncDigraphsCliquesFinder(Obj self, Obj args);
 
 #endif  // DIGRAPHS_SRC_CLIQUES_H_

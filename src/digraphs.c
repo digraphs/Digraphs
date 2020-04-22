@@ -55,6 +55,7 @@ Obj IsAttributeStoringRepObj;
 Obj IsPermGroup;
 Obj IsDigraphAutomorphism;
 Obj LargestMovedPointPerms;
+Obj SmallestMovedPointPerm;
 Obj IsClique;
 
 #if !defined(GAP_KERNEL_MAJOR_VERSION) || GAP_KERNEL_MAJOR_VERSION < 3
@@ -2252,12 +2253,12 @@ static StructGVarFunc GVarFuncs[] = {
      FuncHomomorphismDigraphsFinder,
      "src/homos.c:FuncHomomorphismDigraphsFinder"},
 
-    {"DigraphsCliqueFinder",
+    {"DigraphsCliquesFinder",
      -1,
      "digraph, hook, user_param, limit, include, "
      "exclude, max, size",
-     FuncDigraphsCliqueFinder,
-     "src/cliques.c:FuncDigraphsCliqueFinder"},
+     FuncDigraphsCliquesFinder,
+     "src/cliques.c:FuncDigraphsCliquesFinder"},
 
     {"IS_PLANAR", 1, "digraph", FuncIS_PLANAR, "src/planar.c:FuncIS_PLANAR"},
 
@@ -2330,6 +2331,7 @@ static Int InitKernel(StructInitInfo* module) {
   ImportGVarFromLibrary("IsPermGroup", &IsPermGroup);
   ImportGVarFromLibrary("IsDigraphAutomorphism", &IsDigraphAutomorphism);
   ImportGVarFromLibrary("LargestMovedPointPerms", &LargestMovedPointPerms);
+  ImportGVarFromLibrary("SmallestMovedPointPerm", &SmallestMovedPointPerm);
   ImportGVarFromLibrary("IsClique", &IsClique);
   /* return success                                                      */
   return 0;
