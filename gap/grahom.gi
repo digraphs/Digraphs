@@ -656,26 +656,27 @@ InstallMethod(IsDigraphFolding, "for a digraph, a digraph, and a transformation"
 [IsDigraph, IsDigraph, IsTransformation, IsTransformation],
 function(domain, codomain, vertexmap, edgemap)
   local temp, badedgepairs, optiontree, newoptions, currentpath,
-        goodconfigurations, newoptionstemp, newoption, codomedges,
-        domedges, domedgesbyinvertex, domedgesbyoutvertex, edgepath,
+        goodconfigurations, newoptionstemp, codomedges, domedges,
+        domedgesbyinvertex, domedgesbyoutvertex, edgepath,
         configurationstocheck, currentconfiguration, i, goodedgepairs,
-        newpair, codomedgesbyinvertex, codomedgesbyoutvertex,
-        newconfiguration, currentpair, failedpairs, pathcoverededges,
-        coverededges, loopable, forwardcoverededges;
+        newpair, codomedgesbyinvertex, newconfiguration, currentpair,
+        failedpairs, coverededges, loopable, forwardcoverededges;
 
-#checking functions have the correct domain and codomain
-  for i in [DigraphNrVertices(domain) + 1 .. DegreeOfTransformation(vertexmap)] do
-    if not i^vertexmap = i then
+  #checking functions have the correct domain and codomain 
+  for i in [DigraphNrVertices(domain) + 1 ..
+            DegreeOfTransformation(vertexmap)] do
+    if not i ^ vertexmap = i then
       return false;
     fi;
   od;
   for i in [DigraphNrEdges(domain) + 1 .. DegreeOfTransformation(edgemap)] do
-    if not i^edgemap = i then
+    if not i ^ edgemap = i then
       return false;
     fi;
   od;
   if not IsSubset([1 .. DigraphNrVertices(codomain)],
-                  ImageSetOfTransformation(vertexmap, DigraphNrVertices(domain))) then
+                  ImageSetOfTransformation(vertexmap,
+                                           DigraphNrVertices(domain))) then
     return false;
   fi;
   if not IsSubset([1 .. DigraphNrEdges(codomain)],
@@ -683,10 +684,11 @@ function(domain, codomain, vertexmap, edgemap)
     return false;
   fi;
 
-#checking that the function is a multidigraph homomorphism
+  #checking that the function is a multidigraph homomorphism 
   for i in [1 .. DigraphNrEdges(domain)] do
     temp := DigraphEdges(domain)[i];
-    if not DigraphEdges(codomain)[i^edgemap] = [temp[1]^vertexmap, temp[2]^vertexmap] then
+    if not DigraphEdges(codomain)[i ^ edgemap] =
+           [temp[1] ^ vertexmap, temp[2] ^ vertexmap] then
       return false;
     fi;
   od;
@@ -703,13 +705,12 @@ function(domain, codomain, vertexmap, edgemap)
   domedgesbyoutvertex := List(DigraphVertices(domain),
                               x -> Filtered([1 .. Size(domedges)],
                                             y -> domedges[y][2] = x));
-  codomedgesbyoutvertex := List(DigraphVertices(codomain),
-                                x -> Filtered([1 .. Size(codomedges)],
-                                              y -> codomedges[y][2] = x));
 
-#checking forwards injective
-  badedgepairs := Filtered(Cartesian([1 .. Size(domedges)], [1 .. Size(domedges)]),
-                           x -> (x[1] < x[2]) and (x[1]^edgemap = x[2]^edgemap));
+  #checking forwards injective 
+  badedgepairs := Filtered(Cartesian([1 .. Size(domedges)],
+                                     [1 .. Size(domedges)]),
+                           x -> (x[1] < x[2]) and
+                           (x[1] ^ edgemap = x[2] ^ edgemap));
   goodedgepairs := [];
   failedpairs := [];
   while not badedgepairs = [] do
@@ -717,13 +718,17 @@ function(domain, codomain, vertexmap, edgemap)
     optiontree := [[newpair]];
     currentpath := [1];
     while not optiontree = [] do
-      currentpair := optiontree[Size(currentpath)][currentpath[Size(currentpath)]];
+      currentpair := optiontree[Size(currentpath)]
+                               [currentpath[Size(currentpath)]];
       newoptions := Cartesian(domedgesbyinvertex[domedges[currentpair[1]][2]],
                               domedgesbyinvertex[domedges[currentpair[2]][2]]);
-      newoptions := Filtered(newoptions, x -> (x[1]^edgemap = x[2]^edgemap) and (x[1] < x[2]) and (not x in goodedgepairs));
+      newoptions := Filtered(newoptions,
+                             x -> (x[1] ^ edgemap = x[2] ^ edgemap) and
+                                  (x[1] < x[2]) and (not x in goodedgepairs));
       if newoptions = [] then
         currentpath[Size(currentpath)] := currentpath[Size(currentpath)] + 1;
-        while currentpath <> [] and currentpath[Size(currentpath)] > Size(optiontree[Size(currentpath)]) do
+        while currentpath <> [] and currentpath[Size(currentpath)] >
+                                    Size(optiontree[Size(currentpath)]) do
           goodedgepairs := Union(goodedgepairs, Remove(optiontree));
           Remove(currentpath);
           if Size(currentpath) > 0 then
@@ -734,8 +739,9 @@ function(domain, codomain, vertexmap, edgemap)
         Add(optiontree, newoptions);
         Add(currentpath, 1);
       fi;
-      #when we know we have a problem
-      edgepath := List([1 .. Size(currentpath)], x -> optiontree[x][currentpath[x]]);
+      #when we know we have a problem 
+      edgepath := List([1 .. Size(currentpath)],
+                       x -> optiontree[x][currentpath[x]]);
       if not Size(Set(edgepath)) = Size(edgepath) then
         Add(failedpairs, optiontree[1][1]);
         break;
@@ -743,7 +749,7 @@ function(domain, codomain, vertexmap, edgemap)
     od;
   od;
 
-#checking backwards injective
+  #checking backwards injective 
   badedgepairs := failedpairs;
   goodedgepairs := [];
   while not badedgepairs = [] do
@@ -751,71 +757,89 @@ function(domain, codomain, vertexmap, edgemap)
     optiontree := [[newpair]];
     currentpath := [1];
     while not optiontree = [] do
-      currentpair := optiontree[Size(currentpath)][currentpath[Size(currentpath)]];
-      newoptions := Cartesian(domedgesbyoutvertex[domedges[currentpair[1]][2]], domedgesbyoutvertex[domedges[currentpair[2]][2]]);
-      newoptions := Filtered(newoptions, x -> (x[1]^edgemap = x[2]^edgemap) and (x[1] < x[2]) and (not x in goodedgepairs));
+      currentpair := optiontree[Size(currentpath)]
+                               [currentpath[Size(currentpath)]];
+      newoptions := Cartesian(domedgesbyoutvertex[domedges[currentpair[1]][2]],
+                             domedgesbyoutvertex[domedges[currentpair[2]][2]]);
+      newoptions := Filtered(newoptions, x -> (x[1] ^ edgemap = x[2] ^ edgemap)
+                             and (x[1] < x[2]) and (not x in goodedgepairs));
       if newoptions = [] then
         currentpath[Size(currentpath)] := currentpath[Size(currentpath)] + 1;
-        while currentpath <> [] and currentpath[Size(currentpath)] > Size(optiontree[Size(currentpath)]) do
+        while currentpath <> [] and currentpath[Size(currentpath)] >
+                                    Size(optiontree[Size(currentpath)]) do
           goodedgepairs := Union(goodedgepairs, Remove(optiontree));
           Remove(currentpath);
           if Size(currentpath) > 0 then
-            currentpath[Size(currentpath)] := currentpath[Size(currentpath)] + 1;
+            currentpath[Size(currentpath)] := currentpath[Size(currentpath)]
+                                              + 1;
           fi;
         od;
       else
         Add(optiontree, newoptions);
         Add(currentpath, 1);
       fi;
-      #when we know we have a problem
-      edgepath := List([1 .. Size(currentpath)], x -> optiontree[x][currentpath[x]]);
+      #when we know we have a problem 
+      edgepath := List([1 .. Size(currentpath)],
+                       x -> optiontree[x][currentpath[x]]);
       if not Size(Set(edgepath)) = Size(edgepath) then
         return false;
       fi;
     od;
   od;
 
-
 #checking surjective
-  loopable := Filtered(DigraphVertices(codomain), x-> IsReachable(codomain, x, x));
+  loopable := Filtered(DigraphVertices(codomain),
+                       x -> IsReachable(codomain, x, x));
   forwardcoverededges := Filtered([1 .. Size(codomedges)],
-                  x -> ForAny(loopable, y-> IsReachable(codomain, codomedges[x][2], y)));
+                  x -> ForAny(loopable, y -> IsReachable(codomain,
+                                                         codomedges[x][2],
+                                                         y)));
   coverededges := Filtered(forwardcoverededges,
-                  x -> ForAny(loopable, y-> IsReachable(codomain, y, codomedges[x][1])));
-
+                  x -> ForAny(loopable, y -> IsReachable(codomain, y,
+                                                         codomedges[x][1])));
 
   goodconfigurations := [];
-  configurationstocheck := List(coverededges, x -> [x, Filtered([1 .. Size(domedges)], y -> y^edgemap = x)]);
+  configurationstocheck := List(coverededges,
+                                x -> [x, Filtered([1 .. Size(domedges)],
+                                                   y -> y ^ edgemap = x)]);
   while not configurationstocheck = [] do
     newconfiguration := Remove(configurationstocheck);
     optiontree := [[newconfiguration]];
     currentpath := [1];
     while not optiontree = [] do
-      currentconfiguration := optiontree[Size(currentpath)][currentpath[Size(currentpath)]];
+      currentconfiguration := optiontree[Size(currentpath)]
+                                        [currentpath[Size(currentpath)]];
       AddSet(goodconfigurations, StructuralCopy(currentconfiguration));
-      newoptionstemp := Set(List(currentconfiguration[2], x -> domedges[x][2]));
-      newoptionstemp := Union(List(newoptionstemp, x -> domedgesbyinvertex[x]));
-      newoptions := List(Filtered(codomedgesbyinvertex[codomedges[currentconfiguration[1]][2]], z -> z in forwardcoverededges),
-                         x -> [x, Filtered(newoptionstemp, y -> y^edgemap = x)]);
+      newoptionstemp := Set(List(currentconfiguration[2],
+                                 x -> domedges[x][2]));
+      newoptionstemp := Union(List(newoptionstemp,
+                                   x -> domedgesbyinvertex[x]));
+      newoptions := List(Filtered(codomedgesbyinvertex[codomedges
+                         [currentconfiguration[1]][2]],
+                         z -> z in forwardcoverededges),
+                         x -> [x, Filtered(newoptionstemp,
+                                           y -> y ^ edgemap = x)]);
       newoptions := Filtered(newoptions, x -> not x in goodconfigurations);
-      #finding an unwritable path
+      #finding an unwritable path 
       if ForAny(newoptions, x-> x[2] = []) then
         return [false, "sur"];
       fi;
 
       if newoptions = [] then
         currentpath[Size(currentpath)] := currentpath[Size(currentpath)] + 1;
-        while currentpath <> [] and currentpath[Size(currentpath)] > Size(optiontree[Size(currentpath)]) do
+        while currentpath <> [] and currentpath[Size(currentpath)] >
+                                    Size(optiontree[Size(currentpath)]) do
           Remove(currentpath);
           Remove(optiontree);
           if Size(currentpath) > 0 then
-            currentpath[Size(currentpath)] := currentpath[Size(currentpath)] + 1;
+            currentpath[Size(currentpath)] := currentpath[Size(currentpath)]
+                                              + 1;
           fi;
         od;
       else
-       Add(optiontree, newoptions);
-       Add(currentpath, 1);
-      fi;     
+        Add(optiontree, newoptions);
+        Add(currentpath, 1);
+      fi;
     od;
   od;
 
