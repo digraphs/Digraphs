@@ -444,6 +444,34 @@ static void BronKerbosch(uint16_t  depth,
   }
 }
 
+// FuncDigraphsCliquesFinder is the main function to use the C implementation
+// of Bron-Kerbosch algorithm
+// 
+// The arguments are as follows:
+//
+// 1. digraphs_obj    the digraph to search for cliques in
+// 2. hook_obj        a funtion to apply to every clique found, or Fail if no
+//                    such function is needed
+// 3. user_param_obj  GAP variable that can be used in the hook_obj, must be a
+//                    plist if hook_obj is Fail
+// 4. limit_obj       the maximum number of cliques to find
+// 5. include_obj     a list of vertices of digraph_obj to required to be present in 
+//                    every clique found
+// 6. exclude_obj     a list of vertices of digraph_obj which cannot be present
+//                    in any of the cliques found
+// 7. max_obj         True if only maximal cliques need to be found and False
+//                    otherwise
+// 8. size_obj        an integer specifying the size of cliques to be found
+// 9. aut_grp_obj     an optional argument that can specifiy the automorphisms
+//                    of the graph that will be used in the recursive search.
+//                    If not given, the full automorphism group will be used.
+//
+// The function returns orbit representatives of cliques rather than all of the
+// cliques themselves. Note that if include_obj or exlcude_obj are not invariant 
+// under the full automorphism group (or aut_grp_obj), then some of the cliques 
+// in the cliques in the orbit might not respect the inclusion/exclusion of 
+// the corresponding lists.
+
 Obj FuncDigraphsCliquesFinder(Obj self, Obj args) {
   if (LEN_PLIST(args) != 8 && LEN_PLIST(args)  != 9) { 
     ErrorQuit(
