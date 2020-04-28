@@ -11,9 +11,8 @@ compiler:
   gcc
 
 branches:
-  only:
-  - master
-  - /^stable-\d+\.\d+/
+  except:
+    - /^rc-v\d+\.\d+\.\d+/
 
 env:
   global:
