@@ -85,9 +85,6 @@ DeclareOperation("IsDigraphMonomorphism",
 DeclareOperation("IsDigraphEmbedding",
                  [IsDigraph, IsDigraph, IsPerm, IsList, IsList]);
 
-DeclareOperation("IsDigraphFolding",
-                 [IsDigraph, IsDigraph, IsTransformation, IsTransformation]);
-
 DeclareOperation("IsDigraphColouring", [IsDigraph, IsList]);
 DeclareOperation("IsDigraphColouring", [IsDigraph, IsTransformation]);
 
