@@ -96,7 +96,8 @@ Persons := [
     WWWHome       := "https://www.quendi.de/math",
     PostalAddress := Concatenation(
                        "Fachbereich Mathematik, TU Kaiserslautern, ",
-                       "Gottlieb-Daimler-Straße 48, 67663 Kaiserslautern, Germany"),
+                       "Gottlieb-Daimler-Straße 48, 67663 Kaiserslautern, ",
+                       "Germany"),
     Place         := "Kaiserslautern, Germany",
     Institution   := "TU Kaiserslautern"),
 
