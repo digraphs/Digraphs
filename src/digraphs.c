@@ -57,6 +57,13 @@ Obj IsDigraphAutomorphism;
 Obj LargestMovedPointPerms;
 Obj SmallestMovedPointPerm;
 Obj IsClique;
+Obj IsTrivial;
+Obj Orbit;
+Obj Stabilizer;
+Obj IsSubset;
+Obj OnTuples;
+Obj Group;
+Obj ClosureGroup;
 
 #if !defined(GAP_KERNEL_MAJOR_VERSION) || GAP_KERNEL_MAJOR_VERSION < 3
 // compatibility with GAP <= 4.9
@@ -2333,6 +2340,13 @@ static Int InitKernel(StructInitInfo* module) {
   ImportGVarFromLibrary("LargestMovedPointPerms", &LargestMovedPointPerms);
   ImportGVarFromLibrary("SmallestMovedPointPerm", &SmallestMovedPointPerm);
   ImportGVarFromLibrary("IsClique", &IsClique);
+  ImportGVarFromLibrary("IsTrivial", &IsTrivial);
+  ImportGVarFromLibrary("Orbit", &Orbit);
+  ImportGVarFromLibrary("Stabilizer", &Stabilizer);
+  ImportGVarFromLibrary("IsSubset", &IsSubset);
+  ImportGVarFromLibrary("OnTuples", &OnTuples);
+  ImportGVarFromLibrary("Group", &Group);
+  ImportGVarFromLibrary("ClosureGroup", &ClosureGroup);
   /* return success                                                      */
   return 0;
 }
