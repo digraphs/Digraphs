@@ -92,13 +92,14 @@ Persons := [
     FirstNames    := "Max",
     IsAuthor      := false,
     IsMaintainer  := false,
-    Email         := "max.horn@uni-siegen.de",
+    Email         := "horn@mathematik.uni-kl.de",
     WWWHome       := "https://www.quendi.de/math",
     PostalAddress := Concatenation(
-                       "Department Mathematik, Universität Siegen, ",
-                       "Walter-Flex-Straße 3, 57072 Siegen, Germany"),
-    Place         := "Siegen",
-    Institution   := "Universität Siegen"),
+                       "Fachbereich Mathematik, TU Kaiserslautern, ",
+                       "Gottlieb-Daimler-Straße 48, 67663 Kaiserslautern, ",
+                       "Germany"),
+    Place         := "Kaiserslautern, Germany",
+    Institution   := "TU Kaiserslautern"),
 
   rec(
     LastName      := "Jefferson",
