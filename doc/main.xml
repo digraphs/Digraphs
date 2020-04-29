@@ -13,7 +13,7 @@
    Text='nauty'>http://pallini.di.uniroma1.it/</URL></Alt><Alt
    Only='Text'><Package>nauty</Package></Alt>">
      <!ENTITY NautyTracesInterface "<Alt Not='Text'><URL
-   Text='NautyTracesInterface'>https://github.com/sebasguts/NautyTracesInterface</URL></Alt><Alt
+   Text='NautyTracesInterface'>https://github.com/gap-packages/NautyTracesInterface</URL></Alt><Alt
    Only='Text'><Package>NautyTracesInterface</Package></Alt>">
      <!ENTITY IO "<Alt Not='Text'><URL Text='IO'>
      http://gap-packages.github.io/io/
@@ -21,6 +21,9 @@
      <!ENTITY Orb "<Alt Not='Text'><URL Text='Orb'>
      http://http://gap-packages.github.io/orb/</URL>
      </Alt><Alt Only='Text'><Package>Orb</Package></Alt>">
+     <!ENTITY datastructures "<Alt Not='Text'><URL
+       Text='datastructures'>https://github.com/gap-packages/datastructures</URL></Alt><Alt
+   Only='Text'><Package>datastructures</Package></Alt>">
      <#Include Label="PKGVERSIONDATA">
    ]>
 

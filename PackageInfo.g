@@ -9,11 +9,13 @@
 ##
 
 ##  <#GAPDoc Label="PKGVERSIONDATA">
-##  <!ENTITY VERSION        "1.2.0">
-##  <!ENTITY GAPVERS        "4.9.0">
-##  <!ENTITY GRAPEVERS      "4.8.1">
-##  <!ENTITY IOVERS         "4.5.1">
-##  <!ENTITY ORBVERS        "4.8.2">
+##  <!ENTITY VERSION                  "1.2.0">
+##  <!ENTITY GAPVERS                  "4.9.0">
+##  <!ENTITY GRAPEVERS                "4.8.1">
+##  <!ENTITY IOVERS                   "4.5.1">
+##  <!ENTITY ORBVERS                  "4.8.2">
+##  <!ENTITY DATASTRUCTURESVERS       "0.2.5">
+##  <!ENTITY NAUTYTRACESINTERFACEVERS "0.2">
 ##  <!ENTITY ARCHIVENAME    "digraphs-1.2.0">
 ##  <!ENTITY COPYRIGHTYEARS "2014-20">
 ##  <#/GAPDoc>
