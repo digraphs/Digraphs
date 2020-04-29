@@ -12,6 +12,10 @@ implementation of Dijkstra's algorithm for shortest paths by
 [Markus Pfeiffer][] and [Maria Tsalakou][], and methods for producing a concise
 string representation of a digraph by Murray Whyte.
 
+As of this version, Digraphs requires the
+[datastructures](https://gap-packages.github.io/datastructures) package to be
+available, in version 0.2.5 or newer.
+
 ## Version 1.1.2 (released 16/03/2020)
 
 This is a minor release adding the new configuration flag
