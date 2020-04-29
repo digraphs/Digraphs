@@ -47,9 +47,15 @@ elif [ "$SUITE" == "test" ]; then
   echo "Test(\"load-workspace.tst\"); DigraphsTestInstall(); quit; quit; quit;" |
     $GAPSH -L test-output.w -A -x 80 -r -m 768m -o $MEM -T 2>&1 | tee -a $TESTLOG
 
-  echo -e "\nRunning Digraphs package tests and manual examples..."
-  echo "LoadPackage(\"digraphs\"); DigraphsTestAll(); DigraphsTestExtreme();" |
+  echo -e "\nRunning Digraphs package standard tests and manual examples..."
+  echo "LoadPackage(\"digraphs\"); DigraphsTestAll();" |
     $GAPSH -A -x 80 -r -m 768m -o $MEM -T 2>&1 | tee -a $TESTLOG
+
+  if [ ! "$EXTREME" == "no" ]; then
+    echo -e "\nRunning Digraphs package extreme tests..."
+    echo "LoadPackage(\"digraphs\"); DigraphsTestExtreme();" |
+      $GAPSH -A -x 80 -r -m 768m -o $MEM -T 2>&1 | tee -a $TESTLOG
+  fi
 fi
 
 echo -e "\nSuite complete." # AppVeyor needs some extra command here (like this)
