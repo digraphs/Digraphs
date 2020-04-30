@@ -18,7 +18,7 @@
 #include <stdint.h>   // for uint16_t
 
 // GAP headers
-#include "src/compiled.h"  // for COUNT_TRUES_BLOCKS, Obj, . . .
+#include "compiled.h"  // for COUNT_TRUES_BLOCKS, Obj, . . .
 
 // Digraphs headers
 #include "digraphs-debug.h"  // for DIGRAPHS_ASSERT

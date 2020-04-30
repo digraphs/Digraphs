@@ -36,7 +36,7 @@
 #include <time.h>     // for time
 
 // GAP headers
-#include "src/compiled.h"
+#include "compiled.h"
 
 // Digraphs package headers
 #include "bitarray.h"         // for BitArray

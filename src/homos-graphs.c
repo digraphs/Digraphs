@@ -14,7 +14,7 @@
 #include <stdlib.h>  // for free, malloc, NULL
 
 // GAP headers
-#include "src/compiled.h"  // for Obj, Int
+#include "compiled.h"  // for Obj, Int
 
 // Digraphs headers
 #include "digraphs-config.h"  // for DIGRAPHS_WITH_INCLUDED_BLISS

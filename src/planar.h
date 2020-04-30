@@ -13,7 +13,7 @@
 #define DIGRAPHS_SRC_PLANAR_H_
 
 // GAP headers
-#include "src/compiled.h"
+#include "compiled.h"
 
 Obj FuncIS_PLANAR(Obj self, Obj digraph);
 Obj FuncKURATOWSKI_PLANAR_SUBGRAPH(Obj self, Obj digraph);
