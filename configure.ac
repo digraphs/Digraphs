@@ -47,7 +47,7 @@ LT_INIT([disable-static dlopen win32-dll])
 dnl ##
 dnl ## Locate the GAP root dir
 dnl ##
-AC_FIND_GAP
+FIND_GAP
 
 dnl ##
 dnl ## Detect Windows resp. Cygwin
