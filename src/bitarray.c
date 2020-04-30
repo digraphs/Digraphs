@@ -14,7 +14,7 @@
 #include <stdlib.h>  // for free, calloc, malloc
 
 // GAP headers
-#include "src/compiled.h"  // for Obj, ELM_LIST, ISB_LIST, Fail
+#include "compiled.h"  // for Obj, ELM_LIST, ISB_LIST, Fail
 
 // Digraphs headers
 #include "digraphs-debug.h"  // for DIGRAPHS_ASSERT
