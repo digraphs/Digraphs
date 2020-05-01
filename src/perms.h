@@ -22,7 +22,7 @@
 #include "digraphs-debug.h"  // for DIGRAPHS_ASSERT
 
 // GAP headers
-#include "src/compiled.h"  // for Obj, Int
+#include "compiled.h"  // for Obj, Int
 #include "src/permutat.h"  // for ADDR_PERM, IS_PERM
 
 #define MAXVERTS 512
