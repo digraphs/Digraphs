@@ -1,11 +1,10 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// cliques.c               di/cliques                        Julius Jonusas
+// cliques.c               cliques                           Julius Jonusas
 //
 // Copyright (C) 2020 - Julius Jonusas 
 //
 // This file is free software, see the digraphs/LICENSE.
-
 
 // C headers
 #include <setjmp.h>   // for longjmp, setjmp, jmp_buf
@@ -303,7 +302,8 @@ static void BronKerbosch(uint16_t  depth,
     }
     return;
   } 
-
+  
+  // TODO:
   BitArray* to_try = new_bit_array(MAXVERTS);
   if (max) {
     // Choose a pivot with as many neighbours in <try> as possible 
@@ -426,10 +426,10 @@ Obj FuncDigraphsCliquesFinder(Obj self, Obj args) {
               (Int) TNAM_OBJ(digraph_obj),
               0L);
   } else if (DigraphNrVertices(digraph_obj) > MAXVERTS) {
-    ErrorQuit("the 1st argument <digraph> must have at most 512 vertices, "
+    ErrorQuit("the 1st argument <digraph> must have at most %d vertices, "
               "found %d,",
-              DigraphNrVertices(digraph_obj),
-              0L);
+              MAXVERTS,
+              DigraphNrVertices(digraph_obj));
   }
   if (hook_obj == Fail) {
     if (!IS_LIST(user_param_obj) || !IS_MUTABLE_OBJ(user_param_obj)) {
