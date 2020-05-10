@@ -136,10 +136,11 @@ gap> AutomorphismGroup(gr);
 Group(())
 gap> gr := CycleDigraph(1000);
 <immutable cycle digraph with 1000 vertices>
-gap> AutomorphismGroup(gr);
-<permutation group of size 1000 with 1 generators>
+gap> AutomorphismGroup(gr);;
 gap> Size(last);
 1000
+gap> IsPermGroup(last2) and IsCyclic(last2);
+true
 gap> AutomorphismGroup(CompleteDigraph(6)) = SymmetricGroup(6);
 true
 

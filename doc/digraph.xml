@@ -255,8 +255,7 @@ gap> adj := function(x, y)
 function( x, y ) ... end
 gap> digraph := Digraph(AsList(f), adj);
 <immutable digraph with 81 vertices, 2430 edges>
-gap> group := Group(Z(3));
-<group with 1 generators>
+gap> group := Group(Z(3));;
 gap> act := \*;
 <Operation "*">
 gap> digraph := Digraph(group, List(f), act, adj);
