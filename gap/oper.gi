@@ -1365,6 +1365,37 @@ InstallMethod(DigraphDijkstra, "for a digraph, and a vertex",
 [IsDigraph, IsPosInt],
 {digraph, source} -> DIGRAPHS_DijkstraST(digraph, source, fail));
 
+InstallMethod(DigraphDijkstraSTWeights, "for a digraph, a vertex, a vertex, and a list of weights",
+[IsDigraph, IsPosInt, IsPosInt, IsList],
+function(digraph, source, target, weights)
+    local dist, prev, queue, u, v, alt;
+
+    dist := [];
+    prev := [];
+    queue := BinaryHeap({x, y} -> x[1] < y[1]);
+
+    for v in DigraphVertices(digraph) do
+        dist[v] := infinity;
+        prev[v] := -1;
+    od;
+
+    dist[source] := 0;
+    Push(queue, [0, source]);
+
+    while not IsEmpty(queue) do
+        u := Pop(queue);
+        u := u[2];
+        for v in OutNeighbours(digraph)[u] do
+            alt := dist[u] + weights[u][v];
+            if alt < dist[v] then
+                dist[v] := alt;                                                                              prev[v] := u;
+                Push(queue, [dist[v], v]);
+            fi;
+        od;
+    od;
+    return [dist, prev];
+end);
+
 InstallMethod(IteratorOfPaths,
 "for a digraph by out-neighbours and two pos ints",
 [IsDigraphByOutNeighboursRep, IsPosInt, IsPosInt],

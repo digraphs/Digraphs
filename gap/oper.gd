@@ -98,7 +98,8 @@ DeclareOperation("DigraphDijkstra",
                  [IsDigraph, IsPosInt]);
 DeclareOperation("DigraphDijkstra",
                  [IsDigraph, IsPosInt, IsPosInt]);
-
+DeclareOperation("DigraphDijkstraSTWeights",
+                 [IsDigraph, IsPosInt, IsPosInt, IsList]);
 DeclareOperation("DigraphConnectedComponent", [IsDigraph, IsPosInt]);
 DeclareOperation("DigraphStronglyConnectedComponent", [IsDigraph, IsPosInt]);
 DeclareOperation("DigraphPath", [IsDigraph, IsPosInt, IsPosInt]);
