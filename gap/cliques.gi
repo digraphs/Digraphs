@@ -657,7 +657,7 @@ function(digraph, hook, user_param, limit, include, exclude, max, size, reps)
     fi; 
   fi;
 
-  if 0 < DigraphNrVertices(digraph) and DigraphNrVertices(digraph) < 512 then 
+  if DigraphNrVertices(digraph) < 512 then 
     if reps then
       # Might want to pass the group here
       out := DigraphsCliquesFinder(subgraph,
