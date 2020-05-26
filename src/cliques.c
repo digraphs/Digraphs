@@ -64,7 +64,7 @@ extern Obj ClosureGroup;
 struct clique_data {
   void* user_param;   // A USER_PARAM for the hook
   Obj gap_func;       // Variable to hold a GAP level hook function
-  Obj (*hook)(void*,  // HOOK function applied to every homo found
+  UInt (*hook)(void*,  // HOOK function applied to every homo found
               const BitArray*,
               const uint16_t,
               Obj);
@@ -85,10 +85,10 @@ typedef struct clique_data CliqueData;
 // Hook functions
 ////////////////////////////////////////////////////////////////////////////////
 
-static Obj clique_hook_collect(void* user_param,
-                               const BitArray* clique,
-                               const uint16_t nr,
-                               Obj gap_func) {
+static UInt clique_hook_collect(void* user_param,
+                                const BitArray* clique,
+                                const uint16_t nr,
+                                Obj gap_func) {
   UInt   i;
   Obj    c;
 
@@ -100,21 +100,28 @@ static Obj clique_hook_collect(void* user_param,
   }
 
   ASS_LIST(user_param, LEN_LIST(user_param) + 1, c);
-  return False;
+  return 1;
 }
 
-static Obj clique_hook_gap(void* user_param, const BitArray* clique, const uint16_t nr, Obj gap_func) {
-  UInt   i;
-  Obj    c;
+static UInt clique_hook_gap(void* user_param, const BitArray* clique, const uint16_t nr, Obj gap_func) {
+  UInt i;
+  Obj  c;
+  Obj  n;
   
   c = NEW_PLIST(T_PLIST, nr); 
   for(i = 1; i <= nr; i++) {
     if (get_bit_array(clique, i-1)) {
-      PushPlist(c, INTOBJ_INT(i + 1));
+      PushPlist(c, INTOBJ_INT(i));
     }
   }
 
-  return CALL_2ARGS(gap_func, user_param, c);
+  n = CALL_2ARGS(gap_func, user_param, c);
+  if (!IS_INTOBJ(n)) { 
+    ErrorQuit(
+        "the 2rd argument <hook> must be a function which returns "
+        "an integer,", 0L, 0L);
+  }
+  return INT_INTOBJ(n);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -293,16 +300,14 @@ static int BronKerbosch(uint16_t  depth,
 
   if (depth > 0 && !max && ( size == 0 || size == depth)) {
     // We are not looking for maximal cliques
-    data->hook(data->user_param, data->clique, nr, data->gap_func);
-    *nr_found += 1;
+    *nr_found += data->hook(data->user_param, data->clique, nr, data->gap_func);
     if (*nr_found >= limit) {
       return EXIT;
     }
   } else if (size_bit_array(try, nr) == 0 && size_bit_array(ban, nr) == 0 &&
              (size == 0 || size == depth)) {
     // <CLIQUE> is a maximal clique
-    data->hook(data->user_param, data->clique, nr, data->gap_func);
-    *nr_found += 1;
+    *nr_found += data->hook(data->user_param, data->clique, nr, data->gap_func);
     if (*nr_found >= limit) {
       return EXIT;
     }

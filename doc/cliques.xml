@@ -552,7 +552,9 @@ gap> DigraphIndependentSets(D, [], [4, 5], 1, 2);
         If <A>hook</A> is a function, then it should have two arguments
         <A>user_param</A> (see below) and a clique <C>c</C>. The function
         <C><A>hook</A>(<A>user_param</A>, c)</C> is called every time a new
-        clique <C>c</C> is found by <C>CliquesFinder</C>.<P/>
+        clique <C>c</C> is found by <C>CliquesFinder</C> and should return a
+        number of cliques obtained from <C>c</C> (for example, by applying 
+        automorphisms of <C>G</C>).<P/>
 
         If <A>hook</A> is <K>fail</K>, then a default function is used that
         simply adds every new clique found by <C>CliquesFinder</C> to
@@ -634,6 +636,7 @@ gap> D := CompleteDigraph(5);
 gap> user_param := [];;
 gap> f := function(a, b)  # Calculate size of clique
 >   AddSet(user_param, Size(b));
+>   return 1;
 > end;;
 gap> CliquesFinder(D, f, user_param, infinity, [], [], false, fail,
 >                  true);
@@ -653,6 +656,7 @@ gap> D := CompleteDigraph(IsMutableDigraph, 5);
 gap> user_param := [];;
 gap> f := function(a, b)  # Calculate size of clique
 >   AddSet(user_param, Size(b));
+>   return 1;
 > end;;
 gap> CliquesFinder(D, f, user_param, infinity, [], [], false, fail,
 >                  true);

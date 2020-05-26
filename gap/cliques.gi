@@ -546,9 +546,10 @@ end);
 # This is very hacky at the moment, so we could test C code with GAP tests
 InstallGlobalFunction(CliquesFinder,
 function(digraph, hook, user_param, limit, include, exclude, max, size, reps)
-  local n, subgraph, group, vertices, invariant_include, invariant_exclude,
-        include_variant, exclude_variant, include_invariant, exclude_invariant,
-        x, v, o, i, out, out_reps, found_orbits, num_found, add_cliques;
+  local n, subgraph, group, vertices, include_variant, exclude_variant,
+        invariant_include, include_invariant, invariant_exclude,
+        exclude_invariant, x, v, o, i, out, found_orbits, num_found,
+        hook_wrapper;
 
   if not IsDigraph(digraph) then
     ErrorNoReturn("the 1st argument <D> must be a digraph,");
@@ -670,14 +671,6 @@ function(digraph, hook, user_param, limit, include, exclude, max, size, reps)
                                    size);
       return MakeImmutable(out);
     else 
-      out_reps := DigraphsCliquesFinder(subgraph,
-                                        fail,
-                                        [],
-                                        limit,
-                                        include_invariant,
-                                        exclude_invariant,
-                                        max,
-                                        size);
 
       # Function to find the valid cliques of an orbit given an orbit rep
       found_orbits := [];
@@ -686,9 +679,10 @@ function(digraph, hook, user_param, limit, include, exclude, max, size, reps)
         hook := Add;
       fi;
 
-      add_cliques := function(clique)
-        local orbit, n, i;
+      hook_wrapper := function(usr_param, clique)
+        local orbit, n, new_found, i;
 
+        new_found := 0;
         if not ForAny(found_orbits, x -> clique in x) then
           orbit := Orb(group, clique, OnSets);
           Enumerate(orbit);
@@ -698,12 +692,12 @@ function(digraph, hook, user_param, limit, include, exclude, max, size, reps)
           if invariant_include and invariant_exclude then  
             # we're not just looking for orbit reps, but inc and exc are invariant
             # so there is nothing extra to check
-            n := Minimum(limit - num_found, n);
-            for clique in orbit{[1 .. n]} do
-              hook(user_param, clique);
+            new_found := Minimum(limit - num_found, n);
+            for clique in orbit{[1 .. new_found]} do
+              hook(usr_param, clique);
             od;
-            num_found := num_found + n;
-            return;
+            num_found := num_found + new_found;
+            return new_found;
           fi;
 
           if invariant_include then
@@ -713,8 +707,9 @@ function(digraph, hook, user_param, limit, include, exclude, max, size, reps)
               i := i + 1;
               clique := BlistList(vertices, orbit[i]);
               if SizeBlist(IntersectionBlist(exclude_variant, clique)) = 0 then
-                hook(user_param, orbit[i]);
+                hook(usr_param, orbit[i]);
                 num_found := num_found + 1;
+                new_found := new_found + 1;
               fi;
             od;
           elif invariant_exclude then
@@ -724,8 +719,9 @@ function(digraph, hook, user_param, limit, include, exclude, max, size, reps)
               i := i + 1;
               clique := BlistList(vertices, orbit[i]);
               if IsSubsetBlist(clique, include_variant) then
-                hook(user_param, orbit[i]);
+                hook(usr_param, orbit[i]);
                 num_found := num_found + 1;
+                new_found := new_found + 1;
               fi;
             od;
           else
@@ -737,18 +733,25 @@ function(digraph, hook, user_param, limit, include, exclude, max, size, reps)
               clique := BlistList(vertices, orbit[i]);
               if SizeBlist(IntersectionBlist(exclude_variant, clique)) = 0
                   and IsSubsetBlist(clique, include_variant) then
-                hook(user_param, orbit[i]);
+                hook(usr_param, orbit[i]);
                 num_found := num_found + 1;
+                new_found := new_found + 1;
               fi;
             od;
           fi;
         fi;
-        return;
+        return new_found;
       end;
 
-      for x in out_reps do
-        add_cliques(x);
-      od;
+      DigraphsCliquesFinder(subgraph,
+                            hook_wrapper,
+                            user_param,
+                            limit,
+                            include_invariant,
+                            exclude_invariant,
+                            max,
+                            size);
+
       return MakeImmutable(user_param);
     fi;
   else
