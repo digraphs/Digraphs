@@ -541,8 +541,7 @@ function(arg)
   return CliquesFinder(D, fail, [], limit, include, exclude, true, size, false);
 end);
 
-
-# A wrapper for DigraphsCliquesFinder 
+# A wrapper for DigraphsCliquesFinder
 # This is very hacky at the moment, so we could test C code with GAP tests
 InstallGlobalFunction(CliquesFinder,
 function(digraph, hook, user_param, limit, include, exclude, max, size, reps)
@@ -642,7 +641,7 @@ function(digraph, hook, user_param, limit, include, exclude, max, size, reps)
           i := Intersection(x, o);
           if not IsSubset(x, o) then
             UniteBlist(exclude_variant, BlistList(vertices, i));
-          else 
+          else
             Append(exclude_invariant, i);
           fi;
           x := Difference(x, i);
@@ -655,10 +654,10 @@ function(digraph, hook, user_param, limit, include, exclude, max, size, reps)
                     "5th arguments <include> and <exclude> must be ",
                     "invariant under the action of the automorphism group of ",
                     "the maximal symmetric subdigraph without loops,");
-    fi; 
+    fi;
   fi;
 
-  if DigraphNrVertices(digraph) < 512 then 
+  if DigraphNrVertices(digraph) < 512 then
     if reps then
       # Might want to pass the group here
       out := DigraphsCliquesFinder(subgraph,
@@ -670,7 +669,7 @@ function(digraph, hook, user_param, limit, include, exclude, max, size, reps)
                                    max,
                                    size);
       return MakeImmutable(out);
-    else 
+    else
 
       # Function to find the valid cliques of an orbit given an orbit rep
       found_orbits := [];
@@ -689,9 +688,9 @@ function(digraph, hook, user_param, limit, include, exclude, max, size, reps)
           Add(found_orbits, orbit);
           n := Length(orbit);
 
-          if invariant_include and invariant_exclude then  
-            # we're not just looking for orbit reps, but inc and exc are invariant
-            # so there is nothing extra to check
+          if invariant_include and invariant_exclude then
+            # we're not just looking for orbit reps, but inc and exc are
+            # invariant so there is nothing extra to check
             new_found := Minimum(limit - num_found, n);
             for clique in orbit{[1 .. new_found]} do
               hook(usr_param, clique);

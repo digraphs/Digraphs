@@ -605,7 +605,7 @@ Obj FuncDigraphsCliquesFinder(Obj self, Obj args) {
                       CALL_2ARGS(OnTuples, include_obj, ELM_LIST(gens, i)))
                != True) {
       ErrorQuit("the 5th argument <include> must be invaraint under <aut_grp>, "
-                "or the full automorphism if <aut_grp> is not given",
+                "or the full automorphism if <aut_grp> is not given,",
                 0L,
                 0L);
     }
@@ -615,7 +615,7 @@ Obj FuncDigraphsCliquesFinder(Obj self, Obj args) {
                       CALL_2ARGS(OnTuples, exclude_obj, ELM_LIST(gens, i)))
                != True) {
       ErrorQuit("the 6th argument <exclude> must be invaraint under <aut_grp>, "
-                "or the full automorphism if <aut_grp> is not given",
+                "or the full automorphism if <aut_grp> is not given,",
                 0L,
                 0L);
     }
