@@ -19,9 +19,9 @@
 #include <stdint.h>   // for uint64_t
 #include <stdlib.h>   // for NULL, free
 
+#include "cliques.h"
 #include "digraphs-debug.h"  // for DIGRAPHS_ASSERT
 #include "homos.h"           // for FuncHomomorphismDigraphsFinder
-#include "cliques.h"
 #include "planar.h"          // for FUNC_IS_PLANAR, . . .
 
 #ifdef DIGRAPHS_WITH_INCLUDED_BLISS
