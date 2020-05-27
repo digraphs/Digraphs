@@ -659,9 +659,18 @@ function(digraph, hook, user_param, limit, include, exclude, max, size, reps)
 
   if DigraphNrVertices(digraph) < 512 then
     if reps then
-      # Might want to pass the group here
+
+      if hook = fail then
+        hook_wrapper := fail;
+      else
+        hook_wrapper := function(usr_param, clique)
+          hook(usr_param, clique);
+          return 1;
+        end;
+      fi;
+
       out := DigraphsCliquesFinder(subgraph,
-                                   hook,
+                                   hook_wrapper,
                                    user_param,
                                    limit,
                                    include,
