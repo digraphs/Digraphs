@@ -38,11 +38,16 @@ installation of Digraphs:
   higher.
 * get the [orb](https://gap-packages.github.io/orb) package version 4.8.2 or
   higher.
+* get the [datastructures](https://gap-packages.github.io/datastructures)
+  package version 0.2.5 or higher.
 * **this step is optional:** certain methods in Digraphs require the
   [Grape](https://gap-packages.github.io/grape/) package to be available; a
   full list of these functions can be found in the first chapter of the manual.
   To use these functions make sure that the Grape package version 4.8.1 or
   higher is available.
+* **this step is optional**: get the
+  [NautyTracesInterface](https://github.com/gap-packages/NautyTracesInterface)
+  package version 0.2 or higher.
 * download the package archive `digraphs-x.x.x.tar.gz` from the
   [Digraphs webpage][].
 * unzip and untar the file `digraphs-x.x.x.tar.gz` using, for example,

@@ -184,8 +184,7 @@
     [4X[28Xfunction( x, y ) ... end[128X[104X
     [4X[25Xgap>[125X [27Xdigraph := Digraph(AsList(f), adj);[127X[104X
     [4X[28X<immutable digraph with 81 vertices, 2430 edges>[128X[104X
-    [4X[25Xgap>[125X [27Xgroup := Group(Z(3));[127X[104X
-    [4X[28X<group with 1 generators>[128X[104X
+    [4X[25Xgap>[125X [27Xgroup := Group(Z(3));;[127X[104X
     [4X[25Xgap>[125X [27Xact := \*;[127X[104X
     [4X[28X<Operation "*">[128X[104X
     [4X[25Xgap>[125X [27Xdigraph := Digraph(group, List(f), act, adj);[127X[104X

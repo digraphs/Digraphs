@@ -75,7 +75,8 @@
   [2XDigraphDegeneracy[102X 5.3-24 
   [2XDigraphDegeneracyOrdering[102X 5.3-25 
   [2XDigraphDiameter[102X 5.3-1 
-  [2XDigraphDijkstra[102X 5.3-28  5.3-28 
+  [2XDigraphDijkstra[102X, for a source 5.3-28 
+      for a source and target 5.3-28 
   [2XDigraphDirectProduct[102X, for a list of digraphs 3.3-31 
       for a positive number of digraphs 3.3-31 
   [2XDigraphDirectProductProjections[102X 3.3-33 
