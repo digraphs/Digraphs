@@ -4,6 +4,13 @@ Torpey, Wilf A. Wilson et al.
 
 Licensing information can be found in the `LICENSE` file.
 
+## Version 1.2.1 (released 27/05/2020)
+
+This is a minor release where some of the documentation has been fixed and the
+installation instructions have been improved [James D. Mitchell][], some
+changes were made for compatibility with future versions of GAP [Max Horn][]
+and [Wilf A. Wilson][].
+
 ## Version 1.2.0 (released 27/03/2020)
 
 This is a minor release adding some new features to Digraphs, principally
@@ -754,3 +761,4 @@ Pre-release version that was not made publicly available.
 [Maria Tsalakou]: https://mariatsalakou.github.io
 [Chris Jefferson]: https://caj.host.cs.st-andrews.ac.uk
 [bliss]: http://www.tcs.hut.fi/Software/bliss/
+[Max Horn]: https://www.quendi.de/math
