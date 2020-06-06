@@ -24,6 +24,15 @@
 #
 ########################################################################
 
+InstallMethod(DigraphMutabilityFilter, "for a digraph", [IsDigraph],
+function(D)
+  if IsMutableDigraph(D) then
+    return IsMutableDigraph;
+  else
+    return IsImmutableDigraph;
+  fi;
+end);
+
 ########################################################################
 # 1. Digraph types
 ########################################################################
