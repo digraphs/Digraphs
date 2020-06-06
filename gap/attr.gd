@@ -117,3 +117,6 @@ DeclareAttribute("DigraphDirectProductProjections", IsDigraph);
 
 DeclareAttribute("DigraphMaximalMatching", IsDigraph);
 DeclareAttribute("DigraphMaximumMatching", IsDigraph);
+
+DeclareAttribute("Bridges", IsDigraph);
+DeclareAttributeThatReturnsDigraph("StrongOrientation", IsDigraph);
