@@ -54,6 +54,7 @@
     <#Include Label="DigraphStronglyConnectedComponent">
     <#Include Label="DigraphBicomponents">
     <#Include Label="ArticulationPoints">
+    <#Include Label="DigraphOrientation">
     <#Include Label="DigraphPeriod">
     <#Include Label="DigraphFloydWarshall">
     <#Include Label="IsReachable">

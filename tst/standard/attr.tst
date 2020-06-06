@@ -1612,12 +1612,20 @@ true
 # ArticulationPoints
 gap> ArticulationPoints(CycleDigraph(5));
 [  ]
+gap> DigraphOrientation(CycleDigraph(5)) = CycleDigraph(5);
+true
 gap> ArticulationPoints(Digraph([[2, 7], [3, 5], [4], [2], [6], [1], []]));
-[ 2, 1 ]
+[ 1, 2 ]
+gap> DigraphOrientation(Digraph([[2, 7], [3, 5], [4], [2], [6], [1], []]));
+fail
 gap> ArticulationPoints(ChainDigraph(5));
-[ 4, 3, 2 ]
+[ 2, 3, 4 ]
+gap> DigraphOrientation(ChainDigraph(5));
+fail
 gap> ArticulationPoints(NullDigraph(5));
 [  ]
+gap> DigraphOrientation(NullDigraph(5));
+fail
 gap> gr :=
 > Digraph([[35, 55, 87], [38], [6, 53], [], [66], [56], [36], []
 > , [], [19], [23], [], [40, 76], [72, 79], [46, 48], [22, 68], [
@@ -1636,6 +1644,8 @@ gap> IsConnectedDigraph(gr);
 false
 gap> ArticulationPoints(gr);
 [  ]
+gap> DigraphOrientation(gr);
+fail
 gap> gr := DigraphCopy(gr);
 <immutable digraph with 100 vertices, 110 edges>
 gap> ArticulationPoints(gr);
@@ -1644,18 +1654,26 @@ gap> IsConnectedDigraph(gr);
 false
 gap> ArticulationPoints(Digraph([[1, 2], [2]]));
 [  ]
+gap> DigraphOrientation(Digraph([[1, 2], [2]]));
+fail
 gap> gr := Digraph([[1, 1, 2, 2, 2, 2, 2], [2, 2, 3, 3], []]);  # path
 <immutable multidigraph with 3 vertices, 11 edges>
 gap> ArticulationPoints(gr);
 [ 2 ]
+gap> DigraphOrientation(gr);
+fail
 gap> gr := Digraph([[1, 1, 2, 2, 2, 2, 2], [2, 2, 3, 3], [1, 1, 1]]);  # cycle
 <immutable multidigraph with 3 vertices, 14 edges>
 gap> ArticulationPoints(gr);
 [  ]
+gap> IsCycleDigraph(DigraphOrientation(gr));
+true
+gap> DigraphNrEdges(DigraphOrientation(gr));
+3
 gap> gr := Digraph([[2], [3], [], [3]]);
 <immutable digraph with 4 vertices, 3 edges>
 gap> ArticulationPoints(gr);
-[ 3, 2 ]
+[ 2, 3 ]
 gap> IsConnectedDigraph(DigraphRemoveVertex(gr, 3));
 false
 gap> IsConnectedDigraph(DigraphRemoveVertex(gr, 2));
@@ -1697,6 +1715,21 @@ true
 gap> Set(ArticulationPoints(gr))
 > = Filtered(DigraphVertices(gr),
 >            x -> not IsConnectedDigraph(DigraphRemoveVertex(gr, x)));
+true
+
+# DigraphOrientation
+gap> filename := Concatenation(DIGRAPHS_Dir(), "/data/graph5.g6.gz");;
+gap> D := ReadDigraphs(filename);;
+gap> ForAll(D, 
+>           d -> DigraphOrientation(d) = fail 
+>                or IsStronglyConnectedDigraph(DigraphOrientation(d)));
+true
+gap> Number(D, d -> DigraphOrientation(d) <> fail);
+10
+gap> Number(D, IsBiconnectedDigraph);
+10
+gap> D := Filtered(D, d -> DigraphOrientation(d) <> fail);;
+gap> ForAll(D, d -> IsSubdigraph(d, DigraphOrientation(d)));
 true
 
 #  HamiltonianPath

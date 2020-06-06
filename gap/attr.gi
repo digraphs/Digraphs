@@ -16,41 +16,44 @@ InstallMethod(OutNeighbours, "for a digraph by out-neighbours",
 
 # The next method is (yet another) DFS as described in
 # http://www.eecs.wsu.edu/~holder/courses/CptS223/spr08/slides/graphapps.pdf
-
-InstallMethod(ArticulationPoints, "for a digraph by out-neighbours",
-[IsDigraphByOutNeighboursRep],
+BindGlobal("DIGRAPHS_ArticulationPointsAndOrientation",
 function(D)
-  local copy, nbs, counter, visited, num, low, parent, points, points_seen,
-        stack, depth, v, w, i;
-  if (HasIsConnectedDigraph(D) and not IsConnectedDigraph(D))
-      or DigraphNrVertices(D) <= 1 then
-    return [];
+  local copy, nbs, counter, visited, num, low, points, stack,
+        orientation, nr_children, v, w, i;
+
+  if HasIsConnectedDigraph(D) and not IsConnectedDigraph(D) then
+    return [[], fail];
+  elif DigraphNrVertices(D) = 0 then
+    return [[], []];
+  elif DigraphNrVertices(D) = 1 then
+    return [[], [[]]];
   elif not IsSymmetricDigraph(D) then
     copy := DigraphSymmetricClosure(DigraphMutableCopyIfMutable(D));
   else
     copy := D;
   fi;
-  nbs := OutNeighbours(copy);
 
+  nbs         := OutNeighbours(copy);
   counter     := 0;
   visited     := BlistList([1 .. DigraphNrVertices(copy)], []);
   num         := [];
   low         := [];
-  parent      := [1];
   points      := [];
-  points_seen := BlistList([1 .. DigraphNrVertices(copy)], []);
-  stack       := [[1, 0]];
-  depth       := 1;
+  orientation := List([1 .. DigraphNrVertices(copy)], x -> []);
+  nr_children := 0;  # of node 1
 
-  while depth > 1 or not visited[1] do
-    v := stack[depth][1];
+  stack := Stack();
+  v := 1;
+  i := 0;
+
+  repeat
     if visited[v] then
-      depth := depth - 1;
-      v     := stack[depth][1];
-      w     := nbs[v][stack[depth][2]];
-      if v <> 1 and low[w] >= num[v] and not points_seen[v] then
-        points_seen[v] := true;
-        Add(points, v);
+      v := Peek(stack)[1];
+      i := Peek(stack)[2];
+      Pop(stack);
+      w := nbs[v][i];
+      if v <> 1 and low[w] >= num[v] then
+        AddSet(points, v);
       fi;
       if low[w] < low[v] then
         low[v] := low[w];
@@ -61,41 +64,80 @@ function(D)
       num[v]     := counter;
       low[v]     := counter;
     fi;
-    i := PositionProperty(nbs[v], w -> w <> v, stack[depth][2]);
+    i := PositionProperty(nbs[v], w -> w <> v, i);
     while i <> fail do
       w := nbs[v][i];
-      if not visited[w] then
-        parent[w]       := v;
-        stack[depth][2] := i;
-        depth           := depth + 1;
-        if not IsBound(stack[depth]) then
-          stack[depth] := [];
+      if visited[w] then
+        if num[w] < low[v] then
+          if not v in orientation[w] then
+            AddSet(orientation[v], w);
+          fi;
+          low[v] := num[w];
         fi;
-        stack[depth][1] := w;
-        stack[depth][2] := 0;
+        i := PositionProperty(nbs[v], w -> w <> v, i);
+      else
+        if v = 1 then
+          nr_children := nr_children + 1;
+        fi;
+        Push(stack, [v, i]);
+        AddSet(orientation[v], w);
+        v := w;
+        i := 0;
         break;
-      elif parent[v] <> w and num[w] < low[v] then
-        low[v] := num[w];
       fi;
-      i := PositionProperty(nbs[v], w -> w <> v, i);
     od;
-  od;
+  until Size(stack) = 0;
 
   if counter = DigraphNrVertices(D) then
-    i := Position(parent, 1, 1);
-    if i <> fail and Position(parent, 1, i) <> fail then
-      Add(points, 1);
+    if nr_children > 1 then
+      AddSet(points, 1);
     fi;
-    if IsImmutableDigraph(D) then
-      SetIsConnectedDigraph(D, true);
-    fi;
-    return points;
+    # Do not alter orientation here, because currently oriention is fail if and
+    # only if the digraph is disconnected.
   else
-    if IsImmutableDigraph(D) then
-      SetIsConnectedDigraph(D, false);
-    fi;
-    return [];
+    points      := [];
+    orientation := fail;
   fi;
+  return [points, orientation];
+end);
+
+InstallMethod(ArticulationPoints, "for a digraph by out-neighbours",
+[IsDigraphByOutNeighboursRep],
+function(D)
+  local result;
+  result := DIGRAPHS_ArticulationPointsAndOrientation(D);
+  if IsImmutableDigraph(D) then
+    SetIsConnectedDigraph(D, result[2] <> fail);
+    if IsEmpty(result[1]) and result[2] <> fail then
+      # D has no articulation points and is connected
+      SetDigraphOrientationAttr(D,
+                                Digraph(DigraphMutabilityFilter(D), result[2]));
+    else
+      SetDigraphOrientationAttr(D, fail);
+    fi;
+  fi;
+  return result[1];
+end);
+
+InstallMethodThatReturnsDigraph(DigraphOrientation,
+"for a digraph by out-neighbours",
+[IsDigraphByOutNeighboursRep],
+function(D)
+  local result;
+  result := DIGRAPHS_ArticulationPointsAndOrientation(D);
+  if IsImmutableDigraph(D) then
+    SetIsConnectedDigraph(D, result[2] <> fail);
+    SetArticulationPoints(D, result[1]);
+  fi;
+  if IsEmpty(result[1]) and result[2] <> fail
+      and (DigraphNrVertices(D) <> 2 or IsStronglyConnectedDigraph(D)) then
+    # D has no articulation points and is connected.
+    # Special case: is that D has 2 nodes, is connected, but not strongly
+    # connected, in this case, D has no articulation points, and no
+    # orientation.
+    return Digraph(DigraphMutabilityFilter(D), result[2]);
+  fi;
+  return fail;
 end);
 
 InstallMethod(ChromaticNumber, "for a digraph by out-neighbours",

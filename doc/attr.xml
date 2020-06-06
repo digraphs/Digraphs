@@ -1054,15 +1054,53 @@ gap> ArticulationPoints(CycleDigraph(5));
 [  ]
 gap> D := Digraph([[2, 7], [3, 5], [4], [2], [6], [1], []]);;
 gap> ArticulationPoints(D);
-[ 2, 1 ]
+[ 1, 2 ]
 gap> ArticulationPoints(ChainDigraph(5));
-[ 4, 3, 2 ]
+[ 2, 3, 4 ]
 gap> ArticulationPoints(NullDigraph(5));
 [  ]
 gap> D := ChainDigraph(IsMutableDigraph, 4);
 <mutable digraph with 4 vertices, 3 edges>
 gap> ArticulationPoints(D);
-[ 3, 2 ]
+[ 2, 3 ]
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphOrientation">
+<ManSection>
+  <Oper Name="DigraphOrientation" Arg="D"/>
+  <Attr Name="DigraphOrientationAttr" Arg="D"/>
+  <Returns>A digraph or <K>fail</K>.</Returns>
+  <Description>
+    An <E>orientation</E> of a digraph <A>D</A> (if it exists) is a strongly
+    connected subdigraph <C>C</C> of <A>D</A> that is minimal in the sense
+    that removing any edge of <C>C</C> results in a non-strongly connected
+    subdigraph. Only biconnected digraphs (see <Ref Prop="IsBiconnectedDigraph"/>)
+    admit an orientation. 
+    <P/>
+
+    This operation returns an orientation of the digraph <A>D</A> if it exists,
+    and otherwise returns <K>fail</K>.
+    <P/>
+
+    The method used in this operation has complexity <M>O(m+n)</M> where
+    <M>m</M> is the number of edges (counting multiple edges as one, and not
+    counting loops) and <M>n</M> is the number of vertices in the digraph.
+<Example><![CDATA[
+gap> DigraphOrientation(CycleDigraph(5)) = CycleDigraph(5);
+true
+gap> D := Digraph([[2, 7], [3, 5], [4], [2], [6], [1], []]);;
+gap> IsBiconnectedDigraph(D);
+false
+gap> DigraphOrientation(D);
+fail
+gap> DigraphOrientation(NullDigraph(0));
+<immutable empty digraph with 0 vertices>
+gap> DigraphOrientation(DigraphDisjointUnion(CycleDigraph(3), 
+>                                            CycleDigraph(3)));
+fail
 ]]></Example>
   </Description>
 </ManSection>
