@@ -32,6 +32,7 @@
     <#Include Label="IsChainDigraph">
     <#Include Label="IsConnectedDigraph">
     <#Include Label="IsBiconnectedDigraph">
+    <#Include Label="IsBridgelessDigraph">
     <#Include Label="IsStronglyConnectedDigraph">
     <#Include Label="IsAperiodicDigraph">
     <#Include Label="IsDirectedTree">

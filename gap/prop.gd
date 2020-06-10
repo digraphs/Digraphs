@@ -17,6 +17,7 @@ DeclareProperty("IsAperiodicDigraph", IsDigraph);
 DeclareProperty("IsStronglyConnectedDigraph", IsDigraph);
 DeclareProperty("IsConnectedDigraph", IsDigraph);
 DeclareProperty("IsBiconnectedDigraph", IsDigraph);
+DeclareProperty("IsBridgelessDigraph", IsDigraph);
 DeclareProperty("IsBipartiteDigraph", IsDigraph);
 DeclareProperty("IsCompleteBipartiteDigraph", IsDigraph);
 DeclareProperty("IsCompleteMultipartiteDigraph", IsDigraph);
