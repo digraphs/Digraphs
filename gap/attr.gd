@@ -14,6 +14,7 @@ DeclareAttribute("DigraphVertices", IsDigraph);
 DeclareAttribute("DigraphNrVertices", IsDigraph);
 DeclareAttribute("DigraphEdges", IsDigraph);
 DeclareAttribute("DigraphNrEdges", IsDigraph);
+DeclareAttribute("DigraphNrLoops", IsDigraph);
 
 DeclareAttribute("DigraphRange", IsDigraph);
 DeclareAttribute("DigraphSource", IsDigraph);
@@ -117,6 +118,3 @@ DeclareAttribute("DigraphDirectProductProjections", IsDigraph);
 
 DeclareAttribute("DigraphMaximalMatching", IsDigraph);
 DeclareAttribute("DigraphMaximumMatching", IsDigraph);
-
-DeclareAttribute("Bridges", IsDigraph);
-DeclareAttributeThatReturnsDigraph("StrongOrientation", IsDigraph);
