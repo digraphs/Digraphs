@@ -346,6 +346,23 @@ function(D)
   return m;
 end);
 
+InstallMethod(DigraphNrLoops,
+"for a digraph by out-neighbours",
+[IsDigraphByOutNeighboursRep],
+function(D)
+  local A, sum, a, n, R, i;
+  A := AdjacencyMatrix(D);
+  sum := 0;
+  a := 0;
+  n := DigraphNrVertices(D);
+  R := [1 .. n];
+  for i in R do
+     a := A[i][i];
+     sum := sum + a;
+  od;
+  return sum;
+end);
+
 InstallMethod(DigraphEdges, "for a digraph by out-neighbours",
 [IsDigraphByOutNeighboursRep],
 function(D)
