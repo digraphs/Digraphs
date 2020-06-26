@@ -2504,6 +2504,13 @@ gap> DigraphNrLoops(D);
 5
 gap> D;
 <mutable digraph with 5 vertices, 11 edges>
+gap> D := DigraphByAdjacencyMatrix([
+> [1, 2, 1],
+> [1, 1, 0],
+> [0, 0, 1]]);
+<immutable multidigraph with 3 vertices, 7 edges>
+gap> DigraphNrLoops(D);
+3
 
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(adj);

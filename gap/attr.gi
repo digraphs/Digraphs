@@ -373,14 +373,12 @@ InstallMethod(DigraphNrLoops,
 "for a digraph that knows its adjacency matrix",
 [IsDigraphByOutNeighboursRep],
 function(D)
-  local A, sum, a, n, i;
+  local A, sum, n, i;
   A := AdjacencyMatrix(D);
   sum := 0;
-  a := 0;
   n := DigraphNrVertices(D);
   for i in [1 .. n] do
-     a := A[i][i];
-     sum := sum + a;
+     sum := sum + A[i][i];
   od;
   return sum;
 end);
