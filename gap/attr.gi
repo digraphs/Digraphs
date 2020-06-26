@@ -109,7 +109,7 @@ function(D)
         orientation[v][w] := not orientation[w][v];
         i := PositionProperty(nbs[v], w -> w <> v, i);
       else
-        # diving - part 2
+        # diving - part 2
         if v = 1 then
           nr_children := nr_children + 1;
         fi;
@@ -350,13 +350,35 @@ InstallMethod(DigraphNrLoops,
 "for a digraph by out-neighbours",
 [IsDigraphByOutNeighboursRep],
 function(D)
-  local A, sum, a, n, R, i;
+  local i, j, sum;
+    sum := 0;
+  if HasDigraphHasLoops(D) and not DigraphHasLoops(D) then
+    return 0;
+  else
+    for i in DigraphVertices(D) do
+      for j in OutNeighbours(D)[i] do
+        if i = j then
+          sum := sum + 1;
+        fi;
+      od;
+    od;
+  fi;
+  if IsImmutableDigraph(D) then
+    SetDigraphHasLoops(D, sum <> 0);
+  fi;
+  return sum;
+end);
+
+InstallMethod(DigraphNrLoops,
+"for a digraph that knows its adjacency matrix",
+[IsDigraphByOutNeighboursRep],
+function(D)
+  local A, sum, a, n, i;
   A := AdjacencyMatrix(D);
   sum := 0;
   a := 0;
   n := DigraphNrVertices(D);
-  R := [1 .. n];
-  for i in R do
+  for i in [1 .. n] do
      a := A[i][i];
      sum := sum + a;
   od;
