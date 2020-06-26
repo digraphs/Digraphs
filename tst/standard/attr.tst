@@ -2474,30 +2474,36 @@ gap> Length(M);
 111
 
 # DigraphNrLoops
-gap> d := EmptyDigraph(5);
+gap> D := EmptyDigraph(5);
 <immutable empty digraph with 5 vertices>
-gap> DigraphNrLoops(d);
+gap> DigraphNrLoops(D);
 0
-gap> d := CompleteDigraph(5);
+gap> D := CompleteDigraph(5);
 <immutable complete digraph with 5 vertices>
-gap> DigraphNrLoops(d);
+gap> DigraphNrLoops(D);
 0
-gap> d := Digraph([[2, 3], [1, 4], [3, 3, 5], [], [2, 5]]);
+gap> D := Digraph([[2, 3], [1, 4], [3, 3, 5], [], [2, 5]]);
 <immutable multidigraph with 5 vertices, 9 edges>
-gap> DigraphNrLoops(d);
+gap> DigraphNrLoops(D);
 3
-gap> d := Digraph([[2], [3], [1, 2]]);
+gap> D := Digraph([[2], [3], [1, 2]]);
 <immutable digraph with 3 vertices, 4 edges>
-gap> DigraphNrLoops(d);
+gap> DigraphNrLoops(D);
 0
-gap> d := Digraph([[1, 2], [2, 3], [3, 4], [1, 4, 5], [2, 5]]);
+gap> D := Digraph([[1, 2], [2, 3], [3, 4], [1, 4, 5], [2, 5]]);
 <immutable digraph with 5 vertices, 11 edges>
-gap> DigraphNrLoops(d);
+gap> DigraphNrLoops(D);
 5
-gap> d := Digraph([[1, 4, 4], [2, 2, 4], [4], [3, 5], [5]]);
+gap> D := Digraph([[1, 4, 4], [2, 2, 4], [4], [3, 5], [5]]);
 <immutable multidigraph with 5 vertices, 10 edges>
-gap> DigraphNrLoops(d);
+gap> DigraphNrLoops(D);
 4
+gap> D := Digraph(IsMutableDigraph, [[1, 2], [2, 3], [3, 4], [1, 4, 5], [2, 5]]);
+<mutable digraph with 5 vertices, 11 edges>
+gap> DigraphNrLoops(D);
+5
+gap> D;
+<mutable digraph with 5 vertices, 11 edges>
 
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(adj);
