@@ -3,7 +3,7 @@
                                     [1X[5XDigraphs[105X[101X
   
   
-                                 Version 1.2.1
+                                 Version 1.3.0
   
   
                                   Jan De Beule
@@ -44,7 +44,7 @@
       Homepage: [7Xhttp://julius.jonusas.work[107X
   James D. Mitchell
       Email:    [7Xmailto:jdm3@st-and.ac.uk[107X
-      Homepage: [7Xhttp://www-groups.mcs.st-andrews.ac.uk/~jamesm[107X
+      Homepage: [7Xhttps://jdbm.me[107X
   Michael Torpey
       Email:    [7Xmailto:mct25@st-andrews.ac.uk[107X
       Homepage: [7Xhttps://mtorpey.github.io[107X
@@ -229,20 +229,22 @@
       5.3-12 DigraphStronglyConnectedComponent
       5.3-13 DigraphBicomponents
       5.3-14 ArticulationPoints
-      5.3-15 DigraphPeriod
-      5.3-16 DigraphFloydWarshall
-      5.3-17 IsReachable
-      5.3-18 DigraphPath
-      5.3-19 DigraphShortestPath
-      5.3-20 IteratorOfPaths
-      5.3-21 DigraphAllSimpleCircuits
-      5.3-22 DigraphLongestSimpleCircuit
-      5.3-23 DigraphLayers
-      5.3-24 DigraphDegeneracy
-      5.3-25 DigraphDegeneracyOrdering
-      5.3-26 HamiltonianPath
-      5.3-27 NrSpanningTrees
-      5.3-28 DigraphDijkstra
+      5.3-15 Bridges
+      5.3-16 StrongOrientation
+      5.3-17 DigraphPeriod
+      5.3-18 DigraphFloydWarshall
+      5.3-19 IsReachable
+      5.3-20 DigraphPath
+      5.3-21 DigraphShortestPath
+      5.3-22 IteratorOfPaths
+      5.3-23 DigraphAllSimpleCircuits
+      5.3-24 DigraphLongestSimpleCircuit
+      5.3-25 DigraphLayers
+      5.3-26 DigraphDegeneracy
+      5.3-27 DigraphDegeneracyOrdering
+      5.3-28 HamiltonianPath
+      5.3-29 NrSpanningTrees
+      5.3-30 DigraphDijkstra
     5.4 [33X[0;0YCayley graphs of groups[133X
       5.4-1 GroupOfCayleyDigraph
       5.4-2 GeneratorsOfCayleyDigraph
@@ -284,13 +286,14 @@
       6.3-2 IsChainDigraph
       6.3-3 IsConnectedDigraph
       6.3-4 IsBiconnectedDigraph
-      6.3-5 IsStronglyConnectedDigraph
-      6.3-6 IsAperiodicDigraph
-      6.3-7 IsDirectedTree
-      6.3-8 IsUndirectedTree
-      6.3-9 IsEulerianDigraph
-      6.3-10 IsHamiltonianDigraph
-      6.3-11 IsCycleDigraph
+      6.3-5 IsBridgelessDigraph
+      6.3-6 IsStronglyConnectedDigraph
+      6.3-7 IsAperiodicDigraph
+      6.3-8 IsDirectedTree
+      6.3-9 IsUndirectedTree
+      6.3-10 IsEulerianDigraph
+      6.3-11 IsHamiltonianDigraph
+      6.3-12 IsCycleDigraph
     6.4 [33X[0;0YPlanarity[133X
       6.4-1 IsPlanarDigraph
       6.4-2 IsOuterPlanarDigraph
