@@ -26,6 +26,9 @@ end);
 InstallMethod(IsBiconnectedDigraph, "for a digraph", [IsDigraph],
 D -> IsConnectedDigraph(D) and IsEmpty(ArticulationPoints(D)));
 
+InstallMethod(IsBridgelessDigraph, "for a digraph", [IsDigraph],
+D -> IsConnectedDigraph(D) and IsEmpty(Bridges(D)));
+
 InstallMethod(DIGRAPHS_IsMeetJoinSemilatticeDigraph, "for a homogeneous list",
 [IsHomogeneousList],
 function(nbs)

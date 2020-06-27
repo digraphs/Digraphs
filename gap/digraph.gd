@@ -15,6 +15,8 @@ DeclareCategory("IsCayleyDigraph", IsDigraph);
 DeclareCategory("IsImmutableDigraph", IsDigraph);
 DeclareSynonym("IsMutableDigraph", IsDigraph and IsMutable);
 
+DeclareAttribute("DigraphMutabilityFilter", IsDigraph);
+
 # Family
 BindGlobal("DigraphFamily", NewFamily("DigraphFamily", IsDigraph));
 

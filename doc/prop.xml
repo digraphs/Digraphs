@@ -84,7 +84,7 @@ false]]></Example>
   <Description>
     This property is <K>true</K> if the digraph <A>digraph</A> is acyclic, and
     <K>false</K> if it is not. A digraph is <E>acyclic</E> if every directed
-    cycle on the digraph is trivial. See section <Ref Subsect="Definitions"
+    cycle on the digraph is trivial. See Section <Ref Subsect="Definitions"
       Style="Number" /> for the definition of a directed cycle, and of a trivial
     directed cycle.<P/>
 
@@ -159,7 +159,7 @@ true]]></Example>
     connected and <K>false</K> if it is not. <P/>
 
     A digraph <A>digraph</A> is <E>strongly connected</E> if there is a directed
-    path from every vertex to every other vertex.  See section <Ref
+    path from every vertex to every other vertex.  See Section <Ref
       Subsect="Definitions" Style="Number" /> for the definition of a directed
     path.    <P/>
 
@@ -239,23 +239,31 @@ false]]></Example>
   <Description>
     A connected digraph is <E>biconnected</E> if it is still connected (in the
     sense of <Ref Prop="IsConnectedDigraph"/>) when any vertex is removed. 
+      If <A>D</A> has at least 3 vertices, then <C>IsBiconnectedDigraph</C>
+      implies <Ref Prop="IsBridgelessDigraph"/>;
+    see <Ref Attr="ArticulationPoints"/> or <Ref Attr="Bridges"/> for a more
+    detailed explanation.
+    <P/>
+
     <C>IsBiconnectedDigraph</C> returns <K>true</K> if the digraph
     <A>digraph</A> is biconnected, and <K>false</K> if it is not. In
     particular, <C>IsBiconnectedDigraph</C> returns <K>false</K> if
     <A>digraph</A> is not connected. <P/>
-
-    Multiple edges and loops are ignored by this method. <P/>
-
-    The method used in this operation has complexity <M>O(m+n)</M> where
-    <M>m</M> is the number of edges (counting multiple edges as one, and not
-    counting loops) and <M>n</M> is the number of vertices in the digraph.
-    <P/>
-
-    See also <Ref Attr="ArticulationPoints"/>.
-    <P/>
       
     If the argument <A>digraph</A> is mutable, then the return value of
-    this property is recomputed every time it is called. 
+    this property is recomputed every time it is called. <P/>
+
+    Multiple edges are ignored by this method. <P/>
+
+    The method used in this operation has complexity <M>O(m+n)</M> where
+    <M>m</M> is the number of edges and <M>n</M> is the number of vertices in
+    the digraph.
+    <P/>
+
+    See also <Ref Attr="Bridges"/>, <Ref Attr="ArticulationPoints"/>, and 
+    <Ref Prop="IsBridgelessDigraph"/>.
+    <P/>
+      
 <Example><![CDATA[
 gap> IsBiconnectedDigraph(Digraph([[1, 3], [2, 3], [3]]));
 false
@@ -620,7 +628,7 @@ true
     any pair of distinct vertices <C>u</C> and <C>v</C>, there is exactly one
     directed path from <C>u</C> to <C>v</C>. See <Ref
       Prop="IsSymmetricDigraph"/> and <Ref Prop="DigraphHasLoops"/>, and see
-    section <Ref Subsect="Definitions" Style="Number" /> for the definition of
+    Section <Ref Subsect="Definitions" Style="Number" /> for the definition of
     directed path. This definition implies that an undirected tree has
     no multiple edges. <P/>
 
@@ -758,7 +766,7 @@ false]]></Example>
 
     A connected digraph is called <E>Eulerian</E> if there exists a directed
     circuit on the digraph which includes every edge exactly once.  See
-    section <Ref Subsect="Definitions" Style="Number" /> for the definition of
+    Section <Ref Subsect="Definitions" Style="Number" /> for the definition of
     a directed circuit. Note that the empty digraph with at most one vertex is
     considered to be Eulerian.
     <P/>
@@ -1293,6 +1301,70 @@ true
 gap> D := Digraph([[1, 3], [2], [1, 3]]);
 <immutable digraph with 3 vertices, 5 edges>
 gap> IsEquivalenceDigraph(D);
+true
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="IsBridgelessDigraph">
+<ManSection>
+  <Prop Name="IsBridgelessDigraph" Arg="D"/>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
+  <Description>
+    A connected digraph is <E>bridgeless</E> if it is still connected (in the
+    sense of <Ref Prop="IsConnectedDigraph"/>) when any edge is removed. 
+    If <A>D</A> has at least 3 vertices, then <Ref
+    Prop="IsBiconnectedDigraph"/> implies <C>IsBridgelessDigraph</C>;
+    see <Ref Attr="ArticulationPoints"/> or <Ref Attr="Bridges"/> for a more
+    detailed explanation.
+    <P/>
+
+    <C>IsBridgelessDigraph</C> returns <K>true</K> if the digraph
+    <A>D</A> is bridgeless, and <K>false</K> if it is not. In
+    particular, <C>IsBridgelessDigraph</C> returns <K>false</K> if
+    <A>D</A> is not connected. <P/>
+      
+    If the argument <A>D</A> is mutable, then the return value of
+    this property is recomputed every time it is called. <P/>
+
+    Multiple edges are ignored by this method. <P/>
+
+    The method used in this operation has complexity <M>O(m+n)</M> where
+    <M>m</M> is the number of edges and <M>n</M> is the number of vertices in
+    the digraph.
+    <P/>
+
+    See also <Ref Attr="Bridges"/>, <Ref Attr="ArticulationPoints"/>, and 
+    <Ref Prop="IsBiconnectedDigraph"/>.
+      
+<Example><![CDATA[
+gap> IsBridgelessDigraph(Digraph([[1, 3], [2, 3], [3]]));
+false
+gap> IsBridgelessDigraph(CycleDigraph(5));
+true
+gap> D := Digraph([[1, 1], [1, 1, 2], [3], [3, 3, 4, 4]]);;
+gap> IsBridgelessDigraph(D);
+false
+gap> D := CompleteBipartiteDigraph(IsMutableDigraph, 5, 4);
+<mutable digraph with 9 vertices, 40 edges>
+gap> IsBridgelessDigraph(D);
+true
+gap> D := Digraph([[2, 5], [1, 3, 4, 5], [2, 4], [2, 3], [1, 2]]);
+<immutable digraph with 5 vertices, 12 edges>
+gap> IsBridgelessDigraph(D);
+true
+gap> IsBiconnectedDigraph(D);
+false
+gap> D := Digraph([[2], [3], [4], [2]]);
+<immutable digraph with 4 vertices, 4 edges>
+gap> IsBridgelessDigraph(D);
+false
+gap> IsBiconnectedDigraph(D);
+false
+gap> IsBridgelessDigraph(ChainDigraph(2));
+false
+gap> IsBiconnectedDigraph(ChainDigraph(2));
 true
 ]]></Example>
   </Description>
