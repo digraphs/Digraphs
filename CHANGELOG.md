@@ -757,7 +757,7 @@ The first release.
 ## Version 0.1.0
 Pre-release version that was not made publicly available.
 
-[James D. Mitchell]: http://goo.gl/ZtViV6
+[James D. Mitchell]: https://jdbm.me
 [Wilf A. Wilson]: http://wilf.me
 [Michael Torpey]: https://mtorpey.github.io
 [Julius Jonusas]: http://julius.jonusas.work
