@@ -10,46 +10,82 @@
 
 # AN's code, adapted by WW
 
-InstallMethod(DotDigraph, "for a digraph by out-neighbours",
-[IsDigraphByOutNeighboursRep],
-function(D)
-  local str, out, i, j;
+BindGlobal("DIGRAPHS_DotDigraph",
+function(D, node_funcs, edge_funcs)
+  local str, out, i, func, j;
   str   := "//dot\n";
   Append(str, "digraph hgn{\n");
   Append(str, "node [shape=circle]\n");
   for i in DigraphVertices(D) do
-    Append(str, Concatenation(String(i), "\n"));
+    Append(str, StringFormatted("{}", i));
+    for func in node_funcs do
+      Append(str, func(i));
+    od;
+    Append(str, "\n");
   od;
   out := OutNeighbours(D);
   for i in DigraphVertices(D) do
     for j in out[i] do
-      Append(str, Concatenation(String(i), " -> ", String(j), "\n"));
+      Append(str, StringFormatted("{} -> {}", i, j));
+      for func in edge_funcs do
+        Append(str, func(i, j));
+      od;
+      Append(str, "\n");
     od;
   od;
   Append(str, "}\n");
   return str;
 end);
 
+InstallMethod(DotDigraph, "for a digraph by out-neighbours",
+[IsDigraphByOutNeighboursRep],
+function(D)
+  return DIGRAPHS_DotDigraph(D, [], []);
+end);
+
+InstallMethod(DotColoredDigraph, "for a digraph by out-neighbours and two lists",
+[IsDigraphByOutNeighboursRep, IsList, IsList],
+function(D, vert, edge)
+  return DIGRAPHS_DotDigraph(D,
+                            [i -> StringFormatted("[color={}, style=filled]",
+                            vert[i])],
+                            [{i, j} -> StringFormatted("[color={}]",
+                            edge[i][j])]);
+end);
+
 InstallMethod(DotVertexLabelledDigraph, "for a digraph by out-neighbours",
 [IsDigraphByOutNeighboursRep],
 function(D)
-  local out, str, i, j;
+  return DIGRAPHS_DotDigraph(D, [i -> StringFormatted(" [label=\"{}\"]",
+                                      DigraphVertexLabel(D, i))], []);
+end);
+
+BindGlobal("DIGRAPHS_DotSymmetricDigraph",
+function(D, node_funcs, edge_funcs)
+  local out, str, i, j, func;
+  if not IsSymmetricDigraph(D) then
+    ErrorNoReturn("the argument <D> must be a symmetric digraph,");
+  fi;
   out   := OutNeighbours(D);
   str   := "//dot\n";
-
-  Append(str, "digraph hgn{\n");
-  Append(str, "node [shape=circle]\n");
-
+  Append(str, "graph hgn{\n");
+  Append(str, "node [shape=circle]\n\n");
   for i in DigraphVertices(D) do
-    Append(str, String(i));
-    Append(str, " [label=\"");
-    Append(str, String(DigraphVertexLabel(D, i)));
-    Append(str, "\"]\n");
+    Append(str, StringFormatted("{}", i));
+    for func in node_funcs do
+      Append(str, func(i));
+    od;
+    Append(str, "\n");
   od;
-
   for i in DigraphVertices(D) do
     for j in out[i] do
-      Append(str, Concatenation(String(i), " -> ", String(j), "\n"));
+      if j >= i then
+        Append(str, StringFormatted("{} -- {}", i, j));
+        for func in edge_funcs do
+          Append(str, func(i, j));
+        od;
+        Append(str, "\n");
+      fi;
     od;
   od;
   Append(str, "}\n");
@@ -59,26 +95,18 @@ end);
 InstallMethod(DotSymmetricDigraph, "for a digraph by out-neighbours",
 [IsDigraphByOutNeighboursRep],
 function(D)
-  local out, str, i, j;
-  if not IsSymmetricDigraph(D) then
-    ErrorNoReturn("the argument <D> must be a symmetric digraph,");
-  fi;
-  out   := OutNeighbours(D);
-  str   := "//dot\n";
-  Append(str, "graph hgn{\n");
-  Append(str, "node [shape=circle]\n\n");
-  for i in DigraphVertices(D) do
-    Append(str, Concatenation(String(i), "\n"));
-  od;
-  for i in DigraphVertices(D) do
-    for j in out[i] do
-      if j >= i then
-        Append(str, Concatenation(String(i), " -- ", String(j), "\n"));
-      fi;
-    od;
-  od;
-  Append(str, "}\n");
-  return str;
+  return DIGRAPHS_DotSymmetricDigraph(D, [], []);
+end);
+
+InstallMethod(DotSymmetricColoredDigraph,
+"for a digraph by out-neighbours and two lists",
+[IsDigraphByOutNeighboursRep, IsList, IsList],
+function(D, vert, edge)
+  return DIGRAPHS_DotSymmetricDigraph(D,
+                                     [i -> StringFormatted(
+                                     "[color={}, style=filled]", vert[i])],
+                                     [{i, j} -> StringFormatted("[color={}]",
+                                     edge[i][j])]);
 end);
 
 # AN's code
