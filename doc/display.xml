@@ -91,6 +91,12 @@
 
       This function was written by Attila Egri-Nagy and Manuel Delgado with some
       minor changes by J. D. Mitchell.<P/>
+      <Log><![CDATA[
+gap> Splash(DotDigraph(RandomDigraph(4)));
+]]></Log>
+    </Description>
+  </ManSection>
+<#/GAPDoc>
 
 <#GAPDoc Label="DotDigraph">
   <ManSection>
@@ -121,7 +127,6 @@
       The string returned by <C>DotDigraph</C> or
       <C>DotVertexLabelledDigraph</C> can be written to a file using
       the command <Ref Func="FileString" BookName="GAPDoc"/>.<P/>
-
       <Log><![CDATA[
 gap> adj := List([1 .. 4], x -> [1, 1, 1, 1]);
 [ [ 1, 1, 1, 1 ], [ 1, 1, 1, 1 ], [ 1, 1, 1, 1 ], [ 1, 1, 1, 1 ] ]
