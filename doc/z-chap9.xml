@@ -3,9 +3,7 @@
   <Section><Heading>Visualising a digraph</Heading>
     <#Include Label="Splash">
     <#Include Label="DotDigraph">
-    <#Include Label="DotColoredDigraph">
     <#Include Label="DotSymmetricDigraph">
-    <#Include Label="DotSymmetricColoredDigraph">
     <#Include Label="DotPartialOrderDigraph">
     <#Include Label="DotPreorderDigraph">
     <#Include Label="DotHighlightedDigraph">

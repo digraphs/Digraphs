@@ -92,43 +92,6 @@
       This function was written by Attila Egri-Nagy and Manuel Delgado with some
       minor changes by J. D. Mitchell.<P/>
 
-      <Log><![CDATA[
-gap> Splash(DotDigraph(RandomDigraph(4)));
-]]></Log>
-    </Description>
-  </ManSection>
-<#/GAPDoc>
-
-<#GAPDoc Label="DIGRAPHS_DotDigraph">
-  <ManSection>
-    <Attr Name="DIGRAPHS_DotDigraph" Arg="digraph, node_funcs, edge_funcs"/>
-    <Returns>A string.</Returns>
-    <Description>
-      This function produces a string that can be used to create a graphical
-      representation of the digraph <A>digraph</A>. 
-
-      Vertices are displayed as circles, numbered consistently with
-      <A>digraph</A>. 
-
-      The output is in <C>dot</C> format (also known as <C>GraphViz</C>)
-      format. For details about this file format, and information about how
-      to display or edit this format see
-      <URL>http://www.graphviz.org</URL>. <P/>
-
-      The string returned by <C>DIGHRAPH_DotDigraph</C> can be written to a
-      file using the command <Ref Func="FileString" BookName="GAPDoc"/>.<P/>
-
-      <Log><![CDATA[
-gap> star := Digraph([[2, 2, 3, 4], [1, 1], [1], [1, 4]]);
-<immutable multidigraph with 4 vertices, 9 edges>
-gap> IsSymmetricDigraph(star);
-true
-gap> FileString("dot/star.dot", DotSymmetricDigraph(gr));
-83]]></Log>
-    </Description>
-  </ManSection>
-<#/GAPDoc>
-
 <#GAPDoc Label="DotDigraph">
   <ManSection>
     <Attr Name="DotDigraph" Arg="digraph"/>
@@ -302,36 +265,6 @@ Error, the argument <D> must be a symmetric digraph,
 
 gap> FileString("dot/k4.dot", DotDigraph(gr));
 154]]></Log>
-    </Description>
-  </ManSection>
-<#/GAPDoc>
-
-<#GAPDoc Label="DIGRAPHS_DotSymmetricDigraph">
-  <ManSection>
-    <Attr Name="DIGRAPHS_DotDigraph" Arg="digraph, node_funcs, edge_funcs"/>
-    <Returns>A string.</Returns>
-    <Description>
-      This function produces a string that can be used to create a graphical
-      representation of the symmetric digraph <A>digraph</A>. 
-
-      Vertices are displayed as circles, numbered consistently with
-      <A>digraph</A>. 
-
-      The output is in <C>dot</C> format (also known as <C>GraphViz</C>)
-      format. For details about this file format, and information about how
-      to display or edit this format see
-      <URL>http://www.graphviz.org</URL>. <P/>
-
-      The string returned by <C>DIGHRAPH_DotDigraph</C> can be written to a
-      file using the command <Ref Func="FileString" BookName="GAPDoc"/>.<P/>
-
-      <Log><![CDATA[
-gap> star := Digraph([[2, 2, 3, 4], [1, 1], [1], [1, 4]]);
-<immutable multidigraph with 4 vertices, 9 edges>
-gap> IsSymmetricDigraph(star);
-true
-gap> FileString("dot/star.dot", DotSymmetricDigraph(gr));
-83]]></Log>
     </Description>
   </ManSection>
 <#/GAPDoc>
