@@ -96,6 +96,7 @@ function(D, v, w, label)
     D!.edgelabels[v] := ListWithIdenticalEntries(Length(list), 1);
   fi;
   D!.edgelabels[v][p] := ShallowCopy(label);
+  SetFilterObj(D, IsNotDefaultEdgeLabelled);
 end);
 
 InstallMethod(DigraphEdgeLabel, "for a digraph, a pos int, and a pos int",
@@ -161,6 +162,7 @@ function(D, labels)
                   "the digraph <D> that is the 1st argument,");
   fi;
   SetDigraphEdgeLabelsNC(D, labels);
+  SetFilterObj(D, IsNotDefaultEdgeLabelled);
 end);
 
 InstallMethod(SetDigraphEdgeLabels, "for a digraph, and a function",
@@ -179,11 +181,13 @@ function(D, f)
       D!.edgelabels[i][j] := f(i, adj[i][j]);
     od;
   od;
+  SetFilterObj(D, IsNotDefaultEdgeLabelled);
 end);
 
 InstallMethod(ClearDigraphEdgeLabels, "for a digraph", [IsDigraph],
 function(D)
   Unbind(D!.edgelabels);
+  ResetFilterObj(D, IsNotDefaultEdgeLabelled);
 end);
 
 InstallMethod(RemoveDigraphEdgeLabel,

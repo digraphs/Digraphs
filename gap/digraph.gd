@@ -14,6 +14,7 @@ DeclareCategory("IsDigraphWithAdjacencyFunction", IsDigraph);
 DeclareCategory("IsCayleyDigraph", IsDigraph);
 DeclareCategory("IsImmutableDigraph", IsDigraph);
 DeclareSynonym("IsMutableDigraph", IsDigraph and IsMutable);
+DeclareFilter("IsNotDefaultEdgeLabelled", IsDigraph);
 
 DeclareAttribute("DigraphMutabilityFilter", IsDigraph);
 
