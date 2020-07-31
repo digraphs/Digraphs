@@ -75,6 +75,11 @@ function(D)
   Unbind(D!.vertexlabels);
 end);
 
+InstallMethod(HaveEdgeLabelsBeenAssigned, "for a digraph", [IsDigraph],
+function(D)
+  return IsBound(D!.edgelabels);
+end);
+
 InstallMethod(SetDigraphEdgeLabel,
 "for a digraph, a pos int, a pos int, and an object",
 [IsDigraph, IsPosInt, IsPosInt, IsObject],
@@ -96,7 +101,6 @@ function(D, v, w, label)
     D!.edgelabels[v] := ListWithIdenticalEntries(Length(list), 1);
   fi;
   D!.edgelabels[v][p] := ShallowCopy(label);
-  SetFilterObj(D, IsNotDefaultEdgeLabelled);
 end);
 
 InstallMethod(DigraphEdgeLabel, "for a digraph, a pos int, and a pos int",
@@ -162,8 +166,7 @@ function(D, labels)
                   "the digraph <D> that is the 1st argument,");
   fi;
   SetDigraphEdgeLabelsNC(D, labels);
-  SetFilterObj(D, IsNotDefaultEdgeLabelled);
-end);
+  end);
 
 InstallMethod(SetDigraphEdgeLabels, "for a digraph, and a function",
 [IsDigraph, IsFunction],
@@ -181,14 +184,12 @@ function(D, f)
       D!.edgelabels[i][j] := f(i, adj[i][j]);
     od;
   od;
-  SetFilterObj(D, IsNotDefaultEdgeLabelled);
-end);
+  end);
 
 InstallMethod(ClearDigraphEdgeLabels, "for a digraph", [IsDigraph],
 function(D)
   Unbind(D!.edgelabels);
-  ResetFilterObj(D, IsNotDefaultEdgeLabelled);
-end);
+  end);
 
 InstallMethod(RemoveDigraphEdgeLabel,
 "for a digraph, positive integer, and positive integer",

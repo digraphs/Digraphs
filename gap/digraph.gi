@@ -137,7 +137,7 @@ function(D)
   local copy;
   copy := ConvertToMutableDigraphNC(OutNeighboursMutableCopy(D));
   SetDigraphVertexLabels(copy, StructuralCopy(DigraphVertexLabels(D)));
-  if IsNotDefaultEdgeLabelled(D) = true then
+  if HaveEdgeLabelsBeenAssigned(D) then
     SetDigraphEdgeLabelsNC(copy, StructuralCopy(DigraphEdgeLabelsNC(D)));
   fi;
   return copy;
@@ -149,7 +149,7 @@ function(D)
   local copy;
   copy := ConvertToImmutableDigraphNC(OutNeighboursMutableCopy(D));
   SetDigraphVertexLabels(copy, StructuralCopy(DigraphVertexLabels(D)));
-  if IsNotDefaultEdgeLabelled(D) = true then
+  if HaveEdgeLabelsBeenAssigned(D) then
     SetDigraphEdgeLabelsNC(copy, StructuralCopy(DigraphEdgeLabelsNC(D)));
   fi;
   return copy;

@@ -29,6 +29,7 @@ DeclareOperation("ClearDigraphVertexLabels", [IsDigraph]);
 DeclareOperation("DigraphEdgeLabel", [IsDigraph, IsPosInt, IsPosInt]);
 DeclareOperation("DigraphEdgeLabels", [IsDigraph]);
 DeclareOperation("DigraphEdgeLabelsNC", [IsDigraph]);
+DeclareOperation("HaveEdgeLabelsBeenAssigned", [IsDigraph]);
 
 #  Set edge labels
 DeclareOperation("SetDigraphEdgeLabel",
