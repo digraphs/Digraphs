@@ -84,7 +84,8 @@ function(D, node_funcs, edge_funcs)
   Append(str, "graph hgn{\n");
   Append(str, "node [shape=circle]\n\n");
   for i in DigraphVertices(D) do
-    Append(str, StringFormatted("{}", i));
+    # Append(str, StringFormatted("{}", i));
+    Append(str, String(i));
     for func in node_funcs do
       Append(str, func(i));
     od;
@@ -93,7 +94,10 @@ function(D, node_funcs, edge_funcs)
   for i in DigraphVertices(D) do
     for j in out[i] do
       if j >= i then
-        Append(str, StringFormatted("{} -- {}", i, j));
+        # Append(str, StringFormatted("{} -- {}", i, j));
+        Append(str, String(i));
+        Append(str, " -- ");
+        Append(str, String(j));
         for func in edge_funcs do
           Append(str, func(i, j));
         od;
