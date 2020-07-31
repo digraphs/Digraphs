@@ -7,7 +7,9 @@
 ##
 #############################################################################
 ##
-
+#TO DO Uncomment lines containing StringFormatted when 
+#Digraphs requires gap-4.10.0 
+#and delete the duplicate code
 # AN's code, adapted by WW
 
 BindGlobal("DIGRAPHS_DotDigraph",
@@ -17,7 +19,8 @@ function(D, node_funcs, edge_funcs)
   Append(str, "digraph hgn{\n");
   Append(str, "node [shape=circle]\n");
   for i in DigraphVertices(D) do
-    Append(str, StringFormatted("{}", i));
+    #Append(str, StringFormatted("{}", i));
+    Append(str, String(i));
     for func in node_funcs do
       Append(str, func(i));
     od;
@@ -26,7 +29,10 @@ function(D, node_funcs, edge_funcs)
   out := OutNeighbours(D);
   for i in DigraphVertices(D) do
     for j in out[i] do
-      Append(str, StringFormatted("{} -> {}", i, j));
+      #Append(str, StringFormatted("{} -> {}", i, j));
+      Append(str, String(i));
+      Append(str, " -> ");
+      Append(str, String(j));
       for func in edge_funcs do
         Append(str, func(i, j));
       od;
@@ -46,16 +52,21 @@ end);
 InstallMethod(DotColoredDigraph, "for a digraph by out-neighbours and two lists",
 [IsDigraphByOutNeighboursRep, IsList, IsList],
 function(D, vert, edge)
-  return DIGRAPHS_DotDigraph(D,
-                            [i -> StringFormatted("[color={}, style=filled]",
-                            vert[i])],
-                            [{i, j} -> StringFormatted("[color={}]",
-                            edge[i][j])]);
+  return(DIGRAPHS_DotDigraph(D, 
+                             [i -> Concatenation("[color=", vert[i], ", style=filled]")], 
+                             [{i,j} -> Concatenation("[color=", edge[i][j], "]")]));
+  #return DIGRAPHS_DotDigraph(D,
+#                            [i -> StringFormatted("[color={}, style=filled]",
+#                            vert[i])],
+#                            [{i, j} -> StringFormatted("[color={}]",
+#                            edge[i][j])]);
 end);
 
 InstallMethod(DotVertexLabelledDigraph, "for a digraph by out-neighbours",
 [IsDigraphByOutNeighboursRep],
 function(D)
+#  return DIGRAPHS_DotDigraph(D, [i -> Concatenation(" [label=\"",
+#                                String(DigraphVertexLabel(D, i)), "\n")], []);
   return DIGRAPHS_DotDigraph(D, [i -> StringFormatted(" [label=\"{}\"]",
                                       DigraphVertexLabel(D, i))], []);
 end);
@@ -103,10 +114,15 @@ InstallMethod(DotSymmetricColoredDigraph,
 [IsDigraphByOutNeighboursRep, IsList, IsList],
 function(D, vert, edge)
   return DIGRAPHS_DotSymmetricDigraph(D,
-                                     [i -> StringFormatted(
-                                     "[color={}, style=filled]", vert[i])],
-                                     [{i, j} -> StringFormatted("[color={}]",
-                                     edge[i][j])]);
+                                     [i -> Concatenation("[color=", vert[i], 
+                                     ", style=filled]")],
+                                     [{i, j} -> Concatenation("[color=",
+                                     edge[i][j], "]")]);
+#  return DIGRAPHS_DotSymmetricDigraph(D,
+#                                     [i -> StringFormatted(
+#                                     "[color={}, style=filled]", vert[i])],
+#                                     [{i, j} -> StringFormatted("[color={}]",
+#                                     edge[i][j])]);
 end);
 
 # AN's code
