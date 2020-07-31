@@ -257,18 +257,32 @@ gap> r := rec(DigraphVertices := [1 .. 3], DigraphSource := [1, 1, 1, 1],
 gap> gr := Digraph(r);
 <immutable multidigraph with 3 vertices, 4 edges>
 gap> dot := DotVertexLabelledDigraph(gr);;
-gap> Print(dot{[1 .. 50]});
+gap> Print(dot);
 //dot
 digraph hgn{
 node [shape=circle]
-1 [label="1
+1 [label="1"]
+2 [label="2"]
+3 [label="3"]
+1 -> 1
+1 -> 2
+1 -> 2
+1 -> 3
+}
 gap> SetDigraphVertexLabel(gr, 1, 2);
 gap> dot := DotVertexLabelledDigraph(gr);;
-gap> Print(dot{[1 .. 50]});
+gap> Print(dot);
 //dot
 digraph hgn{
 node [shape=circle]
-1 [label="2
+1 [label="2"]
+2 [label="2"]
+3 [label="3"]
+1 -> 1
+1 -> 2
+1 -> 2
+1 -> 3
+}
 
 # The following tests can't be run because they fail if Semigroups is loaded
 # first
