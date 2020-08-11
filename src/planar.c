@@ -205,9 +205,6 @@ Obj boyers_planarity_check(Obj digraph, int flags, bool krtwsk) {
         }
         j = theGraph->E[j].link[1];
       }
-      if (nr == 0) {
-        RetypeBag(list, T_PLIST_EMPTY);
-      }
       SET_ELM_PLIST(subgraph, i, list);
       CHANGED_BAG(subgraph);
     }
