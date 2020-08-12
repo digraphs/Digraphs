@@ -65,7 +65,11 @@ BindGlobal("BLISS_DATA_NC",
 function(digraph, vert_colours, edge_colours)
   local collapsed, mults, data, edge_gp;
   if IsMultiDigraph(digraph) then
-    collapsed     := DIGRAPHS_CollapseMultiColouredEdges(digraph, edge_colours);
+    if edge_colours = fail then
+      collapsed := DIGRAPHS_CollapseMultipleEdges(digraph);
+    else
+      collapsed     := DIGRAPHS_CollapseMultiColouredEdges(digraph, edge_colours);
+    fi;
     digraph       := collapsed[1];
     edge_colours  := collapsed[2];
     mults         := collapsed[3];
@@ -712,6 +716,59 @@ function(D, edge_colours)
   od;
   return [Digraph(out), new_cols, mults];
 end);
+
+InstallGlobalFunction(DIGRAPHS_CollapseMultipleEdges,
+function(D)
+  local n, mults, out, new_cols, idx, adjv, 
+  indices, p, run, cur, v, C, range, i;
+  n := DigraphNrVertices(D);
+  mults := [];
+  out := List([1 .. n], x -> []);
+  new_cols := List([1 .. n], x -> []);
+  idx := 1;
+  for v in [1 .. n] do
+    adjv := ShallowCopy(OutNeighbours(D)[v]);
+    if Length(adjv) > 0 then
+      indices := [idx .. idx + Length(adjv) - 1];
+      p := Sortex(adjv);
+      indices := Permuted(indices, p);
+
+      run := 1;
+      cur := 1;
+      while cur < Length(adjv) do
+        if adjv[cur + 1] = adjv[cur] then
+          run := run + 1;
+        else
+          Add(out[v], adjv[cur]);
+          range := [cur - run + 1 .. cur];
+          C := [];
+          for i in range do
+            Add(C, indices[i]);
+          od;
+          Add(new_cols[v], run);
+          if run > 1 then
+            Add(mults, C);
+          fi;          
+          run := 1;
+        fi;
+        cur := cur + 1;
+      od;
+      Add(out[v], adjv[cur]);
+      range := [cur - run + 1 .. cur];
+      C := [];
+      for i in range do
+        Add(C, indices[i]);
+      od;
+      Add(new_cols[v], run);
+      if run > 1 then
+        Add(mults, C);
+      fi;
+    fi;
+    idx := idx + Length(adjv);
+  od;
+  return [Digraph(out), new_cols, mults];
+end);
+
 
 InstallMethod(IsDigraphIsomorphism, "for digraph, digraph, and permutation",
 [IsDigraph, IsDigraph, IsPerm],

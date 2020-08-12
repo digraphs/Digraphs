@@ -55,6 +55,7 @@ BindGlobal("DIGRAPHS_UsingBliss", true);
 DeclareGlobalFunction("DIGRAPHS_ValidateVertexColouring");
 DeclareGlobalFunction("DIGRAPHS_ValidateEdgeColouring");
 DeclareGlobalFunction("DIGRAPHS_CollapseMultiColouredEdges");
+DeclareGlobalFunction("DIGRAPHS_CollapseMultipleEdges");
 
 DeclareOperation("IsDigraphAutomorphism", [IsDigraph, IsPerm]);
 DeclareOperation("IsDigraphAutomorphism", [IsDigraph, IsPerm, IsList]);
