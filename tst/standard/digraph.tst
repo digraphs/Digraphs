@@ -1031,7 +1031,7 @@ gap> String(gr2);
 "Digraph([ ])"
 gap> PrintString(gr2);
 "Digraph([ ])"
-gap> D := CycleDigraph(10 * 10^5);
+gap> D := CycleDigraph(10 * 10 ^ 5);
 <immutable cycle digraph with 1000000 vertices>
 gap> D1 := DigraphCopy(D);
 <immutable digraph with 1000000 vertices, 1000000 edges>
