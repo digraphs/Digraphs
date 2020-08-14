@@ -4,6 +4,7 @@
     <#Include Label="DigraphNrVertices">
     <#Include Label="DigraphEdges">
     <#Include Label="DigraphNrEdges">
+    <#Include Label="DigraphNrLoops">
     <#Include Label="DigraphSinks">
     <#Include Label="DigraphSources">
     <#Include Label="DigraphTopologicalSort">

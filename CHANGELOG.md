@@ -4,6 +4,11 @@ Torpey, Wilf A. Wilson et al.
 
 Licensing information can be found in the `LICENSE` file.
 
+## Version 1.3.0 (released 27/06/2020)
+
+This is a minor release adding the new functionality `DigraphMutabilityFilter`,
+`StrongOrientation`, `Bridges`, and `IsBridgeless` [James D. Mitchell][].
+
 ## Version 1.2.1 (released 27/05/2020)
 
 This is a minor release where some of the documentation has been fixed and the
@@ -752,7 +757,7 @@ The first release.
 ## Version 0.1.0
 Pre-release version that was not made publicly available.
 
-[James D. Mitchell]: http://goo.gl/ZtViV6
+[James D. Mitchell]: https://jdbm.me
 [Wilf A. Wilson]: http://wilf.me
 [Michael Torpey]: https://mtorpey.github.io
 [Julius Jonusas]: http://julius.jonusas.work
