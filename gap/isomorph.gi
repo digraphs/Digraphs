@@ -661,40 +661,42 @@ function(D, edge_colours)
   out := List([1 .. n], x -> []);
   new_cols := List([1 .. n], x -> []);
   new_cols_set := [];
-  if edge_colours = fail then
-    edge_colours := List([1 .. n], x -> List(OutNeighbours(D)[x], y -> 1));
-  fi;
   idx := 1;
   for v in [1 .. n] do
-    adjv := ShallowCopy(OutNeighbours(D)[v]);
-    if Length(adjv) > 0 then
-      indices := [idx .. idx + Length(adjv) - 1];
-      colsv := ShallowCopy(edge_colours[v]);
-      p := Sortex(adjv);
-      colsv := Permuted(colsv, p);
-      indices := Permuted(indices, p);
-
-      run := 1;
-      cur := 1;
-      while cur < Length(adjv) do
-        if adjv[cur + 1] = adjv[cur] then
-          run := run + 1;
-        else
-          Add(out[v], adjv[cur]);
-          range := [cur - run + 1 .. cur];
-          cols := colsv{range};
-          C := List([1 .. Maximum(cols)], x -> []);
-          for i in range do
-            Add(C[colsv[i]], indices[i]);
-          od;
-          Append(mults, Filtered(C, x -> Length(x) > 1));
-          Sort(cols);
-          AddSet(new_cols_set, cols);
-          Add(new_cols[v], cols);
-          run := 1;
-        fi;
-        cur := cur + 1;
-      od;
+    nbs := OutNeighbours(D)[v];
+    if not IsEmpty(nbs) then
+      adjv := ShallowCopy(nbs);
+      if Length(adjv) > 0 then
+        indices := [idx .. idx + Length(adjv) - 1];
+        colsv := ShallowCopy(edge_colours[v]);
+        p := Sortex(adjv);
+        colsv := Permuted(colsv, p);
+        indices := Permuted(indices, p);
+        run := 1;
+        cur := 1;
+        if not 
+        while cur < Length(adjv) do
+          if adjv[cur + 1] = adjv[cur] then
+            run := run + 1;
+          else
+            Add(out[v], adjv[cur]);
+            range := [cur - run + 1 .. cur];
+            cols := colsv{range};
+            C := List([1 .. Maximum(cols)], x -> []);
+            for i in range do
+              Add(C[colsv[i]], indices[i]);
+            od;
+            Append(mults, Filtered(C, x -> Length(x) > 1));
+            Sort(cols);
+            AddSet(new_cols_set, cols);
+            Add(new_cols[v], cols);
+            run := 1;
+          fi;
+          cur := cur + 1;
+        od;
+    else 
+      adjv := [];
+    fi;
       Add(out[v], adjv[cur]);
       range := [cur - run + 1 .. cur];
       cols := colsv{range};
@@ -717,34 +719,29 @@ function(D, edge_colours)
   return [Digraph(out), new_cols, mults];
 end);
 
-InstallGlobalFunction(DIGRAPHS_CollapseMultipleEdges,
+InstallGlobalFunction(DIGRAPHS_CollapseMultipleEdges, 
 function(D)
-  local n, mults, out, new_cols, idx, adjv, 
-  indices, p, run, cur, v, C, range, i;
+  local n, mults, out, new_cols, idx, nbs, adjv, indices, p, run, cur, C, v;
   n := DigraphNrVertices(D);
   mults := [];
   out := List([1 .. n], x -> []);
   new_cols := List([1 .. n], x -> []);
   idx := 1;
   for v in [1 .. n] do
-    adjv := ShallowCopy(OutNeighbours(D)[v]);
-    if Length(adjv) > 0 then
+    nbs := OutNeighbours(D)[v];
+    if not IsEmpty(nbs) then
+      adjv := ShallowCopy(nbs);
       indices := [idx .. idx + Length(adjv) - 1];
-      p := Sortex(adjv);
-      indices := Permuted(indices, p);
-
+      SortParallel(adjv, indices);
       run := 1;
       cur := 1;
-      while cur < Length(adjv) do
-        if adjv[cur + 1] = adjv[cur] then
+      while cur <= Length(adjv) do
+        if cur < Length(adjv) and adjv[cur + 1] = adjv[cur] then
           run := run + 1;
         else
           Add(out[v], adjv[cur]);
-          range := [cur - run + 1 .. cur];
           C := [];
-          for i in range do
-            Add(C, indices[i]);
-          od;
+          Append(C, indices{[cur - run + 1 .. cur]});
           Add(new_cols[v], run);
           if run > 1 then
             Add(mults, C);
@@ -753,22 +750,13 @@ function(D)
         fi;
         cur := cur + 1;
       od;
-      Add(out[v], adjv[cur]);
-      range := [cur - run + 1 .. cur];
-      C := [];
-      for i in range do
-        Add(C, indices[i]);
-      od;
-      Add(new_cols[v], run);
-      if run > 1 then
-        Add(mults, C);
-      fi;
+    else
+      adjv := [];
     fi;
     idx := idx + Length(adjv);
   od;
   return [Digraph(out), new_cols, mults];
 end);
-
 
 InstallMethod(IsDigraphIsomorphism, "for digraph, digraph, and permutation",
 [IsDigraph, IsDigraph, IsPerm],
