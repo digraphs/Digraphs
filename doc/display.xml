@@ -113,7 +113,12 @@ gap> Splash(DotDigraph(RandomDigraph(4)));
 
       <C>DotColoredDigraph</C> differs from <C>DotDigraph</C> only in
       that the values in given in the two lists are used to color the vertices and
-      edges of the graph when displayed.  <P/>
+      edges of the graph when displayed. The list for vertex colours should be
+      a list of length equal to the number of vertices, containing strings that
+      are accepted by the graphviz software, which is the one used for graph
+      representation. The list for edge colours should be a list of lists
+      with the same shape of the outneighbours of the digraph that contains strings 
+      that correspond to colours accepted by the graphviz software. <P/>
 
       <C>DotVertexLabelledDigraph</C> differs from <C>DotDigraph</C> only in
       that the values in <Ref Oper="DigraphVertexLabels"/> are used to label
@@ -286,9 +291,8 @@ gap> FileString("dot/k4.dot", DotDigraph(gr));
       <Ref Prop="IsSymmetricDigraph"/>.<P/>
 
       The function <C>DotSymmetricColoredDigraph</C> differs from <C>DotDigraph</C>
-      only in
-      that the values in given in the two lists are used to color the vertices and
-      edges of the graph when displayed.  <P/>
+      only in that the values in given in the two lists are used to color the vertices
+      and edges of the graph when displayed.  <P/>
 
       Vertices are displayed as circles, numbered consistently with
       <A>digraph</A>. Since <A>digraph</A> is symmetric, for every non-loop
