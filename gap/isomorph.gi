@@ -68,7 +68,7 @@ function(digraph, vert_colours, edge_colours)
     if edge_colours = fail then
       collapsed := DIGRAPHS_CollapseMultipleEdges(digraph);
     else
-      collapsed     := DIGRAPHS_CollapseMultiColouredEdges(digraph, edge_colours);
+      collapsed := DIGRAPHS_CollapseMultiColouredEdges(digraph, edge_colours);
     fi;
     digraph       := collapsed[1];
     edge_colours  := collapsed[2];
@@ -655,7 +655,7 @@ end);
 InstallGlobalFunction(DIGRAPHS_CollapseMultiColouredEdges,
 function(D, edge_colours)
   local n, mults, out, new_cols, new_cols_set, idx, adjv, indices, colsv,
-  p, run, cur, range, cols, C, v, i;
+  p, run, cur, range, cols, C, v, i, nbs;
   n := DigraphNrVertices(D);
   mults := [];
   out := List([1 .. n], x -> []);
@@ -674,54 +674,40 @@ function(D, edge_colours)
         indices := Permuted(indices, p);
         run := 1;
         cur := 1;
-        if not 
-        while cur < Length(adjv) do
-          if adjv[cur + 1] = adjv[cur] then
-            run := run + 1;
-          else
-            Add(out[v], adjv[cur]);
-            range := [cur - run + 1 .. cur];
-            cols := colsv{range};
-            C := List([1 .. Maximum(cols)], x -> []);
-            for i in range do
-              Add(C[colsv[i]], indices[i]);
-            od;
-            Append(mults, Filtered(C, x -> Length(x) > 1));
-            Sort(cols);
-            AddSet(new_cols_set, cols);
-            Add(new_cols[v], cols);
-            run := 1;
-          fi;
-          cur := cur + 1;
-        od;
-    else 
-      adjv := [];
+          while cur <= Length(adjv) do
+            if cur < Length(adjv) and adjv[cur + 1] = adjv[cur] then
+              run := run + 1;
+            else
+              Add(out[v], adjv[cur]);
+              range := [cur - run + 1 .. cur];
+              cols := colsv{range};
+              C := List([1 .. Maximum(cols)], x -> []);
+              for i in range do
+                Add(C[colsv[i]], indices[i]);
+              od;
+              Append(mults, Filtered(C, x -> Length(x) > 1));
+              Sort(cols);
+              AddSet(new_cols_set, cols);
+              Add(new_cols[v], cols);
+              run := 1;
+            fi;
+            cur := cur + 1;
+          od;
+      fi;
+      idx := idx + Length(nbs);
     fi;
-      Add(out[v], adjv[cur]);
-      range := [cur - run + 1 .. cur];
-      cols := colsv{range};
-      C := List([1 .. Maximum(cols)], x -> []);
-      for i in range do
-        Add(C[colsv[i]], indices[i]);
+  od;
+    for cols in new_cols do
+      for i in [1 .. Length(cols)] do
+        cols[i] := Position(new_cols_set, cols[i]);
       od;
-      Append(mults, Filtered(C, x -> Length(x) > 1));
-      Sort(cols);
-      AddSet(new_cols_set, cols);
-      Add(new_cols[v], cols);
-    fi;
-    idx := idx + Length(adjv);
-  od;
-  for cols in new_cols do
-    for i in [1 .. Length(cols)] do
-      cols[i] := Position(new_cols_set, cols[i]);
     od;
-  od;
-  return [Digraph(out), new_cols, mults];
-end);
+    return [Digraph(out), new_cols, mults];
+  end);
 
-InstallGlobalFunction(DIGRAPHS_CollapseMultipleEdges, 
+InstallGlobalFunction(DIGRAPHS_CollapseMultipleEdges,
 function(D)
-  local n, mults, out, new_cols, idx, nbs, adjv, indices, p, run, cur, C, v;
+  local n, mults, out, new_cols, idx, nbs, adjv, indices, run, cur, C, v;
   n := DigraphNrVertices(D);
   mults := [];
   out := List([1 .. n], x -> []);
@@ -745,13 +731,13 @@ function(D)
           Add(new_cols[v], run);
           if run > 1 then
             Add(mults, C);
-          fi;          
+          fi;
           run := 1;
         fi;
         cur := cur + 1;
       od;
     fi;
-    idx := idx + Length(adjv);
+    idx := idx + Length(nbs);
   od;
   return [Digraph(out), new_cols, mults];
 end);
