@@ -750,8 +750,6 @@ function(D)
         fi;
         cur := cur + 1;
       od;
-    else
-      adjv := [];
     fi;
     idx := idx + Length(adjv);
   od;
