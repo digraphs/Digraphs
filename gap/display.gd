@@ -10,9 +10,13 @@
 
 DeclareAttribute("DotDigraph", IsDigraph);
 DeclareOperation("DotColoredDigraph", [IsDigraph, IsList, IsList]);
+DeclareOperation("DotVertexColoredDigraph", [IsDigraph, IsList]);
+DeclareOperation("DotEdgeColoredDigraph", [IsDigraph, IsList]);
 DeclareOperation("DotVertexLabelledDigraph", [IsDigraph]);
 DeclareAttribute("DotSymmetricDigraph", IsDigraph);
 DeclareOperation("DotSymmetricColoredDigraph", [IsDigraph, IsList, IsList]);
+DeclareOperation("DotSymmetricVertexColoredDigraph", [IsDigraph, IsList]);
+DeclareOperation("DotSymmetricEdgeColoredDigraph", [IsDigraph, IsList]);
 DeclareAttribute("DotPartialOrderDigraph", IsDigraph);
 DeclareAttribute("DotPreorderDigraph", IsDigraph);
 DeclareSynonym("DotQuasiorderDigraph", DotPreorderDigraph);
