@@ -872,3 +872,106 @@ function(D, t)
   n := DigraphNrVertices(D);
   return IsDigraphColouring(D, ImageListOfTransformation(t, n));
 end);
+
+
+
+InstallMethod(MaximalCommonSubdigraph, "for a pair of digraphs",
+[IsDigraph, IsDigraph],
+function(D1, D2)
+  local B, out1, out2, adj, output, good, p, Clqus, M, l,
+        embedding1, embedding2, outputdigraph, iso;
+
+  iso := IsomorphismDigraphs(D1, D2);
+
+  if iso <> fail then
+    return [DigraphCopy(D1), IdentityTransformation, AsTransformation(iso)];
+  fi;
+
+  out1 := OutNeighbours(D1);
+  out2 := OutNeighbours(D2);
+
+  adj := function(pair)
+    local L, isadj;
+    isadj := function(p)
+      if p[1] = pair[1] or p[2]= pair[2] then
+        return false;
+      fi;
+      return Number(out1[pair[1]], x -> x = p[1]) =
+             Number(out2[pair[2]], x -> x = p[2]);
+    end;
+    L := Filtered(Cartesian([1 .. Size(out1)], [1 .. Size(out2)]), isadj);
+    return List(L, y -> ((y[1] - 1) * Size(out2) + (y[2] - 1)) + 1);
+  end;
+
+  B := Digraph(List(Cartesian([1 .. Size(out1)], [1 .. Size(out2)]), adj));
+
+  good := function(v)
+    p := [QuoInt( v - 1, Size(out2)) + 1, RemInt( v - 1, Size(out2)) + 1];
+    return Number(out1[p[1]], x -> x = p[1]) =
+           Number(out2[p[2]], x -> x = p[2]);    
+  end;
+
+  B := InducedSubdigraph(B, Filtered(DigraphVertices(B), good));
+  if DigraphNrVertices(B) = 0 then
+    return [Digraph([]), [], []];
+  fi;
+  
+  Clqus := DigraphMaximalCliquesReps(B);
+
+  if Clqus = [] then
+    return [Digraph([]), [], []];
+  fi;
+
+  M := List(Clqus[1], x -> DigraphVertexLabel(B, x));
+  for l in Clqus do
+    if Size(l) > Size(M) then
+      M := List(l, x -> DigraphVertexLabel(B, x));
+    fi;
+  od;
+
+  Sort(M);
+  M := List(M, x -> [QuoInt( x - 1, Size(out2)) + 1,
+                     RemInt( x - 1, Size(out2)) + 1]);
+
+  embedding1 := List(M, x -> x[1]);
+  embedding2 := List(M, x -> x[2]);
+
+  return [InducedSubdigraph(D1, embedding1),
+          Transformation([1 .. Size(embedding1)], embedding1),
+          Transformation([1 .. Size(embedding2)], embedding2)];
+
+end);
+
+InstallMethod(MinimalCommonSuperdigraph, "for a pair of digraphs",
+[IsDigraph, IsDigraph],
+function(D1, D2)
+  local out, L, v, e, embfunc, embedding1, embedding2, newvertices;
+  L := MaximalCommonSubdigraph(D1, D2);
+  L[2] := List([1 .. DigraphNrVertices(L[1])], x->x^L[2]);
+  L[3] := List([1 .. DigraphNrVertices(L[1])], x->x^L[3]);  
+  out := List(OutNeighbours(D1), x -> ShallowCopy(x));
+  newvertices := Filtered(DigraphVertices(D2), x -> not x in L[3]);
+  embedding1 := [1 .. DigraphNrVertices(D1)];
+
+  embfunc := function(v)
+    if v in L[3] then
+      return L[2][Position(L[3], v)];
+    fi;
+    return Position(newvertices, v) + DigraphNrVertices(D1);
+  end;
+  embedding2 := List(DigraphVertices(D2), embfunc);
+
+  for v in newvertices do
+    Add(out, []);
+  od;
+
+  for e in DigraphEdges(D2) do
+    if (not e[1] in L[3]) or (not e[2] in L[3]) then
+       Add(out[embedding2[e[1]]], embedding2[e[2]]);
+    fi;
+  od;
+
+  return [Digraph(out), Transformation([1 .. Size(embedding1)], embedding1),
+                        Transformation([1 .. Size(embedding2)], embedding2)];
+
+end);
