@@ -189,7 +189,7 @@ end);
 InstallMethod(ClearDigraphEdgeLabels, "for a digraph", [IsDigraph],
 function(D)
   Unbind(D!.edgelabels);
-  end);
+end);
 
 InstallMethod(RemoveDigraphEdgeLabel,
 "for a digraph, positive integer, and positive integer",
