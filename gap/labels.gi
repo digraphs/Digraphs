@@ -166,7 +166,7 @@ function(D, labels)
                   "the digraph <D> that is the 1st argument,");
   fi;
   SetDigraphEdgeLabelsNC(D, labels);
-  end);
+end);
 
 InstallMethod(SetDigraphEdgeLabels, "for a digraph, and a function",
 [IsDigraph, IsFunction],
