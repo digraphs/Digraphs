@@ -184,7 +184,7 @@ function(D, f)
       D!.edgelabels[i][j] := f(i, adj[i][j]);
     od;
   od;
-  end);
+end);
 
 InstallMethod(ClearDigraphEdgeLabels, "for a digraph", [IsDigraph],
 function(D)
