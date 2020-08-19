@@ -106,22 +106,10 @@ static UInt clique_hook_collect(void*           user_param,
   return 1;
 }
 
-static UInt clique_hook_gap(void*           user_param,
-                            const BitArray* clique,
-                            const uint16_t  nr,
-                            Obj             gap_func) {
-  UInt i;
-  Obj  c;
-  Obj  n;
-
-  c = NEW_PLIST(T_PLIST, nr);
-  for (i = 1; i <= nr; ++i) {
-    if (get_bit_array(clique, i - 1)) {
-      PushPlist(c, INTOBJ_INT(i));
-    }
-  }
-
-  n = CALL_2ARGS(gap_func, user_param, c);
+static UInt clique_hook_gap_list(void*          user_param,
+                                 Obj            clique_list,
+                                 Obj            gap_func) {
+  Obj n = CALL_2ARGS(gap_func, user_param, clique_list);
   if (!IS_INTOBJ(n)) {
     ErrorQuit("the 2rd argument <hook> must be a function which returns "
               "an integer,",
@@ -129,6 +117,22 @@ static UInt clique_hook_gap(void*           user_param,
               0L);
   }
   return INT_INTOBJ(n);
+}
+
+static UInt clique_hook_gap(void*           user_param,
+                            const BitArray* clique,
+                            const uint16_t  nr,
+                            Obj             gap_func) {
+  UInt i;
+  Obj  c;
+
+  c = NEW_PLIST(T_PLIST, nr);
+  for (i = 1; i <= nr; ++i) {
+    if (get_bit_array(clique, i - 1)) {
+      PushPlist(c, INTOBJ_INT(i));
+    }
+  }
+  return clique_hook_gap_list(user_param, c, gap_func);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -239,37 +243,40 @@ static bool init_data_from_args(Obj         digraph_obj,
   }
   // Update TRY using exclude_obj
   if (exclude_obj != Fail) {
-    BitArray* exclude = new_bit_array(MAXVERTS);
-    set_bit_array_from_gap_list(exclude, exclude_obj);
-    complement_bit_arrays(get_conditions(data->try, 0), exclude, nr);
+    set_bit_array_from_gap_list(data->temp_bitarray, exclude_obj);
+    complement_bit_arrays(
+        get_conditions(data->try, 0), data->temp_bitarray, nr);
   }
 
   // Get the isolated vertices of the graph
-  BitArray* isolated       = new_bit_array(MAXVERTS);
-  Int       first_isolated = -1;
+  // temp_bitarray now represents isolated vertices
+  init_bit_array(data->temp_bitarray, false, nr);
+  Int first_isolated = -1;
   for (uint16_t i = 0; i < nr; ++i) {
     if (size_bit_array(data->graph->neighbours[i], nr) == 0) {
       if (first_isolated == -1
           && get_bit_array(get_conditions(data->try, 0), i)) {
         first_isolated = i;
       }
-      set_bit_array(isolated, i, true);
+      set_bit_array(data->temp_bitarray, i, true);
     }
   }
   // Update TRY using isolated, only one isolated vertex is used
   if (first_isolated != -1) {
-    complement_bit_arrays(get_conditions(data->try, 0), isolated, nr);
+    complement_bit_arrays(
+        get_conditions(data->try, 0), data->temp_bitarray, nr);
     set_bit_array(get_conditions(data->try, 0), first_isolated, true);
   }
 
   // Discard the generators of aut_grp_obj which act on the isolated vertices
-  if (size_bit_array(isolated, nr) > 0) {
+  if (size_bit_array(data->temp_bitarray, nr) > 0) {
     Obj new_group = Fail;
     Obj gens      = CALL_1ARGS(GeneratorsOfGroup, *group);
     DIGRAPHS_ASSERT(IS_LIST(gens));
     for (Int i = 1; i <= LEN_LIST(gens); ++i) {
       Obj s = CALL_1ARGS(SmallestMovedPointPerm, ELM_LIST(gens, i));
-      if (s != Infinity && !get_bit_array(isolated, INT_INTOBJ(s) - 1)) {
+      if (s != Infinity
+          && !get_bit_array(data->temp_bitarray, INT_INTOBJ(s) - 1)) {
         if (new_group == Fail) {
           new_group = CALL_1ARGS(Group, ELM_LIST(gens, i));
         } else {
@@ -627,6 +634,16 @@ Obj FuncDigraphsCliquesFinder(Obj self, Obj args) {
   uint16_t nr           = DigraphNrVertices(digraph_obj);
 
   // Check the trivial cases:
+  // The digraph has 0 vertices
+  if (nr == 0) {
+    Obj c = NEW_PLIST(T_PLIST, 0);
+    if (hook_obj != Fail) {
+      clique_hook_gap_list(user_param_obj, c, hook_obj);
+    } else {
+      ASS_LIST(user_param_obj, LEN_LIST(user_param_obj) + 1, c);
+    }
+    return user_param_obj;
+  }
   // The desired clique is too small
   if (size != 0 && include_size > size) {
     return user_param_obj;
