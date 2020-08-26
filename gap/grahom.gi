@@ -873,13 +873,11 @@ function(D, t)
   return IsDigraphColouring(D, ImageListOfTransformation(t, n));
 end);
 
-
-
 InstallMethod(MaximalCommonSubdigraph, "for a pair of digraphs",
 [IsDigraph, IsDigraph],
 function(D1, D2)
-  local B, out1, out2, adj, output, good, p, Clqus, M, l,
-        embedding1, embedding2, outputdigraph, iso;
+  local B, out1, out2, adj, good, p, Clqus, M, l,
+        embedding1, embedding2, iso;
 
   iso := IsomorphismDigraphs(D1, D2);
 
@@ -893,7 +891,7 @@ function(D1, D2)
   adj := function(pair)
     local L, isadj;
     isadj := function(p)
-      if p[1] = pair[1] or p[2]= pair[2] then
+      if p[1] = pair[1] or p[2] = pair[2] then
         return false;
       fi;
       return Number(out1[pair[1]], x -> x = p[1]) =
@@ -906,16 +904,16 @@ function(D1, D2)
   B := Digraph(List(Cartesian([1 .. Size(out1)], [1 .. Size(out2)]), adj));
 
   good := function(v)
-    p := [QuoInt( v - 1, Size(out2)) + 1, RemInt( v - 1, Size(out2)) + 1];
+    p := [QuoInt(v - 1, Size(out2)) + 1, RemInt(v - 1, Size(out2)) + 1];
     return Number(out1[p[1]], x -> x = p[1]) =
-           Number(out2[p[2]], x -> x = p[2]);    
+           Number(out2[p[2]], x -> x = p[2]);
   end;
 
   B := InducedSubdigraph(B, Filtered(DigraphVertices(B), good));
   if DigraphNrVertices(B) = 0 then
     return [Digraph([]), [], []];
   fi;
-  
+
   Clqus := DigraphMaximalCliquesReps(B);
 
   if Clqus = [] then
@@ -930,8 +928,8 @@ function(D1, D2)
   od;
 
   Sort(M);
-  M := List(M, x -> [QuoInt( x - 1, Size(out2)) + 1,
-                     RemInt( x - 1, Size(out2)) + 1]);
+  M := List(M, x -> [QuoInt(x - 1, Size(out2)) + 1,
+                     RemInt(x - 1, Size(out2)) + 1]);
 
   embedding1 := List(M, x -> x[1]);
   embedding2 := List(M, x -> x[2]);
@@ -947,8 +945,8 @@ InstallMethod(MinimalCommonSuperdigraph, "for a pair of digraphs",
 function(D1, D2)
   local out, L, v, e, embfunc, embedding1, embedding2, newvertices;
   L := MaximalCommonSubdigraph(D1, D2);
-  L[2] := List([1 .. DigraphNrVertices(L[1])], x->x^L[2]);
-  L[3] := List([1 .. DigraphNrVertices(L[1])], x->x^L[3]);  
+  L[2] := List([1 .. DigraphNrVertices(L[1])], x -> x ^ L[2]);
+  L[3] := List([1 .. DigraphNrVertices(L[1])], x -> x ^ L[3]);
   out := List(OutNeighbours(D1), x -> ShallowCopy(x));
   newvertices := Filtered(DigraphVertices(D2), x -> not x in L[3]);
   embedding1 := [1 .. DigraphNrVertices(D1)];
