@@ -14,14 +14,13 @@
 
 BindGlobal("DIGRAPHS_DotDigraph",
 function(D, node_funcs, edge_funcs)
-  local str, out, i, func, j;
+  local str, out, i, func, j, k, l;
   str   := "//dot\n";
   Append(str, "digraph hgn{\n");
   Append(str, "node [shape=circle]\n");
   for i in DigraphVertices(D) do
     # Append(str, StringFormatted("{}", i));
-    # This line can be replaced with the above commented one when the
-    # required version is 4.10.0
+    # This line can be replaced with the above commented one when the required version is 4.10.0
     Append(str, String(i));
     for func in node_funcs do
       Append(str, func(i));
@@ -30,13 +29,13 @@ function(D, node_funcs, edge_funcs)
   od;
   out := OutNeighbours(D);
   for i in DigraphVertices(D) do
-    for j in out[i] do
+    l := Length(out[i]);
+    for j in [1..l] do
       # Append(str, StringFormatted("{} -> {}", i, j));
-      # This line can be replaced with the above commented one when
-      # the required version is 4.10.0
+      # This line can be replaced with the above commented one when the required version is 4.10.0
       Append(str, String(i));
       Append(str, " -> ");
-      Append(str, String(j));
+      Append(str, String(out[i][j]));
       for func in edge_funcs do
         Append(str, func(i, j));
       od;
@@ -47,6 +46,84 @@ function(D, node_funcs, edge_funcs)
   return str;
 end);
 
+BindGlobal("DIGRAPHS_ValidRGBValue",
+function(str)
+  local l, chars, x, i;
+  l := Length(str);
+  x := 0;
+  chars := "0123456789ABCDEFabcdef";
+  if l = 7 then
+    if str[1] = '#' then
+      for i in [2 .. l] do
+        if str[i] in chars then
+            x := x + 1;
+        fi;
+      od;
+    fi;
+  fi;
+  if x = (l-1) then
+    return true;
+  else
+    return false;
+  fi;
+end);
+
+
+BindGlobal("DIGRAPHS_ValidVertColors",
+function(D, verts)
+  local v, col, colors, f, filename, Dir;
+  v := DigraphVertices(D);
+  Dir := DIGRAPHS_Dir();
+  filename := Concatenation(Dir, "/data/colors.p");
+  f := IO_File(filename);
+  colors := IO_Unpickle(f);
+  if Length(verts) <> Length(v) then
+    ErrorNoReturn("the number of vertex colors must be the same as the number of vertices, expected ",
+    Length(v), " but found ", Length(verts), "");
+  fi;
+  if Length(verts) = Length(v) then  
+    for col in verts do
+      if not IsString(col) then
+        ErrorNoReturn("expected a string");
+      elif DIGRAPHS_ValidRGBValue(col) = false and (col in colors) = false then
+        ErrorNoReturn("expected RGB Value or valid color name as defined by GraphViz 2.44.1 X11 Color Scheme (http://graphviz.org/doc/info/colors.html)");
+      else
+        return true;
+      fi;
+    od;
+  fi; 
+end);
+
+BindGlobal("DIGRAPHS_ValidEdgeColors",
+function(D, edge)
+  local out, col, colors, v, f, filename, Dir;
+  out := OutNeighbours(D);
+  Dir := DIGRAPHS_Dir();
+  filename := Concatenation(Dir, "/data/colors.p");
+  f := IO_File(filename);
+  colors := IO_Unpickle(f);
+  if Length(edge) <> Length(out) then
+    ErrorNoReturn("the list of edge colors needs to have the same shape as the out-neighbours of the digraph");    
+  fi;
+  if Length(edge) = Length(out) then  
+    for v in [1..Length(edge)] do
+      if Length(out[v]) <> Length(edge[v]) then
+        ErrorNoReturn("the list of edge colors needs to have the same shape as the out-neighbours of the digraph");
+      else
+        for col in edge[v] do
+          if not IsString(col) then
+            ErrorNoReturn("expected a string");
+          elif DIGRAPHS_ValidRGBValue(col) = false and (col in colors) = false then
+            ErrorNoReturn("expected RGB Value or valid color name as defined by GraphViz 2.44.1 X11 Color Scheme (http://graphviz.org/doc/info/colors.html)");
+          else
+            return true;
+          fi;
+        od;
+      fi;
+    od;
+  fi; 
+end);     
+
 InstallMethod(DotDigraph, "for a digraph by out-neighbours",
 [IsDigraphByOutNeighboursRep],
 function(D)
@@ -56,53 +133,60 @@ end);
 InstallMethod(DotColoredDigraph, "for a digraph by out-neighbours and two lists",
 [IsDigraphByOutNeighboursRep, IsList, IsList],
 function(D, vert, edge)
-  # This code can be replaced with the commented out code
-  # when the required version becomes 4.10.0
-  return(DIGRAPHS_DotDigraph(D,
-                             [i -> Concatenation("[color=",
-                             vert[i], ", style=filled]")],
-                             [{i, j} -> Concatenation("[color=",
-                             edge[i][j], "]")]));
-  # return DIGRAPHS_DotDigraph(D,
-  #                             [i -> StringFormatted("[color={}, style=filled]",
-  #                             vert[i])],
-  #                             [{i, j} -> StringFormatted("[color={}]",
-  #                             edge[i][j])]);
+  if DIGRAPHS_ValidVertColors(D, vert) = true and DIGRAPHS_ValidEdgeColors(D, edge) = true then
+# This code can be replaced with the commented out code when the required version of GAP becomes 4.10.0
+    return(DIGRAPHS_DotDigraph(D,
+                               [i -> Concatenation("[color=",
+                               vert[i], ", style=filled]")],
+                               [{i, j} -> Concatenation("[color=",
+                               edge[i][j], "]")]));
+    # return DIGRAPHS_DotDigraph(D,
+    #                             [i -> StringFormatted("[color={}, style=filled]",
+    #                             vert[i])],
+    #                             [{i, j} -> StringFormatted("[color={}]",
+    #                             edge[i][j])]);
+  else
+    return (DIGRAPHS_ValidVertColors(D, vert), DIGRAPHS_ValidEdgeColors(D, edge));
+  fi;
+
 end);
 
-InstallMethod(DotVertexColoredDigraph,
-"for a digraph by out-neighbours and a list",
+InstallMethod(DotVertexColoredDigraph, "for a digraph by out-neighbours and a list",
 [IsDigraphByOutNeighboursRep, IsList],
 function(D, vert)
-  # This code can be replaced with the commented out code
-  # when the required version becomes 4.10.0
-  return(DIGRAPHS_DotDigraph(D,
-                             [i -> Concatenation("[color=",
-                             vert[i], ", style=filled]")], []));
-  # return DIGRAPHS_DotDigraph(D,
-  #                             [i -> StringFormatted("[color={}, style=filled]",
-  #                             vert[i])]);
+  if DIGRAPHS_ValidVertColors(D, vert) = true then
+# This code can be replaced with the commented out code when the required version of GAP becomes 4.10.0
+    return(DIGRAPHS_DotDigraph(D,
+                               [i -> Concatenation("[color=",
+                               vert[i], ", style=filled]")], []));
+    # return DIGRAPHS_DotDigraph(D,
+    #                             [i -> StringFormatted("[color={}, style=filled]",
+    #                             vert[i])]);
+  else 
+    return DIGRAPHS_ValidVertColors(D, vert);
+  fi;
 end);
 
-InstallMethod(DotEdgeColoredDigraph,
-"for a digraph by out-neighbours and a list",
+InstallMethod(DotEdgeColoredDigraph, "for a digraph by out-neighbours and a list",
 [IsDigraphByOutNeighboursRep, IsList],
 function(D, edge)
-  # This code can be replaced with the commented out code
-  # when the required version becomes 4.10.0
-  return(DIGRAPHS_DotDigraph(D, [],
-                             [{i, j} -> Concatenation("[color=",
-                             edge[i][j], "]")]));
-  # return DIGRAPHS_DotDigraph(D,
-  #                             [{i, j} -> StringFormatted("[color={}]",
-  #                             edge[i][j])]);
+  if DIGRAPHS_ValidEdgeColors(D, edge) = true then
+# This code can be replaced with the commented out code when the required version of GAP becomes 4.10.0
+    return(DIGRAPHS_DotDigraph(D, [],
+                               [{i, j} -> Concatenation("[color=",
+                               edge[i][j], "]")]));
+    # return DIGRAPHS_DotDigraph(D,
+    #                             [{i, j} -> StringFormatted("[color={}]",
+    #                             edge[i][j])]);
+  else
+    return DIGRAPHS_ValidEdgeColors(D, edge);
+  fi;
 end);
 
 InstallMethod(DotVertexLabelledDigraph, "for a digraph by out-neighbours",
 [IsDigraphByOutNeighboursRep],
 function(D)
-  # this code can be replaced with the commented out code
-  # when the required version becomes 4.10.0
+# this code can be replaced with the commented out code when the required version of GAP becomes 4.10.0
   return DIGRAPHS_DotDigraph(D, [i -> Concatenation(" [label=\"",
                                 String(DigraphVertexLabel(D, i)), "\"]")], []);
   # return DIGRAPHS_DotDigraph(D, [i -> StringFormatted(" [label=\"{}\"]",
@@ -121,8 +205,7 @@ function(D, node_funcs, edge_funcs)
   Append(str, "node [shape=circle]\n\n");
   for i in DigraphVertices(D) do
     # Append(str, StringFormatted("{}", i));
-    # This line can be replaced with the above commented one
-    # when the required version is 4.10.0
+    # This line can be replaced with the above commented one when the required version of GAP is 4.10.0
     Append(str, String(i));
     for func in node_funcs do
       Append(str, func(i));
@@ -130,14 +213,13 @@ function(D, node_funcs, edge_funcs)
     Append(str, "\n");
   od;
   for i in DigraphVertices(D) do
-    for j in out[i] do
+    for j in [1 .. Length(out[i])] do
       if j >= i then
         # Append(str, StringFormatted("{} -- {}", i, j));
-        # This line can be replaced with the above commented one
-        # when the required version is 4.10.0
+        # This line can be replaced with the above commented one when the required version of GAP is 4.10.0
         Append(str, String(i));
         Append(str, " -- ");
-        Append(str, String(j));
+        Append(str, String(out[i][j]));
         for func in edge_funcs do
           Append(str, func(i, j));
         od;
@@ -159,46 +241,57 @@ InstallMethod(DotSymmetricColoredDigraph,
 "for a digraph by out-neighbours and two lists",
 [IsDigraphByOutNeighboursRep, IsList, IsList],
 function(D, vert, edge)
-  # This code can be replaced with the commented out code
-  # when the required version becomes 4.10.0
-  return DIGRAPHS_DotSymmetricDigraph(D,
-                                     [i -> Concatenation("[color=", vert[i],
-                                     ", style=filled]")],
-                                     [{i, j} -> Concatenation("[color=",
-                                     edge[i][j], "]")]);
-  # return DIGRAPHS_DotSymmetricDigraph(D,
-  #                                     [i -> StringFormatted(
-  #                                     "[color={}, style=filled]", vert[i])],
-  #                                     [{i, j} -> StringFormatted("[color={}]",
-  #                                     edge[i][j])]);
+  if DIGRAPHS_ValidVertColors(D, vert) = true and DIGRAPHS_ValidEdgeColors(D, edge) = true then
+# This code can be replaced with the commented out code when the required version of GAP becomes 4.10.0
+    return DIGRAPHS_DotSymmetricDigraph(D,
+                                       [i -> Concatenation("[color=", vert[i],
+                                       ", style=filled]")],
+                                       [{i, j} -> Concatenation("[color=",
+                                       edge[i][j], "]")]);
+    # return DIGRAPHS_DotSymmetricDigraph(D,
+    #                                     [i -> StringFormatted(
+    #                                     "[color={}, style=filled]", vert[i])],
+    #                                     [{i, j} -> StringFormatted("[color={}]",
+    #                                     edge[i][j])]);
+  else
+    return (DIGRAPHS_ValidVertColors(D, vert), DIGRAPHS_ValidEdgeColors(D, edge));
+  fi;
 end);
 
 InstallMethod(DotSymmetricVertexColoredDigraph,
 "for a digraph by out-neighbours and a list",
 [IsDigraphByOutNeighboursRep, IsList],
 function(D, vert)
-  # This code can be replaced with the commented out code
-  # when the required version becomes 4.10.0
-  return(DIGRAPHS_DotSymmetricDigraph(D,
-                                      [i -> Concatenation("[color=",
-                                      vert[i], ", style=filled]")], []));
-  # return DIGRAPHS_DotSymmetricDigraph(D,
-  #                                    [i -> StringFormatted
-  #                                    ("[color={}, style=filled]", vert[i])]);
+  if DIGRAPHS_ValidVertColors(D, vert) = true then
+    # This code can be replaced with the commented out code
+    # when the required version of GAP becomes 4.10.0
+    return(DIGRAPHS_DotSymmetricDigraph(D,
+                                        [i -> Concatenation("[color=",
+                                        vert[i], ", style=filled]")], []));
+    # return DIGRAPHS_DotSymmetricDigraph(D,
+    #                                    [i -> StringFormatted
+    #                                    ("[color={}, style=filled]", vert[i])]);
+  else
+    return DIGRAPHS_ValidVertColors(D, vert);
+  fi;
 end);
 
 InstallMethod(DotSymmetricEdgeColoredDigraph,
 "for a digraph by out-neighbours and a list",
 [IsDigraphByOutNeighboursRep, IsList],
 function(D, edge)
-  # This code can be replaced with the commented out code
-  # when the required version becomes 4.10.0
-  return(DIGRAPHS_DotSymmetricDigraph(D, [],
-                                     [{i, j} -> Concatenation("[color=",
-                                     edge[i][j], "]")]));
-  # return DIGRAPHS_DotSymmetricDigraph(D,
-  #                                    [{i, j} -> StringFormatted("[color={}]",
-  #                                    edge[i][j])]);
+  if DIGRAPHS_ValidEdgeColors(D, edge) = true then
+    # This code can be replaced with the commented out code
+    # when the required version of GAP becomes 4.10.0
+    return(DIGRAPHS_DotSymmetricDigraph(D, [],
+                                       [{i, j} -> Concatenation("[color=",
+                                       edge[i][j], "]")]));
+    # return DIGRAPHS_DotSymmetricDigraph(D,
+    #                                    [{i, j} -> StringFormatted("[color={}]",
+    #                                    edge[i][j])]);
+  else 
+    return DIGRAPHS_ValidEdgeColors(D, edge);
+  fi;
 end);
 
 # AN's code
