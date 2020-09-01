@@ -408,6 +408,7 @@ gap> edgecolors[4][1] := "lightblue";;
 gap> edgecolors[4][2] := "pink";;
 gap> Print(DotColoredDigraph(D, vertcolors, edgecolors));
 Error, the list of edge colors needs to have the same shape as the out-neighbours of the digraph
+
 # DotVertexColoredDigraph
 gap> D := CompleteDigraph(4);
 <immutable complete digraph with 4 vertices>

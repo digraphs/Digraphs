@@ -96,17 +96,20 @@ end);
 
 BindGlobal("DIGRAPHS_ValidEdgeColors",
 function(D, edge)
-  local out, col, colors, v, f, filename, Dir;
+  local out, col, colors, v, f, filename, Dir, l, sum, counter;
   out := OutNeighbours(D);
   Dir := DIGRAPHS_Dir();
   filename := Concatenation(Dir, "/data/colors.p");
   f := IO_File(filename);
   colors := IO_Unpickle(f);
+  l := Length(edge);
+  counter := 0;
+  sum := 0;
   if Length(edge) <> Length(out) then
     ErrorNoReturn("the list of edge colors needs to have the same shape as the out-neighbours of the digraph");    
-  fi;
-  if Length(edge) = Length(out) then  
-    for v in [1..Length(edge)] do
+  else 
+    for v in [1 .. l] do
+      sum := 0;
       if Length(out[v]) <> Length(edge[v]) then
         ErrorNoReturn("the list of edge colors needs to have the same shape as the out-neighbours of the digraph");
       else
@@ -116,11 +119,17 @@ function(D, edge)
           elif DIGRAPHS_ValidRGBValue(col) = false and (col in colors) = false then
             ErrorNoReturn("expected RGB Value or valid color name as defined by GraphViz 2.44.1 X11 Color Scheme (http://graphviz.org/doc/info/colors.html)");
           else
-            return true;
-          fi;
+            sum := sum + 1;
+          fi;      
         od;
+        if sum = Length(edge[v]) then
+          counter := counter + 1;
+        fi;       
       fi;
     od;
+    if counter = Length(edge) then
+      return true;
+    fi; 
   fi; 
 end);     
 
