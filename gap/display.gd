@@ -8,7 +8,6 @@
 #############################################################################
 ##
 
-DeclareOperation("VertexTest",[IsDigraph, IsList]);
 DeclareAttribute("DotDigraph", IsDigraph);
 DeclareOperation("DotColoredDigraph", [IsDigraph, IsList, IsList]);
 DeclareOperation("DotVertexColoredDigraph", [IsDigraph, IsList]);

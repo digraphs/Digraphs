@@ -93,27 +93,8 @@ gap> edgecolors[3][3] := "purple";;
 gap> edgecolors[4][1] := "lightblue";; 
 gap> edgecolors[4][2] := "pink";;
 gap> edgecolors[4][3] := "purple";;
-gap> Print(DotColoredDigraph(D, vertcolors, edgecolors));
-//dot
-digraph hgn{
-node [shape=circle]
-1[color=blue, style=filled]
-2[color=red, style=filled]
-3[color=green, style=filled]
-4[color=yellow, style=filled]
-1 -> 2[color=lightblue]
-1 -> 3[color=pink]
-1 -> 4[color=purple]
-2 -> 1[color=lightblue]
-2 -> 3[color=pink]
-2 -> 4[color=purple]
-3 -> 1[color=lightblue]
-3 -> 2[color=pink]
-3 -> 4[color=purple]
-4 -> 1[color=lightblue]
-4 -> 2[color=pink]
-4 -> 3[color=purple]
-}
+gap> DotColoredDigraph(D, vertcolors, edgecolors){[1 .. 30]};
+"//dot\ndigraph hgn{\nnode [shape"
 gap> D := Digraph([[2], [1, 3], [2]]);
 <immutable digraph with 3 vertices, 4 edges>
 gap> vertcolors := [];;
@@ -126,17 +107,10 @@ gap> edgecolors[3] := [];;
 gap> edgecolors[1][1] := "green";;
 gap> edgecolors[2][1] := "green";;
 gap> edgecolors[3][1] := "red";; edgecolors[2][2] := "red";;
-gap> Print(DotSymmetricColoredDigraph(D, vertcolors, edgecolors));
-//dot
-graph hgn{
-node [shape=circle]
-
-1[color=blue, style=filled]
-2[color=pink, style=filled]
-3[color=purple, style=filled]
-1 -- 2[color=green]
-2 -- 3[color=red]
-}
+gap> DotSymmetricColoredDigraph(D, vertcolors, edgecolors);
+"//dot\ngraph hgn{\nnode [shape=circle]\n\n1[color=blue, style=filled]\n2[colo\
+r=pink, style=filled]\n3[color=purple, style=filled]\n1 -- 2[color=green]\n2 -\
+- 3[color=red]\n}\n"
 gap> D := Digraph([[2, 3], [1, 3], [1]]);
 <immutable digraph with 3 vertices, 5 edges>
 gap> vertcolors := [];;
@@ -148,19 +122,11 @@ gap> edgecolors[3] := [];;
 gap> edgecolors[1][1] := "orange";; edgecolors[1][2] := "yellow";;
 gap> edgecolors[2][1] := "orange";; edgecolors[2][2] := "pink";;
 gap> edgecolors[3][1] := "yellow";;
-gap> Print(DotColoredDigraph(D, vertcolors, edgecolors));;
-//dot
-digraph hgn{
-node [shape=circle]
-1[color=blue, style=filled]
-2[color=red, style=filled]
-3[color=green, style=filled]
-1 -> 2[color=orange]
-1 -> 3[color=yellow]
-2 -> 1[color=orange]
-2 -> 3[color=pink]
-3 -> 1[color=yellow]
-}
+gap> DotColoredDigraph(D, vertcolors, edgecolors);
+"//dot\ndigraph hgn{\nnode [shape=circle]\n1[color=blue, style=filled]\n2[colo\
+r=red, style=filled]\n3[color=green, style=filled]\n1 -> 2[color=orange]\n1 ->\
+ 3[color=yellow]\n2 -> 1[color=orange]\n2 -> 3[color=pink]\n3 -> 1[color=yello\
+w]\n}\n"
 gap> D := Digraph(IsMutableDigraph, [[2, 3], [1, 3], [1]]);
 <mutable digraph with 3 vertices, 5 edges>
 gap> vertcolors := [];;
@@ -172,19 +138,7 @@ gap> edgecolors[3] := [];;
 gap> edgecolors[1][1] := "orange";; edgecolors[1][2] := "yellow";;
 gap> edgecolors[2][1] := "orange";; edgecolors[2][2] := "pink";;
 gap> edgecolors[3][1] := "yellow";;
-gap> Print(DotColoredDigraph(D, vertcolors, edgecolors));;
-//dot
-digraph hgn{
-node [shape=circle]
-1[color=blue, style=filled]
-2[color=red, style=filled]
-3[color=green, style=filled]
-1 -> 2[color=orange]
-1 -> 3[color=yellow]
-2 -> 1[color=orange]
-2 -> 3[color=pink]
-3 -> 1[color=yellow]
-}
+gap> DotColoredDigraph(D, vertcolors, edgecolors);;
 gap> D;
 <mutable digraph with 3 vertices, 5 edges>
 gap> D := Digraph([[2, 4], [1, 3], [2], [1]]);
@@ -198,19 +152,10 @@ gap> edgecolors[3] := [];; edgecolors[4] := [];;
 gap> edgecolors[1][1] := "orange";; edgecolors[1][2] := "orange";;
 gap> edgecolors[2][1] := "orange";; edgecolors[2][2] := "orange";;
 gap> edgecolors[3][1] := "orange";; edgecolors[4][1] := "orange";;
-gap> Print(DotSymmetricColoredDigraph(D, vertcolors, edgecolors));
-//dot
-graph hgn{
-node [shape=circle]
-
-1[color=blue, style=filled]
-2[color=red, style=filled]
-3[color=green, style=filled]
-4[color=yellow, style=filled]
-1 -- 2[color=orange]
-1 -- 4[color=orange]
-2 -- 3[color=orange]
-}
+gap> DotSymmetricColoredDigraph(D, vertcolors, edgecolors);
+"//dot\ngraph hgn{\nnode [shape=circle]\n\n1[color=blue, style=filled]\n2[colo\
+r=red, style=filled]\n3[color=green, style=filled]\n4[color=yellow, style=fill\
+ed]\n1 -- 2[color=orange]\n1 -- 4[color=orange]\n2 -- 3[color=orange]\n}\n"
 gap> D := Digraph(IsMutableDigraph, [[2, 4], [1, 3], [2], [1]]);
 <mutable digraph with 4 vertices, 6 edges>
 gap> vertcolors := [];;
@@ -222,19 +167,10 @@ gap> edgecolors[3] := [];; edgecolors[4] := [];;
 gap> edgecolors[1][1] := "orange";; edgecolors[1][2] := "orange";;
 gap> edgecolors[2][1] := "orange";; edgecolors[2][2] := "orange";;
 gap> edgecolors[3][1] := "orange";; edgecolors[4][1] := "orange";;
-gap> Print(DotSymmetricColoredDigraph(D, vertcolors, edgecolors));
-//dot
-graph hgn{
-node [shape=circle]
-
-1[color=blue, style=filled]
-2[color=red, style=filled]
-3[color=green, style=filled]
-4[color=yellow, style=filled]
-1 -- 2[color=orange]
-1 -- 4[color=orange]
-2 -- 3[color=orange]
-}
+gap> DotSymmetricColoredDigraph(D, vertcolors, edgecolors);
+"//dot\ngraph hgn{\nnode [shape=circle]\n\n1[color=blue, style=filled]\n2[colo\
+r=red, style=filled]\n3[color=green, style=filled]\n4[color=yellow, style=fill\
+ed]\n1 -- 2[color=orange]\n1 -- 4[color=orange]\n2 -- 3[color=orange]\n}\n"
 gap> D;
 <mutable digraph with 4 vertices, 6 edges>
 gap> D := CompleteDigraph(4);
@@ -257,27 +193,9 @@ gap> edgecolors[3][3] := "purple";;
 gap> edgecolors[4][1] := "lightblue";; 
 gap> edgecolors[4][2] := "pink";;
 gap> edgecolors[4][3] := "purple";;
-gap> Print(DotColoredDigraph(D, vertcolors, edgecolors));
-//dot
-digraph hgn{
-node [shape=circle]
-1[color=blue, style=filled]
-2[color=banana, style=filled]
-3[color=green, style=filled]
-4[color=yellow, style=filled]
-1 -> 2[color=lightblue]
-1 -> 3[color=pink]
-1 -> 4[color=purple]
-2 -> 1[color=lightblue]
-2 -> 3[color=pink]
-2 -> 4[color=purple]
-3 -> 1[color=lightblue]
-3 -> 2[color=pink]
-3 -> 4[color=purple]
-4 -> 1[color=lightblue]
-4 -> 2[color=pink]
-4 -> 3[color=purple]
-}
+gap> DotColoredDigraph(D, vertcolors, edgecolors){[5 .. 35]};
+Error, expected RGB Value or valid color name as defined by GraphViz 2.44.1 X1\
+1 Color Scheme http://graphviz.org/doc/info/colors.html
 gap> D := CompleteDigraph(4);
 <immutable complete digraph with 4 vertices>
 gap> vertcolors := [];;
@@ -298,7 +216,7 @@ gap> edgecolors[3][3] := "purple";;
 gap> edgecolors[4][1] := "lightblue";; 
 gap> edgecolors[4][2] := "pink";;
 gap> edgecolors[4][3] := "purple";;
-gap> Print(DotColoredDigraph(D, vertcolors, edgecolors));
+gap> DotColoredDigraph(D, vertcolors, edgecolors);
 Error, the number of vertex colors must be the same as the number of vertices,\
  expected 4 but found 3
 gap> D := CompleteDigraph(4);
@@ -321,7 +239,7 @@ gap> edgecolors[3][3] := "purple";;
 gap> edgecolors[4][1] := "lightblue";; 
 gap> edgecolors[4][2] := "pink";;
 gap> edgecolors[4][3] := "purple";;
-gap> Print(DotColoredDigraph(D, vertcolors, edgecolors));
+gap> DotColoredDigraph(D, vertcolors, edgecolors);
 Error, expected a string
 gap> D := CompleteDigraph(4);
 <immutable complete digraph with 4 vertices>
@@ -343,27 +261,13 @@ gap> edgecolors[3][3] := "purple";;
 gap> edgecolors[4][1] := "lightblue";; 
 gap> edgecolors[4][2] := "pink";;
 gap> edgecolors[4][3] := "purple";;
-gap> Print(DotColoredDigraph(D, vertcolors, edgecolors));
-//dot
-digraph hgn{
-node [shape=circle]
-1[color=#AB3487, style=filled]
-2[color=#DF4738, style=filled]
-3[color=#4BF234, style=filled]
-4[color=#AF34C9, style=filled]
-1 -> 2[color=lightblue]
-1 -> 3[color=pink]
-1 -> 4[color=purple]
-2 -> 1[color=lightblue]
-2 -> 3[color=pink]
-2 -> 4[color=purple]
-3 -> 1[color=lightblue]
-3 -> 2[color=pink]
-3 -> 4[color=purple]
-4 -> 1[color=lightblue]
-4 -> 2[color=pink]
-4 -> 3[color=purple]
-}
+gap> DotColoredDigraph(D, vertcolors, edgecolors);
+"//dot\ndigraph hgn{\nnode [shape=circle]\n1[color=#AB3487, style=filled]\n2[c\
+olor=#DF4738, style=filled]\n3[color=#4BF234, style=filled]\n4[color=#AF34C9, \
+style=filled]\n1 -> 2[color=lightblue]\n1 -> 3[color=pink]\n1 -> 4[color=purpl\
+e]\n2 -> 1[color=lightblue]\n2 -> 3[color=pink]\n2 -> 4[color=purple]\n3 -> 1[\
+color=lightblue]\n3 -> 2[color=pink]\n3 -> 4[color=purple]\n4 -> 1[color=light\
+blue]\n4 -> 2[color=pink]\n4 -> 3[color=purple]\n}\n"
 gap> D := CompleteDigraph(4);
 <immutable complete digraph with 4 vertices>
 gap> vertcolors := [];;
@@ -384,9 +288,9 @@ gap> edgecolors[3][3] := "purple";;
 gap> edgecolors[4][1] := "lightblue";; 
 gap> edgecolors[4][2] := "pink";;
 gap> edgecolors[4][3] := "purple";;
-gap> Print(DotColoredDigraph(D, vertcolors, edgecolors));
+gap> DotColoredDigraph(D, vertcolors, edgecolors);
 Error, expected RGB Value or valid color name as defined by GraphViz 2.44.1 X1\
-1 Color Scheme (http://graphviz.org/doc/info/colors.html)
+1 Color Scheme http://graphviz.org/doc/info/colors.html
 gap> D := CompleteDigraph(4);
 <immutable complete digraph with 4 vertices>
 gap> vertcolors := [];;
@@ -406,8 +310,9 @@ gap> edgecolors[3][2] := "pink";;
 gap> edgecolors[3][3] := "purple";;
 gap> edgecolors[4][1] := "lightblue";; 
 gap> edgecolors[4][2] := "pink";;
-gap> Print(DotColoredDigraph(D, vertcolors, edgecolors));
-Error, the list of edge colors needs to have the same shape as the out-neighbours of the digraph
+gap> DotColoredDigraph(D, vertcolors, edgecolors);
+Error, the list of edge colors needs to have the same shape as the out-neighbo\
+urs of the digraph
 
 # DotVertexColoredDigraph
 gap> D := CompleteDigraph(4);
@@ -444,14 +349,9 @@ gap> vertcolors[3] := "green";;
 gap> edgecolors := [];;
 gap> edgecolors[1] := [];; edgecolors[2] := [];; 
 gap> edgecolors[3] := [];;
-gap> Print(DotVertexColoredDigraph(D, vertcolors));
-//dot
-digraph hgn{
-node [shape=circle]
-1[color=blue, style=filled]
-2[color=red, style=filled]
-3[color=green, style=filled]
-}
+gap> DotVertexColoredDigraph(D, vertcolors);
+"//dot\ndigraph hgn{\nnode [shape=circle]\n1[color=blue, style=filled]\n2[colo\
+r=red, style=filled]\n3[color=green, style=filled]\n}\n"
 
 # DotEdgeColoredDigraph
 gap> D := CompleteDigraph(4);
@@ -471,27 +371,12 @@ gap> edgecolors[3][3] := "purple";;
 gap> edgecolors[4][1] := "lightblue";; 
 gap> edgecolors[4][2] := "pink";;
 gap> edgecolors[4][3] := "purple";;
-gap> Print(DotEdgeColoredDigraph(D, edgecolors));
-//dot
-digraph hgn{
-node [shape=circle]
-1
-2
-3
-4
-1 -> 2[color=lightblue]
-1 -> 3[color=pink]
-1 -> 4[color=purple]
-2 -> 1[color=lightblue]
-2 -> 3[color=pink]
-2 -> 4[color=purple]
-3 -> 1[color=lightblue]
-3 -> 2[color=pink]
-3 -> 4[color=purple]
-4 -> 1[color=lightblue]
-4 -> 2[color=pink]
-4 -> 3[color=purple]
-}
+gap> DotEdgeColoredDigraph(D, edgecolors);
+"//dot\ndigraph hgn{\nnode [shape=circle]\n1\n2\n3\n4\n1 -> 2[color=lightblue]\
+\n1 -> 3[color=pink]\n1 -> 4[color=purple]\n2 -> 1[color=lightblue]\n2 -> 3[co\
+lor=pink]\n2 -> 4[color=purple]\n3 -> 1[color=lightblue]\n3 -> 2[color=pink]\n\
+3 -> 4[color=purple]\n4 -> 1[color=lightblue]\n4 -> 2[color=pink]\n4 -> 3[colo\
+r=purple]\n}\n"
 
 # DotSymmetricVertexColoredDigraph
 gap> D := Digraph([[2], [1, 3], [2]]);
@@ -500,17 +385,9 @@ gap> vertcolors := [];;
 gap> vertcolors[1] := "blue";;
 gap> vertcolors[2] := "pink";;
 gap> vertcolors[3] := "purple";;
-gap> Print(DotSymmetricVertexColoredDigraph(D, vertcolors));
-//dot
-graph hgn{
-node [shape=circle]
-
-1[color=blue, style=filled]
-2[color=pink, style=filled]
-3[color=purple, style=filled]
-1 -- 2
-2 -- 3
-}
+gap> DotSymmetricVertexColoredDigraph(D, vertcolors);
+"//dot\ngraph hgn{\nnode [shape=circle]\n\n1[color=blue, style=filled]\n2[colo\
+r=pink, style=filled]\n3[color=purple, style=filled]\n1 -- 2\n2 -- 3\n}\n"
 
 # DotSymmetricEdgeColoredDigraph
 gap> D := Digraph([[2], [1, 3], [2]]);
@@ -520,17 +397,9 @@ gap> edgecolors[1] := [];; edgecolors[2] := [];;
 gap> edgecolors[3] := [];;
 gap> edgecolors[1][1] := "green";; edgecolors[2][1] := "green";;
 gap> edgecolors[2][2] := "red";; edgecolors[3][1] := "red";;
-gap> Print(DotSymmetricEdgeColoredDigraph(D, edgecolors));
-//dot
-graph hgn{
-node [shape=circle]
-
-1
-2
-3
-1 -- 2[color=green]
-2 -- 3[color=red]
-}
+gap> DotSymmetricEdgeColoredDigraph(D, edgecolors);
+"//dot\ngraph hgn{\nnode [shape=circle]\n\n1\n2\n3\n1 -- 2[color=green]\n2 -- \
+3[color=red]\n}\n"
 
 # DotVertexLabelledDigraph
 gap> r := rec(DigraphVertices := [1 .. 3], DigraphSource := [1, 1, 1, 1],
@@ -538,32 +407,14 @@ gap> r := rec(DigraphVertices := [1 .. 3], DigraphSource := [1, 1, 1, 1],
 gap> gr := Digraph(r);
 <immutable multidigraph with 3 vertices, 4 edges>
 gap> dot := DotVertexLabelledDigraph(gr);;
-gap> Print(dot);
-//dot
-digraph hgn{
-node [shape=circle]
-1 [label="1"]
-2 [label="2"]
-3 [label="3"]
-1 -> 1
-1 -> 2
-1 -> 2
-1 -> 3
-}
+gap> dot;
+"//dot\ndigraph hgn{\nnode [shape=circle]\n1 [label=\"1\"]\n2 [label=\"2\"]\n3\
+ [label=\"3\"]\n1 -> 1\n1 -> 2\n1 -> 2\n1 -> 3\n}\n"
 gap> SetDigraphVertexLabel(gr, 1, 2);
 gap> dot := DotVertexLabelledDigraph(gr);;
-gap> Print(dot);
-//dot
-digraph hgn{
-node [shape=circle]
-1 [label="2"]
-2 [label="2"]
-3 [label="3"]
-1 -> 1
-1 -> 2
-1 -> 2
-1 -> 3
-}
+gap> dot;
+"//dot\ndigraph hgn{\nnode [shape=circle]\n1 [label=\"2\"]\n2 [label=\"2\"]\n3\
+ [label=\"3\"]\n1 -> 1\n1 -> 2\n1 -> 2\n1 -> 3\n}\n"
 
 # The following tests can't be run because they fail if Semigroups is loaded
 # first
