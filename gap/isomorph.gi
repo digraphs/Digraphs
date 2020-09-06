@@ -666,34 +666,32 @@ function(D, edge_colours)
     nbs := OutNeighbours(D)[v];
     if not IsEmpty(nbs) then
       adjv := ShallowCopy(nbs);
-      if Length(adjv) > 0 then
-        indices := [idx .. idx + Length(adjv) - 1];
-        colsv := ShallowCopy(edge_colours[v]);
-        p := Sortex(adjv);
-        colsv := Permuted(colsv, p);
-        indices := Permuted(indices, p);
-        run := 1;
-        cur := 1;
-          while cur <= Length(adjv) do
-            if cur < Length(adjv) and adjv[cur + 1] = adjv[cur] then
-              run := run + 1;
-            else
-              Add(out[v], adjv[cur]);
-              range := [cur - run + 1 .. cur];
-              cols := colsv{range};
-              C := List([1 .. Maximum(cols)], x -> []);
-              for i in range do
-                Add(C[colsv[i]], indices[i]);
-              od;
-              Append(mults, Filtered(C, x -> Length(x) > 1));
-              Sort(cols);
-              AddSet(new_cols_set, cols);
-              Add(new_cols[v], cols);
-              run := 1;
-            fi;
-            cur := cur + 1;
-          od;
-      fi;
+      indices := [idx .. idx + Length(adjv) - 1];
+      colsv := ShallowCopy(edge_colours[v]);
+      p := Sortex(adjv);
+      colsv := Permuted(colsv, p);
+      indices := Permuted(indices, p);
+      run := 1;
+      cur := 1;
+        while cur <= Length(adjv) do
+          if cur < Length(adjv) and adjv[cur + 1] = adjv[cur] then
+            run := run + 1;
+          else
+            Add(out[v], adjv[cur]);
+            range := [cur - run + 1 .. cur];
+            cols := colsv{range};
+            C := List([1 .. Maximum(cols)], x -> []);
+            for i in range do
+              Add(C[colsv[i]], indices[i]);
+            od;
+            Append(mults, Filtered(C, x -> Length(x) > 1));
+            Sort(cols);
+            AddSet(new_cols_set, cols);
+            Add(new_cols[v], cols);
+            run := 1;
+          fi;
+          cur := cur + 1;
+        od;
       idx := idx + Length(nbs);
     fi;
   od;
