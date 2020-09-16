@@ -70,19 +70,31 @@ function(str)
   fi;
 end);
 
+BindGlobal("DIGRAPHS_GraphvizColorsList", fail);
+
+BindGlobal("DIGRAPHS_GraphvizColors",
+function()
+  local f;
+  if DIGRAPHS_GraphvizColorsList = fail then
+    f := IO_File(Concatenation(DIGRAPHS_Dir(), "/data/colors.p"));
+    MakeReadWriteGlobal("DIGRAPHS_GraphvizColorsList");
+    DIGRAPHS_GraphvizColorsList := IO_Unpickle(f);
+    MakeReadOnlyGlobal("DIGRAPHS_GraphvizColorsList");
+    IO_Close(f);
+  fi;
+  return DIGRAPHS_GraphvizColorsList;
+end);
+
 BindGlobal("DIGRAPHS_ValidVertColors",
 function(D, verts)
-  local v, col, colors, f, filename, Dir, sum;
+  local v, sum, colors, col;
   v := DigraphVertices(D);
-  Dir := DIGRAPHS_Dir();
-  filename := Concatenation(Dir, "/data/colors.p");
-  f := IO_File(filename);
-  colors := IO_Unpickle(f);
   sum := 0;
   if Length(verts) <> Length(v) then
     ErrorNoReturn("the number of vertex colors must be the same as the number",
     " of vertices, expected ", Length(v), " but found ", Length(verts), "");
   fi;
+  colors := DIGRAPHS_GraphvizColors();
   if Length(verts) = Length(v) then
     for col in verts do
       if not IsString(col) then
@@ -104,15 +116,12 @@ end);
 
 BindGlobal("DIGRAPHS_ValidEdgeColors",
 function(D, edge)
-  local out, col, colors, v, f, filename, Dir, l, sum, counter;
+  local out, l, counter, sum, colors, v, col;
   out := OutNeighbours(D);
-  Dir := DIGRAPHS_Dir();
-  filename := Concatenation(Dir, "/data/colors.p");
-  f := IO_File(filename);
-  colors := IO_Unpickle(f);
   l := Length(edge);
   counter := 0;
   sum := 0;
+  colors := DIGRAPHS_GraphvizColors();
   if Length(edge) <> Length(out) then
     ErrorNoReturn("the list of edge colors needs to have the",
     " same shape as the out-neighbours of the digraph");
