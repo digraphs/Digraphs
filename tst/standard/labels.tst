@@ -171,6 +171,17 @@ gap> RemoveDigraphEdgeLabel(gr, 6, 1);
 gap> ClearDigraphEdgeLabels(gr);
 gap> DigraphEdgeLabel(gr, 6, 1);
 1
+gap> gr := Digraph([[2, 3], [3], [1, 5], [], [4]]);
+<immutable digraph with 5 vertices, 6 edges>
+gap> HaveEdgeLabelsBeenAssigned(gr);
+false
+gap> DigraphEdgeLabels(gr);
+[ [ 1, 1 ], [ 1 ], [ 1, 1 ], [  ], [ 1 ] ]
+gap> HaveEdgeLabelsBeenAssigned(gr);
+true
+gap> ClearDigraphEdgeLabels(gr);
+gap> HaveEdgeLabelsBeenAssigned(gr);
+false
 
 # Test errors in DigraphEdgeLabel
 gap> gr := Digraph([[2, 2], []]);
