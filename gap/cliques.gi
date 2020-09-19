@@ -541,12 +541,16 @@ function(arg)
   return CliquesFinder(D, fail, [], limit, include, exclude, true, size, false);
 end);
 
+# A wrapper for DigraphsCliquesFinder
+# This is very hacky at the moment, so we could test C code with GAP tests
 InstallGlobalFunction(CliquesFinder,
-function(D, hook, user_param, limit, include, exclude, max, size, reps)
-  local n, sub, group, invariant_include, invariant_exclude, include_variant,
-  exclude_variant, x, v, o, i, out;
+function(digraph, hook, user_param, limit, include, exclude, max, size, reps)
+  local n, subgraph, group, vertices, include_variant, exclude_variant,
+        invariant_include, include_invariant, invariant_exclude,
+        exclude_invariant, x, v, o, i, out, found_orbits, num_found,
+        hook_wrapper;
 
-  if not IsDigraph(D) then
+  if not IsDigraph(digraph) then
     ErrorNoReturn("the 1st argument <D> must be a digraph,");
   fi;
 
@@ -565,7 +569,7 @@ function(D, hook, user_param, limit, include, exclude, max, size, reps)
                   "a positive integer,");
   fi;
 
-  n := DigraphNrVertices(D);
+  n := DigraphNrVertices(digraph);
   if not (IsHomogeneousList(include)
           and ForAll(include, x -> IsPosInt(x) and x <= n)
           and IsDuplicateFreeList(include))
@@ -591,21 +595,25 @@ function(D, hook, user_param, limit, include, exclude, max, size, reps)
     ErrorNoReturn("the 9th argument <reps> must be true or false,");
   fi;
 
-  # Investigate whether <include> and <exclude> are invariant under <grp>
-  sub := DigraphMutableCopyIfMutable(D);
-  sub := MaximalSymmetricSubdigraphWithoutLoops(sub);
-  group := AutomorphismGroup(sub);
+  subgraph := DigraphMutableCopyIfMutable(digraph);
+  subgraph := MaximalSymmetricSubdigraphWithoutLoops(subgraph);
+  group := AutomorphismGroup(subgraph);
 
+  # Investigate whether <include> and <exclude> are invariant under <group>
+  vertices := DigraphVertices(digraph);
+  include_variant := BlistList(vertices, []);
+  exclude_variant := BlistList(vertices, []);
   invariant_include := true;
+  include_invariant := include;
   invariant_exclude := true;
-  include_variant := [];
-  exclude_variant := [];
+  exclude_invariant := exclude;
 
   if not IsTrivial(group)
       and (not IsEmpty(include) or not IsEmpty(exclude)) then
     if not ForAll(GeneratorsOfGroup(group),
                   x -> IsSubset(include, OnTuples(include, x))) then
       invariant_include := false;
+      include_invariant := [];
       if not reps then
         x := ShallowCopy(include);
         while not IsEmpty(x) do
@@ -613,7 +621,9 @@ function(D, hook, user_param, limit, include, exclude, max, size, reps)
           o := List(Orbit(group, v));
           i := Intersection(x, o);
           if not IsSubset(x, o) then
-            Append(include_variant, i);
+            UniteBlist(include_variant, BlistList(vertices, i));
+          else
+            Append(include_invariant, i);
           fi;
           x := Difference(x, i);
         od;
@@ -622,6 +632,7 @@ function(D, hook, user_param, limit, include, exclude, max, size, reps)
     if not ForAll(GeneratorsOfGroup(group),
                   x -> IsSubset(exclude, OnTuples(exclude, x))) then
       invariant_exclude := false;
+      exclude_invariant := [];
       if not reps then
         x := ShallowCopy(exclude);
         while not IsEmpty(x) do
@@ -629,7 +640,9 @@ function(D, hook, user_param, limit, include, exclude, max, size, reps)
           o := List(Orbit(group, v));
           i := Intersection(x, o);
           if not IsSubset(x, o) then
-            Append(exclude_variant, i);
+            UniteBlist(exclude_variant, BlistList(vertices, i));
+          else
+            Append(exclude_invariant, i);
           fi;
           x := Difference(x, i);
         od;
@@ -644,18 +657,128 @@ function(D, hook, user_param, limit, include, exclude, max, size, reps)
     fi;
   fi;
 
-  out := DIGRAPHS_BronKerbosch(D,
-                               hook,
-                               user_param,
-                               limit,
-                               include,
-                               exclude,
-                               max,
-                               size,
-                               reps,
-                               include_variant,
-                               exclude_variant);
-  return MakeImmutable(out);
+  if DigraphNrVertices(digraph) < 512 then
+    if reps then
+
+      if hook = fail then
+        hook_wrapper := fail;
+      else
+        hook_wrapper := function(usr_param, clique)
+          hook(usr_param, clique);
+          return 1;
+        end;
+      fi;
+
+      out := DigraphsCliquesFinder(subgraph,
+                                   hook_wrapper,
+                                   user_param,
+                                   limit,
+                                   include,
+                                   exclude,
+                                   max,
+                                   size);
+      return MakeImmutable(out);
+    else
+
+      # Function to find the valid cliques of an orbit given an orbit rep
+      found_orbits := [];
+      num_found := 0;
+      if hook = fail then
+        hook := Add;
+      fi;
+
+      hook_wrapper := function(usr_param, clique)
+        local orbit, n, new_found, i;
+
+        new_found := 0;
+        if not ForAny(found_orbits, x -> clique in x) then
+          orbit := Orb(group, clique, OnSets);
+          Enumerate(orbit);
+          Add(found_orbits, orbit);
+          n := Length(orbit);
+
+          if invariant_include and invariant_exclude then
+            # we're not just looking for orbit reps, but inc and exc are
+            # invariant so there is nothing extra to check
+            new_found := Minimum(limit - num_found, n);
+            for clique in orbit{[1 .. new_found]} do
+              hook(usr_param, clique);
+            od;
+            num_found := num_found + new_found;
+            return new_found;
+          fi;
+
+          if invariant_include then
+            # Cliques in the orbit might contain forbidden vertices
+            i := 0;
+            while i < n and num_found < limit do
+              i := i + 1;
+              clique := BlistList(vertices, orbit[i]);
+              if SizeBlist(IntersectionBlist(exclude_variant, clique)) = 0 then
+                hook(usr_param, orbit[i]);
+                num_found := num_found + 1;
+                new_found := new_found + 1;
+              fi;
+            od;
+          elif invariant_exclude then
+            # Cliques in the orbit might not contain all required vertices
+            i := 0;
+            while i < n and num_found < limit do
+              i := i + 1;
+              clique := BlistList(vertices, orbit[i]);
+              if IsSubsetBlist(clique, include_variant) then
+                hook(usr_param, orbit[i]);
+                num_found := num_found + 1;
+                new_found := new_found + 1;
+              fi;
+            od;
+          else
+            # Cliques in the orbit might contain forbidden vertices and
+            # might not contain all required vertices
+            i := 0;
+            while i < n and num_found < limit do
+              i := i + 1;
+              clique := BlistList(vertices, orbit[i]);
+              if SizeBlist(IntersectionBlist(exclude_variant, clique)) = 0
+                  and IsSubsetBlist(clique, include_variant) then
+                hook(usr_param, orbit[i]);
+                num_found := num_found + 1;
+                new_found := new_found + 1;
+              fi;
+            od;
+          fi;
+        fi;
+        return new_found;
+      end;
+
+      DigraphsCliquesFinder(subgraph,
+                            hook_wrapper,
+                            user_param,
+                            limit,
+                            include_invariant,
+                            exclude_invariant,
+                            max,
+                            size);
+
+      return MakeImmutable(user_param);
+    fi;
+  else
+    include_variant := ListBlist(vertices, include_variant);
+    exclude_variant := ListBlist(vertices, exclude_variant);
+
+    out := DIGRAPHS_BronKerbosch(digraph,
+                                 hook,
+                                 user_param,
+                                 limit,
+                                 include,
+                                 exclude,
+                                 max,
+                                 size,
+                                 reps,
+                                 include_variant,
+                                 exclude_variant);
+    return MakeImmutable(out);
+  fi;
 end);
 
 InstallGlobalFunction(DIGRAPHS_BronKerbosch,

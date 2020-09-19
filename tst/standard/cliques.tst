@@ -506,6 +506,117 @@ gap> cliques := DigraphMaximalCliques(D, [1]);
 gap> IsMutable(cliques) or ForAny(cliques, IsMutable);
 false
 
+# Test CliquesFinder on graphs with more than 512 vertices
+gap> CliquesFinder(NullDigraph(513), fail, [], infinity, [], [], true, fail, true);
+[ [ 1 ] ]
+gap> gr := DigraphSymmetricClosure(ChainDigraph(513));
+<immutable symmetric digraph with 513 vertices, 1024 edges>
+gap> CliquesFinder(gr, fail, [], 4, [], [], true, fail, false); 
+[ [ 1, 2 ], [ 512, 513 ], [ 2, 3 ], [ 511, 512 ] ]
+gap> CliquesFinder(gr, fail, [], 4, [1], [], true, fail, false); 
+[ [ 1, 2 ] ]
+gap> CliquesFinder(gr, fail, [], 4, [], [1], true, fail, false); 
+[ [ 512, 513 ], [ 2, 3 ], [ 511, 512 ], [ 3, 4 ] ]
+gap> CliquesFinder(gr, fail, [], 4, [1], [2], true, fail, false);
+[  ]
+gap> CliquesFinder(gr, fail, [], 4, [1], [3], true, fail, false);
+[ [ 1, 2 ] ]
+gap> CliquesFinder(gr, fail, [], 4, [1, 2], [], false, 1, false);  
+[  ]
+gap> CliquesFinder(gr, fail, [], 4, [1, 513], [], false, 1, false);
+[  ]
+gap> CliquesFinder(gr, fail, [], 4, [1, 2, 513], [], false, 1, false);
+[  ]
+gap> CliquesFinder(gr, fail, [], 4, [1], [1], false, fail, false);
+[  ]
+gap> CliquesFinder(gr, fail, [], 4, [], [1 .. 512], false, 2, false);
+[  ]
+gap> CliquesFinder(gr, fail, [], 4, [1, 3], [], false, 2, false);
+[  ]
+gap> f := function(a, b)
+> Add(a, Size(b));
+> end;;
+gap> CliquesFinder(gr, f, [], 4, [], [], false, 2, true);
+[ 2, 2, 2, 2 ]
+
+# Test DigraphsCliqueFinder
+gap> DigraphsCliquesFinder(0);
+Error, there must be 8 or 9 arguments, found 1,
+gap> DigraphsCliquesFinder(1, 2, 3, 4, 5, 6, 7, 8);
+Error, the 1st argument <digraph> must be a digraph, not integer,
+gap> DigraphsCliquesFinder(NullDigraph(513), 2, 3, 4, 5, 6, 7, 8);
+Error, the 1st argument <digraph> must have at most 512 vertices, found 513,
+gap> DigraphsCliquesFinder(NullDigraph(1), fail, 3, 4, 5, 6, 7, 8);
+Error, the 2rd argument <hook> is fail and so the 3th argument must be a mutab\
+le list, not integer,
+gap> f := function(n) end;;
+gap> DigraphsCliquesFinder(NullDigraph(1), f, [], 4, 5, 6, 7, 8);
+Error, the 2rd argument <hook> must be a function with 2 arguments,
+gap> DigraphsCliquesFinder(NullDigraph(1), fail, [], fail, 5, 6, 7, 8);
+Error, the 4th argument <limit> must be an integer or infinity, not boolean or\
+ fail,
+gap> DigraphsCliquesFinder(NullDigraph(1), fail, [], 0, 5, 6, 7, 8);
+Error, the 4th argument <limit> must be a positive integer, not 0,
+gap> DigraphsCliquesFinder(NullDigraph(1), fail, [], 4, 5, 6, 7, 8);
+Error, the 5th argument <include> must be a list or fail, not integer,
+gap> DigraphsCliquesFinder(NullDigraph(1), fail, [], 4, [, 1], 6, 7, 8);
+Error, the 5th argument <include> must be a dense list,
+gap> DigraphsCliquesFinder(NullDigraph(1), fail, [], 4, [0], 6, 7, 8);
+Error, the 5th argument <include> must only contain positive small integers, b\
+ut found integer in position 1,
+gap> DigraphsCliquesFinder(NullDigraph(1), fail, [], 4, [2], 6, 7, 8);
+Error, in the 5th argument <include> position 1 is out of range, must be in th\
+e range [1, 1],
+gap> DigraphsCliquesFinder(NullDigraph(1), fail, [], 4, [1, 1], 6, 7, 8);
+Error, in the 5th argument <include> position 2 is a duplicate,
+gap> DigraphsCliquesFinder(NullDigraph(1), fail, [], 4, [], 6, 7, 8);
+Error, the 6th argument <exclude> must be a list or fail, not integer,
+gap> DigraphsCliquesFinder(NullDigraph(1), fail, [], 4, [], [, 1], 7, 8);
+Error, the 6th argument <exclude> must be a dense list,
+gap> DigraphsCliquesFinder(NullDigraph(1), fail, [], 4, [], [0], 7, 8);
+Error, the 6th argument <exclude> must only contain positive small integers, b\
+ut found integer in position 1,
+gap> DigraphsCliquesFinder(NullDigraph(1), fail, [], 4, [], [2], 7, 8);
+Error, in the 6th argument <exclude> position 1 is out of range, must be in th\
+e range [1, 1],
+gap> DigraphsCliquesFinder(NullDigraph(1), fail, [], 4, [], [1, 1], 7, 8);
+Error, in the 6th argument <exclude> position 2 is a duplicate,
+gap> DigraphsCliquesFinder(NullDigraph(1), fail, [], 4, [], [], 7, 8);
+Error, the 7th argument <max> must true or false, not integer,
+gap> DigraphsCliquesFinder(NullDigraph(1), fail, [], 4, [], [], true, 0);
+Error, the 8th argument <size> must be a positive small integer or fail, not i\
+nteger,
+gap> DigraphsCliquesFinder(NullDigraph(1), fail, [], 4, [], [], true, fail, 0);
+Error, the 9th argument <aut_grp> must be a permutation group or fail, not int\
+eger,
+gap> DigraphsCliquesFinder(NullDigraph(3), fail, [], 4, [], [], true, fail, 
+> Group((1, 2, 3), (1, 2), (1, 3)));
+Error, expected at most 2 generators in the 9th argument but got 3,
+gap> DigraphsCliquesFinder(NullDigraph(2), fail, [], 4, [], [], true, fail, SymmetricGroup(3));
+Error, expected group of automorphisms, but found a non-automorphism in positi\
+on 1 of the group generators,
+gap> DigraphsCliquesFinder(NullDigraph(2), fail, [], 4, [1], [], true, fail);
+Error, the 5th argument <include> must be invaraint under <aut_grp>, or the fu\
+ll automorphism if <aut_grp> is not given,
+gap> DigraphsCliquesFinder(NullDigraph(2), fail, [], 4, [], [1], true, fail);
+Error, the 6th argument <exclude> must be invaraint under <aut_grp>, or the fu\
+ll automorphism if <aut_grp> is not given,
+gap> DigraphsCliquesFinder(CompleteDigraph(2), fail, [], 4, [1, 2], [], true, fail);
+[ [ 1, 2 ] ]
+gap> DigraphsCliquesFinder(CompleteDigraph(2), fail, [], 4, [], [1, 2], true, fail);
+[  ]
+gap> DigraphsCliquesFinder(CompleteDigraph(2), fail, [], 4, [], [], true, 3);
+[  ]
+gap> DigraphsCliquesFinder(NullDigraph(2), fail, [], 4, [1, 2], [], true, fail);
+[  ]
+gap> DigraphsCliquesFinder(CompleteDigraph(2), fail, [], 4, [1, 2], [], true, 2);
+[ [ 1, 2 ] ]
+gap> f := function(a, b)
+> Add(a, Size(b));
+> end;;
+gap> CliquesFinder(CompleteDigraph(3), f, [], 4, [], [], false, 2, true);
+[ 2 ]
+
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(f);
 gap> Unbind(c);
