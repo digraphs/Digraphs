@@ -876,13 +876,13 @@ end);
 InstallMethod(MaximalCommonSubdigraph, "for a pair of digraphs",
 [IsDigraph, IsDigraph],
 function(A, B)
-  local D1, D2, MPG, Clqus, M, i, j, k, l, vertices, edges, edgefunc, n,
-        m, adj, ed, embedding1, embedding2, iso, A1, A2, intto4tuple, t;
+  local D1, D2, MPG, Clqus, M, i, j, l, vertices, edges, n,
+        m, adj, embedding1, embedding2, iso, A1, A2, intto4tuple, t;
 
   D1 := DigraphImmutableCopy(A);
   D2 := DigraphImmutableCopy(B);
 
-  #If the digraphs are isomorphic then we return the first one as the answer
+  # If the digraphs are isomorphic then we return the first one as the answer
   iso := IsomorphismDigraphs(D1, D2);
   if iso <> fail then
     return [D1, IdentityTransformation, AsTransformation(iso)];
@@ -893,33 +893,33 @@ function(A, B)
   A1 := AdjacencyMatrix(D1);
   A2 := AdjacencyMatrix(D2);
 
-  #The algorthith works as follows: We construct the modular product digraph
-  #MPG (see https://en.wikipedia.org/wiki/Modular_product_of_graphs for the
-  #undirected version) a maximal paritial isomorphism between D1 and D2 is
-  #equal to a maximal clique this digraph. We then serch for cliques using the
-  #DigraphMaximalCliquesReps function.
+  # The algorthith works as follows: We construct the modular product digraph
+  # MPG (see https://en.wikipedia.org/wiki/Modular_product_of_graphs for the
+  # undirected version) a maximal paritial isomorphism between D1 and D2 is
+  # equal to a maximal clique this digraph. We then serch for cliques using the
+  # DigraphMaximalCliquesReps function.
 
-  #we represent an element of V(D1)xV(D2)xV(D3)xV(D4) as an element of
-  #[0 .. (n x m x n x m) - 1]
+  # we represent an element of V(D1)xV(D2)xV(D3)xV(D4) as an element of
+  # [0 .. (n x m x n x m) - 1]
   intto4tuple := function(i)
      local t, tempi;
      t := [0, 0, 0, QuoInt(i, n * m * n)];
      tempi := RemInt(i, n * m * n);
-     t[3] := QuoInt(tempi, n*m);
+     t[3] := QuoInt(tempi, n * m);
      tempi := RemInt(i, n * m);
      t[2] := QuoInt(tempi, n);
      t[1] := RemInt(i, n);
      return t;
   end;
 
-  #As we are only consered with cliques we don't need to consider the isolated
+  # As we are only consered with cliques we don't need to consider the isolated
   # vertices of MPG so we constrict it without them
 
   edges := List([1 .. n * m], x -> []);
   for i in [0 .. (n * m * n * m - 1)] do
     t := intto4tuple(i);
-    # not that we are only conserned with cliques so we can ignore edges
-    # if we don't have their corresponding reverse edges
+    # not that we are only conserned with cliques so we can ignore edges 
+    # if we don't have their corresponding reverse edges 
     if t[1] <> t[3] and t[2] <> t[4] and
                         A1[t[1] + 1][t[1] + 1] = A2[t[2] + 1][t[2] + 1] and
                         A1[t[3] + 1][t[3] + 1] = A2[t[4] + 1][t[4] + 1] and
@@ -927,13 +927,13 @@ function(A, B)
                         A1[t[3] + 1][t[1] + 1] = A2[t[4] + 1][t[2] + 1] then
       Add(edges[t[1] + t[2] * n + 1], t[3] + t[4] * n);
     fi;
-  od; 
+  od;
 
   vertices := Filtered([0 .. n * m - 1], x -> edges[x + 1] <> []);
 
-  #In the case that the modular product digraph has no edges, we attempt
-  #to find a vertex in the second digraph with the same number of loops
-  #as one in the first
+  # In the case that the modular product digraph has no edges, we attempt
+  # to find a vertex in the second digraph with the same number of loops
+  # as one in the first
   if vertices = [] then
     for i in DigraphVertices(D1) do
       for j in DigraphVertices(D2) do
@@ -947,14 +947,13 @@ function(A, B)
     return [Digraph([]), IdentityTransformation, IdentityTransformation];
   fi;
 
-  #We now build the modular product graph
+  # We now build the modular product graph
   adj := function(v, w);
     return w in edges[v + 1];
   end;
   MPG := Digraph(vertices, adj);
 
-
-  #We find a big clique
+  # We find a big clique
   Clqus := DigraphMaximalCliquesReps(MPG);
   M := 1;
   for l in [1 .. Size(Clqus)] do
