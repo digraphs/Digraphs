@@ -875,65 +875,96 @@ end);
 
 InstallMethod(MaximalCommonSubdigraph, "for a pair of digraphs",
 [IsDigraph, IsDigraph],
-function(D1, D2)
-  local B, out1, out2, adj, good, p, Clqus, M, l,
-        embedding1, embedding2, iso;
+function(A, B)
+  local D1, D2, MPG, Clqus, M, i, j, k, l, vertices, edges, edgefunc, n,
+        m, adj, ed, embedding1, embedding2, iso, A1, A2, intto4tuple, t;
 
+  D1 := DigraphImmutableCopy(A);
+  D2 := DigraphImmutableCopy(B);
+
+  #If the digraphs are isomorphic then we return the first one as the answer
   iso := IsomorphismDigraphs(D1, D2);
-
   if iso <> fail then
-    return [DigraphCopy(D1), IdentityTransformation, AsTransformation(iso)];
+    return [D1, IdentityTransformation, AsTransformation(iso)];
   fi;
 
-  out1 := OutNeighbours(D1);
-  out2 := OutNeighbours(D2);
+  n := DigraphNrVertices(D1);
+  m := DigraphNrVertices(D2);
+  A1 := AdjacencyMatrix(D1);
+  A2 := AdjacencyMatrix(D2);
 
-  adj := function(pair)
-    local L, isadj;
-    isadj := function(p)
-      if p[1] = pair[1] or p[2] = pair[2] then
-        return false;
-      fi;
-      return Number(out1[pair[1]], x -> x = p[1]) =
-             Number(out2[pair[2]], x -> x = p[2]);
-    end;
-    L := Filtered(Cartesian([1 .. Size(out1)], [1 .. Size(out2)]), isadj);
-    return List(L, y -> ((y[1] - 1) * Size(out2) + (y[2] - 1)) + 1);
+  #The algorthith works as follows: We construct the modular product digraph
+  #MPG (see https://en.wikipedia.org/wiki/Modular_product_of_graphs for the
+  #undirected version) a maximal paritial isomorphism between D1 and D2 is
+  #equal to a maximal clique this digraph. We then serch for cliques using the
+  #DigraphMaximalCliquesReps function.
+
+  #we represent an element of V(D1)xV(D2)xV(D3)xV(D4) as an element of
+  #[0 .. (n x m x n x m) - 1]
+  intto4tuple := function(i)
+     local t, tempi;
+     t := [0, 0, 0, QuoInt(i, n * m * n)];
+     tempi := RemInt(i, n * m * n);
+     t[3] := QuoInt(tempi, n*m);
+     tempi := RemInt(i, n * m);
+     t[2] := QuoInt(tempi, n);
+     t[1] := RemInt(i, n);
+     return t;
   end;
 
-  B := Digraph(List(Cartesian([1 .. Size(out1)], [1 .. Size(out2)]), adj));
+  #As we are only consered with cliques we don't need to consider the isolated
+  # vertices of MPG so we constrict it without them
 
-  good := function(v)
-    p := [QuoInt(v - 1, Size(out2)) + 1, RemInt(v - 1, Size(out2)) + 1];
-    return Number(out1[p[1]], x -> x = p[1]) =
-           Number(out2[p[2]], x -> x = p[2]);
+  edges := List([1 .. n * m], x -> []);
+  for i in [0 .. (n * m * n * m - 1)] do
+    t := intto4tuple(i);
+    # not that we are only conserned with cliques so we can ignore edges
+    # if we don't have their corresponding reverse edges
+    if t[1] <> t[3] and t[2] <> t[4] and
+                        A1[t[1] + 1][t[1] + 1] = A2[t[2] + 1][t[2] + 1] and
+                        A1[t[3] + 1][t[3] + 1] = A2[t[4] + 1][t[4] + 1] and
+                        A1[t[1] + 1][t[3] + 1] = A2[t[2] + 1][t[4] + 1] and
+                        A1[t[3] + 1][t[1] + 1] = A2[t[4] + 1][t[2] + 1] then
+      Add(edges[t[1] + t[2] * n + 1], t[3] + t[4] * n);
+    fi;
+  od; 
+
+  vertices := Filtered([0 .. n * m - 1], x -> edges[x + 1] <> []);
+
+  #In the case that the modular product digraph has no edges, we attempt
+  #to find a vertex in the second digraph with the same number of loops
+  #as one in the first
+  if vertices = [] then
+    for i in DigraphVertices(D1) do
+      for j in DigraphVertices(D2) do
+        if AdjacencyMatrix(D1)[i][i] = AdjacencyMatrix(D2)[j][j] then
+          return [Digraph([ListWithIdenticalEntries(AdjacencyMatrix(D1)[i][i],
+                                                     1)]),
+                  Transformation([1], [i]), Transformation([1], [j])];
+        fi;
+      od;
+    od;
+    return [Digraph([]), IdentityTransformation, IdentityTransformation];
+  fi;
+
+  #We now build the modular product graph
+  adj := function(v, w);
+    return w in edges[v + 1];
   end;
+  MPG := Digraph(vertices, adj);
 
-  B := InducedSubdigraph(B, Filtered(DigraphVertices(B), good));
-  if DigraphNrVertices(B) = 0 then
-    return [Digraph([]), [], []];
-  fi;
 
-  Clqus := DigraphMaximalCliquesReps(B);
-
-  if Clqus = [] then
-    return [Digraph([]), [], []];
-  fi;
-
-  M := List(Clqus[1], x -> DigraphVertexLabel(B, x));
-  for l in Clqus do
-    if Size(l) > Size(M) then
-      M := List(l, x -> DigraphVertexLabel(B, x));
+  #We find a big clique
+  Clqus := DigraphMaximalCliquesReps(MPG);
+  M := 1;
+  for l in [1 .. Size(Clqus)] do
+    if Size(Clqus[l]) > Size(Clqus[M]) then
+      M := l;
     fi;
   od;
 
-  Sort(M);
-  M := List(M, x -> [QuoInt(x - 1, Size(out2)) + 1,
-                     RemInt(x - 1, Size(out2)) + 1]);
-
-  embedding1 := List(M, x -> x[1]);
-  embedding2 := List(M, x -> x[2]);
-
+  embedding1 := List(Clqus[M], x -> intto4tuple(vertices[x])[1] + 1);
+  embedding2 := List(Clqus[M], x -> intto4tuple(vertices[x])[2] + 1);
   return [InducedSubdigraph(D1, embedding1),
           Transformation([1 .. Size(embedding1)], embedding1),
           Transformation([1 .. Size(embedding2)], embedding2)];
@@ -973,3 +1004,4 @@ function(D1, D2)
                         Transformation([1 .. Size(embedding2)], embedding2)];
 
 end);
+

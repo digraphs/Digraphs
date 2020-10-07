@@ -2494,7 +2494,8 @@ false
 
 # MaximalCommSubdigraph and MinimalCommonSuperDigraph
 gap> MaximalCommonSubdigraph(NullDigraph(0), CompleteDigraph(10));         
-[ <immutable empty digraph with 0 vertices>, [  ], [  ] ]
+[ <immutable empty digraph with 0 vertices>, IdentityTransformation, 
+  IdentityTransformation ]
 gap> MinimalCommonSuperdigraph(NullDigraph(0), CompleteDigraph(10));
 [ <immutable digraph with 10 vertices, 90 edges>, IdentityTransformation, 
   IdentityTransformation ]
@@ -2527,7 +2528,8 @@ gap> MinimalCommonSuperdigraph(PetersenGraph(),
 [ <immutable digraph with 10 vertices, 30 edges>, IdentityTransformation, 
   IdentityTransformation ]
 gap> MaximalCommonSubdigraph(Digraph([[1, 1]]), Digraph([[1]]));
-[ <immutable empty digraph with 0 vertices>, [  ], [  ] ]
+[ <immutable empty digraph with 0 vertices>, IdentityTransformation, 
+  IdentityTransformation ]
 gap> MinimalCommonSuperdigraph(Digraph([[1, 1]]), Digraph([[1]]));
 [ <immutable multidigraph with 2 vertices, 3 edges>, IdentityTransformation, 
   Transformation( [ 2, 2 ] ) ]
