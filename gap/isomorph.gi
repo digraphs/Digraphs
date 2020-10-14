@@ -673,25 +673,25 @@ function(D, edge_colours)
       indices := Permuted(indices, p);
       run := 1;
       cur := 1;
-        while cur <= Length(adjv) do
-          if cur < Length(adjv) and adjv[cur + 1] = adjv[cur] then
-            run := run + 1;
-          else
-            Add(out[v], adjv[cur]);
-            range := [cur - run + 1 .. cur];
-            cols := colsv{range};
-            C := List([1 .. Maximum(cols)], x -> []);
-            for i in range do
-              Add(C[colsv[i]], indices[i]);
-            od;
-            Append(mults, Filtered(C, x -> Length(x) > 1));
-            Sort(cols);
-            AddSet(new_cols_set, cols);
-            Add(new_cols[v], cols);
-            run := 1;
-          fi;
-          cur := cur + 1;
-        od;
+      while cur <= Length(adjv) do
+        if cur < Length(adjv) and adjv[cur + 1] = adjv[cur] then
+          run := run + 1;
+        else
+          Add(out[v], adjv[cur]);
+          range := [cur - run + 1 .. cur];
+          cols := colsv{range};
+          C := List([1 .. Maximum(cols)], x -> []);
+          for i in range do
+            Add(C[colsv[i]], indices[i]);
+          od;
+          Append(mults, Filtered(C, x -> Length(x) > 1));
+          Sort(cols);
+          AddSet(new_cols_set, cols);
+          Add(new_cols[v], cols);
+          run := 1;
+        fi;
+        cur := cur + 1;
+      od;
       idx := idx + Length(nbs);
     fi;
   od;
@@ -724,11 +724,9 @@ function(D)
           run := run + 1;
         else
           Add(out[v], adjv[cur]);
-          C := [];
-          Append(C, indices{[cur - run + 1 .. cur]});
           Add(new_cols[v], run);
           if run > 1 then
-            Add(mults, C);
+            Add(mults, indices{[cur - run + 1 .. cur]});
           fi;
           run := 1;
         fi;
