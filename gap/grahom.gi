@@ -893,13 +893,13 @@ function(A, B)
   A1 := AdjacencyMatrix(D1);
   A2 := AdjacencyMatrix(D2);
 
-  # The algorthith works as follows: We construct the modular product digraph
+  # The algorithm works as follows: We construct the modular product digraph
   # MPG (see https://en.wikipedia.org/wiki/Modular_product_of_graphs for the
-  # undirected version) a maximal paritial isomorphism between D1 and D2 is
-  # equal to a maximal clique this digraph. We then serch for cliques using the
+  # undirected version) a maximal partial isomorphism between D1 and D2 is
+  # equal to a maximal clique this digraph. We then search for cliques using the
   # DigraphMaximalCliquesReps function.
 
-  # we represent an element of V(D1)xV(D2)xV(D3)xV(D4) as an element of
+  # we represent an element of V(D1)xV(D2)xV(D1)xV(D2) as an element of
   # [0 .. (n x m x n x m) - 1]
   intto4tuple := function(i)
      local t, tempi;
@@ -912,13 +912,13 @@ function(A, B)
      return t;
   end;
 
-  # As we are only consered with cliques we don't need to consider the isolated
+  # As we are only concerned  with cliques we don't need to consider the isolated
   # vertices of MPG so we constrict it without them
 
   edges := List([1 .. n * m], x -> []);
   for i in [0 .. (n * m * n * m - 1)] do
     t := intto4tuple(i);
-    # not that we are only conserned with cliques so we can ignore edges
+    # not that we are only concerned with cliques so we can ignore edges
     # if we don't have their corresponding reverse edges
     if t[1] <> t[3] and t[2] <> t[4] and
                         A1[t[1] + 1][t[1] + 1] = A2[t[2] + 1][t[2] + 1] and
@@ -929,7 +929,7 @@ function(A, B)
     fi;
   od;
 
-  vertices := Filtered([0 .. n * m - 1], x -> edges[x + 1] <> []);
+  vertices := Filtered([0 .. n * m - 1], x -> edges[1 + x] <> []);
 
   # In the case that the modular product digraph has no edges, we attempt
   # to find a vertex in the second digraph with the same number of loops
