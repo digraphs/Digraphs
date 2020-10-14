@@ -918,8 +918,8 @@ function(A, B)
   edges := List([1 .. n * m], x -> []);
   for i in [0 .. (n * m * n * m - 1)] do
     t := intto4tuple(i);
-    # not that we are only conserned with cliques so we can ignore edges 
-    # if we don't have their corresponding reverse edges 
+    # not that we are only conserned with cliques so we can ignore edges
+    # if we don't have their corresponding reverse edges
     if t[1] <> t[3] and t[2] <> t[4] and
                         A1[t[1] + 1][t[1] + 1] = A2[t[2] + 1][t[2] + 1] and
                         A1[t[3] + 1][t[3] + 1] = A2[t[4] + 1][t[4] + 1] and
