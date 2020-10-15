@@ -342,8 +342,8 @@ static inline void intersect_bit_arrays(BitArray* const       bit_array1,
 //! Union the BitArray's pointed to by \p bit_array1 and \p bit_array2. The
 //! BitArray pointed to by \p bit_array1 is changed in place!
 static inline void union_bit_arrays(BitArray* const       bit_array1,
-                                        BitArray const* const bit_array2,
-                                        uint16_t const        nr_bits) {
+                                    BitArray const* const bit_array2,
+                                    uint16_t const        nr_bits) {
   DIGRAPHS_ASSERT(bit_array1 != NULL);
   DIGRAPHS_ASSERT(bit_array2 != NULL);
   DIGRAPHS_ASSERT(bit_array1->nr_bits == bit_array2->nr_bits);
