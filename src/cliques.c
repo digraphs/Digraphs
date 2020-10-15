@@ -76,7 +76,8 @@ struct clique_data {
 
   Conditions* ban;
   Conditions* to_try;
-  Conditions* try;
+  Conditions* try
+    ;
 
   BitArray* temp_bitarray;
   Obj       orbit;
@@ -106,9 +107,8 @@ static UInt clique_hook_collect(void*           user_param,
   return 1;
 }
 
-static UInt clique_hook_gap_list(void*          user_param,
-                                 Obj            clique_list,
-                                 Obj            gap_func) {
+static UInt
+clique_hook_gap_list(void* user_param, Obj clique_list, Obj gap_func) {
   Obj n = CALL_2ARGS(gap_func, user_param, clique_list);
   if (!IS_INTOBJ(n)) {
     ErrorQuit("the 2rd argument <hook> must be a function which returns "
@@ -655,10 +655,10 @@ Obj FuncDigraphsCliquesFinder(Obj self, Obj args) {
   // Check if include and exclude have empty intersection
   if (include_size != 0 && exclude_size != 0) {
     bool lookup[MAXVERTS] = {false};
-    for (uint16_t i = 0; i < include_size; ++i) {
+    for (UInt i = 1; i <= include_size; ++i) {
       lookup[INT_INTOBJ(ELM_LIST(include_obj, i)) - 1] = true;
     }
-    for (uint16_t i = 0; i < exclude_size; ++i) {
+    for (UInt i = 1; i <= exclude_size; ++i) {
       if (lookup[INT_INTOBJ(ELM_LIST(exclude_obj, i)) - 1]) {
         return user_param_obj;
       }
