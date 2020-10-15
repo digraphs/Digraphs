@@ -76,8 +76,8 @@ struct clique_data {
 
   Conditions* ban;
   Conditions* to_try;
-  Conditions* try
-    ;
+
+  Conditions* try_;
 
   BitArray* temp_bitarray;
   Obj       orbit;
@@ -212,8 +212,7 @@ static bool init_data_from_args(Obj         digraph_obj,
     // Currently Conditions are a nr1 x nr1 array of BitArrays, so both
     // values have to be set to MAXVERTS
     data->clique = new_bit_array(MAXVERTS);
-    data->try
-      = new_conditions(MAXVERTS, MAXVERTS);
+    data->try_   = new_conditions(MAXVERTS, MAXVERTS);
     data->ban    = new_conditions(MAXVERTS, MAXVERTS);
     data->to_try = new_conditions(MAXVERTS, MAXVERTS);
 
@@ -224,28 +223,28 @@ static bool init_data_from_args(Obj         digraph_obj,
   uint16_t nr = DigraphNrVertices(digraph_obj);
   init_graph_from_digraph_obj(data->graph, digraph_obj);
 
-  clear_conditions(data->try, nr + 1, nr);
+  clear_conditions(data->try_, nr + 1, nr);
   clear_conditions(data->ban, nr + 1, nr);
   clear_conditions(data->to_try, nr + 1, nr);
   init_bit_array(data->ban->bit_array[0], false, nr);
 
   init_bit_array(data->clique, false, nr);
-  // Update CLIQUE and TRY using include_obj
+  // Update CLIQUE and try_ using include_obj
   if (include_obj != Fail) {
     set_bit_array_from_gap_list(data->clique, include_obj);
-    complement_bit_arrays(get_conditions(data->try, 0), data->clique, nr);
+    complement_bit_arrays(get_conditions(data->try_, 0), data->clique, nr);
     for (uint16_t i = 1; i <= LEN_LIST(include_obj); ++i) {
       intersect_bit_arrays(
-          get_conditions(data->try, 0),
+          get_conditions(data->try_, 0),
           data->graph->neighbours[INT_INTOBJ(ELM_LIST(include_obj, i)) - 1],
           nr);
     }
   }
-  // Update TRY using exclude_obj
+  // Update try_ using exclude_obj
   if (exclude_obj != Fail) {
     set_bit_array_from_gap_list(data->temp_bitarray, exclude_obj);
     complement_bit_arrays(
-        get_conditions(data->try, 0), data->temp_bitarray, nr);
+        get_conditions(data->try_, 0), data->temp_bitarray, nr);
   }
 
   // Get the isolated vertices of the graph
@@ -255,17 +254,17 @@ static bool init_data_from_args(Obj         digraph_obj,
   for (uint16_t i = 0; i < nr; ++i) {
     if (size_bit_array(data->graph->neighbours[i], nr) == 0) {
       if (first_isolated == -1
-          && get_bit_array(get_conditions(data->try, 0), i)) {
+          && get_bit_array(get_conditions(data->try_, 0), i)) {
         first_isolated = i;
       }
       set_bit_array(data->temp_bitarray, i, true);
     }
   }
-  // Update TRY using isolated, only one isolated vertex is used
+  // Update try_ using isolated, only one isolated vertex is used
   if (first_isolated != -1) {
     complement_bit_arrays(
-        get_conditions(data->try, 0), data->temp_bitarray, nr);
-    set_bit_array(get_conditions(data->try, 0), first_isolated, true);
+        get_conditions(data->try_, 0), data->temp_bitarray, nr);
+    set_bit_array(get_conditions(data->try_, 0), first_isolated, true);
   }
 
   // Discard the generators of aut_grp_obj which act on the isolated vertices
@@ -311,10 +310,9 @@ static int BronKerbosch(uint16_t    depth,
                         uint16_t    size,
                         Obj         group,
                         CliqueData* data) {
-  uint16_t nr = data->graph->nr_vertices;
-  BitArray* try
-    = get_conditions(data->try, 0);
-  BitArray* ban = get_conditions(data->ban, 0);
+  uint16_t  nr   = data->graph->nr_vertices;
+  BitArray* try_ = get_conditions(data->try_, 0);
+  BitArray* ban  = get_conditions(data->ban, 0);
 
   if (depth > 0 && !max && (size == 0 || size == depth)) {
     // We are not looking for maximal cliques
@@ -322,7 +320,7 @@ static int BronKerbosch(uint16_t    depth,
     if (*nr_found >= limit) {
       return EXIT;
     }
-  } else if (size_bit_array(try, nr) == 0 && size_bit_array(ban, nr) == 0
+  } else if (size_bit_array(try_, nr) == 0 && size_bit_array(ban, nr) == 0
              && (size == 0 || size == depth)) {
     // <CLIQUE> is a maximal clique
     *nr_found += data->hook(data->user_param, data->clique, nr, data->gap_func);
@@ -333,13 +331,13 @@ static int BronKerbosch(uint16_t    depth,
 
   BitArray* to_try = get_conditions(data->to_try, 0);
   if (max) {
-    // Choose a pivot with as many neighbours in <try> as possible
+    // Choose a pivot with as many neighbours in <try_> as possible
     uint16_t pivot          = 0;
     int16_t  max_neighbours = -1;
 
     for (uint16_t i = 0; i < nr; ++i) {
-      if (get_bit_array(try, i) || get_bit_array(ban, i)) {
-        copy_bit_array(data->temp_bitarray, try, nr);
+      if (get_bit_array(try_, i) || get_bit_array(ban, i)) {
+        copy_bit_array(data->temp_bitarray, try_, nr);
         intersect_bit_arrays(
             data->temp_bitarray, data->graph->neighbours[i], nr);
         uint16_t num_neighbours = size_bit_array(data->temp_bitarray, nr);
@@ -350,13 +348,13 @@ static int BronKerbosch(uint16_t    depth,
       }
     }
 
-    // Try adding vertices from <try> minus neighbours of <pivot>
+    // try_ adding vertices from <try_> minus neighbours of <pivot>
     init_bit_array(to_try, true, nr);
     complement_bit_arrays(to_try, data->graph->neighbours[pivot], nr);
-    intersect_bit_arrays(to_try, try, nr);
+    intersect_bit_arrays(to_try, try_, nr);
   } else {
     // If we are not looking for maximal cliques, a pivot cannot be used
-    copy_bit_array(to_try, try, nr);
+    copy_bit_array(to_try, try_, nr);
   }
   // Update the height of the condition data->to_try, since we didn't use
   // push_condition
@@ -369,7 +367,7 @@ static int BronKerbosch(uint16_t    depth,
     if (get_bit_array(to_try, v)) {
       set_bit_array(data->clique, v, true);
 
-      push_conditions(data->try, depth + 1, 0, data->graph->neighbours[v]);
+      push_conditions(data->try_, depth + 1, 0, data->graph->neighbours[v]);
       push_conditions(data->ban, depth + 1, 0, data->graph->neighbours[v]);
 
       // recurse
@@ -403,19 +401,19 @@ static int BronKerbosch(uint16_t    depth,
         }
       }
 
-      pop_conditions(data->try, depth + 1);
+      pop_conditions(data->try_, depth + 1);
       pop_conditions(data->ban, depth + 1);
       data->to_try->height[0]--;
       set_bit_array(data->clique, v, false);
 
       if (group == Fail) {
-        set_bit_array(get_conditions(data->try, 0), v, false);
+        set_bit_array(get_conditions(data->try_, 0), v, false);
         set_bit_array(get_conditions(data->ban, 0), v, true);
       } else {
         data->orbit = CALL_2ARGS(Orbit, group, INTOBJ_INT(v + 1));
         set_bit_array_from_gap_list(data->temp_bitarray, data->orbit);
         complement_bit_arrays(
-            get_conditions(data->try, 0), data->temp_bitarray, nr);
+            get_conditions(data->try_, 0), data->temp_bitarray, nr);
         union_bit_arrays(get_conditions(data->ban, 0), data->temp_bitarray, nr);
       }
     }
