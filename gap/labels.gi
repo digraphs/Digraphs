@@ -75,6 +75,11 @@ function(D)
   Unbind(D!.vertexlabels);
 end);
 
+InstallMethod(HaveEdgeLabelsBeenAssigned, "for a digraph", [IsDigraph],
+function(D)
+  return IsBound(D!.edgelabels);
+end);
+
 InstallMethod(SetDigraphEdgeLabel,
 "for a digraph, a pos int, a pos int, and an object",
 [IsDigraph, IsPosInt, IsPosInt, IsObject],

@@ -133,6 +133,30 @@ gap> DigraphNrEdges(D);
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="DigraphNrLoops">
+<ManSection>
+  <Attr Name="DigraphNrLoops" Arg="digraph"/>
+  <Returns>An integer.</Returns>
+  <Description>
+    This function returns the number of loops of the digraph <A>digraph</A>. See <Ref Prop="DigraphHasLoops"/>. <P/>
+    <Example><![CDATA[
+gap> D := Digraph([[2, 3], [1, 4], [3, 3, 5], [], [2, 5]]);
+<immutable multidigraph with 5 vertices, 9 edges>
+gap> DigraphNrLoops(D);
+3
+gap> D := EmptyDigraph(5);
+<immutable empty digraph with 5 vertices>
+gap> DigraphNrLoops(D);
+0
+gap> D := CompleteDigraph(5);
+<immutable complete digraph with 5 vertices>
+gap> DigraphNrLoops(D);
+0
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="RangeSourceDigraph">
 <ManSection>
   <Attr Name="DigraphRange" Arg="digraph"/>
