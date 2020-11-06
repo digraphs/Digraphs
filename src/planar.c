@@ -193,7 +193,7 @@ Obj boyers_planarity_check(Obj digraph, int flags, bool krtwsk) {
     SET_LEN_PLIST(subgraph, theGraph->N);
     for (int i = 1; i <= theGraph->N; ++i) {
       int nr   = 0;
-      Obj list = NEW_PLIST_IMM(T_PLIST, 0);
+      Obj list = NEW_PLIST(T_PLIST, 0);
       int j    = theGraph->V[i].link[1];
       while (j) {
         if (CALL_3ARGS(IsDigraphEdge,
@@ -206,8 +206,10 @@ Obj boyers_planarity_check(Obj digraph, int flags, bool krtwsk) {
         j = theGraph->E[j].link[1];
       }
       if (nr == 0) {
+        SET_LEN_PLIST(list, 0);
         RetypeBag(list, T_PLIST_EMPTY);
       }
+      MakeImmutable(list);
       SET_ELM_PLIST(subgraph, i, list);
       CHANGED_BAG(subgraph);
     }
