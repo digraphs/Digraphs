@@ -279,6 +279,16 @@ InstallMethod(DigraphRemoveEdges, "for an immutable digraph and a list",
 [IsImmutableDigraph, IsList],
 {D, edges} -> MakeImmutable(DigraphRemoveEdges(DigraphMutableCopy(D), edges)));
 
+InstallMethod(DigraphRemoveEdges, "for an immutable digraph and an empty list",
+[IsImmutableDigraph, IsList and IsEmpty],
+{D, edges} -> D);
+
+InstallMethod(DigraphRemoveEdge, "for an immutable digraph and a list",
+[IsImmutableDigraph, IsList and IsEmpty],
+function(D, edges)
+  ErrorNoReturn("the 2nd argument must be non empty,");
+end);
+
 InstallMethod(DigraphReverseEdge,
 "for a mutable digraph by out-neighbours and two positive integers",
 [IsMutableDigraph and IsDigraphByOutNeighboursRep, IsPosInt, IsPosInt],

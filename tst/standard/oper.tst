@@ -39,6 +39,13 @@ gap> DigraphRemoveEdges(gr, [[2, 1]]);
 <immutable digraph with 2 vertices, 1 edge>
 gap> last = gr;
 true
+gap> DigraphRemoveEdges(gr, []);
+<immutable digraph with 2 vertices, 1 edge>
+gap> last = gr;
+true
+gap> DigraphRemoveEdges(gr, [[1, 3]]);
+Error, the 3rd argument <ran> must be a vertex of the digraph <D> that is the \
+1st argument,
 gap> DigraphRemoveEdges(gr, [[1, 2]]);
 <immutable empty digraph with 2 vertices>
 gap> gr := DigraphFromDigraph6String("&DtGsw_");
@@ -78,6 +85,8 @@ Error, the 2nd argument <src> must be a vertex of the digraph <D> that is the \
 gap> DigraphRemoveEdge(gr, [1, 3]);
 Error, the 3rd argument <ran> must be a vertex of the digraph <D> that is the \
 1st argument,
+gap> DigraphRemoveEdge(gr, []);
+Error, the 2nd argument must be non empty,
 gap> gr := DigraphRemoveEdge(gr, [2, 1]);
 <immutable digraph with 2 vertices, 1 edge>
 gap> DigraphEdges(gr);
