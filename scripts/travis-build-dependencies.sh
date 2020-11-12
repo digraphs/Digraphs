@@ -78,11 +78,16 @@ for PKG in "${PKGS[@]}"; do
   else
     VERSION=`grep "\"$PKG\"" $GAPROOT/pkg/digraphs/PackageInfo.g | awk -F'"' '{print $4}' | cut -c3-`
   fi
+  
+  if [ -z $VERSION ]; then
+    echo -e "\nCould not determine the version number of the package $PKG!! Aborting..."
+    exit 1
+  fi
 
   URL="https://github.com/gap-packages/$PKG/releases/download/v$VERSION/$PKG-$VERSION.tar.gz"
   echo -e "\nDownloading $PKG-$VERSION (${PACKAGES[0]} version), from URL:\n$URL"
   $CURL "$URL" -o $PKG-$VERSION.tar.gz
-  tar xf $PKG-$VERSION.tar.gz && rm $PKG-$VERSION.tar.gz
+  (tar xf $PKG-$VERSION.tar.gz && rm $PKG-$VERSION.tar.gz) || exit 1
 
   if [ -f $PKG-$VERSION/configure ]; then
     if [ "$PKG" == "orb" ] || [ "$PKG" == "grape" ] || [ "$PKG" == "datastructures" ]; then

@@ -1,5 +1,4 @@
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.198140.svg)](https://doi.org/10.5281/zenodo.198140)
-[![Build Status](https://travis-ci.org/gap-packages/Digraphs.svg?branch=master)](https://travis-ci.org/gap-packages/Digraphs)
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/gap-packages/digraphs/master)
 
 
