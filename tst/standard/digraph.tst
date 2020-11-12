@@ -1642,6 +1642,14 @@ gap> D := Digraph([[2], [1]]);;
 gap> IsHamiltonianDigraph(D);;
 gap> D;
 <immutable Hamiltonian digraph with 2 vertices, 2 edges>
+gap> D := Digraph([[2], [1, 3], [2]]);;
+gap> IsSymmetricDigraph(D);;
+gap> D;
+<immutable symmetric digraph with 3 vertices, 4 edges>
+gap> IsStronglyConnectedDigraph(D);
+true
+gap> D;
+<immutable connected symmetric digraph with 3 vertices, 4 edges>
 
 # String
 gap> D := CycleDigraph(3);
