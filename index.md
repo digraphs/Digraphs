@@ -65,6 +65,7 @@ version of {{site.data.package.name}}:
                  Julius Jonu{\v s}as and
                  James D. Mitchell and
                  Michael Torpey and
+                 Maria Tsalakou and
                  Wilf A. Wilson },
       Title  = { Digraphs - {GAP} package, Version {{site.data.package.version}} },
       Month  = { {{site.data.package.date | date: "%b"}} },
