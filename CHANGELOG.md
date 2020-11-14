@@ -460,7 +460,7 @@ The principal change in Digraphs version 0.11.0 is the addition of
 support for computing automorphisms, canonical labellings, and isomorphisms of
 digraphs with [nauty](http://pallini.di.uniroma1.it/). This
 functionality requires the [NautyTracesInterface
-package](https://github.com/sebasguts/NautyTracesInterface) for GAP, version 0.2
+package](https://github.com/gap-packages/NautyTracesInterface) for GAP, version 0.2
 or newer. However, this is not a required package, and the default engine
 remains [bliss](http://www.tcs.hut.fi/Software/bliss/). It is possible to
 specify the engine that is used by Digraphs. These changes to Digraphs were made

@@ -105,7 +105,7 @@ rm packages-required-master.tar.gz
 ## Install NautyTracesInterface in Travis
 if [ "$SETUP" == "travis" ] && [ "$NAUTY" != "no" ]; then
   echo -e "\nGetting master version of NautyTracesInterface"
-  git clone -b master --depth=1 https://github.com/sebasguts/NautyTracesInterface.git $GAPROOT/pkg/nautytraces
+  git clone -b master --depth=1 https://github.com/gap-packages/NautyTracesInterface.git $GAPROOT/pkg/nautytraces
   cd $GAPROOT/pkg/nautytraces/nauty2*r* && ./configure $PKG_FLAGS && make
   cd $GAPROOT/pkg/nautytraces && ./autogen.sh && ./configure $PKG_FLAGS && make
 fi
