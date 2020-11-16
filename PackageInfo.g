@@ -35,7 +35,7 @@ ArchiveFormats := ".tar.gz",
 
 SourceRepository := rec(
     Type := "git",
-    URL := Concatenation("https://github.com/gap-packages/",
+    URL := Concatenation("https://github.com/digraphs/",
                          ~.PackageName),
 ),
 
@@ -212,7 +212,7 @@ Persons := [
 Status := "deposited",
 
 IssueTrackerURL := Concatenation(~.SourceRepository.URL, "/issues"),
-PackageWWWHome  := Concatenation("https://gap-packages.github.io/",
+PackageWWWHome  := Concatenation("https://digraphs.github.io/",
                                  ~.PackageName),
 README_URL      := Concatenation(~.PackageWWWHome, "/README.md"),
 PackageInfoURL  := Concatenation(~.PackageWWWHome, "/PackageInfo.g"),
