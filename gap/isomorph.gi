@@ -655,7 +655,7 @@ end);
 InstallGlobalFunction(DIGRAPHS_CollapseMultiColouredEdges,
 function(D, edge_colours)
   local n, mults, out, new_cols, new_cols_set, idx, adjv, indices, colsv,
-  p, run, cur, range, cols, C, v, i, nbs;
+  p, run, cur, range, cols, v, i, nbs;
   n := DigraphNrVertices(D);
   mults := [];
   out := List([1 .. n], x -> []);
