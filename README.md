@@ -1,6 +1,5 @@
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.198140.svg)](https://doi.org/10.5281/zenodo.198140)
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/gap-packages/digraphs/master)
-
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/digraphs/digraphs/master)
 
 ## README
 
@@ -21,7 +20,7 @@ for example.  This will create a subdirectory `digraphs-x.x.x`.
 ## Issues
 
 For questions, remarks, suggestions, and issues please use the
-[issue tracker](https://github.com/gap-packages/Digraphs/issues).
+[issue tracker](https://github.com/digraphs/Digraphs/issues).
 
 ## Installation
 
@@ -95,7 +94,7 @@ configure options `--with-external-bliss` or `--with-external-planarity`, as
 appropriate.
 
 If you wish to install a
-[development version of the Digraphs package](https://github.com/gap-packages/Digraphs),
+[development version of the Digraphs package](https://github.com/digraphs/Digraphs),
 then you must first run the command `./autogen.sh` before compilation. However,
 development versions of the package may be unstable, and we recommend using the
 most recently released version of the package when possible.
