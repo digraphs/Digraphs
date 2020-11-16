@@ -1,0 +1,13 @@
+name: CI
+on: [pull_request]
+
+jobs:
+   lint:
+      runs-on: ubuntu-latest
+      steps:
+         - uses: actions/checkout@v2
+         - name: "Install dependencies . . ."
+           run: |
+                sudo pip install gaplint cpplint
+         - name: "Run gaplint + cpplint . . ."
+           run: bash etc/lint.sh
