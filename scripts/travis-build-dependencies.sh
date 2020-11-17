@@ -51,7 +51,7 @@ mkdir pkg
 ################################################################################
 # Copy Digraphs to its proper location
 if [ "$SETUP" == "appveyor" ]; then
-  cp -r /cygdrive/c/projects/digraphs $GAPROOT/pkg/digraphs
+  cp -r /cygdrive/c/projects/digraphs* $GAPROOT/pkg/digraphs
 elif [ "$SETUP" == "travis" ]; then
   mv $HOME/digraphs $GAPROOT/pkg/digraphs
 fi
