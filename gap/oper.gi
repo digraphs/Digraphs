@@ -608,6 +608,10 @@ InstallMethod(ModularProduct, "for a digraph and digraph",
 function(D1, D2)
   local m, n, E1, E2, edges, next, map, u, v, w, x;
 
+  if IsMultiDigraph(D1) or IsMultiDigraph(D2) then
+    ErrorNoReturn("ModularProduct does not support multidigraphs.");
+  fi;
+
   m := DigraphNrVertices(D1);
   n := DigraphNrVertices(D2);
 
@@ -627,12 +631,16 @@ function(D1, D2)
       edges[next] := [];
       for w in OutNeighbours(D1)[u] do
         for x in OutNeighbours(D2)[v] do
-          Add(edges[next], map(w, x));
+          if (u = w) = (v = x) then
+            Add(edges[next], map(w, x));
+          fi;
         od;
       od;
       for w in OutNeighbours(E1)[u] do
         for x in OutNeighbours(E2)[v] do
-          Add(edges[next], map(w, x));
+          if (u = w) = (v = x) then
+            Add(edges[next], map(w, x));
+          fi;
         od;
       od;
     od;
