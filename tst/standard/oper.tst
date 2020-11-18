@@ -2051,6 +2051,20 @@ gap> DigraphDijkstra(gr, 1, 2);
 gap> DigraphDijkstra(gr, 1, 3);
 [ [ 0, 1, 1, 1 ], [ -1, 1, 1, 1 ] ]
 
+#ModularProduct
+gap> ModularProduct(NullDigraph(0), CompleteDigraph(10));
+<immutable empty digraph with 0 vertices>
+gap> ModularProduct(PetersenGraph(), CompleteDigraph(10));
+<immutable digraph with 100 vertices, 2800 edges>
+gap> ModularProduct(NullDigraph(10), CompleteDigraph(10));
+<immutable digraph with 100 vertices, 100 edges>
+gap> ModularProduct(Digraph([[1], [1, 2]]), Digraph([[], [2]]));
+<immutable digraph with 4 vertices, 4 edges>
+gap> OutNeighbours(last);
+[ [ 4 ], [ 2, 3 ], [  ], [ 4 ] ]
+gap> ModularProduct(PetersenGraph(), DigraphSymmetricClosure(CycleDigraph(5)));
+<immutable digraph with 50 vertices, 950 edges>
+
 #DIGRAPHS_UnbindVariables
 gap> Unbind(a);
 gap> Unbind(adj);
