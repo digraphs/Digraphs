@@ -260,10 +260,6 @@ homo_hook_collect(void* user_param, uint16_t const nr, uint16_t const* map) {
   Obj    t;
   UInt   i;
 
-  if (TNUM_OBJ((Obj) user_param) == T_PLIST_EMPTY) {
-    RetypeBag(user_param, T_PLIST);
-  }
-
   // copy map into new trans2
   t   = NEW_TRANS2(nr);
   ptr = ADDR_TRANS2(t);
