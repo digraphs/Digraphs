@@ -695,7 +695,7 @@ function(D, edge_colours)
       idx := idx + Length(nbs);
     fi;
   od;
-    for cols in new_cols do
+  for cols in new_cols do
       for i in [1 .. Length(cols)] do
         cols[i] := Position(new_cols_set, cols[i]);
       od;
