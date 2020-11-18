@@ -791,7 +791,7 @@ gap> gr := Digraph([
 gap> IsomorphismDigraphs(gr, gr);
 [ (), () ]
 gap> BlissCanonicalLabelling(gr);
-[ (1,9,5,7,4)(2,3,6), () ]
+[ (1,9,6,2,4)(3,7), () ]
 gap> NautyCanonicalLabelling(gr);
 fail
 gap> AutomorphismGroup(gr);
@@ -908,7 +908,7 @@ gap> G := AutomorphismGroup(gr);;
 gap> HasBlissCanonicalLabelling(gr);
 true
 gap> BlissCanonicalLabelling(gr);
-[ (1,9,5,7,4)(2,3,6), () ]
+[ (1,9,6,2,4)(3,7), () ]
 gap> BlissCanonicalLabelling(gr) = BlissCanonicalLabelling(DigraphCopy(gr));
 true
 
