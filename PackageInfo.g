@@ -9,12 +9,14 @@
 ##
 
 ##  <#GAPDoc Label="PKGVERSIONDATA">
-##  <!ENTITY VERSION        "1.2.0">
-##  <!ENTITY GAPVERS        "4.9.0">
-##  <!ENTITY GRAPEVERS      "4.8.1">
-##  <!ENTITY IOVERS         "4.5.1">
-##  <!ENTITY ORBVERS        "4.8.2">
-##  <!ENTITY ARCHIVENAME    "digraphs-1.2.0">
+##  <!ENTITY VERSION                  "1.3.0">
+##  <!ENTITY GAPVERS                  "4.9.0">
+##  <!ENTITY GRAPEVERS                "4.8.1">
+##  <!ENTITY IOVERS                   "4.5.1">
+##  <!ENTITY ORBVERS                  "4.8.2">
+##  <!ENTITY DATASTRUCTURESVERS       "0.2.5">
+##  <!ENTITY NAUTYTRACESINTERFACEVERS "0.2">
+##  <!ENTITY ARCHIVENAME    "digraphs-1.3.0">
 ##  <!ENTITY COPYRIGHTYEARS "2014-20">
 ##  <#/GAPDoc>
 
@@ -26,8 +28,8 @@ _STANDREWSCS := Concatenation(["Jack Cole Building, North Haugh, ",
 SetPackageInfo(rec(
 PackageName := "Digraphs",
 Subtitle := "Graphs, digraphs, and multidigraphs in GAP",
-Version := "1.2.0",
-Date := "27/03/2020",  # dd/mm/yyyy format
+Version := "1.3.0",
+Date := "27/06/2020",  # dd/mm/yyyy format
 License := "GPL-3.0-or-later",
 ArchiveFormats := ".tar.gz",
 
@@ -92,13 +94,14 @@ Persons := [
     FirstNames    := "Max",
     IsAuthor      := false,
     IsMaintainer  := false,
-    Email         := "max.horn@uni-siegen.de",
+    Email         := "horn@mathematik.uni-kl.de",
     WWWHome       := "https://www.quendi.de/math",
     PostalAddress := Concatenation(
-                       "Department Mathematik, Universität Siegen, ",
-                       "Walter-Flex-Straße 3, 57072 Siegen, Germany"),
-    Place         := "Siegen",
-    Institution   := "Universität Siegen"),
+                       "Fachbereich Mathematik, TU Kaiserslautern, ",
+                       "Gottlieb-Daimler-Straße 48, 67663 Kaiserslautern, ",
+                       "Germany"),
+    Place         := "Kaiserslautern, Germany",
+    Institution   := "TU Kaiserslautern"),
 
   rec(
     LastName      := "Jefferson",
@@ -130,7 +133,7 @@ Persons := [
     IsAuthor      := true,
     IsMaintainer  := true,
     Email         := "jdm3@st-and.ac.uk",
-    WWWHome       := "http://www-groups.mcs.st-andrews.ac.uk/~jamesm",
+    WWWHome       := "https://jdbm.me",
     PostalAddress := _STANDREWSMATHS,
     Place         := "St Andrews",
     Institution   := "University of St Andrews"),

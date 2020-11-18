@@ -16,7 +16,7 @@
 #define DIGRAPHS_SRC_DIGRAPHS_H_
 
 // GAP headers
-#include "src/compiled.h"  // for Obj, Int
+#include "compiled.h"  // for Obj, Int
 
 Int DigraphNrVertices(Obj D);
 Obj FuncOutNeighbours(Obj self, Obj D);

@@ -1197,7 +1197,7 @@ gap> for i in [2 .. 200] do
 > od;
 gap> D := CycleDigraph(IsMutableDigraph, 7);
 <mutable digraph with 7 vertices, 7 edges>
-gap> for i in [1 .. 20] do
+gap> for i in [1 .. 10] do
 >   DigraphDisjointUnion(D, G);
 > od;
 gap> DigraphOddGirth(D);
@@ -1612,12 +1612,21 @@ true
 # ArticulationPoints
 gap> ArticulationPoints(CycleDigraph(5));
 [  ]
+gap> StrongOrientation(DigraphSymmetricClosure(CycleDigraph(5))) 
+> = CycleDigraph(5);
+true
 gap> ArticulationPoints(Digraph([[2, 7], [3, 5], [4], [2], [6], [1], []]));
 [ 2, 1 ]
+gap> StrongOrientation(Digraph([[2, 7], [3, 5], [4], [2], [6], [1], []]));
+Error, not yet implemented
 gap> ArticulationPoints(ChainDigraph(5));
 [ 4, 3, 2 ]
+gap> StrongOrientation(ChainDigraph(5));
+Error, not yet implemented
 gap> ArticulationPoints(NullDigraph(5));
 [  ]
+gap> StrongOrientation(NullDigraph(5));
+fail
 gap> gr :=
 > Digraph([[35, 55, 87], [38], [6, 53], [], [66], [56], [36], []
 > , [], [19], [23], [], [40, 76], [72, 79], [46, 48], [22, 68], [
@@ -1636,6 +1645,8 @@ gap> IsConnectedDigraph(gr);
 false
 gap> ArticulationPoints(gr);
 [  ]
+gap> StrongOrientation(gr);
+Error, not yet implemented
 gap> gr := DigraphCopy(gr);
 <immutable digraph with 100 vertices, 110 edges>
 gap> ArticulationPoints(gr);
@@ -1644,10 +1655,14 @@ gap> IsConnectedDigraph(gr);
 false
 gap> ArticulationPoints(Digraph([[1, 2], [2]]));
 [  ]
+gap> StrongOrientation(Digraph([[1, 2], [2]]));
+Error, not yet implemented
 gap> gr := Digraph([[1, 1, 2, 2, 2, 2, 2], [2, 2, 3, 3], []]);  # path
 <immutable multidigraph with 3 vertices, 11 edges>
 gap> ArticulationPoints(gr);
 [ 2 ]
+gap> StrongOrientation(gr);
+Error, not yet implemented
 gap> gr := Digraph([[1, 1, 2, 2, 2, 2, 2], [2, 2, 3, 3], [1, 1, 1]]);  # cycle
 <immutable multidigraph with 3 vertices, 14 edges>
 gap> ArticulationPoints(gr);
@@ -1697,6 +1712,42 @@ true
 gap> Set(ArticulationPoints(gr))
 > = Filtered(DigraphVertices(gr),
 >            x -> not IsConnectedDigraph(DigraphRemoveVertex(gr, x)));
+true
+gap> D := Digraph([[2, 5], [1, 3, 4, 5], [2, 4], [2, 3], [1, 2]]);
+<immutable digraph with 5 vertices, 12 edges>
+gap> Bridges(D);
+[  ]
+gap> ArticulationPoints(D);
+[ 2 ]
+gap> D := Digraph([[2], [3], [4], [2]]);
+<immutable digraph with 4 vertices, 4 edges>
+gap> Bridges(D);
+[ [ 1, 2 ] ]
+gap> ArticulationPoints(D);
+[ 2 ]
+gap> D := Digraph([[1, 1, 2, 2], [2, 2, 3, 3], []]);
+<immutable multidigraph with 3 vertices, 8 edges>
+gap> ArticulationPoints(D);
+[ 2 ]
+gap> Bridges(D);
+[ [ 2, 3 ], [ 1, 2 ] ]
+
+# StrongOrientation
+gap> filename := Concatenation(DIGRAPHS_Dir(), "/data/graph5.g6.gz");;
+gap> D := ReadDigraphs(filename);;
+gap> ForAll(D, 
+>           d -> StrongOrientation(d) = fail 
+>                or IsStronglyConnectedDigraph(StrongOrientation(d)));
+true
+gap> Number(D, d -> StrongOrientation(d) <> fail);
+11
+gap> Number(D, IsBridgelessDigraph);
+11
+gap> D := Filtered(D, d -> StrongOrientation(d) <> fail);;
+gap> ForAll(D, d -> IsSubdigraph(d, StrongOrientation(d)));
+true
+gap> ForAll(D, 
+> d -> DigraphNrEdges(d) / 2 = DigraphNrEdges(StrongOrientation(d)));
 true
 
 #  HamiltonianPath
@@ -2421,6 +2472,45 @@ gap> M := DigraphMaximumMatching(D);; IsMaximalMatching(D, M);
 true
 gap> Length(M);
 111
+
+# DigraphNrLoops
+gap> D := EmptyDigraph(5);
+<immutable empty digraph with 5 vertices>
+gap> DigraphNrLoops(D);
+0
+gap> D := CompleteDigraph(5);
+<immutable complete digraph with 5 vertices>
+gap> DigraphNrLoops(D);
+0
+gap> D := Digraph([[2, 3], [1, 4], [3, 3, 5], [], [2, 5]]);
+<immutable multidigraph with 5 vertices, 9 edges>
+gap> DigraphNrLoops(D);
+3
+gap> D := Digraph([[2], [3], [1, 2]]);
+<immutable digraph with 3 vertices, 4 edges>
+gap> DigraphNrLoops(D);
+0
+gap> D := Digraph([[1, 2], [2, 3], [3, 4], [1, 4, 5], [2, 5]]);
+<immutable digraph with 5 vertices, 11 edges>
+gap> DigraphNrLoops(D);
+5
+gap> D := Digraph([[1, 4, 4], [2, 2, 4], [4], [3, 5], [5]]);
+<immutable multidigraph with 5 vertices, 10 edges>
+gap> DigraphNrLoops(D);
+4
+gap> D := Digraph(IsMutableDigraph, [[1, 2], [2, 3], [3, 4], [1, 4, 5], [2, 5]]);
+<mutable digraph with 5 vertices, 11 edges>
+gap> DigraphNrLoops(D);
+5
+gap> D;
+<mutable digraph with 5 vertices, 11 edges>
+gap> D := DigraphByAdjacencyMatrix([
+> [1, 2, 1],
+> [1, 1, 0],
+> [0, 0, 1]]);
+<immutable multidigraph with 3 vertices, 7 edges>
+gap> DigraphNrLoops(D);
+3
 
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(adj);

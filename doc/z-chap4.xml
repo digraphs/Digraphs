@@ -4,6 +4,7 @@
     <#Include Label="DigraphNrVertices">
     <#Include Label="DigraphEdges">
     <#Include Label="DigraphNrEdges">
+    <#Include Label="DigraphNrLoops">
     <#Include Label="DigraphSinks">
     <#Include Label="DigraphSources">
     <#Include Label="DigraphTopologicalSort">
@@ -54,6 +55,8 @@
     <#Include Label="DigraphStronglyConnectedComponent">
     <#Include Label="DigraphBicomponents">
     <#Include Label="ArticulationPoints">
+    <#Include Label="Bridges">
+    <#Include Label="StrongOrientation">
     <#Include Label="DigraphPeriod">
     <#Include Label="DigraphFloydWarshall">
     <#Include Label="IsReachable">

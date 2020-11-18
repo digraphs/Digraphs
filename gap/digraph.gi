@@ -24,6 +24,15 @@
 #
 ########################################################################
 
+InstallMethod(DigraphMutabilityFilter, "for a digraph", [IsDigraph],
+function(D)
+  if IsMutableDigraph(D) then
+    return IsMutableDigraph;
+  else
+    return IsImmutableDigraph;
+  fi;
+end);
+
 ########################################################################
 # 1. Digraph types
 ########################################################################
@@ -128,7 +137,9 @@ function(D)
   local copy;
   copy := ConvertToMutableDigraphNC(OutNeighboursMutableCopy(D));
   SetDigraphVertexLabels(copy, StructuralCopy(DigraphVertexLabels(D)));
-  SetDigraphEdgeLabelsNC(copy, StructuralCopy(DigraphEdgeLabelsNC(D)));
+  if HaveEdgeLabelsBeenAssigned(D) then
+    SetDigraphEdgeLabelsNC(copy, StructuralCopy(DigraphEdgeLabelsNC(D)));
+  fi;
   return copy;
 end);
 
@@ -138,7 +149,9 @@ function(D)
   local copy;
   copy := ConvertToImmutableDigraphNC(OutNeighboursMutableCopy(D));
   SetDigraphVertexLabels(copy, StructuralCopy(DigraphVertexLabels(D)));
-  SetDigraphEdgeLabelsNC(copy, StructuralCopy(DigraphEdgeLabelsNC(D)));
+  if HaveEdgeLabelsBeenAssigned(D) then
+    SetDigraphEdgeLabelsNC(copy, StructuralCopy(DigraphEdgeLabelsNC(D)));
+  fi;
   return copy;
 end);
 
