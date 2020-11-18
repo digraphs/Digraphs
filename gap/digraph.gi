@@ -491,13 +491,15 @@ function(D)
       fi;
       if HasIsStronglyConnectedDigraph(D) and IsStronglyConnectedDigraph(D)
           and not (HasIsEulerianDigraph(D) and IsEulerianDigraph(D))
-          and not (HasIsHamiltonianDigraph(D) and IsHamiltonianDigraph(D)) then
+          and not (HasIsHamiltonianDigraph(D) and IsHamiltonianDigraph(D))
+          and not (HasIsSymmetricDigraph(D) and IsSymmetricDigraph(D)) then
         Append(str, "strongly connected ");
       fi;
       if HasIsBiconnectedDigraph(D) and IsBiconnectedDigraph(D) then
         Append(str, "biconnected ");
-      elif not (HasIsStronglyConnectedDigraph(D) and
-                IsStronglyConnectedDigraph(D))
+      elif ((HasIsSymmetricDigraph(D) and IsSymmetricDigraph(D))
+            or not (HasIsStronglyConnectedDigraph(D)
+                    and IsStronglyConnectedDigraph(D)))
           and not (HasIsTournament(D) and IsTournament(D))
           and HasIsConnectedDigraph(D) and IsConnectedDigraph(D) then
         Append(str, "connected ");

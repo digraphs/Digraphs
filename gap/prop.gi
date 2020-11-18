@@ -199,6 +199,13 @@ InstallMethod(IsSymmetricDigraph, "for a digraph by out-neighbours",
 function(D)
   local out, inn, new, i;
 
+  if not IsMultiDigraph(D)
+      and (DigraphNrEdges(D) - Length(DigraphLoops(D))) mod 2 = 1 then
+    return false;
+  elif HasAdjacencyMatrix(D) then
+    TryNextMethod();
+  fi;
+
   out := OutNeighbours(D);
   inn := InNeighbours(D);
   if not ForAll(out, IsSortedList) then
@@ -209,6 +216,22 @@ function(D)
     out := new;
   fi;
   return inn = out;
+end);
+
+InstallMethod(IsSymmetricDigraph, "for a digraph with adjacency matrix",
+[IsDigraph and HasAdjacencyMatrix],
+function(D)
+  local mat, n, i, j;
+  mat := AdjacencyMatrix(D);
+  n := DigraphNrVertices(D);
+  for i in [1 .. n - 1] do
+    for j in [i + 1 .. n] do
+      if mat[i][j] <> mat[j][i] then
+        return false;
+      fi;
+    od;
+  od;
+  return true;
 end);
 
 # Functional: for every vertex v there is exactly one edge with source v

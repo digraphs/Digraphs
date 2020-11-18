@@ -35,7 +35,7 @@ ArchiveFormats := ".tar.gz",
 
 SourceRepository := rec(
     Type := "git",
-    URL := Concatenation("https://github.com/gap-packages/",
+    URL := Concatenation("https://github.com/digraphs/",
                          ~.PackageName),
 ),
 
@@ -203,20 +203,16 @@ Persons := [
 
   rec(
     LastName      := "Wilson",
-    FirstNames    := "Wilf",
+    FirstNames    := "Wilf A.",
     IsAuthor      := true,
     IsMaintainer  := true,
     Email         := "gap@wilf-wilson.net",
-    WWWHome       := "http://wilf.me",
-    PostalAddress := Concatenation(["Theodor-Lieser-Straße 5, ",
-                                    "06120 Halle (Saale), Germany"]),
-    Place         := "Halle (Saale), Germany",
-    Institution   := "University of Halle-Wittenberg")],
+    WWWHome       := "https://wilf.me")],
 
 Status := "deposited",
 
 IssueTrackerURL := Concatenation(~.SourceRepository.URL, "/issues"),
-PackageWWWHome  := Concatenation("https://gap-packages.github.io/",
+PackageWWWHome  := Concatenation("https://digraphs.github.io/",
                                  ~.PackageName),
 README_URL      := Concatenation(~.PackageWWWHome, "/README.md"),
 PackageInfoURL  := Concatenation(~.PackageWWWHome, "/PackageInfo.g"),
@@ -238,7 +234,7 @@ PackageDoc := rec(
 ),
 
 Dependencies := rec(
-  GAP := ">=4.9.0",
+  GAP := ">=4.10.0",
   NeededOtherPackages := [["io", ">=4.5.1"],
                           ["orb", ">=4.8.2"],
                           ["datastructures", ">=0.2.5"]],

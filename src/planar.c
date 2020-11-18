@@ -207,7 +207,6 @@ Obj boyers_planarity_check(Obj digraph, int flags, bool krtwsk) {
       }
       if (nr == 0) {
         SET_LEN_PLIST(list, 0);
-        RetypeBag(list, T_PLIST_EMPTY);
       }
       MakeImmutable(list);
       SET_ELM_PLIST(subgraph, i, list);
