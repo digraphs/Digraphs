@@ -82,7 +82,7 @@ InstallMethod(DigraphAddVertices, "for an immutable digraph and an integer",
 {D, m} -> MakeImmutable(DigraphAddVertices(DigraphMutableCopy(D), m)));
 
 # Included for backwards compatibility, even though the 2nd arg is redundant.
-# See https://github.com/gap-packages/Digraphs/issues/264
+# See https://github.com/digraphs/Digraphs/issues/264
 # This is deliberately kept undocumented.
 InstallMethod(DigraphAddVertices, "for a digraph, an integer, and a list",
 [IsDigraph, IsInt, IsList],

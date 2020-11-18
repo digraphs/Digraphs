@@ -58,7 +58,7 @@
 
       <Item>
         download the package archive <F>&ARCHIVENAME;.tar.gz</F> from
-        <URL Text="the Digraph package webpage">http://gap-packages.github.io/Digraphs/</URL>.
+        <URL Text="the Digraph package webpage">http://digraphs.github.io/Digraphs/</URL>.
       </Item>
 
       <Item>
@@ -191,7 +191,7 @@ make]]></Listing>
     If something goes wrong, then please review the instructions in Section <Ref
       Sect="For those in a hurry"/> and ensure that &Digraphs; has been
     properly installed.  If you continue having problems, please use the <URL
-      Text="issue tracker">https://github.com/gap-packages/Digraphs/issues</URL>
+      Text="issue tracker">https://github.com/digraphs/Digraphs/issues</URL>
     to report the issues you are having.
 
     <#Include Label="DigraphsTestInstall">
