@@ -238,6 +238,30 @@ gap> gr := Digraph(rec(DigraphNrVertices := 3, DigraphSource := [1, 1, 2, 2, 2, 
 > DigraphRange := [2, 2, 1, 1, 3, 3, 2, 2]));;
 gap> IsSymmetricDigraph(gr);
 true
+gap> D := Digraph([[2], [3], [2]]);;
+gap> IsSymmetricDigraph(D);
+false
+gap> D := Digraph([[2], [2], [2]]);;
+gap> IsSymmetricDigraph(D);
+false
+gap> D := Digraph([[2], [2], [1]]);;
+gap> IsSymmetricDigraph(D);
+false
+gap> D := CycleDigraph(3);;
+gap> AdjacencyMatrix(D);;
+gap> IsSymmetricDigraph(D);
+false
+gap> D := Digraph([[2, 3], [1, 2, 3], [1, 2]]);;
+gap> AdjacencyMatrix(D);;
+gap> IsSymmetricDigraph(D);
+true
+gap> D := Digraph([[2], [2], [2]]);;
+gap> AdjacencyMatrix(D);;
+gap> IsSymmetricDigraph(D);
+false
+gap> D := Digraph([[2], [2], [2, 1]]);;
+gap> IsSymmetricDigraph(D);
+false
 
 #  IsAntisymmetricDigraph
 gap> gr := Digraph(rec(DigraphNrVertices := 10,
