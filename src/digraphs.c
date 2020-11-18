@@ -55,13 +55,6 @@ Obj IsPermGroup;
 Obj IsDigraphAutomorphism;
 Obj LargestMovedPointPerms;
 
-#if !defined(GAP_KERNEL_MAJOR_VERSION) || GAP_KERNEL_MAJOR_VERSION < 3
-// compatibility with GAP <= 4.9
-static inline Obj NEW_PLIST_IMM(UInt type, Int plen) {
-  return NEW_PLIST(type | IMMUTABLE, plen);
-}
-#endif
-
 static inline bool IsAttributeStoringRep(Obj o) {
   return (CALL_1ARGS(IsAttributeStoringRepObj, o) == True ? true : false);
 }
