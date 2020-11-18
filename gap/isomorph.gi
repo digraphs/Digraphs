@@ -696,12 +696,12 @@ function(D, edge_colours)
     fi;
   od;
   for cols in new_cols do
-      for i in [1 .. Length(cols)] do
-        cols[i] := Position(new_cols_set, cols[i]);
-      od;
+    for i in [1 .. Length(cols)] do
+      cols[i] := Position(new_cols_set, cols[i]);
     od;
-    return [Digraph(out), new_cols, mults];
-  end);
+  od;
+  return [Digraph(out), new_cols, mults];
+end);
 
 InstallGlobalFunction(DIGRAPHS_CollapseMultipleEdges,
 function(D)
