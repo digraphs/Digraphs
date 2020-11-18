@@ -1738,3 +1738,42 @@ gap> DigraphDijkstra(D, 1, 2);
 </Description>
 </ManSection>
 <#/GAPDoc>
+
+
+<#GAPDoc Label="ModularProduct">
+<ManSection>
+  <Oper Name="ModularProduct" Arg="D1, D2"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+  If <A>D1</A> and <A>D2</A> are digraphs without multiedges, then
+  <C>ModularProduct</C> calculates the Modular Product Digraph <C>MPD</C> of
+  <A>D1</A>and <A>D2</A>.
+
+  <C>MPD</C> has vertex set <C>V1 x V2</C> where <C>V1</C> is the vertex set of
+  <A>D1</A> and <C>V2</C> is the vertex set of <A>D2</A> (a vertex
+  <C>[a, b]</C> has label <C>(a - 1) * |V2| + b</C> in the  output). There is
+  an edge from <C>[a, b]</C> to <C>[c, d]</C> precisely if both of:
+
+  1. The vertices <C>a</C> and <C>c</C> of <A>D1</A> are equal if and only if
+     the vertices <C>b</C> and <C>d</C> of <A>D2</A> are equal.
+
+  2. There is an edge from <C>a</C> to <C>c</C> in <A>D1</A> if and only if
+     there is an edge from <C>b</C> to <C>d</C> in <A>D2</A>.
+
+  are satisfied. This digraph is of note as the complete (with loops) subgraphs
+  of <C>MPD</C> are precisely the partial isomorphisms from <A>D1</A> to
+  <A>D2</A>.
+
+  <Example><![CDATA[
+gap> ModularProduct(Digraph([[1], [1, 2]]), Digraph([[], [2]]));
+<immutable digraph with 4 vertices, 4 edges>
+gap> OutNeighbours(last);
+[ [ 4 ], [ 2, 3 ], [  ], [ 4 ] ]
+gap> ModularProduct(PetersenGraph(), DigraphSymmetricClosure(CycleDigraph(5)));
+<immutable digraph with 50 vertices, 950 edges>
+gap> ModularProduct(NullDigraph(0), CompleteDigraph(10));
+<immutable empty digraph with 0 vertices>
+]]></Example>
+</Description>
+</ManSection>
+<#/GAPDoc>
