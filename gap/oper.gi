@@ -645,7 +645,7 @@ function(D1, D2)
       od;
     od;
   od;
-  return DigraphNC(edges);
+  return Digraph(edges);
 end);
 
 ###############################################################################
