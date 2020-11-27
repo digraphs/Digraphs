@@ -4,6 +4,12 @@ Torpey, Wilf A. Wilson et al.
 
 Licensing information can be found in the `LICENSE` file.
 
+## Version 1.3.1 (released 27/11/2020)
+
+This is a minor release fixing some issues, some performance improvements, and
+removing some deprecated code.  The changes in this release were made by [Max Horn][]
+and [Wilf A. Wilson][].
+
 ## Version 1.3.0 (released 27/06/2020)
 
 This is a minor release adding the new functionality `DigraphMutabilityFilter`,
