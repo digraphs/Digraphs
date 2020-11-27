@@ -1,4 +1,4 @@
-name: "GAP tests"
+name: "CI"
 
 # Trigger the workflow on push or pull request
 on:
@@ -8,13 +8,24 @@ on:
       - rc-v[0-9]+.[0-9]+.[0-9]+
 
 jobs:
+  lint:
+    name: "lint"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: "Install dependencies . . ."
+        run: |
+          sudo pip install gaplint cpplint
+      - name: "Run gaplint + cpplint . . ."
+        run: bash etc/lint.sh
   test:
     name: "GAP ${{ matrix.gap-branch }} on ${{ matrix.os }}"
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest]
+        os:
+          - ubuntu-latest
         digraphs-lib:
           - digraphs-lib-0.6
         gap-branch:
