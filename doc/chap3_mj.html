@@ -1122,7 +1122,7 @@ true
 
 <p>Otherwise, if <var class="Arg">labels</var> is a list consisting of <code class="code">k</code> <strong class="pkg">GAP</strong> objects, then this operation returns a digraph constructed from <var class="Arg">digraph</var> by adding <code class="code">k</code> new vertices, which are labelled according to this list.</p>
 
-<p>If <var class="Arg">digraph</var> belongs to <code class="func">IsMutableDigraph</code> (<a href="chap3_mj.html#X7D7EDF83820ED6F5"><span class="RefLink">3.1-2</span></a>), then the vertices are added directly to <var class="Arg">digraph</var>, which is changed in-place. If <var class="Arg">digraph</var> belongs to <code class="func">IsImmutableDigraph</code> (<a href="chap3_mj.html#X7CAFAA89804F80BD"><span class="RefLink">3.1-3</span></a>), then the result is returned as an immutable digraph.</p>
+<p>If <var class="Arg">digraph</var> belongs to <code class="func">IsMutableDigraph</code> (<a href="chap3_mj.html#X7D7EDF83820ED6F5"><span class="RefLink">3.1-2</span></a>), then the vertices are added directly to <var class="Arg">digraph</var>, which is changed in-place. If <var class="Arg">digraph</var> belongs to <code class="func">IsImmutableDigraph</code> (<a href="chap3_mj.html#X7CAFAA89804F80BD"><span class="RefLink">3.1-3</span></a>), then <var class="Arg">digraph</var> itself is returned if no vertices are added (i.e. <code class="code"><var class="Arg">m</var>=0</code> or <var class="Arg">labels</var> is empty), otherwise the result is a new immutable digraph.</p>
 
 
 <div class="example"><pre>

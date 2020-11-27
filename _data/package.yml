@@ -1,6 +1,6 @@
 name: Digraphs
-version: 1.3.0
-date: 2020-06-27
+version: 1.3.1
+date: 2020-11-27
 description: |
     Graphs, digraphs, and multidigraphs in GAP
 
@@ -15,14 +15,14 @@ authors:
       url: https://mtorpey.github.io
     - name: Maria Tsalakou
       url: https://mariatsalakou.github.io/
-    - name: Wilf Wilson
-      url: http://wilf.me
+    - name: Wilf A. Wilson
+      url: https://wilf.me
 
 maintainers:
     - name: James Mitchell
       url: https://jdbm.me
-    - name: Wilf Wilson
-      url: http://wilf.me
+    - name: Wilf A. Wilson
+      url: https://wilf.me
 
 contributors:
     - name: Stuart Burrell
@@ -44,7 +44,7 @@ contributors:
     - name: Murray Whyte
       url: mailto:mw231@st-andrews.ac.uk
 
-GAP: ">=4.9.0"
+GAP: ">=4.10.0"
 
 needed-pkgs:
     - name: "io"
@@ -68,13 +68,13 @@ suggested-pkgs:
       version: ">=0.2"
       url: "http://TODO/"
 
-www: https://gap-packages.github.io/Digraphs
+www: https://digraphs.github.io/Digraphs
 readme: README.md
-packageinfo: https://gap-packages.github.io/Digraphs/PackageInfo.g
+packageinfo: https://digraphs.github.io/Digraphs/PackageInfo.g
 
 downloads:
     - name: .tar.gz
-      url: https://github.com/gap-packages/Digraphs/releases/download/v1.3.0/digraphs-1.3.0.tar.gz
+      url: https://github.com/digraphs/Digraphs/releases/download/v1.3.1/digraphs-1.3.1.tar.gz
 
 abstract: |
     The <b>Digraphs</b> package is a <b>GAP</b> package for digraphs and multidigraphs.

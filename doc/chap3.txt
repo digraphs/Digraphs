@@ -1133,8 +1133,9 @@
   
   [33X[0;0YIf  [3Xdigraph[103X belongs to [2XIsMutableDigraph[102X ([14X3.1-2[114X), then the vertices are added
   directly  to  [3Xdigraph[103X,  which  is  changed  in-place.  If [3Xdigraph[103X belongs to
-  [2XIsImmutableDigraph[102X  ([14X3.1-3[114X),  then  the  result  is returned as an immutable
-  digraph.[133X
+  [2XIsImmutableDigraph[102X  ([14X3.1-3[114X),  then [3Xdigraph[103X itself is returned if no vertices
+  are  added  (i.e.  [10X[3Xm[103X[10X=0[110X  or  [3Xlabels[103X  is empty), otherwise the result is a new
+  immutable digraph.[133X
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27XD := CompleteDigraph(3);[127X[104X
