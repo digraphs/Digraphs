@@ -622,7 +622,7 @@ function(D1, D2)
   next  := 0;
 
   map := function(a, b)
-    return (a - 1) * m + b;
+    return (a - 1) * n + b;
   end;
 
   for u in [1 .. m] do
