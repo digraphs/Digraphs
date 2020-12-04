@@ -101,5 +101,5 @@ most recently released version of the package when possible.
 
 Enjoy!
 
-[Digraphs webpage]: https://gap-packages.github.io/Digraphs
+[Digraphs webpage]: https://digraphs.github.io/Digraphs
 [GAP]: https://www.gap-system.org
