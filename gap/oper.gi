@@ -63,8 +63,12 @@ end);
 
 InstallMethod(DigraphAddVertices, "for an immutable digraph and list",
 [IsImmutableDigraph, IsList],
-{D, labels} -> MakeImmutable(DigraphAddVertices(DigraphMutableCopy(D),
-                                                labels)));
+function(D, labels)
+  if IsEmpty(labels) then
+    return D;
+  fi;
+  return MakeImmutable(DigraphAddVertices(DigraphMutableCopy(D), labels));
+end);
 
 InstallMethod(DigraphAddVertices, "for a mutable digraph and an integer",
 [IsMutableDigraph, IsInt],
@@ -79,7 +83,12 @@ end);
 
 InstallMethod(DigraphAddVertices, "for an immutable digraph and an integer",
 [IsImmutableDigraph, IsInt],
-{D, m} -> MakeImmutable(DigraphAddVertices(DigraphMutableCopy(D), m)));
+function(D, m)
+  if m = 0 then
+    return D;
+  fi;
+  return MakeImmutable(DigraphAddVertices(DigraphMutableCopy(D), m));
+end);
 
 # Included for backwards compatibility, even though the 2nd arg is redundant.
 # See https://github.com/digraphs/Digraphs/issues/264
