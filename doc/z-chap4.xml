@@ -35,9 +35,13 @@
     <#Include Label="InDegreeOfVertex">
     <#Include Label="InNeighboursOfVertex">
     <#Include Label="DigraphLoops">
-    <#Include Label="PartialOrderDigraphMeetOfVertices">
     <#Include Label="DegreeMatrix">
     <#Include Label="LaplacianMatrix">
+  </Section>
+  
+  <Section><Heading>Orders</Heading>
+    <#Include Label="PartialOrderDigraphMeetOfVertices">
+    <#Include Label="NonUpperSemimodularPair">
   </Section>
 
   <Section><Heading>Reachability and connectivity</Heading>

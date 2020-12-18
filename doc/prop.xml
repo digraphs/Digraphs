@@ -1459,3 +1459,39 @@ true
   </Description>
 </ManSection>
 <#/GAPDoc>
+
+<#GAPDoc Label="IsUpperSemimodularDigraph">
+<ManSection>
+  <Prop Name="IsUpperSemimodularDigraph" Arg="D"/>
+  <Prop Name="IsLowerSemimodularDigraph" Arg="D"/>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
+  <Description>
+    <C>IsUpperSemimodularDigraph</C> returns <K>true</K> if the digraph
+    <A>D</A> represents an upper semimodular lattice and <K>false</K> if it
+    does not.  Similarly, <C>IsLowerSemimodularDigraph</C> returns <K>true</K>
+    if <A>D</A> represents a lower semimodular lattice and <K>false</K> if
+    it does not. <P/>
+
+    In a lattice we say that a vertex <C>a</C> <E>covers</E> a vertex <C>b</C>
+    if <C>a</C> is greater than <C>b</C>, and there are no further vertices
+    between <C>a</C> and <C>b</C>.  A lattice is <E>upper semimodular</E> if
+    whenever the meet of <C>a</C> and <C>b</C> is covered by <C>a</C>, the join
+    of <C>a</C> and <C>b</C> covers <C>b</C>.  <E>Lower semimodularity</E> is
+    defined analogously. <P/>
+
+    See also <Ref Prop="IsLatticeDigraph"/>, <Ref Oper="NonUpperSemimodularPair"/>, 
+    and <Ref Oper="NonLowerSemimodularPair"/>.
+
+    &MUTABLE_RECOMPUTED_PROP;
+
+    <Example><![CDATA[
+gap> D := DigraphFromDigraph6String(
+> "&M~~sc`lYUZO__KIBboC_@h?U_?_GL?A_?c");
+<immutable digraph with 14 vertices, 66 edges>
+gap> IsUpperSemimodularDigraph(D);
+true
+gap> IsLowerSemimodularDigraph(D);
+false]]></Example>
+</Description>
+</ManSection>
+<#/GAPDoc>
