@@ -1,5 +1,7 @@
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.198140.svg)](https://doi.org/10.5281/zenodo.198140)
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/digraphs/digraphs/master)
+[![Build status](https://github.com/digraphs/Digraphs/workflows/CI/badge.svg?branch=master)](https://github.com/digraphs/Digraphs/actions?query=workflow%3ACI+branch%3Amaster)
+[![Code coverage](https://codecov.io/gh/digraphs/Digraphs/branch/master/graphs/badge.svg)](https://codecov.io/gh/digraphs/Digraphs/branch/master)
 
 ## README
 
@@ -24,9 +26,9 @@ For questions, remarks, suggestions, and issues please use the
 
 ## Installation
 
-It is assumed that you have a working copy of [GAP][] with version number 4.9.0
-or higher.  The most up-to-date version of GAP, and instructions on how to
-install it, can be obtained from the
+It is assumed that you have a working copy of [GAP][] with version number
+4.10.0 or higher.  The most up-to-date version of GAP, and instructions on how
+to install it, can be obtained from the 
 [main GAP webpage](https://www.gap-system.org).
 
 The following is a summary of the steps that should lead to a successful
@@ -101,5 +103,5 @@ most recently released version of the package when possible.
 
 Enjoy!
 
-[Digraphs webpage]: https://gap-packages.github.io/Digraphs
+[Digraphs webpage]: https://digraphs.github.io/Digraphs
 [GAP]: https://www.gap-system.org

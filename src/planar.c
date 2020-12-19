@@ -32,13 +32,6 @@
 #include "planarity/graphK4Search.h"
 #endif
 
-#if !defined(GAP_KERNEL_MAJOR_VERSION) || GAP_KERNEL_MAJOR_VERSION < 3
-// compatibility with GAP <= 4.9
-static inline Obj NEW_PLIST_IMM(UInt type, Int plen) {
-  return NEW_PLIST(type | IMMUTABLE, plen);
-}
-#endif
-
 // Forward declaration of the main function in this file.
 Obj boyers_planarity_check(Obj digraph, int flags, bool krtwsk);
 

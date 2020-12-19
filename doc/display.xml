@@ -367,7 +367,7 @@ gap> FileString("dot/k4.dot", DotDigraph(gr));
     <Attr Name="DotSymmetricDigraph" Arg="digraph"/>
     <Oper Name="DotSymmetricColoredDigraph" Arg="digraph, vert, edge"/>
     <Oper Name="DotSymmetricVertexColoredDigraph" Arg="digraph, vert"/>
-    <Oper Name="DotSymmetricColoredDigraph" Arg="digraph, edge"/>
+    <Oper Name="DotSymmetricEdgeColoredDigraph" Arg="digraph, edge"/>
     <Returns>A string.</Returns>
     <Description>
       This function produces a graphical representation of the symmetric
@@ -376,7 +376,7 @@ gap> FileString("dot/k4.dot", DotDigraph(gr));
       <Ref Prop="IsSymmetricDigraph"/>.<P/>
 
       The function <C>DotSymmetricColoredDigraph</C> differs from <C>DotDigraph</C>
-      only in that the values in given in the two lists are used to color the vertices
+      only in that the values given in the two lists are used to color the vertices
       and edges of the graph when displayed. The list for vertex colours should be
       a list of length equal to the number of vertices, containing strings that
       are accepted by the graphviz software, which is the one used for graph
@@ -395,7 +395,7 @@ gap> FileString("dot/k4.dot", DotDigraph(gr));
       then the function will return an error.  <P/>
 
       The function <C>DotSymmetricEdgeColoredDigraph</C> differs from <C>DotDigraph</C>
-      only in that the values in given in the list is used to color the edges
+      only in that the values given in the list are used to color the edges
       of the graph when displayed. The list for edge colours should be
       a list of lists with the same shape of the outneighbours, containing strings that
       are accepted by the graphviz software, which is the one used for graph

@@ -3,48 +3,56 @@
 import tempfile, subprocess, sys, os, ntpath, re
 from os.path import exists, isdir, isfile
 
-_ERR_PREFIX = '\033[31mcoverage.py: error: '
-_WARN_PREFIX = '\033[31mcoverage.py: warning: '
-_BOLD_PREFIX = '\033[1m'
 _BLUE_PREFIX = '\033[34m'
+_RED_PREFIX = '\033[31m'
+_RESET = '\033[0m' 
+_ERR_PREFIX = _RED_PREFIX + 'coverage.py: error: '
+_WARN_PREFIX = _RED_PREFIX + 'coverage.py: warning: '
+
+def error_exit(msg):
+    print(_ERR_PREFIX + msg + _RESET)
+    sys.exit(1)
+
+def warn_exit(msg):
+    print(_WARN_PREFIX + msg + _RESET)
+    sys.exit(0)
+
+if len(sys.argv) != 3:
+    error_exit('arguments must be a test file and the threshold')
 
 f = str(sys.argv[1])
 if not (exists(f) and isfile(f)):
-    sys.exit(_ERR_PREFIX + f + ' does not exist!\033[0m')
+    error_exit(f + ' does not exist!')
 
 threshold = int(sys.argv[2])
 
 _DIR = tempfile.mkdtemp()
-_COMMANDS = 'echo "LoadPackage(\\"digraphs\\", false);;\n'
-_COMMANDS += 'Test(\\"' + f + '\\");;\n'
-_COMMANDS += '''UncoverageLineByLine();;
-LoadPackage(\\"profiling\\", false);;
-filesdir := Concatenation(DIGRAPHS_Dir(), \\"/gap/\\");;'''
-_COMMANDS += 'outdir := \\"' + _DIR + '\\";;\n'
-_COMMANDS += 'x := ReadLineByLineProfile(\\"' + _DIR + '/profile.gz\\");;\n'
-_COMMANDS += 'OutputAnnotatedCodeCoverageFiles(x, filesdir, outdir);"'
+_COMMANDS = 'LoadPackage("digraphs", false); Test("' + f + '");;'
+_COMMANDS += 'outdir := "' + _DIR + '";;'
+_COMMANDS += '''
+UncoverageLineByLine();;
+LoadPackage("profiling", false);;
+filesdir := Concatenation(DIGRAPHS_Dir(), "/gap/");;
+x := ReadLineByLineProfile(Concatenation(outdir, "/profile.gz"));;
+OutputAnnotatedCodeCoverageFiles(x, filesdir, outdir);
+QUIT_GAP(0);
+'''
 
-pro1 = subprocess.Popen(_COMMANDS, stdout=subprocess.PIPE, shell=True)
-_RUN_GAP = '../../bin/gap.sh -A -q -m 1g -o 2g -T --cover ' + _DIR + '/profile.gz'
+_RUN_GAP = '../../bin/gap.sh -A -q -m 1g -o 2g -T --cover ' + _DIR + '/profile.gz -c "' + _COMMANDS.replace('"', '\\"') + '"'
 
 try:
-    pro2 = subprocess.Popen(_RUN_GAP,
-                            stdin=pro1.stdout,
-                            shell=True)
-    pro2.wait()
+    pro = subprocess.Popen(_RUN_GAP, shell=True)
+    pro.wait()
 except KeyboardInterrupt:
-    pro1.terminate()
-    pro1.wait()
-    pro2.terminate()
-    pro2.wait()
-    sys.exit('\033[31mKilled!\033[0m')
+    pro.terminate()
+    pro.wait()
+    error_exit('Killed!')
 except (subprocess.CalledProcessError, IOError, OSError):
-    sys.exit(_ERR_PREFIX + 'Something went wrong calling GAP!\033[0m')
+    error_exit('Something went wrong calling GAP!')
 
 filename = _DIR + '/index.html'
 if not (exists(filename) and isfile(filename)):
-    print(_ERR_PREFIX + 'Failed to find file://' + filename + '\033[0m')
-    sys.exit(1)
+    error_exit('Failed to find file://' + filename)
 
 gi_file = ntpath.basename(f).split('.')[0] + '.gi'
 for line in open(filename):
@@ -53,13 +61,10 @@ for line in open(filename):
 
 search = re.search('coverage\d\d+[\'"]>(\d+)</td><td>([\d,]+)</td><td>([\d,]+)</td>', line)
 if search == None:
-    print(_WARN_PREFIX + 'Could not find .gi file to which this .tst refers\033[0m')
-    sys.exit(0)
+    warn_exit('Could not find .gi file to which this .tst refers')
 
 percentage = search.group(1)
-print(_BLUE_PREFIX + gi_file + ' has ' + percentage + '% coverage: ' + search.group(2) + '/' + search.group(3) + ' lines\033[0m')
+print(_BLUE_PREFIX + gi_file + ' has ' + percentage + '% coverage: ' + search.group(2) + '/' + search.group(3) + ' lines' + _RESET)
 
 if int(percentage) < threshold:
-    print(_WARN_PREFIX + percentage + '% is insufficient code coverage for ' + gi_file + ' \033[0m')
-
-sys.exit(0)
+    warn_exit(percentage + '% is insufficient code coverage for ' + gi_file)

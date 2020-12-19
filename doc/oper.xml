@@ -320,8 +320,10 @@ true
 
     If <A>digraph</A> belongs to <Ref Filt="IsMutableDigraph"/>, then the
     vertices are added directly to <A>digraph</A>, which is changed in-place.
-    If <A>digraph</A> belongs to <Ref Filt="IsImmutableDigraph"/>, then the
-    result is returned as an immutable digraph.
+    If <A>digraph</A> belongs to <Ref Filt="IsImmutableDigraph"/>, then
+    <A>digraph</A> itself is returned if no vertices are added
+    (i.e. <C><A>m</A>=0</C> or <A>labels</A> is empty), otherwise
+    the result is a new immutable digraph.
     <P/>
 
     <Example><![CDATA[
