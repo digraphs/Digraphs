@@ -1755,12 +1755,12 @@ gap> DigraphDijkstra(D, 1, 2);
   <A>D1</A> and <C>V2</C> is the vertex set of <A>D2</A> (a vertex
   <C>[a, b]</C> has label <C>(a - 1) * |V2| + b</C> in the  output). There is
   an edge from <C>[a, b]</C> to <C>[c, d]</C> precisely if both of:
+<List>
+  <Item> The vertices <C>a</C> and <C>c</C> of <A>D1</A> are equal if and only if
+     the vertices <C>b</C> and <C>d</C> of <A>D2</A> are equal.</Item>
 
-  1. The vertices <C>a</C> and <C>c</C> of <A>D1</A> are equal if and only if
-     the vertices <C>b</C> and <C>d</C> of <A>D2</A> are equal.
-
-  2. There is an edge from <C>a</C> to <C>c</C> in <A>D1</A> if and only if
-     there is an edge from <C>b</C> to <C>d</C> in <A>D2</A>.
+  <Item> There is an edge from <C>a</C> to <C>c</C> in <A>D1</A> if and only if
+     there is an edge from <C>b</C> to <C>d</C> in <A>D2</A>.</Item></List>
 
   are satisfied. This digraph is of note as the complete (with loops) subgraphs
   of <C>MPD</C> are precisely the partial isomorphisms from <A>D1</A> to

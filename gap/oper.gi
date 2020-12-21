@@ -618,7 +618,7 @@ function(D1, D2)
   local m, n, E1, E2, edges, next, map, u, v, w, x;
 
   if IsMultiDigraph(D1) or IsMultiDigraph(D2) then
-    ErrorNoReturn("ModularProduct does not support multidigraphs.");
+    ErrorNoReturn("ModularProduct does not support multidigraphs,");
   fi;
 
   m := DigraphNrVertices(D1);
@@ -654,7 +654,7 @@ function(D1, D2)
       od;
     od;
   od;
-  return Digraph(edges);
+  return DigraphNC(edges);
 end);
 
 ###############################################################################
