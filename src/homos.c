@@ -133,6 +133,7 @@ Obj FuncOutNeighbours(Obj, Obj);
 
 // GAP level things, imported in digraphs.c
 extern Obj IsDigraph;
+extern Obj IsMultiDigraph;
 extern Obj DIGRAPHS_ValidateVertexColouring;
 extern Obj Infinity;
 extern Obj IsSymmetricDigraph;
@@ -292,23 +293,28 @@ homo_hook_collect(void* user_param, uint16_t const nr, uint16_t const* map) {
 
 static void get_automorphism_group_from_gap(Obj digraph_obj, PermColl* out) {
   DIGRAPHS_ASSERT(CALL_1ARGS(IsDigraph, digraph_obj) == True);
+  if (CALL_1ARGS(IsMultiDigraph, digraph_obj) == True) {
+    ErrorQuit("expected a digraph without multiple edges!", 0L, 0L);
+  }
   Obj o = CALL_1ARGS(AutomorphismGroup, digraph_obj);
   o     = CALL_1ARGS(GeneratorsOfGroup, o);
   DIGRAPHS_ASSERT(IS_LIST(o));
   clear_perm_coll(out);
   out->degree = PERM_DEGREE;
   DIGRAPHS_ASSERT(out->capacity >= LEN_LIST(o));
+  Int k = 0;  // perm coll index
   for (Int i = 1; i <= LEN_LIST(o); ++i) {
     DIGRAPHS_ASSERT(ISB_LIST(o, i));
     DIGRAPHS_ASSERT(IS_PERM2(ELM_LIST(o, i)) || IS_PERM4(ELM_LIST(o, i)));
     Obj p = ELM_LIST(o, i);
     DIGRAPHS_ASSERT(LargestMovedPointPerm(p) <= PERM_DEGREE);
     if (LargestMovedPointPerm(p) == 0) {
+      // the index k must be separate from the index i because of this continue
       continue;
     }
-    Perm q = out->perms[i - 1];
+    Perm q = out->perms[k++];
     out->size++;
-    DIGRAPHS_ASSERT(out->size == i);
+    DIGRAPHS_ASSERT(out->size == k);
     size_t dep;
     if (IS_PERM2(p)) {
       UInt2 const* ptp2 = CONST_ADDR_PERM2(p);
