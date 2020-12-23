@@ -377,6 +377,14 @@ gap> HomomorphismDigraphsFinder(NullDigraph(1), NullDigraph(100), fail, [], infi
 > fail, 2, [1 .. 100], [], fail, fail);
 [ IdentityTransformation ]
 
+# Issue 367: bug in the homomorphisms finder c code
+gap> D := Digraph([[2, 2], []]);;
+gap> GeneratorsOfEndomorphismMonoid(D);
+Error, expected a digraph without multiple edges!
+gap> D := Digraph([[2, 2, 2, 2, 2], []]);;
+gap> GeneratorsOfEndomorphismMonoid(D);
+Error, expected a digraph without multiple edges!
+
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(gr2);
 gap> Unbind(gr);

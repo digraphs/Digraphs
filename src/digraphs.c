@@ -44,6 +44,7 @@
 
 // GAP level things, imported in InitKernel below
 Obj IsDigraph;
+Obj IsMultiDigraph;
 Obj IsDigraphEdge;
 Obj DIGRAPHS_ValidateVertexColouring;
 Obj Infinity;
@@ -2303,6 +2304,7 @@ static Int InitKernel(StructInitInfo* module) {
   /* init filters and functions                                          */
   InitHdlrFuncsFromTable(GVarFuncs);
   ImportGVarFromLibrary("IsDigraph", &IsDigraph);
+  ImportGVarFromLibrary("IsMultiDigraph", &IsMultiDigraph);
   ImportGVarFromLibrary("IsDigraphEdge", &IsDigraphEdge);
   ImportGVarFromLibrary("DIGRAPHS_ValidateVertexColouring",
                         &DIGRAPHS_ValidateVertexColouring);
