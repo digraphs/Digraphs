@@ -138,7 +138,9 @@ gap> for i in [1 .. 10] do
 gap> IO_Close(file);;
 gap> file := DigraphFile(filename, "r");;
 gap> ReadDigraphs(file, 9);
-<immutable digraph with 3 vertices, 5 edges>]]></Example>
+<immutable digraph with 3 vertices, 5 edges>
+gap> IO_Close(file);;
+]]></Example>
     </Description>
 </ManSection>
 <#/GAPDoc>

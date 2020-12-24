@@ -1285,6 +1285,7 @@ function(func, name, delimiter, offset, ignore)
   fi;
 
   lines := IO_ReadLines(file);
+  IO_Close(file);
   edges := EmptyPlist(Length(lines));
   nr := 0;
 
