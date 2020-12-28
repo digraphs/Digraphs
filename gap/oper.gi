@@ -1671,6 +1671,37 @@ function(D, list)
   return DigraphShortestDistance(D, list[1], list[2]);
 end);
 
+InstallMethod(IsReachableFrom, "for a digraph and a vertex",
+[IsDigraph, IsPosInt],
+function(D, root)
+local N, index, current, succ, visited, prev, n, i, parent;
+  N := DigraphNrVertices(D);
+  index := ListWithIdenticalEntries(N, 1);
+  current := root;
+  succ := OutNeighbours(D);
+  visited := [root];
+  parent := [];
+  parent[root] := fail;
+  repeat
+    prev := current;
+    for i in [index[current] .. Length(succ[current])] do
+      n := succ[current][i];
+      if not (n in visited) then
+        Add(visited, n);
+        parent[n] := current;
+        index[current] := i + 1;
+        current := n;
+        break;
+      fi;
+    od;
+    if prev = current then
+      current := parent[current];
+    fi;
+  until current = fail;
+  return visited;
+end);
+
+
 #############################################################################
 # 10. Operations for vertices
 #############################################################################
