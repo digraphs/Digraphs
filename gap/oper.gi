@@ -1674,7 +1674,7 @@ end);
 InstallMethod(IsReachableFrom, "for a digraph and a vertex",
 [IsDigraph, IsPosInt],
 function(D, root)
-local N, index, current, succ, visited, prev, n, i, parent;
+  local N, index, current, succ, visited, prev, n, i, parent;
   N := DigraphNrVertices(D);
   index := ListWithIdenticalEntries(N, 1);
   current := root;
@@ -1700,7 +1700,6 @@ local N, index, current, succ, visited, prev, n, i, parent;
   until current = fail;
   return visited;
 end);
-
 
 #############################################################################
 # 10. Operations for vertices
