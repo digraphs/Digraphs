@@ -1298,6 +1298,44 @@ false
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="IsReachableFrom">
+<ManSection>
+  <Oper Name="IsReachable" Arg="digraph, root"/>
+  <Returns>A list.</Returns>
+  <Description>
+    This operation returns a list of the vertices  <A>v</A> , for which there exists
+    a non-trivial directed walk from vertex <A>root</A> to vertex <A>v</A> in the digraph
+    <A>digraph</A>. See section <Ref Subsect="Definitions" Style="Number" />
+    for the definition of anon-trivial directed walk.
+    <P/>
+
+    The method for <C>IsReachableFrom</C> has worst case complexity of <M>O(m +
+      n)</M> where <M>m</M> is the number of edges and <M>n</M> the number of
+    vertices in <A>digraph</A>.
+
+<Example><![CDATA[
+gap> Digraph([[1, 2, 3], [4], [1, 5], [], [2]]);
+<immutable digraph with 5 vertices, 7 edges>
+gap> IsReachableFrom(D, 1);
+[ 1, 2, 6, 3, 4, 7, 8, 5 ]
+gap> D := Digraph([[1, 2, 3], [4], [1, 5], [], [2]]);
+<immutable digraph with 5 vertices, 7 edges>
+gap> IsReachableFrom(D, 1);
+[ 1, 2, 4, 3, 5 ]
+gap> IsReachableFrom(D, 2);
+[ 2, 4 ]
+gap> IsReachableFrom(D, 3);
+[ 3, 1, 2, 4, 5 ]
+gap> IsReachableFrom(D, 4);
+[ 4 ]
+gap> IsReachableFrom(D, 5);
+[ 5, 2, 4 ]
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+
 <#GAPDoc Label="DigraphPath">
 <ManSection>
   <Oper Name="DigraphPath" Arg="digraph, u, v"/>
