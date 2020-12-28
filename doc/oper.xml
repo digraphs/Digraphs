@@ -1314,10 +1314,6 @@ false
     vertices in <A>digraph</A>.
 
 <Example><![CDATA[
-gap> Digraph([[1, 2, 3], [4], [1, 5], [], [2]]);
-<immutable digraph with 5 vertices, 7 edges>
-gap> IsReachableFrom(D, 1);
-[ 1, 2, 6, 3, 4, 7, 8, 5 ]
 gap> D := Digraph([[1, 2, 3], [4], [1, 5], [], [2]]);
 <immutable digraph with 5 vertices, 7 edges>
 gap> IsReachableFrom(D, 1);
