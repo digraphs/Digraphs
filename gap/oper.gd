@@ -116,7 +116,7 @@ DeclareOperation("DigraphShortestDistance", [IsDigraph, IsPosInt, IsPosInt]);
 DeclareOperation("DigraphShortestDistance", [IsDigraph, IsList, IsList]);
 DeclareOperation("DigraphShortestDistance", [IsDigraph, IsList]);
 DeclareOperation("DigraphShortestPath", [IsDigraph, IsPosInt, IsPosInt]);
-DeclareOperation("IsReachableFrom", [IsDigraph, IsPosInt]);
+DeclareOperation("VerticesReachableFrom", [IsDigraph, IsPosInt]);
 # 10. Operations for vertices . . .
 DeclareOperation("PartialOrderDigraphJoinOfVertices",
                  [IsDigraph, IsPosInt, IsPosInt]);

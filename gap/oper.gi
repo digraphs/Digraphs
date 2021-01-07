@@ -1671,7 +1671,7 @@ function(D, list)
   return DigraphShortestDistance(D, list[1], list[2]);
 end);
 
-InstallMethod(IsReachableFrom, "for a digraph and a vertex",
+InstallMethod(VerticesReachableFrom, "for a digraph and a vertex",
 [IsDigraph, IsPosInt],
 function(D, root)
   local N, index, current, succ, visited, prev, n, i, parent;

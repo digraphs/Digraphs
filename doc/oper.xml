@@ -1298,9 +1298,9 @@ false
 </ManSection>
 <#/GAPDoc>
 
-<#GAPDoc Label="IsReachableFrom">
+<#GAPDoc Label="VerticesReachableFrom">
 <ManSection>
-  <Oper Name="IsReachable" Arg="digraph, root"/>
+  <Oper Name="VerticesReachableFrom" Arg="digraph, root"/>
   <Returns>A list.</Returns>
   <Description>
     This operation returns a list of the vertices  <A>v</A> , for which there exists
@@ -1309,22 +1309,22 @@ false
     for the definition of anon-trivial directed walk.
     <P/>
 
-    The method for <C>IsReachableFrom</C> has worst case complexity of <M>O(m +
+    The method for <C>VerticesReachableFrom</C> has worst case complexity of <M>O(m +
       n)</M> where <M>m</M> is the number of edges and <M>n</M> the number of
     vertices in <A>digraph</A>.
 
 <Example><![CDATA[
 gap> D := Digraph([[1, 2, 3], [4], [1, 5], [], [2]]);
 <immutable digraph with 5 vertices, 7 edges>
-gap> IsReachableFrom(D, 1);
+gap> VerticesReachableFrom(D, 1);
 [ 1, 2, 4, 3, 5 ]
-gap> IsReachableFrom(D, 2);
+gap> VerticesReachableFrom(D, 2);
 [ 2, 4 ]
-gap> IsReachableFrom(D, 3);
+gap> VerticesReachableFrom(D, 3);
 [ 3, 1, 2, 4, 5 ]
-gap> IsReachableFrom(D, 4);
+gap> VerticesReachableFrom(D, 4);
 [ 4 ]
-gap> IsReachableFrom(D, 5);
+gap> VerticesReachableFrom(D, 5);
 [ 5, 2, 4 ]
 ]]></Example>
   </Description>

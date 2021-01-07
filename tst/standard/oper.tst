@@ -1778,71 +1778,71 @@ gap> DigraphShortestPath(gr, 12, 5014);
 # IsReachableFrom
 gap> D := CompleteDigraph(5);
 <immutable complete digraph with 5 vertices>
-gap> IsReachableFrom(D, 1);
+gap> VerticesReachableFrom(D, 1);
 [ 1, 2, 3, 4, 5 ]
-gap> IsReachableFrom(D, 3);
+gap> VerticesReachableFrom(D, 3);
 [ 3, 1, 2, 4, 5 ]
 gap> D := EmptyDigraph(5);
 <immutable empty digraph with 5 vertices>
-gap> IsReachableFrom(D, 1);
+gap> VerticesReachableFrom(D, 1);
 [ 1 ]
-gap> IsReachableFrom(D, 3);
+gap> VerticesReachableFrom(D, 3);
 [ 3 ]
 gap> D := CycleDigraph(4);
 <immutable cycle digraph with 4 vertices>
-gap> IsReachableFrom(D, 1);
+gap> VerticesReachableFrom(D, 1);
 [ 1, 2, 3, 4 ]
-gap> IsReachableFrom(D, 3);
+gap> VerticesReachableFrom(D, 3);
 [ 3, 4, 1, 2 ]
 gap> D := ChainDigraph(5);
 <immutable chain digraph with 5 vertices>
-gap> IsReachableFrom(D, 1);
+gap> VerticesReachableFrom(D, 1);
 [ 1, 2, 3, 4, 5 ]
-gap> IsReachableFrom(D, 3);
+gap> VerticesReachableFrom(D, 3);
 [ 3, 4, 5 ]
-gap> IsReachableFrom(D, 5);
+gap> VerticesReachableFrom(D, 5);
 [ 5 ]
 gap> D := Digraph([[2, 3, 5], [1, 6], [4, 6, 7], [7, 8], [4], [], [8, 6], []]);
 <immutable digraph with 8 vertices, 13 edges>
-gap> IsReachableFrom(D, 1);
+gap> VerticesReachableFrom(D, 1);
 [ 1, 2, 6, 3, 4, 7, 8, 5 ]
-gap> IsReachableFrom(D, 2);
+gap> VerticesReachableFrom(D, 2);
 [ 2, 1, 3, 4, 7, 8, 6, 5 ]
-gap> IsReachableFrom(D, 3);
+gap> VerticesReachableFrom(D, 3);
 [ 3, 4, 7, 8, 6 ]
-gap> IsReachableFrom(D, 4);
+gap> VerticesReachableFrom(D, 4);
 [ 4, 7, 8, 6 ]
-gap> IsReachableFrom(D, 5);
+gap> VerticesReachableFrom(D, 5);
 [ 5, 4, 7, 8, 6 ]
-gap> IsReachableFrom(D, 6);
+gap> VerticesReachableFrom(D, 6);
 [ 6 ]
-gap> IsReachableFrom(D, 7);
+gap> VerticesReachableFrom(D, 7);
 [ 7, 8, 6 ]
-gap> IsReachableFrom(D, 8);
+gap> VerticesReachableFrom(D, 8);
 [ 8 ]
 gap> D := Digraph([[1, 2, 3], [4], [1, 5], [], [2]]);
 <immutable digraph with 5 vertices, 7 edges>
-gap> IsReachableFrom(D, 1);
+gap> VerticesReachableFrom(D, 1);
 [ 1, 2, 4, 3, 5 ]
-gap> IsReachableFrom(D, 2);
+gap> VerticesReachableFrom(D, 2);
 [ 2, 4 ]
-gap> IsReachableFrom(D, 3);
+gap> VerticesReachableFrom(D, 3);
 [ 3, 1, 2, 4, 5 ]
-gap> IsReachableFrom(D, 4);
+gap> VerticesReachableFrom(D, 4);
 [ 4 ]
-gap> IsReachableFrom(D, 5);
+gap> VerticesReachableFrom(D, 5);
 [ 5, 2, 4 ]
 gap> D := Digraph(IsMutableDigraph, [[1, 2, 3], [4], [1, 5], [], [2]]);
 <mutable digraph with 5 vertices, 7 edges>
-gap> IsReachableFrom(D, 1);
+gap> VerticesReachableFrom(D, 1);
 [ 1, 2, 4, 3, 5 ]
-gap> IsReachableFrom(D, 2);
+gap> VerticesReachableFrom(D, 2);
 [ 2, 4 ]
-gap> IsReachableFrom(D, 3);
+gap> VerticesReachableFrom(D, 3);
 [ 3, 1, 2, 4, 5 ]
-gap> IsReachableFrom(D, 4);
+gap> VerticesReachableFrom(D, 4);
 [ 4 ]
-gap> IsReachableFrom(D, 5);
+gap> VerticesReachableFrom(D, 5);
 [ 5, 2, 4 ]
 gap> D;
 <mutable digraph with 5 vertices, 7 edges>
