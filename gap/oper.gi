@@ -1698,6 +1698,7 @@ function(D, root)
       current := parent[current];
     fi;
   until current = fail;
+  Remove(visited, 1);
   return visited;
 end);
 

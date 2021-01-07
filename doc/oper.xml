@@ -1303,10 +1303,10 @@ false
   <Oper Name="VerticesReachableFrom" Arg="digraph, root"/>
   <Returns>A list.</Returns>
   <Description>
-    This operation returns a list of the vertices  <A>v</A> , for which there exists
+    This operation returns a list of the vertices  <A>v</A>, for which there exists
     a non-trivial directed walk from vertex <A>root</A> to vertex <A>v</A> in the digraph
-    <A>digraph</A>. See section <Ref Subsect="Definitions" Style="Number" />
-    for the definition of anon-trivial directed walk.
+    <A>digraph</A>. See Section <Ref Subsect="Definitions" Style="Number" />
+    for the definition of a non-trivial directed walk.
     <P/>
 
     The method for <C>VerticesReachableFrom</C> has worst case complexity of <M>O(m +
