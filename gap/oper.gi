@@ -1679,7 +1679,7 @@ function(D, root)
   index := ListWithIdenticalEntries(N, 1);
   current := root;
   succ := OutNeighbours(D);
-  visited := [root];
+  visited := [];
   parent := [];
   parent[root] := fail;
   repeat
@@ -1687,18 +1687,19 @@ function(D, root)
     for i in [index[current] .. Length(succ[current])] do
       n := succ[current][i];
       if not (n in visited) then
-        Add(visited, n);
-        parent[n] := current;
-        index[current] := i + 1;
-        current := n;
-        break;
+        AddSet(visited, n);
+        if n <> root then
+          parent[n] := current;
+          index[current] := i + 1;
+          current := n;
+          break;
+        fi;
       fi;
     od;
     if prev = current then
       current := parent[current];
     fi;
   until current = fail;
-  Remove(visited, 1);
   return visited;
 end);
 

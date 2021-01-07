@@ -1314,18 +1314,32 @@ false
     vertices in <A>digraph</A>.
 
 <Example><![CDATA[
-gap> D := Digraph([[1, 2, 3], [4], [1, 5], [], [2]]);
-<immutable digraph with 5 vertices, 7 edges>
+gap> D := CompleteDigraph(5);
+<immutable complete digraph with 5 vertices>
 gap> VerticesReachableFrom(D, 1);
-[ 2, 4, 3, 5 ]
-gap> VerticesReachableFrom(D, 2);
-[ 4 ]
+[ 1, 2, 3, 4, 5 ]
 gap> VerticesReachableFrom(D, 3);
-[ 1, 2, 4, 5 ]
-gap> VerticesReachableFrom(D, 4);
+[ 1, 2, 3, 4, 5 ]
+gap> D := EmptyDigraph(5);
+<immutable empty digraph with 5 vertices>
+gap> VerticesReachableFrom(D, 1);
 [  ]
+gap> VerticesReachableFrom(D, 3);
+[  ]
+gap> D := CycleDigraph(4);
+<immutable cycle digraph with 4 vertices>
+gap> VerticesReachableFrom(D, 1);
+[ 1, 2, 3, 4 ]
+gap> VerticesReachableFrom(D, 3);
+[ 1, 2, 3, 4 ]
+gap> D := ChainDigraph(5);
+<immutable chain digraph with 5 vertices>
+gap> VerticesReachableFrom(D, 1);
+[ 2, 3, 4, 5 ]
+gap> VerticesReachableFrom(D, 3);
+[ 4, 5 ]
 gap> VerticesReachableFrom(D, 5);
-[ 2, 4 ]
+[  ]
 ]]></Example>
   </Description>
 </ManSection>
