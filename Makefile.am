@@ -27,6 +27,7 @@ pkginclude_HEADERS += src/digraphs-debug.h
 pkginclude_HEADERS += src/digraphs.h
 pkginclude_HEADERS += src/homos-graphs.h
 pkginclude_HEADERS += src/homos.h
+pkginclude_HEADERS += src/cliques.h
 pkginclude_HEADERS += src/perms.h
 pkginclude_HEADERS += src/planar.h
 pkginclude_HEADERS += src/schreier-sims.h
@@ -50,6 +51,7 @@ digraphs_la_SOURCES =  src/digraphs.c
 digraphs_la_SOURCES += src/bitarray.c
 digraphs_la_SOURCES += src/conditions.c
 digraphs_la_SOURCES += src/homos.c
+digraphs_la_SOURCES += src/cliques.c
 digraphs_la_SOURCES += src/homos-graphs.c
 digraphs_la_SOURCES += src/perms.c
 digraphs_la_SOURCES += src/planar.c
@@ -121,15 +123,8 @@ doc: doc/manual.six
 doc/manual.six: doc/*.xml PackageInfo.g
 	($(GAPROOT)/bin/gap.sh -A makedoc.g)
 
-gaplint:
-	gaplint *.g gap/*
-	gaplint doc/*.xml
-	gaplint tst/testinstall.tst tst/standard/*.tst tst/extreme/*.tst tst/workspaces/*.tst
-
-cpplint:
-	cpplint src/*.[ch]
-
-lint: gaplint cpplint
+lint:
+	etc/lint.sh
 
 format:
 	clang-format -i src/*.[hc]

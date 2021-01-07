@@ -19,6 +19,7 @@
 #include <stdint.h>   // for uint64_t
 #include <stdlib.h>   // for NULL, free
 
+#include "cliques.h"
 #include "digraphs-debug.h"  // for DIGRAPHS_ASSERT
 #include "homos.h"           // for FuncHomomorphismDigraphsFinder
 #include "planar.h"          // for FUNC_IS_PLANAR, . . .
@@ -54,13 +55,15 @@ Obj IsAttributeStoringRepObj;
 Obj IsPermGroup;
 Obj IsDigraphAutomorphism;
 Obj LargestMovedPointPerms;
-
-#if !defined(GAP_KERNEL_MAJOR_VERSION) || GAP_KERNEL_MAJOR_VERSION < 3
-// compatibility with GAP <= 4.9
-static inline Obj NEW_PLIST_IMM(UInt type, Int plen) {
-  return NEW_PLIST(type | IMMUTABLE, plen);
-}
-#endif
+Obj SmallestMovedPointPerm;
+Obj IsClique;
+Obj IsTrivial;
+Obj Orbit;
+Obj Stabilizer;
+Obj IsSubset;
+Obj OnTuples;
+Obj Group;
+Obj ClosureGroup;
 
 static inline bool IsAttributeStoringRep(Obj o) {
   return (CALL_1ARGS(IsAttributeStoringRepObj, o) == True ? true : false);
@@ -2250,6 +2253,13 @@ static StructGVarFunc GVarFuncs[] = {
      FuncHomomorphismDigraphsFinder,
      "src/homos.c:FuncHomomorphismDigraphsFinder"},
 
+    {"DigraphsCliquesFinder",
+     -1,
+     "digraph, hook, user_param, limit, include, "
+     "exclude, max, size",
+     FuncDigraphsCliquesFinder,
+     "src/cliques.c:FuncDigraphsCliquesFinder"},
+
     {"IS_PLANAR", 1, "digraph", FuncIS_PLANAR, "src/planar.c:FuncIS_PLANAR"},
 
     {"PLANAR_EMBEDDING",
@@ -2321,6 +2331,15 @@ static Int InitKernel(StructInitInfo* module) {
   ImportGVarFromLibrary("IsPermGroup", &IsPermGroup);
   ImportGVarFromLibrary("IsDigraphAutomorphism", &IsDigraphAutomorphism);
   ImportGVarFromLibrary("LargestMovedPointPerms", &LargestMovedPointPerms);
+  ImportGVarFromLibrary("SmallestMovedPointPerm", &SmallestMovedPointPerm);
+  ImportGVarFromLibrary("IsClique", &IsClique);
+  ImportGVarFromLibrary("IsTrivial", &IsTrivial);
+  ImportGVarFromLibrary("Orbit", &Orbit);
+  ImportGVarFromLibrary("Stabilizer", &Stabilizer);
+  ImportGVarFromLibrary("IsSubset", &IsSubset);
+  ImportGVarFromLibrary("OnTuples", &OnTuples);
+  ImportGVarFromLibrary("Group", &Group);
+  ImportGVarFromLibrary("ClosureGroup", &ClosureGroup);
   /* return success                                                      */
   return 0;
 }

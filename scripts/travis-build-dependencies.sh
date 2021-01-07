@@ -51,7 +51,7 @@ mkdir pkg
 ################################################################################
 # Copy Digraphs to its proper location
 if [ "$SETUP" == "appveyor" ]; then
-  cp -r /cygdrive/c/projects/digraphs $GAPROOT/pkg/digraphs
+  cp -r /cygdrive/c/projects/digraphs* $GAPROOT/pkg/digraphs
 elif [ "$SETUP" == "travis" ]; then
   mv $HOME/digraphs $GAPROOT/pkg/digraphs
 fi
@@ -78,11 +78,16 @@ for PKG in "${PKGS[@]}"; do
   else
     VERSION=`grep "\"$PKG\"" $GAPROOT/pkg/digraphs/PackageInfo.g | awk -F'"' '{print $4}' | cut -c3-`
   fi
+  
+  if [ -z $VERSION ]; then
+    echo -e "\nCould not determine the version number of the package $PKG!! Aborting..."
+    exit 1
+  fi
 
   URL="https://github.com/gap-packages/$PKG/releases/download/v$VERSION/$PKG-$VERSION.tar.gz"
   echo -e "\nDownloading $PKG-$VERSION (${PACKAGES[0]} version), from URL:\n$URL"
   $CURL "$URL" -o $PKG-$VERSION.tar.gz
-  tar xf $PKG-$VERSION.tar.gz && rm $PKG-$VERSION.tar.gz
+  (tar xf $PKG-$VERSION.tar.gz && rm $PKG-$VERSION.tar.gz) || exit 1
 
   if [ -f $PKG-$VERSION/configure ]; then
     if [ "$PKG" == "orb" ] || [ "$PKG" == "grape" ] || [ "$PKG" == "datastructures" ]; then
@@ -105,7 +110,7 @@ rm packages-required-master.tar.gz
 ## Install NautyTracesInterface in Travis
 if [ "$SETUP" == "travis" ] && [ "$NAUTY" != "no" ]; then
   echo -e "\nGetting master version of NautyTracesInterface"
-  git clone -b master --depth=1 https://github.com/sebasguts/NautyTracesInterface.git $GAPROOT/pkg/nautytraces
+  git clone -b master --depth=1 https://github.com/gap-packages/NautyTracesInterface.git $GAPROOT/pkg/nautytraces
   cd $GAPROOT/pkg/nautytraces/nauty2*r* && ./configure $PKG_FLAGS && make
   cd $GAPROOT/pkg/nautytraces && ./autogen.sh && ./configure $PKG_FLAGS && make
 fi

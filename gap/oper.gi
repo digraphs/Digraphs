@@ -13,7 +13,7 @@
 #
 # 1.  Adding and removing vertices
 # 2.  Adding, removing, and reversing edges
-# 3.  Adding and removing vertices
+# 3.  Ways of combining digraphs
 # 4.  Actions
 # 5.  Substructures and quotients
 # 6.  In and out degrees, neighbours, and edges of vertices
@@ -63,8 +63,12 @@ end);
 
 InstallMethod(DigraphAddVertices, "for an immutable digraph and list",
 [IsImmutableDigraph, IsList],
-{D, labels} -> MakeImmutable(DigraphAddVertices(DigraphMutableCopy(D),
-                                                labels)));
+function(D, labels)
+  if IsEmpty(labels) then
+    return D;
+  fi;
+  return MakeImmutable(DigraphAddVertices(DigraphMutableCopy(D), labels));
+end);
 
 InstallMethod(DigraphAddVertices, "for a mutable digraph and an integer",
 [IsMutableDigraph, IsInt],
@@ -79,10 +83,15 @@ end);
 
 InstallMethod(DigraphAddVertices, "for an immutable digraph and an integer",
 [IsImmutableDigraph, IsInt],
-{D, m} -> MakeImmutable(DigraphAddVertices(DigraphMutableCopy(D), m)));
+function(D, m)
+  if m = 0 then
+    return D;
+  fi;
+  return MakeImmutable(DigraphAddVertices(DigraphMutableCopy(D), m));
+end);
 
 # Included for backwards compatibility, even though the 2nd arg is redundant.
-# See https://github.com/gap-packages/Digraphs/issues/264
+# See https://github.com/digraphs/Digraphs/issues/264
 # This is deliberately kept undocumented.
 InstallMethod(DigraphAddVertices, "for a digraph, an integer, and a list",
 [IsDigraph, IsInt, IsList],
@@ -601,6 +610,51 @@ function(arg)
   SetDigraphDirectProductProjections(D, proj);
   SetDigraphVertexLabels(D, labs);
   return D;
+end);
+
+InstallMethod(ModularProduct, "for a digraph and digraph",
+[IsDigraph, IsDigraph],
+function(D1, D2)
+  local m, n, E1, E2, edges, next, map, u, v, w, x;
+
+  if IsMultiDigraph(D1) or IsMultiDigraph(D2) then
+    ErrorNoReturn("ModularProduct does not support multidigraphs,");
+  fi;
+
+  m := DigraphNrVertices(D1);
+  n := DigraphNrVertices(D2);
+
+  E1 := DigraphDual(D1);
+  E2 := DigraphDual(D2);
+
+  edges := EmptyPlist(m * n);
+  next  := 0;
+
+  map := function(a, b)
+    return (a - 1) * n + b;
+  end;
+
+  for u in [1 .. m] do
+    for v in [1 .. n] do
+      next := next + 1;
+      edges[next] := [];
+      for w in OutNeighbours(D1)[u] do
+        for x in OutNeighbours(D2)[v] do
+          if (u = w) = (v = x) then
+            Add(edges[next], map(w, x));
+          fi;
+        od;
+      od;
+      for w in OutNeighbours(E1)[u] do
+        for x in OutNeighbours(E2)[v] do
+          if (u = w) = (v = x) then
+            Add(edges[next], map(w, x));
+          fi;
+        od;
+      od;
+    od;
+  od;
+  return DigraphNC(edges);
 end);
 
 ###############################################################################

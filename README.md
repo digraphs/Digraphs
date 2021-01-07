@@ -1,7 +1,7 @@
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.198140.svg)](https://doi.org/10.5281/zenodo.198140)
-[![Build Status](https://travis-ci.org/gap-packages/Digraphs.svg?branch=master)](https://travis-ci.org/gap-packages/Digraphs)
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/gap-packages/digraphs/master)
-
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/digraphs/digraphs/master)
+[![Build status](https://github.com/digraphs/Digraphs/workflows/CI/badge.svg?branch=master)](https://github.com/digraphs/Digraphs/actions?query=workflow%3ACI+branch%3Amaster)
+[![Code coverage](https://codecov.io/gh/digraphs/Digraphs/branch/master/graphs/badge.svg)](https://codecov.io/gh/digraphs/Digraphs/branch/master)
 
 ## README
 
@@ -22,13 +22,13 @@ for example.  This will create a subdirectory `digraphs-x.x.x`.
 ## Issues
 
 For questions, remarks, suggestions, and issues please use the
-[issue tracker](https://github.com/gap-packages/Digraphs/issues).
+[issue tracker](https://github.com/digraphs/Digraphs/issues).
 
 ## Installation
 
-It is assumed that you have a working copy of [GAP][] with version number 4.9.0
-or higher.  The most up-to-date version of GAP, and instructions on how to
-install it, can be obtained from the
+It is assumed that you have a working copy of [GAP][] with version number
+4.10.0 or higher.  The most up-to-date version of GAP, and instructions on how
+to install it, can be obtained from the 
 [main GAP webpage](https://www.gap-system.org).
 
 The following is a summary of the steps that should lead to a successful
@@ -96,12 +96,12 @@ configure options `--with-external-bliss` or `--with-external-planarity`, as
 appropriate.
 
 If you wish to install a
-[development version of the Digraphs package](https://github.com/gap-packages/Digraphs),
+[development version of the Digraphs package](https://github.com/digraphs/Digraphs),
 then you must first run the command `./autogen.sh` before compilation. However,
 development versions of the package may be unstable, and we recommend using the
 most recently released version of the package when possible.
 
 Enjoy!
 
-[Digraphs webpage]: https://gap-packages.github.io/Digraphs
+[Digraphs webpage]: https://digraphs.github.io/Digraphs
 [GAP]: https://www.gap-system.org

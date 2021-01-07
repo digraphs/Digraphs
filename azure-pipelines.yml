@@ -1,0 +1,89 @@
+pr:
+- master
+- stable-*.*
+
+trigger:
+- master
+- stable-*.*
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+    DIGRAPHS_LIB: digraphs-lib-0.6
+
+jobs:
+- job: ABI_64_GAP_master_PACKAGES_latest
+  variables:
+    SUITE: test
+    ABI: 64
+    GAP_VERSION: master
+    PACKAGES: latest
+  steps:
+  - script: ci/azure-gap.sh
+    displayName: 'Running the Digraphs package for GAP tests in docker container. . .'
+# TODO there isn't a GAP master 32 docker container yet
+# - job: ABI_32_GAP_master_PACKAGES_latest
+#   variables:
+#     SUITE: test
+#     ABI: 32
+#     GAP_VERSION: master
+#     PACKAGES: latest
+#   steps:
+#   - script: ci/azure-gap.sh
+#     displayName: 'Running the Digraphs package for GAP tests in docker container. . .'
+- job: ABI_64_GAP_411_PACKAGES_latest
+  variables:
+    SUITE: test
+    ABI: 64
+    GAP_VERSION: 4.11.0
+    PACKAGES: latest
+  steps:
+  - script: ci/azure-gap.sh
+    displayName: 'Running the Digraphs package for GAP tests in docker container. . .'
+- job: ABI_32_GAP_411_PACKAGES_latest
+  variables:
+    SUITE: test
+    ABI: 32
+    GAP_VERSION: 4.11.0
+    PACKAGES: latest
+  steps:
+  - script: ci/azure-gap.sh
+    displayName: 'Running the Digraphs package for GAP tests in docker container. . .'
+- job: ABI_64_GAP_410_PACKAGES_required
+  variables:
+    SUITE: test
+    ABI: 64
+    GAP_VERSION: 4.10.2
+    PACKAGES: required
+  steps:
+  - script: ci/azure-gap.sh
+    displayName: 'Running the Digraphs package for GAP tests in docker container. . .'
+- job: ABI_32_GAP_410_PACKAGES_required
+  variables:
+    SUITE: test
+    ABI: 32
+    GAP_VERSION: 4.10.2
+    PACKAGES: required
+  steps:
+  - script: ci/azure-gap.sh
+    displayName: 'Running the Digraphs package for GAP tests in docker container. . .'
+- job: coverage
+  variables:
+    SUITE: coverage 
+    ABI: 64
+    GAP_VERSION: 4.11.0
+    PACKAGES: latest
+    THRESHOLD: 98
+  steps:
+  - script: ci/azure-gap.sh
+    displayName: 'Running the Digraphs package for GAP tests in docker container. . .'
+- job: external_planarity_bliss
+  variables:
+    SUITE: conda
+    ABI: 64
+    GAP_VERSION: 4.11.0
+    PACKAGES: required
+  steps:
+  - script: ci/azure-gap.sh
+    displayName: 'Running the Digraphs package for GAP tests in docker container. . .'

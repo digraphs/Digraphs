@@ -32,13 +32,6 @@
 #include "planarity/graphK4Search.h"
 #endif
 
-#if !defined(GAP_KERNEL_MAJOR_VERSION) || GAP_KERNEL_MAJOR_VERSION < 3
-// compatibility with GAP <= 4.9
-static inline Obj NEW_PLIST_IMM(UInt type, Int plen) {
-  return NEW_PLIST(type | IMMUTABLE, plen);
-}
-#endif
-
 // Forward declaration of the main function in this file.
 Obj boyers_planarity_check(Obj digraph, int flags, bool krtwsk);
 
@@ -193,7 +186,7 @@ Obj boyers_planarity_check(Obj digraph, int flags, bool krtwsk) {
     SET_LEN_PLIST(subgraph, theGraph->N);
     for (int i = 1; i <= theGraph->N; ++i) {
       int nr   = 0;
-      Obj list = NEW_PLIST_IMM(T_PLIST, 0);
+      Obj list = NEW_PLIST(T_PLIST, 0);
       int j    = theGraph->V[i].link[1];
       while (j) {
         if (CALL_3ARGS(IsDigraphEdge,
@@ -206,8 +199,9 @@ Obj boyers_planarity_check(Obj digraph, int flags, bool krtwsk) {
         j = theGraph->E[j].link[1];
       }
       if (nr == 0) {
-        RetypeBag(list, T_PLIST_EMPTY);
+        SET_LEN_PLIST(list, 0);
       }
+      MakeImmutable(list);
       SET_ELM_PLIST(subgraph, i, list);
       CHANGED_BAG(subgraph);
     }

@@ -41,6 +41,8 @@ DeclareGlobalFunction("DigraphJoin");
 DeclareGlobalFunction("DigraphEdgeUnion");
 DeclareGlobalFunction("DigraphCartesianProduct");
 DeclareGlobalFunction("DigraphDirectProduct");
+DeclareOperation("ModularProduct", [IsDigraph, IsDigraph]);
+
 DeclareGlobalFunction("DIGRAPHS_CombinationOperProcessArgs");
 
 # 4. Actions . . .

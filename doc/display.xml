@@ -8,6 +8,7 @@
 #############################################################################
 ##
 
+
 <#GAPDoc Label="Splash">
   <ManSection>
     <Func Name="Splash" Arg="str, [opts]"/>
@@ -90,7 +91,6 @@
 
       This function was written by Attila Egri-Nagy and Manuel Delgado with some
       minor changes by J. D. Mitchell.<P/>
-
       <Log><![CDATA[
 gap> Splash(DotDigraph(RandomDigraph(4)));
 ]]></Log>
@@ -101,7 +101,10 @@ gap> Splash(DotDigraph(RandomDigraph(4)));
 <#GAPDoc Label="DotDigraph">
   <ManSection>
     <Attr Name="DotDigraph" Arg="digraph"/>
+    <Oper Name="DotColoredDigraph" Arg="digraph, vert, edge"/>
     <Oper Name="DotVertexLabelledDigraph" Arg="digraph"/>
+    <Oper Name="DotVertexColoredDigraph" Arg="digraph, vert"/>
+    <Oper Name="DotEdgeColoredDigraph" Arg="digraph, edge"/>
     <Returns>A string.</Returns>
     <Description>
       <C>DotDigraph</C> produces a graphical representation of the digraph
@@ -109,6 +112,33 @@ gap> Splash(DotDigraph(RandomDigraph(4)));
       with <A>digraph</A>. Edges are displayed as arrowed lines between
       vertices, with the arrowhead of each line pointing towards the range
       of the edge.<P/>
+
+      <C>DotColoredDigraph</C> differs from <C>DotDigraph</C> only in
+      that the values in given in the two lists are used to color the vertices and
+      edges of the graph when displayed. The list for vertex colours should be
+      a list of length equal to the number of vertices, containing strings that
+      are accepted by the graphviz software, which is the one used for graph
+      representation. The list for edge colours should be a list of lists
+      with the same shape of the outneighbours of the digraph that contains strings 
+      that correspond to colours accepted by the graphviz software. If the lists 
+      are not the appropriate size, or have holes then the function will return
+      an error.<P/>
+
+      <C>DotVertexColoredDigraph</C> differs from <C>DotDigraph</C> only in
+      that the values in given in the list are used to color the vertices
+      of the graph when displayed. The list for vertex colours should be
+      a list of length equal to the number of vertices, containing strings that
+      are accepted by the graphviz software, which is the one used for graph
+      representation. If the list is not the appropriate size, or has holes 
+      then the function will return an error.<P/>
+
+      <C>DotEdgeColoredDigraph</C> differs from <C>DotDigraph</C> only in
+      that the values in given in the list are used to color the vertices and
+      edges of the graph when displayed. The list for edge colours should be a list
+      of lists with the same shape of the outneighbours of the digraph that contains
+      strings that correspond to colours accepted by the graphviz software. If the 
+      list is not the appropriate size, or has holes then the function will return
+      an error.<P/>
 
       <C>DotVertexLabelledDigraph</C> differs from <C>DotDigraph</C> only in
       that the values in <Ref Oper="DigraphVertexLabels"/> are used to label
@@ -122,7 +152,6 @@ gap> Splash(DotDigraph(RandomDigraph(4)));
       The string returned by <C>DotDigraph</C> or
       <C>DotVertexLabelledDigraph</C> can be written to a file using
       the command <Ref Func="FileString" BookName="GAPDoc"/>.<P/>
-
       <Log><![CDATA[
 gap> adj := List([1 .. 4], x -> [1, 1, 1, 1]);
 [ [ 1, 1, 1, 1 ], [ 1, 1, 1, 1 ], [ 1, 1, 1, 1 ], [ 1, 1, 1, 1 ] ]
@@ -130,21 +159,248 @@ gap> adj[1][3] := 0;
 0
 gap> gr := DigraphByAdjacencyMatrix(adj);
 <immutable digraph with 4 vertices, 15 edges>
+gap> D := CompleteDigraph(4);
+<immutable complete digraph with 4 vertices>
+gap> vertcolors := [];;
+gap> vertcolors[1] := "blue";; vertcolors[2] := "red";; 
+gap> vertcolors[3] := "green";; vertcolors[4] := "yellow";;
+gap> edgecolors := [];;
+gap> edgecolors[1] := [];; edgecolors[2] := [];;
+gap> edgecolors[3] := [];; edgecolors[4] := [];; 
+gap> edgecolors[1][2] := "lightblue";;
+gap> edgecolors[1][3] := "pink";;
+gap> edgecolors[1][4] := "purple";;
+gap> edgecolors[2][1] := "lightblue";;
+gap> edgecolors[2][3] := "pink";; 
+gap> edgecolors[2][4] := "purple";; 
+gap> edgecolors[3][1] := "lightblue";; 
+gap> edgecolors[3][2] := "pink";; 
+gap> edgecolors[3][4] := "purple";;
+gap> edgecolors[4][1] := "lightblue";; 
+gap> edgecolors[4][2] := "pink";;
+gap> edgecolors[4][3] := "purple";;
+gap> Print(DotColoredDigraph(D, vertcolors, edgecolors));
+//dot
+digraph hgn{
+node [shape=circle]
+1[color=blue, style=filled]
+2[color=red, style=filled]
+3[color=green, style=filled]
+4[color=yellow, style=filled]
+1 -> 2[color=lightblue]
+1 -> 3[color=pink]
+1 -> 4[color=purple]
+2 -> 1[color=lightblue]
+2 -> 3[color=pink]
+2 -> 4[color=purple]
+3 -> 1[color=lightblue]
+3 -> 2[color=pink]
+3 -> 4[color=purple]
+4 -> 1[color=lightblue]
+4 -> 2[color=pink]
+4 -> 3[color=purple]
+}
+gap> D := EmptyDigraph(3);
+<immutable empty digraph with 3 vertices>
+gap> vertcolors := [];;
+gap> vertcolors[1] := "blue";; vertcolors[2] := "red";;
+gap> vertcolors[3] := "green";;
+gap> edgecolors := [];;
+gap> edgecolors[1] := [];; edgecolors[2] := [];; 
+gap> edgecolors[3] := [];;
+gap> Print(DotColoredDigraph(D, vertcolors, edgecolors));
+//dot
+digraph hgn{
+node [shape=circle]
+1[color=blue, style=filled]
+2[color=red, style=filled]
+3[color=green, style=filled]
+}
+gap> D := Digraph([[2], [1, 3], [2]]);
+<immutable digraph with 3 vertices, 4 edges>
+gap> vertcolors := [];;
+gap> vertcolors[1] := "blue";;
+gap> vertcolors[2] := "pink";;
+gap> vertcolors[3] := "purple";;
+gap> edgecolors := [];;
+gap> edgecolors[1] := [];; edgecolors[2] := [];;
+gap> edgecolors[3] := [];;
+gap> edgecolors[1][2] := "green";; edgecolors[2][1] := "green";;
+gap> edgecolors[2][3] := "red";; edgecolors[3][2] := "red";;
+gap> Print(DotSymmetricColoredDigraph(D, vertcolors, edgecolors));
+//dot
+graph hgn{
+node [shape=circle]
+
+1[color=blue, style=filled]
+2[color=pink, style=filled]
+3[color=purple, style=filled]
+1 -- 2[color=green]
+2 -- 3[color=red]
+}
+gap> D := Digraph([[2, 3], [1, 3], [1]]);
+<immutable digraph with 3 vertices, 5 edges>
+gap> vertcolors := [];;
+gap> vertcolors[1] := "blue";; vertcolors[2] := "red";;
+gap> vertcolors[3] := "green";;
+gap> edgecolors := [];;
+gap> edgecolors[1] := [];; edgecolors[2] := [];;
+gap> edgecolors[3] := [];;
+gap> edgecolors[1][2] := "orange";; edgecolors[1][3] := "yellow";;
+gap> edgecolors[2][1] := "orange";; edgecolors[2][3] := "pink";;
+gap> edgecolors[3][1] := "yellow";;
+gap> Print(DotColoredDigraph(D, vertcolors, edgecolors));;
+//dot
+digraph hgn{
+node [shape=circle]
+1[color=blue, style=filled]
+2[color=red, style=filled]
+3[color=green, style=filled]
+1 -> 2[color=orange]
+1 -> 3[color=yellow]
+2 -> 1[color=orange]
+2 -> 3[color=pink]
+3 -> 1[color=yellow]
+}
+gap> D := Digraph(IsMutableDigraph, [[2, 3], [1, 3], [1]]);
+<mutable digraph with 3 vertices, 5 edges>
+gap> vertcolors := [];;
+gap> vertcolors[1] := "blue";; vertcolors[2] := "red";;
+gap> vertcolors[3] := "green";;
+gap> edgecolors := [];;
+gap> edgecolors[1] := [];; edgecolors[2] := [];;
+gap> edgecolors[3] := [];;
+gap> edgecolors[1][2] := "orange";; edgecolors[1][3] := "yellow";;
+gap> edgecolors[2][1] := "orange";; edgecolors[2][3] := "pink";;
+gap> edgecolors[3][1] := "yellow";;
+gap> Print(DotColoredDigraph(D, vertcolors, edgecolors));;
+//dot
+digraph hgn{
+node [shape=circle]
+1[color=blue, style=filled]
+2[color=red, style=filled]
+3[color=green, style=filled]
+1 -> 2[color=orange]
+1 -> 3[color=yellow]
+2 -> 1[color=orange]
+2 -> 3[color=pink]
+3 -> 1[color=yellow]
+}
+gap> D;
+<mutable digraph with 3 vertices, 5 edges>
+gap> DotSymmetricDigraph(gr2){[12 .. 70]};
+" hgn{\nnode [shape=circle]\n\n1\n2\n3\n4\n1 -- 2\n2 -- 3\n3 -- 3\n3 -"
+gap> DotSymmetricDigraph(gr1);
+Error, the argument <D> must be a symmetric digraph,
+gap> D := CompleteDigraph(4);
+<immutable complete digraph with 4 vertices>
+gap> vertcolors := [];;
+gap> vertcolors[1] := "blue";; vertcolors[2] := "red";; 
+gap> vertcolors[3] := "green";; vertcolors[4] := "yellow";;
+gap> Print(DotVertexColoredDigraph(D, vertcolors));
+//dot
+digraph hgn{
+node [shape=circle]
+1[color=blue, style=filled]
+2[color=red, style=filled]
+3[color=green, style=filled]
+4[color=yellow, style=filled]
+1 -> 2
+1 -> 3
+1 -> 4
+2 -> 1
+2 -> 3
+2 -> 4
+3 -> 1
+3 -> 2
+3 -> 4
+4 -> 1
+4 -> 2
+4 -> 3
+}
+gap> D := CompleteDigraph(4);
+<immutable complete digraph with 4 vertices>
+gap> edgecolors := [];;
+gap> edgecolors[1] := [];; edgecolors[2] := [];;
+gap> edgecolors[3] := [];; edgecolors[4] := [];; 
+gap> edgecolors[1][2] := "lightblue";;
+gap> edgecolors[1][3] := "pink";;
+gap> edgecolors[1][4] := "purple";;
+gap> edgecolors[2][1] := "lightblue";;
+gap> edgecolors[2][3] := "pink";; 
+gap> edgecolors[2][4] := "purple";; 
+gap> edgecolors[3][1] := "lightblue";; 
+gap> edgecolors[3][2] := "pink";; 
+gap> edgecolors[3][4] := "purple";;
+gap> edgecolors[4][1] := "lightblue";; 
+gap> edgecolors[4][2] := "pink";;
+gap> edgecolors[4][3] := "purple";;
+gap> Print(DotEdgeColoredDigraph(D, edgecolors));
+//dot
+digraph hgn{
+node [shape=circle]
+1
+2
+3
+4
+1 -> 2[color=lightblue]
+1 -> 3[color=pink]
+1 -> 4[color=purple]
+2 -> 1[color=lightblue]
+2 -> 3[color=pink]
+2 -> 4[color=purple]
+3 -> 1[color=lightblue]
+3 -> 2[color=pink]
+3 -> 4[color=purple]
+4 -> 1[color=lightblue]
+4 -> 2[color=pink]
+4 -> 3[color=purple]
+}
 gap> FileString("dot/k4.dot", DotDigraph(gr));
 154]]></Log>
     </Description>
   </ManSection>
-<#/GAPDoc>
+ <#/GAPDoc>
 
 <#GAPDoc Label="DotSymmetricDigraph">
   <ManSection>
     <Attr Name="DotSymmetricDigraph" Arg="digraph"/>
+    <Oper Name="DotSymmetricColoredDigraph" Arg="digraph, vert, edge"/>
+    <Oper Name="DotSymmetricVertexColoredDigraph" Arg="digraph, vert"/>
+    <Oper Name="DotSymmetricEdgeColoredDigraph" Arg="digraph, edge"/>
     <Returns>A string.</Returns>
     <Description>
       This function produces a graphical representation of the symmetric
       digraph <A>digraph</A>. <C>DotSymmetricDigraph</C> will return an
       error if <A>digraph</A> is not a symmetric digraph. See
       <Ref Prop="IsSymmetricDigraph"/>.<P/>
+
+      The function <C>DotSymmetricColoredDigraph</C> differs from <C>DotDigraph</C>
+      only in that the values given in the two lists are used to color the vertices
+      and edges of the graph when displayed. The list for vertex colours should be
+      a list of length equal to the number of vertices, containing strings that
+      are accepted by the graphviz software, which is the one used for graph
+      representation.  The list for edge colours should be a list of lists
+      with the same shape of the outneighbours of the digraph that contains strings 
+      that correspond to colours accepted by the graphviz software.
+      If the list is not the appropriate size, or has holes then the function
+      will return an error.  <P/>
+
+      The function <C>DotSymmetricVertexColoredDigraph</C> differs from <C>DotDigraph</C>
+      only in that the values in given in the list is used to color the vertices
+      of the graph when displayed. The list for vertex colours should be
+      a list of length equal to the number of vertices, containing strings that
+      are accepted by the graphviz software, which is the one used for graph
+      representation. If the list is not the appropriate size, or has holes 
+      then the function will return an error.  <P/>
+
+      The function <C>DotSymmetricEdgeColoredDigraph</C> differs from <C>DotDigraph</C>
+      only in that the values given in the list are used to color the edges
+      of the graph when displayed. The list for edge colours should be
+      a list of lists with the same shape of the outneighbours, containing strings that
+      are accepted by the graphviz software, which is the one used for graph
+      representation. If the list is not the appropriate size, or has holes 
+      then the function will return an error.  <P/>
 
       Vertices are displayed as circles, numbered consistently with
       <A>digraph</A>. Since <A>digraph</A> is symmetric, for every non-loop
@@ -166,6 +422,63 @@ gap> star := Digraph([[2, 2, 3, 4], [1, 1], [1], [1, 4]]);
 gap> IsSymmetricDigraph(star);
 true
 gap> FileString("dot/star.dot", DotSymmetricDigraph(gr));
+gap> D := Digraph([[2], [1, 3], [2]]);
+<immutable digraph with 3 vertices, 4 edges>
+gap> vertcolors := [];;
+gap> vertcolors[1] := "blue";;
+gap> vertcolors[2] := "pink";;
+gap> vertcolors[3] := "purple";;
+gap> edgecolors := [];;
+gap> edgecolors[1] := [];; edgecolors[2] := [];;
+gap> edgecolors[3] := [];;
+gap> edgecolors[1][2] := "green";; edgecolors[2][1] := "green";;
+gap> edgecolors[2][3] := "red";; edgecolors[3][2] := "red";;
+gap> Print(DotSymmetricColoredDigraph(D, vertcolors, edgecolors));
+//dot
+graph hgn{
+node [shape=circle]
+
+1[color=blue, style=filled]
+2[color=pink, style=filled]
+3[color=purple, style=filled]
+1 -- 2[color=green]
+2 -- 3[color=red]
+}
+gap> D := Digraph([[2], [1, 3], [2]]);
+<immutable digraph with 3 vertices, 4 edges>
+gap> vertcolors := [];;
+gap> vertcolors[1] := "blue";;
+gap> vertcolors[2] := "pink";;
+gap> vertcolors[3] := "purple";;
+gap> Print(DotSymmetricVertexColoredDigraph(D, vertcolors));
+//dot
+graph hgn{
+node [shape=circle]
+
+1[color=blue, style=filled]
+2[color=pink, style=filled]
+3[color=purple, style=filled]
+1 -- 2
+2 -- 3
+}
+gap> D := Digraph([[2], [1, 3], [2]]);
+<immutable digraph with 3 vertices, 4 edges>
+gap> edgecolors := [];;
+gap> edgecolors[1] := [];; edgecolors[2] := [];;
+gap> edgecolors[3] := [];;
+gap> edgecolors[1][2] := "green";; edgecolors[2][1] := "green";;
+gap> edgecolors[2][3] := "red";; edgecolors[3][2] := "red";;
+gap> Print(DotSymmetricEdgeColoredDigraph(D, edgecolors));
+//dot
+graph hgn{
+node [shape=circle]
+
+1
+2
+3
+1 -- 2[color=green]
+2 -- 3[color=red]
+}
 83]]></Log>
     </Description>
   </ManSection>

@@ -9,14 +9,14 @@
 ##
 
 ##  <#GAPDoc Label="PKGVERSIONDATA">
-##  <!ENTITY VERSION                  "1.3.0">
-##  <!ENTITY GAPVERS                  "4.9.0">
+##  <!ENTITY VERSION                  "1.3.1">
+##  <!ENTITY GAPVERS                  "4.10.0">
 ##  <!ENTITY GRAPEVERS                "4.8.1">
 ##  <!ENTITY IOVERS                   "4.5.1">
 ##  <!ENTITY ORBVERS                  "4.8.2">
 ##  <!ENTITY DATASTRUCTURESVERS       "0.2.5">
 ##  <!ENTITY NAUTYTRACESINTERFACEVERS "0.2">
-##  <!ENTITY ARCHIVENAME    "digraphs-1.3.0">
+##  <!ENTITY ARCHIVENAME    "digraphs-1.3.1">
 ##  <!ENTITY COPYRIGHTYEARS "2014-20">
 ##  <#/GAPDoc>
 
@@ -28,14 +28,14 @@ _STANDREWSCS := Concatenation(["Jack Cole Building, North Haugh, ",
 SetPackageInfo(rec(
 PackageName := "Digraphs",
 Subtitle := "Graphs, digraphs, and multidigraphs in GAP",
-Version := "1.3.0",
-Date := "27/06/2020",  # dd/mm/yyyy format
+Version := "1.3.1",
+Date := "27/11/2020",  # dd/mm/yyyy format
 License := "GPL-3.0-or-later",
 ArchiveFormats := ".tar.gz",
 
 SourceRepository := rec(
     Type := "git",
-    URL := Concatenation("https://github.com/gap-packages/",
+    URL := Concatenation("https://github.com/digraphs/",
                          ~.PackageName),
 ),
 
@@ -203,20 +203,16 @@ Persons := [
 
   rec(
     LastName      := "Wilson",
-    FirstNames    := "Wilf",
+    FirstNames    := "Wilf A.",
     IsAuthor      := true,
     IsMaintainer  := true,
     Email         := "gap@wilf-wilson.net",
-    WWWHome       := "http://wilf.me",
-    PostalAddress := Concatenation(["Theodor-Lieser-Straße 5, ",
-                                    "06120 Halle (Saale), Germany"]),
-    Place         := "Halle (Saale), Germany",
-    Institution   := "University of Halle-Wittenberg")],
+    WWWHome       := "https://wilf.me")],
 
 Status := "deposited",
 
 IssueTrackerURL := Concatenation(~.SourceRepository.URL, "/issues"),
-PackageWWWHome  := Concatenation("https://gap-packages.github.io/",
+PackageWWWHome  := Concatenation("https://digraphs.github.io/",
                                  ~.PackageName),
 README_URL      := Concatenation(~.PackageWWWHome, "/README.md"),
 PackageInfoURL  := Concatenation(~.PackageWWWHome, "/PackageInfo.g"),
@@ -238,7 +234,7 @@ PackageDoc := rec(
 ),
 
 Dependencies := rec(
-  GAP := ">=4.9.0",
+  GAP := ">=4.10.0",
   NeededOtherPackages := [["io", ">=4.5.1"],
                           ["orb", ">=4.8.2"],
                           ["datastructures", ">=0.2.5"]],
