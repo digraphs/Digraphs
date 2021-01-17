@@ -1730,7 +1730,8 @@ InstallMethod(VerticesReachableFrom, "for a digraph and a vertex",
 function(D, root)
   local N, index, current, succ, visited, prev, n, i, parent;
   N := DigraphNrVertices(D);
-  index := ListWithIdenticalEntries(N, 1);
+  index := ListWithIdenticalEntries(N, 0);
+  index[root] := 1;
   current := root;
   succ := OutNeighbours(D);
   visited := [];
@@ -1740,14 +1741,14 @@ function(D, root)
     prev := current;
     for i in [index[current] .. Length(succ[current])] do
       n := succ[current][i];
-      if not (n in visited) then
-        AddSet(visited, n);
-        if n <> root then
+      if index[n] = 0 then
+        Add(visited, n);
           parent[n] := current;
           index[current] := i + 1;
           current := n;
+          index[current] := 1;
           break;
-        fi;
+  
       fi;
     od;
     if prev = current then
