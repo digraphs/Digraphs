@@ -1725,6 +1725,47 @@ function(D, list)
   return DigraphShortestDistance(D, list[1], list[2]);
 end);
 
+InstallMethod(VerticesReachableFrom, "for a digraph and a vertex",
+[IsDigraph, IsPosInt],
+function(D, root)
+  local N, index, current, succ, visited, prev, n, i, parent,
+  have_visited_root;
+  N := DigraphNrVertices(D);
+  if 0 = root or root > N then
+    ErrorNoReturn("the 2nd argument (root)",
+    " is not a vertex of the 1st argument (a digraph)");
+  fi;
+  index := ListWithIdenticalEntries(N, 0);
+  have_visited_root := false;
+  index[root] := 1;
+  current := root;
+  succ := OutNeighbours(D);
+  visited := [];
+  parent := [];
+  parent[root] := fail;
+  repeat
+    prev := current;
+    for i in [index[current] .. Length(succ[current])] do
+      n := succ[current][i];
+      if n = root and not have_visited_root then
+         Add(visited, root);
+         have_visited_root := true;
+      elif index[n] = 0 then
+        Add(visited, n);
+          parent[n] := current;
+          index[current] := i + 1;
+          current := n;
+          index[current] := 1;
+          break;
+      fi;
+    od;
+    if prev = current then
+      current := parent[current];
+    fi;
+  until current = fail;
+  return visited;
+end);
+
 #############################################################################
 # 10. Operations for vertices
 #############################################################################

@@ -60,6 +60,7 @@
     <#Include Label="DigraphPeriod">
     <#Include Label="DigraphFloydWarshall">
     <#Include Label="IsReachable">
+    <#Include Label="VerticesReachableFrom">
     <#Include Label="DigraphPath">
     <#Include Label="DigraphShortestPath">
     <#Include Label="IteratorOfPaths">
