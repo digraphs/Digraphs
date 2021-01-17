@@ -1747,7 +1747,7 @@ function(D, root)
     prev := current;
     for i in [index[current] .. Length(succ[current])] do
       n := succ[current][i];
-      if n = root and have_visited_root = false then
+      if n = root and not have_visited_root then
          Add(visited, root);
          have_visited_root := true;
       elif index[n] = 0 then
