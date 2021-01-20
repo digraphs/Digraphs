@@ -1275,7 +1275,7 @@ true
   <Description>
     This operation returns <K>true</K> if there exists a non-trivial directed
     walk from vertex <A>u</A> to vertex <A>v</A> in the digraph <A>digraph</A>,
-    and <K>false</K> if there does not exist such a directed walk.  See section
+    and <K>false</K> if there does not exist such a directed walk.  See Section
     <Ref Subsect="Definitions" Style="Number" /> for the definition of a
     non-trivial directed walk.
     <P/>
@@ -1483,7 +1483,7 @@ gap> NextIterator(iter);
   <Description>
     If <A>digraph</A> is a digraph and <A>v</A> is a vertex in <A>digraph</A>,
     then this operation returns the length of the longest directed walk in
-    <A>digraph</A> which begins at vertex <A>v</A>.  See section <Ref
+    <A>digraph</A> which begins at vertex <A>v</A>.  See Section <Ref
       Subsect="Definitions" Style="Number" /> for the definitions of directed
     walk, directed cycle, and loop.
     <P/>
@@ -1586,7 +1586,7 @@ gap> DigraphDistanceSet(D, 2, 0);
     If there is a directed path in the digraph <A>digraph</A> between vertex
     <A>u</A> and vertex <A>v</A>, then this operation returns the length of the
     shortest such directed path.  If no such directed path exists, then this
-    operation returns <K>fail</K>. See section <Ref Subsect="Definitions"
+    operation returns <K>fail</K>. See Section <Ref Subsect="Definitions"
       Style="Number" /> for the definition of a directed path. <P/>
 
     If the second form is used, then <A>list</A> should be a list of length two,

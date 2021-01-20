@@ -30,6 +30,7 @@ extern Obj AutomorphismGroup;
 extern Obj DIGRAPHS_ValidateVertexColouring;
 extern Obj GeneratorsOfGroup;
 extern Obj IsDigraph;
+extern Obj IsMultiDigraph;
 extern Obj IsDigraphEdge;
 
 #endif  // DIGRAPHS_SRC_DIGRAPHS_H_
