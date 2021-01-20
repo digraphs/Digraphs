@@ -228,6 +228,28 @@ Error, the arguments <n> and <k> must be non-negative integers,
 gap> JohnsonDigraph(IsMutableDigraph, 4, 2);
 <mutable digraph with 6 vertices, 24 edges>
 
+#  Folkman
+gap> D := FolkmanGraph();
+<immutable digraph with 20 vertices, 80 edges>
+gap> DigraphNrVertices(D) = 20;
+true
+gap> DigraphNrEdges(D) = 80;
+true
+gap> Size(AutomorphismGroup(D)) = 3840;
+true
+gap> IsHamiltonianDigraph(D);
+true
+gap> ChromaticNumber(D);
+2
+gap> DigraphDiameter(D);
+4
+gap> IsBipartiteDigraph(D);
+true
+gap> IsRegularDigraph(D);
+true
+gap> D := FolkmanGraph(IsMutableDigraph);
+<mutable digraph with 20 vertices, 80 edges>
+
 # LollipopGraph
 gap> LollipopGraph(5, 4);
 <immutable connected symmetric digraph with 9 vertices, 28 edges>
