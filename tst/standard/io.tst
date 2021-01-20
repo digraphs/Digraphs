@@ -284,6 +284,7 @@ gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/helloworld.g6");;
 gap> f := DigraphFile(filename, "w");;
 gap> WriteDigraphs(f, List([1 .. 5], CompleteDigraph));
 IO_OK
+gap> IO_Close(f);;
 gap> f := DigraphFile(filename, "r");;
 gap> ReadDigraphs(f);
 [ <immutable empty digraph with 1 vertex>, 
@@ -291,12 +292,14 @@ gap> ReadDigraphs(f);
   <immutable digraph with 3 vertices, 6 edges>, 
   <immutable digraph with 4 vertices, 12 edges>, 
   <immutable digraph with 5 vertices, 20 edges> ]
+gap> IO_Close(f);;
 gap> f := DigraphFile(filename, "a");;
 gap> WriteDigraphs(f, CycleDigraph(5));
 Error, the argument <D> must be a symmetric digraph with no loops or multiple \
 edges,
 gap> WriteDigraphs(f, JohnsonDigraph(6, 3));
 IO_OK
+gap> IO_Close(f);;
 gap> f := DigraphFile(filename, "r");;
 gap> ReadDigraphs(f);
 [ <immutable empty digraph with 1 vertex>, 
@@ -316,6 +319,7 @@ gap> NextIterator(it);
 <immutable empty digraph with 1 vertex>
 gap> NextIterator(it);
 <immutable digraph with 2 vertices, 2 edges>
+gap> for x in it do od;
 gap> it := IteratorFromDigraphFile(newfilename, DigraphFromGraph6String);
 <iterator>
 gap> NextIterator(it);
@@ -342,12 +346,14 @@ gap> it := ShallowCopy(it);
 <iterator>
 gap> NextIterator(it);
 <immutable empty digraph with 1 vertex>
+gap> for x in it do od;
 gap> IteratorFromDigraphFile(1, 2, 3);
 Error, there must be 1 or 2 arguments,
 gap> IteratorFromDigraphFile(1, 2);
 Error, the 1st argument must be a string,
 gap> IteratorFromDigraphFile("happy", "happy");
 Error, the 2nd argument must be a function or fail,
+gap> IO_Close(f);;
 gap> f := DigraphFile(Concatenation(DIGRAPHS_Dir(), "/data/test-1.d6"));;
 gap> IO_Close(f);
 true

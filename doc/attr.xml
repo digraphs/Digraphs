@@ -753,7 +753,7 @@ rec( comps := [ [ 1, 2 ], [ 3, 4, 5 ] ], id := [ 1, 1, 2, 2, 2 ] )
     than <M>1</M>, then this operation returns <K>fail</K>.
     <P/>
 
-    See section <Ref Subsect="Definitions" Style="Number" /> for the definition
+    See Section <Ref Subsect="Definitions" Style="Number" /> for the definition
     of a directed cycle, and the definition of a loop.
 
     <P/>
@@ -930,7 +930,7 @@ gap> DigraphDiameter(D);
   <Description>
     This attribute returns the <E>girth</E> of the digraph <A>digraph</A>.
     The <E>girth</E> of a digraph is the length of its shortest simple circuit.
-    See section <Ref Subsect="Definitions" Style="Number" /> for the definitions
+    See Section <Ref Subsect="Definitions" Style="Number" /> for the definitions
     of simple circuit, directed cycle, and loop.
     <P/>
 
@@ -1204,7 +1204,7 @@ gap> ArticulationPoints(ChainDigraph(2));
     If <A>digraph</A> is a digraph, then <C>DigraphAllSimpleCircuits</C>
     returns a list of the <E>simple circuits</E> in <A>digraph</A>. <P/>
 
-    See section <Ref Subsect="Definitions" Style="Number" /> for the definition
+    See Section <Ref Subsect="Definitions" Style="Number" /> for the definition
     of a simple circuit, and related notions. Note that a loop is a simple
     circuit. <P/>
 
@@ -1256,7 +1256,7 @@ gap> DigraphAllSimpleCircuits(D);
   <Returns>A list of vertices, or <K>fail</K>.</Returns>
   <Description>
     If <A>digraph</A> is a digraph, then <C>DigraphLongestSimpleCircuit</C>
-    returns the longest <E>simple circuit</E> in <A>digraph</A>. See section
+    returns the longest <E>simple circuit</E> in <A>digraph</A>. See Section
     <Ref Subsect="Definitions" Style="Number" /> for the definition of simple
     circuit, and the definition of length for a simple circuit.<P/>
 
@@ -1342,7 +1342,7 @@ fail
     If a digraph <A>digraph</A> has at least one directed cycle, then the period
     is the greatest positive integer which divides the lengths of all directed
     cycles of <A>digraph</A>.  If <A>digraph</A> has no directed cycles, then
-    this function returns <M>0</M>.  See section <Ref Subsect="Definitions"
+    this function returns <M>0</M>.  See Section <Ref Subsect="Definitions"
       Style="Number" /> for the definition of a directed cycle. <P/>
 
     A digraph with a period of <M>1</M> is said to be <E>aperiodic</E>.  See
