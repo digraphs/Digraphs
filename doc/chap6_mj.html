@@ -6,7 +6,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
 <script type="text/javascript"
-  src="http://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
 </script>
 <title>GAP (digraphs) - Chapter 6: Properties of digraphs</title>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
@@ -482,7 +482,7 @@ false
 
 <p>This property is <code class="keyw">true</code> if the digraph <var class="Arg">digraph</var> is transitive, and <code class="keyw">false</code> if it is not. A digraph is <em>transitive</em> if whenever <code class="code">[ i, j ]</code> and <code class="code">[ j, k ]</code> are edges of the digraph, then <code class="code">[ i, k ]</code> is also an edge of the digraph.</p>
 
-<p>Let <span class="SimpleMath">\(n\)</span> be the number of vertices of an arbitrary digraph, and let <span class="SimpleMath">\(m\)</span> be the number of edges. For general digraphs, the methods used for this property use a version of the Floyd-Warshall algorithm, and have complexity <span class="SimpleMath">\(O(n^3)\)</span>. However for digraphs which are topologically sortable [<code class="func">DigraphTopologicalSort</code> (<a href="chap5_mj.html#X785C30378064CF47"><span class="RefLink">5.1-7</span></a>)], then methods with complexity <span class="SimpleMath">\(O(m + n + m \cdot n)\)</span> will be used when appropriate.</p>
+<p>Let <span class="SimpleMath">\(n\)</span> be the number of vertices of an arbitrary digraph, and let <span class="SimpleMath">\(m\)</span> be the number of edges. For general digraphs, the methods used for this property use a version of the Floyd-Warshall algorithm, and have complexity <span class="SimpleMath">\(O(n^3)\)</span>. However for digraphs which are topologically sortable [<code class="func">DigraphTopologicalSort</code> (<a href="chap5_mj.html#X785C30378064CF47"><span class="RefLink">5.1-8</span></a>)], then methods with complexity <span class="SimpleMath">\(O(m + n + m \cdot n)\)</span> will be used when appropriate.</p>
 
 <p>If the argument <var class="Arg">digraph</var> is mutable, then the return value of this property is recomputed every time it is called.</p>
 
@@ -964,7 +964,7 @@ true</pre></div>
 
 <p>A <em>directed tree</em> is an acyclic digraph with precisely 1 source, such that no two vertices share an out-neighbour. Note the empty digraph is not considered a directed tree as it has no source.</p>
 
-<p>See also <code class="func">DigraphSources</code> (<a href="chap5_mj.html#X7F5C6268839BE98C"><span class="RefLink">5.1-6</span></a>).</p>
+<p>See also <code class="func">DigraphSources</code> (<a href="chap5_mj.html#X7F5C6268839BE98C"><span class="RefLink">5.1-7</span></a>).</p>
 
 <p>If the argument <var class="Arg">digraph</var> is mutable, then the return value of this property is recomputed every time it is called.</p>
 
@@ -1244,7 +1244,7 @@ false
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsEdgeTransitive</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;property&nbsp;)</td></tr></table></div>
 <p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
 
-<p>If <var class="Arg">digraph</var> is a digraph without multiple edges, then <code class="code">IsEdgeTransitive</code> returns <code class="keyw">true</code> if <var class="Arg">digraph</var> is edge transitive, and <code class="keyw">false</code> otherwise. A digraph is <em>edge transitive</em> if its automorphism group acts transitively on its edges (via the action <code class="func">OnPairs</code> (<a href="https://www.gap-system.org/Manuals/doc/ref/chap41_mj.html#X80DAA1D2855B1456"><span class="RefLink">Reference: OnPairs</span></a>)).</p>
+<p>If <var class="Arg">digraph</var> is a digraph without multiple edges, then <code class="code">IsEdgeTransitive</code> returns <code class="keyw">true</code> if <var class="Arg">digraph</var> is edge transitive, and <code class="keyw">false</code> otherwise. A digraph is <em>edge transitive</em> if its automorphism group acts transitively on its edges (via the action <code class="func">OnPairs</code> (<span class="RefLink">???</span>)).</p>
 
 <p>If the argument <var class="Arg">digraph</var> is mutable, then the return value of this property is recomputed every time it is called.</p>
 

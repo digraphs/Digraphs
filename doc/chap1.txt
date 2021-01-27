@@ -4,7 +4,7 @@
   
   [1X1.1 [33X[0;0YIntroduction[133X[101X
   
-  [33X[0;0YThis  is  the manual for version 1.3.1 of the [5XDigraphs[105X package. This package
+  [33X[0;0YThis  is  the manual for version 1.4.0 of the [5XDigraphs[105X package. This package
   was developed at the University of St Andrews by:[133X
   
   [30X    [33X[0;6YJan De Beule,[133X
@@ -62,9 +62,9 @@
   in  the package, which avoids unnecessary copying. Immutable digraphs cannot
   be  changed  in-place, but their advantage is that the value of an attribute
   of  an immutable digraph is only ever computed once. Mutable digraphs can be
-  converted  into  immutable digraphs in-place using [2XMakeImmutable[102X ([14XReference:
-  MakeImmutable[114X).  One  of the motivations for introducing mutable digraphs in
-  version  1.0.0  was  that  in  practice the authors often wanted to create a
+  converted    into    immutable   digraphs   in-place   using   [2XMakeImmutable[102X
+  ([14XMakeImmutable???[114X).  One of the motivations for introducing mutable digraphs
+  in  version  1.0.0 was that in practice the authors often wanted to create a
   digraph  and  immediately  modify  it (removing certain edges, loops, and so
   on).  Before version 1.0.0, this involved copying the digraph several times,
   with  each copy being discarded almost immediately. From version 1.0.0, this

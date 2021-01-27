@@ -4,6 +4,43 @@ Torpey, Wilf A. Wilson et al.
 
 Licensing information can be found in the `LICENSE` file.
 
+## Version 1.4.0 (released 27/01/2021)
+
+In this release there are several new features and improvements. 
+
+The following improvements and bugs have been made:
+
+* the clique finder was reimplemented in C by [Julius Jonusas][]
+* a critical bug in `CayleyDigraph` was reported and fixed by [Jan De Beule][]
+* a minor bug in `ReadDigraphs` was fixed reported by [Wilf A. Wilson][] and
+  fixed by [James D. Mitchell][]
+* the performance of `BlissCanonicalLabelling` and `BlissAutomorphismGroup` was
+  improved for multidigraphs by Marina Anagnostopoulou-Merkouri and Sam
+  Harper.
+* a bug in `GeneratorsOfEndomorphismMonoid` that caused GAP to crash when
+  called with a multidigraph was reported by [Wilf A. Wilson][] and
+  fixed by [James D. Mitchell][] 
+*  [Wilf A. Wilson][] made some improvements to the manual.
+* the performance of `DigraphCopy` was improved by Marina
+  Anagnostopoulou-Merkouri and Sam Harper.
+
+The main new features are:
+
+* the attribute `DigraphNrLoops` was introduced by Marina
+  Anagnostopoulou-Merkouri and Sam Harper.
+* the operations 
+  * `DotColoredDigraph`
+  * `DotVertexColoredDigraph`
+  * `DotEdgeColoredDigraph`
+  * `DotSymmetricColoredDigraph`
+  * `DotSymmetricVertexColoredDigraph` 
+  * `DotSymmetricEdgeColoredDigraph` 
+  were introduced by Marina Anagnostopoulou-Merkouri and Sam Harper.
+* the operation `VerticesReachableFrom` was introduced by 
+  Marina Anagnostopoulou-Merkouri.
+* the operation `ModularProduct` was introduced by Luke Elliott and  
+  [James D. Mitchell][]
+
 ## Version 1.3.1 (released 27/11/2020)
 
 This is a minor release fixing some issues, some performance improvements, and

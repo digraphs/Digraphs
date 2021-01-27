@@ -6,7 +6,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
 <script type="text/javascript"
-  src="http://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
 </script>
 <title>GAP (digraphs) - Appendix A: 
     Grape to Digraphs Command Map
@@ -126,8 +126,8 @@
 </tr>
 <tr>
 <td class="tdleft"><code class="code">AssignVertexNames</code></td>
-<td class="tdleft"><code class="func">SetDigraphVertexLabels</code> (<a href="chap5_mj.html#X7E51F2FE87140B32"><span class="RefLink">5.1-9</span></a>) and <code class="func">SetDigraphVertexLabel</code> (<a href="chap5_mj.html#X7CA91E4B7904F793"><span class="RefLink">5.1-8</span></a>)</td>
-<td class="tdleft">Use <code class="func">SetDigraphVertexLabel</code> (<a href="chap5_mj.html#X7CA91E4B7904F793"><span class="RefLink">5.1-8</span></a>) to set an individual vertex label and <code class="func">SetDigraphVertexLabels</code> (<a href="chap5_mj.html#X7E51F2FE87140B32"><span class="RefLink">5.1-9</span></a>) to set all of the vertex labels.</td>
+<td class="tdleft"><code class="func">SetDigraphVertexLabels</code> (<a href="chap5_mj.html#X7E51F2FE87140B32"><span class="RefLink">5.1-10</span></a>) and <code class="func">SetDigraphVertexLabel</code> (<a href="chap5_mj.html#X7CA91E4B7904F793"><span class="RefLink">5.1-9</span></a>)</td>
+<td class="tdleft">Use <code class="func">SetDigraphVertexLabel</code> (<a href="chap5_mj.html#X7CA91E4B7904F793"><span class="RefLink">5.1-9</span></a>) to set an individual vertex label and <code class="func">SetDigraphVertexLabels</code> (<a href="chap5_mj.html#X7E51F2FE87140B32"><span class="RefLink">5.1-10</span></a>) to set all of the vertex labels.</td>
 </tr>
 </table><br /><p>&nbsp;</p><br />
 </div>
@@ -161,13 +161,13 @@
 </tr>
 <tr>
 <td class="tdleft"><code class="code">VertexName</code></td>
-<td class="tdleft"><code class="func">DigraphVertexLabel</code> (<a href="chap5_mj.html#X7CA91E4B7904F793"><span class="RefLink">5.1-8</span></a>)</td>
-<td class="tdleft">Unlike <code class="code">VertexName</code> in <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span>, the return value of <code class="func">DigraphVertexLabel</code> (<a href="chap5_mj.html#X7CA91E4B7904F793"><span class="RefLink">5.1-8</span></a>) is mutable.</td>
+<td class="tdleft"><code class="func">DigraphVertexLabel</code> (<a href="chap5_mj.html#X7CA91E4B7904F793"><span class="RefLink">5.1-9</span></a>)</td>
+<td class="tdleft">Unlike <code class="code">VertexName</code> in <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span>, the return value of <code class="func">DigraphVertexLabel</code> (<a href="chap5_mj.html#X7CA91E4B7904F793"><span class="RefLink">5.1-9</span></a>) is mutable.</td>
 </tr>
 <tr>
 <td class="tdleft"><code class="code">VertexNames</code></td>
-<td class="tdleft"><code class="func">DigraphVertexLabels</code> (<a href="chap5_mj.html#X7E51F2FE87140B32"><span class="RefLink">5.1-9</span></a>)</td>
-<td class="tdleft">Unlike <code class="code">VertexNames</code> in <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span>, the return value of <code class="func">DigraphVertexLabels</code> (<a href="chap5_mj.html#X7E51F2FE87140B32"><span class="RefLink">5.1-9</span></a>) is mutable.</td>
+<td class="tdleft"><code class="func">DigraphVertexLabels</code> (<a href="chap5_mj.html#X7E51F2FE87140B32"><span class="RefLink">5.1-10</span></a>)</td>
+<td class="tdleft">Unlike <code class="code">VertexNames</code> in <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span>, the return value of <code class="func">DigraphVertexLabels</code> (<a href="chap5_mj.html#X7E51F2FE87140B32"><span class="RefLink">5.1-10</span></a>) is mutable.</td>
 </tr>
 <tr>
 <td class="tdleft"><code class="code">Vertices</code></td>
@@ -201,8 +201,8 @@
 </tr>
 <tr>
 <td class="tdleft"><code class="code">IsEdge</code></td>
-<td class="tdleft"><code class="func">IsDigraphEdge</code> (<a href="chap5_mj.html#X7BB8ED88835F07B4"><span class="RefLink">5.1-14</span></a>)</td>
-<td class="tdleft">The arguments of <code class="func">IsDigraphEdge</code> (<a href="chap5_mj.html#X7BB8ED88835F07B4"><span class="RefLink">5.1-14</span></a>) can be a digraph and an edge, or a digraph and two vertices. In the first form the operation <code class="func">IsDigraphEdge</code> (<a href="chap5_mj.html#X7BB8ED88835F07B4"><span class="RefLink">5.1-14</span></a>) behaves the same as <code class="code">IsEdge</code> in <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span>.</td>
+<td class="tdleft"><code class="func">IsDigraphEdge</code> (<a href="chap5_mj.html#X7BB8ED88835F07B4"><span class="RefLink">5.1-15</span></a>)</td>
+<td class="tdleft">The arguments of <code class="func">IsDigraphEdge</code> (<a href="chap5_mj.html#X7BB8ED88835F07B4"><span class="RefLink">5.1-15</span></a>) can be a digraph and an edge, or a digraph and two vertices. In the first form the operation <code class="func">IsDigraphEdge</code> (<a href="chap5_mj.html#X7BB8ED88835F07B4"><span class="RefLink">5.1-15</span></a>) behaves the same as <code class="code">IsEdge</code> in <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span>.</td>
 </tr>
 <tr>
 <td class="tdleft"><code class="code">DirectedEdges</code></td>
@@ -336,8 +336,8 @@
 </tr>
 <tr>
 <td class="tdleft"><code class="code">Layers</code></td>
-<td class="tdleft"><code class="func">DigraphLayers</code> (<a href="chap5_mj.html#X870E04307C5F213F"><span class="RefLink">5.3-25</span></a>)</td>
-<td class="tdleft"><code class="code">Layers</code> in <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span> is equivalent to <code class="func">DigraphLayers</code> (<a href="chap5_mj.html#X870E04307C5F213F"><span class="RefLink">5.3-25</span></a>) in <strong class="pkg">Digraphs</strong>.</td>
+<td class="tdleft"><code class="func">DigraphLayers</code> (<a href="chap5_mj.html#X870E04307C5F213F"><span class="RefLink">5.3-26</span></a>)</td>
+<td class="tdleft"><code class="code">Layers</code> in <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span> is equivalent to <code class="func">DigraphLayers</code> (<a href="chap5_mj.html#X870E04307C5F213F"><span class="RefLink">5.3-26</span></a>) in <strong class="pkg">Digraphs</strong>.</td>
 </tr>
 <tr>
 <td class="tdleft"><code class="code">IndependentSet</code></td>

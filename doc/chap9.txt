@@ -34,8 +34,8 @@
         directory if does not already exist.[133X
   
         [33X[0;6YThe  default  value  of this option is [10X"tmp.viz"[110X if the option [10Xpath[110X is
-        present,    and   the   result   of   [2XDirectoryTemporary[102X   ([14XReference:
-        DirectoryTemporary[114X) is used otherwise.[133X
+        present,  and the result of [2XDirectoryTemporary[102X ([14XDirectoryTemporary???[114X)
+        is used otherwise.[133X
   
   [8Xfilename[108X
         [33X[0;6Ythis  should  be  a string representing the name of the file where [3Xstr[103X
@@ -73,7 +73,10 @@
   [1X9.1-2 DotDigraph[101X
   
   [33X[1;0Y[29X[2XDotDigraph[102X( [3Xdigraph[103X ) [32X attribute[133X
+  [33X[1;0Y[29X[2XDotColoredDigraph[102X( [3Xdigraph[103X, [3Xvert[103X, [3Xedge[103X ) [32X operation[133X
   [33X[1;0Y[29X[2XDotVertexLabelledDigraph[102X( [3Xdigraph[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XDotVertexColoredDigraph[102X( [3Xdigraph[103X, [3Xvert[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XDotEdgeColoredDigraph[102X( [3Xdigraph[103X, [3Xedge[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA string.[133X
   
   [33X[0;0Y[10XDotDigraph[110X  produces  a  graphical  representation  of  the digraph [3Xdigraph[103X.
@@ -81,8 +84,32 @@
   are  displayed as arrowed lines between vertices, with the arrowhead of each
   line pointing towards the range of the edge.[133X
   
+  [33X[0;0Y[10XDotColoredDigraph[110X  differs  from [10XDotDigraph[110X only in that the values in given
+  in  the two lists are used to color the vertices and edges of the graph when
+  displayed.  The  list for vertex colours should be a list of length equal to
+  the number of vertices, containing strings that are accepted by the graphviz
+  software,  which is the one used for graph representation. The list for edge
+  colours  should  be a list of lists with the same shape of the outneighbours
+  of  the digraph that contains strings that correspond to colours accepted by
+  the  graphviz  software.  If the lists are not the appropriate size, or have
+  holes then the function will return an error.[133X
+  
+  [33X[0;0Y[10XDotVertexColoredDigraph[110X  differs  from [10XDotDigraph[110X only in that the values in
+  given  in  the  list  are  used  to  color  the  vertices  of the graph when
+  displayed.  The  list for vertex colours should be a list of length equal to
+  the number of vertices, containing strings that are accepted by the graphviz
+  software, which is the one used for graph representation. If the list is not
+  the appropriate size, or has holes then the function will return an error.[133X
+  
+  [33X[0;0Y[10XDotEdgeColoredDigraph[110X  differs  from  [10XDotDigraph[110X  only in that the values in
+  given in the list are used to color the vertices and edges of the graph when
+  displayed. The list for edge colours should be a list of lists with the same
+  shape  of  the  outneighbours  of  the  digraph  that  contains strings that
+  correspond  to colours accepted by the graphviz software. If the list is not
+  the appropriate size, or has holes then the function will return an error.[133X
+  
   [33X[0;0Y[10XDotVertexLabelledDigraph[110X  differs from [10XDotDigraph[110X only in that the values in
-  [2XDigraphVertexLabels[102X  ([14X5.1-9[114X)  are used to label the vertices in the produced
+  [2XDigraphVertexLabels[102X  ([14X5.1-10[114X) are used to label the vertices in the produced
   picture rather than the numbers [10X1[110X to the number of vertices of the digraph.[133X
   
   [33X[0;0YThe  output  is  in  [10Xdot[110X format (also known as [10XGraphViz[110X) format. For details
@@ -99,6 +126,203 @@
     [4X[28X0[128X[104X
     [4X[25Xgap>[125X [27Xgr := DigraphByAdjacencyMatrix(adj);[127X[104X
     [4X[28X<immutable digraph with 4 vertices, 15 edges>[128X[104X
+    [4X[25Xgap>[125X [27XD := CompleteDigraph(4);[127X[104X
+    [4X[28X<immutable complete digraph with 4 vertices>[128X[104X
+    [4X[25Xgap>[125X [27Xvertcolors := [];;[127X[104X
+    [4X[25Xgap>[125X [27Xvertcolors[1] := "blue";; vertcolors[2] := "red";; [127X[104X
+    [4X[25Xgap>[125X [27Xvertcolors[3] := "green";; vertcolors[4] := "yellow";;[127X[104X
+    [4X[25Xgap>[125X [27Xedgecolors := [];;[127X[104X
+    [4X[25Xgap>[125X [27Xedgecolors[1] := [];; edgecolors[2] := [];;[127X[104X
+    [4X[25Xgap>[125X [27Xedgecolors[3] := [];; edgecolors[4] := [];; [127X[104X
+    [4X[25Xgap>[125X [27Xedgecolors[1][2] := "lightblue";;[127X[104X
+    [4X[25Xgap>[125X [27Xedgecolors[1][3] := "pink";;[127X[104X
+    [4X[25Xgap>[125X [27Xedgecolors[1][4] := "purple";;[127X[104X
+    [4X[25Xgap>[125X [27Xedgecolors[2][1] := "lightblue";;[127X[104X
+    [4X[25Xgap>[125X [27Xedgecolors[2][3] := "pink";; [127X[104X
+    [4X[25Xgap>[125X [27Xedgecolors[2][4] := "purple";; [127X[104X
+    [4X[25Xgap>[125X [27Xedgecolors[3][1] := "lightblue";; [127X[104X
+    [4X[25Xgap>[125X [27Xedgecolors[3][2] := "pink";; [127X[104X
+    [4X[25Xgap>[125X [27Xedgecolors[3][4] := "purple";;[127X[104X
+    [4X[25Xgap>[125X [27Xedgecolors[4][1] := "lightblue";; [127X[104X
+    [4X[25Xgap>[125X [27Xedgecolors[4][2] := "pink";;[127X[104X
+    [4X[25Xgap>[125X [27Xedgecolors[4][3] := "purple";;[127X[104X
+    [4X[25Xgap>[125X [27XPrint(DotColoredDigraph(D, vertcolors, edgecolors));[127X[104X
+    [4X[28X//dot[128X[104X
+    [4X[28Xdigraph hgn{[128X[104X
+    [4X[28Xnode [shape=circle][128X[104X
+    [4X[28X1[color=blue, style=filled][128X[104X
+    [4X[28X2[color=red, style=filled][128X[104X
+    [4X[28X3[color=green, style=filled][128X[104X
+    [4X[28X4[color=yellow, style=filled][128X[104X
+    [4X[28X1 -> 2[color=lightblue][128X[104X
+    [4X[28X1 -> 3[color=pink][128X[104X
+    [4X[28X1 -> 4[color=purple][128X[104X
+    [4X[28X2 -> 1[color=lightblue][128X[104X
+    [4X[28X2 -> 3[color=pink][128X[104X
+    [4X[28X2 -> 4[color=purple][128X[104X
+    [4X[28X3 -> 1[color=lightblue][128X[104X
+    [4X[28X3 -> 2[color=pink][128X[104X
+    [4X[28X3 -> 4[color=purple][128X[104X
+    [4X[28X4 -> 1[color=lightblue][128X[104X
+    [4X[28X4 -> 2[color=pink][128X[104X
+    [4X[28X4 -> 3[color=purple][128X[104X
+    [4X[28X}[128X[104X
+    [4X[25Xgap>[125X [27XD := EmptyDigraph(3);[127X[104X
+    [4X[28X<immutable empty digraph with 3 vertices>[128X[104X
+    [4X[25Xgap>[125X [27Xvertcolors := [];;[127X[104X
+    [4X[25Xgap>[125X [27Xvertcolors[1] := "blue";; vertcolors[2] := "red";;[127X[104X
+    [4X[25Xgap>[125X [27Xvertcolors[3] := "green";;[127X[104X
+    [4X[25Xgap>[125X [27Xedgecolors := [];;[127X[104X
+    [4X[25Xgap>[125X [27Xedgecolors[1] := [];; edgecolors[2] := [];; [127X[104X
+    [4X[25Xgap>[125X [27Xedgecolors[3] := [];;[127X[104X
+    [4X[25Xgap>[125X [27XPrint(DotColoredDigraph(D, vertcolors, edgecolors));[127X[104X
+    [4X[28X//dot[128X[104X
+    [4X[28Xdigraph hgn{[128X[104X
+    [4X[28Xnode [shape=circle][128X[104X
+    [4X[28X1[color=blue, style=filled][128X[104X
+    [4X[28X2[color=red, style=filled][128X[104X
+    [4X[28X3[color=green, style=filled][128X[104X
+    [4X[28X}[128X[104X
+    [4X[25Xgap>[125X [27XD := Digraph([[2], [1, 3], [2]]);[127X[104X
+    [4X[28X<immutable digraph with 3 vertices, 4 edges>[128X[104X
+    [4X[25Xgap>[125X [27Xvertcolors := [];;[127X[104X
+    [4X[25Xgap>[125X [27Xvertcolors[1] := "blue";;[127X[104X
+    [4X[25Xgap>[125X [27Xvertcolors[2] := "pink";;[127X[104X
+    [4X[25Xgap>[125X [27Xvertcolors[3] := "purple";;[127X[104X
+    [4X[25Xgap>[125X [27Xedgecolors := [];;[127X[104X
+    [4X[25Xgap>[125X [27Xedgecolors[1] := [];; edgecolors[2] := [];;[127X[104X
+    [4X[25Xgap>[125X [27Xedgecolors[3] := [];;[127X[104X
+    [4X[25Xgap>[125X [27Xedgecolors[1][2] := "green";; edgecolors[2][1] := "green";;[127X[104X
+    [4X[25Xgap>[125X [27Xedgecolors[2][3] := "red";; edgecolors[3][2] := "red";;[127X[104X
+    [4X[25Xgap>[125X [27XPrint(DotSymmetricColoredDigraph(D, vertcolors, edgecolors));[127X[104X
+    [4X[28X//dot[128X[104X
+    [4X[28Xgraph hgn{[128X[104X
+    [4X[28Xnode [shape=circle][128X[104X
+    [4X[28X[128X[104X
+    [4X[28X1[color=blue, style=filled][128X[104X
+    [4X[28X2[color=pink, style=filled][128X[104X
+    [4X[28X3[color=purple, style=filled][128X[104X
+    [4X[28X1 -- 2[color=green][128X[104X
+    [4X[28X2 -- 3[color=red][128X[104X
+    [4X[28X}[128X[104X
+    [4X[25Xgap>[125X [27XD := Digraph([[2, 3], [1, 3], [1]]);[127X[104X
+    [4X[28X<immutable digraph with 3 vertices, 5 edges>[128X[104X
+    [4X[25Xgap>[125X [27Xvertcolors := [];;[127X[104X
+    [4X[25Xgap>[125X [27Xvertcolors[1] := "blue";; vertcolors[2] := "red";;[127X[104X
+    [4X[25Xgap>[125X [27Xvertcolors[3] := "green";;[127X[104X
+    [4X[25Xgap>[125X [27Xedgecolors := [];;[127X[104X
+    [4X[25Xgap>[125X [27Xedgecolors[1] := [];; edgecolors[2] := [];;[127X[104X
+    [4X[25Xgap>[125X [27Xedgecolors[3] := [];;[127X[104X
+    [4X[25Xgap>[125X [27Xedgecolors[1][2] := "orange";; edgecolors[1][3] := "yellow";;[127X[104X
+    [4X[25Xgap>[125X [27Xedgecolors[2][1] := "orange";; edgecolors[2][3] := "pink";;[127X[104X
+    [4X[25Xgap>[125X [27Xedgecolors[3][1] := "yellow";;[127X[104X
+    [4X[25Xgap>[125X [27XPrint(DotColoredDigraph(D, vertcolors, edgecolors));;[127X[104X
+    [4X[28X//dot[128X[104X
+    [4X[28Xdigraph hgn{[128X[104X
+    [4X[28Xnode [shape=circle][128X[104X
+    [4X[28X1[color=blue, style=filled][128X[104X
+    [4X[28X2[color=red, style=filled][128X[104X
+    [4X[28X3[color=green, style=filled][128X[104X
+    [4X[28X1 -> 2[color=orange][128X[104X
+    [4X[28X1 -> 3[color=yellow][128X[104X
+    [4X[28X2 -> 1[color=orange][128X[104X
+    [4X[28X2 -> 3[color=pink][128X[104X
+    [4X[28X3 -> 1[color=yellow][128X[104X
+    [4X[28X}[128X[104X
+    [4X[25Xgap>[125X [27XD := Digraph(IsMutableDigraph, [[2, 3], [1, 3], [1]]);[127X[104X
+    [4X[28X<mutable digraph with 3 vertices, 5 edges>[128X[104X
+    [4X[25Xgap>[125X [27Xvertcolors := [];;[127X[104X
+    [4X[25Xgap>[125X [27Xvertcolors[1] := "blue";; vertcolors[2] := "red";;[127X[104X
+    [4X[25Xgap>[125X [27Xvertcolors[3] := "green";;[127X[104X
+    [4X[25Xgap>[125X [27Xedgecolors := [];;[127X[104X
+    [4X[25Xgap>[125X [27Xedgecolors[1] := [];; edgecolors[2] := [];;[127X[104X
+    [4X[25Xgap>[125X [27Xedgecolors[3] := [];;[127X[104X
+    [4X[25Xgap>[125X [27Xedgecolors[1][2] := "orange";; edgecolors[1][3] := "yellow";;[127X[104X
+    [4X[25Xgap>[125X [27Xedgecolors[2][1] := "orange";; edgecolors[2][3] := "pink";;[127X[104X
+    [4X[25Xgap>[125X [27Xedgecolors[3][1] := "yellow";;[127X[104X
+    [4X[25Xgap>[125X [27XPrint(DotColoredDigraph(D, vertcolors, edgecolors));;[127X[104X
+    [4X[28X//dot[128X[104X
+    [4X[28Xdigraph hgn{[128X[104X
+    [4X[28Xnode [shape=circle][128X[104X
+    [4X[28X1[color=blue, style=filled][128X[104X
+    [4X[28X2[color=red, style=filled][128X[104X
+    [4X[28X3[color=green, style=filled][128X[104X
+    [4X[28X1 -> 2[color=orange][128X[104X
+    [4X[28X1 -> 3[color=yellow][128X[104X
+    [4X[28X2 -> 1[color=orange][128X[104X
+    [4X[28X2 -> 3[color=pink][128X[104X
+    [4X[28X3 -> 1[color=yellow][128X[104X
+    [4X[28X}[128X[104X
+    [4X[25Xgap>[125X [27XD;[127X[104X
+    [4X[28X<mutable digraph with 3 vertices, 5 edges>[128X[104X
+    [4X[25Xgap>[125X [27XDotSymmetricDigraph(gr2){[12 .. 70]};[127X[104X
+    [4X[28X" hgn{\nnode [shape=circle]\n\n1\n2\n3\n4\n1 -- 2\n2 -- 3\n3 -- 3\n3 -"[128X[104X
+    [4X[25Xgap>[125X [27XDotSymmetricDigraph(gr1);[127X[104X
+    [4X[28XError, the argument <D> must be a symmetric digraph,[128X[104X
+    [4X[25Xgap>[125X [27XD := CompleteDigraph(4);[127X[104X
+    [4X[28X<immutable complete digraph with 4 vertices>[128X[104X
+    [4X[25Xgap>[125X [27Xvertcolors := [];;[127X[104X
+    [4X[25Xgap>[125X [27Xvertcolors[1] := "blue";; vertcolors[2] := "red";; [127X[104X
+    [4X[25Xgap>[125X [27Xvertcolors[3] := "green";; vertcolors[4] := "yellow";;[127X[104X
+    [4X[25Xgap>[125X [27XPrint(DotVertexColoredDigraph(D, vertcolors));[127X[104X
+    [4X[28X//dot[128X[104X
+    [4X[28Xdigraph hgn{[128X[104X
+    [4X[28Xnode [shape=circle][128X[104X
+    [4X[28X1[color=blue, style=filled][128X[104X
+    [4X[28X2[color=red, style=filled][128X[104X
+    [4X[28X3[color=green, style=filled][128X[104X
+    [4X[28X4[color=yellow, style=filled][128X[104X
+    [4X[28X1 -> 2[128X[104X
+    [4X[28X1 -> 3[128X[104X
+    [4X[28X1 -> 4[128X[104X
+    [4X[28X2 -> 1[128X[104X
+    [4X[28X2 -> 3[128X[104X
+    [4X[28X2 -> 4[128X[104X
+    [4X[28X3 -> 1[128X[104X
+    [4X[28X3 -> 2[128X[104X
+    [4X[28X3 -> 4[128X[104X
+    [4X[28X4 -> 1[128X[104X
+    [4X[28X4 -> 2[128X[104X
+    [4X[28X4 -> 3[128X[104X
+    [4X[28X}[128X[104X
+    [4X[25Xgap>[125X [27XD := CompleteDigraph(4);[127X[104X
+    [4X[28X<immutable complete digraph with 4 vertices>[128X[104X
+    [4X[25Xgap>[125X [27Xedgecolors := [];;[127X[104X
+    [4X[25Xgap>[125X [27Xedgecolors[1] := [];; edgecolors[2] := [];;[127X[104X
+    [4X[25Xgap>[125X [27Xedgecolors[3] := [];; edgecolors[4] := [];; [127X[104X
+    [4X[25Xgap>[125X [27Xedgecolors[1][2] := "lightblue";;[127X[104X
+    [4X[25Xgap>[125X [27Xedgecolors[1][3] := "pink";;[127X[104X
+    [4X[25Xgap>[125X [27Xedgecolors[1][4] := "purple";;[127X[104X
+    [4X[25Xgap>[125X [27Xedgecolors[2][1] := "lightblue";;[127X[104X
+    [4X[25Xgap>[125X [27Xedgecolors[2][3] := "pink";; [127X[104X
+    [4X[25Xgap>[125X [27Xedgecolors[2][4] := "purple";; [127X[104X
+    [4X[25Xgap>[125X [27Xedgecolors[3][1] := "lightblue";; [127X[104X
+    [4X[25Xgap>[125X [27Xedgecolors[3][2] := "pink";; [127X[104X
+    [4X[25Xgap>[125X [27Xedgecolors[3][4] := "purple";;[127X[104X
+    [4X[25Xgap>[125X [27Xedgecolors[4][1] := "lightblue";; [127X[104X
+    [4X[25Xgap>[125X [27Xedgecolors[4][2] := "pink";;[127X[104X
+    [4X[25Xgap>[125X [27Xedgecolors[4][3] := "purple";;[127X[104X
+    [4X[25Xgap>[125X [27XPrint(DotEdgeColoredDigraph(D, edgecolors));[127X[104X
+    [4X[28X//dot[128X[104X
+    [4X[28Xdigraph hgn{[128X[104X
+    [4X[28Xnode [shape=circle][128X[104X
+    [4X[28X1[128X[104X
+    [4X[28X2[128X[104X
+    [4X[28X3[128X[104X
+    [4X[28X4[128X[104X
+    [4X[28X1 -> 2[color=lightblue][128X[104X
+    [4X[28X1 -> 3[color=pink][128X[104X
+    [4X[28X1 -> 4[color=purple][128X[104X
+    [4X[28X2 -> 1[color=lightblue][128X[104X
+    [4X[28X2 -> 3[color=pink][128X[104X
+    [4X[28X2 -> 4[color=purple][128X[104X
+    [4X[28X3 -> 1[color=lightblue][128X[104X
+    [4X[28X3 -> 2[color=pink][128X[104X
+    [4X[28X3 -> 4[color=purple][128X[104X
+    [4X[28X4 -> 1[color=lightblue][128X[104X
+    [4X[28X4 -> 2[color=pink][128X[104X
+    [4X[28X4 -> 3[color=purple][128X[104X
+    [4X[28X}[128X[104X
     [4X[25Xgap>[125X [27XFileString("dot/k4.dot", DotDigraph(gr));[127X[104X
     [4X[28X154[128X[104X
   [4X[32X[104X
@@ -106,11 +330,40 @@
   [1X9.1-3 DotSymmetricDigraph[101X
   
   [33X[1;0Y[29X[2XDotSymmetricDigraph[102X( [3Xdigraph[103X ) [32X attribute[133X
+  [33X[1;0Y[29X[2XDotSymmetricColoredDigraph[102X( [3Xdigraph[103X, [3Xvert[103X, [3Xedge[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XDotSymmetricVertexColoredDigraph[102X( [3Xdigraph[103X, [3Xvert[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XDotSymmetricEdgeColoredDigraph[102X( [3Xdigraph[103X, [3Xedge[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA string.[133X
   
   [33X[0;0YThis  function  produces a graphical representation of the symmetric digraph
   [3Xdigraph[103X.  [10XDotSymmetricDigraph[110X  will  return  an  error  if  [3Xdigraph[103X is not a
   symmetric digraph. See [2XIsSymmetricDigraph[102X ([14X6.1-12[114X).[133X
+  
+  [33X[0;0YThe function [10XDotSymmetricColoredDigraph[110X differs from [10XDotDigraph[110X only in that
+  the  values  given in the two lists are used to color the vertices and edges
+  of the graph when displayed. The list for vertex colours should be a list of
+  length equal to the number of vertices, containing strings that are accepted
+  by  the  graphviz  software, which is the one used for graph representation.
+  The  list  for edge colours should be a list of lists with the same shape of
+  the  outneighbours  of  the digraph that contains strings that correspond to
+  colours  accepted  by  the  graphviz  software.  If  the  list  is  not  the
+  appropriate size, or has holes then the function will return an error.[133X
+  
+  [33X[0;0YThe  function  [10XDotSymmetricVertexColoredDigraph[110X differs from [10XDotDigraph[110X only
+  in that the values in given in the list is used to color the vertices of the
+  graph when displayed. The list for vertex colours should be a list of length
+  equal to the number of vertices, containing strings that are accepted by the
+  graphviz  software,  which  is the one used for graph representation. If the
+  list is not the appropriate size, or has holes then the function will return
+  an error.[133X
+  
+  [33X[0;0YThe  function [10XDotSymmetricEdgeColoredDigraph[110X differs from [10XDotDigraph[110X only in
+  that  the  values given in the list are used to color the edges of the graph
+  when displayed. The list for edge colours should be a list of lists with the
+  same shape of the outneighbours, containing strings that are accepted by the
+  graphviz  software,  which  is the one used for graph representation. If the
+  list is not the appropriate size, or has holes then the function will return
+  an error.[133X
   
   [33X[0;0YVertices are displayed as circles, numbered consistently with [3Xdigraph[103X. Since
   [3Xdigraph[103X  is symmetric, for every non-loop edge there is a complementary edge
@@ -131,6 +384,63 @@
     [4X[25Xgap>[125X [27XIsSymmetricDigraph(star);[127X[104X
     [4X[28Xtrue[128X[104X
     [4X[25Xgap>[125X [27XFileString("dot/star.dot", DotSymmetricDigraph(gr));[127X[104X
+    [4X[25Xgap>[125X [27XD := Digraph([[2], [1, 3], [2]]);[127X[104X
+    [4X[28X<immutable digraph with 3 vertices, 4 edges>[128X[104X
+    [4X[25Xgap>[125X [27Xvertcolors := [];;[127X[104X
+    [4X[25Xgap>[125X [27Xvertcolors[1] := "blue";;[127X[104X
+    [4X[25Xgap>[125X [27Xvertcolors[2] := "pink";;[127X[104X
+    [4X[25Xgap>[125X [27Xvertcolors[3] := "purple";;[127X[104X
+    [4X[25Xgap>[125X [27Xedgecolors := [];;[127X[104X
+    [4X[25Xgap>[125X [27Xedgecolors[1] := [];; edgecolors[2] := [];;[127X[104X
+    [4X[25Xgap>[125X [27Xedgecolors[3] := [];;[127X[104X
+    [4X[25Xgap>[125X [27Xedgecolors[1][2] := "green";; edgecolors[2][1] := "green";;[127X[104X
+    [4X[25Xgap>[125X [27Xedgecolors[2][3] := "red";; edgecolors[3][2] := "red";;[127X[104X
+    [4X[25Xgap>[125X [27XPrint(DotSymmetricColoredDigraph(D, vertcolors, edgecolors));[127X[104X
+    [4X[28X//dot[128X[104X
+    [4X[28Xgraph hgn{[128X[104X
+    [4X[28Xnode [shape=circle][128X[104X
+    [4X[28X[128X[104X
+    [4X[28X1[color=blue, style=filled][128X[104X
+    [4X[28X2[color=pink, style=filled][128X[104X
+    [4X[28X3[color=purple, style=filled][128X[104X
+    [4X[28X1 -- 2[color=green][128X[104X
+    [4X[28X2 -- 3[color=red][128X[104X
+    [4X[28X}[128X[104X
+    [4X[25Xgap>[125X [27XD := Digraph([[2], [1, 3], [2]]);[127X[104X
+    [4X[28X<immutable digraph with 3 vertices, 4 edges>[128X[104X
+    [4X[25Xgap>[125X [27Xvertcolors := [];;[127X[104X
+    [4X[25Xgap>[125X [27Xvertcolors[1] := "blue";;[127X[104X
+    [4X[25Xgap>[125X [27Xvertcolors[2] := "pink";;[127X[104X
+    [4X[25Xgap>[125X [27Xvertcolors[3] := "purple";;[127X[104X
+    [4X[25Xgap>[125X [27XPrint(DotSymmetricVertexColoredDigraph(D, vertcolors));[127X[104X
+    [4X[28X//dot[128X[104X
+    [4X[28Xgraph hgn{[128X[104X
+    [4X[28Xnode [shape=circle][128X[104X
+    [4X[28X[128X[104X
+    [4X[28X1[color=blue, style=filled][128X[104X
+    [4X[28X2[color=pink, style=filled][128X[104X
+    [4X[28X3[color=purple, style=filled][128X[104X
+    [4X[28X1 -- 2[128X[104X
+    [4X[28X2 -- 3[128X[104X
+    [4X[28X}[128X[104X
+    [4X[25Xgap>[125X [27XD := Digraph([[2], [1, 3], [2]]);[127X[104X
+    [4X[28X<immutable digraph with 3 vertices, 4 edges>[128X[104X
+    [4X[25Xgap>[125X [27Xedgecolors := [];;[127X[104X
+    [4X[25Xgap>[125X [27Xedgecolors[1] := [];; edgecolors[2] := [];;[127X[104X
+    [4X[25Xgap>[125X [27Xedgecolors[3] := [];;[127X[104X
+    [4X[25Xgap>[125X [27Xedgecolors[1][2] := "green";; edgecolors[2][1] := "green";;[127X[104X
+    [4X[25Xgap>[125X [27Xedgecolors[2][3] := "red";; edgecolors[3][2] := "red";;[127X[104X
+    [4X[25Xgap>[125X [27XPrint(DotSymmetricEdgeColoredDigraph(D, edgecolors));[127X[104X
+    [4X[28X//dot[128X[104X
+    [4X[28Xgraph hgn{[128X[104X
+    [4X[28Xnode [shape=circle][128X[104X
+    [4X[28X[128X[104X
+    [4X[28X1[128X[104X
+    [4X[28X2[128X[104X
+    [4X[28X3[128X[104X
+    [4X[28X1 -- 2[color=green][128X[104X
+    [4X[28X2 -- 3[color=red][128X[104X
+    [4X[28X}[128X[104X
     [4X[28X83[128X[104X
   [4X[32X[104X
   
@@ -267,7 +577,7 @@
   [6XReturns:[106X  [33X[0;10YA string.[133X
   
   [33X[0;0YReturns  a  string  [10Xstring[110X such that [10XEvalString(string)[110X is equal to [3Xdigraph[103X,
-  and has the same mutability. See [2XEvalString[102X ([14XReference: EvalString[114X).[133X
+  and has the same mutability. See [2XEvalString[102X ([14XEvalString???[114X).[133X
   
   [33X[0;0YThe  methods  installed  for [10XString[110X make some attempts to ensure that [10Xstring[110X
   has  as short a length as possible, but there may exist shorter strings that
@@ -275,8 +585,8 @@
   
   [33X[0;0YIt is possible that [10Xstring[110X may contain escaped special characters. To obtain
   a  representation  of  [3Xdigraph[103X  that can be entered as GAP input, please use
-  [2XPrint[102X  ([14XReference:  Print[114X).  Note  that  [10XPrint[110X  for  a  digraph delegates to
-  [10XPrintString[110X, which delegates to [10XString[110X.[133X
+  [2XPrint[102X  ([14XPrint???[114X).  Note  that [10XPrint[110X for a digraph delegates to [10XPrintString[110X,
+  which delegates to [10XString[110X.[133X
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27XD := CycleDigraph(3);[127X[104X
@@ -437,6 +747,7 @@
     [4X[25Xgap>[125X [27Xfile := DigraphFile(filename, "r");;[127X[104X
     [4X[25Xgap>[125X [27XReadDigraphs(file, 9);[127X[104X
     [4X[28X<immutable digraph with 3 vertices, 5 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIO_Close(file);;[127X[104X
   [4X[32X[104X
   
   [1X9.2-5 ReadDigraphs[101X
@@ -611,8 +922,8 @@
   
   [33X[0;0YIf  [3Xfilename[103X  is a string representing the name of a file containing encoded
   digraphs,  then  [10XIteratorFromDigraphFile[110X  returns  an iterator for which the
-  value  of [2XNextIterator[102X ([14XReference: NextIterator[114X) is the next digraph encoded
-  in the file.[133X
+  value  of  [2XNextIterator[102X ([14XNextIterator???[114X) is the next digraph encoded in the
+  file.[133X
   
   [33X[0;0YIf  the  optional  argument  [3Xdecoder[103X  is  specified  and is a function which
   decodes  a  string  into  a  digraph,  then [10XIteratorFromDigraphFile[110X will use
@@ -710,7 +1021,7 @@
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
   [33X[0;0YThis  function  takes  a  string  [3Xstr[103X,  decodes  it,  and  then  returns the
-  topologically  sorted  digraph [see [2XDigraphTopologicalSort[102X ([14X5.1-7[114X)] which it
+  topologically  sorted  digraph [see [2XDigraphTopologicalSort[102X ([14X5.1-8[114X)] which it
   defines, according to the following rules.[133X
   
   [33X[0;0YThe characters of the string [3Xstr[103X represent the entries in the upper triangle
@@ -835,7 +1146,7 @@
   from   a   file   in   DIMACS   format,   as   appropriate.   The  operation
   [10XWriteDIMACSDigraph[110X  records  the  vertices  and edges of [3Xdigraph[103X. The vertex
   labels  of  [3Xdigraph[103X  will  be  recorded  only  if  they  are  integers.  See
-  [2XIsSymmetricDigraph[102X ([14X6.1-12[114X) and [2XDigraphVertexLabels[102X ([14X5.1-9[114X).[133X
+  [2XIsSymmetricDigraph[102X ([14X6.1-12[114X) and [2XDigraphVertexLabels[102X ([14X5.1-10[114X).[133X
   
   [33X[0;0YThe  first  argument  [3Xfilename[103X  should be the name of the file which will be
   written  to or read from. A file can contain one symmetric digraph in DIMACS

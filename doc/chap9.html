@@ -82,7 +82,7 @@
 <dt><strong class="Mark">directory</strong></dt>
 <dd><p>this should be a string representing the name of the directory in <code class="code">path</code> where you want <code class="code">Splash</code> to do its work. This function will create this directory if does not already exist.</p>
 
-<p>The default value of this option is <code class="code">"tmp.viz"</code> if the option <code class="code">path</code> is present, and the result of <code class="func">DirectoryTemporary</code> (<a href="https://www.gap-system.org/Manuals/doc/ref/chap9_mj.html#X8222B1A886E6195E"><span class="RefLink">Reference: DirectoryTemporary</span></a>) is used otherwise.</p>
+<p>The default value of this option is <code class="code">"tmp.viz"</code> if the option <code class="code">path</code> is present, and the result of <code class="func">DirectoryTemporary</code> (<span class="RefLink">???</span>) is used otherwise.</p>
 
 </dd>
 <dt><strong class="Mark">filename</strong></dt>
@@ -118,16 +118,25 @@
 <h5>9.1-2 DotDigraph</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DotDigraph</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DotColoredDigraph</code>( <var class="Arg">digraph</var>, <var class="Arg">vert</var>, <var class="Arg">edge</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DotVertexLabelledDigraph</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DotVertexColoredDigraph</code>( <var class="Arg">digraph</var>, <var class="Arg">vert</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DotEdgeColoredDigraph</code>( <var class="Arg">digraph</var>, <var class="Arg">edge</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: A string.</p>
 
 <p><code class="code">DotDigraph</code> produces a graphical representation of the digraph <var class="Arg">digraph</var>. Vertices are displayed as circles, numbered consistently with <var class="Arg">digraph</var>. Edges are displayed as arrowed lines between vertices, with the arrowhead of each line pointing towards the range of the edge.</p>
 
-<p><code class="code">DotVertexLabelledDigraph</code> differs from <code class="code">DotDigraph</code> only in that the values in <code class="func">DigraphVertexLabels</code> (<a href="chap5.html#X7E51F2FE87140B32"><span class="RefLink">5.1-9</span></a>) are used to label the vertices in the produced picture rather than the numbers <code class="code">1</code> to the number of vertices of the digraph.</p>
+<p><code class="code">DotColoredDigraph</code> differs from <code class="code">DotDigraph</code> only in that the values in given in the two lists are used to color the vertices and edges of the graph when displayed. The list for vertex colours should be a list of length equal to the number of vertices, containing strings that are accepted by the graphviz software, which is the one used for graph representation. The list for edge colours should be a list of lists with the same shape of the outneighbours of the digraph that contains strings that correspond to colours accepted by the graphviz software. If the lists are not the appropriate size, or have holes then the function will return an error.</p>
+
+<p><code class="code">DotVertexColoredDigraph</code> differs from <code class="code">DotDigraph</code> only in that the values in given in the list are used to color the vertices of the graph when displayed. The list for vertex colours should be a list of length equal to the number of vertices, containing strings that are accepted by the graphviz software, which is the one used for graph representation. If the list is not the appropriate size, or has holes then the function will return an error.</p>
+
+<p><code class="code">DotEdgeColoredDigraph</code> differs from <code class="code">DotDigraph</code> only in that the values in given in the list are used to color the vertices and edges of the graph when displayed. The list for edge colours should be a list of lists with the same shape of the outneighbours of the digraph that contains strings that correspond to colours accepted by the graphviz software. If the list is not the appropriate size, or has holes then the function will return an error.</p>
+
+<p><code class="code">DotVertexLabelledDigraph</code> differs from <code class="code">DotDigraph</code> only in that the values in <code class="func">DigraphVertexLabels</code> (<a href="chap5.html#X7E51F2FE87140B32"><span class="RefLink">5.1-10</span></a>) are used to label the vertices in the produced picture rather than the numbers <code class="code">1</code> to the number of vertices of the digraph.</p>
 
 <p>The output is in <code class="code">dot</code> format (also known as <code class="code">GraphViz</code>) format. For details about this file format, and information about how to display or edit this format see <span class="URL"><a href="http://www.graphviz.org">http://www.graphviz.org</a></span>.</p>
 
-<p>The string returned by <code class="code">DotDigraph</code> or <code class="code">DotVertexLabelledDigraph</code> can be written to a file using the command <code class="func">FileString</code> (<a href="../../../pkg/GAPDoc-1.6.1/doc/chap6_mj.html#X7E14D32181FBC3C3"><span class="RefLink">GAPDoc: FileString</span></a>).</p>
+<p>The string returned by <code class="code">DotDigraph</code> or <code class="code">DotVertexLabelledDigraph</code> can be written to a file using the command <code class="func">FileString</code> (<a href="../../../pkg/GAPDoc-1.6.4/doc/chap6_mj.html#X7E14D32181FBC3C3"><span class="RefLink">GAPDoc: FileString</span></a>).</p>
 
 
 <div class="example"><pre>
@@ -137,6 +146,203 @@
 0
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := DigraphByAdjacencyMatrix(adj);</span>
 &lt;immutable digraph with 4 vertices, 15 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">D := CompleteDigraph(4);</span>
+&lt;immutable complete digraph with 4 vertices&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">vertcolors := [];;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">vertcolors[1] := "blue";; vertcolors[2] := "red";; </span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">vertcolors[3] := "green";; vertcolors[4] := "yellow";;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">edgecolors := [];;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">edgecolors[1] := [];; edgecolors[2] := [];;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">edgecolors[3] := [];; edgecolors[4] := [];; </span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">edgecolors[1][2] := "lightblue";;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">edgecolors[1][3] := "pink";;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">edgecolors[1][4] := "purple";;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">edgecolors[2][1] := "lightblue";;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">edgecolors[2][3] := "pink";; </span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">edgecolors[2][4] := "purple";; </span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">edgecolors[3][1] := "lightblue";; </span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">edgecolors[3][2] := "pink";; </span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">edgecolors[3][4] := "purple";;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">edgecolors[4][1] := "lightblue";; </span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">edgecolors[4][2] := "pink";;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">edgecolors[4][3] := "purple";;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">Print(DotColoredDigraph(D, vertcolors, edgecolors));</span>
+//dot
+digraph hgn{
+node [shape=circle]
+1[color=blue, style=filled]
+2[color=red, style=filled]
+3[color=green, style=filled]
+4[color=yellow, style=filled]
+1 -&gt; 2[color=lightblue]
+1 -&gt; 3[color=pink]
+1 -&gt; 4[color=purple]
+2 -&gt; 1[color=lightblue]
+2 -&gt; 3[color=pink]
+2 -&gt; 4[color=purple]
+3 -&gt; 1[color=lightblue]
+3 -&gt; 2[color=pink]
+3 -&gt; 4[color=purple]
+4 -&gt; 1[color=lightblue]
+4 -&gt; 2[color=pink]
+4 -&gt; 3[color=purple]
+}
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">D := EmptyDigraph(3);</span>
+&lt;immutable empty digraph with 3 vertices&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">vertcolors := [];;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">vertcolors[1] := "blue";; vertcolors[2] := "red";;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">vertcolors[3] := "green";;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">edgecolors := [];;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">edgecolors[1] := [];; edgecolors[2] := [];; </span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">edgecolors[3] := [];;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">Print(DotColoredDigraph(D, vertcolors, edgecolors));</span>
+//dot
+digraph hgn{
+node [shape=circle]
+1[color=blue, style=filled]
+2[color=red, style=filled]
+3[color=green, style=filled]
+}
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">D := Digraph([[2], [1, 3], [2]]);</span>
+&lt;immutable digraph with 3 vertices, 4 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">vertcolors := [];;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">vertcolors[1] := "blue";;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">vertcolors[2] := "pink";;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">vertcolors[3] := "purple";;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">edgecolors := [];;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">edgecolors[1] := [];; edgecolors[2] := [];;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">edgecolors[3] := [];;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">edgecolors[1][2] := "green";; edgecolors[2][1] := "green";;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">edgecolors[2][3] := "red";; edgecolors[3][2] := "red";;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">Print(DotSymmetricColoredDigraph(D, vertcolors, edgecolors));</span>
+//dot
+graph hgn{
+node [shape=circle]
+
+1[color=blue, style=filled]
+2[color=pink, style=filled]
+3[color=purple, style=filled]
+1 -- 2[color=green]
+2 -- 3[color=red]
+}
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">D := Digraph([[2, 3], [1, 3], [1]]);</span>
+&lt;immutable digraph with 3 vertices, 5 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">vertcolors := [];;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">vertcolors[1] := "blue";; vertcolors[2] := "red";;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">vertcolors[3] := "green";;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">edgecolors := [];;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">edgecolors[1] := [];; edgecolors[2] := [];;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">edgecolors[3] := [];;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">edgecolors[1][2] := "orange";; edgecolors[1][3] := "yellow";;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">edgecolors[2][1] := "orange";; edgecolors[2][3] := "pink";;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">edgecolors[3][1] := "yellow";;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">Print(DotColoredDigraph(D, vertcolors, edgecolors));;</span>
+//dot
+digraph hgn{
+node [shape=circle]
+1[color=blue, style=filled]
+2[color=red, style=filled]
+3[color=green, style=filled]
+1 -&gt; 2[color=orange]
+1 -&gt; 3[color=yellow]
+2 -&gt; 1[color=orange]
+2 -&gt; 3[color=pink]
+3 -&gt; 1[color=yellow]
+}
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">D := Digraph(IsMutableDigraph, [[2, 3], [1, 3], [1]]);</span>
+&lt;mutable digraph with 3 vertices, 5 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">vertcolors := [];;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">vertcolors[1] := "blue";; vertcolors[2] := "red";;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">vertcolors[3] := "green";;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">edgecolors := [];;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">edgecolors[1] := [];; edgecolors[2] := [];;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">edgecolors[3] := [];;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">edgecolors[1][2] := "orange";; edgecolors[1][3] := "yellow";;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">edgecolors[2][1] := "orange";; edgecolors[2][3] := "pink";;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">edgecolors[3][1] := "yellow";;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">Print(DotColoredDigraph(D, vertcolors, edgecolors));;</span>
+//dot
+digraph hgn{
+node [shape=circle]
+1[color=blue, style=filled]
+2[color=red, style=filled]
+3[color=green, style=filled]
+1 -&gt; 2[color=orange]
+1 -&gt; 3[color=yellow]
+2 -&gt; 1[color=orange]
+2 -&gt; 3[color=pink]
+3 -&gt; 1[color=yellow]
+}
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">D;</span>
+&lt;mutable digraph with 3 vertices, 5 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DotSymmetricDigraph(gr2){[12 .. 70]};</span>
+" hgn{\nnode [shape=circle]\n\n1\n2\n3\n4\n1 -- 2\n2 -- 3\n3 -- 3\n3 -"
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DotSymmetricDigraph(gr1);</span>
+Error, the argument &lt;D&gt; must be a symmetric digraph,
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">D := CompleteDigraph(4);</span>
+&lt;immutable complete digraph with 4 vertices&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">vertcolors := [];;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">vertcolors[1] := "blue";; vertcolors[2] := "red";; </span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">vertcolors[3] := "green";; vertcolors[4] := "yellow";;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">Print(DotVertexColoredDigraph(D, vertcolors));</span>
+//dot
+digraph hgn{
+node [shape=circle]
+1[color=blue, style=filled]
+2[color=red, style=filled]
+3[color=green, style=filled]
+4[color=yellow, style=filled]
+1 -&gt; 2
+1 -&gt; 3
+1 -&gt; 4
+2 -&gt; 1
+2 -&gt; 3
+2 -&gt; 4
+3 -&gt; 1
+3 -&gt; 2
+3 -&gt; 4
+4 -&gt; 1
+4 -&gt; 2
+4 -&gt; 3
+}
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">D := CompleteDigraph(4);</span>
+&lt;immutable complete digraph with 4 vertices&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">edgecolors := [];;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">edgecolors[1] := [];; edgecolors[2] := [];;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">edgecolors[3] := [];; edgecolors[4] := [];; </span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">edgecolors[1][2] := "lightblue";;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">edgecolors[1][3] := "pink";;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">edgecolors[1][4] := "purple";;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">edgecolors[2][1] := "lightblue";;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">edgecolors[2][3] := "pink";; </span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">edgecolors[2][4] := "purple";; </span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">edgecolors[3][1] := "lightblue";; </span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">edgecolors[3][2] := "pink";; </span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">edgecolors[3][4] := "purple";;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">edgecolors[4][1] := "lightblue";; </span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">edgecolors[4][2] := "pink";;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">edgecolors[4][3] := "purple";;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">Print(DotEdgeColoredDigraph(D, edgecolors));</span>
+//dot
+digraph hgn{
+node [shape=circle]
+1
+2
+3
+4
+1 -&gt; 2[color=lightblue]
+1 -&gt; 3[color=pink]
+1 -&gt; 4[color=purple]
+2 -&gt; 1[color=lightblue]
+2 -&gt; 3[color=pink]
+2 -&gt; 4[color=purple]
+3 -&gt; 1[color=lightblue]
+3 -&gt; 2[color=pink]
+3 -&gt; 4[color=purple]
+4 -&gt; 1[color=lightblue]
+4 -&gt; 2[color=pink]
+4 -&gt; 3[color=purple]
+}
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">FileString("dot/k4.dot", DotDigraph(gr));</span>
 154</pre></div>
 
@@ -145,15 +351,24 @@
 <h5>9.1-3 DotSymmetricDigraph</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DotSymmetricDigraph</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DotSymmetricColoredDigraph</code>( <var class="Arg">digraph</var>, <var class="Arg">vert</var>, <var class="Arg">edge</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DotSymmetricVertexColoredDigraph</code>( <var class="Arg">digraph</var>, <var class="Arg">vert</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DotSymmetricEdgeColoredDigraph</code>( <var class="Arg">digraph</var>, <var class="Arg">edge</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: A string.</p>
 
 <p>This function produces a graphical representation of the symmetric digraph <var class="Arg">digraph</var>. <code class="code">DotSymmetricDigraph</code> will return an error if <var class="Arg">digraph</var> is not a symmetric digraph. See <code class="func">IsSymmetricDigraph</code> (<a href="chap6.html#X81B3EA7887219860"><span class="RefLink">6.1-12</span></a>).</p>
+
+<p>The function <code class="code">DotSymmetricColoredDigraph</code> differs from <code class="code">DotDigraph</code> only in that the values given in the two lists are used to color the vertices and edges of the graph when displayed. The list for vertex colours should be a list of length equal to the number of vertices, containing strings that are accepted by the graphviz software, which is the one used for graph representation. The list for edge colours should be a list of lists with the same shape of the outneighbours of the digraph that contains strings that correspond to colours accepted by the graphviz software. If the list is not the appropriate size, or has holes then the function will return an error.</p>
+
+<p>The function <code class="code">DotSymmetricVertexColoredDigraph</code> differs from <code class="code">DotDigraph</code> only in that the values in given in the list is used to color the vertices of the graph when displayed. The list for vertex colours should be a list of length equal to the number of vertices, containing strings that are accepted by the graphviz software, which is the one used for graph representation. If the list is not the appropriate size, or has holes then the function will return an error.</p>
+
+<p>The function <code class="code">DotSymmetricEdgeColoredDigraph</code> differs from <code class="code">DotDigraph</code> only in that the values given in the list are used to color the edges of the graph when displayed. The list for edge colours should be a list of lists with the same shape of the outneighbours, containing strings that are accepted by the graphviz software, which is the one used for graph representation. If the list is not the appropriate size, or has holes then the function will return an error.</p>
 
 <p>Vertices are displayed as circles, numbered consistently with <var class="Arg">digraph</var>. Since <var class="Arg">digraph</var> is symmetric, for every non-loop edge there is a complementary edge with opposite source and range. <code class="code">DotSymmetricDigraph</code> displays each pair of complementary edges as a single line between the relevant vertices, with no arrowhead.</p>
 
 <p>The output is in <code class="code">dot</code> format (also known as <code class="code">GraphViz</code>) format. For details about this file format, and information about how to display or edit this format see <span class="URL"><a href="http://www.graphviz.org">http://www.graphviz.org</a></span>.</p>
 
-<p>The string returned by <code class="code">DotSymmetricDigraph</code> can be written to a file using the command <code class="func">FileString</code> (<a href="../../../pkg/GAPDoc-1.6.1/doc/chap6_mj.html#X7E14D32181FBC3C3"><span class="RefLink">GAPDoc: FileString</span></a>).</p>
+<p>The string returned by <code class="code">DotSymmetricDigraph</code> can be written to a file using the command <code class="func">FileString</code> (<a href="../../../pkg/GAPDoc-1.6.4/doc/chap6_mj.html#X7E14D32181FBC3C3"><span class="RefLink">GAPDoc: FileString</span></a>).</p>
 
 
 <div class="example"><pre>
@@ -162,6 +377,63 @@
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsSymmetricDigraph(star);</span>
 true
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">FileString("dot/star.dot", DotSymmetricDigraph(gr));</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">D := Digraph([[2], [1, 3], [2]]);</span>
+&lt;immutable digraph with 3 vertices, 4 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">vertcolors := [];;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">vertcolors[1] := "blue";;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">vertcolors[2] := "pink";;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">vertcolors[3] := "purple";;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">edgecolors := [];;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">edgecolors[1] := [];; edgecolors[2] := [];;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">edgecolors[3] := [];;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">edgecolors[1][2] := "green";; edgecolors[2][1] := "green";;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">edgecolors[2][3] := "red";; edgecolors[3][2] := "red";;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">Print(DotSymmetricColoredDigraph(D, vertcolors, edgecolors));</span>
+//dot
+graph hgn{
+node [shape=circle]
+
+1[color=blue, style=filled]
+2[color=pink, style=filled]
+3[color=purple, style=filled]
+1 -- 2[color=green]
+2 -- 3[color=red]
+}
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">D := Digraph([[2], [1, 3], [2]]);</span>
+&lt;immutable digraph with 3 vertices, 4 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">vertcolors := [];;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">vertcolors[1] := "blue";;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">vertcolors[2] := "pink";;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">vertcolors[3] := "purple";;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">Print(DotSymmetricVertexColoredDigraph(D, vertcolors));</span>
+//dot
+graph hgn{
+node [shape=circle]
+
+1[color=blue, style=filled]
+2[color=pink, style=filled]
+3[color=purple, style=filled]
+1 -- 2
+2 -- 3
+}
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">D := Digraph([[2], [1, 3], [2]]);</span>
+&lt;immutable digraph with 3 vertices, 4 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">edgecolors := [];;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">edgecolors[1] := [];; edgecolors[2] := [];;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">edgecolors[3] := [];;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">edgecolors[1][2] := "green";; edgecolors[2][1] := "green";;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">edgecolors[2][3] := "red";; edgecolors[3][2] := "red";;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">Print(DotSymmetricEdgeColoredDigraph(D, edgecolors));</span>
+//dot
+graph hgn{
+node [shape=circle]
+
+1
+2
+3
+1 -- 2[color=green]
+2 -- 3[color=red]
+}
 83</pre></div>
 
 <p><a id="X84120D447E2CAC23" name="X84120D447E2CAC23"></a></p>
@@ -177,7 +449,7 @@ true
 
 <p>The output is in <code class="code">dot</code> format (also known as <code class="code">GraphViz</code>) format. For details about this file format, and information about how to display or edit this format see <span class="URL"><a href="http://www.graphviz.org">http://www.graphviz.org</a></span>.</p>
 
-<p>The string returned by <code class="code">DotPartialOrderDigraph</code> can be written to a file using the command <code class="func">FileString</code> (<a href="../../../pkg/GAPDoc-1.6.1/doc/chap6_mj.html#X7E14D32181FBC3C3"><span class="RefLink">GAPDoc: FileString</span></a>).</p>
+<p>The string returned by <code class="code">DotPartialOrderDigraph</code> can be written to a file using the command <code class="func">FileString</code> (<a href="../../../pkg/GAPDoc-1.6.4/doc/chap6_mj.html#X7E14D32181FBC3C3"><span class="RefLink">GAPDoc: FileString</span></a>).</p>
 
 
 <div class="example"><pre>
@@ -201,7 +473,7 @@ true
 
 <p>The output is in <code class="code">dot</code> format (also known as <code class="code">GraphViz</code>) format. For details about this file format, and information about how to display or edit this format see <span class="URL"><a href="http://www.graphviz.org">http://www.graphviz.org</a></span>.</p>
 
-<p>The string returned by <code class="code">DotPreorderDigraph</code> can be written to a file using the command <code class="func">FileString</code> (<a href="../../../pkg/GAPDoc-1.6.1/doc/chap6_mj.html#X7E14D32181FBC3C3"><span class="RefLink">GAPDoc: FileString</span></a>).</p>
+<p>The string returned by <code class="code">DotPreorderDigraph</code> can be written to a file using the command <code class="func">FileString</code> (<a href="../../../pkg/GAPDoc-1.6.4/doc/chap6_mj.html#X7E14D32181FBC3C3"><span class="RefLink">GAPDoc: FileString</span></a>).</p>
 
 
 <div class="example"><pre>
@@ -263,11 +535,11 @@ true
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; PrintString</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: A string.</p>
 
-<p>Returns a string <code class="code">string</code> such that <code class="code">EvalString(string)</code> is equal to <var class="Arg">digraph</var>, and has the same mutability. See <code class="func">EvalString</code> (<a href="https://www.gap-system.org/Manuals/doc/ref/chap27_mj.html#X7DE4CCD285440659"><span class="RefLink">Reference: EvalString</span></a>).</p>
+<p>Returns a string <code class="code">string</code> such that <code class="code">EvalString(string)</code> is equal to <var class="Arg">digraph</var>, and has the same mutability. See <code class="func">EvalString</code> (<span class="RefLink">???</span>).</p>
 
 <p>The methods installed for <code class="code">String</code> make some attempts to ensure that <code class="code">string</code> has as short a length as possible, but there may exist shorter strings that also evaluate to <var class="Arg">digraph</var>.</p>
 
-<p>It is possible that <code class="code">string</code> may contain escaped special characters. To obtain a representation of <var class="Arg">digraph</var> that can be entered as GAP input, please use <code class="func">Print</code> (<a href="https://www.gap-system.org/Manuals/doc/ref/chap6_mj.html#X7AFA64D97A1F39A3"><span class="RefLink">Reference: Print</span></a>). Note that <code class="code">Print</code> for a digraph delegates to <code class="code">PrintString</code>, which delegates to <code class="code">String</code>.</p>
+<p>It is possible that <code class="code">string</code> may contain escaped special characters. To obtain a representation of <var class="Arg">digraph</var> that can be entered as GAP input, please use <code class="func">Print</code> (<span class="RefLink">???</span>). Note that <code class="code">Print</code> for a digraph delegates to <code class="code">PrintString</code>, which delegates to <code class="code">String</code>.</p>
 
 
 <div class="example"><pre>
@@ -403,7 +675,9 @@ DigraphFromGraph6String(IsMutableDigraph, "IheA@GUAo");
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IO_Close(file);;</span>
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">file := DigraphFile(filename, "r");;</span>
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">ReadDigraphs(file, 9);</span>
-&lt;immutable digraph with 3 vertices, 5 edges&gt;</pre></div>
+&lt;immutable digraph with 3 vertices, 5 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IO_Close(file);;</span>
+</pre></div>
 
 <p><a id="X7E8142007ED0CB9F" name="X7E8142007ED0CB9F"></a></p>
 
@@ -544,7 +818,7 @@ IO_OK
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IteratorFromDigraphFile</code>( <var class="Arg">filename</var>[, <var class="Arg">decoder</var>] )</td><td class="tdright">(&nbsp;function&nbsp;)</td></tr></table></div>
 <p>Returns: An iterator.</p>
 
-<p>If <var class="Arg">filename</var> is a string representing the name of a file containing encoded digraphs, then <code class="code">IteratorFromDigraphFile</code> returns an iterator for which the value of <code class="func">NextIterator</code> (<a href="https://www.gap-system.org/Manuals/doc/ref/chap30_mj.html#X879F62F77D1D1179"><span class="RefLink">Reference: NextIterator</span></a>) is the next digraph encoded in the file.</p>
+<p>If <var class="Arg">filename</var> is a string representing the name of a file containing encoded digraphs, then <code class="code">IteratorFromDigraphFile</code> returns an iterator for which the value of <code class="func">NextIterator</code> (<span class="RefLink">???</span>) is the next digraph encoded in the file.</p>
 
 <p>If the optional argument <var class="Arg">decoder</var> is specified and is a function which decodes a string into a digraph, then <code class="code">IteratorFromDigraphFile</code> will use <var class="Arg">decoder</var> to decode the digraphs contained in <var class="Arg">filename</var>.</p>
 
@@ -625,7 +899,7 @@ IO_OK
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; AdjacencyMatrixUpperTriangleLineDecoder</code>( <var class="Arg">str</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: A digraph.</p>
 
-<p>This function takes a string <var class="Arg">str</var>, decodes it, and then returns the topologically sorted digraph [see <code class="func">DigraphTopologicalSort</code> (<a href="chap5.html#X785C30378064CF47"><span class="RefLink">5.1-7</span></a>)] which it defines, according to the following rules.</p>
+<p>This function takes a string <var class="Arg">str</var>, decodes it, and then returns the topologically sorted digraph [see <code class="func">DigraphTopologicalSort</code> (<a href="chap5.html#X785C30378064CF47"><span class="RefLink">5.1-8</span></a>)] which it defines, according to the following rules.</p>
 
 <p>The characters of the string <var class="Arg">str</var> represent the entries in the upper triangle of a digraph's adjacency matrix. The number of vertices <code class="code">n</code> will be detected from the length of the string and will be as large as possible.</p>
 
@@ -723,7 +997,7 @@ IO_OK
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; WriteDIMACSDigraph</code>( <var class="Arg">filename</var>, <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; ReadDIMACSDigraph</code>( <var class="Arg">filename</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
-<p>These operations write or read the single symmetric digraph <var class="Arg">digraph</var> to or from a file in DIMACS format, as appropriate. The operation <code class="code">WriteDIMACSDigraph</code> records the vertices and edges of <var class="Arg">digraph</var>. The vertex labels of <var class="Arg">digraph</var> will be recorded only if they are integers. See <code class="func">IsSymmetricDigraph</code> (<a href="chap6.html#X81B3EA7887219860"><span class="RefLink">6.1-12</span></a>) and <code class="func">DigraphVertexLabels</code> (<a href="chap5.html#X7E51F2FE87140B32"><span class="RefLink">5.1-9</span></a>).</p>
+<p>These operations write or read the single symmetric digraph <var class="Arg">digraph</var> to or from a file in DIMACS format, as appropriate. The operation <code class="code">WriteDIMACSDigraph</code> records the vertices and edges of <var class="Arg">digraph</var>. The vertex labels of <var class="Arg">digraph</var> will be recorded only if they are integers. See <code class="func">IsSymmetricDigraph</code> (<a href="chap6.html#X81B3EA7887219860"><span class="RefLink">6.1-12</span></a>) and <code class="func">DigraphVertexLabels</code> (<a href="chap5.html#X7E51F2FE87140B32"><span class="RefLink">5.1-10</span></a>).</p>
 
 <p>The first argument <var class="Arg">filename</var> should be the name of the file which will be written to or read from. A file can contain one symmetric digraph in DIMACS format. If <var class="Arg">filename</var> ends in one of <code class="code">.gz</code>, <code class="code">.bz2</code>, or <code class="code">.xz</code>, then the file is compressed, or decompressed, appropriately.</p>
 

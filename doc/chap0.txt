@@ -3,7 +3,7 @@
                                     [1X[5XDigraphs[105X[101X
   
   
-                                 Version 1.3.1
+                                 Version 1.4.0
   
   
                                   Jan De Beule
@@ -183,19 +183,20 @@
       5.1-2 DigraphNrVertices
       5.1-3 DigraphEdges
       5.1-4 DigraphNrEdges
-      5.1-5 DigraphSinks
-      5.1-6 DigraphSources
-      5.1-7 DigraphTopologicalSort
-      5.1-8 DigraphVertexLabel
-      5.1-9 DigraphVertexLabels
-      5.1-10 DigraphEdgeLabel
-      5.1-11 DigraphEdgeLabels
-      5.1-12 DigraphInEdges
-      5.1-13 DigraphOutEdges
-      5.1-14 IsDigraphEdge
-      5.1-15 IsMatching
-      5.1-16 DigraphMaximalMatching
-      5.1-17 DigraphMaximumMatching
+      5.1-5 DigraphNrLoops
+      5.1-6 DigraphSinks
+      5.1-7 DigraphSources
+      5.1-8 DigraphTopologicalSort
+      5.1-9 DigraphVertexLabel
+      5.1-10 DigraphVertexLabels
+      5.1-11 DigraphEdgeLabel
+      5.1-12 DigraphEdgeLabels
+      5.1-13 DigraphInEdges
+      5.1-14 DigraphOutEdges
+      5.1-15 IsDigraphEdge
+      5.1-16 IsMatching
+      5.1-17 DigraphMaximalMatching
+      5.1-18 DigraphMaximumMatching
     5.2 [33X[0;0YNeighbours and degree[133X
       5.2-1 AdjacencyMatrix
       5.2-2 CharacteristicPolynomial
@@ -234,17 +235,18 @@
       5.3-17 DigraphPeriod
       5.3-18 DigraphFloydWarshall
       5.3-19 IsReachable
-      5.3-20 DigraphPath
-      5.3-21 DigraphShortestPath
-      5.3-22 IteratorOfPaths
-      5.3-23 DigraphAllSimpleCircuits
-      5.3-24 DigraphLongestSimpleCircuit
-      5.3-25 DigraphLayers
-      5.3-26 DigraphDegeneracy
-      5.3-27 DigraphDegeneracyOrdering
-      5.3-28 HamiltonianPath
-      5.3-29 NrSpanningTrees
-      5.3-30 DigraphDijkstra
+      5.3-20 VerticesReachableFrom
+      5.3-21 DigraphPath
+      5.3-22 DigraphShortestPath
+      5.3-23 IteratorOfPaths
+      5.3-24 DigraphAllSimpleCircuits
+      5.3-25 DigraphLongestSimpleCircuit
+      5.3-26 DigraphLayers
+      5.3-27 DigraphDegeneracy
+      5.3-28 DigraphDegeneracyOrdering
+      5.3-29 HamiltonianPath
+      5.3-30 NrSpanningTrees
+      5.3-31 DigraphDijkstra
     5.4 [33X[0;0YCayley graphs of groups[133X
       5.4-1 GroupOfCayleyDigraph
       5.4-2 GeneratorsOfCayleyDigraph

@@ -23,7 +23,7 @@
   If  [3Xtrans[103X  is  mathematically  a permutation, then the result coincides with
   [10XOnDigraphs([3Xdigraph[103X[10X, AsPermutation([3Xtrans[103X[10X))[110X.[133X
   
-  [33X[0;0YThe  [2XDigraphVertexLabels[102X  ([14X5.1-9[114X)  of  [3Xdigraph[103X  will  not be retained in the
+  [33X[0;0YThe  [2XDigraphVertexLabels[102X  ([14X5.1-10[114X)  of  [3Xdigraph[103X  will not be retained in the
   returned digraph.[133X
   
   [33X[0;0YIf  [3Xdigraph[103X  belongs  to  [2XIsMutableDigraph[102X  ([14X3.1-2[114X), then relabelling of the
@@ -131,8 +131,8 @@
   [33X[0;0YIf  [3Xdigraph[103X is a multidigraph then the automorphism group is returned as the
   direct  product of a group of permutations on the set of vertices of [3Xdigraph[103X
   with  a  group  of permutations on the set of edges of [3Xdigraph[103X. These groups
-  can  be  accessed using [2XProjection[102X ([14XReference: Projection for a domain and a
-  positive integer[114X) on the returned group.[133X
+  can  be  accessed  using [2XProjection[102X ([14XProjection, for a domain and a positive
+  integer???[114X) on the returned group.[133X
   
   [33X[0;0YBy  default,  the  automorphism group is found using [5Xbliss[105X by Tommi Junttila
   and  Petteri  Kaski.  If  [5XNautyTracesInterface[105X  is  available, then [5Xnauty[105X by
@@ -243,8 +243,8 @@
   [33X[0;0YIf  [3Xdigraph[103X is a multidigraph then the automorphism group is returned as the
   direct  product of a group of permutations on the set of vertices of [3Xdigraph[103X
   with  a  group  of permutations on the set of edges of [3Xdigraph[103X. These groups
-  can  be  accessed using [2XProjection[102X ([14XReference: Projection for a domain and a
-  positive integer[114X) on the returned group.[133X
+  can  be  accessed  using [2XProjection[102X ([14XProjection, for a domain and a positive
+  integer???[114X) on the returned group.[133X
   
   [33X[0;0YBy  default,  the  automorphism group is found using [5Xbliss[105X by Tommi Junttila
   and  Petteri  Kaski.  If  [5XNautyTracesInterface[105X  is  available, then [5Xnauty[105X by
@@ -310,8 +310,8 @@
   [33X[0;0YIf  [3Xdigraph[103X is a multidigraph then the automorphism group is returned as the
   direct  product of a group of permutations on the set of vertices of [3Xdigraph[103X
   with  a  group  of permutations on the set of edges of [3Xdigraph[103X. These groups
-  can  be  accessed using [2XProjection[102X ([14XReference: Projection for a domain and a
-  positive integer[114X) on the returned group.[133X
+  can  be  accessed  using [2XProjection[102X ([14XProjection, for a domain and a positive
+  integer???[114X) on the returned group.[133X
   
   [33X[0;0YBy  default,  the  automorphism group is found using [5Xbliss[105X by Tommi Junttila
   and  Petteri  Kaski.  If  [5XNautyTracesInterface[105X  is  available, then [5Xnauty[105X by
@@ -561,7 +561,7 @@
     [4X[25Xgap>[125X [27XHasDigraphGroup(D);[127X[104X
     [4X[28Xtrue[128X[104X
     [4X[25Xgap>[125X [27XGeneratorsOfGroup(DigraphGroup(D));[127X[104X
-    [4X[28X[ (1,2)(3,8)(4,6)(5,7), (1,3,4,7)(2,5,6,8), (1,4)(2,6)(3,7)(5,8) ][128X[104X
+    [4X[28X[ (1,2)(3,5)(4,6)(7,8), (1,7,4,3)(2,5,6,8), (1,4)(2,6)(3,7)(5,8) ][128X[104X
   [4X[32X[104X
   
   [1X7.2-11 DigraphOrbits[101X
@@ -642,17 +642,17 @@
     [4X[25Xgap>[125X [27XD := CayleyDigraph(AlternatingGroup(4));[127X[104X
     [4X[28X<immutable digraph with 12 vertices, 24 edges>[128X[104X
     [4X[25Xgap>[125X [27Xsch := DigraphSchreierVector(D);[127X[104X
-    [4X[28X[ -1, 2, 2, 1, 1, 1, 1, 1, 2, 2, 2, 1 ][128X[104X
+    [4X[28X[ -1, 2, 2, 1, 1, 2, 1, 2, 2, 1, 1, 1 ][128X[104X
     [4X[25Xgap>[125X [27XDigraphOrbitReps(D);[127X[104X
     [4X[28X[ 1 ][128X[104X
     [4X[25Xgap>[125X [27Xgens := GeneratorsOfGroup(DigraphGroup(D));[127X[104X
-    [4X[28X[ (1,5,7)(2,4,8)(3,6,9)(10,11,12), (1,2,3)(4,7,10)(5,9,11)(6,8,12) ][128X[104X
+    [4X[28X[ (1,7,5)(2,10,9)(3,4,11)(6,8,12), (1,3,2)(4,5,6)(7,9,8)(10,11,12) ][128X[104X
     [4X[25Xgap>[125X [27X10 / gens[sch[10]];[127X[104X
-    [4X[28X7[128X[104X
+    [4X[28X2[128X[104X
     [4X[25Xgap>[125X [27X7 / gens[sch[7]];[127X[104X
-    [4X[28X5[128X[104X
-    [4X[25Xgap>[125X [27X5 / gens[sch[5]];[127X[104X
     [4X[28X1[128X[104X
+    [4X[25Xgap>[125X [27X5 / gens[sch[5]];[127X[104X
+    [4X[28X7[128X[104X
   [4X[32X[104X
   
   [1X7.2-14 DigraphStabilizer[101X

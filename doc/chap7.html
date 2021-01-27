@@ -95,7 +95,7 @@
 
 <p>If the second argument is a <em>transformation</em> <var class="Arg">trans</var> of the vertices of <var class="Arg">digraph</var>, then this operation returns a digraph constructed by transforming the source and range of each edge according to <var class="Arg">trans</var>. Thus a vertex which does not appear in the image of <var class="Arg">trans</var> will be isolated in the returned digraph, and the returned digraph may contain multiple edges, even if <var class="Arg">digraph</var> does not. If <var class="Arg">trans</var> is mathematically a permutation, then the result coincides with <code class="code">OnDigraphs(<var class="Arg">digraph</var>, AsPermutation(<var class="Arg">trans</var>))</code>.</p>
 
-<p>The <code class="func">DigraphVertexLabels</code> (<a href="chap5.html#X7E51F2FE87140B32"><span class="RefLink">5.1-9</span></a>) of <var class="Arg">digraph</var> will not be retained in the returned digraph.</p>
+<p>The <code class="func">DigraphVertexLabels</code> (<a href="chap5.html#X7E51F2FE87140B32"><span class="RefLink">5.1-10</span></a>) of <var class="Arg">digraph</var> will not be retained in the returned digraph.</p>
 
 <p>If <var class="Arg">digraph</var> belongs to <code class="func">IsMutableDigraph</code> (<a href="chap3.html#X7D7EDF83820ED6F5"><span class="RefLink">3.1-2</span></a>), then relabelling of the vertices is performed directly on <var class="Arg">digraph</var>. If <var class="Arg">digraph</var> belongs to <code class="func">IsImmutableDigraph</code> (<a href="chap3.html#X7CAFAA89804F80BD"><span class="RefLink">3.1-3</span></a>), an immutable copy of <var class="Arg">digraph</var> with the vertices relabelled is returned.</p>
 
@@ -177,7 +177,7 @@ true
 
 <p>If <var class="Arg">digraph</var> is not a multidigraph then the automorphism group is returned as a group of permutations on the set of vertices of <var class="Arg">digraph</var>.</p>
 
-<p>If <var class="Arg">digraph</var> is a multidigraph then the automorphism group is returned as the direct product of a group of permutations on the set of vertices of <var class="Arg">digraph</var> with a group of permutations on the set of edges of <var class="Arg">digraph</var>. These groups can be accessed using <code class="func">Projection</code> (<a href="https://www.gap-system.org/Manuals/doc/ref/chap32_mj.html#X8769E8DA80BC96C1"><span class="RefLink">Reference: Projection for a domain and a positive integer</span></a>) on the returned group.</p>
+<p>If <var class="Arg">digraph</var> is a multidigraph then the automorphism group is returned as the direct product of a group of permutations on the set of vertices of <var class="Arg">digraph</var> with a group of permutations on the set of edges of <var class="Arg">digraph</var>. These groups can be accessed using <code class="func">Projection</code> (<span class="RefLink">???</span>) on the returned group.</p>
 
 <p>By default, the automorphism group is found using <span class="URL"><a href="http://www.tcs.tkk.fi/Software/bliss/">bliss</a></span> by Tommi Junttila and Petteri Kaski. If <span class="URL"><a href="https://github.com/gap-packages/NautyTracesInterface">NautyTracesInterface</a></span> is available, then <span class="URL"><a href="http://pallini.di.uniroma1.it/">nauty</a></span> by Brendan Mckay and Adolfo Piperno can be used instead; see <code class="func">BlissAutomorphismGroup</code> (<a href="chap7.html#X7E7B0D88865A89F6"><span class="RefLink">7.2-3</span></a>), <code class="func">NautyAutomorphismGroup</code> (<a href="chap7.html#X857758B18144C0CD"><span class="RefLink">7.2-4</span></a>), <code class="func">DigraphsUseBliss</code> (<a href="chap7.html#X83E593F3855B122E"><span class="RefLink">7.2-1</span></a>), and <code class="func">DigraphsUseNauty</code> (<a href="chap7.html#X83E593F3855B122E"><span class="RefLink">7.2-1</span></a>).</p>
 
@@ -262,7 +262,7 @@ Group([ (3,4)(6,7)(8,9), (2,3)(5,6)(9,10), (2,5)(3,6)(4,7),
 
 <p>If <var class="Arg">digraph</var> is not a multidigraph then the automorphism group is returned as a group of permutations on the set of vertices of <var class="Arg">digraph</var>.</p>
 
-<p>If <var class="Arg">digraph</var> is a multidigraph then the automorphism group is returned as the direct product of a group of permutations on the set of vertices of <var class="Arg">digraph</var> with a group of permutations on the set of edges of <var class="Arg">digraph</var>. These groups can be accessed using <code class="func">Projection</code> (<a href="https://www.gap-system.org/Manuals/doc/ref/chap32_mj.html#X8769E8DA80BC96C1"><span class="RefLink">Reference: Projection for a domain and a positive integer</span></a>) on the returned group.</p>
+<p>If <var class="Arg">digraph</var> is a multidigraph then the automorphism group is returned as the direct product of a group of permutations on the set of vertices of <var class="Arg">digraph</var> with a group of permutations on the set of edges of <var class="Arg">digraph</var>. These groups can be accessed using <code class="func">Projection</code> (<span class="RefLink">???</span>) on the returned group.</p>
 
 <p>By default, the automorphism group is found using <span class="URL"><a href="http://www.tcs.tkk.fi/Software/bliss/">bliss</a></span> by Tommi Junttila and Petteri Kaski. If <span class="URL"><a href="https://github.com/gap-packages/NautyTracesInterface">NautyTracesInterface</a></span> is available, then <span class="URL"><a href="http://pallini.di.uniroma1.it/">nauty</a></span> by Brendan Mckay and Adolfo Piperno can be used instead; see <code class="func">BlissAutomorphismGroup</code> (<a href="chap7.html#X7E7B0D88865A89F6"><span class="RefLink">7.2-3</span></a>), <code class="func">NautyAutomorphismGroup</code> (<a href="chap7.html#X857758B18144C0CD"><span class="RefLink">7.2-4</span></a>), <code class="func">DigraphsUseBliss</code> (<a href="chap7.html#X83E593F3855B122E"><span class="RefLink">7.2-1</span></a>), and <code class="func">DigraphsUseNauty</code> (<a href="chap7.html#X83E593F3855B122E"><span class="RefLink">7.2-1</span></a>).</p>
 
@@ -308,7 +308,7 @@ true</pre></div>
 
 <p>If <var class="Arg">digraph</var> is not a multidigraph then the automorphism group is returned as a group of permutations on the set of vertices of <var class="Arg">digraph</var>.</p>
 
-<p>If <var class="Arg">digraph</var> is a multidigraph then the automorphism group is returned as the direct product of a group of permutations on the set of vertices of <var class="Arg">digraph</var> with a group of permutations on the set of edges of <var class="Arg">digraph</var>. These groups can be accessed using <code class="func">Projection</code> (<a href="https://www.gap-system.org/Manuals/doc/ref/chap32_mj.html#X8769E8DA80BC96C1"><span class="RefLink">Reference: Projection for a domain and a positive integer</span></a>) on the returned group.</p>
+<p>If <var class="Arg">digraph</var> is a multidigraph then the automorphism group is returned as the direct product of a group of permutations on the set of vertices of <var class="Arg">digraph</var> with a group of permutations on the set of edges of <var class="Arg">digraph</var>. These groups can be accessed using <code class="func">Projection</code> (<span class="RefLink">???</span>) on the returned group.</p>
 
 <p>By default, the automorphism group is found using <span class="URL"><a href="http://www.tcs.tkk.fi/Software/bliss/">bliss</a></span> by Tommi Junttila and Petteri Kaski. If <span class="URL"><a href="https://github.com/gap-packages/NautyTracesInterface">NautyTracesInterface</a></span> is available, then <span class="URL"><a href="http://pallini.di.uniroma1.it/">nauty</a></span> by Brendan Mckay and Adolfo Piperno can be used instead; see <code class="func">BlissAutomorphismGroup</code> (<a href="chap7.html#X7E7B0D88865A89F6"><span class="RefLink">7.2-3</span></a>), <code class="func">NautyAutomorphismGroup</code> (<a href="chap7.html#X857758B18144C0CD"><span class="RefLink">7.2-4</span></a>), <code class="func">DigraphsUseBliss</code> (<a href="chap7.html#X83E593F3855B122E"><span class="RefLink">7.2-1</span></a>), and <code class="func">DigraphsUseNauty</code> (<a href="chap7.html#X83E593F3855B122E"><span class="RefLink">7.2-1</span></a>).</p>
 
@@ -532,7 +532,7 @@ true
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">HasDigraphGroup(D);</span>
 true
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">GeneratorsOfGroup(DigraphGroup(D));</span>
-[ (1,2)(3,8)(4,6)(5,7), (1,3,4,7)(2,5,6,8), (1,4)(2,6)(3,7)(5,8) ]</pre></div>
+[ (1,2)(3,5)(4,6)(7,8), (1,7,4,3)(2,5,6,8), (1,4)(2,6)(3,7)(5,8) ]</pre></div>
 
 <p><a id="X8096C5287E459279" name="X8096C5287E459279"></a></p>
 
@@ -618,17 +618,17 @@ Group([ (1,2,3,4) ])
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">D := CayleyDigraph(AlternatingGroup(4));</span>
 &lt;immutable digraph with 12 vertices, 24 edges&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">sch := DigraphSchreierVector(D);</span>
-[ -1, 2, 2, 1, 1, 1, 1, 1, 2, 2, 2, 1 ]
+[ -1, 2, 2, 1, 1, 2, 1, 2, 2, 1, 1, 1 ]
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphOrbitReps(D);</span>
 [ 1 ]
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gens := GeneratorsOfGroup(DigraphGroup(D));</span>
-[ (1,5,7)(2,4,8)(3,6,9)(10,11,12), (1,2,3)(4,7,10)(5,9,11)(6,8,12) ]
+[ (1,7,5)(2,10,9)(3,4,11)(6,8,12), (1,3,2)(4,5,6)(7,9,8)(10,11,12) ]
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">10 / gens[sch[10]];</span>
-7
+2
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">7 / gens[sch[7]];</span>
-5
+1
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">5 / gens[sch[5]];</span>
-1</pre></div>
+7</pre></div>
 
 <p><a id="X78913684795FB256" name="X78913684795FB256"></a></p>
 

@@ -135,18 +135,18 @@
 <h5>3.1-2 IsMutableDigraph</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsMutableDigraph</code></td><td class="tdright">(&nbsp;category&nbsp;)</td></tr></table></div>
-<p><code class="code">IsMutableDigraph</code> is a synonym for <code class="func">IsDigraph</code> (<a href="chap3.html#X7877ADC77F85E630"><span class="RefLink">3.1-1</span></a>) and <code class="func">IsMutable</code> (<a href="https://www.gap-system.org/Manuals/doc/ref/chap12_mj.html#X7999AD1D7A4F1F46"><span class="RefLink">Reference: IsMutable</span></a>). A mutable digraph may be changed in-place by methods in the <strong class="pkg">Digraphs</strong> package, and is not attribute-storing – see <code class="func">IsAttributeStoringRep</code> (<a href="https://www.gap-system.org/Manuals/doc/ref/chap80_mj.html#X874AF11D864AEC1B"><span class="RefLink">Reference: IsAttributeStoringRep</span></a>).</p>
+<p><code class="code">IsMutableDigraph</code> is a synonym for <code class="func">IsDigraph</code> (<a href="chap3.html#X7877ADC77F85E630"><span class="RefLink">3.1-1</span></a>) and <code class="func">IsMutable</code> (<span class="RefLink">???</span>). A mutable digraph may be changed in-place by methods in the <strong class="pkg">Digraphs</strong> package, and is not attribute-storing – see <code class="func">IsAttributeStoringRep</code> (<span class="RefLink">???</span>).</p>
 
-<p>A mutable digraph may be converted into an immutable attribute-storing digraph by calling <code class="func">MakeImmutable</code> (<a href="https://www.gap-system.org/Manuals/doc/ref/chap12_mj.html#X80CE136D804097C7"><span class="RefLink">Reference: MakeImmutable</span></a>) on the digraph.</p>
+<p>A mutable digraph may be converted into an immutable attribute-storing digraph by calling <code class="func">MakeImmutable</code> (<span class="RefLink">???</span>) on the digraph.</p>
 
 <p><a id="X7CAFAA89804F80BD" name="X7CAFAA89804F80BD"></a></p>
 
 <h5>3.1-3 IsImmutableDigraph</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsImmutableDigraph</code></td><td class="tdright">(&nbsp;category&nbsp;)</td></tr></table></div>
-<p><code class="code">IsImmutableDigraph</code> is a subcategory of <code class="func">IsDigraph</code> (<a href="chap3.html#X7877ADC77F85E630"><span class="RefLink">3.1-1</span></a>). Digraphs that lie in <code class="code">IsImmutableDigraph</code> are immutable and attribute-storing. In particular, they lie in <code class="func">IsAttributeStoringRep</code> (<a href="https://www.gap-system.org/Manuals/doc/ref/chap80_mj.html#X874AF11D864AEC1B"><span class="RefLink">Reference: IsAttributeStoringRep</span></a>).</p>
+<p><code class="code">IsImmutableDigraph</code> is a subcategory of <code class="func">IsDigraph</code> (<a href="chap3.html#X7877ADC77F85E630"><span class="RefLink">3.1-1</span></a>). Digraphs that lie in <code class="code">IsImmutableDigraph</code> are immutable and attribute-storing. In particular, they lie in <code class="func">IsAttributeStoringRep</code> (<span class="RefLink">???</span>).</p>
 
-<p>A mutable digraph may be converted to an immutable digraph that lies in the category <code class="code">IsImmutableDigraph</code> by calling <code class="func">MakeImmutable</code> (<a href="https://www.gap-system.org/Manuals/doc/ref/chap12_mj.html#X80CE136D804097C7"><span class="RefLink">Reference: MakeImmutable</span></a>) on the digraph.</p>
+<p>A mutable digraph may be converted to an immutable digraph that lies in the category <code class="code">IsImmutableDigraph</code> by calling <code class="func">MakeImmutable</code> (<span class="RefLink">???</span>) on the digraph.</p>
 
 <p>The operation <code class="func">DigraphMutableCopy</code> (<a href="chap3.html#X83D93A8A8251E6F9"><span class="RefLink">3.3-1</span></a>) can be used to construct a mutable copy of an immutable digraph. It is however not possible to convert an immutable digraph into a mutable digraph in-place.</p>
 
@@ -652,7 +652,7 @@ true</pre></div>
 
 <p>If <var class="Arg">digraph</var> is a digraph, and <var class="Arg">verts</var> is a subset of the vertices of <var class="Arg">digraph</var>, then this operation returns a digraph constructed from <var class="Arg">digraph</var> by retaining precisely those vertices in <var class="Arg">verts</var>, and those edges whose source and range vertices are both contained in <var class="Arg">verts</var>.</p>
 
-<p>The vertices of the induced subdigraph are <code class="code">[1..Length(verts)]</code> but the original vertex labels can be accessed via <code class="func">DigraphVertexLabels</code> (<a href="chap5.html#X7E51F2FE87140B32"><span class="RefLink">5.1-9</span></a>).</p>
+<p>The vertices of the induced subdigraph are <code class="code">[1..Length(verts)]</code> but the original vertex labels can be accessed via <code class="func">DigraphVertexLabels</code> (<a href="chap5.html#X7E51F2FE87140B32"><span class="RefLink">5.1-10</span></a>).</p>
 
 <p>If <var class="Arg">digraph</var> belongs to <code class="func">IsMutableDigraph</code> (<a href="chap3.html#X7D7EDF83820ED6F5"><span class="RefLink">3.1-2</span></a>), then <var class="Arg">digraph</var> is modified in place. If <var class="Arg">digraph</var> belongs to <code class="func">IsImmutableDigraph</code> (<a href="chap3.html#X7CAFAA89804F80BD"><span class="RefLink">3.1-3</span></a>), a new immutable digraph containing the appropriate vertices and edges is returned.</p>
 
@@ -682,7 +682,7 @@ true
 
 <p>This function returns a digraph isomorphic to the subdigraph of <var class="Arg">digraph</var> induced by the set of non-isolated vertices, i.e. the set of those vertices of <var class="Arg">digraph</var> which are the source or range of some edge in <var class="Arg">digraph</var>. See <code class="func">InducedSubdigraph</code> (<a href="chap3.html#X83C51DA182CCEA2F"><span class="RefLink">3.3-3</span></a>).</p>
 
-<p>The ordering of the remaining vertices of <var class="Arg">digraph</var> is preserved, as are the labels of the remaining vertices and edges; see <code class="func">DigraphVertexLabels</code> (<a href="chap5.html#X7E51F2FE87140B32"><span class="RefLink">5.1-9</span></a>) and <code class="func">DigraphEdgeLabels</code> (<a href="chap5.html#X7C24851087D4A8FB"><span class="RefLink">5.1-11</span></a>). This can allow one to match a vertex in the reduced digraph to the corresponding vertex in <var class="Arg">digraph</var>.</p>
+<p>The ordering of the remaining vertices of <var class="Arg">digraph</var> is preserved, as are the labels of the remaining vertices and edges; see <code class="func">DigraphVertexLabels</code> (<a href="chap5.html#X7E51F2FE87140B32"><span class="RefLink">5.1-10</span></a>) and <code class="func">DigraphEdgeLabels</code> (<a href="chap5.html#X7C24851087D4A8FB"><span class="RefLink">5.1-12</span></a>). This can allow one to match a vertex in the reduced digraph to the corresponding vertex in <var class="Arg">digraph</var>.</p>
 
 <p>If <var class="Arg">digraph</var> is immutable, then a new immutable digraph is returned. Otherwise, the isolated vertices of the mutable digraph <var class="Arg">digraph</var> are removed in-place.</p>
 
@@ -994,7 +994,7 @@ true
 
 <p>If <var class="Arg">digraph</var> is immutable, then a new immutable digraph is returned. Otherwise, the mutable digraph <var class="Arg">digraph</var> is changed in-place into its (reflexive) transitive closure.</p>
 
-<p>Let <span class="SimpleMath">n</span> be the number of vertices of <var class="Arg">digraph</var>, and let <span class="SimpleMath">m</span> be the number of edges. For an arbitrary digraph, these attributes will use a version of the Floyd-Warshall algorithm, with complexity <span class="SimpleMath">O(n^3)</span>. However, for a topologically sortable digraph [see <code class="func">DigraphTopologicalSort</code> (<a href="chap5.html#X785C30378064CF47"><span class="RefLink">5.1-7</span></a>)], these attributes will use methods with complexity <span class="SimpleMath">O(m + n + m ⋅ n)</span> when this is faster.</p>
+<p>Let <span class="SimpleMath">n</span> be the number of vertices of <var class="Arg">digraph</var>, and let <span class="SimpleMath">m</span> be the number of edges. For an arbitrary digraph, these attributes will use a version of the Floyd-Warshall algorithm, with complexity <span class="SimpleMath">O(n^3)</span>. However, for a topologically sortable digraph [see <code class="func">DigraphTopologicalSort</code> (<a href="chap5.html#X785C30378064CF47"><span class="RefLink">5.1-8</span></a>)], these attributes will use methods with complexity <span class="SimpleMath">O(m + n + m ⋅ n)</span> when this is faster.</p>
 
 
 <div class="example"><pre>
@@ -1033,7 +1033,7 @@ false
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphReflexiveTransitiveReductionAttr</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
 <p>Returns: A digraph.</p>
 
-<p>If <var class="Arg">digraph</var> is a topologically sortable digraph [see <code class="func">DigraphTopologicalSort</code> (<a href="chap5.html#X785C30378064CF47"><span class="RefLink">5.1-7</span></a>)] with no multiple edges, then these operations return the (reflexive) transitive reduction of <var class="Arg">digraph</var>.</p>
+<p>If <var class="Arg">digraph</var> is a topologically sortable digraph [see <code class="func">DigraphTopologicalSort</code> (<a href="chap5.html#X785C30378064CF47"><span class="RefLink">5.1-8</span></a>)] with no multiple edges, then these operations return the (reflexive) transitive reduction of <var class="Arg">digraph</var>.</p>
 
 <p>The (reflexive) transitive reduction of such a digraph is the unique least subgraph such that the (reflexive) transitive closure of the subgraph is equal to the (reflexive) transitive closure of <var class="Arg">digraph</var> [see <code class="func">DigraphReflexiveTransitiveClosure</code> (<a href="chap3.html#X7A6C419080AD41DE"><span class="RefLink">3.3-12</span></a>)]. In order words, it is the least subgraph of <var class="Arg">digraph</var> which retains the same reachability as <var class="Arg">digraph</var>.</p>
 
@@ -1197,16 +1197,16 @@ true
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr2 := DigraphAddEdgeOrbit(gr1, [1, 8]);</span>
 &lt;immutable digraph with 8 vertices, 32 edges&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphEdges(gr1);</span>
-[ [ 1, 2 ], [ 1, 3 ], [ 1, 4 ], [ 2, 1 ], [ 2, 8 ], [ 2, 6 ], 
-  [ 3, 5 ], [ 3, 4 ], [ 3, 7 ], [ 4, 6 ], [ 4, 7 ], [ 4, 1 ], 
-  [ 5, 3 ], [ 5, 2 ], [ 5, 8 ], [ 6, 4 ], [ 6, 5 ], [ 6, 2 ], 
-  [ 7, 8 ], [ 7, 1 ], [ 7, 3 ], [ 8, 7 ], [ 8, 6 ], [ 8, 5 ] ]
+[ [ 1, 2 ], [ 1, 3 ], [ 1, 4 ], [ 2, 1 ], [ 2, 5 ], [ 2, 6 ], 
+  [ 3, 8 ], [ 3, 4 ], [ 3, 7 ], [ 4, 6 ], [ 4, 7 ], [ 4, 1 ], 
+  [ 5, 7 ], [ 5, 6 ], [ 5, 8 ], [ 6, 4 ], [ 6, 8 ], [ 6, 2 ], 
+  [ 7, 5 ], [ 7, 1 ], [ 7, 3 ], [ 8, 3 ], [ 8, 2 ], [ 8, 5 ] ]
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphEdges(gr2);</span>
-[ [ 1, 2 ], [ 1, 3 ], [ 1, 4 ], [ 1, 8 ], [ 2, 1 ], [ 2, 8 ], 
-  [ 2, 6 ], [ 2, 3 ], [ 3, 5 ], [ 3, 4 ], [ 3, 7 ], [ 3, 2 ], 
-  [ 4, 6 ], [ 4, 7 ], [ 4, 1 ], [ 4, 5 ], [ 5, 3 ], [ 5, 2 ], 
-  [ 5, 8 ], [ 5, 4 ], [ 6, 4 ], [ 6, 5 ], [ 6, 2 ], [ 6, 7 ], 
-  [ 7, 8 ], [ 7, 1 ], [ 7, 3 ], [ 7, 6 ], [ 8, 7 ], [ 8, 6 ], 
+[ [ 1, 2 ], [ 1, 3 ], [ 1, 4 ], [ 1, 8 ], [ 2, 1 ], [ 2, 5 ], 
+  [ 2, 6 ], [ 2, 7 ], [ 3, 8 ], [ 3, 4 ], [ 3, 7 ], [ 3, 6 ], 
+  [ 4, 6 ], [ 4, 7 ], [ 4, 1 ], [ 4, 5 ], [ 5, 7 ], [ 5, 6 ], 
+  [ 5, 8 ], [ 5, 4 ], [ 6, 4 ], [ 6, 8 ], [ 6, 2 ], [ 6, 3 ], 
+  [ 7, 5 ], [ 7, 1 ], [ 7, 3 ], [ 7, 2 ], [ 8, 3 ], [ 8, 2 ], 
   [ 8, 5 ], [ 8, 1 ] ]
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr3 := DigraphRemoveEdgeOrbit(gr2, [1, 8]);</span>
 &lt;immutable digraph with 8 vertices, 24 edges&gt;
@@ -1262,7 +1262,7 @@ true
 
 <p>If <var class="Arg">v</var> is a vertex of <var class="Arg">digraph</var>, then this operation returns a digraph constructed from <var class="Arg">digraph</var> by removing vertex <var class="Arg">v</var>, along with any edge whose source or range vertex is <var class="Arg">v</var>.</p>
 
-<p>If <var class="Arg">digraph</var> has <code class="code">n</code> vertices, then the vertices of the returned digraph are <code class="code">[1..n-1]</code>, but the original labels can be accessed via <code class="func">DigraphVertexLabels</code> (<a href="chap5.html#X7E51F2FE87140B32"><span class="RefLink">5.1-9</span></a>).</p>
+<p>If <var class="Arg">digraph</var> has <code class="code">n</code> vertices, then the vertices of the returned digraph are <code class="code">[1..n-1]</code>, but the original labels can be accessed via <code class="func">DigraphVertexLabels</code> (<a href="chap5.html#X7E51F2FE87140B32"><span class="RefLink">5.1-10</span></a>).</p>
 
 <p>If <var class="Arg">digraph</var> belongs to <code class="func">IsMutableDigraph</code> (<a href="chap3.html#X7D7EDF83820ED6F5"><span class="RefLink">3.1-2</span></a>), then the vertex is removed directly from <var class="Arg">digraph</var>. If <var class="Arg">digraph</var> belongs to <code class="func">IsImmutableDigraph</code> (<a href="chap3.html#X7CAFAA89804F80BD"><span class="RefLink">3.1-3</span></a>), an immutable copy of <var class="Arg">digraph</var> without the vertex is returned.</p>
 
@@ -1299,7 +1299,7 @@ true
 
 <p>If <var class="Arg">verts</var> is a (possibly empty) duplicate-free list of vertices of <var class="Arg">digraph</var>, then this operation returns a digraph constructed from <var class="Arg">digraph</var> by removing every vertex in <var class="Arg">verts</var>, along with any edge whose source or range vertex is in <var class="Arg">verts</var>.</p>
 
-<p>If <var class="Arg">digraph</var> has <code class="code">n</code> vertices, then the vertices of the new digraph are <code class="code">[1 .. n-Length(<var class="Arg">verts</var>)]</code>, but the original labels can be accessed via <code class="func">DigraphVertexLabels</code> (<a href="chap5.html#X7E51F2FE87140B32"><span class="RefLink">5.1-9</span></a>).</p>
+<p>If <var class="Arg">digraph</var> has <code class="code">n</code> vertices, then the vertices of the new digraph are <code class="code">[1 .. n-Length(<var class="Arg">verts</var>)]</code>, but the original labels can be accessed via <code class="func">DigraphVertexLabels</code> (<a href="chap5.html#X7E51F2FE87140B32"><span class="RefLink">5.1-10</span></a>).</p>
 
 <p>If <var class="Arg">digraph</var> belongs to <code class="func">IsMutableDigraph</code> (<a href="chap3.html#X7D7EDF83820ED6F5"><span class="RefLink">3.1-2</span></a>), then the vertices are removed directly from <var class="Arg">digraph</var>. If <var class="Arg">digraph</var> belongs to <code class="func">IsImmutableDigraph</code> (<a href="chap3.html#X7CAFAA89804F80BD"><span class="RefLink">3.1-3</span></a>), an immutable copy of <var class="Arg">digraph</var> without the vertices is returned.</p>
 
@@ -1371,16 +1371,16 @@ true
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr2 := DigraphAddEdgeOrbit(gr1, [1, 8]);</span>
 &lt;immutable digraph with 8 vertices, 32 edges&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphEdges(gr1);</span>
-[ [ 1, 2 ], [ 1, 3 ], [ 1, 4 ], [ 2, 1 ], [ 2, 8 ], [ 2, 6 ], 
-  [ 3, 5 ], [ 3, 4 ], [ 3, 7 ], [ 4, 6 ], [ 4, 7 ], [ 4, 1 ], 
-  [ 5, 3 ], [ 5, 2 ], [ 5, 8 ], [ 6, 4 ], [ 6, 5 ], [ 6, 2 ], 
-  [ 7, 8 ], [ 7, 1 ], [ 7, 3 ], [ 8, 7 ], [ 8, 6 ], [ 8, 5 ] ]
+[ [ 1, 2 ], [ 1, 3 ], [ 1, 4 ], [ 2, 1 ], [ 2, 5 ], [ 2, 6 ], 
+  [ 3, 8 ], [ 3, 4 ], [ 3, 7 ], [ 4, 6 ], [ 4, 7 ], [ 4, 1 ], 
+  [ 5, 7 ], [ 5, 6 ], [ 5, 8 ], [ 6, 4 ], [ 6, 8 ], [ 6, 2 ], 
+  [ 7, 5 ], [ 7, 1 ], [ 7, 3 ], [ 8, 3 ], [ 8, 2 ], [ 8, 5 ] ]
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphEdges(gr2);</span>
-[ [ 1, 2 ], [ 1, 3 ], [ 1, 4 ], [ 1, 8 ], [ 2, 1 ], [ 2, 8 ], 
-  [ 2, 6 ], [ 2, 3 ], [ 3, 5 ], [ 3, 4 ], [ 3, 7 ], [ 3, 2 ], 
-  [ 4, 6 ], [ 4, 7 ], [ 4, 1 ], [ 4, 5 ], [ 5, 3 ], [ 5, 2 ], 
-  [ 5, 8 ], [ 5, 4 ], [ 6, 4 ], [ 6, 5 ], [ 6, 2 ], [ 6, 7 ], 
-  [ 7, 8 ], [ 7, 1 ], [ 7, 3 ], [ 7, 6 ], [ 8, 7 ], [ 8, 6 ], 
+[ [ 1, 2 ], [ 1, 3 ], [ 1, 4 ], [ 1, 8 ], [ 2, 1 ], [ 2, 5 ], 
+  [ 2, 6 ], [ 2, 7 ], [ 3, 8 ], [ 3, 4 ], [ 3, 7 ], [ 3, 6 ], 
+  [ 4, 6 ], [ 4, 7 ], [ 4, 1 ], [ 4, 5 ], [ 5, 7 ], [ 5, 6 ], 
+  [ 5, 8 ], [ 5, 4 ], [ 6, 4 ], [ 6, 8 ], [ 6, 2 ], [ 6, 3 ], 
+  [ 7, 5 ], [ 7, 1 ], [ 7, 3 ], [ 7, 2 ], [ 8, 3 ], [ 8, 2 ], 
   [ 8, 5 ], [ 8, 1 ] ]
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr3 := DigraphRemoveEdgeOrbit(gr2, [1, 8]);</span>
 &lt;immutable digraph with 8 vertices, 24 edges&gt;
@@ -1529,7 +1529,7 @@ true
 
 <p>More specifically, for a collection of digraphs <var class="Arg">D1</var>, <var class="Arg">D2</var>, <code class="code">...</code>, the disjoint union with have <code class="code">DigraphNrVertices(</code><var class="Arg">D1</var><code class="code">)</code> <code class="code">+</code> <code class="code">DigraphNrVertices(</code><var class="Arg">D2</var><code class="code">)</code> <code class="code">+</code> <code class="code">...</code> vertices. The edges of <var class="Arg">D1</var> will remain unchanged, whilst the edges of the <code class="code">i</code>th digraph, <var class="Arg">D</var><code class="code">[i]</code>, will be changed so that they belong to the vertices of the disjoint union corresponding to <var class="Arg">D</var><code class="code">[i]</code>. In particular, the edges of <var class="Arg">D</var><code class="code">[i]</code> will have their source and range increased by <code class="code">DigraphNrVertices(</code><var class="Arg">D1</var><code class="code">)</code> <code class="code">+</code> <code class="code">...</code> <code class="code">+</code> <code class="code">DigraphNrVertices(</code><var class="Arg">D</var><code class="code">[i-1])</code>.</p>
 
-<p>Note that previously set <code class="func">DigraphVertexLabels</code> (<a href="chap5.html#X7E51F2FE87140B32"><span class="RefLink">5.1-9</span></a>) will be lost.</p>
+<p>Note that previously set <code class="func">DigraphVertexLabels</code> (<a href="chap5.html#X7E51F2FE87140B32"><span class="RefLink">5.1-10</span></a>) will be lost.</p>
 
 <p>If the first digraph <var class="Arg">D1</var> [<var class="Arg">list[1]</var>] belongs to <code class="func">IsMutableDigraph</code> (<a href="chap3.html#X7D7EDF83820ED6F5"><span class="RefLink">3.1-2</span></a>), then <var class="Arg">D1</var> [<var class="Arg">list[1]</var>] is modified in place to contain the appropriate vertices and edges. If <var class="Arg">digraph</var> belongs to <code class="func">IsImmutableDigraph</code> (<a href="chap3.html#X7CAFAA89804F80BD"><span class="RefLink">3.1-3</span></a>), a new immutable digraph containing the appropriate vertices and edges is returned.</p>
 
@@ -1561,7 +1561,7 @@ true
 
 <p>The vertex set of the edge union of a collection of digraphs is the <em>union</em> of the vertex sets, whilst the edge list of the edge union is the <em>concatenation</em> of the edge lists. The number of vertices of the edge union is equal to the <em>maximum</em> number of vertices of one of the digraphs, whilst the number of edges of the edge union will equal the <em>sum</em> of the number of edges of each digraph.</p>
 
-<p>Note that previously set <code class="func">DigraphVertexLabels</code> (<a href="chap5.html#X7E51F2FE87140B32"><span class="RefLink">5.1-9</span></a>) will be lost.</p>
+<p>Note that previously set <code class="func">DigraphVertexLabels</code> (<a href="chap5.html#X7E51F2FE87140B32"><span class="RefLink">5.1-10</span></a>) will be lost.</p>
 
 <p>If the first digraph <var class="Arg">D1</var> [<var class="Arg">list[1]</var>] belongs to <code class="func">IsMutableDigraph</code> (<a href="chap3.html#X7D7EDF83820ED6F5"><span class="RefLink">3.1-2</span></a>), then <var class="Arg">D1</var> [<var class="Arg">list[1]</var>] is modified in place to contain the appropriate vertices and edges. If <var class="Arg">digraph</var> belongs to <code class="func">IsImmutableDigraph</code> (<a href="chap3.html#X7CAFAA89804F80BD"><span class="RefLink">3.1-3</span></a>), a new immutable digraph containing the appropriate vertices and edges is returned.</p>
 
@@ -1598,7 +1598,7 @@ true
 
 <p>For example, the join of two empty digraphs is a complete bipartite digraph.</p>
 
-<p>Note that previously set <code class="func">DigraphVertexLabels</code> (<a href="chap5.html#X7E51F2FE87140B32"><span class="RefLink">5.1-9</span></a>) will be lost.</p>
+<p>Note that previously set <code class="func">DigraphVertexLabels</code> (<a href="chap5.html#X7E51F2FE87140B32"><span class="RefLink">5.1-10</span></a>) will be lost.</p>
 
 <p>If the first digraph <var class="Arg">D1</var> [<var class="Arg">list[1]</var>] belongs to <code class="func">IsMutableDigraph</code> (<a href="chap3.html#X7D7EDF83820ED6F5"><span class="RefLink">3.1-2</span></a>), then <var class="Arg">D1</var> [<var class="Arg">list[1]</var>] is modified in place to contain the appropriate vertices and edges. If <var class="Arg">digraph</var> belongs to <code class="func">IsImmutableDigraph</code> (<a href="chap3.html#X7CAFAA89804F80BD"><span class="RefLink">3.1-3</span></a>), a new immutable digraph containing the appropriate vertices and edges is returned.</p>
 
@@ -1628,7 +1628,7 @@ true
 
 <p>Mathematically, the Cartesian product of two digraphs <code class="code">G</code>, <code class="code">H</code> is a digraph with vertex set <code class="code">Cartesian(DigraphVertices(G), DigraphVertices(H))</code> such that there is an edge from <code class="code">[u, u']</code> to <code class="code">[v, v']</code> iff <code class="code"> u = v </code> and there is an edge from <code class="code">u'</code> to <code class="code">v'</code> in <code class="code">H</code> or <code class="code"> u' = v'</code> and there is an edge from <code class="code">u</code> to <code class="code">v</code> in <code class="code">G</code>.</p>
 
-<p>Due to technical reasons, the digraph <code class="code">D</code> returned by <code class="code">DigraphCartesianProduct</code> has vertex set <code class="code">[1 .. DigraphNrVertices(G)*DigraphNrVertices(H)]</code> instead, and the exact method of encoding pairs of vertices into integers is implementation specific. The original vertex pair can be somewhat regained by using <code class="func">DigraphCartesianProductProjections</code> (<a href="chap3.html#X8795087A78FE7D54"><span class="RefLink">3.3-32</span></a>). In addition, <code class="func">DigraphVertexLabels</code> (<a href="chap5.html#X7E51F2FE87140B32"><span class="RefLink">5.1-9</span></a>) are preserved: if vertex pair <code class="code">[u,u']</code> was encoded as <code class="code">i</code> then the vertex label of <code class="code">i</code> will be the pair of vertex labels of <code class="code">u</code> and <code class="code">u'</code> i.e. <code class="code">DigraphVertexLabel(D,i) = [DigraphVertexLabel(G,u), DigraphVertexLabel(H,u')]</code>.</p>
+<p>Due to technical reasons, the digraph <code class="code">D</code> returned by <code class="code">DigraphCartesianProduct</code> has vertex set <code class="code">[1 .. DigraphNrVertices(G)*DigraphNrVertices(H)]</code> instead, and the exact method of encoding pairs of vertices into integers is implementation specific. The original vertex pair can be somewhat regained by using <code class="func">DigraphCartesianProductProjections</code> (<a href="chap3.html#X8795087A78FE7D54"><span class="RefLink">3.3-32</span></a>). In addition, <code class="func">DigraphVertexLabels</code> (<a href="chap5.html#X7E51F2FE87140B32"><span class="RefLink">5.1-10</span></a>) are preserved: if vertex pair <code class="code">[u,u']</code> was encoded as <code class="code">i</code> then the vertex label of <code class="code">i</code> will be the pair of vertex labels of <code class="code">u</code> and <code class="code">u'</code> i.e. <code class="code">DigraphVertexLabel(D,i) = [DigraphVertexLabel(G,u), DigraphVertexLabel(H,u')]</code>.</p>
 
 <p>As the Cartesian product is associative, the Cartesian product of a collection of digraphs <var class="Arg">gr1</var>, <var class="Arg">gr2</var>, <code class="code">...</code> is computed in the obvious fashion.</p>
 
@@ -1661,7 +1661,7 @@ true
 
 <p>Mathematically, the direct product of two digraphs <code class="code">G</code>, <code class="code">H</code> is a digraph with vertex set <code class="code">Cartesian(DigraphVertices(G), DigraphVertices(H))</code> such that there is an edge from <code class="code">[u, u']</code> to <code class="code">[v, v']</code> iff there is an edge from <code class="code">u</code> to <code class="code">v</code> in <code class="code">G</code> and an edge from <code class="code">u'</code> to <code class="code">v'</code> in <code class="code">H</code>.</p>
 
-<p>Due to technical reasons, the digraph <code class="code">D</code> returned by <code class="code">DigraphDirectProduct</code> has vertex set <code class="code">[1 .. DigraphNrVertices(G)*DigraphNrVertices(H)]</code> instead, and the exact method of encoding pairs of vertices into integers is implementation specific. The original vertex pair can be somewhat regained by using <code class="func">DigraphDirectProductProjections</code> (<a href="chap3.html#X84FB64F185B804C2"><span class="RefLink">3.3-33</span></a>). In addition <code class="func">DigraphVertexLabels</code> (<a href="chap5.html#X7E51F2FE87140B32"><span class="RefLink">5.1-9</span></a>) are preserved: if vertex pair <code class="code">[u,u']</code> was encoded as <code class="code">i</code> then the vertex label of <code class="code">i</code> will be the pair of vertex labels of <code class="code">u</code> and <code class="code">u'</code> i.e. <code class="code">DigraphVertexLabel(D,i) = [DigraphVertexLabel(G,u), DigraphVertexLabel(H,u')]</code>.</p>
+<p>Due to technical reasons, the digraph <code class="code">D</code> returned by <code class="code">DigraphDirectProduct</code> has vertex set <code class="code">[1 .. DigraphNrVertices(G)*DigraphNrVertices(H)]</code> instead, and the exact method of encoding pairs of vertices into integers is implementation specific. The original vertex pair can be somewhat regained by using <code class="func">DigraphDirectProductProjections</code> (<a href="chap3.html#X84FB64F185B804C2"><span class="RefLink">3.3-33</span></a>). In addition <code class="func">DigraphVertexLabels</code> (<a href="chap5.html#X7E51F2FE87140B32"><span class="RefLink">5.1-10</span></a>) are preserved: if vertex pair <code class="code">[u,u']</code> was encoded as <code class="code">i</code> then the vertex label of <code class="code">i</code> will be the pair of vertex labels of <code class="code">u</code> and <code class="code">u'</code> i.e. <code class="code">DigraphVertexLabel(D,i) = [DigraphVertexLabel(G,u), DigraphVertexLabel(H,u')]</code>.</p>
 
 <p>As the direct product is associative, the direct product of a collection of digraphs <var class="Arg">gr1</var>, <var class="Arg">gr2</var>, <code class="code">...</code> is computed in the obvious fashion.</p>
 

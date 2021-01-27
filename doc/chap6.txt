@@ -414,7 +414,7 @@
   number  of  edges.  For general digraphs, the methods used for this property
   use  a  version of the Floyd-Warshall algorithm, and have complexity [22XO(n^3)[122X.
   However     for     digraphs     which     are     topologically    sortable
-  [[2XDigraphTopologicalSort[102X ([14X5.1-7[114X)], then methods with complexity [22XO(m + n + m ⋅
+  [[2XDigraphTopologicalSort[102X ([14X5.1-8[114X)], then methods with complexity [22XO(m + n + m ⋅
   n)[122X will be used when appropriate.[133X
   
   [33X[0;0YIf  the  argument [3Xdigraph[103X is mutable, then the return value of this property
@@ -943,7 +943,7 @@
   two  vertices  share  an  out-neighbour.  Note  the  empty  digraph  is  not
   considered a directed tree as it has no source.[133X
   
-  [33X[0;0YSee also [2XDigraphSources[102X ([14X5.1-6[114X).[133X
+  [33X[0;0YSee also [2XDigraphSources[102X ([14X5.1-7[114X).[133X
   
   [33X[0;0YIf  the  argument [3Xdigraph[103X is mutable, then the return value of this property
   is recomputed every time it is called.[133X
@@ -1248,7 +1248,7 @@
   [33X[0;0YIf  [3Xdigraph[103X  is  a  digraph  without  multiple  edges, then [10XIsEdgeTransitive[110X
   returns  [9Xtrue[109X  if [3Xdigraph[103X is edge transitive, and [9Xfalse[109X otherwise. A digraph
   is  [13Xedge transitive[113X if its automorphism group acts transitively on its edges
-  (via the action [2XOnPairs[102X ([14XReference: OnPairs[114X)).[133X
+  (via the action [2XOnPairs[102X ([14XOnPairs???[114X)).[133X
   
   [33X[0;0YIf  the  argument [3Xdigraph[103X is mutable, then the return value of this property
   is recomputed every time it is called.[133X
