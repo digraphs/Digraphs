@@ -9,7 +9,7 @@
     It is assumed that you have a working copy of &GAP; with version number
     &GAPVERS; or higher. The most up-to-date version of &GAP; and instructions
     on how to install it can be obtained from the main &GAP; webpage
-    <URL>http://www.gap-system.org</URL>.<P/>
+    <URL>https://www.gap-system.org</URL>.<P/>
 
     The following is a summary of the steps that should lead to a
     successful installation of &Digraphs;:
@@ -58,7 +58,7 @@
 
       <Item>
         download the package archive <F>&ARCHIVENAME;.tar.gz</F> from
-        <URL Text="the Digraph package webpage">http://digraphs.github.io/Digraphs/</URL>.
+        <URL Text="the Digraph package webpage">https://digraphs.github.io/Digraphs/</URL>.
       </Item>
 
       <Item>

@@ -16,7 +16,7 @@ InstallMethod(OutNeighbours, "for a digraph by out-neighbours",
 
 # The next method is (yet another) DFS which simultaneously computes:
 # 1. *articulation points* as described in
-#   http://www.eecs.wsu.edu/~holder/courses/CptS223/spr08/slides/graphapps.pdf
+#   https://www.eecs.wsu.edu/~holder/courses/CptS223/spr08/slides/graphapps.pdf
 # 2. *bridges* as described in https://stackoverflow.com/q/28917290/
 #   (this is a minor adaption of the algorithm described in point 1).
 # 3. a *strong orientation* as alluded to somewhere on the internet that I can
