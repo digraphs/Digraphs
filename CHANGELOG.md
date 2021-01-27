@@ -384,7 +384,7 @@ Other additions and changes are listed below:
   Suite](https://github.com/graph-algorithms/edge-addition-planarity-suite)
   is now included in Digraphs, and so it is now possible to test digraphs for
   planarity, and to perform related computations.  This was added by [James D.
-  Mitchell](http://goo.gl/ZtViV6) in [PR
+  Mitchell][] in [PR
   #156](https://github.com/digraphs/Digraphs/pull/156).  The new
   functionality can be accessed via:
   * `Is(Outer)PlanarDigraph`,
@@ -403,14 +403,14 @@ Other additions and changes are listed below:
   `DigraphWelshPowellOrder`. The behaviour of `DigraphGreedyColouring` can be
   modified by including an optional second argument; see the
   documentation for more information. This work was done by [James D.
-  Mitchell](http://goo.gl/ZtViV6) in [PR
+  Mitchell][] in [PR
   #144](https://github.com/digraphs/Digraphs/pull/144).
 * `DigraphShortestPath` was introduced by Murray Whyte in [PR
   #148](https://github.com/digraphs/Digraphs/pull/148).
 * `IsAntiSymmetricDigraph` (with a capital S) was added as a synonym for
   `IsAntisymmetricDigraph`.
 * `RandomDigraph` now allows a float as its second argument; by [James D.
-  Mitchell](http://goo.gl/ZtViV6) in [PR
+  Mitchell][] in [PR
   #159](https://github.com/digraphs/Digraphs/pull/159).
 * The attribute `CharacteristcPolynomial` for a digraph was added by Luke
   Elliott in [PR #164](https://github.com/digraphs/Digraphs/pull/164).
@@ -426,7 +426,7 @@ This release contains bugfixes and a couple of new features.
   digraphs were added by Chris Russell in [PR
   #136](https://github.com/digraphs/Digraphs/pull/136).
 * The operation `IsDigraphColouring` was added by [James D.
-  Mitchell](http://goo.gl/ZtViV6) in [PR
+  Mitchell][] in [PR
   #145](https://github.com/digraphs/Digraphs/pull/145).
 * In previous versions of the package, the output of `ArticulationPoints` would
   sometimes contain repeated vertices (reported by Luke Elliott in [Issue
