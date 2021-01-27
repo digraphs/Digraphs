@@ -81,7 +81,7 @@ fi
 
 if [ "$SUITE" == "conda" ]; then
   bold "Installing dependencies (conda). . ."
-  wget http://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
+  wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
   chmod +x miniconda.sh;
   ./miniconda.sh -b;
   export PATH=/home/gap/miniconda3/bin:$PATH;

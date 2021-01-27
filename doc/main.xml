@@ -10,13 +10,13 @@
          Text='edge-addition-planarity-suite'>https://github.com/graph-algorithms/edge-addition-planarity-suite</URL></Alt><Alt
        Only='Text'><Package>edge-addition-planarity-suite</Package></Alt>">
      <!ENTITY nauty "<Alt Not='Text'><URL
-   Text='nauty'>http://pallini.di.uniroma1.it/</URL></Alt><Alt
+   Text='nauty'>https://pallini.di.uniroma1.it/</URL></Alt><Alt
    Only='Text'><Package>nauty</Package></Alt>">
      <!ENTITY NautyTracesInterface "<Alt Not='Text'><URL
    Text='NautyTracesInterface'>https://github.com/gap-packages/NautyTracesInterface</URL></Alt><Alt
    Only='Text'><Package>NautyTracesInterface</Package></Alt>">
      <!ENTITY IO "<Alt Not='Text'><URL Text='IO'>
-     http://gap-packages.github.io/io/
+     https://gap-packages.github.io/io/
 </URL></Alt><Alt Only='Text'><Package>IO</Package></Alt>">
      <!ENTITY Orb "<Alt Not='Text'><URL Text='Orb'>
      https://gap-packages.github.io/orb/</URL>
