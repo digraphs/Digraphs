@@ -12,7 +12,7 @@ The following improvements and bugs have been made:
 
 * the clique finder was reimplemented in C by [Julius Jonusas][]
 * a critical bug in `CayleyDigraph` was reported and fixed by [Jan De Beule][]
-* a minor bug in `ReadDigraphs` was fixed reported by [Wilf A. Wilson][] and
+* a minor bug in `ReadDigraphs` was reported by [Wilf A. Wilson][] and
   fixed by [James D. Mitchell][]
 * the performance of `BlissCanonicalLabelling` and `BlissAutomorphismGroup` was
   improved for multidigraphs by Marina Anagnostopoulou-Merkouri and Sam
