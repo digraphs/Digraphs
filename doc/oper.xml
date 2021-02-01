@@ -1374,7 +1374,7 @@ gap> VerticesReachableFrom(D, 5);
         where for each each <M>i &lt; n</M>, <M>a_i</M> is the position of
         <M>v_{i+1}</M> in
         <C>OutNeighboursOfVertex(</C><A>digraph</A><C>,</C><M>v_i</M><C>)</C>
-        corresponding to the edge <M>e_i</M>.  This is can be useful if the
+        corresponding to the edge <M>e_i</M>.  This can be useful if the
         position of a vertex in a list of out-neighours is significant, for
         example in orbit digraphs.
       </Item>
