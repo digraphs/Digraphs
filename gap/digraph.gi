@@ -24,6 +24,8 @@
 #
 ########################################################################
 
+BindGlobal("DIGRAPHS_NamedGraph6String", fail);
+
 InstallMethod(DigraphMutabilityFilter, "for a digraph", [IsDigraph],
 function(D)
   if IsMutableDigraph(D) then
@@ -428,6 +430,29 @@ DigraphCons);
 
 InstallMethod(Digraph, "for a list, list, and list", [IsList, IsList, IsList],
 {dom, src, ran} -> DigraphCons(IsImmutableDigraph, dom, src, ran));
+
+InstallMethod(Digraph, "for a string naming a graph", [IsString],
+function(name)
+  local f, r;
+
+  # TODO: Tolerate arbitrary capitalisation, and whitespace
+
+  # TODO: Read the record from a file, if it hasn't already been read.
+  if DIGRAPHS_NamedGraph6String = fail then
+    f := Concatenation(DIGRAPHS_Dir(), "/data/named-g6.p.gz");
+    f := IO_CompressedFile(f, "r");
+    r := IO_Unpickle(f);
+    IO_Close(f);
+    # TODO: figure out better way of doing this, so that it doesn't give
+    # warnings
+    MakeReadWriteGlobal("DIGRAPHS_NamedGraph6String");
+    BindGlobal("DIGRAPHS_NamedGraph6String", r);
+    MakeReadOnlyGlobal("DIGRAPHS_NamedGraph6String");
+  fi;
+
+  # TODO Check the name "s" exists in the DIGRAPHS_NamedGraph6String
+  return DigraphFromGraph6String(DIGRAPHS_NamedGraph6String.(name));
+end);
 
 ########################################################################
 # 6. Printing, viewing, strings
