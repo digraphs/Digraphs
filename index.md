@@ -70,5 +70,5 @@ version of {{site.data.package.name}}:
       Title  = { Digraphs - {GAP} package, Version {{site.data.package.version}} },
       Month  = { {{site.data.package.date | date: "%b"}} },
       Year   = { {{site.data.package.date | date: "%Y"}} },
-      Url    = { https://gap-packages.github.io/Digraphs }
+      Url    = { https://digraphs.github.io/Digraphs }
 }</pre>
