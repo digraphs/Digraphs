@@ -4,7 +4,7 @@
 
 In this directory is a collection of various types of digraphs, which can be
 loaded into the GAP computational algebra system using the [Digraphs
-package](https://gap-packages.github.io/Digraphs).  It is a
+package](https://digraphs.github.io/Digraphs).  It is a
 completely optional addition to the package, which can be used to produce
 examples of digraphs for use in the package.
 
@@ -12,7 +12,7 @@ examples of digraphs for use in the package.
 Getting digraphs-lib
 --------------------
 The latest version of this library is available at
-<http://gap-packages.github.io/Digraphs>.
+<http://digraphs.github.io/Digraphs>.
 
 Simply download the archive, and extract it into the root directory of your
 Digraphs installation.  This should result in a `digraphs-lib` directory inside
