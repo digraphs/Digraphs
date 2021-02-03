@@ -12,7 +12,7 @@ examples of digraphs for use in the package.
 Getting digraphs-lib
 --------------------
 The latest version of this library is available at
-<http://digraphs.github.io/Digraphs>.
+<https://digraphs.github.io/Digraphs>.
 
 Simply download the archive, and extract it into the root directory of your
 Digraphs installation.  This should result in a `digraphs-lib` directory inside

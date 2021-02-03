@@ -14,7 +14,7 @@ authors:
     - name: Michael Torpey
       url: https://mtorpey.github.io
     - name: Maria Tsalakou
-      url: https://mariatsalakou.github.io/
+      url: https://mariatsalakou.github.io
     - name: Wilf A. Wilson
       url: https://wilf.me
 
@@ -34,7 +34,7 @@ contributors:
     - name: Max Horn
       url: https://www.quendi.de/math
     - name: Christopher Jefferson
-      url: http://caj.host.cs.st-andrews.ac.uk
+      url: https://caj.host.cs.st-andrews.ac.uk
     - name: Markus Pfeiffer
       url: https://www.morphism.de/~markusp
     - name: Christopher Russell
@@ -66,7 +66,7 @@ suggested-pkgs:
       url: "https://gap-packages.github.io/grape"
     - name: "nautytracesinterface"
       version: ">=0.2"
-      url: "http://TODO/"
+      url: "https://github.com/gap-packages/NautyTracesInterface"
 
 www: https://digraphs.github.io/Digraphs
 readme: README.md
