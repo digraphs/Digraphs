@@ -18,7 +18,7 @@
 
 ########################################################################
 #
-# This file is organised as follows:
+# This file is organised as follows:
 #
 # 1. Attributes
 #

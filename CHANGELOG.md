@@ -384,7 +384,7 @@ Other additions and changes are listed below:
   Suite](https://github.com/graph-algorithms/edge-addition-planarity-suite)
   is now included in Digraphs, and so it is now possible to test digraphs for
   planarity, and to perform related computations.  This was added by [James D.
-  Mitchell](http://goo.gl/ZtViV6) in [PR
+  Mitchell][] in [PR
   #156](https://github.com/digraphs/Digraphs/pull/156).  The new
   functionality can be accessed via:
   * `Is(Outer)PlanarDigraph`,
@@ -403,14 +403,14 @@ Other additions and changes are listed below:
   `DigraphWelshPowellOrder`. The behaviour of `DigraphGreedyColouring` can be
   modified by including an optional second argument; see the
   documentation for more information. This work was done by [James D.
-  Mitchell](http://goo.gl/ZtViV6) in [PR
+  Mitchell][] in [PR
   #144](https://github.com/digraphs/Digraphs/pull/144).
 * `DigraphShortestPath` was introduced by Murray Whyte in [PR
   #148](https://github.com/digraphs/Digraphs/pull/148).
 * `IsAntiSymmetricDigraph` (with a capital S) was added as a synonym for
   `IsAntisymmetricDigraph`.
 * `RandomDigraph` now allows a float as its second argument; by [James D.
-  Mitchell](http://goo.gl/ZtViV6) in [PR
+  Mitchell][] in [PR
   #159](https://github.com/digraphs/Digraphs/pull/159).
 * The attribute `CharacteristcPolynomial` for a digraph was added by Luke
   Elliott in [PR #164](https://github.com/digraphs/Digraphs/pull/164).
@@ -426,7 +426,7 @@ This release contains bugfixes and a couple of new features.
   digraphs were added by Chris Russell in [PR
   #136](https://github.com/digraphs/Digraphs/pull/136).
 * The operation `IsDigraphColouring` was added by [James D.
-  Mitchell](http://goo.gl/ZtViV6) in [PR
+  Mitchell][] in [PR
   #145](https://github.com/digraphs/Digraphs/pull/145).
 * In previous versions of the package, the output of `ArticulationPoints` would
   sometimes contain repeated vertices (reported by Luke Elliott in [Issue
@@ -501,11 +501,11 @@ Digraphs now requires version 4.5.1 of the IO package.
 
 The principal change in Digraphs version 0.11.0 is the addition of
 support for computing automorphisms, canonical labellings, and isomorphisms of
-digraphs with [nauty](http://pallini.di.uniroma1.it/). This
+digraphs with [nauty](https://pallini.di.uniroma1.it/). This
 functionality requires the [NautyTracesInterface
 package](https://github.com/gap-packages/NautyTracesInterface) for GAP, version 0.2
 or newer. However, this is not a required package, and the default engine
-remains [bliss](http://www.tcs.hut.fi/Software/bliss/). It is possible to
+remains [bliss][]. It is possible to
 specify the engine that is used by Digraphs. These changes to Digraphs were made
 by [James D. Mitchell][]].
 
@@ -679,7 +679,7 @@ digraphs are set at creation [[Michael Torpey][]]
 
 ## Version 0.5.0 (released 03/03/2016)
 This release contains some bugfixes, as well as new and changed functionality.
-Digraphs now requires the [Orb package](http://gap-packages.github.io/orb),
+Digraphs now requires the [Orb package](https://gap-packages.github.io/orb),
 version 4.7.5 or higher.
 
 ### New Features in Version 0.5.0
@@ -782,7 +782,7 @@ This release contains a number of bugfixes and performance improvements.
 
 ### New Features in Version 0.3.0
 * The attribute `DigraphAllSimpleCircuits` based
-on the algorithm in [this paper](http://epubs.siam.org/doi/abs/10.1137/0204007?journalCode=smjcat) by Donald B. Johnson. [Stuart Burrell and [Wilf A. Wilson][]]
+on the algorithm in [this paper](https://epubs.siam.org/doi/abs/10.1137/0204007) by Donald B. Johnson. [Stuart Burrell and [Wilf A. Wilson][]]
 * Improve efficiency of the algorithm for coloring a graph with 2 colours, a method for `IsBipartiteDigraph` and `DigraphBicomponents`. [Isabella Scott and [Wilf A. Wilson][]]
 * `AutomorphismGroup` and `DigraphCanonicalLabelling` can now be used with color classes that are preserved by the permutations acting on a digraph. [[James D. Mitchell][]]
 * The `TCodeDecoder` was made more efficient. [[James D. Mitchell][]]
@@ -801,7 +801,7 @@ The first release.
 Pre-release version that was not made publicly available.
 
 [James D. Mitchell]: https://jdbm.me
-[Wilf A. Wilson]: http://wilf.me
+[Wilf A. Wilson]: https://wilf.me
 [Michael Torpey]: https://mtorpey.github.io
 [Julius Jonusas]: http://julius.jonusas.work
 [Jan De Beule]: http://homepages.vub.ac.be/~jdbeule
