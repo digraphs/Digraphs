@@ -418,27 +418,22 @@ gap> dot;
 "//dot\ndigraph hgn{\nnode [shape=circle]\n1 [label=\"2\"]\n2 [label=\"2\"]\n3\
  [label=\"3\"]\n1 -> 1\n1 -> 2\n1 -> 2\n1 -> 3\n}\n"
 
-# The following tests can't be run because they fail if Semigroups is loaded
-# first
-#  Splash 
-#gap> Splash(1);
-#Error, Digraphs: Splash: usage,
-#<arg>[1] must be a string,
-#gap> Splash("string", 0);
-#Error, Digraphs: Splash: usage,
-#<arg>[2] must be a record,
-#gap> Splash("string");
-#Error, Digraphs: Splash: usage,
-#the option <type> must be "dot" or "latex",
-#gap> Splash("string", rec(path := "~/", filename := "filename"));
-#Error, Digraphs: Splash: usage,
-#the option <type> must be "dot" or "latex",
-#gap> Splash("string", rec(viewer := "xpdf"));
-#Error, Digraphs: Splash: usage,
-#the option <type> must be "dot" or "latex",
-#gap> Splash("string", rec(type := "dot", engine := "dott"));
-#Error, Digraphs: Splash: usage,
-#the option <engine> must be "dot", "neato", "twopi", "circo", "fdp", "sfdp", or "patchwork"
+# Splash 
+gap> Splash(1);
+Error, the 1st argument must be a string,
+gap> Splash("string", 0);
+Error, the 2nd argument must be a record,
+gap> Splash("string");
+Error, the component "type" of the 2nd argument <a record>  must be "dot" or "\
+latex",
+gap> Splash("string", rec(path := "~/", filename := "filename"));
+Error, the component "type" of the 2nd argument <a record>  must be "dot" or "\
+latex",
+gap> Splash("string", rec(viewer := "xpdf"));
+Error, the viewer "xpdf" specified in the option `viewer` is not available,
+gap> Splash("string", rec(type := "dot", engine := "dott"));
+Error, the component "engine" of the 2nd argument <a record> must be one of: "\
+dot", "neato", "twopi", "circo", "fdp", "sfdp", or "patchwork"
 
 # DotPartialOrderDigraph
 gap> gr := Digraph([[1], [1, 2], [1, 3], [1, 4], [1 .. 5], [1 .. 6],
