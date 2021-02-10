@@ -40,11 +40,15 @@ gap> Digraph(rec(DigraphNrVertices := n, DigraphRange := r));
 Error, the argument <record> must be a record with components 'DigraphSource',\
  'DigraphRange', and either 'DigraphVertices' or 'DigraphNrVertices' (but not \
 both),
-gap> Digraph(rec(DigraphNrVertices := n, DigraphSource := s, DigraphVertices := v));
+gap> Digraph(rec(DigraphNrVertices := n,
+>                DigraphSource     := s,
+>                DigraphVertices   := v));
 Error, the argument <record> must be a record with components 'DigraphSource',\
  'DigraphRange', and either 'DigraphVertices' or 'DigraphNrVertices' (but not \
 both),
-gap> Digraph(rec(DigraphNrVertices := n, DigraphRange := r, DigraphVertices := v));
+gap> Digraph(rec(DigraphNrVertices := n,
+>                DigraphRange      := r,
+>                DigraphVertices   := v));
 Error, the argument <record> must be a record with components 'DigraphSource',\
  'DigraphRange', and either 'DigraphVertices' or 'DigraphNrVertices' (but not \
 both),
@@ -52,41 +56,69 @@ gap> Digraph(rec(DigraphSource := s, DigraphRange := r));
 Error, the argument <record> must be a record with components 'DigraphSource',\
  'DigraphRange', and either 'DigraphVertices' or 'DigraphNrVertices' (but not \
 both),
-gap> Digraph(rec(DigraphNrVertices := n, DigraphSource := s, DigraphRange := 4));
+gap> Digraph(rec(DigraphNrVertices := n,
+>                DigraphSource     := s,
+>                DigraphRange      := 4));
 Error, the record components 'DigraphSource' and 'DigraphRange' must be lists,
-gap> Digraph(rec(DigraphNrVertices := n, DigraphSource := 1, DigraphRange := r));
+gap> Digraph(rec(DigraphNrVertices := n,
+>                DigraphSource     := 1,
+>                DigraphRange      := r));
 Error, the record components 'DigraphSource' and 'DigraphRange' must be lists,
-gap> Digraph(rec(DigraphNrVertices := n, DigraphSource := [1, 2], DigraphRange := r));
+gap> Digraph(rec(DigraphNrVertices := n,
+>                DigraphSource     := [1, 2],
+>                DigraphRange      := r));
 Error, the record components 'DigraphSource' and 'DigraphRange' must have equa\
 l length,
-gap> Digraph(rec(DigraphNrVertices := "a", DigraphSource := s, DigraphRange := r));
+gap> Digraph(rec(DigraphNrVertices := "a",
+>                DigraphSource     := s,
+>                DigraphRange      := r));
 Error, the record component 'DigraphNrVertices' must be a non-negative integer\
 ,
-gap> Digraph(rec(DigraphNrVertices := -3, DigraphSource := s, DigraphRange := r));
+gap> Digraph(rec(DigraphNrVertices := -3,
+>                DigraphSource     := s,
+>                DigraphRange      := r));
 Error, the record component 'DigraphNrVertices' must be a non-negative integer\
 ,
-gap> Digraph(
-> rec(DigraphNrVertices := 2, DigraphVertices := [1 .. 3], DigraphSource := [2], DigraphRange := [2]));
+gap> Digraph(rec(DigraphNrVertices := 2, DigraphVertices := [1 .. 3],
+>                DigraphSource     := [2],
+>                DigraphRange      := [2]));
 Error, the record must only have one of the components 'DigraphVertices' and '\
 DigraphNrVertices', not both,
-gap> Digraph(rec(DigraphNrVertices := n, DigraphSource := [0 .. 2], DigraphRange := r));
+gap> Digraph(rec(DigraphNrVertices := n,
+>                DigraphSource     := [0 .. 2],
+>                DigraphRange      := r));
 Error, the record component 'DigraphSource' is invalid,
-gap> Digraph(rec(DigraphNrVertices := n, DigraphSource := [2 .. 4], DigraphRange := r));
+gap> Digraph(rec(DigraphNrVertices := n,
+>                DigraphSource     := [2 .. 4],
+>                DigraphRange      := r));
 Error, the record component 'DigraphSource' is invalid,
-gap> Digraph(rec(DigraphVertices := 2, DigraphSource := s, DigraphRange := r));
+gap> Digraph(rec(DigraphVertices := 2,
+>                DigraphSource     := s,
+>                DigraphRange      := r));
 Error, the record component 'DigraphVertices' must be a list,
-gap> Digraph(rec(DigraphNrVertices := n, DigraphSource := [1, 2, 4], DigraphRange := r));
+gap> Digraph(rec(DigraphNrVertices := n,
+>                DigraphSource     := [1, 2, 4],
+>                DigraphRange      := r));
 Error, the record component 'DigraphSource' is invalid,
-gap> Digraph(rec(DigraphVertices := v, DigraphSource := [1, 2, 4], DigraphRange := r));
+gap> Digraph(rec(DigraphVertices := v,
+>                DigraphSource   := [1, 2, 4],
+>                DigraphRange    := r));
 Error, the record component 'DigraphSource' is invalid,
-gap> Digraph(rec(DigraphNrVertices := n, DigraphSource := s, DigraphRange := [1, 4, 2]));
+gap> Digraph(rec(DigraphNrVertices := n,
+>                DigraphSource     := s,
+>                DigraphRange      := [1, 4, 2]));
 Error, the record component 'DigraphRange' is invalid,
-gap> Digraph(rec(DigraphVertices := v, DigraphSource := s, DigraphRange := [1, 4, 2]));
+gap> Digraph(rec(DigraphVertices := v,
+>                DigraphSource   := s,
+>                DigraphRange    := [1, 4, 2]));
 Error, the record component 'DigraphRange' is invalid,
-gap> Digraph(rec(DigraphVertices := "abc", DigraphSource := "acbab", DigraphRange := "cbabb"));
+gap> Digraph(rec(DigraphVertices := "abc",
+>                DigraphSource   := "acbab",
+>                DigraphRange    := "cbabb"));
 <immutable digraph with 3 vertices, 5 edges>
-gap> Digraph(rec(
-> DigraphVertices := [1, 1, 2], DigraphSource := [1, 2], DigraphRange := [1, 2]));
+gap> Digraph(rec(DigraphVertices := [1, 1, 2],
+>                DigraphSource   := [1, 2],
+>                DigraphRange    := [1, 2]));
 Error, the record component 'DigraphVertices' must be duplicate-free,
 
 #  Digraph (by nrvertices, source, and range)
@@ -340,8 +372,9 @@ gap> OutNeighbours(gr);
   [ 2, 4, 5, 5, 7, 10, 10, 10 ], [ 9 ], [ 1, 4, 6, 7, 9 ], 
   [ 2, 3, 6, 6, 6, 6, 6, 7, 10 ], [ 3, 4, 4, 5, 8, 9 ], [ 3, 4, 8, 8, 9, 10 ],
   [ 1, 2, 2, 3, 3, 3, 5, 6, 9, 10 ], [ 2, 3, 3, 3, 4, 4, 4, 4, 5, 6, 9 ] ]
-gap> r := rec(DigraphNrVertices := 10, DigraphSource := ShallowCopy(DigraphSource(gr)),
-> DigraphRange := ShallowCopy(DigraphRange(gr)));;
+gap> r := rec(DigraphNrVertices := 10,
+>             DigraphSource     := ShallowCopy(DigraphSource(gr)),
+>             DigraphRange      := ShallowCopy(DigraphRange(gr)));;
 gap> gr2 := Digraph(r);
 <immutable multidigraph with 10 vertices, 73 edges>
 gap> HasAdjacencyMatrix(gr2);
@@ -547,29 +580,38 @@ gap> RandomLattice(-1);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `RandomLattice' on 1 arguments
 
-# The list of random lattice Digraph6Strings D was generated by running the following command
+# The list of random lattice Digraph6Strings D was generated by running:
 # D := List([1 .. 100], x -> Digraph6String(RandomLattice(7)));
 gap> D := [
-> "&F~grwcIB?_", "&G~tSrCO{D?oC", "&F~kqG{IB?_", "&J~}jSpw`O~_t?a?{?g?o?_", "&H~zzIWxAGH?wB?G",
-> "&G~t[~DosD?oC", "&F~kqG{IB?_", "&H~z~IgrAGN?gB?G", "&I~|TR~DSKoP?{@OB?C", "&G~s[jFOcD?oC",
-> "&G~sc~EocF?oC", "&G~tSrCO{D?oC", "&F~kqG{IB?_", "&F~kqG{IB?_", "&I~|nqTFKKoP?{@OB?C",
-> "&I~|OrPCCNoP?{@OB?C", "&F~kqG{IB?_", "&G~tSrCO{D?oC", "&H~ynMWbAWN?gB?G", "&G~tSrCO{D?oC",
-> "&I~|Sr~DKLOP?{@OB?C", "&F~hrgcIB?_", "&G~s[rCOsD?oC", "&G~tCtCO{D?oC", "&F~lQG{IB?_",
-> "&F~hrgcIB?_", "&I~|DRrDKGOP?{@OB?C", "&F~jRWcIB?_", "&G~tSpCO{D?oC", "&F~mrGcMB?_",
-> "&F~iRwcMB?_", "&F~lQG{IB?_", "&F~lQG{IB?_", "&H~yhKw`BwH?wB?G", "&I~|zqdEKGO^?{@OB?C",
-> "&G~tSrCO{D?oC", "&G~tSrCO{D?oC", "&G~tSrCO{D?oC", "&F~kqG{IB?_", "&F~lQG{IB?_", "&G~skxCOcF?oC",
-> "&J~}dCggoo__~?a?{?g?o?_", "&F~lQG{IB?_", "&G~usdEocD?oC", "&G~tSrCO{D?oC", "&H~ybLG`BWH?wB?G",
-> "&F~irgcIB?_", "&I~|TRBCCNoT?{@OB?C", "&F~iqwcMB?_", "&H~yTHgxAGH?gB?G", "&F~nqg{IB?_",
-> "&I~|PRRCCNoR?{@OB?C", "&F~lqWcMB?_", "&J~}lKhgoo__~?e?s?g?o?_", "&F~nqW{IB?_", "&G~tSrCO{D?oC",
-> "&F~jrWkMB?_", "&G~vKpCO{D?oC", "&F~irgcIB?_", "&H~y~LwnAWN?gB?G", "&F~kqG{IB?_",
-> "&I~|zqdEKGO^?{@OB?C", "&G~t{`EocF?oC", "&H~zNGW~AGN?wB?G", "&H~zNGW~AgN?gB?G", "&F~nQgsIB?_",
-> "&F~hrwkMB?_", "&G~vkbEocF?oC", "&G~s{zCOkF?oC", "&F~grwkMB?_", "&G~tKtCO{D?oC", "&F~nqwsIB?_",
-> "&J~}jKpw_o~_r?a?{?g?o?_", "&F~nqg{IB?_", "&G~s{~DO{D?oC", "&G~tSrCO{D?oC",
-> "&K~~\\tGdCTBr@p?`?P?N?D?B?@", "&G~tSrCO{D?oC", "&H~zjKW`BwJ?gB?G", "&K~~PrG^FnAd@b?`?R?N?D?B?@",
-> "&H~ydKW`AWN?gB?G", "&F~lQG{IB?_", "&G~tSrCO{D?oC", "&H~zNGg~AGN?gB?G", "&G~u[bFocF?oC",
-> "&H~yrMwrAGN?wB?G", "&G~t{zEocF?oC", "&H~yhJw`BWH?wB?G", "&G~uk`FokF?oC", "&F~lqGcMB?_",
-> "&F~kqG{IB?_", "&G~sC~EocF?oC", "&F~lQG{IB?_", "&G~s[~EocF?oC", "&G~tKpCO{D?oC", "&F~jrGcMB?_",
-> "&I~|SrNCKNoR?{@OB?C", "&F~lQG{IB?_", "&F~irgcIB?_", "&F~kqG{IB?_"];;
+> "&F~grwcIB?_", "&G~tSrCO{D?oC", "&F~kqG{IB?_",
+> "&J~}jSpw`O~_t?a?{?g?o?_", "&H~zzIWxAGH?wB?G", "&G~t[~DosD?oC",
+> "&F~kqG{IB?_", "&H~z~IgrAGN?gB?G", "&I~|TR~DSKoP?{@OB?C",
+> "&G~s[jFOcD?oC", "&G~sc~EocF?oC", "&G~tSrCO{D?oC", "&F~kqG{IB?_",
+> "&F~kqG{IB?_", "&I~|nqTFKKoP?{@OB?C", "&I~|OrPCCNoP?{@OB?C",
+> "&F~kqG{IB?_", "&G~tSrCO{D?oC", "&H~ynMWbAWN?gB?G", "&G~tSrCO{D?oC",
+> "&I~|Sr~DKLOP?{@OB?C", "&F~hrgcIB?_", "&G~s[rCOsD?oC", "&G~tCtCO{D?oC",
+> "&F~lQG{IB?_", "&F~hrgcIB?_", "&I~|DRrDKGOP?{@OB?C", "&F~jRWcIB?_",
+> "&G~tSpCO{D?oC", "&F~mrGcMB?_", "&F~iRwcMB?_", "&F~lQG{IB?_",
+> "&F~lQG{IB?_", "&H~yhKw`BwH?wB?G", "&I~|zqdEKGO^?{@OB?C",
+> "&G~tSrCO{D?oC", "&G~tSrCO{D?oC", "&G~tSrCO{D?oC", "&F~kqG{IB?_",
+> "&F~lQG{IB?_", "&G~skxCOcF?oC", "&J~}dCggoo__~?a?{?g?o?_",
+> "&F~lQG{IB?_", "&G~usdEocD?oC", "&G~tSrCO{D?oC", "&H~ybLG`BWH?wB?G",
+> "&F~irgcIB?_", "&I~|TRBCCNoT?{@OB?C", "&F~iqwcMB?_", "&H~yTHgxAGH?gB?G",
+> "&F~nqg{IB?_", "&I~|PRRCCNoR?{@OB?C", "&F~lqWcMB?_",
+> "&J~}lKhgoo__~?e?s?g?o?_", "&F~nqW{IB?_", "&G~tSrCO{D?oC",
+> "&F~jrWkMB?_", "&G~vKpCO{D?oC", "&F~irgcIB?_", "&H~y~LwnAWN?gB?G",
+> "&F~kqG{IB?_", "&I~|zqdEKGO^?{@OB?C", "&G~t{`EocF?oC",
+> "&H~zNGW~AGN?wB?G", "&H~zNGW~AgN?gB?G", "&F~nQgsIB?_", "&F~hrwkMB?_",
+> "&G~vkbEocF?oC", "&G~s{zCOkF?oC", "&F~grwkMB?_", "&G~tKtCO{D?oC",
+> "&F~nqwsIB?_", "&J~}jKpw_o~_r?a?{?g?o?_", "&F~nqg{IB?_",
+> "&G~s{~DO{D?oC", "&G~tSrCO{D?oC", "&K~~\\tGdCTBr@p?`?P?N?D?B?@",
+> "&G~tSrCO{D?oC", "&H~zjKW`BwJ?gB?G", "&K~~PrG^FnAd@b?`?R?N?D?B?@",
+> "&H~ydKW`AWN?gB?G", "&F~lQG{IB?_", "&G~tSrCO{D?oC", "&H~zNGg~AGN?gB?G",
+> "&G~u[bFocF?oC", "&H~yrMwrAGN?wB?G", "&G~t{zEocF?oC",
+> "&H~yhJw`BWH?wB?G", "&G~uk`FokF?oC", "&F~lqGcMB?_", "&F~kqG{IB?_",
+> "&G~sC~EocF?oC", "&F~lQG{IB?_", "&G~s[~EocF?oC", "&G~tKpCO{D?oC",
+> "&F~jrGcMB?_", "&I~|SrNCKNoR?{@OB?C", "&F~lQG{IB?_", "&F~irgcIB?_",
+> "&F~kqG{IB?_"];;
 gap> D := List(D, x -> DigraphFromDigraph6String(x));;
 gap> iso := [];; 
 gap> iso_distr := [];;
@@ -603,15 +645,16 @@ gap> for i in [1 .. Length(D)] do
 > od;
 
 # The total number of nonisomorphic digraphs generated, out of 100. 
-# It is known that there are 53 distinct lattices on 7 points according to OEIS A006966
+# There are 53 distinct lattices on 7 points according to OEIS A006966
 gap> Length(iso);
 41
 
-# The distribution of nonisomorhpic generated lattices. 
-# To the left is the number of times a particular lattice occurs among the randomly generated ones. 
-# To the right is how many distinct lattices have
-# this number of occurences.
-# So entry [3, 5] means that there were five distinct lattices each of which was generated 3 times.
+# The distribution of nonisomorhpic generated lattices.
+# To the left is the number of times a particular lattice occurs among the
+# randomly generated ones.
+# To the right is how many distinct lattices have # this number of occurrences.
+# So entry [3, 5] means that there were five distinct lattices each of which was
+# generated 3 times.
 gap> Display(Collected(iso_distr));
 [ [   1,  26 ],
   [   2,   7 ],
@@ -633,8 +676,12 @@ gap> Display(Collected(eq_distr));
   [  12,   1 ] ]
 
 #  Equals (\=) for two digraphs
-gap> r1 := rec(DigraphNrVertices := 2, DigraphSource := [1, 1, 2], DigraphRange := [1, 2, 2]);;
-gap> r2 := rec(DigraphNrVertices := 2, DigraphSource := [1, 1, 2], DigraphRange := [2, 1, 2]);;
+gap> r1 := rec(DigraphNrVertices := 2,
+>              DigraphSource     := [1, 1, 2],
+>              DigraphRange      := [1, 2, 2]);;
+gap> r2 := rec(DigraphNrVertices := 2,
+>              DigraphSource     := [1, 1, 2],
+>              DigraphRange      := [2, 1, 2]);;
 gap> gr1 := Digraph(r1);
 <immutable digraph with 2 vertices, 3 edges>
 gap> gr2 := Digraph(r2);
@@ -659,7 +706,9 @@ gap> gr1 = gr2;
 false
 gap> gr1 := Digraph([[], [], []]);
 <immutable empty digraph with 3 vertices>
-gap> gr2 := Digraph(rec(DigraphNrVertices := 3, DigraphSource := [], DigraphRange := []));
+gap> gr2 := Digraph(rec(DigraphNrVertices := 3,
+>                       DigraphSource     := [],
+>                       DigraphRange      := []));
 <immutable empty digraph with 3 vertices>
 gap> gr1 = gr2;
 true
@@ -705,8 +754,9 @@ gap> gr1 = gr5;
 true
 gap> graph1 := Digraph([[2], [1], []]);
 <immutable digraph with 3 vertices, 2 edges>
-gap> graph2 := Digraph(rec(
-> DigraphNrVertices := 3, DigraphSource := [1, 2], DigraphRange := [2, 1]));
+gap> graph2 := Digraph(rec(DigraphNrVertices := 3,
+>                          DigraphSource     := [1, 2],
+>                          DigraphRange      := [2, 1]));
 <immutable digraph with 3 vertices, 2 edges>
 gap> graph1 = graph2;
 true
@@ -727,35 +777,43 @@ true
 gap> gr1 = gr1;
 true
 gap> gr1 := Digraph([[2], []]);;
-gap> gr2 := Digraph(rec(DigraphNrVertices := 1, DigraphSource := [], DigraphRange := []));;
+gap> gr2 := Digraph(rec(DigraphNrVertices := 1,
+>                       DigraphSource     := [],
+>                       DigraphRange      := []));;
 gap> gr1 = gr2;  # Different number of vertices
 false
-gap> gr2 := Digraph(rec(
-> DigraphNrVertices := 2, DigraphSource := [1, 2], DigraphRange := [1, 2]));;
+gap> gr2 := Digraph(rec(DigraphNrVertices := 2,
+>                       DigraphSource     := [1, 2],
+>                       DigraphRange      := [1, 2]));;
 gap> gr1 = gr2;  # Different number of edges
 false
-gap> EmptyDigraph(2) =
-> Digraph(rec(DigraphNrVertices := 2, DigraphSource := [], DigraphRange := []));  # Both empty
+gap> EmptyDigraph(2) = Digraph(rec(DigraphNrVertices := 2,
+>                                  DigraphSource     := [],
+>                                  DigraphRange      := []));  # Both empty
 true
 gap> gr1 := Digraph([[], [1, 2]]);;
 gap> gr1 = gr2;  # |out1[1]| = 0, |out2[1]| <> =
 false
 gap> gr1 := Digraph([[1, 1], [2, 2]]);;
-gap> gr2 := Digraph(rec(
-> DigraphNrVertices := 2, DigraphSource := [1, 2, 2, 2], DigraphRange := [1, 2, 2, 2]));;
+gap> gr2 := Digraph(rec(DigraphNrVertices := 2,
+>                       DigraphSource     := [1, 2, 2, 2],
+>                       DigraphRange      := [1, 2, 2, 2]));;
 gap> gr1 = gr2;  # |out1[1]| = 2, |out2[1]| = 1
 false
-gap> gr2 := Digraph(rec(
-> DigraphNrVertices := 2, DigraphSource := [1, 1, 1, 2], DigraphRange := [1, 1, 1, 2]));;
+gap> gr2 := Digraph(rec(DigraphNrVertices := 2,
+>                       DigraphSource     := [1, 1, 1, 2],
+>                       DigraphRange      := [1, 1, 1, 2]));;
 gap> gr1 = gr2;  # |out1[1]| = 2, |out2[1]| = 3
 false
 gap> gr1 := Digraph([[1, 2], [2, 1]]);;
-gap> gr2 := Digraph(rec(
-> DigraphNrVertices := 2, DigraphSource := [1, 1, 2, 2], DigraphRange := [1, 2, 2, 2]));;
+gap> gr2 := Digraph(rec(DigraphNrVertices := 2,
+>                       DigraphSource     := [1, 1, 2, 2],
+>                       DigraphRange      := [1, 2, 2, 2]));;
 gap> gr1 = gr2;  # Different contents of out[2]
 false
-gap> gr2 := Digraph(rec(
-> DigraphNrVertices := 2, DigraphSource := [1, 1, 2, 2], DigraphRange := [1, 2, 1, 2]));;
+gap> gr2 := Digraph(rec(DigraphNrVertices := 2,
+>                       DigraphSource     := [1, 1, 2, 2],
+>                       DigraphRange      := [1, 2, 1, 2]));;
 gap> gr1 = gr2;  # out[2] sorted differently
 true
 gap> gr1 := Digraph(
@@ -774,7 +832,9 @@ gap> r2 :=
 >  10, 3, 9, 7, 6, 10, 9, 3, 5, 8, 4, 7, 1, 7, 4, 3, 8, 5, 10, 6, 9, 2,
 >  4, 8, 5, 9, 7, 1, 10, 6, 3, 2, 5, 8, 7, 10, 4, 9, 1, 5, 8, 3, 2, 1, 6,
 >  7, 10, 4, 4, 1, 5, 8, 3, 9, 7, 2, 6, 9, 6, 5, 7, 8, 10, 2, 3, 4];;
-gap> gr2 := Digraph(rec(DigraphNrVertices := 10, DigraphSource := s, DigraphRange := r2));;
+gap> gr2 := Digraph(rec(DigraphNrVertices := 10,
+>                       DigraphSource     := s,
+>                       DigraphRange      := r2));;
 gap> gr1 = gr2;
 true
 gap> gr1 := Digraph([[2], []]);;
@@ -786,8 +846,9 @@ gap> gr1 = gr2;  # Different number of edges
 false
 gap> EmptyDigraph(2) = Digraph([[], []]);  # Both empty digraphs
 true
-gap> gr1 := Digraph(rec(
-> DigraphNrVertices := 2, DigraphSource := [1, 2], DigraphRange := [1, 2]));;
+gap> gr1 := Digraph(rec(DigraphNrVertices := 2,
+>                       DigraphSource     := [1, 2],
+>                       DigraphRange      := [1, 2]));;
 gap> OutNeighbours(gr1);;
 gap> gr1 = gr2;  # Equal outneighbours
 true
@@ -828,34 +889,48 @@ gap> gr1 := RandomDigraph(10, 0.264);;
 gap> gr2 := Digraph(List(ShallowCopy(OutNeighbours(gr1)), Reversed));;
 gap> gr1 = gr2;
 true
-gap> gr1 := Digraph(rec(DigraphNrVertices := 0, DigraphSource := [], DigraphRange := []));;
+gap> gr1 := Digraph(rec(DigraphNrVertices := 0,
+>                       DigraphSource     := [],
+>                       DigraphRange      := []));;
 gap> gr1 = gr1;  # IsIdenticalObj
 true
-gap> gr2 := Digraph(rec(DigraphNrVertices := 1, DigraphSource := [], DigraphRange := []));;
+gap> gr2 := Digraph(rec(DigraphNrVertices := 1,
+>                       DigraphSource     := [],
+>                       DigraphRange      := []));;
 gap> gr1 = gr2;  # Different number of vertices
 false
-gap> gr1 := Digraph(rec(DigraphNrVertices := 1, DigraphSource := [1], DigraphRange := [1]));;
+gap> gr1 := Digraph(rec(DigraphNrVertices := 1,
+>                       DigraphSource     := [1],
+>                       DigraphRange      := [1]));;
 gap> gr1 = gr2;  # Different sources
 false
-gap> gr2 := Digraph(rec(DigraphNrVertices := 1, DigraphSource := [1], DigraphRange := [1]));;
+gap> gr2 := Digraph(rec(DigraphNrVertices := 1,
+>                       DigraphSource     := [1],
+>                       DigraphRange      := [1]));;
 gap> gr1 = gr2;  # Equal range
 true
-gap> gr1 := Digraph(rec(
-> DigraphNrVertices := 3, DigraphSource := [1, 2, 2, 3, 3], DigraphRange := [1, 1, 2, 2, 3]));;
-gap> gr2 := Digraph(rec(
-> DigraphNrVertices := 3, DigraphSource := [1, 2, 2, 3, 3], DigraphRange := [1, 2, 2, 3, 2]));;
+gap> gr1 := Digraph(rec(DigraphNrVertices := 3,
+>                       DigraphSource     := [1, 2, 2, 3, 3],
+>                       DigraphRange      := [1, 1, 2, 2, 3]));;
+gap> gr2 := Digraph(rec(DigraphNrVertices := 3,
+>                       DigraphSource     := [1, 2, 2, 3, 3],
+>                       DigraphRange      := [1, 2, 2, 3, 2]));;
 gap> gr1 = gr2;  # Different contents of out[2]
 false
-gap> gr1 := Digraph(rec(
-> DigraphNrVertices := 3, DigraphSource := [1, 2, 2, 3, 3], DigraphRange := [1, 1, 2, 2, 3]));;
-gap> gr2 := Digraph(rec(
-> DigraphNrVertices := 3, DigraphSource := [1, 2, 2, 3, 3], DigraphRange := [1, 2, 1, 3, 3]));;
+gap> gr1 := Digraph(rec(DigraphNrVertices := 3,
+>                       DigraphSource     := [1, 2, 2, 3, 3],
+>                       DigraphRange      := [1, 1, 2, 2, 3]));;
+gap> gr2 := Digraph(rec(DigraphNrVertices := 3,
+>                       DigraphSource     := [1, 2, 2, 3, 3],
+>                       DigraphRange      := [1, 2, 1, 3, 3]));;
 gap> gr1 = gr2;  # Different contents of out[3]
 false
-gap> gr1 := Digraph(rec(
-> DigraphNrVertices := 3, DigraphSource := [1, 2, 2, 3, 3], DigraphRange := [1, 1, 2, 2, 3]));;
-gap> gr2 := Digraph(rec(
-> DigraphNrVertices := 3, DigraphSource := [1, 2, 2, 3, 3], DigraphRange := [1, 2, 1, 3, 2]));;
+gap> gr1 := Digraph(rec(DigraphNrVertices := 3,
+>                       DigraphSource     := [1, 2, 2, 3, 3],
+>                       DigraphRange      := [1, 1, 2, 2, 3]));;
+gap> gr2 := Digraph(rec(DigraphNrVertices := 3,
+>                       DigraphSource     := [1, 2, 2, 3, 3],
+>                       DigraphRange      := [1, 2, 1, 3, 2]));;
 gap> gr1 = gr2;  # out[2] and out[3] sorted differently
 true
 gap> s :=
@@ -873,8 +948,12 @@ gap> r2 :=
 >  10, 3, 9, 7, 6, 10, 9, 3, 5, 8, 4, 7, 1, 7, 4, 3, 8, 5, 10, 6, 9, 2,
 >  4, 8, 5, 9, 7, 1, 10, 6, 3, 2, 5, 8, 7, 10, 4, 9, 1, 5, 8, 3, 2, 1, 6,
 >  7, 10, 4, 4, 1, 5, 8, 3, 9, 7, 2, 6, 9, 6, 5, 7, 8, 10, 2, 3, 4];;
-gap> gr1 := Digraph(rec(DigraphNrVertices := 10, DigraphSource := s, DigraphRange := r1));;
-gap> gr2 := Digraph(rec(DigraphNrVertices := 10, DigraphSource := s, DigraphRange := r2));;
+gap> gr1 := Digraph(rec(DigraphNrVertices := 10,
+>                       DigraphSource     := s,
+>                       DigraphRange      := r1));;
+gap> gr2 := Digraph(rec(DigraphNrVertices := 10,
+>                       DigraphSource     := s,
+>                       DigraphRange      := r2));;
 gap> gr1 = gr2;
 true
 
@@ -1057,7 +1136,8 @@ gap> SetDigraphVertexLabel(gr, 1, "w");
 gap> DigraphVertexLabels(DigraphCopy(gr))[1];
 "w"
 gap> gr := Digraph(rec(DigraphVertices := ["a", Group((1, 2))],
-> DigraphSource := [Group((1, 2))], DigraphRange := ["a"]));
+>                      DigraphSource   := [Group((1, 2))],
+>                      DigraphRange    := ["a"]));
 <immutable digraph with 2 vertices, 1 edge>
 gap> DigraphVertexLabels(gr);
 [ "a", Group([ (1,2) ]) ]
@@ -1490,14 +1570,22 @@ e number of edges in the reflexive transitive reduction of the second argument\
 , where [i, j] is an edge in the reflex transitive reduction and hom is a grou\
 p homomorphism from group i to group j,
 gap> T := AsSemigroup(IsPartialPermSemigroup, gr4, [G1, G2, G3, G4, G5],
-> [[-2, 1, hom21], [3, 1, hom31], [4, 1, hom41], [5, 2, hom52], [5, 3, hom53]]);;
+> [[-2, 1, hom21],
+>  [3, 1, hom31],
+>  [4, 1, hom41],
+>  [5, 2, hom52],
+>  [5, 3, hom53]]);;
 Error, Digraphs: AsSemigroup usage,
 the third argument must be a list of triples [i, j, hom] of length equal to th\
 e number of edges in the reflexive transitive reduction of the second argument\
 , where [i, j] is an edge in the reflex transitive reduction and hom is a grou\
 p homomorphism from group i to group j,
 gap> T := AsSemigroup(IsPartialPermSemigroup, gr4, [G1, G2, G3, G4, G5],
-> [[2, -1, hom21], [3, 1, hom31], [4, 1, hom41], [5, 2, hom52], [5, 3, hom53]]);;
+> [[2, -1, hom21],
+>  [3, 1, hom31],
+>  [4, 1, hom41],
+>  [5, 2, hom52],
+>  [5, 3, hom53]]);;
 Error, Digraphs: AsSemigroup usage,
 the third argument must be a list of triples [i, j, hom] of length equal to th\
 e number of edges in the reflexive transitive reduction of the second argument\
