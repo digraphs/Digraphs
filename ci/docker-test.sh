@@ -67,7 +67,7 @@ DIG_DIR="$GAP_HOME/pkg/digraphs"
 
 bold "Installing dependencies (apt-get). . ."
 sudo apt-get --yes update
-sudo apt-get install libtool curl git --yes
+sudo apt-get install libtool curl git xdg-utils --yes
 
 if [ "$GAP_VERSION" == "master" ]; then 
   # Stops the documentation from failing to compile because enumitem.sty isn't
