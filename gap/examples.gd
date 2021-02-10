@@ -50,3 +50,7 @@ DeclareOperation("GeneralisedPetersenGraph", [IsInt, IsInt]);
 DeclareOperation("GeneralisedPetersenGraph", [IsFunction, IsInt, IsInt]);
 
 DeclareConstructor("LatticeGraphCons", [IsDigraph, IsInt, IsInt]);
+
+DeclareGlobalFunction("DIGRAPHS_HaarGraph");
+
+DeclareGlobalFunction("DIGRAPHS_BlistNumber");
