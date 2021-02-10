@@ -51,14 +51,18 @@ gap> IsMultiDigraph(gr2);
 false
 gap> source := [1 .. 10000];;
 gap> range := List(source, x -> Random(source));;
-gap> r := rec (DigraphVertices := [1 .. 10000], DigraphSource := source, DigraphRange := range);;
+gap> r := rec (DigraphVertices := [1 .. 10000],
+>              DigraphSource   := source,
+>              DigraphRange    := range);;
 gap> gr3 := Digraph(r);
 <immutable digraph with 10000 vertices, 10000 edges>
 gap> IsMultiDigraph(gr3);
 false
 gap> Add(source, 10000);;
 gap> Add(range, range[10000]);;
-gap> r := rec(DigraphVertices := [1 .. 10000], DigraphSource := source, DigraphRange := range);;
+gap> r := rec(DigraphVertices := [1 .. 10000],
+>             DigraphSource   := source,
+>             DigraphRange    := range);;
 gap> gr4 := Digraph(r);
 <immutable multidigraph with 10000 vertices, 10001 edges>
 gap> IsMultiDigraph(gr4);
@@ -75,14 +79,18 @@ gap> IsMultiDigraph(loop);
 false
 gap> IsAcyclicDigraph(loop);
 false
-gap> r := rec(DigraphVertices := [1, 2], DigraphSource := [1, 1], DigraphRange := [2, 2]);;
+gap> r := rec(DigraphVertices := [1, 2],
+>             DigraphSource   := [1, 1],
+>             DigraphRange    := [2, 2]);;
 gap> multiple := Digraph(r);
 <immutable multidigraph with 2 vertices, 2 edges>
 gap> IsMultiDigraph(multiple);
 true
 gap> IsAcyclicDigraph(multiple);
 true
-gap> r := rec(DigraphVertices := [1 .. 100], DigraphSource := [], DigraphRange := []);;
+gap> r := rec(DigraphVertices := [1 .. 100],
+>             DigraphSource   := [],
+>             DigraphRange    := []);;
 gap> for i in [1 .. 100] do
 >   for j in [1 .. 100] do
 >     Add(r.DigraphSource, i);
@@ -95,7 +103,9 @@ gap> IsMultiDigraph(complete100);
 false
 gap> IsAcyclicDigraph(complete100);
 false
-gap> r := rec(DigraphVertices := [1 .. 20000], DigraphSource := [], DigraphRange := []);;
+gap> r := rec(DigraphVertices := [1 .. 20000],
+>             DigraphSource   := [],
+>             DigraphRange    := []);;
 gap> for i in [1 .. 9999] do
 >   Add(r.DigraphSource, i);
 >   Add(r.DigraphRange, i + 1);
@@ -234,8 +244,9 @@ gap> g6 := Digraph([[1, 2, 4], [1, 3], [2, 3, 4], [3, 1]]);
 <immutable digraph with 4 vertices, 10 edges>
 gap> IsSymmetricDigraph(g6);
 true
-gap> gr := Digraph(rec(DigraphNrVertices := 3, DigraphSource := [1, 1, 2, 2, 2, 2, 3, 3],
-> DigraphRange := [2, 2, 1, 1, 3, 3, 2, 2]));;
+gap> gr := Digraph(rec(DigraphNrVertices := 3,
+>                      DigraphSource     := [1, 1, 2, 2, 2, 2, 3, 3],
+>                      DigraphRange      := [2, 2, 1, 1, 3, 3, 2, 2]));;
 gap> IsSymmetricDigraph(gr);
 true
 gap> D := Digraph([[2], [3], [2]]);;
@@ -265,10 +276,12 @@ false
 
 #  IsAntisymmetricDigraph
 gap> gr := Digraph(rec(DigraphNrVertices := 10,
-> DigraphSource := [1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 5, 5, 5, 5, 5, 5, 6,
->  6, 6, 6, 6, 7, 7, 7, 7, 7, 8, 8, 8, 8, 8, 9, 9, 9, 9, 10, 10, 10, 10, 10],
-> DigraphRange := [2, 4, 6, 10, 3, 5, 7, 4, 7, 1, 9, 10, 4, 6, 9, 8, 4, 3, 7, 1, 6,
->  8, 2, 3, 9, 7, 10, 9, 4, 1, 8, 9, 3, 1, 4, 2, 5, 2, 1, 10, 5, 6, 2, 4, 8]));
+>  DigraphSource := [1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 5, 5, 5, 5,
+>                    5, 5, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 8, 8, 8, 8, 8, 9, 9,
+>                    9, 9, 10, 10, 10, 10, 10],
+>  DigraphRange  := [2, 4, 6, 10, 3, 5, 7, 4, 7, 1, 9, 10, 4, 6, 9, 8, 4, 3, 7,
+>                    1, 6, 8, 2, 3, 9, 7, 10, 9, 4, 1, 8, 9, 3, 1, 4, 2, 5, 2,
+>                    1, 10, 5, 6, 2, 4, 8]));
 <immutable digraph with 10 vertices, 45 edges>
 gap> IsAntisymmetricDigraph(gr);
 true
@@ -298,11 +311,14 @@ gap> IsAntisymmetricDigraph(gr);
 false
 
 #  IsEmptyDigraph
-gap> gr1 := Digraph(rec(DigraphNrVertices := 5, DigraphSource := [], DigraphRange := []));;
+gap> gr1 := Digraph(rec(DigraphNrVertices := 5,
+>                       DigraphSource     := [],
+>                       DigraphRange      := []));;
 gap> IsEmptyDigraph(gr1);
 true
-gap> gr2 :=
-> Digraph(rec(DigraphVertices := [1 .. 6], DigraphSource := [6], DigraphRange := [1]));;
+gap> gr2 := Digraph(rec(DigraphVertices := [1 .. 6],
+>                       DigraphSource   := [6],
+>                       DigraphRange    := [1]));;
 gap> IsEmptyDigraph(gr2);
 false
 gap> gr3 := DigraphNC([[], [], [], []]);;
@@ -321,8 +337,9 @@ gap> IsEmptyDigraph(gr6);
 false
 
 #  IsTournament
-gap> gr := Digraph(rec(
-> DigraphNrVertices := 2, DigraphSource := [1, 1], DigraphRange := [2, 2]));
+gap> gr := Digraph(rec(DigraphNrVertices := 2,
+>                      DigraphSource     := [1, 1],
+>                      DigraphRange      := [2, 2]));
 <immutable multidigraph with 2 vertices, 2 edges>
 gap> IsTournament(gr);
 false
@@ -562,15 +579,21 @@ gap> gr := Digraph([[6, 7], [6, 9], [1, 2, 4, 5, 8, 9],
 <immutable multidigraph with 10 vertices, 55 edges>
 gap> DigraphHasLoops(gr);
 false
-gap> gr := Digraph(rec(DigraphNrVertices := 0, DigraphSource := [], DigraphRange := []));
+gap> gr := Digraph(rec(DigraphNrVertices := 0,
+>                      DigraphSource     := [],
+>                      DigraphRange      := []));
 <immutable empty digraph with 0 vertices>
 gap> DigraphHasLoops(gr);
 false
-gap> gr := Digraph(rec(DigraphNrVertices := 1, DigraphSource := [], DigraphRange := []));
+gap> gr := Digraph(rec(DigraphNrVertices := 1,
+>                      DigraphSource     := [],
+>                      DigraphRange      := []));
 <immutable empty digraph with 1 vertex>
 gap> DigraphHasLoops(gr);
 false
-gap> gr := Digraph(rec(DigraphNrVertices := 1, DigraphSource := [1], DigraphRange := [1]));
+gap> gr := Digraph(rec(DigraphNrVertices := 1,
+>                      DigraphSource     := [1],
+>                      DigraphRange      := [1]));
 <immutable digraph with 1 vertex, 1 edge>
 gap> DigraphHasLoops(gr);
 true
@@ -579,8 +602,8 @@ gap> r := rec(DigraphNrVertices := 10,
 > [1, 1, 2, 2, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 6, 6,
 >  6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 7, 8, 8, 8, 8, 8, 8, 9, 9, 9, 10, 10, 10, 10,
 >  10, 10],
-> DigraphRange := [6, 7, 6, 9, 1, 2, 4, 5, 8, 9, 1, 2, 3, 4, 5, 6, 7, 10, 1, 5, 6,
->  7, 10, 2, 4, 5, 9, 10, 3, 4, 5, 6, 7, 8, 9, 10, 1, 3, 5, 7, 8, 9, 1, 2, 5,
+> DigraphRange := [6, 7, 6, 9, 1, 2, 4, 5, 8, 9, 1, 2, 3, 4, 5, 6, 7, 10, 1, 5,
+>  6, 7, 10, 2, 4, 5, 9, 10, 3, 4, 5, 6, 7, 8, 9, 10, 1, 3, 5, 7, 8, 9, 1, 2, 5,
 >  1, 2, 4, 6, 7, 8]);;
 gap> gr := Digraph(r);
 <immutable digraph with 10 vertices, 51 edges>
@@ -1196,27 +1219,29 @@ true
 
 # Big partial order digraph
 gap> gr := DigraphFromDiSparse6String(Concatenation(
-> ".~?CI_A?WA_M@G@_G@gB?]@?G_SAWA?Y@oJ__BGH?uA_M_IAoO_oCWL@IB_R_{DGB?mB?U_sDwM@",
-> "aBoX_KCGP@WEwQ@[FGR@_FWS@cFgT@gFwB@A?oO_KCGZACGwZAGGw[AUFOcAYF_f`{IG_Ae@?U`[",
-> "IwWAqEOl`gJgC@mF?jBAFOkBEF_lBIFomBMG?nBQ@?ZAE@?ZAI@?ZAMH?oBWMGdB?LowaWKOya[K",
-> "_xBmI?rBqIOsBuI_tBy@?`AMH?uCA@?aaOHOuB[OgCAIHOvCQ@?baOM@?CYMP@C]HOwCYMOyCKPp",
-> "HbgPPHbkQw{CgRG|C_RW}CyNpN_SIwkDEJPQawSwnDQ@OobCSPUbGS`VbKSpWbOT@XbSTPY_SK?u",
-> "_SK?v_SK?wbcT`[DyM`UDsVgzD[WG{D_Vp`bsUPabwU`bb{Upc_SL`?bcOP[EY@OvCIMOyCKV@\\",
-> "Ea@OvCQM`DDsYgDB_PgxC[V`kc_VpfEuM`HDwZHID{W@hEsZxJE?YpncoWPpcsW`oFIR`bEw[xNE",
-> "O\\HOES\\WDC?Ph@C[X`vc_Xpw_SOhBEWY@yc_Q`fEc]wDCQH@DE_Y`|cgQphEk^gDCQPPiGAQpj",
-> "GE@PEc[Z@vGMQ@lF_`HmFc`XHEo_xIEsZqCG]Z`oFo`QGckZqFf?[P~G_ahpGGahqGq[qJGu\\AH",
-> "Gy\\QEG}\\aO_G@gF@?cgGAKcwHCWdGIGKdWA_KCAV`CeGQACeWRAOegSC[ewTGOfG`AGeGBH]Ga",
-> "WH}@?bHaH?dC?Oa]IEHQ_IEHaba[gaca_OQdacQAeag`QfcCOqa_OeA^aCO`CI?ihBCSgabIm@A^",
-> "cOgAlcSgqm_SPa`c[QPvFggaoc_Q`wFkiQpccgqocgQqkJCkxJI{kxKJURQsJYRaqJ]RpxJaSAEJ",
-> "e?qQaGcqzaSdA{ccdQ|g[da}hcigQCGoHBHkoXIHooiGHsoy^i?ialKU@Q`IiH@yFsgqjK]grEK]",
-> "hBHa[oRGKiI@zISobJfohrKgciBL_OmxCJorxDJssHJJwsYIJ{sgDIgjZ?LQC`|LU^aZKCth~KKt",
-> "yJKOuGDK}_BOLi_RPLm_bQLqbBRLu@gPHKvweJswHKLGwYLLwwgDIuCaVMAHqZH{wRdcsjRBMGxi",
-> "MLcwrcM]GP|G?jbELQ_AmMQjRDkWtBcMmxBja_fa_KSxhMI[iqmKWxrjMybrMM_yRiMozRncC]p}",
-> "IoqH}GCganMeOamKYOqnK_qRhNMjbEMmO`|MgzBtmgzRti{qRkNUyzkMs|Rxms}XNIcjAnM{{rtN",
-> "e_QnMg|YOJg{BpNG|BuN[}ByNk~B|fc^Aqfo^qqJO{XzNG|H~GGlAtNG|H}K_|bwNu^RvNi_atN_",
-> "~ZvN_}b|n[}bznmcR}N|?C@OH?sCOT@cFObAiQ@ECgR`QDWaaSOgea]IGhaiOxCcUQPycg]xJcqR",
-> "XMc}SH{fsgx}f}_I@gI`yGgeaiJgqbYMg}cIPheeiZhqfYciUhifiajinjMlItjYlywjemj?kEoj",
-> "BkQqZIkmrJLkytZUl]uJXmkyjrNI}Rv"));
+> ".~?CI_A?WA_M@G@_G@gB?]@?G_SAWA?Y@oJ__BGH?uA_M_IAoO_oCWL@IB_R_{DGB?mB",
+> "?U_sDwM@aBoX_KCGP@WEwQ@[FGR@_FWS@cFgT@gFwB@A?oO_KCGZACGwZAGGw[AUFOcAY",
+> "F_f`{IG_Ae@?U`[IwWAqEOl`gJgC@mF?jBAFOkBEF_lBIFomBMG?nBQ@?ZAE@?ZAI@?ZA",
+> "MH?oBWMGdB?LowaWKOya[K_xBmI?rBqIOsBuI_tBy@?`AMH?uCA@?aaOHOuB[OgCAIHOv",
+> "CQ@?baOM@?CYMP@C]HOwCYMOyCKPpHbgPPHbkQw{CgRG|C_RW}CyNpN_SIwkDEJPQawSw",
+> "nDQ@OobCSPUbGS`VbKSpWbOT@XbSTPY_SK?u_SK?v_SK?wbcT`[DyM`UDsVgzD[WG{D_V",
+> "p`bsUPabwU`bb{Upc_SL`?bcOP[EY@OvCIMOyCKV@\\Ea@OvCQM`DDsYgDB_PgxC[V`kc",
+> "_VpfEuM`HDwZHID{W@hEsZxJE?YpncoWPpcsW`oFIR`bEw[xNEO\\HOES\\WDC?Ph@C[X",
+> "`vc_Xpw_SOhBEWY@yc_Q`fEc]wDCQH@DE_Y`|cgQphEk^gDCQPPiGAQpjGE@PEc[Z@vGM",
+> "Q@lF_`HmFc`XHEo_xIEsZqCG]Z`oFo`QGckZqFf?[P~G_ahpGGahqGq[qJGu\\AHGy\\Q",
+> "EG}\\aO_G@gF@?cgGAKcwHCWdGIGKdWA_KCAV`CeGQACeWRAOegSC[ewTGOfG`AGeGBH]",
+> "GaWH}@?bHaH?dC?Oa]IEHQ_IEHaba[gaca_OQdacQAeag`QfcCOqa_OeA^aCO`CI?ihBC",
+> "SgabIm@A^cOgAlcSgqm_SPa`c[QPvFggaoc_Q`wFkiQpccgqocgQqkJCkxJI{kxKJURQs",
+> "JYRaqJ]RpxJaSAEJe?qQaGcqzaSdA{ccdQ|g[da}hcigQCGoHBHkoXIHooiGHsoy^i?ia",
+> "lKU@Q`IiH@yFsgqjK]grEK]hBHa[oRGKiI@zISobJfohrKgciBL_OmxCJorxDJssHJJws",
+> "YIJ{sgDIgjZ?LQC`|LU^aZKCth~KKtyJKOuGDK}_BOLi_RPLm_bQLqbBRLu@gPHKvweJs",
+> "wHKLGwYLLwwgDIuCaVMAHqZH{wRdcsjRBMGxiMLcwrcM]GP|G?jbELQ_AmMQjRDkWtBcM",
+> "mxBja_fa_KSxhMI[iqmKWxrjMybrMM_yRiMozRncC]p}IoqH}GCganMeOamKYOqnK_qRh",
+> "NMjbEMmO`|MgzBtmgzRti{qRkNUyzkMs|Rxms}XNIcjAnM{{rtNe_QnMg|YOJg{BpNG|B",
+> "uN[}ByNk~B|fc^Aqfo^qqJO{XzNG|H~GGlAtNG|H}K_|bwNu^RvNi_atN_~ZvN_}b|n[}",
+> "bznmcR}N|?C@OH?sCOT@cFObAiQ@ECgR`QDWaaSOgea]IGhaiOxCcUQPycg]xJcqRXMc}",
+> "SH{fsgx}f}_I@gI`yGgeaiJgqbYMg}cIPheeiZhqfYciUhifiajinjMlItjYlywjemj?k",
+> "EojBkQqZIkmrJLkytZUl]uJXmkyjrNI}Rv"));
 <immutable digraph with 266 vertices, 919 edges>
 gap> gr := DigraphReflexiveTransitiveClosure(gr);
 <immutable preorder digraph with 266 vertices, 10772 edges>
