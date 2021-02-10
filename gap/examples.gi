@@ -370,3 +370,37 @@ GeneralisedPetersenGraphCons);
 
 InstallMethod(GeneralisedPetersenGraph, "for integer, integer", [IsInt, IsInt],
 {n, k} -> GeneralisedPetersenGraphCons(IsImmutableDigraph, n, k));
+
+InstallMethod(KingsGraphCons,
+"for IsMutableDigraph and two integers",
+[IsMutableDigraph, IsInt, IsInt],
+function(filt, n, k)
+  local D, i, j;
+  if n < 1 then
+    ErrorNoReturn("the argument <n> must be a positive integer,");
+  elif k < 1 then
+    ErrorNoReturn("the argument <k> must be a positive integer,");
+  fi;
+  D := EmptyDigraph(filt, n * k);
+  for i in [1 .. k] do
+    for j in [1 .. (n - 1)] do
+      DigraphAddEdge(D, [((i - 1) * n) + j, ((i - 1) * n) + j + 1]);
+    od;
+  od;
+  for i in [1 .. (k - 1)] do
+    for j in [1 .. n] do
+      DigraphAddEdge(D, [((i - 1) * n) + j, ((i - 1) * n) + j + n]);
+    od;
+  od;
+  for i in [1 .. (k - 1)] do
+    for j in [1 .. (n - 1)] do
+      DigraphAddEdge(D, [((i - 1) * n) + j, ((i - 1) * n) + j + (n + 1)]);
+    od;
+  od;
+  for i in [1 .. (k - 1)] do
+    for j in [1 .. (n - 1)] do
+      DigraphAddEdge(D, [((i - 1) * n) + j + 1, ((i - 1) * n) + j + n]);
+    od;
+  od;
+  return DigraphSymmetricClosure(D);
+end);
