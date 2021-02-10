@@ -56,3 +56,7 @@ DeclareOperation("StarDigraph", [IsFunction, IsPosInt]);
 DeclareConstructor("KnightsGraphCons", [IsDigraph, IsPosInt, IsPosInt]);
 DeclareOperation("KnightsGraph", [IsPosInt, IsPosInt]);
 DeclareOperation("KnightsGraph", [IsFunction, IsPosInt, IsPosInt]);
+
+DeclareConstructor("HaarGraphCons", [IsDigraph, IsPosInt]);
+DeclareOperation("HaarGraph", [IsPosInt]);
+DeclareOperation("HaarGraph", [IsFunction, IsPosInt]);
