@@ -24,7 +24,7 @@
 
   <Author>Wilf A. Wilson
     <Email>gap@wilf-wilson.net</Email>
-    <Homepage>http://wilf.me</Homepage>
+    <Homepage>https://wilf.me</Homepage>
   </Author>
 
   <Author>Stuart Burrell</Author>
@@ -51,7 +51,7 @@
 
     &Digraphs; is free software; you can redistribute it and/or modify it
     under the terms of the <URL Text="GNU General Public License">
-    http://www.fsf.org/licenses/gpl.html</URL> as published by the Free Software
+    https://www.fsf.org/licenses/gpl.html</URL> as published by the Free Software
     Foundation; either version 3 of the License, or (at your option) any later
     version.
   </Copyright>

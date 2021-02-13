@@ -157,7 +157,7 @@ static Obj FuncDIGRAPH_NREDGES(Obj self, Obj D) {
 ** Neither the components, nor their elements are in any particular order.
 **
 ** The algorithm is that of Gabow, based on the implementation in Sedgwick:
-**   http://algs4.cs.princeton.edu/42directed/GabowSCC.java.html
+**   https://algs4.cs.princeton.edu/42directed/GabowSCC.java.html
 ** (made non-recursive to avoid problems with stack limits) and
 ** the implementation of STRONGLY_CONNECTED_COMPONENTS_DIGRAPH in listfunc.c.
 */

@@ -33,6 +33,7 @@
     <#Include Label="MaximalSymmetricSubdigraph">
     <#Include Label="MaximalAntiSymmetricSubdigraph">
     <#Include Label="UndirectedSpanningTree">
+    <#Include Label="DigraphShortestPathSpanningTree">
     <#Include Label="QuotientDigraph">
     <#Include Label="DigraphReverse">
     <#Include Label="DigraphDual">
