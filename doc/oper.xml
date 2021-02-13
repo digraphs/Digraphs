@@ -1374,7 +1374,7 @@ gap> VerticesReachableFrom(D, 5);
         where for each each <M>i &lt; n</M>, <M>a_i</M> is the position of
         <M>v_{i+1}</M> in
         <C>OutNeighboursOfVertex(</C><A>digraph</A><C>,</C><M>v_i</M><C>)</C>
-        corresponding to the edge <M>e_i</M>.  This is can be useful if the
+        corresponding to the edge <M>e_i</M>.  This can be useful if the
         position of a vertex in a list of out-neighours is significant, for
         example in orbit digraphs.
       </Item>
@@ -1400,13 +1400,61 @@ fail
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="DigraphShortestPathSpanningTree">
+<ManSection>
+  <Oper Name="DigraphShortestPathSpanningTree" Arg="digraph, v"/>
+  <Returns>A digraph, or <K>fail</K>.</Returns>
+  <Description>
+    If <A>v</A> is a vertex in <A>digraph</A> and every other
+    vertex of <A>digraph</A> is reachable from <A>v</A>,
+    then this operation returns the shortest path spanning tree of
+    <A>digraph</A> rooted at <A>v</A>.
+    If there exist vertices in <A>digraph</A> (other than <A>v</A>) that are
+    not reachable from <A>v</A>, then <C>DigraphShortestPathSpanningTree</C>
+    returns <K>fail</K>.  See <Ref Oper="IsReachable"/>. <P/>
+
+    The <E>shortest path spanning tree of <A>digraph</A> rooted at <A>v</A></E>
+    is a subdigraph of <A>digraph</A> that is a directed tree, with unique
+    source vertex <A>v</A>, and where for each other vertex <A>u</A> in
+    <A>digraph</A>, the unique directed path from <A>v</A> to <A>u</A> in the
+    tree is the lexicographically-least shortest directed path from <A>v</A> to
+    <A>u</A> in <A>digraph</A>. <P/>
+
+    See <Ref Prop="IsDirectedTree"/>, <Ref Attr="DigraphSources"/>, and
+    <Ref Oper="DigraphShortestPath"/>. <P/>
+    
+    If <A>digraph</A> belongs to <Ref Filt="IsMutableDigraph"/>, then
+    <A>digraph</A> is modified in place. If <A>digraph</A> belongs to <Ref
+    Filt="IsImmutableDigraph"/>, then the spanning tree is a new immutable
+    digraph.
+
+<Example><![CDATA[
+gap> D := Digraph([[1, 2], [3], [2, 4], [1], [2, 4]]);
+<immutable digraph with 5 vertices, 8 edges>
+gap> ForAll([2 .. 5], v -> IsReachable(D, 1, v));
+false
+gap> DigraphShortestPathSpanningTree(D, 1);
+fail
+gap> tree := DigraphShortestPathSpanningTree(D, 5);
+<immutable digraph with 5 vertices, 4 edges>
+gap> OutNeighbours(tree);
+[ [  ], [ 3 ], [  ], [ 1 ], [ 2, 4 ] ]
+gap> ForAll(DigraphVertices(D), v ->
+> DigraphShortestPath(D, 5, v) = DigraphPath(tree, 5, v));
+true
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<!-- TODO is it *the* lexicographically least shortest path? -->
 <#GAPDoc Label="DigraphShortestPath">
 <ManSection>
   <Oper Name="DigraphShortestPath" Arg="digraph, u, v"/>
   <Returns>A pair of lists, or <K>fail</K>.</Returns>
   <Description>
-    Returns the shortest directed path in the digraph digraph from the vertex
-    <A>u</A> to the vertex <A>v</A>, if such a path exists. If <C><A>u</A> =
+    Returns a shortest directed path in the digraph <A>digraph</A> from vertex
+    <A>u</A> to vertex <A>v</A>, if such a path exists. If <C><A>u</A> =
     <A>v</A></C>, then the shortest non-trivial cycle is returned, again, if it
     exists. Otherwise, this operation returns <K>fail</K>.  See Section
     <Ref Subsect="Definitions" Style="Text"/> for the definition of a directed

@@ -869,7 +869,7 @@ gap> D := Digraph([[1, 2], [1]]);  # has loops
 <immutable digraph with 2 vertices, 3 edges>
 gap> IsCompleteMultipartiteDigraph(D);
 false
-gap> D := Digraph([[2], []]);  # not symmetric
+gap> D := Digraph([[2], []]);  # not symmetric
 <immutable digraph with 2 vertices, 1 edge>
 gap> IsCompleteMultipartiteDigraph(D);
 false
