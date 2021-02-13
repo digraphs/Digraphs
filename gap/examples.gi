@@ -371,17 +371,15 @@ GeneralisedPetersenGraphCons);
 InstallMethod(GeneralisedPetersenGraph, "for integer, integer", [IsInt, IsInt],
 {n, k} -> GeneralisedPetersenGraphCons(IsImmutableDigraph, n, k));
 
-InstallMethod(LatticeGraphCons,
-"for IsMutableDigraph and two integers",
-[IsMutableDigraph, IsInt, IsInt],
-function(filt, n, k)
+InstallGlobalFUnction(DIGRAPHS_LatticeGraph,
+function(n, k)
   local D, i, j;
   if n < 1 then
     ErrorNoReturn("the argument <n> must be a positive integer,");
   elif k < 1 then
     ErrorNoReturn("the argument <k> must be a positive integer,");
   fi;
-  D := EmptyDigraph(filt, n * k);
+  D := EmptyDigraph(IsMutableDigraph, n * k);
   for i in [1 .. k] do
     for j in [1 .. (n - 1)] do
       DigraphAddEdge(D, [((i - 1) * n) + j, ((i - 1) * n) + j + 1]);
@@ -397,6 +395,9 @@ end);
 
 InstallGlobalFunction(DIGRAPHS_HaarGraph,
 function(n)
+  if n < 1 then
+    ErrorNoReturn("the argument <n> must be a positive integer,");
+  fi;
   local m, binaryList, D, i, j;
   m := Log(n, 2) + 1;
   binaryList := DIGRAPHS_BlistNumber(n + 1,  m);
