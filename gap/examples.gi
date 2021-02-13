@@ -395,10 +395,11 @@ end);
 
 InstallGlobalFunction(DIGRAPHS_HaarGraph,
 function(n)
+  local m, binaryList, D, i, j;
   if n < 1 then
     ErrorNoReturn("the argument <n> must be a positive integer,");
   fi;
-  local m, binaryList, D, i, j;
+  
   m := Log(n, 2) + 1;
   binaryList := DIGRAPHS_BlistNumber(n + 1,  m);
 
