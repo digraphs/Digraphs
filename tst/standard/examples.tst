@@ -226,6 +226,14 @@ Error, the arguments <n> and <k> must be non-negative integers,
 gap> JohnsonDigraph(IsMutableDigraph, 4, 2);
 <mutable digraph with 6 vertices, 24 edges>
 
+# KingsGraph
+gap> DIGRAPHS_KingsGraph(8,8);
+<mutable digraph with 64 vertices, 420 edges>
+gap> DIGRAPHS_KingsGraph(1,8); 
+<mutable digraph with 8 vertices, 14 edges>
+gap> DIGRAPHS_KingsGraph(-1,8);
+Error, the arguments <n> and <k> must be positive integers,
+
 #
 gap> DIGRAPHS_StopTest();
 gap> STOP_TEST("Digraphs package: standard/examples.tst", 0);
