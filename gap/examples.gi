@@ -371,7 +371,7 @@ GeneralisedPetersenGraphCons);
 InstallMethod(GeneralisedPetersenGraph, "for integer, integer", [IsInt, IsInt],
 {n, k} -> GeneralisedPetersenGraphCons(IsImmutableDigraph, n, k));
 
-InstallGlobalFUnction(DIGRAPHS_LatticeGraph,
+InstallGlobalFunction(DIGRAPHS_LatticeGraph,
 function(n, k)
   local D, i, j;
   if n < 1 then
