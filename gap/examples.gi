@@ -374,10 +374,8 @@ InstallMethod(GeneralisedPetersenGraph, "for integer, integer", [IsInt, IsInt],
 InstallGlobalFunction(DIGRAPHS_LatticeGraph,
 function(n, k)
   local D, i, j;
-  if n < 1 then
-    ErrorNoReturn("the argument <n> must be a positive integer,");
-  elif k < 1 then
-    ErrorNoReturn("the argument <k> must be a positive integer,");
+  if (n < 1) or (k < 1) then
+    ErrorNoReturn("the arguments <n> and <k> must be positive integers,");
   fi;
   D := EmptyDigraph(IsMutableDigraph, n * k);
   for i in [1 .. k] do

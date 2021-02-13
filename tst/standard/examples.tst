@@ -226,6 +226,26 @@ Error, the arguments <n> and <k> must be non-negative integers,
 gap> JohnsonDigraph(IsMutableDigraph, 4, 2);
 <mutable digraph with 6 vertices, 24 edges>
 
+# DIGRAPHS_LatticeGraph
+gap> DIGRAPHS_LatticeGraph(2,2);
+<mutable digraph with 4 vertices, 8 edges>
+gap> DIGRAPHS_LatticeGraph(4,3);
+<mutable digraph with 12 vertices, 34 edges>
+gap> DIGRAPHS_LatticeGraph(-1, 9);
+Error, the arguments <n> and <k> must be positive integers,
+gap> DIGRAPHS_LatticeGraph(0, -1);
+Error, the arguments <n> and <k> must be positive integers,
+gap> DIGRAPHS_LatticeGraph(-2,3); 
+Error, the arguments <n> and <k> must be positive integers,
+
+# DIGRAPHS_HaarGraph
+gap> DIGRAPHS_HaarGraph(3);
+<mutable digraph with 4 vertices, 8 edges>
+gap> D := DIGRAPHS_HaarGraph(16);
+<mutable digraph with 10 vertices, 10 edges>
+gap> D := DIGRAPHS_HaarGraph(-5);   
+Error, the argument <n> must be a positive integer,
+
 #
 gap> DIGRAPHS_StopTest();
 gap> STOP_TEST("Digraphs package: standard/examples.tst", 0);
