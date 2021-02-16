@@ -370,3 +370,18 @@ GeneralisedPetersenGraphCons);
 
 InstallMethod(GeneralisedPetersenGraph, "for integer, integer", [IsInt, IsInt],
 {n, k} -> GeneralisedPetersenGraphCons(IsImmutableDigraph, n, k));
+
+InstallMethod(BananaTreeGraph, "for two positive integers",
+[IsPosInt, IsPosInt],
+function(m, n)
+  local D, i, j;
+  D := EmptyDigraph(IsMutable, 1);
+  for i in [1 .. m] do
+    D := DigraphDisjointUnion(D, CompleteBipartiteDigraph(IsMutable, 1, n - 1));
+  od;
+  for j in [0 .. (m - 1)] do
+    DigraphAddEdges(D, [[1, (j * n + 3)], [(j * n + 3), 1]]);
+  od;
+  return D;
+end);
+

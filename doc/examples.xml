@@ -309,3 +309,45 @@ gap> GeneralisedPetersenGraph(IsMutableDigraph, 9, 4);
   </Description>
 </ManSection>
 <#/GAPDoc>
+
+<#GAPDoc Label="BananaTreeGraph">
+<ManSection>
+  <Oper Name="BananaTreeGraph" Arg="[filt, ]m, n"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>n</A> and <A>n</A> are positive integers,
+    then this operation returns the <E>banana tree graph</E> 
+    <M>BananaTreeGraph(<A>m</A>, n)</M>. <P/>
+
+    From
+    <URL>https://mathworld.wolfram.com/BananaTree.html</URL>:
+    <P/>
+
+    <Q>A banana tree graph, as defined by Chen et al. (1997) is a graph obtained by
+    connecting one leaf of each of <A>m</A> copies of an <A>n</A>-star graph with
+    a signle root vertex that is distince from all the stars.</Q>
+    <P/>
+
+    If the optional first argument <A>filt</A> is present, then this should
+    specify the category or representation the digraph being created will
+    belong to. For example, if <A>filt</A> is <Ref Filt="IsMutableDigraph"/>,
+    then the digraph being created will be mutable, if <A>filt</A> is <Ref
+    Filt="IsImmutableDigraph"/>, then the digraph will be immutable. 
+    If the optional first argument <A>filt</A> is not present, then <Ref
+      Filt="IsImmutableDigraph"/> is used by default.<P/>
+
+    See also <Ref Oper="BananaTreeGraph"/>.
+
+<Example><![CDATA[
+gap> D := BananaTreeGraph(2, 4);
+<mutable digraph with 9 vertices, 16 edges>
+gap> D := BananaTreeGraph(3, 3);
+<mutable digraph with 10 vertices, 18 edges>
+gap> D := BananaTreeGraph(5, 2);
+<mutable digraph with 11 vertices, 20 edges>
+gap> D := BananaTreeGraph(3, 4);
+<mutable digraph with 13 vertices, 24 edges>
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>

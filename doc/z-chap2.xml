@@ -86,6 +86,7 @@
     <#Include Label="JohnsonDigraph">
     <#Include Label="PetersenGraph">
     <#Include Label="GeneralisedPetersenGraph">
+    <#Include Label="BananaTreeGraph">
   </Section>
 
 </Chapter>
