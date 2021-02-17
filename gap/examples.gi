@@ -394,7 +394,7 @@ function(n)
   return DigraphSymmetricClosure(D);
 end);
 
-#TODO: Taken from semigroups... 
+# TODO: Taken from semigroups...
 
 InstallGlobalFunction(DIGRAPHS_BlistNumber,
 function(nr, n)
