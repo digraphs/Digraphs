@@ -1725,6 +1725,103 @@ function(D, list)
   return DigraphShortestDistance(D, list[1], list[2]);
 end);
 
+InstallMethod(DigraphShortestPathSpanningTree,
+"for a digraph and a vertex",
+[IsDigraph, IsPosInt],
+function(D, v)
+  local record, diam, tree, nbs, edgelabels, spanningtree, layers,
+        layernumbers, nradjacencies, localparameters, adjnrs, data, i, k;
+
+  if not v in DigraphVertices(D) then
+    ErrorNoReturn("the 2nd argument <v> must be a vertex of the digraph <D>");
+  fi;
+  record := DIGRAPH_ConnectivityDataForVertex(D, v);
+  diam := record.localDiameter;
+  if diam = -1 then
+    return fail;
+  fi;
+
+  # Construct out-neighbours of spanningtree
+  tree := record.spstree;
+  nbs := List(DigraphVertices(D), x -> []);
+  for i in DigraphVertices(D) do
+    if i <> v then
+      Add(nbs[tree[i]], i);
+    fi;
+  od;
+
+  # Create spanningtree according to mutability, retaining vertex labels
+  if IsMutableDigraph(D) then
+    spanningtree := D;
+    spanningtree!.OutNeighbours := nbs;
+  else
+    spanningtree := Digraph(IsImmutableDigraph, nbs);
+    SetDigraphVertexLabels(spanningtree, DigraphVertexLabels(D));
+  fi;
+
+  # Retain edge labels if appropriate
+  if HaveEdgeLabelsBeenAssigned(D) then
+    edgelabels := List(DigraphVertices(D), x -> []);
+    for i in DigraphVertices(D) do
+      for k in [1 .. Length(nbs[i])] do
+        edgelabels[i][k] := DigraphEdgeLabel(D, i, nbs[i][k]);
+      od;
+    od;
+    SetDigraphEdgeLabelsNC(spanningtree, edgelabels);
+  fi;
+
+  if IsMutableDigraph(spanningtree) then
+    return spanningtree;
+  fi;
+
+  # JDB: we know almost all local parameters, except the b_i, 0 < i < diameter.
+  # Note that for a spanningtree, all c_i and a_i are zero.
+  # b_0 will be the number of out-neighbours of v, which is the sameas before.
+  # b_d is of course zero.
+
+  # first reconstruct the layers from record.layernumbers.
+  layers := List([1 .. diam + 1], x -> []);
+  layernumbers := ShallowCopy(record.layerNumbers);
+  for i in [1 .. Length(layernumbers)] do
+    Add(layers[layernumbers[i]], i);
+  od;
+
+  # now compute for each vertex v the number of vertices adjacent with v in the
+  # next layer, using spstree.
+  nradjacencies := ListWithIdenticalEntries(DigraphNrVertices(D), 0);
+  for i in DigraphVertices(D) do
+    if i <> v then
+      nradjacencies[tree[i]] := nradjacencies[tree[i]] + 1;
+    fi;
+  od;
+
+  # now we are ready to compute the local parameters b_i of the spanning tree
+  localparameters := ShallowCopy(record.localParameters);
+  for i in [1 .. diam + 1] do
+    localparameters[i]{[1, 2]} := [0, 0];
+  od;
+  for i in [2 .. diam] do
+    adjnrs := Set(nradjacencies{layers[i]});
+    if Length(adjnrs) > 1 then
+      localparameters[i][3] := -1;
+    else
+      localparameters[i][3] := adjnrs[1];
+    fi;
+  od;
+
+  data := DIGRAPHS_ConnectivityData(spanningtree);
+  data[v] := rec(layerNumbers    := layernumbers,
+                 layers          := layers,
+                 localDiameter   := record.localDiameter,
+                 localGirth      := -1,
+                 localParameters := localparameters,
+                 spstree         := ShallowCopy(tree));
+
+  SetIsDirectedTree(spanningtree, true);
+  SetDigraphSources(spanningtree, [v]);
+  return spanningtree;
+end);
+
 InstallMethod(VerticesReachableFrom, "for a digraph and a vertex",
 [IsDigraph, IsPosInt],
 function(D, root)
