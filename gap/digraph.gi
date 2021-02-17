@@ -26,6 +26,7 @@
 
 BindGlobal("DIGRAPHS_NamedGraph6String", fail);
 BindGlobal("DIGRAPHS_LoadNamedGraph6Strings", function()
+  local f, r;
   if DIGRAPHS_NamedGraph6String = fail then
    f := Concatenation(DIGRAPHS_Dir(), "/data/named-g6.p.gz");
    f := IO_CompressedFile(f, "r");
@@ -445,15 +446,13 @@ InstallMethod(Digraph, "for a list, list, and list", [IsList, IsList, IsList],
 
 InstallMethod(Digraph, "for a string naming a graph", [IsString],
 function(name)
-  local f, r;
-
   # edge case to avoid interfering with Digraph([])
   if name = "" then
     TryNextMethod();
   fi;
 
   # standardise string format to search database
-  LowercaseString(name);
+  name := LowercaseString(name);
   RemoveCharacters(name, " \n\t\r");
 
   # load database if not already done
