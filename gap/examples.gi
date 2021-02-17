@@ -400,3 +400,49 @@ function(filt, k)
   SetIsCompleteBipartiteDigraph(D, k > 1);
   return D;
 end);
+
+InstallMethod(KnightsGraphCons,
+"for IsMutableDigraph and two positive integers",
+[IsMutableDigraph, IsPosInt, IsPosInt],
+function(filt, m, n)
+  local D, moveOffSets, coordinates, target, i, j, iPos;
+  D := EmptyDigraph(IsMutableDigraph, m * n);
+  moveOffSets := [[2, 1], [-2, 1], [2, -1], [-2, -1],
+  [1, 2], [-1, 2], [1, -2], [-1, -2]];
+  coordinates := [];
+  for i in [1 .. n] do
+    for j in [1 .. m] do
+      Add(coordinates, [i, j]);
+    od;
+  od;
+  iPos := 0;
+  for i in coordinates do
+    iPos := iPos + 1;
+    for j in moveOffSets do
+      target := [i[1] + j[1], i[2] + j[2]];
+      if target[1] in [1 .. n] and target[2] in [1 .. m] then
+        DigraphAddEdge(D, [iPos, (target[1] - 1) * m + target[2]]);
+      fi;
+    od;
+  od;
+  return D;
+end);
+
+InstallMethod(KnightsGraphCons,
+"for IsImmutableDigraph and two positive integers",
+[IsImmutableDigraph, IsPosInt, IsPosInt],
+function(filt, m, n)
+  local D;
+  D := MakeImmutable(KnightsGraphCons(IsMutableDigraph, m, n));
+  SetIsMultiDigraph(D, false);
+  SetIsSymmetricDigraph(D, true);
+  SetIsConnectedDigraph(D, m > 2 and n > 2 and not (m = 3 and n = 3));
+  return D;
+end);
+
+InstallMethod(KnightsGraph, "for a function and two positive integers",
+[IsFunction, IsPosInt, IsPosInt],
+KnightsGraphCons);
+
+InstallMethod(KnightsGraph, "for two positive integers", [IsPosInt, IsPosInt],
+{m, n} -> KnightsGraphCons(IsImmutableDigraph, m, n));

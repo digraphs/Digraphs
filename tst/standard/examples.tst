@@ -240,6 +240,18 @@ true
 gap> IsMultiDigraph(StarDigraph(3));
 false
 
+#  Knight's Graph
+gap> D := KnightsGraph(8, 8);
+<immutable connected symmetric digraph with 64 vertices, 336 edges>
+gap> IsConnectedDigraph(D);
+true
+gap> D := KnightsGraph(3, 3);
+<immutable symmetric digraph with 9 vertices, 16 edges>
+gap> IsConnectedDigraph(D);
+false
+gap> KnightsGraph(IsMutable, 3, 9);
+<mutable digraph with 27 vertices, 88 edges>
+
 #
 gap> DIGRAPHS_StopTest();
 gap> STOP_TEST("Digraphs package: standard/examples.tst", 0);
