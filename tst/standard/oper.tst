@@ -2184,10 +2184,77 @@ gap> OutNeighbours(last);
   [ 23, 25, 33, 35, 38, 40, 1, 2, 6, 7, 11, 12, 16, 17, 26, 27, 41, 42, 49 ], 
   [ 21, 24, 31, 34, 36, 39, 2, 3, 7, 8, 12, 13, 17, 18, 27, 28, 42, 43, 50 ] ]
 
+# DigraphShortestPathSpanningTree
+gap> D := Digraph([[2, 3, 4], [1, 3, 4, 5], [1, 2], [5], [4]]);
+<immutable digraph with 5 vertices, 11 edges>
+gap> OutNeighbours(DigraphShortestPathSpanningTree(D, 1));
+[ [ 2, 3, 4 ], [ 5 ], [  ], [  ], [  ] ]
+gap> OutNeighbours(DigraphShortestPathSpanningTree(D, 2));
+[ [  ], [ 1, 3, 4, 5 ], [  ], [  ], [  ] ]
+gap> OutNeighbours(DigraphShortestPathSpanningTree(D, 3));
+[ [ 4 ], [ 5 ], [ 1, 2 ], [  ], [  ] ]
+gap> DigraphShortestPathSpanningTree(D, 4);
+fail
+gap> DigraphShortestPathSpanningTree(D, 5);
+fail
+gap> OutNeighbours(DigraphShortestPathSpanningTree(D, 6));
+Error, the 2nd argument <v> must be a vertex of the digraph <D>
+
+#
+gap> D1 := Digraph([[], [1], [2, 4], [5], []]);
+<immutable digraph with 5 vertices, 4 edges>
+gap> SetDigraphVertexLabels(D1, Elements(CyclicGroup(IsPermGroup, 5)));
+gap> DigraphGroup(D1);
+Group([ (1,5)(2,4) ])
+gap> D2 := DigraphShortestPathSpanningTree(D1, 3);;
+gap> D1 = D2;
+true
+gap> DigraphVertexLabels(D2);
+[ (), (1,2,3,4,5), (1,3,5,2,4), (1,4,2,5,3), (1,5,4,3,2) ]
+gap> IsDirectedTree(D2);
+true
+
+#
+gap> D1 := DigraphFromDigraph6String("&GG@STD?eIA?_");
+<immutable digraph with 8 vertices, 16 edges>
+gap> SetDigraphVertexLabels(D1, "abcdefgh");
+gap> g := AsList(DihedralGroup(IsPermGroup, 16));;
+gap> for i in [1 .. DigraphNrEdges(D1)] do
+>   e := DigraphEdges(D1)[i];
+>   SetDigraphEdgeLabel(D1, e[1], e[2], g[i]);
+> od;
+gap> D2 := DigraphMutableCopy(D1);
+<mutable digraph with 8 vertices, 16 edges>
+gap> DigraphShortestPathSpanningTree(D2, 1);
+fail
+gap> DigraphShortestPathSpanningTree(D2, 2);;
+gap> D2;
+<mutable digraph with 8 vertices, 7 edges>
+gap> for i in [1 .. DigraphNrEdges(D2)] do
+>   e := DigraphEdges(D2)[i];
+>   if DigraphEdgeLabel(D1, e[1], e[2]) <> DigraphEdgeLabel(D1, e[1], e[2]) then
+>     Print("fail!");
+>   fi;
+> od;
+gap> DigraphVertexLabels(D2);
+"abcdefgh"
+gap> OutNeighbours(D2);
+[ [ 3 ], [ 4, 6, 8 ], [  ], [  ], [  ], [ 1, 5, 7 ], [  ], [  ] ]
+gap> IsDirectedTree(D2);
+true
+
+#
+gap> DigraphShortestPathSpanningTree(EmptyDigraph(0), 1);
+Error, the 2nd argument <v> must be a vertex of the digraph <D>
+gap> DigraphShortestPathSpanningTree(EmptyDigraph(1), 1);
+<immutable empty digraph with 1 vertex>
+
 #DIGRAPHS_UnbindVariables
 gap> Unbind(a);
 gap> Unbind(adj);
 gap> Unbind(b);
+gap> Unbind(D1);
+gap> Unbind(D2);
 gap> Unbind(e);
 gap> Unbind(edges);
 gap> Unbind(edges2);

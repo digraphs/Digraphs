@@ -17,14 +17,19 @@
     <Homepage>https://jdbm.me</Homepage>
   </Author>
 
-  <Author>Michael Torpey
+  <Author>Michael C. Torpey
     <Email>mct25@st-andrews.ac.uk</Email>
     <Homepage>https://mtorpey.github.io</Homepage>
   </Author>
 
+  <Author>Maria Tsalakou
+    <Email>mt200@st-andrews.ac.uk</Email>
+    <Homepage>https://mariatsalakou.github.io</Homepage>
+  </Author>
+
   <Author>Wilf A. Wilson
     <Email>gap@wilf-wilson.net</Email>
-    <Homepage>http://wilf.me</Homepage>
+    <Homepage>https://wilf.me</Homepage>
   </Author>
 
   <Author>Stuart Burrell</Author>
@@ -39,7 +44,7 @@
 
   <Author>Markus Pfeiffer</Author>
 
-  <Author>Chris Russell</Author>
+  <Author>Christopher Russell</Author>
 
   <Author>Finn Smith</Author>
 
@@ -51,7 +56,7 @@
 
     &Digraphs; is free software; you can redistribute it and/or modify it
     under the terms of the <URL Text="GNU General Public License">
-    http://www.fsf.org/licenses/gpl.html</URL> as published by the Free Software
+    https://www.fsf.org/licenses/gpl.html</URL> as published by the Free Software
     Foundation; either version 3 of the License, or (at your option) any later
     version.
   </Copyright>
