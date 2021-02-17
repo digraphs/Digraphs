@@ -345,3 +345,47 @@ true
   </Description>
 </ManSection>
 <#/GAPDoc>
+
+<#GAPDoc Label="KnightsGraph">
+<ManSection>
+  <Oper Name="KnightsGraph" Arg="[filt, ]m, n"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>m</A> and <A>n</A> are both positive integers, then this operation
+    returns the <E>Knight's Graph</E> for a <A>m</A> by <A>n</A> board. <P/>
+
+    From
+    <URL>https://en.wikipedia.org/wiki/Knight%27s_graph</URL>:
+    <P/>
+
+    <Q>In graph theory, a knight's graph, or a knight's tour graph, is a
+    graph that represents all legal moves of the knight chess piece on a
+    chessboard.  Each vertex of this graph represents a square of the
+    chessboard, and each edge connects two squares that are a knight's move
+    apart from each other. More specifically, an <A>m</A> by <A>n</A> knight's
+    graph is a knight's graph of an <A>m</A> by <A>n</A> chessboard.</Q>
+    <P/>
+
+    If the optional first argument <A>filt</A> is present, then this should
+    specify the category or representation the digraph being created will
+    belong to. For example, if <A>filt</A> is <Ref Filt="IsMutableDigraph"/>,
+    then the digraph being created will be mutable, if <A>filt</A> is <Ref
+    Filt="IsImmutableDigraph"/>, then the digraph will be immutable.
+    If the optional first argument <A>filt</A> is not present, then <Ref
+      Filt="IsImmutableDigraph"/> is used by default.<P/>
+
+<Example><![CDATA[
+gap> D := KnightsGraph(8, 8);
+<immutable connected symmetric digraph with 64 vertices, 336 edges>
+gap> IsConnectedDigraph(D);
+true
+gap> D := KnightsGraph(3, 3);
+<immutable symmetric digraph with 9 vertices, 16 edges>
+gap> IsConnectedDigraph(D);
+false
+gap> KnightsGraph(IsMutable, 3, 9);
+<mutable digraph with 27 vertices, 88 edges>
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
