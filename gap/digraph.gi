@@ -25,6 +25,18 @@
 ########################################################################
 
 BindGlobal("DIGRAPHS_NamedGraph6String", fail);
+BindGlobal("DIGRAPHS_LoadNamedGraph6Strings", function()
+  if DIGRAPHS_NamedGraph6String = fail then
+   f := Concatenation(DIGRAPHS_Dir(), "/data/named-g6.p.gz");
+   f := IO_CompressedFile(f, "r");
+   r := IO_Unpickle(f);
+   IO_Close(f);
+
+   MakeReadWriteGlobal("DIGRAPHS_NamedGraph6String");
+   UnbindGlobal("DIGRAPHS_NamedGraph6String");
+   BindGlobal("DIGRAPHS_NamedGraph6String", r);
+ fi;
+end);
 
 InstallMethod(DigraphMutabilityFilter, "for a digraph", [IsDigraph],
 function(D)
@@ -435,23 +447,17 @@ InstallMethod(Digraph, "for a string naming a graph", [IsString],
 function(name)
   local f, r;
 
+  # edge case to avoid interfering with Digraph([])
   if name = "" then
     TryNextMethod();
   fi;
 
+  # standardise string format to search database
   LowercaseString(name);
   RemoveCharacters(name, " \n\t\r");
 
-  if DIGRAPHS_NamedGraph6String = fail then
-    f := Concatenation(DIGRAPHS_Dir(), "/data/named-g6.p.gz");
-    f := IO_CompressedFile(f, "r");
-    r := IO_Unpickle(f);
-    IO_Close(f);
-
-    MakeReadWriteGlobal("DIGRAPHS_NamedGraph6String");
-    UnbindGlobal("DIGRAPHS_NamedGraph6String");
-    BindGlobal("DIGRAPHS_NamedGraph6String", r);
-  fi;
+  # load database if not already done
+  DIGRAPHS_LoadNamedGraph6Strings();
 
   if not name in RecNames(DIGRAPHS_NamedGraph6String) then
     ErrorNoReturn("Named graph not found. Please check argument 'name'.");
