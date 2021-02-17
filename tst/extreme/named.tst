@@ -1,7 +1,7 @@
 #############################################################################
 ##
 #W  extreme/named.tst
-#Y  Copyright (C) 2014-21                                Tom D. Conti-Leslie
+#Y  Copyright (C) 2021                                Tom D. Conti-Leslie
 ##
 ##  Licensing information can be found in the README file of this package.
 ##
