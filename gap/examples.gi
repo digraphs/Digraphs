@@ -374,7 +374,7 @@ InstallMethod(GeneralisedPetersenGraph, "for integer, integer", [IsInt, IsInt],
 InstallGlobalFunction(DIGRAPHS_HaarGraph,
 function(n)
   local m, binaryList, D, i, j;
-  if n < 1 then
+  if n < 1 and IsInt(n) then
     ErrorNoReturn("the argument <n> must be a positive integer,");
   fi;
 
