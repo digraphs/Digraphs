@@ -377,10 +377,9 @@ function(n)
   if n < 1 then
     ErrorNoReturn("the argument <n> must be a positive integer,");
   fi;
-  
-  m := Log(n, 2) + 1;
-  binaryList := DIGRAPHS_BlistNumber(n + 1,  m);
 
+  m := Log(n, 2) + 1;
+  binaryList := DIGRAPHS_BlistNumber(n + 1, m);
 
   D := EmptyDigraph(IsMutableDigraph, 2 * m);
 
@@ -395,7 +394,7 @@ function(n)
   return DigraphSymmetricClosure(D);
 end);
 
-#TODO: Taken from semigroups...
+#TODO: Taken from semigroups... 
 
 InstallGlobalFunction(DIGRAPHS_BlistNumber,
 function(nr, n)
