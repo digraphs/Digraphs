@@ -374,7 +374,7 @@ InstallMethod(GeneralisedPetersenGraph, "for integer, integer", [IsInt, IsInt],
 InstallGlobalFunction(DIGRAPHS_KingsGraph,
 function(n, k)
   local D, i, j;
-  if ((not IsPosInt(n)) or (not IsPosInt(k))  then
+  if ((not IsPosInt(n)) or (not IsPosInt(k)))  then
     ErrorNoReturn("the arguments <n> and <k> must be positive integers,");
   fi;
   D := EmptyDigraph(IsMutable, n * k);
