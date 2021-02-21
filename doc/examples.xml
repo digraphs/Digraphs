@@ -313,11 +313,11 @@ gap> GeneralisedPetersenGraph(IsMutableDigraph, 9, 4);
 <#GAPDoc Label="BananaTreeGraph">
 <ManSection>
   <Oper Name="BananaTreeGraph" Arg="[filt, ]m, n"/>
-  <Returns>A digraph.</Returns>
+  <Returns>A digraph</Returns>
   <Description>
     If <A>n</A> and <A>n</A> are positive integers,
     then this operation returns the <E>banana tree graph</E> 
-    <M>BananaTreeGraph(<A>m</A>, n)</M>. <P/>
+    <M>BananaTreeGraph(<A>m</A>, <A>n</A>)</M>. <P/>
 
     From
     <URL>https://mathworld.wolfram.com/BananaTree.html</URL>:
