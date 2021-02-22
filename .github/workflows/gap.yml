@@ -1,32 +1,12 @@
-name: "CI"
-
-# Trigger the workflow on push or pull request
-on:
-  pull_request:
-  push:
-    branches-ignore:
-      - rc-v[0-9]+.[0-9]+.[0-9]+
+name: "Digraphs tests"
+on: [push, pull_request]
 
 jobs:
-  lint:
-    name: "lint"
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-        name: "Check out the repository"
-      - uses: actions/setup-python@v1
-        name: "Set up Python"
-      - uses: BSFishy/pip-action@v1
-        name: "Install gaplint and cpplint with pip"
-        with:
-          packages: |
-            gaplint
-            cpplint
-      - name: "Run gaplint + cpplint"
-        run: bash etc/lint.sh
   test:
     name: "GAP ${{ matrix.gap-branch }}"
     runs-on: ubuntu-latest
+    # Don't run this twice for PRs from branches in the same repository
+    if: ${{ !(github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository) }}
     strategy:
       fail-fast: false
       matrix:
@@ -43,6 +23,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: gap-actions/setup-gap-for-packages@v1
+        name: "Install GAP and clone/compile necessary packages"
         with:
           GAP_PKGS_TO_CLONE: "${{ matrix.pkgs-to-clone }}"
           GAP_PKGS_TO_BUILD: "io orb profiling grape NautyTracesInterface datastructures"
@@ -52,3 +33,4 @@ jobs:
              && curl --retry 5 -L -O "https://digraphs.github.io/Digraphs/${DIGRAPHS_LIB}.tar.gz"
              && tar xf "${DIGRAPHS_LIB}.tar.gz"
       - uses: gap-actions/run-test-for-packages@v1
+        name: "Run tst/testall.g"

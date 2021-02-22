@@ -124,7 +124,8 @@ doc/manual.six: doc/*.xml PackageInfo.g
 	($(GAPROOT)/bin/gap.sh -A makedoc.g)
 
 lint:
-	etc/lint.sh
+	etc/gaplint.sh
+	etc/cpplint.sh
 
 format:
 	clang-format -i src/*.[hc]
