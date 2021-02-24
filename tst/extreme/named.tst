@@ -18,7 +18,7 @@ gap> LoadPackage("digraphs", false);;
 gap> DIGRAPHS_StartTest();
 
 # Load the record of stored test values
-gap> f := Concatenation(DIGRAPHS_Dir(), "/data/test-g6.p.gz");;
+gap> f := Concatenation(DIGRAPHS_Dir(), "/data/named-g6-test.p.gz");;
 gap> f := IO_CompressedFile(f, "r");;
 gap> r := IO_Unpickle(f);;
 gap> IO_Close(f);;
