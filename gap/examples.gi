@@ -989,3 +989,907 @@ depth -> BinaryTreeCons(IsImmutableDigraph, depth));
 
 InstallMethod(BinaryTree, "for a function and a positive integer",
 [IsFunction, IsPosInt], BinaryTreeCons);
+
+InstallMethod(AndrasfaiGraphCons, "for IsMutableDigraph and an integer",
+[IsMutableDigraph, IsPosInt],
+function(filt, n)
+  local js;
+  js := List([0 .. (n - 1)], x -> (3 * x) + 1);
+  return CirculantGraph(IsMutableDigraph, (3 * n) - 1, js);
+end);
+
+InstallMethod(AndrasfaiGraphCons,
+"for IsImmutableDigraph, integer",
+[IsImmutableDigraph, IsPosInt],
+function(filt, n)
+  local D;
+  D := MakeImmutable(AndrasfaiGraphCons(IsMutableDigraph, n));
+  SetIsMultiDigraph(D, false);
+  SetIsSymmetricDigraph(D, true);
+  SetIsUndirectedTree(D, false);
+  SetIsRegularDigraph(D, true);
+  SetIsVertexTransitive(D, true);
+  SetIsHamiltonianDigraph(D, true);
+  SetIsBiconnectedDigraph(D, true);
+  return D;
+end);
+
+InstallMethod(AndrasfaiGraph, "for an integer", [IsPosInt],
+n -> AndrasfaiGraphCons(IsImmutableDigraph, n));
+
+InstallMethod(AndrasfaiGraph, "for a function and an integer",
+[IsFunction, IsPosInt], AndrasfaiGraphCons);
+
+InstallMethod(BinomialTreeGraphCons, "for IsMutableDigraph and an integer",
+[IsMutableDigraph, IsPosInt],
+function(filt, n)
+  local bits, is2n, verts, D, rep, pos, parent, parVert, i;
+  bits := Log(n, 2);
+  is2n := IsEvenInt(n) and IsPrimePowerInt(n);
+  if not is2n then
+    bits := bits + 1;
+  fi;
+  verts := List(Tuples([0, 1], bits){[1 .. n]},
+                x -> x{List([1 .. bits], y -> bits - y + 1)});
+  D := Digraph(IsMutableDigraph, []);
+  DigraphAddVertices(D, n);
+  for i in [2 .. n] do  # 1 is the root vertex
+    rep := StructuralCopy(verts[i]);
+    pos := Position(rep, 1);
+    parent := rep;
+    parent[pos] := 0;
+    parVert := Position(verts, parent);
+    DigraphAddEdge(D, i, parVert);
+  od;
+
+  return DigraphSymmetricClosure(DigraphRemoveAllMultipleEdges(D));
+end);
+
+InstallMethod(BinomialTreeGraphCons,
+"for IsImmutableDigraph, integer",
+[IsImmutableDigraph, IsPosInt],
+function(filt, n)
+  local D;
+  D := MakeImmutable(BinomialTreeGraphCons(IsMutableDigraph, n));
+  SetIsMultiDigraph(D, false);
+  SetIsSymmetricDigraph(D, true);
+  SetIsEmptyDigraph(D, n = 1);
+  SetIsUndirectedTree(D, true);
+  return D;
+end);
+
+InstallMethod(BinomialTreeGraph, "for an integer", [IsPosInt],
+n -> BinomialTreeGraphCons(IsImmutableDigraph, n));
+
+InstallMethod(BinomialTreeGraph, "for a function and an integer",
+[IsFunction, IsPosInt], BinomialTreeGraphCons);
+
+InstallMethod(BondyGraphCons, "for IsMutableDigraph and an integer",
+[IsMutableDigraph, IsInt],
+function(filt, n)
+  if n < 0 then
+    ErrorNoReturn("the argument <n> must be a non-negative integer,");
+  fi;
+  return GeneralisedPetersenGraph(IsMutableDigraph, 3 * (2 * n + 1) + 2, 2);
+end);
+
+InstallMethod(BondyGraphCons,
+"for IsImmutableDigraph, integer",
+[IsImmutableDigraph, IsInt],
+function(filt, n)
+  local D;
+  D := MakeImmutable(BondyGraphCons(IsMutableDigraph, n));
+  SetIsMultiDigraph(D, false);
+  SetIsSymmetricDigraph(D, true);
+  SetIsHamiltonianDigraph(D, false);
+  return D;
+end);
+
+InstallMethod(BondyGraph, "for an integer", [IsInt],
+n -> BondyGraphCons(IsImmutableDigraph, n));
+
+InstallMethod(BondyGraph, "for a function and an integer",
+[IsFunction, IsInt], BondyGraphCons);
+
+InstallMethod(CirculantGraphCons, "for IsMutableDigraph, an integer and a list",
+[IsMutableDigraph, IsPosInt, IsList],
+function(filt, n, par)
+  local D, i, j;
+  if (n < 2) or (not ForAll(par, x -> IsInt(x) and x in [1 .. n])) then
+    ErrorNoReturn("arguments must be an integer <n> greater ",
+                  "than 1 and a list of integers between 1 and n,");
+  fi;
+  D := Digraph(IsMutableDigraph, []);
+  DigraphAddVertices(D, n);
+  for i in [1 .. n] do
+    for j in par do
+      if (i - j) mod n = 0 then
+        DigraphAddEdge(D, i, n);
+      else
+        DigraphAddEdge(D, i, (i - j) mod n);
+      fi;
+      if (i + j) mod n = 0 then
+        DigraphAddEdge(D, i, n);
+      else
+        DigraphAddEdge(D, i, (i + j) mod n);
+      fi;
+    od;
+  od;
+  return DigraphRemoveAllMultipleEdges(DigraphSymmetricClosure(D));
+end);
+
+InstallMethod(CirculantGraphCons,
+"for IsImmutableDigraph, integer, list of integers",
+[IsImmutableDigraph, IsPosInt, IsList],
+function(filt, n, par)
+  local D;
+  D := MakeImmutable(CirculantGraphCons(IsMutableDigraph, n, par));
+  SetIsMultiDigraph(D, false);
+  SetIsSymmetricDigraph(D, true);
+  SetIsUndirectedTree(D, false);
+  SetIsRegularDigraph(D, true);
+  SetIsVertexTransitive(D, true);
+  SetIsHamiltonianDigraph(D, true);
+  SetIsBiconnectedDigraph(D, true);
+  return D;
+end);
+
+InstallMethod(CirculantGraph, "for an integer and a list", [IsPosInt, IsList],
+{n, par} -> CirculantGraphCons(IsImmutableDigraph, n, par));
+
+InstallMethod(CirculantGraph, "for a function and an integer",
+[IsFunction, IsPosInt, IsList], CirculantGraphCons);
+
+InstallMethod(CycleGraphCons, "for IsMutableDigraph and an integer",
+[IsMutableDigraph, IsPosInt],
+function(filt, n)
+  if n < 3 then
+    ErrorNoReturn("the argument <n> must be an integer greater than 2,");
+  fi;
+  return DigraphSymmetricClosure(CycleDigraph(filt, n));
+end);
+
+InstallMethod(CycleGraphCons,
+"for IsImmutableDigraph, integer",
+[IsImmutableDigraph, IsPosInt],
+function(filt, n)
+  local D;
+  D := MakeImmutable(CycleGraphCons(IsMutableDigraph, n));
+  SetIsMultiDigraph(D, false);
+  SetIsSymmetricDigraph(D, true);
+  return D;
+end);
+
+InstallMethod(CycleGraph, "for an integer", [IsPosInt],
+n -> CycleGraphCons(IsImmutableDigraph, n));
+
+InstallMethod(CycleGraph, "for a function and an integer",
+[IsFunction, IsPosInt], CycleGraphCons);
+
+InstallMethod(GearGraphCons, "for IsMutableDigraph and an integer",
+[IsMutableDigraph, IsPosInt],
+function(filt, n)
+  local D, i, central;
+  if n < 3 then
+    ErrorNoReturn("the argument <n> must be an integer greater than 2,");
+  fi;
+  central := 2 * n + 1;
+  D := CycleGraph(IsMutableDigraph, central - 1);
+  DigraphAddVertex(D);
+  for i in [1 .. n] do
+    DigraphAddEdge(D, 2 * i, central);
+    DigraphAddEdge(D, central, 2 * i);
+  od;
+  return D;
+end);
+
+InstallMethod(GearGraphCons,
+"for IsImmutableDigraph, integer",
+[IsImmutableDigraph, IsPosInt],
+function(filt, n)
+  local D;
+  D := MakeImmutable(GearGraphCons(IsMutableDigraph, n));
+  SetIsMultiDigraph(D, false);
+  SetIsSymmetricDigraph(D, true);
+  return D;
+end);
+
+InstallMethod(GearGraph, "for an integer", [IsPosInt],
+n -> GearGraphCons(IsImmutableDigraph, n));
+
+InstallMethod(GearGraph, "for a function and an integer",
+[IsFunction, IsPosInt], GearGraphCons);
+
+InstallMethod(HalvedCubeGraphCons, "for IsMutableDigraph and an integer",
+[IsMutableDigraph, IsPosInt],
+function(filt, n)
+  local D, tuples, vertices, i, j;
+  tuples := Tuples([0, 1], n);
+  vertices := List([1 .. (2 ^ (n - 1))], x -> []);
+  j := 1;
+  for i in [1 .. Length(tuples)] do
+    if Sum(tuples[i]) mod 2 = 0 then
+      vertices[j] := tuples[i];
+      j := j + 1;
+    fi;
+  od;
+  D := EmptyDigraph(IsMutableDigraph, Length(vertices));
+  for i in [1 .. Length(vertices) - 1] do
+    for j in [i + 1 .. Length(vertices)] do
+      if SizeBlist(List([1 .. Length(vertices[i])],
+          x -> vertices[i][x] <> vertices[j][x])) = 2 then
+        DigraphAddEdge(D, i, j);
+        DigraphAddEdge(D, j, i);
+      fi;
+    od;
+  od;
+  return D;
+end);
+
+InstallMethod(HalvedCubeGraphCons,
+"for IsImmutableDigraph, integer",
+[IsImmutableDigraph, IsPosInt],
+function(filt, n)
+  local D;
+  D := MakeImmutable(HalvedCubeGraphCons(IsMutableDigraph, n));
+  SetIsMultiDigraph(D, false);
+  SetIsSymmetricDigraph(D, true);
+  SetIsEmptyDigraph(D, n = 1);
+  SetIsDistanceRegularDigraph(D, true);
+  SetIsHamiltonianDigraph(D, true);
+  return D;
+end);
+
+InstallMethod(HalvedCubeGraph, "for an integer", [IsPosInt],
+n -> HalvedCubeGraphCons(IsImmutableDigraph, n));
+
+InstallMethod(HalvedCubeGraph, "for a function and an integer",
+[IsFunction, IsPosInt], HalvedCubeGraphCons);
+
+InstallMethod(HanoiGraphCons, "for IsMutableDigraph and an integer",
+[IsMutableDigraph, IsPosInt],
+function(filt, n)
+  local D, nrVert, prevNrVert, exp, i;
+  D := Digraph(IsMutableDigraph, []);
+  nrVert := 3 ^ n;
+  DigraphAddVertices(D, nrVert);
+  DigraphAddEdges(D, [[1, 2], [2, 3], [3, 1]]);
+  prevNrVert := 1;
+  exp := 1;
+  for i in [2 .. n] do
+    prevNrVert := prevNrVert * 3;
+    DigraphAddEdges(D, Concatenation(DigraphEdges(D) + prevNrVert,
+                                    DigraphEdges(D) + (2 * prevNrVert)));
+    DigraphAddEdge(D, prevNrVert / 2 + (1 / 2), prevNrVert + 1);
+    DigraphAddEdge(D, prevNrVert, 2 * prevNrVert + 1);
+    DigraphAddEdge(D, 2 * prevNrVert, prevNrVert * 3 - exp);
+    exp := exp * 2;
+  od;
+
+  return DigraphSymmetricClosure(D);
+end);
+
+InstallMethod(HanoiGraphCons,
+"for IsImmutableDigraph, integer",
+[IsImmutableDigraph, IsPosInt],
+function(filt, n)
+  local D;
+  D := MakeImmutable(HanoiGraphCons(IsMutableDigraph, n));
+  SetIsMultiDigraph(D, false);
+  SetIsSymmetricDigraph(D, true);
+  SetIsPlanarDigraph(D, true);
+  SetIsHamiltonianDigraph(D, true);
+  return D;
+end);
+
+InstallMethod(HanoiGraph, "for an integer", [IsPosInt],
+n -> HanoiGraphCons(IsImmutableDigraph, n));
+
+InstallMethod(HanoiGraph, "for a function and an integer",
+[IsFunction, IsPosInt], HanoiGraphCons);
+
+InstallMethod(HelmGraphCons, "for IsMutableDigraph and an integer",
+[IsMutableDigraph, IsPosInt],
+function(filt, n)
+  local D;
+  if n < 3 then
+    ErrorNoReturn("the argument <n> must be an integer greater than 2,");
+  fi;
+  D := WheelGraph(IsMutableDigraph, n + 1);
+  DigraphAddVertices(D, n);
+  DigraphAddEdges(D, List([1 .. n], x -> [x, x + n + 1]));
+  DigraphSymmetricClosure(D);
+  return D;
+end);
+
+InstallMethod(HelmGraphCons,
+"for IsImmutableDigraph, integer",
+[IsImmutableDigraph, IsPosInt],
+function(filt, n)
+  local D;
+  D := MakeImmutable(HelmGraphCons(IsMutableDigraph, n));
+  SetIsMultiDigraph(D, false);
+  SetIsSymmetricDigraph(D, true);
+  return D;
+end);
+
+InstallMethod(HelmGraph, "for an integer", [IsPosInt],
+n -> HelmGraphCons(IsImmutableDigraph, n));
+
+InstallMethod(HelmGraph, "for a function and an integer",
+[IsFunction, IsPosInt], HelmGraphCons);
+
+InstallMethod(HypercubeGraphCons,
+"for IsImmutableDigraph, integer",
+[IsImmutableDigraph, IsInt],
+function(filt, n)
+  local D;
+  D := MakeImmutable(HypercubeGraphCons(IsMutableDigraph, n));
+  SetIsMultiDigraph(D, false);
+  SetIsSymmetricDigraph(D, true);
+  SetIsEmptyDigraph(D, n = 0);
+  SetIsHamiltonianDigraph(D, true);
+  SetIsDistanceRegularDigraph(D, true);
+  SetIsBipartiteDigraph(D, true);
+  return D;
+end);
+
+InstallMethod(HypercubeGraphCons, "for IsMutableDigraph and an integer",
+[IsMutableDigraph, IsInt],
+function(filt, n)
+  local D, vertices, i, j;
+  if n < 0 then
+    ErrorNoReturn("the argument <n> must be a non-negative integer,");
+  fi;
+  vertices := Tuples([0, 1], n);
+  D := EmptyDigraph(IsMutableDigraph, Length(vertices));
+  for i in [1 .. Length(vertices) - 1] do
+    for j in [i + 1 .. Length(vertices)] do
+      if SizeBlist(List([1 .. Length(vertices[i])],
+          x -> vertices[i][x] <> vertices[j][x])) = 1 then
+        DigraphAddEdge(D, i, j);
+        DigraphAddEdge(D, j, i);
+      fi;
+    od;
+  od;
+  return D;
+end);
+
+InstallMethod(HypercubeGraph, "for an integer", [IsInt],
+n -> HypercubeGraphCons(IsImmutableDigraph, n));
+
+InstallMethod(HypercubeGraph, "for a function and an integer",
+[IsFunction, IsInt], HypercubeGraphCons);
+
+InstallMethod(KellerGraphCons, "for IsMutableDigraph and an integer",
+[IsMutableDigraph, IsInt],
+function(filt, n)
+  local D, vertices, i, j;
+  if n < 0 then
+    ErrorNoReturn("the argument <n> must be a non-negative integer,");
+  fi;
+  vertices := Tuples([0, 1, 2, 3], n);
+  D := Digraph(IsMutableDigraph, []);
+  DigraphAddVertices(D, Length(vertices));
+  for i in [1 .. Length(vertices) - 1] do
+    for j in [i + 1 .. Length(vertices)] do
+      if SizeBlist(List([1 .. Length(vertices[i])],
+          x -> vertices[i][x] <> vertices[j][x])) > 1 and
+          SizeBlist(List([1 .. Length(vertices[i])],
+          x -> AbsInt(vertices[i][x] - vertices[j][x]) mod 4 = 2)) > 0 then
+        DigraphAddEdge(D, i, j);
+        DigraphAddEdge(D, j, i);
+      fi;
+    od;
+  od;
+  return D;
+end);
+
+InstallMethod(KellerGraphCons,
+"for IsImmutableDigraph, integer",
+[IsImmutableDigraph, IsInt],
+function(filt, n)
+  local D;
+  D := MakeImmutable(KellerGraphCons(IsMutableDigraph, n));
+  SetIsMultiDigraph(D, false);
+  SetIsSymmetricDigraph(D, true);
+  if n > 1 then
+    SetChromaticNumber(D, 2 ^ n);
+    SetIsHamiltonianDigraph(D, true);
+  else
+    SetIsEmptyDigraph(D, true);
+  fi;
+  return D;
+end);
+
+InstallMethod(KellerGraph, "for an integer", [IsInt],
+n -> KellerGraphCons(IsImmutableDigraph, n));
+
+InstallMethod(KellerGraph, "for a function and an integer",
+[IsFunction, IsInt], KellerGraphCons);
+
+InstallMethod(KneserGraphCons, "for IsMutableDigraph and two integers",
+[IsMutableDigraph, IsPosInt, IsPosInt],
+function(filt, n, k)
+  local D, vertices, i, j;
+  if n < k then
+    ErrorNoReturn("argument <n> must be greater than or equal to argument <k>,");
+  fi;
+  vertices := Combinations([1 .. n], k);
+  D := EmptyDigraph(IsMutableDigraph, Length(vertices));
+  for i in [1 .. Length(vertices) - 1] do
+    for j in [i + 1 .. Length(vertices)] do
+      if Length(Intersection(vertices[i], vertices[j])) = 0 then
+        DigraphAddEdge(D, i, j);
+        DigraphAddEdge(D, j, i);
+      fi;
+    od;
+  od;
+  return D;
+end);
+
+InstallMethod(KneserGraphCons,
+"for IsImmutableDigraph, integer, integer",
+[IsImmutableDigraph, IsPosInt, IsPosInt],
+function(filt, n, k)
+  local D;
+  D := MakeImmutable(KneserGraphCons(IsMutableDigraph, n, k));
+  SetIsMultiDigraph(D, false);
+  SetIsSymmetricDigraph(D, true);
+  SetIsRegularDigraph(D, true);
+  SetIsVertexTransitive(D, true);
+  SetIsEdgeTransitive(D, true);
+  if n >= 2 * k then
+    SetChromaticNumber(D, n - 2 * k + 2);
+  else
+    SetChromaticNumber(D, 1);
+    SetIsEmptyDigraph(D, true);
+  fi;
+  if Float(n) >= ((3 + 5 ^ 0.5) / 2) * Float(k) + 1 then
+    SetIsHamiltonianDigraph(D, true);
+  fi;
+  SetCliqueNumber(D, Int(n / k));
+  return D;
+end);
+
+InstallMethod(KneserGraph, "for two integers", [IsPosInt, IsPosInt],
+{n, k} -> KneserGraphCons(IsImmutableDigraph, n, k));
+
+InstallMethod(KneserGraph, "for a function and two integers",
+[IsFunction, IsPosInt, IsPosInt], KneserGraphCons);
+
+InstallMethod(LindgrenSousselierGraphCons, "for IsMutableDigraph and an integer",
+[IsMutableDigraph, IsPosInt],
+function(filt, n)
+  local D, central, i, threei;
+  central := 6 * n + 4;
+  D := CycleGraph(IsMutableDigraph, central - 1);
+  DigraphAddVertex(D);
+  for i in [0 .. (2 * n)] do
+    threei := 3 * i;
+    DigraphAddEdge(D, central, threei + 1);
+    DigraphAddEdge(D, threei + 1, central);
+    if i <> 2 * n then
+      DigraphAddEdge(D, 2 + threei, 6 + threei);
+      DigraphAddEdge(D, 6 + threei, 2 + threei);
+    fi;
+  od;
+  DigraphAddEdge(D, central - 2, 3);
+  DigraphAddEdge(D, 3, central - 2);
+  return D;
+end);
+
+InstallMethod(LindgrenSousselierGraphCons,
+"for IsImmutableDigraph, integer",
+[IsImmutableDigraph, IsPosInt],
+function(filt, n)
+  local D;
+  D := MakeImmutable(LindgrenSousselierGraphCons(IsMutableDigraph, n));
+  SetIsMultiDigraph(D, false);
+  SetIsSymmetricDigraph(D, true);
+  SetIsHamiltonianDigraph(D, false);
+  return D;
+end);
+
+InstallMethod(LindgrenSousselierGraph, "for an integer", [IsPosInt],
+n -> LindgrenSousselierGraphCons(IsImmutableDigraph, n));
+
+InstallMethod(LindgrenSousselierGraph, "for a function and an integer",
+[IsFunction, IsPosInt], LindgrenSousselierGraphCons);
+
+InstallMethod(MobiusLadderGraphCons, "for IsMutableDigraph and an integer",
+[IsMutableDigraph, IsPosInt],
+function(filt, n)
+  local D, i;
+  if n < 4 then
+    ErrorNoReturn("the argument <n> must be an integer equal to 4 or more,");
+  fi;
+  D := CycleGraph(IsMutableDigraph, 2 * n);
+  for i in [1 .. n] do
+    DigraphAddEdge(D, i, i + n);
+    DigraphAddEdge(D, i + n, i);
+  od;
+  return DigraphSymmetricClosure(D);
+end);
+
+InstallMethod(MobiusLadderGraphCons,
+"for IsImmutableDigraph, integer",
+[IsImmutableDigraph, IsPosInt],
+function(filt, n)
+  local D;
+  D := MakeImmutable(MobiusLadderGraphCons(IsMutableDigraph, n));
+  SetIsMultiDigraph(D, false);
+  SetIsSymmetricDigraph(D, true);
+  return D;
+end);
+
+InstallMethod(MobiusLadderGraph, "for an integer", [IsPosInt],
+n -> MobiusLadderGraphCons(IsImmutableDigraph, n));
+
+InstallMethod(MobiusLadderGraph, "for a function and an integer",
+[IsFunction, IsPosInt], MobiusLadderGraphCons);
+
+InstallMethod(MycielskiGraphCons, "for IsMutableDigraph and an integer",
+[IsMutableDigraph, IsPosInt],
+function(filt, n)
+  local D, i;
+  if n < 2 then
+    ErrorNoReturn("the argument <n> must be an integer greater than 1,");
+  fi;
+  D := Digraph(IsMutableDigraph, []);
+  DigraphAddVertices(D, 2);
+  DigraphAddEdges(D, [[1, 2], [2, 1]]);
+  for i in [3 .. n] do
+    D := DigraphMycielskian(D);
+  od;
+  return D;
+end);
+
+InstallMethod(MycielskiGraphCons,
+"for IsImmutableDigraph, integer",
+[IsImmutableDigraph, IsPosInt],
+function(filt, n)
+  local D;
+  D := MakeImmutable(MycielskiGraphCons(IsMutableDigraph, n));
+  SetIsMultiDigraph(D, false);
+  SetIsSymmetricDigraph(D, true);
+  SetChromaticNumber(D, n);
+  SetCliqueNumber(D, 2);
+  SetIsHamiltonianDigraph(D, true);
+  return D;
+end);
+
+InstallMethod(MycielskiGraph, "for an integer", [IsPosInt],
+n -> MycielskiGraphCons(IsImmutableDigraph, n));
+
+InstallMethod(MycielskiGraph, "for a function and an integer",
+[IsFunction, IsPosInt], MycielskiGraphCons);
+
+InstallMethod(OddGraphCons, "for IsMutableDigraph and an integer",
+[IsMutableDigraph, IsInt],
+function(filt, n)
+  if n < 1 then
+    ErrorNoReturn("the argument <n> must be an integer greater than 0,");
+  fi;
+  return KneserGraph(IsMutableDigraph, 2 * n - 1, n - 1);
+end);
+
+InstallMethod(OddGraphCons,
+"for IsImmutableDigraph, integer",
+[IsImmutableDigraph, IsInt],
+function(filt, n)
+  local D;
+  D := MakeImmutable(OddGraphCons(IsMutableDigraph, n));
+  SetIsMultiDigraph(D, false);
+  SetIsSymmetricDigraph(D, true);
+  SetIsVertexTransitive(D, true);
+  SetIsEdgeTransitive(D, true);
+  SetIsRegularDigraph(D, true);
+  SetIsDistanceRegularDigraph(D, true);
+  SetChromaticNumber(D, 3);
+  return D;
+end);
+
+InstallMethod(OddGraph, "for an integer", [IsInt],
+n -> OddGraphCons(IsImmutableDigraph, n));
+
+InstallMethod(OddGraph, "for a function and an integer",
+[IsFunction, IsInt], OddGraphCons);
+
+InstallMethod(PathGraphCons, "for IsMutableDigraph and an integer",
+[IsMutableDigraph, IsPosInt],
+function(filt, n)
+  return DigraphSymmetricClosure(ChainDigraph(IsMutableDigraph, n));
+end);
+
+InstallMethod(PathGraphCons,
+"for IsImmutableDigraph, integer",
+[IsImmutableDigraph, IsPosInt],
+function(filt, n)
+  local D;
+  D := MakeImmutable(PathGraphCons(IsMutableDigraph, n));
+  SetIsMultiDigraph(D, false);
+  SetIsSymmetricDigraph(D, true);
+  SetIsUndirectedTree(D, true);
+  SetIsEmptyDigraph(D, n = 1);
+  return D;
+end);
+
+InstallMethod(PathGraph, "for an integer", [IsPosInt],
+n -> PathGraphCons(IsImmutableDigraph, n));
+
+InstallMethod(PathGraph, "for a function and an integer",
+[IsFunction, IsPosInt], PathGraphCons);
+
+InstallMethod(PermutationStarGraphCons, "for IsMutableDigraph and two integers",
+[IsMutableDigraph, IsPosInt, IsInt],
+function(filt, n, k)
+  local D, permList, vertices, bList, pos, i, j;
+  if k < 0 then
+    ErrorNoReturn("the arguments <n> and <k> must be integers, ",
+                  "with n greater than 0 and k non-negative,");
+  fi;
+  if k > n then
+    Error("the argument <n> must be greater than or equal to <k>,");
+  fi;
+  permList := PermutationsList([1 .. n]);
+  vertices := Unique(List(permList, x -> List([1 .. k], y -> x[y])));
+  D := Digraph(IsMutableDigraph, []);
+  DigraphAddVertices(D, Length(vertices));
+  for i in [1 .. Length(vertices) - 1] do
+    for j in [i + 1 .. Length(vertices)] do
+      bList := List([1 .. Length(vertices[i])],
+        x -> vertices[i][x] <> vertices[j][x]);
+      pos := Positions(bList, true);
+      if bList[1] then
+        if (SizeBlist(bList) = 2 and
+            vertices[j][pos[2]] = vertices[i][pos[1]] and
+            vertices[j][pos[1]] = vertices[i][pos[2]]) or
+            (SizeBlist(bList) = 1 and (not vertices[j][1] in vertices[i])) then
+          DigraphAddEdge(D, i, j);
+          DigraphAddEdge(D, j, i);
+        fi;
+      fi;
+    od;
+  od;
+  return D;
+end);
+
+InstallMethod(PermutationStarGraphCons,
+"for IsImmutableDigraph, integer, integer",
+[IsImmutableDigraph, IsPosInt, IsInt],
+function(filt, n, k)
+  local D;
+  D := MakeImmutable(PermutationStarGraphCons(IsMutableDigraph, n, k));
+  SetIsMultiDigraph(D, false);
+  SetIsSymmetricDigraph(D, true);
+  SetIsRegularDigraph(D, true);
+  SetIsVertexTransitive(D, true);
+  if k <= Int(n / 2) then
+    SetDigraphDiameter(D, 2 * k - 1);
+  else
+    SetDigraphDiameter(D, Int((n - 1) / 2) + k);
+  fi;
+  return D;
+end);
+
+InstallMethod(PermutationStarGraph, "for two integers", [IsPosInt, IsInt],
+{n, k} -> PermutationStarGraphCons(IsImmutableDigraph, n, k));
+
+InstallMethod(PermutationStarGraph, "for a function and two integers",
+[IsFunction, IsPosInt, IsInt], PermutationStarGraphCons);
+
+InstallMethod(PrismGraphCons, "for IsMutableDigraph and an integer",
+[IsMutableDigraph, IsPosInt],
+function(filt, n)
+  local D;
+  if n < 3 then
+    ErrorNoReturn("the argument <n> must be an integer equal to 3 or more,");
+  else
+    D := GeneralisedPetersenGraph(IsMutableDigraph, n, 1);
+    return D;
+  fi;
+end);
+
+InstallMethod(PrismGraphCons,
+"for IsImmutableDigraph, integer",
+[IsImmutableDigraph, IsPosInt],
+function(filt, n)
+  local D;
+  D := MakeImmutable(PrismGraphCons(IsMutableDigraph, n));
+  SetIsMultiDigraph(D, false);
+  SetIsSymmetricDigraph(D, true);
+  return D;
+end);
+
+InstallMethod(PrismGraph, "for an integer", [IsPosInt],
+n -> PrismGraphCons(IsImmutableDigraph, n));
+
+InstallMethod(PrismGraph, "for a function and an integer",
+[IsFunction, IsPosInt], PrismGraphCons);
+
+InstallMethod(StackedPrismGraphCons, "for IsMutableDigraph and two integers",
+[IsMutableDigraph, IsPosInt, IsPosInt],
+function(filt, n, k)
+  if n < 3 then
+    ErrorNoReturn("the arguments <n> and <k> must be integers, ",
+                  "with <n> greater than 2 and <k> greater than 0,");
+  fi;
+  return DigraphCartesianProduct(CycleGraph(IsMutableDigraph, n),
+          PathGraph(IsMutableDigraph, k));
+end);
+
+InstallMethod(StackedPrismGraphCons,
+"for IsImmutableDigraph, integer, integer",
+[IsImmutableDigraph, IsPosInt, IsPosInt],
+function(filt, n, k)
+  local D;
+  D := MakeImmutable(StackedPrismGraphCons(IsMutableDigraph, n, k));
+  SetIsMultiDigraph(D, false);
+  SetIsSymmetricDigraph(D, true);
+  return D;
+end);
+
+InstallMethod(StackedPrismGraph, "for two integers", [IsPosInt, IsPosInt],
+{n, k} -> StackedPrismGraphCons(IsImmutableDigraph, n, k));
+
+InstallMethod(StackedPrismGraph, "for a function and two integers",
+[IsFunction, IsPosInt, IsPosInt], StackedPrismGraphCons);
+
+InstallMethod(WalshHadamardGraphCons, "for IsMutableDigraph and an integer",
+[IsMutableDigraph, IsPosInt],
+function(filt, n)
+  local H_2, H_n, i, D, j, sideHn;
+  H_2 := [[1, 1],
+          [1, -1]];
+  H_n := [[1]];
+  if n > 1 then
+    for i in [2 .. n] do
+      H_n := KroneckerProduct(H_2, H_n);
+    od;
+  fi;
+  sideHn := Length(H_n);
+  D := EmptyDigraph(IsMutableDigraph, 4 * sideHn);
+  for i in [1 .. sideHn] do
+    for j in [1 .. sideHn] do
+      if H_n[i][j] = 1 then
+        DigraphAddEdge(D, i, 2 * sideHn + j);
+        DigraphAddEdge(D, sideHn + i, 3 * sideHn + j);
+      else
+        DigraphAddEdge(D, i, 3 * sideHn + j);
+        DigraphAddEdge(D, sideHn + i, 2 * sideHn + j);
+      fi;
+    od;
+  od;
+  return DigraphSymmetricClosure(D);
+end);
+
+InstallMethod(WalshHadamardGraphCons,
+"for IsImmutableDigraph, integer",
+[IsImmutableDigraph, IsPosInt],
+function(filt, n)
+  local D;
+  D := MakeImmutable(WalshHadamardGraphCons(IsMutableDigraph, n));
+  SetIsMultiDigraph(D, false);
+  SetIsSymmetricDigraph(D, true);
+  SetIsDistanceRegularDigraph(D, true);
+  return D;
+end);
+
+InstallMethod(WalshHadamardGraph, "for an integer", [IsPosInt],
+n -> WalshHadamardGraphCons(IsImmutableDigraph, n));
+
+InstallMethod(WalshHadamardGraph, "for a function and an integer",
+[IsFunction, IsPosInt], WalshHadamardGraphCons);
+
+InstallMethod(WebGraphCons, "for IsMutableDigraph and an integer",
+[IsMutableDigraph, IsPosInt],
+function(filt, n)
+  local D, i;
+  if n < 3 then
+    ErrorNoReturn("the argument <n> must be an integer greater than 2,");
+  fi;
+  D := StackedPrismGraph(IsMutableDigraph, n, 3);
+  for i in [1 .. (n - 1)] do
+    D := DigraphRemoveEdge(D, i, i + 1);
+    D := DigraphRemoveEdge(D, i + 1, i);
+  od;
+  D := DigraphRemoveEdge(D, n, 1);
+  D := DigraphRemoveEdge(D, 1, n);
+  return D;
+end);
+
+InstallMethod(WebGraphCons,
+"for IsImmutableDigraph, integer",
+[IsImmutableDigraph, IsPosInt],
+function(filt, n)
+  local D;
+  D := MakeImmutable(WebGraphCons(IsMutableDigraph, n));
+  SetIsMultiDigraph(D, false);
+  SetIsSymmetricDigraph(D, true);
+  return D;
+end);
+
+InstallMethod(WebGraph, "for an integer", [IsPosInt],
+n -> WebGraphCons(IsImmutableDigraph, n));
+
+InstallMethod(WebGraph, "for a function and an integer",
+[IsFunction, IsPosInt], WebGraphCons);
+
+InstallMethod(WheelGraphCons, "for IsMutableDigraph and an integer",
+[IsMutableDigraph, IsPosInt],
+function(filt, n)
+  local D;
+  if n < 4 then
+    ErrorNoReturn("the argument <n> must be an integer greater than 3,");
+  fi;
+  D := CycleGraph(IsMutableDigraph, n - 1);
+  DigraphAddVertex(D, 1);
+  DigraphAddEdges(D, List([1 .. n - 1], x -> [x, n]));
+  DigraphAddEdges(D, List([1 .. n - 1], x -> [n, x]));
+  return D;
+end);
+
+InstallMethod(WheelGraphCons,
+"for IsImmutableDigraph, integer",
+[IsImmutableDigraph, IsPosInt],
+function(filt, n)
+  local D;
+  D := MakeImmutable(WheelGraphCons(IsMutableDigraph, n));
+  SetIsMultiDigraph(D, false);
+  SetIsSymmetricDigraph(D, true);
+  SetIsHamiltonianDigraph(D, true);
+  SetIsPlanarDigraph(D, true);
+  if (n mod 2) = 1 then
+    SetChromaticNumber(D, 3);
+  else
+    SetChromaticNumber(D, 4);
+  fi;
+  return D;
+end);
+
+InstallMethod(WheelGraph, "for an integer", [IsPosInt],
+n -> WheelGraphCons(IsImmutableDigraph, n));
+
+InstallMethod(WheelGraph, "for a function and an integer",
+[IsFunction, IsPosInt], WheelGraphCons);
+
+InstallMethod(WindmillGraphCons, "for IsMutableDigraph and two integers",
+[IsMutableDigraph, IsPosInt, IsPosInt],
+function(filt, n, m)
+  local D, i, K, nrVert;
+  if m < 2 or n < 2 then
+    ErrorNoReturn("the arguments <n> and <m> must be integers greater than 1,");
+  fi;
+  D := Digraph(IsMutableDigraph, []);
+  K := CompleteDigraph(n - 1);
+  nrVert := 1 + DigraphNrVertices(K) * m;
+  DigraphAddVertices(D, nrVert);
+  for i in [0 .. (m - 1)] do
+    DigraphAddEdges(D, DigraphEdges(K) + (i * DigraphNrVertices(K)));
+  od;
+  for i in [1 .. (DigraphNrVertices(D) - 1)] do
+    DigraphAddEdge(D, i, nrVert);
+    DigraphAddEdge(D, nrVert, i);
+  od;
+  return D;
+end);
+
+InstallMethod(WindmillGraphCons,
+"for IsImmutableDigraph, integer, integer",
+[IsImmutableDigraph, IsPosInt, IsPosInt],
+function(filt, n, m)
+  local D;
+  D := MakeImmutable(WindmillGraphCons(IsMutableDigraph, n, m));
+  SetIsMultiDigraph(D, false);
+  SetIsSymmetricDigraph(D, true);
+  SetChromaticNumber(D, n);
+  SetDigraphDiameter(D, 2);
+  return D;
+end);
+
+InstallMethod(WindmillGraph, "for two integers", [IsPosInt, IsPosInt],
+{n, m} -> WindmillGraphCons(IsImmutableDigraph, n, m));
+
+InstallMethod(WindmillGraph, "for a function and two integers",
+[IsFunction, IsPosInt, IsPosInt], WindmillGraphCons);
