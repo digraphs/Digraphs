@@ -310,6 +310,91 @@ gap> GeneralisedPetersenGraph(IsMutableDigraph, 9, 4);
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="SquareGridGraph">
+<ManSection>
+  <Oper Name="SquareGridGraph" Arg="[filt, ]n, k"/>
+  <Oper Name="GridGraph" Arg="[filt, ]n, k"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>n</A> and <A>k</A> are positive integers, then this operation returns
+    a square grid graph of dimension <A>n</A> by <A>k</A>. <P/>
+
+    A <E>square grid graph</E> of dimension <A>n</A> by <A>k</A> is the
+    <Ref Func="DigraphCartesianProduct"
+      Label="for a positive number of digraphs" /> of the
+    symmetric closures of the chain digraphs with <A>n</A> and <A>k</A>
+    vertices; see <Ref Oper="DigraphSymmetricClosure"/> and
+    <Ref Oper="ChainDigraph"/>.  <P/>
+
+    In particular, the <C><A>n</A> * <A>k</A></C>  vertices can be arranged
+    into an <A>n</A> by <A>k</A> grid such that two vertices are adjacent in
+    the digraph if and only if they are orthogonally adjacent in the grid.
+    The correspondence between vertices and grid positions is given by
+    <Ref Oper="DigraphVertexLabels"/>.  <P/>
+
+    See <URL>https://en.wikipedia.org/wiki/Lattice_graph</URL>
+    for more information.  <P/>
+
+    If the optional first argument <A>filt</A> is present, then this should
+    specify the category or representation the digraph being created will
+    belong to. For example, if <A>filt</A> is <Ref Filt="IsMutableDigraph"/>,
+    then the digraph being created will be mutable, if <A>filt</A> is <Ref
+    Filt="IsImmutableDigraph"/>, then the digraph will be immutable.
+    If the optional first argument <A>filt</A> is not present, then <Ref
+      Filt="IsImmutableDigraph"/> is used by default.<P/>
+    
+<Example><![CDATA[
+gap> SquareGridGraph(5, 5);
+<immutable connected bipartite symmetric digraph with bicomponent size\
+s 13 and 12>
+gap> GridGraph(IsMutable, 3, 4);
+<mutable digraph with 12 vertices, 34 edges>
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+  
+<#GAPDoc Label="TriangularGridGraph">
+<ManSection>
+  <Oper Name="TriangularGridGraph" Arg="[filt, ]n, k"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>n</A> and <A>k</A> are positive integers, then this operation returns
+    a triangular grid graph of dimension <A>n</A> by <A>k</A>. <P/>
+
+    A <E>triangular grid graph</E> of dimension <A>n</A> by <A>k</A> is a
+    symmetric digraph constructed from the <Ref Oper="SquareGridGraph"/> of the
+    same dimensions, where additionally two vertices are adjacent in the digraph
+    if they are diagonally adjacent in the grid, on a particular one of the
+    diagonals.
+    The correspondence between vertices and grid positions is given by <Ref
+      Oper="DigraphVertexLabels"/>.
+    More specifically, the particular diagonal is the one such that,
+    the vertices corresponding to the grid positions <C>[2,1]</C> and
+    <C>[1,2]</C> are adjacent (if they exist),
+    but those corresponding to <C>[1,1]</C> and <C>[2,2]</C> are not. <P/>
+
+    See <URL>https://en.wikipedia.org/wiki/Lattice_graph#Other_kinds</URL>
+    for more information.  <P/>
+    
+    If the optional first argument <A>filt</A> is present, then this should
+    specify the category or representation the digraph being created will
+    belong to. For example, if <A>filt</A> is <Ref Filt="IsMutableDigraph"/>,
+    then the digraph being created will be mutable, if <A>filt</A> is <Ref
+    Filt="IsImmutableDigraph"/>, then the digraph will be immutable.
+    If the optional first argument <A>filt</A> is not present, then <Ref
+      Filt="IsImmutableDigraph"/> is used by default.<P/>
+
+<Example><![CDATA[
+gap> TriangularGridGraph(3, 3);
+<immutable connected symmetric digraph with 9 vertices, 32 edges>
+gap> TriangularGridGraph(IsMutable, 3, 3);
+<mutable digraph with 9 vertices, 32 edges>
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="StarDigraph">
 <ManSection>
   <Oper Name="StarDigraph" Arg="[filt, ]k"/>
