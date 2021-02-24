@@ -228,11 +228,11 @@ gap> JohnsonDigraph(IsMutableDigraph, 4, 2);
 
 # LollipopGraph
 gap> LollipopGraph(5, 4);
-<mutable digraph with 9 vertices, 28 edges>
+<immutable symmetric digraph with 9 vertices, 28 edges>
 gap> LollipopGraph(8, 4);
-<mutable digraph with 12 vertices, 64 edges>
+<immutable symmetric digraph with 12 vertices, 64 edges>
 gap> D := LollipopGraph(5, 3);
-<mutable digraph with 8 vertices, 26 edges>
+<immutable symmetric digraph with 8 vertices, 26 edges>
 gap> DigraphNrVertices(D);
 8
 gap> DigraphNrEdges(D);
@@ -243,5 +243,3 @@ gap> DigraphUndirectedGirth(D);
 #
 gap> DIGRAPHS_StopTest();
 gap> STOP_TEST("Digraphs package: standard/examples.tst", 0);
-
-
