@@ -467,6 +467,338 @@ true
 gap> BinaryTree(4);
 <immutable digraph with 15 vertices, 14 edges>
 
+# AndrasfaiGraph
+gap> D := AndrasfaiGraph(1);
+<immutable Hamiltonian biconnected vertex-transitive symmetric digraph with 2 \
+vertices, 2 edges>
+gap> D := AndrasfaiGraph(3);
+<immutable Hamiltonian biconnected vertex-transitive symmetric digraph with 8 \
+vertices, 24 edges>
+gap> IsIsomorphicDigraph(D, MobiusLadderGraph(4));
+true
+gap> AndrasfaiGraph(0);
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `AndrasfaiGraph' on 1 arguments
+
+# BinomialTreeGraph
+gap> D := BinomialTreeGraph(6);
+<immutable undirected tree digraph with 6 vertices>
+gap> D := BinomialTreeGraph(16);
+<immutable undirected tree digraph with 16 vertices>
+gap> DigraphEdges(D);
+[ [ 1, 2 ], [ 1, 3 ], [ 1, 5 ], [ 1, 9 ], [ 2, 1 ], [ 3, 1 ], [ 3, 4 ], 
+  [ 4, 3 ], [ 5, 1 ], [ 5, 6 ], [ 5, 7 ], [ 6, 5 ], [ 7, 5 ], [ 7, 8 ], 
+  [ 8, 7 ], [ 9, 1 ], [ 9, 10 ], [ 9, 11 ], [ 9, 13 ], [ 10, 9 ], [ 11, 9 ], 
+  [ 11, 12 ], [ 12, 11 ], [ 13, 9 ], [ 13, 14 ], [ 13, 15 ], [ 14, 13 ], 
+  [ 15, 13 ], [ 15, 16 ], [ 16, 15 ] ]
+gap> BinomialTreeGraph(1);
+<immutable empty digraph with 1 vertex>
+gap> BinomialTreeGraph(0);
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `BinomialTreeGraph' on 1 arguments
+
+# BondyGraph
+gap> D := BondyGraph(2);
+<immutable symmetric digraph with 34 vertices, 102 edges>
+gap> IsIsomorphicDigraph(D, GeneralisedPetersenGraph(17, 2));
+true
+gap> BondyGraph(-1);
+Error, the argument <n> must be a non-negative integer,
+
+# CirculantGraph
+gap> D := CirculantGraph(5, [1, 2]);
+<immutable Hamiltonian biconnected vertex-transitive symmetric digraph with 5 \
+vertices, 20 edges>
+gap> IsIsomorphicDigraph(D, CompleteDigraph(5));
+true
+gap> D := CirculantGraph(6, [2, 3]);
+<immutable Hamiltonian biconnected vertex-transitive symmetric digraph with 6 \
+vertices, 18 edges>
+gap> IsIsomorphicDigraph(D, PrismGraph(3));
+true
+gap> D := CirculantGraph(4, [1]);
+<immutable Hamiltonian biconnected vertex-transitive symmetric digraph with 4 \
+vertices, 8 edges>
+gap> IsIsomorphicDigraph(D, CycleGraph(4));
+true
+gap> CirculantGraph(4, [1, 5]);
+Error, arguments must be an integer <n> greater than 1 and a list of integers \
+between 1 and n,
+gap> CirculantGraph(0, [1]);
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `CirculantGraph' on 2 arguments
+gap> D := CirculantGraph(10, [1, 5]);
+<immutable Hamiltonian biconnected vertex-transitive symmetric digraph with 10\
+ vertices, 30 edges>
+gap> IsIsomorphicDigraph(D, MobiusLadderGraph(5));
+true
+
+# CycleGraph
+gap> IsIsomorphicDigraph(CycleGraph(5), DigraphSymmetricClosure(CycleDigraph(5)));
+true
+gap> CycleGraph(2);
+Error, the argument <n> must be an integer greater than 2,
+
+# GearGraph
+gap> D := GearGraph(4);
+<immutable symmetric digraph with 9 vertices, 24 edges>
+gap> DigraphEdges(D);
+[ [ 1, 2 ], [ 1, 8 ], [ 2, 1 ], [ 2, 3 ], [ 2, 9 ], [ 3, 2 ], [ 3, 4 ], 
+  [ 4, 3 ], [ 4, 5 ], [ 4, 9 ], [ 5, 4 ], [ 5, 6 ], [ 6, 5 ], [ 6, 7 ], 
+  [ 6, 9 ], [ 7, 6 ], [ 7, 8 ], [ 8, 1 ], [ 8, 7 ], [ 8, 9 ], [ 9, 2 ], 
+  [ 9, 4 ], [ 9, 6 ], [ 9, 8 ] ]
+gap> GearGraph(2);
+Error, the argument <n> must be an integer greater than 2,
+
+# HalvedCubeGraph
+gap> HalvedCubeGraph(1);
+<immutable empty digraph with 1 vertex>
+gap> D := HalvedCubeGraph(3);
+<immutable Hamiltonian connected symmetric digraph with 4 vertices, 12 edges>
+gap> IsIsomorphicDigraph(D, CompleteDigraph(4));
+true
+gap> HalvedCubeGraph(-1);
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `HalvedCubeGraph' on 1 arguments
+
+# HanoiGraph
+gap> D := HanoiGraph(1);
+<immutable Hamiltonian connected symmetric digraph with 3 vertices, 6 edges>
+gap> IsIsomorphicDigraph(D, CycleGraph(3));
+true
+gap> HanoiGraph(4);
+<immutable Hamiltonian connected symmetric digraph with 81 vertices, 240 edges\
+>
+gap> HanoiGraph(0);
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `HanoiGraph' on 1 arguments
+
+# HelmGraph
+gap> D := HelmGraph(6);
+<immutable symmetric digraph with 13 vertices, 36 edges>
+gap> DigraphEdges(D);
+[ [ 1, 2 ], [ 1, 6 ], [ 1, 7 ], [ 1, 8 ], [ 2, 1 ], [ 2, 3 ], [ 2, 7 ], 
+  [ 2, 9 ], [ 3, 2 ], [ 3, 4 ], [ 3, 7 ], [ 3, 10 ], [ 4, 3 ], [ 4, 5 ], 
+  [ 4, 7 ], [ 4, 11 ], [ 5, 4 ], [ 5, 6 ], [ 5, 7 ], [ 5, 12 ], [ 6, 1 ], 
+  [ 6, 5 ], [ 6, 7 ], [ 6, 13 ], [ 7, 1 ], [ 7, 2 ], [ 7, 3 ], [ 7, 4 ], 
+  [ 7, 5 ], [ 7, 6 ], [ 8, 1 ], [ 9, 2 ], [ 10, 3 ], [ 11, 4 ], [ 12, 5 ], 
+  [ 13, 6 ] ]
+gap> HelmGraph(1);
+Error, the argument <n> must be an integer greater than 2,
+
+# HypercubeGraph
+gap> HypercubeGraph(0);
+<immutable empty digraph with 1 vertex>
+gap> D := HypercubeGraph(2);
+<immutable Hamiltonian connected bipartite symmetric digraph with bicomponent \
+sizes 2 and 2>
+gap> IsIsomorphicDigraph(D, CycleGraph(4));
+true
+gap> HypercubeGraph(-1);
+Error, the argument <n> must be a non-negative integer,
+
+# KellerGraph
+gap> IsIsomorphicDigraph(EmptyDigraph(4), KellerGraph(1));
+true
+gap> D := KellerGraph(2);
+<immutable Hamiltonian connected symmetric digraph with 16 vertices, 80 edges>
+gap> KellerGraph(-1);
+Error, the argument <n> must be a non-negative integer,
+
+# KneserGraph
+gap> IsIsomorphicDigraph(KneserGraph(5, 1), CompleteDigraph(5));
+true
+gap> KneserGraph(6, 3);
+<immutable edge- and vertex-transitive symmetric digraph with 20 vertices, 20 \
+edges>
+gap> KneserGraph(3, 4);
+Error, argument <n> must be greater than or equal to argument <k>,
+gap> KneserGraph(3, -1);
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `KneserGraph' on 2 arguments
+gap> KneserGraph(-1, 4);
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `KneserGraph' on 2 arguments
+gap> D := KneserGraph(5, 2);
+<immutable edge- and vertex-transitive symmetric digraph with 10 vertices, 30 \
+edges>
+gap> DigraphEdges(D);
+[ [ 1, 8 ], [ 1, 9 ], [ 1, 10 ], [ 2, 6 ], [ 2, 7 ], [ 2, 10 ], [ 3, 5 ], 
+  [ 3, 7 ], [ 3, 9 ], [ 4, 5 ], [ 4, 6 ], [ 4, 8 ], [ 5, 3 ], [ 5, 4 ], 
+  [ 5, 10 ], [ 6, 2 ], [ 6, 4 ], [ 6, 9 ], [ 7, 2 ], [ 7, 3 ], [ 7, 8 ], 
+  [ 8, 1 ], [ 8, 4 ], [ 8, 7 ], [ 9, 1 ], [ 9, 3 ], [ 9, 6 ], [ 10, 1 ], 
+  [ 10, 2 ], [ 10, 5 ] ]
+gap> D := KneserGraph(6, 4);
+<immutable empty digraph with 15 vertices>
+gap> ChromaticNumber(D);
+1
+gap> D := KneserGraph(10, 2);
+<immutable Hamiltonian connected edge- and vertex-transitive symmetric digraph\
+ with 45 vertices, 1260 edges>
+
+# LindgrenSousselierGraph
+gap> D := LindgrenSousselierGraph(1);
+<immutable symmetric digraph with 10 vertices, 30 edges>
+gap> AutomorphismGroup(D) = Group([(4, 8)(5, 7)(9, 10), (2, 10, 9)(3, 4, 5, 6, 7, 8), (1, 2, 3, 4, 10)(5, 7, 9, 6, 8)]);
+true
+gap> LindgrenSousselierGraph(0);
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `LindgrenSousselierGraph' on 1 arguments
+gap> LindgrenSousselierGraph(3);
+<immutable symmetric digraph with 22 vertices, 70 edges>
+gap> IsIsomorphicDigraph(LindgrenSousselierGraph(1), GeneralisedPetersenGraph(5, 2));
+true
+
+# MobiusLadderGraph
+gap> MobiusLadderGraph(2);
+Error, the argument <n> must be an integer equal to 4 or more,
+gap> D := MobiusLadderGraph(4);
+<immutable symmetric digraph with 8 vertices, 24 edges>
+gap> DigraphEdges(D);
+[ [ 1, 2 ], [ 1, 8 ], [ 1, 5 ], [ 2, 1 ], [ 2, 3 ], [ 2, 6 ], [ 3, 2 ], 
+  [ 3, 4 ], [ 3, 7 ], [ 4, 3 ], [ 4, 5 ], [ 4, 8 ], [ 5, 4 ], [ 5, 6 ], 
+  [ 5, 1 ], [ 6, 5 ], [ 6, 7 ], [ 6, 2 ], [ 7, 6 ], [ 7, 8 ], [ 7, 3 ], 
+  [ 8, 1 ], [ 8, 7 ], [ 8, 4 ] ]
+gap> MobiusLadderGraph(10);
+<immutable symmetric digraph with 20 vertices, 60 edges>
+
+# MycielskiGraph
+gap> D := MycielskiGraph(2);
+<immutable Hamiltonian connected symmetric digraph with 2 vertices, 2 edges>
+gap> IsIsomorphicDigraph(MycielskiGraph(3), CycleGraph(5));
+true
+gap> MycielskiGraph(1);
+Error, the argument <n> must be an integer greater than 1,
+
+# OddGraph
+gap> IsIsomorphicDigraph(OddGraph(2), CycleGraph(3));
+true
+gap> OddGraph(4);
+<immutable edge- and vertex-transitive symmetric digraph with 35 vertices, 140\
+ edges>
+gap> OddGraph(0);
+Error, the argument <n> must be an integer greater than 0,
+
+# PathGraph
+gap> D := PathGraph(4);
+<immutable undirected tree digraph with 4 vertices>
+gap> IsIsomorphicDigraph(D, DigraphSymmetricClosure(ChainDigraph(4)));
+true
+gap> PathGraph(1);
+<immutable empty digraph with 1 vertex>
+gap> PathGraph(0);
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `PathGraph' on 1 arguments
+
+# PermutationStarGraph
+gap> D := PermutationStarGraph(3, 2);
+<immutable vertex-transitive symmetric digraph with 6 vertices, 12 edges>
+gap> IsIsomorphicDigraph(D, CycleGraph(6));
+true
+gap> D := PermutationStarGraph(4, 3);
+<immutable vertex-transitive symmetric digraph with 24 vertices, 72 edges>
+gap> DigraphDiameter(D);
+4
+gap> IsIsomorphicDigraph(D, GeneralisedPetersenGraph(12, 5));
+true
+gap> PermutationStarGraph(2, 4);
+Error, the argument <n> must be greater than or equal to <k>,
+gap> PermutationStarGraph(5, -1);
+Error, the arguments <n> and <k> must be integers, with n greater than 0 and k\
+ non-negative,
+gap> PermutationStarGraph(0, 2);
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `PermutationStarGraph' on 2 arguments
+
+# PrismGraph
+gap> PrismGraph(3);
+<immutable symmetric digraph with 6 vertices, 18 edges>
+gap> PrismGraph(2);
+Error, the argument <n> must be an integer equal to 3 or more,
+gap> D := PrismGraph(5);
+<immutable symmetric digraph with 10 vertices, 30 edges>
+gap> DigraphEdges(D);
+[ [ 1, 2 ], [ 1, 5 ], [ 1, 6 ], [ 2, 1 ], [ 2, 3 ], [ 2, 7 ], [ 3, 2 ], 
+  [ 3, 4 ], [ 3, 8 ], [ 4, 3 ], [ 4, 5 ], [ 4, 9 ], [ 5, 1 ], [ 5, 4 ], 
+  [ 5, 10 ], [ 6, 1 ], [ 6, 7 ], [ 6, 10 ], [ 7, 2 ], [ 7, 6 ], [ 7, 8 ], 
+  [ 8, 3 ], [ 8, 7 ], [ 8, 9 ], [ 9, 4 ], [ 9, 8 ], [ 9, 10 ], [ 10, 5 ], 
+  [ 10, 6 ], [ 10, 9 ] ]
+
+# StackedPrismGraph
+gap> D := StackedPrismGraph(4, 1);
+<immutable symmetric digraph with 4 vertices, 8 edges>
+gap> IsIsomorphicDigraph(D, CycleGraph(4));
+true
+gap> D := StackedPrismGraph(5, 2);
+<immutable symmetric digraph with 10 vertices, 30 edges>
+gap> IsIsomorphicDigraph(D, PrismGraph(5));
+true
+gap> StackedPrismGraph(3, 3);
+<immutable symmetric digraph with 9 vertices, 30 edges>
+gap> StackedPrismGraph(2, 2);
+Error, the arguments <n> and <k> must be integers, with <n> greater than 2 and\
+ <k> greater than 0,
+gap> StackedPrismGraph(3, 0);
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `StackedPrismGraph' on 2 arguments
+gap> StackedPrismGraph(0, -1);
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `StackedPrismGraph' on 2 arguments
+
+# WalshHadamardGraph
+gap> WalshHadamardGraph(1);
+<immutable symmetric digraph with 4 vertices, 4 edges>
+gap> D := WalshHadamardGraph(2);
+<immutable symmetric digraph with 8 vertices, 16 edges>
+gap> IsIsomorphicDigraph(D, CycleGraph(8));
+true
+gap> WalshHadamardGraph(0);
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `WalshHadamardGraph' on 1 arguments
+
+# WebGraph
+gap> D := WebGraph(3);
+<immutable symmetric digraph with 9 vertices, 24 edges>
+gap> DigraphEdges(D);
+[ [ 1, 4 ], [ 2, 5 ], [ 3, 6 ], [ 4, 5 ], [ 4, 6 ], [ 4, 1 ], [ 4, 7 ], 
+  [ 5, 4 ], [ 5, 6 ], [ 5, 2 ], [ 5, 8 ], [ 6, 4 ], [ 6, 5 ], [ 6, 3 ], 
+  [ 6, 9 ], [ 7, 8 ], [ 7, 9 ], [ 7, 4 ], [ 8, 7 ], [ 8, 9 ], [ 8, 5 ], 
+  [ 9, 7 ], [ 9, 8 ], [ 9, 6 ] ]
+gap> WebGraph(2);
+Error, the argument <n> must be an integer greater than 2,
+
+# WheelGraph
+gap> D := WheelGraph(5);
+<immutable Hamiltonian connected symmetric digraph with 5 vertices, 16 edges>
+gap> DigraphEdges(D);
+[ [ 1, 2 ], [ 1, 4 ], [ 1, 5 ], [ 2, 1 ], [ 2, 3 ], [ 2, 5 ], [ 3, 2 ], 
+  [ 3, 4 ], [ 3, 5 ], [ 4, 1 ], [ 4, 3 ], [ 4, 5 ], [ 5, 1 ], [ 5, 2 ], 
+  [ 5, 3 ], [ 5, 4 ] ]
+gap> WheelGraph(2);
+Error, the argument <n> must be an integer greater than 3,
+gap> ChromaticNumber(D);
+3
+gap> D := WheelGraph(6);
+<immutable Hamiltonian connected symmetric digraph with 6 vertices, 20 edges>
+gap> ChromaticNumber(D);
+4
+
+# WindmillGraph
+gap> D := WindmillGraph(3, 3);
+<immutable symmetric digraph with 7 vertices, 18 edges>
+gap> DigraphEdges(D);
+[ [ 1, 2 ], [ 1, 7 ], [ 2, 1 ], [ 2, 7 ], [ 3, 4 ], [ 3, 7 ], [ 4, 3 ], 
+  [ 4, 7 ], [ 5, 6 ], [ 5, 7 ], [ 6, 5 ], [ 6, 7 ], [ 7, 1 ], [ 7, 2 ], 
+  [ 7, 3 ], [ 7, 4 ], [ 7, 5 ], [ 7, 6 ] ]
+gap> WindmillGraph(0, 3);
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `WindmillGraph' on 2 arguments
+gap> WindmillGraph(2, 1);
+Error, the arguments <n> and <m> must be integers greater than 1,
+gap> WindmillGraph(-1, 0);
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `WindmillGraph' on 2 arguments
+
 #
 gap> DIGRAPHS_StopTest();
 gap> STOP_TEST("Digraphs package: standard/examples.tst", 0);

@@ -856,3 +856,751 @@ gap> BinaryTree(IsMutableDigraph, 8);
   </Description>
 </ManSection>
 <#/GAPDoc>
+
+<#GAPDoc Label="AndrasfaiGraph">
+<ManSection>
+  <Oper Name="AndrasfaiGraph" Arg="[filt, ]n"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>n</A> is an integer greater than 0, then this operation returns the
+    <A>n</A>th <E>Andrasfai graph</E>. The Andrasfai graph is a circulant graph
+    with <C>3<A>n</A> - 1</C> vertices. The indices of the Andrasfai graph
+    are given by the numbers between <C>1</C> and <C>3<A>n</A> - 1</C> that are
+    congruent to <C>1</C> mod <C>3</C> (that is, for each index <M>j</M>, vertex
+    <M>i</M> is adjacent to the <M>i + j</M>th and <M>i - j</M> vertices). The
+    graph has <C>6(3<A>n</A> - 1)</C> edges. The graph is triangle free.<P/>
+
+    As a circulant graph, the Andrasfai graph is biconnected, cyclic,
+    Hamiltonian, regular, and vertex transitive.<P/>
+
+    See <URL>https://mathworld.wolfram.com/AndrasfaiGraph.html</URL> for further
+    details.<P/>
+
+    &STANDARD_FILT_TEXT;
+
+<Example><![CDATA[
+gap> D := AndrasfaiGraph(4);
+<immutable Hamiltonian biconnected vertex-transitive symmetric digraph\
+ with 11 vertices, 44 edges>
+gap> IsBiconnectedDigraph(D);
+true
+gap> IsIsomorphicDigraph(D, CirculantGraph(11, [1, 4, 7, 10]));
+true]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="BinomialTreeGraph">
+<ManSection>
+  <Oper Name="BinomialTreeGraph" Arg="[filt, ]n"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>n</A> is a positive integer then this operation returns the <A>n</A>th
+    <E>binomial tree graph</E>. The binomial tree graph has <A>n</A> vertices
+    and <C><A>n</A>-1</C> undirected edges. The vertices of the binomial tree
+    graph are the numbers from 1 to <A>n</A> in binary representation, with a
+    vertex <C>v</C> having as a direct parent the vertex with binary
+    representation the same as <C>v</C> but with the lowest 1-bit cleared. For
+    example, the vertex <M>011</M> has parent <M>010</M>, and the vertex
+    <M>010</M> has parent <M>000</M>.<P/>
+
+    The binomial tree graph is an undirected tree, and is symmetric as a
+    digraph.<P/>
+
+    See <URL>https://metacpan.org/pod/Graph::Maker::BinomialTree</URL> for
+    further details.<P/>
+
+    &STANDARD_FILT_TEXT;
+
+<Example><![CDATA[
+gap> D := BinomialTreeGraph(9);
+<immutable undirected tree digraph with 9 vertices>]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="BondyGraph">
+<ManSection>
+  <Oper Name="BondyGraph" Arg="[filt, ]n"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>n</A> is a non-negative integer then this operation returns the
+    <A>n</A>th <E>Bondy graph</E>. The Bondy graphs are a family of
+    hypohamiltonian graphs: a graph which is not Hamiltonian itself but the
+    removal of any vertex produces a Hamiltonian graph. The Bondy graphs are the
+    <C>(3(2<A>n</A> + 1) + 2, 2)</C>-th Generalised Petersen graphs, and have
+    <C>12<A>n</A> + 10</C> vertices and <C>15 + 18<A>n</A></C> undirected
+    edges.<P/>
+
+    See <URL>https://mathworld.wolfram.com/HypohamiltonianGraph.html</URL> for
+    further details.<P/>
+
+    &STANDARD_FILT_TEXT;
+
+<Example><![CDATA[
+gap> D := BondyGraph(1);
+<immutable symmetric digraph with 22 vertices, 66 edges>
+gap> IsHamiltonianDigraph(D);
+false
+gap> G := List([1 .. 22], x -> DigraphRemoveVertex(D, x));;
+gap> ForAll(G, x -> IsHamiltonianDigraph(x));
+true]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="CirculantGraph">
+<ManSection>
+  <Oper Name="CirculantGraph" Arg="[filt, ]n, par"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>n</A> is an integer greater than 1, and <A>par</A> is a list of
+    integers that are contained in <C>[1..<A>n</A>]</C> then this operation
+    returns a <E>circulant graph</E>. The circulant graph is a graph on <A>n</A>
+    vertices, where for each element <M>j</M> of <A>par</A>, the <M>i</M>th
+    vertex is adjacent to the <M>(i + j)</M>th and <M>(i - j)</M>th
+    vertices.<P/>
+
+    If <A>par</A> is <M>[1]</M>, then the graph is the <A>n</A>th cyclic graph.
+    If <A>par</A> is <C>[1,2,...,Int(<A>n</A>/2)]</C>, then the graph is the
+    complete graph on <A>n</A> vertices. If <A>n</A> is at least 4 and
+    <A>par</A> is <C>[1,<A>n</A>]</C> then the graph is the <A>n</A>th Mobius
+    ladder graph.<P/>
+
+    A circulant graph is biconnected, cyclic, Hamiltonian, regular, and vertex
+    transitive.<P/>
+
+    See <URL>https://mathworld.wolfram.com/CirculantGraph.html</URL> for further
+    details.<P/>
+
+    &STANDARD_FILT_TEXT;
+
+<Example><![CDATA[
+gap> D := CirculantGraph(6, [1, 2, 3]);
+<immutable Hamiltonian biconnected vertex-transitive symmetric digraph\
+ with 6 vertices, 30 edges>
+gap> IsIsomorphicDigraph(D, CompleteDigraph(6));
+true]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="CycleGraph">
+<ManSection>
+  <Oper Name="CycleGraph" Arg="[filt, ]n"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>n</A> is an integer greater than 2 then this operation returns the
+    <A>n</A>th <E>cycle graph</E>, consisting of the cycle on <A>n</A> vertices.
+    The cycle graph, unlike the cycle digraph, is symmetric. The cycle graph
+    has <A>n</A> vertices and <A>n</A> undirected edges. The cycle graph is
+    simple so the non-simple graphs with a single vertex and single loop and
+    with two vertices and two edges between them are excluded.<P/>
+
+    See <URL>https://mathworld.wolfram.com/CycleGraph.html</URL> for
+    further details.<P/>
+
+    &STANDARD_FILT_TEXT;
+
+<Example><![CDATA[
+gap> D := CycleGraph(7);
+<immutable symmetric digraph with 7 vertices, 14 edges>]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="GearGraph">
+<ManSection>
+  <Oper Name="GearGraph" Arg="[filt, ]n"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>n</A> is a positive integer at least 3, then this operation
+    returns the <E>gear graph</E> with <C>2<A>n</A> + 1</C> vertices and
+    <C>3<A>n</A></C> undirected edges. The <A>n</A>th gear graph is the
+    <C>2<A></A></C>th cycle graph with one additional central vertex, to which
+    every other vertex of the cycle is connected. The gear graph is a symmetric
+    digraph.  A gear graph is a Matchstick graph, that is it is simple with a
+    planar graph embedding, and is a unit-distance graph (that is, it can be
+    embedded into the Euclidean plane with vertices being distinct points and
+    edges having length 1).<P/>
+
+    See <URL>https://mathworld.wolfram.com/GearGraph.html</URL> for further
+    details.<P/>
+
+    &STANDARD_FILT_TEXT;
+
+<Example><![CDATA[
+gap> D := GearGraph(4);
+<immutable symmetric digraph with 9 vertices, 24 edges>
+gap> ChromaticNumber(D);
+2
+gap> IsVertexTransitive(D);
+false]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="HalvedCubeGraph">
+<ManSection>
+  <Oper Name="HalvedCubeGraph" Arg="[filt, ]n"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>n</A> is a positive integer at least 1, then this operation returns
+    the <A>n</A>th <E>halved cube graph</E>, the graph of the <A>n</A>-
+    demihypercube. The vertices of the graph are those of the <A>n</A>th-
+    hypercube, with two vertices adjacent if and only if they are at distance 1
+    or 2 from each other. Equivalent constructions are as the second graph power
+    of the <C><A>n</A>-1</C>th hypercube graph, or as with vertices labelled as
+    the binary numbers where two vertices are adjacent if they differ in a
+    single bit, or with vertices labelled with the subset of binary numbers with
+    even Hamming weight, with edges connecting vertices with Hamming distance
+    exactly 2. The Halved Cube graph is distance regular and contains a
+    Hamiltonian cycle.<P/>
+
+    See <URL>https://mathworld.wolfram.com/HalvedCubeGraph.html</URL> for
+    further details.<P/>
+
+    &STANDARD_FILT_TEXT;
+
+<Example><![CDATA[
+gap> D := HalvedCubeGraph(3);
+<immutable Hamiltonian connected symmetric digraph with 4 vertices, 12\
+ edges>
+gap> IsDistanceRegularDigraph(D);
+true
+gap> IsHamiltonianDigraph(D);
+true]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="HanoiGraph">
+<ManSection>
+  <Oper Name="HanoiGraph" Arg="[filt, ]n"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>n</A> is positive integer then this operation returns the <A>n</A>th
+    <E>Hanoi graph</E>. The Hanoi graph's vertices represent the possible states
+     of the 'Tower of Hanoi' puzzle on three 'towers', while its edges represent
+     possible moves. The Hanoi graph has <C>3^<A>n</A></C> vertices, and
+     <C>Binomial(3, 3) * (3^<A>n</A> - 1) / 2</C> undirected edges.<P/>
+
+    The Hanoi graph is Hamiltonian. The graph superficially resembles the
+    Sierpinski triangle. The graph is also a 'penny graph' - a graph whose
+    vertices can be considered to be non-overlapping unit circles on a flat
+    surface, with two vertices adjacent only if the unit circles touch at a
+    single point. Thus the Hanoi graph is planar.<P/>
+
+    See <URL>https://mathworld.wolfram.com/HanoiGraph.html</URL> for
+    further details.<P/>
+
+    &STANDARD_FILT_TEXT;
+
+<Example><![CDATA[
+gap> D := HanoiGraph(5);
+<immutable Hamiltonian connected symmetric digraph with 243 vertices, \
+726 edges>
+gap> IsPlanarDigraph(D);
+true]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="HelmGraph">
+<ManSection>
+  <Oper Name="HelmGraph" Arg="[filt, ]n"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>n</A> is a positive integer at least 3, then this operation returns
+    the <A>n</A>th <E>helm graph</E>. The helm graph is the <A>n</A>-1th wheel
+    graph with, for each external vertex of the 'wheel', adjoining a new vertex
+    incident only to the first vertex. That is, the graph looks similar to
+    a ship's helm.<P/>
+
+    See <URL>https://mathworld.wolfram.com/WheelGraph.html</URL> for further
+    details.<P/>
+
+    &STANDARD_FILT_TEXT;
+
+<Example><![CDATA[
+gap> D := HelmGraph(4);
+<immutable symmetric digraph with 9 vertices, 24 edges>]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="HypercubeGraph">
+<ManSection>
+  <Oper Name="HypercubeGraph" Arg="[filt, ]n"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>n</A> is a non-negative integer, then this operation returns the
+    <A>n</A>th <E>hypercube graph</E>. The graph has <C>2^<A>n</A></C> vertices
+    and <C>2^(<A>n</A>-1)<A>n</A></C> edges. It is formed from the vertices and
+    edges of the <A>n</A>-dimensional hypercube. Alternatively, the graph can be
+    constructed by labelling each vertex with the binary numbers, with two
+    vertices adjacent if they have Hamming distance exactly one. The hypercube
+    graphs are Hamiltonian, distance-transitive and therefore distance-regular,
+    and bipartite.<P/>
+
+    See <URL>https://mathworld.wolfram.com/HypercubeGraph.html</URL> for further
+    details.<P/>
+
+    &STANDARD_FILT_TEXT;
+
+<Example><![CDATA[
+gap> D := HypercubeGraph(5);
+<immutable Hamiltonian connected bipartite symmetric digraph with bico\
+mponent sizes 16 and 16>
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="KellerGraph">
+<ManSection>
+  <Oper Name="KellerGraph" Arg="[filt, ]n"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>n</A> is a nonnegative integer then this operation returns the
+    <A>n</A>th or <A>n</A>-dimensional <E>Keller graph</E>. The graph has
+    vertices given by the <A>n</A>-tuples on the set <M>[0, 1, 2, 3]</M>.
+    Two vertices are adjacent if their respective tuples are such that they
+    differ in at least two coordinates and in at least one coordinate the
+    difference between the two is <C>2</C> mod <C>4</C>. The Keller graph has
+    <C>4^<A>n</A></C> vertices.<P/>
+
+    The Keller graphs were constructed with the intention of finding
+    counterexamples to Keller's conjecture
+    (<URL>https://mathworld.wolfram.com/KellersConjecture.html</URL>), and has
+    been used since for testing maximum clique algorithms.<P/>
+
+    If <A>n</A> is 1 then the graph is empty, for <A>n</A> greater than 1 the
+    chromatic number of the Keller graph is <C>2^<A>n</A></C> and the graph is
+    Hamiltonian.<P/>
+
+    See <URL>https://mathworld.wolfram.com/KellerGraph.html</URL> for further
+    details.<P/>
+
+    &STANDARD_FILT_TEXT;
+
+<Example><![CDATA[
+gap> D := KellerGraph(3);
+<immutable Hamiltonian connected symmetric digraph with 64 vertices, 2\
+176 edges>
+gap> ChromaticNumber(D);
+8]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="KneserGraph">
+<ManSection>
+  <Oper Name="KneserGraph" Arg="[filt, ]n, k"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>n</A> and <A>k</A> are integers greater than 0, with <A>k</A> less
+    than <A>n</A>, then this operation returns the <C>(<A>n</A>,<A>k</A>)</C>-th
+    <E>Kneser graph</E>. The Kneser graph's vertices correspond to the <A>k</A>-
+    element subsets of a set of <A>n</A> elements, with two vertices being
+    adjacent if and only if the subsets are disjoint. The graph has
+    <C>Binomial(<A>n</A>, <A>k</A>)</C> vertices and <C>Binomial(<A>n</A>,
+    <A>k</A>) * Binomial(<A>n</A> - <A>k</A>, <A>k</A>)</C> edges. Kneser graphs
+    are regular, edge transitive, and vertex transitive. If <A>k</A> is 1, then
+    the graph is the complete graph on <A>n</A> vertices. If <C>(<A>n</A>,
+    <A>k</A>)</C> is <C>(2m-1, <A>n</A>-1)</C>, then the graph is the <C>m</C>th
+    Odd graph. The Petersen graph is the <M>(5, 2)</M>th Kneser graph.<P/>
+
+    If <C><A>n</A> >= 2<A>k</A></C> then the graph's chromatic number is
+    <C><A>n</A> - 2<A>k</A> + 2</C>, and otherwise is 1. The Kneser graph
+    contains a Hamiltonian cycle if <C><A>n</A> >= ((3 + 5 ^ 0.5) / 2)<A>k</A> +
+    1</C>. The graph has clique number equal to the floor of <C><A>n</A> /
+    <A>k</A></C>.<P/>
+
+    See <URL>https://mathworld.wolfram.com/KneserGraph.html</URL> for further
+    details.<P/>
+
+    &STANDARD_FILT_TEXT;
+
+<Example><![CDATA[
+gap> D := KneserGraph(7, 3);
+<immutable edge- and vertex-transitive symmetric digraph with 35 verti\
+ces, 140 edges>
+gap> IsRegularDigraph(D);
+true
+gap> ChromaticNumber(D);
+3
+gap> CliqueNumber(D);
+2]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="LindgrenSousselierGraph">
+<ManSection>
+  <Oper Name="LindgrenSousselierGraph" Arg="[filt, ]n"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>n</A> is an integer greater than 0, then this operation returns the
+    <A>n</A>th <E>Lindgren-Sousselier graph</E>, an infinite family of
+    hyophamiltonian graphs - a graph that is non-Hamiltonian but removing
+    any vector gives a Hamiltonian graph. The graph has <C>6<A>n</A>+4</C>
+    vertices and <C>15 + 10(<A>n</A>-1)</C> undirected edges. The first
+    Lindgren-Sousselier graph is the Petersen graph, and is in fact the smallest
+    hyophamiltonian graph.<P/>
+
+    See <URL>https://mathworld.wolfram.com/HypohamiltonianGraph.html</URL>
+    for further details.<P/>
+
+    &STANDARD_FILT_TEXT;
+
+<Example><![CDATA[
+gap> D := LindgrenSousselierGraph(3);
+<immutable symmetric digraph with 22 vertices, 70 edges>
+gap> IsHamiltonianDigraph(D);
+false
+gap> IsHamiltonianDigraph(DigraphRemoveVertex(D, 1));
+true
+gap> IsIsomorphicDigraph(LindgrenSousselierGraph(1), PetersenGraph());
+true]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="MobiusLadderGraph">
+<ManSection>
+  <Oper Name="MobiusLadderGraph" Arg="[filt, ]n"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>n</A> is a positive integer at least 4, then this operation returns
+    the <E>Mobius ladder graph</E> that is obtained by introducing a 'twist'
+    in the <A>n</A>th prism graph, similar to the construction of a Mobius
+    strip. The Mobius ladder graph is isomorphic to the circulant graph
+    <C>Ci(2<A>n</A>, [1, <A>n</A>])</C>. The Mobius ladders are cubic,
+    symmetric, Hamiltonian, vertex-transitive, and graceful. They are also
+    non-planar and apex, meaning removing a single vertex produces a planar
+    graph.<P/>
+
+    See <URL>https://mathworld.wolfram.com/MoebiusLadder.html</URL> for further
+    details.<P/>
+
+    &STANDARD_FILT_TEXT;
+
+<Example><![CDATA[
+gap> D := MobiusLadderGraph(7);
+<immutable symmetric digraph with 14 vertices, 42 edges>
+gap> IsHamiltonianDigraph(D);
+true
+gap> IsVertexTransitive(D);
+true
+gap> IsPlanarDigraph(D);
+false
+gap> D2 := DigraphRemoveVertex(D, 1);
+<immutable digraph with 13 vertices, 36 edges>
+gap> IsPlanarDigraph(D2);
+true]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="MycielskiGraph">
+<ManSection>
+  <Oper Name="MycielskiGraph" Arg="[filt, ]n"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>n</A> is an integer greater than 1, then this operation returns the
+    <A>n</A>th <E>Mycielski graph</E>. The Mycielskian of a triangle-free graph
+    is a construction that adds vertices and edges to produce a new graph that
+    is still triangle-free but has a larger chromatic number. The Mycielski
+    graphs are a series of graphs with this construction repeated, starting
+    with the complete graph on two vertices. The graph has <C>3 * 2^(<A>n</A>-2)
+    - 1</C> vertices, with the number of edges being
+    <C>(18 - 27 * 2 ^ <A>n</A> + 14 * 3 ^ <A>n</A>) / 36</C>.<P/>
+
+    The Mycielski graph has chromatic number equal to <A>n</A>, clique number
+    equal to <M>2</M>, and is Hamiltonian. The graph is in fact the graph with
+    chromatic number <A>n</A> with the least possible vertices.<P/>
+
+    See <URL>https://mathworld.wolfram.com/MycielskiGraph.html</URL> for further
+    details.<P/>
+
+    &STANDARD_FILT_TEXT;
+
+<Example><![CDATA[
+gap> D := MycielskiGraph(4);
+<immutable Hamiltonian connected symmetric digraph with 11 vertices, 4\
+0 edges>
+gap> ChromaticNumber(D);
+4
+gap> CliqueNumber(D);
+2]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="OddGraph">
+<ManSection>
+  <Oper Name="OddGraph" Arg="[filt, ]n"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>n</A> is an integer greater than 0, then this operation returns the
+    <A>n</A>th <E>odd graph</E>. The odd graph has vertices labelled with the
+    <C><A>n</A>-1</C>-subsets of a <C>2<A>n</A>-1</C>-set, with two vertices
+    adjacent if and only if their subsets are disjoint. The <A>n</A>th odd graph
+    is the <C>(2<A>n</A>-1, <A>n</A>-1)</C>-th Kneser graph. The graph has
+    <C>Binomial(2<A>n</A>-1, <A>n</A>-1)</C> vertices and <C><A>n</A> *
+    Binomial(2<A>n</A>-1, <A>n</A>-1) / 2</C> edges.<P/>
+
+    The odd graph is regular and distance transitive (and therefore distance
+    regular). They have chromatic number equal to 3, and all Odd graphs with
+    <A>n</A> greater than 3 are Hamiltonian. They are also vertex and edge
+    transitive.<P/>
+
+    See <URL>https://mathworld.wolfram.com/OddGraph.html</URL> for further
+    details.<P/>
+
+    &STANDARD_FILT_TEXT;
+
+<Example><![CDATA[
+gap> D := OddGraph(4);
+<immutable edge- and vertex-transitive symmetric digraph with 35 verti\
+ces, 140 edges>
+gap> IsIsomorphicDigraph(D, KneserGraph(7, 3));
+true
+gap> ChromaticNumber(D);
+3]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="PathGraph">
+<ManSection>
+  <Oper Name="PathGraph" Arg="[filt, ]n"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>n</A> is a non-negative integer then this operation returns the
+    <A>n</A>th <E>path graph</E>, consisting of the path on <A>n</A> vertices.
+    This is the symmetric closure of the <Ref Oper="ChainDigraph"/>. The path
+    graph has <A>n</A> vertices and <C><A>n</A>-1</C> edges. The path graph is
+    an undirected tree.<P/>
+
+    See <URL>https://mathworld.wolfram.com/PathGraph.html</URL> for
+    further details.<P/>
+
+    &STANDARD_FILT_TEXT;
+
+<Example><![CDATA[
+gap> D := PathGraph(12);
+<immutable undirected tree digraph with 12 vertices>]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="PermutationStarGraph">
+<ManSection>
+  <Oper Name="PermutationStarGraph" Arg="[filt, ]n, k"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>n</A> is an integer at greater than 0 and <A>k</A> is an integer
+    greater than 1, and <A>k</A> less than or equal to <A>n</A>, then this
+    operation returns the <C>(<A>n</A>, <A>k</A>)</C>-th <E>permutation star
+    graph</E>. The vertices of the graph are given by the <A>k</A>-length
+    ordered subsets of an <A>n</A>-set, with two vertices being adjacent if one
+    is labelled <C>p1 p2 p3 ... pi ... p<A>k</A></C>, and the other is either
+    labelled <C>pi p2 p3 ... p1 ... p<A>k</A></C>, or labelled
+    <C>x p2 p3 ... pi ... p<A>k</A></C> where <C>x</C> is in
+    <C>[1..<A>n</A>]</C> and is not equal to <C>p1</C>. The graph has
+    <C><A>n</A>! / (<A>n</A> - <A>k</A>)!</C> vertices.<P/>
+
+    The permutation star graph is regular and vertex transitive. It has diameter
+    <C>2<A>k</A> - 1</C> if <A>k</A> less than or equal to <C>Int(<A>n</A> /
+    2)</C>, and diameter <C>Int((<A>n</A> - 1) / 2) + <A>k</A></C> if
+    <C><A>k</A> >= Int(<A>n</A> / 2) + 1</C>.<P/>
+
+    See <URL>https://mathworld.wolfram.com/PermutationStarGraph.html</URL> for
+    further details.<P/>
+
+    &STANDARD_FILT_TEXT;
+
+<Example><![CDATA[
+gap> D := PermutationStarGraph(6, 2);
+<immutable vertex-transitive symmetric digraph with 30 vertices, 150 e\
+dges>
+gap> DigraphDiameter(D);
+3]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="PrismGraph">
+<ManSection>
+  <Oper Name="PrismGraph" Arg="[filt, ]n"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>n</A> is a positive integer at least 3, then this operation returns
+    the <E>prism graph</E> that is the skeleton of the <A>n</A>-prism. It has
+    <C>2<A>n</A></C> vertices and <C>3<A>n</A></C> undirected edges. The prism
+    graph is a symmetric digraph. The <A>n</A>th prism graph is isomorphic to
+    the graph Cartesian product of the second path graph and the <A>n</A>th
+    cycle graph, isomorphic to the generalised Petersen graph
+    <C>GP(<A>n</A>,1)</C>. If <A>n</A> is odd then the prism graph is isomorphic
+    to the Circulant graph <C>Ci(2<A>n</A>, [2,<A>n</A>])</C>. The prism graph
+    is Hamiltonian.<P/>
+
+    See <URL>https://mathworld.wolfram.com/PrismGraph.html</URL> for further
+    details.<P/>
+
+    &STANDARD_FILT_TEXT;
+
+<Example><![CDATA[
+gap> D := PrismGraph(4);
+<immutable symmetric digraph with 8 vertices, 24 edges>
+gap> IsHamiltonianDigraph(D);
+true
+gap> D := PrismGraph(5);
+<immutable symmetric digraph with 10 vertices, 30 edges>
+gap> IsIsomorphicDigraph(D, CirculantGraph(10, [2, 5]));
+true]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="StackedPrismGraph">
+<ManSection>
+  <Oper Name="StackedPrismGraph" Arg="[filt, ]n, k"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>n</A> is an integer at least 3 and <A>k</A> is a positive integer then
+    this operation returns the <C>(<A>n</A>,<A>k</A>)</C>-th <E>stacked prism
+    graph</E>. The graph is <A>k</A> concentric <A>n</A>-Cycle graphs connected
+    by spokes.  The stacked prism is the graph Cartesian product of the
+    <A>n</A>th cycle graph and the <A>k</A>th path graph. The graph has
+    <C><A>n</A><A>k</A></C> vertices and <C><A>n</A>(2<A>k</A> - 1)</C>
+    undirected edges. If <A>k</A> is 1 then the graph is the <A>n</A>th cycle
+    graph, if <A>k</A> is 2 then the graph is the prism graph.
+     <P/>
+
+    See <URL>https://mathworld.wolfram.com/StackedPrismGraph.html</URL> for
+    further details.<P/>
+
+    &STANDARD_FILT_TEXT;
+
+<Example><![CDATA[
+gap> D := StackedPrismGraph(5, 2);
+<immutable symmetric digraph with 10 vertices, 30 edges>
+gap> IsIsomorphicDigraph(D, PrismGraph(5));
+true]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="WalshHadamardGraph">
+<ManSection>
+  <Oper Name="WalshHadamardGraph" Arg="[filt, ]n"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>n</A> is a positive integer at least 1, then this operation returns
+    the <E>Hadamard graph</E> constructed from the <A>n</A>th Hadamard matrix
+    (of dimension <C>2^<A>n</A></C>) as constructed by Joseph Walsh. A Hadamard
+    matrix is a square matrix with entries either <M>1</M> or <M>-1</M>, such
+    that all the rows are mutually orthogonal. The <A>n</A>th Walsh Hadamard
+    graph is a graph on <C>4<A>n</A></C> matrices split into four categories
+    <M>r_i+, r_i-, c_i+, c_i-</M>.  If <M>h_ij</M> are the elements of the
+    <A>n</A>th Walsh matrix, then if <M>h_ij = 1</M> then <M>(r_i+, c_j+)</M>
+    and <M>(r_i-, c_j-)</M> are edges, if <M>h_ij = -1</M> then <M>(r_i+,
+    c_j-)</M> and <M>(r_i-, c_j+)</M> are edges. Walsh Hadamard graphs are
+    distance transitive and distance regular.<P/>
+
+    See <URL>https://mathworld.wolfram.com/HadamardGraph.html</URL> for further
+    details.<P/>
+
+    &STANDARD_FILT_TEXT;
+
+<Example><![CDATA[
+gap> D := WalshHadamardGraph(5);
+<immutable symmetric digraph with 64 vertices, 1024 edges>
+gap> IsDistanceRegularDigraph(D);
+true]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="WebGraph">
+<ManSection>
+  <Oper Name="WebGraph" Arg="[filt, ]n"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>n</A> is an integer at least 3 then this operation returns the
+    <A>n</A>th <E>web graph</E>. The web graph is the <C>(<A>n</A>,3)</C>-th
+    stacked prism graph with the edges of the outer cycle removed. The graph
+    has <C>3<A>n</A></C> vertices and <C>4<A>n</A></C> undirected edges.<P/>
+
+    See <URL>https://mathworld.wolfram.com/WebGraph.html</URL> for
+    further details.<P/>
+
+    &STANDARD_FILT_TEXT;
+
+<Example><![CDATA[
+gap> D := WebGraph(5);
+<immutable symmetric digraph with 15 vertices, 40 edges>]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="WheelGraph">
+<ManSection>
+  <Oper Name="WheelGraph" Arg="[filt, ]n"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>n</A> is a positive integer at least 4, then this operation returns
+    the <A>n</A>th <E>wheel graph</E>. The Wheel graph is formed from an
+    <C><A>n</A>-1</C> cycle graph with a single additional vertex adjacent to
+    all vertices of the cycle. The graph has <A>n</A> vertices and
+    <C>2(<A>n</A>-1)</C> edges. Wheel graphs are the skeletons of
+    <C><A>n</A>-1</C> pyramids, and are self-dual. If <A>n</A> is odd, then the
+    chromatic number of the wheel graph is 3 and the Wheel graph is perfect, and
+    it is 4 otherwise. The wheel graph is also Hamiltonian and planar.<P/>
+
+    See <URL>https://mathworld.wolfram.com/WheelGraph.html</URL> for further
+    details.<P/>
+
+    &STANDARD_FILT_TEXT;
+
+<Example><![CDATA[
+gap> D := WheelGraph(8);
+<immutable Hamiltonian connected symmetric digraph with 8 vertices, 28\
+ edges>
+gap> ChromaticNumber(D);
+4
+gap> IsHamiltonianDigraph(D);
+true]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="WindmillGraph">
+<ManSection>
+  <Oper Name="WindmillGraph" Arg="[filt, ]n, m"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>n</A> and <A>m</A> are integers greater than 1 then this operation
+    returns the <C>(<A>n</A>, <A>m</A>)</C>-th <E>windmill graph</E>. The
+    windmill graph is formed from <A>m</A> copies of the complete graph on
+    <A>n</A> vertices with one shared vertex. The graph has <C><A>m</A>(<A>n</A>
+    - 1) + 1</C> vertices and <C><A>m</A> * <A>n</A> * (<A>n</A> - 1) / 2</C>
+    undirected edges. The windmill graph has chromatic number <A>n</A> and
+    diameter 2.<P/>
+
+    See <URL>https://mathworld.wolfram.com/WindmillGraph.html</URL> for
+    further details.<P/>
+
+    &STANDARD_FILT_TEXT;
+
+<Example><![CDATA[
+gap> D := WindmillGraph(4, 3);
+<immutable symmetric digraph with 10 vertices, 36 edges>
+gap> ChromaticNumber(D);
+4]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
