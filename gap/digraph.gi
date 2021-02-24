@@ -28,15 +28,15 @@ BindGlobal("DIGRAPHS_NamedGraph6String", fail);
 BindGlobal("DIGRAPHS_LoadNamedGraph6Strings", function()
   local f, r;
   if DIGRAPHS_NamedGraph6String = fail then
-   f := Concatenation(DIGRAPHS_Dir(), "/data/named-g6.p.gz");
-   f := IO_CompressedFile(f, "r");
-   r := IO_Unpickle(f);
-   IO_Close(f);
+    f := Concatenation(DIGRAPHS_Dir(), "/data/named-g6.p.gz");
+    f := IO_CompressedFile(f, "r");
+    r := IO_Unpickle(f);
+    IO_Close(f);
 
-   MakeReadWriteGlobal("DIGRAPHS_NamedGraph6String");
-   UnbindGlobal("DIGRAPHS_NamedGraph6String");
-   BindGlobal("DIGRAPHS_NamedGraph6String", r);
- fi;
+    MakeReadWriteGlobal("DIGRAPHS_NamedGraph6String");
+    UnbindGlobal("DIGRAPHS_NamedGraph6String");
+    BindGlobal("DIGRAPHS_NamedGraph6String", r);
+  fi;
 end);
 
 InstallMethod(DigraphMutabilityFilter, "for a digraph", [IsDigraph],
