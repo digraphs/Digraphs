@@ -459,7 +459,9 @@ function(name)
   DIGRAPHS_LoadNamedGraph6Strings();
 
   if not name in RecNames(DIGRAPHS_NamedGraph6String) then
-    ErrorNoReturn("Named graph not found. Please check argument 'name'.");
+    ErrorNoReturn("Named graph not found. Please check argument 'name',\n",
+                  "or view list of available graphs with prefix p using\n",
+                  "ListNamedGraphs(p).");
   fi;
   return DigraphFromGraph6String(DIGRAPHS_NamedGraph6String.(name));
 end);
