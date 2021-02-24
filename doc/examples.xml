@@ -309,3 +309,35 @@ gap> GeneralisedPetersenGraph(IsMutableDigraph, 9, 4);
   </Description>
 </ManSection>
 <#/GAPDoc>
+
+<#GAPDoc Label="LollipopGraph">
+<ManSection>
+  <Oper Name="LollipopGraph" Arg="[filt, ]n, k"/>
+  <Returns>A digraph</Returns>
+  <Description>
+    If <A>m</A> and <A>n</A> are positive integers and <A>k</A>, 
+    then this operation returns the <A>(m, n)</A>-lollipop graph
+    that consists of a complete digraph on <A>m</A> vertices and a 
+    path digraph on  <A>n</A> vertices connected by a bridge.
+
+    From
+    <URL>https://en.wikipedia.org/wiki/Lollipop_graph</URL>:
+    <P/>
+
+<Example><![CDATA[
+gap> LollipopGraph(5, 4);
+<mutable digraph with 9 vertices, 28 edges>
+gap> LollipopGraph(8, 4);
+<mutable digraph with 12 vertices, 64 edges>
+gap> D := LollipopGraph(5, 3);
+<mutable digraph with 8 vertices, 26 edges>
+gap> DigraphNrVertices(D);
+8
+gap> DigraphNrEdges(D);
+26
+gap> DigraphUndirectedGirth(D);
+3
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>

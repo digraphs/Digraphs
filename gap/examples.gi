@@ -370,3 +370,13 @@ GeneralisedPetersenGraphCons);
 
 InstallMethod(GeneralisedPetersenGraph, "for integer, integer", [IsInt, IsInt],
 {n, k} -> GeneralisedPetersenGraphCons(IsImmutableDigraph, n, k));
+
+InstallMethod(LollipopGraph, "for two positive integers",
+[IsPosInt, IsPosInt],
+function(m, n)
+  local D;
+  D := DigraphDisjointUnion(CompleteDigraph(IsMutableDigraph, m),
+  DigraphSymmetricClosure(ChainDigraph(IsMutableDigraph, n)));
+  DigraphAddEdges(D, [[m, m + 1], [m + 1, m]]);
+  return D;
+end);
