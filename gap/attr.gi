@@ -978,7 +978,7 @@ function(digraph)
   fi;
   oddgirth := infinity;
   for comp in comps do
-    if comps > 1 then
+    if Length(comps) > 1 then  # i.e. if not IsStronglyConnectedDigraph(digraph)
       gr := InducedSubdigraph(digraph, comp);
     else
       gr := digraph;
