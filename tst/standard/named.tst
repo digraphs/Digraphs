@@ -65,7 +65,7 @@ gap> failed;
 [  ]
 
 # Check behaviour on some string inputs.
-gap> Digraph("Surely no digraph has this name");
+gap> Digraph("Surely no graph has this name");
 Error, Named graph not found. Please check argument 'name',
 or view list of available graphs with prefix p using
 ListNamedGraphs(p).
@@ -73,6 +73,8 @@ gap> D := Digraph("folkman");
 <immutable digraph with 20 vertices, 80 edges>
 gap> D = Digraph("F \n  Ol k\tMA\r\r n");
 true
+gap> Digraph("");
+<immutable empty digraph with 0 vertices>
 
 # Check attributes of first few graphs (extreme/named.tst checks all).
 # "failed" is a list of pairs [name, prop] where the digraph called "name"
@@ -91,6 +93,15 @@ gap> failed := [];;
 >      od;
 >    od;
 gap> failed;
+[  ]
+
+# ListNamedDigraphs
+gap> Length(RecNames(DIGRAPHS_NamedGraph6String))
+>    = Length(ListNamedDigraphs(""));
+true
+gap> "folkman" in ListNamedDigraphs("F\n oL");
+true
+gap> ListNamedDigraphs("Surely no digraph has this name");
 [  ]
 
 #  DIGRAPHS_UnbindVariables

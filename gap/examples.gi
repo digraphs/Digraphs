@@ -392,7 +392,7 @@ function(s)
   # add to out-list all valid completions of the request s
   out := [];
   for c in cands do
-    if c{[1 .. l]} = s then
+    if Length(c) >= l and c{[1 .. l]} = s then
       Add(out, c);
     fi;
   od;
