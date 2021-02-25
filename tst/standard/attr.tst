@@ -1217,6 +1217,12 @@ gap> for i in [1 .. 10] do
 > od;
 gap> DigraphOddGirth(D);
 7
+gap> D := DigraphFromDigraph6String("&IWsC_A?_PG_GDKC?cO");
+<immutable digraph with 10 vertices, 22 edges>
+gap> DigraphGirth(D);
+2
+gap> DigraphOddGirth(D);
+3
 
 # DigraphMycielskian
 gap> D1 := DigraphSymmetricClosure(CycleDigraph(2));
@@ -1368,6 +1374,13 @@ gap> gr := MaximalSymmetricSubdigraphWithoutLoops(gr);
 <immutable symmetric digraph with 3 vertices, 4 edges>
 gap> OutNeighbours(gr);
 [ [ 2, 3 ], [ 1 ], [ 1 ] ]
+gap> D := Digraph(IsImmutableDigraph, [[2, 2], [1]]);
+<immutable multidigraph with 2 vertices, 3 edges>
+gap> DigraphRemoveAllMultipleEdges(D);;
+gap> HasDigraphRemoveAllMultipleEdgesAttr(D);
+true
+gap> IsCompleteDigraph(MaximalSymmetricSubdigraph(D));
+true
 
 #  RepresentativeOutNeighbours
 gap> gr := CycleDigraph(5);
@@ -1574,6 +1587,8 @@ fail
 gap> forest := UndirectedSpanningForest(gr);
 fail
 gap> UndirectedSpanningForest(EmptyDigraph(IsMutableDigraph, 0));
+fail
+gap> UndirectedSpanningTree(ChainDigraph(IsMutableDigraph, 4));
 fail
 gap> gr := EmptyDigraph(1);
 <immutable empty digraph with 1 vertex>
@@ -2047,6 +2062,13 @@ gap> MaximalAntiSymmetricSubdigraph(D);
 <immutable antisymmetric digraph with 10 vertices, 45 edges>
 gap> MaximalAntiSymmetricSubdigraph(D);
 <immutable antisymmetric digraph with 10 vertices, 45 edges>
+gap> D := Digraph(IsImmutableDigraph, [[2, 2], [1]]);
+<immutable multidigraph with 2 vertices, 3 edges>
+gap> DigraphRemoveAllMultipleEdges(D);;
+gap> HasDigraphRemoveAllMultipleEdgesAttr(D);
+true
+gap> IsChainDigraph(MaximalAntiSymmetricSubdigraph(D));
+true
 
 # CharacteristicPolynomial
 gap> gr := Digraph([
@@ -2156,6 +2178,11 @@ gap> DigraphTransitiveReduction(gr);
 Error, not yet implemented for non-topologically sortable digraphs,
 gap> DigraphReflexiveTransitiveReduction(gr);
 Error, not yet implemented for non-topologically sortable digraphs,
+gap> D := Digraph(IsImmutableDigraph, [[1, 2, 3], [3], [3]]);;
+gap> DigraphRemoveLoops(D);; HasDigraphRemoveLoopsAttr(D);
+true
+gap> DigraphReflexiveTransitiveReduction(D) = ChainDigraph(3);
+true
 
 # Working examples
 gap> gr1 := ChainDigraph(6);
@@ -2531,6 +2558,14 @@ gap> D := DigraphByAdjacencyMatrix([
 <immutable multidigraph with 3 vertices, 7 edges>
 gap> DigraphNrLoops(D);
 3
+gap> D := CompleteDigraph(IsImmutableDigraph, 3);
+<immutable complete digraph with 3 vertices>
+gap> DigraphHasLoops(D);
+false
+gap> HasDigraphHasLoops(D) and not DigraphHasLoops(D);
+true
+gap> DigraphNrLoops(D) = 0;
+true
 
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(adj);

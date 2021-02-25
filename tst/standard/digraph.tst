@@ -1234,6 +1234,12 @@ gap> gr2 := DigraphAddAllLoops(gr);
 <immutable reflexive multidigraph with 5 vertices, 15 edges>
 gap> OutNeighbours(gr2);
 [ [ 1, 2, 3 ], [ 2, 2, 2, 2 ], [ 5, 1, 3 ], [ 1, 2, 3, 4 ], [ 5 ] ]
+gap> D := Digraph(IsImmutableDigraph,
+> [[1, 3], [2, 1, 5], [3, 4], [2, 3, 4], [5, 1]]);;
+gap> IsReflexiveDigraph(D);
+true
+gap> IsIdenticalObj(D, DigraphAddAllLoops(D));
+true
 
 # ConvertToImmutableDigraphNC
 gap> record := rec(OutNeighbours := [[1, 2], []]);
