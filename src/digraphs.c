@@ -87,7 +87,7 @@ Obj FuncOutNeighbours(Obj self, Obj D) {
     RNamOutNeighbours = RNamName("OutNeighbours");
   }
   if (!CALL_1ARGS(IsDigraph, D)) {
-    ErrorQuit("the expected a digraph, not a %s", (Int) TNAM_OBJ(D), 0L);
+    ErrorQuit("expected a digraph, not a %s", (Int) TNAM_OBJ(D), 0L);
   } else if (IsbPRec(D, RNamOutNeighbours)) {
     return ElmPRec(D, RNamOutNeighbours);
   } else {
