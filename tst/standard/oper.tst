@@ -335,8 +335,10 @@ Error, the 2nd argument <partition> is not a valid partition of the vertices [\
 1 .. 3] of the 1st argument <D>,
 gap> gr := Digraph(rec(
 > DigraphNrVertices := 8,
-> DigraphSource := [1, 1, 2, 2, 3, 4, 4, 4, 5, 5, 5, 5, 5, 6, 7, 7, 7, 7, 7, 8, 8],
-> DigraphRange := [6, 7, 1, 6, 5, 1, 4, 8, 1, 3, 4, 6, 7, 7, 1, 4, 5, 6, 7, 5, 6]));
+> DigraphSource := [1, 1, 2, 2, 3, 4, 4, 4, 5, 5, 5, 5, 5, 6, 7, 7, 7, 7, 7, 8,
+>                   8],
+> DigraphRange := [6, 7, 1, 6, 5, 1, 4, 8, 1, 3, 4, 6, 7, 7, 1, 4, 5, 6, 7, 5,
+>                  6]));
 <immutable digraph with 8 vertices, 21 edges>
 gap> qr := QuotientDigraph(gr, [[1], [2, 3, 5, 7], [4, 6, 8]]);
 <immutable digraph with 3 vertices, 8 edges>
@@ -354,8 +356,9 @@ gap> DigraphOutEdges(gr, 5);
 Error, the 2nd argument <v> is not a vertex of the 1st argument <D>,
 gap> DigraphInEdges(gr, 1000);
 Error, the 2nd argument <v> is not a vertex of the 1st argument <D>,
-gap> gr := Digraph(rec(DigraphVertices := ["a", "b", "c"], DigraphSource := ["a", "a", "b"],
-> DigraphRange := ["b", "b", "c"]));
+gap> gr := Digraph(rec(DigraphVertices := ["a", "b", "c"],
+>                      DigraphSource   := ["a", "a", "b"],
+>                      DigraphRange    := ["b", "b", "c"]));
 <immutable multidigraph with 3 vertices, 3 edges>
 gap> DigraphInEdges(gr, 1);
 [  ]
@@ -427,7 +430,9 @@ gap> IsDigraphEdge(gr, [1000, 1]);
 true
 gap> IsDigraphEdge(gr, [1000, 600]);
 false
-gap> gr := Digraph(rec(DigraphNrVertices := 2, DigraphSource := [1], DigraphRange := [2]));
+gap> gr := Digraph(rec(DigraphNrVertices := 2,
+>                      DigraphSource     := [1],
+>                      DigraphRange      := [2]));
 <immutable digraph with 2 vertices, 1 edge>
 gap> IsDigraphEdge(gr, [2, 1]);
 false
@@ -593,7 +598,9 @@ gap> gr2 := DigraphAddVertices(gr, [SymmetricGroup(2), Group(())]);
 <immutable digraph with 3 vertices, 1 edge>
 gap> DigraphVertexLabels(gr2);
 [ Alt( [ 1 .. 5 ] ), Sym( [ 1 .. 2 ] ), Group(()) ]
-gap> gr := Digraph(rec(DigraphNrVertices := 1, DigraphSource := [1], DigraphRange := [1]));
+gap> gr := Digraph(rec(DigraphNrVertices := 1,
+>                      DigraphSource     := [1],
+>                      DigraphRange      := [1]));
 <immutable digraph with 1 vertex, 1 edge>
 gap> gr2 := DigraphAddVertices(gr, 2);
 <immutable digraph with 3 vertices, 1 edge>
@@ -604,12 +611,16 @@ gap> gr2 := DigraphAddVertices(gr, 2);
 <immutable digraph with 3 vertices, 1 edge>
 gap> DigraphVertexLabels(gr2);
 [ true, 2, 3 ]
-gap> gr := Digraph(rec(DigraphNrVertices := 1, DigraphSource := [1], DigraphRange := [1]));;
+gap> gr := Digraph(rec(DigraphNrVertices := 1,
+>                      DigraphSource     := [1],
+>                      DigraphRange      := [1]));;
 gap> gr2 := DigraphAddVertices(gr, [SymmetricGroup(2), Group(())]);
 <immutable digraph with 3 vertices, 1 edge>
 gap> DigraphVertexLabels(gr2);
 [ 1, Sym( [ 1 .. 2 ] ), Group(()) ]
-gap> gr := Digraph(rec(DigraphNrVertices := 1, DigraphSource := [1], DigraphRange := [1]));;
+gap> gr := Digraph(rec(DigraphNrVertices := 1,
+>                      DigraphSource     := [1],
+>                      DigraphRange      := [1]));;
 gap> SetDigraphVertexLabels(gr, [AlternatingGroup(5)]);
 gap> gr2 := DigraphAddVertices(gr, [SymmetricGroup(2), Group(())]);
 <immutable digraph with 3 vertices, 1 edge>
@@ -1841,7 +1852,8 @@ gap> D;
 <mutable digraph with 5 vertices, 7 edges>
 
 # DigraphAddAllLoops - mutable
-gap> D := Digraph(IsMutableDigraph, [[1], [3, 4], [5, 6], [4, 2, 3], [4, 5], [1]]);
+gap> D := Digraph(IsMutableDigraph,
+> [[1], [3, 4], [5, 6], [4, 2, 3], [4, 5], [1]]);
 <mutable digraph with 6 vertices, 11 edges>
 gap> DigraphAddAllLoops(D);
 <mutable digraph with 6 vertices, 14 edges>
@@ -2001,7 +2013,8 @@ gap> DigraphCartesianProduct(D, D, D);
 <mutable digraph with 27 vertices, 81 edges>
 gap> D := DigraphMutableCopy(CycleDigraph(3));
 <mutable digraph with 3 vertices, 3 edges>
-gap> DigraphCartesianProduct(D, CycleDigraph(3), CycleDigraph(3), CycleDigraph(3));
+gap> DigraphCartesianProduct(
+> D, CycleDigraph(3), CycleDigraph(3), CycleDigraph(3));
 <mutable digraph with 81 vertices, 324 edges>
 gap> D := DigraphCartesianProduct(ChainDigraph(3), CycleDigraph(3));
 <immutable digraph with 9 vertices, 15 edges>

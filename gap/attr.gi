@@ -977,7 +977,7 @@ function(digraph)
   fi;
   oddgirth := infinity;
   for comp in comps do
-    if comps > 1 then
+    if Length(comps) > 1 then  # i.e. if not IsStronglyConnectedDigraph(digraph)
       gr := InducedSubdigraph(digraph, comp);
     else
       gr := digraph;
@@ -1449,18 +1449,6 @@ end);
 
 InstallMethod(CharacteristicPolynomial, "for a digraph", [IsDigraph],
 D -> CharacteristicPolynomial(AdjacencyMatrix(D)));
-
-InstallMethod(IsVertexTransitive, "for a digraph", [IsDigraph],
-D -> IsTransitive(AutomorphismGroup(D), DigraphVertices(D)));
-
-InstallMethod(IsEdgeTransitive, "for a digraph", [IsDigraph],
-function(D)
-  if IsMultiDigraph(D) then
-    ErrorNoReturn("the argument <D> must be a digraph with no multiple",
-                  " edges,");
-  fi;
-  return IsTransitive(AutomorphismGroup(D), DigraphEdges(D), OnPairs);
-end);
 
 # Things that are attributes for immutable digraphs, but operations for mutable.
 
