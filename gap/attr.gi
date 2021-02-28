@@ -11,9 +11,6 @@
 InstallMethod(DigraphNrVertices, "for a digraph by out-neighbours",
 [IsDigraphByOutNeighboursRep], DIGRAPH_NR_VERTICES);
 
-InstallMethod(OutNeighbours, "for a digraph by out-neighbours",
-[IsDigraphByOutNeighboursRep], DIGRAPH_OUT_NEIGHBOURS);
-
 # The next method is (yet another) DFS which simultaneously computes:
 # 1. *articulation points* as described in
 #   https://www.eecs.wsu.edu/~holder/courses/CptS223/spr08/slides/graphapps.pdf
