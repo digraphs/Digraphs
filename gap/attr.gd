@@ -18,7 +18,7 @@ DeclareAttribute("DigraphNrLoops", IsDigraph);
 
 DeclareAttribute("DigraphRange", IsDigraph);
 DeclareAttribute("DigraphSource", IsDigraph);
-DeclareGlobalFunction("OutNeighbors", OutNeighbours);
+DeclareGlobalFunction("OutNeighbors");
 DeclareAttribute("InNeighbours", IsDigraph);
 DeclareSynonymAttr("InNeighbors", InNeighbours);
 DeclareAttribute("DigraphAdjacencyFunction", IsDigraph);
