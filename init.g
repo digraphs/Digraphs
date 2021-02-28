@@ -27,9 +27,14 @@ fi;
 BindGlobal("DIGRAPHS_IsGrapeLoaded",
            IsPackageMarkedForLoading("grape", "4.8.1"));
 
-if not DIGRAPHS_IsGrapeLoaded then
+# To avoid warnings when GRAPE is not loaded
+if not IsBound(IsGraph) then
   IsGraph := ReturnFalse;
+fi;
+if not IsBound(Vertices) then
   Vertices := IdFunc;
+fi;
+if not IsBound(Adjacency) then
   Adjacency := IdFunc;
 fi;
 
