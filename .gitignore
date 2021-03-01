@@ -74,3 +74,4 @@ coverage
 .ipynb_checkpoints
 bliss
 *.a
+*.dylib
