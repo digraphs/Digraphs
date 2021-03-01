@@ -309,3 +309,36 @@ gap> GeneralisedPetersenGraph(IsMutableDigraph, 9, 4);
   </Description>
 </ManSection>
 <#/GAPDoc>
+
+<#GAPDoc Label="TadpoleDigraph">
+<ManSection>
+  <Oper Name="TadpoleDigraph" Arg="[filt, ]m, n"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>m</A> and <A>n</A> are non-negative integers (where m > 2), then this operation
+    returns a Tadpole digraph.<P/>
+
+    If the optional first argument <A>filt</A> is present, then this should
+    specify the category or representation the digraph being created will
+    belong to. For example, if <A>filt</A> is <Ref Filt="IsMutableDigraph"/>,
+    then the digraph being created will be mutable, if <A>filt</A> is <Ref
+    Filt="IsImmutableDigraph"/>, then the digraph will be immutable. 
+    If the optional first argument <A>filt</A> is not present, then <Ref
+      Filt="IsImmutableDigraph"/> is used by default.<P/>
+
+    The <E>Tadpole digraph</E> consists of a cycle graph on m vertices and a path graph on
+    n vertices. These two graphs are connected by a bridge.<P/>
+
+    <Example><![CDATA[
+gap> TadpoleDigraph(10, 15);
+<immutable symmetric multidigraph with 25 vertices, 50 edges>
+gap> TadpoleDigraph(IsMutableDigraph, 5, 6);
+<mutable digraph with 11 vertices, 22 edges>
+gap> IsSymmetricDigraph(TadpoleDigraph(3, 5));
+true
+gap> IsMultiDigraph(TadpoleDigraph(3, 5));
+true
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>

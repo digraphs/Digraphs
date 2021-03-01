@@ -370,3 +370,58 @@ GeneralisedPetersenGraphCons);
 
 InstallMethod(GeneralisedPetersenGraph, "for integer, integer", [IsInt, IsInt],
 {n, k} -> GeneralisedPetersenGraphCons(IsImmutableDigraph, n, k));
+
+InstallMethod(GeneralisedPetersenGraphCons,
+"for IsImmutableDigraph, integer, int",
+[IsImmutableDigraph, IsInt, IsInt],
+function(filt, n, k)
+  local D;
+  D := MakeImmutable(GeneralisedPetersenGraphCons(IsMutableDigraph, n, k));
+  SetIsMultiDigraph(D, false);
+  SetIsSymmetricDigraph(D, true);
+  return D;
+end);
+
+InstallMethod(TadpoleDigraphCons, "for IsMutableDigraph and two integers",
+[IsMutableDigraph, IsInt, IsInt],
+function(filt, m, n)
+  local i, j, tail, graph;
+  if (m < 3) then
+    ErrorNoReturn("m needs to greater than 2");
+  elif (n < 0) then
+    ErrorNoReturn("n needs to be positive (or 0)");
+  fi;
+  graph := CycleDigraph(IsMutable, m);
+  DigraphAddEdge(graph, [1, m]);
+  for j in [2 .. m] do
+    DigraphAddEdge(graph, [j, j - 1]);
+  od;
+  if (n = 0) then
+    return graph;
+  fi;
+  tail := ChainDigraph(IsMutable, n);
+  for i in [2 .. n] do
+    DigraphAddEdge(tail, [i, i - 1]);
+  od;
+  DigraphDisjointUnion(graph, tail);
+  DigraphAddEdges(graph, [[m, n + m], [n + m, m]]);
+  return graph;
+end);
+
+InstallMethod(TadpoleDigraph, "for a function, integer, integer",
+[IsFunction, IsInt, IsInt],
+TadpoleDigraphCons);
+
+InstallMethod(TadpoleDigraph, "for integer, integer", [IsInt, IsInt],
+{m, n} -> TadpoleDigraphCons(IsImmutableDigraph, m, n));
+
+InstallMethod(TadpoleDigraphCons,
+"for IsImmutableDigraph, integer, integer",
+[IsImmutableDigraph, IsInt, IsInt],
+function(filt, m, n)
+  local D;
+  D := MakeImmutable(TadpoleDigraph(IsMutableDigraph, m, n));
+  SetIsMultiDigraph(D, true);
+  SetIsSymmetricDigraph(D, true);
+  return D;
+end);
