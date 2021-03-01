@@ -50,6 +50,14 @@
   <Ref Sect="Isomorphisms and canonical labellings"/> for more details.  
   <P/>
 
+  The &edge-addition-planarity-suite; is also included in &Digraphs;; see
+  <Cite Key="BM04"/>, <Cite Key="B06"/>, <Cite Key="BM06"/>, and <Cite
+  Key="B12"/> .  The &edge-addition-planarity-suite; is an open-source
+  implementation of the edge addition planar graph embedding algorithm and
+  related algorithms by John M. Boyer. See Section <Ref Sect="Planarity"/> for
+  more details.
+  <P/>
+
   From version 1.0.0 of this package, digraphs can be either mutable or immutable.
   Mutable digraphs can be changed in-place by many of the methods in the
   package, which avoids unnecessary copying. Immutable digraphs cannot be
