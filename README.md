@@ -85,12 +85,27 @@ If you installed GAP on several architectures, then you must execute the
 configure/make step for each of the architectures. You can either do this
 immediately after configuring and compiling GAP itself on this architecture, or
 alternatively set the environment variable `CONFIGNAME` to the name of the
-configuration you used when compiling GAPbefore running `./configure`.  Note
+configuration you used when compiling GAP before running `./configure`.  Note
 however that your compiler choice and flags (environment variables `CC` and
 `CFLAGS`) need to be chosen to match the setup of the original GAP compilation.
 For example, you have to specify 32-bit or 64-bit mode correctly!
 
-Digraphs vendors `bliss` and `planarity` libraries in the `extern` directory.
+### Configuration options
+
+In addition to the usual autoconf generated configuration flags, the following
+flags are provided.
+
+Option                        | Meaning
+----------------------------- | ------------------------------------------------
+--enable-code-coverage        | enable code coverage support
+--enable-compile-warnings     | enable compiler warnings
+--enable-debug                | enable debug mode
+--with-external-bliss         | use external bliss
+--with-external-planarity     | use external planarity
+--with-gaproot                | specify root of GAP installation
+--without-intrinsics          | do not use compiler intrinsics even if available
+
+Digraphs vendors the `bliss` and `planarity` libraries in the `extern` directory.
 If you wish to use your system copy of `bliss` or `planarity`, please use the
 configure options `--with-external-bliss` or `--with-external-planarity`, as
 appropriate.
