@@ -2453,6 +2453,46 @@ false
 gap> IsDigraphEmbedding(ran, src, (), [2, 1], [1, 1, 2]);
 false
 
+# MaximalCommSubdigraph and MinimalCommonSuperDigraph
+gap> MaximalCommonSubdigraph(NullDigraph(0), CompleteDigraph(10));
+[ <immutable empty digraph with 0 vertices>, IdentityTransformation, 
+  IdentityTransformation ]
+gap> MinimalCommonSuperdigraph(NullDigraph(0), CompleteDigraph(10));
+[ <immutable digraph with 10 vertices, 90 edges>, IdentityTransformation, 
+  IdentityTransformation ]
+gap> MaximalCommonSubdigraph(PetersenGraph(), CompleteDigraph(10));
+[ <immutable digraph with 2 vertices, 2 edges>, IdentityTransformation, 
+  IdentityTransformation ]
+gap> MinimalCommonSuperdigraph(PetersenGraph(), CompleteDigraph(10));
+[ <immutable digraph with 18 vertices, 118 edges>, IdentityTransformation, 
+  Transformation( [ 1, 2, 11, 12, 13, 14, 15, 16, 17, 18, 11, 12, 13, 14, 15,
+      16, 17, 18 ] ) ]
+gap> MaximalCommonSubdigraph(NullDigraph(10), CompleteDigraph(10));
+[ <immutable empty digraph with 1 vertex>, IdentityTransformation, 
+  IdentityTransformation ]
+gap> MinimalCommonSuperdigraph(NullDigraph(10), CompleteDigraph(10));
+[ <immutable digraph with 19 vertices, 90 edges>, IdentityTransformation, 
+  Transformation( [ 1, 11, 12, 13, 14, 15, 16, 17, 18, 19, 11, 12, 13, 14, 15,
+     16, 17, 18, 19 ] ) ]
+gap> MaximalCommonSubdigraph(CompleteDigraph(100), CompleteDigraph(100));
+[ <immutable digraph with 100 vertices, 9900 edges>, IdentityTransformation, 
+  IdentityTransformation ]
+gap> MinimalCommonSuperdigraph(CompleteDigraph(100), CompleteDigraph(100));
+[ <immutable digraph with 100 vertices, 9900 edges>, IdentityTransformation, 
+  IdentityTransformation ]
+gap> MaximalCommonSubdigraph(PetersenGraph(),
+> DigraphSymmetricClosure(CycleDigraph(5)));
+[ <immutable digraph with 5 vertices, 10 edges>, IdentityTransformation, 
+  IdentityTransformation ]
+gap> MinimalCommonSuperdigraph(PetersenGraph(),
+> DigraphSymmetricClosure(CycleDigraph(5)));
+[ <immutable digraph with 10 vertices, 30 edges>, IdentityTransformation, 
+  IdentityTransformation ]
+gap> MaximalCommonSubdigraph(Digraph([[1, 1]]), Digraph([[1]]));
+Error, ModularProduct does not support multidigraphs,
+gap> MinimalCommonSuperdigraph(Digraph([[1, 1]]), Digraph([[1]]));
+Error, ModularProduct does not support multidigraphs,
+
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(edges);
 gap> Unbind(epis);
