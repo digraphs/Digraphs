@@ -310,13 +310,13 @@ gap> GeneralisedPetersenGraph(IsMutableDigraph, 9, 4);
 </ManSection>
 <#/GAPDoc>
 
-<#GAPDoc Label="TadpoleDigraph">
+<#GAPDoc Label="StarDigraph">
 <ManSection>
-  <Oper Name="TadpoleDigraph" Arg="[filt, ]m, n"/>
+  <Oper Name="StarDigraph" Arg="[filt, ]k"/>
   <Returns>A digraph.</Returns>
   <Description>
-    If <A>m</A> and <A>n</A> are non-negative integers (where m > 2), then this operation
-    returns a Tadpole digraph.<P/>
+    If <A>k</A> is a positive integer, then this operation
+    returns a Star digraph.<P/>
 
     If the optional first argument <A>filt</A> is present, then this should
     specify the category or representation the digraph being created will
@@ -326,17 +326,16 @@ gap> GeneralisedPetersenGraph(IsMutableDigraph, 9, 4);
     If the optional first argument <A>filt</A> is not present, then <Ref
       Filt="IsImmutableDigraph"/> is used by default.<P/>
 
-    The <E>Tadpole digraph</E> consists of a cycle graph on m vertices and a path graph on
-    n vertices. These two graphs are connected by a bridge.<P/>
+    A <E>Star digraph</E> has a single node with k-1 leaves.<P/>
 
     <Example><![CDATA[
-gap> TadpoleDigraph(10, 15);
-<immutable symmetric multidigraph with 25 vertices, 50 edges>
-gap> TadpoleDigraph(IsMutableDigraph, 5, 6);
-<mutable digraph with 11 vertices, 22 edges>
-gap> IsSymmetricDigraph(TadpoleDigraph(3, 5));
+gap> StarDigraph(IsMutable, 10);
+<mutable digraph with 10 vertices, 18 edges>
+gap> StarDigraph(5);
+<immutable symmetric multidigraph with 5 vertices, 8 edges>
+gap> IsSymmetricDigraph(StarDigraph(3));
 true
-gap> IsMultiDigraph(TadpoleDigraph(3, 5));
+gap> IsMultiDigraph(StarDigraph(3));
 true
 ]]></Example>
   </Description>

@@ -382,45 +382,30 @@ function(filt, n, k)
   return D;
 end);
 
-InstallMethod(TadpoleDigraphCons, "for IsMutableDigraph and two integers",
-[IsMutableDigraph, IsInt, IsInt],
-function(filt, m, n)
-  local i, j, tail, graph;
-  if (m < 3) then
-    ErrorNoReturn("m needs to greater than 2");
-  elif (n < 0) then
-    ErrorNoReturn("n needs to be positive (or 0)");
-  fi;
-  graph := CycleDigraph(IsMutable, m);
-  DigraphAddEdge(graph, [1, m]);
-  for j in [2 .. m] do
-    DigraphAddEdge(graph, [j, j - 1]);
+InstallMethod(StarDigraphCons, "for IsMutableDigraph and one integer",
+[IsMutableDigraph, IsPosInt],
+function(filt, k)
+  local j, graph;
+  graph := EmptyDigraph(IsMutable, k);
+  for j in [1 .. (k - 1)] do
+    DigraphAddEdges(graph, [[j, k], [k, j]]);
   od;
-  if (n = 0) then
-    return graph;
-  fi;
-  tail := ChainDigraph(IsMutable, n);
-  for i in [2 .. n] do
-    DigraphAddEdge(tail, [i, i - 1]);
-  od;
-  DigraphDisjointUnion(graph, tail);
-  DigraphAddEdges(graph, [[m, n + m], [n + m, m]]);
   return graph;
 end);
 
-InstallMethod(TadpoleDigraph, "for a function, integer, integer",
-[IsFunction, IsInt, IsInt],
-TadpoleDigraphCons);
+InstallMethod(StarDigraph, "for a function, integer",
+[IsFunction, IsPosInt],
+StarDigraphCons);
 
-InstallMethod(TadpoleDigraph, "for integer, integer", [IsInt, IsInt],
-{m, n} -> TadpoleDigraphCons(IsImmutableDigraph, m, n));
+InstallMethod(StarDigraph, "for integer", [IsPosInt],
+{k} -> StarDigraphCons(IsImmutableDigraph, k));
 
-InstallMethod(TadpoleDigraphCons,
-"for IsImmutableDigraph, integer, integer",
-[IsImmutableDigraph, IsInt, IsInt],
-function(filt, m, n)
+InstallMethod(StarDigraphCons,
+"for IsImmutableDigraph, integer",
+[IsImmutableDigraph, IsPosInt],
+function(filt, k)
   local D;
-  D := MakeImmutable(TadpoleDigraph(IsMutableDigraph, m, n));
+  D := MakeImmutable(StarDigraph(IsMutableDigraph, k));
   SetIsMultiDigraph(D, true);
   SetIsSymmetricDigraph(D, true);
   return D;
