@@ -312,10 +312,10 @@ gap> GeneralisedPetersenGraph(IsMutableDigraph, 9, 4);
 
 <#GAPDoc Label="LollipopGraph">
 <ManSection>
-  <Oper Name="LollipopGraph" Arg="[filt, ]n, k"/>
+  <Oper Name="LollipopGraph" Arg="[filt, ]n, n"/>
   <Returns>A digraph</Returns>
   <Description>
-    If <A>m</A> and <A>n</A> are positive integers and <A>k</A>, 
+    If <A>m</A> and <A>n</A> are positive integers, 
     then this operation returns the <A>(m, n)</A>-lollipop graph
     that consists of a complete digraph on <A>m</A> vertices and a 
     path digraph on  <A>n</A> vertices connected by a bridge.

@@ -371,7 +371,8 @@ GeneralisedPetersenGraphCons);
 InstallMethod(GeneralisedPetersenGraph, "for integer, integer", [IsInt, IsInt],
 {n, k} -> GeneralisedPetersenGraphCons(IsImmutableDigraph, n, k));
 
-InstallMethod(LollipopGraphCons, "for IsMutableDigraph and two positive integers",
+InstallMethod(LollipopGraphCons,
+"for IsMutableDigraph and two positive integers",
 [IsMutableDigraph, IsPosInt, IsPosInt],
 function(filt, m, n)
   local D;
@@ -381,7 +382,8 @@ function(filt, m, n)
   return D;
 end);
 
-InstallMethod(LollipopGraphCons, "for IsImmutableDigraph and two positive integers",
+InstallMethod(LollipopGraphCons,
+"for IsImmutableDigraph and two positive integers",
 [IsImmutableDigraph, IsPosInt, IsPosInt],
 function(filt, m, n)
   local D;
@@ -398,7 +400,3 @@ InstallMethod(LollipopGraph, "for a function and two pos int",
 InstallMethod(LollipopGraph, "for a function and two pos int",
 [IsFunction, IsPosInt, IsPosInt],
 {filt, m, n} -> LollipopGraphCons(filt, m, n));
-
-
-
-
