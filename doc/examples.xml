@@ -312,7 +312,7 @@ gap> GeneralisedPetersenGraph(IsMutableDigraph, 9, 4);
 
 <#GAPDoc Label="LollipopGraph">
 <ManSection>
-  <Oper Name="LollipopGraph" Arg="[filt, ]n, n"/>
+  <Oper Name="LollipopGraph" Arg="[filt, ]m, n"/>
   <Returns>A digraph</Returns>
   <Description>
     If <A>m</A> and <A>n</A> are positive integers, 
