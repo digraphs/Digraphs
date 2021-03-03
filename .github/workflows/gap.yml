@@ -1,0 +1,36 @@
+name: "Digraphs tests"
+on: [push, pull_request]
+
+jobs:
+  test:
+    name: "GAP ${{ matrix.gap-branch }}"
+    runs-on: ubuntu-latest
+    # Don't run this twice for PRs from branches in the same repository
+    if: ${{ !(github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository) }}
+    strategy:
+      fail-fast: false
+      matrix:
+        gap-branch:
+          - master
+          - stable-4.11
+        pkgs-to-clone:
+          - NautyTracesInterface
+
+        include:
+          - gap-branch: stable-4.10
+            pkgs-to-clone: datastructures
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: gap-actions/setup-gap-for-packages@v1
+        name: "Install GAP and clone/compile necessary packages"
+        with:
+          GAP_PKGS_TO_CLONE: "${{ matrix.pkgs-to-clone }}"
+          GAP_PKGS_TO_BUILD: "io orb profiling grape NautyTracesInterface datastructures"
+          GAPBRANCH: ${{ matrix.gap-branch }}
+      - name: "Install digraphs-lib"
+        run: DIGRAPHS_LIB="digraphs-lib-0.6"
+             && curl --retry 5 -L -O "https://digraphs.github.io/Digraphs/${DIGRAPHS_LIB}.tar.gz"
+             && tar xf "${DIGRAPHS_LIB}.tar.gz"
+      - uses: gap-actions/run-test-for-packages@v1
+        name: "Run tst/testall.g"
