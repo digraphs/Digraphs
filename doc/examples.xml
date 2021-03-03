@@ -309,3 +309,49 @@ gap> GeneralisedPetersenGraph(IsMutableDigraph, 9, 4);
   </Description>
 </ManSection>
 <#/GAPDoc>
+
+<#GAPDoc Label="HaarGraph">
+<ManSection>
+  <Oper Name="HaarGraph" Arg="[filt, ]n"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>n</A> is a positive integer then this operation returns
+    the <E>Haar graph</E> <M>H(<A>n</A>)</M>. <P/>
+
+    From
+    <URL>https://mathworld.wolfram.com/HaarGraph.html</URL>:
+    <P/>
+
+    <Q>A Haar graph is a bipartite regular graph indexed by a positive integer.
+    The number of vertices in the resulting graph is equal to the number of digits 
+    required to represent the indexing integer in binary. The vertices are 
+    then split into two groups and connected based on the binary representation
+    of the indexing integer. The two groups can be thought of as two vertical 
+    columns opposite each other. To check which vertices are connected, each vertex in
+    the first collumn is checked in turn. For each of these vertices the binary 
+    representation is mapped onto the second collumn, the 1s place coinciding with 
+    the vertex directly opposite the original vertex. An edge is added from the vertex
+    being checked to each vertex that is mapped to a 1 in the binary representation.</Q>
+    <P/>
+
+    If the optional first argument <A>filt</A> is present, then this should
+    specify the category or representation the digraph being created will
+    belong to. For example, if <A>filt</A> is <Ref Filt="IsMutableDigraph"/>,
+    then the digraph being created will be mutable, if <A>filt</A> is <Ref
+    Filt="IsImmutableDigraph"/>, then the digraph will be immutable. 
+    If the optional first argument <A>filt</A> is not present, then <Ref
+      Filt="IsImmutableDigraph"/> is used by default.<P/>
+
+<Example><![CDATA[
+gap> HaarGraph(3);
+<immutable symmetric digraph with 4 vertices, 8 edges>
+gap> D := HaarGraph(16);
+<immutable symmetric digraph with 10 vertices, 10 edges>
+gap> IsBipartiteDigraph(D);
+true
+gap> HaarGraph(-2);
+Error, the argument <n> must be a positive integer,
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>

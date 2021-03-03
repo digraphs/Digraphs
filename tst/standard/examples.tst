@@ -227,11 +227,13 @@ gap> JohnsonDigraph(IsMutableDigraph, 4, 2);
 <mutable digraph with 6 vertices, 24 edges>
 
 # DIGRAPHS_HaarGraph
-gap> DIGRAPHS_HaarGraph(3);
-<mutable digraph with 4 vertices, 8 edges>
-gap> D := DIGRAPHS_HaarGraph(16);
-<mutable digraph with 10 vertices, 10 edges>
-gap> D := DIGRAPHS_HaarGraph(-5);   
+gap> HaarGraph(3);
+<immutable symmetric digraph with 4 vertices, 8 edges>
+gap> D := HaarGraph(16);
+<immutable symmetric digraph with 10 vertices, 10 edges>
+gap> IsBipartiteDigraph(D);
+true
+gap> HaarGraph(-2);
 Error, the argument <n> must be a positive integer,
 
 #

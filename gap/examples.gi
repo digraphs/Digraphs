@@ -371,8 +371,10 @@ GeneralisedPetersenGraphCons);
 InstallMethod(GeneralisedPetersenGraph, "for integer, integer", [IsInt, IsInt],
 {n, k} -> GeneralisedPetersenGraphCons(IsImmutableDigraph, n, k));
 
-InstallGlobalFunction(DIGRAPHS_HaarGraph,
-function(n)
+InstallMethod(HaarGraphCons,
+"for IsMutableDigraph and one integer",
+[IsMutableDigraph, IsInt],
+function(filt, n)
   local m, binaryList, D, i, j;
   if not IsPosInt(n) then
     ErrorNoReturn("the argument <n> must be a positive integer,");
@@ -393,6 +395,24 @@ function(n)
 
   return DigraphSymmetricClosure(D);
 end);
+
+InstallMethod(HaarGraphCons,
+"for IsImmutableDigraph, integer, int",
+[IsImmutableDigraph, IsInt],
+function(filt, n)
+  local D;
+  D := MakeImmutable(HaarGraphCons(IsMutableDigraph, n));
+  SetIsMultiDigraph(D, false);
+  SetIsSymmetricDigraph(D, true);
+  return D;
+end);
+
+InstallMethod(HaarGraph, "for a function, integer",
+[IsFunction, IsInt],
+HaarGraphCons);
+
+InstallMethod(HaarGraph, "for integer", [IsInt],
+{n} -> HaarGraphCons(IsImmutableDigraph, n));
 
 # TODO: Taken from semigroups...
 
