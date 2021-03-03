@@ -49,4 +49,6 @@ DeclareConstructor("GeneralisedPetersenGraphCons", [IsDigraph, IsInt, IsInt]);
 DeclareOperation("GeneralisedPetersenGraph", [IsInt, IsInt]);
 DeclareOperation("GeneralisedPetersenGraph", [IsFunction, IsInt, IsInt]);
 
-DeclareGlobalFunction("DIGRAPHS_KingsGraph");
+DeclareConstructor("KingsGraphCons", [IsDigraph, IsInt, IsInt]);
+DeclareOperation("KingsGraph", [IsInt, IsInt]);
+DeclareOperation("KingsGraph", [IsFunction, IsInt, IsInt]);

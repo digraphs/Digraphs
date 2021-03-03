@@ -227,11 +227,17 @@ gap> JohnsonDigraph(IsMutableDigraph, 4, 2);
 <mutable digraph with 6 vertices, 24 edges>
 
 # KingsGraph
-gap> DIGRAPHS_KingsGraph(8, 8);
-<mutable digraph with 64 vertices, 420 edges>
-gap> DIGRAPHS_KingsGraph(1, 8); 
-<mutable digraph with 8 vertices, 14 edges>
-gap> DIGRAPHS_KingsGraph(-1, 8);
+gap> KingsGraph(8, 8);
+<immutable symmetric digraph with 64 vertices, 420 edges>
+gap> D := KingsGraph(4, 7);
+<immutable symmetric digraph with 28 vertices, 162 edges>
+gap> IsConnectedDigraph(D);
+true
+gap> D := KingsGraph(2, 2);
+<immutable symmetric digraph with 4 vertices, 12 edges>
+gap> OutNeighbors(D);     
+[ [ 2, 3, 4 ], [ 1, 3, 4 ], [ 1, 2, 4 ], [ 1, 2, 3 ] ]
+gap> KingsGraph(-4, 2);
 Error, the arguments <n> and <k> must be positive integers,
 
 #
