@@ -12,4 +12,10 @@ comment:
   behavior: default
 
 ignore:
- - "extern"         # Do not check coverage on the extern directory
+ - "extern/"
+ - "gap/utils.gi"
+ - "PackageInfo.g"
+ - "init.g"
+ - "makedoc.g"
+ - "read.g"
+ - "tst/testall.g"
