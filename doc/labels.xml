@@ -71,15 +71,23 @@ gap> DigraphVertexLabel(D, 1);
     copy of the labels of the vertices in <A>digraph</A>.
     <C>SetDigraphVertexLabels</C> can be used to set the labels of the vertices
     in <A>digraph</A> to the list of
-    arbitrary &GAP; objects <A>list</A>. <P/>
+    arbitrary &GAP; objects <A>list</A>, which must be of the same length
+    as the number of vertices of <A>digraph</A>. <P/>
+
+    If the list <A>list</A> is immutable, then the vertex labels are set to a
+    mutable copy of <A>list</A>. Otherwise, the labels are set to exactly
+    <A>list</A>. <P/>
 
     The label of a vertex can be changed an arbitrary number of times. If no
     label has been set for the vertex <A>i</A>, then the default value is
     <A>i</A>. <P/>
 
     If <A>digraph</A> is a digraph created from a record with a component
-    <C>vertices</C>, then the labels of the vertices are set to the value of
-    this component.<P/>
+    <C>DigraphVertices</C>, then the labels of the vertices are set to the
+    value of this component. As in the above, if the component is immutable
+    then the digraph's vertex labels are set to a mutable copy of
+    <C>DigraphVertices</C>. Otherwise, they are set to exactly
+    <C>DigraphVertices</C>. <P/>
 
     Induced subdigraphs, and other operations which create new digraphs from
     old ones, inherit their labels from their parents.
