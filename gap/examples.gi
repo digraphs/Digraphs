@@ -372,13 +372,10 @@ InstallMethod(GeneralisedPetersenGraph, "for integer, integer", [IsInt, IsInt],
 {n, k} -> GeneralisedPetersenGraphCons(IsImmutableDigraph, n, k));
 
 InstallMethod(KingsGraphCons,
-"for IsMutableDigraph and two integers",
-[IsMutableDigraph, IsInt, IsInt],
+"for IsMutableDigraph, positive integer, positive integer",
+[IsMutableDigraph, IsPosInt, IsPosInt],
 function(filt, n, k)
   local D, i, j;
-  if not IsPosInt(n) or not IsPosInt(k)  then
-    ErrorNoReturn("the arguments <n> and <k> must be positive integers,");
-  fi;
   D := EmptyDigraph(filt, n * k);
   for i in [1 .. k] do
     for j in [1 .. (n - 1)] do
@@ -393,10 +390,6 @@ function(filt, n, k)
   for i in [1 .. (k - 1)] do
     for j in [1 .. (n - 1)] do
       DigraphAddEdge(D, [((i - 1) * n) + j, ((i - 1) * n) + j + (n + 1)]);
-    od;
-  od;
-  for i in [1 .. (k - 1)] do
-    for j in [1 .. (n - 1)] do
       DigraphAddEdge(D, [((i - 1) * n) + j + 1, ((i - 1) * n) + j + n]);
     od;
   od;
@@ -404,19 +397,20 @@ function(filt, n, k)
 end);
 
 InstallMethod(KingsGraphCons,
-"for IsImmutableDigraph, integer, integer",
-[IsImmutableDigraph, IsInt, IsInt],
+"for IsImmutableDigraph, positive integer, positive integer",
+[IsImmutableDigraph, IsPosInt, IsPosInt],
 function(filt, n, k)
   local D;
   D := MakeImmutable(KingsGraphCons(IsMutableDigraph, n, k));
   SetIsMultiDigraph(D, false);
   SetIsSymmetricDigraph(D, true);
+  SetIsConnectedDigraph(D, true);
   return D;
 end);
 
-InstallMethod(KingsGraph, "for a function, integer, integer",
-[IsFunction, IsInt, IsInt],
+InstallMethod(KingsGraph, "for a function, positive integer, positive integer",
+[IsFunction, IsPosInt, IsPosInt],
 KingsGraphCons);
 
-InstallMethod(KingsGraph, "for integer, integer", [IsInt, IsInt],
+InstallMethod(KingsGraph, "for positive integer, positive integer", [IsPosInt, IsPosInt],
 {n, k} -> KingsGraphCons(IsImmutableDigraph, n, k));

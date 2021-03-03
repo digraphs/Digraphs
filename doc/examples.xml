@@ -317,18 +317,20 @@ gap> GeneralisedPetersenGraph(IsMutableDigraph, 9, 4);
   <Description>
     If <A>n</A> is a positive integer and <A>k</A> is a positive
     integer, then this operation returns
-    the <E>King's graph</E> for an <A>n</A> by <A>k</A> board. <P/>
+    the <E>king's graph</E> for an <A>n</A> by <A>k</A> board. <P/>
 
     From
     <URL>https://en.wikipedia.org/wiki/King%27s_graph</URL>:
     <P/>
 
-    <Q>The king's graph represents all legal moves of the king piece in chess. 
-    Each vertex of the graph represents a square, while each edge represents 
-    a legal move. The input values determine the size of the chess board for 
-    which the king's graph is generated, with n = k = 8 representing a normal 
-    8 by 8 chess board. The graph is connected for all positive integer values 
-    of n and k.</Q>
+    <Q>In graph theory, a king's graph is a graph that represents all legal 
+    moves of the king chess piece on a chessboard where each vertex represents 
+    a square on a chessboard and each edge is a legal move. More specifically, 
+    an <A>n</A> by <A>k</A> king's graph is a king's graph of an <A>n</A> by
+    <A>k</A> chessboard. It is the map graph formed from the squares of a chessboard 
+    by making a vertex for each square and an edge for each two squares that 
+    share an edge or a corner. It can also be constructed as the strong product 
+    of two path graphs.</Q>
     <P/>
 
     If the optional first argument <A>filt</A> is present, then this should

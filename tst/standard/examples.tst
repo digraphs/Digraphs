@@ -237,8 +237,6 @@ gap> D := KingsGraph(2, 2);
 <immutable symmetric digraph with 4 vertices, 12 edges>
 gap> OutNeighbors(D);     
 [ [ 2, 3, 4 ], [ 1, 3, 4 ], [ 1, 2, 4 ], [ 1, 2, 3 ] ]
-gap> KingsGraph(-4, 2);
-Error, the arguments <n> and <k> must be positive integers,
 
 #
 gap> DIGRAPHS_StopTest();
