@@ -412,6 +412,6 @@ InstallMethod(KingsGraph, "for a function, positive integer, positive integer",
 [IsFunction, IsPosInt, IsPosInt],
 KingsGraphCons);
 
-InstallMethod(KingsGraph, "for positive integer, positive integer", 
+InstallMethod(KingsGraph, "for positive integer, positive integer",
 [IsPosInt, IsPosInt],
 {n, k} -> KingsGraphCons(IsImmutableDigraph, n, k));
