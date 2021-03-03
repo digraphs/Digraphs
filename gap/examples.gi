@@ -371,9 +371,10 @@ GeneralisedPetersenGraphCons);
 InstallMethod(GeneralisedPetersenGraph, "for integer, integer", [IsInt, IsInt],
 {n, k} -> GeneralisedPetersenGraphCons(IsImmutableDigraph, n, k));
 
-InstallMethod(BananaTreeGraph, "for two positive integers",
-[IsPosInt, IsPosInt],
-function(m, n)
+InstallMethod(BananaTreeGraphCons,
+"for IsMutableDigraph and two positive integers",
+[IsMutableDigraph, IsPosInt, IsPosInt],
+function(filt, m, n)
   local D, i, j;
   D := EmptyDigraph(IsMutable, 1);
   for i in [1 .. m] do
@@ -384,4 +385,23 @@ function(m, n)
   od;
   return D;
 end);
+
+InstallMethod(BananaTreeGraphCons,
+"for IsImmutableDigraph and two positive integers",
+[IsImmutableDigraph, IsPosInt, IsPosInt],
+function(filt, m, n)
+  local D;
+  D := MakeImmutable(BananaTreeGraphCons(IsMutableDigraph, m, n));
+  SetIsMultiDigraph(D, false);
+  SetIsSymmetricDigraph(D, true);
+  return D;
+end);
+
+InstallMethod(BananaTreeGraph, "for a function and two pos int",
+[IsPosInt, IsPosInt],
+{m, n} -> BananaTreeGraphCons(IsImmutableDigraph, m, n));
+
+InstallMethod(BananaTreeGraph, "for a function and two pos int",
+[IsFunction, IsPosInt, IsPosInt],
+{filt, m, n} -> BananaTreeGraphCons(filt, m, n));
 

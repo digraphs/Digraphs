@@ -48,4 +48,10 @@ DeclareOperation("PetersenGraph", [IsFunction]);
 DeclareConstructor("GeneralisedPetersenGraphCons", [IsDigraph, IsInt, IsInt]);
 DeclareOperation("GeneralisedPetersenGraph", [IsInt, IsInt]);
 DeclareOperation("GeneralisedPetersenGraph", [IsFunction, IsInt, IsInt]);
+
+DeclareConstructor("BananaTreeGraphCons", [IsDigraph, IsPosInt, IsPosInt]);
 DeclareOperation("BananaTreeGraph", [IsPosInt, IsPosInt]);
+DeclareOperation("BananaTreeGraph", [IsFunction, IsPosInt, IsPosInt]);
+
+
+
