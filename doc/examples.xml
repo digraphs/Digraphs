@@ -321,7 +321,7 @@ gap> GeneralisedPetersenGraph(IsMutableDigraph, 9, 4);
     path digraph on  <A>n</A> vertices connected by a bridge.
 
     From
-    <URL>https://en.wikipedia.org/wiki/Lollipop_graph</URL>:
+    <URL>https://en.wikipedia.org/wiki/Lollipop_graph</URL>
     <P/>
 
 <Example><![CDATA[
