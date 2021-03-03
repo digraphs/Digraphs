@@ -118,10 +118,10 @@ flags are provided.
    <Item><C>--enable-debug</C></Item><Item> enable debug mode</Item>
  </Row>
  <Row>
-   <Item><C>--with-external-bliss</C></Item><Item> use external bliss</Item>
+   <Item><C>--with-external-bliss</C></Item><Item> use external &bliss;</Item>
  </Row>
  <Row>
-   <Item><C>--with-external-planarity</C></Item><Item> use external planarity</Item>
+   <Item><C>--with-external-planarity</C></Item><Item> use external &edge-addition-planarity-suite;</Item>
  </Row>
  <Row>
    <Item><C>--with-gaproot</C></Item><Item> specify root of GAP installation</Item>

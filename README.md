@@ -100,8 +100,8 @@ Option                        | Meaning
 --enable-code-coverage        | enable code coverage support
 --enable-compile-warnings     | enable compiler warnings
 --enable-debug                | enable debug mode
---with-external-bliss         | use external bliss
---with-external-planarity     | use external planarity
+--with-external-bliss         | use external `bliss`
+--with-external-planarity     | use external `planarity`
 --with-gaproot                | specify root of GAP installation
 --without-intrinsics          | do not use compiler intrinsics even if available
 
