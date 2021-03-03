@@ -24,8 +24,8 @@
     <A>i</A>. <P/>
 
     If <A>digraph</A> is a digraph created from a record with a component
-    <C>vertices</C>, then the labels of the vertices are set to the value of
-    this component.<P/>
+    <C>DigraphVertices</C>, then the labels of the vertices are set to
+    the value of this component.<P/>
 
     Induced subdigraphs, and some other operations which create new digraphs from
     old ones, inherit their labels from their parents.
