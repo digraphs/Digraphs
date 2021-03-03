@@ -75,6 +75,8 @@ DeclareOperation("Digraph", [IsFunction, IsString]);
 
 DeclareConstructor("DigraphCons", [IsDigraph, IsString]);
 
+DeclareOperation("ListNamedDigraphs", [IsString]);
+
 # 8.  Digraph by-something constructors . . .
 DeclareConstructor("DigraphByAdjacencyMatrixCons",
                   [IsDigraph, IsHomogeneousList]);

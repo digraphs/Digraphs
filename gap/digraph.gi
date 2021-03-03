@@ -24,18 +24,18 @@
 #
 ########################################################################
 
-BindGlobal("DIGRAPHS_NamedGraph6String", fail);
-BindGlobal("DIGRAPHS_LoadNamedGraph6Strings", function()
+BindGlobal("DIGRAPHS_NamedDiSparse6Strings", fail);
+BindGlobal("DIGRAPHS_LoadNamedDiSparse6Strings", function()
   local f, r;
-  if DIGRAPHS_NamedGraph6String = fail then
-    f := Concatenation(DIGRAPHS_Dir(), "/data/named-g6.p.gz");
+  if DIGRAPHS_NamedDiSparse6Strings = fail then
+    f := Concatenation(DIGRAPHS_Dir(), "/data/named-ds6.p.gz");
     f := IO_CompressedFile(f, "r");
     r := IO_Unpickle(f);
     IO_Close(f);
 
-    MakeReadWriteGlobal("DIGRAPHS_NamedGraph6String");
-    UnbindGlobal("DIGRAPHS_NamedGraph6String");
-    BindGlobal("DIGRAPHS_NamedGraph6String", r);
+    MakeReadWriteGlobal("DIGRAPHS_NamedDiSparse6Strings");
+    UnbindGlobal("DIGRAPHS_NamedDiSparse6Strings");
+    BindGlobal("DIGRAPHS_NamedDiSparse6Strings", r);
   fi;
 end);
 
@@ -444,7 +444,7 @@ DigraphCons);
 InstallMethod(Digraph, "for a list, list, and list", [IsList, IsList, IsList],
 {dom, src, ran} -> DigraphCons(IsImmutableDigraph, dom, src, ran));
 
-InstallMethod(Digraph, "for a string naming a graph", [IsString],
+InstallMethod(Digraph, "for a string naming a digraph", [IsString],
 function(name)
   # edge case to avoid interfering with Digraph([])
   if name = "" then
@@ -456,14 +456,42 @@ function(name)
   RemoveCharacters(name, " \n\t\r");
 
   # load database if not already done
-  DIGRAPHS_LoadNamedGraph6Strings();
+  DIGRAPHS_LoadNamedDiSparse6Strings();
 
-  if not name in RecNames(DIGRAPHS_NamedGraph6String) then
-    ErrorNoReturn("Named graph not found. Please check argument 'name',\n",
-                  "or view list of available graphs with prefix p using\n",
-                  "ListNamedGraphs(p).");
+  if not name in RecNames(DIGRAPHS_NamedDiSparse6Strings) then
+    ErrorNoReturn("Named digraph not found. Please check argument 'name',\n",
+                  "or view list of available digraphs with prefix p using\n",
+                  "ListNamedDigraphs(p).");
   fi;
-  return DigraphFromGraph6String(DIGRAPHS_NamedGraph6String.(name));
+  return DigraphFromDiSparse6String(DIGRAPHS_NamedDiSparse6Strings.(name));
+end);
+
+InstallMethod(ListNamedDigraphs, "for a partially completed string",
+[IsString],
+function(s)
+  local l, cands, out, c;
+  # standardise request
+  s := LowercaseString(s);
+  RemoveCharacters(s, " \n\t\r");
+  l := Length(s);
+
+  # load database if not already done
+  DIGRAPHS_LoadNamedDiSparse6Strings();
+
+  # retrieve candidates
+  cands := RecNames(DIGRAPHS_NamedDiSparse6Strings);
+  if l = 0 then
+    return cands;
+  fi;
+
+  # add to out-list all valid completions of the request s
+  out := [];
+  for c in cands do
+    if Length(c) >= l and c{[1 .. l]} = s then
+      Add(out, c);
+    fi;
+  od;
+  return out;
 end);
 
 ########################################################################

@@ -370,31 +370,3 @@ GeneralisedPetersenGraphCons);
 
 InstallMethod(GeneralisedPetersenGraph, "for integer, integer", [IsInt, IsInt],
 {n, k} -> GeneralisedPetersenGraphCons(IsImmutableDigraph, n, k));
-
-InstallMethod(ListNamedDigraphs, "for a partially completed string",
-[IsString],
-function(s)
-  local l, cands, out, c;
-  # standardise request
-  s := LowercaseString(s);
-  RemoveCharacters(s, " \n\t\r");
-  l := Length(s);
-
-  # load database if not already done
-  DIGRAPHS_LoadNamedGraph6Strings();
-
-  # retrieve candidates
-  cands := RecNames(DIGRAPHS_NamedGraph6String);
-  if l = 0 then
-    return cands;
-  fi;
-
-  # add to out-list all valid completions of the request s
-  out := [];
-  for c in cands do
-    if Length(c) >= l and c{[1 .. l]} = s then
-      Add(out, c);
-    fi;
-  od;
-  return out;
-end);
