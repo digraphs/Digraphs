@@ -372,7 +372,7 @@ InstallMethod(GeneralisedPetersenGraph, "for integer, integer", [IsInt, IsInt],
 {n, k} -> GeneralisedPetersenGraphCons(IsImmutableDigraph, n, k));
 
 InstallMethod(KingsGraphCons,
-"for IsMutableDigraph, positive integer, positive integer",
+"for IsMutableDigraph and two positive integers",
 [IsMutableDigraph, IsPosInt, IsPosInt],
 function(filt, n, k)
   local D, i, j;
@@ -397,7 +397,7 @@ function(filt, n, k)
 end);
 
 InstallMethod(KingsGraphCons,
-"for IsImmutableDigraph, positive integer, positive integer",
+"for IsImmutableDigraph and two positive integer",
 [IsImmutableDigraph, IsPosInt, IsPosInt],
 function(filt, n, k)
   local D;
@@ -408,10 +408,10 @@ function(filt, n, k)
   return D;
 end);
 
-InstallMethod(KingsGraph, "for a function, positive integer, positive integer",
+InstallMethod(KingsGraph, "for a function and two positive integers",
 [IsFunction, IsPosInt, IsPosInt],
 KingsGraphCons);
 
-InstallMethod(KingsGraph, "for positive integer, positive integer",
+InstallMethod(KingsGraph, "two positive integers",
 [IsPosInt, IsPosInt],
 {n, k} -> KingsGraphCons(IsImmutableDigraph, n, k));
