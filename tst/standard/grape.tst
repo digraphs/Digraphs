@@ -1,7 +1,7 @@
 #############################################################################
 ##
 #W  standard/grape.tst
-#Y  Copyright (C) 2019                                   James D. Mitchell
+#Y  Copyright (C) 2019-21                                James D. Mitchell
 ##
 ##  Licensing information can be found in the README file of this package.
 ##
@@ -18,6 +18,14 @@ gap> group := DihedralGroup(8);
 <pc group of size 8 with 3 generators>
 gap> digraph := CayleyDigraph(group);
 <immutable digraph with 8 vertices, 24 edges>
+gap> DigraphVertexLabels(digraph) = AsList(group);
+true
+gap> DigraphEdgeLabels(digraph) =
+> ListWithIdenticalEntries(Size(group), GeneratorsOfGroup(group));
+true
+gap> ForAll(DigraphEdges(digraph), e -> AsList(group)[e[1]]
+> * DigraphEdgeLabel(digraph, e[1], e[2]) = AsList(group)[e[2]]);
+true
 gap> group := DihedralGroup(IsPermGroup, 8);
 Group([ (1,2,3,4), (2,4) ])
 gap> digraph := CayleyDigraph(group);

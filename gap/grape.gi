@@ -1,7 +1,7 @@
 #############################################################################
 ##
 ##  grape.gi
-##  Copyright (C) 2019                                   James D. Mitchell
+##  Copyright (C) 2019-21                                James D. Mitchell
 ##
 ##  Licensing information can be found in the README file of this package.
 ##
@@ -111,6 +111,8 @@ function(G, gens)
   SetFilterObj(D, IsCayleyDigraph);
   SetGroupOfCayleyDigraph(D, G);
   SetGeneratorsOfCayleyDigraph(D, gens);
+  SetDigraphEdgeLabels(D, ListWithIdenticalEntries(Size(G), gens));
+  SetDigraphVertexLabels(D, AsList(G));
 
   return D;
 end);

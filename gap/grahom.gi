@@ -678,3 +678,80 @@ function(D, t)
   n := DigraphNrVertices(D);
   return IsDigraphColouring(D, ImageListOfTransformation(t, n));
 end);
+
+InstallMethod(MaximalCommonSubdigraph, "for a pair of digraphs",
+[IsDigraph, IsDigraph],
+function(A, B)
+  local D1, D2, MPG, nonloops, Clqus, M, l, n, m, embedding1, embedding2, iso;
+
+  D1 := DigraphImmutableCopy(A);
+  D2 := DigraphImmutableCopy(B);
+
+  # If the digraphs are isomorphic then we return the first one as the answer
+  iso := IsomorphismDigraphs(D1, D2);
+  if iso <> fail then
+    return [D1, IdentityTransformation, AsTransformation(iso)];
+  fi;
+
+  n := DigraphNrVertices(D1);
+  m := DigraphNrVertices(D2);
+
+  # The algorithm works as follows: We construct the modular product digraph
+  # MPG (see https://en.wikipedia.org/wiki/Modular_product_of_graphs for the
+  # undirected version) a maximal partial isomorphism between D1 and D2 is
+  # equal to a maximal clique this digraph. We then search for cliques using the
+  # DigraphMaximalCliquesReps function.
+
+  MPG := ModularProduct(D1, D2);
+
+  nonloops := Filtered([1 .. n * m], x -> not x in OutNeighbours(MPG)[x]);
+  # We find a big clique
+  Clqus := DigraphMaximalCliquesReps(MPG, [], nonloops);
+  M := 1;
+  for l in [1 .. Size(Clqus)] do
+    if Size(Clqus[l]) > Size(Clqus[M]) then
+      M := l;
+    fi;
+  od;
+
+  embedding1 := List(Clqus[M], x -> QuoInt(x - 1, m) + 1);
+  embedding2 := List(Clqus[M], x -> RemInt(x - 1, m) + 1);
+  return [InducedSubdigraph(D1, embedding1),
+          Transformation([1 .. Size(embedding1)], embedding1),
+          Transformation([1 .. Size(embedding2)], embedding2)];
+
+end);
+
+InstallMethod(MinimalCommonSuperdigraph, "for a pair of digraphs",
+[IsDigraph, IsDigraph],
+function(D1, D2)
+  local out, L, v, e, embfunc, embedding1, embedding2, newvertices;
+  L := MaximalCommonSubdigraph(D1, D2);
+  L[2] := List([1 .. DigraphNrVertices(L[1])], x -> x ^ L[2]);
+  L[3] := List([1 .. DigraphNrVertices(L[1])], x -> x ^ L[3]);
+  out := List(OutNeighbours(D1), x -> ShallowCopy(x));
+  newvertices := Filtered(DigraphVertices(D2), x -> not x in L[3]);
+  embedding1 := [1 .. DigraphNrVertices(D1)];
+
+  embfunc := function(v)
+    if v in L[3] then
+      return L[2][Position(L[3], v)];
+    fi;
+    return Position(newvertices, v) + DigraphNrVertices(D1);
+  end;
+  embedding2 := List(DigraphVertices(D2), embfunc);
+
+  for v in newvertices do
+    Add(out, []);
+  od;
+
+  for e in DigraphEdges(D2) do
+    if (not e[1] in L[3]) or (not e[2] in L[3]) then
+       Add(out[embedding2[e[1]]], embedding2[e[2]]);
+    fi;
+  od;
+
+  return [Digraph(out), Transformation([1 .. Size(embedding1)], embedding1),
+                        Transformation([1 .. Size(embedding2)], embedding2)];
+
+end);
