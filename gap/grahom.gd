@@ -92,3 +92,6 @@ DeclareOperation("DigraphsRespectsColouring",
                  [IsDigraph, IsDigraph, IsTransformation, IsList, IsList]);
 DeclareOperation("DigraphsRespectsColouring",
                  [IsDigraph, IsDigraph, IsPerm, IsList, IsList]);
+
+DeclareOperation("MaximalCommonSubdigraph", [IsDigraph, IsDigraph]);
+DeclareOperation("MinimalCommonSuperdigraph", [IsDigraph, IsDigraph]);
