@@ -507,7 +507,8 @@ gap> IsMutable(cliques) or ForAny(cliques, IsMutable);
 false
 
 # Test CliquesFinder on graphs with more than 512 vertices
-gap> CliquesFinder(NullDigraph(513), fail, [], infinity, [], [], true, fail, true);
+gap> CliquesFinder(
+> NullDigraph(513), fail, [], infinity, [], [], true, fail, true);
 [ [ 1 ] ]
 gap> gr := DigraphSymmetricClosure(ChainDigraph(513));
 <immutable symmetric digraph with 513 vertices, 1024 edges>
@@ -601,15 +602,20 @@ ll automorphism if <aut_grp> is not given,
 gap> DigraphsCliquesFinder(NullDigraph(2), fail, [], 4, [], [1], true, fail);
 Error, the 6th argument <exclude> must be invaraint under <aut_grp>, or the fu\
 ll automorphism if <aut_grp> is not given,
-gap> DigraphsCliquesFinder(CompleteDigraph(2), fail, [], 4, [1, 2], [], true, fail);
+gap> DigraphsCliquesFinder(
+> CompleteDigraph(2), fail, [], 4, [1, 2], [], true, fail);
 [ [ 1, 2 ] ]
-gap> DigraphsCliquesFinder(CompleteDigraph(2), fail, [], 4, [], [1, 2], true, fail);
+gap> DigraphsCliquesFinder(
+> CompleteDigraph(2), fail, [], 4, [], [1, 2], true, fail);
 [  ]
-gap> DigraphsCliquesFinder(CompleteDigraph(2), fail, [], 4, [], [], true, 3);
+gap> DigraphsCliquesFinder(
+> CompleteDigraph(2), fail, [], 4, [], [], true, 3);
 [  ]
-gap> DigraphsCliquesFinder(NullDigraph(2), fail, [], 4, [1, 2], [], true, fail);
+gap> DigraphsCliquesFinder(
+> NullDigraph(2), fail, [], 4, [1, 2], [], true, fail);
 [  ]
-gap> DigraphsCliquesFinder(CompleteDigraph(2), fail, [], 4, [1, 2], [], true, 2);
+gap> DigraphsCliquesFinder(
+> CompleteDigraph(2), fail, [], 4, [1, 2], [], true, 2);
 [ [ 1, 2 ] ]
 gap> f := function(a, b)
 > Add(a, Size(b));
