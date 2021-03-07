@@ -393,7 +393,7 @@ function(filt, m, n)
   return D;
 end);
 
-InstallMethod(LollipopGraph, "for a function and two pos int",
+InstallMethod(LollipopGraph, "for two pos int",
 [IsPosInt, IsPosInt],
 {m, n} -> LollipopGraphCons(IsImmutableDigraph, m, n));
 
