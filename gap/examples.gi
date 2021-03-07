@@ -394,7 +394,7 @@ function(filt, m, n)
   D := MakeImmutable(BananaTreeGraphCons(IsMutableDigraph, m, n));
   SetIsMultiDigraph(D, false);
   SetIsSymmetricDigraph(D, true);
-  SetIsAcyclicDigraph(true);
+  SetIsAcyclicDigraph(D, true);
   return D;
 end);
 
