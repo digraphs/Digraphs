@@ -1,0 +1,65 @@
+# Directories
+/c/Release/
+/c/Debug/
+/c/.settings/
+/c/error/
+
+/c/random/
+/c/embedded/
+/c/adjlist/
+/c/obstructed/
+
+/c/Release/random/
+/c/Release/embedded/
+/c/Release/adjlist/
+/c/Release/obstructed/
+/c/Release/error/
+
+/c/Debug/random/
+/c/Debug/embedded/
+/c/Debug/adjlist/
+/c/Debug/obstructed/
+/c/Debug/error/
+
+# Object files
+*.o
+*.ko
+*.obj
+*.elf
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Libraries
+*.lib
+*.a
+*.la
+*.lo
+
+# Shared objects (inc. Windows DLLs)
+*.dll
+*.so
+*.so.*
+*.dylib
+
+# Executables
+*.exe
+*.out
+*.app
+*.i*86
+*.x86_64
+*.hex
+
+# Debug files
+*.dSYM/
+
+# Java
+*.class
+*.log
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar

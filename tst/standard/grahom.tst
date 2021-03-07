@@ -1099,21 +1099,22 @@ fail
 gap> DigraphEmbedding(gr1, gr1);
 IdentityTransformation
 gap> D := NullDigraph(2);;
-gap> DD := DigraphFromDiSparse6String(
-> ".~?C?_W@GN?e??@`W?wJ`cAG^?EG_@AEH?CacDWj@M??ga{Igq?WG_gbO?_J?}L_I_IFG~@?G_u_A\
-> AhBAiPOD`IB_QCEOxAck@HNB}KpK_KMhSBQ?`Hd[L?z`CIxY?}VOU`OGGteCVxHbcNXBd}JxO_uYo|\
-> bwVxmBiXxqEy\\ODf[SwOfwL`tgCOpncU`p~`e[WcA_JxYgsD@dg{Bpu`[bYRAc]hoHAd_BDIe@`hg\
-> Boed{ZwiaGOxFCs]HyeQ]XAbYL`}fmhogCSaYhEyTaR_?JAIdOYaTiwD@EEm@hFFObiqBSiYs@CQPK\
-> EaQWHBAMW]`Whw\\IIC?hAgPIKJQ[qjaciiTeYSP\\IWiXk_s[@pf?^BBa?SpkfiUwBAGRH[ck_zL@\
-> oJZNKq?PCGknHi_wciolS@O\\IuaGJLANx]LQD_]bW]J\\@_QPxK?uG@m?I_tCcnrDLMD@XKQLQ[b[\
-> cqX_?QA[e{]qlislBXjmGozLyXYTMQUQP_grj?aSkz^f{qrTiiQAtgWsrUhYXb@jsorreWbRCNAA_b\
-> IqSwxL}CQ_I_zru`sK@]GShrQNIziUes^K?`c?gSa?CGEaKDghAYEGkAmL_bbg@WHAyGHB?YPobcg@\
-> gHAuR_TdC?`D_KGhUAONxY@IVOC@IVpUDqVGkeKDW[B?KXf@MJGXdySg[e{YgfEiL`CCwSPUfKVpm`\
-> sH?ef[NgECY^?XfwB@u`SNiAEE[WD@uOiGCOSII@Y`Hk_W[yNDmGIQ?O\\iOeId_\\daCwOCgWGW@w\
-> Sp_hobyOb_]y_A{OpLhIJaO`wTydAOdhugQiPaikN@GIa\\HBGmJaIj?Xw@A?ZhC`ElOHj[@HsjgRA\
-> THqG@AF}PpJHyoQtkKM`bGenigk[oWNIokHH_{LaugGlbG_sJGZEkhWMA[gGPFusOcKEsoyEqtP~aG\
-> MPll_T`iKuBOWgIArIdAG@C`{PGGb]^Zb?ehwnKewWiLWwhPmUBjemsgGvIu{@RLIDrB`i{IQM]bBq\
-> cKyWLFcnzxKICIyKyEgI@g{XDeGbN");;
+gap> DD := DigraphFromDiSparse6String(Concatenation(
+> ".~?C?_W@GN?e??@`W?wJ`cAG^?EG_@AEH?CacDWj@M??ga{Igq?WG_gbO?_J?}L_I_IFG~@?",
+> "G_u_AAhBAiPOD`IB_QCEOxAck@HNB}KpK_KMhSBQ?`Hd[L?z`CIxY?}VOU`OGGteCVxHbcNXB",
+> "d}JxO_uYo|bwVxmBiXxqEy\\ODf[SwOfwL`tgCOpncU`p~`e[WcA_JxYgsD@dg{Bpu`[bYRAc",
+> "]hoHAd_BDIe@`hgBoed{ZwiaGOxFCs]HyeQ]XAbYL`}fmhogCSaYhEyTaR_?JAIdOYaTiwD@E",
+> "Em@hFFObiqBSiYs@CQPKEaQWHBAMW]`Whw\\IIC?hAgPIKJQ[qjaciiTeYSP\\IWiXk_s[@pf",
+> "?^BBa?SpkfiUwBAGRH[ck_zL@oJZNKq?PCGknHi_wciolS@O\\IuaGJLANx]LQD_]bW]J\\@_",
+> "QPxK?uG@m?I_tCcnrDLMD@XKQLQ[b[cqX_?QA[e{]qlislBXjmGozLyXYTMQUQP_grj?aSkz^",
+> "f{qrTiiQAtgWsrUhYXb@jsorreWbRCNAA_bIqSwxL}CQ_I_zru`sK@]GShrQNIziUes^K?`c?",
+> "gSa?CGEaKDghAYEGkAmL_bbg@WHAyGHB?YPobcg@gHAuR_TdC?`D_KGhUAONxY@IVOC@IVpUD",
+> "qVGkeKDW[B?KXf@MJGXdySg[e{YgfEiL`CCwSPUfKVpm`sH?ef[NgECY^?XfwB@u`SNiAEE[W",
+> "D@uOiGCOSII@Y`Hk_W[yNDmGIQ?O\\iOeId_\\daCwOCgWGW@wSp_hobyOb_]y_A{OpLhIJaO",
+> "`wTydAOdhugQiPaikN@GIa\\HBGmJaIj?Xw@A?ZhC`ElOHj[@HsjgRATHqG@AF}PpJHyoQtkK",
+> "M`bGenigk[oWNIokHH_{LaugGlbG_sJGZEkhWMA[gGPFusOcKEsoyEqtP~aGMPll_T`iKuBOW",
+> "gIArIdAG@C`{PGGb]^Zb?ehwnKewWiLWwhPmUBjemsgGvIu{@RLIDrB`i{IQM]bBqcKyWLFcn",
+> "zxKICIyKyEgI@g{XDeGbN"));;
 gap> DigraphEmbedding(D, DD);
 IdentityTransformation
 gap> D := DigraphDisjointUnion(CycleDigraph(3), CycleDigraph(5));;
@@ -1571,10 +1572,10 @@ gap> EmbeddingsDigraphsRepresentatives(NullDigraph(2),
 
 #
 gap> D1 := NullDigraph(2);;
-gap> D2 := DigraphFromDiSparse6String(
-> ".~?@c_oAN?xSA_XcBf?q^?YK?iooXja]oBJGlgZ_CLzgQoAn?kWjDIK[?P[c_qpNLM{{KFRMns`Wm\
-> tSNCuT^Z?a[rvOeCCdvGixXG`ZFc__AF?hKMg?IaGH]gGIAm?z?_lpGdmRUzMYQmoASkoKS]prafo[\
-> wws?[R_AcjsseVtaiXLcvXSwg`v@gfKBQ^KJc|n]D\\thb");;
+gap> D2 := DigraphFromDiSparse6String(Concatenation(
+> ".~?@c_oAN?xSA_XcBf?q^?YK?iooXja]oBJGlgZ_CLzgQoAn?kWjDIK[?P[c_qpNLM{",
+> "{KFRMns`WmtSNCuT^Z?a[rvOeCCdvGixXG`ZFc__AF?hKMg?IaGH]gGIAm?z?_lpGdmR",
+> "UzMYQmoASkoKS]prafo[wws?[R_AcjsseVtaiXLcvXSwg`v@gfKBQ^KJc|n]D\\thb"));;
 gap> DigraphMonomorphism(D1, D2);
 IdentityTransformation
 gap> D1 := CompleteDigraph(2);;
@@ -2287,9 +2288,11 @@ gap> gr1 := ChainDigraph(3);
 <immutable chain digraph with 3 vertices>
 gap> gr2 := ChainDigraph(6);
 <immutable chain digraph with 6 vertices>
-gap> IsDigraphHomomorphism(gr1, gr2, Transformation([1, 2, 3]), [1 .. 3], [1 .. 6]);
+gap> IsDigraphHomomorphism(gr1, gr2, Transformation([1, 2, 3]),
+> [1 .. 3], [1 .. 6]);
 true
-gap> IsDigraphHomomorphism(gr1, gr2, Transformation([1, 2, 3]), [1 .. 3], [1, 1, 2, 3, 4, 5]);   
+gap> IsDigraphHomomorphism(gr1, gr2, Transformation([1, 2, 3]),
+> [1 .. 3], [1, 1, 2, 3, 4, 5]);   
 false
 gap> IsDigraphHomomorphism(gr1, gr2, Transformation([1, 2, 3]),
 > [2, 2, 1], [2, 2, 1, 3, 4, 5]);
@@ -2375,9 +2378,11 @@ gap> src := Digraph([[1], [1, 2], [1, 3]]);
 <immutable digraph with 3 vertices, 5 edges>
 gap> ran := Digraph([[1], [1, 2]]);
 <immutable digraph with 2 vertices, 3 edges>
-gap> IsDigraphEpimorphism(src, ran, Transformation([1, 2, 2]), [1, 2, 2], [1, 2]);
+gap> IsDigraphEpimorphism(src, ran, Transformation([1, 2, 2]),
+> [1, 2, 2], [1, 2]);
 true
-gap> IsDigraphEpimorphism(src, ran, Transformation([1, 2, 2]), [1, 2, 3], [1, 2]);
+gap> IsDigraphEpimorphism(src, ran, Transformation([1, 2, 2]),
+> [1, 2, 3], [1, 2]);
 false
 gap> IsDigraphEpimorphism(src, src, Transformation([1, 2, 3]),
 >                         [1, 1, 2], [1, 1, 2]);
@@ -2452,6 +2457,46 @@ gap> IsDigraphEmbedding(ran, src, (), [2, 1], [1, 2, 2]);
 false
 gap> IsDigraphEmbedding(ran, src, (), [2, 1], [1, 1, 2]);
 false
+
+# MaximalCommSubdigraph and MinimalCommonSuperDigraph
+gap> MaximalCommonSubdigraph(NullDigraph(0), CompleteDigraph(10));
+[ <immutable empty digraph with 0 vertices>, IdentityTransformation, 
+  IdentityTransformation ]
+gap> MinimalCommonSuperdigraph(NullDigraph(0), CompleteDigraph(10));
+[ <immutable digraph with 10 vertices, 90 edges>, IdentityTransformation, 
+  IdentityTransformation ]
+gap> MaximalCommonSubdigraph(PetersenGraph(), CompleteDigraph(10));
+[ <immutable digraph with 2 vertices, 2 edges>, IdentityTransformation, 
+  IdentityTransformation ]
+gap> MinimalCommonSuperdigraph(PetersenGraph(), CompleteDigraph(10));
+[ <immutable digraph with 18 vertices, 118 edges>, IdentityTransformation, 
+  Transformation( [ 1, 2, 11, 12, 13, 14, 15, 16, 17, 18, 11, 12, 13, 14, 15,
+      16, 17, 18 ] ) ]
+gap> MaximalCommonSubdigraph(NullDigraph(10), CompleteDigraph(10));
+[ <immutable empty digraph with 1 vertex>, IdentityTransformation, 
+  IdentityTransformation ]
+gap> MinimalCommonSuperdigraph(NullDigraph(10), CompleteDigraph(10));
+[ <immutable digraph with 19 vertices, 90 edges>, IdentityTransformation, 
+  Transformation( [ 1, 11, 12, 13, 14, 15, 16, 17, 18, 19, 11, 12, 13, 14, 15,
+     16, 17, 18, 19 ] ) ]
+gap> MaximalCommonSubdigraph(CompleteDigraph(100), CompleteDigraph(100));
+[ <immutable digraph with 100 vertices, 9900 edges>, IdentityTransformation, 
+  IdentityTransformation ]
+gap> MinimalCommonSuperdigraph(CompleteDigraph(100), CompleteDigraph(100));
+[ <immutable digraph with 100 vertices, 9900 edges>, IdentityTransformation, 
+  IdentityTransformation ]
+gap> MaximalCommonSubdigraph(PetersenGraph(),
+> DigraphSymmetricClosure(CycleDigraph(5)));
+[ <immutable digraph with 5 vertices, 10 edges>, IdentityTransformation, 
+  IdentityTransformation ]
+gap> MinimalCommonSuperdigraph(PetersenGraph(),
+> DigraphSymmetricClosure(CycleDigraph(5)));
+[ <immutable digraph with 10 vertices, 30 edges>, IdentityTransformation, 
+  IdentityTransformation ]
+gap> MaximalCommonSubdigraph(Digraph([[1, 1]]), Digraph([[1]]));
+Error, ModularProduct does not support multidigraphs,
+gap> MinimalCommonSuperdigraph(Digraph([[1, 1]]), Digraph([[1]]));
+Error, ModularProduct does not support multidigraphs,
 
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(edges);

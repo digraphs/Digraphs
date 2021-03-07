@@ -147,7 +147,7 @@ true]]></Example>
         <C>DigraphMaximalClique</C> greedily enlarge the clique <A>include</A>
         until it cannot continue.  The result is guaranteed to be a maximal
         clique. This may or may not return an answer more quickly than using
-        <Ref Func="DigraphMaximalCliques"/>.  with a limit of 1.
+        <Ref Func="DigraphMaximalCliques"/> with a limit of 1.
       </Item>
       <Mark>Three arguments</Mark>
       <Item>
@@ -348,7 +348,7 @@ gap> DigraphMaximalCliques(D);
         independent set <A>include</A> until it cannot continue.  The result
         is guaranteed to be a maximal independent set. This may or may not
         return an answer more quickly than using <Ref
-          Func="DigraphMaximalIndependentSets"/>.  with a limit of 1.
+          Func="DigraphMaximalIndependentSets"/> with a limit of 1.
       </Item>
       <Mark>Three arguments</Mark>
       <Item>
