@@ -1,4 +1,4 @@
-t############################################################################
+############################################################################
 ##
 #W  examples.xml
 #Y  Copyright (C) 2019                              Murray T. Whyte
@@ -325,7 +325,7 @@ gap> GeneralisedPetersenGraph(IsMutableDigraph, 9, 4);
 
     <Q>A banana tree graph, as defined by Chen et al. (1997) is a graph obtained by
     connecting one leaf of each of <A>m</A> copies of an <A>n</A>-star graph with
-    a signle root vertex that is distince from all the stars.</Q>
+    a single root vertex that is distance from all the stars.</Q>
     <P/>
 
     If the optional first argument <A>filt</A> is present, then this should
