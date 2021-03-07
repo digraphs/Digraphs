@@ -239,6 +239,8 @@ gap> DigraphNrEdges(D);
 26
 gap> DigraphUndirectedGirth(D);
 3
+gap> LollipopGraph(IsMutableDigraph, 5, 3);
+<mutable digraph with 8 vertices, 26 edges>
 
 #
 gap> DIGRAPHS_StopTest();
