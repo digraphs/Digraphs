@@ -42,6 +42,16 @@ SourceRepository := rec(
 Persons := [
 
   rec(
+    LastName      := "Anagnostopoulou-Merkouri",
+    FirstNames    := "Marina",
+    IsAuthor      := false,
+    IsMaintainer  := false,
+    Email         := "mam49@st-andrews.ac.uk",
+    PostalAddress := _STANDREWSMATHS,
+    Place         := "St Andrews",
+    Institution   := "University of St Andrews"),
+
+ rec(
     LastName      := "De Beule",
     FirstNames    := "Jan",
     IsAuthor      := true,
@@ -85,6 +95,16 @@ Persons := [
     IsAuthor      := false,
     IsMaintainer  := false,
     Email         := "le27@st-andrews.ac.uk",
+    PostalAddress := _STANDREWSMATHS,
+    Place         := "St Andrews",
+    Institution   := "University of St Andrews"),
+
+rec(
+    LastName      := "Harper",
+    FirstNames    := "Samantha",
+    IsAuthor      := false,
+    IsMaintainer  := false,
+    Email         := "seh25@st-andrews.ac.uk",
     PostalAddress := _STANDREWSMATHS,
     Place         := "St Andrews",
     Institution   := "University of St Andrews"),

@@ -86,7 +86,9 @@ Obj FuncOutNeighbours(Obj self, Obj D) {
   if (!RNamOutNeighbours) {
     RNamOutNeighbours = RNamName("OutNeighbours");
   }
-  if (IsbPRec(D, RNamOutNeighbours)) {
+  if (!CALL_1ARGS(IsDigraph, D)) {
+    ErrorQuit("expected a digraph, not a %s", (Int) TNAM_OBJ(D), 0L);
+  } else if (IsbPRec(D, RNamOutNeighbours)) {
     return ElmPRec(D, RNamOutNeighbours);
   } else {
     ErrorQuit(
@@ -2127,7 +2129,7 @@ static StructGVarFunc GVarFuncs[] = {
      FuncDIGRAPH_SOURCE_RANGE,
      "src/digraphs.c:FuncDIGRAPH_SOURCE_RANGE"},
 
-    {"DIGRAPH_OUT_NEIGHBOURS",
+    {"OutNeighbours",
      1,
      "D",
      FuncOutNeighbours,
