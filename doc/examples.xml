@@ -326,8 +326,8 @@ gap> GeneralisedPetersenGraph(IsMutableDigraph, 9, 4);
     If the optional first argument <A>filt</A> is not present, then <Ref
       Filt="IsImmutableDigraph"/> is used by default.<P/>
 
-    The <E>Tadpole digraph</E> consists of a cycle graph on m vertices and a path graph on
-    n vertices. These two graphs are connected by a bridge.<P/>
+    The <E>Tadpole digraph</E> consists of a cycle graph on <A>m</A> vertices and a path graph on
+    <A>n</A> vertices. These two graphs are connected by a bridge.<P/>
 
     <Example><![CDATA[
 gap> TadpoleDigraph(10, 15);
