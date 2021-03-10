@@ -2024,6 +2024,17 @@ gap> for i in [1 .. 9] do
 >    od;
 gap> DigraphCore(D);
 [ 1, 2 ]
+gap> D := DigraphFromDigraph6String("&G?_cO`EO?@??");
+<immutable digraph with 8 vertices, 10 edges>
+gap> DigraphCore(D);
+[ 2, 5 ]
+gap> D := DigraphFromDigraph6String("&GSY??A?SA?O?");
+<immutable digraph with 8 vertices, 10 edges>
+gap> DigraphCore(D);
+[ 1, 2 ]
+gap> D := Digraph([[2], [1, 3], []]);;
+gap> DigraphCore(D);
+[ 1, 2 ]
 
 # MaximalAntiSymmetricSubdigraph
 gap> MaximalAntiSymmetricSubdigraph(Digraph([[2, 2], [1]]));
