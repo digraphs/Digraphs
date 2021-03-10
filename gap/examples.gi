@@ -398,7 +398,7 @@ function(filt, m, n)
   return D;
 end);
 
-InstallMethod(BananaTreeGraph, "for a function and two pos int",
+InstallMethod(BananaTreeGraph, "for a function and two pos ints",
 [IsPosInt, IsPosInt],
 {m, n} -> BananaTreeGraphCons(IsImmutableDigraph, m, n));
 
