@@ -372,17 +372,12 @@ InstallMethod(GeneralisedPetersenGraph, "for integer, integer", [IsInt, IsInt],
 {n, k} -> GeneralisedPetersenGraphCons(IsImmutableDigraph, n, k));
 
 InstallMethod(HaarGraphCons,
-"for IsMutableDigraph and one integer",
-[IsMutableDigraph, IsInt],
+"for IsMutableDigraph and one positive integer",
+[IsMutableDigraph, IsPosInt],
 function(filt, n)
   local m, binaryList, D, i, j;
-  if not IsPosInt(n) then
-    ErrorNoReturn("the argument <n> must be a positive integer,");
-  fi;
-
   m := Log(n, 2) + 1;
   binaryList := DIGRAPHS_BlistNumber(n + 1, m);
-
   D := EmptyDigraph(IsMutableDigraph, 2 * m);
 
   for i in [1 .. m] do
@@ -397,21 +392,22 @@ function(filt, n)
 end);
 
 InstallMethod(HaarGraphCons,
-"for IsImmutableDigraph, integer, int",
-[IsImmutableDigraph, IsInt],
+"for IsImmutableDigraph and one positive integer",
+[IsImmutableDigraph, IsPosInt],
 function(filt, n)
   local D;
   D := MakeImmutable(HaarGraphCons(IsMutableDigraph, n));
   SetIsMultiDigraph(D, false);
   SetIsSymmetricDigraph(D, true);
+  SetIsBipartiteDigraph(D, true);
   return D;
 end);
 
-InstallMethod(HaarGraph, "for a function, integer",
-[IsFunction, IsInt],
+InstallMethod(HaarGraph, "for a function and a positive integer",
+[IsFunction, IsPosInt],
 HaarGraphCons);
 
-InstallMethod(HaarGraph, "for integer", [IsInt],
+InstallMethod(HaarGraph, "for a positive integer", [IsPosInt],
 {n} -> HaarGraphCons(IsImmutableDigraph, n));
 
 # TODO: Taken from semigroups...
