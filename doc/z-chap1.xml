@@ -94,6 +94,44 @@ make]]></Listing>
     If you want to check that the package is working correctly, you
     should run some of the tests described in Section
     <Ref Sect="Testing your installation"/>.
+    <Subsection Label="Configuration options">
+      <Heading>Configuration options</Heading>
+
+In addition to the usual autoconf generated configuration flags, the following
+flags are provided.
+
+<Table Align="|l|l|">
+ <Caption>Configuration flags</Caption>
+ <HorLine/>
+  <Row>
+   <Item>Option</Item><Item>Meaning</Item>
+  </Row>
+ <HorLine/>
+ <HorLine/>
+ <Row>
+   <Item><C>--enable-code-coverage</C></Item><Item> enable code coverage support</Item>
+ </Row>
+ <Row>
+   <Item><C>--enable-compile-warnings</C></Item><Item> enable compiler warnings</Item>
+ </Row>
+ <Row>
+   <Item><C>--enable-debug</C></Item><Item> enable debug mode</Item>
+ </Row>
+ <Row>
+   <Item><C>--with-external-bliss</C></Item><Item> use external &bliss;</Item>
+ </Row>
+ <Row>
+   <Item><C>--with-external-planarity</C></Item><Item> use external &edge-addition-planarity-suite;</Item>
+ </Row>
+ <Row>
+   <Item><C>--with-gaproot</C></Item><Item> specify root of GAP installation</Item>
+ </Row>
+ <Row>
+   <Item><C>--without-intrinsics</C></Item><Item> do not use compiler intrinsics even if available</Item>
+ </Row>
+ <HorLine/>
+</Table>
+</Subsection>
   </Section>
 
   <!--**********************************************************************-->
