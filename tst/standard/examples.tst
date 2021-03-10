@@ -238,8 +238,6 @@ gap> D := BananaTreeGraph(3, 4);
 gap> D := BananaTreeGraph(0, 0);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `BananaTreeGraph' on 2 arguments
-gap> D := DigraphMutableCopy(BananaTreeGraph(2, 4));
-<mutable digraph with 9 vertices, 16 edges>
 gap> D := BananaTreeGraph(IsMutableDigraph, 5, 3);
 <mutable digraph with 16 vertices, 30 edges>
 
