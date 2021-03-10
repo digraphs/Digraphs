@@ -83,7 +83,7 @@ gap> DigraphNrVertices(D);
     <P/>
 
     The entries of <C>DigraphEdges(</C><A>digraph</A><C>)</C> are in one-to-one
-    corresponence with the edges of <A>digraph</A>.  Hence
+    correspondence with the edges of <A>digraph</A>.  Hence
     <C>DigraphEdges(</C><A>digraph</A><C>)</C> is duplicate-free if and only if
     <A>digraph</A> contains no multiple edges. <P/>
 
@@ -1956,7 +1956,7 @@ gap> D;
     and the reverse edge <C>[j,i]</C> is an edge of <A>digraph</A>.
     In other words, for every
     symmetric pair of edges <C>[i,j]</C> and <C>[j,i]</C> in <A>digraph</A>, where 
-    <C>i</C> and <C>j</C> are distinct, it discards the the edge
+    <C>i</C> and <C>j</C> are distinct, it discards the edge
     <M>[\max(i,j),\min(i,j)]</M>.
     <P/>
 
