@@ -70,11 +70,6 @@ DeclareOperation("Digraph", [IsList, IsFunction]);
 DeclareOperation("Digraph", [IsInt, IsList, IsList]);
 DeclareOperation("Digraph", [IsList, IsList, IsList]);
 
-DeclareOperation("Digraph", [IsString]);
-DeclareOperation("Digraph", [IsFunction, IsString]);
-
-DeclareConstructor("DigraphCons", [IsDigraph, IsString]);
-
 DeclareOperation("ListNamedDigraphs", [IsString]);
 
 # 8.  Digraph by-something constructors . . .
