@@ -371,17 +371,6 @@ GeneralisedPetersenGraphCons);
 InstallMethod(GeneralisedPetersenGraph, "for integer, integer", [IsInt, IsInt],
 {n, k} -> GeneralisedPetersenGraphCons(IsImmutableDigraph, n, k));
 
-InstallMethod(GeneralisedPetersenGraphCons,
-"for IsImmutableDigraph, integer, int",
-[IsImmutableDigraph, IsInt, IsInt],
-function(filt, n, k)
-  local D;
-  D := MakeImmutable(GeneralisedPetersenGraphCons(IsMutableDigraph, n, k));
-  SetIsMultiDigraph(D, false);
-  SetIsSymmetricDigraph(D, true);
-  return D;
-end);
-
 InstallMethod(StarDigraphCons, "for IsMutableDigraph and one integer",
 [IsMutableDigraph, IsPosInt],
 function(filt, k)
@@ -406,7 +395,7 @@ InstallMethod(StarDigraphCons,
 function(filt, k)
   local D;
   D := MakeImmutable(StarDigraph(IsMutableDigraph, k));
-  SetIsMultiDigraph(D, true);
+  SetIsMultiDigraph(D, false);
   SetIsSymmetricDigraph(D, true);
   return D;
 end);

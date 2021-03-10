@@ -315,8 +315,9 @@ gap> GeneralisedPetersenGraph(IsMutableDigraph, 9, 4);
   <Oper Name="StarDigraph" Arg="[filt, ]k"/>
   <Returns>A digraph.</Returns>
   <Description>
-    If <A>k</A> is a positive integer, then this operation
-    returns a Star digraph.<P/>
+    This returns a <E>star digraph<E> with <A>k</A> vertices.
+    A <E>star digraph</E> has a single node with <M><A>k</A>-1</A> leaves.<P/>
+
 
     If the optional first argument <A>filt</A> is present, then this should
     specify the category or representation the digraph being created will
@@ -325,9 +326,6 @@ gap> GeneralisedPetersenGraph(IsMutableDigraph, 9, 4);
     Filt="IsImmutableDigraph"/>, then the digraph will be immutable. 
     If the optional first argument <A>filt</A> is not present, then <Ref
       Filt="IsImmutableDigraph"/> is used by default.<P/>
-
-    A <E>Star digraph</E> has a single node with k-1 leaves.<P/>
-
     <Example><![CDATA[
 gap> StarDigraph(IsMutable, 10);
 <mutable digraph with 10 vertices, 18 edges>
@@ -336,7 +334,7 @@ gap> StarDigraph(5);
 gap> IsSymmetricDigraph(StarDigraph(3));
 true
 gap> IsMultiDigraph(StarDigraph(3));
-true
+false
 ]]></Example>
   </Description>
 </ManSection>
