@@ -402,6 +402,6 @@ InstallMethod(BananaTreeGraph, "for a function and two pos ints",
 [IsPosInt, IsPosInt],
 {m, n} -> BananaTreeGraphCons(IsImmutableDigraph, m, n));
 
-InstallMethod(BananaTreeGraph, "for a function and two pos int",
+InstallMethod(BananaTreeGraph, "for a function and two pos ints",
 [IsFunction, IsPosInt, IsPosInt],
 {filt, m, n} -> BananaTreeGraphCons(filt, m, n));
