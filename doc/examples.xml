@@ -337,7 +337,7 @@ gap> TadpoleDigraph(IsMutableDigraph, 5, 6);
 gap> IsSymmetricDigraph(TadpoleDigraph(3, 5));
 true
 gap> IsMultiDigraph(TadpoleDigraph(3, 5));
-true
+false
 ]]></Example>
   </Description>
 </ManSection>
