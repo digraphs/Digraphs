@@ -405,4 +405,3 @@ InstallMethod(BananaTreeGraph, "for a function and two pos int",
 InstallMethod(BananaTreeGraph, "for a function and two pos int",
 [IsFunction, IsPosInt, IsPosInt],
 {filt, m, n} -> BananaTreeGraphCons(filt, m, n));
-

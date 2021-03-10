@@ -226,10 +226,6 @@ Error, the arguments <n> and <k> must be non-negative integers,
 gap> JohnsonDigraph(IsMutableDigraph, 4, 2);
 <mutable digraph with 6 vertices, 24 edges>
 
-#
-gap> DIGRAPHS_StopTest();
-gap> STOP_TEST("Digraphs package: standard/examples.tst", 0);
-
 # BananaTreeGraph
 gap> D := BananaTreeGraph(2, 4);
 <immutable acyclic digraph with 9 vertices, 16 edges>
@@ -244,3 +240,7 @@ Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `BananaTreeGraph' on 2 arguments
 gap> D := DigraphMutableCopy(BananaTreeGraph(2, 4));
 <mutable digraph with 9 vertices, 16 edges>
+
+#
+gap> DIGRAPHS_StopTest();
+gap> STOP_TEST("Digraphs package: standard/examples.tst", 0);
