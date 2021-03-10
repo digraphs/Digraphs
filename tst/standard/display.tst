@@ -55,8 +55,10 @@ gap> dot{[1 .. 50]};
 gap> dot{[51 .. 75]};
 "1\n1 -> 2\n1 -> 2\n1 -> 3\n}\n"
 gap> r := rec(DigraphVertices := [1 .. 8],
-> DigraphSource := [1, 1, 2, 2, 3, 4, 4, 4, 5, 5, 5, 5, 5, 6, 7, 7, 7, 7, 7, 8, 8],
-> DigraphRange := [6, 7, 1, 6, 5, 1, 4, 8, 1, 3, 6, 6, 7, 7, 1, 4, 4, 5, 7, 5, 6]);;
+> DigraphSource := [1, 1, 2, 2, 3, 4, 4, 4, 5, 5, 5, 5, 5, 6, 7, 7, 7, 7, 7, 8,
+>                   8],
+> DigraphRange  := [6, 7, 1, 6, 5, 1, 4, 8, 1, 3, 6, 6, 7, 7, 1, 4, 4, 5, 7, 5,
+>                   6]);;
 gap> gr1 := Digraph(r);
 <immutable multidigraph with 8 vertices, 21 edges>
 gap> DotDigraph(gr1){[50 .. 109]};
@@ -518,7 +520,9 @@ gap> Print(DotPreorderDigraph(gr){[1 .. 94]}, "\n");
 digraph graphname {
 node [shape=Mrecord, height=0.5, fixedsize=true]ranksep=1;
 1 [label=
-gap> gr := DigraphDisjointUnion(CompleteDigraph(10), CompleteDigraph(5), CycleDigraph(2));;
+gap> gr := DigraphDisjointUnion(CompleteDigraph(10),
+>                               CompleteDigraph(5),
+>                               CycleDigraph(2));;
 gap> gr := DigraphReflexiveTransitiveClosure(DigraphAddEdge(gr, [10, 11]));;
 gap> IsPreorderDigraph(gr);
 true

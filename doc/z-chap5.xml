@@ -42,7 +42,7 @@
     <#Include Label="IsCycleDigraph">
   </Section>
   
-  <Section><Heading>Planarity</Heading>
+  <Section Label="Planarity"><Heading>Planarity</Heading>
     <#Include Label="IsPlanarDigraph">
     <#Include Label="IsOuterPlanarDigraph">
   </Section>
