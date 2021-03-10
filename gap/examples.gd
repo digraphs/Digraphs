@@ -48,3 +48,19 @@ DeclareOperation("PetersenGraph", [IsFunction]);
 DeclareConstructor("GeneralisedPetersenGraphCons", [IsDigraph, IsInt, IsInt]);
 DeclareOperation("GeneralisedPetersenGraph", [IsInt, IsInt]);
 DeclareOperation("GeneralisedPetersenGraph", [IsFunction, IsInt, IsInt]);
+
+DeclareConstructor("RooksGraphCons", [IsDigraph, IsPosInt, IsPosInt]);
+DeclareOperation("RooksGraph", [IsPosInt, IsPosInt]);
+DeclareOperation("RooksGraph", [IsFunction, IsPosInt, IsPosInt]);
+
+DeclareConstructor("WhiteBishopsGraphCons", [IsDigraph, IsPosInt, IsPosInt]);
+DeclareOperation("WhiteBishopsGraph", [IsPosInt, IsPosInt]);
+DeclareOperation("WhiteBishopsGraph", [IsFunction, IsPosInt, IsPosInt]);
+
+DeclareConstructor("BlackBishopsGraphCons", [IsDigraph, IsPosInt, IsPosInt]);
+DeclareOperation("BlackBishopsGraph", [IsPosInt, IsPosInt]);
+DeclareOperation("BlackBishopsGraph", [IsFunction, IsPosInt, IsPosInt]);
+
+DeclareConstructor("QueensGraphCons", [IsDigraph, IsPosInt, IsPosInt]);
+DeclareOperation("QueensGraph", [IsPosInt, IsPosInt]);
+DeclareOperation("QueensGraph", [IsFunction, IsPosInt, IsPosInt]);

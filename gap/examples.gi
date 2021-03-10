@@ -370,3 +370,157 @@ GeneralisedPetersenGraphCons);
 
 InstallMethod(GeneralisedPetersenGraph, "for integer, integer", [IsInt, IsInt],
 {n, k} -> GeneralisedPetersenGraphCons(IsImmutableDigraph, n, k));
+
+InstallMethod(RooksGraphCons,
+"for IsMutableDigraph and two integers",
+[IsMutableDigraph, IsPosInt, IsPosInt],
+function(filt, n, k)
+  local D1, D2, DR;
+  D1 := CompleteDigraph(n);
+  D2 := CompleteDigraph(k);
+  DR := DigraphCartesianProduct(D1, D2);
+  return DR;
+end);
+
+InstallMethod(WhiteBishopsGraphCons,
+"for IsMutableDigraph and two integers",
+[IsMutableDigraph, IsPosInt, IsPosInt],
+function(filt, n, k)
+  local D, i, j, p, coordinates, targetCoordinate, switch, a;
+  D := EmptyDigraph(IsMutable, n * k);
+  p := 0;
+  coordinates := [];
+  for i in [1 .. k] do
+    for j in [1 .. n] do
+      p := p + 1;
+      coordinates[p] := [i, j];
+    od;
+  od;
+
+  for i in coordinates do
+    if IsOddInt(i[1] + i[2]) then
+      switch := true;
+      a := 0;
+      while switch do
+        a := a + 1;
+        targetCoordinate := [i[1] + a, i[2] + a];
+        if targetCoordinate in coordinates then
+          DigraphAddEdge(D, [Position(coordinates, i),
+          Position(coordinates, targetCoordinate)]);
+        else
+          switch := false;
+        fi;
+      od;
+      switch := true;
+      a := 0;
+      while switch do
+        a := a + 1;
+        targetCoordinate := [i[1] - a, i[2] - a];
+        if targetCoordinate in coordinates then
+          DigraphAddEdge(D, [Position(coordinates, i),
+          Position(coordinates, targetCoordinate)]);
+        else
+          switch := false;
+        fi;
+      od;
+      switch := true;
+      a := 0;
+      while switch do
+        a := a + 1;
+        targetCoordinate := [i[1] - a, i[2] + a];
+        if targetCoordinate in coordinates then
+          DigraphAddEdge(D, [Position(coordinates, i),
+          Position(coordinates, targetCoordinate)]);
+        else
+          switch := false;
+        fi;
+      od;
+      switch := true;
+      a := 0;
+      while switch do
+        a := a + 1;
+        targetCoordinate := [i[1] + a, i[2] - a];
+        if targetCoordinate in coordinates then
+          DigraphAddEdge(D, [Position(coordinates, i),
+          Position(coordinates, targetCoordinate)]);
+        else
+          switch := false;
+        fi;
+      od;
+    fi;
+  od;
+  
+  return D;
+end);
+
+InstallMethod(BlackBishopsGraphCons,
+"for IsMutableDigraph and two integers",
+[IsMutableDigraph, IsPosInt, IsPosInt],
+function(filt, n, k)
+  local D, i, j, p, coordinates, targetCoordinate, switch, a;
+  D := EmptyDigraph(IsMutable, n * k);
+  p := 0;
+  coordinates := [];
+  for i in [1 .. k] do
+    for j in [1 .. n] do
+      p := p + 1;
+      coordinates[p] := [i, j];
+    od;
+  od;
+
+  for i in coordinates do
+    if IsEvenInt(i[1] + i[2]) then
+      switch := true;
+      a := 0;
+      while switch do
+        a := a + 1;
+        targetCoordinate := [i[1] + a, i[2] + a];
+        if targetCoordinate in coordinates then
+          DigraphAddEdge(D, [Position(coordinates, i),
+          Position(coordinates, targetCoordinate)]);
+        else
+          switch := false;
+        fi;
+      od;
+      switch := true;
+      a := 0;
+      while switch do
+        a := a + 1;
+        targetCoordinate := [i[1] - a, i[2] - a];
+        if targetCoordinate in coordinates then
+          DigraphAddEdge(D, [Position(coordinates, i),
+          Position(coordinates, targetCoordinate)]);
+        else
+          switch := false;
+        fi;
+      od;
+      switch := true;
+      a := 0;
+      while switch do
+        a := a + 1;
+        targetCoordinate := [i[1] - a, i[2] + a];
+        if targetCoordinate in coordinates then
+          DigraphAddEdge(D, [Position(coordinates, i),
+          Position(coordinates, targetCoordinate)]);
+        else
+          switch := false;
+        fi;
+      od;
+      switch := true;
+      a := 0;
+      while switch do
+        a := a + 1;
+        targetCoordinate := [i[1] + a, i[2] - a];
+        if targetCoordinate in coordinates then
+          DigraphAddEdge(D, [Position(coordinates, i),
+          Position(coordinates, targetCoordinate)]);
+        else
+          switch := false;
+        fi;
+      od;
+    fi;
+  od;
+  
+  return D;
+end);
+
