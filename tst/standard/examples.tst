@@ -228,13 +228,13 @@ gap> JohnsonDigraph(IsMutableDigraph, 4, 2);
 
 # BananaTreeGraph
 gap> D := BananaTreeGraph(2, 4);
-<immutable acyclic digraph with 9 vertices, 16 edges>
+<immutable connected symmetric digraph with 9 vertices, 16 edges>
 gap> D := BananaTreeGraph(3, 3);
-<immutable acyclic digraph with 10 vertices, 18 edges>
+<immutable connected symmetric digraph with 10 vertices, 18 edges>
 gap> D := BananaTreeGraph(5, 2);
-<immutable acyclic digraph with 11 vertices, 20 edges>
+<immutable connected symmetric digraph with 11 vertices, 20 edges>
 gap> D := BananaTreeGraph(3, 4);
-<immutable acyclic digraph with 13 vertices, 24 edges>
+<immutable connected symmetric digraph with 13 vertices, 24 edges>
 gap> D := BananaTreeGraph(0, 0);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `BananaTreeGraph' on 2 arguments
