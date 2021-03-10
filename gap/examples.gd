@@ -52,5 +52,3 @@ DeclareOperation("GeneralisedPetersenGraph", [IsFunction, IsInt, IsInt]);
 DeclareConstructor("HaarGraphCons", [IsDigraph, IsPosInt]);
 DeclareOperation("HaarGraph", [IsPosInt]);
 DeclareOperation("HaarGraph", [IsFunction, IsPosInt]);
-
-DeclareGlobalFunction("DIGRAPHS_BlistNumber");

@@ -372,7 +372,7 @@ InstallMethod(GeneralisedPetersenGraph, "for integer, integer", [IsInt, IsInt],
 {n, k} -> GeneralisedPetersenGraphCons(IsImmutableDigraph, n, k));
 
 InstallMethod(HaarGraphCons,
-"for IsMutableDigraph and one positive integer",
+"for IsMutableDigraph and a positive integer",
 [IsMutableDigraph, IsPosInt],
 function(filt, n)
   local m, binaryList, D, i, j;
@@ -392,7 +392,7 @@ function(filt, n)
 end);
 
 InstallMethod(HaarGraphCons,
-"for IsImmutableDigraph and one positive integer",
+"for IsImmutableDigraph and a positive integer",
 [IsImmutableDigraph, IsPosInt],
 function(filt, n)
   local D;
@@ -409,23 +409,3 @@ HaarGraphCons);
 
 InstallMethod(HaarGraph, "for a positive integer", [IsPosInt],
 {n} -> HaarGraphCons(IsImmutableDigraph, n));
-
-# TODO: Taken from semigroups...
-
-InstallGlobalFunction(DIGRAPHS_BlistNumber,
-function(nr, n)
-  local x, q, i;
-
-  x := BlistList([1 .. n], []);
-  nr := nr - 1;   # to be in [0 .. 2 ^ n - 1]
-  for i in [n, n - 1 .. 1] do
-    q := nr mod 2;
-    if q = 0 then
-      x[i] := false;
-    else
-      x[i] := true;
-    fi;
-    nr := (nr - q) / 2;
-  od;
-  return x;
-end);
