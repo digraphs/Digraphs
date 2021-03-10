@@ -343,13 +343,11 @@ gap> GeneralisedPetersenGraph(IsMutableDigraph, 9, 4);
 
 <Example><![CDATA[
 gap> HaarGraph(3);
-<immutable symmetric digraph with 4 vertices, 8 edges>
+<immutable bipartite symmetric digraph with bicomponent sizes 2 and 2>
 gap> D := HaarGraph(16);
-<immutable symmetric digraph with 10 vertices, 10 edges>
+<immutable bipartite symmetric digraph with bicomponent sizes 5 and 5>
 gap> IsBipartiteDigraph(D);
 true
-gap> HaarGraph(-2);
-Error, the argument <n> must be a positive integer,
 ]]></Example>
   </Description>
 </ManSection>
