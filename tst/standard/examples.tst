@@ -239,5 +239,7 @@ gap> IsSymmetricDigraph(TadpoleDigraph(3, 5));
 true
 gap> IsMultiDigraph(TadpoleDigraph(3, 5));
 true
+gap> TadpoleDigraph(3, 0);
+
 gap> DIGRAPHS_StopTest();
 gap> STOP_TEST("Digraphs package: standard/examples.tst", 0);

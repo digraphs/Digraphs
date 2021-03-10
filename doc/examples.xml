@@ -315,7 +315,7 @@ gap> GeneralisedPetersenGraph(IsMutableDigraph, 9, 4);
   <Oper Name="TadpoleDigraph" Arg="[filt, ]m, n"/>
   <Returns>A digraph.</Returns>
   <Description>
-    If <A>m</A> and <A>n</A> are non-negative integers (where m > 2), then this operation
+    If <A>m</A> and <A>n</A> are non-negative integers (where <A>m</A>> 2), then this operation
     returns a Tadpole digraph.<P/>
 
     If the optional first argument <A>filt</A> is present, then this should
