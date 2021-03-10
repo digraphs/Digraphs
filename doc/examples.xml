@@ -317,7 +317,7 @@ gap> GeneralisedPetersenGraph(IsMutableDigraph, 9, 4);
   <Description>
     If <A>m</A> and <A>n</A> are positive integers,
     then this operation returns the <E>banana tree graph</E> 
-    <M>BananaTreeGraph(<A>m</A>, <A>n</A>)</M>. <P/>
+    with parameters <A>m</A> and <A>n</A>, as defined below. <P/>
 
     From
     <URL>https://mathworld.wolfram.com/BananaTree.html</URL>:
