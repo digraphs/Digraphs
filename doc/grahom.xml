@@ -798,3 +798,66 @@ false
     </Description>
   </ManSection>
 <#/GAPDoc>
+
+<#GAPDoc Label="MaximalCommonSubdigraph">
+  <ManSection>
+    <Oper Name="MaximalCommonSubdigraph" Arg="D1, D2"/>
+    <Returns>A list containing a digraph and two transformations.</Returns>
+    <Description>
+  If <A>D1</A> and <A>D2</A> are digraphs without multiple edges, then
+  <C>MaximalCommonSubdigraph</C> returns a maximal common subgraph <C>M</C> of
+  <A>D1</A> and <A>D2</A> with the maximum number of vertices. So <C>M</C> is a
+  digraph which embeds into both <A>D1</A> and <A>D2</A> and has the largest
+  number of vertices amoung such digraphs.
+
+  It returns a list <C>[M, t1, t2]</C> where <C>M</C> is the maximal common
+  subdigraph and <C>t1, t2</C> are transformations embedding <C>M</C> into
+  <A>D1</A> and <A>D2</A> respectively.
+
+<Example><![CDATA[
+gap> MaximalCommonSubdigraph(PetersenGraph(), CompleteDigraph(10));
+[ <immutable digraph with 2 vertices, 2 edges>, 
+  IdentityTransformation, IdentityTransformation ]
+gap> MaximalCommonSubdigraph(PetersenGraph(),
+> DigraphSymmetricClosure(CycleDigraph(5)));
+[ <immutable digraph with 5 vertices, 10 edges>, 
+  IdentityTransformation, IdentityTransformation ]
+gap> MaximalCommonSubdigraph(NullDigraph(0), CompleteDigraph(10));
+[ <immutable empty digraph with 0 vertices>, IdentityTransformation, 
+  IdentityTransformation ]
+]]></Example>
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="MinimalCommonSuperdigraph">
+  <ManSection>
+    <Oper Name="MinimalCommonSuperdigraph" Arg="D1, D2"/>
+    <Returns>A list containing a digraph and two transformations.</Returns>
+    <Description>
+  If <A>D1</A> and <A>D2</A> are digraphs without multiple edges, then
+  <C>MinimalCommonSuperdigraph</C> returns a minimal common superdigraph
+  <C>M</C> of <A>D1</A> and <A>D2</A> with the minimum number of vertices.
+  So <C>M</C> is a digraph into which both <A>D1</A> and <A>D2</A> embed and
+  has the smallest number of vertices amoung such digraphs.
+ 
+  It returns a list <C>[M, t1, t2]</C> where <C>M</C> is the minimal common 
+  superdigraph and <C>t1, t2</C> are transformations embedding <A>D1</A> and
+  <A>D2</A> respectively into <C>M</C>.
+<Example><![CDATA[
+gap> MinimalCommonSuperdigraph(PetersenGraph(), CompleteDigraph(10));
+[ <immutable digraph with 18 vertices, 118 edges>, 
+  IdentityTransformation, 
+  Transformation( [ 1, 2, 11, 12, 13, 14, 15, 16, 17, 18, 11, 12, 13,
+      14, 15, 16, 17, 18 ] ) ]
+gap> MinimalCommonSuperdigraph(PetersenGraph(),
+> DigraphSymmetricClosure(CycleDigraph(5)));
+[ <immutable digraph with 10 vertices, 30 edges>, 
+  IdentityTransformation, IdentityTransformation ]
+gap> MinimalCommonSuperdigraph(NullDigraph(0), CompleteDigraph(10));
+[ <immutable digraph with 10 vertices, 90 edges>, 
+  IdentityTransformation, IdentityTransformation ]
+]]></Example>
+    </Description>
+  </ManSection>
+<#/GAPDoc>

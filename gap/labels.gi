@@ -61,6 +61,9 @@ function(D, names)
                   "to the number of vertices of the digraph <D> that is the ",
                   "1st argument,");
   fi;
+  if not IsMutable(names) then
+    names := ShallowCopy(names);
+  fi;
   D!.vertexlabels := names;
 end);
 
