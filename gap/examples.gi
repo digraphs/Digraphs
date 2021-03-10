@@ -371,17 +371,6 @@ GeneralisedPetersenGraphCons);
 InstallMethod(GeneralisedPetersenGraph, "for integer, integer", [IsInt, IsInt],
 {n, k} -> GeneralisedPetersenGraphCons(IsImmutableDigraph, n, k));
 
-InstallMethod(GeneralisedPetersenGraphCons,
-"for IsImmutableDigraph, integer, int",
-[IsImmutableDigraph, IsInt, IsInt],
-function(filt, n, k)
-  local D;
-  D := MakeImmutable(GeneralisedPetersenGraphCons(IsMutableDigraph, n, k));
-  SetIsMultiDigraph(D, false);
-  SetIsSymmetricDigraph(D, true);
-  return D;
-end);
-
 InstallMethod(TadpoleDigraphCons, "for IsMutableDigraph and two integers",
 [IsMutableDigraph, IsInt, IsInt],
 function(filt, m, n)
@@ -421,7 +410,7 @@ InstallMethod(TadpoleDigraphCons,
 function(filt, m, n)
   local D;
   D := MakeImmutable(TadpoleDigraph(IsMutableDigraph, m, n));
-  SetIsMultiDigraph(D, true);
+  SetIsMultiDigraph(D, false);
   SetIsSymmetricDigraph(D, true);
   return D;
 end);
