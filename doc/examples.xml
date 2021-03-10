@@ -325,7 +325,7 @@ gap> GeneralisedPetersenGraph(IsMutableDigraph, 9, 4);
 
     <Q>A banana tree graph, as defined by Chen et al. (1997) is a graph obtained by
     connecting one leaf of each of <A>m</A> copies of an <A>n</A>-star graph with
-    a single root vertex that is distance from all the stars.</Q>
+    a single root vertex that is distinct from all the stars.</Q>
     <P/>
 
     If the optional first argument <A>filt</A> is present, then this should
@@ -336,7 +336,7 @@ gap> GeneralisedPetersenGraph(IsMutableDigraph, 9, 4);
     If the optional first argument <A>filt</A> is not present, then <Ref
       Filt="IsImmutableDigraph"/> is used by default.<P/>
 
-    See also <Ref Oper="BananaTreeGraph"/>.
+    See also <Ref Oper="CompleteBipartiteDigraph"/>.
 
 <Example><![CDATA[
 gap> D := BananaTreeGraph(2, 4);
