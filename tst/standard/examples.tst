@@ -230,14 +230,14 @@ gap> JohnsonDigraph(IsMutableDigraph, 4, 2);
 gap> StarDigraph(IsMutable, 10);
 <mutable digraph with 10 vertices, 18 edges>
 gap> StarDigraph(IsImmutableDigraph, 10);
-<immutable symmetric multidigraph with 10 vertices, 18 edges>
+<immutable symmetric digraph with 10 vertices, 18 edges>
 gap> StarDigraph(3);
-<immutable symmetric multidigraph with 3 vertices, 4 edges>
+<immutable symmetric digraph with 3 vertices, 4 edges>
 gap> StarDigraph(1);
-<immutable empty multidigraph with 1 vertex>
+<immutable empty digraph with 1 vertex>
 gap> IsSymmetricDigraph(StarDigraph(3));
 true
 gap> IsMultiDigraph(StarDigraph(3));
-true
+false
 gap> DIGRAPHS_StopTest();
 gap> STOP_TEST("Digraphs package: standard/examples.tst", 0);

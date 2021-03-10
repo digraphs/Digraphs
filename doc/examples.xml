@@ -330,7 +330,7 @@ gap> GeneralisedPetersenGraph(IsMutableDigraph, 9, 4);
 gap> StarDigraph(IsMutable, 10);
 <mutable digraph with 10 vertices, 18 edges>
 gap> StarDigraph(5);
-<immutable symmetric multidigraph with 5 vertices, 8 edges>
+<immutable symmetric digraph with 5 vertices, 8 edges>
 gap> IsSymmetricDigraph(StarDigraph(3));
 true
 gap> IsMultiDigraph(StarDigraph(3));
