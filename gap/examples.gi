@@ -397,7 +397,7 @@ function(filt, n, k)
 end);
 
 InstallMethod(KingsGraphCons,
-"for IsImmutableDigraph and two positive integer",
+"for IsImmutableDigraph and two positive integers",
 [IsImmutableDigraph, IsPosInt, IsPosInt],
 function(filt, n, k)
   local D;
