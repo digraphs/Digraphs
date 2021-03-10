@@ -79,6 +79,12 @@ gap> DigraphVertexLabels(gr);
 [ 1, 3, 4, 5, 6, 7, 8, 9, 10 ]
 gap> D := NullDigraph(5);;
 gap> RemoveDigraphVertexLabel(D, 6);
+gap> A := Immutable([1, 2]);
+[ 1, 2 ]
+gap> D := CycleDigraph(2);
+<immutable cycle digraph with 2 vertices>
+gap> SetDigraphVertexLabels(D, A);
+gap> SetDigraphVertexLabel(D, 2, "b");
 
 #  DigraphEdgeLabels
 gap> gr := Digraph([[2, 3], [3], [1, 5], [], [4]]);
