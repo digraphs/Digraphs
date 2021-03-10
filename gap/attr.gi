@@ -1349,6 +1349,12 @@ function(digraph)
   elif IsCompleteDigraph(digraph) then
     return DigraphVertexLabels(digraph);
   elif IsSymmetricDigraph(digraph) and IsBipartiteDigraph(digraph) then
+    # TODO symmetric is not necessary, you just need bipartite and:
+    # DigraphGirth(digraph) = 2
+    # i.e. not IsAntiSymmetricDigraph(digraph)
+    # i.e. a pair [i, j] with edges i -> j and j -> i.
+    # Given this, the core is [i, j]
+    # This would allow you to <return 3> rather than <return 2> in function <lo>
     i := First(DigraphVertices(digraph),
                i -> OutDegreeOfVertex(digraph, i) > 0);
     return DigraphVertexLabels(digraph){
@@ -1394,7 +1400,7 @@ function(digraph)
     if oddgirth <> infinity then
       return oddgirth;
     fi;
-    return 3;
+    return 2;
   end;
 
   hom      := [];
