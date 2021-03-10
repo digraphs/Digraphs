@@ -315,7 +315,7 @@ gap> GeneralisedPetersenGraph(IsMutableDigraph, 9, 4);
   <Oper Name="BananaTreeGraph" Arg="[filt, ]m, n"/>
   <Returns>A digraph</Returns>
   <Description>
-    If <A>n</A> and <A>n</A> are positive integers,
+    If <A>m</A> and <A>n</A> are positive integers,
     then this operation returns the <E>banana tree graph</E> 
     <M>BananaTreeGraph(<A>m</A>, <A>n</A>)</M>. <P/>
 
