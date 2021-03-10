@@ -228,13 +228,13 @@ gap> JohnsonDigraph(IsMutableDigraph, 4, 2);
 
 # KingsGraph
 gap> KingsGraph(8, 8);
-<immutable symmetric digraph with 64 vertices, 420 edges>
+<immutable connected symmetric digraph with 64 vertices, 420 edges>
 gap> D := KingsGraph(4, 7);
-<immutable symmetric digraph with 28 vertices, 162 edges>
+<immutable connected symmetric digraph with 28 vertices, 162 edges>
 gap> IsConnectedDigraph(D);
 true
 gap> D := KingsGraph(2, 2);
-<immutable symmetric digraph with 4 vertices, 12 edges>
+<immutable connected symmetric digraph with 4 vertices, 12 edges>
 gap> OutNeighbors(D);     
 [ [ 2, 3, 4 ], [ 1, 3, 4 ], [ 1, 2, 4 ], [ 1, 2, 3 ] ]
 
