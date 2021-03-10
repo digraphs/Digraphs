@@ -142,7 +142,7 @@ for PKG in "${PKGS[@]}"; do
 
   # Get the relevant version number
   if [ "${PACKAGES[0]}" == "latest" ] || [ "$PKG" == "profiling" ]; then
-    VERSION=`$CURL -s "https://github.com/gap-packages/$PKG/releases/latest" | grep \<title\>Release | awk -F' ' '{print $2}'`
+    VERSION=`$CURL -s "https://api.github.com/repos/gap-packages/${PKG}/releases" | grep tag_name | head -n 1 | awk -F'"' '{print $4}'`
   else
     VERSION=`grep "\"$PKG\"" $GAP_HOME/pkg/digraphs/PackageInfo.g | awk -F'"' '{print $4}' | cut -c3-`
   fi
@@ -150,6 +150,8 @@ for PKG in "${PKGS[@]}"; do
   if [ -z $VERSION ]; then
     bold "Could not determine the version number of the package $PKG!! Aborting..."
     exit 1
+  elif [ "${VERSION:0:1}" == "v" ]; then
+    VERSION=${VERSION:1}
   fi
 
   URL="https://github.com/gap-packages/$PKG/releases/download/v$VERSION/$PKG-$VERSION.tar.gz"
