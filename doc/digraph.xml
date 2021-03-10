@@ -205,7 +205,7 @@
       <Mark>for a binary relation</Mark>
       <Item>
         if <A>obj</A> is a binary relation on the points <C>[1 .. n]</C> for
-        some posititve integer <M>n</M>, then this function returns the digraph
+        some positive integer <M>n</M>, then this function returns the digraph
         defined by <A>obj</A>. Specifically, this function returns a digraph
         which has <M>n</M> vertices, and which has an edge with source <C>i</C>
         and range <C>j</C> if and only if <C>[i,j]</C> is a pair in

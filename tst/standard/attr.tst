@@ -96,7 +96,9 @@ gap> gr := Digraph([[], []]);
 <immutable empty digraph with 2 vertices>
 gap> DigraphDual(gr);
 <immutable digraph with 2 vertices, 4 edges>
-gap> gr := Digraph(rec(DigraphNrVertices := 2, DigraphSource := [], DigraphRange := []));
+gap> gr := Digraph(rec(DigraphNrVertices := 2,
+>                      DigraphSource := [],
+>                      DigraphRange := []));
 <immutable empty digraph with 2 vertices>
 gap> DigraphDual(gr);
 <immutable digraph with 2 vertices, 4 edges>
@@ -170,7 +172,9 @@ gap> adj2 := AdjacencyMatrix(gr);
   [ 0, 0, 0, 0, 2, 0, 0 ] ]
 gap> adj1 = adj2;
 true
-gap> r := rec(DigraphNrVertices := 1, DigraphSource := [1, 1], DigraphRange := [1, 1]);;
+gap> r := rec(DigraphNrVertices := 1,
+>             DigraphSource := [1, 1],
+>             DigraphRange := [1, 1]);;
 gap> gr := Digraph(r);
 <immutable multidigraph with 1 vertex, 2 edges>
 gap> adj1 := AdjacencyMatrix(gr);
@@ -183,12 +187,15 @@ gap> adj1 = adj2;
 true
 gap> AdjacencyMatrix(Digraph([]));
 [  ]
-gap> AdjacencyMatrix(
-> Digraph(rec(DigraphNrVertices := 0, DigraphSource := [], DigraphRange := [])));
+gap> AdjacencyMatrix(Digraph(rec(DigraphNrVertices := 0,
+>                                DigraphSource     := [],
+>                                DigraphRange      := [])));
 [  ]
 
 #  DigraphTopologicalSort
-gap> r := rec(DigraphNrVertices := 20000, DigraphSource := [], DigraphRange := []);;
+gap> r := rec(DigraphNrVertices := 20000,
+>             DigraphSource     := [],
+>             DigraphRange      := []);;
 gap> for i in [1 .. 9999] do
 >   Add(r.DigraphSource, i);
 >   Add(r.DigraphRange, i + 1);
@@ -214,7 +221,9 @@ gap> gr := Digraph([[2], [1]]);
 <immutable digraph with 2 vertices, 2 edges>
 gap> DigraphTopologicalSort(gr);
 fail
-gap> r := rec(DigraphNrVertices := 2, DigraphSource := [1, 1], DigraphRange := [2, 2]);;
+gap> r := rec(DigraphNrVertices := 2,
+>             DigraphSource := [1, 1],
+>             DigraphRange := [2, 2]);;
 gap> multiple := Digraph(r);;
 gap> DigraphTopologicalSort(multiple);
 [ 2, 1 ]
@@ -364,12 +373,14 @@ rec( comps := [ [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ],
   id := [ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ] )
 gap> gr := Digraph(rec(
 > DigraphNrVertices := 100,
-> DigraphSource := [8, 9, 11, 11, 12, 13, 14, 14, 18, 19, 22, 27, 31, 32, 32, 34,
->             37, 40, 45, 48, 50, 52, 58, 58, 58, 59, 60, 60, 65, 66, 73,
->             75, 79, 81, 81, 83, 84, 86, 86, 89, 96, 100, 100, 100],
-> DigraphRange := [54, 62, 28, 55, 70, 37, 20, 32, 53, 16, 42, 66, 63, 13, 73, 89,
->            36, 5, 4, 58, 26, 48, 36, 56, 65, 78, 95, 96, 97, 60, 11, 66,
->            66, 19, 79, 21, 13, 29, 78, 98, 100, 44, 53, 69]));
+> DigraphSource     := [8, 9, 11, 11, 12, 13, 14, 14, 18, 19, 22, 27, 31, 32,
+>                       32, 34, 37, 40, 45, 48, 50, 52, 58, 58, 58, 59, 60, 60,
+>                       65, 66, 73, 75, 79, 81, 81, 83, 84, 86, 86, 89, 96, 100,
+>                       100, 100],
+> DigraphRange      := [54, 62, 28, 55, 70, 37, 20, 32, 53, 16, 42, 66, 63, 13,
+>                       73, 89, 36, 5, 4, 58, 26, 48, 36, 56, 65, 78, 95, 96,
+>                       97, 60, 11, 66, 66, 19, 79, 21, 13, 29, 78, 98, 100, 44,
+>                       53, 69]));
 <immutable digraph with 100 vertices, 44 edges>
 gap> OutNeighbours(gr);
 [ [  ], [  ], [  ], [  ], [  ], [  ], [  ], [ 54 ], [ 62 ], [  ], [ 28, 55 ], 
@@ -423,7 +434,9 @@ gap> DigraphShortestDistances(Digraph([]));
 [  ]
 gap> mat := DigraphShortestDistances(Digraph([[], []]));
 [ [ 0, fail ], [ fail, 0 ] ]
-gap> r := rec(DigraphVertices := [1 .. 15], DigraphSource := [], DigraphRange := []);;
+gap> r := rec(DigraphVertices := [1 .. 15],
+>             DigraphSource   := [],
+>             DigraphRange    := []);;
 gap> for i in [1 .. 15] do
 >   for j in [1 .. 15] do
 >     Add(r.DigraphSource, i);
@@ -448,8 +461,9 @@ gap> Display(DigraphShortestDistances(complete15));
   [  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  0,  1,  1 ],
   [  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  0,  1 ],
   [  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  0 ] ]
-gap> r := rec(DigraphNrVertices := 7, DigraphRange := [3, 5, 5, 4, 6, 2, 5, 3, 3, 7, 2],
->  DigraphSource := [1, 1, 1, 2, 2, 3, 3, 4, 5, 5, 7]);;
+gap> r := rec(DigraphNrVertices := 7,
+>             DigraphRange      := [3, 5, 5, 4, 6, 2, 5, 3, 3, 7, 2],
+>             DigraphSource     := [1, 1, 1, 2, 2, 3, 3, 4, 5, 5, 7]);;
 gap> gr := Digraph(r);
 <immutable multidigraph with 7 vertices, 11 edges>
 gap> Display(DigraphShortestDistances(gr));
@@ -473,8 +487,9 @@ gap> DigraphShortestDistances(gr);
 [ [ 0, 1, 1 ], [ 1, 0, 1 ], [ 1, 1, 0 ] ]
 
 #  OutNeighbours and InNeighbours
-gap> gr := Digraph(rec(DigraphNrVertices := 10, DigraphSource := [1, 1, 5, 5, 7, 10],
-> DigraphRange := [3, 3, 1, 10, 7, 1]));
+gap> gr := Digraph(rec(DigraphNrVertices := 10,
+>                      DigraphSource := [1, 1, 5, 5, 7, 10],
+>                      DigraphRange := [3, 3, 1, 10, 7, 1]));
 <immutable multidigraph with 10 vertices, 6 edges>
 gap> InNeighbours(gr);
 [ [ 5, 10 ], [  ], [ 1, 1 ], [  ], [  ], [  ], [ 7 ], [  ], [  ], [ 5 ] ]
@@ -542,10 +557,10 @@ gap> InDegrees(gr2);
 gap> InDegreeSequence(gr2);
 [ 5, 5, 5, 5, 4, 3, 1, 0 ]
 gap> r := rec(DigraphNrVertices := 8,
-> DigraphSource := [1, 1, 1, 2, 2, 2, 2, 3, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 6, 6, 7, 7,
->             7, 7, 7, 7, 8, 8],
-> DigraphRange := [6, 7, 1, 1, 3, 3, 6, 5, 1, 4, 4, 4, 8, 1, 3, 4, 6, 7, 7, 7, 1, 4,
->            5, 6, 5, 7, 5, 6]);;
+> DigraphSource := [1, 1, 1, 2, 2, 2, 2, 3, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 6, 6,
+>                   7, 7, 7, 7, 7, 7, 8, 8],
+> DigraphRange := [6, 7, 1, 1, 3, 3, 6, 5, 1, 4, 4, 4, 8, 1, 3, 4, 6, 7, 7, 7,
+>                  1, 4, 5, 6, 5, 7, 5, 6]);;
 gap> gr3 := Digraph(r);
 <immutable multidigraph with 8 vertices, 28 edges>
 gap> OutDegrees(gr3);
@@ -1202,6 +1217,12 @@ gap> for i in [1 .. 10] do
 > od;
 gap> DigraphOddGirth(D);
 7
+gap> D := DigraphFromDigraph6String("&IWsC_A?_PG_GDKC?cO");
+<immutable digraph with 10 vertices, 22 edges>
+gap> DigraphGirth(D);
+2
+gap> DigraphOddGirth(D);
+3
 
 # DigraphMycielskian
 gap> D1 := DigraphSymmetricClosure(CycleDigraph(2));
@@ -1353,6 +1374,13 @@ gap> gr := MaximalSymmetricSubdigraphWithoutLoops(gr);
 <immutable symmetric digraph with 3 vertices, 4 edges>
 gap> OutNeighbours(gr);
 [ [ 2, 3 ], [ 1 ], [ 1 ] ]
+gap> D := Digraph(IsImmutableDigraph, [[2, 2], [1]]);
+<immutable multidigraph with 2 vertices, 3 edges>
+gap> DigraphRemoveAllMultipleEdges(D);;
+gap> HasDigraphRemoveAllMultipleEdgesAttr(D);
+true
+gap> IsCompleteDigraph(MaximalSymmetricSubdigraph(D));
+true
 
 #  RepresentativeOutNeighbours
 gap> gr := CycleDigraph(5);
@@ -1559,6 +1587,8 @@ fail
 gap> forest := UndirectedSpanningForest(gr);
 fail
 gap> UndirectedSpanningForest(EmptyDigraph(IsMutableDigraph, 0));
+fail
+gap> UndirectedSpanningTree(ChainDigraph(IsMutableDigraph, 4));
 fail
 gap> gr := EmptyDigraph(1);
 <immutable empty digraph with 1 vertex>
@@ -1964,8 +1994,8 @@ gap> DigraphCore(D);
 [ 8 .. 29 ]
 gap> IsDigraphCore(InducedSubdigraph(D, DigraphCore(D)));
 true
-gap> str := ".qb`hOAW@fAiG]g??aGD[TXAbjgWl^?fkG{~cA@p`e~EIRlHSxBFHx\\RJ@ERCYhVSoIDvIE?c?x_\
-> YBJg?IWmoN_djWMyKnckGkdMqBsQMBWsBaK?\\BBFWOvY[vcHp]N";;
+gap> str := ".qb`hOAW@fAiG]g??aGD[TXAbjgWl^?fkG{~cA@p`e~EIRlHSxBFHx\\RJ@ERCYhV\
+> SoIDvIE?c?x_YBJg?IWmoN_djWMyKnckGkdMqBsQMBWsBaK?\\BBFWOvY[vcHp]N";;
 gap> D := DigraphFromDiSparse6String(str);
 <immutable digraph with 50 vertices, 79 edges>
 gap> DigraphCore(D);
@@ -2032,6 +2062,13 @@ gap> MaximalAntiSymmetricSubdigraph(D);
 <immutable antisymmetric digraph with 10 vertices, 45 edges>
 gap> MaximalAntiSymmetricSubdigraph(D);
 <immutable antisymmetric digraph with 10 vertices, 45 edges>
+gap> D := Digraph(IsImmutableDigraph, [[2, 2], [1]]);
+<immutable multidigraph with 2 vertices, 3 edges>
+gap> DigraphRemoveAllMultipleEdges(D);;
+gap> HasDigraphRemoveAllMultipleEdgesAttr(D);
+true
+gap> IsChainDigraph(MaximalAntiSymmetricSubdigraph(D));
+true
 
 # CharacteristicPolynomial
 gap> gr := Digraph([
@@ -2141,6 +2178,11 @@ gap> DigraphTransitiveReduction(gr);
 Error, not yet implemented for non-topologically sortable digraphs,
 gap> DigraphReflexiveTransitiveReduction(gr);
 Error, not yet implemented for non-topologically sortable digraphs,
+gap> D := Digraph(IsImmutableDigraph, [[1, 2, 3], [3], [3]]);;
+gap> DigraphRemoveLoops(D);; HasDigraphRemoveLoopsAttr(D);
+true
+gap> DigraphReflexiveTransitiveReduction(D) = ChainDigraph(3);
+true
 
 # Working examples
 gap> gr1 := ChainDigraph(6);
@@ -2206,7 +2248,8 @@ gap> gr := Digraph([[2], [1]]);
 gap> SetIsSymmetricDigraph(gr, true);
 gap> gr = DigraphReverse(gr);
 true
-gap> DigraphReverse(Digraph(IsMutableDigraph, [[2], [1]])) = CompleteDigraph(2);
+gap> DigraphReverse(Digraph(IsMutableDigraph, [[2], [1]]))
+> = CompleteDigraph(2);
 true
 
 # DigraphCartesianProductProjections
@@ -2246,7 +2289,8 @@ gap> IsIdempotent(proj[2]);
 true
 gap> RankOfTransformation(proj[3]);
 2
-gap> P := DigraphRemoveAllMultipleEdges(ReducedDigraph(OnDigraphs(D, proj[2])));;
+gap> P := DigraphRemoveAllMultipleEdges(
+> ReducedDigraph(OnDigraphs(D, proj[2])));;
 gap> IsIsomorphicDigraph(CycleDigraph(4), P);
 true
 gap> G := RandomDigraph(12);; 
@@ -2257,7 +2301,8 @@ gap> IsIdempotent(proj[1]);
 true
 gap> RankOfTransformation(proj[2]);
 50
-gap> P := DigraphRemoveAllMultipleEdges(ReducedDigraph(OnDigraphs(D, proj[2])));;
+gap> P := DigraphRemoveAllMultipleEdges(
+> ReducedDigraph(OnDigraphs(D, proj[2])));;
 gap> IsIsomorphicDigraph(H, P);
 true
 
@@ -2267,8 +2312,8 @@ gap> D := DigraphFromDigraph6String("&Sq_MN|bDCLy~Xj}u}GxOLlGfqJtnSQ|l\
 <immutable digraph with 20 vertices, 205 edges>
 gap> M := DigraphMaximalMatching(D);; IsMaximalMatching(D, M);
 true
-gap> D := DigraphFromDigraph6String(IsMutable, "&Sq_MN|bDCLy~Xj}u}GxOLlGfqJtnSQ|l\
-> Q?lYvjbqN~XNNAQYDJE[UHOhyGOqtsjCWJy[");
+gap> D := DigraphFromDigraph6String(IsMutable,
+> "&Sq_MN|bDCLy~Xj}u}GxOLlGfqJtnSQ|lQ?lYvjbqN~XNNAQYDJE[UHOhyGOqtsjCWJy[");
 <mutable digraph with 20 vertices, 205 edges>
 gap> M := DigraphMaximalMatching(D);; IsMaximalMatching(D, M);
 true
@@ -2281,7 +2326,8 @@ gap> D;
 <mutable digraph with 4 vertices, 4 edges>
 
 # DigraphMaximumMatching
-gap> D := DigraphFromDiSparse6String(".]cBn@kqAlt?EpclQp|M}bAgFjHkoDsIuACyCM_Hj");
+gap> D := DigraphFromDiSparse6String(
+> ".]cBn@kqAlt?EpclQp|M}bAgFjHkoDsIuACyCM_Hj");
 <immutable digraph with 30 vertices, 26 edges>
 gap> M := DigraphMaximumMatching(D);; IsMaximalMatching(D, M);
 true
@@ -2498,7 +2544,8 @@ gap> D := Digraph([[1, 4, 4], [2, 2, 4], [4], [3, 5], [5]]);
 <immutable multidigraph with 5 vertices, 10 edges>
 gap> DigraphNrLoops(D);
 4
-gap> D := Digraph(IsMutableDigraph, [[1, 2], [2, 3], [3, 4], [1, 4, 5], [2, 5]]);
+gap> D := Digraph(IsMutableDigraph,
+>                 [[1, 2], [2, 3], [3, 4], [1, 4, 5], [2, 5]]);
 <mutable digraph with 5 vertices, 11 edges>
 gap> DigraphNrLoops(D);
 5
@@ -2511,6 +2558,14 @@ gap> D := DigraphByAdjacencyMatrix([
 <immutable multidigraph with 3 vertices, 7 edges>
 gap> DigraphNrLoops(D);
 3
+gap> D := CompleteDigraph(IsImmutableDigraph, 3);
+<immutable complete digraph with 3 vertices>
+gap> DigraphHasLoops(D);
+false
+gap> HasDigraphHasLoops(D) and not DigraphHasLoops(D);
+true
+gap> DigraphNrLoops(D) = 0;
+true
 
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(adj);

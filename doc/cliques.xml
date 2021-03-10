@@ -145,14 +145,14 @@ true]]></Example>
       <Item>
         If one or two arguments are supplied, then <C>DigraphClique</C> and
         <C>DigraphMaximalClique</C> greedily enlarge the clique <A>include</A>
-        until it can not continue.  The result is guaranteed to be a maximal
+        until it cannot continue.  The result is guaranteed to be a maximal
         clique. This may or may not return an answer more quickly than using
-        <Ref Func="DigraphMaximalCliques"/>.  with a limit of 1.
+        <Ref Func="DigraphMaximalCliques"/> with a limit of 1.
       </Item>
       <Mark>Three arguments</Mark>
       <Item>
         If three arguments are supplied, then <C>DigraphClique</C> greedily
-        enlarges the clique <A>include</A> until it can not continue, although
+        enlarges the clique <A>include</A> until it cannot continue, although
         this clique may not be maximal.<P/>
 
         Given three arguments, <C>DigraphMaximalClique</C> returns the maximal
@@ -345,15 +345,15 @@ gap> DigraphMaximalCliques(D);
       <Item>
         If one or two arguments are supplied, then <C>DigraphIndependentSet</C>
         and <C>DigraphMaximalIndependentSet</C> greedily enlarge the
-        independent set <A>include</A> until it can not continue.  The result
+        independent set <A>include</A> until it cannot continue.  The result
         is guaranteed to be a maximal independent set. This may or may not
         return an answer more quickly than using <Ref
-          Func="DigraphMaximalIndependentSets"/>.  with a limit of 1.
+          Func="DigraphMaximalIndependentSets"/> with a limit of 1.
       </Item>
       <Mark>Three arguments</Mark>
       <Item>
         If three arguments are supplied, then <C>DigraphIndependentSet</C>
-        greedily enlarges the independent set <A>include</A> until it can not
+        greedily enlarges the independent set <A>include</A> until it cannot
         continue, although this independent set may not be maximal.<P/>
 
         Given three arguments, <C>DigraphMaximalIndependentSet</C> returns the

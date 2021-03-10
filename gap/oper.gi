@@ -1725,6 +1725,103 @@ function(D, list)
   return DigraphShortestDistance(D, list[1], list[2]);
 end);
 
+InstallMethod(DigraphShortestPathSpanningTree,
+"for a digraph and a vertex",
+[IsDigraph, IsPosInt],
+function(D, v)
+  local record, diam, tree, nbs, edgelabels, spanningtree, layers,
+        layernumbers, nradjacencies, localparameters, adjnrs, data, i, k;
+
+  if not v in DigraphVertices(D) then
+    ErrorNoReturn("the 2nd argument <v> must be a vertex of the digraph <D>");
+  fi;
+  record := DIGRAPH_ConnectivityDataForVertex(D, v);
+  diam := record.localDiameter;
+  if diam = -1 then
+    return fail;
+  fi;
+
+  # Construct out-neighbours of spanningtree
+  tree := record.spstree;
+  nbs := List(DigraphVertices(D), x -> []);
+  for i in DigraphVertices(D) do
+    if i <> v then
+      Add(nbs[tree[i]], i);
+    fi;
+  od;
+
+  # Create spanningtree according to mutability, retaining vertex labels
+  if IsMutableDigraph(D) then
+    spanningtree := D;
+    spanningtree!.OutNeighbours := nbs;
+  else
+    spanningtree := Digraph(IsImmutableDigraph, nbs);
+    SetDigraphVertexLabels(spanningtree, DigraphVertexLabels(D));
+  fi;
+
+  # Retain edge labels if appropriate
+  if HaveEdgeLabelsBeenAssigned(D) then
+    edgelabels := List(DigraphVertices(D), x -> []);
+    for i in DigraphVertices(D) do
+      for k in [1 .. Length(nbs[i])] do
+        edgelabels[i][k] := DigraphEdgeLabel(D, i, nbs[i][k]);
+      od;
+    od;
+    SetDigraphEdgeLabelsNC(spanningtree, edgelabels);
+  fi;
+
+  if IsMutableDigraph(spanningtree) then
+    return spanningtree;
+  fi;
+
+  # JDB: we know almost all local parameters, except the b_i, 0 < i < diameter.
+  # Note that for a spanningtree, all c_i and a_i are zero.
+  # b_0 will be the number of out-neighbours of v, which is the sameas before.
+  # b_d is of course zero.
+
+  # first reconstruct the layers from record.layernumbers.
+  layers := List([1 .. diam + 1], x -> []);
+  layernumbers := ShallowCopy(record.layerNumbers);
+  for i in [1 .. Length(layernumbers)] do
+    Add(layers[layernumbers[i]], i);
+  od;
+
+  # now compute for each vertex v the number of vertices adjacent with v in the
+  # next layer, using spstree.
+  nradjacencies := ListWithIdenticalEntries(DigraphNrVertices(D), 0);
+  for i in DigraphVertices(D) do
+    if i <> v then
+      nradjacencies[tree[i]] := nradjacencies[tree[i]] + 1;
+    fi;
+  od;
+
+  # now we are ready to compute the local parameters b_i of the spanning tree
+  localparameters := ShallowCopy(record.localParameters);
+  for i in [1 .. diam + 1] do
+    localparameters[i]{[1, 2]} := [0, 0];
+  od;
+  for i in [2 .. diam] do
+    adjnrs := Set(nradjacencies{layers[i]});
+    if Length(adjnrs) > 1 then
+      localparameters[i][3] := -1;
+    else
+      localparameters[i][3] := adjnrs[1];
+    fi;
+  od;
+
+  data := DIGRAPHS_ConnectivityData(spanningtree);
+  data[v] := rec(layerNumbers    := layernumbers,
+                 layers          := layers,
+                 localDiameter   := record.localDiameter,
+                 localGirth      := -1,
+                 localParameters := localparameters,
+                 spstree         := ShallowCopy(tree));
+
+  SetIsDirectedTree(spanningtree, true);
+  SetDigraphSources(spanningtree, [v]);
+  return spanningtree;
+end);
+
 InstallMethod(VerticesReachableFrom, "for a digraph and a vertex",
 [IsDigraph, IsPosInt],
 function(D, root)
@@ -1732,8 +1829,8 @@ function(D, root)
   have_visited_root;
   N := DigraphNrVertices(D);
   if 0 = root or root > N then
-    ErrorNoReturn("the 2nd argument (root)",
-    " is not a vertex of the 1st argument (a digraph)");
+    ErrorNoReturn("the 2nd argument (root) is not a vertex of the 1st ",
+                  "argument (a digraph)");
   fi;
   index := ListWithIdenticalEntries(N, 0);
   have_visited_root := false;
@@ -1764,6 +1861,146 @@ function(D, root)
     fi;
   until current = fail;
   return visited;
+end);
+
+InstallMethod(DominatorTree, "for a digraph and a vertex",
+[IsDigraph, IsPosInt],
+function(D, root)
+  local M, node_to_preorder_num, preorder_num_to_node, parent, index, next,
+  current, succ, prev, n, semi, lastlinked, label, bucket, idom,
+  compress, eval, pred, N, w, y, x, i, v;
+  M := DigraphNrVertices(D);
+
+  if 0 = root or root > M then
+    ErrorNoReturn("the 2nd argument (root) is not a vertex of the 1st ",
+                  "argument (a digraph)");
+  fi;
+
+  node_to_preorder_num := [];
+  node_to_preorder_num[root] := 1;
+  preorder_num_to_node := [root];
+
+  parent := [];
+  parent[root] := fail;
+
+  index := ListWithIdenticalEntries(M, 1);
+
+  next := 2;
+  current := root;
+  succ := OutNeighbours(D);
+  repeat
+    prev := current;
+    for i in [index[current] .. Length(succ[current])] do
+      n := succ[current][i];
+      if not IsBound(node_to_preorder_num[n]) then
+        Add(preorder_num_to_node, n);
+        parent[n] := current;
+        index[current] := i + 1;
+        node_to_preorder_num[n] := next;
+        next := next + 1;
+        current := n;
+        break;
+      fi;
+    od;
+    if prev = current then
+      current := parent[current];
+    fi;
+  until current = fail;
+  semi := [1 .. M];
+  lastlinked := M + 1;
+  label := [];
+  bucket := List([1 .. M], x -> []);
+  idom := [];
+  idom[root] := root;
+
+  compress := function(v)
+    local u;
+    u := parent[v];
+    if u <> fail and lastlinked <= M and node_to_preorder_num[u] >=
+        node_to_preorder_num[lastlinked] then
+      compress(u);
+      if node_to_preorder_num[semi[label[u]]]
+          < node_to_preorder_num[semi[label[v]]] then
+        label[v] := label[u];
+      fi;
+      parent[v] := parent[u];
+    fi;
+  end;
+
+  eval := function(v)
+    if lastlinked <= M and node_to_preorder_num[v] >=
+        node_to_preorder_num[lastlinked] then
+      compress(v);
+      return label[v];
+    else
+      return v;
+    fi;
+  end;
+
+  pred := InNeighbours(D);
+  N := Length(preorder_num_to_node);
+  for i in [N, N - 1 .. 2] do
+    w := preorder_num_to_node[i];
+    for v in bucket[w] do
+      y := eval(v);
+      if node_to_preorder_num[semi[y]] < node_to_preorder_num[w] then
+        idom[v] := y;
+      else
+        idom[v] := w;
+      fi;
+    od;
+    bucket[w] := [];
+    for v in pred[w] do
+      if IsBound(node_to_preorder_num[v]) then
+        x := eval(v);
+        if node_to_preorder_num[semi[x]] < node_to_preorder_num[semi[w]] then
+          semi[w] := semi[x];
+        fi;
+      fi;
+    od;
+    if parent[w] = semi[w] then
+      idom[w] := parent[w];
+    else
+      Add(bucket[semi[w]], w);
+    fi;
+    lastlinked := w;
+    label[w] := semi[w];
+  od;
+  for v in bucket[root] do
+    idom[v] := root;
+  od;
+  for i in [2 .. N] do
+    w := preorder_num_to_node[i];
+    if idom[w] <> semi[w] then
+      idom[w] := idom[semi[w]];
+    fi;
+  od;
+  idom[root] := fail;
+  return rec(idom := idom, preorder := preorder_num_to_node);
+end);
+
+InstallMethod(Dominators, "for a digraph and a vertex",
+[IsDigraph, IsPosInt],
+function(D, root)
+  local tree, preorder, result, u, v;
+  if not root in DigraphVertices(D) then
+    ErrorNoReturn("the 2nd argument (a pos. int.) is not a vertex of ",
+                  "the 1st argument (a digraph)");
+  fi;
+  tree := DominatorTree(D, root);
+  preorder := tree.preorder;
+  tree := tree.idom;
+  result := [];
+  for v in preorder do
+    u := tree[v];
+    if u <> fail then
+      result[v] := [u];
+      if IsBound(result[u]) then
+        Append(result[v], result[u]);
+      fi;
+    fi;
+  od;
+  return result;
 end);
 
 #############################################################################

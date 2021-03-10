@@ -86,7 +86,9 @@ Obj FuncOutNeighbours(Obj self, Obj D) {
   if (!RNamOutNeighbours) {
     RNamOutNeighbours = RNamName("OutNeighbours");
   }
-  if (IsbPRec(D, RNamOutNeighbours)) {
+  if (!CALL_1ARGS(IsDigraph, D)) {
+    ErrorQuit("expected a digraph, not a %s", (Int) TNAM_OBJ(D), 0L);
+  } else if (IsbPRec(D, RNamOutNeighbours)) {
     return ElmPRec(D, RNamOutNeighbours);
   } else {
     ErrorQuit(
@@ -157,7 +159,7 @@ static Obj FuncDIGRAPH_NREDGES(Obj self, Obj D) {
 ** Neither the components, nor their elements are in any particular order.
 **
 ** The algorithm is that of Gabow, based on the implementation in Sedgwick:
-**   http://algs4.cs.princeton.edu/42directed/GabowSCC.java.html
+**   https://algs4.cs.princeton.edu/42directed/GabowSCC.java.html
 ** (made non-recursive to avoid problems with stack limits) and
 ** the implementation of STRONGLY_CONNECTED_COMPONENTS_DIGRAPH in listfunc.c.
 */
@@ -2127,7 +2129,7 @@ static StructGVarFunc GVarFuncs[] = {
      FuncDIGRAPH_SOURCE_RANGE,
      "src/digraphs.c:FuncDIGRAPH_SOURCE_RANGE"},
 
-    {"DIGRAPH_OUT_NEIGHBOURS",
+    {"OutNeighbours",
      1,
      "D",
      FuncOutNeighbours,

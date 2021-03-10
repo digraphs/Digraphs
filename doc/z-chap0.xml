@@ -12,7 +12,8 @@
     <Item>Jan De Beule,</Item>
     <Item>Julius Jonu&#353;as,</Item>
     <Item>James D. Mitchell,</Item>
-    <Item>Michael C. Torpey, and</Item>
+    <Item>Michael C. Torpey,</Item>
+    <Item>Maria Tsalakou, and</Item>
     <Item>Wilf A. Wilson.</Item>
   </List>
   Additional contributions were made by:
@@ -23,9 +24,8 @@
     <Item>Max Horn,</Item>
     <Item>Christopher Jefferson,</Item>
     <Item>Markus Pfeiffer,</Item>
-    <Item>Chris Russell,</Item>
+    <Item>Christopher Russell,</Item>
     <Item>Finn Smith, and</Item>
-    <Item>Maria Tsalakou,</Item>
     <Item>Murray Whyte.</Item>
   </List>
 
@@ -48,6 +48,14 @@
     Key="MP14"/> for computing automorphism groups and canonical forms
   in &Digraphs;. See Section 
   <Ref Sect="Isomorphisms and canonical labellings"/> for more details.  
+  <P/>
+
+  The &edge-addition-planarity-suite; is also included in &Digraphs;; see
+  <Cite Key="BM04"/>, <Cite Key="B06"/>, <Cite Key="BM06"/>, and <Cite
+  Key="B12"/> .  The &edge-addition-planarity-suite; is an open-source
+  implementation of the edge addition planar graph embedding algorithm and
+  related algorithms by John M. Boyer. See Section <Ref Sect="Planarity"/> for
+  more details.
   <P/>
 
   From version 1.0.0 of this package, digraphs can be either mutable or immutable.

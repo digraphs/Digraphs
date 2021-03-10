@@ -1,7 +1,7 @@
 #############################################################################
 ##
 ##  attr.gi
-##  Copyright (C) 2014-19                                James D. Mitchell
+##  Copyright (C) 2014-21                                James D. Mitchell
 ##
 ##  Licensing information can be found in the README file of this package.
 ##
@@ -11,12 +11,11 @@
 InstallMethod(DigraphNrVertices, "for a digraph by out-neighbours",
 [IsDigraphByOutNeighboursRep], DIGRAPH_NR_VERTICES);
 
-InstallMethod(OutNeighbours, "for a digraph by out-neighbours",
-[IsDigraphByOutNeighboursRep], DIGRAPH_OUT_NEIGHBOURS);
+InstallGlobalFunction(OutNeighbors, OutNeighbours);
 
 # The next method is (yet another) DFS which simultaneously computes:
 # 1. *articulation points* as described in
-#   http://www.eecs.wsu.edu/~holder/courses/CptS223/spr08/slides/graphapps.pdf
+#   https://www.eecs.wsu.edu/~holder/courses/CptS223/spr08/slides/graphapps.pdf
 # 2. *bridges* as described in https://stackoverflow.com/q/28917290/
 #   (this is a minor adaption of the algorithm described in point 1).
 # 3. a *strong orientation* as alluded to somewhere on the internet that I can
@@ -740,39 +739,37 @@ BindGlobal("DIGRAPH_ConnectivityDataForVertex",
 function(D, v)
   local data, out_nbs, record, orbnum, reps, i, next, laynum, localGirth,
         layers, sum, localParameters, nprev, nhere, nnext, lnum, localDiameter,
-        layerNumbers, x, y;
-  data := DIGRAPHS_ConnectivityData(D);
+        layerNumbers, x, y, tree, expand, stab, edges, edge;
 
+  data := DIGRAPHS_ConnectivityData(D);
   if IsBound(data[v]) then
     return data[v];
   fi;
 
-  out_nbs := OutNeighbours(D);
+  expand := false;
   if HasDigraphGroup(D) then
-    record          := DIGRAPHS_Orbits(DigraphStabilizer(D, v),
-                                       DigraphVertices(D));
+    stab            := DigraphStabilizer(D, v);
+    record          := DIGRAPHS_Orbits(stab, DigraphVertices(D));
     orbnum          := record.lookup;
     reps            := List(record.orbits, Representative);
-    i               := 1;
-    next            := [orbnum[v]];
-    laynum          := [1 .. Length(reps)] * 0;
-    laynum[next[1]] := 1;
-    localGirth      := -1;
-    layers          := [next];
-    sum             := 1;
-    localParameters := [];
+    if Length(record.orbits) < DigraphNrVertices(D) then
+        expand := true;
+    fi;
   else
     orbnum          := [1 .. DigraphNrVertices(D)];
     reps            := [1 .. DigraphNrVertices(D)];
-    i               := 1;
-    next            := [orbnum[v]];
-    laynum          := [1 .. Length(reps)] * 0;
-    laynum[next[1]] := 1;
-    localGirth      := -1;
-    layers          := [next];
-    sum             := 1;
-    localParameters := [];
   fi;
+  out_nbs         := OutNeighbours(D);
+  i               := 1;
+  next            := [orbnum[v]];
+  laynum          := ListWithIdenticalEntries(Length(reps), 0);
+  laynum[next[1]] := 1;
+  tree            := ListWithIdenticalEntries(DigraphNrVertices(D), 0);
+  tree[v]         := -1;
+  localGirth      := -1;
+  layers          := [next];
+  sum             := 1;
+  localParameters := [];
 
   # localDiameter is the length of the longest shortest path starting at v
   #
@@ -780,6 +777,9 @@ function(D, v)
   # each i between 1 and localDiameter where c_i (respectively a_i and b_i) is
   # the number of vertices at distance i − 1 (respectively i and i + 1) from v
   # that are adjacent to a vertex w at distance i from v.
+
+  # <tree> gives a shortest path spanning tree rooted at <v> and is used by
+  # the ShortestPathSpanningTree method.
 
   while Length(next) > 0 do
     next := [];
@@ -799,6 +799,16 @@ function(D, v)
           AddSet(next, orbnum[y]);
           nnext := nnext + 1;
           laynum[orbnum[y]] := i + 1;
+          if not expand then
+            tree[y] := reps[x];
+          else
+            edges := Orbit(stab, [reps[x], y], OnTuples);
+            for edge in edges do
+              if tree[edge[2]] = 0 or tree[edge[2]] > edge[1] then
+                tree[edge[2]] := edge[1];
+              fi;
+            od;
+          fi;
         fi;
       od;
       if (localGirth = -1 or localGirth = 2 * i - 1) and nprev > 1 then
@@ -837,9 +847,12 @@ function(D, v)
   for i in [1 .. DigraphNrVertices(D)] do
      layerNumbers[i] := laynum[orbnum[i]];
   od;
-  data[v] := rec(layerNumbers := layerNumbers, localDiameter := localDiameter,
-                 localGirth := localGirth, localParameters := localParameters,
-                 layers := layers);
+  data[v] := rec(layerNumbers    := layerNumbers,
+                 localDiameter   := localDiameter,
+                 localGirth      := localGirth,
+                 localParameters := localParameters,
+                 layers          := layers,
+                 spstree         := tree);
   return data[v];
 end);
 
@@ -978,7 +991,7 @@ function(digraph)
   fi;
   oddgirth := infinity;
   for comp in comps do
-    if comps > 1 then
+    if Length(comps) > 1 then  # i.e. if not IsStronglyConnectedDigraph(digraph)
       gr := InducedSubdigraph(digraph, comp);
     else
       gr := digraph;
@@ -1450,18 +1463,6 @@ end);
 
 InstallMethod(CharacteristicPolynomial, "for a digraph", [IsDigraph],
 D -> CharacteristicPolynomial(AdjacencyMatrix(D)));
-
-InstallMethod(IsVertexTransitive, "for a digraph", [IsDigraph],
-D -> IsTransitive(AutomorphismGroup(D), DigraphVertices(D)));
-
-InstallMethod(IsEdgeTransitive, "for a digraph", [IsDigraph],
-function(D)
-  if IsMultiDigraph(D) then
-    ErrorNoReturn("the argument <D> must be a digraph with no multiple",
-                  " edges,");
-  fi;
-  return IsTransitive(AutomorphismGroup(D), DigraphEdges(D), OnPairs);
-end);
 
 # Things that are attributes for immutable digraphs, but operations for mutable.
 
