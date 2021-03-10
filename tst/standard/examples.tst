@@ -48,6 +48,16 @@ gap> D := GeneralisedPetersenGraph(8, 3);
 <immutable symmetric digraph with 16 vertices, 48 edges>
 gap> IsIsomorphicDigraph(D, G8_3);
 true
+gap> D := GeneralisedPetersenGraph(1, -1);
+Error, the argument <k> must be a non-negative integer,
+gap> D := GeneralisedPetersenGraph(-1, 1);
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `GeneralisedPetersenGraph' on 2 argument\
+s
+gap> D := GeneralisedPetersenGraph(8, 5);
+Error, the argument <k> must be less than or equal to <n> / 2,
+gap> D := GeneralisedPetersenGraph(8, 4);
+<immutable symmetric digraph with 16 vertices, 40 edges>
 
 #  CompleteDigraph
 gap> gr := CompleteDigraph(5);
