@@ -53,6 +53,15 @@ DeclareConstructor("KingsGraphCons", [IsDigraph, IsPosInt, IsPosInt]);
 DeclareOperation("KingsGraph", [IsPosInt, IsPosInt]);
 DeclareOperation("KingsGraph", [IsFunction, IsPosInt, IsPosInt]);
 
+DeclareConstructor("SquareGridGraphCons", [IsDigraph, IsPosInt, IsPosInt]);
+DeclareOperation("SquareGridGraph", [IsPosInt, IsPosInt]);
+DeclareOperation("SquareGridGraph", [IsFunction, IsPosInt, IsPosInt]);
+DeclareSynonym("GridGraph", SquareGridGraph);
+
+DeclareConstructor("TriangularGridGraphCons", [IsDigraph, IsPosInt, IsPosInt]);
+DeclareOperation("TriangularGridGraph", [IsPosInt, IsPosInt]);
+DeclareOperation("TriangularGridGraph", [IsFunction, IsPosInt, IsPosInt]);
+
 DeclareConstructor("StarDigraphCons", [IsDigraph, IsPosInt]);
 DeclareOperation("StarDigraph", [IsPosInt]);
 DeclareOperation("StarDigraph", [IsFunction, IsPosInt]);
