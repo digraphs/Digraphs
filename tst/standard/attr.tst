@@ -1631,7 +1631,7 @@ true
 gap> D := DigraphFromDigraph6String("&I~~~~^Znn~|~~x^|v{");
 <immutable digraph with 10 vertices, 89 edges>
 gap> tree := UndirectedSpanningTree(D);
-<immutable symmetric digraph with 10 vertices, 18 edges>
+<immutable undirected tree digraph with 10 vertices>
 gap> IsUndirectedSpanningTree(D, tree);
 true
 gap> tree := UndirectedSpanningTree(DigraphMutableCopy(D));
