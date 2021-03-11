@@ -236,7 +236,7 @@ true
 gap> D := KingsGraph(2, 2);
 <immutable connected symmetric digraph with 4 vertices, 12 edges>
 gap> OutNeighbors(D);     
-[ [ 2, 3, 4 ], [ 1, 3, 4 ], [ 1, 2, 4 ], [ 1, 2, 3 ] ]
+[ [ 2, 3, 4 ], [ 1, 4, 3 ], [ 4, 1, 2 ], [ 3, 2, 1 ] ]
 
 #  SquareGridGraph
 gap> SquareGridGraph(7, 7);

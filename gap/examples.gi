@@ -375,25 +375,17 @@ InstallMethod(KingsGraphCons,
 "for IsMutableDigraph and two positive integers",
 [IsMutableDigraph, IsPosInt, IsPosInt],
 function(filt, n, k)
-  local D, i, j;
-  D := EmptyDigraph(filt, n * k);
-  for i in [1 .. k] do
-    for j in [1 .. (n - 1)] do
-      DigraphAddEdge(D, [((i - 1) * n) + j, ((i - 1) * n) + j + 1]);
-    od;
-  od;
-  for i in [1 .. (k - 1)] do
-    for j in [1 .. n] do
-      DigraphAddEdge(D, [((i - 1) * n) + j, ((i - 1) * n) + j + n]);
-    od;
-  od;
+  local D, a, b, i, j;
+  D := TriangularGridGraph(IsMutableDigraph, n, k);
   for i in [1 .. (k - 1)] do
     for j in [1 .. (n - 1)] do
-      DigraphAddEdge(D, [((i - 1) * n) + j, ((i - 1) * n) + j + (n + 1)]);
-      DigraphAddEdge(D, [((i - 1) * n) + j + 1, ((i - 1) * n) + j + n]);
+      a := ((i - 1) * n) + j;
+      b := ((i - 1) * n) + j + n + 1;
+      DigraphAddEdge(D, a, b);
+      DigraphAddEdge(D, b, a);
     od;
   od;
-  return DigraphSymmetricClosure(D);
+  return D;
 end);
 
 InstallMethod(KingsGraphCons,
