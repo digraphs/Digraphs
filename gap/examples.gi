@@ -405,6 +405,10 @@ function(filt, n, k)
   SetIsMultiDigraph(D, false);
   SetIsSymmetricDigraph(D, true);
   SetIsConnectedDigraph(D, true);
+  SetIsBipartiteDigraph(D, n * k in Difference([n, k], [1]));
+  SetIsPlanarDigraph(D, true);
+  SetIsConnectedDigraph(D, true);
+  SetDigraphHasLoops(D, false);
   return D;
 end);
 
