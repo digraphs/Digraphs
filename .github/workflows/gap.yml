@@ -21,16 +21,35 @@ jobs:
             pkgs-to-clone: datastructures
 
     steps:
-      - uses: actions/checkout@v2
-      - uses: gap-actions/setup-gap-for-packages@v1
-        name: "Install GAP and clone/compile necessary packages"
+      - name: "Check out the repository"
+        uses: actions/checkout@v2
+      - name: "Install TeX Live"
+        if: ${{ matrix.gap-branch == 'master' }}
+        run: |
+          sudo apt-get update
+          sudo apt-get install texlive-latex-base texlive-latex-recommended texlive-latex-extra
+          sudo apt-get install texlive-extra-utils texlive-fonts-recommended texlive-fonts-extra
+      - name: "Install GAP and clone/compile necessary packages"
+        uses: gap-actions/setup-gap-for-packages@v1
         with:
           GAP_PKGS_TO_CLONE: "${{ matrix.pkgs-to-clone }}"
           GAP_PKGS_TO_BUILD: "io orb profiling grape NautyTracesInterface datastructures"
           GAPBRANCH: ${{ matrix.gap-branch }}
       - name: "Install digraphs-lib"
-        run: DIGRAPHS_LIB="digraphs-lib-0.6"
-             && curl --retry 5 -L -O "https://digraphs.github.io/Digraphs/${DIGRAPHS_LIB}.tar.gz"
-             && tar xf "${DIGRAPHS_LIB}.tar.gz"
-      - uses: gap-actions/run-test-for-packages@v1
-        name: "Run tst/testall.g"
+        run: |
+          DIGRAPHS_LIB="digraphs-lib-0.6"
+          curl --retry 5 -L -O "https://digraphs.github.io/Digraphs/${DIGRAPHS_LIB}.tar.gz"
+          tar xf "${DIGRAPHS_LIB}.tar.gz"
+      - name: "Run tst/testall.g"
+        uses: gap-actions/run-test-for-packages@v1
+      - name: "Upload compiled manuals"
+        if: ${{ matrix.gap-branch == 'master' }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: manual
+          path: |
+            doc/manual.pdf
+            doc/*.html
+            doc/*.css
+            doc/*.js
+
