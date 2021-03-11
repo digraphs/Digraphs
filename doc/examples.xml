@@ -315,13 +315,15 @@ gap> GeneralisedPetersenGraph(IsMutableDigraph, 9, 4);
   <Oper Name="StarDigraph" Arg="[filt, ]k"/>
   <Returns>A digraph.</Returns>
   <Description>
-    This returns the <E>star digraph<E> with <A>k</A> vertices, which is the
-    undirected tree in which the vertex <C>1</C> is adjacent to all other vertices.
-    If <M><A>k</A> > 1</M>, then this is the complete bipartite digraph with
-    bicomponents <C>[ 1 ]</C> and <C>[ 2 .. <A>k</A> ]</C>. <P/>
+    If <A>k</A> is a positive integer, then this operation returns the
+    <E>star digraph</E> with <A>k</A> vertices, which is the
+    undirected tree in which vertex <C>1</C> is adjacent to all other
+    vertices.  If <A>k</A> is at least <C>2</C>, then this is the complete
+    bipartite digraph with bicomponents
+    <C>[1]</C> and <C>[2 .. <A>k</A>]</C>. <P/>
     
-    See <Ref Prop="IsUndirectedTree"/>, <Ref Prop="IsCompleteBipartiteDigraph"/>, and
-    <Ref Attr="DigraphBicomponents"/>. <P/>
+    See <Ref Prop="IsUndirectedTree"/>, <Ref Prop="IsCompleteBipartiteDigraph"/>,
+    and <Ref Attr="DigraphBicomponents"/>. <P/>
 
     If the optional first argument <A>filt</A> is present, then this should
     specify the category or representation the digraph being created will

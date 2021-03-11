@@ -240,5 +240,6 @@ true
 gap> IsMultiDigraph(StarDigraph(3));
 false
 
+#
 gap> DIGRAPHS_StopTest();
 gap> STOP_TEST("Digraphs package: standard/examples.tst", 0);
