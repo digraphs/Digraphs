@@ -419,3 +419,120 @@ KingsGraphCons);
 InstallMethod(KingsGraph, "two positive integers",
 [IsPosInt, IsPosInt],
 {n, k} -> KingsGraphCons(IsImmutableDigraph, n, k));
+
+InstallMethod(StarDigraphCons, "for IsMutableDigraph and a positive integer",
+[IsMutableDigraph, IsPosInt],
+function(filt, k)
+  local j, graph;
+  graph := EmptyDigraph(IsMutable, k);
+  for j in [2 .. k] do
+    DigraphAddEdges(graph, [[1, j], [j, 1]]);
+  od;
+  return graph;
+end);
+
+InstallMethod(StarDigraph, "for a function and a positive integer",
+[IsFunction, IsPosInt],
+StarDigraphCons);
+
+InstallMethod(StarDigraph, "for integer", [IsPosInt],
+{k} -> StarDigraphCons(IsImmutableDigraph, k));
+
+InstallMethod(StarDigraphCons,
+"for IsImmutableDigraph and a positive integer",
+[IsImmutableDigraph, IsPosInt],
+function(filt, k)
+  local D;
+  D := MakeImmutable(StarDigraph(IsMutableDigraph, k));
+  SetIsMultiDigraph(D, false);
+  SetIsEmptyDigraph(D, k = 1);
+  SetIsCompleteBipartiteDigraph(D, k > 1);
+  return D;
+end);
+
+InstallMethod(KnightsGraphCons,
+"for IsMutableDigraph and two positive integers",
+[IsMutableDigraph, IsPosInt, IsPosInt],
+function(filt, m, n)
+  local D, moveOffSets, coordinates, target, i, j, iPos;
+  D := EmptyDigraph(IsMutableDigraph, m * n);
+  moveOffSets := [[2, 1], [-2, 1], [2, -1], [-2, -1],
+  [1, 2], [-1, 2], [1, -2], [-1, -2]];
+  coordinates := [];
+  for i in [1 .. n] do
+    for j in [1 .. m] do
+      Add(coordinates, [i, j]);
+    od;
+  od;
+  iPos := 0;
+  for i in coordinates do
+    iPos := iPos + 1;
+    for j in moveOffSets do
+      target := [i[1] + j[1], i[2] + j[2]];
+      if target[1] in [1 .. n] and target[2] in [1 .. m] then
+        DigraphAddEdge(D, [iPos, (target[1] - 1) * m + target[2]]);
+      fi;
+    od;
+  od;
+  return D;
+end);
+
+InstallMethod(KnightsGraphCons,
+"for IsImmutableDigraph and two positive integers",
+[IsImmutableDigraph, IsPosInt, IsPosInt],
+function(filt, m, n)
+  local D;
+  D := MakeImmutable(KnightsGraphCons(IsMutableDigraph, m, n));
+  SetIsMultiDigraph(D, false);
+  SetIsSymmetricDigraph(D, true);
+  SetIsConnectedDigraph(D, m > 2 and n > 2 and not (m = 3 and n = 3));
+  return D;
+end);
+
+InstallMethod(KnightsGraph, "for a function and two positive integers",
+[IsFunction, IsPosInt, IsPosInt],
+KnightsGraphCons);
+
+InstallMethod(KnightsGraph, "for two positive integers", [IsPosInt, IsPosInt],
+{m, n} -> KnightsGraphCons(IsImmutableDigraph, m, n));
+
+InstallMethod(HaarGraphCons,
+"for IsMutableDigraph and a positive integer",
+[IsMutableDigraph, IsPosInt],
+function(filt, n)
+  local m, binaryList, D, i, j;
+  m := Log(n, 2) + 1;
+  binaryList := DIGRAPHS_BlistNumber(n + 1, m);
+  D := EmptyDigraph(IsMutableDigraph, 2 * m);
+
+  for i in [1 .. m] do
+    for j in [1 .. m] do
+      if binaryList[((j - i) mod m) + 1] then
+          DigraphAddEdge(D, [i, m + j]);
+      fi;
+    od;
+  od;
+
+  return DigraphSymmetricClosure(D);
+end);
+
+InstallMethod(HaarGraphCons,
+"for IsImmutableDigraph and a positive integer",
+[IsImmutableDigraph, IsPosInt],
+function(filt, n)
+  local D;
+  D := MakeImmutable(HaarGraphCons(IsMutableDigraph, n));
+  SetIsMultiDigraph(D, false);
+  SetIsSymmetricDigraph(D, true);
+  SetIsRegularDigraph(D, true);
+  SetIsVertexTransitive(D, true);
+  SetIsBipartiteDigraph(D, true);
+  return D;
+end);
+
+InstallMethod(HaarGraph, "for a function and a positive integer",
+[IsFunction, IsPosInt],
+HaarGraphCons);
+
+InstallMethod(HaarGraph, "for a positive integer", [IsPosInt],
+{n} -> HaarGraphCons(IsImmutableDigraph, n));
