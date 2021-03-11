@@ -2093,6 +2093,7 @@ InstallMethod(UndirectedSpanningTree, "for an immutable digraph",
 InstallMethod(UndirectedSpanningTreeAttr, "for an immutable digraph",
 [IsImmutableDigraph],
 function(D)
+  local out;
   if DigraphNrVertices(D) = 0
       or not IsStronglyConnectedDigraph(D)
       or (HasMaximalSymmetricSubdigraphAttr(D)
@@ -2101,7 +2102,9 @@ function(D)
           <> 2 * (DigraphNrVertices(D) - 1)) then
     return fail;
   fi;
-  return UndirectedSpanningForest(D);
+  out := UndirectedSpanningForest(D);
+  SetIsUndirectedTree(out, true);
+  return out;
 end);
 
 InstallMethod(DigraphMycielskian, "for a digraph",

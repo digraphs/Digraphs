@@ -70,6 +70,7 @@ InstallTrueMethod(IsAcyclicDigraph, IsTournament and IsTransitiveDigraph);
 InstallTrueMethod(IsAntisymmetricDigraph, IsAcyclicDigraph);
 InstallTrueMethod(IsAntisymmetricDigraph, IsTournament);
 InstallTrueMethod(IsBipartiteDigraph, IsCompleteBipartiteDigraph);
+InstallTrueMethod(IsBipartiteDigraph, IsUndirectedForest);
 InstallTrueMethod(IsCompleteMultipartiteDigraph, IsCompleteBipartiteDigraph);
 InstallTrueMethod(IsConnectedDigraph, IsBiconnectedDigraph);
 InstallTrueMethod(IsConnectedDigraph, IsStronglyConnectedDigraph);

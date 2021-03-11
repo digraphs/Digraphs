@@ -479,6 +479,14 @@ function(D)
       Append(str, "join semilattice ");
     elif HasIsMeetSemilatticeDigraph(D) and IsMeetSemilatticeDigraph(D) then
       Append(str, "meet semilattice ");
+    elif HasIsUndirectedTree(D) and IsUndirectedTree(D) then
+      Append(str, "undirected tree ");
+      display_nredges := false;
+    elif HasIsUndirectedForest(D) and IsUndirectedForest(D) then
+      Append(str, "undirected forest ");
+    elif HasIsDirectedTree(D) and IsDirectedTree(D) then
+      Append(str, "directed tree ");
+      display_nredges := false;
     else
       if HasIsEulerianDigraph(D) and IsEulerianDigraph(D) then
         Append(str, "Eulerian ");
