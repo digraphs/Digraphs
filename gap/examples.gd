@@ -52,3 +52,15 @@ DeclareOperation("GeneralisedPetersenGraph", [IsFunction, IsInt, IsInt]);
 DeclareConstructor("KingsGraphCons", [IsDigraph, IsPosInt, IsPosInt]);
 DeclareOperation("KingsGraph", [IsPosInt, IsPosInt]);
 DeclareOperation("KingsGraph", [IsFunction, IsPosInt, IsPosInt]);
+
+DeclareConstructor("StarDigraphCons", [IsDigraph, IsPosInt]);
+DeclareOperation("StarDigraph", [IsPosInt]);
+DeclareOperation("StarDigraph", [IsFunction, IsPosInt]);
+
+DeclareConstructor("KnightsGraphCons", [IsDigraph, IsPosInt, IsPosInt]);
+DeclareOperation("KnightsGraph", [IsPosInt, IsPosInt]);
+DeclareOperation("KnightsGraph", [IsFunction, IsPosInt, IsPosInt]);
+
+DeclareConstructor("HaarGraphCons", [IsDigraph, IsPosInt]);
+DeclareOperation("HaarGraph", [IsPosInt]);
+DeclareOperation("HaarGraph", [IsFunction, IsPosInt]);

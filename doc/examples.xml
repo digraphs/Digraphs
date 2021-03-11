@@ -337,10 +337,10 @@ gap> GeneralisedPetersenGraph(IsMutableDigraph, 9, 4);
     specify the category or representation the digraph being created will
     belong to. For example, if <A>filt</A> is <Ref Filt="IsMutableDigraph"/>,
     then the digraph being created will be mutable, if <A>filt</A> is <Ref
-    Filt="IsImmutableDigraph"/>, then the digraph will be immutable. 
+    Filt="IsImmutableDigraph"/>, then the digraph will be immutable.
     If the optional first argument <A>filt</A> is not present, then <Ref
       Filt="IsImmutableDigraph"/> is used by default.<P/>
-
+    
 <Example><![CDATA[
 gap> KingsGraph(8, 8);
 <immutable connected symmetric digraph with 64 vertices, 420 edges>
@@ -352,6 +352,132 @@ gap> D := KingsGraph(2, 2);
 <immutable connected symmetric digraph with 4 vertices, 12 edges>
 gap> OutNeighbors(D);     
 [ [ 2, 3, 4 ], [ 1, 3, 4 ], [ 1, 2, 4 ], [ 1, 2, 3 ] ]
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+<#GAPDoc Label="StarDigraph">
+<ManSection>
+  <Oper Name="StarDigraph" Arg="[filt, ]k"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>k</A> is a positive integer, then this operation returns the
+    <E>star digraph</E> with <A>k</A> vertices, which is the
+    undirected tree in which vertex <C>1</C> is adjacent to all other
+    vertices.  If <A>k</A> is at least <C>2</C>, then this is the complete
+    bipartite digraph with bicomponents
+    <C>[1]</C> and <C>[2 .. <A>k</A>]</C>. <P/>
+    
+    See <Ref Prop="IsUndirectedTree"/>, <Ref Prop="IsCompleteBipartiteDigraph"/>,
+    and <Ref Attr="DigraphBicomponents"/>. <P/>
+
+    If the optional first argument <A>filt</A> is present, then this should
+    specify the category or representation the digraph being created will
+    belong to. For example, if <A>filt</A> is <Ref Filt="IsMutableDigraph"/>,
+    then the digraph being created will be mutable, if <A>filt</A> is <Ref
+    Filt="IsImmutableDigraph"/>, then the digraph will be immutable. 
+    If the optional first argument <A>filt</A> is not present, then <Ref
+      Filt="IsImmutableDigraph"/> is used by default.<P/>
+    <Example><![CDATA[
+gap> StarDigraph(IsMutable, 10);
+<mutable digraph with 10 vertices, 18 edges>
+gap> StarDigraph(5);
+<immutable complete bipartite digraph with bicomponent sizes 1 and 4>
+gap> IsSymmetricDigraph(StarDigraph(3));
+true
+gap> IsUndirectedTree(StarDigraph(3));
+true
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="KnightsGraph">
+<ManSection>
+  <Oper Name="KnightsGraph" Arg="[filt, ]m, n"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>m</A> and <A>n</A> are both positive integers, then this operation
+    returns the <E>Knight's Graph</E> for a <A>m</A> by <A>n</A> board. <P/>
+
+    From
+    <URL>https://en.wikipedia.org/wiki/Knight%27s_graph</URL>:
+    <P/>
+
+    <Q>In graph theory, a knight's graph, or a knight's tour graph, is a
+    graph that represents all legal moves of the knight chess piece on a
+    chessboard.  Each vertex of this graph represents a square of the
+    chessboard, and each edge connects two squares that are a knight's move
+    apart from each other. More specifically, an <A>m</A> by <A>n</A> knight's
+    graph is a knight's graph of an <A>m</A> by <A>n</A> chessboard.</Q>
+    <P/>
+
+    If the optional first argument <A>filt</A> is present, then this should
+    specify the category or representation the digraph being created will
+    belong to. For example, if <A>filt</A> is <Ref Filt="IsMutableDigraph"/>,
+    then the digraph being created will be mutable, if <A>filt</A> is <Ref
+    Filt="IsImmutableDigraph"/>, then the digraph will be immutable.
+    If the optional first argument <A>filt</A> is not present, then <Ref
+      Filt="IsImmutableDigraph"/> is used by default.<P/>
+
+<Example><![CDATA[
+gap> D := KnightsGraph(8, 8);
+<immutable connected symmetric digraph with 64 vertices, 336 edges>
+gap> IsConnectedDigraph(D);
+true
+gap> D := KnightsGraph(3, 3);
+<immutable symmetric digraph with 9 vertices, 16 edges>
+gap> IsConnectedDigraph(D);
+false
+gap> KnightsGraph(IsMutable, 3, 9);
+<mutable digraph with 27 vertices, 88 edges>
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="HaarGraph">
+<ManSection>
+  <Oper Name="HaarGraph" Arg="[filt, ]n"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>n</A> is a positive integer then this operation returns
+    the <E>Haar graph</E> <M>H(<A>n</A>)</M>. <P/>
+
+    From
+    <URL>https://mathworld.wolfram.com/HaarGraph.html</URL>:
+    <P/>
+
+    <Q>A Haar graph H(<A>n</A>) is a bipartite regular vertex-transitive graph
+    indexed by a positive integer and obtained by a simple binary encoding of
+    cyclically adjacent vertices. Haar graphs may be connected or
+    disconnected.</Q><P/>
+
+    The number of vertices in the Haar graph <M>H(<A>n</A>)</M> is
+    equal to twice <M>m</M>, where <M>m</M> is the number of digits
+    required to represent <A>n</A> in binary.
+    These vertices are arranged into bicomponents
+    <C>[1..m]</C> and <C>[m+1..2*m]</C>.
+    Vertices <M>i</M> and <M>j</M> in different bicomponents are
+    adjacent by a symmetric pair of edges if and only if
+    the binary representation of <A>n</A> has a 1 in position
+    (<M>j-i</M> modulo <M>m</M>) + 1 from the left. <P/>
+
+    If the optional first argument <A>filt</A> is present, then this should
+    specify the category or representation the digraph being created will
+    belong to. For example, if <A>filt</A> is <Ref Filt="IsMutableDigraph"/>,
+    then the digraph being created will be mutable, if <A>filt</A> is <Ref
+    Filt="IsImmutableDigraph"/>, then the digraph will be immutable.
+    If the optional first argument <A>filt</A> is not present, then <Ref
+      Filt="IsImmutableDigraph"/> is used by default.<P/>
+
+<Example><![CDATA[
+gap> HaarGraph(3);
+<immutable bipartite vertex-transitive symmetric digraph with bicompon\
+ent sizes 2 and 2>
+gap> D := HaarGraph(16);
+<immutable bipartite vertex-transitive symmetric digraph with bicompon\
+ent sizes 5 and 5>
 ]]></Example>
   </Description>
 </ManSection>
