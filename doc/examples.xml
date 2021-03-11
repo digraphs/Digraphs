@@ -309,3 +309,39 @@ gap> GeneralisedPetersenGraph(IsMutableDigraph, 9, 4);
   </Description>
 </ManSection>
 <#/GAPDoc>
+
+<#GAPDoc Label="StarDigraph">
+<ManSection>
+  <Oper Name="StarDigraph" Arg="[filt, ]k"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>k</A> is a positive integer, then this operation returns the
+    <E>star digraph</E> with <A>k</A> vertices, which is the
+    undirected tree in which vertex <C>1</C> is adjacent to all other
+    vertices.  If <A>k</A> is at least <C>2</C>, then this is the complete
+    bipartite digraph with bicomponents
+    <C>[1]</C> and <C>[2 .. <A>k</A>]</C>. <P/>
+    
+    See <Ref Prop="IsUndirectedTree"/>, <Ref Prop="IsCompleteBipartiteDigraph"/>,
+    and <Ref Attr="DigraphBicomponents"/>. <P/>
+
+    If the optional first argument <A>filt</A> is present, then this should
+    specify the category or representation the digraph being created will
+    belong to. For example, if <A>filt</A> is <Ref Filt="IsMutableDigraph"/>,
+    then the digraph being created will be mutable, if <A>filt</A> is <Ref
+    Filt="IsImmutableDigraph"/>, then the digraph will be immutable. 
+    If the optional first argument <A>filt</A> is not present, then <Ref
+      Filt="IsImmutableDigraph"/> is used by default.<P/>
+    <Example><![CDATA[
+gap> StarDigraph(IsMutable, 10);
+<mutable digraph with 10 vertices, 18 edges>
+gap> StarDigraph(5);
+<immutable complete bipartite digraph with bicomponent sizes 1 and 4>
+gap> IsSymmetricDigraph(StarDigraph(3));
+true
+gap> IsUndirectedTree(StarDigraph(3));
+true
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>

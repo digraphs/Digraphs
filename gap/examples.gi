@@ -370,3 +370,33 @@ GeneralisedPetersenGraphCons);
 
 InstallMethod(GeneralisedPetersenGraph, "for integer, integer", [IsInt, IsInt],
 {n, k} -> GeneralisedPetersenGraphCons(IsImmutableDigraph, n, k));
+
+InstallMethod(StarDigraphCons, "for IsMutableDigraph and a positive integer",
+[IsMutableDigraph, IsPosInt],
+function(filt, k)
+  local j, graph;
+  graph := EmptyDigraph(IsMutable, k);
+  for j in [2 .. k] do
+    DigraphAddEdges(graph, [[1, j], [j, 1]]);
+  od;
+  return graph;
+end);
+
+InstallMethod(StarDigraph, "for a function and a positive integer",
+[IsFunction, IsPosInt],
+StarDigraphCons);
+
+InstallMethod(StarDigraph, "for integer", [IsPosInt],
+{k} -> StarDigraphCons(IsImmutableDigraph, k));
+
+InstallMethod(StarDigraphCons,
+"for IsImmutableDigraph and a positive integer",
+[IsImmutableDigraph, IsPosInt],
+function(filt, k)
+  local D;
+  D := MakeImmutable(StarDigraph(IsMutableDigraph, k));
+  SetIsMultiDigraph(D, false);
+  SetIsEmptyDigraph(D, k = 1);
+  SetIsCompleteBipartiteDigraph(D, k > 1);
+  return D;
+end);
