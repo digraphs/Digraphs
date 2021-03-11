@@ -238,6 +238,38 @@ gap> D := KingsGraph(2, 2);
 gap> OutNeighbors(D);     
 [ [ 2, 3, 4 ], [ 1, 3, 4 ], [ 1, 2, 4 ], [ 1, 2, 3 ] ]
 
+#  SquareGridGraph
+gap> SquareGridGraph(7, 7);
+<immutable connected bipartite symmetric digraph with bicomponent sizes 25 and\
+ 24>
+gap> SquareGridGraph(2, 4);
+<immutable connected bipartite symmetric digraph with bicomponent sizes 4 and \
+4>
+gap> SquareGridGraph(IsMutableDigraph, 5, 3);
+<mutable digraph with 15 vertices, 44 edges>
+gap> SquareGridGraph(IsImmutableDigraph, 1, 1);
+<immutable empty digraph with 1 vertex>
+gap> SquareGridGraph(1, 4);
+<immutable connected bipartite symmetric digraph with bicomponent sizes 2 and \
+2>
+gap> SquareGridGraph(2, 1);
+<immutable connected bipartite symmetric digraph with bicomponent sizes 1 and \
+1>
+
+#  TriangularGridGraph
+gap> TriangularGridGraph(3, 4);
+<immutable connected symmetric digraph with 12 vertices, 46 edges>
+gap> TriangularGridGraph(IsMutableDigraph, 7, 2);
+<mutable digraph with 14 vertices, 50 edges>
+gap> TriangularGridGraph(1, 1);
+<immutable empty digraph with 1 vertex>
+gap> TriangularGridGraph(1, 5);
+<immutable connected bipartite symmetric digraph with bicomponent sizes 3 and \
+2>
+gap> TriangularGridGraph(3, 1);
+<immutable connected bipartite symmetric digraph with bicomponent sizes 2 and \
+1>
+
 # StarDigraph
 gap> StarDigraph(IsMutable, 10);
 <mutable digraph with 10 vertices, 18 edges>
