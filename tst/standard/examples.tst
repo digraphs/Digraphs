@@ -230,9 +230,9 @@ gap> JohnsonDigraph(IsMutableDigraph, 4, 2);
 gap> StarDigraph(IsMutable, 10);
 <mutable digraph with 10 vertices, 18 edges>
 gap> StarDigraph(IsImmutableDigraph, 10);
-<immutable symmetric digraph with 10 vertices, 18 edges>
+<immutable complete bipartite digraph with bicomponent sizes 1 and 9>
 gap> StarDigraph(3);
-<immutable symmetric digraph with 3 vertices, 4 edges>
+<immutable complete bipartite digraph with bicomponent sizes 1 and 2>
 gap> StarDigraph(1);
 <immutable empty digraph with 1 vertex>
 gap> IsSymmetricDigraph(StarDigraph(3));
