@@ -211,6 +211,23 @@
         and range <C>j</C> if and only if <C>[i,j]</C> is a pair in
         the binary relation <A>obj</A>.
       </Item>
+
+      <Mark>for a string naming a digraph</Mark>
+      <Item>
+        if <A>obj</A> is a non-empty string, then this function returns the
+        digraph that has name <A>obj</A>. &Digraphs; comes with a database
+        containing a few hundred common digraph names that can be loaded in this
+        way. Valid names include <C>"folkman"</C>, <C>"diamond"</C> and
+        <C>"brinkmann"</C>. If the name is commonly followed by the word
+        <C>"graph"</C>, then it is called without writing <C>"graph"</C> at the
+        end. You can explore the available graph names using
+        <Ref Oper="ListNamedDigraphs"/>. Digraph names are case and whitespace
+        insensitive. <P/>
+
+        Note that any undirected graphs in the database are stored as symmetric
+        digraphs, so the resulting graph will have twice as many edges as its
+        undirected counterpart.
+      </Item>
     </List>
 
     <Example><![CDATA[
@@ -228,7 +245,9 @@ gap> Petersen := Graph(SymmetricGroup(5), [[1, 2]], OnSets,
 gap> Digraph(Petersen);
 <immutable digraph with 10 vertices, 30 edges>
 gap> gr := Digraph([1 .. 10], ReturnTrue);
-<immutable digraph with 10 vertices, 100 edges>]]></Example>
+<immutable digraph with 10 vertices, 100 edges>
+gap> Digraph("Diamond");
+<immutable digraph with 4 vertices, 10 edges>]]></Example>
 
       The next example illustrates the uses of the fourth and fifth variants of
       this constructor. The resulting digraph is a strongly regular graph, and
@@ -392,6 +411,32 @@ gap> D := DigraphByInNeighbours(IsMutableDigraph,
 >                               [[2, 3, 2], [1], [1, 2, 3]]);
 <mutable multidigraph with 3 vertices, 7 edges>
 ]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="ListNamedDigraphs">
+<ManSection>
+  <Oper Name="ListNamedDigraphs" Arg="s[, level]"/>
+  <Returns>A list of strings representing digraph names.</Returns>
+  <Description>
+    This function searches through the list of names that are
+    currently in the &Digraphs; database of named digraphs. The first argument
+    <A>s</A> should be a partially completed string; this function returns all
+    completions <C>str</C> of the string <A>s</A> such that <C>Digraph(str)</C>
+    will successfully return a digraph. <P/>
+
+    The optional second argument <A>level</A> controls the flexibility of the
+    search. If <C><A>level</A> = 1</C>, then only strings beginning exactly with
+    <A>s</A> are returned. If <C><A>level</A> = 2</C>, then all names containing
+    <A>s</A> as a substring are returned. If <C><A>level</A> = 3</C>, then
+    once again a substring search is carried out, but
+    characters that are not alphanumeric are ignored in the search. <P/>
+
+    If <A>level</A> is not specified, it is set by default to equal 2. <P/>
+
+    The search is always case and whitespace insensitive, and this is also the
+    case when applying <Ref Oper="Digraph"/> to a string.
   </Description>
 </ManSection>
 <#/GAPDoc>
