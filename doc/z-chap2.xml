@@ -88,6 +88,8 @@
     <#Include Label="JohnsonDigraph">
     <#Include Label="PetersenGraph">
     <#Include Label="GeneralisedPetersenGraph">
+    <#Include Label="KnightsGraph">
+    <#Include Label="StarDigraph">
   </Section>
 
 </Chapter>
