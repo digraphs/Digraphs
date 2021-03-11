@@ -252,6 +252,28 @@ false
 gap> KnightsGraph(IsMutable, 3, 9);
 <mutable digraph with 27 vertices, 88 edges>
 
+# DIGRAPHS_HaarGraph
+gap> HaarGraph(1);
+<immutable bipartite vertex-transitive symmetric digraph with bicomponent size\
+s 1 and 1>
+gap> OutNeighbours(last);
+[ [ 2 ], [ 1 ] ]
+gap> HaarGraph(2);
+<immutable bipartite vertex-transitive symmetric digraph with bicomponent size\
+s 2 and 2>
+gap> OutNeighbours(last);
+[ [ 3 ], [ 4 ], [ 1 ], [ 2 ] ]
+gap> HaarGraph(3);
+<immutable bipartite vertex-transitive symmetric digraph with bicomponent size\
+s 2 and 2>
+gap> OutNeighbours(last);
+[ [ 3, 4 ], [ 3, 4 ], [ 1, 2 ], [ 1, 2 ] ]
+gap> D := HaarGraph(16);
+<immutable bipartite vertex-transitive symmetric digraph with bicomponent size\
+s 5 and 5>
+gap> IsBipartiteDigraph(D);
+true
+
 #
 gap> DIGRAPHS_StopTest();
 gap> STOP_TEST("Digraphs package: standard/examples.tst", 0);

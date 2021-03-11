@@ -389,3 +389,50 @@ gap> KnightsGraph(IsMutable, 3, 9);
   </Description>
 </ManSection>
 <#/GAPDoc>
+
+<#GAPDoc Label="HaarGraph">
+<ManSection>
+  <Oper Name="HaarGraph" Arg="[filt, ]n"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>n</A> is a positive integer then this operation returns
+    the <E>Haar graph</E> <M>H(<A>n</A>)</M>. <P/>
+
+    From
+    <URL>https://mathworld.wolfram.com/HaarGraph.html</URL>:
+    <P/>
+
+    <Q>A Haar graph H(<A>n</A>) is a bipartite regular vertex-transitive graph
+    indexed by a positive integer and obtained by a simple binary encoding of
+    cyclically adjacent vertices. Haar graphs may be connected or
+    disconnected.</Q><P/>
+
+    The number of vertices in the Haar graph <M>H(<A>n</A>)</M> is
+    equal to twice <M>m</M>, where <M>m</M> is the number of digits
+    required to represent <A>n</A> in binary.
+    These vertices are arranged into bicomponents
+    <C>[1..m]</C> and <C>[m+1..2*m]</C>.
+    Vertices <M>i</M> and <M>j</M> in different bicomponents are
+    adjacent by a symmetric pair of edges if and only if
+    the binary representation of <A>n</A> has a 1 in position
+    (<M>j-i</M> modulo <M>m</M>) + 1 from the left. <P/>
+
+    If the optional first argument <A>filt</A> is present, then this should
+    specify the category or representation the digraph being created will
+    belong to. For example, if <A>filt</A> is <Ref Filt="IsMutableDigraph"/>,
+    then the digraph being created will be mutable, if <A>filt</A> is <Ref
+    Filt="IsImmutableDigraph"/>, then the digraph will be immutable.
+    If the optional first argument <A>filt</A> is not present, then <Ref
+      Filt="IsImmutableDigraph"/> is used by default.<P/>
+
+<Example><![CDATA[
+gap> HaarGraph(3);
+<immutable bipartite vertex-transitive symmetric digraph with bicompon\
+ent sizes 2 and 2>
+gap> D := HaarGraph(16);
+<immutable bipartite vertex-transitive symmetric digraph with bicompon\
+ent sizes 5 and 5>
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
