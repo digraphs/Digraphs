@@ -1874,7 +1874,7 @@ gap> "folkman" in ListNamedDigraphs("F\n oL");
 true
 gap> ListNamedDigraphs("Surely no digraph has this name");
 [  ]
-gap> "diamond" in ListNamedDigraphs("mond", 1);
+gap> "diamond" in ListNamedDigraphs("mo", 1);
 false
 gap> "diamond" in ListNamedDigraphs("mond", 2);
 true
@@ -1882,6 +1882,8 @@ gap> "petersen" in ListNamedDigraphs("et!er", 3);
 true
 gap> "petersen" in ListNamedDigraphs("et!er1413", 3);
 false
+gap> "brinkmann" in ListNamedDigraphs("man", 1000);
+true
 
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(G);
