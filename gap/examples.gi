@@ -407,7 +407,6 @@ function(filt, n, k)
   SetIsConnectedDigraph(D, true);
   SetIsBipartiteDigraph(D, n * k in Difference([n, k], [1]));
   SetIsPlanarDigraph(D, n <= 2 or k <= 2 or n = 3 and k = 3);
-  SetIsConnectedDigraph(D, true);
   SetDigraphHasLoops(D, false);
   return D;
 end);
