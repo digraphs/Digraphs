@@ -1838,8 +1838,8 @@ gap> failed;
 # Named digraphs
 gap> Digraph("The smallest digraph that cannot be described in 100 chars");
 Error, Named digraph not found. Please check argument 'name',
-or view list of available digraphs with prefix p using
-ListNamedDigraphs(p).
+or view list of available digraphs with names containing
+string s using ListNamedDigraphs(s).
 gap> D := Digraph("folkman");
 <immutable digraph with 20 vertices, 80 edges>
 gap> D = Digraph("F \n  Ol k\tMA\r\r n");

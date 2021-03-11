@@ -460,8 +460,8 @@ function(name)
 
   if not name in RecNames(DIGRAPHS_NamedDiSparse6Strings) then
     ErrorNoReturn("Named digraph not found. Please check argument 'name',\n",
-                  "or view list of available digraphs with prefix p using\n",
-                  "ListNamedDigraphs(p).");
+                  "or view list of available digraphs with names containing\n",
+                  "string s using ListNamedDigraphs(s).");
   fi;
   return DigraphFromDiSparse6String(DIGRAPHS_NamedDiSparse6Strings.(name));
 end);
@@ -519,9 +519,9 @@ function(s, level)
   # add to out-list all strings that when stripped to contain only alphanumeric
   # characters, contain the resquest s as a substring
   if level = 3 then
+    s := Filtered(s, x -> IsDigitChar(x) or IsAlphaChar(x));
     for c in cands do
-      if PositionSublist(Filtered(c, x -> IsDigitChar(x) or IsAlphaChar(x)),
-                         Filtered(s, x -> IsDigitChar(x) or IsAlphaChar(x)))
+      if PositionSublist(Filtered(c, x -> IsDigitChar(x) or IsAlphaChar(x)), s)
           <> fail then
         Add(out, c);
       fi;
