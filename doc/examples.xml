@@ -574,20 +574,20 @@ ent sizes 5 and 5>
 <#/GAPDoc>
 
 
-<#GAPDoc Label="BananaTreeGraph">
+<#GAPDoc Label="BananaTree">
 <ManSection>
-  <Oper Name="BananaTreeGraph" Arg="[filt, ]m, n"/>
+  <Oper Name="BananaTree" Arg="[filt, ]m, n"/>
   <Returns>A digraph</Returns>
   <Description>
     If <A>m</A> and <A>n</A> are positive integers,
-    then this operation returns the <E>banana tree graph</E> 
+    then this operation returns the <E>banana tree</E> 
     with parameters <A>m</A> and <A>n</A>, as defined below. <P/>
 
     From
     <URL>https://mathworld.wolfram.com/BananaTree.html</URL>:
     <P/>
 
-    <Q>A banana tree graph, as defined by Chen et al. (1997) is a graph obtained by
+    <Q>A banana tree, as defined by Chen et al. (1997) is a graph obtained by
     connecting one leaf of each of <A>m</A> copies of an <A>n</A>-star graph with
     a single root vertex that is distinct from all the stars.</Q>
     <P/>
@@ -600,16 +600,15 @@ ent sizes 5 and 5>
     If the optional first argument <A>filt</A> is not present, then <Ref
       Filt="IsImmutableDigraph"/> is used by default.<P/>
 
-    See also <Ref Oper="CompleteBipartiteDigraph"/>.
-
+    See also <Ref Oper="StarDigraph"/> and <Ref Prop="IsUndirectedTree"/>.
 <Example><![CDATA[
-gap> D := BananaTreeGraph(2, 4);
+gap> D := BananaTree(2, 4);
 <immutable connected symmetric digraph with 9 vertices, 16 edges>
-gap> D := BananaTreeGraph(3, 3);
+gap> D := BananaTree(3, 3);
 <immutable connected symmetric digraph with 10 vertices, 18 edges>
-gap> D := BananaTreeGraph(5, 2);
+gap> D := BananaTree(5, 2);
 <immutable connected symmetric digraph with 11 vertices, 20 edges>
-gap> D := BananaTreeGraph(3, 4);
+gap> D := BananaTree(3, 4);
 <immutable connected symmetric digraph with 13 vertices, 24 edges>
 ]]></Example>
   </Description>

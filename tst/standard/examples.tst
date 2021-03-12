@@ -226,21 +226,6 @@ Error, the arguments <n> and <k> must be non-negative integers,
 gap> JohnsonDigraph(IsMutableDigraph, 4, 2);
 <mutable digraph with 6 vertices, 24 edges>
 
-# BananaTreeGraph
-gap> D := BananaTreeGraph(2, 4);
-<immutable connected symmetric digraph with 9 vertices, 16 edges>
-gap> D := BananaTreeGraph(3, 3);
-<immutable connected symmetric digraph with 10 vertices, 18 edges>
-gap> D := BananaTreeGraph(5, 2);
-<immutable connected symmetric digraph with 11 vertices, 20 edges>
-gap> D := BananaTreeGraph(3, 4);
-<immutable connected symmetric digraph with 13 vertices, 24 edges>
-gap> D := BananaTreeGraph(0, 0);
-Error, no method found! For debugging hints type ?Recovery from NoMethodFound
-Error, no 1st choice method found for `BananaTreeGraph' on 2 arguments
-gap> D := BananaTreeGraph(IsMutableDigraph, 5, 3);
-<mutable digraph with 16 vertices, 30 edges>
-
 #  KingsGraph
 gap> KingsGraph(8, 8);
 <immutable connected symmetric digraph with 64 vertices, 420 edges>
@@ -333,8 +318,21 @@ s 5 and 5>
 gap> IsBipartiteDigraph(D);
 true
 
+# BananaTree
+gap> D := BananaTree(2, 4);
+<immutable connected symmetric digraph with 9 vertices, 16 edges>
+gap> D := BananaTree(3, 3);
+<immutable connected symmetric digraph with 10 vertices, 18 edges>
+gap> D := BananaTree(5, 2);
+<immutable connected symmetric digraph with 11 vertices, 20 edges>
+gap> D := BananaTree(3, 4);
+<immutable connected symmetric digraph with 13 vertices, 24 edges>
+gap> D := BananaTree(0, 0);
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `BananaTree' on 2 arguments
+gap> D := BananaTree(IsMutableDigraph, 5, 3);
+<mutable digraph with 16 vertices, 30 edges>
+
 #
 gap> DIGRAPHS_StopTest();
 gap> STOP_TEST("Digraphs package: standard/examples.tst", 0);
-
-
