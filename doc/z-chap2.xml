@@ -87,6 +87,7 @@
     <#Include Label="JohnsonDigraph">
     <#Include Label="PetersenGraph">
     <#Include Label="GeneralisedPetersenGraph">
+    <#Include Label="LollipopGraph">
     <#Include Label="SquareGridGraph">
     <#Include Label="TriangularGridGraph">
     <#Include Label="HaarGraph">

@@ -49,6 +49,10 @@ DeclareConstructor("GeneralisedPetersenGraphCons", [IsDigraph, IsInt, IsInt]);
 DeclareOperation("GeneralisedPetersenGraph", [IsInt, IsInt]);
 DeclareOperation("GeneralisedPetersenGraph", [IsFunction, IsInt, IsInt]);
 
+DeclareConstructor("LollipopGraphCons", [IsDigraph, IsPosInt, IsPosInt]);
+DeclareOperation("LollipopGraph", [IsPosInt, IsPosInt]);
+DeclareOperation("LollipopGraph", [IsFunction, IsPosInt, IsPosInt]);
+
 DeclareConstructor("KingsGraphCons", [IsDigraph, IsPosInt, IsPosInt]);
 DeclareOperation("KingsGraph", [IsPosInt, IsPosInt]);
 DeclareOperation("KingsGraph", [IsFunction, IsPosInt, IsPosInt]);

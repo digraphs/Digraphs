@@ -226,6 +226,22 @@ Error, the arguments <n> and <k> must be non-negative integers,
 gap> JohnsonDigraph(IsMutableDigraph, 4, 2);
 <mutable digraph with 6 vertices, 24 edges>
 
+# LollipopGraph
+gap> LollipopGraph(5, 4);
+<immutable connected symmetric digraph with 9 vertices, 28 edges>
+gap> LollipopGraph(8, 4);
+<immutable connected symmetric digraph with 12 vertices, 64 edges>
+gap> D := LollipopGraph(5, 3);
+<immutable connected symmetric digraph with 8 vertices, 26 edges>
+gap> DigraphNrVertices(D);
+8
+gap> DigraphNrEdges(D);
+26
+gap> DigraphUndirectedGirth(D);
+3
+gap> LollipopGraph(IsMutableDigraph, 5, 3);
+<mutable digraph with 8 vertices, 26 edges>
+
 #  KingsGraph
 gap> KingsGraph(8, 8);
 <immutable connected symmetric digraph with 64 vertices, 420 edges>
