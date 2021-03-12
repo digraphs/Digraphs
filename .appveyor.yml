@@ -5,6 +5,8 @@ branches:
   except:
     - /rc-v\d+\.\d+\.\d+/
 
+skip_branch_with_pr: true
+
 environment:
   TEST_SUITE: test
   PACKAGES: "latest"
