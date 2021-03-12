@@ -1,4 +1,4 @@
-############################################################################
+#############################################################################
 ##
 #W  examples.xml
 #Y  Copyright (C) 2019                              Murray T. Whyte
@@ -315,7 +315,7 @@ gap> GeneralisedPetersenGraph(IsMutableDigraph, 9, 4);
   <Oper Name="LollipopGraph" Arg="[filt, ]m, n"/>
   <Returns>A digraph</Returns>
   <Description>
-    If <A>m</A> and <A>n</A> are positive integers, 
+    If <A>m</A> and <A>n</A> are positive integers,
     then this operation returns the <E>(<A>m</A>, <A>n</A>)-lollipop graph</E>.
     As defined at <URL>https://en.wikipedia.org/wiki/Lollipop_graph</URL>,
     this consists of a complete digraph on <A>m</A> vertices and the
@@ -493,8 +493,15 @@ gap> TriangularGridGraph(IsMutable, 3, 3);
     
     See <Ref Prop="IsUndirectedTree"/>, <Ref Prop="IsCompleteBipartiteDigraph"/>,
     and <Ref Attr="DigraphBicomponents"/>. <P/>
-    
-<Example><![CDATA[
+
+    If the optional first argument <A>filt</A> is present, then this should
+    specify the category or representation the digraph being created will
+    belong to. For example, if <A>filt</A> is <Ref Filt="IsMutableDigraph"/>,
+    then the digraph being created will be mutable, if <A>filt</A> is <Ref
+    Filt="IsImmutableDigraph"/>, then the digraph will be immutable. 
+    If the optional first argument <A>filt</A> is not present, then <Ref
+      Filt="IsImmutableDigraph"/> is used by default.<P/>
+    <Example><![CDATA[
 gap> StarDigraph(IsMutable, 10);
 <mutable digraph with 10 vertices, 18 edges>
 gap> StarDigraph(5);
