@@ -609,7 +609,7 @@ InstallMethod(BananaTreeCons,
 "for IsMutableDigraph and two positive integers",
 [IsMutableDigraph, IsPosInt, IsPosInt],
 function(filt, m, n)
-  local D, i, j, list;
+  local D, j, list;
   D := EmptyDigraph(IsMutable, 1);
   list := Concatenation([D], ListWithIdenticalEntries(m, StarDigraph(n)));
   D := DigraphDisjointUnion(list);
