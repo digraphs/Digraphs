@@ -321,3 +321,18 @@ true
 #
 gap> DIGRAPHS_StopTest();
 gap> STOP_TEST("Digraphs package: standard/examples.tst", 0);
+
+# BananaTreeGraph
+gap> D := BananaTreeGraph(2, 4);
+<mutable digraph with 9 vertices, 16 edges>
+gap> D := BananaTreeGraph(3, 3);
+<mutable digraph with 10 vertices, 18 edges>
+gap> D := BananaTreeGraph(5, 2);
+<mutable digraph with 11 vertices, 20 edges>
+gap> D := BananaTreeGraph(3, 4);
+<mutable digraph with 13 vertices, 24 edges>
+gap> D := BananaTreeGraph(0, 0);
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `BananaTreeGraph' on 2 arguments
+gap> D := DigraphMutableCopy(BananaTreeGraph(2, 4));
+<mutable digraph with 9 vertices, 16 edges>
