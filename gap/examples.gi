@@ -612,7 +612,7 @@ function(filt, m, n)
   local D, j, list;
   D := EmptyDigraph(IsMutable, 1);
   list := Concatenation([D], ListWithIdenticalEntries(m, StarDigraph(n)));
-  D := DigraphDisjointUnion(list);
+  DigraphDisjointUnion(list);  # changes <D> in place
   for j in [0 .. (m - 1)] do
     DigraphAddEdges(D, [[1, (j * n + 3)], [(j * n + 3), 1]]);
   od;

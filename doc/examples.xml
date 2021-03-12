@@ -582,20 +582,21 @@ ent sizes 5 and 5>
 
 <#GAPDoc Label="BananaTree">
 <ManSection>
-  <Oper Name="BananaTree" Arg="[filt, ]m, n"/>
+  <Oper Name="BananaTree" Arg="[filt, ]n, k"/>
   <Returns>A digraph</Returns>
   <Description>
-    If <A>m</A> and <A>n</A> are positive integers,
+    If <A>n</A> and <A>k</A> are positive integers,
     then this operation returns the <E>banana tree</E>
-    with parameters <A>m</A> and <A>n</A>, as defined below. <P/>
+    with parameters <A>n</A> and <A>k</A>, as defined below. <P/>
 
     From
     <URL>https://mathworld.wolfram.com/BananaTree.html</URL>:
     <P/>
 
-    <Q>A banana tree, as defined by Chen et al. (1997) is a graph obtained by
-    connecting one leaf of each of <A>m</A> copies of an <A>n</A>-star graph with
-    a single root vertex that is distinct from all the stars.</Q>
+    <Q>An <C>(<A>n</A>,<A>k</A>)</C>-banana tree,
+    as defined by Chen et al. (1997), is a graph obtained by
+    connecting one leaf of each of <A>n</A> copies of an <A>k</A>-star graph
+    with a single root vertex that is distinct from all the stars.</Q>
     <P/>
 
     If the optional first argument <A>filt</A> is present, then this should
