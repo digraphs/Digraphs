@@ -93,7 +93,6 @@
     <#Include Label="HaarGraph">
     <#Include Label="KingsGraph">
     <#Include Label="KnightsGraph">
-    <#Include Label="BananaTree">
   </Section>
 
 </Chapter>

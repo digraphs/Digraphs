@@ -643,5 +643,3 @@ HaarGraphCons);
 
 InstallMethod(HaarGraph, "for a positive integer", [IsPosInt],
 {n} -> HaarGraphCons(IsImmutableDigraph, n));
-
-
