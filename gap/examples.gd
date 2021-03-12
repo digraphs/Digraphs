@@ -36,6 +36,7 @@ DeclareOperation("ChainDigraph", [IsFunction, IsPosInt]);
 DeclareConstructor("CycleDigraphCons", [IsDigraph, IsPosInt]);
 DeclareOperation("CycleDigraph", [IsPosInt]);
 DeclareOperation("CycleDigraph", [IsFunction, IsPosInt]);
+DeclareSynonym("DigraphCycle", CycleDigraph);
 
 DeclareConstructor("JohnsonDigraphCons", [IsDigraph, IsInt, IsInt]);
 DeclareOperation("JohnsonDigraph", [IsInt, IsInt]);

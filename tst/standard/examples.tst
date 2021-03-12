@@ -92,6 +92,8 @@ gap> gr := CycleDigraph(1000);
 <immutable cycle digraph with 1000 vertices>
 gap> gr := CycleDigraph(IsMutableDigraph, 6);
 <mutable digraph with 6 vertices, 6 edges>
+gap> gr = DigraphCycle(IsImmutableDigraph, 6);
+true
 
 #  ChainDigraph
 gap> gr := ChainDigraph(0);
