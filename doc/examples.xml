@@ -315,8 +315,8 @@ gap> GeneralisedPetersenGraph(IsMutableDigraph, 9, 4);
   <Oper Name="KingsGraph" Arg="[filt, ]n, k"/>
   <Returns>A digraph.</Returns>
   <Description>
-    If <A>n</A> is a positive integer and <A>k</A> is a positive
-    integer, then this operation returns
+    If <A>n</A> and <A>k</A> are positive integers,
+    then this operation returns
     the <E>king's graph</E> for an <A>n</A> by <A>k</A> board. <P/>
 
     From
@@ -332,6 +332,15 @@ gap> GeneralisedPetersenGraph(IsMutableDigraph, 9, 4);
     share an edge or a corner. It can also be constructed as the strong product 
     of two path graphs.</Q>
     <P/>
+    
+    In particular, the <C><A>n</A> * <A>k</A></C>  vertices can be arranged
+    into an <A>n</A> by <A>k</A> grid such that two vertices are adjacent in
+    the digraph if and only if they are orthogonally or diagonally adjacent in the grid.
+    The correspondence between vertices and grid positions is given by
+    <Ref Oper="DigraphVertexLabels"/>.  <P/>
+    
+    See also <Ref Oper="SquareGridGraph"/> and
+    <Ref Oper="TriangularGridGraph"/>. <P/>
     
     If the optional first argument <A>filt</A> is present, then this should
     specify the category or representation the digraph being created will
