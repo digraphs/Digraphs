@@ -610,6 +610,10 @@ InstallMethod(BananaTreeCons,
 [IsMutableDigraph, IsPosInt, IsPosInt],
 function(filt, m, n)
   local D, j, list;
+  if n = 1 then
+    ErrorNoReturn("The second argument must be an integer",
+    " greater than one");
+  fi;
   D := EmptyDigraph(IsMutable, 1);
   list := Concatenation([D], ListWithIdenticalEntries(m, StarDigraph(n)));
   DigraphDisjointUnion(list);  # changes <D> in place

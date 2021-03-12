@@ -332,6 +332,8 @@ Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `BananaTree' on 2 arguments
 gap> D := BananaTree(IsMutableDigraph, 5, 3);
 <mutable digraph with 16 vertices, 30 edges>
+gap> BananaTree(3, 1);
+Error, The second argument must be an integer greater than one
 
 #
 gap> DIGRAPHS_StopTest();
