@@ -242,6 +242,98 @@ gap> DigraphUndirectedGirth(D);
 gap> LollipopGraph(IsMutableDigraph, 5, 3);
 <mutable digraph with 8 vertices, 26 edges>
 
+#  KingsGraph
+gap> KingsGraph(8, 8);
+<immutable connected symmetric digraph with 64 vertices, 420 edges>
+gap> D := KingsGraph(4, 7);
+<immutable connected symmetric digraph with 28 vertices, 162 edges>
+gap> IsConnectedDigraph(D);
+true
+gap> D := KingsGraph(2, 2);
+<immutable connected symmetric digraph with 4 vertices, 12 edges>
+gap> OutNeighbors(D);     
+[ [ 2, 3, 4 ], [ 1, 4, 3 ], [ 4, 1, 2 ], [ 3, 2, 1 ] ]
+
+#  SquareGridGraph
+gap> SquareGridGraph(7, 7);
+<immutable connected bipartite symmetric digraph with bicomponent sizes 25 and\
+ 24>
+gap> SquareGridGraph(2, 4);
+<immutable connected bipartite symmetric digraph with bicomponent sizes 4 and \
+4>
+gap> SquareGridGraph(IsMutableDigraph, 5, 3);
+<mutable digraph with 15 vertices, 44 edges>
+gap> SquareGridGraph(IsImmutableDigraph, 1, 1);
+<immutable empty digraph with 1 vertex>
+gap> SquareGridGraph(1, 4);
+<immutable connected bipartite symmetric digraph with bicomponent sizes 2 and \
+2>
+gap> SquareGridGraph(2, 1);
+<immutable connected bipartite symmetric digraph with bicomponent sizes 1 and \
+1>
+
+#  TriangularGridGraph
+gap> TriangularGridGraph(3, 4);
+<immutable connected symmetric digraph with 12 vertices, 46 edges>
+gap> TriangularGridGraph(IsMutableDigraph, 7, 2);
+<mutable digraph with 14 vertices, 50 edges>
+gap> TriangularGridGraph(1, 1);
+<immutable empty digraph with 1 vertex>
+gap> TriangularGridGraph(1, 5);
+<immutable connected bipartite symmetric digraph with bicomponent sizes 3 and \
+2>
+gap> TriangularGridGraph(3, 1);
+<immutable connected bipartite symmetric digraph with bicomponent sizes 2 and \
+1>
+
+# StarDigraph
+gap> StarDigraph(IsMutable, 10);
+<mutable digraph with 10 vertices, 18 edges>
+gap> StarDigraph(IsImmutableDigraph, 10);
+<immutable complete bipartite digraph with bicomponent sizes 1 and 9>
+gap> StarDigraph(3);
+<immutable complete bipartite digraph with bicomponent sizes 1 and 2>
+gap> StarDigraph(1);
+<immutable empty digraph with 1 vertex>
+gap> IsSymmetricDigraph(StarDigraph(3));
+true
+gap> IsMultiDigraph(StarDigraph(3));
+false
+
+#  Knight's Graph
+gap> D := KnightsGraph(8, 8);
+<immutable connected symmetric digraph with 64 vertices, 336 edges>
+gap> IsConnectedDigraph(D);
+true
+gap> D := KnightsGraph(3, 3);
+<immutable symmetric digraph with 9 vertices, 16 edges>
+gap> IsConnectedDigraph(D);
+false
+gap> KnightsGraph(IsMutable, 3, 9);
+<mutable digraph with 27 vertices, 88 edges>
+
+# DIGRAPHS_HaarGraph
+gap> HaarGraph(1);
+<immutable bipartite vertex-transitive symmetric digraph with bicomponent size\
+s 1 and 1>
+gap> OutNeighbours(last);
+[ [ 2 ], [ 1 ] ]
+gap> HaarGraph(2);
+<immutable bipartite vertex-transitive symmetric digraph with bicomponent size\
+s 2 and 2>
+gap> OutNeighbours(last);
+[ [ 3 ], [ 4 ], [ 1 ], [ 2 ] ]
+gap> HaarGraph(3);
+<immutable bipartite vertex-transitive symmetric digraph with bicomponent size\
+s 2 and 2>
+gap> OutNeighbours(last);
+[ [ 3, 4 ], [ 3, 4 ], [ 1, 2 ], [ 1, 2 ] ]
+gap> D := HaarGraph(16);
+<immutable bipartite vertex-transitive symmetric digraph with bicomponent size\
+s 5 and 5>
+gap> IsBipartiteDigraph(D);
+true
+
 #
 gap> DIGRAPHS_StopTest();
 gap> STOP_TEST("Digraphs package: standard/examples.tst", 0);
