@@ -336,12 +336,12 @@ gap> GeneralisedPetersenGraph(IsMutableDigraph, 9, 4);
 <Example><![CDATA[
 gap> D := LollipopGraph(5, 3);
 <immutable connected symmetric digraph with 8 vertices, 26 edges>
-gap> DigraphNrVertices(D);
-8
-gap> DigraphNrEdges(D);
-26
+gap> CliqueNumber(D);
+5
 gap> DigraphUndirectedGirth(D);
 3
+gap> LollipopGraph(IsMutableDigraph, 3, 8);
+<mutable digraph with 11 vertices, 22 edges>
 ]]></Example>
   </Description>
 </ManSection>
