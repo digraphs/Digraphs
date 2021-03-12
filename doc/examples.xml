@@ -316,11 +316,22 @@ gap> GeneralisedPetersenGraph(IsMutableDigraph, 9, 4);
   <Returns>A digraph</Returns>
   <Description>
     If <A>m</A> and <A>n</A> are positive integers,
-    then this operation returns the <E>(<A>m</A>, <A>n</A>)-lollipop graph</E>.
+    then this operation returns the <E>(<A>m</A>,<A>n</A>)-lollipop graph</E>.
     As defined at <URL>https://en.wikipedia.org/wiki/Lollipop_graph</URL>,
-    this consists of a complete digraph on <A>m</A> vertices and the
-    symmetric closure of a chain digraph on <A>n</A> vertices,
-    connected by a bridge. <P/>
+    this consists of a complete digraph on the vertices <C>[1..<A>m</A>]</C>
+    (the 'head' of the lollipop),
+    and the symmetric closure of a chain digraph on the remaining <A>n</A>
+    vertices (the 'stick'),
+    connected by a bridge
+    (the edge <C>[<A>m</A>, <A>m</A>+1]</C> and its reverse). <P/>
+
+    If the optional first argument <A>filt</A> is present, then this should
+    specify the category or representation the digraph being created will
+    belong to. For example, if <A>filt</A> is <Ref Filt="IsMutableDigraph"/>,
+    then the digraph being created will be mutable, if <A>filt</A> is <Ref
+    Filt="IsImmutableDigraph"/>, then the digraph will be immutable.
+    If the optional first argument <A>filt</A> is not present, then <Ref
+      Filt="IsImmutableDigraph"/> is used by default.
 
 <Example><![CDATA[
 gap> D := LollipopGraph(5, 3);
