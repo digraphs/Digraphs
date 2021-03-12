@@ -390,6 +390,15 @@ function(filt, m, n)
   D := MakeImmutable(LollipopGraphCons(IsMutableDigraph, m, n));
   SetIsMultiDigraph(D, false);
   SetIsSymmetricDigraph(D, true);
+  SetIsConnectedDigraph(D, true);
+  SetDigraphHasLoops(D, false);
+  SetChromaticNumber(D, Maximum(2, m));
+  SetCliqueNumber(D, Maximum(2, m));
+  if m <= 2 then
+    SetDigraphUndirectedGirth(D, infinity);
+  else
+    SetDigraphUndirectedGirth(D, 3);
+  fi;
   return D;
 end);
 
