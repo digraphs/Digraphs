@@ -316,13 +316,11 @@ gap> GeneralisedPetersenGraph(IsMutableDigraph, 9, 4);
   <Returns>A digraph</Returns>
   <Description>
     If <A>m</A> and <A>n</A> are positive integers, 
-    then this operation returns the <A>(m, n)</A>-lollipop graph
-    that consists of a complete digraph on <A>m</A> vertices and a 
-    path digraph on  <A>n</A> vertices connected by a bridge.
-
-    From
-    <URL>https://en.wikipedia.org/wiki/Lollipop_graph</URL>
-    <P/>
+    then this operation returns the <E>(<A>m</A>, <A>n</A>)-lollipop graph</E>.
+    As defined at <URL>https://en.wikipedia.org/wiki/Lollipop_graph</URL>,
+    this consists of a complete digraph on <A>m</A> vertices and the
+    symmetric closure of a chain digraph on <A>n</A> vertices,
+    connected by a bridge. <P/>
 
 <Example><![CDATA[
 gap> LollipopGraph(5, 4);
