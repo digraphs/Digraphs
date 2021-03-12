@@ -353,14 +353,16 @@ gap> GeneralisedPetersenGraph(IsMutableDigraph, 9, 4);
     <Example><![CDATA[
 gap> KingsGraph(8, 8);
 <immutable connected symmetric digraph with 64 vertices, 420 edges>
-gap> D := KingsGraph(4, 7);
-<immutable connected symmetric digraph with 28 vertices, 162 edges>
-gap> IsConnectedDigraph(D);
+gap> D := KingsGraph(IsMutable, 2, 7);
+<mutable digraph with 14 vertices, 62 edges>
+gap> IsPlanarDigraph(D);
 true
-gap> D := KingsGraph(2, 2);
-<immutable connected symmetric digraph with 4 vertices, 12 edges>
-gap> OutNeighbors(D);     
-[ [ 2, 3, 4 ], [ 1, 3, 4 ], [ 1, 2, 4 ], [ 1, 2, 3 ] ]
+gap> D := KingsGraph(3, 3);
+<immutable connected symmetric digraph with 9 vertices, 40 edges>
+gap> OutNeighbors(D);
+[ [ 2, 4, 5 ], [ 1, 3, 5, 4, 6 ], [ 2, 6, 5 ], [ 5, 1, 7, 2, 8 ], 
+  [ 4, 6, 2, 8, 3, 7, 1, 9 ], [ 5, 3, 9, 8, 2 ], [ 8, 4, 5 ], 
+  [ 7, 9, 5, 6, 4 ], [ 8, 6, 5 ] ]
 ]]></Example>
   </Description>
 </ManSection>
