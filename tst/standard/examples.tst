@@ -226,6 +226,18 @@ Error, the arguments <n> and <k> must be non-negative integers,
 gap> JohnsonDigraph(IsMutableDigraph, 4, 2);
 <mutable digraph with 6 vertices, 24 edges>
 
+#  KingsGraph
+gap> KingsGraph(8, 8);
+<immutable connected symmetric digraph with 64 vertices, 420 edges>
+gap> D := KingsGraph(4, 7);
+<immutable connected symmetric digraph with 28 vertices, 162 edges>
+gap> IsConnectedDigraph(D);
+true
+gap> D := KingsGraph(2, 2);
+<immutable connected symmetric digraph with 4 vertices, 12 edges>
+gap> OutNeighbors(D);     
+[ [ 2, 3, 4 ], [ 1, 4, 3 ], [ 4, 1, 2 ], [ 3, 2, 1 ] ]
+
 #  SquareGridGraph
 gap> SquareGridGraph(7, 7);
 <immutable connected bipartite symmetric digraph with bicomponent sizes 25 and\

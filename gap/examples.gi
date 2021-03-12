@@ -371,6 +371,46 @@ GeneralisedPetersenGraphCons);
 InstallMethod(GeneralisedPetersenGraph, "for integer, integer", [IsInt, IsInt],
 {n, k} -> GeneralisedPetersenGraphCons(IsImmutableDigraph, n, k));
 
+InstallMethod(KingsGraphCons,
+"for IsMutableDigraph and two positive integers",
+[IsMutableDigraph, IsPosInt, IsPosInt],
+function(filt, n, k)
+  local D, a, b, i, j;
+  D := TriangularGridGraph(IsMutableDigraph, n, k);
+  for i in [1 .. (k - 1)] do
+    for j in [1 .. (n - 1)] do
+      a := ((i - 1) * n) + j;
+      b := ((i - 1) * n) + j + n + 1;
+      DigraphAddEdge(D, a, b);
+      DigraphAddEdge(D, b, a);
+    od;
+  od;
+  return D;
+end);
+
+InstallMethod(KingsGraphCons,
+"for IsImmutableDigraph and two positive integers",
+[IsImmutableDigraph, IsPosInt, IsPosInt],
+function(filt, n, k)
+  local D;
+  D := MakeImmutable(KingsGraphCons(IsMutableDigraph, n, k));
+  SetIsMultiDigraph(D, false);
+  SetIsSymmetricDigraph(D, true);
+  SetIsConnectedDigraph(D, true);
+  SetIsBipartiteDigraph(D, n * k in Difference([n, k], [1]));
+  SetIsPlanarDigraph(D, n <= 2 or k <= 2 or n = 3 and k = 3);
+  SetDigraphHasLoops(D, false);
+  return D;
+end);
+
+InstallMethod(KingsGraph, "for a function and two positive integers",
+[IsFunction, IsPosInt, IsPosInt],
+KingsGraphCons);
+
+InstallMethod(KingsGraph, "two positive integers",
+[IsPosInt, IsPosInt],
+{n, k} -> KingsGraphCons(IsImmutableDigraph, n, k));
+
 # This function constructs an n by k square grid graph.
 
 InstallMethod(SquareGridGraphCons,
