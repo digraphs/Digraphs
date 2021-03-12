@@ -1,4 +1,4 @@
-############################################################################
+#############################################################################
 ##
 #W  examples.xml
 #Y  Copyright (C) 2019                              Murray T. Whyte
@@ -467,8 +467,15 @@ gap> TriangularGridGraph(IsMutable, 3, 3);
     
     See <Ref Prop="IsUndirectedTree"/>, <Ref Prop="IsCompleteBipartiteDigraph"/>,
     and <Ref Attr="DigraphBicomponents"/>. <P/>
-    
-<Example><![CDATA[
+
+    If the optional first argument <A>filt</A> is present, then this should
+    specify the category or representation the digraph being created will
+    belong to. For example, if <A>filt</A> is <Ref Filt="IsMutableDigraph"/>,
+    then the digraph being created will be mutable, if <A>filt</A> is <Ref
+    Filt="IsImmutableDigraph"/>, then the digraph will be immutable. 
+    If the optional first argument <A>filt</A> is not present, then <Ref
+      Filt="IsImmutableDigraph"/> is used by default.<P/>
+    <Example><![CDATA[
 gap> StarDigraph(IsMutable, 10);
 <mutable digraph with 10 vertices, 18 edges>
 gap> StarDigraph(5);
@@ -573,14 +580,13 @@ ent sizes 5 and 5>
 </ManSection>
 <#/GAPDoc>
 
-
 <#GAPDoc Label="BananaTree">
 <ManSection>
   <Oper Name="BananaTree" Arg="[filt, ]m, n"/>
   <Returns>A digraph</Returns>
   <Description>
     If <A>m</A> and <A>n</A> are positive integers,
-    then this operation returns the <E>banana tree</E> 
+    then this operation returns the <E>banana tree</E>
     with parameters <A>m</A> and <A>n</A>, as defined below. <P/>
 
     From
@@ -596,7 +602,7 @@ ent sizes 5 and 5>
     specify the category or representation the digraph being created will
     belong to. For example, if <A>filt</A> is <Ref Filt="IsMutableDigraph"/>,
     then the digraph being created will be mutable, if <A>filt</A> is <Ref
-    Filt="IsImmutableDigraph"/>, then the digraph will be immutable. 
+    Filt="IsImmutableDigraph"/>, then the digraph will be immutable.
     If the optional first argument <A>filt</A> is not present, then <Ref
       Filt="IsImmutableDigraph"/> is used by default.<P/>
 

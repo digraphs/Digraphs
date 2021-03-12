@@ -87,12 +87,13 @@
     <#Include Label="JohnsonDigraph">
     <#Include Label="PetersenGraph">
     <#Include Label="GeneralisedPetersenGraph">
+    <#Include Label="BananaTree">
     <#Include Label="SquareGridGraph">
     <#Include Label="TriangularGridGraph">
     <#Include Label="HaarGraph">
     <#Include Label="KingsGraph">
     <#Include Label="KnightsGraph">
-    <#Include Label="BananaTree">
+    <#Include Label="StarDigraph">
   </Section>
 
 </Chapter>
