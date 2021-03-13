@@ -371,6 +371,45 @@ GeneralisedPetersenGraphCons);
 InstallMethod(GeneralisedPetersenGraph, "for integer, integer", [IsInt, IsInt],
 {n, k} -> GeneralisedPetersenGraphCons(IsImmutableDigraph, n, k));
 
+InstallMethod(LollipopGraphCons,
+"for IsMutableDigraph and two positive integers",
+[IsMutableDigraph, IsPosInt, IsPosInt],
+function(filt, m, n)
+  local D;
+  D := DigraphDisjointUnion(CompleteDigraph(IsMutableDigraph, m),
+  DigraphSymmetricClosure(ChainDigraph(IsMutableDigraph, n)));
+  DigraphAddEdges(D, [[m, m + 1], [m + 1, m]]);
+  return D;
+end);
+
+InstallMethod(LollipopGraphCons,
+"for IsImmutableDigraph and two positive integers",
+[IsImmutableDigraph, IsPosInt, IsPosInt],
+function(filt, m, n)
+  local D;
+  D := MakeImmutable(LollipopGraphCons(IsMutableDigraph, m, n));
+  SetIsMultiDigraph(D, false);
+  SetIsSymmetricDigraph(D, true);
+  SetIsConnectedDigraph(D, true);
+  SetDigraphHasLoops(D, false);
+  SetChromaticNumber(D, Maximum(2, m));
+  SetCliqueNumber(D, Maximum(2, m));
+  if m <= 2 then
+    SetDigraphUndirectedGirth(D, infinity);
+  else
+    SetDigraphUndirectedGirth(D, 3);
+  fi;
+  return D;
+end);
+
+InstallMethod(LollipopGraph, "for two pos int",
+[IsPosInt, IsPosInt],
+{m, n} -> LollipopGraphCons(IsImmutableDigraph, m, n));
+
+InstallMethod(LollipopGraph, "for a function and two pos int",
+[IsFunction, IsPosInt, IsPosInt],
+{filt, m, n} -> LollipopGraphCons(filt, m, n));
+
 InstallMethod(KingsGraphCons,
 "for IsMutableDigraph and two positive integers",
 [IsMutableDigraph, IsPosInt, IsPosInt],
