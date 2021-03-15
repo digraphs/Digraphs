@@ -225,7 +225,7 @@
         insensitive. <P/>
 
         Note that any undirected graphs in the database are stored as symmetric
-        digraphs, so the resulting graph will have twice as many edges as its
+        digraphs, so the resulting digraph will have twice as many edges as its
         undirected counterpart.
       </Item>
     </List>

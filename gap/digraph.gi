@@ -459,18 +459,16 @@ function(name)
   DIGRAPHS_LoadNamedDiSparse6Strings();
 
   if not name in RecNames(DIGRAPHS_NamedDiSparse6Strings) then
-    ErrorNoReturn("Named digraph not found. Please check argument 'name',\n",
-                  "or view list of available digraphs with names containing\n",
-                  "string s using ListNamedDigraphs(s).");
+    ErrorNoReturn("named digraph <name> not found; see ListNamedDigraphs,");
   fi;
   return DigraphFromDiSparse6String(DIGRAPHS_NamedDiSparse6Strings.(name));
 end);
 
 InstallMethod(ListNamedDigraphs,
-"for a partially completed string and a pos int",
+"for a string and a pos int",
 [IsString, IsPosInt],
 function(s, level)
-  local l, cands, out, c;
+  local l, cands, func;
   # standardise request
   s := LowercaseString(s);
   RemoveCharacters(s, " \n\t\r");
@@ -485,8 +483,6 @@ function(s, level)
     return cands;
   fi;
 
-  out := [];
-
   # print warning if level higher than ones here that have methods
   if level > 3 then
     Info(InfoWarning, 1, "ListNamedDigraphs: second argument <level> is");
@@ -495,45 +491,21 @@ function(s, level)
     level := 3;
   fi;
 
-  # IF LEVEL = 1 (PREFIX SEARCH):
-  # add to out-list all valid completions of the request s
   if level = 1 then
-    for c in cands do
-      if Length(c) >= l and c{[1 .. l]} = s then
-        Add(out, c);
-      fi;
-    od;
-  fi;
-
-  # IF LEVEL = 2 (SUBSTRING SEARCH):
-  # add to out-list all strings that contain request s
-  if level = 2 then
-    for c in cands do
-      if PositionSublist(c, s) <> fail then
-        Add(out, c);
-      fi;
-    od;
-  fi;
-
-  # IF LEVEL = 3 (ALPHANUM-ONLY SUBSTRING SEARCH):
-  # add to out-list all strings that when stripped to contain only alphanumeric
-  # characters, contain the resquest s as a substring
-  if level = 3 then
+    func := c -> Length(c) >= l and c{[1 .. l]} = s;
+  elif level = 2 then
+    func := c -> PositionSublist(c, s) <> fail;
+  else
     s := Filtered(s, x -> IsDigitChar(x) or IsAlphaChar(x));
-    for c in cands do
-      if PositionSublist(Filtered(c, x -> IsDigitChar(x) or IsAlphaChar(x)), s)
-          <> fail then
-        Add(out, c);
-      fi;
-    od;
+    func := c -> PositionSublist(Filtered(c, x -> IsDigitChar(x) or
+                                                  IsAlphaChar(x)), s) <> fail;
   fi;
-
-  return out;
+  return Filtered(cands, func);
 end);
 
 # if search function called with no level, assume a substring search with
 # special chars
-InstallMethod(ListNamedDigraphs, "for a partially completed string", [IsString],
+InstallMethod(ListNamedDigraphs, "for a string", [IsString],
 x -> ListNamedDigraphs(x, 2));
 
 ########################################################################
