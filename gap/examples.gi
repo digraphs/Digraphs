@@ -371,6 +371,162 @@ GeneralisedPetersenGraphCons);
 InstallMethod(GeneralisedPetersenGraph, "for integer, integer", [IsInt, IsInt],
 {n, k} -> GeneralisedPetersenGraphCons(IsImmutableDigraph, n, k));
 
+InstallMethod(LollipopGraphCons,
+"for IsMutableDigraph and two positive integers",
+[IsMutableDigraph, IsPosInt, IsPosInt],
+function(filt, m, n)
+  local D;
+  D := DigraphDisjointUnion(CompleteDigraph(IsMutableDigraph, m),
+  DigraphSymmetricClosure(ChainDigraph(IsMutableDigraph, n)));
+  DigraphAddEdges(D, [[m, m + 1], [m + 1, m]]);
+  return D;
+end);
+
+InstallMethod(LollipopGraphCons,
+"for IsImmutableDigraph and two positive integers",
+[IsImmutableDigraph, IsPosInt, IsPosInt],
+function(filt, m, n)
+  local D;
+  D := MakeImmutable(LollipopGraphCons(IsMutableDigraph, m, n));
+  SetIsMultiDigraph(D, false);
+  SetIsSymmetricDigraph(D, true);
+  SetIsConnectedDigraph(D, true);
+  SetDigraphHasLoops(D, false);
+  SetChromaticNumber(D, Maximum(2, m));
+  SetCliqueNumber(D, Maximum(2, m));
+  if m <= 2 then
+    SetDigraphUndirectedGirth(D, infinity);
+  else
+    SetDigraphUndirectedGirth(D, 3);
+  fi;
+  return D;
+end);
+
+InstallMethod(LollipopGraph, "for two pos int",
+[IsPosInt, IsPosInt],
+{m, n} -> LollipopGraphCons(IsImmutableDigraph, m, n));
+
+InstallMethod(LollipopGraph, "for a function and two pos int",
+[IsFunction, IsPosInt, IsPosInt],
+{filt, m, n} -> LollipopGraphCons(filt, m, n));
+
+InstallMethod(KingsGraphCons,
+"for IsMutableDigraph and two positive integers",
+[IsMutableDigraph, IsPosInt, IsPosInt],
+function(filt, n, k)
+  local D, a, b, i, j;
+  D := TriangularGridGraph(IsMutableDigraph, n, k);
+  for i in [1 .. (k - 1)] do
+    for j in [1 .. (n - 1)] do
+      a := ((i - 1) * n) + j;
+      b := ((i - 1) * n) + j + n + 1;
+      DigraphAddEdge(D, a, b);
+      DigraphAddEdge(D, b, a);
+    od;
+  od;
+  return D;
+end);
+
+InstallMethod(KingsGraphCons,
+"for IsImmutableDigraph and two positive integers",
+[IsImmutableDigraph, IsPosInt, IsPosInt],
+function(filt, n, k)
+  local D;
+  D := MakeImmutable(KingsGraphCons(IsMutableDigraph, n, k));
+  SetIsMultiDigraph(D, false);
+  SetIsSymmetricDigraph(D, true);
+  SetIsConnectedDigraph(D, true);
+  SetIsBipartiteDigraph(D, n * k in Difference([n, k], [1]));
+  SetIsPlanarDigraph(D, n <= 2 or k <= 2 or n = 3 and k = 3);
+  SetDigraphHasLoops(D, false);
+  return D;
+end);
+
+InstallMethod(KingsGraph, "for a function and two positive integers",
+[IsFunction, IsPosInt, IsPosInt],
+KingsGraphCons);
+
+InstallMethod(KingsGraph, "two positive integers",
+[IsPosInt, IsPosInt],
+{n, k} -> KingsGraphCons(IsImmutableDigraph, n, k));
+
+# This function constructs an n by k square grid graph.
+
+InstallMethod(SquareGridGraphCons,
+"for IsMutableDigraph and two positive integers",
+[IsMutableDigraph, IsPosInt, IsPosInt],
+function(filt, n, k)
+  local D1, D2;
+  D1 := DigraphSymmetricClosure(ChainDigraph(IsMutableDigraph, n));
+  D2 := DigraphSymmetricClosure(ChainDigraph(IsMutableDigraph, k));
+  return DigraphCartesianProduct(D1, D2);
+end);
+
+InstallMethod(SquareGridGraphCons,
+"for IsImmutableDigraph and two positive integers",
+[IsImmutableDigraph, IsPosInt, IsPosInt],
+function(filt, n, k)
+  local D;
+  D := MakeImmutable(SquareGridGraphCons(IsMutableDigraph, n, k));
+  SetIsMultiDigraph(D, false);
+  SetIsSymmetricDigraph(D, true);
+  SetIsBipartiteDigraph(D, n > 1 or k > 1);
+  SetIsPlanarDigraph(D, true);
+  SetIsConnectedDigraph(D, true);
+  SetDigraphHasLoops(D, false);
+  return D;
+end);
+
+InstallMethod(SquareGridGraph, "for a function and two positive integers",
+[IsFunction, IsPosInt, IsPosInt],
+SquareGridGraphCons);
+
+InstallMethod(SquareGridGraph, "for two integers", [IsPosInt, IsPosInt],
+{n, k} -> SquareGridGraphCons(IsImmutableDigraph, n, k));
+
+#  This function constructs an n by k triangular grid graph. It is the same as
+#  the square grid graph except that it adds diagonal edges.
+
+InstallMethod(TriangularGridGraphCons,
+"for IsMutableDigraph and two integers",
+[IsMutableDigraph, IsPosInt, IsPosInt],
+function(filt, n, k)
+  local D, a, b, i, j;
+  D := SquareGridGraph(IsMutableDigraph, n, k);
+  for i in [1 .. (k - 1)] do
+    for j in [1 .. (n - 1)] do
+      a := ((i - 1) * n) + j + 1;
+      b := ((i - 1) * n) + j + n;
+      DigraphAddEdge(D, a, b);
+      DigraphAddEdge(D, b, a);
+    od;
+  od;
+  return D;
+end);
+
+InstallMethod(TriangularGridGraphCons,
+"for IsImmutableDigraph and two positive integers",
+[IsImmutableDigraph, IsPosInt, IsPosInt],
+function(filt, n, k)
+  local D;
+  D := MakeImmutable(TriangularGridGraphCons(IsMutableDigraph, n, k));
+  SetIsMultiDigraph(D, false);
+  SetIsSymmetricDigraph(D, true);
+  SetIsBipartiteDigraph(D, n * k in Difference([n, k], [1]));
+  SetIsPlanarDigraph(D, true);
+  SetIsConnectedDigraph(D, true);
+  SetDigraphHasLoops(D, false);
+  return D;
+end);
+
+InstallMethod(TriangularGridGraph, "for a function and two positive integers",
+[IsFunction, IsPosInt, IsPosInt],
+TriangularGridGraphCons);
+
+InstallMethod(TriangularGridGraph, "for two positive integers",
+[IsPosInt, IsPosInt],
+{n, k} -> TriangularGridGraphCons(IsImmutableDigraph, n, k));
+
 InstallMethod(StarDigraphCons, "for IsMutableDigraph and a positive integer",
 [IsMutableDigraph, IsPosInt],
 function(filt, k)

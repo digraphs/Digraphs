@@ -226,6 +226,66 @@ Error, the arguments <n> and <k> must be non-negative integers,
 gap> JohnsonDigraph(IsMutableDigraph, 4, 2);
 <mutable digraph with 6 vertices, 24 edges>
 
+# LollipopGraph
+gap> LollipopGraph(5, 4);
+<immutable connected symmetric digraph with 9 vertices, 28 edges>
+gap> LollipopGraph(8, 4);
+<immutable connected symmetric digraph with 12 vertices, 64 edges>
+gap> D := LollipopGraph(5, 3);
+<immutable connected symmetric digraph with 8 vertices, 26 edges>
+gap> DigraphNrVertices(D);
+8
+gap> DigraphNrEdges(D);
+26
+gap> DigraphUndirectedGirth(D);
+3
+gap> LollipopGraph(IsMutableDigraph, 5, 3);
+<mutable digraph with 8 vertices, 26 edges>
+
+#  KingsGraph
+gap> KingsGraph(8, 8);
+<immutable connected symmetric digraph with 64 vertices, 420 edges>
+gap> D := KingsGraph(4, 7);
+<immutable connected symmetric digraph with 28 vertices, 162 edges>
+gap> IsConnectedDigraph(D);
+true
+gap> D := KingsGraph(2, 2);
+<immutable connected symmetric digraph with 4 vertices, 12 edges>
+gap> OutNeighbors(D);     
+[ [ 2, 3, 4 ], [ 1, 4, 3 ], [ 4, 1, 2 ], [ 3, 2, 1 ] ]
+
+#  SquareGridGraph
+gap> SquareGridGraph(7, 7);
+<immutable connected bipartite symmetric digraph with bicomponent sizes 25 and\
+ 24>
+gap> SquareGridGraph(2, 4);
+<immutable connected bipartite symmetric digraph with bicomponent sizes 4 and \
+4>
+gap> SquareGridGraph(IsMutableDigraph, 5, 3);
+<mutable digraph with 15 vertices, 44 edges>
+gap> SquareGridGraph(IsImmutableDigraph, 1, 1);
+<immutable empty digraph with 1 vertex>
+gap> SquareGridGraph(1, 4);
+<immutable connected bipartite symmetric digraph with bicomponent sizes 2 and \
+2>
+gap> SquareGridGraph(2, 1);
+<immutable connected bipartite symmetric digraph with bicomponent sizes 1 and \
+1>
+
+#  TriangularGridGraph
+gap> TriangularGridGraph(3, 4);
+<immutable connected symmetric digraph with 12 vertices, 46 edges>
+gap> TriangularGridGraph(IsMutableDigraph, 7, 2);
+<mutable digraph with 14 vertices, 50 edges>
+gap> TriangularGridGraph(1, 1);
+<immutable empty digraph with 1 vertex>
+gap> TriangularGridGraph(1, 5);
+<immutable connected bipartite symmetric digraph with bicomponent sizes 3 and \
+2>
+gap> TriangularGridGraph(3, 1);
+<immutable connected bipartite symmetric digraph with bicomponent sizes 2 and \
+1>
+
 # StarDigraph
 gap> StarDigraph(IsMutable, 10);
 <mutable digraph with 10 vertices, 18 edges>
