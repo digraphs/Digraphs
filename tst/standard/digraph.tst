@@ -1784,16 +1784,12 @@ gap> D := EvalString(
 gap> String(D);
 "DigraphFromDigraph6String(\"&N~~nf~v~~~~u\\\\mvf~vvv~Zzv|vNxuxVw~|v~Lro\")"
 
-# Unpickle the NAMED DIGRAPHS MAIN and NAMED DIGRAPHS TEST records.
+# Load the NAMED DIGRAPHS MAIN and NAMED DIGRAPHS TEST records.
 # Check the entries match.
-gap> f := Concatenation(DIGRAPHS_Dir(), "/data/named-ds6.p.gz");;
-gap> f := IO_CompressedFile(f, "r");;
-gap> main := IO_Unpickle(f);;
-gap> IO_Close(f);;
-gap> f := Concatenation(DIGRAPHS_Dir(), "/data/named-ds6-test.p.gz");;
-gap> f := IO_CompressedFile(f, "r");;
-gap> test := IO_Unpickle(f);;
-gap> IO_Close(f);;
+gap> DIGRAPHS_LoadNamedDigraphs();
+gap> main := DIGRAPHS_NamedDigraphs;;
+gap> DIGRAPHS_LoadNamedDigraphsTests();
+gap> test := DIGRAPHS_NamedDigraphsTests;;
 gap> Set(RecNames(main)) = Set(RecNames(test));
 true
 
@@ -1865,7 +1861,7 @@ gap> failed;
 [  ]
 
 # ListNamedDigraphs
-gap> Length(RecNames(DIGRAPHS_NamedDiSparse6Strings))
+gap> Length(RecNames(main))
 >    = Length(ListNamedDigraphs(""));
 true
 gap> "folkman" in ListNamedDigraphs("F\n oL");

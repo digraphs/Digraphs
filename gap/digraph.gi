@@ -1,7 +1,7 @@
 #############################################################################
 ##
 ##  digraph.gi
-##  Copyright (C) 2014-19                                James D. Mitchell
+##  Copyright (C) 2014-21                                James D. Mitchell
 ##
 ##  Licensing information can be found in the README file of this package.
 ##
@@ -24,18 +24,35 @@
 #
 ########################################################################
 
-BindGlobal("DIGRAPHS_NamedDiSparse6Strings", fail);
-BindGlobal("DIGRAPHS_LoadNamedDiSparse6Strings", function()
-  local f, r;
-  if DIGRAPHS_NamedDiSparse6Strings = fail then
-    f := Concatenation(DIGRAPHS_Dir(), "/data/named-ds6.p.gz");
-    f := IO_CompressedFile(f, "r");
-    r := IO_Unpickle(f);
-    IO_Close(f);
+BindGlobal("DIGRAPHS_NamedDigraphs", fail);
+BindGlobal("DIGRAPHS_NamedDigraphsTests", fail);
 
-    MakeReadWriteGlobal("DIGRAPHS_NamedDiSparse6Strings");
-    UnbindGlobal("DIGRAPHS_NamedDiSparse6Strings");
-    BindGlobal("DIGRAPHS_NamedDiSparse6Strings", r);
+BindGlobal("DIGRAPHS_LoadNamedDigraphs", function()
+  # Check if the database has already been loaded
+  if DIGRAPHS_NamedDigraphs = fail then
+    MakeReadWriteGlobal("DIGRAPHS_NamedDigraphs");
+    UnbindGlobal("DIGRAPHS_NamedDigraphs");
+
+    # Initialise empty record
+    BindGlobal("DIGRAPHS_NamedDigraphs", rec());
+
+    # Populate record with entries from the named digraphs main database
+    Read(Concatenation(DIGRAPHS_Dir(), "/data/named-digraphs-main-database.g"));
+  fi;
+end);
+
+BindGlobal("DIGRAPHS_LoadNamedDigraphsTests", function()
+  # INTENDED ONLY FOR TESTING PURPOSES
+  # Check if the database has already been loaded
+  if DIGRAPHS_NamedDigraphsTests = fail then
+    MakeReadWriteGlobal("DIGRAPHS_NamedDigraphsTests");
+    UnbindGlobal("DIGRAPHS_NamedDigraphsTests");
+
+    # Initialise empty record
+    BindGlobal("DIGRAPHS_NamedDigraphsTests", rec());
+
+    # Populate record with entries from the named digraphs test database
+    Read(Concatenation(DIGRAPHS_Dir(), "/data/named-digraphs-test-database.g"));
   fi;
 end);
 
@@ -456,12 +473,12 @@ function(name)
   RemoveCharacters(name, " \n\t\r");
 
   # load database if not already done
-  DIGRAPHS_LoadNamedDiSparse6Strings();
+  DIGRAPHS_LoadNamedDigraphs();
 
-  if not name in RecNames(DIGRAPHS_NamedDiSparse6Strings) then
+  if not name in RecNames(DIGRAPHS_NamedDigraphs) then
     ErrorNoReturn("named digraph <name> not found; see ListNamedDigraphs,");
   fi;
-  return DigraphFromDiSparse6String(DIGRAPHS_NamedDiSparse6Strings.(name));
+  return DigraphFromDiSparse6String(DIGRAPHS_NamedDigraphs.(name));
 end);
 
 InstallMethod(ListNamedDigraphs,
@@ -475,10 +492,10 @@ function(s, level)
   l := Length(s);
 
   # load database if not already done
-  DIGRAPHS_LoadNamedDiSparse6Strings();
+  DIGRAPHS_LoadNamedDigraphs();
 
   # retrieve candidates
-  cands := RecNames(DIGRAPHS_NamedDiSparse6Strings);
+  cands := RecNames(DIGRAPHS_NamedDigraphs);
   if l = 0 then
     return cands;
   fi;

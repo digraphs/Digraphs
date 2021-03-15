@@ -7,9 +7,9 @@
 ##
 #############################################################################
 ##
-## This tests attributes of all digraphs stored in the named graphs list
-## against known values. Attributes tested are largely from House of Graphs
-## at hog.grinvin.org.
+## This tests attributes of all digraphs stored in the named graphs main
+## database against known values. Attributes tested are largely from House
+## of Graphs at hog.grinvin.org.
 ##
 gap> START_TEST("Digraphs package: extreme/named.tst");
 gap> LoadPackage("digraphs", false);;
@@ -18,10 +18,8 @@ gap> LoadPackage("digraphs", false);;
 gap> DIGRAPHS_StartTest();
 
 # Load the record of stored test values
-gap> f := Concatenation(DIGRAPHS_Dir(), "/data/named-ds6-test.p.gz");;
-gap> f := IO_CompressedFile(f, "r");;
-gap> r := IO_Unpickle(f);;
-gap> IO_Close(f);;
+gap> DIGRAPHS_LoadNamedDigraphsTests();
+gap> r := DIGRAPHS_NamedDigraphsTests;;
 
 # For each graph, test Digraphs-generated properties against stored values.
 # "failed" is a list of pairs [name, prop] where the digraph called "name"
