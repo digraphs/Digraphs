@@ -652,9 +652,6 @@ function(filt, m, n)
     ErrorNoReturn("the first argument <m> must be an integer greater than 2");
   fi;
   graph := DigraphSymmetricClosure(CycleDigraph(IsMutableDigraph, m));
-  if n = 0 then
-    return graph;
-  fi;
   tail := DigraphSymmetricClosure(ChainDigraph(IsMutable, n));
   DigraphDisjointUnion(graph, tail);
   DigraphAddEdges(graph, [[m, n + m], [n + m, m]]);
