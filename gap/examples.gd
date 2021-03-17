@@ -77,3 +77,7 @@ DeclareOperation("KnightsGraph", [IsFunction, IsPosInt, IsPosInt]);
 DeclareConstructor("HaarGraphCons", [IsDigraph, IsPosInt]);
 DeclareOperation("HaarGraph", [IsPosInt]);
 DeclareOperation("HaarGraph", [IsFunction, IsPosInt]);
+
+DeclareConstructor("BananaTreeCons", [IsDigraph, IsPosInt, IsPosInt]);
+DeclareOperation("BananaTree", [IsPosInt, IsPosInt]);
+DeclareOperation("BananaTree", [IsFunction, IsPosInt, IsPosInt]);
