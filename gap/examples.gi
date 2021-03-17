@@ -674,15 +674,16 @@ function(filt, m, n)
   return D;
 end);
 
-InstallMethod(BananaTree, "for a function and two pos ints",
+InstallMethod(BananaTree, "for a function and two positive integers",
 [IsPosInt, IsPosInt],
 {m, n} -> BananaTreeCons(IsImmutableDigraph, m, n));
 
-InstallMethod(BananaTree, "for a function and two pos ints",
+InstallMethod(BananaTree, "for a function and two positive integers",
 [IsFunction, IsPosInt, IsPosInt],
 {filt, m, n} -> BananaTreeCons(filt, m, n));
 
-InstallMethod(TadpoleDigraphCons, "for IsMutableDigraph and two integers",
+InstallMethod(TadpoleDigraphCons,
+"for IsMutableDigraph and two positive integers",
 [IsMutableDigraph, IsPosInt, IsPosInt],
 function(filt, m, n)
   local tail, graph;
@@ -696,16 +697,16 @@ function(filt, m, n)
   return graph;
 end);
 
-InstallMethod(TadpoleDigraph, "for a function, integer, integer",
-[IsFunction, IsInt, IsInt],
+InstallMethod(TadpoleDigraph, "for a function and two positive integers",
+[IsFunction, IsPosInt, IsPosInt],
 TadpoleDigraphCons);
 
-InstallMethod(TadpoleDigraph, "for integer, integer", [IsInt, IsInt],
+InstallMethod(TadpoleDigraph, "for two positive integers", [IsPosInt, IsPosInt],
 {m, n} -> TadpoleDigraphCons(IsImmutableDigraph, m, n));
 
 InstallMethod(TadpoleDigraphCons,
-"for IsImmutableDigraph, integer, integer",
-[IsImmutableDigraph, IsInt, IsInt],
+"for IsImmutableDigraph and two positive integers",
+[IsImmutableDigraph, IsPosInt, IsPosInt],
 function(filt, m, n)
   local D;
   D := MakeImmutable(TadpoleDigraph(IsMutableDigraph, m, n));

@@ -680,7 +680,7 @@ gap> D := BananaTree(3, 4);
     please refer to <URL>https://en.wikipedia.org/wiki/Tadpole_graph</URL>.<P/>
 
     See <Ref Oper="DigraphSymmetricClosure"/>, <Ref Oper="DigraphDisjointUnion"/>,
-    <Ref Oper="CycleDigraph"/>, and <Ref Oper="ChainDigraph"/>.
+    <Ref Oper="CycleDigraph"/>, and <Ref Oper="ChainDigraph"/>. <P/>
 
     If the optional first argument <A>filt</A> is present, then this should
     specify the category or representation the digraph being created will
