@@ -372,26 +372,17 @@ InstallMethod(GeneralisedPetersenGraph, "for integer, integer", [IsInt, IsInt],
 {n, k} -> GeneralisedPetersenGraphCons(IsImmutableDigraph, n, k));
 
 InstallMethod(TadpoleDigraphCons, "for IsMutableDigraph and two integers",
-[IsMutableDigraph, IsInt, IsInt],
+[IsMutableDigraph, IsPosInt, IsPosInt],
 function(filt, m, n)
-  local i, j, tail, graph;
-  if (m < 3) then
-    ErrorNoReturn("m needs to greater than 2");
-  elif (n < 0) then
-    ErrorNoReturn("n needs to be positive (or 0)");
+  local tail, graph;
+  if m < 3 then
+    ErrorNoReturn("the first argument <m> must be an integer greater than 2");
   fi;
-  graph := CycleDigraph(IsMutable, m);
-  DigraphAddEdge(graph, [1, m]);
-  for j in [2 .. m] do
-    DigraphAddEdge(graph, [j, j - 1]);
-  od;
-  if (n = 0) then
+  graph := DigraphSymmetricClosure(CycleDigraph(IsMutableDigraph, m));
+  if n = 0 then
     return graph;
   fi;
-  tail := ChainDigraph(IsMutable, n);
-  for i in [2 .. n] do
-    DigraphAddEdge(tail, [i, i - 1]);
-  od;
+  tail := DigraphSymmetricClosure(ChainDigraph(IsMutable, n));
   DigraphDisjointUnion(graph, tail);
   DigraphAddEdges(graph, [[m, n + m], [n + m, m]]);
   return graph;

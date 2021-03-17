@@ -228,18 +228,16 @@ gap> JohnsonDigraph(IsMutableDigraph, 4, 2);
 
 # TadPoleDigraph
 gap> TadpoleDigraph(2, 2);
-Error, m needs to greater than 2
-gap> TadpoleDigraph(3, -1);
-Error, n needs to be positive (or 0)
+Error, the first argument <m> must be an integer greater than 2
 gap> TadpoleDigraph(10, 15);
 <immutable symmetric digraph with 25 vertices, 50 edges>
 gap> TadpoleDigraph(IsMutableDigraph, 5, 6);
 <mutable digraph with 11 vertices, 22 edges>
 gap> IsSymmetricDigraph(TadpoleDigraph(3, 5));
 true
-gap> IsMultiDigraph(TadpoleDigraph(3, 5));
-false
-gap> TadpoleDigraph(3, 0);
-<immutable symmetric digraph with 3 vertices, 6 edges>
+gap> TadpoleDigraph(3, 1);
+<immutable symmetric digraph with 4 vertices, 8 edges>
+
+#
 gap> DIGRAPHS_StopTest();
 gap> STOP_TEST("Digraphs package: standard/examples.tst", 0);
