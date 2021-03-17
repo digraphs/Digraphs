@@ -674,10 +674,43 @@ function(filt, m, n)
   return D;
 end);
 
-InstallMethod(BananaTree, "for a function and two pos ints",
+InstallMethod(BananaTree, "for a function and two positive integers",
 [IsPosInt, IsPosInt],
 {m, n} -> BananaTreeCons(IsImmutableDigraph, m, n));
 
-InstallMethod(BananaTree, "for a function and two pos ints",
+InstallMethod(BananaTree, "for a function and two positive integers",
 [IsFunction, IsPosInt, IsPosInt],
 {filt, m, n} -> BananaTreeCons(filt, m, n));
+
+InstallMethod(TadpoleDigraphCons,
+"for IsMutableDigraph and two positive integers",
+[IsMutableDigraph, IsPosInt, IsPosInt],
+function(filt, m, n)
+  local tail, graph;
+  if m < 3 then
+    ErrorNoReturn("the first argument <m> must be an integer greater than 2");
+  fi;
+  graph := DigraphSymmetricClosure(CycleDigraph(IsMutableDigraph, m));
+  tail := DigraphSymmetricClosure(ChainDigraph(IsMutable, n));
+  DigraphDisjointUnion(graph, tail);
+  DigraphAddEdges(graph, [[m, n + m], [n + m, m]]);
+  return graph;
+end);
+
+InstallMethod(TadpoleDigraph, "for a function and two positive integers",
+[IsFunction, IsPosInt, IsPosInt],
+TadpoleDigraphCons);
+
+InstallMethod(TadpoleDigraph, "for two positive integers", [IsPosInt, IsPosInt],
+{m, n} -> TadpoleDigraphCons(IsImmutableDigraph, m, n));
+
+InstallMethod(TadpoleDigraphCons,
+"for IsImmutableDigraph and two positive integers",
+[IsImmutableDigraph, IsPosInt, IsPosInt],
+function(filt, m, n)
+  local D;
+  D := MakeImmutable(TadpoleDigraph(IsMutableDigraph, m, n));
+  SetIsMultiDigraph(D, false);
+  SetIsSymmetricDigraph(D, true);
+  return D;
+end);

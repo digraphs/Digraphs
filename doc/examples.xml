@@ -665,3 +665,41 @@ gap> D := BananaTree(3, 4);
   </Description>
 </ManSection>
 <#/GAPDoc>
+
+<#GAPDoc Label="TadpoleDigraph">
+<ManSection>
+  <Oper Name="TadpoleDigraph" Arg="[filt, ]m, n"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    The <E>Tadpole digraph</E> is the symmetric closure of the disjoint union
+    of the cycle digraph on <C>[1..<A>m</A>]</C> (the 'head' of the tadpole)
+    and the chain digraph on <C>[<A>m</A>+1..<A>m</A>+<A>n</A>]</C>
+    (the 'tail' of the tadpole), along with the additional
+    edges <C>[1, <A>m</A>+1]</C> and <C>[1, <A>m</A>+1]</C>
+    which connect the 'head' and the 'tail'. For more details on the Tadpole digraph
+    please refer to <URL>https://en.wikipedia.org/wiki/Tadpole_graph</URL>.<P/>
+
+    See <Ref Oper="DigraphSymmetricClosure"/>,
+    <Ref Func="DigraphDisjointUnion" Label="for a list of digraphs"/>,
+    <Ref Oper="CycleDigraph"/>, and <Ref Oper="ChainDigraph"/>. <P/>
+
+    If the optional first argument <A>filt</A> is present, then this should
+    specify the category or representation the digraph being created will
+    belong to. For example, if <A>filt</A> is <Ref Filt="IsMutableDigraph"/>,
+    then the digraph being created will be mutable, if <A>filt</A> is <Ref
+    Filt="IsImmutableDigraph"/>, then the digraph will be immutable. 
+    If the optional first argument <A>filt</A> is not present, then <Ref
+      Filt="IsImmutableDigraph"/> is used by default.<P/>
+
+    <Example><![CDATA[
+gap> TadpoleDigraph(10, 15);
+<immutable symmetric digraph with 25 vertices, 50 edges>
+gap> TadpoleDigraph(IsMutableDigraph, 5, 6);
+<mutable digraph with 11 vertices, 22 edges>
+gap> IsSymmetricDigraph(TadpoleDigraph(3, 5));
+true
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
