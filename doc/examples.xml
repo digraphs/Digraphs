@@ -679,7 +679,8 @@ gap> D := BananaTree(3, 4);
     which connect the 'head' and the 'tail'. For more details on the Tadpole digraph
     please refer to <URL>https://en.wikipedia.org/wiki/Tadpole_graph</URL>.<P/>
 
-    See <Ref Oper="DigraphSymmetricClosure"/>, <Ref Oper="DigraphDisjointUnion"/>,
+    See <Ref Oper="DigraphSymmetricClosure"/>,
+    <Ref Func="DigraphDisjointUnion" Label="for a list of digraphs"/>,
     <Ref Oper="CycleDigraph"/>, and <Ref Oper="ChainDigraph"/>. <P/>
 
     If the optional first argument <A>filt</A> is present, then this should
