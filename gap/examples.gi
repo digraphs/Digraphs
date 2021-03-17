@@ -643,3 +643,41 @@ HaarGraphCons);
 
 InstallMethod(HaarGraph, "for a positive integer", [IsPosInt],
 {n} -> HaarGraphCons(IsImmutableDigraph, n));
+
+InstallMethod(BananaTreeCons,
+"for IsMutableDigraph and two positive integers",
+[IsMutableDigraph, IsPosInt, IsPosInt],
+function(filt, m, n)
+  local D, j, list;
+  if n = 1 then
+    ErrorNoReturn("The second argument must be an integer",
+    " greater than one");
+  fi;
+  D := EmptyDigraph(IsMutable, 1);
+  list := Concatenation([D], ListWithIdenticalEntries(m, StarDigraph(n)));
+  DigraphDisjointUnion(list);  # changes <D> in place
+  for j in [0 .. (m - 1)] do
+    DigraphAddEdges(D, [[1, (j * n + 3)], [(j * n + 3), 1]]);
+  od;
+  return D;
+end);
+
+InstallMethod(BananaTreeCons,
+"for IsImmutableDigraph and two positive integers",
+[IsImmutableDigraph, IsPosInt, IsPosInt],
+function(filt, m, n)
+  local D;
+  D := MakeImmutable(BananaTreeCons(IsMutableDigraph, m, n));
+  SetIsMultiDigraph(D, false);
+  SetIsSymmetricDigraph(D, true);
+  SetIsUndirectedTree(D, true);
+  return D;
+end);
+
+InstallMethod(BananaTree, "for a function and two pos ints",
+[IsPosInt, IsPosInt],
+{m, n} -> BananaTreeCons(IsImmutableDigraph, m, n));
+
+InstallMethod(BananaTree, "for a function and two pos ints",
+[IsFunction, IsPosInt, IsPosInt],
+{filt, m, n} -> BananaTreeCons(filt, m, n));

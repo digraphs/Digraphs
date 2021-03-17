@@ -334,6 +334,23 @@ s 5 and 5>
 gap> IsBipartiteDigraph(D);
 true
 
+# BananaTree
+gap> D := BananaTree(2, 4);
+<immutable connected symmetric digraph with 9 vertices, 16 edges>
+gap> D := BananaTree(3, 3);
+<immutable connected symmetric digraph with 10 vertices, 18 edges>
+gap> D := BananaTree(5, 2);
+<immutable connected symmetric digraph with 11 vertices, 20 edges>
+gap> D := BananaTree(3, 4);
+<immutable connected symmetric digraph with 13 vertices, 24 edges>
+gap> D := BananaTree(0, 0);
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `BananaTree' on 2 arguments
+gap> D := BananaTree(IsMutableDigraph, 5, 3);
+<mutable digraph with 16 vertices, 30 edges>
+gap> BananaTree(3, 1);
+Error, The second argument must be an integer greater than one
+
 #
 gap> DIGRAPHS_StopTest();
 gap> STOP_TEST("Digraphs package: standard/examples.tst", 0);
