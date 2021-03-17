@@ -78,6 +78,10 @@ DeclareConstructor("HaarGraphCons", [IsDigraph, IsPosInt]);
 DeclareOperation("HaarGraph", [IsPosInt]);
 DeclareOperation("HaarGraph", [IsFunction, IsPosInt]);
 
+DeclareConstructor("BananaTreeCons", [IsDigraph, IsPosInt, IsPosInt]);
+DeclareOperation("BananaTree", [IsPosInt, IsPosInt]);
+DeclareOperation("BananaTree", [IsFunction, IsPosInt, IsPosInt]);
+
 DeclareConstructor("TadpoleDigraphCons", [IsDigraph, IsInt, IsInt]);
 DeclareOperation("TadpoleDigraph", [IsInt, IsInt]);
 DeclareOperation("TadpoleDigraph", [IsFunction, IsInt, IsInt]);

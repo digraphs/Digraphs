@@ -617,6 +617,55 @@ ent sizes 5 and 5>
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="BananaTree">
+<ManSection>
+  <Oper Name="BananaTree" Arg="[filt, ]n, k"/>
+  <Returns>A digraph</Returns>
+  <Description>
+    If <A>n</A> and <A>k</A> are positive integers with <A>k</A> greater than <M>1</M>,
+    then this operation returns the <E>banana tree</E>
+    with parameters <A>n</A> and <A>k</A>, as defined below. <P/>
+
+    From
+    <URL>https://mathworld.wolfram.com/BananaTree.html</URL>:
+    <P/>
+
+    <Q>An <C>(<A>n</A>,<A>k</A>)</C>-banana tree,
+    as defined by Chen et al. (1997), is a graph obtained by
+    connecting one leaf of each of <A>n</A> copies of an <A>k</A>-star graph
+    with a single root vertex that is distinct from all the stars.</Q>
+    <P/>
+    
+    Specifically, in the resulting digraph, vertex <C>1</C> is the 'root',
+    and for each <C>m</C> in <C>[1 .. <A>k</A>]</C>,
+    the <C>m</C>th star is on the vertices
+    <C>[((m - 1) * n) + 2 .. (m * n) + 1]</C>,
+    with the first of these being the 'centre' of the star,
+    and the second being the 'leaf' adjacent <C>1</C>. <P/>
+    
+    If the optional first argument <A>filt</A> is present, then this should
+    specify the category or representation the digraph being created will
+    belong to. For example, if <A>filt</A> is <Ref Filt="IsMutableDigraph"/>,
+    then the digraph being created will be mutable, if <A>filt</A> is <Ref
+    Filt="IsImmutableDigraph"/>, then the digraph will be immutable.
+    If the optional first argument <A>filt</A> is not present, then <Ref
+      Filt="IsImmutableDigraph"/> is used by default.<P/>
+
+    See also <Ref Oper="StarDigraph"/> and <Ref Prop="IsUndirectedTree"/>.
+<Example><![CDATA[
+gap> D := BananaTree(2, 4);
+<immutable connected symmetric digraph with 9 vertices, 16 edges>
+gap> D := BananaTree(3, 3);
+<immutable connected symmetric digraph with 10 vertices, 18 edges>
+gap> D := BananaTree(5, 2);
+<immutable connected symmetric digraph with 11 vertices, 20 edges>
+gap> D := BananaTree(3, 4);
+<immutable connected symmetric digraph with 13 vertices, 24 edges>
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="TadpoleDigraph">
 <ManSection>
   <Oper Name="TadpoleDigraph" Arg="[filt, ]m, n"/>
@@ -652,3 +701,4 @@ true
   </Description>
 </ManSection>
 <#/GAPDoc>
+
