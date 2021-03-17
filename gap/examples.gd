@@ -49,6 +49,35 @@ DeclareConstructor("GeneralisedPetersenGraphCons", [IsDigraph, IsInt, IsInt]);
 DeclareOperation("GeneralisedPetersenGraph", [IsInt, IsInt]);
 DeclareOperation("GeneralisedPetersenGraph", [IsFunction, IsInt, IsInt]);
 
+DeclareConstructor("LollipopGraphCons", [IsDigraph, IsPosInt, IsPosInt]);
+DeclareOperation("LollipopGraph", [IsPosInt, IsPosInt]);
+DeclareOperation("LollipopGraph", [IsFunction, IsPosInt, IsPosInt]);
+
+DeclareConstructor("KingsGraphCons", [IsDigraph, IsPosInt, IsPosInt]);
+DeclareOperation("KingsGraph", [IsPosInt, IsPosInt]);
+DeclareOperation("KingsGraph", [IsFunction, IsPosInt, IsPosInt]);
+
+DeclareConstructor("SquareGridGraphCons", [IsDigraph, IsPosInt, IsPosInt]);
+DeclareOperation("SquareGridGraph", [IsPosInt, IsPosInt]);
+DeclareOperation("SquareGridGraph", [IsFunction, IsPosInt, IsPosInt]);
+DeclareSynonym("GridGraph", SquareGridGraph);
+
+DeclareConstructor("TriangularGridGraphCons", [IsDigraph, IsPosInt, IsPosInt]);
+DeclareOperation("TriangularGridGraph", [IsPosInt, IsPosInt]);
+DeclareOperation("TriangularGridGraph", [IsFunction, IsPosInt, IsPosInt]);
+
+DeclareConstructor("StarDigraphCons", [IsDigraph, IsPosInt]);
+DeclareOperation("StarDigraph", [IsPosInt]);
+DeclareOperation("StarDigraph", [IsFunction, IsPosInt]);
+
+DeclareConstructor("KnightsGraphCons", [IsDigraph, IsPosInt, IsPosInt]);
+DeclareOperation("KnightsGraph", [IsPosInt, IsPosInt]);
+DeclareOperation("KnightsGraph", [IsFunction, IsPosInt, IsPosInt]);
+
+DeclareConstructor("HaarGraphCons", [IsDigraph, IsPosInt]);
+DeclareOperation("HaarGraph", [IsPosInt]);
+DeclareOperation("HaarGraph", [IsFunction, IsPosInt]);
+
 DeclareConstructor("TadpoleDigraphCons", [IsDigraph, IsInt, IsInt]);
 DeclareOperation("TadpoleDigraph", [IsInt, IsInt]);
 DeclareOperation("TadpoleDigraph", [IsFunction, IsInt, IsInt]);
