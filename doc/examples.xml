@@ -622,7 +622,7 @@ ent sizes 5 and 5>
   <Oper Name="BananaTree" Arg="[filt, ]n, k"/>
   <Returns>A digraph</Returns>
   <Description>
-    If <A>n</A> and <A>k</A> are positive integers,
+    If <A>n</A> and <A>k</A> are positive integers with <A>k</A> greater than <M>1</M>,
     then this operation returns the <E>banana tree</E>
     with parameters <A>n</A> and <A>k</A>, as defined below. <P/>
 
@@ -636,17 +636,12 @@ ent sizes 5 and 5>
     with a single root vertex that is distinct from all the stars.</Q>
     <P/>
     
-    Note that in this function vertex 1 is the root vertex that is distinct
-    from all the stars and [2 .. n + 1], [n + 2 .. 2 * n + 1], ..., 
-    [(k - 1) * n + 2, ..., k * n + 1] are the vertices of each of the k stars
-    respectively. The leaf of each of the n stars that is 
-    connected to the isolated vertex is always vertex (m * n + 2), 
-    for each m in [1 .. k - 1].
-
-    If the second argument is equal to 1, then the function returns an error.
-    If k = 1 then each k-star is an isolated vertex and thus contains no leaves
-    to be connected to the root vertex, so an (n, 1) banana tree cannot be 
-    constructed.
+    Specifically, in the resulting digraph, vertex <C>1</C> is the 'root',
+    and for each <C>m</C> in <C>[1 .. <A>k</A>]</C>,
+    the <C>m</C>th star is on the vertices
+    <C>[((m - 1) * n) + 2 .. (m * n) + 1]</C>,
+    with the first of these being the 'centre' of the star,
+    and the second being the 'leaf' adjacent <C>1</C>. <P/>
     
     If the optional first argument <A>filt</A> is present, then this should
     specify the category or representation the digraph being created will
