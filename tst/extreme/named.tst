@@ -7,7 +7,7 @@
 ##
 #############################################################################
 ##
-## This tests attributes of all digraphs stored in the named graphs main
+## This tests attributes of all digraphs stored in the named digraphs main
 ## database against known values. Attributes tested are largely from House
 ## of Graphs at hog.grinvin.org.
 ##
@@ -24,8 +24,8 @@ gap> r := DIGRAPHS_NamedDigraphsTests;;
 # For each graph, test Digraphs-generated properties against stored values.
 # "failed" is a list of pairs [name, prop] where the digraph called "name"
 # did not coincide with the test record on property "prop". The test is
-# passed if this list remains empty. If it contains graphs, you should check
-# those graphs for errors.
+# passed if this list remains empty. If it contains digraphs, you should check
+# those digraphs for errors.
 gap> names := RecNames(r);;
 gap> failed := [];;
 gap> for name in names do
