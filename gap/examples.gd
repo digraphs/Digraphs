@@ -85,3 +85,7 @@ DeclareOperation("BananaTree", [IsFunction, IsPosInt, IsPosInt]);
 DeclareConstructor("TadpoleDigraphCons", [IsDigraph, IsPosInt, IsPosInt]);
 DeclareOperation("TadpoleDigraph", [IsInt, IsPosInt]);
 DeclareOperation("TadpoleDigraph", [IsFunction, IsPosInt, IsPosInt]);
+
+DeclareConstructor("BookDigraphCons", [IsDigraph, IsPosInt]);
+DeclareOperation("BookDigraph", [IsPosInt]);
+DeclareOperation("BookDigraph", [IsFunction, IsPosInt]);

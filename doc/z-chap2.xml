@@ -96,6 +96,7 @@
     <#Include Label="KnightsGraph">
     <#Include Label="StarDigraph">
     <#Include Label="TadpoleDigraph">
+    <#Include Label="BookDigraph">
   </Section>
 
 </Chapter>

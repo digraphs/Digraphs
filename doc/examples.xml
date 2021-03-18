@@ -703,3 +703,45 @@ true
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="BookDigraph">
+<ManSection>
+  <Oper Name="BookDigraph" Arg="[filt, ]m"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    The <E>Book digraph</E> is (generally) the cartesian product of the chain digraph
+    (as the "Book Spine") and the star digraph (as the "Pages"). When <A>m</A> is less than 3
+    two special cases occur. When <A>m</A> is 1, a (<A>2</A>, <A>2</A>) complete bipartite
+    graph is returned (the "square" graph). When <A>m</A> is 2, a (<A>2</A>, <A>3</A>)
+    square grid graph is returned (the "domino" graph). For more details on the Book digraph
+    please refer to <URL>https://mathworld.wolfram.com/BookGraph.html</URL>.<P/>
+
+    See <Ref Oper="DigraphCartesianProduct"/>,
+    <Ref Oper="StarDigraph"/>, <Ref Oper="ChainDigraph"/>,
+    <Ref Func="CompleteBipartiteDigraph"/>, and <Ref Func="SquareGridGraph"/>. <P/>
+
+    If the optional first argument <A>filt</A> is present, then this should
+    specify the category or representation the digraph being created will
+    belong to. For example, if <A>filt</A> is <Ref Filt="IsMutableDigraph"/>,
+    then the digraph being created will be mutable, if <A>filt</A> is <Ref
+    Filt="IsImmutableDigraph"/>, then the digraph will be immutable. 
+    If the optional first argument <A>filt</A> is not present, then <Ref
+      Filt="IsImmutableDigraph"/> is used by default.<P/>
+
+    <Example><![CDATA[
+gap> BookDigraph(1);
+<immutable bipartite symmetric digraph with bicomponent sizes 2 and 2>
+gap> BookDigraph(2);
+<immutable bipartite symmetric digraph with bicomponent sizes 3 and 3>
+gap> BookDigraph(IsMutable, 12);
+<mutable digraph with 24 vertices, 56 edges>
+gap> BookDigraph(7);
+<immutable bipartite symmetric digraph with bicomponent sizes 7 and 7>
+gap> IsSymmetricDigraph(BookDigraph(24));
+true
+gap> IsBipartiteDigraph(BookDigraph(24));
+true
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
