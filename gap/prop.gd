@@ -74,6 +74,9 @@ InstallTrueMethod(IsBipartiteDigraph, IsUndirectedForest);
 InstallTrueMethod(IsCompleteMultipartiteDigraph, IsCompleteBipartiteDigraph);
 InstallTrueMethod(IsConnectedDigraph, IsBiconnectedDigraph);
 InstallTrueMethod(IsConnectedDigraph, IsStronglyConnectedDigraph);
+InstallTrueMethod(IsFunctionalDigraph, IsCycleDigraph);
+InstallTrueMethod(IsHamiltonianDigraph,
+                  IsTournament and IsStronglyConnectedDigraph);
 InstallTrueMethod(IsInRegularDigraph, IsRegularDigraph);
 InstallTrueMethod(IsOutRegularDigraph, IsRegularDigraph);
 InstallTrueMethod(IsPreorderDigraph, IsPartialOrderDigraph);
@@ -81,6 +84,7 @@ InstallTrueMethod(IsRegularDigraph, IsInRegularDigraph and IsOutRegularDigraph);
 InstallTrueMethod(IsRegularDigraph, IsVertexTransitive);
 InstallTrueMethod(IsStronglyConnectedDigraph,
                   IsConnectedDigraph and IsSymmetricDigraph);
+InstallTrueMethod(IsStronglyConnectedDigraph, IsCycleDigraph);
 InstallTrueMethod(IsStronglyConnectedDigraph, IsEulerianDigraph);
 InstallTrueMethod(IsStronglyConnectedDigraph, IsHamiltonianDigraph);
 InstallTrueMethod(IsStronglyConnectedDigraph, IsUndirectedTree);
