@@ -1536,6 +1536,17 @@ gap> ChromaticNumber(a);
 49
 gap> ChromaticNumber(b);
 49
+gap> D := DigraphFromGraph6String("ElNG");
+<immutable digraph with 6 vertices, 18 edges>
+gap> ChromaticNumber(D);
+3
+gap> IsSymmetricDigraph(D) and IsRegularDigraph(D) and OutDegreeSet(D) = [3];
+true
+gap> IsBiconnectedDigraph(D);
+true
+gap> D := Digraph(OutNeighbours(CycleDigraph(13)));;
+gap> ChromaticNumber(D);
+3
 
 #  DegreeMatrix
 gap> gr := Digraph([[2, 3, 4], [2, 5], [1, 5, 4], [1], [1, 1, 2, 4]]);;
