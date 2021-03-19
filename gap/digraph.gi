@@ -562,7 +562,8 @@ function(D)
     Append(str, "multi");
   fi;
 
-  if HasIsTournament(D) and IsTournament(D) and n > 1 then
+  if not (HasIsCycleDigraph(D) and IsCycleDigraph(D))
+      and HasIsTournament(D) and IsTournament(D) and n > 1 then
     Append(str, "tournament ");
     display_nredges := false;
   else
