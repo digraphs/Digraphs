@@ -708,14 +708,14 @@ true
   <Oper Name="BookDigraph" Arg="[filt, ]m"/>
   <Returns>A digraph.</Returns>
   <Description>
-    The <E>Book digraph</E> is (generally) the cartesian product of the chain digraph
+    The <E>Book digraph</E> is (generally) the Cartesian product of the chain digraph
     (as the "Book Spine") and the star digraph (as the "Pages"). When <A>m</A> is less than 3
     two special cases occur. When <A>m</A> is 1, a (<A>2</A>, <A>2</A>) complete bipartite
     graph is returned (the "square" graph). When <A>m</A> is 2, a (<A>2</A>, <A>3</A>)
     square grid graph is returned (the "domino" graph). For more details on the Book digraph
     please refer to <URL>https://mathworld.wolfram.com/BookGraph.html</URL>.<P/>
 
-    See <Ref Oper="DigraphCartesianProduct"/>,
+    See <Ref Func="DigraphCartesianProduct" Label="for a positive number of digraphs"/>,
     <Ref Oper="StarDigraph"/>, <Ref Oper="ChainDigraph"/>,
     <Ref Func="CompleteBipartiteDigraph"/>, and <Ref Func="SquareGridGraph"/>. <P/>
 
