@@ -19,6 +19,7 @@ function(graph)
   record := rec();
   record.graph := graph;
   record.stack := Stack();
+  record.child := 0;
   record.current := 0;
   record.nbs := OutNeighbors(graph);
   record.parent := ListWithIdenticalEntries(DigraphNrVertices(graph), -1);
@@ -27,55 +28,47 @@ function(graph)
 end);
 
 BindGlobal("BacktrackFunc",
-function(record, child)
+function(record, data, child)
   local current;
   current := record.current;
 
-  if current <> 1 and record.low[child] >= record.pre[current] then
-    Add(record.articulation_points, current);
+  if current <> 1 and data.low[child] >= data.pre[current] then
+    Add(data.articulation_points, current);
   fi;
-  if record.low[child] = record.pre[child] then
-    Add(record.bridges, [current, child]);
+  if data.low[child] = data.pre[child] then
+    Add(data.bridges, [current, child]);
   fi;
-  if record.low[child] < record.low[current] then
-    record.low[current] := record.low[child];
+  if data.low[child] < data.low[current] then
+    data.low[current] := data.low[child];
   fi;
 end);
 
 BindGlobal("DiveFunc1",
-function(record)
-  record.counter := record.counter + 1;
-  record.low[record.current] := record.counter;
-  record.pre[record.current] := record.counter;
+function(record, data, current)
+  data.counter := data.counter + 1;
+  data.low[current] := data.counter;
+  data.pre[current] := data.counter;
 end);
 
 BindGlobal("DiveFunc2",
-function(record)
-  local child, current; 
-  child := record.child;
-  current := record.current;
-
+function(record, data, current, child)
   if (current = 1) then
-    record.nr_children := record.nr_children + 1;
+    data.nr_children := data.nr_children + 1;
   fi;
-  record.orientation[current][child] := true;
+  data.orientation[current][child] := true;
 end);
 
 BindGlobal("BackEdgeFunc",
-function(record)
-  local current, parent, child;
-  current := record.current;
-  parent := record.parent[current];
-  child := record.child;
+function(record, data, current, child, parent)
   # current -> child is a back edge
-  if child <> parent and record.pre[child] < record.low[current] then
-    record.low[current] := record.pre[child];
+  if child <> parent and data.pre[child] < data.low[current] then
+    data.low[current] := data.pre[child];
   fi;
-  record.orientation[current][child] := not record.orientation[child][current];
+  data.orientation[current][child] := not data.orientation[child][current];
 end);
 
 BindGlobal("ExecuteDFS",
-function(record, start, BacktrackFunc, DiveFunc1, DiveFunc2, BackEdgeFunc)
+function(record, data, start, BacktrackFunc, DiveFunc1, DiveFunc2, BackEdgeFunc)
   local neighbours, i, j, parent, discovered;
   # invalid start point
   if DigraphNrVertices(record.graph) < start then
@@ -96,14 +89,14 @@ function(record, start, BacktrackFunc, DiveFunc1, DiveFunc2, BackEdgeFunc)
     record.current := parent;
     neighbours := record.nbs[parent];
     if record.visited[parent] = 1 then
-      BacktrackFunc(record, neighbours[j]);
+      BacktrackFunc(record, data, neighbours[j]);
       if j + 1 > Size(neighbours) then
         Pop(record.stack);
         continue;
       fi;
       j := j + 1;
     elif record.visited[parent] <> 1 then
-      DiveFunc1(record);
+      DiveFunc1(record, data, parent);
       record.visited[parent] := 1;
     fi;
 
@@ -111,14 +104,14 @@ function(record, start, BacktrackFunc, DiveFunc1, DiveFunc2, BackEdgeFunc)
       record.child := neighbours[i];
       if record.visited[neighbours[i]] = -1 then
         record.parent[neighbours[i]] := parent; 
-        DiveFunc2(record);
+        DiveFunc2(record, data, parent, record.child);
         Push(record.stack, i);
         Push(record.stack, neighbours[i]);
         Push(record.stack, 1);
         discovered := true;
         break;
       else
-        BackEdgeFunc(record);
+        BackEdgeFunc(record, data, parent, record.child, record.parent[parent]);
       fi;
       j := i;
     od;
@@ -153,53 +146,55 @@ function(D)
   # DFS record
   record := NewDFSRecord(copy);
 
+  data := rec();
+
   # outputs
-  record.articulation_points := [];
-  record.bridges             := [];
-  record.orientation         := List([1 .. N], x -> BlistList([1 .. N], []));
+  data.articulation_points := [];
+  data.bridges             := [];
+  data.orientation         := List([1 .. N], x -> BlistList([1 .. N], []));
 
   # number of nodes encountered in the search so far
-  record.counter := 0;
+  data.counter := 0;
 
   # the order in which the nodes are visited, -1 indicates "not yet visited".
-  record.pre := ListWithIdenticalEntries(N, -1);
+  data.pre := ListWithIdenticalEntries(N, -1);
 
   # low[i] is the lowest value in pre currently reachable from node i.
-  record.low := [];
+  data.low := [];
 
   # nr_children of node 1, for articulation points the root node (1) is an
   # articulation point if and only if it has at least 2 children.
-  record.nr_children := 0;
+  data.nr_children := 0;
 
-  ExecuteDFS(record, 1, BacktrackFunc, DiveFunc1, DiveFunc2, BackEdgeFunc);
+  ExecuteDFS(record, data, 1, BacktrackFunc, DiveFunc1, DiveFunc2, BackEdgeFunc);
   # Print(record);
   # Print(Size(record.stack));
-  if record.counter = DigraphNrVertices(D) then
+  if data.counter = DigraphNrVertices(D) then
     connected := true;
-    if record.nr_children > 1 then
-      Add(record.articulation_points, 1);
+    if data.nr_children > 1 then
+      Add(data.articulation_points, 1);
     fi;
-    if not IsEmpty(record.bridges) then
-      record.orientation := fail;
+    if not IsEmpty(data.bridges) then
+      data.orientation := fail;
     else
-      record.orientation := DigraphByAdjacencyMatrix(DigraphMutabilityFilter(D),
-                                                    record.orientation);
+      data.orientation := DigraphByAdjacencyMatrix(DigraphMutabilityFilter(D),
+                                                    data.orientation);
     fi;
   else
     connected                  := false;
-    record.articulation_points := [];
-    record.bridges             := [];
-    record.orientation         := fail;
+    data.articulation_points := [];
+    data.bridges             := [];
+    data.orientation         := fail;
   fi;
   if IsImmutableDigraph(D) then
     SetIsConnectedDigraph(D, connected);
-    SetArticulationPoints(D, record.articulation_points);
-    SetBridges(D, record.bridges);
+    SetArticulationPoints(D, data.articulation_points);
+    SetBridges(D, data.bridges);
     if IsSymmetricDigraph(D) then
-      SetStrongOrientationAttr(D, record.orientation);
+      SetStrongOrientationAttr(D, data.orientation);
     fi;
   fi;
-  return [connected, record.articulation_points, record.bridges, record.orientation];
+  return [connected, data.articulation_points, data.bridges, data.orientation];
 end);
 
 # The next method is (yet another) DFS which simultaneously computes:
