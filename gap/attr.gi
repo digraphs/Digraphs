@@ -21,17 +21,14 @@ function(graph)
   record.stack := Stack();
   record.child := 0;
   record.current := 0;
-  record.nbs := OutNeighbors(graph);
+  record.neighbours := OutNeighbors(graph);
   record.parent := ListWithIdenticalEntries(DigraphNrVertices(graph), -1);
   record.visited := ListWithIdenticalEntries(DigraphNrVertices(graph), -1);
   return record;
 end);
 
 BindGlobal("BacktrackFunc",
-function(record, data, child)
-  local current;
-  current := record.current;
-
+function(record, data, current, child)
   if current <> 1 and data.low[child] >= data.pre[current] then
     Add(data.articulation_points, current);
   fi;
@@ -69,7 +66,7 @@ end);
 
 BindGlobal("ExecuteDFS",
 function(record, data, start, BacktrackFunc, DiveFunc1, DiveFunc2, BackEdgeFunc)
-  local neighbours, i, j, parent, discovered;
+  local neighbours, i, lastIndex, current, discovered;
   # invalid start point
   if DigraphNrVertices(record.graph) < start then
     return false;
@@ -79,41 +76,40 @@ function(record, data, start, BacktrackFunc, DiveFunc1, DiveFunc2, BackEdgeFunc)
   Push(record.stack, start);
   Push(record.stack, 1);
   record.parent[start] := start;
-  record.current := start;
 
   while Size(record.stack) <> 0 do
     discovered := false;
-    j := Pop(record.stack);
-    parent := Peek(record.stack);
+    lastIndex := Pop(record.stack);
+    current := Peek(record.stack);
 
-    record.current := parent;
-    neighbours := record.nbs[parent];
-    if record.visited[parent] = 1 then
-      BacktrackFunc(record, data, neighbours[j]);
-      if j + 1 > Size(neighbours) then
+    record.current := current;
+    neighbours := record.neighbours[current];
+    if record.visited[current] = 1 then
+      BacktrackFunc(record, data, current, neighbours[lastIndex]);
+      if lastIndex + 1 > Size(neighbours) then
         Pop(record.stack);
         continue;
       fi;
-      j := j + 1;
-    elif record.visited[parent] <> 1 then
-      DiveFunc1(record, data, parent);
-      record.visited[parent] := 1;
+      lastIndex := lastIndex + 1;
+    elif record.visited[current] <> 1 then
+      DiveFunc1(record, data, current);
+      record.visited[current] := 1;
     fi;
 
-    for i in [j .. Size(neighbours)] do
+    for i in [lastIndex .. Size(neighbours)] do
       record.child := neighbours[i];
       if record.visited[neighbours[i]] = -1 then
-        record.parent[neighbours[i]] := parent; 
-        DiveFunc2(record, data, parent, record.child);
+        record.parent[neighbours[i]] := current; 
+        DiveFunc2(record, data, current, record.child);
         Push(record.stack, i);
         Push(record.stack, neighbours[i]);
         Push(record.stack, 1);
         discovered := true;
         break;
       else
-        BackEdgeFunc(record, data, parent, record.child, record.parent[parent]);
+        BackEdgeFunc(record, data, current, record.child, record.parent[current]);
       fi;
-      j := i;
+      lastIndex := i;
     od;
 
     if not discovered then
