@@ -31,25 +31,32 @@ BindGlobal("BacktrackFunc",
 function(record, data)
   local current, child;
   current := record.current;
-  child := record.child;
-  if current <> 1 and data.low[child] >= data.pre[current] then
-    Add(data.articulation_points, current);
-  fi;
-  if data.low[child] = data.pre[child] then
-    Add(data.bridges, [current, child]);
-  fi;
-  if data.low[child] < data.low[current] then
-    data.low[current] := data.low[child];
-  fi;
+  Print("Backtracking for ", current, "\n");
+  for child in record.neighbours[current] do
+    if data.pre[child] > data.pre[current] then
+      if current <> 1 and data.low[child] >= data.pre[current] then
+        Print("Current is ", current, "\n");
+        Add(data.articulation_points, current);
+      fi;
+      if data.low[child] = data.pre[child] then
+        Add(data.bridges, [current, child]);
+      fi;
+      if data.low[child] < data.low[current] then
+        data.low[current] := data.low[child];
+      fi;
+    fi;
+  od;
 end);
 
 BindGlobal("DiveFunc",
 function(record, data)
   local current, parent;
   current := record.current;
+  Print("Diving with current = ", current, "\n");
   if current <> 1 then
     parent := record.parent[current];
     if parent = 1 then
+      Print("My parent is 1, I am ", current, "\n");
       data.nr_children := data.nr_children + 1;
     fi;
     data.orientation[parent][current] := true;
@@ -74,60 +81,43 @@ end);
 
 BindGlobal("ExecuteDFS",
 function(record, data, start, BacktrackFunc, DiveFunc, BackEdgeFunc)
-  local neighbours, i, startIndex, discovered;
+  local enstacked, neighbours, v;
+
   # invalid start point
   if DigraphNrVertices(record.graph) < start then
     return false;
   fi;
-
+  
   # sets up (adds the first index and node to the stack)
   Push(record.stack, start);
-  Push(record.stack, 1);
+  enstacked := BlistList([1 .. DigraphNrVertices(record.graph)], []);
+  enstacked[start] := true;
   record.parent[start] := start;
 
   while Size(record.stack) <> 0 do
-    # Error();
-    discovered := false;
-    startIndex := Pop(record.stack);
     record.current := Peek(record.stack);
-
-    neighbours := record.neighbours[record.current];
     if record.visited[record.current] = 1 then
-      record.child := neighbours[startIndex];
       BacktrackFunc(record, data);
-      # move on to the next child
-      startIndex := startIndex + 1;
+      Pop(record.stack);
+      continue;
     else
       DiveFunc(record, data);
       record.visited[record.current] := 1;
     fi;
-
-    for i in [startIndex .. Size(neighbours)] do
-      record.child := neighbours[i];
-      if record.visited[neighbours[i]] = -1 then
-        record.parent[neighbours[i]] := record.current;
-
-        # records index for future backtrack
-        Push(record.stack, i);
-        # saves the undiscovered child
-        Push(record.stack, neighbours[i]);
-        # saves the child's starting index for its children
-        Push(record.stack, 1);
-
-        # we have discovered a new node
-        discovered := true;
-        break;
+    neighbours := record.neighbours[record.current];
+    for v in neighbours do
+      record.child := v;
+      if record.visited[v] = -1 and not enstacked[v] then
+        # This isn't right, the parent isn't set correct.
+        record.parent[v] := record.current;
+        Push(record.stack, v);
+        enstacked[v] := true;
       else
         BackEdgeFunc(record, data);
       fi;
     od;
-
-    # move on if no more undiscovered children
-    if not discovered then
-      Pop(record.stack);
-    fi;
   od;
-  return true;
+  return record;
 end);
 
 BindGlobal("DIGRAPHS_ArticulationPointsBridgesStrongOrientation",
