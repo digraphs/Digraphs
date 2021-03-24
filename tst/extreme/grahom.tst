@@ -281,7 +281,7 @@ gap> for gr in graph5
 # Check some symmetric digraphs from digraphs-lib
 gap> gr := ReadDigraphs(
 > Concatenation(DIGRAPHS_Dir(), "/digraphs-lib/sts.g6.gz"), 1);
-<immutable digraph with 26 vertices, 390 edges>
+<immutable symmetric digraph with 26 vertices, 390 edges>
 gap> gens := GeneratorsOfEndomorphismMonoid(gr);;
 gap> adj := AdjacencyMatrix(gr);;
 gap> ForAll(gens, t -> ForAll(DigraphEdges(gr),
@@ -289,7 +289,7 @@ gap> ForAll(gens, t -> ForAll(DigraphEdges(gr),
 true
 gap> gr := ReadDigraphs(
 > Concatenation(DIGRAPHS_Dir(), "/digraphs-lib/sts.g6.gz"), 2);
-<immutable digraph with 35 vertices, 630 edges>
+<immutable symmetric digraph with 35 vertices, 630 edges>
 gap> gens := GeneratorsOfEndomorphismMonoid(gr);;
 gap> adj := AdjacencyMatrix(gr);;
 gap> ForAll(gens, t -> ForAll(DigraphEdges(gr),
@@ -297,7 +297,7 @@ gap> ForAll(gens, t -> ForAll(DigraphEdges(gr),
 true
 gap> gr := ReadDigraphs(
 > Concatenation(DIGRAPHS_Dir(), "/digraphs-lib/sts.g6.gz"), 21);
-<immutable digraph with 7 vertices, 42 edges>
+<immutable symmetric digraph with 7 vertices, 42 edges>
 gap> gens := GeneratorsOfEndomorphismMonoid(gr);;
 gap> adj := AdjacencyMatrix(gr);;
 gap> ForAll(gens, t -> ForAll(DigraphEdges(gr),
@@ -305,7 +305,7 @@ gap> ForAll(gens, t -> ForAll(DigraphEdges(gr),
 true
 gap> gr := ReadDigraphs(
 > Concatenation(DIGRAPHS_Dir(), "/digraphs-lib/sts.g6.gz"), 25);
-<immutable digraph with 12 vertices, 108 edges>
+<immutable symmetric digraph with 12 vertices, 108 edges>
 gap> GeneratorsOfEndomorphismMonoid(gr);;
 
 #  HomomorphismDigraphsFinder 1
@@ -393,11 +393,11 @@ gap> HomomorphismDigraphsFinder(gr2, gr1, fail, [], 1, fail, 0, [1 .. 20],
 gap> gr1 := DigraphFromGraph6String(
 > "]b?_?a@I??T_Y?ADcGAACUP@_AOG?C_BoH?Pg?C??gk?AA@?A?CJD?EO?sO`@H?j@S?C?_PG??")
 > ;
-<immutable digraph with 30 vertices, 174 edges>
+<immutable symmetric digraph with 30 vertices, 174 edges>
 gap> gr2 := DigraphFromGraph6String(Concatenation(
 > "ghYlce}\\ANfA}}WbK^qUDQqfGwl]UecLg{xSyQ]fHK}]uHFUyn\\]weXQVCRZDlYUvqYpnNNv",
 > "z@v]KDJvDxH}BB\\wwtMdxNFpKu?QX]RA@|MlHRpLK]EFg}WaFWuKcFK}hFs"));
-<immutable digraph with 40 vertices, 812 edges>
+<immutable symmetric digraph with 40 vertices, 812 edges>
 gap> HomomorphismDigraphsFinder(gr1, gr2, fail, [], 1, fail, 0, [1 .. 40],
 > [], fail, fail);
 [ Transformation( [ 1, 2, 22, 5, 31, 5, 12, 3, 6, 36, 10, 19, 25, 5, 38, 15,
@@ -532,7 +532,7 @@ gap> D := DigraphFromGraph6String(
 > "khdLA_gc?N_QQchPIS@Q_dH@GKA_W@OW?Fo???~{G??SgSoSgSQISIaQcQgD?\\@?SASI?gGggC_[\
 > `??N_M??APNG?Qc?E?DIG?_?IS?B??IS?E??dH?C??H@_B??A_W?o??IB?E???Fo?O????F~O?????\
 > ?N~~{");
-<immutable digraph with 44 vertices, 464 edges>
+<immutable symmetric digraph with 44 vertices, 464 edges>
 gap> t := DigraphEpimorphism(D, CompleteDigraph(6));
 Transformation( [ 4, 2, 1, 2, 1, 4, 2, 3, 2, 3, 1, 4, 4, 5, 5, 4, 1, 3, 3, 3,
   1, 2, 3, 2, 6, 4, 5, 2, 6, 6, 3, 5, 4, 4, 5, 4, 4, 3, 5, 5, 5, 5, 2, 1 ] )
