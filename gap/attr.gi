@@ -66,52 +66,54 @@ end);
 
 BindGlobal("ExecuteDFS",
 function(record, data, start, BacktrackFunc, DiveFunc1, DiveFunc2, BackEdgeFunc)
-  local neighbours, i, lastIndex, current, discovered;
+  local neighbours, i, startIndex, discovered;
   # invalid start point
   if DigraphNrVertices(record.graph) < start then
     return false;
   fi;
 
-  # sets up the starting node
+  # sets up (adds the first index and node to the stack)
   Push(record.stack, start);
   Push(record.stack, 1);
   record.parent[start] := start;
 
   while Size(record.stack) <> 0 do
     discovered := false;
-    lastIndex := Pop(record.stack);
-    current := Peek(record.stack);
+    startIndex := Pop(record.stack);
+    record.current := Peek(record.stack);
 
-    record.current := current;
-    neighbours := record.neighbours[current];
-    if record.visited[current] = 1 then
-      BacktrackFunc(record, data, current, neighbours[lastIndex]);
-      if lastIndex + 1 > Size(neighbours) then
-        Pop(record.stack);
-        continue;
-      fi;
-      lastIndex := lastIndex + 1;
-    elif record.visited[current] <> 1 then
-      DiveFunc1(record, data, current);
-      record.visited[current] := 1;
+    neighbours := record.neighbours[record.current];
+    if record.visited[record.current] = 1 then
+      BacktrackFunc(record, data, record.current, neighbours[startIndex]);
+      # move on to the next child
+      startIndex := startIndex + 1;
+    else
+      DiveFunc1(record, data, record.current);
+      record.visited[record.current] := 1;
     fi;
 
-    for i in [lastIndex .. Size(neighbours)] do
+    for i in [startIndex .. Size(neighbours)] do
       record.child := neighbours[i];
       if record.visited[neighbours[i]] = -1 then
-        record.parent[neighbours[i]] := current; 
-        DiveFunc2(record, data, current, record.child);
+        record.parent[neighbours[i]] := record.current; 
+        DiveFunc2(record, data, record.current, record.child);
+
+        # records index for future backtrack
         Push(record.stack, i);
+        # saves the undiscovered child
         Push(record.stack, neighbours[i]);
+        # saves the child's starting index for its children
         Push(record.stack, 1);
+
+        # we have discovered a new node
         discovered := true;
         break;
       else
-        BackEdgeFunc(record, data, current, record.child, record.parent[current]);
+        BackEdgeFunc(record, data, record.current, record.child, record.parent[record.current]);
       fi;
-      lastIndex := i;
     od;
 
+    # move on if no more undiscovered children
     if not discovered then
       Pop(record.stack);
     fi;
