@@ -708,15 +708,16 @@ true
   <Oper Name="BookDigraph" Arg="[filt, ]m"/>
   <Returns>A digraph.</Returns>
   <Description>
-    The <E>Book digraph</E> is (generally) the cartesian product of the chain digraph
-    (as the "Book Spine") and the star digraph (as the "Pages"). When <A>m</A> is less than 3
-    two special cases occur. When <A>m</A> is 1, a (<A>2</A>, <A>2</A>) complete bipartite
-    graph is returned (the "square" graph). When <A>m</A> is 2, a (<A>2</A>, <A>3</A>)
-    square grid graph is returned (the "domino" graph). For more details on the Book digraph
+    The <E>Book digraph</E> is the Cartesian product of a complete digraph with 2 vertices
+    (as the "Book Spine") and the <M><A>m<A>+1</M> star digraph (as the "Pages").</P>
+
+    <E>Additional Information:</E> when <M><A>m</A>=1</M> the <E>Book digraph</E> is a
+    (<A>2</A>, <A>2</A>)-complete bipartite digraph and when <M><A>m</A>=2</M> the <E>Book digraph</E> is
+    isomorphic to the (<A>2</A>, <A>3</A>)-square grid graph. For more details on the Book digraph
     please refer to <URL>https://mathworld.wolfram.com/BookGraph.html</URL>.<P/>
 
     See <Ref Oper="DigraphCartesianProduct"/>,
-    <Ref Oper="StarDigraph"/>, <Ref Oper="ChainDigraph"/>,
+    <Ref Oper="CompleteDigraph"/>, <Ref Oper="StarDigraph"/>,
     <Ref Func="CompleteBipartiteDigraph"/>, and <Ref Func="SquareGridGraph"/>. <P/>
 
     If the optional first argument <A>filt</A> is present, then this should
