@@ -224,9 +224,9 @@ gap> DigraphFromGraph6String(IsMutableDigraph, "IheA@GUAo");
 gap> DigraphFromGraph6String("?");
 <immutable empty digraph with 0 vertices>
 gap> DigraphFromGraph6String("C]");
-<immutable digraph with 4 vertices, 8 edges>
+<immutable symmetric digraph with 4 vertices, 8 edges>
 gap> DigraphFromGraph6String("H?AAEM{");
-<immutable digraph with 9 vertices, 22 edges>
+<immutable symmetric digraph with 9 vertices, 22 edges>
 gap> DigraphFromDigraph6String("&?");
 <immutable empty digraph with 0 vertices>
 gap> DigraphFromDigraph6String(IsMutableDigraph, "&DOOOW?");
@@ -330,10 +330,10 @@ gap> DigraphFromDiSparse6String(".CaWBGA?b");
     <Example><![CDATA[
 gap> ReadDigraphs(
 > Concatenation(DIGRAPHS_Dir(), "/data/graph5.g6.gz"), 10);
-<immutable digraph with 5 vertices, 8 edges>
+<immutable symmetric digraph with 5 vertices, 8 edges>
 gap> ReadDigraphs(
 > Concatenation(DIGRAPHS_Dir(), "/data/graph5.g6.gz"), 17);
-<immutable digraph with 5 vertices, 12 edges>
+<immutable symmetric digraph with 5 vertices, 12 edges>
 gap> ReadDigraphs(
 > Concatenation(DIGRAPHS_Dir(), "/data/tree9.4.txt"));
 [ <immutable digraph with 9 vertices, 8 edges>, 

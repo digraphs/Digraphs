@@ -332,7 +332,7 @@ gap> DigraphGreedyColouring(ChainDigraph(10));;
 gap> DigraphGreedyColouring(CompleteDigraph(10));;
 gap> gr := DigraphFromSparse6String(
 > ":]nA?LcB@_EDfEB`GIaHGdJIgEKcLK`?MdCHiFLaBJhFMkJM");
-<immutable digraph with 30 vertices, 90 edges>
+<immutable symmetric digraph with 30 vertices, 90 edges>
 gap> DigraphGreedyColouring(gr);;
 gap> DigraphGreedyColouring(EmptyDigraph(0));
 IdentityTransformation
@@ -395,7 +395,7 @@ gap> DigraphGreedyColouring(CompleteDigraph(10), DigraphWelshPowellOrder);
 IdentityTransformation
 gap> gr := DigraphFromSparse6String(
 > ":]nA?LcB@_EDfEB`GIaHGdJIgEKcLK`?MdCHiFLaBJhFMkJM");
-<immutable digraph with 30 vertices, 90 edges>
+<immutable symmetric digraph with 30 vertices, 90 edges>
 gap> DigraphGreedyColouring(gr, DigraphWelshPowellOrder);
 Transformation( [ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2,
   2, 2, 2, 2, 2, 2, 2, 2, 2, 2 ] )
@@ -442,7 +442,7 @@ gap> DigraphGreedyColouring(CompleteDigraph(10), order_func);
 IdentityTransformation
 gap> gr := DigraphFromSparse6String(
 > ":]nA?LcB@_EDfEB`GIaHGdJIgEKcLK`?MdCHiFLaBJhFMkJM");
-<immutable digraph with 30 vertices, 90 edges>
+<immutable symmetric digraph with 30 vertices, 90 edges>
 gap> DigraphGreedyColouring(gr, order_func);
 Transformation( [ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2,
   2, 2, 2, 2, 2, 2, 2, 2, 2, 2 ] )
@@ -2242,9 +2242,9 @@ gap> DigraphSmallestLastOrder(D2);
 
 # Issue 222
 gap> D1 := DigraphFromGraph6String("E}hO");
-<immutable digraph with 6 vertices, 18 edges>
+<immutable symmetric digraph with 6 vertices, 18 edges>
 gap> D2 := DigraphFromGraph6String("E}h_");
-<immutable digraph with 6 vertices, 18 edges>
+<immutable symmetric digraph with 6 vertices, 18 edges>
 gap> mono := MonomorphismsDigraphs(D1, D2);
 [  ]
 

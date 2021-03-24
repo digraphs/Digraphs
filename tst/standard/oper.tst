@@ -1185,7 +1185,7 @@ false
 gap> IsReachable(gr1, 4, 4);
 false
 gap> gr := DigraphFromSparse6String(":DA_IAMALN");
-<immutable digraph with 5 vertices, 16 edges>
+<immutable symmetric digraph with 5 vertices, 16 edges>
 gap> IsReachable(gr, 1, 2);
 false
 gap> IsReachable(gr, 1, 4);
@@ -1410,7 +1410,7 @@ gap> DigraphShortestDistance(gr, [1, 6], DigraphLayers(gr, 1)[3]);
 #  Issue #12
 gap> gr := DigraphFromSparse6String(
 > ":]n?AL`CB_EDbFE`IGaGHdJIeKGcLK_@MhDCiFLaBJmHFmKJ");
-<immutable digraph with 30 vertices, 90 edges>
+<immutable symmetric digraph with 30 vertices, 90 edges>
 gap> G1 := DigraphGroup(gr);;
 gap> IsPermGroup(G1) and Length(GeneratorsOfGroup(G1)) = 5;
 true
@@ -1546,7 +1546,7 @@ gap> gr := DigraphFromDigraph6String("&I?PIMAQc@A?W?ADPP?");
 gap> IsUndirectedSpanningTree(gr, EmptyDigraph(10));
 false
 gap> gr := DigraphFromGraph6String("INB`cZoQ_");
-<immutable digraph with 10 vertices, 38 edges>
+<immutable symmetric digraph with 10 vertices, 38 edges>
 gap> IsUndirectedSpanningTree(gr, gr);
 false
 gap> gr1 := DigraphEdgeUnion(CycleDigraph(5), DigraphReverse(CycleDigraph(5)));
