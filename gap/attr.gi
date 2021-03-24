@@ -28,7 +28,10 @@ function(graph)
 end);
 
 BindGlobal("BacktrackFunc",
-function(record, data, current, child)
+function(record, data)
+  local current, child;
+  current := record.current;
+  child := record.child;
   if current <> 1 and data.low[child] >= data.pre[current] then
     Add(data.articulation_points, current);
   fi;
@@ -40,23 +43,28 @@ function(record, data, current, child)
   fi;
 end);
 
-BindGlobal("DiveFunc1",
-function(record, data, current)
+BindGlobal("DiveFunc",
+function(record, data)
+  local current, parent;
+  current := record.current;
+  if current <> 1 then
+    parent := record.parent[current];
+    if parent = 1 then
+      data.nr_children := data.nr_children + 1;
+    fi;
+    data.orientation[parent][current] := true;
+  fi;
   data.counter := data.counter + 1;
   data.low[current] := data.counter;
   data.pre[current] := data.counter;
 end);
 
-BindGlobal("DiveFunc2",
-function(record, data, current, child)
-  if (current = 1) then
-    data.nr_children := data.nr_children + 1;
-  fi;
-  data.orientation[current][child] := true;
-end);
-
 BindGlobal("BackEdgeFunc",
-function(record, data, current, child, parent)
+function(record, data)
+  local current, child, parent;
+  current := record.current;
+  child := record.child;
+  parent := record.parent[current];
   # current -> child is a back edge
   if child <> parent and data.pre[child] < data.low[current] then
     data.low[current] := data.pre[child];
@@ -65,7 +73,7 @@ function(record, data, current, child, parent)
 end);
 
 BindGlobal("ExecuteDFS",
-function(record, data, start, BacktrackFunc, DiveFunc1, DiveFunc2, BackEdgeFunc)
+function(record, data, start, BacktrackFunc, DiveFunc, BackEdgeFunc)
   local neighbours, i, startIndex, discovered;
   # invalid start point
   if DigraphNrVertices(record.graph) < start then
@@ -78,25 +86,26 @@ function(record, data, start, BacktrackFunc, DiveFunc1, DiveFunc2, BackEdgeFunc)
   record.parent[start] := start;
 
   while Size(record.stack) <> 0 do
+    # Error();
     discovered := false;
     startIndex := Pop(record.stack);
     record.current := Peek(record.stack);
 
     neighbours := record.neighbours[record.current];
     if record.visited[record.current] = 1 then
-      BacktrackFunc(record, data, record.current, neighbours[startIndex]);
+      record.child := neighbours[startIndex];
+      BacktrackFunc(record, data);
       # move on to the next child
       startIndex := startIndex + 1;
     else
-      DiveFunc1(record, data, record.current);
+      DiveFunc(record, data);
       record.visited[record.current] := 1;
     fi;
 
     for i in [startIndex .. Size(neighbours)] do
       record.child := neighbours[i];
       if record.visited[neighbours[i]] = -1 then
-        record.parent[neighbours[i]] := record.current; 
-        DiveFunc2(record, data, record.current, record.child);
+        record.parent[neighbours[i]] := record.current;
 
         # records index for future backtrack
         Push(record.stack, i);
@@ -109,7 +118,7 @@ function(record, data, start, BacktrackFunc, DiveFunc1, DiveFunc2, BackEdgeFunc)
         discovered := true;
         break;
       else
-        BackEdgeFunc(record, data, record.current, record.child, record.parent[record.current]);
+        BackEdgeFunc(record, data);
       fi;
     od;
 
@@ -142,6 +151,7 @@ function(D)
   fi;
 
   # DFS record
+
   record := NewDFSRecord(copy);
 
   data := rec();
@@ -151,20 +161,20 @@ function(D)
   data.bridges             := [];
   data.orientation         := List([1 .. N], x -> BlistList([1 .. N], []));
 
-  # number of nodes encountered in the search so far
-  data.counter := 0;
+  # low[i] is the lowest value in pre currently reachable from node i.
+  data.low := [];
 
   # the order in which the nodes are visited, -1 indicates "not yet visited".
   data.pre := ListWithIdenticalEntries(N, -1);
 
-  # low[i] is the lowest value in pre currently reachable from node i.
-  data.low := [];
+  # number of nodes encountered in the search so far
+  data.counter := 0;
 
   # nr_children of node 1, for articulation points the root node (1) is an
   # articulation point if and only if it has at least 2 children.
   data.nr_children := 0;
 
-  ExecuteDFS(record, data, 1, BacktrackFunc, DiveFunc1, DiveFunc2, BackEdgeFunc);
+  ExecuteDFS(record, data, 1, BacktrackFunc, DiveFunc, BackEdgeFunc);
   # Print(record);
   # Print(Size(record.stack));
   if data.counter = DigraphNrVertices(D) then
