@@ -43,7 +43,7 @@ gap> D := GeneralisedPetersenGraph(5, 2);
 gap> IsIsomorphicDigraph(D, PetersenGraph());
 true
 gap> G8_3 := DigraphFromGraph6String("OCQa`Q?OH?a@A@@?_OGB@");
-<immutable digraph with 16 vertices, 48 edges>
+<immutable symmetric digraph with 16 vertices, 48 edges>
 gap> D := GeneralisedPetersenGraph(8, 3);
 <immutable symmetric digraph with 16 vertices, 48 edges>
 gap> IsIsomorphicDigraph(D, G8_3);

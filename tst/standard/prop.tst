@@ -827,7 +827,7 @@ gap> gr := CompleteBipartiteDigraph(3, 3);;
 gap> IsDistanceRegularDigraph(gr);
 true
 gap> gr := DigraphFromGraph6String("MhEGHC@AI?_PC@_G_");
-<immutable digraph with 14 vertices, 42 edges>
+<immutable symmetric digraph with 14 vertices, 42 edges>
 gap> IsDistanceRegularDigraph(gr);
 true
 gap> IsDistanceRegularDigraph(ChainDigraph(5));

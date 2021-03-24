@@ -128,7 +128,7 @@ gap> DoubleDigraph(gamma);
     <Example><![CDATA[
 gap> digraph := DigraphFromSparse6String(
 > ":]n?AL`BC_DEbEF`GIaGHdIJeGKcKL_@McDHfILaBJfHMjKM");
-<immutable digraph with 30 vertices, 90 edges>
+<immutable symmetric digraph with 30 vertices, 90 edges>
 gap> DistanceDigraph(digraph, 1);
 <immutable digraph with 30 vertices, 90 edges>
 gap> DistanceDigraph(digraph, [1, 2]);
