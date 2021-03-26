@@ -375,152 +375,106 @@ InstallMethod(RooksGraphCons,
 "for IsMutableDigraph and two integers",
 [IsMutableDigraph, IsPosInt, IsPosInt],
 function(filt, n, k)
-  local D1, D2, DR;
-  D1 := CompleteDigraph(n);
-  D2 := CompleteDigraph(k);
-  DR := DigraphCartesianProduct(D1, D2);
-  return DR;
-end);
-
-InstallMethod(WhiteBishopsGraphCons,
-"for IsMutableDigraph and two integers",
-[IsMutableDigraph, IsPosInt, IsPosInt],
-function(filt, n, k)
-  local D, i, j, p, coordinates, targetCoordinate, switch, a;
-  D := EmptyDigraph(IsMutable, n * k);
-  p := 0;
-  coordinates := [];
-  for i in [1 .. k] do
-    for j in [1 .. n] do
-      p := p + 1;
-      coordinates[p] := [i, j];
-    od;
-  od;
-
-  for i in coordinates do
-    if IsOddInt(i[1] + i[2]) then
-      switch := true;
-      a := 0;
-      while switch do
-        a := a + 1;
-        targetCoordinate := [i[1] + a, i[2] + a];
-        if targetCoordinate in coordinates then
-          DigraphAddEdge(D, [Position(coordinates, i),
-          Position(coordinates, targetCoordinate)]);
-        else
-          switch := false;
-        fi;
-      od;
-      switch := true;
-      a := 0;
-      while switch do
-        a := a + 1;
-        targetCoordinate := [i[1] - a, i[2] - a];
-        if targetCoordinate in coordinates then
-          DigraphAddEdge(D, [Position(coordinates, i),
-          Position(coordinates, targetCoordinate)]);
-        else
-          switch := false;
-        fi;
-      od;
-      switch := true;
-      a := 0;
-      while switch do
-        a := a + 1;
-        targetCoordinate := [i[1] - a, i[2] + a];
-        if targetCoordinate in coordinates then
-          DigraphAddEdge(D, [Position(coordinates, i),
-          Position(coordinates, targetCoordinate)]);
-        else
-          switch := false;
-        fi;
-      od;
-      switch := true;
-      a := 0;
-      while switch do
-        a := a + 1;
-        targetCoordinate := [i[1] + a, i[2] - a];
-        if targetCoordinate in coordinates then
-          DigraphAddEdge(D, [Position(coordinates, i),
-          Position(coordinates, targetCoordinate)]);
-        else
-          switch := false;
-        fi;
-      od;
-    fi;
-  od;
-  
+  local D, completeD1, completeD2, cartesianProduct;
+  completeD1 := CompleteDigraph(n);
+  completeD2 := CompleteDigraph(k);
+  cartesianProduct := DigraphCartesianProduct(completeD1, completeD2);
+  D := DigraphMutableCopy(cartesianProduct);
   return D;
 end);
 
-InstallMethod(BlackBishopsGraphCons,
-"for IsMutableDigraph and two integers",
-[IsMutableDigraph, IsPosInt, IsPosInt],
-function(filt, n, k)
-  local D, i, j, p, coordinates, targetCoordinate, switch, a;
-  D := EmptyDigraph(IsMutable, n * k);
-  p := 0;
-  coordinates := [];
-  for i in [1 .. k] do
-    for j in [1 .. n] do
-      p := p + 1;
-      coordinates[p] := [i, j];
-    od;
-  od;
+InstallMethod(BishopsGraphCons,
+"for IsMutableDigraph, a string and two integers",
+[IsMutableDigraph, IsString, IsPosInt, IsPosInt],
+function(filt, color, n, k)
+  local D, i, multiple, p, uL, uR, dL, dR, j, c, lB, rB, r;
+  D := EmptyDigraph(filt, n * k);
 
-  for i in coordinates do
-    if IsEvenInt(i[1] + i[2]) then
-      switch := true;
-      a := 0;
-      while switch do
-        a := a + 1;
-        targetCoordinate := [i[1] + a, i[2] + a];
-        if targetCoordinate in coordinates then
-          DigraphAddEdge(D, [Position(coordinates, i),
-          Position(coordinates, targetCoordinate)]);
-        else
-          switch := false;
-        fi;
-      od;
-      switch := true;
-      a := 0;
-      while switch do
-        a := a + 1;
-        targetCoordinate := [i[1] - a, i[2] - a];
-        if targetCoordinate in coordinates then
-          DigraphAddEdge(D, [Position(coordinates, i),
-          Position(coordinates, targetCoordinate)]);
-        else
-          switch := false;
-        fi;
-      od;
-      switch := true;
-      a := 0;
-      while switch do
-        a := a + 1;
-        targetCoordinate := [i[1] - a, i[2] + a];
-        if targetCoordinate in coordinates then
-          DigraphAddEdge(D, [Position(coordinates, i),
-          Position(coordinates, targetCoordinate)]);
-        else
-          switch := false;
-        fi;
-      od;
-      switch := true;
-      a := 0;
-      while switch do
-        a := a + 1;
-        targetCoordinate := [i[1] + a, i[2] - a];
-        if targetCoordinate in coordinates then
-          DigraphAddEdge(D, [Position(coordinates, i),
-          Position(coordinates, targetCoordinate)]);
-        else
-          switch := false;
-        fi;
-      od;
+  for i in [1 .. n * k] do
+    multiple := i mod n = 0;
+    if color = "black" and IsOddInt(i) or color = "white" and IsEvenInt(i) then
+      c := QuoInt(i, n);
+      if multiple then
+        c := c - 1;
+      fi;
+
+      if not multiple and IsOddInt(c) then
+        p := (c + 1) * n - (i mod n) + 1;
+      elif multiple and IsOddInt(c) then
+        p := c * n + 1;
+      else
+        p := i;
+      fi;
+
+      if not p mod n = 0 then
+        r := (p mod n);
+      else
+        r := n;
+      fi;
+
+      uL := p - (n - 1);
+      uR := p + (n + 1);
+      dL := p - (n + 1);
+      dR := p + (n - 1);
+
+      lB := true;
+      rB := true;
+
+      if not p mod n = 0 then
+        for j in [1 .. n - r] do
+          if uL > 0 then
+            DigraphAddEdge(D, [p, uL]);
+            uL := uL - (n - 1);
+          else
+            lB := false;
+          fi;
+          if uR <= n * k then
+            DigraphAddEdge(D, [p, uR]);
+            uR := uR + (n + 1);
+          else
+            rB := false;
+          fi;
+          if not (lB or rB) then
+            break;
+          fi;
+        od;
+      fi;
+
+      lB := true;
+      rB := true;
+
+      if not r = 1 then
+        for j in [1 .. r - 1] do
+          if dL > 0 then
+            DigraphAddEdge(D, [p, dL]);
+            dL := dL - (n + 1);
+          else
+            lB := false;
+          fi;
+          if dR <= n * k then
+            DigraphAddEdge(D, [p, dR]);
+            dR := dR + (n - 1);
+          else
+            rB := false;
+          fi;
+          if not (lB or rB) then
+            break;
+          fi;
+        od;
+      fi;
     fi;
   od;
-  
   return D;
 end);
 
+InstallMethod(QueensGraphCons,
+"for IsMutableDigraph and two integers",
+[IsMutableDigraph, IsPosInt, IsPosInt],
+function(filt, n, k)
+  local D, D1, D2, D3;
+  D1 := RooksGraphCons(filt, n, k);
+  D2 := BishopsGraphCons(filt, "black", n, k);
+  D3 := BishopsGraphCons(filt, "white", n, k);
+  D := DigraphEdgeUnion(D1, D2, D3);
+  return D;
+end);

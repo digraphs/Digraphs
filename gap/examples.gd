@@ -53,13 +53,9 @@ DeclareConstructor("RooksGraphCons", [IsDigraph, IsPosInt, IsPosInt]);
 DeclareOperation("RooksGraph", [IsPosInt, IsPosInt]);
 DeclareOperation("RooksGraph", [IsFunction, IsPosInt, IsPosInt]);
 
-DeclareConstructor("WhiteBishopsGraphCons", [IsDigraph, IsPosInt, IsPosInt]);
-DeclareOperation("WhiteBishopsGraph", [IsPosInt, IsPosInt]);
-DeclareOperation("WhiteBishopsGraph", [IsFunction, IsPosInt, IsPosInt]);
-
-DeclareConstructor("BlackBishopsGraphCons", [IsDigraph, IsPosInt, IsPosInt]);
-DeclareOperation("BlackBishopsGraph", [IsPosInt, IsPosInt]);
-DeclareOperation("BlackBishopsGraph", [IsFunction, IsPosInt, IsPosInt]);
+DeclareConstructor("BishopsGraphCons", [IsDigraph, IsString, IsPosInt, IsPosInt]);
+DeclareOperation("BishopsGraph", [IsString, IsPosInt, IsPosInt]);
+DeclareOperation("BishopsGraph", [IsFunction, IsString, IsPosInt, IsPosInt]);
 
 DeclareConstructor("QueensGraphCons", [IsDigraph, IsPosInt, IsPosInt]);
 DeclareOperation("QueensGraph", [IsPosInt, IsPosInt]);
