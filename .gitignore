@@ -56,6 +56,8 @@ src/_pkgconfig.h
 extern/edge-addition-planarity-suite-Version_3.0.0.5/.libs
 extern/edge-addition-planarity-suite-Version_3.0.0.5/c/.deps
 extern/edge-addition-planarity-suite-Version_3.0.0.5/m4
+extern/edge-addition-planarity-suite-Version_3.0.1.0/.libs
+extern/edge-addition-planarity-suite-Version_3.0.1.0/c/.deps
 src/stamp-h1
 tags
 tst/out/*
