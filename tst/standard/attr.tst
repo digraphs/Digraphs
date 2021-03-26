@@ -1536,6 +1536,17 @@ gap> ChromaticNumber(a);
 49
 gap> ChromaticNumber(b);
 49
+gap> D := DigraphFromGraph6String("ElNG");
+<immutable digraph with 6 vertices, 18 edges>
+gap> ChromaticNumber(D);
+3
+gap> IsSymmetricDigraph(D) and IsRegularDigraph(D) and OutDegreeSet(D) = [3];
+true
+gap> IsBiconnectedDigraph(D);
+true
+gap> D := Digraph(OutNeighbours(CycleDigraph(13)));;
+gap> ChromaticNumber(D);
+3
 
 #  DegreeMatrix
 gap> gr := Digraph([[2, 3, 4], [2, 5], [1, 5, 4], [1], [1, 1, 2, 4]]);;
@@ -1631,7 +1642,7 @@ true
 gap> D := DigraphFromDigraph6String("&I~~~~^Znn~|~~x^|v{");
 <immutable digraph with 10 vertices, 89 edges>
 gap> tree := UndirectedSpanningTree(D);
-<immutable symmetric digraph with 10 vertices, 18 edges>
+<immutable undirected tree digraph with 10 vertices>
 gap> IsUndirectedSpanningTree(D, tree);
 true
 gap> tree := UndirectedSpanningTree(DigraphMutableCopy(D));
@@ -2022,6 +2033,17 @@ gap> D := CycleDigraph(IsMutableDigraph, 2);
 gap> for i in [1 .. 9] do
 >      DigraphDisjointUnion(D, D);
 >    od;
+gap> DigraphCore(D);
+[ 1, 2 ]
+gap> D := DigraphFromDigraph6String("&G?_cO`EO?@??");
+<immutable digraph with 8 vertices, 10 edges>
+gap> DigraphCore(D);
+[ 2, 5 ]
+gap> D := DigraphFromDigraph6String("&GSY??A?SA?O?");
+<immutable digraph with 8 vertices, 10 edges>
+gap> DigraphCore(D);
+[ 1, 2 ]
+gap> D := Digraph([[2], [1, 3], []]);;
 gap> DigraphCore(D);
 [ 1, 2 ]
 

@@ -575,6 +575,14 @@ function(D)
       Append(str, "join semilattice ");
     elif HasIsMeetSemilatticeDigraph(D) and IsMeetSemilatticeDigraph(D) then
       Append(str, "meet semilattice ");
+    elif HasIsUndirectedTree(D) and IsUndirectedTree(D) then
+      Append(str, "undirected tree ");
+      display_nredges := false;
+    elif HasIsUndirectedForest(D) and IsUndirectedForest(D) then
+      Append(str, "undirected forest ");
+    elif HasIsDirectedTree(D) and IsDirectedTree(D) then
+      Append(str, "directed tree ");
+      display_nredges := false;
     else
       if HasIsEulerianDigraph(D) and IsEulerianDigraph(D) then
         Append(str, "Eulerian ");
@@ -650,7 +658,8 @@ function(D)
     Append(str, "multi");
   fi;
 
-  if HasIsTournament(D) and IsTournament(D) and n > 1 then
+  if not (HasIsCycleDigraph(D) and IsCycleDigraph(D))
+      and HasIsTournament(D) and IsTournament(D) and n > 1 then
     Append(str, "tournament ");
     display_nredges := false;
   else
