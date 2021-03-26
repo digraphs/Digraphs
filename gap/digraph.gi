@@ -1,7 +1,7 @@
 #############################################################################
 ##
 ##  digraph.gi
-##  Copyright (C) 2014-19                                James D. Mitchell
+##  Copyright (C) 2014-21                                James D. Mitchell
 ##
 ##  Licensing information can be found in the README file of this package.
 ##
@@ -23,6 +23,38 @@
 # 10. Random digraphs
 #
 ########################################################################
+
+BindGlobal("DIGRAPHS_NamedDigraphs", fail);
+BindGlobal("DIGRAPHS_NamedDigraphsTests", fail);
+
+BindGlobal("DIGRAPHS_LoadNamedDigraphs", function()
+  # Check if the database has already been loaded
+  if DIGRAPHS_NamedDigraphs = fail then
+    MakeReadWriteGlobal("DIGRAPHS_NamedDigraphs");
+    UnbindGlobal("DIGRAPHS_NamedDigraphs");
+
+    # Initialise empty record
+    BindGlobal("DIGRAPHS_NamedDigraphs", rec());
+
+    # Populate record with entries from the named digraphs main database
+    Read(Concatenation(DIGRAPHS_Dir(), "/data/named-digraphs-main-database.g"));
+  fi;
+end);
+
+BindGlobal("DIGRAPHS_LoadNamedDigraphsTests", function()
+  # INTENDED ONLY FOR TESTING PURPOSES
+  # Check if the database has already been loaded
+  if DIGRAPHS_NamedDigraphsTests = fail then
+    MakeReadWriteGlobal("DIGRAPHS_NamedDigraphsTests");
+    UnbindGlobal("DIGRAPHS_NamedDigraphsTests");
+
+    # Initialise empty record
+    BindGlobal("DIGRAPHS_NamedDigraphsTests", rec());
+
+    # Populate record with entries from the named digraphs test database
+    Read(Concatenation(DIGRAPHS_Dir(), "/data/named-digraphs-test-database.g"));
+  fi;
+end);
 
 InstallMethod(DigraphMutabilityFilter, "for a digraph", [IsDigraph],
 function(D)
@@ -428,6 +460,70 @@ DigraphCons);
 
 InstallMethod(Digraph, "for a list, list, and list", [IsList, IsList, IsList],
 {dom, src, ran} -> DigraphCons(IsImmutableDigraph, dom, src, ran));
+
+InstallMethod(Digraph, "for a string naming a digraph", [IsString],
+function(name)
+  # edge case to avoid interfering with Digraph([])
+  if name = "" then
+    TryNextMethod();
+  fi;
+
+  # standardise string format to search database
+  name := LowercaseString(name);
+  RemoveCharacters(name, " \n\t\r");
+
+  # load database if not already done
+  DIGRAPHS_LoadNamedDigraphs();
+
+  if not name in RecNames(DIGRAPHS_NamedDigraphs) then
+    ErrorNoReturn("named digraph <name> not found; see ListNamedDigraphs,");
+  fi;
+  return DigraphFromDiSparse6String(DIGRAPHS_NamedDigraphs.(name));
+end);
+
+InstallMethod(ListNamedDigraphs,
+"for a string and a pos int",
+[IsString, IsPosInt],
+function(s, level)
+  local l, cands, func;
+  # standardise request
+  s := LowercaseString(s);
+  RemoveCharacters(s, " \n\t\r");
+  l := Length(s);
+
+  # load database if not already done
+  DIGRAPHS_LoadNamedDigraphs();
+
+  # retrieve candidates
+  cands := RecNames(DIGRAPHS_NamedDigraphs);
+  if l = 0 then
+    return cands;
+  fi;
+
+  # print warning if level higher than ones here that have methods
+  if level > 3 then
+    Info(InfoWarning, 1, "ListNamedDigraphs: second argument <level> is");
+    Info(InfoWarning, 1, "greater than level of greatest flexibility.");
+    Info(InfoWarning, 1, "Using <level> = 3 instead.");
+    level := 3;
+  fi;
+
+  if level = 1 then
+    func := c -> Length(c) >= l and c{[1 .. l]} = s;
+  elif level = 2 then
+    func := c -> PositionSublist(c, s) <> fail;
+  else
+    s := Filtered(s, x -> IsDigitChar(x) or IsAlphaChar(x));
+    func := c -> PositionSublist(Filtered(c, x -> IsDigitChar(x) or
+                                                  IsAlphaChar(x)), s) <> fail;
+  fi;
+  return Filtered(cands, func);
+end);
+
+# if search function called with no level, assume a substring search with
+# special chars
+InstallMethod(ListNamedDigraphs, "for a string", [IsString],
+x -> ListNamedDigraphs(x, 2));
 
 ########################################################################
 # 6. Printing, viewing, strings
