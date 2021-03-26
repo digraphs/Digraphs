@@ -826,6 +826,21 @@ function(D, t)
   return MakeImmutable(OnDigraphs(DigraphMutableCopy(D), t));
 end);
 
+InstallMethod(OnTuplesDigraphs,
+"for list of digraphs and a perm",
+[IsDigraphCollection and IsHomogeneousList, IsPerm],
+{L, p} -> List(L, D -> OnDigraphs(DigraphMutableCopyIfMutable(D), p)));
+
+InstallMethod(OnSetsDigraphs,
+"for a list of digraphs and a perm",
+[IsDigraphCollection and IsHomogeneousList, IsPerm],
+function(S, p)
+  if not IsSet(S) then
+    ErrorNoReturn("the first argument must be a set (a strictly sorted list),");
+  fi;
+  return Set(S, D -> OnDigraphs(DigraphMutableCopyIfMutable(D), p));
+end);
+
 # Not revising the following because multi-digraphs are being withdrawn in the
 # near future.
 

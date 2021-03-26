@@ -149,6 +149,55 @@ gap> gr := OnDigraphs(gr, t);
 gap> OutNeighbours(gr);
 [ [ 2 ], [ 1, 1 ], [  ] ]
 
+#  OnTuplesDigraphs: for a digraph and a permutation
+gap> D := [ChainDigraph(3), CycleDigraph(4)];;
+gap> List(D, OutNeighbours);
+[ [ [ 2 ], [ 3 ], [  ] ], [ [ 2 ], [ 3 ], [ 4 ], [ 1 ] ] ]
+gap> List(OnTuplesDigraphs(D, (1, 3)), OutNeighbours);
+[ [ [  ], [ 1 ], [ 2 ] ], [ [ 4 ], [ 1 ], [ 2 ], [ 3 ] ] ]
+gap> D := [ChainDigraph(3), DigraphReverse(ChainDigraph(3))];;
+gap> List(D, OutNeighbours);
+[ [ [ 2 ], [ 3 ], [  ] ], [ [  ], [ 1 ], [ 2 ] ] ]
+gap> List(OnTuplesDigraphs(D, (1, 3)), OutNeighbours);
+[ [ [  ], [ 1 ], [ 2 ] ], [ [ 2 ], [ 3 ], [  ] ] ]
+gap> OnTuplesDigraphs(D, (1, 3)) = Permuted(D, (1, 2));
+true
+gap> D := EmptyDigraph(IsMutableDigraph, 3);;
+gap> DigraphAddEdge(D, 1, 1);;
+gap> out := OnTuplesDigraphs([D, D], (1, 2, 3));;
+gap> List(out, DigraphEdges);
+[ [ [ 2, 2 ] ], [ [ 2, 2 ] ] ]
+
+#  OnSetsDigraphs: for a digraph and a permutation
+gap> D := [DigraphReverse(ChainDigraph(3)), ChainDigraph(3)];;
+gap> IsSet(D);
+false
+gap> OnSetsDigraphs(D, (1, 2));
+Error, the first argument must be a set (a strictly sorted list),
+gap> D := Reversed(D);;
+gap> OnSetsDigraphs(D, (1, 3)) = D;
+true
+gap> OnSetsDigraphs(D, (1, 3)) = OnTuplesDigraphs(D, (1, 3));
+false
+gap> MinimalGeneratingSet(Stabilizer(SymmetricGroup(3), D, OnSetsDigraphs));
+[ (1,3) ]
+
+# Set of orbital graphs of G := TransitiveGroup(6, 4)
+# The stabiliser of this set is the normaliser of G in S_6
+gap> x := Set(["&ECA@_OG", "&EQHcQHc", "&EHcQHcQ"], DigraphFromDigraph6String);
+[ <immutable digraph with 6 vertices, 6 edges>, 
+  <immutable digraph with 6 vertices, 12 edges>, 
+  <immutable digraph with 6 vertices, 12 edges> ]
+gap> Stabiliser(SymmetricGroup(6), x, OnSetsDigraphs)
+> = Group([(1, 2, 3, 4, 5, 6), (1, 5)(2, 4)(3, 6)]);
+true
+gap> OnTuplesDigraphs(x, (2, 3)(5, 6)) = x;
+false
+gap> OnTuplesDigraphs(x, (2, 3)(5, 6)) = [x[1], x[3], x[2]];
+true
+gap> OnSetsDigraphs(x, (2, 3)(5, 6)) = x;
+true
+
 #  OnMultiDigraphs: for a pair of permutations
 gap> gr1 := CompleteDigraph(3);
 <immutable complete digraph with 3 vertices>

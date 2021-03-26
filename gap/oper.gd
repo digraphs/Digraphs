@@ -59,6 +59,8 @@ DeclareOperation("DIGRAPHS_GraphProduct", [IsDigraph, IsDigraph, IsFunction]);
 # 4. Actions . . .
 DeclareOperation("OnDigraphs", [IsDigraph, IsPerm]);
 DeclareOperation("OnDigraphs", [IsDigraph, IsTransformation]);
+DeclareOperation("OnTuplesDigraphs", [IsDigraphCollection, IsPerm]);
+DeclareOperation("OnSetsDigraphs", [IsDigraphCollection, IsPerm]);
 DeclareOperation("OnMultiDigraphs", [IsDigraph, IsPermCollection]);
 DeclareOperation("OnMultiDigraphs", [IsDigraph, IsPerm, IsPerm]);
 
