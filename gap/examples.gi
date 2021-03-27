@@ -371,93 +371,82 @@ GeneralisedPetersenGraphCons);
 InstallMethod(GeneralisedPetersenGraph, "for integer, integer", [IsInt, IsInt],
 {n, k} -> GeneralisedPetersenGraphCons(IsImmutableDigraph, n, k));
 
-InstallMethod(RooksGraphCons,
-"for IsMutableDigraph and two integers",
-[IsMutableDigraph, IsPosInt, IsPosInt],
-function(filt, n, k)
-  local D, completeD1, completeD2, cartesianProduct;
-  completeD1 := CompleteDigraph(n);
-  completeD2 := CompleteDigraph(k);
-  cartesianProduct := DigraphCartesianProduct(completeD1, completeD2);
-  D := DigraphMutableCopy(cartesianProduct);
-  return D;
-end);
-
 InstallMethod(BishopsGraphCons,
-"for IsMutableDigraph, a string and two integers",
+"for IsMutableDigraph, a string and two positive integers",
 [IsMutableDigraph, IsString, IsPosInt, IsPosInt],
-function(filt, color, n, k)
-  local D, i, multiple, p, uL, uR, dL, dR, j, c, lB, rB, r;
-  D := EmptyDigraph(filt, n * k);
+function(filt, color, m, n)
+  local D, i, multiple, position, upLeft, upRight, downLeft, downRight,
+  j, collumn, row, leftBound, rightBound;
+  D := EmptyDigraph(filt, m * n);
 
-  for i in [1 .. n * k] do
-    multiple := i mod n = 0;
+  for i in [1 .. m * n] do
+    multiple := i mod m = 0;
     if color = "black" and IsOddInt(i) or color = "white" and IsEvenInt(i) then
-      c := QuoInt(i, n);
+      collumn := QuoInt(i, m);
       if multiple then
-        c := c - 1;
+        collumn := collumn - 1;
       fi;
 
-      if not multiple and IsOddInt(c) then
-        p := (c + 1) * n - (i mod n) + 1;
-      elif multiple and IsOddInt(c) then
-        p := c * n + 1;
+      if not multiple and IsOddInt(collumn) then
+        position := (collumn + 1) * m - (i mod m) + 1;
+      elif multiple and IsOddInt(collumn) then
+        position := collumn * m + 1;
       else
-        p := i;
+        position := i;
       fi;
 
-      if not p mod n = 0 then
-        r := (p mod n);
+      if not position mod m = 0 then
+        row := position mod m;
       else
-        r := n;
+        row := m;
       fi;
 
-      uL := p - (n - 1);
-      uR := p + (n + 1);
-      dL := p - (n + 1);
-      dR := p + (n - 1);
+      upLeft := position - (m - 1);
+      upRight := position + (m + 1);
+      downLeft := position - (m + 1);
+      downRight := position + (m - 1);
 
-      lB := true;
-      rB := true;
+      leftBound := true;
+      rightBound := true;
 
-      if not p mod n = 0 then
-        for j in [1 .. n - r] do
-          if uL > 0 then
-            DigraphAddEdge(D, [p, uL]);
-            uL := uL - (n - 1);
+      if not position mod m = 0 then
+        for j in [1 .. m - row] do
+          if upLeft > 0 then
+            DigraphAddEdge(D, [position, upLeft]);
+            upLeft := upLeft - (m - 1);
           else
-            lB := false;
+            leftBound := false;
           fi;
-          if uR <= n * k then
-            DigraphAddEdge(D, [p, uR]);
-            uR := uR + (n + 1);
+          if upRight <= m * n then
+            DigraphAddEdge(D, [position, upRight]);
+            upRight := upRight + (m + 1);
           else
-            rB := false;
+            rightBound := false;
           fi;
-          if not (lB or rB) then
+          if not (leftBound or rightBound) then
             break;
           fi;
         od;
       fi;
 
-      lB := true;
-      rB := true;
+      leftBound := true;
+      rightBound := true;
 
-      if not r = 1 then
-        for j in [1 .. r - 1] do
-          if dL > 0 then
-            DigraphAddEdge(D, [p, dL]);
-            dL := dL - (n + 1);
+      if not row = 1 then
+        for j in [1 .. row - 1] do
+          if downLeft > 0 then
+            DigraphAddEdge(D, [position, downLeft]);
+            downLeft := downLeft - (m + 1);
           else
-            lB := false;
+            leftBound := false;
           fi;
-          if dR <= n * k then
-            DigraphAddEdge(D, [p, dR]);
-            dR := dR + (n - 1);
+          if downRight <= m * n then
+            DigraphAddEdge(D, [position, downRight]);
+            downRight := downRight + (m - 1);
           else
-            rB := false;
+            rightBound := false;
           fi;
-          if not (lB or rB) then
+          if not (leftBound or rightBound) then
             break;
           fi;
         od;
@@ -466,6 +455,58 @@ function(filt, color, n, k)
   od;
   return D;
 end);
+
+InstallMethod(BishopsGraphCons,
+"for IsImmutableDigraph, a string and two positive integers",
+[IsImmutableDigraph, IsString, IsPosInt, IsPosInt],
+function(filt, color, m, n)
+  local D;
+  D := MakeImmutable(BishopsGraphCons(IsMutableDigraph, color, m, n));
+  SetIsMultiDigraph(D, false);
+  SetIsSymmetricDigraph(D, true);
+  return D;
+end);
+
+InstallMethod(BishopsGraph,
+"for a function, a string and two positive integers",
+[IsFunction, IsString, IsPosInt, IsPosInt],
+BishopsGraphCons);
+
+InstallMethod(BishopsGraph, "for a string and two positive integers",
+[IsString, IsPosInt, IsPosInt],
+{color, m, n} -> BishopsGraphCons(IsImmutableDigraph, color, m, n));
+
+InstallMethod(RooksGraphCons,
+"for IsMutableDigraph and two positive integers",
+[IsMutableDigraph, IsPosInt, IsPosInt],
+function(filt, m, n)
+  local D, completeD1, completeD2, cartesianProduct;
+  completeD1 := CompleteDigraph(m);
+  completeD2 := CompleteDigraph(n);
+  cartesianProduct := DigraphCartesianProduct(completeD1, completeD2);
+  D := DigraphMutableCopy(cartesianProduct);
+  return D;
+end);
+
+InstallMethod(RooksGraphCons,
+"for IsImmutableDigraph and two positive integers",
+[IsImmutableDigraph, IsPosInt, IsPosInt],
+function(filt, m, n)
+  local D;
+  D := MakeImmutable(RooksGraphCons(IsMutableDigraph, m, n));
+  SetIsMultiDigraph(D, false);
+  SetIsSymmetricDigraph(D, true);
+  return D;
+end);
+
+InstallMethod(RooksGraph,
+"for a function and two positive integers",
+[IsFunction, IsPosInt, IsPosInt],
+RooksGraphCons);
+
+InstallMethod(RooksGraph, "for two positive integers",
+[IsPosInt, IsPosInt],
+{m, n} -> RooksGraphCons(IsImmutableDigraph, m, n));
 
 InstallMethod(QueensGraphCons,
 "for IsMutableDigraph and two integers",
@@ -478,3 +519,23 @@ function(filt, n, k)
   D := DigraphEdgeUnion(D1, D2, D3);
   return D;
 end);
+
+InstallMethod(QueensGraphCons,
+"for IsImmutableDigraph and two positive integers",
+[IsImmutableDigraph, IsPosInt, IsPosInt],
+function(filt, m, n)
+  local D;
+  D := MakeImmutable(QueensGraphCons(IsMutableDigraph, m, n));
+  SetIsMultiDigraph(D, false);
+  SetIsSymmetricDigraph(D, true);
+  return D;
+end);
+
+InstallMethod(QueensGraph,
+"for a function and two positive integers",
+[IsFunction, IsPosInt, IsPosInt],
+QueensGraphCons);
+
+InstallMethod(QueensGraph, "for two positive integers",
+[IsPosInt, IsPosInt],
+{m, n} -> QueensGraphCons(IsImmutableDigraph, m, n));
