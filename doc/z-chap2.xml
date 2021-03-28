@@ -86,6 +86,9 @@
     <#Include Label="JohnsonDigraph">
     <#Include Label="PetersenGraph">
     <#Include Label="GeneralisedPetersenGraph">
+    <#Include Label="BishopsGraph">
+    <#Include Label="RooksGraph">
+    <#Include Lable="QueensGraph">
   </Section>
 
 </Chapter>

@@ -309,3 +309,137 @@ gap> GeneralisedPetersenGraph(IsMutableDigraph, 9, 4);
   </Description>
 </ManSection>
 <#/GAPDoc>
+
+<#GAPDoc Label="BishopsGraph">
+<ManSection>
+  <Oper Name="BishopsGraph" Arg="[filt, ]color, m, n"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>m</A> and <A>n</A> are positive integers and <A>color</A> is
+    either the string <C>"black"</C> or the string <C>"white"</C>, then this
+    operation returns the <E>bishop's graph</E> for an <A>m</A> by <A>n</A>
+    board for a bishop of that color.<P/>
+
+    From
+    <URL>https://mathworld.wolfram.com/BishopGraph.html</URL>:
+    <P/>
+
+    <Q> A bishop's graph is a graph formed from possible moves of a bishop chess
+    piece, which may make diagonal moves of any length on a chessboard (or any 
+    other board). To form the graph, each chessboard square is considered a vertex, 
+    and vertices connected by allowable bishop moves are considered edges. Because 
+    bishops starting on squares of one color and moving diagonally always remain 
+    on the same color squares, all bishop's graphs are disconnected (except for the 
+    trivial singleton graph on a <C> 1 x 1 </C> board which is trivially connected).</Q>
+    <P/>
+
+    If the optional first argument <A>filt</A> is present, then this should
+    specify the category or representation the digraph being created will
+    belong to. For example, if <A>filt</A> is <Ref Filt="IsMutableDigraph"/>,
+    then the digraph being created will be mutable, if <A>filt</A> is <Ref
+    Filt="IsImmutableDigraph"/>, then the digraph will be immutable. 
+    If the optional first argument <A>filt</A> is not present, then <Ref
+      Filt="IsImmutableDigraph"/> is used by default.<P/>
+
+<Example><![CDATA[
+gap> D := BishopsGraph("black", 3, 5);
+<immutable symmetric digraph with 15 vertices, 24 edges>
+gap> IsConnectedDigraph(D);       
+false
+gap> IsSymmetricDigraph(D);
+true
+gap> BishopsGraph("white", 4, 4);
+<immutable symmetric digraph with 16 vertices, 28 edges>
+gap> D := BishopsGraph("black", 1, 5);
+<immutable empty digraph with 5 vertices>
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="RooksGraph">
+<ManSection>
+  <Oper Name="RooksGraph" Arg="[filt, ]m, n"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>m</A> and <A>n</A> are positive integers, then this
+    operation returns the <E>rook's graph</E> for an <A>m</A> 
+    by <A>n</A> board.<P/>
+
+    From
+    <URL>https://mathworld.wolfram.com/RookGraph.html</URL>:
+    <P/>
+
+    <Q>The <C><A>m</A> x <A>m</A></C> rook's graph (confusingly called the 
+    <C><A>m</A> x <A>m</A></C> grid by Brouwer et al.1989, p. 440) and also
+    sometimes known as a lattice graph (e.g., Brouwer) is the graph Cartesian 
+    product <C>K_m</C> square <C>K_n</C> of complete graphs, which is
+    equivalent to the line graph <C>L(K_(m,n))</C> of the complete bipartite graph
+    <C>K_(m,n)</C>. This is the definition adopted for example by Brualdi and Ryser
+    (1991, p. 153), although restricted to the case <C>m = n</C>. This definition
+    corresponds to the connectivity graph of a rook chess piece (which can
+    move any number of spaces in a straight line-either horizontally or vertically,
+    but not diagonally) on an m×n chessboard.</Q>
+    <P/>
+
+    If the optional first argument <A>filt</A> is present, then this should
+    specify the category or representation the digraph being created will
+    belong to. For example, if <A>filt</A> is <Ref Filt="IsMutableDigraph"/>,
+    then the digraph being created will be mutable, if <A>filt</A> is <Ref
+    Filt="IsImmutableDigraph"/>, then the digraph will be immutable. 
+    If the optional first argument <A>filt</A> is not present, then <Ref
+      Filt="IsImmutableDigraph"/> is used by default.<P/>
+
+<Example><![CDATA[
+gap> D := RooksGraph(7, 4);
+<immutable symmetric digraph with 28 vertices, 252 edges>
+gap> RooksGraph(1, 8);
+<immutable symmetric digraph with 8 vertices, 56 edges>
+gap> IsSymmetricDigraph(D);
+true
+gap> IsConnectedDigraph(D);
+true
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="QueensGraph">
+<ManSection>
+  <Oper Name="QueensGraph" Arg="[filt, ]m, n"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>m</A> and <A>n</A> are positive integers, then this
+    operation returns the <E>queen's graph</E> for an <A>m</A> 
+    by <A>n</A> board.<P/>
+
+    From
+    <URL>https://mathworld.wolfram.com/QueenGraph.html</URL>:
+    <P/>
+
+    <Q>The <C><A>m</A> x <A>n</A><C> queen graph <C>Q_(m,n)</C> is a graph with
+    mn vertices in which each vertex represents a square in an m×n chessboard,
+    and each edge corresponds to a legal move by a queen.</Q>
+    <P/>
+
+    If the optional first argument <A>filt</A> is present, then this should
+    specify the category or representation the digraph being created will
+    belong to. For example, if <A>filt</A> is <Ref Filt="IsMutableDigraph"/>,
+    then the digraph being created will be mutable, if <A>filt</A> is <Ref
+    Filt="IsImmutableDigraph"/>, then the digraph will be immutable.
+    If the optional first argument <A>filt</A> is not present, then <Ref
+      Filt="IsImmutableDigraph"/> is used by default.<P/>
+
+<Example><![CDATA[
+gap> QueensGraph(2, 5);
+<immutable symmetric digraph with 10 vertices, 66 edges>
+gap> D := QueensGraph(4, 3);
+<immutable symmetric digraph with 12 vertices, 92 edges>
+gap> IsConnectedDigraph(D);
+true
+gap> IsSymmetricDigraph(D);
+true
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
