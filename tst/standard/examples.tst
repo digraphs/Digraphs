@@ -234,7 +234,7 @@ false
 gap> D := BishopsGraph("white", 4, 3);
 <immutable symmetric digraph with 12 vertices, 16 edges>
 gap> OutNeighbours(D);
-[ [  ], [ 7, 12, 5 ], [  ], [ 7, 10 ], [ 2, 10 ], [  ], [ 4, 12, 2, 10 ],
+[ [  ], [ 7, 12, 5 ], [  ], [ 7, 10 ], [ 2, 10 ], [  ], [ 4, 12, 2, 10 ], 
   [  ], [  ], [ 7, 4, 5 ], [  ], [ 7, 2 ] ]
 gap> BishopsGraph("blue", 8, 4);
 Error, the argument <color> must be either "black" or "white".
@@ -247,7 +247,7 @@ gap> D := RooksGraph(3, 2);
 gap> IsPlanarDigraph(D);
 true
 gap> OutNeighbours(D);
-[ [ 2, 3, 4 ], [ 1, 3, 5 ], [ 1, 2, 6 ], [ 5, 6, 1 ], [ 4, 6, 2 ],
+[ [ 2, 3, 4 ], [ 1, 3, 5 ], [ 1, 2, 6 ], [ 5, 6, 1 ], [ 4, 6, 2 ], 
   [ 4, 5, 3 ] ]
 
 #  QueensDigraph
@@ -258,7 +258,7 @@ gap> QueensGraph(3, 4);
 gap> D := QueensGraph(2, 3);
 <immutable connected symmetric digraph with 6 vertices, 26 edges>
 gap> OutNeighbours(D);
-[ [ 2, 3, 5, 4 ], [ 1, 4, 6, 3 ], [ 4, 1, 5, 2, 6 ], [ 3, 2, 6, 1, 5 ],
+[ [ 2, 3, 5, 4 ], [ 1, 4, 6, 3 ], [ 4, 1, 5, 2, 6 ], [ 3, 2, 6, 1, 5 ], 
   [ 6, 1, 3, 4 ], [ 5, 2, 4, 3 ] ]
 
 #
