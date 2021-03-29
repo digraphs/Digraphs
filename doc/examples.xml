@@ -390,11 +390,9 @@ gap> D := BishopsGraph("black", 1, 5);
 
 <Example><![CDATA[
 gap> D := RooksGraph(7, 4);
-<immutable symmetric digraph with 28 vertices, 252 edges>
+<immutable connected regular symmetric digraph with 28 vertices, 252 edges>
 gap> RooksGraph(1, 8);
-<immutable symmetric digraph with 8 vertices, 56 edges>
-gap> IsSymmetricDigraph(D);
-true
+<immutable connected regular symmetric digraph with 8 vertices, 56 edges>
 ]]></Example>
   </Description>
 </ManSection>
@@ -428,11 +426,11 @@ true
 
 <Example><![CDATA[
 gap> QueensGraph(2, 5);
-<immutable symmetric digraph with 10 vertices, 66 edges>
+<immutable connected symmetric digraph with 10 vertices, 66 edges>
 gap> D := QueensGraph(4, 3);
-<immutable symmetric digraph with 12 vertices, 92 edges>
-gap> IsConnectedDigraph(D);
-true
+<immutable connected symmetric digraph with 12 vertices, 92 edges>
+gap> IsRegularDigraph(D);
+false
 ]]></Example>
   </Description>
 </ManSection>
