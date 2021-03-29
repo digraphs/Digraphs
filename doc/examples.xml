@@ -318,7 +318,7 @@ gap> GeneralisedPetersenGraph(IsMutableDigraph, 9, 4);
     If <A>m</A> and <A>n</A> are positive integers and <A>color</A> is
     either the string <C>"black"</C> or the string <C>"white"</C>, then this
     operation returns the <E>bishop's graph</E> for an <A>m</A> by <A>n</A>
-    board for a bishop of that color.<P/>
+    board for a bishop of that square color.<P/>
 
     From
     <URL>https://mathworld.wolfram.com/BishopGraph.html</URL>:

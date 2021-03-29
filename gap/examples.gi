@@ -377,6 +377,11 @@ InstallMethod(BishopsGraphCons,
 function(filt, color, m, n)
   local D, i, multiple, position, upLeft, upRight, downLeft, downRight,
   j, collumn, row, leftBound, rightBound;
+
+  if not (color = "black" or color = "white") then
+    ErrorNoReturn("the argument <color> must be either \"black\" or \"white\".");
+  fi;
+
   D := EmptyDigraph(filt, m * n);
 
   for i in [1 .. m * n] do
@@ -499,6 +504,7 @@ function(filt, m, n)
   SetIsSymmetricDigraph(D, true);
   SetIsConnectedDigraph(D, true);
   SetIsRegularDigraph(D, true);
+  SetIsPlanarDigraph(D, m + n < 6);
   return D;
 end);
 
