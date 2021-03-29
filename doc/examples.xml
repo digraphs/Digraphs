@@ -346,8 +346,6 @@ gap> D := BishopsGraph("black", 3, 5);
 <immutable symmetric digraph with 15 vertices, 24 edges>
 gap> IsConnectedDigraph(D);       
 false
-gap> IsSymmetricDigraph(D);
-true
 gap> BishopsGraph("white", 4, 4);
 <immutable symmetric digraph with 16 vertices, 28 edges>
 gap> D := BishopsGraph("black", 1, 5);
@@ -397,8 +395,6 @@ gap> RooksGraph(1, 8);
 <immutable symmetric digraph with 8 vertices, 56 edges>
 gap> IsSymmetricDigraph(D);
 true
-gap> IsConnectedDigraph(D);
-true
 ]]></Example>
   </Description>
 </ManSection>
@@ -436,8 +432,6 @@ gap> QueensGraph(2, 5);
 gap> D := QueensGraph(4, 3);
 <immutable symmetric digraph with 12 vertices, 92 edges>
 gap> IsConnectedDigraph(D);
-true
-gap> IsSymmetricDigraph(D);
 true
 ]]></Example>
   </Description>

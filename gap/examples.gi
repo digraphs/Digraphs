@@ -464,6 +464,7 @@ function(filt, color, m, n)
   D := MakeImmutable(BishopsGraphCons(IsMutableDigraph, color, m, n));
   SetIsMultiDigraph(D, false);
   SetIsSymmetricDigraph(D, true);
+  SetIsConnectedDigraph(D, m * n = 1);
   return D;
 end);
 
@@ -496,6 +497,8 @@ function(filt, m, n)
   D := MakeImmutable(RooksGraphCons(IsMutableDigraph, m, n));
   SetIsMultiDigraph(D, false);
   SetIsSymmetricDigraph(D, true);
+  SetIsConnectedDigraph(D, true);
+  SetIsRegularDigraph(D, true);
   return D;
 end);
 
@@ -528,6 +531,7 @@ function(filt, m, n)
   D := MakeImmutable(QueensGraphCons(IsMutableDigraph, m, n));
   SetIsMultiDigraph(D, false);
   SetIsSymmetricDigraph(D, true);
+  SetIsConnectedDigraph(D, true);
   return D;
 end);
 
