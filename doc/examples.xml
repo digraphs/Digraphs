@@ -609,9 +609,11 @@ true
 
 <Example><![CDATA[
 gap> D := RooksGraph(7, 4);
-<immutable connected regular symmetric digraph with 28 vertices, 252 edges>
+<immutable connected regular symmetric digraph with 28 vertices, 252 e\
+dges>
 gap> RooksGraph(1, 8);
-<immutable connected regular symmetric digraph with 8 vertices, 56 edges>
+<immutable connected regular symmetric digraph with 8 vertices, 56 edg\
+es>
 ]]></Example>
   </Description>
 </ManSection>
