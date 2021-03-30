@@ -91,7 +91,8 @@ DeclareConstructor("RooksGraphCons", [IsDigraph, IsPosInt, IsPosInt]);
 DeclareOperation("RooksGraph", [IsPosInt, IsPosInt]);
 DeclareOperation("RooksGraph", [IsFunction, IsPosInt, IsPosInt]);
 
-DeclareConstructor("BishopsGraphCons", [IsDigraph, IsString, IsPosInt, IsPosInt]);
+DeclareConstructor("BishopsGraphCons",
+[IsDigraph, IsString, IsPosInt, IsPosInt]);
 DeclareOperation("BishopsGraph", [IsString, IsPosInt, IsPosInt]);
 DeclareOperation("BishopsGraph", [IsFunction, IsString, IsPosInt, IsPosInt]);
 
