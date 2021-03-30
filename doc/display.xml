@@ -20,8 +20,8 @@
       The string <A>str</A> must correspond to a valid <C>dot</C> or
       <C>LaTeX</C> text file and you must have have <C>GraphViz</C> and
       <C>pdflatex</C> installed on your computer.  For details about these file
-      formats, see <URL>http://www.latex-project.org</URL> and
-      <URL>http://www.graphviz.org</URL>.<P/>
+      formats, see <URL>https://www.latex-project.org</URL> and
+      <URL>https://www.graphviz.org</URL>.<P/>
 
       This function is provided to allow convenient, immediate viewing of the
       pictures produced by the function <Ref Attr="DotDigraph"/>.<P/>
@@ -147,7 +147,7 @@ gap> Splash(DotDigraph(RandomDigraph(4)));
 
       The output is in <C>dot</C> format (also known as <C>GraphViz</C>)
       format. For details about this file format, and information about how to
-      display or edit this format see <URL>http://www.graphviz.org</URL>. <P/>
+      display or edit this format see <URL>https://www.graphviz.org</URL>. <P/>
 
       The string returned by <C>DotDigraph</C> or
       <C>DotVertexLabelledDigraph</C> can be written to a file using
@@ -411,7 +411,7 @@ gap> FileString("dot/k4.dot", DotDigraph(gr));
       The output is in <C>dot</C> format (also known as <C>GraphViz</C>)
       format. For details about this file format, and information about how
       to display or edit this format see
-      <URL>http://www.graphviz.org</URL>. <P/>
+      <URL>https://www.graphviz.org</URL>. <P/>
 
       The string returned by <C>DotSymmetricDigraph</C> can be written to a
       file using the command <Ref Func="FileString" BookName="GAPDoc"/>.<P/>
@@ -502,7 +502,7 @@ node [shape=circle]
       The output is in <C>dot</C> format (also known as <C>GraphViz</C>)
       format. For details about this file format, and information about how
       to display or edit this format see
-      <URL>http://www.graphviz.org</URL>. <P/>
+      <URL>https://www.graphviz.org</URL>. <P/>
 
       The string returned by <C>DotPartialOrderDigraph</C> can be written to a
       file using the command <Ref Func="FileString" BookName="GAPDoc"/>.<P/>
@@ -543,7 +543,7 @@ gap> FileString("dot/poset.dot", DotPartialOrderDigraph(gr));
       The output is in <C>dot</C> format (also known as <C>GraphViz</C>)
       format. For details about this file format, and information about how
       to display or edit this format see
-      <URL>http://www.graphviz.org</URL>. <P/>
+      <URL>https://www.graphviz.org</URL>. <P/>
 
       The string returned by <C>DotPreorderDigraph</C> can be written to a
       file using the command <Ref Func="FileString" BookName="GAPDoc"/>.<P/>

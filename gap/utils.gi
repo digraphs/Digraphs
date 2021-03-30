@@ -184,7 +184,7 @@ function(arg)
     ErrorNoReturn("the file pkg/digraphs/digraphs-lib/extreme.d6.gz is ",
                   "required for these tests to run. Please install the ",
                   "'digraphs-lib'archive from: ",
-                  "http://digraphs.github.io/Digraphs/",
+                  "https://digraphs.github.io/Digraphs/",
                   "and try again,");
   fi;
 
@@ -555,3 +555,21 @@ DIGRAPHS_CheckManualConsistency := function()
   DIGRAPHS_CheckDocCoverage(doc);
   return DIGRAPHS_CheckManSectionTypes(doc, true);
 end;
+
+InstallGlobalFunction(DIGRAPHS_BlistNumber,
+function(nr, n)
+  local x, q, i;
+
+  x := BlistList([1 .. n], []);
+  nr := nr - 1;   # to be in [0 .. 2 ^ n - 1]
+  for i in [n, n - 1 .. 1] do
+    q := nr mod 2;
+    if q = 0 then
+      x[i] := false;
+    else
+      x[i] := true;
+    fi;
+    nr := (nr - q) / 2;
+  od;
+  return x;
+end);

@@ -19,8 +19,8 @@ D -> IsDirectedTree(D) and IsSubset([0, 1], OutDegreeSet(D)));
 InstallMethod(IsCycleDigraph, "for a digraph", [IsDigraph],
 function(D)
   return DigraphNrVertices(D) > 0
-     and IsStronglyConnectedDigraph(D)
-     and DigraphNrEdges(D) = DigraphNrVertices(D);
+     and DigraphNrEdges(D) = DigraphNrVertices(D)
+     and IsStronglyConnectedDigraph(D);
 end);
 
 InstallMethod(IsBiconnectedDigraph, "for a digraph", [IsDigraph],
@@ -435,7 +435,7 @@ end);
 # Hamiltonian.
 # This function uses theorems 4.1 and 4.2 from the following paper:
 # Sufficient conditions for a digraph to be Hamiltonian
-# http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.99.4560&rep=rep1
+# https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.99.4560&rep=rep1
 # &type=pdf
 # A vertex z dominates a pair of vertices {x, y} if z->x and z->y
 # A pair of vertices {x, y} dominates a vertex z if x->z and y->z

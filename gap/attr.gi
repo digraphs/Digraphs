@@ -1,7 +1,7 @@
 #############################################################################
 ##
 ##  attr.gi
-##  Copyright (C) 2014-19                                James D. Mitchell
+##  Copyright (C) 2014-21                                James D. Mitchell
 ##
 ##  Licensing information can be found in the README file of this package.
 ##
@@ -11,12 +11,11 @@
 InstallMethod(DigraphNrVertices, "for a digraph by out-neighbours",
 [IsDigraphByOutNeighboursRep], DIGRAPH_NR_VERTICES);
 
-InstallMethod(OutNeighbours, "for a digraph by out-neighbours",
-[IsDigraphByOutNeighboursRep], DIGRAPH_OUT_NEIGHBOURS);
+InstallGlobalFunction(OutNeighbors, OutNeighbours);
 
 # The next method is (yet another) DFS which simultaneously computes:
 # 1. *articulation points* as described in
-#   http://www.eecs.wsu.edu/~holder/courses/CptS223/spr08/slides/graphapps.pdf
+#   https://www.eecs.wsu.edu/~holder/courses/CptS223/spr08/slides/graphapps.pdf
 # 2. *bridges* as described in https://stackoverflow.com/q/28917290/
 #   (this is a minor adaption of the algorithm described in point 1).
 # 3. a *strong orientation* as alluded to somewhere on the internet that I can
@@ -179,7 +178,7 @@ InstallMethod(ChromaticNumber, "for a digraph by out-neighbours",
 [IsDigraphByOutNeighboursRep],
 function(D)
   local nr, comps, upper, chrom, tmp_comps, tmp_upper, n, comp, bound, clique,
-  c, i;
+  c, i, greedy_bound, brooks_bound;
   nr := DigraphNrVertices(D);
 
   if DigraphHasLoops(D) then
@@ -197,12 +196,17 @@ function(D)
   D := DigraphMutableCopy(D);
   D := DigraphRemoveAllMultipleEdges(D);
   D := DigraphSymmetricClosure(D);
+  MakeImmutable(D);
 
   if IsCompleteDigraph(D) then
     # chromatic number = nr iff <D> has >= 2 verts & this cond.
     return nr;
   elif nr = 4 then
     # if nr = 4, then 3 is only remaining possible chromatic number
+    return 3;
+  elif 2 * nr = DigraphNrEdges(D)
+      and IsRegularDigraph(D) and Length(OutNeighboursOfVertex(D, 1)) = 2 then
+    # <D> is an odd-length cycle graph
     return 3;
   fi;
 
@@ -216,7 +220,9 @@ function(D)
   # do not yet know.
   if IsConnectedDigraph(D) then
     comps := [D];
-    upper := [RankOfTransformation(DigraphGreedyColouring(D), nr)];
+    greedy_bound := RankOfTransformation(DigraphGreedyColouring(D), nr);
+    brooks_bound := Maximum(OutDegrees(D));  # Brooks' theorem
+    upper := [Minimum(greedy_bound, brooks_bound)];
     chrom := Maximum(CliqueNumber(D), chrom);
   else
     tmp_comps := [];
@@ -239,8 +245,12 @@ function(D)
           # If comp is bipartite, then its chromatic number is 2, and, since
           # the chromatic number of D is >= 3, this component can be
           # ignored.
-          bound := RankOfTransformation(DigraphGreedyColouring(comp),
-                                        DigraphNrVertices(comp));
+          greedy_bound := RankOfTransformation(DigraphGreedyColouring(comp),
+                                               DigraphNrVertices(comp));
+          # Don't need to take odd cycles into account for Brooks' theorem,
+          # since they are 3-colourable and the chromatic number of D is >= 3.
+          brooks_bound := Maximum(OutDegrees(comp));
+          bound := Minimum(greedy_bound, brooks_bound);
           if bound > chrom then
             # If bound <= chrom, then comp can be coloured by at most chrom
             # colours, and so we can ignore comp.
@@ -740,39 +750,37 @@ BindGlobal("DIGRAPH_ConnectivityDataForVertex",
 function(D, v)
   local data, out_nbs, record, orbnum, reps, i, next, laynum, localGirth,
         layers, sum, localParameters, nprev, nhere, nnext, lnum, localDiameter,
-        layerNumbers, x, y;
-  data := DIGRAPHS_ConnectivityData(D);
+        layerNumbers, x, y, tree, expand, stab, edges, edge;
 
+  data := DIGRAPHS_ConnectivityData(D);
   if IsBound(data[v]) then
     return data[v];
   fi;
 
-  out_nbs := OutNeighbours(D);
+  expand := false;
   if HasDigraphGroup(D) then
-    record          := DIGRAPHS_Orbits(DigraphStabilizer(D, v),
-                                       DigraphVertices(D));
+    stab            := DigraphStabilizer(D, v);
+    record          := DIGRAPHS_Orbits(stab, DigraphVertices(D));
     orbnum          := record.lookup;
     reps            := List(record.orbits, Representative);
-    i               := 1;
-    next            := [orbnum[v]];
-    laynum          := [1 .. Length(reps)] * 0;
-    laynum[next[1]] := 1;
-    localGirth      := -1;
-    layers          := [next];
-    sum             := 1;
-    localParameters := [];
+    if Length(record.orbits) < DigraphNrVertices(D) then
+        expand := true;
+    fi;
   else
     orbnum          := [1 .. DigraphNrVertices(D)];
     reps            := [1 .. DigraphNrVertices(D)];
-    i               := 1;
-    next            := [orbnum[v]];
-    laynum          := [1 .. Length(reps)] * 0;
-    laynum[next[1]] := 1;
-    localGirth      := -1;
-    layers          := [next];
-    sum             := 1;
-    localParameters := [];
   fi;
+  out_nbs         := OutNeighbours(D);
+  i               := 1;
+  next            := [orbnum[v]];
+  laynum          := ListWithIdenticalEntries(Length(reps), 0);
+  laynum[next[1]] := 1;
+  tree            := ListWithIdenticalEntries(DigraphNrVertices(D), 0);
+  tree[v]         := -1;
+  localGirth      := -1;
+  layers          := [next];
+  sum             := 1;
+  localParameters := [];
 
   # localDiameter is the length of the longest shortest path starting at v
   #
@@ -780,6 +788,9 @@ function(D, v)
   # each i between 1 and localDiameter where c_i (respectively a_i and b_i) is
   # the number of vertices at distance i − 1 (respectively i and i + 1) from v
   # that are adjacent to a vertex w at distance i from v.
+
+  # <tree> gives a shortest path spanning tree rooted at <v> and is used by
+  # the ShortestPathSpanningTree method.
 
   while Length(next) > 0 do
     next := [];
@@ -799,6 +810,16 @@ function(D, v)
           AddSet(next, orbnum[y]);
           nnext := nnext + 1;
           laynum[orbnum[y]] := i + 1;
+          if not expand then
+            tree[y] := reps[x];
+          else
+            edges := Orbit(stab, [reps[x], y], OnTuples);
+            for edge in edges do
+              if tree[edge[2]] = 0 or tree[edge[2]] > edge[1] then
+                tree[edge[2]] := edge[1];
+              fi;
+            od;
+          fi;
         fi;
       od;
       if (localGirth = -1 or localGirth = 2 * i - 1) and nprev > 1 then
@@ -837,9 +858,12 @@ function(D, v)
   for i in [1 .. DigraphNrVertices(D)] do
      layerNumbers[i] := laynum[orbnum[i]];
   od;
-  data[v] := rec(layerNumbers := layerNumbers, localDiameter := localDiameter,
-                 localGirth := localGirth, localParameters := localParameters,
-                 layers := layers);
+  data[v] := rec(layerNumbers    := layerNumbers,
+                 localDiameter   := localDiameter,
+                 localGirth      := localGirth,
+                 localParameters := localParameters,
+                 layers          := layers,
+                 spstree         := tree);
   return data[v];
 end);
 
@@ -978,7 +1002,7 @@ function(digraph)
   fi;
   oddgirth := infinity;
   for comp in comps do
-    if comps > 1 then
+    if Length(comps) > 1 then  # i.e. if not IsStronglyConnectedDigraph(digraph)
       gr := InducedSubdigraph(digraph, comp);
     else
       gr := digraph;
@@ -1350,6 +1374,12 @@ function(digraph)
   elif IsCompleteDigraph(digraph) then
     return DigraphVertexLabels(digraph);
   elif IsSymmetricDigraph(digraph) and IsBipartiteDigraph(digraph) then
+    # TODO symmetric is not necessary, you just need bipartite and:
+    # DigraphGirth(digraph) = 2
+    # i.e. not IsAntiSymmetricDigraph(digraph)
+    # i.e. a pair [i, j] with edges i -> j and j -> i.
+    # Given this, the core is [i, j]
+    # This would allow you to <return 3> rather than <return 2> in function <lo>
     i := First(DigraphVertices(digraph),
                i -> OutDegreeOfVertex(digraph, i) > 0);
     return DigraphVertexLabels(digraph){
@@ -1395,7 +1425,7 @@ function(digraph)
     if oddgirth <> infinity then
       return oddgirth;
     fi;
-    return 3;
+    return 2;
   end;
 
   hom      := [];
@@ -1450,18 +1480,6 @@ end);
 
 InstallMethod(CharacteristicPolynomial, "for a digraph", [IsDigraph],
 D -> CharacteristicPolynomial(AdjacencyMatrix(D)));
-
-InstallMethod(IsVertexTransitive, "for a digraph", [IsDigraph],
-D -> IsTransitive(AutomorphismGroup(D), DigraphVertices(D)));
-
-InstallMethod(IsEdgeTransitive, "for a digraph", [IsDigraph],
-function(D)
-  if IsMultiDigraph(D) then
-    ErrorNoReturn("the argument <D> must be a digraph with no multiple",
-                  " edges,");
-  fi;
-  return IsTransitive(AutomorphismGroup(D), DigraphEdges(D), OnPairs);
-end);
 
 # Things that are attributes for immutable digraphs, but operations for mutable.
 
@@ -2092,6 +2110,7 @@ InstallMethod(UndirectedSpanningTree, "for an immutable digraph",
 InstallMethod(UndirectedSpanningTreeAttr, "for an immutable digraph",
 [IsImmutableDigraph],
 function(D)
+  local out;
   if DigraphNrVertices(D) = 0
       or not IsStronglyConnectedDigraph(D)
       or (HasMaximalSymmetricSubdigraphAttr(D)
@@ -2100,7 +2119,9 @@ function(D)
           <> 2 * (DigraphNrVertices(D) - 1)) then
     return fail;
   fi;
-  return UndirectedSpanningForest(D);
+  out := UndirectedSpanningForest(D);
+  SetIsUndirectedTree(out, true);
+  return out;
 end);
 
 InstallMethod(DigraphMycielskian, "for a digraph",

@@ -15,6 +15,7 @@
     <#Include Label="EdgeOrbitsDigraph">
     <#Include Label="DigraphByInNeighbours">
     <#Include Label="CayleyDigraph">
+    <#Include Label="ListNamedDigraphs">
   </Section>
 
   <Section><Heading>Changing representations</Heading>
@@ -33,6 +34,7 @@
     <#Include Label="MaximalSymmetricSubdigraph">
     <#Include Label="MaximalAntiSymmetricSubdigraph">
     <#Include Label="UndirectedSpanningTree">
+    <#Include Label="DigraphShortestPathSpanningTree">
     <#Include Label="QuotientDigraph">
     <#Include Label="DigraphReverse">
     <#Include Label="DigraphDual">
@@ -87,8 +89,18 @@
     <#Include Label="PetersenGraph">
     <#Include Label="GeneralisedPetersenGraph">
     <#Include Label="BishopsGraph">
+    <#Include Label="LollipopGraph">
+    <#Include Label="KingsGraph">
+    <#Include Label="SquareGridGraph">
+    <#Include Label="TriangularGridGraph">
+    <#Include Label="StarDigraph">
     <#Include Label="RooksGraph">
+    <#Include Label="KnightsGraph">
     <#Include Lable="QueensGraph">
+    <#Include Label="HaarGraph">
+    <#Include Label="BananaTree">
+    <#Include Label="TadpoleDigraph">
+
   </Section>
 
 </Chapter>
