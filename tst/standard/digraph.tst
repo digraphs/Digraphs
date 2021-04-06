@@ -1784,6 +1784,101 @@ gap> D := EvalString(
 gap> String(D);
 "DigraphFromDigraph6String(\"&N~~nf~v~~~~u\\\\mvf~vvv~Zzv|vNxuxVw~|v~Lro\")"
 
+# Load the NAMED DIGRAPHS MAIN and NAMED DIGRAPHS TEST records.
+# Check the entries match.
+gap> DIGRAPHS_LoadNamedDigraphs();
+gap> main := DIGRAPHS_NamedDigraphs;;
+gap> DIGRAPHS_LoadNamedDigraphsTests();
+gap> test := DIGRAPHS_NamedDigraphsTests;;
+gap> Set(RecNames(main)) = Set(RecNames(test));
+true
+
+# NAMED DIGRAPHS MAIN:
+# - ensure every name is lowercase with no spaces
+# - ensure every value is a string
+# if anything does not satisfy these conditions, goes in failed list.
+gap> failed_names := [];;
+gap> failed_values := [];;
+gap> for name in RecNames(main) do
+>      name2 := LowercaseString(name);;
+>      RemoveCharacters(name2, " \n\t\r");;
+>      if name <> name2 then
+>        Add(failed_names, name);;
+>      fi;
+>      if not IsString(main.(name)) then
+>        Add(failed_values, name);;
+>      fi;
+>    od;
+gap> failed_names;
+[  ]
+gap> failed_values;
+[  ]
+
+# NAMED DIGRAPHS TEST:
+# - ensure every value is a record
+# - ensure every value has at least one component
+# if any component doesn't satisfy these conditions, its name goes in "failed"
+gap> failed := [];;
+gap> for name in RecNames(test) do
+>      if not IsRecord(test.(name)) then
+>        Add(failed, name);;
+>      else
+>        if Length(RecNames(test.(name))) = 0 then
+>          Add(failed, name);;
+>        fi;
+>      fi;
+>    od;
+gap> failed;
+[  ]
+
+# Named digraphs
+gap> Digraph("The smallest digraph that cannot be described in 100 chars");
+Error, named digraph <name> not found; see ListNamedDigraphs,
+gap> D := Digraph("folkman");
+<immutable digraph with 20 vertices, 80 edges>
+gap> D = Digraph("F \n  Ol k\tMA\r\r n");
+true
+gap> Digraph("");
+<immutable empty digraph with 0 vertices>
+
+# Check attributes of first few digraphs (extreme/named.tst checks all).
+# "failed" is a list of pairs [name, prop] where the digraph called "name"
+# did not coincide with the test record on property "prop". The test is
+# passed if this list remains empty. If it contains graphs, you should check
+# those graphs for errors.
+gap> m := Minimum(20, Length(RecNames(main)));;
+gap> failed := [];;
+>    for name in RecNames(main){[1 .. m]} do
+>      D := Digraph(name);;
+>      properties := test.(name);;
+>      for prop in RecNames(properties) do
+>        if ValueGlobal(prop)(D) <> properties.(prop) then
+>          Add(failed, [name, prop]);;
+>        fi;
+>      od;
+>    od;
+gap> failed;
+[  ]
+
+# ListNamedDigraphs
+gap> Length(RecNames(main))
+>    = Length(ListNamedDigraphs(""));
+true
+gap> "folkman" in ListNamedDigraphs("F\n oL");
+true
+gap> ListNamedDigraphs("Surely no digraph has this name");
+[  ]
+gap> "diamond" in ListNamedDigraphs("mo", 1);
+false
+gap> "diamond" in ListNamedDigraphs("mond", 2);
+true
+gap> "petersen" in ListNamedDigraphs("et!er", 3);
+true
+gap> "petersen" in ListNamedDigraphs("et!er1413", 3);
+false
+gap> "brinkmann" in ListNamedDigraphs("man", 1000);
+true
+
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(G);
 gap> Unbind(adj);
@@ -1792,12 +1887,16 @@ gap> Unbind(bddigraph);
 gap> Unbind(bdgroup);
 gap> Unbind(bin);
 gap> Unbind(d);
+gap> Unbind(D);
 gap> Unbind(ddigraph);
 gap> Unbind(digraph);
 gap> Unbind(divides);
 gap> Unbind(elms);
 gap> Unbind(error);
 gap> Unbind(f);
+gap> Unbind(failed);
+gap> Unbind(failed_names);
+gap> Unbind(failed_values);
 gap> Unbind(foo);
 gap> Unbind(g);
 gap> Unbind(gr);
@@ -1816,14 +1915,21 @@ gap> Unbind(h);
 gap> Unbind(i);
 gap> Unbind(im);
 gap> Unbind(inn);
+gap> Unbind(m);
+gap> Unbind(main);
 gap> Unbind(mat);
 gap> Unbind(n);
+gap> Unbind(name);
+gap> Unbind(name2);
 gap> Unbind(new);
 gap> Unbind(out);
+gap> Unbind(prop);
+gap> Unbind(properties);
 gap> Unbind(r);
 gap> Unbind(r1);
 gap> Unbind(r2);
 gap> Unbind(s);
+gap> Unbind(test);
 gap> Unbind(v);
 gap> Unbind(x);
 
