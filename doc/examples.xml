@@ -162,10 +162,11 @@ gap> ChainDigraph(IsMutableDigraph, 10);
 <#GAPDoc Label="CycleDigraph">
 <ManSection>
   <Oper Name="CycleDigraph" Arg="[filt, ]n"/>
+  <Oper Name="DigraphCycle" Arg="[filt, ]n"/>
   <Returns>A digraph.</Returns>
   <Description>
-    If <A>n</A> is a positive integer, this function returns a <E>cycle</E>
-    digraph with <A>n</A> vertices and <A>n</A> edges. Specifically,
+    If <A>n</A> is a positive integer, then these functions return a <E>cycle
+    digraph</E> with <A>n</A> vertices and <A>n</A> edges. Specifically,
     for each vertex <C>i</C> (with <C>i</C> &lt; <C>n</C>), there is a directed
     edge with source <C>i</C> and range <C>i + 1</C>. In addition, there is
     an edge with source <C>n</C> and range <C>1</C>. <P/>
@@ -184,6 +185,8 @@ gap> CycleDigraph(123);
 <immutable cycle digraph with 123 vertices>
 gap> CycleDigraph(IsMutableDigraph, 10);
 <mutable digraph with 10 vertices, 10 edges>
+gap> DigraphCycle(4) = CycleDigraph(4);
+true
 ]]></Example>
   </Description>
 </ManSection>
@@ -654,13 +657,13 @@ ent sizes 5 and 5>
     See also <Ref Oper="StarDigraph"/> and <Ref Prop="IsUndirectedTree"/>.
 <Example><![CDATA[
 gap> D := BananaTree(2, 4);
-<immutable connected symmetric digraph with 9 vertices, 16 edges>
+<immutable undirected tree digraph with 9 vertices>
 gap> D := BananaTree(3, 3);
-<immutable connected symmetric digraph with 10 vertices, 18 edges>
+<immutable undirected tree digraph with 10 vertices>
 gap> D := BananaTree(5, 2);
-<immutable connected symmetric digraph with 11 vertices, 20 edges>
+<immutable undirected tree digraph with 11 vertices>
 gap> D := BananaTree(3, 4);
-<immutable connected symmetric digraph with 13 vertices, 24 edges>
+<immutable undirected tree digraph with 13 vertices>
 ]]></Example>
   </Description>
 </ManSection>

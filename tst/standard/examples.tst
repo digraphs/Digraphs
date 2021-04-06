@@ -92,6 +92,8 @@ gap> gr := CycleDigraph(1000);
 <immutable cycle digraph with 1000 vertices>
 gap> gr := CycleDigraph(IsMutableDigraph, 6);
 <mutable digraph with 6 vertices, 6 edges>
+gap> gr = DigraphCycle(IsImmutableDigraph, 6);
+true
 
 #  ChainDigraph
 gap> gr := ChainDigraph(0);
@@ -336,13 +338,13 @@ true
 
 # BananaTree
 gap> D := BananaTree(2, 4);
-<immutable connected symmetric digraph with 9 vertices, 16 edges>
+<immutable undirected tree digraph with 9 vertices>
 gap> D := BananaTree(3, 3);
-<immutable connected symmetric digraph with 10 vertices, 18 edges>
+<immutable undirected tree digraph with 10 vertices>
 gap> D := BananaTree(5, 2);
-<immutable connected symmetric digraph with 11 vertices, 20 edges>
+<immutable undirected tree digraph with 11 vertices>
 gap> D := BananaTree(3, 4);
-<immutable connected symmetric digraph with 13 vertices, 24 edges>
+<immutable undirected tree digraph with 13 vertices>
 gap> D := BananaTree(0, 0);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `BananaTree' on 2 arguments

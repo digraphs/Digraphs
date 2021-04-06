@@ -243,21 +243,19 @@ InstallMethod(CycleDigraphCons,
 function(filt, n)
   local D;
   D := MakeImmutable(CycleDigraphCons(IsMutableDigraph, n));
-  if n = 1 then
-    SetIsTransitiveDigraph(D, true);
-    SetDigraphHasLoops(D, true);
-  else
-    SetIsTransitiveDigraph(D, false);
-    SetDigraphHasLoops(D, false);
-  fi;
   SetIsAcyclicDigraph(D, false);
   SetIsCycleDigraph(D, true);
   SetIsEmptyDigraph(D, false);
   SetIsMultiDigraph(D, false);
   SetDigraphNrEdges(D, n);
-  SetIsFunctionalDigraph(D, true);
-  SetIsStronglyConnectedDigraph(D, true);
+  SetIsTournament(D, n = 3);
+  SetIsTransitiveDigraph(D, n = 1);
   SetAutomorphismGroup(D, CyclicGroup(IsPermGroup, n));
+  SetDigraphHasLoops(D, n = 1);
+  SetIsBipartiteDigraph(D, n mod 2 = 0);
+  if n > 1 then
+    SetChromaticNumber(D, 2 + (n mod 2));
+  fi;
   return D;
 end);
 
