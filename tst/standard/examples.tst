@@ -369,11 +369,11 @@ gap> BookDigraph(1);
 gap> BookDigraph(2);
 <immutable bipartite symmetric digraph with bicomponent sizes 3 and 3>
 gap> BookDigraph(7);
-<immutable bipartite symmetric digraph with bicomponent sizes 7 and 7>
+<immutable bipartite symmetric digraph with bicomponent sizes 8 and 8>
 gap> BookDigraph(12);
-<immutable bipartite symmetric digraph with bicomponent sizes 12 and 12>
+<immutable bipartite symmetric digraph with bicomponent sizes 13 and 13>
 gap> BookDigraph(IsMutable, 12);
-<mutable digraph with 24 vertices, 56 edges>
+<mutable digraph with 26 vertices, 74 edges>
 gap> IsSymmetricDigraph(BookDigraph(24));
 true
 gap> IsBipartiteDigraph(BookDigraph(32));
