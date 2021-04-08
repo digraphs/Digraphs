@@ -46,6 +46,50 @@ gap> group := FreeGroup(2);;
 gap> digraph := CayleyDigraph(group);
 Error, the 1st argument <G> must be a finite group,
 
+#  CayleyDigraph: check edge labels
+#
+gap> group := SymmetricGroup(4);;
+gap> gens := [(1, 2, 3, 4), (1, 2)];;
+gap> D := CayleyDigraph(group, gens);
+<immutable digraph with 24 vertices, 48 edges>
+gap> DigraphNrEdges(D) = Length(gens) * Size(group);
+true
+gap> DigraphVertexLabels(D) = AsList(group);
+true
+gap> ForAll(DigraphVertices(D), u -> ForAll(OutNeighboursOfVertex(D, u), v ->
+> DigraphVertexLabel(D, u) * DigraphEdgeLabel(D, u, v)
+> = DigraphVertexLabel(D, v)));
+true
+
+#
+gap> group := GL(2, 3);;
+gap> D := CayleyDigraph(group);
+<immutable digraph with 48 vertices, 96 edges>
+gap> DigraphNrEdges(D) = Length(GeneratorsOfGroup(group)) * Size(group);
+true
+gap> DigraphVertexLabels(D) = AsList(group);
+true
+gap> ForAll(DigraphVertices(D), u -> ForAll(OutNeighboursOfVertex(D, u), v ->
+> DigraphVertexLabel(D, u) * DigraphEdgeLabel(D, u, v)
+> = DigraphVertexLabel(D, v)));
+true
+
+#
+gap> gens := [
+> [[Z(3) ^ 0, Z(3) ^ 0], [Z(3) ^ 0, 0 * Z(3)]],
+> [[0 * Z(3), Z(3)], [Z(3), 0 * Z(3)]],
+> [[0 * Z(3), Z(3) ^ 0], [Z(3) ^ 0, 0 * Z(3)]]];;
+gap> D := CayleyDigraph(group, gens);
+<immutable digraph with 48 vertices, 144 edges>
+gap> DigraphNrEdges(D) = Length(gens) * Size(group);
+true
+gap> DigraphVertexLabels(D) = AsList(group);
+true
+gap> ForAll(DigraphVertices(D), u -> ForAll(OutNeighboursOfVertex(D, u), v ->
+> DigraphVertexLabel(D, u) * DigraphEdgeLabel(D, u, v)
+> = DigraphVertexLabel(D, v)));
+true
+
 #  DigraphAddEdgeOrbit
 gap> digraph := NullDigraph(4);
 <immutable empty digraph with 4 vertices>
