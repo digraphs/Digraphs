@@ -94,7 +94,7 @@ end);
 InstallMethod(CayleyDigraph, "for a group with generators",
 [IsGroup, IsHomogeneousList],
 function(G, gens)
-  local adj, D;
+  local adj, D, labels, root, all_vertices;
 
   if not IsFinite(G) then
     ErrorNoReturn("the 1st argument <G> must be a finite group,");
@@ -107,11 +107,23 @@ function(G, gens)
     return x ^ -1 * y in gens;
   end;
 
-  D := Digraph(G, AsList(G), OnLeftInverse, adj);
+  all_vertices := AsList(G);
+  D := Digraph(G, all_vertices, OnLeftInverse, adj);
   SetFilterObj(D, IsCayleyDigraph);
   SetGroupOfCayleyDigraph(D, G);
   SetGeneratorsOfCayleyDigraph(D, gens);
-  SetDigraphEdgeLabels(D, ListWithIdenticalEntries(Size(G), gens));
+  
+  #SetDigraphEdgeLabels(D, ListWithIdenticalEntries(Size(G), gens)); #this is wrong. 
+
+  #For reasons I do not see immediately why the ordered list out(e), e the identity of the group, has a different order than the list of gens. This might be due to the use of the ActionHomomorphism functions, probably converting the list of generators into an ordered set. 
+  #However, it is correct that for each vertex, the list of labels of edges to out neighbours will be the same, due to the construction of a cayley graph using a regular action of the group on itself.
+  #Hence to solve this (withouth thinking too much), it is sufficient to look at the list of outneighbours of the vertex representing the identity element of the group.
+  #I am not completely sure whether AsList(G) always returns a list of group elements with the identity being the very first element? Therefore I determine the vertex number of the identity again instead of assuming it is 1.
+  
+  root := Position(all_vertices,Identity(G));
+  labels := List(OutNeighboursOfVertex(D,1),x->all_vertices[x]);  
+  SetDigraphEdgeLabels(D, ListWithIdenticalEntries(Size(G), labels)); 
+ 
   SetDigraphVertexLabels(D, AsList(G));
 
   return D;
