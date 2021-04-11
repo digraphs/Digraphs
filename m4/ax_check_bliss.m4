@@ -6,7 +6,7 @@ dnl otherwise use the included version
 dnl
 AC_DEFUN([AX_CHECK_BLISS], [
   AC_ARG_WITH([external-bliss],
-	      [AC_HELP_STRING([--with-external-bliss],
+	      [AS_HELP_STRING([--with-external-bliss],
 			      [use external bliss])],
               [],
               [with_external_bliss=no])
