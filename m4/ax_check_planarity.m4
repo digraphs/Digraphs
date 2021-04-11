@@ -6,7 +6,7 @@ dnl otherwise use the included version
 dnl
 AC_DEFUN([AX_CHECK_PLANARITY], [
   AC_ARG_WITH([external-planarity],
-	      [AC_HELP_STRING([--with-external-planarity],
+	      [AS_HELP_STRING([--with-external-planarity],
 			      [use external planarity])],
               [],
               [with_external_planarity=no])
