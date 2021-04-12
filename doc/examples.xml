@@ -715,7 +715,7 @@ true
     (as the "Book Spine") and the <M><A>m</A>+1</M> star digraph (as the "Pages").
     For more details on the Book digraph please refer to <URL>https://mathworld.wolfram.com/BookGraph.html</URL>.<P/>
 
-    See <Ref Oper="DigraphCartesianProduct"/>,
+    See <Ref Func="DigraphCartesianProduct" Label="for a positive number of digraphs"/>,
     <Ref Oper="CompleteDigraph"/>, and <Ref Oper="StarDigraph"/>. <P/>
 
     If the optional first argument <A>filt</A> is present, then this should
@@ -743,4 +743,3 @@ true
   </Description>
 </ManSection>
 <#/GAPDoc>
-
