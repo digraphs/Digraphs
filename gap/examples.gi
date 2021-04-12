@@ -712,3 +712,31 @@ function(filt, m, n)
   SetIsSymmetricDigraph(D, true);
   return D;
 end);
+
+InstallMethod(BookDigraphCons,
+"for IsMutableDigraph and one positive integer",
+[IsMutableDigraph, IsPosInt],
+function(filt, m)
+  local book;
+  book := CompleteDigraph(IsMutable, 2);
+  return DigraphCartesianProduct(book, StarDigraph(IsMutable, m + 1));
+end);
+
+InstallMethod(BookDigraph, "for a function and one positive integer",
+[IsFunction, IsPosInt],
+BookDigraphCons);
+
+InstallMethod(BookDigraph, "for one positive integer", [IsPosInt],
+{m} -> BookDigraphCons(IsImmutableDigraph, m));
+
+InstallMethod(BookDigraphCons,
+"for IsImmutableDigraph and one positive integer",
+[IsImmutableDigraph, IsPosInt],
+function(filt, m)
+  local D;
+  D := MakeImmutable(BookDigraph(IsMutableDigraph, m));
+  SetIsMultiDigraph(D, false);
+  SetIsSymmetricDigraph(D, true);
+  SetIsBipartiteDigraph(D, true);
+  return D;
+end);

@@ -365,6 +365,22 @@ true
 gap> TadpoleDigraph(3, 1);
 <immutable symmetric digraph with 4 vertices, 8 edges>
 
+# BookDigraph
+gap> BookDigraph(1);
+<immutable bipartite symmetric digraph with bicomponent sizes 2 and 2>
+gap> BookDigraph(2);
+<immutable bipartite symmetric digraph with bicomponent sizes 3 and 3>
+gap> BookDigraph(7);
+<immutable bipartite symmetric digraph with bicomponent sizes 8 and 8>
+gap> BookDigraph(12);
+<immutable bipartite symmetric digraph with bicomponent sizes 13 and 13>
+gap> BookDigraph(IsMutable, 12);
+<mutable digraph with 26 vertices, 74 edges>
+gap> IsSymmetricDigraph(BookDigraph(24));
+true
+gap> IsBipartiteDigraph(BookDigraph(32));
+true
+
 #
 gap> DIGRAPHS_StopTest();
 gap> STOP_TEST("Digraphs package: standard/examples.tst", 0);
