@@ -33,7 +33,7 @@ end);
 #   children have been visited (i.e. when we backtrack from record.child to
 #   record.parent[record.child]).
 # * AncestorFunc is called with (record, data) when (record.current,
-#   record.child) is an   edge and v is an ancestor of record.current.
+#   record.child) is an   edge and record.child is an ancestor of record.current.
 # * CrossFunc is called with (record, data) when (record.current, record.child)
 #   is an edge, the preorder value of record.current is greater than the
 #   preorder value of v, and record.current and v are unrelated by ancestry.
@@ -216,6 +216,7 @@ function(D)
   # Print(data.orientation);
   return [connected, data.articulation_points, data.bridges, data.orientation];
 end);
+
 
 # The next method is (yet another) DFS which simultaneously computes:
 # 1. *articulation points* as described in
