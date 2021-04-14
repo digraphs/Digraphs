@@ -30,8 +30,9 @@ end);
 
 # * PreOrderFunc is called with (record, data) when a vertex is popped from the
 #   stack for the first time.
-# * PostOrderFunc is called with (record, data) and record.current = v when all
-#   of the vertex v's children have been visited.
+# * PostOrderFunc is called with (record, data) when all of record.child's 
+#   children have been visited (i.e. when we backtrack from record.child to
+#   record.parent[record.child]).
 # * AncestorFunc is called with (record, data) when (record.current,
 #   record.child) is an   edge and v is an ancestor of record.current.
 # * CrossFunc is called with (record, data) when (record.current, record.child)
@@ -59,9 +60,10 @@ function(record, data, start, PreOrderFunc, PostOrderFunc, AncestorFunc,
 
     record.current := Pop(record.stack);
     if record.current < 0 then
-      record.current := -1 * record.current;
+      record.child := -1 * record.current;
+      record.current := record.parent[record.child];
       PostOrderFunc(record, data);
-      record.postorder[record.current] := postorder_num;
+      record.postorder[record.child] := postorder_num;
       postorder_num := postorder_num + 1;
       continue;
     elif record.preorder[record.current] > 0 then
@@ -116,22 +118,20 @@ function(D)
 
   PostOrderFunc := function(record, data)
     local current, child, children_seen;
-    current := record.current;
-
-    for child in OutNeighbours(record.graph)[current] do
-      if record.preorder[child] > record.preorder[current] then
-        # stops the duplication of articulation_points
-        if current <> 1 and data.low[child] >= record.preorder[current] then
-          Add(data.articulation_points, current);
-        fi;
-        if data.low[child] = record.preorder[child] then
-          Add(data.bridges, [current, child]);
-        fi;
-        if data.low[child] < data.low[current] then
-          data.low[current] := data.low[child];
-        fi;
+    child := record.child;
+    current := record.parent[child];
+    if record.preorder[child] > record.preorder[current] then
+      # stops the duplication of articulation_points
+      if current <> 1 and data.low[child] >= record.preorder[current] then
+        Add(data.articulation_points, current);
       fi;
-    od;
+      if data.low[child] = record.preorder[child] then
+        Add(data.bridges, [current, child]);
+      fi;
+      if data.low[child] < data.low[current] then
+        data.low[current] := data.low[child];
+      fi;
+    fi;
   end;
 
   PreOrderFunc := function(record, data)
