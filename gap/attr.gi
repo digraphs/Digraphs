@@ -21,113 +21,71 @@ function(graph)
   record.stack := Stack();
   record.child := 0;
   record.current := 0;
-  record.neighbours := OutNeighbors(graph);
   record.parent := ListWithIdenticalEntries(DigraphNrVertices(graph), -1);
-  record.visited := ListWithIdenticalEntries(DigraphNrVertices(graph), -1);
+  record.preorder := ListWithIdenticalEntries(DigraphNrVertices(graph), -1);
+  record.postorder := ListWithIdenticalEntries(DigraphNrVertices(graph), -1);
   return record;
 end);
 
-BindGlobal("BacktrackFunc",
-function(record, data)
-  local current, child, children_seen;
-  current := record.current;
 
-  # stops the duplication of backtracks
-  children_seen := BlistList([1 .. DigraphNrVertices(record.graph)], []);
-  for child in record.neighbours[current] do
-    if children_seen[child] then
-      continue;
-    else
-      children_seen[child] := true;
-    fi;
-    if data.pre[child] > data.pre[current] then
-      # stops the duplication of articulation_points
-      if current <> 1 and data.low[child] >= data.pre[current] and Position(data.articulation_points, current) = fail then
-        Add(data.articulation_points, current);
-      fi;
-      if data.low[child] = data.pre[child] then
-        Add(data.bridges, [current, child]);
-      fi;
-      if data.low[child] < data.low[current] then
-        data.low[current] := data.low[child];
-      fi;
-    fi;
-  od;
-end);
-
-BindGlobal("DiveFunc",
-function(record, data)
-  local current, parent;
-  current := record.current;
-  if current <> 1 then
-    parent := record.parent[current];
-    if parent = 1 then
-      data.nr_children := data.nr_children + 1;
-    fi;
-    data.orientation[parent][current] := true;
-  fi;
-  data.counter := data.counter + 1;
-  data.low[current] := data.counter;
-  data.pre[current] := data.counter;
-end);
-
-BindGlobal("BackEdgeFunc",
-function(record, data)
-  local current, child, parent;
-  current := record.current;
-  child := record.child;
-  parent := record.parent[current];
-  # current -> child is a back edge
-  if child <> parent and data.pre[child] < data.low[current] then
-    data.low[current] := data.pre[child];
-  fi;
-  data.orientation[current][child] := not data.orientation[child][current];
-end);
+# * PreOrderFunc is called with (record, data) when a vertex is popped from the
+#   stack for the first time.
+# * PostOrderFunc is called with (record, data) and record.current = v when all
+#   of the vertex v's children have been visited.
+# * AncestorFunc is called with (record, data) when (record.current,
+#   record.child) is an   edge and v is an ancestor of record.current.
+# * CrossFunc is called with (record, data) when (record.current, record.child)
+#   is an edge, the preorder value of record.current is greater than the preorder
+#   value of v, and record.current and v are unrelated by ancestry. 
 
 BindGlobal("ExecuteDFS",
-function(record, data, start, BacktrackFunc, DiveFunc, BackEdgeFunc)
-  local enstacked, neighbours, v, j, k;
+function(record, data, start, PreOrderFunc, PostOrderFunc, AncestorFunc,
+  CrossFunc)
+  local preorder_num, postorder_num, neighbours, v, j;
 
   # invalid start point
   if DigraphNrVertices(record.graph) < start then
+    # TODO error
     return false;
   fi;
-  
+
   # sets up (adds the first index and node to the stack)
   Push(record.stack, start);
-
   record.parent[start] := start;
+  preorder_num := 1;
+  postorder_num := 1;
 
   while Size(record.stack) <> 0 do
-    record.current := Peek(record.stack);
-    if record.visited[record.current] = 1 then
-      BacktrackFunc(record, data);
-      Pop(record.stack);
+
+    record.current := Pop(record.stack);
+    if record.current < 0 then
+      record.current := -1 * record.current;
+      PostOrderFunc(record, data);
+      record.postorder[record.current] := postorder_num;
+      postorder_num := postorder_num + 1;
+      continue;
+    elif record.preorder[record.current] > 0 then
       continue;
     else
-      DiveFunc(record, data);
-      record.visited[record.current] := 1;
+      PreOrderFunc(record, data);
+      record.preorder[record.current] := preorder_num;
+      preorder_num := preorder_num + 1;
+      Push(record.stack, -1 * record.current);
     fi;
-    
-    # only remember those enstacked for the current node
-    enstacked := BlistList([1 .. DigraphNrVertices(record.graph)], []);
-    enstacked[start] := true;
-    
-    neighbours := record.neighbours[record.current];
+
+    neighbours := OutNeighbours(record.graph)[record.current];
+
     for j in [0 .. Size(neighbours) - 1] do
-      # make sure push in the correct order
       v := neighbours[Size(neighbours) - j];
       record.child := v;
-
-      # update the parent
-      if record.visited[v] = -1 then
+      if record.preorder[v] = -1 then
         record.parent[v] := record.current;
-      fi;
-      if record.visited[v] = -1 and not enstacked[v] then
         Push(record.stack, v);
-        enstacked[v] := true;
-      elif record.visited[v] <> -1 then
-        BackEdgeFunc(record, data);
+      elif record.postorder[v] = -1 then
+        # v is an ancestor of record.current
+        AncestorFunc(record, data);
+      elif record.preorder[v] < record.preorder[record.current] then
+        CrossFunc(record, data);
       fi;
     od;
   od;
@@ -136,7 +94,8 @@ end);
 
 BindGlobal("DIGRAPHS_ArticulationPointsBridgesStrongOrientation",
 function(D)
-  local N, copy, record, connected, data;
+  local N, copy, PostOrderFunc, PreOrderFunc, AncestorCrossFunc, data, record, connected;
+
   N := DigraphNrVertices(D);
 
   if HasIsConnectedDigraph(D) and not IsConnectedDigraph(D) then
@@ -147,16 +106,59 @@ function(D)
     # the graph disconnected), no bridges, strong orientation (since
     # the digraph with 0 nodes is strongly connected).
     return [true, [], [], D];
-  elif not IsSymmetricDigraph(D) then
-    copy := DigraphSymmetricClosure(DigraphMutableCopyIfMutable(D));
+  elif not IsSymmetricDigraph(D) or IsMultiDigraph(D) then
+    copy := DigraphSymmetricClosure(DigraphMutableCopy(D));
+    copy := DigraphRemoveAllMultipleEdges(copy);
     MakeImmutable(copy);
   else
     copy := D;
   fi;
 
-  # DFS record
+  PostOrderFunc := function(record, data)
+    local current, child, children_seen;
+    current := record.current;
 
-  record := NewDFSRecord(copy);
+    for child in OutNeighbours(record.graph)[current] do
+      if record.preorder[child] > record.preorder[current] then
+        # stops the duplication of articulation_points
+        if current <> 1 and data.low[child] >= record.preorder[current] then
+          Add(data.articulation_points, current);
+        fi;
+        if data.low[child] = record.preorder[child] then
+          Add(data.bridges, [current, child]);
+        fi;
+        if data.low[child] < data.low[current] then
+          data.low[current] := data.low[child];
+        fi;
+      fi;
+    od;
+  end;
+
+  PreOrderFunc := function(record, data)
+    local current, parent;
+    current := record.current;
+    if current <> 1 then
+      parent := record.parent[current];
+      if parent = 1 then
+        data.nr_children := data.nr_children + 1;
+      fi;
+      data.orientation[parent][current] := true;
+    fi;
+    data.counter := data.counter + 1;
+    data.low[current] := data.counter;
+  end;
+
+  AncestorCrossFunc := function(record, data)
+    local current, child, parent;
+    current := record.current;
+    child := record.child;
+    parent := record.parent[current];
+    # current -> child is a back edge
+    if child <> parent and record.preorder[child] < data.low[current] then
+      data.low[current] := record.preorder[child];
+    fi;
+    data.orientation[current][child] := not data.orientation[child][current];
+  end;
 
   data := rec();
 
@@ -168,9 +170,6 @@ function(D)
   # low[i] is the lowest value in pre currently reachable from node i.
   data.low := [];
 
-  # the order in which the nodes are visited, -1 indicates "not yet visited".
-  data.pre := ListWithIdenticalEntries(N, -1);
-
   # number of nodes encountered in the search so far
   data.counter := 0;
 
@@ -178,7 +177,14 @@ function(D)
   # articulation point if and only if it has at least 2 children.
   data.nr_children := 0;
 
-  ExecuteDFS(record, data, 1, BacktrackFunc, DiveFunc, BackEdgeFunc);
+  record := NewDFSRecord(copy);
+  ExecuteDFS(record, 
+             data, 
+             1, 
+             PreOrderFunc, 
+             PostOrderFunc, 
+             AncestorCrossFunc, 
+             AncestorCrossFunc);
   # Print(data);
   # Print(record);
   # Print(Size(record.stack));
