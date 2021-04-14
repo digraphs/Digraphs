@@ -1849,7 +1849,7 @@ function(D, root)
     fi;
   end;
 
-  ExecuteDFS(record, 
+  ExecuteDFS_C(record, 
                data, 
                root, 
                PreOrderFunc, 
