@@ -27,17 +27,16 @@ function(graph)
   return record;
 end);
 
-
 # * PreOrderFunc is called with (record, data) when a vertex is popped from the
 #   stack for the first time.
-# * PostOrderFunc is called with (record, data) when all of record.child's 
+# * PostOrderFunc is called with (record, data) when all of record.child's
 #   children have been visited (i.e. when we backtrack from record.child to
 #   record.parent[record.child]).
 # * AncestorFunc is called with (record, data) when (record.current,
 #   record.child) is an   edge and v is an ancestor of record.current.
-# * CrossFunc is called with (record, data) when (record.current, record.child)
-#   is an edge, the preorder value of record.current is greater than the preorder
-#   value of v, and record.current and v are unrelated by ancestry. 
+# * CrossFunc is called with (record, data) when (record.current, record.child)
+#   is an edge, the preorder value of record.current is greater than the
+#   preorder value of v, and record.current and v are unrelated by ancestry.
 
 BindGlobal("ExecuteDFS",
 function(record, data, start, PreOrderFunc, PostOrderFunc, AncestorFunc,
@@ -96,7 +95,8 @@ end);
 
 BindGlobal("DIGRAPHS_ArticulationPointsBridgesStrongOrientation",
 function(D)
-  local N, copy, PostOrderFunc, PreOrderFunc, AncestorCrossFunc, data, record, connected;
+  local N, copy, PostOrderFunc, PreOrderFunc, AncestorCrossFunc, data, record,
+  connected;
 
   N := DigraphNrVertices(D);
 
@@ -117,7 +117,7 @@ function(D)
   fi;
 
   PostOrderFunc := function(record, data)
-    local current, child, children_seen;
+    local child, current;
     child := record.child;
     current := record.parent[child];
     if record.preorder[child] > record.preorder[current] then
@@ -178,12 +178,12 @@ function(D)
   data.nr_children := 0;
 
   record := NewDFSRecord(copy);
-  ExecuteDFS(record, 
-             data, 
-             1, 
-             PreOrderFunc, 
-             PostOrderFunc, 
-             AncestorCrossFunc, 
+  ExecuteDFS(record,
+             data,
+             1,
+             PreOrderFunc,
+             PostOrderFunc,
+             AncestorCrossFunc,
              AncestorCrossFunc);
   # Print(data);
   # Print(record);
@@ -359,7 +359,7 @@ function(D)
       fi;
     od;
   until Size(stack) = 0;
-  
+
   # Print(DigraphNrVertices(D));
   # Print("\n");
   # Print(nr_children);
@@ -1023,7 +1023,7 @@ function(D, v)
   #
   # localParameters is a list of 3-tuples [a_{i - 1}, b_{i - 1}, c_{i - 1}] for
   # each i between 1 and localDiameter where c_i (respectively a_i and b_i) is
-  # the number of vertices at distance i − 1 (respectively i and i + 1) from v
+  # the number of vertices at distance i  1 (respectively i and i + 1) from v
   # that are adjacent to a vertex w at distance i from v.
 
   # <tree> gives a shortest path spanning tree rooted at <v> and is used by
