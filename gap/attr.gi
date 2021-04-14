@@ -43,6 +43,9 @@ function(record, data, start, PreOrderFunc, PostOrderFunc, AncestorFunc,
   CrossFunc)
   local preorder_num, postorder_num, neighbours, v, j;
 
+  # TODO check that record is valid
+  # TODO check that PreOrderFunc etc are valid
+
   # invalid start point
   if DigraphNrVertices(record.graph) < start then
     # TODO error

@@ -1850,13 +1850,12 @@ function(D, root)
   end;
 
   ExecuteDFS(record, 
-             data, 
-             root, 
-             PreOrderFunc, 
-             ReturnNothing, 
-             AncestorFunc,
-             ReturnNothing);
-  
+               data, 
+               root, 
+               PreOrderFunc, 
+               ReturnNothing, 
+               AncestorFunc,
+               ReturnNothing);
   return data.result;
 end);
 
