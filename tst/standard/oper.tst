@@ -1785,7 +1785,7 @@ gap> D := CompleteDigraph(5);
 gap> VerticesReachableFrom(D, 1);
 [ 2, 1, 3, 4, 5 ]
 gap> VerticesReachableFrom(D, 3);
-[ 1, 2, 3, 4, 5 ]
+[ 1, 3, 2, 4, 5 ]
 gap> D := EmptyDigraph(5);
 <immutable empty digraph with 5 vertices>
 gap> VerticesReachableFrom(D, 1);
@@ -1831,7 +1831,7 @@ gap> VerticesReachableFrom(D, 1);
 gap> VerticesReachableFrom(D, 2);
 [ 4 ]
 gap> VerticesReachableFrom(D, 3);
-[ 1, 2, 4, 3, 5 ]
+[ 1, 3, 2, 4, 5 ]
 gap> VerticesReachableFrom(D, 4);
 [  ]
 gap> VerticesReachableFrom(D, 5);
@@ -1843,7 +1843,7 @@ gap> VerticesReachableFrom(D, 1);
 gap> VerticesReachableFrom(D, 2);
 [ 4 ]
 gap> VerticesReachableFrom(D, 3);
-[ 1, 2, 4, 3, 5 ]
+[ 1, 3, 2, 4, 5 ]
 gap> VerticesReachableFrom(D, 4);
 [  ]
 gap> VerticesReachableFrom(D, 5);

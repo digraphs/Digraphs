@@ -13,13 +13,14 @@
 *******************************************************************************/
 
 #include "digraphs.h"
-#include "digraphs-config.h"
 
 #include <stdbool.h>  // for false, true, bool
 #include <stdint.h>   // for uint64_t
 #include <stdlib.h>   // for NULL, free
 
 #include "cliques.h"
+#include "dfs.h"  // for ExecuteDFS
+#include "digraphs-config.h"
 #include "digraphs-debug.h"  // for DIGRAPHS_ASSERT
 #include "homos.h"           // for FuncHomomorphismDigraphsFinder
 #include "planar.h"          // for FUNC_IS_PLANAR, . . .
@@ -2312,6 +2313,12 @@ static StructGVarFunc GVarFuncs[] = {
      "digraph",
      FuncSUBGRAPH_HOMEOMORPHIC_TO_K4,
      "src/planar.c:FuncSUBGRAPH_HOMEOMORPHIC_TO_K4"},
+
+    {"ExecuteDFS_C",
+     7,
+     "record, data, start, PreorderFunc, x, y, z",
+     ExecuteDFS,
+     "src/dfs.c:ExecuteDFS"},
 
     {0, 0, 0, 0, 0} /* Finish with an empty entry */
 };
