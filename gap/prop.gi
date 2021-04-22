@@ -173,7 +173,7 @@ D -> DigraphNrVertices(D) <= 1 and IsEmptyDigraph(D));
 InstallMethod(IsAcyclicDigraph, "for a digraph by out-neighbours",
 [IsDigraphByOutNeighboursRep],
 function(D)
-  local n;
+  local n, i, record, data, FoundCycle, components;
   n := DigraphNrVertices(D);
   if n = 0 then
     return true;
@@ -188,7 +188,25 @@ function(D)
     fi;
     return false;
   fi;
-  return IS_ACYCLIC_DIGRAPH(OutNeighbours(D));
+  record := NewDFSRecord(D);
+  data := rec();
+  data.acyclic := true;
+  FoundCycle := function(record, data)
+    data.acyclic := false;
+  end;
+
+  components := DigraphConnectedComponents(D);
+  if Size(components.comps) = 1 then
+    ExecuteDFS_C(record, data, 1, Nothing, Nothing, FoundCycle, Nothing);
+    return data.acyclic;
+  fi;
+
+  for i in [1 .. Size(components.comps)] do
+    record := NewDFSRecord(D);
+    ExecuteDFS_C(record, data, components.comps[i][1], Nothing, Nothing, FoundCycle, Nothing);
+    if not data.acyclic then return false; fi;
+  od;
+  return true;
 end);
 
 # Complexity O(number of edges)

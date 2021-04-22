@@ -1559,6 +1559,63 @@ function(D, u, v)
   return IteratorByFunctions(record);
 end);
 
+# InstallMethod(DigraphLongestDistanceFromVertex, "for a digraph and a pos int",
+# [IsDigraphByOutNeighboursRep, IsPosInt],
+# function(D, v)
+#   local dist, record, PreOrderFunc, PostOrderFunc, data, AncestorFunc, CrossFunc;
+
+#   if not v in DigraphVertices(D) then
+#     ErrorNoReturn("the 2nd argument <v> must be a vertex of the 1st ",
+#                   "argument <D>,");
+#   fi;
+#   record := NewDFSRecord(D);
+
+#   data := rec();
+#   data.current_length := 0;
+#   data.longest_length := -2;
+#   data.loop := false;
+#   data.leaf := false;
+#   data.results := ListWithIdenticalEntries(DigraphNrVertices(D), 0);
+
+#   PreOrderFunc := function(record, data)
+#     data.current_length := data.current_length + 1;
+#     # reached a leaf node
+#     if Size(OutNeighborsOfVertex(record.graph, record.current)) = 0 then
+#       data.leaf := true;
+#     fi;
+#   end;
+
+#   PostOrderFunc := function(record, data)
+#     data.results[record.current] := data.current_length;
+#     data.current_length := data.current_length - 1;
+#     if data.leaf then
+#       if data.current_length > data.longest_length then
+#         data.longest_length := data.current_length;
+#       fi;
+#       data.leaf := false;
+#     fi;
+#   end;
+
+#   CrossFunc := function(record, data)
+#     local current_score;
+#     current_score := data.current_score + data.result[record.child];
+
+#     Push(record.stack, record.child);
+#     record.preorder[record.child] := -1;
+#   end;
+
+#   AncestorFunc := function(record, data)
+#     data.loop := true;
+#   end;
+
+#   ExecuteDFS_C(record, data, v, PreOrderFunc, PostOrderFunc, AncestorFunc, CrossFunc);
+#   # dist := DIGRAPH_LONGEST_DIST_VERTEX(OutNeighbours(D), v);
+#   if data.longest_length = -2 or data.loop then
+#     return infinity;
+#   fi;
+#   return data.longest_length;
+# end);
+
 InstallMethod(DigraphLongestDistanceFromVertex, "for a digraph and a pos int",
 [IsDigraphByOutNeighboursRep, IsPosInt],
 function(D, v)

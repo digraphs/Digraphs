@@ -60,6 +60,7 @@ function(record, data, start, PreOrderFunc, PostOrderFunc, AncestorFunc,
 
   # TODO check that record is valid
   # TODO check that PreOrderFunc etc are valid
+  # TODO make sure graph is connected
 
   # invalid start point
   if DigraphNrVertices(record.graph) < start then
