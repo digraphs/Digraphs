@@ -326,7 +326,29 @@ D -> DigraphPeriod(D) = 1);
 
 InstallMethod(IsAntisymmetricDigraph, "for a digraph by out-neighbours",
 [IsDigraphByOutNeighboursRep],
-D -> IS_ANTISYMMETRIC_DIGRAPH(OutNeighbours(D)));
+function(D)
+  local i, record, data, AncestorFunc;
+  record := NewDFSRecord(D);
+  data := rec();
+  data.antisymmetric := true;
+
+  AncestorFunc := function(record, data)
+    local i, neighbours;
+    if not data.antisymmetric or record.child = record.current then
+      return;
+    fi;
+    # checks if the child has a symmetric edge with current node
+    neighbours := OutNeighboursOfVertex(record.graph, record.child);
+    for i in [1 .. Size(neighbours)] do
+      if neighbours[i] = record.current then
+        data.antisymmetric := false;
+        return;
+      fi;
+    od;
+  end;
+  ExecuteDFS(record, data, 1, Nothing, Nothing, AncestorFunc, Nothing);
+  return data.antisymmetric;
+end);
 
 InstallMethod(IsTransitiveDigraph, "for a digraph by out-neighbours",
 [IsDigraphByOutNeighboursRep],
