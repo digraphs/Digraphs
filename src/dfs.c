@@ -25,22 +25,23 @@ Obj ExecuteDFS(Obj self, Obj args) {
     ErrorQuit("there must be 7 arguments, found %d,", LEN_PLIST(args), 0L);
   }
   Obj record = ELM_PLIST(args, 1);
-  DIGRAPHS_ASSERT(IS_PREC(record));
   Obj data  = ELM_PLIST(args, 2);
   Obj start = ELM_PLIST(args, 3);
-  DIGRAPHS_ASSERT(IS_INTOBJ(start));
   Obj PreorderFunc = ELM_PLIST(args, 4);
-  DIGRAPHS_ASSERT(IS_FUNC(PreorderFunc));
-  DIGRAPHS_ASSERT(NARG_FUNC(PreorderFunc) == 2);
   Obj PostOrderFunc = ELM_PLIST(args, 5);
-  DIGRAPHS_ASSERT(IS_FUNC(PostOrderFunc));
-  // DIGRAPHS_ASSERT(NARG_FUNC(PostOrderFunc) == 2);
   Obj AncestorFunc = ELM_PLIST(args, 6);
+  Obj CrossFunc = ELM_PLIST(args, 7);
+  
+  DIGRAPHS_ASSERT(NARG_FUNC(PreorderFunc) == 2);
   DIGRAPHS_ASSERT(IS_FUNC(AncestorFunc));
   DIGRAPHS_ASSERT(NARG_FUNC(AncestorFunc) == 2);
-  Obj CrossFunc = ELM_PLIST(args, 7);
+  DIGRAPHS_ASSERT(IS_FUNC(PostOrderFunc));
+  DIGRAPHS_ASSERT(NARG_FUNC(PostOrderFunc) == 2);
+  DIGRAPHS_ASSERT(IS_FUNC(PreorderFunc));
+  DIGRAPHS_ASSERT(IS_PREC(record));
+  DIGRAPHS_ASSERT(IS_INTOBJ(start));
   DIGRAPHS_ASSERT(IS_FUNC(CrossFunc));
-  // DIGRAPHS_ASSERT(NARG_FUNC(CrossFunc) == 2);
+  DIGRAPHS_ASSERT(NARG_FUNC(CrossFunc) == 2);
 
   Obj D = ElmPRec(record, RNamName("graph"));
   Int N = DigraphNrVertices(D);
@@ -77,7 +78,7 @@ Obj ExecuteDFS(Obj self, Obj args) {
       Int child = -1 * current;
       AssPRec(record, RNamChild, INTOBJ_INT(child));
       AssPRec(record, RNamCurrent, ELM_PLIST(parent, child));
-      // CALL_2ARGS(PostOrderFunc, record, data);
+      CALL_2ARGS(PostOrderFunc, record, data);
       SET_ELM_PLIST(postorder, child, INTOBJ_INT(++postorder_num));
       CHANGED_BAG(record);
       continue;
@@ -103,11 +104,10 @@ Obj ExecuteDFS(Obj self, Obj args) {
         CALL_2ARGS(AncestorFunc, record, data);
       } else if (INT_INTOBJ(ELM_PLIST(preorder, v))
                  < INT_INTOBJ(ELM_PLIST(preorder, current))) {
-        // CALL_2ARGS(CrossFunc, record, data);
+        CALL_2ARGS(CrossFunc, record, data);
       }
     }
   }
-  // AssPRec(record, RNamName("current"), INTOBJ_INT(current));
   return record;
 }
 

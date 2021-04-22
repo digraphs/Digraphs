@@ -1447,118 +1447,6 @@ function(out, u, v)
   return IteratorOfPathsNC(out, u, v);
 end);
 
-# InstallMethod(IteratorOfPathsNC, "for a list and two pos ints",
-# [IsList, IsPosInt, IsPosInt],
-# function(D, u, v)
-#   local n, record;
-
-#   n := Length(D);
-#   # can assume that n > 0 since u and v are extant vertices of digraph
-#   Assert(1, n > 0);
-
-#   record := rec(adj := D,
-#                 start := u,
-#                 stop := v,
-#                 onpath := BlistList([1 .. n], []),
-#                 nbs := ListWithIdenticalEntries(n, 1));
-
-#   record.NextIterator := function(iter)
-#     local adj, path, ptr, nbs, level, stop, onpath, backtracked, j, k, current,
-#     new, next, x;
-
-#     adj := iter!.adj;
-#     path := [iter!.start];
-#     ptr := ListWithIdenticalEntries(n, 0);
-#     nbs := iter!.nbs;
-#     level := 1;
-#     stop := iter!.stop;
-#     onpath := iter!.onpath;
-
-#     backtracked := false;
-#     while true do
-#       j := path[level];
-#       k := nbs[j];
-
-#       # Backtrack if vertex j is already in path, or it has no k^th neighbour
-#       if (not ptr[j] = 0 or k > Length(adj[j])) then
-#         if k > Length(adj[j]) then
-#           nbs[j] := 1;
-#         fi;
-#         if k > Length(adj[j]) and onpath[j] then
-#           ptr[j] := 0;
-#         else
-#           ptr[j] := 1;
-#         fi;
-#         level := level - 1;
-#         backtracked := true;
-#         if level = 0 then
-#           # No more paths to be found
-#           current := fail;
-#           break;
-#         fi;
-#         # Backtrack and choose next available branch
-#         Remove(path);
-#         ptr[path[level]] := 0;
-#         nbs[path[level]] := nbs[path[level]] + 1;
-#         continue;
-#       fi;
-
-#       # Otherwise move into next available branch
-
-#       # Check if new branch is a valid complete path
-#       if adj[j][k] = stop then
-#         current := [Concatenation(path, [adj[j][k]]), List(path, x -> nbs[x])];
-#         nbs[j] := nbs[j] + 1;
-#         # Everything in the path should keep its nbs
-#         # but everything else should be back to 1
-#         new := ListWithIdenticalEntries(n, 1);
-#         for x in path do
-#           onpath[x] := true;
-#           new[x] := nbs[x];
-#         od;
-#         iter!.nbs := new;
-#         iter!.onpath := onpath;
-#         break;
-#       fi;
-#       ptr[j] := 2;
-#       level := level + 1;
-#       path[level] := adj[j][k];
-#       # this is the troublesome line
-#       if ptr[path[level]] = 0 and backtracked then
-#         nbs[path[level]] := 1;
-#       fi;
-#     od;
-
-#     if not IsBound(iter!.current) then
-#       return current;
-#     fi;
-
-#     next := iter!.current;
-#     iter!.current := current;
-#     return next;
-#   end;
-
-#   record.current := record.NextIterator(record);
-
-#   record.IsDoneIterator := function(iter)
-#     if iter!.current = fail then
-#       return true;
-#     fi;
-#     return false;
-#   end;
-
-#   record.ShallowCopy := function(iter)
-#     return rec(adj := iter!.adj,
-#                start := iter!.start,
-#                stop := iter!.stop,
-#                nbs := ShallowCopy(iter!.nbs),
-#                onpath := ShallowCopy(iter!.onpath),
-#                current := ShallowCopy(iter!.current));
-#   end;
-
-#   return IteratorByFunctions(record);
-# end);
-
 InstallMethod(IteratorOfPathsNC, "for a list and two pos ints",
 [IsList, IsPosInt, IsPosInt],
 function(D, u, v)
@@ -1965,9 +1853,9 @@ function(D, root)
                data, 
                root, 
                PreOrderFunc, 
-               ReturnNothing, 
+               Nothing, 
                AncestorFunc,
-               ReturnNothing);
+               Nothing);
   return data.result;
 end);
 
@@ -1992,13 +1880,13 @@ function(D, root)
   end;
  
   record := NewDFSRecord(D);
-  ExecuteDFS(record, 
+  ExecuteDFS_C(record, 
              preorder_num_to_node, 
              root, 
              PreOrderFunc, 
-             ReturnNothing, 
-             ReturnNothing, 
-             ReturnNothing);
+             Nothing, 
+             Nothing, 
+             Nothing);
 
   parent := record.parent;
   parent[root] := fail;
@@ -2159,19 +2047,4 @@ function(D, i, j)
   od;
 
   return fail;
-end);
-
-InstallMethod(DigraphPreorder, "for a digraph and root vertex",
-[IsDigraph, IsPosInt],
-function(D, r)
-  local record;
-  record := NewDFSRecord(D);
-  ExecuteDFS(record, 
-             r,
-             fail,
-             ReturnNothing, 
-             ReturnNothing, 
-             ReturnNothing,
-             ReturnNothing);
-  return record.preorder;
 end);

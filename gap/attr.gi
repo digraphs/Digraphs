@@ -27,21 +27,36 @@ function(graph)
   return record;
 end);
 
+BindGlobal("ResetDFSRecord",
+function(record)
+  record.stack := Stack();
+  record.child := 0;
+  record.current := 0;
+  record.parent := ListWithIdenticalEntries(DigraphNrVertices(record.graph), -1);
+  record.preorder := ListWithIdenticalEntries(DigraphNrVertices(record.graph), -1);
+  record.postorder := ListWithIdenticalEntries(DigraphNrVertices(record.graph), -1);
+  return record;
+end);
+
+BindGlobal("Nothing",
+function(record, data)
+end);
+
 # * PreOrderFunc is called with (record, data) when a vertex is popped from the
 #   stack for the first time.
 # * PostOrderFunc is called with (record, data) when all of record.child's
 #   children have been visited (i.e. when we backtrack from record.child to
 #   record.parent[record.child]).
 # * AncestorFunc is called with (record, data) when (record.current,
-#   record.child) is an   edge and record.child is an ancestor of record.current.
+#   record.child) is an edge and record.child is an ancestor of record.current.
 # * CrossFunc is called with (record, data) when (record.current, record.child)
 #   is an edge, the preorder value of record.current is greater than the
-#   preorder value of v, and record.current and v are unrelated by ancestry.
+#   preorder value of child, and record.current and child are unrelated by ancestry.
 
 BindGlobal("ExecuteDFS",
 function(record, data, start, PreOrderFunc, PostOrderFunc, AncestorFunc,
   CrossFunc)
-  local preorder_num, postorder_num, neighbours, v, j;
+  local preorder_num, postorder_num, neighbours, child, j;
 
   # TODO check that record is valid
   # TODO check that PreOrderFunc etc are valid
@@ -80,15 +95,15 @@ function(record, data, start, PreOrderFunc, PostOrderFunc, AncestorFunc,
     neighbours := OutNeighbours(record.graph)[record.current];
 
     for j in [0 .. Size(neighbours) - 1] do
-      v := neighbours[Size(neighbours) - j];
-      record.child := v;
-      if record.preorder[v] = -1 then
-        record.parent[v] := record.current;
-        Push(record.stack, v);
-      elif record.postorder[v] = -1 then
-        # v is an ancestor of record.current
+      child := neighbours[Size(neighbours) - j];
+      record.child := child;
+      if record.preorder[child] = -1 then
+        record.parent[child] := record.current;
+        Push(record.stack, child);
+      elif record.postorder[child] = -1 then
+        # child is an ancestor of record.current
         AncestorFunc(record, data);
-      elif record.preorder[v] < record.preorder[record.current] then
+      elif record.preorder[child] < record.preorder[record.current] then
         CrossFunc(record, data);
       fi;
     od;
@@ -2345,6 +2360,7 @@ InstallMethod(UndirectedSpanningTree, "for an immutable digraph",
 InstallMethod(UndirectedSpanningTreeAttr, "for an immutable digraph",
 [IsImmutableDigraph],
 function(D)
+  local record, i, list, data, PostOrderFunc, C;
   if DigraphNrVertices(D) = 0
       or not IsStronglyConnectedDigraph(D)
       or (HasMaximalSymmetricSubdigraphAttr(D)
@@ -2353,7 +2369,23 @@ function(D)
           <> 2 * (DigraphNrVertices(D) - 1)) then
     return fail;
   fi;
-  return UndirectedSpanningForest(D);
+  D := MaximalSymmetricSubdigraph(D);
+  record := NewDFSRecord(D);
+  data := List(DigraphVertices(D), x-> []);
+
+  PostOrderFunc := function(record, data)
+    if record.child <> record.parent[record.child] then
+      Add(data[record.child], record.parent[record.child]);
+      Add(data[record.parent[record.child]], record.child);
+    fi;
+  end;
+  ExecuteDFS_C(record, data, 1, Nothing, PostOrderFunc, Nothing, Nothing);
+  C := Digraph(data);
+  SetUndirectedSpanningForestAttr(D, C);
+  SetIsUndirectedForest(C, true);
+  SetIsMultiDigraph(C, false);
+  SetDigraphHasLoops(C, false);
+  return C;
 end);
 
 InstallMethod(DigraphMycielskian, "for a digraph",
