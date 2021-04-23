@@ -757,7 +757,30 @@ end);
 
 InstallMethod(DigraphTopologicalSort, "for a digraph by out-neighbours",
 [IsDigraphByOutNeighboursRep],
-D -> DIGRAPH_TOPO_SORT(OutNeighbours(D)));
+function(D)
+  local i, record, data, AncestorFunc, PostOrderFunc;
+  record := NewDFSRecord(D);
+  data := rec();
+  data.failed := false;
+  data.count := 0;
+  data.out := ListWithIdenticalEntries(DigraphNrVertices(record.graph), 0);
+  AncestorFunc := function(record, data)
+    if not data.failed and record.current <> record.child then
+      data.failed := true;
+    fi;
+  end;
+  PostOrderFunc := function(record, data)
+    data.count := data.count + 1;
+    data.out[data.count] := record.child;
+  end;
+  for i in [1 .. DigraphNrVertices(D)] do
+    ExecuteDFS(record, data, i, Nothing, PostOrderFunc, AncestorFunc, Nothing);
+    if data.failed then
+      return fail;
+    fi;
+  od;
+  return data.out;
+end);
 
 InstallMethod(DigraphStronglyConnectedComponents,
 "for a digraph by out-neighbours",
