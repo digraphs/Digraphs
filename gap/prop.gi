@@ -197,13 +197,13 @@ function(D)
 
   components := DigraphConnectedComponents(D);
   if Size(components.comps) = 1 then
-    ExecuteDFS_C(record, data, 1, Nothing, Nothing, FoundCycle, Nothing);
+    ExecuteDFS_C(record, data, 1, DFSDefault, DFSDefault, FoundCycle, DFSDefault);
     return data.acyclic;
   fi;
 
   for i in [1 .. Size(components.comps)] do
     record := NewDFSRecord(D);
-    ExecuteDFS_C(record, data, components.comps[i][1], Nothing, Nothing, FoundCycle, Nothing);
+    ExecuteDFS_C(record, data, components.comps[i][1], DFSDefault, DFSDefault, FoundCycle, DFSDefault);
     if not data.acyclic then return false; fi;
   od;
   return true;
@@ -333,20 +333,19 @@ function(D)
   data.antisymmetric := true;
 
   AncestorFunc := function(record, data)
-    local i, neighbours;
+    local pos, neighbours;
     if not data.antisymmetric or record.child = record.current then
       return;
     fi;
     # checks if the child has a symmetric edge with current node
     neighbours := OutNeighboursOfVertex(record.graph, record.child);
-    for i in [1 .. Size(neighbours)] do
-      if neighbours[i] = record.current then
-        data.antisymmetric := false;
-        return;
-      fi;
-    od;
+    pos := Position(neighbours, record.current);
+    if pos <> fail then
+      data.antisymmetric := false;
+      return;
+    fi;
   end;
-  ExecuteDFS(record, data, 1, Nothing, Nothing, AncestorFunc, Nothing);
+  ExecuteDFS(record, data, 1, DFSDefault, DFSDefault, AncestorFunc, DFSDefault);
   return data.antisymmetric;
 end);
 

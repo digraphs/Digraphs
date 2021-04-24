@@ -1302,7 +1302,7 @@ function(D, u, v)
   path_info := Stack();
   AddToPath := function(current, child)
     local edge;
-    edge := PositionSorted(OutNeighborsOfVertex(D, current), child);
+    edge := Position(OutNeighborsOfVertex(D, current), child);
     Push(path_info, edge);
     Push(path_info, child);
   end;
@@ -1318,7 +1318,7 @@ function(D, u, v)
       AddToPath(record.current, record.child);
     fi;
   end;
-  ExecuteDFS(record, path_info, u, Nothing, PostOrderFunc, AncestorFunc, Nothing);
+  ExecuteDFS_C(record, path_info, u, DFSDefault, PostOrderFunc, AncestorFunc, DFSDefault);
   if Size(path_info) <= 1 then
     return fail;
   fi;
@@ -1621,7 +1621,7 @@ function(D, v)
       fi;
     od;
   end;
-  ExecuteDFS_C(record, data, v, PreOrderFunc, PostOrderFunc, AncestorFunc, Nothing);
+  ExecuteDFS_C(record, data, v, PreOrderFunc, PostOrderFunc, AncestorFunc, DFSDefault);
   if data.infinity then
     return infinity;
   fi;
@@ -1906,9 +1906,9 @@ function(D, root)
                data, 
                root, 
                PreOrderFunc, 
-               Nothing, 
+               DFSDefault, 
                AncestorFunc,
-               Nothing);
+               DFSDefault);
   return data.result;
 end);
 
@@ -1937,9 +1937,9 @@ function(D, root)
              preorder_num_to_node, 
              root, 
              PreOrderFunc, 
-             Nothing, 
-             Nothing, 
-             Nothing);
+             DFSDefault, 
+             DFSDefault, 
+             DFSDefault);
 
   parent := record.parent;
   parent[root] := fail;
