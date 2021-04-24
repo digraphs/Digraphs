@@ -40,7 +40,8 @@ end);
 #   record.child) is an edge and record.child is an ancestor of record.current.
 # * CrossFunc is called with (record, data) when (record.current, record.child)
 #   is an edge, the preorder value of record.current is greater than the
-#   preorder value of child, and record.current and child are unrelated by ancestry.
+#   preorder value of child, and record.current and child are unrelated
+#   by ancestry.
 
 BindGlobal("ExecuteDFS",
 function(record, data, start, PreOrderFunc, PostOrderFunc, AncestorFunc,
@@ -575,7 +576,9 @@ function(D)
     data.out[data.count] := record.child;
   end;
   for i in [1 .. DigraphNrVertices(D)] do
-    ExecuteDFS_C(record, data, i, DFSDefault, PostOrderFunc, AncestorFunc, DFSDefault);
+    ExecuteDFS_C(record, data, i, DFSDefault,
+                 PostOrderFunc, AncestorFunc,
+                 DFSDefault);
     if data.failed then
       return fail;
     fi;
@@ -2185,7 +2188,7 @@ InstallMethod(UndirectedSpanningTree, "for an immutable digraph",
 InstallMethod(UndirectedSpanningTreeAttr, "for an immutable digraph",
 [IsImmutableDigraph],
 function(D)
-  local record, i, list, data, PostOrderFunc, C;
+  local record, data, PostOrderFunc, C;
   if DigraphNrVertices(D) = 0
       or not IsStronglyConnectedDigraph(D)
       or (HasMaximalSymmetricSubdigraphAttr(D)
@@ -2196,7 +2199,7 @@ function(D)
   fi;
   D := MaximalSymmetricSubdigraph(D);
   record := NewDFSRecord(D);
-  data := List(DigraphVertices(D), x-> []);
+  data := List(DigraphVertices(D), x -> []);
 
   PostOrderFunc := function(record, data)
     if record.child <> record.parent[record.child] then
@@ -2204,7 +2207,8 @@ function(D)
       Add(data[record.parent[record.child]], record.child);
     fi;
   end;
-  ExecuteDFS_C(record, data, 1, DFSDefault, PostOrderFunc, DFSDefault, DFSDefault);
+  ExecuteDFS_C(record, data, 1, DFSDefault,
+               PostOrderFunc, DFSDefault, DFSDefault);
   C := Digraph(data);
   SetUndirectedSpanningForestAttr(D, C);
   SetIsUndirectedForest(C, true);

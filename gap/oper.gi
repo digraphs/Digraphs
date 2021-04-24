@@ -1313,12 +1313,14 @@ function(D, u, v)
     fi;
   end;
   PostOrderFunc := function(record, data)
-    if record.child <> u and 
-      record.preorder[record.child] <= record.preorder[v] then
+    if record.child <> u and
+        record.preorder[record.child] <= record.preorder[v] then
       AddToPath(record.current, record.child);
     fi;
   end;
-  ExecuteDFS_C(record, path_info, u, DFSDefault, PostOrderFunc, AncestorFunc, DFSDefault);
+  ExecuteDFS_C(record, path_info, u,
+               DFSDefault, PostOrderFunc,
+               AncestorFunc, DFSDefault);
   if Size(path_info) <= 1 then
     return fail;
   fi;
@@ -1591,7 +1593,7 @@ end);
 InstallMethod(DigraphLongestDistanceFromVertex, "for a digraph and a pos int",
 [IsDigraphByOutNeighboursRep, IsPosInt],
 function(D, v)
-  local dist, record, PreOrderFunc, PostOrderFunc, data, AncestorFunc;
+  local record, PreOrderFunc, PostOrderFunc, data, AncestorFunc;
 
   if not v in DigraphVertices(D) then
     ErrorNoReturn("the 2nd argument <v> must be a vertex of the 1st ",
@@ -1621,7 +1623,9 @@ function(D, v)
       fi;
     od;
   end;
-  ExecuteDFS_C(record, data, v, PreOrderFunc, PostOrderFunc, AncestorFunc, DFSDefault);
+  ExecuteDFS_C(record, data, v,
+               PreOrderFunc, PostOrderFunc,
+               AncestorFunc, DFSDefault);
   if data.infinity then
     return infinity;
   fi;
@@ -1888,7 +1892,7 @@ function(D, root)
 
   record := NewDFSRecord(D);
   data := rec(result := [], root_is_child := false);
-  
+
   PreOrderFunc := function(record, data)
     if record.current <> root then
       Add(data.result, record.current);
@@ -1902,11 +1906,11 @@ function(D, root)
     fi;
   end;
 
-  ExecuteDFS_C(record, 
-               data, 
-               root, 
-               PreOrderFunc, 
-               DFSDefault, 
+  ExecuteDFS_C(record,
+               data,
+               root,
+               PreOrderFunc,
+               DFSDefault,
                AncestorFunc,
                DFSDefault);
   return data.result;
@@ -1931,14 +1935,14 @@ function(D, root)
   PreOrderFunc := function(record, data)
     Add(data, record.current);
   end;
- 
+
   record := NewDFSRecord(D);
-  ExecuteDFS_C(record, 
-             preorder_num_to_node, 
-             root, 
-             PreOrderFunc, 
-             DFSDefault, 
-             DFSDefault, 
+  ExecuteDFS_C(record,
+             preorder_num_to_node,
+             root,
+             PreOrderFunc,
+             DFSDefault,
+             DFSDefault,
              DFSDefault);
 
   parent := record.parent;
