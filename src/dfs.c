@@ -31,7 +31,7 @@ Obj ExecuteDFS(Obj self, Obj args) {
   Obj PostOrderFunc = ELM_PLIST(args, 5);
   Obj AncestorFunc = ELM_PLIST(args, 6);
   Obj CrossFunc = ELM_PLIST(args, 7);
-  
+
   DIGRAPHS_ASSERT(NARG_FUNC(PreorderFunc) == 2);
   DIGRAPHS_ASSERT(IS_FUNC(AncestorFunc));
   DIGRAPHS_ASSERT(NARG_FUNC(AncestorFunc) == 2);
