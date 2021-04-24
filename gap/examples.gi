@@ -243,21 +243,19 @@ InstallMethod(CycleDigraphCons,
 function(filt, n)
   local D;
   D := MakeImmutable(CycleDigraphCons(IsMutableDigraph, n));
-  if n = 1 then
-    SetIsTransitiveDigraph(D, true);
-    SetDigraphHasLoops(D, true);
-  else
-    SetIsTransitiveDigraph(D, false);
-    SetDigraphHasLoops(D, false);
-  fi;
   SetIsAcyclicDigraph(D, false);
   SetIsCycleDigraph(D, true);
   SetIsEmptyDigraph(D, false);
   SetIsMultiDigraph(D, false);
   SetDigraphNrEdges(D, n);
-  SetIsFunctionalDigraph(D, true);
-  SetIsStronglyConnectedDigraph(D, true);
+  SetIsTournament(D, n = 3);
+  SetIsTransitiveDigraph(D, n = 1);
   SetAutomorphismGroup(D, CyclicGroup(IsPermGroup, n));
+  SetDigraphHasLoops(D, n = 1);
+  SetIsBipartiteDigraph(D, n mod 2 = 0);
+  if n > 1 then
+    SetChromaticNumber(D, 2 + (n mod 2));
+  fi;
   return D;
 end);
 
@@ -716,39 +714,29 @@ function(filt, m, n)
 end);
 
 InstallMethod(BookDigraphCons,
-  "for IsMutableDigraph and one positive integer",
-  [IsMutableDigraph, IsPosInt],
-  function(filt, m)
-    local pages, book, graph;
-    # special cases
-    if m = 1 then
-      # "the" square graph
-      return CompleteBipartiteDigraph(filt, 2, 2);
-    elif m = 2 then
-      # domino graph
-      return SquareGridGraph(filt, 2, 3);
-    fi;
-    pages := StarDigraph(filt, m);
-    book := ChainDigraph(filt, 2);
-    graph := DigraphCartesianProduct(book, pages);
-    return graph;
-  end);
+"for IsMutableDigraph and one positive integer",
+[IsMutableDigraph, IsPosInt],
+function(filt, m)
+  local book;
+  book := CompleteDigraph(IsMutable, 2);
+  return DigraphCartesianProduct(book, StarDigraph(IsMutable, m + 1));
+end);
 
-  InstallMethod(BookDigraph, "for a function and one positive integer",
-  [IsFunction, IsPosInt],
-  BookDigraphCons);
+InstallMethod(BookDigraph, "for a function and one positive integer",
+[IsFunction, IsPosInt],
+BookDigraphCons);
 
-  InstallMethod(BookDigraph, "for one positive integer", [IsPosInt],
-  {m} -> BookDigraphCons(IsImmutableDigraph, m));
+InstallMethod(BookDigraph, "for one positive integer", [IsPosInt],
+{m} -> BookDigraphCons(IsImmutableDigraph, m));
 
-  InstallMethod(BookDigraphCons,
-  "for IsImmutableDigraph and one positive integer",
-  [IsImmutableDigraph, IsPosInt],
-  function(filt, m)
-    local D;
-    D := MakeImmutable(BookDigraph(IsMutableDigraph, m));
-    SetIsMultiDigraph(D, false);
-    SetIsSymmetricDigraph(D, true);
-    SetIsBipartiteDigraph(D, true);
-    return D;
-  end);
+InstallMethod(BookDigraphCons,
+"for IsImmutableDigraph and one positive integer",
+[IsImmutableDigraph, IsPosInt],
+function(filt, m)
+  local D;
+  D := MakeImmutable(BookDigraph(IsMutableDigraph, m));
+  SetIsMultiDigraph(D, false);
+  SetIsSymmetricDigraph(D, true);
+  SetIsBipartiteDigraph(D, true);
+  return D;
+end);

@@ -248,7 +248,7 @@ InstallMethod(ChromaticNumber, "for a digraph by out-neighbours",
 [IsDigraphByOutNeighboursRep],
 function(D)
   local nr, comps, upper, chrom, tmp_comps, tmp_upper, n, comp, bound, clique,
-  c, i;
+  c, i, greedy_bound, brooks_bound;
   nr := DigraphNrVertices(D);
 
   if DigraphHasLoops(D) then
@@ -266,12 +266,17 @@ function(D)
   D := DigraphMutableCopy(D);
   D := DigraphRemoveAllMultipleEdges(D);
   D := DigraphSymmetricClosure(D);
+  MakeImmutable(D);
 
   if IsCompleteDigraph(D) then
     # chromatic number = nr iff <D> has >= 2 verts & this cond.
     return nr;
   elif nr = 4 then
     # if nr = 4, then 3 is only remaining possible chromatic number
+    return 3;
+  elif 2 * nr = DigraphNrEdges(D)
+      and IsRegularDigraph(D) and Length(OutNeighboursOfVertex(D, 1)) = 2 then
+    # <D> is an odd-length cycle graph
     return 3;
   fi;
 
@@ -285,7 +290,9 @@ function(D)
   # do not yet know.
   if IsConnectedDigraph(D) then
     comps := [D];
-    upper := [RankOfTransformation(DigraphGreedyColouring(D), nr)];
+    greedy_bound := RankOfTransformation(DigraphGreedyColouring(D), nr);
+    brooks_bound := Maximum(OutDegrees(D));  # Brooks' theorem
+    upper := [Minimum(greedy_bound, brooks_bound)];
     chrom := Maximum(CliqueNumber(D), chrom);
   else
     tmp_comps := [];
@@ -308,8 +315,12 @@ function(D)
           # If comp is bipartite, then its chromatic number is 2, and, since
           # the chromatic number of D is >= 3, this component can be
           # ignored.
-          bound := RankOfTransformation(DigraphGreedyColouring(comp),
-                                        DigraphNrVertices(comp));
+          greedy_bound := RankOfTransformation(DigraphGreedyColouring(comp),
+                                               DigraphNrVertices(comp));
+          # Don't need to take odd cycles into account for Brooks' theorem,
+          # since they are 3-colourable and the chromatic number of D is >= 3.
+          brooks_bound := Maximum(OutDegrees(comp));
+          bound := Minimum(greedy_bound, brooks_bound);
           if bound > chrom then
             # If bound <= chrom, then comp can be coloured by at most chrom
             # colours, and so we can ignore comp.
@@ -1458,6 +1469,12 @@ function(digraph)
   elif IsCompleteDigraph(digraph) then
     return DigraphVertexLabels(digraph);
   elif IsSymmetricDigraph(digraph) and IsBipartiteDigraph(digraph) then
+    # TODO symmetric is not necessary, you just need bipartite and:
+    # DigraphGirth(digraph) = 2
+    # i.e. not IsAntiSymmetricDigraph(digraph)
+    # i.e. a pair [i, j] with edges i -> j and j -> i.
+    # Given this, the core is [i, j]
+    # This would allow you to <return 3> rather than <return 2> in function <lo>
     i := First(DigraphVertices(digraph),
                i -> OutDegreeOfVertex(digraph, i) > 0);
     return DigraphVertexLabels(digraph){
@@ -1503,7 +1520,7 @@ function(digraph)
     if oddgirth <> infinity then
       return oddgirth;
     fi;
-    return 3;
+    return 2;
   end;
 
   hom      := [];
@@ -2188,7 +2205,7 @@ InstallMethod(UndirectedSpanningTree, "for an immutable digraph",
 InstallMethod(UndirectedSpanningTreeAttr, "for an immutable digraph",
 [IsImmutableDigraph],
 function(D)
-  local record, data, PostOrderFunc, C;
+  local record, data, PostOrderFunc, C, out;
   if DigraphNrVertices(D) = 0
       or not IsStronglyConnectedDigraph(D)
       or (HasMaximalSymmetricSubdigraphAttr(D)
@@ -2197,24 +2214,27 @@ function(D)
           <> 2 * (DigraphNrVertices(D) - 1)) then
     return fail;
   fi;
-  D := MaximalSymmetricSubdigraph(D);
-  record := NewDFSRecord(D);
-  data := List(DigraphVertices(D), x -> []);
+  # D := MaximalSymmetricSubdigraph(D);
+  # record := NewDFSRecord(D);
+  # data := List(DigraphVertices(D), x -> []);
 
-  PostOrderFunc := function(record, data)
-    if record.child <> record.parent[record.child] then
-      Add(data[record.child], record.parent[record.child]);
-      Add(data[record.parent[record.child]], record.child);
-    fi;
-  end;
-  ExecuteDFS_C(record, data, 1, DFSDefault,
-               PostOrderFunc, DFSDefault, DFSDefault);
-  C := Digraph(data);
-  SetUndirectedSpanningForestAttr(D, C);
-  SetIsUndirectedForest(C, true);
-  SetIsMultiDigraph(C, false);
-  SetDigraphHasLoops(C, false);
-  return C;
+  # PostOrderFunc := function(record, data)
+  #   if record.child <> record.parent[record.child] then
+  #     Add(data[record.child], record.parent[record.child]);
+  #     Add(data[record.parent[record.child]], record.child);
+  #   fi;
+  # end;
+  # ExecuteDFS_C(record, data, 1, DFSDefault,
+  #              PostOrderFunc, DFSDefault, DFSDefault);
+  # C := Digraph(data);
+  # SetUndirectedSpanningForestAttr(D, C);
+  # SetIsUndirectedForest(C, true);
+  # SetIsMultiDigraph(C, false);
+  # SetDigraphHasLoops(C, false);
+  # return C;
+  out := UndirectedSpanningForest(D);
+  SetIsUndirectedTree(out, true);
+  return out;
 end);
 
 InstallMethod(DigraphMycielskian, "for a digraph",

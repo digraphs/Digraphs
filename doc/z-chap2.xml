@@ -15,6 +15,7 @@
     <#Include Label="EdgeOrbitsDigraph">
     <#Include Label="DigraphByInNeighbours">
     <#Include Label="CayleyDigraph">
+    <#Include Label="ListNamedDigraphs">
   </Section>
 
   <Section><Heading>Changing representations</Heading>

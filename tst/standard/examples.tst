@@ -92,6 +92,8 @@ gap> gr := CycleDigraph(1000);
 <immutable cycle digraph with 1000 vertices>
 gap> gr := CycleDigraph(IsMutableDigraph, 6);
 <mutable digraph with 6 vertices, 6 edges>
+gap> gr = DigraphCycle(IsImmutableDigraph, 6);
+true
 
 #  ChainDigraph
 gap> gr := ChainDigraph(0);
@@ -336,13 +338,13 @@ true
 
 # BananaTree
 gap> D := BananaTree(2, 4);
-<immutable connected symmetric digraph with 9 vertices, 16 edges>
+<immutable undirected tree digraph with 9 vertices>
 gap> D := BananaTree(3, 3);
-<immutable connected symmetric digraph with 10 vertices, 18 edges>
+<immutable undirected tree digraph with 10 vertices>
 gap> D := BananaTree(5, 2);
-<immutable connected symmetric digraph with 11 vertices, 20 edges>
+<immutable undirected tree digraph with 11 vertices>
 gap> D := BananaTree(3, 4);
-<immutable connected symmetric digraph with 13 vertices, 24 edges>
+<immutable undirected tree digraph with 13 vertices>
 gap> D := BananaTree(0, 0);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `BananaTree' on 2 arguments
@@ -369,11 +371,11 @@ gap> BookDigraph(1);
 gap> BookDigraph(2);
 <immutable bipartite symmetric digraph with bicomponent sizes 3 and 3>
 gap> BookDigraph(7);
-<immutable bipartite symmetric digraph with bicomponent sizes 7 and 7>
+<immutable bipartite symmetric digraph with bicomponent sizes 8 and 8>
 gap> BookDigraph(12);
-<immutable bipartite symmetric digraph with bicomponent sizes 12 and 12>
+<immutable bipartite symmetric digraph with bicomponent sizes 13 and 13>
 gap> BookDigraph(IsMutable, 12);
-<mutable digraph with 24 vertices, 56 edges>
+<mutable digraph with 26 vertices, 74 edges>
 gap> IsSymmetricDigraph(BookDigraph(24));
 true
 gap> IsBipartiteDigraph(BookDigraph(32));

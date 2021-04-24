@@ -19,8 +19,8 @@ D -> IsDirectedTree(D) and IsSubset([0, 1], OutDegreeSet(D)));
 InstallMethod(IsCycleDigraph, "for a digraph", [IsDigraph],
 function(D)
   return DigraphNrVertices(D) > 0
-     and IsStronglyConnectedDigraph(D)
-     and DigraphNrEdges(D) = DigraphNrVertices(D);
+     and DigraphNrEdges(D) = DigraphNrVertices(D)
+     and IsStronglyConnectedDigraph(D);
 end);
 
 InstallMethod(IsBiconnectedDigraph, "for a digraph", [IsDigraph],
