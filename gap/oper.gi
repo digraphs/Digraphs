@@ -1281,7 +1281,7 @@ end);
 InstallMethod(DigraphPath, "for a digraph by out-neighbours and two pos ints",
 [IsDigraphByOutNeighboursRep, IsPosInt, IsPosInt],
 function(D, u, v)
-  local verts;
+  local verts, record, out, path_info, PostOrderFunc, AncestorFunc, AddToPath;
 
   verts := DigraphVertices(D);
   if not (u in verts and v in verts) then
@@ -1298,7 +1298,36 @@ function(D, u, v)
           DigraphConnectedComponents(D).id[v] then
     return fail;
   fi;
-  return DIGRAPH_PATH(OutNeighbours(D), u, v);
+  record := NewDFSRecord(D);
+  path_info := Stack();
+  AddToPath := function(current, child)
+    local edge;
+    edge := PositionSorted(OutNeighborsOfVertex(D, current), child);
+    Push(path_info, edge);
+    Push(path_info, child);
+  end;
+  AncestorFunc := function(record, data)
+    if u = v and record.child = u and Size(data) = 0 then
+      AddToPath(record.current, record.child);
+      record.preorder[v] := DigraphNrVertices(D) + 1;
+    fi;
+  end;
+  PostOrderFunc := function(record, data)
+    if record.child <> u and 
+      record.preorder[record.child] <= record.preorder[v] then
+      AddToPath(record.current, record.child);
+    fi;
+  end;
+  ExecuteDFS(record, path_info, u, Nothing, PostOrderFunc, AncestorFunc, Nothing);
+  if Size(path_info) <= 1 then
+    return fail;
+  fi;
+  out := [[u], []];
+  while Size(path_info) <> 0 do
+    Add(out[1], Pop(path_info));
+    Add(out[2], Pop(path_info));
+  od;
+  return out;
 end);
 
 InstallMethod(DigraphShortestPath,

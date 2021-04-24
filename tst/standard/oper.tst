@@ -1219,6 +1219,16 @@ ent <D>,
 gap> DigraphPath(gr, 11, 11);
 Error, the 2nd and 3rd arguments <u> and <v> must be vertices of the 1st argum\
 ent <D>,
+gap> D := Digraph([[2], [3], [2, 3]]);
+<immutable digraph with 3 vertices, 4 edges>
+gap> DigraphPath(D, 1, 3);
+[ [ 1, 2, 3 ], [ 1, 1 ] ]
+gap> DigraphPath(D, 2, 1);
+fail
+gap> DigraphPath(D, 3, 3);
+[ [ 3, 3 ], [ 2 ] ]
+gap> DigraphPath(D, 1, 1);
+fail
 
 #  IteratorOfPaths
 gap> gr := CompleteDigraph(5);;
