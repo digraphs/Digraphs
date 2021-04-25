@@ -1600,11 +1600,8 @@ function(D, v)
                   "argument <D>,");
   fi;
   record := NewDFSRecord(D);
-  data := rec();
-  data.prev := 0;
-  data.depth := ListWithIdenticalEntries(DigraphNrVertices(D), 0);
-  data.infinity := false;
-  data.prev := 0;
+  data := rec(depth := ListWithIdenticalEntries(DigraphNrVertices(D), 0),
+              prev := 0, infinity := false);
   AncestorFunc := function(record, data)
     data.infinity := true;
   end;

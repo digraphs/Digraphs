@@ -573,10 +573,8 @@ InstallMethod(DigraphTopologicalSort, "for a digraph by out-neighbours",
 function(D)
   local i, record, data, AncestorFunc, PostOrderFunc;
   record := NewDFSRecord(D);
-  data := rec();
-  data.failed := false;
-  data.count := 0;
-  data.out := ListWithIdenticalEntries(DigraphNrVertices(record.graph), 0);
+  data := rec(out := ListWithIdenticalEntries(DigraphNrVertices(record.graph), 0),
+              failed := false, count := 0);
   AncestorFunc := function(record, data)
     if not data.failed and record.current <> record.child then
       data.failed := true;
@@ -586,7 +584,7 @@ function(D)
     data.count := data.count + 1;
     data.out[data.count] := record.child;
   end;
-  for i in [1 .. DigraphNrVertices(D)] do
+  for i in DigraphVertices(D) do
     ExecuteDFS_C(record, data, i, DFSDefault,
                  PostOrderFunc, AncestorFunc,
                  DFSDefault);

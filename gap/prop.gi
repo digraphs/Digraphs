@@ -189,19 +189,17 @@ function(D)
     return false;
   fi;
   record := NewDFSRecord(D);
-  data := rec();
-  data.acyclic := true;
+  data := rec(acyclic := true);
   FoundCycle := function(record, data)
     data.acyclic := false;
   end;
-
   components := DigraphConnectedComponents(D);
   if Size(components.comps) = 1 then
     ExecuteDFS_C(record, data, 1, DFSDefault,
                  DFSDefault, FoundCycle, DFSDefault);
     return data.acyclic;
   fi;
-
+  # handles disconnected digraphs
   for i in [1 .. Size(components.comps)] do
     record := NewDFSRecord(D);
     ExecuteDFS_C(record, data, components.comps[i][1],
@@ -333,8 +331,7 @@ InstallMethod(IsAntisymmetricDigraph, "for a digraph by out-neighbours",
 function(D)
   local record, data, AncestorFunc;
   record := NewDFSRecord(D);
-  data := rec();
-  data.antisymmetric := true;
+  data := rec(antisymmetric := true);
 
   AncestorFunc := function(record, data)
     local pos, neighbours;
