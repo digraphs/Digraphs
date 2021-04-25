@@ -335,7 +335,7 @@ function(D)
 
   AncestorFunc := function(record, data)
     local pos, neighbours;
-    if not data.antisymmetric or record.child = record.current then
+    if record.child = record.current then
       return;
     fi;
     # checks if the child has a symmetric edge with current node
@@ -343,7 +343,7 @@ function(D)
     pos := Position(neighbours, record.current);
     if pos <> fail then
       data.antisymmetric := false;
-      return;
+      record.stop := true;
     fi;
   end;
   ExecuteDFS(record, data, 1, DFSDefault, DFSDefault, AncestorFunc, DFSDefault);

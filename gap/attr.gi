@@ -21,6 +21,7 @@ function(graph)
   record.stack := Stack();
   record.child := 0;
   record.current := 0;
+  record.stop := false;
   record.parent := ListWithIdenticalEntries(DigraphNrVertices(graph), -1);
   record.preorder := ListWithIdenticalEntries(DigraphNrVertices(graph), -1);
   record.postorder := ListWithIdenticalEntries(DigraphNrVertices(graph), -1);
@@ -83,6 +84,10 @@ function(record, data, start, PreOrderFunc, PostOrderFunc, AncestorFunc,
       Push(record.stack, -1 * record.current);
     fi;
 
+    if record.stop then
+      break;
+    fi;
+
     neighbours := OutNeighbours(record.graph)[record.current];
 
     for j in [0 .. Size(neighbours) - 1] do
@@ -96,6 +101,9 @@ function(record, data, start, PreOrderFunc, PostOrderFunc, AncestorFunc,
         AncestorFunc(record, data);
       elif record.preorder[child] < record.preorder[record.current] then
         CrossFunc(record, data);
+      fi;
+      if record.stop then
+        break;
       fi;
     od;
   od;
