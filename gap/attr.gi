@@ -2160,18 +2160,29 @@ InstallMethod(DigraphReflexiveTransitiveReductionAttr,
 InstallMethod(UndirectedSpanningForest, "for a digraph by out-neighbours",
 [IsDigraphByOutNeighboursRep],
 function(D)
-  local C;
+  local C, record, data, PreOrderFunc, i;
   if DigraphNrVertices(D) = 0 then
     return fail;
   fi;
-  C := MaximalSymmetricSubdigraph(D)!.OutNeighbours;
-  C := DIGRAPH_SYMMETRIC_SPANNING_FOREST(C);
+  C := MaximalSymmetricSubdigraph(D);
+  record := NewDFSRecord(C);
+  data := List(DigraphVertices(C), x -> []);
+
+  PreOrderFunc := function(record, data)
+    if record.parent[record.current] <> record.current then
+      Add(data[record.parent[record.current]], record.current);
+      Add(data[record.current], record.parent[record.current]);
+    fi;
+  end;
+  for i in DigraphVertices(C) do
+    ExecuteDFS_C(record, data, i, PreOrderFunc, DFSDefault, DFSDefault, DFSDefault);
+  od;
   if IsMutableDigraph(D) then
-    D!.OutNeighbours := C;
+    D!.OutNeighbours := data;
     ClearDigraphEdgeLabels(D);
     return D;
   fi;
-  C := ConvertToImmutableDigraphNC(C);
+  C := ConvertToImmutableDigraphNC(data);
   SetUndirectedSpanningForestAttr(D, C);
   SetIsUndirectedForest(C, true);
   SetIsMultiDigraph(C, false);
@@ -2205,7 +2216,7 @@ InstallMethod(UndirectedSpanningTree, "for an immutable digraph",
 InstallMethod(UndirectedSpanningTreeAttr, "for an immutable digraph",
 [IsImmutableDigraph],
 function(D)
-  local record, data, PostOrderFunc, C, out;
+  local out;
   if DigraphNrVertices(D) = 0
       or not IsStronglyConnectedDigraph(D)
       or (HasMaximalSymmetricSubdigraphAttr(D)
@@ -2214,24 +2225,6 @@ function(D)
           <> 2 * (DigraphNrVertices(D) - 1)) then
     return fail;
   fi;
-  # D := MaximalSymmetricSubdigraph(D);
-  # record := NewDFSRecord(D);
-  # data := List(DigraphVertices(D), x -> []);
-
-  # PostOrderFunc := function(record, data)
-  #   if record.child <> record.parent[record.child] then
-  #     Add(data[record.child], record.parent[record.child]);
-  #     Add(data[record.parent[record.child]], record.child);
-  #   fi;
-  # end;
-  # ExecuteDFS_C(record, data, 1, DFSDefault,
-  #              PostOrderFunc, DFSDefault, DFSDefault);
-  # C := Digraph(data);
-  # SetUndirectedSpanningForestAttr(D, C);
-  # SetIsUndirectedForest(C, true);
-  # SetIsMultiDigraph(C, false);
-  # SetDigraphHasLoops(C, false);
-  # return C;
   out := UndirectedSpanningForest(D);
   SetIsUndirectedTree(out, true);
   return out;
