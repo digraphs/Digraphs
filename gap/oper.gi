@@ -1604,6 +1604,7 @@ function(D, v)
               prev := 0, infinity := false);
   AncestorFunc := function(record, data)
     data.infinity := true;
+    record.stop := true;
   end;
   PostOrderFunc := function(record, data)
     data.depth[record.current] := data.prev;

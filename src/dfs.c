@@ -70,6 +70,7 @@ Obj ExecuteDFS(Obj self, Obj args) {
 
   Int RNamChild   = RNamName("child");
   Int RNamCurrent = RNamName("current");
+  Int RNamStop = RNamName("stop");
 
   while (top > 0) {
     current = INT_INTOBJ(ELM_PLIST(stack, top--));
@@ -91,6 +92,10 @@ Obj ExecuteDFS(Obj self, Obj args) {
       CHANGED_BAG(record);
       AssPlist(stack, ++top, INTOBJ_INT(-1 * current));
     }
+    
+    if (ElmPRec(record, RNamStop) == True) {
+      break;
+    }
 
     Obj succ = ELM_PLIST(neighbors, current);
     for (UInt j = 0; j < LEN_LIST(succ); ++j) {
@@ -105,6 +110,9 @@ Obj ExecuteDFS(Obj self, Obj args) {
       } else if (INT_INTOBJ(ELM_PLIST(preorder, v))
                  < INT_INTOBJ(ELM_PLIST(preorder, current))) {
         CALL_2ARGS(CrossFunc, record, data);
+      }
+      if (ElmPRec(record, RNamStop) == True) {
+        break;
       }
     }
   }

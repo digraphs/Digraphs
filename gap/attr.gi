@@ -584,8 +584,9 @@ function(D)
   data := rec(out := ListWithIdenticalEntries(DigraphNrVertices(record.graph), 0),
               failed := false, count := 0);
   AncestorFunc := function(record, data)
-    if not data.failed and record.current <> record.child then
+    if record.current <> record.child then
       data.failed := true;
+      record.stop := true;
     fi;
   end;
   PostOrderFunc := function(record, data)

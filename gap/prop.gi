@@ -192,6 +192,7 @@ function(D)
   data := rec(acyclic := true);
   FoundCycle := function(record, data)
     data.acyclic := false;
+    record.stop := true;
   end;
   components := DigraphConnectedComponents(D);
   if Size(components.comps) = 1 then
