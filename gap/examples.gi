@@ -714,11 +714,7 @@ end);
 InstallMethod(BookGraphCons,
 "for IsMutableDigraph and one positive integer",
 [IsMutableDigraph, IsPosInt],
-function(filt, m)
-  local book;
-  book := CompleteDigraph(IsMutable, 2);
-  return DigraphCartesianProduct(book, StarGraph(IsMutable, m + 1));
-end);
+{filt, m} -> StackedBookGraph(filt, m, 2));
 
 InstallMethod(BookGraph, "for a function and a positive integer",
 [IsFunction, IsPosInt], BookGraphCons);
@@ -732,6 +728,35 @@ InstallMethod(BookGraphCons,
 function(filt, m)
   local D;
   D := MakeImmutable(BookGraph(IsMutableDigraph, m));
+  SetIsMultiDigraph(D, false);
+  SetIsSymmetricDigraph(D, true);
+  SetIsBipartiteDigraph(D, true);
+  return D;
+end);
+
+InstallMethod(StackedBookGraphCons,
+"for IsMutableDigraph and two positive integers",
+[IsMutableDigraph, IsPosInt, IsPosInt],
+function(filt, m, n)
+  local book;
+  book := DigraphSymmetricClosure(ChainDigraph(IsMutable, n));
+  return DigraphCartesianProduct(book, StarGraph(IsMutable, m + 1));
+end);
+
+InstallMethod(StackedBookGraph, "for a function and two positive integers",
+[IsFunction, IsPosInt, IsPosInt],
+StackedBookGraphCons);
+
+InstallMethod(StackedBookGraph, "for two positive integers",
+[IsPosInt, IsPosInt],
+{m, n} -> StackedBookGraphCons(IsImmutableDigraph, m, n));
+
+InstallMethod(StackedBookGraphCons,
+"for IsImmutableDigraph and two positive integers",
+[IsImmutableDigraph, IsPosInt, IsPosInt],
+function(filt, m, n)
+  local D;
+  D := MakeImmutable(StackedBookGraph(IsMutableDigraph, m, n));
   SetIsMultiDigraph(D, false);
   SetIsSymmetricDigraph(D, true);
   SetIsBipartiteDigraph(D, true);

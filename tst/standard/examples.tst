@@ -381,6 +381,22 @@ true
 gap> IsBipartiteDigraph(BookGraph(32));
 true
 
+# StackedBookGraph
+gap> StackedBookGraph(1, 5);
+<immutable bipartite symmetric digraph with bicomponent sizes 5 and 5>
+gap> StackedBookGraph(20, 10);
+<immutable bipartite symmetric digraph with bicomponent sizes 105 and 105>
+gap> StackedBookGraph(7, 2);
+<immutable bipartite symmetric digraph with bicomponent sizes 8 and 8>
+gap> StackedBookGraph(12, 1);
+<immutable bipartite symmetric digraph with bicomponent sizes 1 and 12>
+gap> StackedBookGraph(IsMutable, 12, 2);
+<mutable digraph with 26 vertices, 74 edges>
+gap> IsSymmetricDigraph(StackedBookGraph(4, 3));
+true
+gap> IsBipartiteDigraph(StackedBookGraph(5, 4));
+true
+
 # BinaryTree
 gap> BinaryTree(4);
 <immutable digraph with 15 vertices, 14 edges>
