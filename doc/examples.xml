@@ -702,23 +702,15 @@ true
   <Oper Name="BookGraph" Arg="[filt, ]m"/>
   <Returns>A digraph.</Returns>
   <Description>
-    The <E>Book digraph</E> is the Cartesian product of a complete digraph with
-    2 vertices (as the "Book Spine") and the <M><A>m</A>+1</M> star digraph (as
-    the "Pages").  For more details on the Book digraph please refer to
+    The <E>book graph</E> is the Cartesian product of a complete digraph with
+    two vertices (as the "book spine") and the <M><A>m</A>+1</M> star graph (as
+    the "pages").  For more details on the book graph please refer to
     <URL>https://mathworld.wolfram.com/BookGraph.html</URL>.<P/>
 
-    See 
-    <Ref Func="DigraphCartesianProduct" Label="for a positive number of digraphs"/>,
-    <Ref Oper="CompleteDigraph"/>, and <Ref Oper="StarGraph"/>.
-    <P/>
+    See <Ref Func="DigraphCartesianProduct" Label="for a positive number of digraphs"/>,
+    <Ref Oper="CompleteDigraph"/>, and <Ref Oper="StarGraph"/>. <P/>
 
-    If the optional first argument <A>filt</A> is present, then this should
-    specify the category or representation the digraph being created will
-    belong to. For example, if <A>filt</A> is <Ref Filt="IsMutableDigraph"/>,
-    then the digraph being created will be mutable, if <A>filt</A> is <Ref
-    Filt="IsImmutableDigraph"/>, then the digraph will be immutable. 
-    If the optional first argument <A>filt</A> is not present, then <Ref
-      Filt="IsImmutableDigraph"/> is used by default.<P/>
+    &STANDARD_FILT_TEXT;
 
     <Example><![CDATA[
 gap> BookGraph(1);
@@ -732,6 +724,44 @@ gap> BookGraph(7);
 gap> IsSymmetricDigraph(BookGraph(24));
 true
 gap> IsBipartiteDigraph(BookGraph(24));
+true
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="StackedBookGraph">
+<ManSection>
+  <Oper Name="StackedBookGraph" Arg="[filt, ]m, n"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    The <E>stacked book graph</E> is the Cartesian product of the symmetric
+    closure of the chain digraph with <A>n</A> vertices (as the "book spine")
+    and the <M><A>m</A>+1</M> star graph (as the "pages").
+    For more details on the stacked book graph please refer to
+    <URL>https://mathworld.wolfram.com/StackedBookGraph.html</URL>.<P/>
+
+    See <Ref Func="DigraphCartesianProduct" Label="for a positive number of digraphs"/>,
+    <Ref Oper="DigraphSymmetricClosure"/>, <Ref Oper="ChainDigraph"/>, and
+    <Ref Oper="StarGraph"/>. <P/>
+
+    &STANDARD_FILT_TEXT;
+
+    <Example><![CDATA[
+gap> StackedBookGraph(1, 1);
+<immutable bipartite symmetric digraph with bicomponent sizes 1 and 1>
+gap> StackedBookGraph(1, 2);
+<immutable bipartite symmetric digraph with bicomponent sizes 2 and 2>
+gap> StackedBookGraph(3, 4);
+<immutable bipartite symmetric digraph with bicomponent sizes 8 and 8>
+gap> StackedBookGraph(IsMutable, 12, 5);
+<mutable digraph with 65 vertices, 224 edges>
+gap> StackedBookGraph(5, 5);
+<immutable bipartite symmetric digraph with bicomponent sizes 13 and 1\
+7>
+gap> IsSymmetricDigraph(StackedBookGraph(24, 8));
+true
+gap> IsBipartiteDigraph(StackedBookGraph(24, 8));
 true
 ]]></Example>
   </Description>
