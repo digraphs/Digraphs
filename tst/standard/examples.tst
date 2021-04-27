@@ -381,6 +381,18 @@ true
 gap> IsBipartiteDigraph(BookDigraph(32));
 true
 
+# PathDigraph
+gap> PathDigraph(15);
+<immutable symmetric digraph with 15 vertices, 28 edges>
+gap> PathDigraph(1);
+<immutable empty digraph with 1 vertex>
+gap> PathDigraph(20);
+<immutable symmetric digraph with 20 vertices, 38 edges>
+gap> PathDigraph(IsMutable, 5);
+<mutable digraph with 5 vertices, 8 edges>
+gap> IsSymmetricDigraph(PathDigraph(24));
+true
+
 #
 gap> DIGRAPHS_StopTest();
 gap> STOP_TEST("Digraphs package: standard/examples.tst", 0);

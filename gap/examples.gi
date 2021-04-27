@@ -738,3 +738,28 @@ function(filt, m)
   SetIsBipartiteDigraph(D, true);
   return D;
 end);
+
+InstallMethod(PathDigraphCons,
+"for IsMutableDigraph and one positive integer",
+[IsMutableDigraph, IsPosInt],
+function(filt, m)
+  return DigraphSymmetricClosure(ChainDigraph(filt, m));
+end);
+
+InstallMethod(PathDigraph, "for a function and one positive integer",
+[IsFunction, IsPosInt],
+PathDigraphCons);
+
+InstallMethod(PathDigraph, "for one positive integer", [IsPosInt],
+{m} -> PathDigraphCons(IsImmutableDigraph, m));
+
+InstallMethod(PathDigraphCons,
+"for IsImmutableDigraph and one positive integer",
+[IsImmutableDigraph, IsPosInt],
+function(filt, m)
+  local D;
+  D := MakeImmutable(PathDigraph(IsMutableDigraph, m));
+  SetIsMultiDigraph(D, false);
+  SetIsSymmetricDigraph(D, true);
+  return D;
+end);

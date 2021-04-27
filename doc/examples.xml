@@ -743,3 +743,38 @@ true
   </Description>
 </ManSection>
 <#/GAPDoc>
+
+<#GAPDoc Label="PathDigraph">
+<ManSection>
+  <Oper Name="PathDigraph" Arg="[filt, ]m"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    The <E>Path digraph</E> is the symmetric closure of the chain digraph so that
+    for m vertices there are <C>2<A>m</A> - 2</C> edges. Specifically, for each
+    vertex <C>i</C> (with <C>i</C> &lt; m), there is a directed edge with source <C>i</C>
+    and range <C>i + 1</C> and a directed edge with source <C>i + 1</C> and range <C>i</C>.
+    For more details on the Path digraph please refer to <URL>https://mathworld.wolfram.com/PathGraph.html</URL>.<P/>
+
+    See <Ref Oper="DigraphSymmetricClosure"> and <Ref Oper="ChainDigraph"/>. <P/>
+
+    If the optional first argument <A>filt</A> is present, then this should
+    specify the category or representation the digraph being created will
+    belong to. For example, if <A>filt</A> is <Ref Filt="IsMutableDigraph"/>,
+    then the digraph being created will be mutable, if <A>filt</A> is <Ref
+    Filt="IsImmutableDigraph"/>, then the digraph will be immutable. 
+    If the optional first argument <A>filt</A> is not present, then <Ref
+      Filt="IsImmutableDigraph"/> is used by default.<P/>
+
+    <Example><![CDATA[
+gap> PathDigraph(2);
+<immutable symmetric digraph with 2 vertices, 2 edges>
+gap> PathDigraph(10);
+<immutable symmetric digraph with 10 vertices, 18 edges>
+gap> BookDigraph(IsMutable, 15);
+<mutable digraph with 15 vertices, 28 edges>
+gap> IsSymmetricDigraph(PathDigraph(24));
+true
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
