@@ -1601,9 +1601,8 @@ function(D, v)
   fi;
   record := NewDFSRecord(D);
   data := rec(depth := ListWithIdenticalEntries(DigraphNrVertices(D), 0),
-              prev := 0, infinity := false);
+              prev := 0);
   AncestorFunc := function(record, data)
-    data.infinity := true;
     record.stop := true;
   end;
   PostOrderFunc := function(record, data)
@@ -1624,7 +1623,7 @@ function(D, v)
   ExecuteDFS_C(record, data, v,
                PreOrderFunc, PostOrderFunc,
                AncestorFunc, DFSDefault);
-  if data.infinity then
+  if record.stop then
     return infinity;
   fi;
   return data.depth[v];

@@ -582,10 +582,9 @@ function(D)
   local i, record, data, AncestorFunc, PostOrderFunc;
   record := NewDFSRecord(D);
   data := rec(out := ListWithIdenticalEntries(DigraphNrVertices(record.graph), 0),
-              failed := false, count := 0);
+              count := 0);
   AncestorFunc := function(record, data)
     if record.current <> record.child then
-      data.failed := true;
       record.stop := true;
     fi;
   end;
@@ -594,10 +593,13 @@ function(D)
     data.out[data.count] := record.child;
   end;
   for i in DigraphVertices(D) do
+    if record.preorder[i] <> -1 then
+      continue;
+    fi;
     ExecuteDFS_C(record, data, i, DFSDefault,
                  PostOrderFunc, AncestorFunc,
                  DFSDefault);
-    if data.failed then
+    if record.stop then
       return fail;
     fi;
   od;
