@@ -682,7 +682,14 @@ end);
 InstallMethod(DigraphFromGraph6StringCons,
 "for IsImmutableDigraph and a string",
 [IsImmutableDigraph, IsString],
-{filt, s} -> MakeImmutable(DigraphFromGraph6StringCons(IsMutableDigraph, s)));
+function(filt, s)
+  local D;
+  D := MakeImmutable(DigraphFromGraph6StringCons(IsMutableDigraph, s));
+  SetIsSymmetricDigraph(D, true);
+  SetIsMultiDigraph(D, false);
+  SetDigraphHasLoops(D, false);
+  return D;
+end);
 
 InstallMethod(DigraphFromGraph6String, "for a function and a string",
 [IsFunction, IsString],
@@ -913,7 +920,12 @@ end);
 InstallMethod(DigraphFromSparse6StringCons,
 "for IsImmutableDigraph and a string",
 [IsImmutableDigraph, IsString],
-{filt, s} -> MakeImmutable(DigraphFromSparse6String(IsMutableDigraph, s)));
+function(filt, s)
+  local D;
+  D := MakeImmutable(DigraphFromSparse6String(IsMutableDigraph, s));
+  SetIsSymmetricDigraph(D, true);
+  return D;
+end);
 
 InstallMethod(DigraphFromSparse6String, "for a function and a string",
 [IsFunction, IsString],

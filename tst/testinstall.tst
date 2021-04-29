@@ -94,7 +94,7 @@ false
 
 #  DigraphFromSparse6String
 gap> DigraphFromSparse6String(":Fa@x^");
-<immutable digraph with 7 vertices, 8 edges>
+<immutable symmetric digraph with 7 vertices, 8 edges>
 
 #  (In/Out)Neighbours and (In/Out)NeighboursOfVertex and (In/Out)DegreeOfVertex
 gap> gr := Digraph([[4], [2, 2], [2, 3, 1, 4], [1]]);
@@ -224,14 +224,14 @@ gap> DigraphAllSimpleCircuits(gr);
 # of a pivot vertex was not necessarily valid when the stabilizer was
 # non-trivial
 gap> gr := DigraphFromGraph6String("L~~~ySrJ[N{NT^");
-<immutable digraph with 13 vertices, 108 edges>
+<immutable symmetric digraph with 13 vertices, 108 edges>
 gap> gr = MaximalSymmetricSubdigraphWithoutLoops(gr);
 true
 gap> DigraphMaximalCliquesReps(gr);
 [ [ 1, 2, 3, 4, 5, 6, 7 ], [ 1, 2, 3, 12 ], [ 2, 8, 12, 13 ], [ 4, 9, 13 ], 
   [ 8, 9, 10, 11, 12, 13 ] ]
 gap> gr := DigraphFromGraph6String("I~~wzfJhw");
-<immutable digraph with 10 vertices, 66 edges>
+<immutable symmetric digraph with 10 vertices, 66 edges>
 gap> gr = MaximalSymmetricSubdigraphWithoutLoops(gr);
 true
 gap> DigraphMaximalCliquesReps(gr);

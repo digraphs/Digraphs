@@ -1515,7 +1515,7 @@ gap> DigraphGreedyColouring(gr);;
 gap> ChromaticNumber(gr);
 2
 gap> gr := DigraphFromGraph6String("KmKk~K??G@_@");
-<immutable digraph with 12 vertices, 42 edges>
+<immutable symmetric digraph with 12 vertices, 42 edges>
 gap> ChromaticNumber(gr);
 4
 gap> gr := CycleDigraph(7);
@@ -1537,7 +1537,7 @@ gap> ChromaticNumber(a);
 gap> ChromaticNumber(b);
 49
 gap> D := DigraphFromGraph6String("ElNG");
-<immutable digraph with 6 vertices, 18 edges>
+<immutable symmetric digraph with 6 vertices, 18 edges>
 gap> ChromaticNumber(D);
 3
 gap> IsSymmetricDigraph(D) and IsRegularDigraph(D) and OutDegreeSet(D) = [3];
@@ -1741,7 +1741,7 @@ gap> gr := DigraphFromSparse6String(
 > ":~?@V`OINBg_McouHAxQD@gyYEW}Q_@_YdgE`?OgZgpEbfYQKDGqiDQEI`wGdjoADGZG\
 > FIJONFQSplq]y@IwvbPKhMh}JGK?OLzW{agKKfRCtarqTGayQGb]rMIurapkxPG?RGcI]\
 > IBtB_`EQKJ@LmxlL_?k^QieOkB|T");
-<immutable digraph with 87 vertices, 214 edges>
+<immutable symmetric digraph with 87 vertices, 214 edges>
 gap> Set(ArticulationPoints(gr));
 [ 1, 3, 8, 11, 12, 15, 17, 18, 19, 21, 23, 27, 30, 36, 37, 41, 42, 46, 51, 
   52, 59, 60, 61, 63, 66, 68, 69, 73, 75, 76, 79, 84, 87 ]

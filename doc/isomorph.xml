@@ -148,7 +148,7 @@ Group([ (3,4)(6,7)(8,9), (2,3)(5,6)(9,10), (2,5)(3,6)(4,7),
 
     <Example><![CDATA[
 gap> johnson := DigraphFromGraph6String("E}lw");
-<immutable digraph with 6 vertices, 24 edges>
+<immutable symmetric digraph with 6 vertices, 24 edges>
 gap> G := AutomorphismGroup(johnson);
 Group([ (3,4), (2,3)(4,5), (1,2)(5,6) ])
 gap> cycle := CycleDigraph(9);
