@@ -2593,6 +2593,9 @@ gap> ExecuteDFS(record, data, 1, DFSDefault,
 >               DFSDefault, AncestorFunc, CrossFunc);
 gap> data;
 rec( cross_vertex := [ 4 ], cycle_vertex := [ 1, 1 ] )
+gap> ExecuteDFS(rec(), data, 1, DFSDefault,                         
+>               DFSDefault, AncestorFunc, CrossFunc);
+Error, the 1st argument <record> must be created with NewDFSRecord,
 
 #
 gap> DIGRAPHS_StopTest();
