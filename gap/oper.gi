@@ -2141,8 +2141,8 @@ end);
 InstallGlobalFunction(ExecuteDFS,
 function(record, data, start, PreOrderFunc, PostOrderFunc, AncestorFunc,
          CrossFunc)
-  if RecNames(record) <> [ "stop", "graph", "child", "parent", "preorder",
-                   "current", "postorder" ] then
+  if RecNames(record) <> ["stop", "graph", "child", "parent", "preorder",
+                   "current", "postorder"] then
     ErrorNoReturn("the 1st argument <record> must be created with ",
                   "NewDFSRecord,");
   fi;

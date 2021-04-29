@@ -47,9 +47,9 @@ Obj ExecuteDFS(Obj self, Obj args) {
   Int N = DigraphNrVertices(D);
 
   if (start > D) {
-    ErrorQuit("the third argument <start> must be a vertex in your graph,", 0L, 0L);
+    ErrorQuit("the third argument <start> must be a vertex in your graph,",
+                                                                   0L, 0L);
   }
-
   Int top   = 0;
   Obj stack = NEW_PLIST(T_PLIST_CYC, N);
   AssPlist(stack, ++top, start);
@@ -96,7 +96,7 @@ Obj ExecuteDFS(Obj self, Obj args) {
       CHANGED_BAG(record);
       AssPlist(stack, ++top, INTOBJ_INT(-1 * current));
     }
-    
+
     if (ElmPRec(record, RNamStop) == True) {
       break;
     }
