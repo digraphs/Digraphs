@@ -343,7 +343,7 @@ function(D)
       record.stop := true;
     fi;
   end;
-  ExecuteDFS(record, [], 1, DFSDefault, DFSDefault, AncestorFunc, DFSDefault);
+  ExecuteDFS_C(record, [], 1, DFSDefault, DFSDefault, AncestorFunc, DFSDefault);
   return not record.stop;
 end);
 

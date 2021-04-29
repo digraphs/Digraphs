@@ -130,4 +130,6 @@ DeclareOperation("PartialOrderDigraphMeetOfVertices",
                  [IsDigraph, IsPosInt, IsPosInt]);
 
 # 11. DFS
-DeclareOperation("DigraphPreorder", [IsDigraph, IsPosInt]);
+DeclareOperation("NewDFSRecord", [IsDigraph]);
+DeclareOperation("DFSDefault", [IsRecord, IsObject]);
+DeclareGlobalFunction("ExecuteDFS");

@@ -46,6 +46,10 @@ Obj ExecuteDFS(Obj self, Obj args) {
   Obj D = ElmPRec(record, RNamName("graph"));
   Int N = DigraphNrVertices(D);
 
+  if (start > D) {
+    ErrorQuit("the third argument <start> must be a vertex in your graph,", 0L, 0L);
+  }
+
   Int top   = 0;
   Obj stack = NEW_PLIST(T_PLIST_CYC, N);
   AssPlist(stack, ++top, start);
