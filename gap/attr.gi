@@ -794,7 +794,7 @@ function(D, v)
   #
   # localParameters is a list of 3-tuples [a_{i - 1}, b_{i - 1}, c_{i - 1}] for
   # each i between 1 and localDiameter where c_i (respectively a_i and b_i) is
-  # the number of vertices at distance i  1 (respectively i and i + 1) from v
+  # the number of vertices at distance i - 1 (respectively i and i + 1) from v
   # that are adjacent to a vertex w at distance i from v.
 
   # <tree> gives a shortest path spanning tree rooted at <v> and is used by
