@@ -2061,18 +2061,18 @@ rec( child := 1, current := 1,
   <A>PreOrderFunc</A>, <A>PostOrderFunc</A>, <A>AncestorFunc</A> or <A>CrossFunc</A> functions.
   ExecuteDFS takes 7 arguments:
   <List>
-    <Item><A><E>record</E></A>: the depth first search record (created using NewDFSRecord)</Item>
-    <Item><A><E>data</E></A>: an object that you want manipulate in the functions passed.</Item>
-    <Item><A><E>start</E></A>: the vertex where we begin the depth first search.</Item>
-    <Item><A><E>PreOrderFunc</E></A>: this function is called when a vertex is first visited. This vertex
+    <Item><A>record</A>: the depth first search record (created using NewDFSRecord)</Item>
+    <Item><A>data</A>: an object that you want manipulate in the functions passed.</Item>
+    <Item><A>start</A>: the vertex where we begin the depth first search.</Item>
+    <Item><A>PreOrderFunc</A>: this function is called when a vertex is first visited. This vertex
     is stored in <A>record</A>.current</Item>
-    <Item><A><E>PostOrderFunc</E></A>: this function is called when a vertex has no more unvisited children
+    <Item><A>PostOrderFunc</A>: this function is called when a vertex has no more unvisited children
     causing us to backtrack. This vertex is stored in <A>record</A>.child and its parent is stored 
     in <A>record</A>.current</Item>
-    <Item><A><E>AncestorFunc</E></A>: this function is called when (<A>record</A>.current,
+    <Item><A>AncestorFunc</A>: this function is called when (<A>record</A>.current,
     <A>record</A>.child) is an edge and <A>record</A>.child is an ancestor of <A>record</A>.current. An ancestor here means that
     <A>record</A>.child is on the same branch as <A>record</A>.current but was visited prior to <A>record</A>.current</Item>
-    <Item><A><E>CrossFunc</E></A>: this function is called when (<A>record</A>.current,
+    <Item><A>CrossFunc</A>: this function is called when (<A>record</A>.current,
     <A>record</A>.child) is an edge and <A>record</A>.child has been visited before <A>record</A>.current
       and it is not an ancestor of <A>record</A>.current</Item>
   </List>
