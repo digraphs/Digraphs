@@ -2541,6 +2541,14 @@ true
 gap> Length(M);
 111
 
+# DigraphMaximumMatching: Issue #461, reported by Leonard Soicher on 2021-05-06.
+# See https://github.com/digraphs/Digraphs/issues/461
+gap> D := DigraphFromGraph6String("Cr");
+<immutable symmetric digraph with 4 vertices, 8 edges>
+gap> SetDigraphVertexLabels(D, [[1, 1], [2, 1], [1, 2], [2, 2]]);
+gap> IsMaximumMatching(D, DigraphMaximumMatching(D));
+true
+
 # DigraphNrLoops
 gap> D := EmptyDigraph(5);
 <immutable empty digraph with 5 vertices>
