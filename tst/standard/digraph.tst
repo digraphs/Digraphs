@@ -447,7 +447,7 @@ gap> gr2 := DigraphByInNeighboursConsNC(IsImmutableDigraph, inn);
 gap> gr2 := DigraphByInNeighbours(IsImmutableDigraph, inn);
 <immutable multidigraph with 20 vertices, 8 edges>
 
-#  AsDigraph
+#  AsDigraph for a transformation
 gap> f := Transformation([]);
 IdentityTransformation
 gap> gr := AsDigraph(f);
@@ -474,6 +474,42 @@ gap> AsDigraph(h);
 <immutable functional digraph with 4 vertices>
 gap> AsDigraph(h, 2);
 fail
+
+# AsDigraph for a permutation
+gap> f := ();;
+gap> D := AsDigraph(f);
+<immutable empty digraph with 0 vertices>
+gap> D = EmptyDigraph(0);;
+gap> AsDigraph(f, 10);
+<immutable functional digraph with 10 vertices>
+gap> g := (1, 3, 7)(2, 6, 5, 8);;
+gap> D := AsDigraph(g);
+<immutable functional digraph with 8 vertices>
+gap> DigraphRange(D) = ListPerm(g);
+true
+gap> AsDigraph(g, -1);
+Error, the 2nd argument <n> should be a non-negative integer,
+gap> AsDigraph(g, 0);
+<immutable empty digraph with 0 vertices>
+gap> D := AsDigraph(g, 10);
+<immutable functional digraph with 10 vertices>
+gap> DigraphRange(D) = Concatenation(ListPerm(g), [9, 10]);
+true
+gap> AsDigraph(g, 7);
+fail
+gap> h := (2, 5, 3);;
+gap> D := AsDigraph(IsMutableDigraph, h);
+<mutable digraph with 5 vertices, 5 edges>
+gap> DigraphRange(D) = ListPerm(h);
+true
+gap> AsDigraph(IsImmutableDigraph, h, 5);
+<immutable functional digraph with 5 vertices>
+gap> D = AsDigraph(IsImmutableDigraph, h, 5);
+true
+gap> D := AsDigraph(IsMutableDigraph, h, 6);
+<mutable digraph with 6 vertices, 6 edges>
+gap> OutNeighbours(D);
+[ [ 1 ], [ 5 ], [ 2 ], [ 4 ], [ 3 ], [ 6 ] ]
 
 #  RandomDigraph
 gap> IsImmutableDigraph(RandomDigraph(100, 0.2));
