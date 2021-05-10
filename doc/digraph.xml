@@ -443,34 +443,42 @@ gap> D := DigraphByInNeighbours(IsMutableDigraph,
 
 <#GAPDoc Label="AsDigraph">
 <ManSection>
-  <Oper Name="AsDigraph" Arg="[filt, ]trans[, n]"/>
+  <Oper Name="AsDigraph" Arg="[filt, ]f[, n]"
+    Label="for a transformation or perm"/>
   <Returns>A digraph, or <K>fail</K>.</Returns>
   <Description>
+    If <A>f</A> is a transformation or permutation,
+    and <A>n</A> is a non-negative integer
+    such that the restriction of <A>f</A> to <C>[1..<A>n</A>]</C> defines
+    a function of <C>[1..<A>n</A>]</C>, then <C>AsDigraph</C>
+    returns the functional digraph with <A>n</A> vertices defined by
+    <A>f</A>. See <Ref Prop="IsFunctionalDigraph"/>.
+    <P/>
+
+    Specifically, the digraph returned by <C>AsDigraph</C> has  <A>n</A> edges:
+    for each vertex <C>v</C> in <C>[1..<A>n</A>]</C>, there is a unique edge
+    with source <C>v</C>; this edge has range <C>v^<A>f</A></C>.
+    <P/>
+
+    If the optional second argument <A>n</A> is not supplied, then
+    the degree of the transformation <A>f</A>,
+    or the largest moved point of the permutation <A>f</A>,
+    as applicable, is used by default.  If the restriction of
+    <A>f</A> to <C>[1..<A>n</A>]</C> does not define a function of
+    <C>[1..<A>n</A>]</C>, then <C>AsDigraph(<A>f</A>, <A>n</A>)</C>
+    returns <K>fail</K>.
+    <P/>
+
     If the optional first argument <A>filt</A> is present, then this should
     specify the category or representation the digraph being created will
     belong to. For example, if <A>filt</A> is <Ref Filt="IsMutableDigraph"/>,
     then the digraph being created will be mutable, if <A>filt</A> is <Ref
     Filt="IsImmutableDigraph"/>, then the digraph will be immutable. 
     If the optional first argument <A>filt</A> is not present, then <Ref
-    Filt="IsImmutableDigraph"/> is used by default.<P/>
-
-    If <A>trans</A> is a transformation, and <A>n</A> is a non-negative integer
-    such that the restriction of <A>trans</A> to <C>[1 .. <A>n</A>]</C> defines
-    a transformation of <C>[1 .. <A>n</A>]</C>, then <C>AsDigraph</C>
-    returns the functional digraph with <A>n</A> vertices defined by
-    <A>trans</A>. See <Ref Prop="IsFunctionalDigraph"/>.
+      Filt="IsImmutableDigraph"/> is used by default.
     <P/>
 
-    Specifically, the digraph returned by <C>AsDigraph</C> has  <A>n</A> edges:
-    for each vertex <C>x</C> in <C>[1 .. <A>n</A>]</C>, there is a unique edge
-    with source <C>x</C>; this edge has range <C>x^<A>trans</A></C>.
-    <P/>
-
-    If the optional second argument <A>n</A> is not supplied, then the degree of
-    the transformation <A>trans</A> is used by default.  If the restriction of
-    <A>trans</A> to <C>[1 .. <A>n</A>]</C> does not define a transformation of
-    <C>[1 .. <A>n</A>]</C>, then <C>AsDigraph(<A>trans</A>, <A>n</A>)</C>
-    returns <K>fail</K>.
+    See also <Ref Attr="AsTransformation"/>.
 
     <Example><![CDATA[
 gap> f := Transformation([4, 3, 3, 1, 7, 9, 10, 4, 2, 3]);
@@ -481,6 +489,12 @@ gap> AsDigraph(f, 4);
 <immutable functional digraph with 4 vertices>
 gap> AsDigraph(f, 5);
 fail
+gap> AsDigraph((1, 2, 3, 4)) = CycleDigraph(4);
+true
+gap> D := AsDigraph(IsMutableDigraph, (1, 3)(2, 4), 5);
+<mutable digraph with 5 vertices, 5 edges>
+gap> DigraphEdges(D);
+[ [ 1, 3 ], [ 2, 4 ], [ 3, 1 ], [ 4, 2 ], [ 5, 5 ] ]
 gap> b := BinaryRelationOnPoints(
 > [[3], [1, 3, 5], [1], [1, 2, 4], [2, 3, 5]]);
 Binary Relation on 5 points

@@ -109,10 +109,14 @@ DeclareConstructor("AsDigraphCons", [IsDigraph, IsTransformation, IsInt]);
 DeclareOperation("AsDigraph", [IsFunction, IsBinaryRelation]);
 DeclareOperation("AsDigraph", [IsFunction, IsTransformation]);
 DeclareOperation("AsDigraph", [IsFunction, IsTransformation, IsInt]);
+DeclareOperation("AsDigraph", [IsFunction, IsPerm]);
+DeclareOperation("AsDigraph", [IsFunction, IsPerm, IsInt]);
 
 DeclareOperation("AsDigraph", [IsBinaryRelation]);
 DeclareOperation("AsDigraph", [IsTransformation]);
 DeclareOperation("AsDigraph", [IsTransformation, IsInt]);
+DeclareOperation("AsDigraph", [IsPerm]);
+DeclareOperation("AsDigraph", [IsPerm, IsInt]);
 
 DeclareOperation("AsBinaryRelation", [IsDigraph]);
 DeclareOperation("AsSemigroup", [IsFunction, IsDigraph]);
