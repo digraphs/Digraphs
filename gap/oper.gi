@@ -386,7 +386,7 @@ InstallMethod(DigraphClosure,
 InstallGlobalFunction(DIGRAPHS_CombinationOperProcessArgs,
 function(arg)
   local copy, i;
-  arg := arg[1];
+  arg := ShallowCopy(arg[1]);
   if IsMutableDigraph(arg[1]) then
     for i in [2 .. Length(arg)] do
       if IsIdenticalObj(arg[1], arg[i]) then
@@ -405,6 +405,7 @@ function(arg)
       arg[i] := OutNeighbours(arg[i]);
     od;
   fi;
+  return arg;
 end);
 
 InstallGlobalFunction(DigraphDisjointUnion,
@@ -423,7 +424,7 @@ function(arg)
   fi;
 
   D := arg[1];
-  DIGRAPHS_CombinationOperProcessArgs(arg);
+  arg := DIGRAPHS_CombinationOperProcessArgs(arg);
   offset := DigraphNrVertices(D);
   for i in [2 .. Length(arg)] do
     n := Length(arg[i]);
@@ -459,7 +460,7 @@ function(arg)
   D      := arg[1];
   tot    := Sum(arg, DigraphNrVertices);
   offset := DigraphNrVertices(D);
-  DIGRAPHS_CombinationOperProcessArgs(arg);
+  arg := DIGRAPHS_CombinationOperProcessArgs(arg);
 
   for list in arg[1] do
     Append(list, [offset + 1 .. tot]);
@@ -499,7 +500,7 @@ function(arg)
 
   D := arg[1];
   n := Maximum(List(arg, DigraphNrVertices));
-  DIGRAPHS_CombinationOperProcessArgs(arg);
+  arg := DIGRAPHS_CombinationOperProcessArgs(arg);
 
   if IsMutableDigraph(D) then
     DigraphAddVertices(D, n - DigraphNrVertices(D));
@@ -539,7 +540,7 @@ function(arg)
   labs := List(Cartesian(Reversed(List(arg, DigraphVertexLabels))), Reversed);
 
   D := arg[1];
-  DIGRAPHS_CombinationOperProcessArgs(arg);
+  arg := DIGRAPHS_CombinationOperProcessArgs(arg);
 
   m := Product(List(arg, Length));
   proj := [Transformation([1 .. m], x -> RemInt(x - 1, Length(arg[1])) + 1)];
@@ -585,7 +586,7 @@ function(arg)
   labs := List(Cartesian(Reversed(List(arg, DigraphVertexLabels))), Reversed);
 
   D := arg[1];
-  DIGRAPHS_CombinationOperProcessArgs(arg);
+  arg := DIGRAPHS_CombinationOperProcessArgs(arg);
 
   m := Product(List(arg, Length));
   proj := [Transformation([1 .. m], x -> RemInt(x - 1, Length(arg[1])) + 1)];
