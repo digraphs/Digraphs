@@ -889,8 +889,6 @@ Error, the arguments must be digraphs by out-neighbours, or a single non-empty\
  list of digraphs by out-neighbours,
 gap> DigraphDisjointUnion(gr, gr);
 <immutable digraph with 2000 vertices, 2000 edges>
-gap> DigraphDisjointUnion([gr2, gr2]);
-<immutable digraph with 200 vertices, 19800 edges>
 gap> DigraphDisjointUnion(gr, gr2);
 <immutable digraph with 1100 vertices, 10900 edges>
 gap> gr := CycleDigraph(1000);;
@@ -910,16 +908,6 @@ gap> u2 := DigraphDisjointUnion(gr1, gr3);
 <immutable multidigraph with 5 vertices, 8 edges>
 gap> u1 = u2;
 true
-gap> n := 10;;
-gap> DigraphDisjointUnion(List([1 .. n], x -> EmptyDigraph(x))) =
-> EmptyDigraph(Int(n * (n + 1) / 2));
-true
-gap> gr := DigraphDisjointUnion(List([2 .. 5], x -> ChainDigraph(x)));
-<immutable digraph with 14 vertices, 10 edges>
-gap> gr := DigraphAddEdges(gr, [[2, 3], [5, 6], [9, 10]]);
-<immutable digraph with 14 vertices, 13 edges>
-gap> gr = ChainDigraph(14);
-true
 gap> D := CycleDigraph(IsMutableDigraph, 2);
 <mutable digraph with 2 vertices, 2 edges>
 gap> DigraphVertexLabels(D);
@@ -928,6 +916,36 @@ gap> DigraphDisjointUnion(D, D);
 <mutable digraph with 4 vertices, 4 edges>
 gap> DigraphVertexLabels(D);
 [ 1 .. 4 ]
+
+#  DigraphDisjointUnion: for a list of digraphs
+gap> DigraphDisjointUnion([CompleteDigraph(100), CompleteDigraph(100)]);
+<immutable digraph with 200 vertices, 19800 edges>
+gap> gr := DigraphDisjointUnion(List([2 .. 5], ChainDigraph));
+<immutable digraph with 14 vertices, 10 edges>
+gap> gr := DigraphAddEdges(gr, [[2, 3], [5, 6], [9, 10]]);
+<immutable digraph with 14 vertices, 13 edges>
+gap> gr = ChainDigraph(14);
+true
+gap> n := 10;;
+gap> DigraphDisjointUnion(List([1 .. n], x -> EmptyDigraph(x))) =
+> EmptyDigraph(Int(n * (n + 1) / 2));
+true
+gap> D1 := CycleDigraph(3);; D2 := DigraphReverse(D1);;
+gap> L := [D1, D2];
+[ <immutable cycle digraph with 3 vertices>, 
+  <immutable digraph with 3 vertices, 3 edges> ]
+gap> DigraphDisjointUnion(L) = DigraphFromDigraph6String("&EOG_@CA");
+true
+gap> L;
+[ <immutable cycle digraph with 3 vertices>, 
+  <immutable digraph with 3 vertices, 3 edges> ]
+gap> MakeImmutable(L);; IsMutable(L);
+false
+gap> DigraphDisjointUnion(L) = DigraphFromDigraph6String("&EOG_@CA");
+true
+gap> L;
+[ <immutable cycle digraph with 3 vertices>, 
+  <immutable digraph with 3 vertices, 3 edges> ]
 
 #  DigraphEdgeUnion
 gap> gr1 := DigraphFromDigraph6String("&I????@A_?AA???@d??");
@@ -976,6 +994,24 @@ gap> gr := DigraphEdgeUnion(ChainDigraph(2), ChainDigraph(3), ChainDigraph(4));
 gap> OutNeighbours(gr);
 [ [ 2, 2, 2 ], [ 3, 3 ], [ 4 ], [  ] ]
 
+#  DigraphEdgeUnion: for a list of digraphs
+gap> D1 := CycleDigraph(3);; D2 := DigraphReverse(D1);;
+gap> L := [D1, D2];
+[ <immutable cycle digraph with 3 vertices>, 
+  <immutable digraph with 3 vertices, 3 edges> ]
+gap> DigraphEdgeUnion(L) = CompleteDigraph(3);
+true
+gap> L;
+[ <immutable cycle digraph with 3 vertices>, 
+  <immutable digraph with 3 vertices, 3 edges> ]
+gap> MakeImmutable(L);; IsMutable(L);
+false
+gap> DigraphEdgeUnion(L) = CompleteDigraph(3);
+true
+gap> L;
+[ <immutable cycle digraph with 3 vertices>, 
+  <immutable digraph with 3 vertices, 3 edges> ]
+
 #  DigraphJoin
 gap> gr := CompleteDigraph(20);
 <immutable complete digraph with 20 vertices>
@@ -994,20 +1030,26 @@ Error, the arguments must be digraphs by out-neighbours, or a single list of d\
 igraphs by out-neighbours,
 gap> DigraphJoin(gr, gr2);
 <immutable digraph with 30 vertices, 780 edges>
-gap> DigraphJoin(gr, EmptyDigraph(0));
-<immutable digraph with 20 vertices, 380 edges>
-gap> DigraphJoin(EmptyDigraph(0), CycleDigraph(1000));
-<immutable digraph with 1000 vertices, 1000 edges>
-gap> DigraphJoin(EmptyDigraph(0), EmptyDigraph(0));
-<immutable empty digraph with 0 vertices>
-gap> DigraphJoin(EmptyDigraph(5), EmptyDigraph(5));
-<immutable digraph with 10 vertices, 50 edges>
+gap> DigraphJoin(gr, EmptyDigraph(0)) = gr;
+true
+gap> D := CycleDigraph(1000);
+<immutable cycle digraph with 1000 vertices>
+gap> DigraphJoin(EmptyDigraph(0), D) = D;
+true
+gap> DigraphNrVertices(DigraphJoin(EmptyDigraph(0), EmptyDigraph(0)));
+0
+gap> D := EmptyDigraph(5);;
+gap> DigraphJoin(D, D) = CompleteBipartiteDigraph(5, 5);
+true
 gap> gr1 := Digraph([[2, 2, 3], [3], [2]]);
 <immutable multidigraph with 3 vertices, 5 edges>
 gap> gr2 := Digraph([[1, 2], [1]]);
 <immutable digraph with 2 vertices, 3 edges>
-gap> gr3 := Digraph(rec(DigraphNrVertices := 2,
-> DigraphSource := [1, 1, 2], DigraphRange := [2, 1, 1]));;
+gap> gr3 := Digraph(rec(
+>   DigraphNrVertices := 2,
+>   DigraphSource := [1, 1, 2],
+>   DigraphRange := [2, 1, 1]
+> ));;
 gap> gr2 = gr3;
 true
 gap> j1 := DigraphJoin(gr1, gr2);
@@ -1027,11 +1069,29 @@ gap> mat := [
 > [1, 1, 1, 0, 0, 0]];;
 gap> AdjacencyMatrix(gr) = mat;
 true
-gap> DigraphJoin(List([1 .. 5], x -> EmptyDigraph(1))) = CompleteDigraph(5);
-true
 gap> DigraphJoin(EmptyDigraph(3), EmptyDigraph(2)) =
 > CompleteBipartiteDigraph(3, 2);
 true
+
+#  DigraphJoin: for a list of digraphs
+gap> DigraphJoin(List([1 .. 5], x -> EmptyDigraph(1))) = CompleteDigraph(5);
+true
+gap> D1 := CycleDigraph(3);; D2 := DigraphReverse(D1);;
+gap> L := [D1, D2];
+[ <immutable cycle digraph with 3 vertices>, 
+  <immutable digraph with 3 vertices, 3 edges> ]
+gap> DigraphJoin(L) = DigraphFromDigraph6String("&EVNfx{y");
+true
+gap> L;
+[ <immutable cycle digraph with 3 vertices>, 
+  <immutable digraph with 3 vertices, 3 edges> ]
+gap> MakeImmutable(L);; IsMutable(L);
+false
+gap> DigraphJoin(L) = DigraphFromDigraph6String("&EVNfx{y");
+true
+gap> L;
+[ <immutable cycle digraph with 3 vertices>, 
+  <immutable digraph with 3 vertices, 3 edges> ]
 
 #  OutNeighboursMutableCopy
 gap> gr := Digraph([[3], [10], [6], [3], [10], [], [6], [3], [], [3]]);
@@ -2038,6 +2098,24 @@ true
 gap> DigraphCartesianProduct(Digraph([[1]]), Digraph([[1]]));
 <immutable multidigraph with 1 vertex, 2 edges>
 
+#  DigraphCartesianProduct: for a list of digraphs
+gap> D1 := CycleDigraph(3);; D2 := DigraphReverse(D1);;
+gap> L := [D1, D2];
+[ <immutable cycle digraph with 3 vertices>, 
+  <immutable digraph with 3 vertices, 3 edges> ]
+gap> DigraphCartesianProduct(L) = DigraphFromDigraph6String("&HO`A_KOP@_COP@_");
+true
+gap> L;
+[ <immutable cycle digraph with 3 vertices>, 
+  <immutable digraph with 3 vertices, 3 edges> ]
+gap> MakeImmutable(L);; IsMutable(L);
+false
+gap> DigraphCartesianProduct(L) = DigraphFromDigraph6String("&HO`A_KOP@_COP@_");
+true
+gap> L;
+[ <immutable cycle digraph with 3 vertices>, 
+  <immutable digraph with 3 vertices, 3 edges> ]
+
 # DigraphDirectProduct
 gap> D := DigraphMutableCopy(CycleDigraph(3));
 <mutable digraph with 3 vertices, 3 edges>
@@ -2066,6 +2144,24 @@ true
 gap> D := RandomDigraph(100);; IsIsomorphicDigraph(D,
 > DigraphDirectProduct(D, Digraph([[1]])));
 true
+
+#  DigraphDirectProduct: for a list of digraphs
+gap> D1 := CycleDigraph(3);; D2 := DigraphReverse(D1);;
+gap> L := [D1, D2];
+[ <immutable cycle digraph with 3 vertices>, 
+  <immutable digraph with 3 vertices, 3 edges> ]
+gap> DigraphDirectProduct(L) = DigraphFromDiSparse6String(".HeESITfeogP");
+true
+gap> L;
+[ <immutable cycle digraph with 3 vertices>, 
+  <immutable digraph with 3 vertices, 3 edges> ]
+gap> MakeImmutable(L);; IsMutable(L);
+false
+gap> DigraphDirectProduct(L) = DigraphFromDiSparse6String(".HeESITfeogP");
+true
+gap> L;
+[ <immutable cycle digraph with 3 vertices>, 
+  <immutable digraph with 3 vertices, 3 edges> ]
 
 # Issue 213
 gap> D := Digraph(IsMutableDigraph, [[3, 4, 6, 8], [1, 3, 4, 6, 7, 8, 10], 
