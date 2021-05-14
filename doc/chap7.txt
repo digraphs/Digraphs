@@ -131,8 +131,8 @@
   [33X[0;0YIf  [3Xdigraph[103X is a multidigraph then the automorphism group is returned as the
   direct  product of a group of permutations on the set of vertices of [3Xdigraph[103X
   with  a  group  of permutations on the set of edges of [3Xdigraph[103X. These groups
-  can  be  accessed  using [2XProjection[102X ([14XProjection, for a domain and a positive
-  integer???[114X) on the returned group.[133X
+  can  be  accessed using [2XProjection[102X ([14XReference: Projection for a domain and a
+  positive integer[114X) on the returned group.[133X
   
   [33X[0;0YBy  default,  the  automorphism group is found using [5Xbliss[105X by Tommi Junttila
   and  Petteri  Kaski.  If  [5XNautyTracesInterface[105X  is  available, then [5Xnauty[105X by
@@ -145,7 +145,7 @@
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27Xjohnson := DigraphFromGraph6String("E}lw");[127X[104X
-    [4X[28X<immutable digraph with 6 vertices, 24 edges>[128X[104X
+    [4X[28X<immutable symmetric digraph with 6 vertices, 24 edges>[128X[104X
     [4X[25Xgap>[125X [27XG := AutomorphismGroup(johnson);[127X[104X
     [4X[28XGroup([ (3,4), (2,3)(4,5), (1,2)(5,6) ])[128X[104X
     [4X[25Xgap>[125X [27Xcycle := CycleDigraph(9);[127X[104X
@@ -243,8 +243,8 @@
   [33X[0;0YIf  [3Xdigraph[103X is a multidigraph then the automorphism group is returned as the
   direct  product of a group of permutations on the set of vertices of [3Xdigraph[103X
   with  a  group  of permutations on the set of edges of [3Xdigraph[103X. These groups
-  can  be  accessed  using [2XProjection[102X ([14XProjection, for a domain and a positive
-  integer???[114X) on the returned group.[133X
+  can  be  accessed using [2XProjection[102X ([14XReference: Projection for a domain and a
+  positive integer[114X) on the returned group.[133X
   
   [33X[0;0YBy  default,  the  automorphism group is found using [5Xbliss[105X by Tommi Junttila
   and  Petteri  Kaski.  If  [5XNautyTracesInterface[105X  is  available, then [5Xnauty[105X by
@@ -310,8 +310,8 @@
   [33X[0;0YIf  [3Xdigraph[103X is a multidigraph then the automorphism group is returned as the
   direct  product of a group of permutations on the set of vertices of [3Xdigraph[103X
   with  a  group  of permutations on the set of edges of [3Xdigraph[103X. These groups
-  can  be  accessed  using [2XProjection[102X ([14XProjection, for a domain and a positive
-  integer???[114X) on the returned group.[133X
+  can  be  accessed using [2XProjection[102X ([14XReference: Projection for a domain and a
+  positive integer[114X) on the returned group.[133X
   
   [33X[0;0YBy  default,  the  automorphism group is found using [5Xbliss[105X by Tommi Junttila
   and  Petteri  Kaski.  If  [5XNautyTracesInterface[105X  is  available, then [5Xnauty[105X by

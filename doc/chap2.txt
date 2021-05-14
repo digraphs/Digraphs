@@ -9,7 +9,7 @@
   [33X[0;0YIt is assumed that you have a working copy of [5XGAP[105X with version number 4.10.0
   or  higher.  The  most  up-to-date version of [5XGAP[105X and instructions on how to
   install    it    can    be    obtained    from    the   main   [5XGAP[105X   webpage
-  [7Xhttp://www.gap-system.org[107X.[133X
+  [7Xhttps://www.gap-system.org[107X.[133X
   
   [33X[0;0YThe  following  is  a  summary of the steps that should lead to a successful
   installation of [5XDigraphs[105X:[133X
@@ -39,18 +39,18 @@
         not  available, then [5XDigraphs[105X can be used as normal with the exception
         that functions whose names contain [21XNauty[121X will not work.[133X
   
-  [30X    [33X[0;6Ydownload  the  package  archive [11Xdigraphs-1.4.0.tar.gz[111X from the Digraph
-        package webpage ([7Xhttp://digraphs.github.io/Digraphs/[107X).[133X
+  [30X    [33X[0;6Ydownload  the  package  archive [11Xdigraphs-1.4.1.tar.gz[111X from the Digraph
+        package webpage ([7Xhttps://digraphs.github.io/Digraphs/[107X).[133X
   
   [30X    [33X[0;6Yunzip  and  untar  the  file,  this  should  create a directory called
-        [11Xdigraphs-1.4.0[111X.[133X
+        [11Xdigraphs-1.4.1[111X.[133X
   
   [30X    [33X[0;6Ylocate  the  [11Xpkg[111X  directory  of your [5XGAP[105X directory, which contains the
-        directories [11Xlib[111X, [11Xdoc[111X and so on. Move the directory [11Xdigraphs-1.4.0[111X into
+        directories [11Xlib[111X, [11Xdoc[111X and so on. Move the directory [11Xdigraphs-1.4.1[111X into
         the [11Xpkg[111X directory.[133X
   
   [30X    [33X[0;6Yit   is   necessary  to  compile  the  [5XDigraphs[105X  package.  Inside  the
-        [11Xpkg/digraphs-1.4.0[111X directory, type[133X
+        [11Xpkg/digraphs-1.4.1[111X directory, type[133X
   
   [4X      [32X[104X
           [4X./configure[104X
@@ -65,6 +65,28 @@
   
   [33X[0;0YIf  you  want to check that the package is working correctly, you should run
   some of the tests described in Section [14X2.5[114X.[133X
+  
+  
+  [1X2.1-1 [33X[0;0YConfiguration options[133X[101X
+  
+  [33X[0;0YIn  addition  to  the  usual  autoconf  generated  configuration  flags, the
+  following flags are provided.[133X
+  
+      ┌───────────────────────────┬──────────────────────────────────────────────────┐
+      │ Option                    │ Meaning                                          │ 
+      ├───────────────────────────┼──────────────────────────────────────────────────┤
+      ├───────────────────────────┼──────────────────────────────────────────────────┤
+      │ [10X--enable-code-coverage[110X    │ enable code coverage support                     │ 
+      │ [10X--enable-compile-warnings[110X │ enable compiler warnings                         │ 
+      │ [10X--enable-debug[110X            │ enable debug mode                                │ 
+      │ [10X--with-external-bliss[110X     │ use external [5Xbliss[105X                               │ 
+      │ [10X--with-external-planarity[110X │ use external [5Xedge-addition-planarity-suite[105X       │ 
+      │ [10X--with-gaproot[110X            │ specify root of GAP installation                 │ 
+      │ [10X--without-intrinsics[110X      │ do not use compiler intrinsics even if available │ 
+      └───────────────────────────┴──────────────────────────────────────────────────┘
+  
+       [1XTable:[101X Configuration flags
+  
   
   
   [1X2.2 [33X[0;0YOptional package dependencies[133X[101X
@@ -97,7 +119,7 @@
   
   [33X[0;0YIt is not possible to use the [5XDigraphs[105X package without compiling it.[133X
   
-  [33X[0;0YTo  compile  the  kernel  component inside the [11Xpkg/digraphs-1.4.0[111X directory,
+  [33X[0;0YTo  compile  the  kernel  component inside the [11Xpkg/digraphs-1.4.1[111X directory,
   type[133X
   
   [4X[32X[104X

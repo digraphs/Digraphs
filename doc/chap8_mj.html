@@ -230,11 +230,11 @@ true</pre></div>
 
 <dl>
 <dt><strong class="Mark">One or two arguments</strong></dt>
-<dd><p>If one or two arguments are supplied, then <code class="code">DigraphClique</code> and <code class="code">DigraphMaximalClique</code> greedily enlarge the clique <var class="Arg">include</var> until it can not continue. The result is guaranteed to be a maximal clique. This may or may not return an answer more quickly than using <code class="func">DigraphMaximalCliques</code> (<a href="chap8_mj.html#X84EA2F9482B8D4AF"><span class="RefLink">8.1-4</span></a>). with a limit of 1.</p>
+<dd><p>If one or two arguments are supplied, then <code class="code">DigraphClique</code> and <code class="code">DigraphMaximalClique</code> greedily enlarge the clique <var class="Arg">include</var> until it cannot continue. The result is guaranteed to be a maximal clique. This may or may not return an answer more quickly than using <code class="func">DigraphMaximalCliques</code> (<a href="chap8_mj.html#X84EA2F9482B8D4AF"><span class="RefLink">8.1-4</span></a>) with a limit of 1.</p>
 
 </dd>
 <dt><strong class="Mark">Three arguments</strong></dt>
-<dd><p>If three arguments are supplied, then <code class="code">DigraphClique</code> greedily enlarges the clique <var class="Arg">include</var> until it can not continue, although this clique may not be maximal.</p>
+<dd><p>If three arguments are supplied, then <code class="code">DigraphClique</code> greedily enlarges the clique <var class="Arg">include</var> until it cannot continue, although this clique may not be maximal.</p>
 
 <p>Given three arguments, <code class="code">DigraphMaximalClique</code> returns the maximal clique returned by <code class="code">DigraphMaximalCliques(</code><var class="Arg">digraph</var><code class="code">, </code><var class="Arg">include</var><code class="code">, </code><var class="Arg">exclude</var><code class="code">, 1)</code> if one exists, else <code class="keyw">fail</code>.</p>
 
@@ -420,11 +420,11 @@ true</pre></div>
 
 <dl>
 <dt><strong class="Mark">One or two arguments</strong></dt>
-<dd><p>If one or two arguments are supplied, then <code class="code">DigraphIndependentSet</code> and <code class="code">DigraphMaximalIndependentSet</code> greedily enlarge the independent set <var class="Arg">include</var> until it can not continue. The result is guaranteed to be a maximal independent set. This may or may not return an answer more quickly than using <code class="func">DigraphMaximalIndependentSets</code> (<a href="chap8_mj.html#X7D2C78EB81A798A9"><span class="RefLink">8.2-3</span></a>). with a limit of 1.</p>
+<dd><p>If one or two arguments are supplied, then <code class="code">DigraphIndependentSet</code> and <code class="code">DigraphMaximalIndependentSet</code> greedily enlarge the independent set <var class="Arg">include</var> until it cannot continue. The result is guaranteed to be a maximal independent set. This may or may not return an answer more quickly than using <code class="func">DigraphMaximalIndependentSets</code> (<a href="chap8_mj.html#X7D2C78EB81A798A9"><span class="RefLink">8.2-3</span></a>) with a limit of 1.</p>
 
 </dd>
 <dt><strong class="Mark">Three arguments</strong></dt>
-<dd><p>If three arguments are supplied, then <code class="code">DigraphIndependentSet</code> greedily enlarges the independent set <var class="Arg">include</var> until it can not continue, although this independent set may not be maximal.</p>
+<dd><p>If three arguments are supplied, then <code class="code">DigraphIndependentSet</code> greedily enlarges the independent set <var class="Arg">include</var> until it cannot continue, although this independent set may not be maximal.</p>
 
 <p>Given three arguments, <code class="code">DigraphMaximalIndependentSet</code> returns the maximal independent set returned by <code class="code">DigraphMaximalIndependentSets(</code><var class="Arg">digraph</var><code class="code">, </code><var class="Arg">include</var><code class="code">, </code><var class="Arg">exclude</var><code class="code">, 1)</code> if one exists, else <code class="keyw">fail</code>.</p>
 

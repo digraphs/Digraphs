@@ -1,6 +1,6 @@
 name: Digraphs
-version: 1.4.0
-date: 2021-01-27
+version: 1.4.1
+date: 2021-05-14
 description: |
     Graphs, digraphs, and multidigraphs in GAP
 
@@ -14,7 +14,7 @@ authors:
     - name: Michael Torpey
       url: https://mtorpey.github.io
     - name: Maria Tsalakou
-      url: https://mariatsalakou.github.io
+      url: https://mariatsalakou.github.io/
     - name: Wilf A. Wilson
       url: https://wilf.me
 
@@ -66,7 +66,7 @@ suggested-pkgs:
       url: "https://gap-packages.github.io/grape"
     - name: "nautytracesinterface"
       version: ">=0.2"
-      url: "https://github.com/gap-packages/NautyTracesInterface"
+      url: "https://gap-packages.github.io/NautyTracesInterface/"
 
 www: https://digraphs.github.io/Digraphs
 readme: README.md
@@ -74,7 +74,7 @@ packageinfo: https://digraphs.github.io/Digraphs/PackageInfo.g
 
 downloads:
     - name: .tar.gz
-      url: https://github.com/digraphs/Digraphs/releases/download/v1.4.0/digraphs-1.4.0.tar.gz
+      url: https://github.com/digraphs/Digraphs/releases/download/v1.4.1/digraphs-1.4.1.tar.gz
 
 abstract: |
     The <b>Digraphs</b> package is a <b>GAP</b> package for digraphs and multidigraphs.

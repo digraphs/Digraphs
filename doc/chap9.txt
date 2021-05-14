@@ -14,8 +14,8 @@
   
   [33X[0;0YThe  string  [3Xstr[103X  must  correspond to a valid [10Xdot[110X or [10XLaTeX[110X text file and you
   must have have [10XGraphViz[110X and [10Xpdflatex[110X installed on your computer. For details
-  about    these    file   formats,   see   [7Xhttp://www.latex-project.org[107X   and
-  [7Xhttp://www.graphviz.org[107X.[133X
+  about    these   file   formats,   see   [7Xhttps://www.latex-project.org[107X   and
+  [7Xhttps://www.graphviz.org[107X.[133X
   
   [33X[0;0YThis  function  is  provided  to  allow convenient, immediate viewing of the
   pictures produced by the function [2XDotDigraph[102X ([14X9.1-2[114X).[133X
@@ -34,8 +34,8 @@
         directory if does not already exist.[133X
   
         [33X[0;6YThe  default  value  of this option is [10X"tmp.viz"[110X if the option [10Xpath[110X is
-        present,  and the result of [2XDirectoryTemporary[102X ([14XDirectoryTemporary???[114X)
-        is used otherwise.[133X
+        present,    and   the   result   of   [2XDirectoryTemporary[102X   ([14XReference:
+        DirectoryTemporary[114X) is used otherwise.[133X
   
   [8Xfilename[108X
         [33X[0;6Ythis  should  be  a string representing the name of the file where [3Xstr[103X
@@ -114,7 +114,7 @@
   
   [33X[0;0YThe  output  is  in  [10Xdot[110X format (also known as [10XGraphViz[110X) format. For details
   about  this  file  format, and information about how to display or edit this
-  format see [7Xhttp://www.graphviz.org[107X.[133X
+  format see [7Xhttps://www.graphviz.org[107X.[133X
   
   [33X[0;0YThe string returned by [10XDotDigraph[110X or [10XDotVertexLabelledDigraph[110X can be written
   to a file using the command [2XFileString[102X ([14XGAPDoc: FileString[114X).[133X
@@ -373,7 +373,7 @@
   
   [33X[0;0YThe  output  is  in  [10Xdot[110X format (also known as [10XGraphViz[110X) format. For details
   about  this  file  format, and information about how to display or edit this
-  format see [7Xhttp://www.graphviz.org[107X.[133X
+  format see [7Xhttps://www.graphviz.org[107X.[133X
   
   [33X[0;0YThe  string  returned  by [10XDotSymmetricDigraph[110X can be written to a file using
   the command [2XFileString[102X ([14XGAPDoc: FileString[114X).[133X
@@ -459,7 +459,7 @@
   
   [33X[0;0YThe  output  is  in  [10Xdot[110X format (also known as [10XGraphViz[110X) format. For details
   about  this  file  format, and information about how to display or edit this
-  format see [7Xhttp://www.graphviz.org[107X.[133X
+  format see [7Xhttps://www.graphviz.org[107X.[133X
   
   [33X[0;0YThe string returned by [10XDotPartialOrderDigraph[110X can be written to a file using
   the command [2XFileString[102X ([14XGAPDoc: FileString[114X).[133X
@@ -495,7 +495,7 @@
   
   [33X[0;0YThe  output  is  in  [10Xdot[110X format (also known as [10XGraphViz[110X) format. For details
   about  this  file  format, and information about how to display or edit this
-  format see [7Xhttp://www.graphviz.org[107X.[133X
+  format see [7Xhttps://www.graphviz.org[107X.[133X
   
   [33X[0;0YThe string returned by [10XDotPreorderDigraph[110X can be written to a file using the
   command [2XFileString[102X ([14XGAPDoc: FileString[114X).[133X
@@ -577,7 +577,7 @@
   [6XReturns:[106X  [33X[0;10YA string.[133X
   
   [33X[0;0YReturns  a  string  [10Xstring[110X such that [10XEvalString(string)[110X is equal to [3Xdigraph[103X,
-  and has the same mutability. See [2XEvalString[102X ([14XEvalString???[114X).[133X
+  and has the same mutability. See [2XEvalString[102X ([14XReference: EvalString[114X).[133X
   
   [33X[0;0YThe  methods  installed  for [10XString[110X make some attempts to ensure that [10Xstring[110X
   has  as short a length as possible, but there may exist shorter strings that
@@ -585,8 +585,8 @@
   
   [33X[0;0YIt is possible that [10Xstring[110X may contain escaped special characters. To obtain
   a  representation  of  [3Xdigraph[103X  that can be entered as GAP input, please use
-  [2XPrint[102X  ([14XPrint???[114X).  Note  that [10XPrint[110X for a digraph delegates to [10XPrintString[110X,
-  which delegates to [10XString[110X.[133X
+  [2XPrint[102X  ([14XReference:  Print[114X).  Note  that  [10XPrint[110X  for  a  digraph delegates to
+  [10XPrintString[110X, which delegates to [10XString[110X.[133X
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27XD := CycleDigraph(3);[127X[104X
@@ -627,9 +627,9 @@
     [4X[25Xgap>[125X [27XDigraphFromGraph6String("?");[127X[104X
     [4X[28X<immutable empty digraph with 0 vertices>[128X[104X
     [4X[25Xgap>[125X [27XDigraphFromGraph6String("C]");[127X[104X
-    [4X[28X<immutable digraph with 4 vertices, 8 edges>[128X[104X
+    [4X[28X<immutable symmetric digraph with 4 vertices, 8 edges>[128X[104X
     [4X[25Xgap>[125X [27XDigraphFromGraph6String("H?AAEM{");[127X[104X
-    [4X[28X<immutable digraph with 9 vertices, 22 edges>[128X[104X
+    [4X[28X<immutable symmetric digraph with 9 vertices, 22 edges>[128X[104X
     [4X[25Xgap>[125X [27XDigraphFromDigraph6String("&?");[127X[104X
     [4X[28X<immutable empty digraph with 0 vertices>[128X[104X
     [4X[25Xgap>[125X [27XDigraphFromDigraph6String(IsMutableDigraph, "&DOOOW?");[127X[104X
@@ -817,10 +817,10 @@
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27XReadDigraphs([127X[104X
     [4X[25X>[125X [27XConcatenation(DIGRAPHS_Dir(), "/data/graph5.g6.gz"), 10);[127X[104X
-    [4X[28X<immutable digraph with 5 vertices, 8 edges>[128X[104X
+    [4X[28X<immutable symmetric digraph with 5 vertices, 8 edges>[128X[104X
     [4X[25Xgap>[125X [27XReadDigraphs([127X[104X
     [4X[25X>[125X [27XConcatenation(DIGRAPHS_Dir(), "/data/graph5.g6.gz"), 17);[127X[104X
-    [4X[28X<immutable digraph with 5 vertices, 12 edges>[128X[104X
+    [4X[28X<immutable symmetric digraph with 5 vertices, 12 edges>[128X[104X
     [4X[25Xgap>[125X [27XReadDigraphs([127X[104X
     [4X[25X>[125X [27XConcatenation(DIGRAPHS_Dir(), "/data/tree9.4.txt"));[127X[104X
     [4X[28X[ <immutable digraph with 9 vertices, 8 edges>, [128X[104X
@@ -922,8 +922,8 @@
   
   [33X[0;0YIf  [3Xfilename[103X  is a string representing the name of a file containing encoded
   digraphs,  then  [10XIteratorFromDigraphFile[110X  returns  an iterator for which the
-  value  of  [2XNextIterator[102X ([14XNextIterator???[114X) is the next digraph encoded in the
-  file.[133X
+  value  of [2XNextIterator[102X ([14XReference: NextIterator[114X) is the next digraph encoded
+  in the file.[133X
   
   [33X[0;0YIf  the  optional  argument  [3Xdecoder[103X  is  specified  and is a function which
   decodes  a  string  into  a  digraph,  then [10XIteratorFromDigraphFile[110X will use

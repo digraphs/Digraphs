@@ -4,7 +4,7 @@
   
   [1X1.1 [33X[0;0YIntroduction[133X[101X
   
-  [33X[0;0YThis  is  the manual for version 1.4.0 of the [5XDigraphs[105X package. This package
+  [33X[0;0YThis  is  the manual for version 1.4.1 of the [5XDigraphs[105X package. This package
   was developed at the University of St Andrews by:[133X
   
   [30X    [33X[0;6YJan De Beule,[133X
@@ -13,7 +13,9 @@
   
   [30X    [33X[0;6YJames D. Mitchell,[133X
   
-  [30X    [33X[0;6YMichael C. Torpey, and[133X
+  [30X    [33X[0;6YMichael C. Torpey,[133X
+  
+  [30X    [33X[0;6YMaria Tsalakou, and[133X
   
   [30X    [33X[0;6YWilf A. Wilson.[133X
   
@@ -31,11 +33,9 @@
   
   [30X    [33X[0;6YMarkus Pfeiffer,[133X
   
-  [30X    [33X[0;6YChris Russell,[133X
+  [30X    [33X[0;6YChristopher Russell,[133X
   
   [30X    [33X[0;6YFinn Smith, and[133X
-  
-  [30X    [33X[0;6YMaria Tsalakou,[133X
   
   [30X    [33X[0;6YMurray Whyte.[133X
   
@@ -57,14 +57,20 @@
   automorphism  groups  and  canonical  forms in [5XDigraphs[105X. See Section [14X7.2[114X for
   more details.[133X
   
+  [33X[0;0YThe  [5Xedge-addition-planarity-suite[105X is also included in [5XDigraphs[105X; see [BM04],
+  [Boy06],  [BM06],  and  [Boy12]  .  The  [5Xedge-addition-planarity-suite[105X is an
+  open-source  implementation  of  the  edge  addition  planar graph embedding
+  algorithm  and related algorithms by John M. Boyer. See Section [14X6.4[114X for more
+  details.[133X
+  
   [33X[0;0YFrom  version  1.0.0  of  this  package,  digraphs  can be either mutable or
   immutable.  Mutable  digraphs can be changed in-place by many of the methods
   in  the package, which avoids unnecessary copying. Immutable digraphs cannot
   be  changed  in-place, but their advantage is that the value of an attribute
   of  an immutable digraph is only ever computed once. Mutable digraphs can be
-  converted    into    immutable   digraphs   in-place   using   [2XMakeImmutable[102X
-  ([14XMakeImmutable???[114X).  One of the motivations for introducing mutable digraphs
-  in  version  1.0.0 was that in practice the authors often wanted to create a
+  converted  into  immutable digraphs in-place using [2XMakeImmutable[102X ([14XReference:
+  MakeImmutable[114X).  One  of the motivations for introducing mutable digraphs in
+  version  1.0.0  was  that  in  practice the authors often wanted to create a
   digraph  and  immediately  modify  it (removing certain edges, loops, and so
   on).  Before version 1.0.0, this involved copying the digraph several times,
   with  each copy being discarded almost immediately. From version 1.0.0, this

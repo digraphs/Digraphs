@@ -138,18 +138,18 @@
 <h5>3.1-2 IsMutableDigraph</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsMutableDigraph</code></td><td class="tdright">(&nbsp;category&nbsp;)</td></tr></table></div>
-<p><code class="code">IsMutableDigraph</code> is a synonym for <code class="func">IsDigraph</code> (<a href="chap3_mj.html#X7877ADC77F85E630"><span class="RefLink">3.1-1</span></a>) and <code class="func">IsMutable</code> (<span class="RefLink">???</span>). A mutable digraph may be changed in-place by methods in the <strong class="pkg">Digraphs</strong> package, and is not attribute-storing – see <code class="func">IsAttributeStoringRep</code> (<span class="RefLink">???</span>).</p>
+<p><code class="code">IsMutableDigraph</code> is a synonym for <code class="func">IsDigraph</code> (<a href="chap3_mj.html#X7877ADC77F85E630"><span class="RefLink">3.1-1</span></a>) and <code class="func">IsMutable</code> (<a href="https://www.gap-system.org/Manuals/doc/ref/chap12_mj.html#X7999AD1D7A4F1F46"><span class="RefLink">Reference: IsMutable</span></a>). A mutable digraph may be changed in-place by methods in the <strong class="pkg">Digraphs</strong> package, and is not attribute-storing – see <code class="func">IsAttributeStoringRep</code> (<a href="https://www.gap-system.org/Manuals/doc/ref/chap13_mj.html#X7A951C33839AF2C1"><span class="RefLink">Reference: IsAttributeStoringRep</span></a>).</p>
 
-<p>A mutable digraph may be converted into an immutable attribute-storing digraph by calling <code class="func">MakeImmutable</code> (<span class="RefLink">???</span>) on the digraph.</p>
+<p>A mutable digraph may be converted into an immutable attribute-storing digraph by calling <code class="func">MakeImmutable</code> (<a href="https://www.gap-system.org/Manuals/doc/ref/chap12_mj.html#X80CE136D804097C7"><span class="RefLink">Reference: MakeImmutable</span></a>) on the digraph.</p>
 
 <p><a id="X7CAFAA89804F80BD" name="X7CAFAA89804F80BD"></a></p>
 
 <h5>3.1-3 IsImmutableDigraph</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsImmutableDigraph</code></td><td class="tdright">(&nbsp;category&nbsp;)</td></tr></table></div>
-<p><code class="code">IsImmutableDigraph</code> is a subcategory of <code class="func">IsDigraph</code> (<a href="chap3_mj.html#X7877ADC77F85E630"><span class="RefLink">3.1-1</span></a>). Digraphs that lie in <code class="code">IsImmutableDigraph</code> are immutable and attribute-storing. In particular, they lie in <code class="func">IsAttributeStoringRep</code> (<span class="RefLink">???</span>).</p>
+<p><code class="code">IsImmutableDigraph</code> is a subcategory of <code class="func">IsDigraph</code> (<a href="chap3_mj.html#X7877ADC77F85E630"><span class="RefLink">3.1-1</span></a>). Digraphs that lie in <code class="code">IsImmutableDigraph</code> are immutable and attribute-storing. In particular, they lie in <code class="func">IsAttributeStoringRep</code> (<a href="https://www.gap-system.org/Manuals/doc/ref/chap13_mj.html#X7A951C33839AF2C1"><span class="RefLink">Reference: IsAttributeStoringRep</span></a>).</p>
 
-<p>A mutable digraph may be converted to an immutable digraph that lies in the category <code class="code">IsImmutableDigraph</code> by calling <code class="func">MakeImmutable</code> (<span class="RefLink">???</span>) on the digraph.</p>
+<p>A mutable digraph may be converted to an immutable digraph that lies in the category <code class="code">IsImmutableDigraph</code> by calling <code class="func">MakeImmutable</code> (<a href="https://www.gap-system.org/Manuals/doc/ref/chap12_mj.html#X80CE136D804097C7"><span class="RefLink">Reference: MakeImmutable</span></a>) on the digraph.</p>
 
 <p>The operation <code class="func">DigraphMutableCopy</code> (<a href="chap3_mj.html#X83D93A8A8251E6F9"><span class="RefLink">3.3-1</span></a>) can be used to construct a mutable copy of an immutable digraph. It is however not possible to convert an immutable digraph into a mutable digraph in-place.</p>
 
@@ -217,11 +217,11 @@
 
 </dd>
 <dt><strong class="Mark">for a Grape package graph</strong></dt>
-<dd><p>if <var class="Arg">obj</var> is a <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span> package graph (i.e. a record for which the function <code class="code">IsGraph</code> returns <code class="keyw">true</code>), then this function returns a digraph isomorphic to <var class="Arg">obj</var>.</p>
+<dd><p>if <var class="Arg">obj</var> is a <span class="URL"><a href="https://gap-packages.github.io/grape">Grape</a></span> package graph (i.e. a record for which the function <code class="code">IsGraph</code> returns <code class="keyw">true</code>), then this function returns a digraph isomorphic to <var class="Arg">obj</var>.</p>
 
 </dd>
 <dt><strong class="Mark">for a binary relation</strong></dt>
-<dd><p>if <var class="Arg">obj</var> is a binary relation on the points <code class="code">[1 .. n]</code> for some posititve integer <span class="SimpleMath">\(n\)</span>, then this function returns the digraph defined by <var class="Arg">obj</var>. Specifically, this function returns a digraph which has <span class="SimpleMath">\(n\)</span> vertices, and which has an edge with source <code class="code">i</code> and range <code class="code">j</code> if and only if <code class="code">[i,j]</code> is a pair in the binary relation <var class="Arg">obj</var>.</p>
+<dd><p>if <var class="Arg">obj</var> is a binary relation on the points <code class="code">[1 .. n]</code> for some positive integer <span class="SimpleMath">\(n\)</span>, then this function returns the digraph defined by <var class="Arg">obj</var>. Specifically, this function returns a digraph which has <span class="SimpleMath">\(n\)</span> vertices, and which has an edge with source <code class="code">i</code> and range <code class="code">j</code> if and only if <code class="code">[i,j]</code> is a pair in the binary relation <var class="Arg">obj</var>.</p>
 
 </dd>
 </dl>
@@ -481,11 +481,11 @@ Binary Relation on 5 points
 <h5>3.2-3 Graph</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; Graph</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
-<p>Returns: A <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span> package graph.</p>
+<p>Returns: A <span class="URL"><a href="https://gap-packages.github.io/grape">Grape</a></span> package graph.</p>
 
-<p>If <var class="Arg">digraph</var> is a mutable or immutable digraph without multiple edges, then this operation returns a <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span> package graph that is isomorphic to <var class="Arg">digraph</var>.</p>
+<p>If <var class="Arg">digraph</var> is a mutable or immutable digraph without multiple edges, then this operation returns a <span class="URL"><a href="https://gap-packages.github.io/grape">Grape</a></span> package graph that is isomorphic to <var class="Arg">digraph</var>.</p>
 
-<p>If <var class="Arg">digraph</var> is a multidigraph, then since <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span> does not support multiple edges, the multiple edges will be reduced to a single edge in the result. In order words, for a multidigraph this operation will return the same as <code class="code">Graph(DigraphRemoveAllMultipleEdges(</code><var class="Arg">digraph</var><code class="code">))</code>.</p>
+<p>If <var class="Arg">digraph</var> is a multidigraph, then since <span class="URL"><a href="https://gap-packages.github.io/grape">Grape</a></span> does not support multiple edges, the multiple edges will be reduced to a single edge in the result. In order words, for a multidigraph this operation will return the same as <code class="code">Graph(DigraphRemoveAllMultipleEdges(</code><var class="Arg">digraph</var><code class="code">))</code>.</p>
 
 
 <div class="example"><pre>
@@ -513,7 +513,7 @@ true</pre></div>
 <h5>3.2-4 AsGraph</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; AsGraph</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
-<p>Returns: A <span class="URL"><a href="http://www.maths.qmul.ac.uk/~leonard/grape/">Grape</a></span> package graph.</p>
+<p>Returns: A <span class="URL"><a href="https://gap-packages.github.io/grape">Grape</a></span> package graph.</p>
 
 <p>If <var class="Arg">digraph</var> is a digraph, then this method returns the same as <code class="func">Graph</code> (<a href="chap3_mj.html#X7B335342839E5146"><span class="RefLink">3.2-3</span></a>), except that if <var class="Arg">digraph</var> is immutable, then the result will be stored as a mutable attribute of <var class="Arg">digraph</var>. In this latter case, when <code class="code">AsGraph(</code><var class="Arg">digraph</var><code class="code">)</code> is called subsequently, the same <strong class="pkg">GAP</strong> object will be returned as before.</p>
 
@@ -761,7 +761,7 @@ true
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; MaximalAntiSymmetricSubdigraphAttr</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
 <p>Returns: A digraph.</p>
 
-<p>If <var class="Arg">digraph</var> is a digraph, then <code class="code">MaximalAntiSymmetricSubdigraph</code> returns an anti-symmetric subdigraph of <var class="Arg">digraph</var> formed by retaining the vertices of <var class="Arg">digraph</var>, discarding any duplicate edges, and discarding any edge <code class="code">[i,j]</code> of <var class="Arg">digraph</var> where <code class="code">i &gt; j</code> and the reverse edge <code class="code">[j,i]</code> is an edge of <var class="Arg">digraph</var>. In other words, for every symmetric pair of edges <code class="code">[i,j]</code> and <code class="code">[j,i]</code> in <var class="Arg">digraph</var>, where <code class="code">i</code> and <code class="code">j</code> are distinct, it discards the the edge <span class="SimpleMath">\([\max(i,j),\min(i,j)]\)</span>.</p>
+<p>If <var class="Arg">digraph</var> is a digraph, then <code class="code">MaximalAntiSymmetricSubdigraph</code> returns an anti-symmetric subdigraph of <var class="Arg">digraph</var> formed by retaining the vertices of <var class="Arg">digraph</var>, discarding any duplicate edges, and discarding any edge <code class="code">[i,j]</code> of <var class="Arg">digraph</var> where <code class="code">i &gt; j</code> and the reverse edge <code class="code">[j,i]</code> is an edge of <var class="Arg">digraph</var>. In other words, for every symmetric pair of edges <code class="code">[i,j]</code> and <code class="code">[j,i]</code> in <var class="Arg">digraph</var>, where <code class="code">i</code> and <code class="code">j</code> are distinct, it discards the edge <span class="SimpleMath">\([\max(i,j),\min(i,j)]\)</span>.</p>
 
 <p>If <var class="Arg">digraph</var> is immutable, then a new immutable digraph is returned. Otherwise, the mutable digraph <var class="Arg">digraph</var> is changed in-place.</p>
 
@@ -1877,7 +1877,7 @@ true
 <div class="example"><pre>
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">digraph := DigraphFromSparse6String(</span>
 <span class="GAPprompt">&gt;</span> <span class="GAPinput">":]n?AL`BC_DEbEF`GIaGHdIJeGKcKL_@McDHfILaBJfHMjKM");</span>
-&lt;immutable digraph with 30 vertices, 90 edges&gt;
+&lt;immutable symmetric digraph with 30 vertices, 90 edges&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DistanceDigraph(digraph, 1);</span>
 &lt;immutable digraph with 30 vertices, 90 edges&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DistanceDigraph(digraph, [1, 2]);</span>

@@ -71,7 +71,7 @@
   [33X[0;0Y[10XDigraphEdges[110X returns a list of edges of the digraph [3Xdigraph[103X, where each edge
   is a pair of elements of [2XDigraphVertices[102X ([14X5.1-1[114X) of the form [10X[source,range][110X.[133X
   
-  [33X[0;0YThe  entries  of  [10XDigraphEdges([110X[3Xdigraph[103X[10X)[110X are in one-to-one corresponence with
+  [33X[0;0YThe  entries  of [10XDigraphEdges([110X[3Xdigraph[103X[10X)[110X are in one-to-one correspondence with
   the  edges  of [3Xdigraph[103X. Hence [10XDigraphEdges([110X[3Xdigraph[103X[10X)[110X is duplicate-free if and
   only if [3Xdigraph[103X contains no multiple edges.[133X
   
@@ -221,8 +221,9 @@
   [33X[0;0YThe  label  of  a  vertex can be changed an arbitrary number of times. If no
   label has been set for the vertex [3Xi[103X, then the default value is [3Xi[103X.[133X
   
-  [33X[0;0YIf  [3Xdigraph[103X  is  a  digraph created from a record with a component [10Xvertices[110X,
-  then the labels of the vertices are set to the value of this component.[133X
+  [33X[0;0YIf   [3Xdigraph[103X   is   a  digraph  created  from  a  record  with  a  component
+  [10XDigraphVertices[110X,  then  the  labels  of the vertices are set to the value of
+  this component.[133X
   
   [33X[0;0YInduced  subdigraphs,  and  some  other operations which create new digraphs
   from old ones, inherit their labels from their parents.[133X
@@ -264,13 +265,19 @@
   [33X[0;0YIf  [3Xdigraph[103X  is  a  digraph,  then [10XDigraphVertexLabels[110X returns a copy of the
   labels of the vertices in [3Xdigraph[103X. [10XSetDigraphVertexLabels[110X can be used to set
   the  labels  of the vertices in [3Xdigraph[103X to the list of arbitrary [5XGAP[105X objects
-  [3Xlist[103X.[133X
+  [3Xlist[103X, which must be of the same length as the number of vertices of [3Xdigraph[103X.[133X
+  
+  [33X[0;0YIf  the  list [3Xlist[103X is immutable, then the vertex labels are set to a mutable
+  copy of [3Xlist[103X. Otherwise, the labels are set to exactly [3Xlist[103X.[133X
   
   [33X[0;0YThe  label  of  a  vertex can be changed an arbitrary number of times. If no
   label has been set for the vertex [3Xi[103X, then the default value is [3Xi[103X.[133X
   
-  [33X[0;0YIf  [3Xdigraph[103X  is  a  digraph created from a record with a component [10Xvertices[110X,
-  then the labels of the vertices are set to the value of this component.[133X
+  [33X[0;0YIf   [3Xdigraph[103X   is   a  digraph  created  from  a  record  with  a  component
+  [10XDigraphVertices[110X,  then  the  labels  of the vertices are set to the value of
+  this  component.  As  in  the  above, if the component is immutable then the
+  digraph's  vertex  labels  are  set  to  a  mutable copy of [10XDigraphVertices[110X.
+  Otherwise, they are set to exactly [10XDigraphVertices[110X.[133X
   
   [33X[0;0YInduced subdigraphs, and other operations which create new digraphs from old
   ones, inherit their labels from their parents.[133X
@@ -1879,8 +1886,8 @@
   [30X    [33X[0;6Y[10Xa[110X  is  the  list of positive integers [22X[a_1, a_2, ..., a_n-1][122X where for
         each   each   [22Xi   <   n[122X,   [22Xa_i[122X   is   the   position   of   [22Xv_i+1[122X   in
         [10XOutNeighboursOfVertex([110X[3Xdigraph[103X[10X,[110X[22Xv_i[122X[10X)[110X corresponding to the edge [22Xe_i[122X. This
-        is  can  be  useful  if  the  position  of  a  vertex  in  a  list  of
-        out-neighours is significant, for example in orbit digraphs.[133X
+        can  be  useful if the position of a vertex in a list of out-neighours
+        is significant, for example in orbit digraphs.[133X
   
   [33X[0;0YThe  method for [10XDigraphPath[110X has worst case complexity of [22XO(m + n)[122X where [22Xm[122X is
   the number of edges and [22Xn[122X the number of vertices in [3Xdigraph[103X.[133X
@@ -1937,9 +1944,9 @@
   [3Xdigraph[103X from the vertex [3Xu[103X to the vertex [3Xv[103X.[133X
   
   [33X[0;0YSee  [2XDigraphPath[102X  ([14X5.3-21[114X) for more information about the repesentation of a
-  directed path or directed cycle which is used, and see [14XIterators???[114X for more
-  information about iterators. See Section [14X'[33X[0;0YDefinitions[133X'[114X for the definition of
-  a directed path and a directed cycle.[133X
+  directed  path  or  directed  cycle  which  is  used,  and  see  [14X'Reference:
+  Iterators'[114X  for  more information about iterators. See Section [14X'[33X[0;0YDefinitions[133X'[114X
+  for the definition of a directed path and a directed cycle.[133X
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27XD := Digraph([[1, 4, 4, 2], [3, 5], [2, 3], [1, 2], [4]]);[127X[104X
@@ -2284,7 +2291,7 @@
   [6XReturns:[106X  [33X[0;10YA semilattice of partial perms.[133X
   
   [33X[0;0YThe    operation    [10XAsSemigroup[110X    requires    that   [3Xfilt[103X   be   equal   to
-  [2XIsPartialPermSemigroup[102X   ([14XIsPartialPermSemigroup???[114X).   If   [3Xdigraph[103X   is  a
+  [2XIsPartialPermSemigroup[102X  ([14XReference: IsPartialPermSemigroup[114X). If [3Xdigraph[103X is a
   [2XIsJoinSemilatticeDigraph[102X   ([14X6.1-17[114X)   or   [2XIsLatticeDigraph[102X   ([14X6.1-17[114X)  then
   [10XAsSemigroup[110X  returns a semigroup of partial perms which is isomorphic to the
   semigroup  whose  elements  are  the  vertices  of  [3Xdigraph[103X  with the binary
@@ -2295,14 +2302,15 @@
   operation [2XPartialOrderDigraphMeetOfVertices[102X ([14X5.2-15[114X).[133X
   
   [33X[0;0YThe operation [10XAsMonoid[110X behaves similarly to [10XAsSemigroup[110X except that [3Xfilt[103X may
-  also  be equal to [2XIsPartialPermMonoid[102X ([14XIsPartialPermMonoid???[114X), [3Xdigraph[103X must
-  satisfy   [2XIsLatticeDigraph[102X  ([14X6.1-17[114X),  and  the  output  satisfies  [2XIsMonoid[102X
-  ([14XIsMonoid???[114X).[133X
+  also  be  equal  to  [2XIsPartialPermMonoid[102X  ([14XReference:  IsPartialPermMonoid[114X),
+  [3Xdigraph[103X  must  satisfy  [2XIsLatticeDigraph[102X  ([14X6.1-17[114X), and the output satisfies
+  [2XIsMonoid[102X ([14XReference: IsMonoid[114X).[133X
   
   [33X[0;0YThe output of both of these operations is guaranteed to be of minimal degree
-  (see     [2XDegreeOfPartialPermSemigroup[102X    ([14XDegreeOfPartialPermSemigroup???[114X)).
-  Furthermore  the  [2XGeneratorsOfSemigroup[102X  ([14XGeneratorsOfSemigroup???[114X)  of  the
-  output is guaranteed to be the unique generating set of minimal size.[133X
+  (see                 [2XDegreeOfPartialPermSemigroup[102X                ([14XReference:
+  DegreeOfPartialPermSemigroup[114X)).    Furthermore   the   [2XGeneratorsOfSemigroup[102X
+  ([14XReference:  GeneratorsOfSemigroup[114X)  of  the  output is guaranteed to be the
+  unique generating set of minimal size.[133X
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27Xdi := Digraph([[1], [1, 2], [1, 3], [1, 4], [1, 2, 3, 5]]);[127X[104X
@@ -2329,7 +2337,7 @@
   [6XReturns:[106X  [33X[0;10YA Clifford semigroup of partial perms.[133X
   
   [33X[0;0YThe    operation    [10XAsSemigroup[110X    requires    that   [3Xfilt[103X   be   equal   to
-  [2XIsPartialPermSemigroup[102X    ([14XIsPartialPermSemigroup???[114X).    If    [3XY[103X    is    a
+  [2XIsPartialPermSemigroup[102X   ([14XReference:  IsPartialPermSemigroup[114X).  If  [3XY[103X  is  a
   [2XIsJoinSemilatticeDigraph[102X  ([14X6.1-17[114X) or [2XIsMeetSemilatticeDigraph[102X ([14X6.1-17[114X), [3Xgps[103X
   is  a  list  of  groups  corresponding  to  each  vertex, and [3Xhoms[103X is a list
   containing  for  each  edge  [10X(i, j)[110X in the transitive reduction of [3Xdigraph[103X a

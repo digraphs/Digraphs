@@ -2,9 +2,21 @@
   
   [1XReferences[101X
   
+  [[20XBM04[120X] [16XBoyer, J. M. and Myrvold, W. J.[116X, [17XOn the Cutting Edge: Simplified O(n)
+  Planarity by Edge Addition[117X, [18XJournal of Graph Algorithms and Applications[118X, [19X8[119X,
+  3 (2004), 241--273.
+  
   [[20XBM06[120X] [16XBoyer, J. M. and Myrvold, W. J.[116X, [17XOn the Cutting Edge: Simplified O(n)
   Planarity  by Edge Addition[117X, in Graph Algorithms and Applications 5, {WORLD}
   {SCIENTIFIC} (2006), 241--273.
+  
+  [[20XBoy06[120X]  [16XBoyer, J. M.[116X ([1m[31mHealy, P. and Nikolov, N. S.[15X, Eds.), [17XA New Method for
+  Efficiently  Generating  Planar  Graph  Visibility Representations[117X, in Graph
+  Drawing, Springer Berlin Heidelberg, Berlin, Heidelberg (2006), 508--511.
+  
+  [[20XBoy12[120X] [16XBoyer, J. M.[116X, [17XSubgraph Homeomorphism via the Edge Addition Planarity
+  Algorithm[117X,  [18XJournal  of  Graph  Algorithms  and  Applications[118X, [19X16[119X, 2 (2012),
+  381--410.
   
   [[20XCK86[120X]  [16XCalderbank,  R. and Kantor, W. M.[116X, [17XThe geometry of two-weight codes[117X,
   [18XBull. London Math. Soc.[118X, [19X18[119X, 2 (1986), 97--122.

@@ -248,14 +248,14 @@
   
   [8XOne or two arguments[108X
         [33X[0;6YIf   one  or  two  arguments  are  supplied,  then  [10XDigraphClique[110X  and
-        [10XDigraphMaximalClique[110X  greedily enlarge the clique [3Xinclude[103X until it can
-        not  continue.  The  result is guaranteed to be a maximal clique. This
+        [10XDigraphMaximalClique[110X  greedily  enlarge  the  clique  [3Xinclude[103X until it
+        cannot continue. The result is guaranteed to be a maximal clique. This
         may   or   may   not   return   an  answer  more  quickly  than  using
-        [2XDigraphMaximalCliques[102X ([14X8.1-4[114X). with a limit of 1.[133X
+        [2XDigraphMaximalCliques[102X ([14X8.1-4[114X) with a limit of 1.[133X
   
   [8XThree arguments[108X
         [33X[0;6YIf  three arguments are supplied, then [10XDigraphClique[110X greedily enlarges
-        the clique [3Xinclude[103X until it can not continue, although this clique may
+        the  clique [3Xinclude[103X until it cannot continue, although this clique may
         not be maximal.[133X
   
         [33X[0;6YGiven three arguments, [10XDigraphMaximalClique[110X returns the maximal clique
@@ -476,14 +476,14 @@
   [8XOne or two arguments[108X
         [33X[0;6YIf  one  or two arguments are supplied, then [10XDigraphIndependentSet[110X and
         [10XDigraphMaximalIndependentSet[110X  greedily  enlarge  the  independent  set
-        [3Xinclude[103X  until  it  can not continue. The result is guaranteed to be a
+        [3Xinclude[103X  until  it  cannot  continue. The result is guaranteed to be a
         maximal  independent  set.  This  may or may not return an answer more
-        quickly than using [2XDigraphMaximalIndependentSets[102X ([14X8.2-3[114X). with a limit
+        quickly  than using [2XDigraphMaximalIndependentSets[102X ([14X8.2-3[114X) with a limit
         of 1.[133X
   
   [8XThree arguments[108X
         [33X[0;6YIf  three  arguments are supplied, then [10XDigraphIndependentSet[110X greedily
-        enlarges  the  independent  set  [3Xinclude[103X  until  it  can not continue,
+        enlarges  the  independent  set  [3Xinclude[103X  until  it  cannot  continue,
         although this independent set may not be maximal.[133X
   
         [33X[0;6YGiven   three   arguments,  [10XDigraphMaximalIndependentSet[110X  returns  the

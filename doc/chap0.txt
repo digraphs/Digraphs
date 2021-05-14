@@ -3,7 +3,7 @@
                                     [1X[5XDigraphs[105X[101X
   
   
-                                 Version 1.4.0
+                                 Version 1.4.1
   
   
                                   Jan De Beule
@@ -12,7 +12,9 @@
   
                                James D. Mitchell
   
-                                 Michael Torpey
+                               Michael C. Torpey
+  
+                                 Maria Tsalakou
   
                                  Wilf A. Wilson
   
@@ -28,7 +30,7 @@
   
                                 Markus Pfeiffer
   
-                                 Chris Russell
+                              Christopher Russell
   
                                    Finn Smith
   
@@ -45,12 +47,15 @@
   James D. Mitchell
       Email:    [7Xmailto:jdm3@st-and.ac.uk[107X
       Homepage: [7Xhttps://jdbm.me[107X
-  Michael Torpey
+  Michael C. Torpey
       Email:    [7Xmailto:mct25@st-andrews.ac.uk[107X
       Homepage: [7Xhttps://mtorpey.github.io[107X
+  Maria Tsalakou
+      Email:    [7Xmailto:mt200@st-andrews.ac.uk[107X
+      Homepage: [7Xhttps://mariatsalakou.github.io[107X
   Wilf A. Wilson
       Email:    [7Xmailto:gap@wilf-wilson.net[107X
-      Homepage: [7Xhttp://wilf.me[107X
+      Homepage: [7Xhttps://wilf.me[107X
   
   -------------------------------------------------------
   [1XAbstract[101X
@@ -60,12 +65,12 @@
   
   -------------------------------------------------------
   [1XCopyright[101X
-  [33X[0;0Y©  2014-20  by  Jan  De  Beule,  Julius  Jonušas, James D. Mitchell, Michael
+  [33X[0;0Y©  2014-21  by  Jan  De  Beule,  Julius  Jonušas, James D. Mitchell, Michael
   Torpey, Wilf A. Wilson et al.[133X
   
   [33X[0;0Y[5XDigraphs[105X  is  free  software; you can redistribute it and/or modify it under
   the      terms      of      the      GNU      General     Public     License
-  ([7Xhttp://www.fsf.org/licenses/gpl.html[107X)  as  published  by  the Free Software
+  ([7Xhttps://www.fsf.org/licenses/gpl.html[107X)  as  published  by the Free Software
   Foundation;  either  version 3 of the License, or (at your option) any later
   version.[133X
   
@@ -87,6 +92,7 @@
       1.1-1 [33X[0;0YDefinitions[133X
   2 [33X[0;0YInstalling [5XDigraphs[105X[133X
     2.1 [33X[0;0YFor those in a hurry[133X
+      2.1-1 [33X[0;0YConfiguration options[133X
     2.2 [33X[0;0YOptional package dependencies[133X
       2.2-1 [33X[0;0YThe Grape package[133X
     2.3 [33X[0;0YCompiling the kernel module[133X
