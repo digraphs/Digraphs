@@ -1,14 +1,42 @@
 # CHANGELOG – Digraphs package for GAP
-Copyright © 2014-20 by Jan De Beule, Julius Jonušas, James D. Mitchell, Michael
+Copyright © 2014-21 by Jan De Beule, Julius Jonušas, James D. Mitchell, Michael
 Torpey, Wilf A. Wilson et al.
 
 Licensing information can be found in the `LICENSE` file.
+
+## Version 1.4.1 (released 14/05/2021)
+
+This minor release contains several bugfixes and technical changes,
+and improvements to the documentation. These include the following:
+
+* `OutNeighbours` is now a global function rather than an attribute
+  ([James D. Mitchell][], [PR #413](https://github.com/digraphs/Digraphs/pull/419)).
+* The configuration options for Digraphs are now described in the manual
+  ([James D. Mitchell][], [PR #420](https://github.com/digraphs/Digraphs/pull/420)).
+* The included version of the [Edge Addition Planarity Suite][] has been updated
+  from version 3.0.0.5 to 3.0.1.0, and is now documented in the manual
+  ([James D. Mitchell][], PRs [#421](https://github.com/digraphs/Digraphs/pull/421),
+  [#422](https://github.com/digraphs/Digraphs/pull/422)).
+* `SetDigraphVertexLabels` now accepts an immutable list of labels
+  (Murray Whyte, [PR #427](https://github.com/digraphs/Digraphs/pull/427)).
+* A bug was fixed in `DigraphCore` that could lead to wrong results
+  ([Wilf A. Wilson][], [PR #437](https://github.com/digraphs/Digraphs/pull/437)).
+* The performance of `ChromaticNumber` was improved in some cases by the
+  use of Brooks' theorem
+  ([Wilf A. Wilson][], [PR #446](https://github.com/digraphs/Digraphs/pull/446)).
+* A bug, reported by Leonard Soicher, was fixed in `DigraphMaximumMatching`
+  which affected digraphs with custom vertex labels
+  ([Wilf A. Wilson][], [PR #462](https://github.com/digraphs/Digraphs/pull/462)).
+* A bug was fixed that affected `DigraphEdgeUnion`, `DigraphJoin`,
+  `DigraphDisjointUnion`, `DigraphDirectProduct`, and `DigraphCartesianProduct`
+  when each was given a single list of digraphs as the argument.
+  ([Wilf A. Wilson][], [PR #468](https://github.com/digraphs/Digraphs/pull/468)).
 
 ## Version 1.4.0 (released 27/01/2021)
 
 In this release there are several new features and improvements. 
 
-The following improvements and bugs have been made:
+The following improvements and bugfixes have been made:
 
 * the clique finder was reimplemented in C by [Julius Jonusas][]
 * a critical bug in `CayleyDigraph` was reported and fixed by [Jan De Beule][]
@@ -380,8 +408,7 @@ reported by
 
 Other additions and changes are listed below:
 
-* A copy of the [Edge Addition Planarity
-  Suite](https://github.com/graph-algorithms/edge-addition-planarity-suite)
+* A copy of the [Edge Addition Planarity Suite][]
   is now included in Digraphs, and so it is now possible to test digraphs for
   planarity, and to perform related computations.  This was added by [James D.
   Mitchell][] in [PR
@@ -810,3 +837,4 @@ Pre-release version that was not made publicly available.
 [Chris Jefferson]: https://caj.host.cs.st-andrews.ac.uk
 [bliss]: http://www.tcs.hut.fi/Software/bliss/
 [Max Horn]: https://www.quendi.de/math
+[Edge Addition Planarity Suite]: https://github.com/graph-algorithms/edge-addition-planarity-suite

@@ -2390,6 +2390,9 @@ InstallMethod(DigraphMaximumMatching, "for a digraph", [IsDigraph],
 function(D)
   local mateG, mateD, G, M, i, lab;
   G     := DigraphImmutableCopy(D);
+  # Ensure that InducedSubdigraph is given a digraph with vertex labels equal
+  # to DigraphVertices(D).
+  SetDigraphVertexLabels(G, DigraphVertices(G));
   G     := InducedSubdigraph(G, Difference(DigraphVertices(G), DigraphLoops(G)));
   lab   := DigraphVertexLabels(G);
   G     := DigraphSymmetricClosure(G);
