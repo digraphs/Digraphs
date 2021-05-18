@@ -237,8 +237,9 @@ Dependencies := rec(
   GAP := ">=4.10.0",
   NeededOtherPackages := [["io", ">=4.5.1"],
                           ["orb", ">=4.8.2"],
+                          ["GAPDoc", ">=1.6.3"],
                           ["datastructures", ">=0.2.5"]],
-  SuggestedOtherPackages := [["gapdoc", ">=1.5.1"],
+  SuggestedOtherPackages := [
                              ["grape", ">=4.8.1"],
                              ["nautytracesinterface", ">=0.2"]],
   ExternalConditions := [],

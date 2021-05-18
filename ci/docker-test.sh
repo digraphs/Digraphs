@@ -136,6 +136,10 @@ fi
 if [ "$SUITE" == "coverage" ]; then
   PKGS+=( "profiling" )
 fi
+# We now need a newer GAPDoc than the one included in the Docker container for GAP 4.10.2
+if [ "$GAP_VERSION" == "4.10.2" ]; then
+  PKGS+=( "GAPDoc" )
+fi
 
 for PKG in "${PKGS[@]}"; do
   cd $GAP_HOME/pkg
@@ -154,7 +158,12 @@ for PKG in "${PKGS[@]}"; do
     VERSION=${VERSION:1}
   fi
 
-  URL="https://github.com/gap-packages/$PKG/releases/download/v$VERSION/$PKG-$VERSION.tar.gz"
+  # This can be removed when there is no GAPDoc special case for GAP 4.10.2
+  if [ "$PKG" == "GAPDoc" ]; then
+    URL="http://www.math.rwth-aachen.de/~Frank.Luebeck/GAPDoc/GAPDoc-$VERSION.tar.gz"
+  else
+    URL="https://github.com/gap-packages/$PKG/releases/download/v$VERSION/$PKG-$VERSION.tar.gz"
+  fi
   bold "Downloading $PKG-$VERSION (${PACKAGES[0]} version), from URL:"
   bold "$URL"
   $CURL "$URL" -o $PKG-$VERSION.tar.gz
