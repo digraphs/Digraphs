@@ -822,9 +822,9 @@ function(filt, n)
   D := MakeImmutable(HaarGraphCons(IsMutableDigraph, n));
   SetIsMultiDigraph(D, false);
   SetIsSymmetricDigraph(D, true);
-  SetIsRegularDigraph(D, true);
   SetIsVertexTransitive(D, true);
   SetIsBipartiteDigraph(D, true);
+  SetIsCompleteDigraph(D, n = 1);
   return D;
 end);
 
