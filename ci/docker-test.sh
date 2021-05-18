@@ -117,14 +117,6 @@ tar xf $DIGRAPHS_LIB.tar.gz
 rm $DIGRAPHS_LIB.tar.gz
 
 ################################################################################
-# Copy Digraphs to its proper location
-################################################################################
-
-if [ "$SETUP" == "appveyor" ]; then
-  cp -r /cygdrive/c/projects/digraphs $GAP_HOME/pkg/digraphs
-fi
-
-################################################################################
 # Install gap dependencies
 ################################################################################
 
@@ -172,7 +164,7 @@ done
 ################################################################################
 ## Install NautyTracesInterface
 ################################################################################
-if [ "$SETUP" != "appveyor" ] && [ "$NAUTY" != "no" ]; then
+if [ "$NAUTY" != "no" ]; then
   bold "Getting master version of NautyTracesInterface . . ."
   git clone -b master --depth=1 https://github.com/gap-packages/NautyTracesInterface.git $GAP_HOME/pkg/nautytraces
   cd $GAP_HOME/pkg/nautytraces/nauty2*r* && ./configure $PKG_FLAGS && make
@@ -223,7 +215,5 @@ elif [ "$SUITE" == "test" ]; then
       $GAPSH -A -x 80 -m 768m -o $MEM -T 2>&1 | tee -a $TESTLOG
   fi
 fi
-
-bold "Suite complete." # AppVeyor needs some extra command here (like this)
 
 ( ! grep -E "Diff|brk>|#E|Error|Errors detected|# WARNING|Syntax warning|Couldn't open saved workspace|insufficient|WARNING in|FAILED|Total errors found:" $TESTLOG )
