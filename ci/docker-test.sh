@@ -117,14 +117,6 @@ tar xf $DIGRAPHS_LIB.tar.gz
 rm $DIGRAPHS_LIB.tar.gz
 
 ################################################################################
-# Copy Digraphs to its proper location
-################################################################################
-
-if [ "$SETUP" == "appveyor" ]; then
-  cp -r /cygdrive/c/projects/digraphs $GAP_HOME/pkg/digraphs
-fi
-
-################################################################################
 # Install gap dependencies
 ################################################################################
 
@@ -135,6 +127,10 @@ if [ "$GRAPE" != "no" ]; then
 fi
 if [ "$SUITE" == "coverage" ]; then
   PKGS+=( "profiling" )
+fi
+# We now need a newer GAPDoc than the one included in the Docker container for GAP 4.10.2
+if [ "$GAP_VERSION" == "4.10.2" ]; then
+  PKGS+=( "GAPDoc" )
 fi
 
 for PKG in "${PKGS[@]}"; do
@@ -154,7 +150,12 @@ for PKG in "${PKGS[@]}"; do
     VERSION=${VERSION:1}
   fi
 
-  URL="https://github.com/gap-packages/$PKG/releases/download/v$VERSION/$PKG-$VERSION.tar.gz"
+  # This can be removed when there is no GAPDoc special case for GAP 4.10.2
+  if [ "$PKG" == "GAPDoc" ]; then
+    URL="http://www.math.rwth-aachen.de/~Frank.Luebeck/GAPDoc/GAPDoc-$VERSION.tar.gz"
+  else
+    URL="https://github.com/gap-packages/$PKG/releases/download/v$VERSION/$PKG-$VERSION.tar.gz"
+  fi
   bold "Downloading $PKG-$VERSION (${PACKAGES[0]} version), from URL:"
   bold "$URL"
   $CURL "$URL" -o $PKG-$VERSION.tar.gz
@@ -172,7 +173,7 @@ done
 ################################################################################
 ## Install NautyTracesInterface
 ################################################################################
-if [ "$SETUP" != "appveyor" ] && [ "$NAUTY" != "no" ]; then
+if [ "$NAUTY" != "no" ]; then
   bold "Getting master version of NautyTracesInterface . . ."
   git clone -b master --depth=1 https://github.com/gap-packages/NautyTracesInterface.git $GAP_HOME/pkg/nautytraces
   cd $GAP_HOME/pkg/nautytraces/nauty2*r* && ./configure $PKG_FLAGS && make
@@ -223,7 +224,5 @@ elif [ "$SUITE" == "test" ]; then
       $GAPSH -A -x 80 -m 768m -o $MEM -T 2>&1 | tee -a $TESTLOG
   fi
 fi
-
-bold "Suite complete." # AppVeyor needs some extra command here (like this)
 
 ( ! grep -E "Diff|brk>|#E|Error|Errors detected|# WARNING|Syntax warning|Couldn't open saved workspace|insufficient|WARNING in|FAILED|Total errors found:" $TESTLOG )
