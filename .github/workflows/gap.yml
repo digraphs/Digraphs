@@ -11,7 +11,7 @@ env:
   DIGRAPHS_LIB: digraphs-lib-0.6
 
 jobs:
-  test:
+  test-unix:
     name: "${{ matrix.os }} / GAP ${{ matrix.gap-branch }}"
     runs-on: "${{ matrix.os }}-latest"
     # Don't run this twice for PRs from branches in the same repository
@@ -31,9 +31,15 @@ jobs:
           - gap-branch: stable-4.10
             pkgs-to-clone: datastructures
             os: ubuntu
+          - gap-branch: master
+            pkgs-to-clone: "datastructures NautyTracesInterface"
+            os: macos
 
     steps:
       - uses: actions/checkout@v2
+      - name: "Install dependencies"
+        if: ${{ runner.os == 'macOS' }}
+        run: brew install automake
       - name: "Install GAP and clone/compile necessary packages"
         uses: gap-actions/setup-gap@v2
         with:
