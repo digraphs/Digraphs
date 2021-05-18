@@ -1,0 +1,18 @@
+#!/bin/bash
+# This script is intended to be run by the release-gap-package script which is
+# part of the the ReleaseTools for GAP:
+#
+# https://github.com/gap-system/ReleaseTools
+
+set -e
+
+# ensure we are in the same directory as this script
+cd "$(dirname "${BASH_SOURCE[0]}")"
+
+notice_it() {
+    printf '\033[93m%s\033[0m\n' "$*"
+}
+
+notice_it "Deleting additional unnecessary files"
+rm -f  .covignore .gaplint.yml .mailmap Dockerfile
+rm -rf ci etc scripts
