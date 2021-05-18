@@ -22,6 +22,8 @@ BindGlobal("DIGRAPHS_NautyAvailable",
 
 Unbind(_NautyTracesInterfaceVersion);
 
+ReadPackage("digraphs", "gap/doc.g");
+
 ReadPackage("digraphs", "gap/utils.gi");
 ReadPackage("digraphs", "gap/digraph.gi");
 ReadPackage("digraphs", "gap/constructors.gi");
