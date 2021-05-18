@@ -1,7 +1,7 @@
 #############################################################################
 ##
 ##  PackageInfo.g
-##  Copyright (C) 2015-19                                James D. Mitchell
+##  Copyright (C) 2015-21                                James D. Mitchell
 ##
 ##  Licensing information can be found in the README.md file of this package.
 ##
@@ -9,15 +9,15 @@
 ##
 
 ##  <#GAPDoc Label="PKGVERSIONDATA">
-##  <!ENTITY VERSION                  "1.4.0">
+##  <!ENTITY VERSION                  "1.4.1">
 ##  <!ENTITY GAPVERS                  "4.10.0">
 ##  <!ENTITY GRAPEVERS                "4.8.1">
 ##  <!ENTITY IOVERS                   "4.5.1">
 ##  <!ENTITY ORBVERS                  "4.8.2">
 ##  <!ENTITY DATASTRUCTURESVERS       "0.2.5">
 ##  <!ENTITY NAUTYTRACESINTERFACEVERS "0.2">
-##  <!ENTITY ARCHIVENAME    "digraphs-1.4.0">
-##  <!ENTITY COPYRIGHTYEARS "2014-20">
+##  <!ENTITY ARCHIVENAME    "digraphs-1.4.1">
+##  <!ENTITY COPYRIGHTYEARS "2014-21">
 ##  <#/GAPDoc>
 
 _STANDREWSMATHS := Concatenation(["Mathematical Institute, North Haugh, ",
@@ -28,8 +28,8 @@ _STANDREWSCS := Concatenation(["Jack Cole Building, North Haugh, ",
 SetPackageInfo(rec(
 PackageName := "Digraphs",
 Subtitle := "Graphs, digraphs, and multidigraphs in GAP",
-Version := "1.4.0",
-Date := "27/01/2021",  # dd/mm/yyyy format
+Version := "1.4.1",
+Date := "14/05/2021",  # dd/mm/yyyy format
 License := "GPL-3.0-or-later",
 ArchiveFormats := ".tar.gz",
 
@@ -258,7 +258,7 @@ Dependencies := rec(
   NeededOtherPackages := [["io", ">=4.5.1"],
                           ["orb", ">=4.8.2"],
                           ["datastructures", ">=0.2.5"]],
-  SuggestedOtherPackages := [["gapdoc", ">=1.5.1"],
+  SuggestedOtherPackages := [["GAPDoc", ">=1.6.3"],
                              ["grape", ">=4.8.1"],
                              ["nautytracesinterface", ">=0.2"]],
   ExternalConditions := [],

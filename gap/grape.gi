@@ -29,7 +29,7 @@ function(imm, G, obj, act, adj)
   local hom, dom, sch, orbits, reps, stabs, rep_out, out, gens, trace, word,
   D, adj_func, i, o, w;
 
-  if not (imm = IsMutableDigraph or imm = IsImmutableDigraph) then
+  if not imm in [IsMutableDigraph, IsImmutableDigraph] then
     ErrorNoReturn("<imm> must be IsMutableDigraph or IsImmutableDigraph");
   fi;
 
@@ -94,7 +94,7 @@ end);
 InstallMethod(CayleyDigraph, "for a group with generators",
 [IsGroup, IsHomogeneousList],
 function(G, gens)
-  local adj, D;
+  local elts, adj, D, edge_labels;
 
   if not IsFinite(G) then
     ErrorNoReturn("the 1st argument <G> must be a finite group,");
@@ -103,16 +103,18 @@ function(G, gens)
                   "1st argument,");
   fi;
 
-  adj := function(x, y)
-    return x ^ -1 * y in gens;
-  end;
+  # vertex i in the Cayley digraph corresponds to elts[i].
+  elts := AsList(G);
+  adj := {x, y} -> LeftQuotient(x, y) in gens;
 
-  D := Digraph(G, AsList(G), OnLeftInverse, adj);
+  D := Digraph(IsImmutableDigraph, G, elts, OnLeftInverse, adj);
   SetFilterObj(D, IsCayleyDigraph);
   SetGroupOfCayleyDigraph(D, G);
   SetGeneratorsOfCayleyDigraph(D, gens);
-  SetDigraphEdgeLabels(D, ListWithIdenticalEntries(Size(G), gens));
-  SetDigraphVertexLabels(D, AsList(G));
+  SetDigraphVertexLabels(D, elts);
+  # Out-neighbours of identity give the correspondence between edges & gens
+  edge_labels := elts{OutNeighboursOfVertex(D, Position(elts, One(G)))};
+  SetDigraphEdgeLabels(D, ListWithIdenticalEntries(Size(G), edge_labels));
 
   return D;
 end);

@@ -13,24 +13,6 @@
 # Internal stuff
 #############################################################################
 
-BindGlobal("DIGRAPHS_DocXMLFiles", ["attr.xml",
-                                    "cliques.xml",
-                                    "constructors.xml",
-                                    "digraph.xml",
-                                    "display.xml",
-                                    "grahom.xml",
-                                    "grape.xml",
-                                    "io.xml",
-                                    "isomorph.xml",
-                                    "labels.xml",
-                                    "oper.xml",
-                                    "orbits.xml",
-                                    "planar.xml",
-                                    "prop.xml",
-                                    "utils.xml",
-                                    "examples.xml",
-                                    "../PackageInfo.g"]);
-
 BindGlobal("DIGRAPHS_TestRec", rec());
 MakeReadWriteGlobal("DIGRAPHS_TestRec");
 
@@ -207,11 +189,8 @@ end);
 
 InstallGlobalFunction(DigraphsMakeDoc,
 function()
-  MakeGAPDocDoc(Concatenation(PackageInfo("digraphs")[1]!.
-                              InstallationPath, "/doc"),
-                "main.xml", DIGRAPHS_DocXMLFiles, "Digraphs", "MathJax",
-                "../../..");
-  return;
+  # Compile the documentation of the currently-loaded version of Digraphs
+  DIGRAPHS_MakeDoc(DirectoriesPackageLibrary("Digraphs", ""));
 end);
 
 InstallGlobalFunction(DigraphsTestManualExamples,
