@@ -415,8 +415,8 @@ static Obj FuncDIGRAPH_LONGEST_DIST_VERTEX(Obj self, Obj adj, Obj start) {
   i  = INT_INTOBJ(start);
 
   if (i > nr || i < 1) {
-    ErrorQuit("Digraphs: DIGRAPH_LONGEST_DIST_VERTEX: usage,\nthe second "
-              "argument must be a vertex of the first argument,",
+    ErrorQuit("DIGRAPH_LONGEST_DIST_VERTEX: the 2nd "
+              "arg must be a vertex of the first,",
               0L,
               0L);
   }
