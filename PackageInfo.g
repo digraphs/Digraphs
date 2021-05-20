@@ -258,6 +258,6 @@ AvailabilityTest := function()
 end,
 
 Autoload := false,
-TestFile := "tst/testinstall.tst",
+TestFile := "tst/teststandard.g",
 Keywords := []
 ));
