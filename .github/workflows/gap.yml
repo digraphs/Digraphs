@@ -59,7 +59,27 @@ jobs:
         run: |
           curl --retry 5 -L -O "https://digraphs.github.io/Digraphs/${{ env.DIGRAPHS_LIB }}.tar.gz"
           tar xf "${{ env.DIGRAPHS_LIB }}.tar.gz"
-      - name: "Run tst/testall.g"
+      - name: "Run DigraphsTestInstall"
+        if: ${{ always() }}
         uses: gap-actions/run-pkg-tests@v2
+        with:
+          GAP_TESTFILE: "tst/github_actions/install.g"
+      - name: "Run DigraphsTestStandard"
+        if: ${{ always() }}
+        uses: gap-actions/run-pkg-tests@v2
+        with:
+          GAP_TESTFILE: "tst/github_actions/standard.g"
+      - name: "Run DigraphsTestManualExamples"
+        if: ${{ always() }}
+        uses: gap-actions/run-pkg-tests@v2
+        with:
+          GAP_TESTFILE: "tst/github_actions/examples.g"
+      - name: "Run DigraphsTestExtreme"
+        if: ${{ always() }}
+        uses: gap-actions/run-pkg-tests@v2
+        with:
+          GAP_TESTFILE: "tst/github_actions/extreme.g"
       - uses: gap-actions/process-coverage@v2
+        if: ${{ always() }}
       - uses: codecov/codecov-action@v1
+        if: ${{ always() }}
