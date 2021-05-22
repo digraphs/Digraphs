@@ -140,15 +140,26 @@ end);
 InstallGlobalFunction(DigraphsTestStandard,
 function(arg)
   local opts, dir;
-  if Length(arg) = 1 and IsRecord(arg[2]) then
-    opts := arg[1];
+  if Length(arg) = 1 and IsRecord(arg[1]) then
+    opts := ShallowCopy(arg[1]);
   elif Length(arg) <> 0 then
     ErrorNoReturn("there must be no arguments, or the argument ",
                   "must be a record");
   else
-    opts := rec(suppressStatusMessage := true,
-                earlyStop             := true,
-                testOptions := rec(showProgress := false));
+    opts := rec();
+  fi;
+
+  if not IsBound(opts.suppressStatusMessage) then
+    opts.suppressStatusMessage := true;
+  fi;
+  if not IsBound(opts.earlyStop) then
+    opts.earlyStop := true;
+  fi;
+  if not IsBound(opts.testOptions) or not IsRecord(opts.testOptions) then
+    opts.testOptions := rec();
+  fi;
+  if not IsBound(opts.testOptions.showProgress) then
+    opts.testOptions.showProgress := false;
   fi;
 
   dir := DirectoriesPackageLibrary("digraphs", "tst/standard/");
@@ -170,15 +181,29 @@ function(arg)
                   "and try again,");
   fi;
 
-  if Length(arg) = 1 and IsRecord(arg[2]) then
-    opts := arg[1];
+  if Length(arg) = 1 and IsRecord(arg[1]) then
+    opts := ShallowCopy(arg[1]);
   elif Length(arg) <> 0 then
     ErrorNoReturn("there must be no arguments, or the argument ",
                   "must be a record");
   else
-    opts := rec(suppressStatusMessage := true,
-                earlyStop             := true,
-                testOptions := rec(showProgress := "some"));
+    opts := rec();
+  fi;
+
+  if not IsBound(opts.suppressStatusMessage) then
+    opts.suppressStatusMessage := true;
+  fi;
+  if not IsBound(opts.earlyStop) then
+    opts.earlyStop := true;
+  fi;
+  if not IsBound(opts.testOptions) or not IsRecord(opts.testOptions) then
+    opts.testOptions := rec();
+  fi;
+  if not IsBound(opts.testOptions.showProgress) then
+    opts.testOptions.showProgress := false;
+  fi;
+  if not IsBound(opts.testOptions.showProgress) then
+    opts.suppressStatusMessage := "some";
   fi;
 
   dir := DirectoriesPackageLibrary("digraphs", "tst/extreme/");
