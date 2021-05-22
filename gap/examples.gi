@@ -528,12 +528,10 @@ InstallMethod(TriangularGridGraph, "for two positive integers",
 InstallMethod(StarDigraphCons, "for IsMutableDigraph and a positive integer",
 [IsMutableDigraph, IsPosInt],
 function(filt, k)
-  local j, graph;
-  graph := EmptyDigraph(IsMutable, k);
-  for j in [2 .. k] do
-    DigraphAddEdges(graph, [[1, j], [j, 1]]);
-  od;
-  return graph;
+  if k = 1 then
+    return EmptyDigraph(IsMutable, 1);
+  fi;
+  return CompleteBipartiteDigraph(IsMutableDigraph, 1, k - 1);
 end);
 
 InstallMethod(StarDigraph, "for a function and a positive integer",

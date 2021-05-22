@@ -1,0 +1,45 @@
+name: "Manual"
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+  schedule:
+    # Every day at 3:20 AM UTC
+    - cron: '20 3 * * *'
+
+jobs:
+  manual:
+    name: "compile and upload manual"
+    runs-on: ubuntu-latest
+    # Don't run this twice for PRs from branches in the same repository
+    if: ${{ !(github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository) }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: "Install TeX Live"
+        run: |
+          packages=(
+            texlive-latex-base
+            texlive-latex-recommended
+            texlive-latex-extra
+            texlive-extra-utils
+            texlive-fonts-recommended
+            texlive-fonts-extra
+          )
+          sudo apt-get update
+          sudo apt-get install "${packages[@]}"
+      - uses: gap-actions/setup-gap@v2
+        env:
+          GAP_BOOTSTRAP: "minimal"
+        with:
+          GAP_PKGS_TO_BUILD: ''
+      - uses: gap-actions/build-pkg-docs@v1
+      - name: "Upload compiled manuals"
+        uses: actions/upload-artifact@v2
+        with:
+          name: "Digraphs manual"
+          retention-days: 7
+          path: |
+            doc/manual.pdf
+            doc/*.html
+            doc/*.css
+            doc/*.js

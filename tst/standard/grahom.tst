@@ -2345,7 +2345,7 @@ gap> ForAll(AutomorphismGroup(gr1),
 >           x -> IsDigraphAutomorphism(gr1, x, [1, 1, 1, 1, 1]));
 true
 
-# IsDigraphEndomorphism, for vertex-coloured digraphs 
+# IsDigraphEndomorphism, for vertex-coloured digraphs
 gap> gr1 := DigraphTransitiveClosure(CompleteDigraph(2));   
 <immutable transitive digraph with 2 vertices, 4 edges>
 gap> IsDigraphEndomorphism(gr1, (1, 2), [1, 2]);

@@ -1,4 +1,4 @@
-name: "Tests"
+name: "GAP"
 on:
   workflow_dispatch:
   pull_request:
@@ -12,7 +12,7 @@ env:
 
 jobs:
   test-unix:
-    name: "${{ matrix.os }} / GAP ${{ matrix.gap-branch }}"
+    name: "${{ matrix.os }}${{ matrix.ABI }} / GAP ${{ matrix.gap-branch }}"
     runs-on: "${{ matrix.os }}-latest"
     # Don't run this twice for PRs from branches in the same repository
     if: ${{ !(github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository) }}
@@ -26,6 +26,7 @@ jobs:
           - stable-4.11
         pkgs-to-clone:
           - NautyTracesInterface
+        ABI: ['']
 
         include:
           - gap-branch: stable-4.10
@@ -34,6 +35,9 @@ jobs:
           - gap-branch: master
             pkgs-to-clone: "datastructures NautyTracesInterface"
             os: macos
+          - gap-branch: master
+            os: ubuntu
+            ABI: 32
 
     steps:
       - uses: actions/checkout@v2
@@ -46,8 +50,11 @@ jobs:
           GAP_PKGS_TO_CLONE: "${{ matrix.pkgs-to-clone }}"
           GAP_PKGS_TO_BUILD: "io orb profiling grape NautyTracesInterface datastructures"
           GAPBRANCH: ${{ matrix.gap-branch }}
+          ABI: ${{ matrix.ABI }}
       - name: "Build Digraphs"
         uses: gap-actions/build-pkg@v1
+        with:
+          ABI: ${{ matrix.ABI }}
       - name: "Install digraphs-lib"
         run: |
           curl --retry 5 -L -O "https://digraphs.github.io/Digraphs/${{ env.DIGRAPHS_LIB }}.tar.gz"
@@ -56,35 +63,3 @@ jobs:
         uses: gap-actions/run-pkg-tests@v2
       - uses: gap-actions/process-coverage@v2
       - uses: codecov/codecov-action@v1
-
-  manual:
-    name: "Compile and upload manual"
-    runs-on: ubuntu-latest
-    if: ${{ !(github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository) }}
-    steps:
-      - uses: actions/checkout@v2
-      - name: "Install TeX Live"
-        run: |
-          packages=(
-            texlive-latex-base
-            texlive-latex-recommended
-            texlive-latex-extra
-            texlive-extra-utils
-            texlive-fonts-recommended
-            texlive-fonts-extra
-          )
-          sudo apt-get update
-          sudo apt-get install "${packages[@]}"
-      - uses: gap-actions/setup-gap@v2
-        with:
-          GAP_PKGS_TO_BUILD: ''
-      - uses: gap-actions/build-pkg-docs@v1
-      - name: "Upload compiled manuals"
-        uses: actions/upload-artifact@v2
-        with:
-          name: "Digraphs manual"
-          path: |
-            doc/manual.pdf
-            doc/*.html
-            doc/*.css
-            doc/*.js

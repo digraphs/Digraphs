@@ -54,7 +54,7 @@
 <#GAPDoc Label="DigraphsTestExtreme">
 <ManSection>
   <Func Name="DigraphsTestExtreme" Arg=""/>
-  <Returns>Nothing.</Returns>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
     This function should be called with no argument. It executes a series of
     very demanding tests, which measure the performance of a variety of
