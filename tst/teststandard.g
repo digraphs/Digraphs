@@ -8,12 +8,12 @@
 #############################################################################
 ##
 LoadPackage("digraphs", false);;
-# These "{No} errors detected" lines currently have to be printed in this way
+# The "{No} errors detected" lines currently have to be printed in this way
 # to satisfy the automated GAP testing system that runs on Jenkins.
 # This requirement will hopefully go soon.
-if DigraphsTestInstall()
-    and DigraphsTestStandard()
-    and DIGRAPHS_RunTest(DigraphsTestManualExamples) then
+if SizeBlist([DigraphsTestInstall(),
+              DigraphsTestStandard(rec(earlyStop := false)),
+              DIGRAPHS_RunTest(DigraphsTestManualExamples)]) = 3 then
   Print("#I  No errors detected while testing\n\n");
   QUIT_GAP(0);
 else
