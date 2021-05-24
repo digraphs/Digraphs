@@ -442,6 +442,27 @@ Error, the viewer "xpdf" specified in the option `viewer` is not available,
 gap> Splash("string", rec(type := "dot", engine := "dott"));
 Error, the component "engine" of the 2nd argument <a record> must be one of: "\
 dot", "neato", "twopi", "circo", "fdp", "sfdp", or "patchwork"
+gap> tmpdir := Filename(DirectoryTemporary(), "");;
+gap> Splash("string",
+> rec(path      := tmpdir,
+>     directory := "digraphs_temporary_directory"));
+Error, the component "type" of the 2nd argument <a record>  must be "dot" or "\
+latex",
+gap> Splash("%latex", rec(filetype := "latex", engine := fail));
+Error, the component "engine" of the 2nd argument <a record> must be one of: "\
+dot", "neato", "twopi", "circo", "fdp", "sfdp", or "patchwork"
+gap> Splash("//dot", rec(filetype := "pdf", engine := fail));
+Error, the component "engine" of the 2nd argument <a record> must be one of: "\
+dot", "neato", "twopi", "circo", "fdp", "sfdp", or "patchwork"
+gap> MakeReadWriteGlobal("VizViewers");
+gap> VizViewers_backup := ShallowCopy(VizViewers);;
+gap> VizViewers := ["nonexistent-viewer"];;
+gap> Splash("//dot");
+Error, none of the default viewers [ "nonexistent-viewer" 
+ ] is available, please specify an available viewer in the options record comp\
+onent `viewer`,
+gap> VizViewers := VizViewers_backup;;
+gap> MakeReadOnlyGlobal("VizViewers");
 
 # DotPartialOrderDigraph
 gap> gr := Digraph([[1], [1, 2], [1, 3], [1, 4], [1 .. 5], [1 .. 6],
@@ -619,6 +640,7 @@ gap> Unbind(gr);
 gap> Unbind(gr1);
 gap> Unbind(gr2);
 gap> Unbind(r);
+gap> Unbind(tmpdir);
 
 #
 gap> DIGRAPHS_StopTest();
