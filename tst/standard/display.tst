@@ -379,6 +379,14 @@ gap> DotEdgeColoredDigraph(D, edgecolors);
 lor=pink]\n2 -> 4[color=purple]\n3 -> 1[color=lightblue]\n3 -> 2[color=pink]\n\
 3 -> 4[color=purple]\n4 -> 1[color=lightblue]\n4 -> 2[color=pink]\n4 -> 3[colo\
 r=purple]\n}\n"
+gap> DotEdgeColoredDigraph(CycleDigraph(3), []);
+Error, the list of edge colors needs to have the same shape as the out-neighbo\
+urs of the digraph
+gap> DotEdgeColoredDigraph(CycleDigraph(3), [[fail, fail], [fail], [fail]]);
+Error, the list of edge colors needs to have the same shape as the out-neighbo\
+urs of the digraph
+gap> DotEdgeColoredDigraph(CycleDigraph(3), [[fail], [fail], [fail]]);
+Error, expected a string
 
 # DotSymmetricVertexColoredDigraph
 gap> D := Digraph([[2], [1, 3], [2]]);
@@ -483,6 +491,8 @@ gap> DotPartialOrderDigraph(gr);
 Error, the argument <D> must be a partial order digraph,
 
 # DotPreorderDigraph and DotQuasiorderDigraph
+gap> DotPreorderDigraph(CompleteDigraph(5));
+Error, the argument <D> must be a preorder digraph,
 gap> gr := Digraph([[1], [1, 2], [1, 3], [1, 4], [1 .. 5], [1 .. 6],
 > [1, 2, 3, 4, 5, 7], [1, 8]]);;
 gap> Print(DotPreorderDigraph(gr), "\n");
@@ -556,6 +566,42 @@ subgraph highverts{
 1 -> 2
 1 -> 3 [color=black]
 2 -> 2
+}
+}
+gap> D := CycleDigraph(5);;
+gap> DotHighlightedDigraph(D, [10], "black", "grey");
+Error, the 2nd argument <highverts> must be a list of vertices of the 1st argu\
+ment <D>,
+gap> DotHighlightedDigraph(D, [1], "", "grey");
+Error, the 3rd argument <highcolour> must be a string containing the name of a\
+ colour,
+gap> DotHighlightedDigraph(D, [1], "black", "");
+Error, the 4th argument <lowcolour> must be a string containing the name of a \
+colour,
+gap> Print(DotHighlightedDigraph(D, Filtered(DigraphVertices(D), IsEvenInt)));
+//dot
+digraph hgn{
+subgraph lowverts{
+node [shape=circle, color=grey]
+ edge [color=grey]
+1
+3
+5
+}
+subgraph highverts{
+node [shape=circle, color=black]
+ edge [color=black]
+2
+4
+}
+subgraph lowverts{
+1 -> 2
+3 -> 4
+5 -> 1
+}
+subgraph highverts{
+2 -> 3 [color=grey]
+4 -> 5 [color=grey]
 }
 }
 
