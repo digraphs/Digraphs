@@ -2056,13 +2056,13 @@ rec( child := 1, current := 1,
   <Oper Name="ExecuteDFS" Arg="record, data, start, PreOrderFunc, PostOrderFunc, AncestorFunc,
                                CrossFunc"/>
   <Description>
-  This performs a full depth first search from the <A>start</A> vertex (where <A>start</A> is within the graph).
+  This performs a full depth first search from the <A>start</A> vertex (where <A>start</A> is a vertex within the graph).
   The depth first search can be terminated by changing the <A>record</A>.stop attribute to true in the
   <A>PreOrderFunc</A>, <A>PostOrderFunc</A>, <A>AncestorFunc</A> or <A>CrossFunc</A> functions.
   ExecuteDFS takes 7 arguments:
   <List>
     <Item><A>record</A>: the depth first search record (created using NewDFSRecord)</Item>
-    <Item><A>data</A>: an object that you want manipulate in the functions passed.</Item>
+    <Item><A>data</A>: an object that you want to manipulate in the functions passed.</Item>
     <Item><A>start</A>: the vertex where we begin the depth first search.</Item>
     <Item><A>PreOrderFunc</A>: this function is called when a vertex is first visited. This vertex
     is stored in <A>record</A>.current</Item>
@@ -2076,12 +2076,12 @@ rec( child := 1, current := 1,
     <A>record</A>.child) is an edge and <A>record</A>.child has been visited before <A>record</A>.current
       and it is not an ancestor of <A>record</A>.current</Item>
   </List>
-  Note that this function only performs a depth first search on the connected graph that has <A>start</A>.
-  To perform a depth first search on unconnected components, you need to call this function with a <A>start</A> that is
-  within those unconnected components. It is also important to note that all functions passed need to accept 2 arguments
+  Note that this function only performs a depth first search on the connected component that contains <A>start</A>.
+  To perform a depth first search on all connected components of the digraph, you need to call this function with a <A>start</A>
+  that is within those unconnected components. It is also important to note that all functions passed need to accept 2 arguments
   (<A>record</A>, <A>data</A>). Finally, for the <A>start</A> vertex, its parent is itself and the <A>PreOrderFunc</A>
   will be called on it.
-  See <Ref Oper="NewDFSRecord"/>.
+  See <Ref Oper="NewDFSRecord"/> and <Ref Attr="DigraphConnectedComponents"/>.
   <Example><![CDATA[
 gap> record := NewDFSRecord(CycleDigraph(10));;
 gap> ExecuteDFS(record, [], 1, DFSDefault,
