@@ -22,7 +22,6 @@
 
 Obj ExecuteDFS(Obj self, Obj args) {
   DIGRAPHS_ASSERT(LEN_PLIST(args) == 7);
-  
   Obj record = ELM_PLIST(args, 1);
   Obj data  = ELM_PLIST(args, 2);
   Obj start = ELM_PLIST(args, 3);
