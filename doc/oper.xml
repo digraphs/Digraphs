@@ -2001,7 +2001,7 @@ gap> ModularProduct(NullDigraph(0), CompleteDigraph(10));
   <C>preorder</C> and <C>postorder</C>) will have <C>-1</C> values at all of their indicies as no vertex has 
   been visited. The <C>stop</C> attribute will initially be <C>false</C>.
   <E>This record should be passed into the <C>ExecuteDFS</C> function.</E>
-  See <Ref Func="ExecuteDFS" Label="for a record, object, integer and 4 functions"/>.
+  See <Ref Oper="ExecuteDFS"/>.
   <Example><![CDATA[
 gap> record := NewDFSRecord(CompleteDigraph(2));
 rec( child := -1, current := -1, 
@@ -2034,7 +2034,7 @@ gap> record.graph;
   This is a default function to be passed into the <C>ExecuteDFS</C> function.
   This does nothing and can be used in place of the <C>PreOrderFunc</C>, <C>PostOrderFunc</C>,
   <C>AncestorFunc</C> and/or <C>CrossFunc</C> of the <C>ExecuteDFS</C> function.
-  See <Ref Func="ExecuteDFS" Label="for a record, object, integer and 4 functions"/>.
+  See <Ref Oper="ExecuteDFS"/>.
   <Example><![CDATA[
 gap> PreOrderFunc := function(record, data)
 >       data.num_vertices := data.num_vertices + 1;
@@ -2060,8 +2060,8 @@ rec( child := 1, current := 1,
 
 <#GAPDoc Label="ExecuteDFS">
 <ManSection>
-  <Oper Name="ExecuteDFS" Arg="record, data, start, PreOrderFunc, PostOrderFunc, AncestorFunc,
-                               CrossFunc"/>
+  <Oper Name="ExecuteDFS"
+    Arg="record, data, start, PreOrderFunc, PostOrderFunc, AncestorFunc, CrossFunc"/>
   <Description>
   This performs a full depth first search from the <A>start</A> vertex (where <A>start</A> is a vertex within the graph).
   The depth first search can be terminated by changing the <A>record</A>.stop attribute to true in the
