@@ -2069,19 +2069,18 @@ rec( child := 1, current := 1,
     <Item><A>PostOrderFunc</A>: this function is called when a vertex has no more unvisited children
     causing us to backtrack. This vertex is stored in <A>record</A>.child and its parent is stored 
     in <A>record</A>.current</Item>
-    <Item><A>AncestorFunc</A>: this function is called when (<A>record</A>.current,
-    <A>record</A>.child) is an edge and <A>record</A>.child is an ancestor of <A>record</A>.current. An ancestor here means that
-    <A>record</A>.child is on the same branch as <A>record</A>.current but was visited prior to <A>record</A>.current</Item>
-    <Item><A>CrossFunc</A>: this function is called when (<A>record</A>.current,
-    <A>record</A>.child) is an edge and <A>record</A>.child has been visited before <A>record</A>.current
-      and it is not an ancestor of <A>record</A>.current</Item>
+    <Item><A>AncestorFunc</A>: this function is called when (<C><A>record</A>.current</C>,
+    <C><A>record</A>.child</C>) is an edge and <C><A>record</A>.child</C> is an ancestor of <C><A>record</A>.current</C>. An ancestor here means that
+    <C><A>record</A>.child</C> is on the same branch as <C><A>record</A>.current</C> but was visited prior to <C><A>record</A>.current</C></Item>
+    <Item><A>CrossFunc</A>: this function is called when (<C><A>record</A>.current</C>,
+    <C><A>record</A>.child</C>) is an edge and <C><A>record</A>.child</C> has been visited before <C><A>record</A>.current</C>
+      and it is not an ancestor of <C><A>record</A>.current</C></Item>
   </List>
-  Note that this function only performs a depth first search on the connected component that contains <A>start</A>.
-  To perform a depth first search on all connected components of the digraph, you need to call this function with a <A>start</A>
-  that is within those unconnected components. It is also important to note that all functions passed need to accept 2 arguments
+  Note that this function only performs a depth first search on the vertices reachable from <A>start</A>.
+  It is also important to note that all functions passed need to accept 2 arguments
   (<A>record</A>, <A>data</A>). Finally, for the <A>start</A> vertex, its parent is itself and the <A>PreOrderFunc</A>
   will be called on it.
-  See <Ref Oper="NewDFSRecord"/> and <Ref Attr="DigraphConnectedComponents"/>.
+  See <Ref Oper="NewDFSRecord"/>.
   <Example><![CDATA[
 gap> record := NewDFSRecord(CycleDigraph(10));;
 gap> ExecuteDFS(record, [], 1, DFSDefault,
