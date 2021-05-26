@@ -155,6 +155,201 @@ function(D)
   return DIGRAPHS_ArticulationPointsBridgesStrongOrientation(D)[4];
 end);
 
+# Utility function to calculate the maximal independent sets (as BLists) of a
+# subgraph induced by removing a set of vertices.
+BindGlobal("DIGRAPHS_MaximalIndependentSetsSubtractedSet",
+function(I, subtracted_set, size_bound)
+  local induced_mis, temp, i;
+  # First remove all vertices in the subtracted set from each MIS
+  temp := List(I, i -> DifferenceBlist(i, subtracted_set));
+  induced_mis := [];
+  # Then remove any sets which are no longer maximal
+  # Sort in decreasing size
+  Sort(temp, {x, y} -> SizeBlist(x) > SizeBlist(y));
+  # Then check elements from back to front for if they are a subset
+  for i in temp do
+    if SizeBlist(i) <= size_bound and
+        ForAll(induced_mis, x -> not IsSubsetBlist(x, i)) then
+      Add(induced_mis, i);
+    fi;
+  od;
+  return induced_mis;
+end
+);
+
+BindGlobal("DIGRAPHS_ChromaticNumberLawler",
+function(D)
+  local n, vertices, subset_colours, s, S, i, I, subset_iter, x,
+  mis, subset_mis;
+  n := DigraphNrVertices(D);
+  vertices := List(DigraphVertices(D));
+  # Store all the Maximal Independent Sets, which can later be used for
+  # calculating the maximal independent sets of induced subgraphs.
+  mis := DigraphMaximalIndependentSets(D);
+  # Convert each MIS to a Blist
+  mis := List(mis, x -> BlistList(vertices, x));
+  # Store current best colouring for each subset
+  subset_colours := ListWithIdenticalEntries(2 ^ n, infinity);
+  # Empty set can be colouring with only one colour.
+  subset_colours[1] := 0;
+  # Iterator for blist subsets.
+  subset_iter := ListWithIdenticalEntries(n, [false, true]);
+  subset_iter := IteratorOfCartesianProduct2(subset_iter);
+  # Skip the first one, which should be the empty set.
+  S := NextIterator(subset_iter);
+  # Iterate over all vertex subsets.
+  for S in subset_iter do
+    # Cartesian iterator is ascending lexicographically, but we want reverse
+    # lexicographic ordering. We treat this as iterating over the complement.
+    # Index the current subset that is being iterated over.
+    s := 1;
+    for x in [1 .. n] do
+      # Need to negate, as we are iterating over the complement.
+      if not S[x] then
+        s := s + 2 ^ (x - 1);
+      fi;
+    od;
+    # Iterate over the maximal independent sets of V[S]
+    subset_mis := DIGRAPHS_MaximalIndependentSetsSubtractedSet(mis, S, infinity);
+    # Flip the list, as we now need the actual set.
+    FlipBlist(S);
+    for I in subset_mis do
+        # Calculate S \ I. This is destructive, but is undone.
+        SubtractBlist(S, I);
+        # Index S \ I
+        i := 1;
+        for x in [1 .. n] do
+          if S[x] then
+            i := i + 2 ^ (x - 1);
+          fi;
+        od;
+        # The chromatic number of this subset is the minimum value of all
+        # the maximal independent subsets of D[S].
+        subset_colours[s] := Minimum(subset_colours[s], subset_colours[i] + 1);
+        # Undo the changes to the subset.
+        UniteBlist(S, I);
+    od;
+  od;
+  return subset_colours[2 ^ n];
+end
+);
+
+BindGlobal("DIGRAPHS_UnderThreeColourable",
+function(D)
+  local nr;
+  nr := DigraphNrVertices(D);
+  if DigraphHasLoops(D) then
+    ErrorNoReturn("the argument <D> must be a digraph with no loops,");
+  elif nr = 0 then
+    return 0;  # chromatic number = 0 iff <D> has 0 verts
+  elif IsNullDigraph(D) then
+    return 1;  # chromatic number = 1 iff <D> has >= 1 verts & no edges
+  elif IsBipartiteDigraph(D) then
+    return 2;  # chromatic number = 2 iff <D> has >= 2 verts & is bipartite
+               # <D> has at least 2 vertices at this stage
+  elif DigraphColouring(D, 3) <> fail then
+               # Check if there is a 3 colouring
+    return 3;
+  fi;
+  return infinity;
+end
+);
+
+BindGlobal("DIGRAPHS_ChromaticNumberByskov",
+function(D)
+  local n, a, vertices, subset_colours, S, i, j, I, subset_iter,
+  index_subsets, vertex_blist, k, MIS;
+
+  n := DigraphNrVertices(D);
+  vertices := DigraphVertices(D);
+  vertex_blist := BlistList(vertices, vertices);
+  # Store all the Maximal Independent Sets, which can later be used for
+  # calculating the maximal independent sets of induced subgraphs.
+  MIS := DigraphMaximalIndependentSets(D);
+  # Convert each MIS to a Blist
+  MIS := List(MIS, x -> BlistList(vertices, x));
+  # Store current best colouring for each subset
+  subset_colours := ListWithIdenticalEntries(2 ^ n, infinity);
+  # Empty set is 0 colourable
+  subset_colours[1] := 0;
+  # Function to index the subsets of the vertices of D
+  index_subsets := function(subset)
+    local x, index;
+    index := 1;
+    for x in [1 .. n] do
+      if subset[x] then
+        index := index + 2 ^ (x - 1);
+      fi;
+    od;
+    return index;
+  end;
+  # Iterate over vetex subsets
+  subset_iter := IteratorOfCombinations(vertices);
+  # Skip the first one, which should be the empty set
+  S := NextIterator(subset_iter);
+  Assert(1, IsEmpty(S), "First set from iterator should be the empty set");
+  # First find the 3 colourable subgraphs of D
+  for S in subset_iter do
+    a := DIGRAPHS_UnderThreeColourable(InducedSubdigraph(D, S));
+    S := BlistList(vertices, S);
+    i := index_subsets(S);
+    # Mark this as three or less colourable if it is.
+    subset_colours[i] := Minimum(a, subset_colours[i]);
+  od;
+  # Process 4 colourable subgraphs
+  for I in MIS do
+    SubtractBlist(vertex_blist, I);
+    # Iterate over all subsets of V(D) \ I as blists
+    # This is done by taking the cartesian product of n copies of [true, false]
+    # or [true] if the vertex is in I. The [true] is used as each element will
+    # be flipped to get reverse lexicographic ordering.
+    subset_iter := EmptyPlist(n);
+    for i in [1 .. n] do
+      if I[i] then
+        subset_iter[i] := [true];
+      else
+        subset_iter[i] := [true, false];
+      fi;
+    od;
+    subset_iter := IteratorOfCartesianProduct2(subset_iter);
+    # Skip the empty set.
+    NextIterator(subset_iter);
+    for S in subset_iter do
+      FlipBlist(S);
+      i := index_subsets(S);
+      if subset_colours[i] = 3 then
+        # Index union of S and I
+        j := index_subsets(UnionBlist(S, I));
+        subset_colours[j] := Minimum(subset_colours[j], 4);
+      fi;
+    od;
+    # Undo the changes made.
+    UniteBlist(vertex_blist, I);
+  od;
+  # Iterate over vetex subset blists.
+  subset_iter := ListWithIdenticalEntries(n, [true, false]);
+  subset_iter := IteratorOfCartesianProduct2(subset_iter);
+  # Skip the first one, which should be the empty set
+  S := NextIterator(subset_iter);
+  for S in subset_iter do
+    # Cartesian iteratator goes in lexicographic order, but we want reverse.
+    FlipBlist(S);
+    # Index the current subset that is being iterated over
+    i := index_subsets(S);
+    if 4 <= subset_colours[i] and subset_colours[i] < infinity then
+      k := SizeBlist(S) / subset_colours[i];
+      # Iterate over the maximal independent sets of D[V \ S]
+      for I in DIGRAPHS_MaximalIndependentSetsSubtractedSet(MIS, S, k) do
+        # Index S union I
+        j := index_subsets(UnionBlist(S, I));
+        subset_colours[j] := Minimum(subset_colours[j], subset_colours[i] + 1);
+      od;
+    fi;
+  od;
+  return subset_colours[2 ^ n];
+end
+);
+
 InstallMethod(ChromaticNumber, "for a digraph by out-neighbours",
 [IsDigraphByOutNeighboursRep],
 function(D)
@@ -171,6 +366,13 @@ function(D)
   elif IsBipartiteDigraph(D) then
     return 2;  # chromatic number = 2 iff <D> has >= 2 verts & is bipartite
                # <D> has at least 2 vertices at this stage
+  fi;
+
+  # Value option for alternative dispatch
+  if ValueOption("lawler") <> fail then
+    return DIGRAPHS_ChromaticNumberLawler(D);
+  elif ValueOption("byskov") <> fail then
+    return DIGRAPHS_ChromaticNumberByskov(D);
   fi;
 
   # The chromatic number of <D> is at least 3 and at most nr
