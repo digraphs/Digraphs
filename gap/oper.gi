@@ -1319,7 +1319,7 @@ function(D, u, v)
       AddToPath(record.current, record.child);
     fi;
   end;
-  ExecuteDFS_C(record, path_info, u,
+  ExecuteDFS(record, path_info, u,
                DFSDefault, PostOrderFunc,
                AncestorFunc, DFSDefault);
   if Size(path_info) <= 1 then
@@ -1621,7 +1621,7 @@ function(D, v)
       fi;
     od;
   end;
-  ExecuteDFS_C(record, data, v,
+  ExecuteDFS(record, data, v,
                PreOrderFunc, PostOrderFunc,
                AncestorFunc, DFSDefault);
   if record.stop then
@@ -1904,7 +1904,7 @@ function(D, root)
     fi;
   end;
 
-  ExecuteDFS_C(record,
+  ExecuteDFS(record,
                data,
                root,
                PreOrderFunc,
@@ -1935,7 +1935,7 @@ function(D, root)
   end;
 
   record := NewDFSRecord(D);
-  ExecuteDFS_C(record,
+  ExecuteDFS(record,
              preorder_num_to_node,
              root,
              PreOrderFunc,

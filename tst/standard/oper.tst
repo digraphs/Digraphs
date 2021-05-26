@@ -2692,6 +2692,10 @@ rec( cross_vertex := [ 4 ], cycle_vertex := [ 1, 1 ] )
 gap> ExecuteDFS(rec(), data, 1, DFSDefault,                         
 >               DFSDefault, AncestorFunc, CrossFunc);
 Error, the 1st argument <record> must be created with NewDFSRecord,
+gap> D := ChainDigraph(1);;
+gap> ExecuteDFS(NewDFSRecord(D), [], 3, DFSDefault, DFSDefault, DFSDefault,
+> DFSDefault);
+Error, the third argument <start> must be a vertex in your graph,
 
 #
 gap> DIGRAPHS_StopTest();

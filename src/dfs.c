@@ -21,9 +21,6 @@
 #include "digraphs.h"
 
 Obj ExecuteDFS(Obj self, Obj args) {
-  if (LEN_PLIST(args) != 7) {
-    ErrorQuit("there must be 7 arguments, found %d,", LEN_PLIST(args), 0L);
-  }
   Obj record = ELM_PLIST(args, 1);
   Obj data  = ELM_PLIST(args, 2);
   Obj start = ELM_PLIST(args, 3);
@@ -46,7 +43,7 @@ Obj ExecuteDFS(Obj self, Obj args) {
   Obj D = ElmPRec(record, RNamName("graph"));
   Int N = DigraphNrVertices(D);
 
-  if (start > D) {
+  if (INT_INTOBJ(start) > N) {
     ErrorQuit("the third argument <start> must be a vertex in your graph,",
                                                                    0L, 0L);
   }
