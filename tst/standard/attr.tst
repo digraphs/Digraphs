@@ -1548,6 +1548,112 @@ gap> D := Digraph(OutNeighbours(CycleDigraph(13)));;
 gap> ChromaticNumber(D);
 3
 
+#  Test ChromaticNumber Lawler
+gap> ChromaticNumber(NullDigraph(10) : lawler);
+1
+gap> ChromaticNumber(CompleteDigraph(10) : lawler);
+10
+gap> ChromaticNumber(CompleteBipartiteDigraph(5, 5) : lawler);
+2
+gap> ChromaticNumber(DigraphRemoveEdge(CompleteDigraph(10), [1, 2]) : lawler);
+10
+gap> ChromaticNumber(Digraph([[4, 8], [6, 10], [9], [2, 3, 9], [],
+> [3], [4], [6], [], [5, 7]]) : lawler);
+3
+gap> ChromaticNumber(DigraphDisjointUnion(CompleteDigraph(1),
+> Digraph([[2], [4], [1, 2], [3]])) : lawler);
+3
+gap> ChromaticNumber(DigraphDisjointUnion(CompleteDigraph(1),
+> Digraph([[2], [4], [1, 2], [3], [1, 2, 3]])) : lawler);
+4
+gap> gr := Digraph([[2, 3, 4], [3], [], []]);
+<immutable digraph with 4 vertices, 4 edges>
+gap> ChromaticNumber(gr : lawler);
+3
+gap> ChromaticNumber(EmptyDigraph(0) : lawler);
+0
+gap> gr := CompleteDigraph(4);;
+gap> gr := DigraphAddVertex(gr);;
+gap> ChromaticNumber(gr : lawler);
+4
+gap> gr := Digraph([[2, 4, 7, 3], [3, 5, 8, 1], [1, 6, 9, 2],
+> [5, 7, 1, 6], [6, 8, 2, 4], [4, 9, 3, 5], [8, 1, 4, 9], [9, 2, 5, 7],
+> [7, 3, 6, 8]]);;
+gap> ChromaticNumber(gr : lawler);
+3
+gap> gr := DigraphSymmetricClosure(ChainDigraph(5));
+<immutable symmetric digraph with 5 vertices, 8 edges>
+gap> ChromaticNumber(gr : lawler);
+2
+gap> gr := DigraphFromGraph6String("KmKk~K??G@_@");
+<immutable symmetric digraph with 12 vertices, 42 edges>
+gap> ChromaticNumber(gr : lawler);
+4
+gap> gr := CycleDigraph(7);
+<immutable cycle digraph with 7 vertices>
+gap> ChromaticNumber(gr : lawler);
+3
+gap> ChromaticNumber(gr : lawler);
+3
+gap> ChromaticNumber(gr : lawler);
+3
+
+#  Test ChromaticNumber Byskov 
+gap> ChromaticNumber(NullDigraph(10) : byskov);
+1
+gap> ChromaticNumber(CompleteDigraph(10) : byskov);
+10
+gap> ChromaticNumber(CompleteBipartiteDigraph(5, 5) : byskov);
+2
+gap> ChromaticNumber(DigraphRemoveEdge(CompleteDigraph(10), [1, 2]) : byskov);
+10
+gap> ChromaticNumber(Digraph([[4, 8], [6, 10], [9], [2, 3, 9], [],
+> [3], [4], [6], [], [5, 7]]) : byskov);
+3
+gap> ChromaticNumber(DigraphDisjointUnion(CompleteDigraph(1),
+> Digraph([[2], [4], [1, 2], [3]])) : byskov);
+3
+gap> ChromaticNumber(DigraphDisjointUnion(CompleteDigraph(1),
+> Digraph([[2], [4], [1, 2], [3], [1, 2, 3]])) : byskov);
+4
+gap> gr := Digraph([[2, 3, 4], [3], [], []]);
+<immutable digraph with 4 vertices, 4 edges>
+gap> ChromaticNumber(gr : byskov);
+3
+gap> ChromaticNumber(EmptyDigraph(0) : byskov);
+0
+gap> gr := CompleteDigraph(4);;
+gap> gr := DigraphAddVertex(gr);;
+gap> ChromaticNumber(gr : byskov);
+4
+gap> gr := Digraph([[2, 4, 7, 3], [3, 5, 8, 1], [1, 6, 9, 2],
+> [5, 7, 1, 6], [6, 8, 2, 4], [4, 9, 3, 5], [8, 1, 4, 9], [9, 2, 5, 7],
+> [7, 3, 6, 8]]);;
+gap> ChromaticNumber(gr : byskov);
+3
+gap> gr := DigraphSymmetricClosure(ChainDigraph(5));
+<immutable symmetric digraph with 5 vertices, 8 edges>
+gap> ChromaticNumber(gr : byskov);
+2
+gap> gr := DigraphFromGraph6String("KmKk~K??G@_@");
+<immutable symmetric digraph with 12 vertices, 42 edges>
+gap> ChromaticNumber(gr : byskov);
+4
+gap> gr := CycleDigraph(7);
+<immutable cycle digraph with 7 vertices>
+gap> ChromaticNumber(gr : byskov);
+3
+gap> ChromaticNumber(gr : byskov);
+3
+gap> ChromaticNumber(gr : byskov);
+3
+
+# Extra tests for under three colourable check
+gap> DIGRAPHS_UnderThreeColourable(Digraph([[1]]));
+Error, the argument <D> must be a digraph with no loops,
+gap> DIGRAPHS_UnderThreeColourable(EmptyDigraph(0));
+0
+
 #  DegreeMatrix
 gap> gr := Digraph([[2, 3, 4], [2, 5], [1, 5, 4], [1], [1, 1, 2, 4]]);;
 gap> DegreeMatrix(gr);

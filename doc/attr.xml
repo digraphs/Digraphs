@@ -1417,7 +1417,17 @@ gap> DigraphLoops(D);
     least one vertex, <C>ChromaticNumber</C> returns the least number <C>n</C>
     such that <C>DigraphColouring(<A>digraph</A>, n)</C> does not return
     <K>fail</K>. See <Ref Oper="DigraphColouring"
-      Label="for a digraph and a number of colours"/>.
+      Label="for a digraph and a number of colours"/>. <P/>
+
+    It is possible to select the algorithm to compute the chromatic number via
+    the use of value options. The permitted algorithms and values to
+    pass as options are:
+    <List>
+      <Item><C>lawler</C> - Lawler's Algorithm 
+      <Cite Key="Law1976"/></Item>
+      <Item><C>byskov</C> - Byskov's Algorithm 
+      <Cite Key="Bys2002"/></Item>
+    </List>
 
     <Example><![CDATA[
 gap> ChromaticNumber(NullDigraph(10));
@@ -1434,6 +1444,10 @@ gap> D := PetersenGraph(IsMutableDigraph);
 <mutable digraph with 10 vertices, 30 edges>
 gap> ChromaticNumber(D);
 3
+gap> ChromaticNumber(CompleteDigraph(10) : lawler);
+10
+gap> ChromaticNumber(CompleteDigraph(10) : byskov);
+10
 ]]></Example>
   </Description>
 </ManSection>
