@@ -1047,6 +1047,21 @@ InstallMethod(AsDigraph, "for a function and a transformation",
 InstallMethod(AsDigraph, "for a transformation", [IsTransformation],
 t -> AsDigraphCons(IsImmutableDigraph, t, DegreeOfTransformation(t)));
 
+InstallMethod(AsDigraph, "for a function, a perm, and an integer",
+[IsFunction, IsPerm, IsInt],
+{func, p, n} -> AsDigraphCons(func, AsTransformation(p), n));
+
+InstallMethod(AsDigraph, "for a perm and an integer",
+[IsPerm, IsInt],
+{p, n} -> AsDigraph(AsTransformation(p), n));
+
+InstallMethod(AsDigraph, "for a function and a perm",
+[IsFunction, IsPerm],
+{func, p} -> AsDigraph(func, AsTransformation(p)));
+
+InstallMethod(AsDigraph, "for a perm", [IsPerm],
+p -> AsDigraph(AsTransformation(p)));
+
 InstallMethod(AsBinaryRelation, "for a digraph", [IsDigraphByOutNeighboursRep],
 function(D)
   local rel;
