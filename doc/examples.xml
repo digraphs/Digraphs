@@ -669,9 +669,9 @@ gap> D := BananaTree(3, 4);
 </ManSection>
 <#/GAPDoc>
 
-<#GAPDoc Label="TadpoleDigraph">
+<#GAPDoc Label="TadpoleGraph">
 <ManSection>
-  <Oper Name="TadpoleDigraph" Arg="[filt, ]m, n"/>
+  <Oper Name="TadpoleGraph" Arg="[filt, ]m, n"/>
   <Returns>A digraph.</Returns>
   <Description>
     The <E>Tadpole digraph</E> is the symmetric closure of the disjoint union
@@ -695,20 +695,20 @@ gap> D := BananaTree(3, 4);
       Filt="IsImmutableDigraph"/> is used by default.<P/>
 
     <Example><![CDATA[
-gap> TadpoleDigraph(10, 15);
+gap> TadpoleGraph(10, 15);
 <immutable symmetric digraph with 25 vertices, 50 edges>
-gap> TadpoleDigraph(IsMutableDigraph, 5, 6);
+gap> TadpoleGraph(IsMutableDigraph, 5, 6);
 <mutable digraph with 11 vertices, 22 edges>
-gap> IsSymmetricDigraph(TadpoleDigraph(3, 5));
+gap> IsSymmetricDigraph(TadpoleGraph(3, 5));
 true
 ]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
 
-<#GAPDoc Label="BookDigraph">
+<#GAPDoc Label="BookGraph">
 <ManSection>
-  <Oper Name="BookDigraph" Arg="[filt, ]m"/>
+  <Oper Name="BookGraph" Arg="[filt, ]m"/>
   <Returns>A digraph.</Returns>
   <Description>
     The <E>Book digraph</E> is the Cartesian product of a complete digraph with 2 vertices
@@ -727,17 +727,17 @@ true
       Filt="IsImmutableDigraph"/> is used by default.<P/>
 
     <Example><![CDATA[
-gap> BookDigraph(1);
+gap> BookGraph(1);
 <immutable bipartite symmetric digraph with bicomponent sizes 2 and 2>
-gap> BookDigraph(2);
+gap> BookGraph(2);
 <immutable bipartite symmetric digraph with bicomponent sizes 3 and 3>
-gap> BookDigraph(IsMutable, 12);
+gap> BookGraph(IsMutable, 12);
 <mutable digraph with 26 vertices, 74 edges>
-gap> BookDigraph(7);
+gap> BookGraph(7);
 <immutable bipartite symmetric digraph with bicomponent sizes 8 and 8>
-gap> IsSymmetricDigraph(BookDigraph(24));
+gap> IsSymmetricDigraph(BookGraph(24));
 true
-gap> IsBipartiteDigraph(BookDigraph(24));
+gap> IsBipartiteDigraph(BookGraph(24));
 true
 ]]></Example>
   </Description>

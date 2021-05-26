@@ -353,32 +353,32 @@ gap> D := BananaTree(IsMutableDigraph, 5, 3);
 gap> BananaTree(3, 1);
 Error, The second argument must be an integer greater than one
 
-# TadPoleDigraph
-gap> TadpoleDigraph(2, 2);
+# TadpoleGraph
+gap> TadpoleGraph(2, 2);
 Error, the first argument <m> must be an integer greater than 2
-gap> TadpoleDigraph(10, 15);
+gap> TadpoleGraph(10, 15);
 <immutable symmetric digraph with 25 vertices, 50 edges>
-gap> TadpoleDigraph(IsMutableDigraph, 5, 6);
+gap> TadpoleGraph(IsMutableDigraph, 5, 6);
 <mutable digraph with 11 vertices, 22 edges>
-gap> IsSymmetricDigraph(TadpoleDigraph(3, 5));
+gap> IsSymmetricDigraph(TadpoleGraph(3, 5));
 true
-gap> TadpoleDigraph(3, 1);
+gap> TadpoleGraph(3, 1);
 <immutable symmetric digraph with 4 vertices, 8 edges>
 
-# BookDigraph
-gap> BookDigraph(1);
+# BookGraph
+gap> BookGraph(1);
 <immutable bipartite symmetric digraph with bicomponent sizes 2 and 2>
-gap> BookDigraph(2);
+gap> BookGraph(2);
 <immutable bipartite symmetric digraph with bicomponent sizes 3 and 3>
-gap> BookDigraph(7);
+gap> BookGraph(7);
 <immutable bipartite symmetric digraph with bicomponent sizes 8 and 8>
-gap> BookDigraph(12);
+gap> BookGraph(12);
 <immutable bipartite symmetric digraph with bicomponent sizes 13 and 13>
-gap> BookDigraph(IsMutable, 12);
+gap> BookGraph(IsMutable, 12);
 <mutable digraph with 26 vertices, 74 edges>
-gap> IsSymmetricDigraph(BookDigraph(24));
+gap> IsSymmetricDigraph(BookGraph(24));
 true
-gap> IsBipartiteDigraph(BookDigraph(32));
+gap> IsBipartiteDigraph(BookGraph(32));
 true
 
 #
