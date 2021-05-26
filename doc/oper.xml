@@ -1975,19 +1975,26 @@ gap> ModularProduct(NullDigraph(0), CompleteDigraph(10));
   vertex within the <A>digraph</A> equating to the vertex number. These lists store
   the following:
   <List>
-    <Item><E>parent</E>: at each index, the parent of the vertex is stored</Item>
-    <Item><E>preorder</E>: at each index, the preorder number (order in which the vertex is visited)
+    <Mark>parent</Mark>
+    <Item>at each index, the parent of the vertex is stored</Item>
+    <Mark>preorder</Mark>
+    <Item>at each index, the preorder number (order in which the vertex is visited)
           is stored</Item>
-    <Item><E>postorder</E>: at each index, the postorder number (order in which the vertex is backtracked on)
+    <Mark>postorder</Mark>
+    <Item>at each index, the postorder number (order in which the vertex is backtracked on)
           is stored</Item>
   </List>
 
   The record also stores a further 4 attributes.
   <List>
-    <Item><E>current</E>: the current vertex that is being visited</Item>
-    <Item><E>child</E>: the child of the current vertex</Item>
-    <Item><E>graph</E>: the <A>digraph</A></Item>
-    <Item><E>stop</E>: whether to stop the depth first search</Item>
+    <Mark>current</Mark>
+    <Item>the current vertex that is being visited</Item>
+    <Mark>child</Mark>
+    <Item>the child of the current vertex</Item>
+    <Mark>graph</Mark>
+    <Item>the <A>digraph</A></Item>
+    <Mark>stop</Mark>
+    <Item>whether to stop the depth first search</Item>
   </List>
   
   Initially, the current and child attributes will have -1 values and the lists (parent,
@@ -2061,18 +2068,25 @@ rec( child := 1, current := 1,
   <A>PreOrderFunc</A>, <A>PostOrderFunc</A>, <A>AncestorFunc</A> or <A>CrossFunc</A> functions.
   ExecuteDFS takes 7 arguments:
   <List>
-    <Item><A>record</A>: the depth first search record (created using NewDFSRecord)</Item>
-    <Item><A>data</A>: an object that you want to manipulate in the functions passed.</Item>
-    <Item><A>start</A>: the vertex where we begin the depth first search.</Item>
-    <Item><A>PreOrderFunc</A>: this function is called when a vertex is first visited. This vertex
+    <Mark>record</Mark>
+    <Item>the depth first search record (created using NewDFSRecord)</Item>
+    <Mark>data</Mark>
+    <Item>an object that you want to manipulate in the functions passed.</Item>
+    <Mark>start</Mark>
+    <Item>the vertex where we begin the depth first search.</Item>
+    <Mark>PreOrderFunc</Mark>
+    <Item>this function is called when a vertex is first visited. This vertex
     is stored in <A>record</A>.current</Item>
-    <Item><A>PostOrderFunc</A>: this function is called when a vertex has no more unvisited children
+    <Mark>PostOrderFunc</Mark>
+    <Item>this function is called when a vertex has no more unvisited children
     causing us to backtrack. This vertex is stored in <A>record</A>.child and its parent is stored 
     in <A>record</A>.current</Item>
-    <Item><A>AncestorFunc</A>: this function is called when (<C><A>record</A>.current</C>,
+    <Mark>AncestorFunc</Mark>
+    <Item>this function is called when (<C><A>record</A>.current</C>,
     <C><A>record</A>.child</C>) is an edge and <C><A>record</A>.child</C> is an ancestor of <C><A>record</A>.current</C>. An ancestor here means that
     <C><A>record</A>.child</C> is on the same branch as <C><A>record</A>.current</C> but was visited prior to <C><A>record</A>.current</C></Item>
-    <Item><A>CrossFunc</A>: this function is called when (<C><A>record</A>.current</C>,
+    <Mark>CrossFunc</Mark>
+    <Item>this function is called when (<C><A>record</A>.current</C>,
     <C><A>record</A>.child</C>) is an edge and <C><A>record</A>.child</C> has been visited before <C><A>record</A>.current</C>
       and it is not an ancestor of <C><A>record</A>.current</C></Item>
   </List>

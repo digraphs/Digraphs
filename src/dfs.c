@@ -20,6 +20,8 @@
 #include "digraphs-debug.h"
 #include "digraphs.h"
 
+// Extreme examples are on the pull request #459
+
 Obj ExecuteDFS(Obj self, Obj args) {
   DIGRAPHS_ASSERT(LEN_PLIST(args) == 7);
   Obj record = ELM_PLIST(args, 1);
