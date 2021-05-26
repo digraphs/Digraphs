@@ -1997,10 +1997,10 @@ gap> ModularProduct(NullDigraph(0), CompleteDigraph(10));
     <Item>whether to stop the depth first search</Item>
   </List>
   
-  Initially, the current and child attributes will have -1 values and the lists (parent,
-  preorder and postorder) will have -1 values at all of their indicies as no vertex has 
-  been visited. The stop attribute will initially be false.
-  <E>This record should be passed into the ExecuteDFS function.</E>
+  Initially, the <C>current</C> and <C>child</C> attributes will have <C>-1</C> values and the lists (<C>parent</C>,
+  <C>preorder</C> and <C>postorder</C>) will have <C>-1</C> values at all of their indicies as no vertex has 
+  been visited. The <C>stop</C> attribute will initially be <C>false</C>.
+  <E>This record should be passed into the <C>ExecuteDFS</C> function.</E>
   See <Ref Func="ExecuteDFS" Label="for a record, object, integer and 4 functions"/>.
   <Example><![CDATA[
 gap> record := NewDFSRecord(CompleteDigraph(2));
@@ -2031,9 +2031,9 @@ gap> record.graph;
 <ManSection>
   <Oper Name="DFSDefault" Arg="record, data"/>
   <Description>
-  This is a default function to be passed into the ExecuteDFS function.
-  This does nothing and can be used in place of the PreOrderFunc, PostOrderFunc,
-  AncestorFunc and/or CrossFunc of the ExecuteDFS function.
+  This is a default function to be passed into the <C>ExecuteDFS</C> function.
+  This does nothing and can be used in place of the <C>PreOrderFunc</C>, <C>PostOrderFunc</C>,
+  <C>AncestorFunc</C> and/or <C>CrossFunc</C> of the <C>ExecuteDFS</C> function.
   See <Ref Func="ExecuteDFS" Label="for a record, object, integer and 4 functions"/>.
   <Example><![CDATA[
 gap> PreOrderFunc := function(record, data)
@@ -2066,7 +2066,7 @@ rec( child := 1, current := 1,
   This performs a full depth first search from the <A>start</A> vertex (where <A>start</A> is a vertex within the graph).
   The depth first search can be terminated by changing the <A>record</A>.stop attribute to true in the
   <A>PreOrderFunc</A>, <A>PostOrderFunc</A>, <A>AncestorFunc</A> or <A>CrossFunc</A> functions.
-  ExecuteDFS takes 7 arguments:
+  <C>ExecuteDFS</C> takes 7 arguments:
   <List>
     <Mark>record</Mark>
     <Item>the depth first search record (created using NewDFSRecord)</Item>
@@ -2091,8 +2091,8 @@ rec( child := 1, current := 1,
       and it is not an ancestor of <C><A>record</A>.current</C></Item>
   </List>
   Note that this function only performs a depth first search on the vertices reachable from <A>start</A>.
-  It is also important to note that all functions passed need to accept 2 arguments
-  (<A>record</A>, <A>data</A>). Finally, for the <A>start</A> vertex, its parent is itself and the <A>PreOrderFunc</A>
+  It is also important to note that all functions passed need to accept arguments <A>record</A> and <A>data</A>.
+  Finally, for the <A>start</A> vertex, its parent is itself and the <A>PreOrderFunc</A>
   will be called on it.
   See <Ref Oper="NewDFSRecord"/>.
   <Example><![CDATA[
