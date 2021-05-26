@@ -328,8 +328,8 @@ D -> DigraphPeriod(D) = 1);
 InstallMethod(IsAntisymmetricDigraph, "for a digraph by out-neighbours",
 [IsDigraphByOutNeighboursRep],
 function(D)
-  local record, AncestorFunc;
-  if DigraphNrVertices(D) = 0 then
+  local record, AncestorFunc, i, components;
+  if DigraphNrVertices(D) <= 1 then
     return true;
   fi;
   record := NewDFSRecord(D);
@@ -346,9 +346,17 @@ function(D)
       record.stop := true;
     fi;
   end;
-  ExecuteDFS(record, [], 1, DFSDefault, DFSDefault,
+
+  components := DigraphConnectedComponents(D);
+  for i in [1 .. Size(components.comps)] do
+    record := NewDFSRecord(D);
+    ExecuteDFS(record, [], components.comps[i][1], DFSDefault, DFSDefault,
                AncestorFunc, DFSDefault);
-  return not record.stop;
+    if record.stop then
+      return false;
+    fi;
+  od;
+  return true;
 end);
 
 InstallMethod(IsTransitiveDigraph, "for a digraph by out-neighbours",
