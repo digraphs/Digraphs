@@ -1541,88 +1541,76 @@ true
 gap> gr5 := Digraph([[1], [1, 2], [1, 3], [1, 4], [2, 3, 5]]);;
 gap> T := AsSemigroup(IsPartialPermSemigroup, gr5, [G1, G2, G3, G4, G5],
 > [[2, 1, hom21], [3, 1, hom31], [4, 1, hom41], [5, 2, hom52], [5, 3, hom52]]);;
-Error, Digraphs: AsSemigroup usage,
-the second argument must be a join semilattice digraph or a meet semilattice d\
-igraph,
+Error, the second argument must be a join semilattice digraph or a meet semila\
+ttice digraph,
 gap> T := AsSemigroup(IsPartialPermSemigroup, gr4, [G1, G2, G3, G4],
 > [[2, 1, hom21], [3, 1, hom31], [4, 1, hom41], [5, 2, hom52], [5, 3, hom52]]);;
-Error, Digraphs: AsSemigroup usage,
-the third argument must have length equal to the number of vertices in the sec\
-ond argument,
+Error, the third argument must have length equal to the number of vertices in \
+the second argument,
 gap> S := FullTransformationMonoid(4);;
 gap> T := AsSemigroup(IsPartialPermSemigroup, gr4, [S, G2, G3, G4, G5],
 > [[2, 1, hom21], [3, 1, hom31], [4, 1, hom41], [5, 2, hom52], [5, 3, hom53]]);;
-Error, Digraphs: AsSemigroup usage,
-the third argument must be a list of groups,
+Error, the third argument must be a list of groups,
 gap> T := AsSemigroup(IsPartialPermSemigroup, gr4, [G1, G2, G3, G4, G5],
 > [[2, 1, hom21], [3, 1, hom31], [4, 1, hom41], [5, 2, hom52]]);;
-Error, Digraphs: AsSemigroup usage,
-the third argument must be a list of triples [i, j, hom] of length equal to th\
-e number of edges in the reflexive transitive reduction of the second argument\
-, where [i, j] is an edge in the reflex transitive reduction and hom is a grou\
-p homomorphism from group i to group j,
+Error, the third argument must be a list of triples [i, j, hom] of length equa\
+l to the number of edges in the reflexive transitive reduction of the second a\
+rgument, where [i, j] is an edge in the reflex transitive reduction and hom is\
+ a group homomorphism from group i to group j,
 gap> T := AsSemigroup(IsPartialPermSemigroup, gr4, [G1, G2, G3, G4, G5],
 > [[2, 1, hom21], [3, 1, hom31], [4, 1, hom41], [5, 2, hom52], [5, 4, hom53]]);;
-Error, Digraphs: AsSemigroup usage,
-the third argument must be a list of triples [i, j, hom] of length equal to th\
-e number of edges in the reflexive transitive reduction of the second argument\
-, where [i, j] is an edge in the reflex transitive reduction and hom is a grou\
-p homomorphism from group i to group j,
+Error, the third argument must be a list of triples [i, j, hom] of length equa\
+l to the number of edges in the reflexive transitive reduction of the second a\
+rgument, where [i, j] is an edge in the reflex transitive reduction and hom is\
+ a group homomorphism from group i to group j,
 gap> T := AsSemigroup(IsPartialPermSemigroup, gr4, [G1, G2, G3, G4, G5],
 > [[2, 1], [3, 1, hom31], [4, 1, hom41], [5, 2, hom52], [5, 3, hom53]]);;
-Error, Digraphs: AsSemigroup usage,
-the third argument must be a list of triples [i, j, hom] of length equal to th\
-e number of edges in the reflexive transitive reduction of the second argument\
-, where [i, j] is an edge in the reflex transitive reduction and hom is a grou\
-p homomorphism from group i to group j,
+Error, the third argument must be a list of triples [i, j, hom] of length equa\
+l to the number of edges in the reflexive transitive reduction of the second a\
+rgument, where [i, j] is an edge in the reflex transitive reduction and hom is\
+ a group homomorphism from group i to group j,
 gap> T := AsSemigroup(IsPartialPermSemigroup, gr4, [G1, G2, G3, G4, G5],
 > [[-2, 1, hom21],
 >  [3, 1, hom31],
 >  [4, 1, hom41],
 >  [5, 2, hom52],
 >  [5, 3, hom53]]);;
-Error, Digraphs: AsSemigroup usage,
-the third argument must be a list of triples [i, j, hom] of length equal to th\
-e number of edges in the reflexive transitive reduction of the second argument\
-, where [i, j] is an edge in the reflex transitive reduction and hom is a grou\
-p homomorphism from group i to group j,
+Error, the third argument must be a list of triples [i, j, hom] of length equa\
+l to the number of edges in the reflexive transitive reduction of the second a\
+rgument, where [i, j] is an edge in the reflex transitive reduction and hom is\
+ a group homomorphism from group i to group j,
 gap> T := AsSemigroup(IsPartialPermSemigroup, gr4, [G1, G2, G3, G4, G5],
 > [[2, -1, hom21],
 >  [3, 1, hom31],
 >  [4, 1, hom41],
 >  [5, 2, hom52],
 >  [5, 3, hom53]]);;
-Error, Digraphs: AsSemigroup usage,
-the third argument must be a list of triples [i, j, hom] of length equal to th\
-e number of edges in the reflexive transitive reduction of the second argument\
-, where [i, j] is an edge in the reflex transitive reduction and hom is a grou\
-p homomorphism from group i to group j,
+Error, the third argument must be a list of triples [i, j, hom] of length equa\
+l to the number of edges in the reflexive transitive reduction of the second a\
+rgument, where [i, j] is an edge in the reflex transitive reduction and hom is\
+ a group homomorphism from group i to group j,
 gap> T := AsSemigroup(IsPartialPermSemigroup, gr4, [G1, G2, G3, G4, G5],
 > [[2, 1, sgn], [3, 1, hom31], [4, 1, hom41], [5, 2, hom52], [5, 3, hom53]]);;
-Error, Digraphs: AsSemigroup usage,
-the third argument must be a list of triples [i, j, hom] of length equal to th\
-e number of edges in the reflexive transitive reduction of the second argument\
-, where [i, j] is an edge in the reflex transitive reduction and hom is a grou\
-p homomorphism from group i to group j,
+Error, the third argument must be a list of triples [i, j, hom] of length equa\
+l to the number of edges in the reflexive transitive reduction of the second a\
+rgument, where [i, j] is an edge in the reflex transitive reduction and hom is\
+ a group homomorphism from group i to group j,
 gap> T := AsSemigroup(IsPartialPermSemigroup, gr4, [G1, G2, G3, G4, G5],
 > [[2, 1, sgn], [3, 1, hom31], [4, 1, hom41], [5, 2, hom52], [4, 1, hom53]]);;
-Error, Digraphs: AsSemigroup usage,
-the third argument must be a list of triples [i, j, hom] of length equal to th\
-e number of edges in the reflexive transitive reduction of the second argument\
-, where [i, j] is an edge in the reflex transitive reduction and hom is a grou\
-p homomorphism from group i to group j,
+Error, the third argument must be a list of triples [i, j, hom] of length equa\
+l to the number of edges in the reflexive transitive reduction of the second a\
+rgument, where [i, j] is an edge in the reflex transitive reduction and hom is\
+ a group homomorphism from group i to group j,
 gap> T := AsSemigroup(IsPartialPermSemigroup, gr4, [G1, G2, G3, G4, G5],
 > [[2, 1, sgn], [3, 1, hom31], [4, 1, hom41], [5, 2, hom52], [5, 2, hom53]]);;
-Error, Digraphs: AsSemigroup usage,
-the third argument must be a list of triples [i, j, hom] of length equal to th\
-e number of edges in the reflexive transitive reduction of the second argument\
-, where [i, j] is an edge in the reflex transitive reduction and hom is a grou\
-p homomorphism from group i to group j,
+Error, the third argument must be a list of triples [i, j, hom] of length equa\
+l to the number of edges in the reflexive transitive reduction of the second a\
+rgument, where [i, j] is an edge in the reflex transitive reduction and hom is\
+ a group homomorphism from group i to group j,
 gap> T := AsSemigroup(IsPartialPermSemigroup, gr4, [G1, G2, G3, G4, G5],
 > [[2, 1, hom21], [3, 1, hom31], [4, 1, hom41], [5, 2, hom52], [5, 2, hom52]]);;
-Error, Digraphs: AsSemigroup usage,
-the fourth argument must contain a triple [i, j, hom] for each edge [i, j] in \
-the reflexive transitive reduction of the second argument,
+Error, the fourth argument must contain a triple [i, j, hom] for each edge [i,\
+ j] in the reflexive transitive reduction of the second argument,
 
 # MakeImmutable
 gap> D := NullDigraph(IsMutableDigraph, 10);
