@@ -96,8 +96,8 @@
     <#Include Label="KingsGraph">
     <#Include Label="KnightsGraph">
     <#Include Label="StarGraph">
-    <#Include Label="TadpoleDigraph">
-    <#Include Label="BookDigraph">
+    <#Include Label="TadpoleGraph">
+    <#Include Label="BookGraph">
   </Section>
 
 </Chapter>

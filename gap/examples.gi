@@ -678,7 +678,7 @@ InstallMethod(BananaTree, "for a function and two positive integers",
 [IsFunction, IsPosInt, IsPosInt],
 {filt, m, n} -> BananaTreeCons(filt, m, n));
 
-InstallMethod(TadpoleDigraphCons,
+InstallMethod(TadpoleGraphCons,
 "for IsMutableDigraph and two positive integers",
 [IsMutableDigraph, IsPosInt, IsPosInt],
 function(filt, m, n)
@@ -693,25 +693,25 @@ function(filt, m, n)
   return graph;
 end);
 
-InstallMethod(TadpoleDigraph, "for a function and two positive integers",
+InstallMethod(TadpoleGraph, "for a function and two positive integers",
 [IsFunction, IsPosInt, IsPosInt],
-TadpoleDigraphCons);
+TadpoleGraphCons);
 
-InstallMethod(TadpoleDigraph, "for two positive integers", [IsPosInt, IsPosInt],
-{m, n} -> TadpoleDigraphCons(IsImmutableDigraph, m, n));
+InstallMethod(TadpoleGraph, "for two positive integers", [IsPosInt, IsPosInt],
+{m, n} -> TadpoleGraphCons(IsImmutableDigraph, m, n));
 
-InstallMethod(TadpoleDigraphCons,
+InstallMethod(TadpoleGraphCons,
 "for IsImmutableDigraph and two positive integers",
 [IsImmutableDigraph, IsPosInt, IsPosInt],
 function(filt, m, n)
   local D;
-  D := MakeImmutable(TadpoleDigraph(IsMutableDigraph, m, n));
+  D := MakeImmutable(TadpoleGraph(IsMutableDigraph, m, n));
   SetIsMultiDigraph(D, false);
   SetIsSymmetricDigraph(D, true);
   return D;
 end);
 
-InstallMethod(BookDigraphCons,
+InstallMethod(BookGraphCons,
 "for IsMutableDigraph and one positive integer",
 [IsMutableDigraph, IsPosInt],
 function(filt, m)
@@ -720,19 +720,19 @@ function(filt, m)
   return DigraphCartesianProduct(book, StarGraph(IsMutable, m + 1));
 end);
 
-InstallMethod(BookDigraph, "for a function and one positive integer",
+InstallMethod(BookGraph, "for a function and one positive integer",
 [IsFunction, IsPosInt],
-BookDigraphCons);
+BookGraphCons);
 
-InstallMethod(BookDigraph, "for one positive integer", [IsPosInt],
-{m} -> BookDigraphCons(IsImmutableDigraph, m));
+InstallMethod(BookGraph, "for one positive integer", [IsPosInt],
+{m} -> BookGraphCons(IsImmutableDigraph, m));
 
-InstallMethod(BookDigraphCons,
+InstallMethod(BookGraphCons,
 "for IsImmutableDigraph and one positive integer",
 [IsImmutableDigraph, IsPosInt],
 function(filt, m)
   local D;
-  D := MakeImmutable(BookDigraph(IsMutableDigraph, m));
+  D := MakeImmutable(BookGraph(IsMutableDigraph, m));
   SetIsMultiDigraph(D, false);
   SetIsSymmetricDigraph(D, true);
   SetIsBipartiteDigraph(D, true);
