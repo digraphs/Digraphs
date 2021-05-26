@@ -67,9 +67,9 @@ DeclareConstructor("TriangularGridGraphCons", [IsDigraph, IsPosInt, IsPosInt]);
 DeclareOperation("TriangularGridGraph", [IsPosInt, IsPosInt]);
 DeclareOperation("TriangularGridGraph", [IsFunction, IsPosInt, IsPosInt]);
 
-DeclareConstructor("StarDigraphCons", [IsDigraph, IsPosInt]);
-DeclareOperation("StarDigraph", [IsPosInt]);
-DeclareOperation("StarDigraph", [IsFunction, IsPosInt]);
+DeclareConstructor("StarGraphCons", [IsDigraph, IsPosInt]);
+DeclareOperation("StarGraph", [IsPosInt]);
+DeclareOperation("StarGraph", [IsFunction, IsPosInt]);
 
 DeclareConstructor("KnightsGraphCons", [IsDigraph, IsPosInt, IsPosInt]);
 DeclareOperation("KnightsGraph", [IsPosInt, IsPosInt]);

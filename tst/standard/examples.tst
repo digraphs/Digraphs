@@ -288,18 +288,18 @@ gap> TriangularGridGraph(3, 1);
 <immutable connected bipartite symmetric digraph with bicomponent sizes 2 and \
 1>
 
-# StarDigraph
-gap> StarDigraph(IsMutable, 10);
+# StarGraph
+gap> StarGraph(IsMutable, 10);
 <mutable digraph with 10 vertices, 18 edges>
-gap> StarDigraph(IsImmutableDigraph, 10);
+gap> StarGraph(IsImmutableDigraph, 10);
 <immutable complete bipartite digraph with bicomponent sizes 1 and 9>
-gap> StarDigraph(3);
+gap> StarGraph(3);
 <immutable complete bipartite digraph with bicomponent sizes 1 and 2>
-gap> StarDigraph(1);
+gap> StarGraph(1);
 <immutable empty digraph with 1 vertex>
-gap> IsSymmetricDigraph(StarDigraph(3));
+gap> IsSymmetricDigraph(StarGraph(3));
 true
-gap> IsMultiDigraph(StarDigraph(3));
+gap> IsMultiDigraph(StarGraph(3));
 false
 
 #  Knight's Graph

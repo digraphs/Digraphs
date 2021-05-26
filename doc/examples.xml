@@ -493,9 +493,9 @@ gap> TriangularGridGraph(IsMutable, 3, 3);
 </ManSection>
 <#/GAPDoc>
 
-<#GAPDoc Label="StarDigraph">
+<#GAPDoc Label="StarGraph">
 <ManSection>
-  <Oper Name="StarDigraph" Arg="[filt, ]k"/>
+  <Oper Name="StarGraph" Arg="[filt, ]k"/>
   <Returns>A digraph.</Returns>
   <Description>
     If <A>k</A> is a positive integer, then this operation returns the
@@ -516,13 +516,13 @@ gap> TriangularGridGraph(IsMutable, 3, 3);
     If the optional first argument <A>filt</A> is not present, then <Ref
       Filt="IsImmutableDigraph"/> is used by default.<P/>
     <Example><![CDATA[
-gap> StarDigraph(IsMutable, 10);
+gap> StarGraph(IsMutable, 10);
 <mutable digraph with 10 vertices, 18 edges>
-gap> StarDigraph(5);
+gap> StarGraph(5);
 <immutable complete bipartite digraph with bicomponent sizes 1 and 4>
-gap> IsSymmetricDigraph(StarDigraph(3));
+gap> IsSymmetricDigraph(StarGraph(3));
 true
-gap> IsUndirectedTree(StarDigraph(3));
+gap> IsUndirectedTree(StarGraph(3));
 true
 ]]></Example>
   </Description>
@@ -654,7 +654,7 @@ ent sizes 5 and 5>
     If the optional first argument <A>filt</A> is not present, then <Ref
       Filt="IsImmutableDigraph"/> is used by default.<P/>
 
-    See also <Ref Oper="StarDigraph"/> and <Ref Prop="IsUndirectedTree"/>.
+    See also <Ref Oper="StarGraph"/> and <Ref Prop="IsUndirectedTree"/>.
 <Example><![CDATA[
 gap> D := BananaTree(2, 4);
 <immutable undirected tree digraph with 9 vertices>
@@ -716,7 +716,7 @@ true
     For more details on the Book digraph please refer to <URL>https://mathworld.wolfram.com/BookGraph.html</URL>.<P/>
 
     See <Ref Func="DigraphCartesianProduct" Label="for a positive number of digraphs"/>,
-    <Ref Oper="CompleteDigraph"/>, and <Ref Oper="StarDigraph"/>. <P/>
+    <Ref Oper="CompleteDigraph"/>, and <Ref Oper="StarGraph"/>. <P/>
 
     If the optional first argument <A>filt</A> is present, then this should
     specify the category or representation the digraph being created will
