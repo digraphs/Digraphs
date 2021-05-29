@@ -34,7 +34,7 @@ AC_PREFIX_DEFAULT('${abs_top_builddir}/../../bin/')
 dnl ##
 dnl ## Set the language
 dnl ##
-AC_PROG_CC_C99
+AC_PROG_CC
 AC_PROG_CXX
 AC_LANG([C++])
 
@@ -134,7 +134,6 @@ AS_IF([test "x$with_intrinsics" == "xno" ],
 
 AS_IF([test "x$with_intrinsics" != "xno"],
       [AX_CHECK_COMPILE_FLAG(-march=native, AX_APPEND_FLAG(-march=native))
-       AX_CHECK_COMPILE_FLAG(-mpopcnt, AX_APPEND_FLAG(-mpopcnt))
       ])
 
 dnl compiler builtins
