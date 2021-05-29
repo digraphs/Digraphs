@@ -1065,7 +1065,7 @@ function(D)
     data.out[data.count] := record.child;
   end;
   for i in DigraphVertices(D) do
-    if record.preorder[i] <> -1 then
+    if not IsBound(record.preorder[i]) then
       continue;
     fi;
     ExecuteDFS(record, data, i, DFSDefault,

@@ -32,16 +32,16 @@ Obj ExecuteDFS(Obj self, Obj args) {
   Obj AncestorFunc  = ELM_PLIST(args, 6);
   Obj CrossFunc     = ELM_PLIST(args, 7);
 
-  DIGRAPHS_ASSERT(NARG_FUNC(PreorderFunc) == 2);
-  DIGRAPHS_ASSERT(IS_FUNC(AncestorFunc));
-  DIGRAPHS_ASSERT(NARG_FUNC(AncestorFunc) == 2);
-  DIGRAPHS_ASSERT(IS_FUNC(PostOrderFunc));
-  DIGRAPHS_ASSERT(NARG_FUNC(PostOrderFunc) == 2);
-  DIGRAPHS_ASSERT(IS_FUNC(PreorderFunc));
   DIGRAPHS_ASSERT(IS_PREC(record));
   DIGRAPHS_ASSERT(IS_INTOBJ(start));
+  // DIGRAPHS_ASSERT(NARG_FUNC(PreorderFunc) == 2);
+  DIGRAPHS_ASSERT(IS_FUNC(PreorderFunc));
+  DIGRAPHS_ASSERT(IS_FUNC(PostOrderFunc));
+  // DIGRAPHS_ASSERT(NARG_FUNC(PostOrderFunc) == 2);
+  DIGRAPHS_ASSERT(IS_FUNC(AncestorFunc));
+  // DIGRAPHS_ASSERT(NARG_FUNC(AncestorFunc) == 2);
   DIGRAPHS_ASSERT(IS_FUNC(CrossFunc));
-  DIGRAPHS_ASSERT(NARG_FUNC(CrossFunc) == 2);
+  // DIGRAPHS_ASSERT(NARG_FUNC(CrossFunc) == 2);
 
   Obj D = ElmPRec(record, RNamName("graph"));
   Int N = DigraphNrVertices(D);
@@ -51,7 +51,7 @@ Obj ExecuteDFS(Obj self, Obj args) {
         "the third argument <start> must be a vertex in your graph,", 0L, 0L);
   }
   Int top   = 0;
-  Obj stack = NEW_PLIST(T_PLIST_CYC, N);
+  Obj stack = NEW_PLIST(T_PLIST_CYC, 0);
   AssPlist(stack, ++top, start);
 
   UInt preorder_num  = 0;
@@ -62,12 +62,14 @@ Obj ExecuteDFS(Obj self, Obj args) {
   Obj parent    = ElmPRec(record, RNamName("parent"));
   Obj postorder = ElmPRec(record, RNamName("postorder"));
   Obj preorder  = ElmPRec(record, RNamName("preorder"));
+  Obj edge      = ElmPRec(record, RNamName("edge"));
 
-  DIGRAPHS_ASSERT(LEN_PLIST(parent) == N);
-  DIGRAPHS_ASSERT(LEN_PLIST(postorder) == N);
-  DIGRAPHS_ASSERT(LEN_PLIST(preorder) == N);
+  DIGRAPHS_ASSERT(LEN_PLIST(parent) == 1);
+  DIGRAPHS_ASSERT(LEN_PLIST(postorder) == 1);
+  DIGRAPHS_ASSERT(LEN_PLIST(preorder) == 1);
+  DIGRAPHS_ASSERT(LEN_PLIST(edge) == 1);
 
-  SET_ELM_PLIST(parent, INT_INTOBJ(start), start);
+  AssPlist(parent, INT_INTOBJ(start), start);
 
   Obj neighbors = FuncOutNeighbours(self, D);
   DIGRAPHS_ASSERT(IS_PLIST(neighbors));
@@ -77,6 +79,9 @@ Obj ExecuteDFS(Obj self, Obj args) {
   Int RNamStop    = RNamName("stop");
 
   while (top > 0) {
+    if (ElmPRec(record, RNamStop) == True) {
+      break;
+    }
     current = INT_INTOBJ(ELM_PLIST(stack, top--));
     DIGRAPHS_ASSERT(current != 0);
     if (current < 0) {
@@ -84,15 +89,17 @@ Obj ExecuteDFS(Obj self, Obj args) {
       AssPRec(record, RNamChild, INTOBJ_INT(child));
       AssPRec(record, RNamCurrent, ELM_PLIST(parent, child));
       CALL_2ARGS(PostOrderFunc, record, data);
-      SET_ELM_PLIST(postorder, child, INTOBJ_INT(++postorder_num));
+      AssPlist(postorder, child, INTOBJ_INT(++postorder_num));
       CHANGED_BAG(record);
       continue;
-    } else if (INT_INTOBJ(ELM_PLIST(preorder, current)) > 0) {
+    } else if (current <= LEN_PLIST(preorder)
+               && ELM_PLIST(preorder, current) != 0
+               && ELM_PLIST(preorder, current) != Fail) {
       continue;
     } else {
       AssPRec(record, RNamCurrent, INTOBJ_INT(current));
       CALL_2ARGS(PreorderFunc, record, data);
-      SET_ELM_PLIST(preorder, current, INTOBJ_INT(++preorder_num));
+      AssPlist(preorder, current, INTOBJ_INT(++preorder_num));
       CHANGED_BAG(record);
       AssPlist(stack, ++top, INTOBJ_INT(-1 * current));
     }
@@ -105,11 +112,15 @@ Obj ExecuteDFS(Obj self, Obj args) {
     for (UInt j = 0; j < LEN_LIST(succ); ++j) {
       UInt v = INT_INTOBJ(ELM_LIST(succ, LEN_LIST(succ) - j));
       AssPRec(record, RNamChild, INTOBJ_INT(v));
-      if (INT_INTOBJ(ELM_PLIST(preorder, v)) == -1) {
-        SET_ELM_PLIST(parent, v, INTOBJ_INT(current));
+      if (v > LEN_PLIST(preorder) || ELM_PLIST(preorder, v) == 0
+          || ELM_PLIST(preorder, v) == Fail) {
+        AssPlist(parent, v, INTOBJ_INT(current));
+        AssPlist(edge, v, INTOBJ_INT(LEN_LIST(succ) - j));
         CHANGED_BAG(record);
         AssPlist(stack, ++top, INTOBJ_INT(v));
-      } else if (INT_INTOBJ(ELM_PLIST(postorder, v)) == -1) {
+      } else if (current > LEN_PLIST(preorder)
+                 || ELM_PLIST(preorder, current) != 0
+                 || ELM_PLIST(preorder, current) != Fail) {
         CALL_2ARGS(AncestorFunc, record, data);
       } else if (INT_INTOBJ(ELM_PLIST(preorder, v))
                  < INT_INTOBJ(ELM_PLIST(preorder, current))) {

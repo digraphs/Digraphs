@@ -1680,10 +1680,10 @@ end);
 InstallMethod(DigraphPath, "for a digraph by out-neighbours and two pos ints",
 [IsDigraphByOutNeighboursRep, IsPosInt, IsPosInt],
 function(D, u, v)
-  local verts, record, out, path_info, PostOrderFunc, AncestorFunc, AddToPath;
+  local N, record, PreOrderFunc, AncestorFunc, nodes, edges, current;
 
-  verts := DigraphVertices(D);
-  if not (u in verts and v in verts) then
+  N := DigraphNrVertices(D);
+  if u > N or v > N then
     ErrorNoReturn("the 2nd and 3rd arguments <u> and <v> must be ",
                   "vertices of the 1st argument <D>,");
   elif IsDigraphEdge(D, u, v) then
@@ -1696,40 +1696,60 @@ function(D, u, v)
       and DigraphConnectedComponents(D).id[u] <>
           DigraphConnectedComponents(D).id[v] then
     return fail;
-  fi;
-  record := NewDFSRecord(D);
-  path_info := Stack();
-  AddToPath := function(current, child)
-    local edge;
-    edge := Position(OutNeighborsOfVertex(D, current), child);
-    Push(path_info, edge);
-    Push(path_info, child);
-  end;
-  AncestorFunc := function(record, data)
-    if u = v and record.child = u and Size(data) = 0 then
-      AddToPath(record.current, record.child);
-      record.preorder[v] := DigraphNrVertices(D) + 1;
-    fi;
-  end;
-  PostOrderFunc := function(record, data)
-    if record.child <> u and
-        record.preorder[record.child] <= record.preorder[v] then
-      AddToPath(record.current, record.child);
-    fi;
-    data;  # to make the linter happy
-  end;
-  ExecuteDFS(record, path_info, u,
-               DFSDefault, PostOrderFunc,
-               AncestorFunc, DFSDefault);
-  if Size(path_info) <= 1 then
+  elif OutDegreeOfVertex(D, u) = 0
+      or (HasInNeighbours(D) and InDegreeOfVertex(D, v) = 0) then
     return fail;
   fi;
-  out := [[u], []];
-  while Size(path_info) <> 0 do
-    Add(out[1], Pop(path_info));
-    Add(out[2], Pop(path_info));
+  record := NewDFSRecord(D);
+  if u <> v then
+    # if v is reachable from u, then u is an ancestor of v, and so at some
+    # point v will be encountered for the first time, and PreOrderFunc will be
+    # called.
+    PreOrderFunc := function(record, data)
+      if record.current = v then
+        record.stop := true;
+      fi;
+      data;  # to make the linter happy
+    end;
+    AncestorFunc := DFSDefault;
+  else
+    # if u is reachable from u, then u will be encountered as an ancestor of
+    # itself, but PreOrderFunc won't be called (because u has already been
+    # discovered).
+    PreOrderFunc := DFSDefault;
+    AncestorFunc := function(record, data)
+      if record.child = v then
+        record.stop := true;
+      fi;
+      data;  # to make the linter happy
+    end;
+  fi;
+  ExecuteDFS(record,
+             fail,
+             u,
+             PreOrderFunc,
+             DFSDefault,
+             AncestorFunc,
+             DFSDefault);
+  if not record.stop then
+    return fail;
+  fi;
+  nodes := [v];
+  edges := [];
+  current := v;
+  if u = v then
+    # Go one back from v to the last node in the tree
+    current := record.current;
+    Add(nodes, current);
+    Add(edges, Position(OutNeighboursOfVertex(D, current), u));
+  fi;
+  # Follow the path from current (which is a descendant of u) back to u
+  while current <> u do
+    Add(edges, record.edge[current]);
+    current := record.parent[current];
+    Add(nodes, current);
   od;
-  return out;
+  return [Reversed(nodes), Reversed(edges)];
 end);
 
 InstallMethod(IsDigraphPath, "for a digraph and list",
@@ -2385,12 +2405,12 @@ function(D, roots)
   end;
 
   ExecuteDFS(record,
-               data,
-               root,
-               PreOrderFunc,
-               DFSDefault,
-               AncestorFunc,
-               DFSDefault);
+             data,
+             root,
+             PreOrderFunc,
+             DFSDefault,
+             AncestorFunc,
+             DFSDefault);
   return data.result;
 end);
 
@@ -2771,9 +2791,10 @@ function(graph)
   record.child := -1;
   record.current := -1;
   record.stop := false;
-  record.parent := ListWithIdenticalEntries(DigraphNrVertices(graph), -1);
-  record.preorder := ListWithIdenticalEntries(DigraphNrVertices(graph), -1);
-  record.postorder := ListWithIdenticalEntries(DigraphNrVertices(graph), -1);
+  record.parent := [fail];
+  record.preorder := [fail];
+  record.postorder := [fail];
+  record.edge := [fail];
   return record;
 end);
 
@@ -2798,8 +2819,9 @@ end);
 InstallGlobalFunction(ExecuteDFS,
 function(record, data, start, PreOrderFunc, PostOrderFunc, AncestorFunc,
          CrossFunc)
-  if not IsEqualSet(RecNames(record), ["stop", "graph", "child", "parent",
-                                    "preorder", "postorder", "current"]) then
+  if not IsEqualSet(RecNames(record),
+                    ["stop", "graph", "child", "parent", "preorder",
+                     "postorder", "current", "edge"]) then
     ErrorNoReturn("the 1st argument <record> must be created with ",
                   "NewDFSRecord,");
   fi;
