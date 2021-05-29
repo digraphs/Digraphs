@@ -14,7 +14,7 @@
 #define DIGRAPHS_SRC_DFS_H_
 
 // GAP headers
-#include "compiled.h"  // for Obj, Int
+#include "gap-includes.h"  // for Obj, Int
 
 Obj ExecuteDFS(Obj self, Obj args);
 

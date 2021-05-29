@@ -17,6 +17,7 @@ PLANARITY_SUITE_DIR = @PLANARITY_SUITE_DIR@
 
 # sources
 KEXT_SOURCES =  src/digraphs.c
+KEXT_SOURCES += src/dfs.c
 KEXT_SOURCES += src/bitarray.c
 KEXT_SOURCES += src/conditions.c
 KEXT_SOURCES += src/homos.c
@@ -26,7 +27,6 @@ KEXT_SOURCES += src/perms.c
 KEXT_SOURCES += src/planar.c
 KEXT_SOURCES += src/schreier-sims.c
 KEXT_SOURCES += src/safemalloc.c
-KEXT_SOURCES += src/dfs.c
 
 ifdef WITH_INCLUDED_BLISS
   KEXT_SOURCES += extern/bliss-0.73/defs.cc

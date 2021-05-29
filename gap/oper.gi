@@ -2791,10 +2791,10 @@ function(graph)
   record.child := -1;
   record.current := -1;
   record.stop := false;
-  record.parent := [fail];
-  record.preorder := [fail];
-  record.postorder := [fail];
-  record.edge := [fail];
+  record.parent := [];
+  record.preorder := [];
+  record.postorder := [];
+  record.edge := [];
   return record;
 end);
 
