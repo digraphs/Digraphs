@@ -68,6 +68,7 @@ Obj ExecuteDFS(Obj self, Obj args) {
   Obj edge      = ElmPRec(record, RNamName("edge"));
 
   // FIXME edge needs to be off by 1, so that the first entry is bound
+  // FIXME use hash maps for parent, postorder, preorder, and edge
 
   DIGRAPHS_ASSERT(LEN_PLIST(parent) == 1);
   DIGRAPHS_ASSERT(LEN_PLIST(postorder) == 1);
