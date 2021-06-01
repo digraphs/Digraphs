@@ -711,12 +711,15 @@ true
   <Oper Name="BookGraph" Arg="[filt, ]m"/>
   <Returns>A digraph.</Returns>
   <Description>
-    The <E>Book digraph</E> is the Cartesian product of a complete digraph with 2 vertices
-    (as the "Book Spine") and the <M><A>m</A>+1</M> star digraph (as the "Pages").
-    For more details on the Book digraph please refer to <URL>https://mathworld.wolfram.com/BookGraph.html</URL>.<P/>
+    The <E>Book digraph</E> is the Cartesian product of a complete digraph with
+    2 vertices (as the "Book Spine") and the <M><A>m</A>+1</M> star digraph (as
+    the "Pages").  For more details on the Book digraph please refer to
+    <URL>https://mathworld.wolfram.com/BookGraph.html</URL>.<P/>
 
-    See <Ref Func="DigraphCartesianProduct" Label="for a positive number of digraphs"/>,
-    <Ref Oper="CompleteDigraph"/>, and <Ref Oper="StarGraph"/>. <P/>
+    See 
+    <Ref Func="DigraphCartesianProduct" Label="for a positive number of digraphs"/>,
+    <Ref Oper="CompleteDigraph"/>, and <Ref Oper="StarGraph"/>.
+    <P/>
 
     If the optional first argument <A>filt</A> is present, then this should
     specify the category or representation the digraph being created will
@@ -739,6 +742,29 @@ gap> IsSymmetricDigraph(BookGraph(24));
 true
 gap> IsBipartiteDigraph(BookGraph(24));
 true
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="BinaryTree">
+<ManSection>
+  <Oper Name="BinaryTree" Arg="[filt, ]m"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    This function returns a binary tree of depth <A>m</A> with <C>2 ^ <A>m</A>
+    - 1</C> vertices. All edges are directed towards the root of the tree.
+    <P/>
+
+    &STANDARD_FILT_TEXT;
+
+    <Example><![CDATA[
+gap> BinaryTree(1);
+<immutable empty digraph with 1 vertex>
+gap> BinaryTree(8);
+<immutable digraph with 255 vertices, 254 edges>
+gap> BinaryTree(IsMutableDigraph, 8);
+<mutable digraph with 255 vertices, 254 edges>
 ]]></Example>
   </Description>
 </ManSection>

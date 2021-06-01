@@ -577,3 +577,18 @@ function(nr, n)
   od;
   return x;
 end);
+
+InstallGlobalFunction(DIGRAPHS_NumberBlist,
+function(blist)
+  local n, nr, i;
+  n := Length(blist);
+  nr := 0;
+  for i in [1 .. n] do
+    if blist[i] then
+      nr := 2 * nr + 1;
+    else
+      nr := 2 * nr;
+    fi;
+  od;
+  return nr + 1;   # to be in [1 .. 2 ^ n]
+end);

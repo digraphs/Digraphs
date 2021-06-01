@@ -24,6 +24,7 @@
      <!ENTITY datastructures "<Alt Not='Text'><URL
        Text='datastructures'>https://github.com/gap-packages/datastructures</URL></Alt><Alt
    Only='Text'><Package>datastructures</Package></Alt>">
+     <!ENTITY STANDARD_FILT_TEXT "If the optional first argument <A>filt</A> is present, then this should specify the category or representation the digraph being created will belong to. For example, if <A>filt</A> is <Ref Filt='IsMutableDigraph'/>, then the digraph being created will be mutable, if <A>filt</A> is <Ref Filt='IsImmutableDigraph'/>, then the digraph will be immutable.  If the optional first argument <A>filt</A> is not present, then <Ref Filt='IsImmutableDigraph'/> is used by default.<P/>">
      <#Include Label="PKGVERSIONDATA">
    ]>
 

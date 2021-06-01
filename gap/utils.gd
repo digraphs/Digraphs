@@ -25,3 +25,4 @@ DeclareGlobalFunction("DigraphsTestStandard");
 DeclareGlobalFunction("DigraphsTestManualExamples");
 
 DeclareGlobalFunction("DIGRAPHS_BlistNumber");
+DeclareGlobalFunction("DIGRAPHS_NumberBlist");
