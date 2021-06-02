@@ -513,6 +513,181 @@ function(D)
 end
 );
 
+BindGlobal("DIGRAPHS_ChromaticNumberZykov",
+function(D)
+  local nr, ZykovReduce, chrom;
+  nr := DigraphNrVertices(D);
+  # Recursive function call
+  ZykovReduce := function(D)
+    local nr, D_contract, adjacent, vertices, v, x, y, x_i, y_i, found, deg;
+    nr := DigraphNrVertices(D);
+    # Update upper bound if possible.
+    chrom := Minimum(nr, chrom);
+    # Leaf nodes are either complete graphs or q-cliques. The chromatic number
+    # is then the smallest q-clique found.
+    if not IsCompleteDigraph(D) and IsEmpty(CliquesFinder(D, fail, [], 1, [],
+                                                          [], false, chrom,
+                                                          true)) then
+      # Get adjacency function
+      adjacent := DigraphAdjacencyFunction(D);
+      # Sort vertices by degree, so that higher degree vertices are picked first
+      vertices := [1 .. nr];
+      deg   := ShallowCopy(OutDegrees(D));
+      SortParallel(deg, vertices, {x, y} -> x > y);
+      # Choose two non-adjacent vertices x, y
+      # This is just done by ascending ordering.
+      found := false;
+      for x_i in [1 .. nr] do
+        x := vertices[x_i];
+        for y_i in [x_i + 1 .. nr] do
+          y := vertices[y_i];
+          if not adjacent(x, y) then
+            found := true;
+            break;
+          fi;
+        od;
+        if found then
+          break;
+        fi;
+      od;
+      Assert(1, x <> y, "x and y must be different");
+      Assert(1, found, "No adjacent vertices");
+      # Colour the vertex contraction.
+      # A contraction of a graph effectively merges two non adjacent vertices
+      # into a single new vertex with the edges merged.
+      # We merge y into x, keeping x.
+      D_contract := DigraphMutableCopy(D);
+      for v in vertices do
+         # Iterate over all vertices that
+         if v = x or v = y then
+           continue;
+         fi;
+         # Add any edge that involves y, but not already x to avoid duplication.
+         if adjacent(v, y) and not adjacent(v, x) then
+            DigraphAddEdge(D_contract, x, v);
+            DigraphAddEdge(D_contract, v, x);
+         fi;
+      od;
+      DigraphRemoveVertex(D_contract, y);
+      ZykovReduce(D_contract);
+      # Colour the edge addition
+      # This just adds symmetric edges between x and y;
+      DigraphAddEdge(D, [x, y]);
+      DigraphAddEdge(D, [y, x]);
+      ZykovReduce(D);
+      # Undo changes to the graph
+      DigraphRemoveEdge(D, [x, y]);
+      DigraphRemoveEdge(D, [y, x]);
+    fi;
+  end;
+  # Algorithm requires an undirected graph.
+  D := DigraphSymmetricClosure(DigraphMutableCopy(D));
+  # Use greedy colouring as an upper bound
+  chrom := RankOfTransformation(DigraphGreedyColouring(D), nr);
+  ZykovReduce(D);
+  return chrom;
+end
+);
+
+BindGlobal("DIGRAPHS_ChromaticNumberChristofides",
+function(D)
+  local nr, I, n, T, b, unprocessed, i, v_without_t, j, u, min_occurences,
+  cur_occurences, chrom, colouring, stack, vertices;
+
+  nr := DigraphNrVertices(D);
+  vertices := List(DigraphVertices(D));
+  # Initialise the required variables.
+  # Calculate all maximal independent sets of D.
+  I := DigraphMaximalIndependentSets(D);
+  # Convert each MIS into a BList
+  I := List(I, i -> BlistList(vertices, i));
+  # Upper bound for chromatic number.
+  chrom := nr;
+  # Set of vertices of D not in the current subgraph at level n.
+  T := ListWithIdenticalEntries(nr, false);
+  # Current search level of the subgraph tree.
+  n := 0;
+  # The maximal independent sets of V \ T at level n.
+  b := [ListWithIdenticalEntries(nr, false)];
+  # Number of unprocessed MIS's of V \ T from level 1 to n
+  unprocessed := ListWithIdenticalEntries(nr, 0);
+  # Would be jth colour class of the chromatic colouring of G.
+  colouring := List([1 .. nr], i -> BlistList(vertices, [i]));
+  # Stores current unprocessed MIS's of V \ T at level 1 to level n
+  stack := [];
+  # Now perform the search.
+  repeat
+    # Step 2
+    if n < chrom then
+      # Step 3
+      # If V = T then we've reached a null subgraph
+      if SizeBlist(T) = nr then
+        chrom := n;
+        SubtractBlist(T, b[n + 1]);
+        for i in [1 .. chrom] do
+          colouring[i] := b[i];
+          # TODO set colouring attribute
+        od;
+      else
+        # Step 4
+        # Compute the maximal independent sets of V \ T
+        v_without_t := DIGRAPHS_MaximalIndependentSetsSubtractedSet(I, T,
+                                                                    infinity);
+        # Step 5
+        # Pick u in V \ T such that u is in the fewest maximal independent sets.
+        u := -1;
+        min_occurences := infinity;
+        for i in vertices do
+          # Skip elements of T.
+          if T[i] then
+            continue;
+          fi;
+          cur_occurences := 0;
+          for j in v_without_t do
+            if j[i] then
+              cur_occurences := cur_occurences + 1;
+            fi;
+          od;
+          if cur_occurences < min_occurences then
+            min_occurences := cur_occurences;
+            u := i;
+          fi;
+        od;
+        Assert(1, u <> -1, "Vertex must be picked");
+        # Remove maximal independent sets not containing u.
+        v_without_t := Filtered(v_without_t, x -> x[u]);
+        # Add these MISs to the stack
+        Append(stack, v_without_t);
+        # Search has moved one level deeper
+        n := n + 1;
+        unprocessed[n] := Length(v_without_t);
+      fi;
+    else
+      # if n >= g then T = T \ b[n]
+      # This exceeds the current best bound, so stop search.
+      SubtractBlist(T, b[n + 1]);
+    fi;
+    # Step 6
+    while n <> 0 do
+      # step 7
+      if unprocessed[n] = 0 then
+        n := n - 1;
+        SubtractBlist(T, b[n + 1]);
+      else
+        # Step 8
+        # take an element from the top of the stack
+        i := Remove(stack);
+        unprocessed[n] := unprocessed[n] - 1;
+        b[n + 1] := i;
+        UniteBlist(T, i);
+        break;
+      fi;
+    od;
+  until n = 0;
+  return chrom;
+end
+);
+
 InstallMethod(ChromaticNumber, "for a digraph by out-neighbours",
 [IsDigraphByOutNeighboursRep],
 function(D)
@@ -536,6 +711,10 @@ function(D)
     return DIGRAPHS_ChromaticNumberLawler(D);
   elif ValueOption("byskov") <> fail then
     return DIGRAPHS_ChromaticNumberByskov(D);
+  elif ValueOption("zykov") <> fail then
+    return DIGRAPHS_ChromaticNumberZykov(D);
+  elif ValueOption("christofides") <> fail then
+    return DIGRAPHS_ChromaticNumberChristofides(D);
   fi;
 
   # The chromatic number of <D> is at least 3 and at most nr
