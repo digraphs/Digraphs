@@ -318,6 +318,14 @@ gap> GeneralisedPetersenGraph(IsMutableDigraph, 9, 4);
     If <A>n</A> is a positive integer then this operation returns
     the <E>Haar graph</E> <M>H(<A>n</A>)</M>. <P/>
 
+    From
+    <URL>https://mathworld.wolfram.com/HaarGraph.html</URL>:
+    <P/>
+
+    <Q>A Haar graph H(<A>n</A>) is a bipartite regular vertex-transitive graph indexed by a 
+    positive integer and obtained by a simple binary encoding of cyclically adjacent 
+    vertices. Haar graphs may be connected or disconnected. </Q><P/>
+
     The number of vertices in a given haar graph is equal to the number of digits 
     required to represent the indexing integer <A>n</A> in binary. The <M>i</M>th vertex in the 
     first column is connected to the <M>j</M>th vertex in the second column if the 
