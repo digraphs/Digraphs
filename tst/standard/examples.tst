@@ -381,6 +381,10 @@ true
 gap> IsBipartiteDigraph(BookGraph(32));
 true
 
+# BinaryTree
+gap> BinaryTree(4);
+<immutable digraph with 15 vertices, 14 edges>
+
 #
 gap> DIGRAPHS_StopTest();
 gap> STOP_TEST("Digraphs package: standard/examples.tst", 0);

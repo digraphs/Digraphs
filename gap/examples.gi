@@ -720,15 +720,14 @@ function(filt, m)
   return DigraphCartesianProduct(book, StarGraph(IsMutable, m + 1));
 end);
 
-InstallMethod(BookGraph, "for a function and one positive integer",
-[IsFunction, IsPosInt],
-BookGraphCons);
+InstallMethod(BookGraph, "for a function and a positive integer",
+[IsFunction, IsPosInt], BookGraphCons);
 
-InstallMethod(BookGraph, "for one positive integer", [IsPosInt],
-{m} -> BookGraphCons(IsImmutableDigraph, m));
+InstallMethod(BookGraph, "for a positive integer", [IsPosInt],
+m -> BookGraphCons(IsImmutableDigraph, m));
 
 InstallMethod(BookGraphCons,
-"for IsImmutableDigraph and one positive integer",
+"for IsImmutableDigraph and a positive integer",
 [IsImmutableDigraph, IsPosInt],
 function(filt, m)
   local D;
@@ -738,3 +737,34 @@ function(filt, m)
   SetIsBipartiteDigraph(D, true);
   return D;
 end);
+
+InstallMethod(BinaryTreeCons,
+"for IsMutableDigraph and positive integer",
+[IsMutableDigraph, IsPosInt],
+function(filt, depth)
+  local D, x, i, j;
+  D := [[]];
+  for i in [1 .. depth - 1] do
+    for j in [1 .. 2 ^ i] do
+      x := DIGRAPHS_BlistNumber(j, i){[2 .. i]};
+      Add(D, [DIGRAPHS_NumberBlist(x) + (2 ^ (i - 1)) - 1]);
+    od;
+  od;
+  return Digraph(IsMutableDigraph, D);
+end);
+
+InstallMethod(BinaryTreeCons,
+"for IsImmutableDigraph and positive integer",
+[IsImmutableDigraph, IsPosInt],
+function(filt, depth)
+  local D;
+  D := BinaryTreeCons(IsMutableDigraph, depth);
+  MakeImmutable(D);
+  return D;
+end);
+
+InstallMethod(BinaryTree, "for a positive integer", [IsPosInt],
+depth -> BinaryTreeCons(IsImmutableDigraph, depth));
+
+InstallMethod(BinaryTree, "for a function and a positive integer",
+[IsFunction, IsPosInt], BinaryTreeCons);
