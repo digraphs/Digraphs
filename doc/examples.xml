@@ -753,9 +753,13 @@ true
   <Returns>A digraph.</Returns>
   <Description>
     This function returns a binary tree of depth <A>m</A> with <C>2 ^ <A>m</A>
-    - 1</C> vertices. All edges are directed towards the root of the tree.
+    - 1</C> vertices. All edges are directed towards the root of the tree,
+    which is vertex <C>1</C>.
     <P/>
-
+    Note that <C>BinaryTree(<A>m</A>)</C> is the induced subdigraph of
+    <C>BinaryTree(<A>m</A>+1)</C> on the vertices <C>[1..2^(<A>m</A>-1)]</C>.
+    <P/>
+    
     &STANDARD_FILT_TEXT;
 
     <Example><![CDATA[
