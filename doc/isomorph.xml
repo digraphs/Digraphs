@@ -68,8 +68,7 @@
     See also <Ref Func="DigraphsUseBliss"/>, and <Ref Func="DigraphsUseNauty"/>.
     <P/>
 
-    If the argument <A>digraph</A> is mutable, then the return value of
-    this attribute is recomputed every time it is called. 
+    &MUTABLE_RECOMPUTED_ATTR;
 
     <Example><![CDATA[
 gap> G := BlissAutomorphismGroup(JohnsonDigraph(5, 2));;
@@ -102,8 +101,7 @@ gap> Size(G);
     See also <Ref Func="DigraphsUseBliss"/>, and <Ref Func="DigraphsUseNauty"/>.
     <P/>
 
-    If the argument <A>digraph</A> is mutable, then the return value of
-    this attribute is recomputed every time it is called. 
+    &MUTABLE_RECOMPUTED_ATTR;
 
     <Log><![CDATA[
 gap> NautyAutomorphismGroup(JohnsonDigraph(5, 2));
@@ -143,8 +141,7 @@ Group([ (3,4)(6,7)(8,9), (2,3)(5,6)(9,10), (2,5)(3,6)(4,7),
     and <Ref Func="DigraphsUseNauty"/>.
     <P/>
 
-    If the argument <A>digraph</A> is mutable, then the return value of
-    this attribute is recomputed every time it is called. 
+    &MUTABLE_RECOMPUTED_ATTR;
 
     <Example><![CDATA[
 gap> johnson := DigraphFromGraph6String("E}lw");
@@ -735,8 +732,7 @@ fail]]></Example>
       Attr="NautyCanonicalLabelling" Label="for a digraph"/>.
     <P/>
 
-    If the argument <A>digraph</A> is mutable, then the return value of
-    this attribute is recomputed every time it is called. 
+    &MUTABLE_RECOMPUTED_ATTR;
 
     <Example><![CDATA[
 gap> digraph := Digraph([[1], [2, 3], [3], [1, 2, 3]]);
