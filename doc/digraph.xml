@@ -368,11 +368,12 @@ gap> DigraphByEdges(IsMutableDigraph,
   <C>[1 .. Length(<A>list</A>)]</C>, then this function returns the
   digraph with vertices <M>E^0=</M><C>[1 .. Length(<A>list</A>)]</C>, and
   edges corresponding to the entries of <A>list</A>. More precisely, there is an
-  edge with source vertex <C>i</C> and range vertex <C>j</C> if <C>i</C> is list
-  <C><A>list</A>[j]</C>. <P/>
+  edge with source vertex <C>i</C> and range vertex <C>j</C> if <C>i</C> is
+  in the list <C><A>list</A>[j]</C>. <P/>
 
-  If <C>i</C> occurs list <C><A>list</A>[j]</C> with multiplicity <C>k</C>,
-  then there are <C>k</C> multiple edges from <C>i</C> to <C>j</C>. <P/>
+  If <C>i</C> occurs in the list <C><A>list</A>[j]</C> with multiplicity
+  <C>k</C>, then there are <C>k</C> multiple edges from <C>i</C> to <C>j</C>.
+  <P/>
 
   See <Ref Attr="InNeighbours"/>.
 
