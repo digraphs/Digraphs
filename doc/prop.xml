@@ -1,7 +1,7 @@
 #############################################################################
 ##
 #W  prop.xml
-#Y  Copyright (C) 2014-19                               James D. Mitchell
+#Y  Copyright (C) 2014-21                               James D. Mitchell
 ##
 ##  Licensing information can be found in the README file of this package.
 ##
@@ -54,7 +54,7 @@ true]]></Example>
 
     &MUTABLE_RECOMPUTED_PROP;
 
-<Example><![CDATA[
+    <Example><![CDATA[
 gap> D := Digraph([[1, 2], [2]]);
 <immutable digraph with 2 vertices, 3 edges>
 gap> DigraphEdges(D);
@@ -258,7 +258,7 @@ false]]></Example>
 
     &MUTABLE_RECOMPUTED_PROP;
 
-<Example><![CDATA[
+    <Example><![CDATA[
 gap> IsBiconnectedDigraph(Digraph([[1, 3], [2, 3], [3]]));
 false
 gap> IsBiconnectedDigraph(CycleDigraph(5));
@@ -468,7 +468,7 @@ false
 
     &MUTABLE_RECOMPUTED_PROP;
 
-<Example><![CDATA[
+    <Example><![CDATA[
 gap> D := Digraph([[1, 3], [2, 3], [3]]);
 <immutable digraph with 3 vertices, 5 edges>
 gap> IsChainDigraph(D);
@@ -509,7 +509,7 @@ true]]></Example>
 
     &MUTABLE_RECOMPUTED_PROP;
 
-<Example><![CDATA[
+    <Example><![CDATA[
 gap> D := Digraph([[1, 3], [2, 3], [3]]);
 <immutable digraph with 3 vertices, 5 edges>
 gap> IsCycleDigraph(D);
@@ -1203,7 +1203,7 @@ true
 
     &MUTABLE_RECOMPUTED_PROP;
 
-<Example><![CDATA[
+    <Example><![CDATA[
 gap> D := Digraph([[1], [2, 3], [2, 3]]);
 <immutable digraph with 3 vertices, 5 edges>
 gap> IsPreorderDigraph(D);
@@ -1240,7 +1240,7 @@ false
 
     &MUTABLE_RECOMPUTED_PROP;
 
-<Example><![CDATA[
+    <Example><![CDATA[
 gap> D := Digraph([[1, 3], [2, 3], [3]]);
 <immutable digraph with 3 vertices, 5 edges>
 gap> IsPartialOrderDigraph(D);
@@ -1271,7 +1271,7 @@ true
 
     &MUTABLE_RECOMPUTED_PROP;
 
-<Example><![CDATA[
+    <Example><![CDATA[
 gap> D := Digraph([[1, 3], [2], [1, 3]]);
 <immutable digraph with 3 vertices, 5 edges>
 gap> IsEquivalenceDigraph(D);

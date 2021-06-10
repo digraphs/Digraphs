@@ -247,7 +247,7 @@ gap> PetersenGraph(IsMutableDigraph);
 
     &STANDARD_FILT_TEXT;
 
-<Example><![CDATA[
+    <Example><![CDATA[
 gap> GeneralisedPetersenGraph(7, 2);
 <immutable symmetric digraph with 14 vertices, 42 edges>
 gap> GeneralisedPetersenGraph(40, 1);
@@ -280,7 +280,7 @@ gap> GeneralisedPetersenGraph(IsMutableDigraph, 9, 4);
 
     &STANDARD_FILT_TEXT;
 
-<Example><![CDATA[
+    <Example><![CDATA[
 gap> D := LollipopGraph(5, 3);
 <immutable connected symmetric digraph with 8 vertices, 26 edges>
 gap> CliqueNumber(D);
@@ -316,13 +316,13 @@ gap> LollipopGraph(IsMutableDigraph, 3, 8);
     share an edge or a corner. It can also be constructed as the strong product 
     of two path graphs.</Q>
     <P/>
-    
+
     In particular, the <C><A>n</A> * <A>k</A></C>  vertices can be arranged
     into an <A>n</A> by <A>k</A> grid such that two vertices are adjacent in
     the digraph if and only if they are orthogonally or diagonally adjacent in the grid.
     The correspondence between vertices and grid positions is given by
     <Ref Oper="DigraphVertexLabels"/>.  <P/>
-    
+
     See also <Ref Oper="SquareGridGraph"/> and
     <Ref Oper="TriangularGridGraph"/>. <P/>
 
@@ -430,7 +430,7 @@ gap> TriangularGridGraph(IsMutable, 3, 3);
     vertices.  If <A>k</A> is at least <C>2</C>, then this is the complete
     bipartite digraph with bicomponents
     <C>[1]</C> and <C>[2 .. <A>k</A>]</C>. <P/>
-    
+
     See <Ref Prop="IsUndirectedTree"/>, <Ref Prop="IsCompleteBipartiteDigraph"/>,
     and <Ref Attr="DigraphBicomponents"/>. <P/>
 
@@ -472,7 +472,7 @@ true
 
     &STANDARD_FILT_TEXT;
 
-<Example><![CDATA[
+    <Example><![CDATA[
 gap> D := KnightsGraph(8, 8);
 <immutable connected symmetric digraph with 64 vertices, 336 edges>
 gap> IsConnectedDigraph(D);
@@ -508,7 +508,7 @@ gap> KnightsGraph(IsMutable, 3, 9);
 
     &STANDARD_FILT_TEXT;
 
-<Example><![CDATA[
+    <Example><![CDATA[
 gap> HaarGraph(3);
 <immutable bipartite vertex-transitive symmetric digraph with bicompon\
 ent sizes 2 and 2>
@@ -538,7 +538,7 @@ ent sizes 5 and 5>
     connecting one leaf of each of <A>n</A> copies of an <A>k</A>-star graph
     with a single root vertex that is distinct from all the stars.</Q>
     <P/>
-    
+
     Specifically, in the resulting digraph, vertex <C>1</C> is the 'root',
     and for each <C>m</C> in <C>[1 .. <A>k</A>]</C>,
     the <C>m</C>th star is on the vertices
@@ -678,7 +678,7 @@ true
     Note that <C>BinaryTree(<A>m</A>)</C> is the induced subdigraph of
     <C>BinaryTree(<A>m</A>+1)</C> on the vertices <C>[1..2^(<A>m</A>-1)]</C>.
     <P/>
-    
+
     &STANDARD_FILT_TEXT;
 
     <Example><![CDATA[
