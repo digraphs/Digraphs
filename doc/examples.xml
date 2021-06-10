@@ -1,7 +1,7 @@
 #############################################################################
 ##
 #W  examples.xml
-#Y  Copyright (C) 2019                              Murray T. Whyte
+#Y  Copyright (C) 2019-21                           Murray T. Whyte
 ##
 ##  Licensing information can be found in the README file of this package.
 ##
@@ -16,18 +16,11 @@
   <Description>
     If <A>n</A> is a non-negative integer, this function returns the
     <E>empty</E> or <E>null</E> digraph with <A>n</A> vertices. An empty
-    digraph is one with no edges.
-    <P/>
-      
-    If the optional first argument <A>filt</A> is present, then this should
-    specify the category or representation the digraph being created will
-    belong to. For example, if <A>filt</A> is <Ref Filt="IsMutableDigraph"/>,
-    then the digraph being created will be mutable, if <A>filt</A> is <Ref
-    Filt="IsImmutableDigraph"/>, then the digraph will be immutable. 
-    If the optional first argument <A>filt</A> is not present, then <Ref
-      Filt="IsImmutableDigraph"/> is used by default.<P/>
+    digraph is one with no edges. <P/>
 
-    <C>NullDigraph</C> is a synonym for <C>EmptyDigraph</C>.
+    <C>NullDigraph</C> is a synonym for <C>EmptyDigraph</C>. <P/>
+
+    &STANDARD_FILT_TEXT;
 
     <Example><![CDATA[
 gap> EmptyDigraph(20);
@@ -56,13 +49,7 @@ gap> EmptyDigraph(IsMutableDigraph, 10);
     <A>n</A> (containing the vertices <C>[m + 1 .. m + n]</C>).
     <P/>
 
-    If the optional first argument <A>filt</A> is present, then this should
-    specify the category or representation the digraph being created will
-    belong to. For example, if <A>filt</A> is <Ref Filt="IsMutableDigraph"/>,
-    then the digraph being created will be mutable, if <A>filt</A> is <Ref
-    Filt="IsImmutableDigraph"/>, then the digraph will be immutable. 
-    If the optional first argument <A>filt</A> is not present, then <Ref
-      Filt="IsImmutableDigraph"/> is used by default.
+    &STANDARD_FILT_TEXT;
 
     <Example><![CDATA[
 gap> CompleteBipartiteDigraph(2, 3);
@@ -86,13 +73,8 @@ gap> CompleteBipartiteDigraph(IsMutableDigraph, 3, 2);
       same independent set.
       <P/>
 
-      If the optional first argument <A>filt</A> is present, then this should
-      specify the category or representation the digraph being created will
-      belong to. For example, if <A>filt</A> is <Ref Filt="IsMutableDigraph"/>,
-      then the digraph being created will be mutable, if <A>filt</A> is <Ref
-      Filt="IsImmutableDigraph"/>, then the digraph will be immutable. 
-      If the optional first argument <A>filt</A> is not present, then <Ref
-        Filt="IsImmutableDigraph"/> is used by default.
+      &STANDARD_FILT_TEXT;
+
       <Example><![CDATA[
 gap> CompleteMultipartiteDigraph([5, 4, 2]);
 <immutable complete multipartite digraph with 11 vertices, 76 edges>
@@ -111,13 +93,8 @@ gap> CompleteMultipartiteDigraph(IsMutableDigraph, [5, 4, 2]);
     If <A>n</A> is a non-negative integer, this function returns the complete
     digraph with <A>n</A> vertices. See <Ref Prop="IsCompleteDigraph"/>. <P/>
 
-    If the optional first argument <A>filt</A> is present, then this should
-    specify the category or representation the digraph being created will
-    belong to. For example, if <A>filt</A> is <Ref Filt="IsMutableDigraph"/>,
-    then the digraph being created will be mutable, if <A>filt</A> is <Ref
-    Filt="IsImmutableDigraph"/>, then the digraph will be immutable. 
-    If the optional first argument <A>filt</A> is not present, then <Ref
-      Filt="IsImmutableDigraph"/> is used by default.
+    &STANDARD_FILT_TEXT;
+
     <Example><![CDATA[
 gap> CompleteDigraph(20);
 <immutable complete digraph with 20 vertices>
@@ -139,16 +116,11 @@ gap> CompleteDigraph(IsMutableDigraph, 10);
     for each vertex <C>i</C> (with <C>i</C> &lt; <C>n</C>), there is a directed
     edge with source <C>i</C> and range <C>i + 1</C>. <P/>
 
-    If the optional first argument <A>filt</A> is present, then this should
-    specify the category or representation the digraph being created will
-    belong to. For example, if <A>filt</A> is <Ref Filt="IsMutableDigraph"/>,
-    then the digraph being created will be mutable, if <A>filt</A> is <Ref
-    Filt="IsImmutableDigraph"/>, then the digraph will be immutable. 
-    If the optional first argument <A>filt</A> is not present, then <Ref
-      Filt="IsImmutableDigraph"/> is used by default.<P/>
-
     The <Ref Oper="DigraphReflexiveTransitiveClosure"/> of a chain represents a
-    total order.
+    total order. <P/>
+
+    &STANDARD_FILT_TEXT;
+
     <Example><![CDATA[
 gap> ChainDigraph(42);
 <immutable chain digraph with 42 vertices>
@@ -171,14 +143,9 @@ gap> ChainDigraph(IsMutableDigraph, 10);
     edge with source <C>i</C> and range <C>i + 1</C>. In addition, there is
     an edge with source <C>n</C> and range <C>1</C>. <P/>
 
-    If the optional first argument <A>filt</A> is present, then this should
-    specify the category or representation the digraph being created will
-    belong to. For example, if <A>filt</A> is <Ref Filt="IsMutableDigraph"/>,
-    then the digraph being created will be mutable, if <A>filt</A> is <Ref
-    Filt="IsImmutableDigraph"/>, then the digraph will be immutable. 
-    If the optional first argument <A>filt</A> is not present, then <Ref
-    Filt="IsImmutableDigraph"/> is used by default.
-  <Example><![CDATA[
+    &STANDARD_FILT_TEXT;
+
+    <Example><![CDATA[
 gap> CycleDigraph(1);
 <immutable digraph with 1 vertex, 1 edge>
 gap> CycleDigraph(123);
@@ -201,17 +168,12 @@ true
     returns a symmetric digraph which corresponds to the undirected <E>Johnson
     graph</E> <M>J(n, k)</M>. <P/>
 
-    If the optional first argument <A>filt</A> is present, then this should
-    specify the category or representation the digraph being created will
-    belong to. For example, if <A>filt</A> is <Ref Filt="IsMutableDigraph"/>,
-    then the digraph being created will be mutable, if <A>filt</A> is <Ref
-    Filt="IsImmutableDigraph"/>, then the digraph will be immutable. 
-    If the optional first argument <A>filt</A> is not present, then <Ref
-      Filt="IsImmutableDigraph"/> is used by default.<P/>
-
     The <E>Johnson graph</E> <M>J(n, k)</M> has vertices given by all the
     <A>k</A>-subsets of the range <C>[1 .. <A>n</A>]</C>, and two vertices are
-      connected by an edge iff their intersection has size <M><A>k</A> - 1</M>.
+    connected by an edge if and only if their intersection has size
+    <M><A>k</A> - 1</M>. <P/>
+
+    &STANDARD_FILT_TEXT;
 
     <Example><![CDATA[
 gap> gr := JohnsonDigraph(3, 1);
@@ -245,18 +207,12 @@ gap> JohnsonDigraph(IsMutableDigraph, 1, 0);
     many problems in graph theory. The Petersen graph is named after Julius
     Petersen, who in 1898 constructed it to be the smallest bridgeless cubic
     graph with no three-edge-coloring.</Q><P/>
-    
-    If the optional first argument <A>filt</A> is present, then this should
-    specify the category or representation the digraph being created will
-    belong to. For example, if <A>filt</A> is <Ref Filt="IsMutableDigraph"/>,
-    then the digraph being created will be mutable, if <A>filt</A> is <Ref
-    Filt="IsImmutableDigraph"/>, then the digraph will be immutable. 
-    If the optional first argument <A>filt</A> is not present, then <Ref
-      Filt="IsImmutableDigraph"/> is used by default.<P/>
 
-    See also <Ref Oper="GeneralisedPetersenGraph"/>.
+    See also <Ref Oper="GeneralisedPetersenGraph"/>. <P/>
 
-<Example><![CDATA[
+    &STANDARD_FILT_TEXT;
+
+    <Example><![CDATA[
 gap> ChromaticNumber(PetersenGraph());
 3
 gap> PetersenGraph(IsMutableDigraph);
@@ -287,15 +243,9 @@ gap> PetersenGraph(IsMutableDigraph);
     Coxeter and was given its name in 1969 by Mark Watkins.</Q>
     <P/>
 
-    If the optional first argument <A>filt</A> is present, then this should
-    specify the category or representation the digraph being created will
-    belong to. For example, if <A>filt</A> is <Ref Filt="IsMutableDigraph"/>,
-    then the digraph being created will be mutable, if <A>filt</A> is <Ref
-    Filt="IsImmutableDigraph"/>, then the digraph will be immutable. 
-    If the optional first argument <A>filt</A> is not present, then <Ref
-      Filt="IsImmutableDigraph"/> is used by default.<P/>
+    See also <Ref Oper="PetersenGraph"/>. <P/>
 
-    See also <Ref Oper="PetersenGraph"/>.
+    &STANDARD_FILT_TEXT;
 
 <Example><![CDATA[
 gap> GeneralisedPetersenGraph(7, 2);
@@ -328,13 +278,7 @@ gap> GeneralisedPetersenGraph(IsMutableDigraph, 9, 4);
     connected by a bridge
     (the edge <C>[<A>m</A>, <A>m</A>+1]</C> and its reverse). <P/>
 
-    If the optional first argument <A>filt</A> is present, then this should
-    specify the category or representation the digraph being created will
-    belong to. For example, if <A>filt</A> is <Ref Filt="IsMutableDigraph"/>,
-    then the digraph being created will be mutable, if <A>filt</A> is <Ref
-    Filt="IsImmutableDigraph"/>, then the digraph will be immutable.
-    If the optional first argument <A>filt</A> is not present, then <Ref
-      Filt="IsImmutableDigraph"/> is used by default.
+    &STANDARD_FILT_TEXT;
 
 <Example><![CDATA[
 gap> D := LollipopGraph(5, 3);
@@ -381,15 +325,9 @@ gap> LollipopGraph(IsMutableDigraph, 3, 8);
     
     See also <Ref Oper="SquareGridGraph"/> and
     <Ref Oper="TriangularGridGraph"/>. <P/>
-    
-    If the optional first argument <A>filt</A> is present, then this should
-    specify the category or representation the digraph being created will
-    belong to. For example, if <A>filt</A> is <Ref Filt="IsMutableDigraph"/>,
-    then the digraph being created will be mutable, if <A>filt</A> is <Ref
-    Filt="IsImmutableDigraph"/>, then the digraph will be immutable.
-    If the optional first argument <A>filt</A> is not present, then <Ref
-      Filt="IsImmutableDigraph"/> is used by default.<P/>
-    
+
+    &STANDARD_FILT_TEXT;
+
     <Example><![CDATA[
 gap> KingsGraph(8, 8);
 <immutable connected symmetric digraph with 64 vertices, 420 edges>
@@ -433,15 +371,9 @@ gap> OutNeighbors(D);
     See <URL>https://en.wikipedia.org/wiki/Lattice_graph</URL>
     for more information.  <P/>
 
-    If the optional first argument <A>filt</A> is present, then this should
-    specify the category or representation the digraph being created will
-    belong to. For example, if <A>filt</A> is <Ref Filt="IsMutableDigraph"/>,
-    then the digraph being created will be mutable, if <A>filt</A> is <Ref
-    Filt="IsImmutableDigraph"/>, then the digraph will be immutable.
-    If the optional first argument <A>filt</A> is not present, then <Ref
-      Filt="IsImmutableDigraph"/> is used by default.<P/>
-    
-<Example><![CDATA[
+    &STANDARD_FILT_TEXT;
+
+    <Example><![CDATA[
 gap> SquareGridGraph(5, 5);
 <immutable connected bipartite symmetric digraph with bicomponent size\
 s 13 and 12>
@@ -474,16 +406,10 @@ gap> GridGraph(IsMutable, 3, 4);
 
     See <URL>https://en.wikipedia.org/wiki/Lattice_graph#Other_kinds</URL>
     for more information.  <P/>
-    
-    If the optional first argument <A>filt</A> is present, then this should
-    specify the category or representation the digraph being created will
-    belong to. For example, if <A>filt</A> is <Ref Filt="IsMutableDigraph"/>,
-    then the digraph being created will be mutable, if <A>filt</A> is <Ref
-    Filt="IsImmutableDigraph"/>, then the digraph will be immutable.
-    If the optional first argument <A>filt</A> is not present, then <Ref
-      Filt="IsImmutableDigraph"/> is used by default.<P/>
 
-<Example><![CDATA[
+    &STANDARD_FILT_TEXT;
+
+    <Example><![CDATA[
 gap> TriangularGridGraph(3, 3);
 <immutable connected symmetric digraph with 9 vertices, 32 edges>
 gap> TriangularGridGraph(IsMutable, 3, 3);
@@ -508,13 +434,8 @@ gap> TriangularGridGraph(IsMutable, 3, 3);
     See <Ref Prop="IsUndirectedTree"/>, <Ref Prop="IsCompleteBipartiteDigraph"/>,
     and <Ref Attr="DigraphBicomponents"/>. <P/>
 
-    If the optional first argument <A>filt</A> is present, then this should
-    specify the category or representation the digraph being created will
-    belong to. For example, if <A>filt</A> is <Ref Filt="IsMutableDigraph"/>,
-    then the digraph being created will be mutable, if <A>filt</A> is <Ref
-    Filt="IsImmutableDigraph"/>, then the digraph will be immutable. 
-    If the optional first argument <A>filt</A> is not present, then <Ref
-      Filt="IsImmutableDigraph"/> is used by default.<P/>
+    &STANDARD_FILT_TEXT;
+
     <Example><![CDATA[
 gap> StarGraph(IsMutable, 10);
 <mutable digraph with 10 vertices, 18 edges>
@@ -549,13 +470,7 @@ true
     graph is a knight's graph of an <A>m</A> by <A>n</A> chessboard.</Q>
     <P/>
 
-    If the optional first argument <A>filt</A> is present, then this should
-    specify the category or representation the digraph being created will
-    belong to. For example, if <A>filt</A> is <Ref Filt="IsMutableDigraph"/>,
-    then the digraph being created will be mutable, if <A>filt</A> is <Ref
-    Filt="IsImmutableDigraph"/>, then the digraph will be immutable.
-    If the optional first argument <A>filt</A> is not present, then <Ref
-      Filt="IsImmutableDigraph"/> is used by default.<P/>
+    &STANDARD_FILT_TEXT;
 
 <Example><![CDATA[
 gap> D := KnightsGraph(8, 8);
@@ -591,13 +506,7 @@ gap> KnightsGraph(IsMutable, 3, 9);
     the binary representation of <A>n</A> has a 1 in position
     (<M>j-i</M> modulo <M>m</M>) + 1 from the left. <P/>
 
-    If the optional first argument <A>filt</A> is present, then this should
-    specify the category or representation the digraph being created will
-    belong to. For example, if <A>filt</A> is <Ref Filt="IsMutableDigraph"/>,
-    then the digraph being created will be mutable, if <A>filt</A> is <Ref
-    Filt="IsImmutableDigraph"/>, then the digraph will be immutable.
-    If the optional first argument <A>filt</A> is not present, then <Ref
-      Filt="IsImmutableDigraph"/> is used by default.<P/>
+    &STANDARD_FILT_TEXT;
 
 <Example><![CDATA[
 gap> HaarGraph(3);
@@ -636,17 +545,12 @@ ent sizes 5 and 5>
     <C>[((m - 1) * n) + 2 .. (m * n) + 1]</C>,
     with the first of these being the 'centre' of the star,
     and the second being the 'leaf' adjacent <C>1</C>. <P/>
-    
-    If the optional first argument <A>filt</A> is present, then this should
-    specify the category or representation the digraph being created will
-    belong to. For example, if <A>filt</A> is <Ref Filt="IsMutableDigraph"/>,
-    then the digraph being created will be mutable, if <A>filt</A> is <Ref
-    Filt="IsImmutableDigraph"/>, then the digraph will be immutable.
-    If the optional first argument <A>filt</A> is not present, then <Ref
-      Filt="IsImmutableDigraph"/> is used by default.<P/>
 
-    See also <Ref Oper="StarGraph"/> and <Ref Prop="IsUndirectedTree"/>.
-<Example><![CDATA[
+    See also <Ref Oper="StarGraph"/> and <Ref Prop="IsUndirectedTree"/>. <P/>
+
+    &STANDARD_FILT_TEXT;
+
+    <Example><![CDATA[
 gap> D := BananaTree(2, 4);
 <immutable undirected tree digraph with 9 vertices>
 gap> D := BananaTree(3, 3);
@@ -677,13 +581,7 @@ gap> D := BananaTree(3, 4);
     <Ref Func="DigraphDisjointUnion" Label="for a list of digraphs"/>,
     <Ref Oper="CycleDigraph"/>, and <Ref Oper="ChainDigraph"/>. <P/>
 
-    If the optional first argument <A>filt</A> is present, then this should
-    specify the category or representation the digraph being created will
-    belong to. For example, if <A>filt</A> is <Ref Filt="IsMutableDigraph"/>,
-    then the digraph being created will be mutable, if <A>filt</A> is <Ref
-    Filt="IsImmutableDigraph"/>, then the digraph will be immutable. 
-    If the optional first argument <A>filt</A> is not present, then <Ref
-      Filt="IsImmutableDigraph"/> is used by default.<P/>
+    &STANDARD_FILT_TEXT;
 
     <Example><![CDATA[
 gap> TadpoleGraph(10, 15);

@@ -114,13 +114,8 @@
     Label = "for a group, list, function, and function"/>
   <Returns>A digraph.</Returns>
   <Description>
-    If the optional first argument <A>filt</A> is present, then this should
-    specify the category or representation the digraph being created will
-    belong to. For example, if <A>filt</A> is <Ref Filt="IsMutableDigraph"/>,
-    then the digraph being created will be mutable, if <A>filt</A> is <Ref
-    Filt="IsImmutableDigraph"/>, then the digraph will be immutable. 
-    If the optional first argument <A>filt</A> is not present, then <Ref
-    Filt="IsImmutableDigraph"/> is used by default.
+    &STANDARD_FILT_TEXT;
+
     <List>
       <Mark>for a list (i.e. an adjacency list)</Mark>
       <Item>
@@ -289,13 +284,7 @@ gap> digraph := Digraph(group, List(f), act, adj);
   <Oper Name="DigraphByAdjacencyMatrix" Arg="[filt, ]list"/>
   <Returns>A digraph.</Returns>
   <Description>
-    If the optional first argument <A>filt</A> is present, then this should
-    specify the category or representation the digraph being created will
-    belong to. For example, if <A>filt</A> is <Ref Filt="IsMutableDigraph"/>,
-    then the digraph being created will be mutable, if <A>filt</A> is <Ref
-    Filt="IsImmutableDigraph"/>, then the digraph will be immutable. 
-    If the optional first argument <A>filt</A> is not present, then <Ref
-    Filt="IsImmutableDigraph"/> is used by default.<P/>
+    &STANDARD_FILT_TEXT;
 
     If <A>list</A> is the adjacency matrix of a digraph in the sense of
     <Ref Attr="AdjacencyMatrix"/>, then this operation returns the digraph
@@ -336,13 +325,7 @@ gap> D := DigraphByAdjacencyMatrix(IsMutableDigraph,
   <Oper Name="DigraphByEdges" Arg="[filt, ]list[, n]"/>
   <Returns>A digraph.</Returns>
   <Description>
-    If the optional first argument <A>filt</A> is present, then this should
-    specify the category or representation the digraph being created will
-    belong to. For example, if <A>filt</A> is <Ref Filt="IsMutableDigraph"/>,
-    then the digraph being created will be mutable, if <A>filt</A> is <Ref
-    Filt="IsImmutableDigraph"/>, then the digraph will be immutable. 
-    If the optional first argument <A>filt</A> is not present, then <Ref
-    Filt="IsImmutableDigraph"/> is used by default.<P/>
+    &STANDARD_FILT_TEXT;
 
     If <A>list</A> is list of pairs of positive integers, then this function
     returns the digraph with the minimum number of vertices <C>m</C> such that
@@ -379,13 +362,7 @@ gap> DigraphByEdges(IsMutableDigraph,
   <Oper Name="DigraphByInNeighbors" Arg="[filt, ]list"/>
   <Returns>A digraph.</Returns>
   <Description>
-  If the optional first argument <A>filt</A> is present, then this should
-  specify the category or representation the digraph being created will
-  belong to. For example, if <A>filt</A> is <Ref Filt="IsMutableDigraph"/>,
-  then the digraph being created will be mutable, if <A>filt</A> is <Ref
-  Filt="IsImmutableDigraph"/>, then the digraph will be immutable. 
-  If the optional first argument <A>filt</A> is not present, then <Ref
-  Filt="IsImmutableDigraph"/> is used by default.<P/>
+    &STANDARD_FILT_TEXT;
 
   If <A>list</A> is a list of lists of positive integers list the range
   <C>[1 .. Length(<A>list</A>)]</C>, then this function returns the
@@ -469,16 +446,10 @@ gap> D := DigraphByInNeighbours(IsMutableDigraph,
     returns <K>fail</K>.
     <P/>
 
-    If the optional first argument <A>filt</A> is present, then this should
-    specify the category or representation the digraph being created will
-    belong to. For example, if <A>filt</A> is <Ref Filt="IsMutableDigraph"/>,
-    then the digraph being created will be mutable, if <A>filt</A> is <Ref
-    Filt="IsImmutableDigraph"/>, then the digraph will be immutable. 
-    If the optional first argument <A>filt</A> is not present, then <Ref
-      Filt="IsImmutableDigraph"/> is used by default.
+    See also <Ref Attr="AsTransformation"/>.
     <P/>
 
-    See also <Ref Attr="AsTransformation"/>.
+    &STANDARD_FILT_TEXT;
 
     <Example><![CDATA[
 gap> f := Transformation([4, 3, 3, 1, 7, 9, 10, 4, 2, 3]);
@@ -773,13 +744,7 @@ gap> List(D, x -> Size(x));
   <Oper Name="RandomDigraph" Arg="[filt, ]n[, p]"/>
   <Returns>A digraph.</Returns>
   <Description>
-    If the optional first argument <A>filt</A> is present, then this should
-    specify the category or representation the digraph being created will
-    belong to. For example, if <A>filt</A> is <Ref Filt="IsMutableDigraph"/>,
-    then the digraph being created will be mutable, if <A>filt</A> is <Ref
-    Filt="IsImmutableDigraph"/>, then the digraph will be immutable. 
-    If the optional first argument <A>filt</A> is not present, then <Ref
-      Filt="IsImmutableDigraph"/> is used by default.<P/>
+    &STANDARD_FILT_TEXT;
 
     If <A>n</A> is a positive integer, then this function returns a random
     digraph with <A>n</A> vertices and without multiple edges. The result
@@ -807,13 +772,7 @@ gap> RandomDigraph(IsMutableDigraph, 1000, 1 / 2);
   <Oper Name="RandomTournament" Arg="[filt, ]n"/>
   <Returns>A digraph.</Returns>
   <Description>
-    If the optional first argument <A>filt</A> is present, then this should
-    specify the category or representation the digraph being created will
-    belong to. For example, if <A>filt</A> is <Ref Filt="IsMutableDigraph"/>,
-    then the digraph being created will be mutable, if <A>filt</A> is <Ref
-    Filt="IsImmutableDigraph"/>, then the digraph will be immutable. 
-    If the optional first argument <A>filt</A> is not present, then <Ref
-      Filt="IsImmutableDigraph"/> is used by default.<P/>
+    &STANDARD_FILT_TEXT;
 
     If <A>n</A> is a non-negative integer, this function returns a random
     tournament with <A>n</A> vertices. See <Ref Prop="IsTournament"/>. <P/>
@@ -832,13 +791,7 @@ gap> RandomTournament(IsMutableDigraph, 10);
   <Oper Name="RandomLattice" Arg="n"/>
   <Returns>A digraph.</Returns>
   <Description>
-    If the optional first argument <A>filt</A> is present, then this should
-    specify the category or representation the digraph being created will
-    belong to. For example, if <A>filt</A> is <Ref Filt="IsMutableDigraph"/>,
-    then the digraph being created will be mutable, if <A>filt</A> is <Ref
-    Filt="IsImmutableDigraph"/>, then the digraph will be immutable. 
-    If the optional first argument <A>filt</A> is not present, then <Ref
-      Filt="IsImmutableDigraph"/> is used by default.<P/>
+    &STANDARD_FILT_TEXT;
 
     If <A>n</A> is a positive integer, this function return a random lattice
     with <C>m</C> vertices, where it is guaranteed that <C>m</C> is between
