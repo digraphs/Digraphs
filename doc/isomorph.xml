@@ -1,7 +1,7 @@
 #############################################################################
 ##
 #W  isomorph.xml                                        James D. Mitchell
-#Y  Copyright (C) 2014-18                                  Wilf A. Wilson
+#Y  Copyright (C) 2014-21                                  Wilf A. Wilson
 ##
 ##  Licensing information can be found in the README file of this package.
 ##
@@ -783,13 +783,13 @@ gap> OutNeighbours(canon);
     </List>
     See also <Ref Attr="AutomorphismGroup" Label="for a digraph"
       />.<P/>
-    
+
     If <A>col1</A> and <A>col2</A>, or <A>col</A>, are given, then they must
     represent vertex colourings; see 
     <Ref Oper="AutomorphismGroup" Label="for a digraph and a homogeneous list"/> 
     for details of the permissible values for
     these arguments. The homomorphism must then also have the property:
-  
+
     <List>
       <Item>
         <C>col1[i] = col2[i ^ x]</C> for all vertices <C>i</C> of <A>src</A>,
