@@ -266,7 +266,7 @@ gap> GeneralisedPetersenGraph(IsMutableDigraph, 9, 4);
 <#GAPDoc Label="LollipopGraph">
 <ManSection>
   <Oper Name="LollipopGraph" Arg="[filt, ]m, n"/>
-  <Returns>A digraph</Returns>
+  <Returns>A digraph.</Returns>
   <Description>
     If <A>m</A> and <A>n</A> are positive integers,
     then this operation returns the <E>(<A>m</A>,<A>n</A>)-lollipop graph</E>.
@@ -301,7 +301,7 @@ gap> LollipopGraph(IsMutableDigraph, 3, 8);
   <Description>
     If <A>n</A> and <A>k</A> are positive integers,
     then this operation returns
-    the <E>king's graph</E> for an <A>n</A> by <A>k</A> board. <P/>
+    the <E>king's graph</E> of an <A>n</A> by <A>k</A> board. <P/>
 
     From
     <URL>https://en.wikipedia.org/wiki/King%27s_graph</URL>:
@@ -425,7 +425,7 @@ gap> TriangularGridGraph(IsMutable, 3, 3);
   <Returns>A digraph.</Returns>
   <Description>
     If <A>k</A> is a positive integer, then this operation returns the
-    <E>star digraph</E> with <A>k</A> vertices, which is the
+    <E>star graph</E> with <A>k</A> vertices, which is the
     undirected tree in which vertex <C>1</C> is adjacent to all other
     vertices.  If <A>k</A> is at least <C>2</C>, then this is the complete
     bipartite digraph with bicomponents
@@ -456,7 +456,7 @@ true
   <Returns>A digraph.</Returns>
   <Description>
     If <A>m</A> and <A>n</A> are both positive integers, then this operation
-    returns the <E>Knight's Graph</E> for a <A>m</A> by <A>n</A> board. <P/>
+    returns the <E>knight's graph</E> of a <A>m</A> by <A>n</A> board. <P/>
 
     From
     <URL>https://en.wikipedia.org/wiki/Knight%27s_graph</URL>:
@@ -525,7 +525,8 @@ ent sizes 5 and 5>
   <Oper Name="BananaTree" Arg="[filt, ]n, k"/>
   <Returns>A digraph</Returns>
   <Description>
-    If <A>n</A> and <A>k</A> are positive integers with <A>k</A> greater than <M>1</M>,
+    If <A>n</A> and <A>k</A> are positive integers
+    with <A>k</A> greater than <M>1</M>,
     then this operation returns the <E>banana tree</E>
     with parameters <A>n</A> and <A>k</A>, as defined below. <P/>
 
@@ -569,12 +570,12 @@ gap> D := BananaTree(3, 4);
   <Oper Name="TadpoleGraph" Arg="[filt, ]m, n"/>
   <Returns>A digraph.</Returns>
   <Description>
-    The <E>Tadpole digraph</E> is the symmetric closure of the disjoint union
+    The <E>tadpole graph</E> is the symmetric closure of the disjoint union
     of the cycle digraph on <C>[1..<A>m</A>]</C> (the 'head' of the tadpole)
     and the chain digraph on <C>[<A>m</A>+1..<A>m</A>+<A>n</A>]</C>
     (the 'tail' of the tadpole), along with the additional
     edges <C>[1, <A>m</A>+1]</C> and <C>[1, <A>m</A>+1]</C>
-    which connect the 'head' and the 'tail'. For more details on the Tadpole digraph
+    which connect the 'head' and the 'tail'. For more details on the tadpole graph
     please refer to <URL>https://en.wikipedia.org/wiki/Tadpole_graph</URL>.<P/>
 
     See <Ref Oper="DigraphSymmetricClosure"/>,
