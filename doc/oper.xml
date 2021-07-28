@@ -1382,7 +1382,9 @@ gap> VerticesReachableFrom(D, 5);
 
     The method for <C>DigraphPath</C> has worst case complexity of <M>O(m +
       n)</M> where <M>m</M> is the number of edges and <M>n</M> the number of
-    vertices in <A>digraph</A>.
+      vertices in <A>digraph</A>.<P/>
+
+      See also <Ref Oper="IsDigraphPath"/>.
 
 <Example><![CDATA[
 gap> D := Digraph([[2], [3], [2, 3]]);
@@ -2129,5 +2131,57 @@ gap> data;
 [ 4 ]
 ]]></Example>
 </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="IsDigraphPath">
+<ManSection>
+  <Oper Name="IsDigraphPath" Arg="D, v, a"/>
+  <Oper Name="IsDigraphPath" Arg="D, list" Label="for a digraph and list"/>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
+  <Description>
+    This function returns <K>true</K> if the arguments <A>v</A> and <A>a </A>
+    describe a path in the digraph <A>D</A>.
+
+    A directed path (or directed cycle) of non-zero length <C>n-1</C>,
+    <M>(v_1, e_1, v_2, e_2, ..., e_{n-1}, v_n)</M>,
+    is represented by a pair of lists <C>[<A>v</A>, <A>a</A>]</C> as follows:
+
+    <List>
+      <Item>
+        <A>v</A> is the list <M>[v_1, v_2, ..., v_n]</M>.
+      </Item>
+      <Item>
+        <A>a</A> is the list of positive integers <M>[a_1, a_2, ..., a_{n-1}]</M>
+        where for each each <M>i &lt; n</M>, <M>a_i</M> is the position of
+        <M>v_{i+1}</M> in
+        <C>OutNeighboursOfVertex(</C><A>D</A><C>,</C><M>v_i</M><C>)</C>
+        corresponding to the edge <M>e_i</M>.  This can be useful if the
+        position of a vertex in a list of out-neighours is significant, for
+        example in orbit digraphs.
+      </Item>
+    </List>
+
+    If the arguments to <C>IsDigraphPath</C> are a digraph <A>D</A> and list
+    <A>list</A>, then this is equivalent to calling <C>IsDigraphPath(<A>D</A>,
+    <A>list</A>[1], <A>list</A>[2])</C>.
+
+    <Example><![CDATA[
+gap> D := Digraph(IsMutableDigraph, Combinations([1 .. 5]), IsSubset);
+<mutable digraph with 32 vertices, 243 edges>
+gap> DigraphReflexiveTransitiveReduction(D);
+<mutable digraph with 32 vertices, 80 edges>
+gap> MakeImmutable(D);
+<immutable digraph with 32 vertices, 80 edges>
+gap> IsDigraphPath(D, [32, 31, 33], [1, 1]);
+false
+gap> IsDigraphPath(D, [1], []);
+true
+gap> IsDigraphPath(D, [6, 9, 16, 17], [3, 3, 2]);
+true
+gap> IsDigraphPath(D, DigraphPath(D, 6, 1));
+true
+]]></Example>
+  </Description>
 </ManSection>
 <#/GAPDoc>

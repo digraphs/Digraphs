@@ -1333,6 +1333,37 @@ function(D, u, v)
   return out;
 end);
 
+InstallMethod(IsDigraphPath, "for a digraph and list",
+[IsDigraph, IsList],
+function(D, digraph_path_output)
+  if Length(digraph_path_output) <> 2 then
+    DError(["the 2nd argument (a list) must have length 2, ",
+            "but found length {}"],
+           Length(digraph_path_output));
+  fi;
+  return IsDigraphPath(D, digraph_path_output[1], digraph_path_output[2]);
+end);
+
+InstallMethod(IsDigraphPath, "for a digraph, homog. list, and homog. list",
+[IsDigraph, IsHomogeneousList, IsHomogeneousList],
+function(D, nodes, edges)
+  local a, i;
+  if Length(nodes) <> Length(edges) + 1 then
+    DError(["the 2nd and 3rd arguments (lists) are incompatible, ",
+            "expected 3rd argument of length {}, got {}"],
+           Length(nodes) - 1,
+           Length(edges));
+  fi;
+  a := OutNeighbours(D);
+  for i in [1 .. Length(edges)] do
+    if nodes[i] > Length(a) or edges[i] > Length(a[nodes[i]])
+        or a[nodes[i]][edges[i]] <> nodes[i + 1] then
+      return false;
+    fi;
+  od;
+  return true;
+end);
+
 InstallMethod(DigraphShortestPath,
 "for a digraph by out-neighbours and two pos ints",
 [IsDigraphByOutNeighboursRep, IsPosInt, IsPosInt],
