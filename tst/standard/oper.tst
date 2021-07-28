@@ -2697,6 +2697,45 @@ gap> ExecuteDFS(NewDFSRecord(D), [], 3, DFSDefault, DFSDefault, DFSDefault,
 > DFSDefault);
 Error, the third argument <start> must be a vertex in your graph,
 
+# IsDigraphPath
+gap> D := Digraph(IsMutableDigraph, Combinations([1 .. 5]), IsSubset);
+<mutable digraph with 32 vertices, 243 edges>
+gap> DigraphReflexiveTransitiveReduction(D);
+<mutable digraph with 32 vertices, 80 edges>
+gap> MakeImmutable(D);
+<immutable digraph with 32 vertices, 80 edges>
+gap> IsDigraphPath(D, [1, 2, 3], []);
+Error, the 2nd and 3rd arguments (lists) are incompatible, expected 3rd argume\
+nt of length 2, got 0
+gap> IsDigraphPath(D, [1], []);
+true
+gap> IsDigraphPath(D, [1, 2], [5]);
+false
+gap> IsDigraphPath(D, [32, 31, 33], [1, 1]);
+false
+gap> IsDigraphPath(D, [32, 33, 31], [1, 1]);
+false
+gap> IsDigraphPath(D, [6, 9, 16, 17], [3, 3, 2]);
+true
+gap> IsDigraphPath(D, [33, 9, 16, 17], [3, 3, 2]);
+false
+gap> IsDigraphPath(D, [6, 9, 18, 1], [9, 10, 2]);
+false
+
+# IsDigraphPath
+gap> D := Digraph(IsMutableDigraph, Combinations([1 .. 5]), IsSubset);
+<mutable digraph with 32 vertices, 243 edges>
+gap> DigraphReflexiveTransitiveReduction(D);
+<mutable digraph with 32 vertices, 80 edges>
+gap> MakeImmutable(D);
+<immutable digraph with 32 vertices, 80 edges>
+gap> IsDigraphPath(D, DigraphPath(D, 6, 1));
+true
+gap> ForAll(List(IteratorOfPaths(D, 6, 1)), x -> IsDigraphPath(D, x));
+true
+gap> IsDigraphPath(D, []);
+Error, the 2nd argument (a list) must have length 2, but found length 0
+
 #
 gap> DIGRAPHS_StopTest();
 gap> STOP_TEST("Digraphs package: standard/oper.tst", 0);

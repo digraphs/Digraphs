@@ -92,6 +92,9 @@ DeclareOperation("IsMatching", [IsDigraph, IsHomogeneousList]);
 DeclareOperation("IsMaximalMatching", [IsDigraph, IsHomogeneousList]);
 DeclareOperation("IsMaximumMatching", [IsDigraph, IsHomogeneousList]);
 DeclareOperation("IsPerfectMatching", [IsDigraph, IsHomogeneousList]);
+DeclareOperation("IsDigraphPath",
+                 [IsDigraph, IsHomogeneousList, IsHomogeneousList]);
+DeclareOperation("IsDigraphPath", [IsDigraph, IsList]);
 
 # 9. Connectivity . . .
 DeclareOperation("DigraphFloydWarshall",
