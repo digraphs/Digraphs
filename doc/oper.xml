@@ -1932,7 +1932,7 @@ gap> DigraphDijkstra(D, 1, 2);
   <Description>
   If <A>D1</A> and <A>D2</A> are digraphs without multiple edges, then
   <C>ModularProduct</C> calculates the <E>modular product digraph</E>
-  (<C>MPD</C>) of <A>D1</A>and <A>D2</A>.
+  (<C>MPD</C>) of <A>D1</A> and <A>D2</A>.
 
   <C>MPD</C> has vertex set <C>V1 x V2</C> where <C>V1</C> is the vertex set of
   <A>D1</A> and <C>V2</C> is the vertex set of <A>D2</A> (a vertex
@@ -1958,7 +1958,8 @@ gap> ModularProduct(Digraph([[1], [1, 2]]), Digraph([[], [2]]));
 <immutable digraph with 4 vertices, 4 edges>
 gap> OutNeighbours(last);
 [ [ 4 ], [ 2, 3 ], [  ], [ 4 ] ]
-gap> ModularProduct(PetersenGraph(), DigraphSymmetricClosure(CycleDigraph(5)));
+gap> ModularProduct(PetersenGraph(),
+> DigraphSymmetricClosure(CycleDigraph(5)));
 <immutable digraph with 50 vertices, 950 edges>
 gap> ModularProduct(NullDigraph(0), CompleteDigraph(10));
 <immutable empty digraph with 0 vertices>
@@ -1966,6 +1967,164 @@ gap> ModularProduct(NullDigraph(0), CompleteDigraph(10));
 </Description>
 </ManSection>
 <#/GAPDoc>
+
+<#GAPDoc Label="StrongProduct">
+<ManSection>
+  <Oper Name="StrongProduct" Arg="D1, D2"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+  If <A>D1</A> and <A>D2</A> are digraphs without multiple edges,
+  then <C>StrongProduct</C> calculates the <E>strong product digraph</E>
+  (<C>SPD</C>) of <A>D1</A> and <A>D2</A>.
+
+  <C>SPD</C> has vertex set <C>V1 x V2</C> where <C>V1</C> is the vertex set of
+  <A>D1</A> and <C>V2</C> is the vertex set of <A>D2</A> (a vertex
+  <C>[a, b]</C> has label <C>(a - 1) * |V2| + b</C> in the  output). There is
+  an edge from <C>[a, b]</C> to <C>[c, d]</C> when at least one of the
+  following three conditions are satisfied:
+  <List>
+    <Item>
+      The vertices <C>a</C> and <C>c</C> of <A>D1</A> are equal and there is
+      an edge from <C>b</C> to <C>d</C> in <A>D2</A>.
+    </Item>
+    <Item>
+      The vertices <C>b</C> and <C>d</C> of <A>D2</A> are equal and there is
+      an edge from <C>a</C> to <C>c</C> in <A>D1</A>.
+    </Item>
+    <Item>
+      There is an edge from <C>a</C> to <C>c</C> in <A>D1</A> and there is
+      an edge from <C>b</C> to <C>d</C> in <A>D2</A>.
+    </Item>
+  </List>
+
+  The SPD of two paths of lengths <C>m</C> and <C>n</C> is also the king's graph
+  for an <C>m</C> by <C>n</C> board. 
+
+  <Example><![CDATA[
+gap> D1 := Digraph([[2], [1, 3, 4], [2, 5], [2, 5], [3, 4]]);
+<immutable digraph with 5 vertices, 10 edges>
+gap> D2 := Digraph([[2], [1, 3, 4], [2], [2]]);
+<immutable digraph with 4 vertices, 6 edges>
+gap> StrongProduct(D1, D2);
+<immutable digraph with 20 vertices, 130 edges>
+gap> StrongProduct(DigraphSymmetricClosure(ChainDigraph(3)),
+> DigraphSymmetricClosure(ChainDigraph(4)));
+<immutable digraph with 12 vertices, 58 edges>
+]]></Example>
+</Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="ConormalProduct">
+<ManSection>
+  <Oper Name="ConormalProduct" Arg="D1, D2"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+  If <A>D1</A> and <A>D2</A> are digraphs without multiple edges,
+  then <C>ConormalProduct</C> calculates the <E>co-normal product digraph</E>
+  (<C>CNPD</C>) of <A>D1</A> and <A>D2</A>.
+
+  <C>CNPD</C> has vertex set <C>V1 x V2</C> where <C>V1</C> is the vertex set of
+  <A>D1</A> and <C>V2</C> is the vertex set of <A>D2</A> (a vertex
+  <C>[a, b]</C> has label <C>(a - 1) * |V2| + b</C> in the  output). There is
+  an edge from <C>[a, b]</C> to <C>[c, d]</C> when at least one of the
+  following two conditions are satisfied:
+  <List>
+    <Item>
+      There is an edge from <C>a</C> to <C>c</C> in <A>D1</A>.
+    </Item>
+    <Item>
+      There is an edge from <C>b</C> to <C>d</C> in <A>D2</A>.
+    </Item>
+  </List>
+
+  <Example><![CDATA[
+gap> ConormalProduct(DigraphSymmetricClosure(CycleDigraph(7)),
+> DigraphSymmetricClosure(CycleDigraph(4)));
+<immutable digraph with 28 vertices, 504 edges>
+gap> ConormalProduct(NullDigraph(0), CompleteDigraph(10));
+<immutable empty digraph with 0 vertices>
+]]></Example>
+</Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="HomomorphicProduct">
+<ManSection>
+  <Oper Name="HomomorphicProduct" Arg="D1, D2"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+  If <A>D1</A> and <A>D2</A> are digraphs without multiple edges,
+  then <C>HomomorphicProduct</C> calculates the <E>homomorphic product digraph</E>
+  (<C>HPD</C>) of <A>D1</A> and <A>D2</A>.
+
+  <C>HPD</C> has vertex set <C>V1 x V2</C> where <C>V1</C> is the vertex set of
+  <A>D1</A> and <C>V2</C> is the vertex set of <A>D2</A> (a vertex
+  <C>[a, b]</C> has label <C>(a - 1) * |V2| + b</C> in the  output). There is
+  an edge from <C>[a, b]</C> to <C>[c, d]</C> when at least one of the
+  following two conditions are satisfied:
+  <List>
+    <Item>
+      The vertices <C>a</C> and <C>c</C> of <A>D1</A> are equal.
+    </Item>
+    <Item>
+      There is an edge from <C>a</C> to <C>c</C> in <A>D1</A> and no edge from
+      <C>b</C> to <C>d</C> in <A>D2</A>.
+    </Item>
+  </List>
+
+  <Example><![CDATA[
+gap> HomomorphicProduct(PetersenGraph(),
+> DigraphSymmetricClosure(ChainDigraph(4)));
+<immutable digraph with 40 vertices, 460 edges>
+gap> D1 := Digraph([[2], [1, 3, 4], [2, 5], [2, 5], [3, 4]]);
+<immutable digraph with 5 vertices, 10 edges>
+gap> D2 := Digraph([[2], [1, 3], [2, 4], [3]]);
+<immutable digraph with 4 vertices, 6 edges>
+gap> HomomorphicProduct(D1, D2);
+<immutable digraph with 20 vertices, 180 edges>
+]]></Example>
+</Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="LexicographicProduct">
+<ManSection>
+  <Oper Name="LexicographicProduct" Arg="D1, D2"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+  If <A>D1</A> and <A>D2</A> are digraphs without multiple edges,
+  then <C>LexicographicProduct</C> calculates the <E>lexicographic product digraph</E>
+  (<C>LPD</C>) of <A>D1</A> and <A>D2</A>.
+
+  <C>LPD</C> has vertex set <C>V1 x V2</C> where <C>V1</C> is the vertex set of
+  <A>D1</A> and <C>V2</C> is the vertex set of <A>D2</A> (a vertex
+  <C>[a, b]</C> has label <C>(a - 1) * |V2| + b</C> in the  output). There is
+  an edge from <C>[a, b]</C> to <C>[c, d]</C> when at least one of the
+  following two conditions are satisfied:
+  <List>
+    <Item>
+      There is an edge from <C>a</C> to <C>c</C> in <A>D1</A>.
+    </Item>
+    <Item>
+      The vertices <C>a</C> and <C>c</C> of <A>D1</A> are equal and there is
+      an edge from <C>b</C> to <C>d</C> in <A>D2</A>.
+    </Item>
+  </List>
+
+  <Example><![CDATA[
+gap> LexicographicProduct(DigraphSymmetricClosure(CycleDigraph(3)),
+> DigraphSymmetricClosure(ChainDigraph(2)));
+<immutable digraph with 6 vertices, 30 edges>
+gap> OutNeighbours(last);
+[ [ 2, 3, 4, 5, 6 ], [ 1, 3, 4, 5, 6 ], [ 1, 2, 4, 5, 6 ], 
+  [ 1, 2, 3, 5, 6 ], [ 1, 2, 3, 4, 6 ], [ 1, 2, 3, 4, 5 ] ]
+gap> LexicographicProduct(NullDigraph(0), CompleteDigraph(10));
+<immutable empty digraph with 0 vertices>
+]]></Example>
+</Description>
+</ManSection>
+<#/GAPDoc>  
 
 <#GAPDoc Label="NewDFSRecord">
 <ManSection>
