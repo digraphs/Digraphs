@@ -2302,6 +2302,137 @@ gap> OutNeighbours(last);
   [ 23, 25, 33, 35, 38, 40, 1, 2, 6, 7, 11, 12, 16, 17, 26, 27, 41, 42, 49 ], 
   [ 21, 24, 31, 34, 36, 39, 2, 3, 7, 8, 12, 13, 17, 18, 27, 28, 42, 43, 50 ] ]
 
+#StrongProduct
+gap> D := Digraph([[2, 2], [1, 1, 3], [2]]);
+<immutable multidigraph with 3 vertices, 6 edges>
+gap> StrongProduct(D, D);
+Error, the 1st argument (a digraph) must not satisfy IsMultiDigraph
+gap> DigraphSymmetricClosure(ChainDigraph(6));
+<immutable symmetric digraph with 6 vertices, 10 edges>
+gap> StrongProduct(DigraphSymmetricClosure(ChainDigraph(10)), last);
+<immutable digraph with 60 vertices, 388 edges>
+gap> StrongProduct(NullDigraph(0), CompleteDigraph(5));
+<immutable empty digraph with 0 vertices>
+gap>  DigraphSymmetricClosure(CycleDigraph(4));
+<immutable symmetric digraph with 4 vertices, 8 edges>
+gap> StrongProduct(DigraphSymmetricClosure(ChainDigraph(3)), last);
+<immutable digraph with 12 vertices, 72 edges>
+gap> OutNeighbours(last);
+[ [ 2, 4, 5, 6, 8 ], [ 1, 3, 5, 6, 7 ], [ 2, 4, 6, 7, 8 ], [ 1, 3, 5, 7, 8 ], 
+  [ 1, 2, 4, 6, 8, 9, 10, 12 ], [ 1, 2, 3, 5, 7, 9, 10, 11 ], 
+  [ 2, 3, 4, 6, 8, 10, 11, 12 ], [ 1, 3, 4, 5, 7, 9, 11, 12 ], 
+  [ 5, 6, 8, 10, 12 ], [ 5, 6, 7, 9, 11 ], [ 6, 7, 8, 10, 12 ], 
+  [ 5, 7, 8, 9, 11 ] ]
+gap> StrongProduct(ChainDigraph(2), ChainDigraph(8));
+<immutable digraph with 16 vertices, 29 edges>
+
+#ConormalProduct
+gap> D := Digraph([[2, 4, 4], [1, 3], [2, 4], [1, 1, 3]]);
+<immutable multidigraph with 4 vertices, 10 edges>
+gap> ConormalProduct(D, D);
+Error, the 1st argument (a digraph) must not satisfy IsMultiDigraph
+gap> ConormalProduct(NullDigraph(10), CompleteDigraph(10));
+<immutable digraph with 100 vertices, 9000 edges>
+gap> ConormalProduct(PetersenGraph(), PetersenGraph());
+<immutable digraph with 100 vertices, 5100 edges>
+gap> DigraphSymmetricClosure(CycleDigraph(3));
+<immutable symmetric digraph with 3 vertices, 6 edges>
+gap> ConormalProduct(last, last);
+<immutable digraph with 9 vertices, 72 edges>
+gap> ConormalProduct(CycleDigraph(2), CycleDigraph(8));
+<immutable digraph with 16 vertices, 144 edges>
+
+#HomomorphicProduct
+gap> D := Digraph([[2, 3], [1, 3, 3], [1, 2, 2]]);
+<immutable multidigraph with 3 vertices, 8 edges>
+gap> HomomorphicProduct(D, D);                    
+Error, the 1st argument (a digraph) must not satisfy IsMultiDigraph
+gap> DigraphSymmetricClosure(CycleDigraph(6)); 
+<immutable symmetric digraph with 6 vertices, 12 edges>
+gap> HomomorphicProduct(PetersenGraph(), last);
+<immutable digraph with 60 vertices, 1080 edges>
+gap> HomomorphicProduct(NullDigraph(0), CompleteDigraph(11));
+<immutable empty digraph with 0 vertices>
+gap> DigraphSymmetricClosure(CycleDigraph(8));
+<immutable symmetric digraph with 8 vertices, 16 edges>
+gap> HomomorphicProduct(NullDigraph(10), last);
+<immutable digraph with 80 vertices, 640 edges>
+gap> OutNeighbours(last);
+[ [ 1, 2, 3, 4, 5, 6, 7, 8 ], [ 1, 2, 3, 4, 5, 6, 7, 8 ], 
+  [ 1, 2, 3, 4, 5, 6, 7, 8 ], [ 1, 2, 3, 4, 5, 6, 7, 8 ], 
+  [ 1, 2, 3, 4, 5, 6, 7, 8 ], [ 1, 2, 3, 4, 5, 6, 7, 8 ], 
+  [ 1, 2, 3, 4, 5, 6, 7, 8 ], [ 1, 2, 3, 4, 5, 6, 7, 8 ], 
+  [ 9, 10, 11, 12, 13, 14, 15, 16 ], [ 9, 10, 11, 12, 13, 14, 15, 16 ], 
+  [ 9, 10, 11, 12, 13, 14, 15, 16 ], [ 9, 10, 11, 12, 13, 14, 15, 16 ], 
+  [ 9, 10, 11, 12, 13, 14, 15, 16 ], [ 9, 10, 11, 12, 13, 14, 15, 16 ], 
+  [ 9, 10, 11, 12, 13, 14, 15, 16 ], [ 9, 10, 11, 12, 13, 14, 15, 16 ], 
+  [ 17, 18, 19, 20, 21, 22, 23, 24 ], [ 17, 18, 19, 20, 21, 22, 23, 24 ], 
+  [ 17, 18, 19, 20, 21, 22, 23, 24 ], [ 17, 18, 19, 20, 21, 22, 23, 24 ], 
+  [ 17, 18, 19, 20, 21, 22, 23, 24 ], [ 17, 18, 19, 20, 21, 22, 23, 24 ], 
+  [ 17, 18, 19, 20, 21, 22, 23, 24 ], [ 17, 18, 19, 20, 21, 22, 23, 24 ], 
+  [ 25, 26, 27, 28, 29, 30, 31, 32 ], [ 25, 26, 27, 28, 29, 30, 31, 32 ], 
+  [ 25, 26, 27, 28, 29, 30, 31, 32 ], [ 25, 26, 27, 28, 29, 30, 31, 32 ], 
+  [ 25, 26, 27, 28, 29, 30, 31, 32 ], [ 25, 26, 27, 28, 29, 30, 31, 32 ], 
+  [ 25, 26, 27, 28, 29, 30, 31, 32 ], [ 25, 26, 27, 28, 29, 30, 31, 32 ], 
+  [ 33, 34, 35, 36, 37, 38, 39, 40 ], [ 33, 34, 35, 36, 37, 38, 39, 40 ], 
+  [ 33, 34, 35, 36, 37, 38, 39, 40 ], [ 33, 34, 35, 36, 37, 38, 39, 40 ], 
+  [ 33, 34, 35, 36, 37, 38, 39, 40 ], [ 33, 34, 35, 36, 37, 38, 39, 40 ], 
+  [ 33, 34, 35, 36, 37, 38, 39, 40 ], [ 33, 34, 35, 36, 37, 38, 39, 40 ], 
+  [ 41, 42, 43, 44, 45, 46, 47, 48 ], [ 41, 42, 43, 44, 45, 46, 47, 48 ], 
+  [ 41, 42, 43, 44, 45, 46, 47, 48 ], [ 41, 42, 43, 44, 45, 46, 47, 48 ], 
+  [ 41, 42, 43, 44, 45, 46, 47, 48 ], [ 41, 42, 43, 44, 45, 46, 47, 48 ], 
+  [ 41, 42, 43, 44, 45, 46, 47, 48 ], [ 41, 42, 43, 44, 45, 46, 47, 48 ], 
+  [ 49, 50, 51, 52, 53, 54, 55, 56 ], [ 49, 50, 51, 52, 53, 54, 55, 56 ], 
+  [ 49, 50, 51, 52, 53, 54, 55, 56 ], [ 49, 50, 51, 52, 53, 54, 55, 56 ], 
+  [ 49, 50, 51, 52, 53, 54, 55, 56 ], [ 49, 50, 51, 52, 53, 54, 55, 56 ], 
+  [ 49, 50, 51, 52, 53, 54, 55, 56 ], [ 49, 50, 51, 52, 53, 54, 55, 56 ], 
+  [ 57, 58, 59, 60, 61, 62, 63, 64 ], [ 57, 58, 59, 60, 61, 62, 63, 64 ], 
+  [ 57, 58, 59, 60, 61, 62, 63, 64 ], [ 57, 58, 59, 60, 61, 62, 63, 64 ], 
+  [ 57, 58, 59, 60, 61, 62, 63, 64 ], [ 57, 58, 59, 60, 61, 62, 63, 64 ], 
+  [ 57, 58, 59, 60, 61, 62, 63, 64 ], [ 57, 58, 59, 60, 61, 62, 63, 64 ], 
+  [ 65, 66, 67, 68, 69, 70, 71, 72 ], [ 65, 66, 67, 68, 69, 70, 71, 72 ], 
+  [ 65, 66, 67, 68, 69, 70, 71, 72 ], [ 65, 66, 67, 68, 69, 70, 71, 72 ], 
+  [ 65, 66, 67, 68, 69, 70, 71, 72 ], [ 65, 66, 67, 68, 69, 70, 71, 72 ], 
+  [ 65, 66, 67, 68, 69, 70, 71, 72 ], [ 65, 66, 67, 68, 69, 70, 71, 72 ], 
+  [ 73, 74, 75, 76, 77, 78, 79, 80 ], [ 73, 74, 75, 76, 77, 78, 79, 80 ], 
+  [ 73, 74, 75, 76, 77, 78, 79, 80 ], [ 73, 74, 75, 76, 77, 78, 79, 80 ], 
+  [ 73, 74, 75, 76, 77, 78, 79, 80 ], [ 73, 74, 75, 76, 77, 78, 79, 80 ], 
+  [ 73, 74, 75, 76, 77, 78, 79, 80 ], [ 73, 74, 75, 76, 77, 78, 79, 80 ] ]
+gap> HomomorphicProduct(CompleteDigraph(8), CycleDigraph(8));
+<immutable digraph with 64 vertices, 3648 edges>
+
+#LexicographicProduct
+gap> D := Digraph([[2, 2, 2], [1, 1, 1]]);
+<immutable multidigraph with 2 vertices, 6 edges>
+gap> LexicographicProduct(CompleteDigraph(3), D);
+Error, the 2nd argument (a digraph) must not satisfy IsMultiDigraph
+gap> StrongProduct(NullDigraph(0), CompleteDigraph(3));
+<immutable empty digraph with 0 vertices>
+gap> D1 := Digraph([[2], [1, 3, 4], [2, 5], [2, 5], [3, 4]]);
+<immutable digraph with 5 vertices, 10 edges>
+gap> D2 := Digraph([[2], [1, 3, 4], [2], [2]]);              
+<immutable digraph with 4 vertices, 6 edges>
+gap> LexicographicProduct(D1, D2);
+<immutable digraph with 20 vertices, 190 edges>
+gap> OutNeighbours(last);
+[ [ 2, 5, 6, 7, 8 ], [ 1, 3, 4, 5, 6, 7, 8 ], [ 2, 5, 6, 7, 8 ], 
+  [ 2, 5, 6, 7, 8 ], [ 1, 2, 3, 4, 6, 9, 10, 11, 12, 13, 14, 15, 16 ], 
+  [ 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 ], 
+  [ 1, 2, 3, 4, 6, 9, 10, 11, 12, 13, 14, 15, 16 ], 
+  [ 1, 2, 3, 4, 6, 9, 10, 11, 12, 13, 14, 15, 16 ], 
+  [ 5, 6, 7, 8, 10, 17, 18, 19, 20 ], 
+  [ 5, 6, 7, 8, 9, 11, 12, 17, 18, 19, 20 ], 
+  [ 5, 6, 7, 8, 10, 17, 18, 19, 20 ], [ 5, 6, 7, 8, 10, 17, 18, 19, 20 ], 
+  [ 5, 6, 7, 8, 14, 17, 18, 19, 20 ], 
+  [ 5, 6, 7, 8, 13, 15, 16, 17, 18, 19, 20 ], 
+  [ 5, 6, 7, 8, 14, 17, 18, 19, 20 ], [ 5, 6, 7, 8, 14, 17, 18, 19, 20 ], 
+  [ 9, 10, 11, 12, 13, 14, 15, 16, 18 ], 
+  [ 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 20 ], 
+  [ 9, 10, 11, 12, 13, 14, 15, 16, 18 ], 
+  [ 9, 10, 11, 12, 13, 14, 15, 16, 18 ] ]
+gap> LexicographicProduct(ChainDigraph(3), CycleDigraph(7));   
+<immutable digraph with 21 vertices, 119 edges>
+
 # DigraphShortestPathSpanningTree
 gap> D := Digraph([[2, 3, 4], [1, 3, 4, 5], [1, 2], [5], [4]]);
 <immutable digraph with 5 vertices, 11 edges>

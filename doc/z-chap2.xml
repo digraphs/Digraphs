@@ -59,6 +59,11 @@
     <#Include Label="DigraphJoin">
     <#Include Label="DigraphCartesianProduct">
     <#Include Label="DigraphDirectProduct">
+    <#Include Label="ConormalProduct">
+    <#Include Label="HomomorphicProduct">
+    <#Include Label="LexicographicProduct">
+    <#Include Label="ModularProduct">
+    <#Include Label="StrongProduct">
     <#Include Label="DigraphCartesianProductProjections">
     <#Include Label="DigraphDirectProductProjections">
     <#Include Label="LineDigraph">
