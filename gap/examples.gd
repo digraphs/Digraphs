@@ -71,6 +71,26 @@ DeclareConstructor("StarGraphCons", [IsDigraph, IsPosInt]);
 DeclareOperation("StarGraph", [IsPosInt]);
 DeclareOperation("StarGraph", [IsFunction, IsPosInt]);
 
+DeclareConstructor("QueensGraphCons", [IsDigraph, IsPosInt, IsPosInt]);
+DeclareOperation("QueensGraph", [IsPosInt, IsPosInt]);
+DeclareOperation("QueensGraph", [IsFunction, IsPosInt, IsPosInt]);
+DeclareSynonym("QueenGraph", QueensGraph);
+
+DeclareConstructor("RooksGraphCons", [IsDigraph, IsPosInt, IsPosInt]);
+DeclareOperation("RooksGraph", [IsPosInt, IsPosInt]);
+DeclareOperation("RooksGraph", [IsFunction, IsPosInt, IsPosInt]);
+DeclareSynonym("RookGraph", RooksGraph);
+
+DeclareConstructor("BishopsGraphCons",
+[IsDigraph, IsString, IsPosInt, IsPosInt]);
+DeclareOperation("BishopsGraph", [IsString, IsPosInt, IsPosInt]);
+DeclareOperation("BishopsGraph", [IsFunction, IsString, IsPosInt, IsPosInt]);
+DeclareConstructor("BishopsGraphCons",
+[IsDigraph, IsPosInt, IsPosInt]);
+DeclareOperation("BishopsGraph", [IsPosInt, IsPosInt]);
+DeclareOperation("BishopsGraph", [IsFunction, IsPosInt, IsPosInt]);
+DeclareSynonym("BishopGraph", BishopsGraph);
+
 DeclareConstructor("KnightsGraphCons", [IsDigraph, IsPosInt, IsPosInt]);
 DeclareOperation("KnightsGraph", [IsPosInt, IsPosInt]);
 DeclareOperation("KnightsGraph", [IsFunction, IsPosInt, IsPosInt]);

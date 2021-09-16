@@ -450,6 +450,129 @@ gap> OutNeighbors(D);
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="QueensGraph">
+<ManSection>
+  <Oper Name="QueensGraph" Arg="[filt, ]m, n"/>
+  <Oper Name="QueenGraph" Arg="[filt, ]m, n"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>m</A> and <A>n</A> are positive integers, then this operation returns
+    the <E>queen's graph</E> of an <A>m</A> by <A>n</A> chessboard,
+    as a symmetric digraph.
+    <P/>
+
+    A queen's graph represents the movement of the queen
+    chess-piece accross a chessboard. Each vertex of the queen's graph represents
+    a square on the chessboard, while each edge represents a single legal
+    chess move that the queen piece can take to move from one square to another.
+    The dimensions of the board are given in squares, with every board containing at
+    minimum the A1 square (which is dark colored). A legal queen's move is defined as
+    any move which moves the queen piece to an adjacent square or to a square
+    which can be reached through a series of moves to adjacent squares, with all of these
+    small moves being in the same direction.<P/>
+
+    &STANDARD_FILT_TEXT;
+    
+<Example><![CDATA[
+gap> QueensGraph(2, 5);
+<immutable connected symmetric digraph with 10 vertices, 66 edges>
+gap> D := QueensGraph(4, 3);
+<immutable connected symmetric digraph with 12 vertices, 92 edges>
+gap> IsRegularDigraph(D);
+false
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="RooksGraph">
+<ManSection>
+  <Oper Name="RooksGraph" Arg="[filt, ]m, n"/>
+  <Oper Name="RookGraph" Arg="[filt, ]m, n"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>m</A> and <A>n</A> are positive integers, then this operation returns
+    the <E>rook's graph</E> of an <A>m</A> by <A>n</A> chessboard,
+    as a symmetric digraph.
+    <P/>
+
+    From
+    <URL>https://en.wikipedia.org/wiki/Rook%27s_graph</URL>:
+    <P/>
+
+    <Q>A rook's graph is a graph that represents all legal moves of the rook 
+    chess-piece on a chessboard. Each vertex of a rook's graph represents a 
+    square on a chessboard, and each edge represents a legal move from one square 
+    to another. The same graphs can be defined mathematically as the Cartesian 
+    products of two complete graphs or as the line graphs of complete bipartite 
+    graphs. </Q>
+    <P/>
+
+    See
+    <Ref Func="DigraphCartesianProduct" Label="for a list of digraphs"/> and
+    <Ref Oper="LineDigraph"/>. <P/>
+
+    &STANDARD_FILT_TEXT;
+
+<Example><![CDATA[
+gap> D := RooksGraph(7, 4);
+<immutable connected regular symmetric digraph with 28 vertices, 252 e\
+dges>
+gap> RooksGraph(1, 8);
+<immutable connected regular symmetric digraph with 8 vertices, 56 edg\
+es>
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="BishopsGraph">
+<ManSection>
+  <Oper Name="BishopsGraph" Arg="[filt, ][color, ]m, n"/>
+  <Oper Name="BishopGraph" Arg="[filt, ][color, ]m, n"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>m</A> and <A>n</A> are positive integers, then this operation returns
+    the <E>bishop's graph</E> of an <A>m</A> by <A>n</A> chessboard,
+    as a symmetric digraph.
+    <P/>
+
+    A bishop's graph is the symmetric digraph which represents the movement of
+    the bishop chess piece accross a chessboard.
+    Each vertex of the bishop's graph represents a square on the chessboard,
+    while each edge represents a single legal chess move that the bishop piece
+    can take to move from one square to another.
+    The dimensions of the board are given in squares, with every board
+    containing at minimum the A1 square (which is dark colored).
+    A legal bishop's move is defined as any move which moves the bishop piece to
+    a diagonally adjacent square or to a square which can be reached through a
+    series of moves to a diagonally adjacent square, with all of these small
+    moves being in the same direction.<P/>
+
+    If the optional second argument <A>color</A> is present, then this should
+    be one of the strings <C>"dark"</C> or <C>"light"</C>. When this argument
+    is not included, the function will return a disconnected digraph (except in the case of
+    a 1-by-1 board) showing in one component all of the squares reachable by the
+    light-square bishop, and in the other component all of the squares reachable by the
+    dark-square bishop. If <A>color</A> is specified, then the function will return only
+    the relevant component as a stand-alone digraph.<P/>
+    
+    &STANDARD_FILT_TEXT;
+
+<Example><![CDATA[
+gap> D := BishopsGraph("dark", 3, 5);
+<immutable connected symmetric digraph with 8 vertices, 24 edges>
+gap> IsConnectedDigraph(D);       
+true
+gap> BishopsGraph("light", 4, 4);
+<immutable connected symmetric digraph with 8 vertices, 28 edges>
+gap> D := BishopsGraph("dark", 1, 5);
+<immutable empty digraph with 3 vertices>
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="KnightsGraph">
 <ManSection>
   <Oper Name="KnightsGraph" Arg="[filt, ]m, n"/>

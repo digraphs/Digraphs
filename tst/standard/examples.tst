@@ -302,6 +302,57 @@ gap> D := KingsGraph(2, 2);
 gap> OutNeighbors(D);     
 [ [ 2, 3, 4 ], [ 1, 4, 3 ], [ 4, 1, 2 ], [ 3, 2, 1 ] ]
 
+#  QueensDigraph
+gap> QueensGraph(5, 2);
+<immutable connected symmetric digraph with 10 vertices, 66 edges>
+gap> QueensGraph(3, 4);
+<immutable connected symmetric digraph with 12 vertices, 92 edges>
+gap> D := QueensGraph(2, 3);
+<immutable connected symmetric digraph with 6 vertices, 26 edges>
+gap> OutNeighbours(D);
+[ [ 2, 3, 4, 5 ], [ 1, 3, 5, 4, 6 ], [ 1, 2, 6, 5 ], [ 5, 6, 1, 2 ], 
+  [ 4, 6, 2, 1, 3 ], [ 4, 5, 3, 2 ] ]
+
+#  RooksDigraph
+gap> RooksGraph(4, 8);
+<immutable connected regular symmetric digraph with 32 vertices, 320 edges>
+gap> D := RooksGraph(3, 2);
+<immutable connected regular symmetric digraph with 6 vertices, 18 edges>
+gap> IsPlanarDigraph(D);
+true
+gap> OutNeighbours(D);
+[ [ 2, 3, 5 ], [ 1, 4, 6 ], [ 4, 1, 5 ], [ 3, 2, 6 ], [ 6, 1, 3 ], 
+  [ 5, 2, 4 ] ]
+
+#  BishopsDigraph
+gap> D := BishopsGraph("dark", 7, 9);
+<immutable connected symmetric digraph with 32 vertices, 272 edges>
+gap> IsConnectedDigraph(D);
+true
+gap> DigraphVertexLabels(D);         
+[ [ 1, 1 ], [ 3, 1 ], [ 5, 1 ], [ 7, 1 ], [ 9, 1 ], [ 2, 2 ], [ 4, 2 ], 
+  [ 6, 2 ], [ 8, 2 ], [ 1, 3 ], [ 3, 3 ], [ 5, 3 ], [ 7, 3 ], [ 9, 3 ], 
+  [ 2, 4 ], [ 4, 4 ], [ 6, 4 ], [ 8, 4 ], [ 1, 5 ], [ 3, 5 ], [ 5, 5 ], 
+  [ 7, 5 ], [ 9, 5 ], [ 2, 6 ], [ 4, 6 ], [ 6, 6 ], [ 8, 6 ], [ 1, 7 ], 
+  [ 3, 7 ], [ 5, 7 ], [ 7, 7 ], [ 9, 7 ] ]
+gap> D := BishopGraph("light", 4, 3);
+<immutable connected symmetric digraph with 6 vertices, 16 edges>
+gap> OutNeighbours(D);
+[ [ 2, 3 ], [ 1, 4, 6 ], [ 1, 4, 5 ], [ 2, 3, 5, 6 ], [ 3, 4 ], [ 2, 4 ] ]
+gap> BishopsGraph("blue", 8, 4);
+Error, the argument <color> must be either "dark" or "light".
+gap> D := BishopsGraph(5, 4);       
+<immutable symmetric digraph with 20 vertices, 80 edges>
+gap> IsConnectedDigraph(D);
+false
+gap> OutNeighbours(D);
+[ [ 6, 11, 16 ], [ 5, 7, 12 ], [ 6, 8, 9 ], [ 7, 10, 13 ], [ 2, 10, 15, 20 ], 
+  [ 1, 3, 9, 11, 16 ], [ 2, 4, 10, 12, 13 ], [ 3, 11, 14, 17 ], 
+  [ 3, 6, 14, 19 ], [ 4, 5, 7, 13, 15, 20 ], [ 1, 6, 8, 14, 16, 17 ], 
+  [ 2, 7, 15, 18 ], [ 4, 7, 10, 18 ], [ 8, 9, 11, 17, 19 ], 
+  [ 5, 10, 12, 18, 20 ], [ 1, 6, 11, 19 ], [ 8, 11, 14 ], [ 12, 13, 15 ], 
+  [ 9, 14, 16 ], [ 5, 10, 15 ] ]
+
 #  Knight's Graph
 gap> D := KnightsGraph(8, 8);
 <immutable connected symmetric digraph with 64 vertices, 336 edges>
