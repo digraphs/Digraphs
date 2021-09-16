@@ -99,6 +99,9 @@
     <#Include Label="TriangularGridGraph">
     <#Include Label="HaarGraph">
     <#Include Label="KingsGraph">
+    <#Include Label="QueensGraph">
+    <#Include Label="RooksGraph">
+    <#Include Label="BishopsGraph">
     <#Include Label="KnightsGraph">
     <#Include Label="StarGraph">
     <#Include Label="TadpoleGraph">

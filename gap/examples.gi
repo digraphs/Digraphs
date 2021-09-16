@@ -553,6 +553,215 @@ InstallMethod(KingsGraph, "two positive integers",
 [IsPosInt, IsPosInt],
 {n, k} -> KingsGraphCons(IsImmutableDigraph, n, k));
 
+InstallMethod(QueensGraphCons,
+"for IsMutableDigraph and two integers",
+[IsMutableDigraph, IsPosInt, IsPosInt],
+function(filt, m, n)
+  local D1, D2;
+  D1 := RooksGraphCons(IsMutableDigraph, m, n);
+  D2 := BishopsGraphCons(IsMutableDigraph, m, n);
+  return DigraphEdgeUnion(D1, D2);
+end);
+
+InstallMethod(QueensGraphCons,
+"for IsImmutableDigraph and two positive integers",
+[IsImmutableDigraph, IsPosInt, IsPosInt],
+function(filt, m, n)
+  local D;
+  D := MakeImmutable(QueensGraphCons(IsMutableDigraph, m, n));
+  SetIsMultiDigraph(D, false);
+  SetIsSymmetricDigraph(D, true);
+  SetIsConnectedDigraph(D, true);
+  return D;
+end);
+
+InstallMethod(QueensGraph,
+"for a function and two positive integers",
+[IsFunction, IsPosInt, IsPosInt],
+QueensGraphCons);
+
+InstallMethod(QueensGraph, "for two positive integers",
+[IsPosInt, IsPosInt],
+{m, n} -> QueensGraphCons(IsImmutableDigraph, m, n));
+
+InstallMethod(RooksGraphCons,
+"for IsMutableDigraph and two positive integers",
+[IsMutableDigraph, IsPosInt, IsPosInt],
+function(filt, m, n)
+  local completeD1, completeD2;
+  completeD1 := CompleteDigraph(IsMutableDigraph, n);
+  completeD2 := CompleteDigraph(m);
+  return DigraphCartesianProduct(completeD1, completeD2);
+end);
+
+InstallMethod(RooksGraphCons,
+"for IsImmutableDigraph and two positive integers",
+[IsImmutableDigraph, IsPosInt, IsPosInt],
+function(filt, m, n)
+  local D;
+  D := MakeImmutable(RooksGraphCons(IsMutableDigraph, m, n));
+  SetIsMultiDigraph(D, false);
+  SetIsSymmetricDigraph(D, true);
+  SetIsConnectedDigraph(D, true);
+  SetIsRegularDigraph(D, true);
+  SetIsPlanarDigraph(D, m + n < 6);
+  return D;
+end);
+
+InstallMethod(RooksGraph,
+"for a function and two positive integers",
+[IsFunction, IsPosInt, IsPosInt],
+RooksGraphCons);
+
+InstallMethod(RooksGraph, "for two positive integers",
+[IsPosInt, IsPosInt],
+{m, n} -> RooksGraphCons(IsImmutableDigraph, m, n));
+
+InstallMethod(BishopsGraphCons,
+"for IsMutableDigraph, a string and two positive integers",
+[IsMutableDigraph, IsString, IsPosInt, IsPosInt],
+function(filt, color, m, n)
+  local D1, D2, i, j, v, vertices, map, pos, labels;
+
+  if not (color = "dark" or color = "light") then
+    ErrorNoReturn(
+    "the argument <color> must be either \"dark\" or \"light\".");
+  fi;
+
+  vertices := EuclideanQuotient(m * n, 2);
+
+  if IsOddInt(m * n) and color = "dark" then
+    vertices := vertices + 1;
+  fi;
+
+  D1 := EmptyDigraph(IsMutableDigraph, vertices);
+  D2 := EmptyDigraph(IsMutableDigraph, vertices);
+
+  map := function(a)
+    return QuoInt(a + 1, 2);
+  end;
+
+  pos := function(a)
+    if RemInt(a, n) = 0 then
+      return QuotientRemainder(a, n) + [0, n];
+    else
+      return QuotientRemainder(a, n) + [1, 0];
+    fi;
+  end;
+
+  labels := [];
+
+  for i in [1 .. m] do
+    for j in [1 .. n] do
+      if IsEvenInt(i + j) and color = "dark"
+          or IsOddInt(i + j) and color = "light" then
+        Add(labels, Reversed(pos((i - 1) * n + j)));
+      fi;
+    od;
+  od;
+
+  for i in [1 .. (m - 1)] do
+    for j in [1 .. (n - 1)] do
+      if IsEvenInt(i + j) and color = "dark"
+          or IsOddInt(i + j) and color = "light" then
+        v := (i - 1) * n + j;
+        DigraphAddEdge(D1, [map(v), map(v + n + 1)]);
+      elif IsEvenInt(i + j) and color = "light"
+          or IsOddInt(i + j) and color = "dark" then
+        v := (i - 1) * n + j + 1;
+        DigraphAddEdge(D2, [map(v), map(v + n - 1)]);
+      fi;
+    od;
+  od;
+
+  DigraphTransitiveClosure(D1);
+  DigraphTransitiveClosure(D2);
+  DigraphEdgeUnion(D1, D2);
+  SetDigraphVertexLabels(D1, labels);
+  return DigraphSymmetricClosure(D1);
+end);
+
+InstallMethod(BishopsGraphCons,
+"for IsImmutableDigraph, a string and two positive integers",
+[IsImmutableDigraph, IsString, IsPosInt, IsPosInt],
+function(filt, color, m, n)
+  local D;
+  D := MakeImmutable(BishopsGraphCons(IsMutableDigraph, color, m, n));
+  SetIsMultiDigraph(D, false);
+  SetIsSymmetricDigraph(D, true);
+  SetIsConnectedDigraph(D, m > 1 or n > 1);
+  return D;
+end);
+
+InstallMethod(BishopsGraph,
+"for a function, a string and two positive integers",
+[IsFunction, IsString, IsPosInt, IsPosInt],
+BishopsGraphCons);
+
+InstallMethod(BishopsGraph, "for a string and two positive integers",
+[IsString, IsPosInt, IsPosInt],
+{color, m, n} -> BishopsGraphCons(IsImmutableDigraph, color, m, n));
+
+InstallMethod(BishopsGraphCons,
+"for IsMutableDigraph and two positive integers",
+[IsMutableDigraph, IsPosInt, IsPosInt],
+function(filt, m, n)
+  local D1, D2, i, j, v, pos, labels;
+
+  D1 := EmptyDigraph(IsMutableDigraph, m * n);
+  D2 := EmptyDigraph(IsMutableDigraph, m * n);
+
+  pos := function(a)
+    if RemInt(a, n) = 0 then
+      return QuotientRemainder(a, n) + [0, n];
+    else
+      return QuotientRemainder(a, n) + [1, 0];
+    fi;
+  end;
+
+  labels := [];
+
+  for i in [1 .. m * n] do
+    Add(labels, Reversed(pos(i)));
+  od;
+
+  for i in [1 .. (m - 1)] do
+    for j in [1 .. (n - 1)] do
+      v := (i - 1) * n + j;
+      DigraphAddEdge(D1, [v, v + n + 1]);
+      v := (i - 1) * n + j + 1;
+      DigraphAddEdge(D2, [v, v + n - 1]);
+    od;
+  od;
+
+  DigraphTransitiveClosure(D1);
+  DigraphTransitiveClosure(D2);
+  DigraphEdgeUnion(D1, D2);
+  SetDigraphVertexLabels(D1, labels);
+  return DigraphSymmetricClosure(D1);
+end);
+
+InstallMethod(BishopsGraphCons,
+"for IsImmutableDigraph and two positive integers",
+[IsImmutableDigraph, IsPosInt, IsPosInt],
+function(filt, m, n)
+  local D;
+  D := MakeImmutable(BishopsGraphCons(IsMutableDigraph, m, n));
+  SetIsMultiDigraph(D, false);
+  SetIsSymmetricDigraph(D, true);
+  SetIsConnectedDigraph(D, m * n = 1);
+  return D;
+end);
+
+InstallMethod(BishopsGraph,
+"for a function and two positive integers",
+[IsFunction, IsPosInt, IsPosInt],
+BishopsGraphCons);
+
+InstallMethod(BishopsGraph, "for two positive integers",
+[IsPosInt, IsPosInt],
+{m, n} -> BishopsGraphCons(IsImmutableDigraph, m, n));
+
 InstallMethod(KnightsGraphCons,
 "for IsMutableDigraph and two positive integers",
 [IsMutableDigraph, IsPosInt, IsPosInt],
