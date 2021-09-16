@@ -588,10 +588,10 @@ InstallMethod(RooksGraphCons,
 "for IsMutableDigraph and two positive integers",
 [IsMutableDigraph, IsPosInt, IsPosInt],
 function(filt, m, n)
-  local completeD1, completeD2;
-  completeD1 := CompleteDigraph(IsMutableDigraph, n);
-  completeD2 := CompleteDigraph(m);
-  return DigraphCartesianProduct(completeD1, completeD2);
+  local D1, D2;
+  D1 := CompleteDigraph(IsMutableDigraph, m);
+  D2 := CompleteDigraph(n);
+  return DigraphCartesianProduct(D1, D2);
 end);
 
 InstallMethod(RooksGraphCons,
@@ -621,63 +621,82 @@ InstallMethod(BishopsGraphCons,
 "for IsMutableDigraph, a string and two positive integers",
 [IsMutableDigraph, IsString, IsPosInt, IsPosInt],
 function(filt, color, m, n)
-  local D1, D2, i, j, v, vertices, map, pos, labels;
+  local both, dark, nr, D1, D2, upL, inc, step, labels, v, not_final_row, i, j,
+        is_dark_square, range;
 
-  if not (color = "dark" or color = "light") then
-    ErrorNoReturn(
-    "the argument <color> must be either \"dark\" or \"light\".");
+  if not color in ["dark", "light", "both"] then
+    DError(["the argument <color> must be {}, {}, or {}"],
+            "\"dark\"", "\"light\"", "\"both\"");
   fi;
 
-  vertices := EuclideanQuotient(m * n, 2);
+  # Set up booleans for whether to include dark and/or light squares
+  both  := color = "both";
+  dark  := both or color = "dark";
 
-  if IsOddInt(m * n) and color = "dark" then
-    vertices := vertices + 1;
-  fi;
-
-  D1 := EmptyDigraph(IsMutableDigraph, vertices);
-  D2 := EmptyDigraph(IsMutableDigraph, vertices);
-
-  map := function(a)
-    return QuoInt(a + 1, 2);
-  end;
-
-  pos := function(a)
-    if RemInt(a, n) = 0 then
-      return QuotientRemainder(a, n) + [0, n];
-    else
-      return QuotientRemainder(a, n) + [1, 0];
+  # Set up two empty digraphs to hold the differently oriented diagonal edges
+  # "both" => return a digraph with all m * n vertices, else return only half
+  if both then
+    nr := m * n;
+  else
+    nr := EuclideanQuotient(m * n, 2);
+    if dark and IsOddInt(m) and IsOddInt(n) then
+      nr := nr + 1;
     fi;
-  end;
+  fi;
+  D1 := EmptyDigraph(IsMutableDigraph, nr);  # bottom left/top right diagonal
+  D2 := EmptyDigraph(IsMutableDigraph, nr);  # bottom right/top left diagonal
+
+  # Set up a function for computing the increments from a vertex to its top-left
+  # and top-right neighbours, based on the current position in the grid.
+  if both then
+    upL := {v, j, is_dark_square} -> v + m - 1;
+    inc := 2;
+  else
+    if IsOddInt(m) then
+      step := EuclideanQuotient(m - 1, 2);
+      upL := {v, j, is_dark_square} -> v + step;
+    else
+      step := m / 2;
+      upL := function(v, j, is_dark_square)
+        if IsOddInt(j) = is_dark_square then
+          return v + step - 1;
+        else
+          return v + step;
+        fi;
+      end;
+    fi;
+    inc := 1;
+  fi;
 
   labels := [];
-
-  for i in [1 .. m] do
-    for j in [1 .. n] do
-      if IsEvenInt(i + j) and color = "dark"
-          or IsOddInt(i + j) and color = "light" then
-        Add(labels, Reversed(pos((i - 1) * n + j)));
+  v := 0;
+  for j in [1 .. n] do
+    not_final_row := j < n;
+    is_dark_square := IsOddInt(j);
+    for i in [1 .. m] do
+      # Decide whether the square [i, j] appears in the digraph
+      if both or (dark = is_dark_square) then
+        Add(labels, [i, j]);
+        v := v + 1;
+        if not_final_row then  # Add edges from v to its neighbours in next row
+          range := upL(v, j, is_dark_square);
+          if i > 1 then
+            DigraphAddEdge(D2, v, range);        # Diagonally up+left
+          fi;
+          if i < m then
+            DigraphAddEdge(D1, v, range + inc);  # Diagonally up+right
+          fi;
+        fi;
       fi;
+      is_dark_square := not is_dark_square;
     od;
   od;
-
-  for i in [1 .. (m - 1)] do
-    for j in [1 .. (n - 1)] do
-      if IsEvenInt(i + j) and color = "dark"
-          or IsOddInt(i + j) and color = "light" then
-        v := (i - 1) * n + j;
-        DigraphAddEdge(D1, [map(v), map(v + n + 1)]);
-      elif IsEvenInt(i + j) and color = "light"
-          or IsOddInt(i + j) and color = "dark" then
-        v := (i - 1) * n + j + 1;
-        DigraphAddEdge(D2, [map(v), map(v + n - 1)]);
-      fi;
-    od;
-  od;
+  SetDigraphVertexLabels(D1, labels);
+  Assert(0, v = nr);
 
   DigraphTransitiveClosure(D1);
   DigraphTransitiveClosure(D2);
   DigraphEdgeUnion(D1, D2);
-  SetDigraphVertexLabels(D1, labels);
   return DigraphSymmetricClosure(D1);
 end);
 
@@ -689,7 +708,7 @@ function(filt, color, m, n)
   D := MakeImmutable(BishopsGraphCons(IsMutableDigraph, color, m, n));
   SetIsMultiDigraph(D, false);
   SetIsSymmetricDigraph(D, true);
-  SetIsConnectedDigraph(D, m > 1 or n > 1);
+  SetIsConnectedDigraph(D, color <> "both" and (m > 1 or n > 1));
   return D;
 end);
 
@@ -705,48 +724,14 @@ InstallMethod(BishopsGraph, "for a string and two positive integers",
 InstallMethod(BishopsGraphCons,
 "for IsMutableDigraph and two positive integers",
 [IsMutableDigraph, IsPosInt, IsPosInt],
-function(filt, m, n)
-  local D1, D2, i, j, v, pos, labels;
-
-  D1 := EmptyDigraph(IsMutableDigraph, m * n);
-  D2 := EmptyDigraph(IsMutableDigraph, m * n);
-
-  pos := function(a)
-    if RemInt(a, n) = 0 then
-      return QuotientRemainder(a, n) + [0, n];
-    else
-      return QuotientRemainder(a, n) + [1, 0];
-    fi;
-  end;
-
-  labels := [];
-
-  for i in [1 .. m * n] do
-    Add(labels, Reversed(pos(i)));
-  od;
-
-  for i in [1 .. (m - 1)] do
-    for j in [1 .. (n - 1)] do
-      v := (i - 1) * n + j;
-      DigraphAddEdge(D1, [v, v + n + 1]);
-      v := (i - 1) * n + j + 1;
-      DigraphAddEdge(D2, [v, v + n - 1]);
-    od;
-  od;
-
-  DigraphTransitiveClosure(D1);
-  DigraphTransitiveClosure(D2);
-  DigraphEdgeUnion(D1, D2);
-  SetDigraphVertexLabels(D1, labels);
-  return DigraphSymmetricClosure(D1);
-end);
+{filt, m, n} -> BishopsGraphCons(IsMutableDigraph, "both", m, n));
 
 InstallMethod(BishopsGraphCons,
 "for IsImmutableDigraph and two positive integers",
 [IsImmutableDigraph, IsPosInt, IsPosInt],
 function(filt, m, n)
   local D;
-  D := MakeImmutable(BishopsGraphCons(IsMutableDigraph, m, n));
+  D := MakeImmutable(BishopsGraphCons(IsMutableDigraph, "both", m, n));
   SetIsMultiDigraph(D, false);
   SetIsSymmetricDigraph(D, true);
   SetIsConnectedDigraph(D, m * n = 1);
@@ -766,26 +751,28 @@ InstallMethod(KnightsGraphCons,
 "for IsMutableDigraph and two positive integers",
 [IsMutableDigraph, IsPosInt, IsPosInt],
 function(filt, m, n)
-  local D, moveOffSets, coordinates, target, i, j, iPos;
+  local D, moves, labels, v, r, s, range, j, i, move;
+
   D := EmptyDigraph(IsMutableDigraph, m * n);
-  moveOffSets := [[2, 1], [-2, 1], [2, -1], [-2, -1],
-  [1, 2], [-1, 2], [1, -2], [-1, -2]];
-  coordinates := [];
-  for i in [1 .. n] do
-    for j in [1 .. m] do
-      Add(coordinates, [i, j]);
+  moves := [[2, 1], [-2, 1], [1, 2], [-1, 2]];
+  labels := [];
+  v := 0;
+  for j in [1 .. n] do
+    for i in [1 .. m] do
+      Add(labels, [i, j]);  # Considering moves up from [i,j] or down to [i,j]
+      v := v + 1;           # Square [i,j] <-> vertex v
+      for move in moves do
+        r := i + move[1];
+        s := j + move[2];
+        if r in [1 .. m] and s <= n then  # Does the move leave us on the board?
+          range := (s - 1) * m + r;
+          DigraphAddEdge(D, v, range);
+          DigraphAddEdge(D, range, v);
+        fi;
+      od;
     od;
   od;
-  iPos := 0;
-  for i in coordinates do
-    iPos := iPos + 1;
-    for j in moveOffSets do
-      target := [i[1] + j[1], i[2] + j[2]];
-      if target[1] in [1 .. n] and target[2] in [1 .. m] then
-        DigraphAddEdge(D, [iPos, (target[1] - 1) * m + target[2]]);
-      fi;
-    od;
-  od;
+  SetDigraphVertexLabels(D, labels);
   return D;
 end);
 
