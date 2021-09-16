@@ -294,58 +294,6 @@ gap> LollipopGraph(IsMutableDigraph, 3, 8);
 </ManSection>
 <#/GAPDoc>
 
-<#GAPDoc Label="KingsGraph">
-<ManSection>
-  <Oper Name="KingsGraph" Arg="[filt, ]n, k"/>
-  <Returns>A digraph.</Returns>
-  <Description>
-    If <A>n</A> and <A>k</A> are positive integers,
-    then this operation returns
-    the <E>king's graph</E> of an <A>n</A> by <A>k</A> board. <P/>
-
-    From
-    <URL>https://en.wikipedia.org/wiki/King%27s_graph</URL>:
-    <P/>
-
-    <Q>In graph theory, a king's graph is a graph that represents all legal 
-    moves of the king chess piece on a chessboard where each vertex represents 
-    a square on a chessboard and each edge is a legal move. More specifically, 
-    an <A>n</A> by <A>k</A> king's graph is a king's graph of an <A>n</A> by
-    <A>k</A> chessboard. It is the map graph formed from the squares of a chessboard 
-    by making a vertex for each square and an edge for each two squares that 
-    share an edge or a corner. It can also be constructed as the strong product 
-    of two path graphs.</Q>
-    <P/>
-
-    In particular, the <C><A>n</A> * <A>k</A></C>  vertices can be arranged
-    into an <A>n</A> by <A>k</A> grid such that two vertices are adjacent in
-    the digraph if and only if they are orthogonally or diagonally adjacent in the grid.
-    The correspondence between vertices and grid positions is given by
-    <Ref Oper="DigraphVertexLabels"/>.  <P/>
-
-    See also <Ref Oper="SquareGridGraph"/> and
-    <Ref Oper="TriangularGridGraph"/>. <P/>
-
-    &STANDARD_FILT_TEXT;
-
-    <Example><![CDATA[
-gap> KingsGraph(8, 8);
-<immutable connected symmetric digraph with 64 vertices, 420 edges>
-gap> D := KingsGraph(IsMutable, 2, 7);
-<mutable digraph with 14 vertices, 62 edges>
-gap> IsPlanarDigraph(D);
-true
-gap> D := KingsGraph(3, 3);
-<immutable connected symmetric digraph with 9 vertices, 40 edges>
-gap> OutNeighbors(D);
-[ [ 2, 4, 5 ], [ 1, 3, 5, 4, 6 ], [ 2, 6, 5 ], [ 5, 1, 7, 2, 8 ], 
-  [ 4, 6, 2, 8, 3, 7, 1, 9 ], [ 5, 3, 9, 8, 2 ], [ 8, 4, 5 ], 
-  [ 7, 9, 5, 6, 4 ], [ 8, 6, 5 ] ]
-]]></Example>
-  </Description>
-</ManSection>
-<#/GAPDoc>
-
 <#GAPDoc Label="SquareGridGraph">
 <ManSection>
   <Oper Name="SquareGridGraph" Arg="[filt, ]n, k"/>
@@ -445,6 +393,58 @@ gap> IsSymmetricDigraph(StarGraph(3));
 true
 gap> IsUndirectedTree(StarGraph(3));
 true
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="KingsGraph">
+<ManSection>
+  <Oper Name="KingsGraph" Arg="[filt, ]n, k"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>n</A> and <A>k</A> are positive integers,
+    then this operation returns
+    the <E>king's graph</E> of an <A>n</A> by <A>k</A> board. <P/>
+
+    From
+    <URL>https://en.wikipedia.org/wiki/King%27s_graph</URL>:
+    <P/>
+
+    <Q>In graph theory, a king's graph is a graph that represents all legal 
+    moves of the king chess piece on a chessboard where each vertex represents 
+    a square on a chessboard and each edge is a legal move. More specifically, 
+    an <A>n</A> by <A>k</A> king's graph is a king's graph of an <A>n</A> by
+    <A>k</A> chessboard. It is the map graph formed from the squares of a chessboard 
+    by making a vertex for each square and an edge for each two squares that 
+    share an edge or a corner. It can also be constructed as the strong product 
+    of two path graphs.</Q>
+    <P/>
+
+    In particular, the <C><A>n</A> * <A>k</A></C>  vertices can be arranged
+    into an <A>n</A> by <A>k</A> grid such that two vertices are adjacent in
+    the digraph if and only if they are orthogonally or diagonally adjacent in the grid.
+    The correspondence between vertices and grid positions is given by
+    <Ref Oper="DigraphVertexLabels"/>.  <P/>
+
+    See also <Ref Oper="SquareGridGraph"/> and
+    <Ref Oper="TriangularGridGraph"/>. <P/>
+
+    &STANDARD_FILT_TEXT;
+
+    <Example><![CDATA[
+gap> KingsGraph(8, 8);
+<immutable connected symmetric digraph with 64 vertices, 420 edges>
+gap> D := KingsGraph(IsMutable, 2, 7);
+<mutable digraph with 14 vertices, 62 edges>
+gap> IsPlanarDigraph(D);
+true
+gap> D := KingsGraph(3, 3);
+<immutable connected symmetric digraph with 9 vertices, 40 edges>
+gap> OutNeighbors(D);
+[ [ 2, 4, 5 ], [ 1, 3, 5, 4, 6 ], [ 2, 6, 5 ], [ 5, 1, 7, 2, 8 ], 
+  [ 4, 6, 2, 8, 3, 7, 1, 9 ], [ 5, 3, 9, 8, 2 ], [ 8, 4, 5 ], 
+  [ 7, 9, 5, 6, 4 ], [ 8, 6, 5 ] ]
 ]]></Example>
   </Description>
 </ManSection>

@@ -244,18 +244,6 @@ gap> DigraphUndirectedGirth(D);
 gap> LollipopGraph(IsMutableDigraph, 5, 3);
 <mutable digraph with 8 vertices, 26 edges>
 
-#  KingsGraph
-gap> KingsGraph(8, 8);
-<immutable connected symmetric digraph with 64 vertices, 420 edges>
-gap> D := KingsGraph(4, 7);
-<immutable connected symmetric digraph with 28 vertices, 162 edges>
-gap> IsConnectedDigraph(D);
-true
-gap> D := KingsGraph(2, 2);
-<immutable connected symmetric digraph with 4 vertices, 12 edges>
-gap> OutNeighbors(D);     
-[ [ 2, 3, 4 ], [ 1, 4, 3 ], [ 4, 1, 2 ], [ 3, 2, 1 ] ]
-
 #  SquareGridGraph
 gap> SquareGridGraph(7, 7);
 <immutable connected bipartite symmetric digraph with bicomponent sizes 25 and\
@@ -301,6 +289,18 @@ gap> IsSymmetricDigraph(StarGraph(3));
 true
 gap> IsMultiDigraph(StarGraph(3));
 false
+
+#  KingsGraph
+gap> KingsGraph(8, 8);
+<immutable connected symmetric digraph with 64 vertices, 420 edges>
+gap> D := KingsGraph(4, 7);
+<immutable connected symmetric digraph with 28 vertices, 162 edges>
+gap> IsConnectedDigraph(D);
+true
+gap> D := KingsGraph(2, 2);
+<immutable connected symmetric digraph with 4 vertices, 12 edges>
+gap> OutNeighbors(D);     
+[ [ 2, 3, 4 ], [ 1, 4, 3 ], [ 4, 1, 2 ], [ 3, 2, 1 ] ]
 
 #  Knight's Graph
 gap> D := KnightsGraph(8, 8);
