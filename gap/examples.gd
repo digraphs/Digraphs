@@ -118,3 +118,11 @@ DeclareOperation("StackedBookGraph", [IsFunction, IsPosInt, IsPosInt]);
 DeclareConstructor("BinaryTreeCons", [IsDigraph, IsPosInt]);
 DeclareOperation("BinaryTree", [IsPosInt]);
 DeclareOperation("BinaryTree", [IsFunction, IsPosInt]);
+
+DeclareConstructor("PancakeGraphCons", [IsDigraph, IsPosInt]);
+DeclareOperation("PancakeGraph", [IsPosInt]);
+DeclareOperation("PancakeGraph", [IsFunction, IsPosInt]);
+
+DeclareConstructor("BurntPancakeGraphCons", [IsDigraph, IsPosInt]);
+DeclareOperation("BurntPancakeGraph", [IsPosInt]);
+DeclareOperation("BurntPancakeGraph", [IsFunction, IsPosInt]);

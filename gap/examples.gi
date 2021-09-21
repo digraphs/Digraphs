@@ -989,3 +989,67 @@ depth -> BinaryTreeCons(IsImmutableDigraph, depth));
 
 InstallMethod(BinaryTree, "for a function and a positive integer",
 [IsFunction, IsPosInt], BinaryTreeCons);
+
+BindGlobal("DIGRAPHS_PrefixReversalGroup",
+function(n)
+  return Group(List([2 .. n], i -> PermList([i, i - 1 .. 1])), ());
+end);
+
+InstallMethod(PancakeGraphCons, "for IsMutableDigraph and pos int",
+[IsMutableDigraph, IsPosInt],
+{filt, n} -> CayleyDigraph(IsMutableDigraph, DIGRAPHS_PrefixReversalGroup(n)));
+
+InstallMethod(PancakeGraphCons, "for IsImmutableDigraph and pos int",
+[IsImmutableDigraph, IsPosInt],
+function(filt, n)
+  local D;
+  D := CayleyDigraph(IsImmutableDigraph, DIGRAPHS_PrefixReversalGroup(n));
+  SetIsMultiDigraph(D, false);
+  SetIsSymmetricDigraph(D, true);
+  SetIsHamiltonianDigraph(D, true);
+  return D;
+end);
+
+InstallMethod(PancakeGraph, "for a function and pos int",
+[IsFunction, IsPosInt], PancakeGraphCons);
+
+InstallMethod(PancakeGraph, "for a pos int",
+[IsPosInt], n -> PancakeGraphCons(IsImmutableDigraph, n));
+
+BindGlobal("DIGRAPHS_HyperoctahedralGroup",
+function(n)
+  local id, A, i;
+  if n = 1 then
+    return Group(());
+  fi;
+  id := [1 .. 2 * n];
+  A := [];
+  for i in [1 .. n] do
+    id{[1 .. i]} := [i + n, i - 1 + n .. 1 + n];
+    id{[n + 1 .. n + i]} := [i, i - 1 .. 1];
+    Add(A, PermList(id));
+  od;
+  return Group(A);
+end);
+
+InstallMethod(BurntPancakeGraphCons, "for IsMutableDigraph and pos int",
+[IsMutableDigraph, IsPosInt],
+{filt, n} -> CayleyDigraph(IsMutableDigraph, DIGRAPHS_HyperoctahedralGroup(n)));
+
+InstallMethod(BurntPancakeGraphCons, "for IsImmutableDigraph and pos int",
+[IsImmutableDigraph, IsPosInt],
+function(filt, n)
+  local D;
+  D := CayleyDigraph(IsImmutableDigraph, DIGRAPHS_HyperoctahedralGroup(n));
+  SetIsMultiDigraph(D, false);
+  SetIsSymmetricDigraph(D, true);
+  SetIsHamiltonianDigraph(D, true);
+  return D;
+end);
+
+InstallMethod(BurntPancakeGraph, "for a function and pos int",
+[IsFunction, IsPosInt], BurntPancakeGraphCons);
+
+InstallMethod(BurntPancakeGraph, "for a pos int",
+[IsPosInt], n -> BurntPancakeGraphCons(IsImmutableDigraph, n));
+

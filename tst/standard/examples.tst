@@ -467,6 +467,33 @@ true
 gap> BinaryTree(4);
 <immutable digraph with 15 vertices, 14 edges>
 
+# PancakeGraph
+gap> D := PancakeGraph(3);
+<immutable Hamiltonian connected symmetric digraph with 6 vertices, 12 edges>
+gap> ChromaticNumber(D);
+2
+gap> IsVertexTransitive(D);
+true
+gap> DigraphUndirectedGirth(D);
+6
+gap> IsHamiltonianDigraph(D);
+true
+gap> D := PancakeGraph(IsMutableDigraph, 1);
+<mutable empty digraph with 1 vertex>
+
+# BurntPancakeGraph
+gap> BurntPancakeGraph(3);
+<immutable Hamiltonian connected symmetric digraph with 48 vertices, 144 edges\
+>
+gap> BurntPancakeGraph(4);
+<immutable Hamiltonian connected symmetric digraph with 384 vertices, 1536 edg\
+es>
+gap> BurntPancakeGraph(5);
+<immutable Hamiltonian connected symmetric digraph with 3840 vertices, 19200 e\
+dges>
+gap> BurntPancakeGraph(IsMutableDigraph, 1);
+<mutable digraph with 1 vertex, 1 edge>
+
 #
 gap> DIGRAPHS_StopTest();
 gap> STOP_TEST("Digraphs package: standard/examples.tst", 0);

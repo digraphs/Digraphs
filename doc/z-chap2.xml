@@ -108,6 +108,7 @@
     <#Include Label="BookGraph">
     <#Include Label="StackedBookGraph">
     <#Include Label="BinaryTree">
+    <#Include Label="PancakeGraph">
   </Section>
 
 </Chapter>
