@@ -57,11 +57,6 @@ case $host_os in
          * ) CYGWIN=no;;
 esac
 AM_CONDITIONAL([SYS_IS_CYGWIN], [test "$CYGWIN" = "yes"])
-if test "$CYGWIN" = "yes"; then
-  AC_DEFINE(SYS_IS_CYGWIN32, 1, are we on CYGWIN?)
-else
-  AC_DEFINE(SYS_IS_CYGWIN32, 0, are we on CYGWIN?)
-fi
 
 dnl ## User setting: Debug mode (off by default)
 AC_ARG_ENABLE([debug],
