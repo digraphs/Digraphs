@@ -68,6 +68,16 @@ Persons := [
     Institution   := "Vrije Universiteit Brussel"),
 
   rec(
+    LastName      := "Buck",
+    FirstNames    := "Finn",
+    IsAuthor      := false,
+    IsMaintainer  := false,
+    Email         := "flb5@st-andrews.ac.uk",
+    PostalAddress := _STANDREWSMATHS,
+    Place         := "St Andrews",
+    Institution   := "University of St Andrews"),
+
+  rec(
     LastName      := "Burrell",
     FirstNames    := "Stuart",
     IsAuthor      := false,
@@ -90,11 +100,31 @@ Persons := [
     Institution   := "University of St Andrews"),
 
   rec(
+    LastName      := "Conti-Leslie",
+    FirstNames    := "Tom",
+    IsAuthor      := false,
+    IsMaintainer  := false,
+    Email         := "tdcl@st-andrews.ac.uk",
+    PostalAddress := _STANDREWSMATHS,
+    Place         := "St Andrews",
+    Institution   := "University of St Andrews"),
+
+  rec(
     LastName      := "Elliott",
     FirstNames    := "Luke",
     IsAuthor      := false,
     IsMaintainer  := false,
     Email         := "le27@st-andrews.ac.uk",
+    PostalAddress := _STANDREWSMATHS,
+    Place         := "St Andrews",
+    Institution   := "University of St Andrews"),
+
+  rec(
+    LastName      := "Gilligan",
+    FirstNames    := "Ewan",
+    IsAuthor      := false,
+    IsMaintainer  := false,
+    Email         := "eg207@st-andrews.ac.uk",
     PostalAddress := _STANDREWSMATHS,
     Place         := "St Andrews",
     Institution   := "University of St Andrews"),
@@ -170,6 +200,16 @@ rec(
     Institution   := "University of St Andrews"),
 
   rec(
+    LastName      := "Racine",
+    FirstNames    := "Lea",
+    IsAuthor      := false,
+    IsMaintainer  := false,
+    Email         := "lr217@st-andrews.ac.uk",
+    PostalAddress := _STANDREWSMATHS,
+    Place         := "St Andrews",
+    Institution   := "University of St Andrews"),
+
+  rec(
     LastName      := "Russell",
     FirstNames    := "Christopher",
     IsAuthor      := false,
@@ -185,6 +225,16 @@ rec(
     IsAuthor      := false,
     IsMaintainer  := false,
     Email         := "fls3@st-andrews.ac.uk",
+    PostalAddress := _STANDREWSMATHS,
+    Place         := "St Andrews",
+    Institution   := "University of St Andrews"),
+
+  rec(
+    LastName      := "Spiers",
+    FirstNames    := "Ben",
+    IsAuthor      := false,
+    IsMaintainer  := false,
+    Email         := "bs201@st-andrews.ac.uk",
     PostalAddress := _STANDREWSMATHS,
     Place         := "St Andrews",
     Institution   := "University of St Andrews"),
