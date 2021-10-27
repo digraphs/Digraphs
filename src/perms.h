@@ -2,11 +2,11 @@
 **
 *A  perms.h                  permutations                     Julius Jonusas
 **                                                            James Mitchell
-**                                                            Michael Torpey
 **                                                            Wilf A. Wilson
+**                                                            Michael Young
 **
-**  Copyright (C) 2014-15 - Julius Jonusas, James Mitchell, Michael Torpey,
-**  Wilf A. Wilson
+**  Copyright (C) 2014-15 - Julius Jonusas, James Mitchell, Wilf A. Wilson,
+**  Michael Young
 **
 **  This file is free software, see the digraphs/LICENSE.
 **

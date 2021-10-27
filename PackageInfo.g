@@ -190,17 +190,6 @@ rec(
     Institution   := "University of St Andrews"),
 
   rec(
-    LastName      := "Torpey",
-    FirstNames    := "Michael",
-    IsAuthor      := true,
-    IsMaintainer  := false,
-    Email         := "mct25@st-andrews.ac.uk",
-    WWWHome       := "https://mtorpey.github.io",
-    PostalAddress := _STANDREWSCS,
-    Place         := "St Andrews",
-    Institution   := "University of St Andrews"),
-
-  rec(
     LastName      := "Tsalakou",
     FirstNames    := "Maria",
     IsAuthor      := true,
@@ -227,7 +216,18 @@ rec(
     IsAuthor      := true,
     IsMaintainer  := true,
     Email         := "gap@wilf-wilson.net",
-    WWWHome       := "https://wilf.me")],
+    WWWHome       := "https://wilf.me"),
+
+  rec(
+    LastName      := "Young",
+    FirstNames    := "Michael",
+    IsAuthor      := true,
+    IsMaintainer  := false,
+    Email         := "mct25@st-andrews.ac.uk",
+    WWWHome       := "https://mct25.host.cs.st-andrews.ac.uk",
+    PostalAddress := _STANDREWSCS,
+    Place         := "St Andrews",
+    Institution   := "University of St Andrews")],
 
 Status := "deposited",
 

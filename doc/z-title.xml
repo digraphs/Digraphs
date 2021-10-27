@@ -17,11 +17,6 @@
     <Homepage>https://jdbm.me</Homepage>
   </Author>
 
-  <Author>Michael C. Torpey
-    <Email>mct25@st-andrews.ac.uk</Email>
-    <Homepage>https://mtorpey.github.io</Homepage>
-  </Author>
-
   <Author>Maria Tsalakou
     <Email>mt200@st-andrews.ac.uk</Email>
     <Homepage>https://mariatsalakou.github.io</Homepage>
@@ -30,6 +25,11 @@
   <Author>Wilf A. Wilson
     <Email>gap@wilf-wilson.net</Email>
     <Homepage>https://wilf.me</Homepage>
+  </Author>
+
+  <Author>Michael C. Young
+    <Email>mct25@st-andrews.ac.uk</Email>
+    <Homepage>https://mct25.host.cs.st-andrews.ac.uk</Homepage>
   </Author>
 
   <Author>Stuart Burrell</Author>
@@ -51,8 +51,8 @@
   <Author>Murray White</Author>
 
   <Copyright>&copyright; &COPYRIGHTYEARS; by
-    Jan De Beule, Julius Jonu&#353;as, James D. Mitchell, Michael
-    Torpey, Wilf A. Wilson et al.<P/>
+    Jan De Beule, Julius Jonu&#353;as, James D. Mitchell, Wilf A. Wilson,
+    Michael Young et al.<P/>
 
     &Digraphs; is free software; you can redistribute it and/or modify it
     under the terms of the <URL Text="GNU General Public License">
