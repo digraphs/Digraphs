@@ -379,6 +379,14 @@ gap> DotEdgeColoredDigraph(D, edgecolors);
 lor=pink]\n2 -> 4[color=purple]\n3 -> 1[color=lightblue]\n3 -> 2[color=pink]\n\
 3 -> 4[color=purple]\n4 -> 1[color=lightblue]\n4 -> 2[color=pink]\n4 -> 3[colo\
 r=purple]\n}\n"
+gap> DotEdgeColoredDigraph(CycleDigraph(3), []);
+Error, the list of edge colors needs to have the same shape as the out-neighbo\
+urs of the digraph
+gap> DotEdgeColoredDigraph(CycleDigraph(3), [[fail, fail], [fail], [fail]]);
+Error, the list of edge colors needs to have the same shape as the out-neighbo\
+urs of the digraph
+gap> DotEdgeColoredDigraph(CycleDigraph(3), [[fail], [fail], [fail]]);
+Error, expected a string
 
 # DotSymmetricVertexColoredDigraph
 gap> D := Digraph([[2], [1, 3], [2]]);
@@ -418,27 +426,43 @@ gap> dot;
 "//dot\ndigraph hgn{\nnode [shape=circle]\n1 [label=\"2\"]\n2 [label=\"2\"]\n3\
  [label=\"3\"]\n1 -> 1\n1 -> 2\n1 -> 2\n1 -> 3\n}\n"
 
-# The following tests can't be run because they fail if Semigroups is loaded
-# first
-#  Splash 
-#gap> Splash(1);
-#Error, Digraphs: Splash: usage,
-#<arg>[1] must be a string,
-#gap> Splash("string", 0);
-#Error, Digraphs: Splash: usage,
-#<arg>[2] must be a record,
-#gap> Splash("string");
-#Error, Digraphs: Splash: usage,
-#the option <type> must be "dot" or "latex",
-#gap> Splash("string", rec(path := "~/", filename := "filename"));
-#Error, Digraphs: Splash: usage,
-#the option <type> must be "dot" or "latex",
-#gap> Splash("string", rec(viewer := "xpdf"));
-#Error, Digraphs: Splash: usage,
-#the option <type> must be "dot" or "latex",
-#gap> Splash("string", rec(type := "dot", engine := "dott"));
-#Error, Digraphs: Splash: usage,
-#the option <engine> must be "dot", "neato", "twopi", "circo", "fdp", "sfdp", or "patchwork"
+# Splash 
+gap> Splash(1);
+Error, the 1st argument must be a string,
+gap> Splash("string", 0);
+Error, the 2nd argument must be a record,
+gap> Splash("string");
+Error, the component "type" of the 2nd argument <a record>  must be "dot" or "\
+latex",
+gap> Splash("string", rec(path := "~/", filename := "filename"));
+Error, the component "type" of the 2nd argument <a record>  must be "dot" or "\
+latex",
+gap> Splash("string", rec(viewer := "xpdf"));
+Error, the viewer "xpdf" specified in the option `viewer` is not available,
+gap> Splash("string", rec(type := "dot", engine := "dott"));
+Error, the component "engine" of the 2nd argument <a record> must be one of: "\
+dot", "neato", "twopi", "circo", "fdp", "sfdp", or "patchwork"
+gap> tmpdir := Filename(DirectoryTemporary(), "");;
+gap> Splash("string",
+> rec(path      := tmpdir,
+>     directory := "digraphs_temporary_directory"));
+Error, the component "type" of the 2nd argument <a record>  must be "dot" or "\
+latex",
+gap> Splash("%latex", rec(filetype := "latex", engine := fail));
+Error, the component "engine" of the 2nd argument <a record> must be one of: "\
+dot", "neato", "twopi", "circo", "fdp", "sfdp", or "patchwork"
+gap> Splash("//dot", rec(filetype := "pdf", engine := fail));
+Error, the component "engine" of the 2nd argument <a record> must be one of: "\
+dot", "neato", "twopi", "circo", "fdp", "sfdp", or "patchwork"
+gap> MakeReadWriteGlobal("VizViewers");
+gap> VizViewers_backup := ShallowCopy(VizViewers);;
+gap> VizViewers := ["nonexistent-viewer"];;
+gap> Splash("//dot");
+Error, none of the default viewers [ "nonexistent-viewer" 
+ ] is available, please specify an available viewer in the options record comp\
+onent `viewer`,
+gap> VizViewers := VizViewers_backup;;
+gap> MakeReadOnlyGlobal("VizViewers");
 
 # DotPartialOrderDigraph
 gap> gr := Digraph([[1], [1, 2], [1, 3], [1, 4], [1 .. 5], [1 .. 6],
@@ -488,6 +512,8 @@ gap> DotPartialOrderDigraph(gr);
 Error, the argument <D> must be a partial order digraph,
 
 # DotPreorderDigraph and DotQuasiorderDigraph
+gap> DotPreorderDigraph(CompleteDigraph(5));
+Error, the argument <D> must be a preorder digraph,
 gap> gr := Digraph([[1], [1, 2], [1, 3], [1, 4], [1 .. 5], [1 .. 6],
 > [1, 2, 3, 4, 5, 7], [1, 8]]);;
 gap> Print(DotPreorderDigraph(gr), "\n");
@@ -563,6 +589,42 @@ subgraph highverts{
 2 -> 2
 }
 }
+gap> D := CycleDigraph(5);;
+gap> DotHighlightedDigraph(D, [10], "black", "grey");
+Error, the 2nd argument <highverts> must be a list of vertices of the 1st argu\
+ment <D>,
+gap> DotHighlightedDigraph(D, [1], "", "grey");
+Error, the 3rd argument <highcolour> must be a string containing the name of a\
+ colour,
+gap> DotHighlightedDigraph(D, [1], "black", "");
+Error, the 4th argument <lowcolour> must be a string containing the name of a \
+colour,
+gap> Print(DotHighlightedDigraph(D, Filtered(DigraphVertices(D), IsEvenInt)));
+//dot
+digraph hgn{
+subgraph lowverts{
+node [shape=circle, color=grey]
+ edge [color=grey]
+1
+3
+5
+}
+subgraph highverts{
+node [shape=circle, color=black]
+ edge [color=black]
+2
+4
+}
+subgraph lowverts{
+1 -> 2
+3 -> 4
+5 -> 1
+}
+subgraph highverts{
+2 -> 3 [color=grey]
+4 -> 5 [color=grey]
+}
+}
 
 # Splash
 gap> Splash(DotDigraph(RandomDigraph(10)), rec(viewer := 1));
@@ -578,6 +640,7 @@ gap> Unbind(gr);
 gap> Unbind(gr1);
 gap> Unbind(gr2);
 gap> Unbind(r);
+gap> Unbind(tmpdir);
 
 #
 gap> DIGRAPHS_StopTest();

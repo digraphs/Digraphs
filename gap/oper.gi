@@ -776,7 +776,7 @@ function(D, p)
     return D;
   elif ForAny(DigraphVertices(D), i -> i ^ p > DigraphNrVertices(D)) then
     ErrorNoReturn("the 2nd argument <p> must be a permutation that permutes ",
-                  "of the digraph <D> that is the 1st argument,");
+                  "the vertices of the digraph <D> that is the 1st argument,");
   fi;
   out := D!.OutNeighbours;
   out{DigraphVertices(D)} := Permuted(out, p);
