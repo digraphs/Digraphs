@@ -23,6 +23,7 @@ lib_LTLIBRARIES = digraphs.la
 
 pkginclude_HEADERS =  src/bitarray.h
 pkginclude_HEADERS += src/conditions.h
+pkginclude_HEADERS += src/dfs.h
 pkginclude_HEADERS += src/digraphs-debug.h
 pkginclude_HEADERS += src/digraphs.h
 pkginclude_HEADERS += src/homos-graphs.h
@@ -48,6 +49,7 @@ if WITH_INCLUDED_BLISS
 endif
 
 digraphs_la_SOURCES =  src/digraphs.c
+digraphs_la_SOURCES += src/dfs.c
 digraphs_la_SOURCES += src/bitarray.c
 digraphs_la_SOURCES += src/conditions.c
 digraphs_la_SOURCES += src/homos.c
