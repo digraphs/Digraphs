@@ -18,6 +18,9 @@
   Algorithm[117X,  [18XJournal  of  Graph  Algorithms  and  Applications[118X, [19X16[119X, 2 (2012),
   381--410.
   
+  [[20XBys02[120X]  [16XByskov,  J.[116X,  [17XChromatic  Number  in Time O(2.4023 n ) Using Maximal
+  Independent Sets[117X, [18XBRICS Report Series[118X, [19X9[119X (2002), .
+  
   [[20XCK86[120X]  [16XCalderbank,  R. and Kantor, W. M.[116X, [17XThe geometry of two-weight codes[117X,
   [18XBull. London Math. Soc.[118X, [19X18[119X, 2 (1986), 97--122.
   
@@ -30,6 +33,13 @@
   for  large  and  sparse  graphs[117X,  in  Proceedings  of  the Ninth Workshop on
   Algorithm  Engineering  and  Experiments and the Fourth Workshop on Analytic
   Algorithms and Combinatorics, SIAM (2007), 135--149.
+  
+  [[20XLaw76[120X]  [16XLawler,  E.[116X,  [17XA  Note  on  the  Complexity  of the Chromatic Number
+  Problem[117X, [18XInf. Process. Lett.[118X, [19X5[119X (1976), 66-67.
+  
+  [[20XLT79[120X]  [16XLengauer,  T.  and  Tarjan,  R.  E.[116X,  [17XA  Fast  Algorithm for Finding
+  Dominators  in  a  Flowgraph[117X,  [18XACM Transactions on Programming Languages and
+  Systems[118X, [19X1[119X, 1 (1979), 121--141.
   
   [[20XMP14[120X]  [16XMcKay,  B.  D.  and  Piperno,  A.[116X,  [17XPractical graph isomorphism, II[117X,
   [18XJournal of Symbolic Computation[118X, [19X60[119X, 0 (2014), 94 - 112.

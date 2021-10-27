@@ -25,7 +25,7 @@
 
 <h1><strong class="pkg">Digraphs</strong></h1>
 
-<p>Version 1.4.1</p>
+<p>Version 1.5.0</p>
 
 </div>
 <p><b>Jan De Beule
@@ -46,12 +46,6 @@
   </b>
 <br />Email: <span class="URL"><a href="mailto:jdm3@st-and.ac.uk">jdm3@st-and.ac.uk</a></span>
 <br />Homepage: <span class="URL"><a href="https://jdbm.me">https://jdbm.me</a></span>
-</p><p><b>Michael C. Torpey
-    
-    
-  </b>
-<br />Email: <span class="URL"><a href="mailto:mct25@st-andrews.ac.uk">mct25@st-andrews.ac.uk</a></span>
-<br />Homepage: <span class="URL"><a href="https://mtorpey.github.io">https://mtorpey.github.io</a></span>
 </p><p><b>Maria Tsalakou
     
     
@@ -64,6 +58,12 @@
   </b>
 <br />Email: <span class="URL"><a href="mailto:gap@wilf-wilson.net">gap@wilf-wilson.net</a></span>
 <br />Homepage: <span class="URL"><a href="https://wilf.me">https://wilf.me</a></span>
+</p><p><b>Michael C. Young
+    
+    
+  </b>
+<br />Email: <span class="URL"><a href="mailto:mct25@st-andrews.ac.uk">mct25@st-andrews.ac.uk</a></span>
+<br />Homepage: <span class="URL"><a href="https://mct25.host.cs.st-andrews.ac.uk">https://mct25.host.cs.st-andrews.ac.uk</a></span>
 </p><p><b>Stuart Burrell</b>
 </p><p><b>Reinis Cirpons</b>
 </p><p><b>Luke Elliott</b>
@@ -81,7 +81,7 @@
 
 <p><a id="X81488B807F2A1CF1" name="X81488B807F2A1CF1"></a></p>
 <h3>Copyright</h3>
-<p>© 2014-21 by Jan De Beule, Julius Jonušas, James D. Mitchell, Michael Torpey, Wilf A. Wilson et al.</p>
+<p>© 2014-21 by Jan De Beule, Julius Jonušas, James D. Mitchell, Wilf A. Wilson, Michael Young et al.</p>
 
 <p><strong class="pkg">Digraphs</strong> is free software; you can redistribute it and/or modify it under the terms of the <span class="URL"><a href=" https://www.fsf.org/licenses/gpl.html">GNU General Public License</a></span> as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.</p>
 
@@ -149,12 +149,13 @@
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X7B75C1D680757D6F">3.1-10 EdgeOrbitsDigraph</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X81BC49B57EAADEFB">3.1-11 DigraphByInNeighbours</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X7FCADADC7EC28478">3.1-12 CayleyDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X7BB820C9813F035F">3.1-13 ListNamedDigraphs</a></span>
 </div></div>
 <div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap3.html#X83608C407CC8836D">3.2 <span class="Heading">Changing representations</span></a>
 </span>
 <div class="ContSSBlock">
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X7FBC4BDB82FBEDD2">3.2-1 AsBinaryRelation</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X83CA27E67F685EB3">3.2-2 AsDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X855E2AC47A4F5B55">3.2-2 AsDigraph</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X7B335342839E5146">3.2-3 Graph</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X7C4F13E080EC16B0">3.2-4 AsGraph</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X7C5360B2799943F3">3.2-5 AsTransformation</a></span>
@@ -169,40 +170,46 @@
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X829E3EAC7C4B3B1E">3.3-5 MaximalSymmetricSubdigraph</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X79BA6A66846D5A95">3.3-6 MaximalAntiSymmetricSubdigraph</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X7DD9766C86D3ED20">3.3-7 UndirectedSpanningForest</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X7D1D26D27F5B56C2">3.3-8 QuotientDigraph</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X78DECD26811EFD7C">3.3-9 DigraphReverse</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X7F71D99D852B130F">3.3-10 DigraphDual</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X874883DD7DD450C4">3.3-11 DigraphSymmetricClosure</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X7A6C419080AD41DE">3.3-12 DigraphTransitiveClosure</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X82AD17517E273600">3.3-13 DigraphTransitiveReduction</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X83B2506D79453208">3.3-14 DigraphAddVertex</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X8134BEE7786BD3A7">3.3-15 DigraphAddVertices</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X7E58CC4880627658">3.3-16 DigraphAddEdge</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X7BE5C7028760B053">3.3-17 DigraphAddEdgeOrbit</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X8693A61B7F752C76">3.3-18 DigraphAddEdges</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X7B634A2B83C08B16">3.3-19 DigraphRemoveVertex</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X7E290E847A5A299A">3.3-20 DigraphRemoveVertices</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X8433E3BC7E5EA6BF">3.3-21 DigraphRemoveEdge</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X85981D9187F49018">3.3-22 DigraphRemoveEdgeOrbit</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X87093FDA7F88E732">3.3-23 DigraphRemoveEdges</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X79324AF7818C0C02">3.3-24 DigraphRemoveLoops</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X7DCCD0247897A3DE">3.3-25 DigraphRemoveAllMultipleEdges</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X7821753D85402A8C">3.3-26 DigraphReverseEdges</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X814F1DFC83DB273F">3.3-27 DigraphDisjointUnion</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X7DA997697D310E44">3.3-28 DigraphEdgeUnion</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X7DDFC759860E3390">3.3-29 DigraphJoin</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X7D625CC87DBFFDED">3.3-30 DigraphCartesianProduct</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X84D24DC9833B54A5">3.3-31 DigraphDirectProduct</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X8795087A78FE7D54">3.3-32 DigraphCartesianProductProjections</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X84FB64F185B804C2">3.3-33 DigraphDirectProductProjections</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X8595BF937B749F22">3.3-34 LineDigraph</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X8364C6F17A1680CB">3.3-35 LineUndirectedDigraph</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X7FB8B48C87C0ED16">3.3-36 DoubleDigraph</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X7C6E6CB284982C7A">3.3-37 BipartiteDoubleDigraph</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X8167A50A83256ED1">3.3-38 DigraphAddAllLoops</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X865436437DF95FEF">3.3-39 DistanceDigraph</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X86F9CCEA839ABC48">3.3-40 DigraphClosure</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X7B5AC5FE859F4D80">3.3-41 DigraphMycielskian</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X79C770918610AD97">3.3-8 DigraphShortestPathSpanningTree</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X7D1D26D27F5B56C2">3.3-9 QuotientDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X78DECD26811EFD7C">3.3-10 DigraphReverse</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X7F71D99D852B130F">3.3-11 DigraphDual</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X874883DD7DD450C4">3.3-12 DigraphSymmetricClosure</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X7A6C419080AD41DE">3.3-13 DigraphTransitiveClosure</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X82AD17517E273600">3.3-14 DigraphTransitiveReduction</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X83B2506D79453208">3.3-15 DigraphAddVertex</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X8134BEE7786BD3A7">3.3-16 DigraphAddVertices</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X7E58CC4880627658">3.3-17 DigraphAddEdge</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X7BE5C7028760B053">3.3-18 DigraphAddEdgeOrbit</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X8693A61B7F752C76">3.3-19 DigraphAddEdges</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X7B634A2B83C08B16">3.3-20 DigraphRemoveVertex</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X7E290E847A5A299A">3.3-21 DigraphRemoveVertices</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X8433E3BC7E5EA6BF">3.3-22 DigraphRemoveEdge</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X85981D9187F49018">3.3-23 DigraphRemoveEdgeOrbit</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X87093FDA7F88E732">3.3-24 DigraphRemoveEdges</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X79324AF7818C0C02">3.3-25 DigraphRemoveLoops</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X7DCCD0247897A3DE">3.3-26 DigraphRemoveAllMultipleEdges</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X7821753D85402A8C">3.3-27 DigraphReverseEdges</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X814F1DFC83DB273F">3.3-28 DigraphDisjointUnion</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X7DA997697D310E44">3.3-29 DigraphEdgeUnion</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X7DDFC759860E3390">3.3-30 DigraphJoin</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X7D625CC87DBFFDED">3.3-31 DigraphCartesianProduct</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X84D24DC9833B54A5">3.3-32 DigraphDirectProduct</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X8160BCC378AF000F">3.3-33 ConormalProduct</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X79FD2AF279F20A72">3.3-34 HomomorphicProduct</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X8151176882BA9901">3.3-35 LexicographicProduct</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X807F95057F9DF576">3.3-36 ModularProduct</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X82E200F07FEFAF27">3.3-37 StrongProduct</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X8795087A78FE7D54">3.3-38 DigraphCartesianProductProjections</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X84FB64F185B804C2">3.3-39 DigraphDirectProductProjections</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X8595BF937B749F22">3.3-40 LineDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X8364C6F17A1680CB">3.3-41 LineUndirectedDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X7FB8B48C87C0ED16">3.3-42 DoubleDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X7C6E6CB284982C7A">3.3-43 BipartiteDoubleDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X8167A50A83256ED1">3.3-44 DigraphAddAllLoops</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X865436437DF95FEF">3.3-45 DistanceDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X86F9CCEA839ABC48">3.3-46 DigraphClosure</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X7B5AC5FE859F4D80">3.3-47 DigraphMycielskian</a></span>
 </div></div>
 <div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap3.html#X85B5D9B97F5187B7">3.4 <span class="Heading">Random digraphs</span></a>
 </span>
@@ -215,15 +222,54 @@
 <div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap3.html#X7C76D1DC7DAF03D3">3.5 <span class="Heading">Standard examples</span></a>
 </span>
 <div class="ContSSBlock">
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X870594FC866AC88E">3.5-1 ChainDigraph</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X812417E278198D9C">3.5-2 CompleteDigraph</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X8795B0AD856014FA">3.5-3 CompleteBipartiteDigraph</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X873F29CC863241F8">3.5-4 CompleteMultipartiteDigraph</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X80C29DDE876FFBEB">3.5-5 CycleDigraph</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X80DAE31A79FEFD40">3.5-6 EmptyDigraph</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X80ED9CE785819607">3.5-7 JohnsonDigraph</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X823F43217A6C375D">3.5-8 PetersenGraph</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X7B5441F386BD105E">3.5-9 GeneralisedPetersenGraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X7D5E3E337D03EDFF">3.5-1 AndrasfaiGraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X8636C2898395B7DF">3.5-2 BananaTree</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X7FC309427BB170D8">3.5-3 BinaryTree</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X845C374280D6EAA4">3.5-4 BinomialTreeGraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X7E3240047C92733F">3.5-5 BishopsGraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X81A0AC37816D287B">3.5-6 BondyGraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X861F493382FA7C0B">3.5-7 BookGraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X7B5E9D857D47F5C2">3.5-8 StackedBookGraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X870594FC866AC88E">3.5-9 ChainDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X7DB5AB657A797CF2">3.5-10 CirculantGraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X812417E278198D9C">3.5-11 CompleteDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X8795B0AD856014FA">3.5-12 CompleteBipartiteDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X873F29CC863241F8">3.5-13 CompleteMultipartiteDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X80C29DDE876FFBEB">3.5-14 CycleDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X7F6EC0AE81531C3C">3.5-15 CycleGraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X80DAE31A79FEFD40">3.5-16 EmptyDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X7CE45E2B782ADE9A">3.5-17 GearGraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X795B62398767E313">3.5-18 HaarGraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X801024F57DDC8A39">3.5-19 HalvedCubeGraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X7C43BDE47DF6553A">3.5-20 HanoiGraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X782ABFCE812B020A">3.5-21 HelmGraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X7EE552F88609B1A2">3.5-22 HypercubeGraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X80ED9CE785819607">3.5-23 JohnsonDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X79483C677AF65688">3.5-24 KellerGraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X80576A8C861512FD">3.5-25 KingsGraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X8655BA8584B3ACD0">3.5-26 KneserGraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X84609DCA79FD9B56">3.5-27 KnightsGraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X7F61140C822880DA">3.5-28 LindgrenSousselierGraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X832E82CF87BF5D43">3.5-29 LollipopGraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X853613228110588E">3.5-30 MobiusLadderGraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X825943547FD7A687">3.5-31 MycielskiGraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X7904BB2982014ADA">3.5-32 OddGraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X815055168405B7F0">3.5-33 PathGraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X7A38DFC47AAE4A96">3.5-34 PermutationStarGraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X823F43217A6C375D">3.5-35 PetersenGraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X7B5441F386BD105E">3.5-36 GeneralisedPetersenGraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X85425DC5847E6D20">3.5-37 PrismGraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X817982877B48D5BD">3.5-38 StackedPrismGraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X785C3F1F7D690151">3.5-39 QueensGraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X7A6DD11881874F51">3.5-40 RooksGraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X8404987F849D7CF2">3.5-41 SquareGridGraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X8234361278E8816F">3.5-42 TriangularGridGraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X78F78C077CBAE1EC">3.5-43 StarGraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X81D59C4D809F4AD3">3.5-44 TadpoleGraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X7BFA33067F83F8B0">3.5-45 WalshHadamardGraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X84F3B70A82EEE780">3.5-46 WebGraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X817EA60D828A765E">3.5-47 WheelGraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X7BE44CA27AA5F8DB">3.5-48 WindmillGraph</a></span>
 </div></div>
 </div>
 <div class="ContChap"><a href="chap4.html#X7AD6F77E7D95C996">4 <span class="Heading">Operators</span></a>
@@ -300,18 +346,21 @@
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X853D0B0981A33433">5.3-17 DigraphPeriod</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X864A31A8809F61C2">5.3-18 DigraphFloydWarshall</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X7FBAB09E7C0BE5CF">5.3-19 IsReachable</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X7CAE81D97B43DDF3">5.3-20 VerticesReachableFrom</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X8039170B82A32257">5.3-21 DigraphPath</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X80E9D645843973A6">5.3-22 DigraphShortestPath</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X7C0416FE7A69CA2C">5.3-23 IteratorOfPaths</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X7ECD16838704FAAA">5.3-24 DigraphAllSimpleCircuits</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X7C735C4E86BDD5F6">5.3-25 DigraphLongestSimpleCircuit</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X870E04307C5F213F">5.3-26 DigraphLayers</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X7B2E42327DA118E0">5.3-27 DigraphDegeneracy</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X827C2BD17A4547E3">5.3-28 DigraphDegeneracyOrdering</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X863FDFC4839A3B82">5.3-29 HamiltonianPath</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X82F30D5681466BC6">5.3-30 NrSpanningTrees</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X79352A8286D1D8F6">5.3-31 DigraphDijkstra</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X7ECD22877AEA89CC">5.3-20 IsDigraphPath</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X7CAE81D97B43DDF3">5.3-21 VerticesReachableFrom</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X8039170B82A32257">5.3-22 DigraphPath</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X80E9D645843973A6">5.3-23 DigraphShortestPath</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X7FE79CB278CE6991">5.3-24 Dominators</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X7D66A0FB7F6100FB">5.3-25 DominatorTree</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X7C0416FE7A69CA2C">5.3-26 IteratorOfPaths</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X7ECD16838704FAAA">5.3-27 DigraphAllSimpleCircuits</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X7C735C4E86BDD5F6">5.3-28 DigraphLongestSimpleCircuit</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X870E04307C5F213F">5.3-29 DigraphLayers</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X7B2E42327DA118E0">5.3-30 DigraphDegeneracy</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X827C2BD17A4547E3">5.3-31 DigraphDegeneracyOrdering</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X863FDFC4839A3B82">5.3-32 HamiltonianPath</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X82F30D5681466BC6">5.3-33 NrSpanningTrees</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X79352A8286D1D8F6">5.3-34 DigraphDijkstra</a></span>
 </div></div>
 <div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap5.html#X82F900777D677F55">5.4 <span class="Heading">Cayley graphs of groups</span></a>
 </span>
@@ -426,6 +475,8 @@
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7.html#X7E1C806D81DFE15E">7.2-19 RepresentativeOutNeighbours</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7.html#X80183D4A7C51365A">7.2-20 IsDigraphIsomorphism</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7.html#X7F16B8B3825A627A">7.2-21 IsDigraphColouring</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7.html#X7D4378F27B49C9AC">7.2-22 MaximalCommonSubdigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7.html#X7B99C75B8021FCDA">7.2-23 MinimalCommonSuperdigraph</a></span>
 </div></div>
 <div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap7.html#X7E1A02FE8384C03C">7.3 <span class="Heading">Homomorphisms of digraphs</span></a>
 </span>

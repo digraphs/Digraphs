@@ -189,7 +189,7 @@ true</pre></div>
 
 <p>Equivalently, a bipartite digraph with bicomponents of size <span class="SimpleMath">m</span> and <span class="SimpleMath">n</span> is complete precisely when it has <span class="SimpleMath">2mn</span> edges, none of which are multiple edges.</p>
 
-<p>See also <code class="func">CompleteBipartiteDigraph</code> (<a href="chap3.html#X8795B0AD856014FA"><span class="RefLink">3.5-3</span></a>).</p>
+<p>See also <code class="func">CompleteBipartiteDigraph</code> (<a href="chap3.html#X8795B0AD856014FA"><span class="RefLink">3.5-12</span></a>).</p>
 
 <p>If the argument <var class="Arg">digraph</var> is mutable, then the return value of this property is recomputed every time it is called.</p>
 
@@ -749,7 +749,7 @@ false</pre></div>
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsChainDigraph</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;property&nbsp;)</td></tr></table></div>
 <p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
 
-<p><code class="code">IsChainDigraph</code> returns <code class="keyw">true</code> if the digraph <var class="Arg">digraph</var> is isomorphic to the chain digraph with the same number of vertices as <var class="Arg">digraph</var>, and <code class="keyw">false</code> if it is not; see <code class="func">ChainDigraph</code> (<a href="chap3.html#X870594FC866AC88E"><span class="RefLink">3.5-1</span></a>).</p>
+<p><code class="code">IsChainDigraph</code> returns <code class="keyw">true</code> if the digraph <var class="Arg">digraph</var> is isomorphic to the chain digraph with the same number of vertices as <var class="Arg">digraph</var>, and <code class="keyw">false</code> if it is not; see <code class="func">ChainDigraph</code> (<a href="chap3.html#X870594FC866AC88E"><span class="RefLink">3.5-9</span></a>).</p>
 
 <p>A digraph is a <em>chain</em> if and only if it is a directed tree, in which every vertex has out degree at most one; see <code class="func">IsDirectedTree</code> (<a href="chap6.html#X7B46EA6C7B2DF2FB"><span class="RefLink">6.3-8</span></a>) and <code class="func">OutDegrees</code> (<a href="chap5.html#X7F5ACE807D1BC2E2"><span class="RefLink">5.2-8</span></a>).</p>
 
@@ -817,13 +817,13 @@ false</pre></div>
 
 <p><code class="code">IsBiconnectedDigraph</code> returns <code class="keyw">true</code> if the digraph <var class="Arg">digraph</var> is biconnected, and <code class="keyw">false</code> if it is not. In particular, <code class="code">IsBiconnectedDigraph</code> returns <code class="keyw">false</code> if <var class="Arg">digraph</var> is not connected.</p>
 
-<p>If the argument <var class="Arg">digraph</var> is mutable, then the return value of this property is recomputed every time it is called.</p>
-
 <p>Multiple edges are ignored by this method.</p>
 
 <p>The method used in this operation has complexity <span class="SimpleMath">O(m+n)</span> where <span class="SimpleMath">m</span> is the number of edges and <span class="SimpleMath">n</span> is the number of vertices in the digraph.</p>
 
 <p>See also <code class="func">Bridges</code> (<a href="chap5.html#X84D5A125848BD800"><span class="RefLink">5.3-15</span></a>), <code class="func">ArticulationPoints</code> (<a href="chap5.html#X7DDE06E47E605DD7"><span class="RefLink">5.3-14</span></a>), and <code class="func">IsBridgelessDigraph</code> (<a href="chap6.html#X7D2A6572820B7F24"><span class="RefLink">6.3-5</span></a>).</p>
+
+<p>If the argument <var class="Arg">digraph</var> is mutable, then the return value of this property is recomputed every time it is called.</p>
 
 
 <div class="example"><pre>
@@ -843,20 +843,20 @@ true</pre></div>
 
 <h5>6.3-5 IsBridgelessDigraph</h5>
 
-<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsBridgelessDigraph</code>( <var class="Arg">D</var> )</td><td class="tdright">(&nbsp;property&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsBridgelessDigraph</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;property&nbsp;)</td></tr></table></div>
 <p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
 
-<p>A connected digraph is <em>bridgeless</em> if it is still connected (in the sense of <code class="func">IsConnectedDigraph</code> (<a href="chap6.html#X83C08C0B7EC1A91F"><span class="RefLink">6.3-3</span></a>)) when any edge is removed. If <var class="Arg">D</var> has at least 3 vertices, then <code class="func">IsBiconnectedDigraph</code> (<a href="chap6.html#X838FAF2D825977BE"><span class="RefLink">6.3-4</span></a>) implies <code class="code">IsBridgelessDigraph</code>; see <code class="func">ArticulationPoints</code> (<a href="chap5.html#X7DDE06E47E605DD7"><span class="RefLink">5.3-14</span></a>) or <code class="func">Bridges</code> (<a href="chap5.html#X84D5A125848BD800"><span class="RefLink">5.3-15</span></a>) for a more detailed explanation.</p>
+<p>A connected digraph is <em>bridgeless</em> if it is still connected (in the sense of <code class="func">IsConnectedDigraph</code> (<a href="chap6.html#X83C08C0B7EC1A91F"><span class="RefLink">6.3-3</span></a>)) when any edge is removed. If <var class="Arg">digraph</var> has at least 3 vertices, then <code class="func">IsBiconnectedDigraph</code> (<a href="chap6.html#X838FAF2D825977BE"><span class="RefLink">6.3-4</span></a>) implies <code class="code">IsBridgelessDigraph</code>; see <code class="func">ArticulationPoints</code> (<a href="chap5.html#X7DDE06E47E605DD7"><span class="RefLink">5.3-14</span></a>) or <code class="func">Bridges</code> (<a href="chap5.html#X84D5A125848BD800"><span class="RefLink">5.3-15</span></a>) for a more detailed explanation.</p>
 
-<p><code class="code">IsBridgelessDigraph</code> returns <code class="keyw">true</code> if the digraph <var class="Arg">D</var> is bridgeless, and <code class="keyw">false</code> if it is not. In particular, <code class="code">IsBridgelessDigraph</code> returns <code class="keyw">false</code> if <var class="Arg">D</var> is not connected.</p>
-
-<p>If the argument <var class="Arg">D</var> is mutable, then the return value of this property is recomputed every time it is called.</p>
+<p><code class="code">IsBridgelessDigraph</code> returns <code class="keyw">true</code> if the digraph <var class="Arg">digraph</var> is bridgeless, and <code class="keyw">false</code> if it is not. In particular, <code class="code">IsBridgelessDigraph</code> returns <code class="keyw">false</code> if <var class="Arg">digraph</var> is not connected.</p>
 
 <p>Multiple edges are ignored by this method.</p>
 
 <p>The method used in this operation has complexity <span class="SimpleMath">O(m+n)</span> where <span class="SimpleMath">m</span> is the number of edges and <span class="SimpleMath">n</span> is the number of vertices in the digraph.</p>
 
 <p>See also <code class="func">Bridges</code> (<a href="chap5.html#X84D5A125848BD800"><span class="RefLink">5.3-15</span></a>), <code class="func">ArticulationPoints</code> (<a href="chap5.html#X7DDE06E47E605DD7"><span class="RefLink">5.3-14</span></a>), and <code class="func">IsBiconnectedDigraph</code> (<a href="chap6.html#X838FAF2D825977BE"><span class="RefLink">6.3-4</span></a>).</p>
+
+<p>If the argument <var class="Arg">digraph</var> is mutable, then the return value of this property is recomputed every time it is called.</p>
 
 
 <div class="example"><pre>
@@ -959,7 +959,7 @@ true</pre></div>
 
 <p>Returns <code class="keyw">true</code> if the digraph <var class="Arg">digraph</var> is a directed tree, and <code class="keyw">false</code> if it is not.</p>
 
-<p>A <em>directed tree</em> is an acyclic digraph with precisely 1 source, such that no two vertices share an out-neighbour. Note the empty digraph is not considered a directed tree as it has no source.</p>
+<p>A <em>directed tree</em> is an acyclic digraph with precisely 1 source, such that no two vertices share an out-neighbour. Note that the empty digraph with zero vertices is not considered to be a directed tree, because it has no source.</p>
 
 <p>See also <code class="func">DigraphSources</code> (<a href="chap5.html#X7F5C6268839BE98C"><span class="RefLink">5.1-7</span></a>).</p>
 
@@ -997,7 +997,7 @@ true
 
 <p>An <em>undirected tree</em> is a symmetric digraph without loops, in which for any pair of distinct vertices <code class="code">u</code> and <code class="code">v</code>, there is exactly one directed path from <code class="code">u</code> to <code class="code">v</code>. See <code class="func">IsSymmetricDigraph</code> (<a href="chap6.html#X81B3EA7887219860"><span class="RefLink">6.1-12</span></a>) and <code class="func">DigraphHasLoops</code> (<a href="chap6.html#X7D92935C7D535187"><span class="RefLink">6.1-1</span></a>), and see Section <a href="chap1.html#X84541F61810C741D"><span class="RefLink">1.1-1</span></a> for the definition of directed path. This definition implies that an undirected tree has no multiple edges.</p>
 
-<p>An <em>undirected forest</em> is a digraph, each of whose connected components is an undirected tree. In other words, an undirected forest is isomorphic to a disjoint union of undirected trees. See <code class="func">DigraphConnectedComponents</code> (<a href="chap5.html#X842FAD6A7B835977"><span class="RefLink">5.3-9</span></a>) and <code class="func">DigraphDisjointUnion</code> (<a href="chap3.html#X814F1DFC83DB273F"><span class="RefLink">3.3-27</span></a>). In particular, every undirected tree is an undirected forest.</p>
+<p>An <em>undirected forest</em> is a digraph, each of whose connected components is an undirected tree. In other words, an undirected forest is isomorphic to a disjoint union of undirected trees. See <code class="func">DigraphConnectedComponents</code> (<a href="chap5.html#X842FAD6A7B835977"><span class="RefLink">5.3-9</span></a>) and <code class="func">DigraphDisjointUnion</code> (<a href="chap3.html#X814F1DFC83DB273F"><span class="RefLink">3.3-28</span></a>). In particular, every undirected tree is an undirected forest.</p>
 
 <p>Please note that the digraph with zero vertices is considered to be neither an undirected tree nor an undirected forest.</p>
 
@@ -1101,7 +1101,7 @@ true
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsCycleDigraph</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;property&nbsp;)</td></tr></table></div>
 <p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
 
-<p><code class="code">IsCycleDigraph</code> returns <code class="keyw">true</code> if the digraph <var class="Arg">digraph</var> is isomorphic to the cycle digraph with the same number of vertices as <var class="Arg">digraph</var>, and <code class="keyw">false</code> if it is not; see <code class="func">CycleDigraph</code> (<a href="chap3.html#X80C29DDE876FFBEB"><span class="RefLink">3.5-5</span></a>).</p>
+<p><code class="code">IsCycleDigraph</code> returns <code class="keyw">true</code> if the digraph <var class="Arg">digraph</var> is isomorphic to the cycle digraph with the same number of vertices as <var class="Arg">digraph</var>, and <code class="keyw">false</code> if it is not; see <code class="func">CycleDigraph</code> (<a href="chap3.html#X80C29DDE876FFBEB"><span class="RefLink">3.5-14</span></a>).</p>
 
 <p>A digraph is a <em>cycle</em> if and only if it is strongly connected and has the same number of edges as vertices.</p>
 
@@ -1241,7 +1241,7 @@ false
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsEdgeTransitive</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;property&nbsp;)</td></tr></table></div>
 <p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
 
-<p>If <var class="Arg">digraph</var> is a digraph without multiple edges, then <code class="code">IsEdgeTransitive</code> returns <code class="keyw">true</code> if <var class="Arg">digraph</var> is edge transitive, and <code class="keyw">false</code> otherwise. A digraph is <em>edge transitive</em> if its automorphism group acts transitively on its edges (via the action <code class="func">OnPairs</code> (<a href="https://www.gap-system.org/Manuals/doc/ref/chap41_mj.html#X80DAA1D2855B1456"><span class="RefLink">Reference: OnPairs</span></a>)).</p>
+<p>If <var class="Arg">digraph</var> is a digraph without multiple edges, then <code class="code">IsEdgeTransitive</code> returns <code class="keyw">true</code> if <var class="Arg">digraph</var> is edge transitive, and <code class="keyw">false</code> otherwise. A digraph is <em>edge transitive</em> if its automorphism group acts transitively on its edges (via the action <code class="func">OnPairs</code> (<a href="https://www.gap-system.org/Manuals/doc/ref/chap41.html#X80DAA1D2855B1456"><span class="RefLink">Reference: OnPairs</span></a>)).</p>
 
 <p>If the argument <var class="Arg">digraph</var> is mutable, then the return value of this property is recomputed every time it is called.</p>
 

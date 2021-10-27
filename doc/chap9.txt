@@ -455,7 +455,7 @@
   
   [33X[0;0YSince  [3Xdigraph[103X  is a partial order, it is both reflexive and transitive. The
   output   of   [10XDotPartialOrderDigraph[110X   is  the  [2XDotDigraph[102X  ([14X9.1-2[114X)  of  the
-  [2XDigraphReflexiveTransitiveReduction[102X ([14X3.3-13[114X) of [3Xdigraph[103X.[133X
+  [2XDigraphReflexiveTransitiveReduction[102X ([14X3.3-14[114X) of [3Xdigraph[103X.[133X
   
   [33X[0;0YThe  output  is  in  [10Xdot[110X format (also known as [10XGraphViz[110X) format. For details
   about  this  file  format, and information about how to display or edit this
@@ -484,12 +484,12 @@
   
   [33X[0;0YA  preorder  digraph  is  reflexive  and transitive but in general it is not
   anti-symmetric  and  may  have strongly connected components containing more
-  than  one  vertex.  The  [2XQuotientDigraph[102X  ([14X3.3-8[114X)  [3XQ[103X obtained by forming the
+  than  one  vertex.  The  [2XQuotientDigraph[102X  ([14X3.3-9[114X)  [3XQ[103X obtained by forming the
   quotient  of  [3Xdigraph[103X  by  the  partition  of its vertices into the strongly
   connected  components  satisfies  [2XIsPartialOrderDigraph[102X ([14X6.1-16[114X). Thus every
   vertex  of  [3XQ[103X  corresponds to a strongly connected component of [3Xdigraph[103X. The
   output          of          [10XDotPreorderDigraph[110X          displays         the
-  [2XDigraphReflexiveTransitiveReduction[102X ([14X3.3-13[114X) of [3XQ[103X with vertices displayed as
+  [2XDigraphReflexiveTransitiveReduction[102X ([14X3.3-14[114X) of [3XQ[103X with vertices displayed as
   rounded  rectangles  labelled  by  all  of  the  vertices  of [3Xdigraph[103X in the
   corresponding strongly connected component.[133X
   

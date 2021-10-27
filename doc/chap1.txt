@@ -4,7 +4,7 @@
   
   [1X1.1 [33X[0;0YIntroduction[133X[101X
   
-  [33X[0;0YThis  is  the manual for version 1.4.1 of the [5XDigraphs[105X package. This package
+  [33X[0;0YThis  is  the manual for version 1.5.0 of the [5XDigraphs[105X package. This package
   was developed at the University of St Andrews by:[133X
   
   [30X    [33X[0;6YJan De Beule,[133X
@@ -13,19 +13,27 @@
   
   [30X    [33X[0;6YJames D. Mitchell,[133X
   
-  [30X    [33X[0;6YMichael C. Torpey,[133X
+  [30X    [33X[0;6YMaria Tsalakou,[133X
   
-  [30X    [33X[0;6YMaria Tsalakou, and[133X
+  [30X    [33X[0;6YWilf A. Wilson, and[133X
   
-  [30X    [33X[0;6YWilf A. Wilson.[133X
+  [30X    [33X[0;6YMichael C. Young.[133X
   
   [33X[0;0YAdditional contributions were made by:[133X
+  
+  [30X    [33X[0;6YMarina Anagnostopoulou-Merkouri,[133X
+  
+  [30X    [33X[0;6YFinn Buck,[133X
   
   [30X    [33X[0;6YStuart Burrell,[133X
   
   [30X    [33X[0;6YReinis Cirpons,[133X
   
+  [30X    [33X[0;6YTom Conti-Leslie,[133X
+  
   [30X    [33X[0;6YLuke Elliott,[133X
+  
+  [30X    [33X[0;6YEwan Gilligan,[133X
   
   [30X    [33X[0;6YMax Horn,[133X
   
@@ -33,9 +41,13 @@
   
   [30X    [33X[0;6YMarkus Pfeiffer,[133X
   
+  [30X    [33X[0;6YLea Racine,[133X
+  
   [30X    [33X[0;6YChristopher Russell,[133X
   
-  [30X    [33X[0;6YFinn Smith, and[133X
+  [30X    [33X[0;6YFinn Smith,[133X
+  
+  [30X    [33X[0;6YBen Spiers, and[133X
   
   [30X    [33X[0;6YMurray Whyte.[133X
   

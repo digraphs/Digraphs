@@ -9,14 +9,14 @@
 ##
 
 ##  <#GAPDoc Label="PKGVERSIONDATA">
-##  <!ENTITY VERSION                  "1.4.1">
+##  <!ENTITY VERSION                  "1.5.0">
 ##  <!ENTITY GAPVERS                  "4.10.0">
 ##  <!ENTITY GRAPEVERS                "4.8.1">
 ##  <!ENTITY IOVERS                   "4.5.1">
 ##  <!ENTITY ORBVERS                  "4.8.2">
 ##  <!ENTITY DATASTRUCTURESVERS       "0.2.5">
 ##  <!ENTITY NAUTYTRACESINTERFACEVERS "0.2">
-##  <!ENTITY ARCHIVENAME    "digraphs-1.4.1">
+##  <!ENTITY ARCHIVENAME    "digraphs-1.5.0">
 ##  <!ENTITY COPYRIGHTYEARS "2014-21">
 ##  <#/GAPDoc>
 
@@ -28,8 +28,8 @@ _STANDREWSCS := Concatenation(["Jack Cole Building, North Haugh, ",
 SetPackageInfo(rec(
 PackageName := "Digraphs",
 Subtitle := "Graphs, digraphs, and multidigraphs in GAP",
-Version := "1.4.1",
-Date := "14/05/2021",  # dd/mm/yyyy format
+Version := "1.5.0",
+Date := "27/10/2021",  # dd/mm/yyyy format
 License := "GPL-3.0-or-later",
 ArchiveFormats := ".tar.gz",
 
@@ -42,6 +42,16 @@ SourceRepository := rec(
 Persons := [
 
   rec(
+    LastName      := "Anagnostopoulou-Merkouri",
+    FirstNames    := "Marina",
+    IsAuthor      := false,
+    IsMaintainer  := false,
+    Email         := "mam49@st-andrews.ac.uk",
+    PostalAddress := _STANDREWSMATHS,
+    Place         := "St Andrews",
+    Institution   := "University of St Andrews"),
+
+ rec(
     LastName      := "De Beule",
     FirstNames    := "Jan",
     IsAuthor      := true,
@@ -56,6 +66,16 @@ Persons := [
                      " Belgium"]),
     Place         := "Brussels",
     Institution   := "Vrije Universiteit Brussel"),
+
+  rec(
+    LastName      := "Buck",
+    FirstNames    := "Finn",
+    IsAuthor      := false,
+    IsMaintainer  := false,
+    Email         := "flb5@st-andrews.ac.uk",
+    PostalAddress := _STANDREWSMATHS,
+    Place         := "St Andrews",
+    Institution   := "University of St Andrews"),
 
   rec(
     LastName      := "Burrell",
@@ -80,11 +100,41 @@ Persons := [
     Institution   := "University of St Andrews"),
 
   rec(
+    LastName      := "Conti-Leslie",
+    FirstNames    := "Tom",
+    IsAuthor      := false,
+    IsMaintainer  := false,
+    Email         := "tdcl@st-andrews.ac.uk",
+    PostalAddress := _STANDREWSMATHS,
+    Place         := "St Andrews",
+    Institution   := "University of St Andrews"),
+
+  rec(
     LastName      := "Elliott",
     FirstNames    := "Luke",
     IsAuthor      := false,
     IsMaintainer  := false,
     Email         := "le27@st-andrews.ac.uk",
+    PostalAddress := _STANDREWSMATHS,
+    Place         := "St Andrews",
+    Institution   := "University of St Andrews"),
+
+  rec(
+    LastName      := "Gilligan",
+    FirstNames    := "Ewan",
+    IsAuthor      := false,
+    IsMaintainer  := false,
+    Email         := "eg207@st-andrews.ac.uk",
+    PostalAddress := _STANDREWSMATHS,
+    Place         := "St Andrews",
+    Institution   := "University of St Andrews"),
+
+rec(
+    LastName      := "Harper",
+    FirstNames    := "Samantha",
+    IsAuthor      := false,
+    IsMaintainer  := false,
+    Email         := "seh25@st-andrews.ac.uk",
     PostalAddress := _STANDREWSMATHS,
     Place         := "St Andrews",
     Institution   := "University of St Andrews"),
@@ -150,6 +200,16 @@ Persons := [
     Institution   := "University of St Andrews"),
 
   rec(
+    LastName      := "Racine",
+    FirstNames    := "Lea",
+    IsAuthor      := false,
+    IsMaintainer  := false,
+    Email         := "lr217@st-andrews.ac.uk",
+    PostalAddress := _STANDREWSMATHS,
+    Place         := "St Andrews",
+    Institution   := "University of St Andrews"),
+
+  rec(
     LastName      := "Russell",
     FirstNames    := "Christopher",
     IsAuthor      := false,
@@ -170,13 +230,12 @@ Persons := [
     Institution   := "University of St Andrews"),
 
   rec(
-    LastName      := "Torpey",
-    FirstNames    := "Michael",
-    IsAuthor      := true,
+    LastName      := "Spiers",
+    FirstNames    := "Ben",
+    IsAuthor      := false,
     IsMaintainer  := false,
-    Email         := "mct25@st-andrews.ac.uk",
-    WWWHome       := "https://mtorpey.github.io",
-    PostalAddress := _STANDREWSCS,
+    Email         := "bs201@st-andrews.ac.uk",
+    PostalAddress := _STANDREWSMATHS,
     Place         := "St Andrews",
     Institution   := "University of St Andrews"),
 
@@ -207,7 +266,18 @@ Persons := [
     IsAuthor      := true,
     IsMaintainer  := true,
     Email         := "gap@wilf-wilson.net",
-    WWWHome       := "https://wilf.me")],
+    WWWHome       := "https://wilf.me"),
+
+  rec(
+    LastName      := "Young",
+    FirstNames    := "Michael",
+    IsAuthor      := true,
+    IsMaintainer  := false,
+    Email         := "mct25@st-andrews.ac.uk",
+    WWWHome       := "https://mct25.host.cs.st-andrews.ac.uk",
+    PostalAddress := _STANDREWSCS,
+    Place         := "St Andrews",
+    Institution   := "University of St Andrews")],
 
 Status := "deposited",
 
@@ -238,7 +308,7 @@ Dependencies := rec(
   NeededOtherPackages := [["io", ">=4.5.1"],
                           ["orb", ">=4.8.2"],
                           ["datastructures", ">=0.2.5"]],
-  SuggestedOtherPackages := [["gapdoc", ">=1.5.1"],
+  SuggestedOtherPackages := [["GAPDoc", ">=1.6.3"],
                              ["grape", ">=4.8.1"],
                              ["nautytracesinterface", ">=0.2"]],
   ExternalConditions := [],
@@ -258,6 +328,6 @@ AvailabilityTest := function()
 end,
 
 Autoload := false,
-TestFile := "tst/testinstall.tst",
+TestFile := "tst/teststandard.g",
 Keywords := []
 ));

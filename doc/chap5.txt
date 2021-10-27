@@ -7,12 +7,14 @@
   [1X5.1-1 DigraphVertices[101X
   
   [33X[1;0Y[29X[2XDigraphVertices[102X( [3Xdigraph[103X ) [32X attribute[133X
-  [6XReturns:[106X  [33X[0;10YA list of integers.[133X
+  [6XReturns:[106X  [33X[0;10YA list of positive integers.[133X
   
   [33X[0;0YReturns the vertices of the digraph [3Xdigraph[103X.[133X
   
-  [33X[0;0YNote  that the vertices of a digraph are always a range of positive integers
-  from [10X1[110X to the number of vertices of the graph.[133X
+  [33X[0;0YNote  that  the  vertices  of  a  digraph  are  always the range of positive
+  integers  from  [10X1[110X  to the number of vertices of the graph, [2XDigraphNrVertices[102X
+  ([14X5.1-2[114X).  Arbitrary [13Xlabels[113X can be assigned to the vertices of a digraph; see
+  [2XDigraphVertexLabels[102X ([14X5.1-10[114X) for more information about this.[133X
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27Xgr := Digraph(["a", "b", "c"],[127X[104X
@@ -38,7 +40,7 @@
   [1X5.1-2 DigraphNrVertices[101X
   
   [33X[1;0Y[29X[2XDigraphNrVertices[102X( [3Xdigraph[103X ) [32X attribute[133X
-  [6XReturns:[106X  [33X[0;10YAn integer.[133X
+  [6XReturns:[106X  [33X[0;10YAn non-negative integer.[133X
   
   [33X[0;0YReturns the number of vertices of the digraph [3Xdigraph[103X.[133X
   
@@ -66,10 +68,10 @@
   [1X5.1-3 DigraphEdges[101X
   
   [33X[1;0Y[29X[2XDigraphEdges[102X( [3Xdigraph[103X ) [32X attribute[133X
-  [6XReturns:[106X  [33X[0;10YA list of lists.[133X
+  [6XReturns:[106X  [33X[0;10YA list of lists of two positive integers.[133X
   
-  [33X[0;0Y[10XDigraphEdges[110X returns a list of edges of the digraph [3Xdigraph[103X, where each edge
-  is a pair of elements of [2XDigraphVertices[102X ([14X5.1-1[114X) of the form [10X[source,range][110X.[133X
+  [33X[0;0YReturns a list of edges of the digraph [3Xdigraph[103X, where each edge is a pair of
+  elements of [2XDigraphVertices[102X ([14X5.1-1[114X) of the form [10X[source,range][110X.[133X
   
   [33X[0;0YThe  entries  of [10XDigraphEdges([110X[3Xdigraph[103X[10X)[110X are in one-to-one correspondence with
   the  edges  of [3Xdigraph[103X. Hence [10XDigraphEdges([110X[3Xdigraph[103X[10X)[110X is duplicate-free if and
@@ -98,7 +100,7 @@
   [33X[1;0Y[29X[2XDigraphNrEdges[102X( [3Xdigraph[103X ) [32X attribute[133X
   [6XReturns:[106X  [33X[0;10YAn integer.[133X
   
-  [33X[0;0YThis function returns the number of edges of the digraph [3Xdigraph[103X.[133X
+  [33X[0;0YReturns the number of edges of the digraph [3Xdigraph[103X.[133X
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27Xgr := Digraph([[127X[104X
@@ -732,17 +734,18 @@
   [6XReturns:[106X  [33X[0;10YA list of positive integers.[133X
   
   [33X[0;0Y[10XDigraphRange[110X  and  [10XDigraphSource[110X  return the range and source of the digraph
-  [3Xdigraph[103X. More precisely, position [10Xi[110X in [10XDigraphRange([3Xdigraph[103X[10X)[110X is the range of
-  the [10Xi[110Xth edge of [3Xdigraph[103X.[133X
+  [3Xdigraph[103X.   More   precisely,   position   [10Xi[110X  in  [10XDigraphSource([3Xdigraph[103X[10X)[110X  and
+  [10XDigraphRange([3Xdigraph[103X[10X)[110X  give,  respectively,  the source and range of the [10Xi[110Xth
+  edge of [3Xdigraph[103X.[133X
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27Xgr := Digraph([[127X[104X
     [4X[25X>[125X [27X[2, 1, 3, 5], [1, 3, 4], [2, 3], [2], [1, 2, 3, 4]]);[127X[104X
     [4X[28X<immutable digraph with 5 vertices, 14 edges>[128X[104X
-    [4X[25Xgap>[125X [27XDigraphRange(gr);[127X[104X
-    [4X[28X[ 2, 1, 3, 5, 1, 3, 4, 2, 3, 2, 1, 2, 3, 4 ][128X[104X
     [4X[25Xgap>[125X [27XDigraphSource(gr);[127X[104X
     [4X[28X[ 1, 1, 1, 1, 2, 2, 2, 3, 3, 4, 5, 5, 5, 5 ][128X[104X
+    [4X[25Xgap>[125X [27XDigraphRange(gr);[127X[104X
+    [4X[28X[ 2, 1, 3, 5, 1, 3, 4, 2, 3, 2, 1, 2, 3, 4 ][128X[104X
     [4X[25Xgap>[125X [27XDigraphEdges(gr);[127X[104X
     [4X[28X[ [ 1, 2 ], [ 1, 1 ], [ 1, 3 ], [ 1, 5 ], [ 2, 1 ], [ 2, 3 ], [128X[104X
     [4X[28X  [ 2, 4 ], [ 3, 2 ], [ 3, 3 ], [ 4, 2 ], [ 5, 1 ], [ 5, 2 ], [128X[104X
@@ -763,13 +766,16 @@
   [33X[1;0Y[29X[2XOutNeighborsMutableCopy[102X( [3Xdigraph[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YThe adjacencies of a digraph.[133X
   
-  [33X[0;0YThis  function  returns the list [10Xout[110X of out-neighbours of each vertex of the
+  [33X[0;0Y[10XOutNeighbours[110X  returns  the list [10Xout[110X of out-neighbours of each vertex of the
   digraph  [3Xdigraph[103X.  More specifically, a vertex [10Xj[110X appears in [10Xout[i][110X each time
-  there exists an edge with source [10Xi[110X and range [10Xj[110X in [3Xdigraph[103X.[133X
+  there exists the edge [10X[i, j][110X in [3Xdigraph[103X.[133X
   
   [33X[0;0YThe  function  [10XOutNeighbours[110X returns an immutable list of lists, whereas the
   function [10XOutNeighboursMutableCopy[110X returns a copy of [10XOutNeighbours[110X which is a
   mutable list of mutable lists.[133X
+  
+  [33X[0;0YNote  that  the  entries  of  [10Xout[110X  are  not  guaranteed  to be sorted in any
+  particular order.[133X
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27Xgr := Digraph(["a", "b", "c"],[127X[104X
@@ -805,15 +811,17 @@
   [33X[1;0Y[29X[2XInNeighborsMutableCopy[102X( [3Xdigraph[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA list of lists of vertices.[133X
   
-  [33X[0;0YThis  function  returns  the list [10Xinn[110X of in-neighbours of each vertex of the
+  [33X[0;0Y[10XInNeighbours[110X  returns  the  list  [10Xinn[110X of in-neighbours of each vertex of the
   digraph  [3Xdigraph[103X.  More specifically, a vertex [10Xj[110X appears in [10Xinn[i][110X each time
-  there exists an edge with source [10Xj[110X and range [10Xi[110X in [3Xdigraph[103X.[133X
+  there exists an edge [10X[j,i][110X in [3Xdigraph[103X.[133X
   
   [33X[0;0YThe  function  [10XInNeighbours[110X  returns an immutable list of lists, whereas the
   function  [10XInNeighboursMutableCopy[110X  returns a copy of [10XInNeighbours[110X which is a
   mutable list of mutable lists.[133X
   
-  [33X[0;0YNote that each entry of [10Xinn[110X is sorted into ascending order.[133X
+  [33X[0;0YNote  that  the  entries  of  [10Xinn[110X  are not necessarily sorted into ascending
+  order,  particularly  if  [3Xdigraph[103X  was constructed via [2XDigraphByInNeighbours[102X
+  ([14X3.1-11[114X).[133X
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27Xgr := Digraph(["a", "b", "c"],[127X[104X
@@ -1062,10 +1070,10 @@
   [33X[1;0Y[29X[2XDegreeMatrix[102X( [3Xdigraph[103X ) [32X attribute[133X
   [6XReturns:[106X  [33X[0;10YA square matrix of non-negative integers.[133X
   
-  [33X[0;0YThis  function  returns the outdegree matrix [10Xmat[110X of the digraph [3Xdigraph[103X. The
-  value  of  the [10Xi[110Xth diagonal matrix entry is the outdegree of the vertex [10Xi[110X in
-  [3Xdigraph[103X.  All  off-diagonal  entries are [10X0[110X. If [3Xdigraph[103X has no vertices, then
-  the empty list is returned.[133X
+  [33X[0;0YReturns  the  out-degree matrix [10Xmat[110X of the digraph [3Xdigraph[103X. The value of the
+  [10Xi[110Xth  diagonal matrix entry is the out-degree of the vertex [10Xi[110X in [3Xdigraph[103X. All
+  off-diagonal  entries are [10X0[110X. If [3Xdigraph[103X has no vertices, then the empty list
+  is returned.[133X
   
   [33X[0;0YSee [2XOutDegrees[102X ([14X5.2-8[114X) for more information.[133X
   
@@ -1099,10 +1107,10 @@
   [33X[1;0Y[29X[2XLaplacianMatrix[102X( [3Xdigraph[103X ) [32X attribute[133X
   [6XReturns:[106X  [33X[0;10YA square matrix of integers.[133X
   
-  [33X[0;0YThis  function  returns  the  outdegree  Laplacian matrix [10Xmat[110X of the digraph
-  [3Xdigraph[103X.  The outdegree Laplacian matrix is defined as [10XDegreeMatrix(digraph)
-  -  AdjacencyMatrix(digraph)[110X. If [3Xdigraph[103X has no vertices, then the empty list
-  is returned.[133X
+  [33X[0;0YReturns  the  out-degree  Laplacian  matrix  [10Xmat[110X of the digraph [3Xdigraph[103X. The
+  out-degree   Laplacian   matrix   is   defined  as  [10XDegreeMatrix(digraph)  -
+  AdjacencyMatrix(digraph)[110X. If [3Xdigraph[103X has no vertices, then the empty list is
+  returned.[133X
   
   [33X[0;0YSee [2XDegreeMatrix[102X ([14X5.2-16[114X) and [2XAdjacencyMatrix[102X ([14X5.2-1[114X) for more information.[133X
   
@@ -1243,7 +1251,7 @@
         loop  or  a  directed  cycle,  then  we consider there to be a walk of
         infinite   length  from  [3Xv[103X  (realised  by  repeatedly  traversing  the
         loop/directed cycle), and so the result is [9Xinfinity[109X. To disallow walks
-        using loops, try using [2XDigraphRemoveLoops[102X ([14X3.3-24[114X):[133X
+        using loops, try using [2XDigraphRemoveLoops[102X ([14X3.3-25[114X):[133X
   
         [33X[0;6Y[10XDigraphLongestDistanceFromVertex(DigraphRemoveLoops([3Xdigraph[103X[10X,[3Xv[103X[10X))[110X.[133X
   
@@ -1413,7 +1421,7 @@
   formally, two vertices are in the same weakly connected component of [3Xdigraph[103X
   if  and  only  if  they  are  in  the same strongly connected component (see
   [2XDigraphStronglyConnectedComponents[102X  ([14X5.3-11[114X)) of the [2XDigraphSymmetricClosure[102X
-  ([14X3.3-11[114X) of [3Xdigraph[103X.[133X
+  ([14X3.3-12[114X) of [3Xdigraph[103X.[133X
   
   [33X[0;0YThe  set  of weakly connected components is a partition of the vertex set of
   [3Xdigraph[103X.[133X
@@ -1825,7 +1833,46 @@
     [4X[28Xfalse[128X[104X
   [4X[32X[104X
   
-  [1X5.3-20 VerticesReachableFrom[101X
+  [1X5.3-20 IsDigraphPath[101X
+  
+  [33X[1;0Y[29X[2XIsDigraphPath[102X( [3XD[103X, [3Xv[103X, [3Xa[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XIsDigraphPath[102X( [3XD[103X, [3Xlist[103X ) [32X operation[133X
+  [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
+  
+  [33X[0;0YThis  function returns [9Xtrue[109X if the arguments [3Xv[103X and [3Xa [103X describe a path in the
+  digraph [3XD[103X. A directed path (or directed cycle) of non-zero length [10Xn-1[110X, [22X(v_1,
+  e_1, v_2, e_2, ..., e_n-1, v_n)[122X, is represented by a pair of lists [10X[[3Xv[103X[10X, [3Xa[103X[10X][110X as
+  follows:[133X
+  
+  [30X    [33X[0;6Y[3Xv[103X is the list [22X[v_1, v_2, ..., v_n][122X.[133X
+  
+  [30X    [33X[0;6Y[3Xa[103X  is  the  list of positive integers [22X[a_1, a_2, ..., a_n-1][122X where for
+        each   each   [22Xi   <   n[122X,   [22Xa_i[122X   is   the   position   of   [22Xv_i+1[122X   in
+        [10XOutNeighboursOfVertex([110X[3XD[103X[10X,[110X[22Xv_i[122X[10X)[110X  corresponding  to the edge [22Xe_i[122X. This can
+        be  useful  if  the position of a vertex in a list of out-neighours is
+        significant, for example in orbit digraphs.[133X
+  
+  [33X[0;0YIf  the  arguments to [10XIsDigraphPath[110X are a digraph [3XD[103X and list [3Xlist[103X, then this
+  is equivalent to calling [10XIsDigraphPath([3XD[103X[10X, [3Xlist[103X[10X[1], [3Xlist[103X[10X[2])[110X.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27XD := Digraph(IsMutableDigraph, Combinations([1 .. 5]), IsSubset);[127X[104X
+    [4X[28X<mutable digraph with 32 vertices, 243 edges>[128X[104X
+    [4X[25Xgap>[125X [27XDigraphReflexiveTransitiveReduction(D);[127X[104X
+    [4X[28X<mutable digraph with 32 vertices, 80 edges>[128X[104X
+    [4X[25Xgap>[125X [27XMakeImmutable(D);[127X[104X
+    [4X[28X<immutable digraph with 32 vertices, 80 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsDigraphPath(D, [32, 31, 33], [1, 1]);[127X[104X
+    [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27XIsDigraphPath(D, [1], []);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XIsDigraphPath(D, [6, 9, 16, 17], [3, 3, 2]);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XIsDigraphPath(D, DigraphPath(D, 6, 1));[127X[104X
+    [4X[28Xtrue[128X[104X
+  [4X[32X[104X
+  
+  [1X5.3-21 VerticesReachableFrom[101X
   
   [33X[1;0Y[29X[2XVerticesReachableFrom[102X( [3Xdigraph[103X, [3Xroot[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA list.[133X
@@ -1867,7 +1914,7 @@
     [4X[28X[  ][128X[104X
   [4X[32X[104X
   
-  [1X5.3-21 DigraphPath[101X
+  [1X5.3-22 DigraphPath[101X
   
   [33X[1;0Y[29X[2XDigraphPath[102X( [3Xdigraph[103X, [3Xu[103X, [3Xv[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA pair of lists, or [9Xfail[109X.[133X
@@ -1892,6 +1939,8 @@
   [33X[0;0YThe  method for [10XDigraphPath[110X has worst case complexity of [22XO(m + n)[122X where [22Xm[122X is
   the number of edges and [22Xn[122X the number of vertices in [3Xdigraph[103X.[133X
   
+  [33X[0;0YSee also [2XIsDigraphPath[102X ([14X5.3-20[114X).[133X
+  
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27XD := Digraph([[2], [3], [2, 3]]);[127X[104X
     [4X[28X<immutable digraph with 3 vertices, 4 edges>[128X[104X
@@ -1905,18 +1954,18 @@
     [4X[28Xfail[128X[104X
   [4X[32X[104X
   
-  [1X5.3-22 DigraphShortestPath[101X
+  [1X5.3-23 DigraphShortestPath[101X
   
   [33X[1;0Y[29X[2XDigraphShortestPath[102X( [3Xdigraph[103X, [3Xu[103X, [3Xv[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA pair of lists, or [9Xfail[109X.[133X
   
-  [33X[0;0YReturns  the shortest directed path in the digraph digraph from the vertex [3Xu[103X
-  to  the  vertex  [3Xv[103X,  if  such  a  path  exists.  If [10X[3Xu[103X[10X = [3Xv[103X[10X[110X, then the shortest
-  non-trivial  cycle  is  returned,  again,  if  it  exists.  Otherwise,  this
-  operation  returns  [9Xfail[109X.  See Section [14X'[33X[0;0YDefinitions[133X'[114X for the definition of a
-  directed path and a directed cycle.[133X
+  [33X[0;0YReturns  a  shortest  directed  path in the digraph [3Xdigraph[103X from vertex [3Xu[103X to
+  vertex  [3Xv[103X,  if  such  a path exists. If [10X[3Xu[103X[10X = [3Xv[103X[10X[110X, then the shortest non-trivial
+  cycle  is  returned,  again, if it exists. Otherwise, this operation returns
+  [9Xfail[109X.  See Section [14X'[33X[0;0YDefinitions[133X'[114X for the definition of a directed path and a
+  directed cycle.[133X
   
-  [33X[0;0YSee  [2XDigraphPath[102X  ([14X5.3-21[114X)  for  details  on  the  output.  The  method  for
+  [33X[0;0YSee  [2XDigraphPath[102X  ([14X5.3-22[114X)  for  details  on  the  output.  The  method  for
   [10XDigraphShortestPath[110X  has  worst  case  complexity of [22XO(m + n)[122X where [22Xm[122X is the
   number of edges and [22Xn[122X the number of vertices in [3Xdigraph[103X.[133X
   
@@ -1933,7 +1982,80 @@
     [4X[28X[ [ 1, 1 ], [ 1 ] ][128X[104X
   [4X[32X[104X
   
-  [1X5.3-23 IteratorOfPaths[101X
+  [1X5.3-24 Dominators[101X
+  
+  [33X[1;0Y[29X[2XDominators[102X( [3Xdigraph[103X, [3Xroot[103X ) [32X operation[133X
+  [6XReturns:[106X  [33X[0;10YA list of lists.[133X
+  
+  [33X[0;0Y[10XDominators[110X  takes  a  [3Xdigraph[103X  and a root [3Xroot[103X and returns the dominators of
+  each  vertex  with  respect to the root. The output is returned as a list of
+  length  [10XDigraphNrVertices([3XDigraph[103X[10X)[110X,  whose  [3Xi[103Xth  entry  is  a  list with the
+  dominators  of vertex [3Xi[103X of the [3Xdigraph[103X. If there is no path from the root to
+  a  specific  vertex,  the  output  will  contain a hole in the corresponding
+  position.  The  [13Xdominators[113X of a vertex [22Xu[122X are the vertices that are contained
+  in  every  path  from  the [22Xroot[122X to [22Xu[122X, not including [22Xu[122X itself. The method for
+  this  operation  is an implementation of an algorithm by Thomas Lengauer and
+  Robert  Endre  Tarjan  [LT79]. The complexity of this algorithm is [22XO(mlog n)[122X
+  where  [22Xm[122X  is  the  number  of  edges  and  [22Xn[122X  is  the number of nodes in the
+  subdigraph induced by the nodes in [3Xdigraph[103X reachable from [3Xroot[103X.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27XD := Digraph([[2], [3, 6], [2, 4], [1], [], [3]]);[127X[104X
+    [4X[28X<immutable digraph with 6 vertices, 7 edges>[128X[104X
+    [4X[25Xgap>[125X [27XDominators(D, 1);[127X[104X
+    [4X[28X[ , [ 1 ], [ 2, 1 ], [ 3, 2, 1 ],, [ 2, 1 ] ][128X[104X
+    [4X[25Xgap>[125X [27XDominators(D, 2);[127X[104X
+    [4X[28X[ [ 4, 3, 2 ],, [ 2 ], [ 3, 2 ],, [ 2 ] ][128X[104X
+    [4X[25Xgap>[125X [27XDominators(D, 3);[127X[104X
+    [4X[28X[ [ 4, 3 ], [ 3 ],, [ 3 ],, [ 2, 3 ] ][128X[104X
+    [4X[25Xgap>[125X [27XDominators(D, 4);[127X[104X
+    [4X[28X[ [ 4 ], [ 1, 4 ], [ 2, 1, 4 ],,, [ 2, 1, 4 ] ][128X[104X
+    [4X[25Xgap>[125X [27XDominators(D, 5);[127X[104X
+    [4X[28X[  ][128X[104X
+    [4X[25Xgap>[125X [27XDominators(D, 6);[127X[104X
+    [4X[28X[ [ 4, 3, 6 ], [ 3, 6 ], [ 6 ], [ 3, 6 ] ][128X[104X
+  [4X[32X[104X
+  
+  [1X5.3-25 DominatorTree[101X
+  
+  [33X[1;0Y[29X[2XDominatorTree[102X( [3Xdigraph[103X, [3Xroot[103X ) [32X operation[133X
+  [6XReturns:[106X  [33X[0;10YA record.[133X
+  
+  [33X[0;0Y[10XDominatorTree[110X  takes  a  [3Xdigraph[103X and a [3Xroot[103X vertex and returns a record with
+  the following components:[133X
+  
+  [8Xidom[108X
+        [33X[0;6Ythe immediate dominators of the vertices with respect to the root.[133X
+  
+  [8Xpreorder[108X
+        [33X[0;6Ythe  preorder values of the vertices defined by the depth first search
+        executed on the digraph.[133X
+  
+  [33X[0;0YThe  [13Ximmediate  dominator[113X of a vertex [22Xu[122X is the unique dominator of [22Xu[122X that is
+  dominated  by  all other dominators of [22Xu[122X. The algorithm is an implementation
+  of  the  fast  algorithm  written by Thomas Lengauer and Robert Endre Tarjan
+  [LT79].  The complexity of this algorithm is [22XO(mlog n)[122X where [22Xm[122X is the number
+  of edges and [22Xn[122X is the number of nodes in the subdigraph induced by the nodes
+  in [3Xdigraph[103X reachable from [3Xroot[103X.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27XD := Digraph([[2, 3], [4, 6], [4, 5], [3, 5], [1, 6], [2, 3]]);[127X[104X
+    [4X[28X<immutable digraph with 6 vertices, 12 edges>[128X[104X
+    [4X[25Xgap>[125X [27XDominatorTree(D, 1);[127X[104X
+    [4X[28Xrec( idom := [ fail, 1, 1, 1, 1, 1 ], [128X[104X
+    [4X[28X  preorder := [ 1, 2, 4, 3, 5, 6 ] )[128X[104X
+    [4X[25Xgap>[125X [27XDominatorTree(D, 5);[127X[104X
+    [4X[28Xrec( idom := [ 5, 5, 5, 5, fail, 5 ], [128X[104X
+    [4X[28X  preorder := [ 5, 1, 2, 4, 3, 6 ] )[128X[104X
+    [4X[25Xgap>[125X [27XD := CompleteDigraph(5);[127X[104X
+    [4X[28X<immutable complete digraph with 5 vertices>[128X[104X
+    [4X[25Xgap>[125X [27XDominatorTree(D, 1);[127X[104X
+    [4X[28Xrec( idom := [ fail, 1, 1, 1, 1 ], preorder := [ 1, 2, 3, 4, 5 ] )[128X[104X
+    [4X[25Xgap>[125X [27XDominatorTree(D, 2);[127X[104X
+    [4X[28Xrec( idom := [ 2, fail, 2, 2, 2 ], preorder := [ 2, 1, 3, 4, 5 ] )[128X[104X
+  [4X[32X[104X
+  
+  [1X5.3-26 IteratorOfPaths[101X
   
   [33X[1;0Y[29X[2XIteratorOfPaths[102X( [3Xdigraph[103X, [3Xu[103X, [3Xv[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YAn iterator.[133X
@@ -1943,7 +2065,7 @@
   non-trivial  directed  paths (or directed cycles, in the case that [3Xu[103X [10X=[110X [3Xv[103X) in
   [3Xdigraph[103X from the vertex [3Xu[103X to the vertex [3Xv[103X.[133X
   
-  [33X[0;0YSee  [2XDigraphPath[102X  ([14X5.3-21[114X) for more information about the repesentation of a
+  [33X[0;0YSee  [2XDigraphPath[102X  ([14X5.3-22[114X) for more information about the repesentation of a
   directed  path  or  directed  cycle  which  is  used,  and  see  [14X'Reference:
   Iterators'[114X  for  more information about iterators. See Section [14X'[33X[0;0YDefinitions[133X'[114X
   for the definition of a directed path and a directed cycle.[133X
@@ -1967,7 +2089,7 @@
     [4X[28X[ [ 4, 1, 2, 3 ], [ 1, 4, 1 ] ][128X[104X
   [4X[32X[104X
   
-  [1X5.3-24 DigraphAllSimpleCircuits[101X
+  [1X5.3-27 DigraphAllSimpleCircuits[101X
   
   [33X[1;0Y[29X[2XDigraphAllSimpleCircuits[102X( [3Xdigraph[103X ) [32X attribute[133X
   [6XReturns:[106X  [33X[0;10YA list of lists of vertices.[133X
@@ -2015,7 +2137,7 @@
     [4X[28X[ [ 1, 2, 3 ] ][128X[104X
   [4X[32X[104X
   
-  [1X5.3-25 DigraphLongestSimpleCircuit[101X
+  [1X5.3-28 DigraphLongestSimpleCircuit[101X
   
   [33X[1;0Y[29X[2XDigraphLongestSimpleCircuit[102X( [3Xdigraph[103X ) [32X attribute[133X
   [6XReturns:[106X  [33X[0;10YA list of vertices, or [9Xfail[109X.[133X
@@ -2027,7 +2149,7 @@
   [33X[0;0YThis  attribute  computes  [10XDigraphAllSimpleCircuits([110X[3Xdigraph[103X[10X)[110X to find all the
   simple  circuits  of  [3Xdigraph[103X,  and  returns one of maximal length. A simple
   circuit  is  represented as a list of vertices, in the same way as described
-  in [2XDigraphAllSimpleCircuits[102X ([14X5.3-24[114X).[133X
+  in [2XDigraphAllSimpleCircuits[102X ([14X5.3-27[114X).[133X
   
   [33X[0;0YIf  [3Xdigraph[103X  has  no  simple  circuits, then this attribute returns [9Xfail[109X. If
   [3Xdigraph[103X  has multiple simple circuits of maximal length, then this attribute
@@ -2049,7 +2171,7 @@
     [4X[28X[ 1, 2, 3, 4, 8, 7, 6, 5 ][128X[104X
   [4X[32X[104X
   
-  [1X5.3-26 DigraphLayers[101X
+  [1X5.3-29 DigraphLayers[101X
   
   [33X[1;0Y[29X[2XDigraphLayers[102X( [3Xdigraph[103X, [3Xvertex[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA list.[133X
@@ -2064,7 +2186,7 @@
     [4X[28X[ [ 1 ], [ 2, 3, 4 ] ][128X[104X
   [4X[32X[104X
   
-  [1X5.3-27 DigraphDegeneracy[101X
+  [1X5.3-30 DigraphDegeneracy[101X
   
   [33X[1;0Y[29X[2XDigraphDegeneracy[102X( [3Xdigraph[103X ) [32X attribute[133X
   [6XReturns:[106X  [33X[0;10YA non-negative integer, or [9Xfail[109X.[133X
@@ -2097,13 +2219,13 @@
     [4X[28X3[128X[104X
   [4X[32X[104X
   
-  [1X5.3-28 DigraphDegeneracyOrdering[101X
+  [1X5.3-31 DigraphDegeneracyOrdering[101X
   
   [33X[1;0Y[29X[2XDigraphDegeneracyOrdering[102X( [3Xdigraph[103X ) [32X attribute[133X
   [6XReturns:[106X  [33X[0;10YA list of integers, or [9Xfail[109X.[133X
   
   [33X[0;0YIf   [3Xdigraph[103X   is  a  digraph  for  which  [10XDigraphDegeneracy([110X[3Xdigraph[103X[10X)[110X  is  a
-  non-negative  integer  [10Xk[110X  -  see  [2XDigraphDegeneracy[102X  ([14X5.3-27[114X)  -  then  this
+  non-negative  integer  [10Xk[110X  -  see  [2XDigraphDegeneracy[102X  ([14X5.3-30[114X)  -  then  this
   attribute  returns  a degeneracy ordering of the vertices of the vertices of
   [3Xdigraph[103X.[133X
   
@@ -2131,7 +2253,7 @@
     [4X[28X[ 6, 5, 4, 1, 3, 2 ][128X[104X
   [4X[32X[104X
   
-  [1X5.3-29 HamiltonianPath[101X
+  [1X5.3-32 HamiltonianPath[101X
   
   [33X[1;0Y[29X[2XHamiltonianPath[102X( [3Xdigraph[103X ) [32X attribute[133X
   [6XReturns:[106X  [33X[0;10YA list or [9Xfail[109X.[133X
@@ -2141,7 +2263,7 @@
   [33X[0;0YA  [13XHamiltonian path[113X of a digraph with [10Xn[110X vertices is directed cycle of length
   [10Xn[110X.  If  [3Xdigraph[103X  is  a  digraph  that contains a Hamiltonian path, then this
   function returns one, described in the form used by [2XDigraphAllSimpleCircuits[102X
-  ([14X5.3-24[114X).  Note if [3Xdigraph[103X has 0 or 1 vertices, then [10XHamiltonianPath[110X returns
+  ([14X5.3-27[114X).  Note if [3Xdigraph[103X has 0 or 1 vertices, then [10XHamiltonianPath[110X returns
   [10X[][110X or [10X[1][110X, respectively.[133X
   
   [33X[0;0YThe  method  used  in  this  attribute has the same worst case complexity as
@@ -2170,7 +2292,7 @@
     [4X[28Xfail[128X[104X
   [4X[32X[104X
   
-  [1X5.3-30 NrSpanningTrees[101X
+  [1X5.3-33 NrSpanningTrees[101X
   
   [33X[1;0Y[29X[2XNrSpanningTrees[102X( [3Xdigraph[103X ) [32X attribute[133X
   [6XReturns:[106X  [33X[0;10YAn integer.[133X
@@ -2197,7 +2319,7 @@
     [4X[28X1134225[128X[104X
   [4X[32X[104X
   
-  [1X5.3-31 DigraphDijkstra[101X
+  [1X5.3-34 DigraphDijkstra[101X
   
   [33X[1;0Y[29X[2XDigraphDijkstra[102X( [3Xdigraph[103X, [3Xsource[103X, [3Xtarget[103X ) [32X operation[133X
   [33X[1;0Y[29X[2XDigraphDijkstra[102X( [3Xdigraph[103X, [3Xsource[103X ) [32X operation[133X

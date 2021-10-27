@@ -1,6 +1,6 @@
 name: Digraphs
-version: 1.4.1
-date: 2021-05-14
+version: 1.5.0
+date: 2021-10-27
 description: |
     Graphs, digraphs, and multidigraphs in GAP
 
@@ -11,12 +11,12 @@ authors:
       url: http://julius.jonusas.work
     - name: James Mitchell
       url: https://jdbm.me
-    - name: Michael Torpey
-      url: https://mtorpey.github.io
     - name: Maria Tsalakou
       url: https://mariatsalakou.github.io/
     - name: Wilf A. Wilson
       url: https://wilf.me
+    - name: Michael Young
+      url: https://mct25.host.cs.st-andrews.ac.uk
 
 maintainers:
     - name: James Mitchell
@@ -25,22 +25,36 @@ maintainers:
       url: https://wilf.me
 
 contributors:
+    - name: Marina Anagnostopoulou-Merkouri
+      url: mailto:mam49@st-andrews.ac.uk
+    - name: Finn Buck
+      url: mailto:flb5@st-andrews.ac.uk
     - name: Stuart Burrell
       url: mailto:sb235@st-andrews.ac.uk
     - name: Reinis Cirpons
       url: mailto:rc234@st-andrews.ac.uk
+    - name: Tom Conti-Leslie
+      url: mailto:tdcl@st-andrews.ac.uk
     - name: Luke Elliott
       url: mailto:le27@st-andrews.ac.uk
+    - name: Ewan Gilligan
+      url: mailto:eg207@st-andrews.ac.uk
+    - name: Samantha Harper
+      url: mailto:seh25@st-andrews.ac.uk
     - name: Max Horn
       url: https://www.quendi.de/math
     - name: Christopher Jefferson
       url: https://caj.host.cs.st-andrews.ac.uk
     - name: Markus Pfeiffer
       url: https://www.morphism.de/~markusp
+    - name: Lea Racine
+      url: mailto:lr217@st-andrews.ac.uk
     - name: Christopher Russell
       url: mailto:cr66@st-andrews.ac.uk
     - name: Finn Smith
       url: mailto:fls3@st-andrews.ac.uk
+    - name: Ben Spiers
+      url: mailto:bs201@st-andrews.ac.uk
     - name: Murray Whyte
       url: mailto:mw231@st-andrews.ac.uk
 
@@ -58,8 +72,8 @@ needed-pkgs:
       url: "https://gap-packages.github.io/datastructures"
 
 suggested-pkgs:
-    - name: "gapdoc"
-      version: ">=1.5.1"
+    - name: "GAPDoc"
+      version: ">=1.6.3"
       url: "http://www.math.rwth-aachen.de/~Frank.Luebeck/GAPDoc"
     - name: "grape"
       version: ">=4.8.1"
@@ -74,7 +88,7 @@ packageinfo: https://digraphs.github.io/Digraphs/PackageInfo.g
 
 downloads:
     - name: .tar.gz
-      url: https://github.com/digraphs/Digraphs/releases/download/v1.4.1/digraphs-1.4.1.tar.gz
+      url: https://github.com/digraphs/Digraphs/releases/download/v1.5.0/digraphs-1.5.0.tar.gz
 
 abstract: |
     The <b>Digraphs</b> package is a <b>GAP</b> package for digraphs and multidigraphs.

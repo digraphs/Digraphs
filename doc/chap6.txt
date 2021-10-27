@@ -112,7 +112,7 @@
   [33X[0;0YEquivalently,  a  bipartite  digraph  with  bicomponents  of size [22Xm[122X and [22Xn[122X is
   complete precisely when it has [22X2mn[122X edges, none of which are multiple edges.[133X
   
-  [33X[0;0YSee also [2XCompleteBipartiteDigraph[102X ([14X3.5-3[114X).[133X
+  [33X[0;0YSee also [2XCompleteBipartiteDigraph[102X ([14X3.5-12[114X).[133X
   
   [33X[0;0YIf  the  argument [3Xdigraph[103X is mutable, then the return value of this property
   is recomputed every time it is called.[133X
@@ -706,7 +706,7 @@
   
   [33X[0;0Y[10XIsChainDigraph[110X  returns  [9Xtrue[109X  if  the  digraph [3Xdigraph[103X is isomorphic to the
   chain  digraph  with the same number of vertices as [3Xdigraph[103X, and [9Xfalse[109X if it
-  is not; see [2XChainDigraph[102X ([14X3.5-1[114X).[133X
+  is not; see [2XChainDigraph[102X ([14X3.5-9[114X).[133X
   
   [33X[0;0YA  digraph  is  a [13Xchain[113X if and only if it is a directed tree, in which every
   vertex has out degree at most one; see [2XIsDirectedTree[102X ([14X6.3-8[114X) and [2XOutDegrees[102X
@@ -786,9 +786,6 @@
   [9Xfalse[109X  if  it  is  not. In particular, [10XIsBiconnectedDigraph[110X returns [9Xfalse[109X if
   [3Xdigraph[103X is not connected.[133X
   
-  [33X[0;0YIf  the  argument [3Xdigraph[103X is mutable, then the return value of this property
-  is recomputed every time it is called.[133X
-  
   [33X[0;0YMultiple edges are ignored by this method.[133X
   
   [33X[0;0YThe  method  used  in  this  operation  has complexity [22XO(m+n)[122X where [22Xm[122X is the
@@ -796,6 +793,9 @@
   
   [33X[0;0YSee    also    [2XBridges[102X    ([14X5.3-15[114X),    [2XArticulationPoints[102X    ([14X5.3-14[114X),   and
   [2XIsBridgelessDigraph[102X ([14X6.3-5[114X).[133X
+  
+  [33X[0;0YIf  the  argument [3Xdigraph[103X is mutable, then the return value of this property
+  is recomputed every time it is called.[133X
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27XIsBiconnectedDigraph(Digraph([[1, 3], [2, 3], [3]]));[127X[104X
@@ -813,21 +813,18 @@
   
   [1X6.3-5 IsBridgelessDigraph[101X
   
-  [33X[1;0Y[29X[2XIsBridgelessDigraph[102X( [3XD[103X ) [32X property[133X
+  [33X[1;0Y[29X[2XIsBridgelessDigraph[102X( [3Xdigraph[103X ) [32X property[133X
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
   
   [33X[0;0YA  connected digraph is [13Xbridgeless[113X if it is still connected (in the sense of
-  [2XIsConnectedDigraph[102X  ([14X6.3-3[114X))  when  any edge is removed. If [3XD[103X has at least 3
-  vertices, then [2XIsBiconnectedDigraph[102X ([14X6.3-4[114X) implies [10XIsBridgelessDigraph[110X; see
-  [2XArticulationPoints[102X   ([14X5.3-14[114X)  or  [2XBridges[102X  ([14X5.3-15[114X)  for  a  more  detailed
-  explanation.[133X
+  [2XIsConnectedDigraph[102X  ([14X6.3-3[114X))  when  any  edge  is removed. If [3Xdigraph[103X has at
+  least    3    vertices,    then    [2XIsBiconnectedDigraph[102X    ([14X6.3-4[114X)   implies
+  [10XIsBridgelessDigraph[110X; see [2XArticulationPoints[102X ([14X5.3-14[114X) or [2XBridges[102X ([14X5.3-15[114X) for
+  a more detailed explanation.[133X
   
-  [33X[0;0Y[10XIsBridgelessDigraph[110X  returns  [9Xtrue[109X if the digraph [3XD[103X is bridgeless, and [9Xfalse[109X
-  if  it  is not. In particular, [10XIsBridgelessDigraph[110X returns [9Xfalse[109X if [3XD[103X is not
-  connected.[133X
-  
-  [33X[0;0YIf  the  argument  [3XD[103X  is  mutable, then the return value of this property is
-  recomputed every time it is called.[133X
+  [33X[0;0Y[10XIsBridgelessDigraph[110X  returns  [9Xtrue[109X if the digraph [3Xdigraph[103X is bridgeless, and
+  [9Xfalse[109X  if  it  is  not.  In particular, [10XIsBridgelessDigraph[110X returns [9Xfalse[109X if
+  [3Xdigraph[103X is not connected.[133X
   
   [33X[0;0YMultiple edges are ignored by this method.[133X
   
@@ -836,6 +833,9 @@
   
   [33X[0;0YSee    also    [2XBridges[102X    ([14X5.3-15[114X),    [2XArticulationPoints[102X    ([14X5.3-14[114X),   and
   [2XIsBiconnectedDigraph[102X ([14X6.3-4[114X).[133X
+  
+  [33X[0;0YIf  the  argument [3Xdigraph[103X is mutable, then the return value of this property
+  is recomputed every time it is called.[133X
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27XIsBridgelessDigraph(Digraph([[1, 3], [2, 3], [3]]));[127X[104X
@@ -940,8 +940,8 @@
   not.[133X
   
   [33X[0;0YA  [13Xdirected tree[113X is an acyclic digraph with precisely 1 source, such that no
-  two  vertices  share  an  out-neighbour.  Note  the  empty  digraph  is  not
-  considered a directed tree as it has no source.[133X
+  two  vertices  share an out-neighbour. Note that the empty digraph with zero
+  vertices is not considered to be a directed tree, because it has no source.[133X
   
   [33X[0;0YSee also [2XDigraphSources[102X ([14X5.1-7[114X).[133X
   
@@ -986,7 +986,7 @@
   [33X[0;0YAn  [13Xundirected forest[113X is a digraph, each of whose connected components is an
   undirected  tree.  In  other  words, an undirected forest is isomorphic to a
   disjoint  union  of undirected trees. See [2XDigraphConnectedComponents[102X ([14X5.3-9[114X)
-  and  [2XDigraphDisjointUnion[102X  ([14X3.3-27[114X). In particular, every undirected tree is
+  and  [2XDigraphDisjointUnion[102X  ([14X3.3-28[114X). In particular, every undirected tree is
   an undirected forest.[133X
   
   [33X[0;0YPlease  note that the digraph with zero vertices is considered to be neither
@@ -1096,7 +1096,7 @@
   
   [33X[0;0Y[10XIsCycleDigraph[110X  returns  [9Xtrue[109X  if  the  digraph [3Xdigraph[103X is isomorphic to the
   cycle  digraph  with the same number of vertices as [3Xdigraph[103X, and [9Xfalse[109X if it
-  is not; see [2XCycleDigraph[102X ([14X3.5-5[114X).[133X
+  is not; see [2XCycleDigraph[102X ([14X3.5-14[114X).[133X
   
   [33X[0;0YA  digraph  is  a  [13Xcycle[113X if and only if it is strongly connected and has the
   same number of edges as vertices.[133X

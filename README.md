@@ -1,4 +1,4 @@
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.198140.svg)](https://doi.org/10.5281/zenodo.198140)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4763272.svg)](https://doi.org/10.5281/zenodo.4763272)
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/digraphs/digraphs/master)
 [![Build status](https://github.com/digraphs/Digraphs/workflows/CI/badge.svg?branch=master)](https://github.com/digraphs/Digraphs/actions?query=workflow%3ACI+branch%3Amaster)
 [![Code coverage](https://codecov.io/gh/digraphs/Digraphs/branch/master/graphs/badge.svg)](https://codecov.io/gh/digraphs/Digraphs/branch/master)
@@ -7,7 +7,7 @@
 
 ### Digraphs package for GAP
 
-#### Copyright (C) 2014-21 by Jan De Beule, Julius Jonušas, James D. Mitchell, Michael Torpey, Wilf A. Wilson et al.
+#### Copyright (C) 2014-21 by Jan De Beule, Julius Jonušas, James D. Mitchell, Wilf A. Wilson, Michael Young et al.
 ## Getting Digraphs
 
 To get the latest version of the package, download the archive file

@@ -508,7 +508,7 @@
   recomputed every time this function is called.[133X
   
   [33X[0;0YNote  that  certain  other  constructor  operations  such  as  [2XCayleyDigraph[102X
-  ([14X3.1-12[114X),  [2XBipartiteDoubleDigraph[102X  ([14X3.3-37[114X), and [2XDoubleDigraph[102X ([14X3.3-36[114X), may
+  ([14X3.1-12[114X),  [2XBipartiteDoubleDigraph[102X  ([14X3.3-43[114X), and [2XDoubleDigraph[102X ([14X3.3-42[114X), may
   not  require  a  group  as  one  of  the  arguments,  but  use  the standard
   constructor  method  using a group, and hence set the [10XDigraphGroup[110X attribute
   for the resulting digraph.[133X
@@ -1014,6 +1014,58 @@
     [4X[28Xfalse[128X[104X
     [4X[25Xgap>[125X [27XIsDigraphColouring(D, IdentityTransformation);[127X[104X
     [4X[28Xtrue[128X[104X
+  [4X[32X[104X
+  
+  [1X7.2-22 MaximalCommonSubdigraph[101X
+  
+  [33X[1;0Y[29X[2XMaximalCommonSubdigraph[102X( [3XD1[103X, [3XD2[103X ) [32X operation[133X
+  [6XReturns:[106X  [33X[0;10YA list containing a digraph and two transformations.[133X
+  
+  [33X[0;0YIf    [3XD1[103X    and    [3XD2[103X    are   digraphs   without   multiple   edges,   then
+  [10XMaximalCommonSubdigraph[110X  returns  a  maximal  common subgraph [10XM[110X of [3XD1[103X and [3XD2[103X
+  with  the  maximum  number  of vertices. So [10XM[110X is a digraph which embeds into
+  both  [3XD1[103X and [3XD2[103X and has the largest number of vertices amoung such digraphs.
+  It  returns  a list [10X[M, t1, t2][110X where [10XM[110X is the maximal common subdigraph and
+  [10Xt1, t2[110X are transformations embedding [10XM[110X into [3XD1[103X and [3XD2[103X respectively.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27XMaximalCommonSubdigraph(PetersenGraph(), CompleteDigraph(10));[127X[104X
+    [4X[28X[ <immutable digraph with 2 vertices, 2 edges>, [128X[104X
+    [4X[28X  IdentityTransformation, IdentityTransformation ][128X[104X
+    [4X[25Xgap>[125X [27XMaximalCommonSubdigraph(PetersenGraph(),[127X[104X
+    [4X[25X>[125X [27XDigraphSymmetricClosure(CycleDigraph(5)));[127X[104X
+    [4X[28X[ <immutable digraph with 5 vertices, 10 edges>, [128X[104X
+    [4X[28X  IdentityTransformation, IdentityTransformation ][128X[104X
+    [4X[25Xgap>[125X [27XMaximalCommonSubdigraph(NullDigraph(0), CompleteDigraph(10));[127X[104X
+    [4X[28X[ <immutable empty digraph with 0 vertices>, IdentityTransformation, [128X[104X
+    [4X[28X  IdentityTransformation ][128X[104X
+  [4X[32X[104X
+  
+  [1X7.2-23 MinimalCommonSuperdigraph[101X
+  
+  [33X[1;0Y[29X[2XMinimalCommonSuperdigraph[102X( [3XD1[103X, [3XD2[103X ) [32X operation[133X
+  [6XReturns:[106X  [33X[0;10YA list containing a digraph and two transformations.[133X
+  
+  [33X[0;0YIf    [3XD1[103X    and    [3XD2[103X    are   digraphs   without   multiple   edges,   then
+  [10XMinimalCommonSuperdigraph[110X  returns a minimal common superdigraph [10XM[110X of [3XD1[103X and
+  [3XD2[103X with the minimum number of vertices. So [10XM[110X is a digraph into which both [3XD1[103X
+  and  [3XD2[103X  embed and has the smallest number of vertices amoung such digraphs.
+  It returns a list [10X[M, t1, t2][110X where [10XM[110X is the minimal common superdigraph and
+  [10Xt1, t2[110X are transformations embedding [3XD1[103X and [3XD2[103X respectively into [10XM[110X.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27XMinimalCommonSuperdigraph(PetersenGraph(), CompleteDigraph(10));[127X[104X
+    [4X[28X[ <immutable digraph with 18 vertices, 118 edges>, [128X[104X
+    [4X[28X  IdentityTransformation, [128X[104X
+    [4X[28X  Transformation( [ 1, 2, 11, 12, 13, 14, 15, 16, 17, 18, 11, 12, 13,[128X[104X
+    [4X[28X      14, 15, 16, 17, 18 ] ) ][128X[104X
+    [4X[25Xgap>[125X [27XMinimalCommonSuperdigraph(PetersenGraph(),[127X[104X
+    [4X[25X>[125X [27XDigraphSymmetricClosure(CycleDigraph(5)));[127X[104X
+    [4X[28X[ <immutable digraph with 10 vertices, 30 edges>, [128X[104X
+    [4X[28X  IdentityTransformation, IdentityTransformation ][128X[104X
+    [4X[25Xgap>[125X [27XMinimalCommonSuperdigraph(NullDigraph(0), CompleteDigraph(10));[127X[104X
+    [4X[28X[ <immutable digraph with 10 vertices, 90 edges>, [128X[104X
+    [4X[28X  IdentityTransformation, IdentityTransformation ][128X[104X
   [4X[32X[104X
   
   
@@ -1551,7 +1603,7 @@
   proper  colouring  that  uses  exactly  [10Xn[110X  colours.  Equivalently,  a proper
   ([10Xn[110X-)colouring of a digraph can be defined to be a [2XDigraphEpimorphism[102X ([14X7.3-6[114X)
   from   a   digraph   onto  the  complete  digraph  (with  [10Xn[110X  vertices);  see
-  [2XCompleteDigraph[102X  ([14X3.5-2[114X).  Note  that  a digraph with loops ([2XDigraphHasLoops[102X
+  [2XCompleteDigraph[102X  ([14X3.5-11[114X).  Note  that a digraph with loops ([2XDigraphHasLoops[102X
   ([14X6.1-1[114X)) does not have a proper [10Xn[110X-colouring for any value [10Xn[110X.[133X
   
   [33X[0;0YIf   [3Xdigraph[103X   is   a   digraph  and  [3Xn[103X  is  a  non-negative  integer,  then
@@ -1642,6 +1694,14 @@
   that [10XDigraphColouring([3Xdigraph[103X[10X, n)[110X does not return [9Xfail[109X. See [2XDigraphColouring[102X
   ([14X7.3-14[114X).[133X
   
+  [33X[0;0YIt  is  possible to select the algorithm to compute the chromatic number via
+  the  use  of  value  options. The permitted algorithms and values to pass as
+  options are:[133X
+  
+  [30X    [33X[0;6Y[10Xlawler[110X - Lawler's Algorithm [Law76][133X
+  
+  [30X    [33X[0;6Y[10Xbyskov[110X - Byskov's Algorithm [Bys02][133X
+  
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27XChromaticNumber(NullDigraph(10));[127X[104X
     [4X[28X1[128X[104X
@@ -1657,6 +1717,10 @@
     [4X[28X<mutable digraph with 10 vertices, 30 edges>[128X[104X
     [4X[25Xgap>[125X [27XChromaticNumber(D);[127X[104X
     [4X[28X3[128X[104X
+    [4X[25Xgap>[125X [27XChromaticNumber(CompleteDigraph(10) : lawler);[127X[104X
+    [4X[28X10[128X[104X
+    [4X[25Xgap>[125X [27XChromaticNumber(CompleteDigraph(10) : byskov);[127X[104X
+    [4X[28X10[128X[104X
   [4X[32X[104X
   
   [1X7.3-18 DigraphCore[101X

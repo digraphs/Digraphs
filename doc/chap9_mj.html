@@ -139,7 +139,7 @@
 
 <p>The output is in <code class="code">dot</code> format (also known as <code class="code">GraphViz</code>) format. For details about this file format, and information about how to display or edit this format see <span class="URL"><a href="https://www.graphviz.org">https://www.graphviz.org</a></span>.</p>
 
-<p>The string returned by <code class="code">DotDigraph</code> or <code class="code">DotVertexLabelledDigraph</code> can be written to a file using the command <code class="func">FileString</code> (<a href="../../../pkg/gapdoc/doc/chap6_mj.html#X7E14D32181FBC3C3"><span class="RefLink">GAPDoc: FileString</span></a>).</p>
+<p>The string returned by <code class="code">DotDigraph</code> or <code class="code">DotVertexLabelledDigraph</code> can be written to a file using the command <code class="func">FileString</code> (<a href="http://www.math.rwth-aachen.de/~Frank.Luebeck/GAPDoc/doc/chap6_mj.html#X7E14D32181FBC3C3"><span class="RefLink">GAPDoc: FileString</span></a>).</p>
 
 
 <div class="example"><pre>
@@ -371,7 +371,7 @@ node [shape=circle]
 
 <p>The output is in <code class="code">dot</code> format (also known as <code class="code">GraphViz</code>) format. For details about this file format, and information about how to display or edit this format see <span class="URL"><a href="https://www.graphviz.org">https://www.graphviz.org</a></span>.</p>
 
-<p>The string returned by <code class="code">DotSymmetricDigraph</code> can be written to a file using the command <code class="func">FileString</code> (<a href="../../../pkg/gapdoc/doc/chap6_mj.html#X7E14D32181FBC3C3"><span class="RefLink">GAPDoc: FileString</span></a>).</p>
+<p>The string returned by <code class="code">DotSymmetricDigraph</code> can be written to a file using the command <code class="func">FileString</code> (<a href="http://www.math.rwth-aachen.de/~Frank.Luebeck/GAPDoc/doc/chap6_mj.html#X7E14D32181FBC3C3"><span class="RefLink">GAPDoc: FileString</span></a>).</p>
 
 
 <div class="example"><pre>
@@ -448,11 +448,11 @@ node [shape=circle]
 
 <p>This function produces a graphical representation of a partial order digraph <var class="Arg">digraph</var>. <code class="code">DotPartialOrderDigraph</code> will return an error if <var class="Arg">digraph</var> is not a partial order digraph. See <code class="func">IsPartialOrderDigraph</code> (<a href="chap6_mj.html#X82BAE6D37D49A145"><span class="RefLink">6.1-16</span></a>).</p>
 
-<p>Since <var class="Arg">digraph</var> is a partial order, it is both reflexive and transitive. The output of <code class="code">DotPartialOrderDigraph</code> is the <code class="func">DotDigraph</code> (<a href="chap9_mj.html#X7F9B99C478EE093A"><span class="RefLink">9.1-2</span></a>) of the <code class="func">DigraphReflexiveTransitiveReduction</code> (<a href="chap3_mj.html#X82AD17517E273600"><span class="RefLink">3.3-13</span></a>) of <var class="Arg">digraph</var>.</p>
+<p>Since <var class="Arg">digraph</var> is a partial order, it is both reflexive and transitive. The output of <code class="code">DotPartialOrderDigraph</code> is the <code class="func">DotDigraph</code> (<a href="chap9_mj.html#X7F9B99C478EE093A"><span class="RefLink">9.1-2</span></a>) of the <code class="func">DigraphReflexiveTransitiveReduction</code> (<a href="chap3_mj.html#X82AD17517E273600"><span class="RefLink">3.3-14</span></a>) of <var class="Arg">digraph</var>.</p>
 
 <p>The output is in <code class="code">dot</code> format (also known as <code class="code">GraphViz</code>) format. For details about this file format, and information about how to display or edit this format see <span class="URL"><a href="https://www.graphviz.org">https://www.graphviz.org</a></span>.</p>
 
-<p>The string returned by <code class="code">DotPartialOrderDigraph</code> can be written to a file using the command <code class="func">FileString</code> (<a href="../../../pkg/gapdoc/doc/chap6_mj.html#X7E14D32181FBC3C3"><span class="RefLink">GAPDoc: FileString</span></a>).</p>
+<p>The string returned by <code class="code">DotPartialOrderDigraph</code> can be written to a file using the command <code class="func">FileString</code> (<a href="http://www.math.rwth-aachen.de/~Frank.Luebeck/GAPDoc/doc/chap6_mj.html#X7E14D32181FBC3C3"><span class="RefLink">GAPDoc: FileString</span></a>).</p>
 
 
 <div class="example"><pre>
@@ -472,11 +472,11 @@ true
 
 <p>This function produces a graphical representation of a preorder digraph <var class="Arg">digraph</var>. <code class="code">DotPreorderDigraph</code> will return an error if <var class="Arg">digraph</var> is not a preorder digraph. See <code class="func">IsPreorderDigraph</code> (<a href="chap6_mj.html#X8617726C7829F796"><span class="RefLink">6.1-15</span></a>).</p>
 
-<p>A preorder digraph is reflexive and transitive but in general it is not anti-symmetric and may have strongly connected components containing more than one vertex. The <code class="func">QuotientDigraph</code> (<a href="chap3_mj.html#X7D1D26D27F5B56C2"><span class="RefLink">3.3-8</span></a>) <var class="Arg">Q</var> obtained by forming the quotient of <var class="Arg">digraph</var> by the partition of its vertices into the strongly connected components satisfies <code class="func">IsPartialOrderDigraph</code> (<a href="chap6_mj.html#X82BAE6D37D49A145"><span class="RefLink">6.1-16</span></a>). Thus every vertex of <var class="Arg">Q</var> corresponds to a strongly connected component of <var class="Arg">digraph</var>. The output of <code class="code">DotPreorderDigraph</code> displays the <code class="func">DigraphReflexiveTransitiveReduction</code> (<a href="chap3_mj.html#X82AD17517E273600"><span class="RefLink">3.3-13</span></a>) of <var class="Arg">Q</var> with vertices displayed as rounded rectangles labelled by all of the vertices of <var class="Arg">digraph</var> in the corresponding strongly connected component.</p>
+<p>A preorder digraph is reflexive and transitive but in general it is not anti-symmetric and may have strongly connected components containing more than one vertex. The <code class="func">QuotientDigraph</code> (<a href="chap3_mj.html#X7D1D26D27F5B56C2"><span class="RefLink">3.3-9</span></a>) <var class="Arg">Q</var> obtained by forming the quotient of <var class="Arg">digraph</var> by the partition of its vertices into the strongly connected components satisfies <code class="func">IsPartialOrderDigraph</code> (<a href="chap6_mj.html#X82BAE6D37D49A145"><span class="RefLink">6.1-16</span></a>). Thus every vertex of <var class="Arg">Q</var> corresponds to a strongly connected component of <var class="Arg">digraph</var>. The output of <code class="code">DotPreorderDigraph</code> displays the <code class="func">DigraphReflexiveTransitiveReduction</code> (<a href="chap3_mj.html#X82AD17517E273600"><span class="RefLink">3.3-14</span></a>) of <var class="Arg">Q</var> with vertices displayed as rounded rectangles labelled by all of the vertices of <var class="Arg">digraph</var> in the corresponding strongly connected component.</p>
 
 <p>The output is in <code class="code">dot</code> format (also known as <code class="code">GraphViz</code>) format. For details about this file format, and information about how to display or edit this format see <span class="URL"><a href="https://www.graphviz.org">https://www.graphviz.org</a></span>.</p>
 
-<p>The string returned by <code class="code">DotPreorderDigraph</code> can be written to a file using the command <code class="func">FileString</code> (<a href="../../../pkg/gapdoc/doc/chap6_mj.html#X7E14D32181FBC3C3"><span class="RefLink">GAPDoc: FileString</span></a>).</p>
+<p>The string returned by <code class="code">DotPreorderDigraph</code> can be written to a file using the command <code class="func">FileString</code> (<a href="http://www.math.rwth-aachen.de/~Frank.Luebeck/GAPDoc/doc/chap6_mj.html#X7E14D32181FBC3C3"><span class="RefLink">GAPDoc: FileString</span></a>).</p>
 
 
 <div class="example"><pre>
