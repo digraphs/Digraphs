@@ -1917,37 +1917,6 @@ gap> VerticesReachableFrom(D, 5);
 gap> D;
 <mutable digraph with 5 vertices, 7 edges>
 
-# DigraphAddAllLoops - mutable
-gap> D := Digraph(IsMutableDigraph,
-> [[1], [3, 4], [5, 6], [4, 2, 3], [4, 5], [1]]);
-<mutable digraph with 6 vertices, 11 edges>
-gap> DigraphAddAllLoops(D);
-<mutable digraph with 6 vertices, 14 edges>
-gap> IsIdenticalObj(last, D);
-true
-gap> D := Digraph([[1], [3, 4], [5, 6], [4, 2, 3], [4, 5], [1]]);
-<immutable digraph with 6 vertices, 11 edges>
-gap> DigraphAddAllLoops(D);
-<immutable reflexive digraph with 6 vertices, 14 edges>
-gap> IsIdenticalObj(last, D);
-false
-gap> D := Digraph([[1], [3, 4], [5, 6], [4, 2, 3], [4, 5], [1]]);
-<immutable digraph with 6 vertices, 11 edges>
-gap> D := DigraphAddEdge(D, 1, 3);
-<immutable digraph with 6 vertices, 12 edges>
-gap> D := DigraphAddEdge(D, 1, 3);
-<immutable multidigraph with 6 vertices, 13 edges>
-gap> D := DigraphRemoveEdge(D, 1, 3);
-Error, the 1st argument <D> must be a digraph with no multiple edges,
-gap> D := Digraph([[1], [3, 4], [5, 6], [4, 2, 3], [4, 5], [1]]);
-<immutable digraph with 6 vertices, 11 edges>
-gap> D := DigraphAddEdge(D, 1, 3);
-<immutable digraph with 6 vertices, 12 edges>
-gap> D := DigraphRemoveEdge(D, 1, 3);
-<immutable digraph with 6 vertices, 11 edges>
-gap> D := DigraphRemoveEdge(D, 1, 3);
-<immutable digraph with 6 vertices, 11 edges>
-
 # DisjointUnion etc
 gap> D := DigraphMutableCopy(CycleDigraph(3));
 <mutable digraph with 3 vertices, 3 edges>
@@ -2628,7 +2597,8 @@ gap> Dominators(D, 2);
 [ ,,, [ 2 ] ]
 gap> Dominators(D, 1);
 [ , [ 1 ], [ 1 ], [ 2, 1 ], [ 3, 1 ] ]
-gap> D := Digraph(IsMutableDigraph, [[2, 3, 5], [1, 6], [4, 6, 7], [7, 8], [4], [], [8], []]);
+gap> D := Digraph(IsMutableDigraph, [[2, 3, 5], [1, 6], [4, 6, 7], [7, 8], [4],
+> [], [8], []]);
 <mutable digraph with 8 vertices, 12 edges>
 gap> Dominators(D, 1);
 [ , [ 1 ], [ 1 ], [ 1 ], [ 1 ], [ 1 ], [ 1 ], [ 1 ] ]

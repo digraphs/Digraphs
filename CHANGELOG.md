@@ -1,8 +1,61 @@
 # CHANGELOG – Digraphs package for GAP
-Copyright © 2014-21 by Jan De Beule, Julius Jonušas, James D. Mitchell, Michael
-Torpey, Wilf A. Wilson et al.
+Copyright © 2014-21 by Jan De Beule, Julius Jonušas, James D. Mitchell,
+Wilf A. Wilson, Michael Young et al.
 
 Licensing information can be found in the `LICENSE` file.
+
+## Version 1.5.0 (released 27/10/2021)
+
+This is a fairly major release of the Digraphs package, containing some bugfixes and several new features. 
+
+In this version, we welcome Finn Buck, Tom Conti-Leslie, Ewan Gilligan, Lea
+Racine, and Ben Spiers as contributors to the package.
+
+
+### Bugfixes
+
+* The edge labels of Cayley digraphs could sometimes be incorrect (Fixed by [Jan De Beule][] in [PR #452](https://github.com/digraphs/Digraphs/pull/452))
+* Typos in the documentation of `IsDirectedTree` and an error message for `OnDigraphs` were fixed ([Wilf A. Wilson][] in PRs [#480](https://github.com/digraphs/Digraphs/pull/480) and [#498](https://github.com/digraphs/Digraphs/pull/498))
+
+### A database of one-off named graphs and digraphs, and more families of standard examples
+
+We especially wish to highlight the greatly expanded functionality for creating digraphs that are either famous one-off examples, or are part of a family of standard examples.
+
+In particular, Finn Buck, Lea Racine, [James D. Mitchell][], Marina Anagnostopoulou-Merkouri, and Ben Spiers implemented functions to construct many more families of standard examples (currently documented in Section 3.5), which were added in in PRs
+[#408](https://github.com/digraphs/Digraphs/pull/408),
+[#409](https://github.com/digraphs/Digraphs/pull/409),
+[#411](https://github.com/digraphs/Digraphs/pull/411),
+[#415](https://github.com/digraphs/Digraphs/pull/415),
+[#416](https://github.com/digraphs/Digraphs/pull/416),
+[#417](https://github.com/digraphs/Digraphs/pull/417),
+[#423](https://github.com/digraphs/Digraphs/pull/423),
+[#424](https://github.com/digraphs/Digraphs/pull/424),
+[#425](https://github.com/digraphs/Digraphs/pull/425),
+[#445](https://github.com/digraphs/Digraphs/pull/445),
+[#454](https://github.com/digraphs/Digraphs/pull/454),
+[#456](https://github.com/digraphs/Digraphs/pull/456), and
+[#490](https://github.com/digraphs/Digraphs/pull/490).
+
+Furthermore,  Reinis Cirpons, Tom Conti-Leslie, and Murray Whyte added a database of one-off named graphs and digraphs in [PR #404](https://github.com/digraphs/Digraphs/pull/404).
+These digraphs can be constructed by calling `Digraph` with a string of appropriate name, e.g. `Digraph("brinkmann")`.
+The available names can be accessed with the `ListNamedDigraphs` function.
+
+
+### Other new features
+
+* Tarjan and Lengauer's almost-linear time dominators algorithm was implemented, and is available via `Dominators` and `DominatorTree` ([James D. Mitchell][], Marina Anagnostopoulou-Merkouri,  Samantha Harper, and Finn Buck, in [PR #336](https://github.com/digraphs/Digraphs/pull/336))
+* `MaximalCommonSubdigraph` and `MinimalCommonSuperdigraph` were introduced (Luke Elliot, [PR #361](https://github.com/digraphs/Digraphs/pull/361))
+* `DigraphShortestPathSpanningTree` was introduced ([Jan De Beule][] and [Wilf A. Wilson][], in [PR #363](https://github.com/digraphs/Digraphs/pull/363))
+* Lawler and Byskov's algorithms for chromatic number were implemented (Ewan Gilligan, [PR #382](https://github.com/digraphs/Digraphs/pull/382))
+* Cayley digraphs now have pre-set vertex and edge labels ([Jan De Beule][] and [Wilf A. Wilson][], in [PR #385](https://github.com/digraphs/Digraphs/pull/385))
+* `DigraphCycle` was added as a synonym for `CycleDigraph` ([Wilf A. Wilson][], [PR #441](https://github.com/digraphs/Digraphs/pull/441))
+* Several new digraph product operations were introduced: `StrongProduct`, `ConormalProduct`, `HomomorphicProduct`, and `LexicographicProduct` (Finn Buck, [PR #460](https://github.com/digraphs/Digraphs/pull/460))
+* The operation `IsDigraphPath` was introduced ([James D. Mitchell][], [PR #489](https://github.com/digraphs/Digraphs/pull/489))
+
+### Other changes
+
+* The `ViewString` and inherently known properties of trees, forests, cycle digraphs and tournaments were improved ([Wilf A. Wilson][] in PRs [#440](https://github.com/digraphs/Digraphs/pull/440) and [#447](https://github.com/digraphs/Digraphs/pull/447))
+* Some technical changes to the package were made by [James D. Mitchell][] in [PR #488](https://github.com/digraphs/Digraphs/pull/488) and by [Max Horn][] in [PR #502](https://github.com/digraphs/Digraphs/pull/502)
 
 ## Version 1.4.1 (released 14/05/2021)
 
@@ -403,7 +456,7 @@ information.  The Digraphs package now uses the nauty format, although digraphs
 encoded using the old format can still be read in.  This incompatibility was
 reported by
 [Jukka Kohonen](https://tuhat.helsinki.fi/portal/en/persons/jukka-kohonen(a6f3f037-4918-4bf5-a114-ac417f94beb5).html), and the changes were made by
-[Michael Torpey][] in
+[Michael Young][] in
 [PR #162](https://github.com/digraphs/Digraphs/pull/162).
 
 Other additions and changes are listed below:
@@ -700,7 +753,7 @@ Minor changes include:
 
 * a better method for `DigraphReverse` [[Wilf A. Wilson][]]
 * automorphism groups of complete, empty, cycle, chain, and complete bipartite
-digraphs are set at creation [[Michael Torpey][]]
+digraphs are set at creation [[Michael Young][]]
 * a minor improvement in performance in the `DigraphMaximalCliques` [[Wilf A. Wilson][]]
 * a new operation `AdjacencyMatrixMutableCopy` [[James D. Mitchell][]]
 
@@ -795,7 +848,7 @@ version, we welcomed Jan De Beule to the development team.
   - `RepresentativeOutNeighbours`
 
 [[Jan De Beule][], [Julius Jonusas][], [James D. Mitchell][],
- [Michael Torpey][], [Wilf A. Wilson][]]
+ [Michael Young][], [Wilf A. Wilson][]]
 
 ## Version 0.3.2 (released 14/01/2016)
 This is another minor release due to some missing build files in the Version
@@ -819,7 +872,7 @@ on the algorithm in [this paper](https://epubs.siam.org/doi/abs/10.1137/0204007)
 ### Issues Resolved in Version 0.3.0
 * There was a memory leak in bliss-0.73, which is fixed in the copy of bliss included with Digraphs, but not in the official release of bliss. [[James D. Mitchell][]]
 * Some bits of code that caused compiler warnings were improved. [[James D. Mitchell][]]
-* Some memory leaks were resolved in the Digraphs kernel module. [[Michael Torpey][]]
+* Some memory leaks were resolved in the Digraphs kernel module. [[Michael Young][]]
 
 ## Version 0.2.0 (released 04/09/2015)
 The first release.
@@ -829,7 +882,7 @@ Pre-release version that was not made publicly available.
 
 [James D. Mitchell]: https://jdbm.me
 [Wilf A. Wilson]: https://wilf.me
-[Michael Torpey]: https://mtorpey.github.io
+[Michael Young]: https://mct25.host.cs.st-andrews.ac.uk
 [Julius Jonusas]: http://julius.jonusas.work
 [Jan De Beule]: http://homepages.vub.ac.be/~jdbeule
 [Markus Pfeiffer]: https://www.morphism.de/~markusp

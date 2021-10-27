@@ -1,8 +1,8 @@
 #############################################################################
 ##
 #W  workspaces/load-workspace.tst
-#Y  Copyright (C) 2017                                      Michael Torpey
-##                                                          Wilf A. Wilson
+#Y  Copyright (C) 2017                                      Wilf A. Wilson
+##                                                          Michael Young
 ##
 ##  Licensing information can be found in the README file of this package.
 ##

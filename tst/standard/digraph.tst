@@ -1247,36 +1247,6 @@ gap> gr := Digraph([4, 3 .. 1], f);
 gap> IsDigraphEdge(gr, [2, 1]);
 true
 
-#  DigraphAddAllLoops
-gap> gr := CompleteDigraph(10);
-<immutable complete digraph with 10 vertices>
-gap> OutNeighbours(gr)[1];
-[ 2, 3, 4, 5, 6, 7, 8, 9, 10 ]
-gap> gr2 := DigraphAddAllLoops(gr);
-<immutable reflexive digraph with 10 vertices, 100 edges>
-gap> OutNeighbours(gr2)[1];
-[ 2, 3, 4, 5, 6, 7, 8, 9, 10, 1 ]
-gap> gr3 := DigraphAddAllLoops(gr);
-<immutable reflexive digraph with 10 vertices, 100 edges>
-gap> OutNeighbours(gr3)[1];
-[ 2, 3, 4, 5, 6, 7, 8, 9, 10, 1 ]
-gap> gr := EmptyDigraph(100);
-<immutable empty digraph with 100 vertices>
-gap> DigraphAddAllLoops(gr);
-<immutable reflexive digraph with 100 vertices, 100 edges>
-gap> gr := Digraph([[1, 2, 3], [2, 2, 2, 2], [5, 1], [1, 2, 3, 4], [5]]);
-<immutable multidigraph with 5 vertices, 14 edges>
-gap> gr2 := DigraphAddAllLoops(gr);
-<immutable reflexive multidigraph with 5 vertices, 15 edges>
-gap> OutNeighbours(gr2);
-[ [ 1, 2, 3 ], [ 2, 2, 2, 2 ], [ 5, 1, 3 ], [ 1, 2, 3, 4 ], [ 5 ] ]
-gap> D := Digraph(IsImmutableDigraph,
-> [[1, 3], [2, 1, 5], [3, 4], [2, 3, 4], [5, 1]]);;
-gap> IsReflexiveDigraph(D);
-true
-gap> IsIdenticalObj(D, DigraphAddAllLoops(D));
-true
-
 # ConvertToImmutableDigraphNC
 gap> record := rec(OutNeighbours := [[1, 2], []]);
 rec( OutNeighbours := [ [ 1, 2 ], [  ] ] )
