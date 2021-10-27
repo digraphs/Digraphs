@@ -20,6 +20,9 @@
     <#Include Label="IsMatching">
     <#Include Label="DigraphMaximalMatching">
     <#Include Label="DigraphMaximumMatching">
+    <#Include Label="NewDFSRecord">
+    <#Include Label="DFSDefault">
+    <#Include Label="ExecuteDFS">
   </Section>
 
   <Section><Heading>Neighbours and degree</Heading>

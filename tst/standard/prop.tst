@@ -187,6 +187,14 @@ gap> HasIsAcyclicDigraph(gr);
 false
 gap> IsAcyclicDigraph(gr);
 false
+gap> gr := DigraphDisjointUnion(ChainDigraph(10), ChainDigraph(2));
+<immutable digraph with 12 vertices, 10 edges>
+gap> IsAcyclicDigraph(gr);
+true
+gap> gr := DigraphDisjointUnion(CompleteDigraph(5), ChainDigraph(2)); 
+<immutable digraph with 7 vertices, 21 edges>
+gap> IsAcyclicDigraph(gr);                                           
+false
 
 #  IsFunctionalDigraph
 gap> IsFunctionalDigraph(multiple);

@@ -1440,7 +1440,7 @@ gap> D := CompleteDigraph(5);
 gap> VerticesReachableFrom(D, 1);
 [ 1, 2, 3, 4, 5 ]
 gap> VerticesReachableFrom(D, 3);
-[ 1, 2, 3, 4, 5 ]
+[ 1, 3, 2, 4, 5 ]
 gap> D := EmptyDigraph(5);
 <immutable empty digraph with 5 vertices>
 gap> VerticesReachableFrom(D, 1);
@@ -2328,6 +2328,173 @@ gap> LexicographicProduct(NullDigraph(0), CompleteDigraph(10));
 </Description>
 </ManSection>
 <#/GAPDoc>  
+
+<#GAPDoc Label="NewDFSRecord">
+<ManSection>
+  <Oper Name="NewDFSRecord" Arg="digraph"/>
+  <Returns>A record.</Returns>
+  <Description>
+  This record contains three lists (parent, preorder and postorder) with their length
+  equal to the number of verticies in the <A>digraph</A>. Each index of the lists maps to the
+  vertex within the <A>digraph</A> equating to the vertex number. These lists store
+  the following:
+  <List>
+    <Mark>parent</Mark>
+    <Item>at each index, the parent of the vertex is stored</Item>
+    <Mark>preorder</Mark>
+    <Item>at each index, the preorder number (order in which the vertex is visited)
+          is stored</Item>
+    <Mark>postorder</Mark>
+    <Item>at each index, the postorder number (order in which the vertex is backtracked on)
+          is stored</Item>
+  </List>
+
+  The record also stores a further 4 attributes.
+  <List>
+    <Mark>current</Mark>
+    <Item>the current vertex that is being visited</Item>
+    <Mark>child</Mark>
+    <Item>the child of the current vertex</Item>
+    <Mark>graph</Mark>
+    <Item>the <A>digraph</A></Item>
+    <Mark>stop</Mark>
+    <Item>whether to stop the depth first search</Item>
+  </List>
+  
+  Initially, the <C>current</C> and <C>child</C> attributes will have <C>-1</C> values and the lists (<C>parent</C>,
+  <C>preorder</C> and <C>postorder</C>) will have <C>-1</C> values at all of their indicies as no vertex has 
+  been visited. The <C>stop</C> attribute will initially be <C>false</C>.
+  <E>This record should be passed into the <C>ExecuteDFS</C> function.</E>
+  See <Ref Oper="ExecuteDFS"/>.
+  <Example><![CDATA[
+gap> record := NewDFSRecord(CompleteDigraph(2));
+rec( child := -1, current := -1, 
+  graph := <immutable complete digraph with 2 vertices>, 
+  parent := [ -1, -1 ], postorder := [ -1, -1 ], 
+  preorder := [ -1, -1 ], stop := false )
+gap> record.preorder;
+[ -1, -1 ]
+gap> record.postorder;
+[ -1, -1 ]
+gap> record.stop;
+false
+gap> record.parent;
+[ -1, -1 ]
+gap> record.child;
+-1
+gap> record.current;
+-1
+gap> record.graph;
+<immutable complete digraph with 2 vertices>
+]]></Example>
+</Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DFSDefault">
+<ManSection>
+  <Oper Name="DFSDefault" Arg="record, data"/>
+  <Description>
+  This is a default function to be passed into the <C>ExecuteDFS</C> function.
+  This does nothing and can be used in place of the <C>PreOrderFunc</C>, <C>PostOrderFunc</C>,
+  <C>AncestorFunc</C> and/or <C>CrossFunc</C> of the <C>ExecuteDFS</C> function.
+  See <Ref Oper="ExecuteDFS"/>.
+  <Example><![CDATA[
+gap> PreOrderFunc := function(record, data)
+>       data.num_vertices := data.num_vertices + 1;
+>    end;;
+gap> record := NewDFSRecord(CompleteDigraph(2));;
+gap> data := rec(num_vertices := 0);;
+gap> ExecuteDFS(record, data, 1, PreOrderFunc,
+>               DFSDefault, DFSDefault, DFSDefault);
+gap> data;
+rec( num_vertices := 2 )
+gap> record := NewDFSRecord(CompleteDigraph(2));;
+gap> ExecuteDFS(record, [], 1, DFSDefault,
+>               DFSDefault, DFSDefault, DFSDefault);
+gap> record;
+rec( child := 1, current := 1, 
+  graph := <immutable complete digraph with 2 vertices>, 
+  parent := [ 1, 1 ], postorder := [ 2, 1 ], preorder := [ 1, 2 ], 
+  stop := false )
+]]></Example>
+</Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="ExecuteDFS">
+<ManSection>
+  <Oper Name="ExecuteDFS"
+    Arg="record, data, start, PreOrderFunc, PostOrderFunc, AncestorFunc, CrossFunc"/>
+  <Description>
+  This performs a full depth first search from the <A>start</A> vertex (where <A>start</A> is a vertex within the graph).
+  The depth first search can be terminated by changing the <A>record</A>.stop attribute to true in the
+  <A>PreOrderFunc</A>, <A>PostOrderFunc</A>, <A>AncestorFunc</A> or <A>CrossFunc</A> functions.
+  <C>ExecuteDFS</C> takes 7 arguments:
+  <List>
+    <Mark>record</Mark>
+    <Item>the depth first search record (created using NewDFSRecord)</Item>
+    <Mark>data</Mark>
+    <Item>an object that you want to manipulate in the functions passed.</Item>
+    <Mark>start</Mark>
+    <Item>the vertex where we begin the depth first search.</Item>
+    <Mark>PreOrderFunc</Mark>
+    <Item>this function is called when a vertex is first visited. This vertex
+    is stored in <A>record</A>.current</Item>
+    <Mark>PostOrderFunc</Mark>
+    <Item>this function is called when a vertex has no more unvisited children
+    causing us to backtrack. This vertex is stored in <A>record</A>.child and its parent is stored 
+    in <A>record</A>.current</Item>
+    <Mark>AncestorFunc</Mark>
+    <Item>this function is called when (<C><A>record</A>.current</C>,
+    <C><A>record</A>.child</C>) is an edge and <C><A>record</A>.child</C> is an ancestor of <C><A>record</A>.current</C>. An ancestor here means that
+    <C><A>record</A>.child</C> is on the same branch as <C><A>record</A>.current</C> but was visited prior to <C><A>record</A>.current</C></Item>
+    <Mark>CrossFunc</Mark>
+    <Item>this function is called when (<C><A>record</A>.current</C>,
+    <C><A>record</A>.child</C>) is an edge and <C><A>record</A>.child</C> has been visited before <C><A>record</A>.current</C>
+      and it is not an ancestor of <C><A>record</A>.current</C></Item>
+  </List>
+  Note that this function only performs a depth first search on the vertices reachable from <A>start</A>.
+  It is also important to note that all functions passed need to accept arguments <A>record</A> and <A>data</A>.
+  Finally, for the <A>start</A> vertex, its parent is itself and the <A>PreOrderFunc</A>
+  will be called on it.
+  See <Ref Oper="NewDFSRecord"/>.
+  <Example><![CDATA[
+gap> record := NewDFSRecord(CycleDigraph(10));;
+gap> ExecuteDFS(record, [], 1, DFSDefault,
+>               DFSDefault, DFSDefault, DFSDefault);
+gap> record.preorder;
+[ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ]
+gap> record := NewDFSRecord(CompleteDigraph(10));;
+gap> data := rec(cycle_vertex := 0);;
+gap> AncestorFunc := function(record, data)
+>       record.stop := true;
+>       data.cycle_vertex := record.child;
+>    end;;
+gap> ExecuteDFS(record, data, 1, DFSDefault,             
+>               DFSDefault, AncestorFunc, DFSDefault);
+gap> record.stop;
+true
+gap> data.cycle_vertex;
+1
+gap> record.preorder;
+[ 1, 2, 3, -1, -1, -1, -1, -1, -1, -1 ]
+gap> record := NewDFSRecord(Digraph([[2, 3], [4], [5], [], [4]]));;
+gap> CrossFunc := function(record, data)
+>       record.stop := true;
+>       Add(data, record.child);
+>    end;;
+gap> data := [];;
+gap> ExecuteDFS(record, data, 1, DFSDefault,                         
+>               DFSDefault, DFSDefault, CrossFunc);             
+gap> record.stop;
+true
+gap> data;
+[ 4 ]
+]]></Example>
+</Description>
+</ManSection>
+<#/GAPDoc>
 
 <#GAPDoc Label="IsDigraphPath">
 <ManSection>

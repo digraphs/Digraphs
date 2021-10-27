@@ -237,7 +237,7 @@ end);
 
 # Finds a set S of homomorphism from gr1 to gr2 such that every homomorphism g
 # between the two graphs can expressed as a composition g = f * x of an element
-# f in S and an automorphism x of gr2
+# f in S and an automorphism x of gr2
 
 InstallMethod(HomomorphismsDigraphsRepresentatives,
 "for a digraph and a digraph",

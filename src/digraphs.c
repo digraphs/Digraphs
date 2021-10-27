@@ -21,6 +21,7 @@
 
 #include "bliss-includes.h"   // for bliss stuff
 #include "cliques.h"          // for FuncDIGRAPHS_FREE_CLIQUES_DATA
+#include "dfs.h"              // for FuncExecuteDFS
 #include "digraphs-config.h"  // for DIGRAPHS_WITH_INCLUDED_BLISS
 #include "digraphs-debug.h"   // for DIGRAPHS_ASSERT
 #include "homos.h"            // for FuncHomomorphismDigraphsFinder
@@ -2223,6 +2224,12 @@ static StructGVarFunc GVarFuncs[] = {
     GVAR_FUNC(SUBGRAPH_HOMEOMORPHIC_TO_K4, 1, "digraph"),
     GVAR_FUNC(DIGRAPHS_FREE_HOMOS_DATA, 0, ""),
     GVAR_FUNC(DIGRAPHS_FREE_CLIQUES_DATA, 0, ""),
+
+    {"ExecuteDFS_C",
+     7,
+     "record, data, start, PreorderFunc, x, y, z",
+     ExecuteDFS,
+     "src/dfs.c:ExecuteDFS"},
 
     {0, 0, 0, 0, 0} /* Finish with an empty entry */
 };

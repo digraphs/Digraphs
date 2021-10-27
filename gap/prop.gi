@@ -244,7 +244,7 @@ D -> DigraphNrVertices(D) <= 1 and IsEmptyDigraph(D));
 InstallMethod(IsAcyclicDigraph, "for a digraph by out-neighbours",
 [IsDigraphByOutNeighboursRep],
 function(D)
-  local n;
+  local n, i, record, FoundCycle, components;
   n := DigraphNrVertices(D);
   if n = 0 then
     return true;
@@ -259,7 +259,27 @@ function(D)
     fi;
     return false;
   fi;
-  return IS_ACYCLIC_DIGRAPH(OutNeighbours(D));
+  record := NewDFSRecord(D);
+  FoundCycle := function(record, data)
+    record.stop := true;
+    data;  # to make the linter happy
+  end;
+  components := DigraphConnectedComponents(D);
+  if Size(components.comps) = 1 then
+    ExecuteDFS(record, [], 1, DFSDefault,
+                 DFSDefault, FoundCycle, DFSDefault);
+    return not record.stop;
+  fi;
+  # handles disconnected digraphs
+  for i in [1 .. Size(components.comps)] do
+    record := NewDFSRecord(D);
+    ExecuteDFS(record, [], components.comps[i][1],
+                 DFSDefault, DFSDefault, FoundCycle, DFSDefault);
+    if record.stop then
+      return false;
+    fi;
+  od;
+  return true;
 end);
 
 # Complexity O(number of edges)
@@ -383,7 +403,38 @@ D -> DigraphPeriod(D) = 1);
 
 InstallMethod(IsAntisymmetricDigraph, "for a digraph by out-neighbours",
 [IsDigraphByOutNeighboursRep],
-D -> IS_ANTISYMMETRIC_DIGRAPH(OutNeighbours(D)));
+function(D)
+  local record, AncestorFunc, i, components;
+  if DigraphNrVertices(D) <= 1 then
+    return true;
+  fi;
+  record := NewDFSRecord(D);
+
+  AncestorFunc := function(record, data)
+    local pos, neighbours;
+    if record.child = record.current then
+      return;
+    fi;
+    # checks if the child has a symmetric edge with current node
+    neighbours := OutNeighboursOfVertex(record.graph, record.child);
+    pos := Position(neighbours, record.current);
+    if pos <> fail then
+      record.stop := true;
+    fi;
+    data;  # to make the linter happy
+  end;
+
+  components := DigraphConnectedComponents(D);
+  for i in [1 .. Size(components.comps)] do
+    record := NewDFSRecord(D);
+    ExecuteDFS(record, [], components.comps[i][1], DFSDefault, DFSDefault,
+               AncestorFunc, DFSDefault);
+    if record.stop then
+      return false;
+    fi;
+  od;
+  return true;
+end);
 
 InstallMethod(IsTransitiveDigraph, "for a digraph by out-neighbours",
 [IsDigraphByOutNeighboursRep],
