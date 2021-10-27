@@ -2690,6 +2690,54 @@ rec( idom := [ fail ], preorder := [ 1 ] )
 gap> DominatorTree(D, 6);
 rec( idom := [ ,,,,, fail ], preorder := [ 6 ] )
 
+# IsDigraphPath
+gap> D := Digraph(IsMutableDigraph, Combinations([1 .. 5]), IsSubset);
+<mutable digraph with 32 vertices, 243 edges>
+gap> DigraphReflexiveTransitiveReduction(D);
+<mutable digraph with 32 vertices, 80 edges>
+gap> MakeImmutable(D);
+<immutable digraph with 32 vertices, 80 edges>
+gap> IsDigraphPath(D, []);
+Error, the 2nd argument (a list) must have length 2, but found length 0
+gap> IsDigraphPath(D, [1, 2, 3], []);
+Error, the 2nd and 3rd arguments (lists) are incompatible, expected 3rd argume\
+nt of length 2, got 0
+gap> IsDigraphPath(D, [1], []);
+true
+gap> IsDigraphPath(D, [1, 2], [5]);
+false
+gap> IsDigraphPath(D, [32, 31, 33], [1, 1]);
+false
+gap> IsDigraphPath(D, [32, 33, 31], [1, 1]);
+false
+gap> IsDigraphPath(D, [6, 9, 16, 17], [3, 3, 2]);
+true
+gap> IsDigraphPath(D, [33, 9, 16, 17], [3, 3, 2]);
+false
+gap> IsDigraphPath(D, [6, 9, 18, 1], [9, 10, 2]);
+false
+gap> IsDigraphPath(D, DigraphPath(D, 6, 1));
+true
+gap> ForAll(List(IteratorOfPaths(D, 6, 1)), x -> IsDigraphPath(D, x));
+true
+
+# IsDigraphPath: failing example with new DFS code (issue #487)
+gap> D := Digraph([
+>   [2, 3, 4, 5, 5], [6, 3, 4, 7, 5], [8, 9, 10, 8, 11],
+>   [12, 13, 14, 15, 16], [2, 13, 4, 12, 17], [6, 9, 4, 16, 11],
+>   [18, 13, 4, 12, 8], [8, 19, 10, 19, 20], [8, 9, 10, 8, 21],
+>   [12, 13, 14, 15, 16], [22, 13, 14, 12, 16], [23, 13, 24, 12, 8],
+>   [19, 9, 19, 8, 24], [19, 13, 19, 15, 16], [21, 19, 24, 19, 20],
+>   [25, 13, 10, 12, 8], [26, 13, 10, 12, 17], [6, 3, 4, 7, 27],
+>   [19, 19, 19, 19, 19], [28, 13, 19, 12, 16], [29, 13, 14, 12, 16],
+>   [23, 3, 24, 7, 30], [29, 9, 14, 16, 24], [12, 19, 14, 19, 19],
+>   [8, 8, 10, 24, 15], [8, 8, 10, 24, 31], [30, 19, 4, 19, 20],
+>   [19, 8, 19, 24, 12], [23, 9, 24, 16, 21], [6, 13, 4, 12, 17],
+>   [32, 13, 24, 12, 17], [29, 3, 14, 7, 7]]);;
+gap> path := DigraphPath(D, 5, 5);;
+gap> IsDigraphPath(D, path);
+true
+
 #DIGRAPHS_UnbindVariables
 gap> Unbind(a);
 gap> Unbind(adj);
