@@ -390,10 +390,9 @@ gap> DigraphVertexLabels(KnightsGraph(3, 4));
 [ [ 1, 1 ], [ 2, 1 ], [ 3, 1 ], [ 1, 2 ], [ 2, 2 ], [ 3, 2 ], [ 1, 3 ], 
   [ 2, 3 ], [ 3, 3 ], [ 1, 4 ], [ 2, 4 ], [ 3, 4 ] ]
 
-# DIGRAPHS_HaarGraph
+# HaarGraph
 gap> HaarGraph(1);
-<immutable bipartite vertex-transitive symmetric digraph with bicomponent size\
-s 1 and 1>
+<immutable complete digraph with 2 vertices>
 gap> OutNeighbours(last);
 [ [ 2 ], [ 1 ] ]
 gap> HaarGraph(2);
