@@ -31,7 +31,6 @@ pkginclude_HEADERS += src/cliques.h
 pkginclude_HEADERS += src/perms.h
 pkginclude_HEADERS += src/planar.h
 pkginclude_HEADERS += src/schreier-sims.h
-pkginclude_HEADERS += src/dfs.h
 
 if WITH_INCLUDED_BLISS
   pkginclude_HEADERS += extern/bliss-0.73/bignum.hh
@@ -57,7 +56,6 @@ digraphs_la_SOURCES += src/homos-graphs.c
 digraphs_la_SOURCES += src/perms.c
 digraphs_la_SOURCES += src/planar.c
 digraphs_la_SOURCES += src/schreier-sims.c
-digraphs_la_SOURCES += src/dfs.c
 
 if WITH_INCLUDED_BLISS
   digraphs_la_SOURCES += extern/bliss-0.73/defs.cc
