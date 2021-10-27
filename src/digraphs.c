@@ -2,11 +2,11 @@
 **
 *A  digraphs.c                  GAP package Digraphs          Julius Jonusas
 **                                                            James Mitchell
-**                                                            Michael Torpey
 **                                                            Wilf A. Wilson
+**                                                            Michael Young
 **
-**  Copyright (C) 2014-17 - Julius Jonusas, James Mitchell, Michael Torpey,
-**  Wilf A. Wilson
+**  Copyright (C) 2014-17 - Julius Jonusas, James Mitchell, Wilf A. Wilson,
+**  Michael Young
 **
 **  This file is free software, see the digraphs/LICENSE.
 **

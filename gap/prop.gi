@@ -105,7 +105,7 @@ end);
 InstallMethod(IsCompleteBipartiteDigraph, "for a digraph",
 [IsDigraph],
 function(D)
-  local bicomps;
+  local bicomps, res;
   if IsMultiDigraph(D) then
     return false;
   fi;
@@ -113,7 +113,11 @@ function(D)
   if bicomps = fail then
     return false;
   fi;
-  return DigraphNrEdges(D) = 2 * Length(bicomps[1]) * Length(bicomps[2]);
+  res := DigraphNrEdges(D) = 2 * Length(bicomps[1]) * Length(bicomps[2]);
+  if res and DigraphNrVertices(D) = 2 then
+    SetIsCompleteDigraph(D, true);
+  fi;
+  return res;
 end);
 
 InstallMethod(IsCompleteMultipartiteDigraph, "for a digraph",
