@@ -1562,7 +1562,7 @@ false
 gap> DigraphShortestPathSpanningTree(D, 1);
 fail
 gap> tree := DigraphShortestPathSpanningTree(D, 5);
-<immutable directed tree digraph with 5 vertices>
+<immutable directed tree with 5 vertices>
 gap> OutNeighbours(tree);
 [ [  ], [ 3 ], [  ], [ 1 ], [ 2, 4 ] ]
 gap> ForAll(DigraphVertices(D), v ->
