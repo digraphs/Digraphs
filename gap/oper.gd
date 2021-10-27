@@ -20,7 +20,7 @@ DeclareOperation("DigraphRemoveVertex", [IsDigraph, IsPosInt]);
 DeclareOperation("DigraphRemoveVertices", [IsDigraph, IsList]);
 DeclareOperation("DigraphRemoveVerticesNC", [IsDigraph, IsList]);
 
-# 2. Adding, removing, and reversing edges . . .
+# 2. Adding, removing, contracting, and reversing edges . . .
 DeclareOperation("DigraphAddEdge", [IsDigraph, IsPosInt, IsPosInt]);
 DeclareOperation("DigraphAddEdge", [IsDigraph, IsList]);
 DeclareOperation("DigraphAddEdges", [IsDigraph, IsList]);
@@ -28,6 +28,8 @@ DeclareOperation("DigraphAddEdges", [IsDigraph, IsList]);
 DeclareOperation("DigraphRemoveEdge", [IsDigraph, IsPosInt, IsPosInt]);
 DeclareOperation("DigraphRemoveEdge", [IsDigraph, IsList]);
 DeclareOperation("DigraphRemoveEdges", [IsDigraph, IsList]);
+
+DeclareOperation("DigraphContractEdge", [IsDigraph, IsPosInt, IsPosInt]);
 
 DeclareOperation("DigraphReverseEdge", [IsDigraph, IsList]);
 DeclareOperation("DigraphReverseEdge", [IsDigraph, IsPosInt, IsPosInt]);

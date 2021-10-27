@@ -83,6 +83,31 @@ gap> gr := DigraphRemoveEdge(gr, [2, 1]);
 gap> DigraphEdges(gr);
 [ [ 1, 2 ] ]
 
+# DigraphContractEdge: for a digraph and two nodes
+gap> D := Digraph([[2,4],[4],[4],[]]);
+<immutable digraph with 4 vertices, 4 edges>
+gap> DigraphContractEdge(D,2,4);
+<immutable digraph with 3 vertices, 3 edges>
+gap> DigraphEdges(DigraphContractEdge(D,2,4));
+[ [ 1, 3 ], [ 2, 3 ], [ 3, 3 ] ]
+gap> DigraphContractEdge(D,3,4);
+<immutable digraph with 3 vertices, 4 edges>
+gap> DigraphEdges(DigraphContractEdge(D,3,4));
+[ [ 1, 2 ], [ 1, 3 ], [ 2, 3 ], [ 3, 3 ] ]
+gap> DigraphContractEdge(D,1,2);
+<immutable digraph with 3 vertices, 3 edges>
+gap> DigraphEdges(DigraphContractEdge(D,1,2));
+[ [ 1, 2 ], [ 3, 2 ], [ 3, 3 ] ]
+gap> DigraphContractEdge(D,2,5);
+Error, the 3rd argument <ran> must be a vertex of the digraph <D> that is the \
+1st argument,
+gap> DigraphContractEdge(D,4,3);
+Error, there must be an edge between 4 and 3
+gap> D := Digraph([[2,2],[1]]);
+<immutable multidigraph with 2 vertices, 3 edges>
+gap> DigraphContractEdge(D,1,2);
+Error, the 1st argument <D> must be a digraph with no multiple edges,
+
 #  OnDigraphs: for a digraph and a perm
 gap> gr := Digraph([[2], [1], [3]]);
 <immutable digraph with 3 vertices, 3 edges>

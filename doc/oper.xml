@@ -110,6 +110,49 @@ true]]></Example>
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="DigraphContractEdge">
+<ManSection>
+  <Oper Name="DigraphContractEdge" Arg="digraph, src, ran"
+    Label="for a digraph, source, and range"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>digraph</A> is a digraph with no multiple edges and <A>src</A>
+    and <A>ran</A> are vertices of <A>digraph</A>, then this operation returns
+    a digraph constructed from <A>digraph</A> by contracting along the edge
+    specified by <A>[src, ran]</A>. <P/>  
+
+    If <A>digraph</A> belongs to <Ref
+      Filt="IsMutableDigraph"/>, then the edge is contracted directly on
+    <A>digraph</A>. If <A>digraph</A> belongs to <Ref
+      Filt="IsImmutableDigraph"/>, an immutable copy of <A>digraph</A> with
+    the edge contracted is returned.
+    <P/>
+
+    Note that if <A>digraph</A> belongs to <Ref Filt="IsImmutableDigraph"/>,
+    then a new copy of <A>digraph</A> will be returned even if <A>[src, ran]</A>
+    does not define an edge of <A>digraph</A>.<P/>
+
+    <Example><![CDATA[
+gap> D := Digraph([[2, 4], [4], [4], []]);
+<immutable digraph with 4 vertices, 4 edges>
+gap> DigraphContractEdge(D, 2, 4);
+<immutable digraph with 3 vertices, 3 edges>
+gap> DigraphEdges(DigraphContractEdge(D, 2, 4));
+[ [ 1, 3 ], [ 2, 3 ], [ 3, 3 ] ]
+gap> DigraphContractEdge(D, 3, 4);
+<immutable digraph with 3 vertices, 4 edges>
+gap> DigraphEdges(DigraphContractEdge(D, 3, 4));
+[ [ 1, 2 ], [ 1, 3 ], [ 2, 3 ], [ 3, 3 ] ]
+gap> DigraphContractEdge(D, 1, 2);
+<immutable digraph with 3 vertices, 3 edges>
+gap> DigraphEdges(DigraphContractEdge(D, 1, 2));
+[ [ 1, 2 ], [ 3, 2 ], [ 3, 3 ] ]
+]]>
+</Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="DigraphReverseEdges">
 <ManSection>
   <Oper Name="DigraphReverseEdges" Arg="digraph, edges"
