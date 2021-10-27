@@ -75,6 +75,7 @@
     <#Include Label="HamiltonianPath">
     <#Include Label="NrSpanningTrees">
     <#Include Label="DigraphDijkstra">
+    <#Include Label="VertexConnectivity">
   </Section>
 
   <Section><Heading>Cayley graphs of groups</Heading>
