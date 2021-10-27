@@ -228,6 +228,11 @@ function(D)
   return DigraphNrConnectedComponents(D) = 1;
 end);
 
+InstallImmediateMethod(IsConnectedDigraph,
+"for a digraph with known number of connected components",
+IsDigraph and HasDigraphNrConnectedComponents, 0,
+D -> DigraphNrConnectedComponents(D) < 2);
+
 InstallImmediateMethod(IsAcyclicDigraph, "for a reflexive digraph",
 IsReflexiveDigraph, 0,
 D -> DigraphNrVertices(D) = 0);
