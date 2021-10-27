@@ -1100,6 +1100,11 @@ InstallMethod(DigraphNrConnectedComponents, "for a digraph",
 [IsDigraph],
 D -> Length(DigraphConnectedComponents(D).comps));
 
+InstallImmediateMethod(DigraphNrConnectedComponents,
+"for a digraph with known connected components",
+IsDigraph and HasDigraphConnectedComponents, 0,
+D -> Length(DigraphConnectedComponents(D).comps));
+
 InstallMethod(OutDegrees, "for a digraph by out-neighbours",
 [IsDigraphByOutNeighboursRep],
 function(D)
