@@ -1220,6 +1220,10 @@ gap> IsJoinSemilatticeDigraph(gr);
 true
 gap> IsLatticeDigraph(gr);
 true
+gap> IsPlanarDigraph(gr);
+true
+gap> gr;
+<immutable planar lattice digraph with 2 vertices, 3 edges>
 gap> gr := CycleDigraph(5);
 <immutable cycle digraph with 5 vertices>
 gap> IsMeetSemilatticeDigraph(gr);
@@ -1552,7 +1556,7 @@ gap> g := CompleteMultipartiteDigraph([1, 1, 2, 3, 5, 8, 13, 21, 34]);
 gap> IsHamiltonianDigraph(g);
 true
 gap> g := CompleteBipartiteDigraph(50, 50);
-<immutable complete bipartite digraph with bicomponent sizes 50 and 50>
+<immutable complete bipartite digraph with bicomponents of size 50>
 gap> IsHamiltonianDigraph(g);
 true
 gap> g := CompleteMultipartiteDigraph([1, 15, 1, 1, 1, 1, 1, 1]);
@@ -1600,7 +1604,7 @@ gap> D := JohnsonDigraph(8, 3);
 gap> IsDigraphCore(D);
 true
 gap> D := CompleteBipartiteDigraph(500, 500);
-<immutable complete bipartite digraph with bicomponent sizes 500 and 500>
+<immutable complete bipartite digraph with bicomponents of size 500>
 gap> IsDigraphCore(D);
 false
 gap> D := PetersenGraph();
