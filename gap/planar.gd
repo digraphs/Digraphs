@@ -38,4 +38,6 @@ InstallTrueMethod(IsBiconnectedDigraph,
                   IsOuterPlanarDigraph and IsHamiltonianDigraph);
 InstallTrueMethod(IsHamiltonianDigraph,
                   IsOuterPlanarDigraph and IsBiconnectedDigraph);
+InstallTrueMethod(IsPlanarDigraph, IsChainDigraph);
+InstallTrueMethod(IsPlanarDigraph, IsCycleDigraph);
 InstallTrueMethod(IsPlanarDigraph, IsOuterPlanarDigraph);

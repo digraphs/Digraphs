@@ -78,6 +78,7 @@ function(_, m, n)
     aut := DirectProduct(SymmetricGroup(m), SymmetricGroup(n));
   fi;
   SetAutomorphismGroup(D, aut);
+  SetIsPlanarDigraph(D, m <= 2 or n <= 2);
   return D;
 end);
 
@@ -216,6 +217,7 @@ function(_, n)
   SetIsCompleteBipartiteDigraph(D, n = 2);
   SetIsCompleteMultipartiteDigraph(D, n > 1);
   SetAutomorphismGroup(D, SymmetricGroup(n));
+  SetIsPlanarDigraph(D, n <= 4);
   return D;
 end);
 
