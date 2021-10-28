@@ -575,6 +575,10 @@ gap> DigraphAddEdge(gr, [1, 2]);
 <immutable digraph with 2 vertices, 1 edge>
 gap> DigraphEdges(last);
 [ [ 1, 2 ] ]
+gap> n := 10 ^ 5;; D1 := EmptyDigraph(IsMutableDigraph, n);;
+gap> for i in [1 .. n - 1] do DigraphAddEdge(D1, i, i + 1); od;
+gap> D1 = ChainDigraph(n);
+true
 
 #  DigraphAddVertices
 gap> gr := Digraph([[1]]);;

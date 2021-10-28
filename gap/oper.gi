@@ -184,7 +184,7 @@ function(D, src, ran)
                   "digraph <D> that is the 1st argument,");
   fi;
   Add(D!.OutNeighbours[src], ran);
-  if not IsMultiDigraph(D) then
+  if HaveEdgeLabelsBeenAssigned(D) and not IsMultiDigraph(D) then
     SetDigraphEdgeLabel(D, src, ran, 1);
   fi;
   return D;
