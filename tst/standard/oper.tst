@@ -1011,6 +1011,12 @@ true
 gap> L;
 [ <immutable cycle digraph with 3 vertices>, 
   <immutable digraph with 3 vertices, 3 edges> ]
+gap> D1 := ChainDigraph(IsMutableDigraph, 4);;
+gap> SetDigraphVertexLabels(D1, ["some", "nice", "vertex", "labels"]);;
+gap> D2 := DigraphReverse(ChainDigraph(5));;
+gap> DigraphEdgeUnion(D1, D2);;
+gap> DigraphVertexLabels(D1);
+[ 1 .. 5 ]
 
 #  DigraphJoin
 gap> gr := CompleteDigraph(20);

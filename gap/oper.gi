@@ -517,6 +517,7 @@ function(arg)
   od;
   if IsMutableDigraph(D) then
     ClearDigraphEdgeLabels(D);
+    ClearDigraphVertexLabels(D);
     return D;
   fi;
   return ConvertToImmutableDigraphNC(arg[1]);

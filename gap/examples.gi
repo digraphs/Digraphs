@@ -556,10 +556,13 @@ InstallMethod(QueensGraphCons,
 "for IsMutableDigraph and two integers",
 [IsMutableDigraph, IsPosInt, IsPosInt],
 function(filt, m, n)
-  local D1, D2;
+  local D1, D2, labels;
   D1 := RooksGraphCons(IsMutableDigraph, m, n);
   D2 := BishopsGraphCons(IsMutableDigraph, m, n);
-  return DigraphEdgeUnion(D1, D2);
+  labels := DigraphVertexLabels(D1);
+  DigraphEdgeUnion(D1, D2);
+  SetDigraphVertexLabels(D1, labels);
+  return D1;
 end);
 
 InstallMethod(QueensGraphCons,
@@ -690,12 +693,12 @@ function(filt, color, m, n)
       is_dark_square := not is_dark_square;
     od;
   od;
-  SetDigraphVertexLabels(D1, labels);
   Assert(0, v = nr);
 
   DigraphTransitiveClosure(D1);
   DigraphTransitiveClosure(D2);
   DigraphEdgeUnion(D1, D2);
+  SetDigraphVertexLabels(D1, labels);
   return DigraphSymmetricClosure(D1);
 end);
 
