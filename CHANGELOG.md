@@ -21,7 +21,7 @@ Racine, and Ben Spiers as contributors to the package.
 
 We especially wish to highlight the greatly expanded functionality for creating digraphs that are either famous one-off examples, or are part of a family of standard examples.
 
-In particular, Finn Buck, Lea Racine, [James D. Mitchell][], Marina Anagnostopoulou-Merkouri, and Ben Spiers implemented functions to construct many more families of standard examples (currently documented in Section 3.5), which were added in in PRs
+In particular, Marina Anagnostopoulou-Merkouri, Finn Buck, [James D. Mitchell][], Lea Racine, and Ben Spiers implemented functions to construct many more families of standard examples (currently documented in Section 3.5), which were added in in PRs
 [#408](https://github.com/digraphs/Digraphs/pull/408),
 [#409](https://github.com/digraphs/Digraphs/pull/409),
 [#411](https://github.com/digraphs/Digraphs/pull/411),
@@ -36,7 +36,7 @@ In particular, Finn Buck, Lea Racine, [James D. Mitchell][], Marina Anagnostopou
 [#456](https://github.com/digraphs/Digraphs/pull/456), and
 [#490](https://github.com/digraphs/Digraphs/pull/490).
 
-Furthermore,  Reinis Cirpons, Tom Conti-Leslie, and Murray Whyte added a database of one-off named graphs and digraphs in [PR #404](https://github.com/digraphs/Digraphs/pull/404).
+Furthermore, Marina Anagnostopoulou-Merkouri, Reinis Cirpons, Tom Conti-Leslie, Lea Racine, Maria Tsalakou, and Murray Whyte added a database of one-off named graphs and digraphs in [PR #404](https://github.com/digraphs/Digraphs/pull/404).
 These digraphs can be constructed by calling `Digraph` with a string of appropriate name, e.g. `Digraph("brinkmann")`.
 The available names can be accessed with the `ListNamedDigraphs` function.
 
