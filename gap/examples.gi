@@ -556,15 +556,10 @@ InstallMethod(QueensGraphCons,
 "for IsMutableDigraph and two integers",
 [IsMutableDigraph, IsPosInt, IsPosInt],
 function(filt, m, n)
-  local D1, D2, labels, n1, n2;
+  local D1, D2, labels;
   D1 := RooksGraphCons(IsMutableDigraph, m, n);
   D2 := BishopsGraphCons(IsMutableDigraph, m, n);
   labels := DigraphVertexLabels(D1);
-  n1 := DigraphNrVertices(D1);
-  n2 := DigraphNrVertices(D2);
-  if n1 < n2 then
-    Append(labels, DigraphVertexLabels(D2){[n1 + 1 .. n2]});
-  fi;
   DigraphEdgeUnion(D1, D2);
   SetDigraphVertexLabels(D1, labels);
   return D1;
