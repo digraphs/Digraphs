@@ -75,3 +75,5 @@ coverage
 bliss
 *.a
 *.dylib
+/doc/*.js
+/doc/*.css
