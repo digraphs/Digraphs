@@ -76,6 +76,7 @@ InstallTrueMethod(IsCompleteMultipartiteDigraph, IsCompleteBipartiteDigraph);
 InstallTrueMethod(IsConnectedDigraph, IsBiconnectedDigraph);
 InstallTrueMethod(IsConnectedDigraph, IsStronglyConnectedDigraph);
 InstallTrueMethod(IsFunctionalDigraph, IsCycleDigraph);
+InstallTrueMethod(IsFunctionalDigraph, IsPermutationDigraph);
 InstallTrueMethod(IsHamiltonianDigraph,
                   IsTournament and IsStronglyConnectedDigraph);
 InstallTrueMethod(IsInRegularDigraph, IsRegularDigraph);
