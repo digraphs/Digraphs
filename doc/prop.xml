@@ -816,7 +816,7 @@ true
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
     This property is <K>true</K> if the digraph <A>digraph</A> is
-    functional and each node has only one in neighbour. <P/>
+    functional and each node has only one in-neighbour. <P/>
 
     &MUTABLE_RECOMPUTED_PROP;
 
