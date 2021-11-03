@@ -323,16 +323,14 @@ PetersenGraphCons);
 InstallMethod(PetersenGraph, [], {} -> PetersenGraphCons(IsImmutableDigraph));
 
 InstallMethod(GeneralisedPetersenGraphCons,
-"for IsMutableDigraph and two integers",
-[IsMutableDigraph, IsInt, IsInt],
+"for IsMutableDigraph, positive integer, integer",
+[IsMutableDigraph, IsPosInt, IsInt],
 function(filt, n, k)
   local D, i;
-  if n < 1 then
-    ErrorNoReturn("the argument <n> must be a positive integer,");
-  elif k < 0 then
+  if k < 0 then
     ErrorNoReturn("the argument <k> must be a non-negative integer,");
   elif k > n / 2 then
-    ErrorNoReturn("the argument <k> must be less than <n> / 2,");
+    ErrorNoReturn("the argument <k> must be less than or equal to <n> / 2,");
   fi;
   D := EmptyDigraph(filt, 2 * n);
   for i in [1 .. n] do
@@ -352,8 +350,8 @@ function(filt, n, k)
 end);
 
 InstallMethod(GeneralisedPetersenGraphCons,
-"for IsImmutableDigraph, integer, int",
-[IsImmutableDigraph, IsInt, IsInt],
+"for IsImmutableDigraph, positive integer, int",
+[IsImmutableDigraph, IsPosInt, IsInt],
 function(filt, n, k)
   local D;
   D := MakeImmutable(GeneralisedPetersenGraphCons(IsMutableDigraph, n, k));
@@ -362,11 +360,12 @@ function(filt, n, k)
   return D;
 end);
 
-InstallMethod(GeneralisedPetersenGraph, "for a function, integer, integer",
-[IsFunction, IsInt, IsInt],
+InstallMethod(GeneralisedPetersenGraph,
+"for a function, positive integer, integer", [IsFunction, IsPosInt, IsInt],
 GeneralisedPetersenGraphCons);
 
-InstallMethod(GeneralisedPetersenGraph, "for integer, integer", [IsInt, IsInt],
+InstallMethod(GeneralisedPetersenGraph, "for a positive integer and integer",
+[IsPosInt, IsInt],
 {n, k} -> GeneralisedPetersenGraphCons(IsImmutableDigraph, n, k));
 
 InstallMethod(LollipopGraphCons,
@@ -557,10 +556,13 @@ InstallMethod(QueensGraphCons,
 "for IsMutableDigraph and two integers",
 [IsMutableDigraph, IsPosInt, IsPosInt],
 function(filt, m, n)
-  local D1, D2;
+  local D1, D2, labels;
   D1 := RooksGraphCons(IsMutableDigraph, m, n);
   D2 := BishopsGraphCons(IsMutableDigraph, m, n);
-  return DigraphEdgeUnion(D1, D2);
+  labels := DigraphVertexLabels(D1);
+  DigraphEdgeUnion(D1, D2);
+  SetDigraphVertexLabels(D1, labels);
+  return D1;
 end);
 
 InstallMethod(QueensGraphCons,
@@ -691,12 +693,12 @@ function(filt, color, m, n)
       is_dark_square := not is_dark_square;
     od;
   od;
-  SetDigraphVertexLabels(D1, labels);
   Assert(0, v = nr);
 
   DigraphTransitiveClosure(D1);
   DigraphTransitiveClosure(D2);
   DigraphEdgeUnion(D1, D2);
+  SetDigraphVertexLabels(D1, labels);
   return DigraphSymmetricClosure(D1);
 end);
 
@@ -823,9 +825,9 @@ function(filt, n)
   D := MakeImmutable(HaarGraphCons(IsMutableDigraph, n));
   SetIsMultiDigraph(D, false);
   SetIsSymmetricDigraph(D, true);
-  SetIsRegularDigraph(D, true);
   SetIsVertexTransitive(D, true);
   SetIsBipartiteDigraph(D, true);
+  SetIsCompleteDigraph(D, n = 1);
   return D;
 end);
 

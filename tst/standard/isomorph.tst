@@ -731,6 +731,8 @@ gap> IsTrivial(Image(Projection(G, 1)));
 true
 gap> Image(Projection(G, 2));
 Group([ (4,5) ])
+gap> IsTrivial(AutomorphismGroup(Digraph(OutNeighbours(Digraph("frucht")))));
+true
 
 # A larger example
 gap> gr := Digraph([

@@ -1061,6 +1061,14 @@ gap> DigraphDiameter(gr);
 3
 gap> DigraphGroup(gr) = DihedralGroup(IsPermGroup, 14);
 true
+gap> gr := DigraphSymmetricClosure(DigraphAddEdge(CycleDigraph(7), 1, 2));;
+gap> IsMultiDigraph(gr);
+true
+gap> SetDigraphGroup(gr, Group((1, 2)(3, 7)(4, 6)));
+gap> DigraphDiameter(gr);
+3
+gap> DigraphUndirectedGirth(gr);
+2
 gap> gr := DigraphSymmetricClosure(CycleDigraph(7));;
 gap> DigraphDiameter(gr);
 3
@@ -2379,6 +2387,8 @@ true
 gap> DigraphReverse(Digraph(IsMutableDigraph, [[2], [1]]))
 > = CompleteDigraph(2);
 true
+gap> OutNeighbours(DigraphReverse(ChainDigraph(IsMutableDigraph, 5)));
+[ [  ], [ 1 ], [ 2 ], [ 3 ], [ 4 ] ]
 
 # DigraphCartesianProductProjections
 gap> D := DigraphCartesianProduct(ChainDigraph(3), CycleDigraph(4),
@@ -2702,6 +2712,67 @@ gap> HasDigraphHasLoops(D) and not DigraphHasLoops(D);
 true
 gap> DigraphNrLoops(D) = 0;
 true
+
+#  DigraphAddAllLoops
+gap> gr := CompleteDigraph(10);
+<immutable complete digraph with 10 vertices>
+gap> OutNeighbours(gr)[1];
+[ 2, 3, 4, 5, 6, 7, 8, 9, 10 ]
+gap> gr2 := DigraphAddAllLoops(gr);
+<immutable reflexive digraph with 10 vertices, 100 edges>
+gap> OutNeighbours(gr2)[1];
+[ 2, 3, 4, 5, 6, 7, 8, 9, 10, 1 ]
+gap> gr3 := DigraphAddAllLoops(gr);
+<immutable reflexive digraph with 10 vertices, 100 edges>
+gap> OutNeighbours(gr3)[1];
+[ 2, 3, 4, 5, 6, 7, 8, 9, 10, 1 ]
+gap> gr := EmptyDigraph(100);
+<immutable empty digraph with 100 vertices>
+gap> DigraphAddAllLoops(gr);
+<immutable reflexive digraph with 100 vertices, 100 edges>
+gap> gr := Digraph([[1, 2, 3], [2, 2, 2, 2], [5, 1], [1, 2, 3, 4], [5]]);
+<immutable multidigraph with 5 vertices, 14 edges>
+gap> gr2 := DigraphAddAllLoops(gr);
+<immutable reflexive multidigraph with 5 vertices, 15 edges>
+gap> OutNeighbours(gr2);
+[ [ 1, 2, 3 ], [ 2, 2, 2, 2 ], [ 5, 1, 3 ], [ 1, 2, 3, 4 ], [ 5 ] ]
+gap> D := Digraph(IsImmutableDigraph,
+> [[1, 3], [2, 1, 5], [3, 4], [2, 3, 4], [5, 1]]);;
+gap> IsReflexiveDigraph(D);
+true
+gap> IsIdenticalObj(D, DigraphAddAllLoops(D));
+true
+
+# DigraphAddAllLoops - mutable
+gap> D := Digraph(IsMutableDigraph,
+> [[1], [3, 4], [5, 6], [4, 2, 3], [4, 5], [1]]);
+<mutable digraph with 6 vertices, 11 edges>
+gap> DigraphAddAllLoops(D);
+<mutable digraph with 6 vertices, 14 edges>
+gap> IsIdenticalObj(last, D);
+true
+gap> D := Digraph([[1], [3, 4], [5, 6], [4, 2, 3], [4, 5], [1]]);
+<immutable digraph with 6 vertices, 11 edges>
+gap> DigraphAddAllLoops(D);
+<immutable reflexive digraph with 6 vertices, 14 edges>
+gap> IsIdenticalObj(last, D);
+false
+gap> D := Digraph([[1], [3, 4], [5, 6], [4, 2, 3], [4, 5], [1]]);
+<immutable digraph with 6 vertices, 11 edges>
+gap> D := DigraphAddEdge(D, 1, 3);
+<immutable digraph with 6 vertices, 12 edges>
+gap> D := DigraphAddEdge(D, 1, 3);
+<immutable multidigraph with 6 vertices, 13 edges>
+gap> D := DigraphRemoveEdge(D, 1, 3);
+Error, the 1st argument <D> must be a digraph with no multiple edges,
+gap> D := Digraph([[1], [3, 4], [5, 6], [4, 2, 3], [4, 5], [1]]);
+<immutable digraph with 6 vertices, 11 edges>
+gap> D := DigraphAddEdge(D, 1, 3);
+<immutable digraph with 6 vertices, 12 edges>
+gap> D := DigraphRemoveEdge(D, 1, 3);
+<immutable digraph with 6 vertices, 11 edges>
+gap> D := DigraphRemoveEdge(D, 1, 3);
+<immutable digraph with 6 vertices, 11 edges>
 
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(adj);
