@@ -45,6 +45,7 @@ DeclareProperty("IsAntisymmetricDigraph", IsDigraph);
 DeclareProperty("IsTransitiveDigraph", IsDigraph);
 DeclareProperty("IsJoinSemilatticeDigraph", IsDigraph);
 DeclareProperty("IsMeetSemilatticeDigraph", IsDigraph);
+DeclareProperty("IsPermutationDigraph", IsDigraph);
 DeclareSynonymAttr("IsLatticeDigraph",
                    IsMeetSemilatticeDigraph and IsJoinSemilatticeDigraph);
 DeclareSynonymAttr("IsPreorderDigraph",

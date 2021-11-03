@@ -10,6 +10,7 @@
     <#Include Label="IsEmptyDigraph">
     <#Include Label="IsEquivalenceDigraph">
     <#Include Label="IsFunctionalDigraph">
+    <#Include Label="IsPermutationDigraph">
     <#Include Label="IsMultiDigraph">
     <#Include Label="IsReflexiveDigraph">
     <#Include Label="IsSymmetricDigraph">

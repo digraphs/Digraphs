@@ -259,6 +259,10 @@ InstallMethod(IsFunctionalDigraph, "for a digraph by out-neighbours",
 [IsDigraphByOutNeighboursRep],
 D -> ForAll(OutNeighbours(D), x -> Length(x) = 1));
 
+InstallMethod(IsPermutationDigraph, "for a digraph by out-neighbours",
+[IsDigraphByOutNeighboursRep],
+D -> IsFunctionalDigraph(D) and ForAll(InNeighbours(D), x -> Length(x) = 1));
+
 InstallMethod(IsTournament, "for a digraph", [IsDigraph],
 function(D)
   local n;
