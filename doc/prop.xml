@@ -810,6 +810,34 @@ true
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="IsPermutationDigraph">
+<ManSection>
+  <Prop Name="IsPermutationDigraph" Arg="digraph"/>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
+  <Description>
+    This property is <K>true</K> if the digraph <A>digraph</A> is
+    functional and each node has only one in-neighbour. <P/>
+
+    &MUTABLE_RECOMPUTED_PROP;
+
+    <Example><![CDATA[
+gap> gr1 := Digraph([[3], [2], [2], [1], [6], [5]]);
+<immutable digraph with 6 vertices, 6 edges>
+gap> IsPermutationDigraph(gr1);
+false
+gap> gr2 := Digraph([[1, 2], [1]]);
+<immutable digraph with 2 vertices, 3 edges>
+gap> IsPermutationDigraph(gr2);
+false
+gap> gr3 := Digraph(3, [1, 2, 3], [2, 3, 1]);
+<immutable digraph with 3 vertices, 3 edges>
+gap> IsPermutationDigraph(gr3);
+true
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="IsHamiltonianDigraph">
 <ManSection>
   <Prop Name="IsHamiltonianDigraph" Arg="digraph"/>

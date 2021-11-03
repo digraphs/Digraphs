@@ -45,6 +45,7 @@ DeclareProperty("IsAntisymmetricDigraph", IsDigraph);
 DeclareProperty("IsTransitiveDigraph", IsDigraph);
 DeclareProperty("IsJoinSemilatticeDigraph", IsDigraph);
 DeclareProperty("IsMeetSemilatticeDigraph", IsDigraph);
+DeclareProperty("IsPermutationDigraph", IsDigraph);
 DeclareSynonymAttr("IsLatticeDigraph",
                    IsMeetSemilatticeDigraph and IsJoinSemilatticeDigraph);
 DeclareSynonymAttr("IsPreorderDigraph",
@@ -75,6 +76,7 @@ InstallTrueMethod(IsCompleteMultipartiteDigraph, IsCompleteBipartiteDigraph);
 InstallTrueMethod(IsConnectedDigraph, IsBiconnectedDigraph);
 InstallTrueMethod(IsConnectedDigraph, IsStronglyConnectedDigraph);
 InstallTrueMethod(IsFunctionalDigraph, IsCycleDigraph);
+InstallTrueMethod(IsFunctionalDigraph, IsPermutationDigraph);
 InstallTrueMethod(IsHamiltonianDigraph,
                   IsTournament and IsStronglyConnectedDigraph);
 InstallTrueMethod(IsInRegularDigraph, IsRegularDigraph);

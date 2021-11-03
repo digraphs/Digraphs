@@ -225,6 +225,26 @@ gap> g5 := Digraph(rec(DigraphVertices := [1 .. 3],
 gap> IsFunctionalDigraph(g5);
 false
 
+#  IsPermutationDigraph
+gap> D := CompleteDigraph(5);
+<immutable complete digraph with 5 vertices>
+gap> IsPermutationDigraph(D);
+false
+gap> IsPermutationDigraph(CycleDigraph(5));
+true
+gap> IsPermutationDigraph(NullDigraph(1));
+false
+gap> IsPermutationDigraph(g1);
+false
+gap> IsPermutationDigraph(g2);
+false
+gap> IsPermutationDigraph(g3);
+false
+gap> IsPermutationDigraph(g4);
+true
+gap> IsPermutationDigraph(g5);
+false
+
 #  IsSymmetricDigraph
 gap> IsSymmetricDigraph(g1);
 false
