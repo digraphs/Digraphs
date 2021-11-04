@@ -318,10 +318,10 @@ function(D, src, ran)
     ErrorNoReturn("the 1st argument <D> must be a digraph with no multiple ",
                   "edges,");
   elif (src = ran) then
-    ErrorNoReturn("the 1st argument <src> cannot equal the 2nd argument"
-                  " <ran>,")
+    ErrorNoReturn("the 1st argument <src> cannot equal the 2nd argument",
+                  " <ran>,");
   elif not IsDigraphEdge(D, src, ran) then
-    ErrorNoReturn("[<src>, <ran>] must be an edge of the digraph <D>",
+    ErrorNoReturn("[<src>, <ran>] must be an edge of the digraph <D> ",
                   "(the 2nd, 3rd and 1st arguments, respectively),");
   fi;
   V := Difference(DigraphVertices(D), [src, ran]);
