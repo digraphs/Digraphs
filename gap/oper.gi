@@ -317,14 +317,12 @@ function(D, src, ran)
   if IsMultiDigraph(D) then
     ErrorNoReturn("the 1st argument <D> must be a digraph with no multiple ",
                   "edges,");
-  elif not (IsPosInt(src) and src in DigraphVertices(D)) then
-    ErrorNoReturn("the 2nd argument <src> must be a vertex of the ",
-                  "digraph <D> that is the 1st argument,");
-  elif not (IsPosInt(ran) and ran in DigraphVertices(D)) then
-    ErrorNoReturn("the 3rd argument <ran> must be a vertex of the ",
-                  "digraph <D> that is the 1st argument,");
-  elif not ([src,ran] in DigraphEdges(D)) then
-    ErrorNoReturn("there must be an edge between ",src," and ",ran);
+  elif (src = ran) then
+    ErrorNoReturn("the 1st argument <src> cannot equal the 2nd argument"
+                  " <ran>,")
+  elif not IsDigraphEdge(D, src, ran) then
+    ErrorNoReturn("[<src>, <ran>] must be an edge of the digraph <D>",
+                  "(the 2nd, 3rd and 1st arguments, respectively),");
   fi;
   V := Difference(DigraphVertices(D), [src, ran]);
   P := List(V, z -> [z]);
