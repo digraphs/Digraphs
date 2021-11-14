@@ -115,6 +115,8 @@ DeclareOperation("IsDigraphPath",
 DeclareOperation("IsDigraphPath", [IsDigraph, IsList]);
 
 # 9. Connectivity . . .
+DeclareOperation("DigraphIsKing", [IsDigraph, IsPosInt, IsPosInt]);
+
 DeclareOperation("DigraphFloydWarshall",
                  [IsDigraph, IsFunction, IsObject, IsObject]);
 DeclareOperation("DigraphDijkstra",
