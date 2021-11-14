@@ -1331,6 +1331,21 @@ end);
 # 9.  Connectivity
 #############################################################################
 
+InstallMethod(DigraphIsKing,
+"for a digraph and two positive integers",
+[IsDigraph, IsPosInt, IsPosInt],
+function(D, v, k)
+  local layers;
+  if not v in DigraphVertices(D) then
+    ErrorNoReturn("the 2nd argument <v> is not a vertex of the ",
+                  "1st argument <D>,");
+  elif not IsTournament(D) then
+    ErrorNoReturn("the 1st argument <D> must be a tournament,");
+  fi;
+  layers := DigraphLayers(D, v);
+  return ((Length(layers) <= k + 1) and (Union(layers) = DigraphVertices(D)));
+end);
+
 InstallMethod(DigraphFloydWarshall,
 "for a digraph by out-neighbours, function, object, and object",
 [IsDigraphByOutNeighboursRep, IsFunction, IsObject, IsObject],
