@@ -3431,3 +3431,15 @@ D -> DIGRAPHS_IsJoinSemilatticeAndJoinTable(D)[2]);
 InstallMethod(DigraphMeetTable, "for a digraph",
 [IsDigraph],
 D -> DIGRAPHS_IsMeetSemilatticeAndMeetTable(D)[2]);
+
+InstallMethod(Digraph2Kings, "for a digraph", [IsDigraph],
+function(D)
+  local v, kings;
+  kings := [];
+  for v in DigraphVertices(D) do
+    if DigraphIsKing(D, v, 2) then
+      Add(kings, v);
+    fi;
+  od;
+  return kings;
+end);

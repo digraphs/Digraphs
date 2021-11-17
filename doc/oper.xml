@@ -8,6 +8,37 @@
 #############################################################################
 ##
 
+<#GAPDoc Label="DigraphIsKing">
+<ManSection>
+  <Oper Name="DigraphIsKing" Arg="D, v, k"/>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
+  <Description>
+    If <A>D</A> is a tournament and <A>v</A> is a vertex in the tournament,
+    then this operation returns <K>true</K> if every other vertex of <A>D</A>
+    is reachable from <A>v</A> by a path of length at most <A>k</A>. Else,
+    <K>false</K> is returned. <P/>
+
+    If <K>true</K> is returned, then the vertex, <A>v</A>, is a k-king. <P/>
+
+    <Example><![CDATA[
+gap> gr := Digraph([[2, 3, 4], [3, 5], [5], [2, 3], [1, 4]]);
+<immutable digraph with 5 vertices, 10 edges>
+gap> DigraphIsKing(gr, 2, 2);
+true
+gap> DigraphIsKing(gr, 3, 2);
+false
+gap> OutNeighboursOfVertex(gr, 3);
+[ 5 ]
+gap> OutNeighboursOfVertex(gr, 5);
+[ 1, 4 ]
+gap> Union(last, last2);
+[ 1, 4, 5 ]
+gap> DigraphIsKing(gr, 3, 4);
+true]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="IsSubdigraph">
 <ManSection>
   <Oper Name="IsSubdigraph" Arg="super, sub"/>
