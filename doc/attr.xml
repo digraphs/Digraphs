@@ -2399,3 +2399,29 @@ gap> Length(M);
   </Description>
 </ManSection>
 <#/GAPDoc>
+
+<#GAPDoc Label="Digraph2Kings">
+<ManSection>
+  <Oper Name="Digraph2Kings" Arg="D"/>
+  <Returns>A list.</Returns>
+  <Description>
+    If <A>D</A> is a tournament then this operation returns a list of the
+    2-kings in the tournament. If the tournament contains a source, then the
+    source is the only 2-king (see <Ref Attr="DigraphSources"/>). The number 
+    of 2-kings in a tournament without a source is at least three. A tournament
+    cannot have exactly two 2-kings.
+
+    <Example><![CDATA[
+gap> gr := Digraph([[2, 3, 4], [3, 5], [5], [2, 3], [1, 4]]);
+<immutable digraph with 5 vertices, 10 edges>
+gap> Digraph2Kings(gr);
+[ 1, 2, 5 ]
+gap> gr := Digraph([[2, 3, 4, 5], [3, 5], [5], [2, 3], [4]]);
+<immutable digraph with 5 vertices, 10 edges>
+gap> DigraphSources(gr);
+[ 1 ]
+gap> Digraph2Kings(gr);
+[ 1 ]]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>

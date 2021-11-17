@@ -75,6 +75,8 @@
     <#Include Label="HamiltonianPath">
     <#Include Label="NrSpanningTrees">
     <#Include Label="DigraphDijkstra">
+    <#Include Label="DigraphIsKing">
+    <#Include Label="Digraph2Kings">
   </Section>
 
   <Section><Heading>Cayley graphs of groups</Heading>

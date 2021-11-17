@@ -2613,3 +2613,15 @@ function(D)
   M := List(DigraphLoops(D), x -> [x, x]);
   return Union(M, DIGRAPHS_MateToMatching(D, mateD));
 end);
+
+InstallMethod(Digraph2Kings, "for a digraph", [IsDigraph],
+function(D)
+  local v, kings;
+  kings := [];
+  for v in DigraphVertices(D) do
+    if DigraphIsKing(D, v, 2) then
+      Add(kings, v);
+    fi;
+  od;
+  return kings;
+end);
