@@ -11,6 +11,9 @@
 # meaning it really has multiple edges!!
 DeclareProperty("IsMultiDigraph", IsDigraph);
 
+DeclareProperty("DigraphHasAVertex", IsDigraph);
+DeclareProperty("DigraphHasNoVertices", IsDigraph);
+
 DeclareProperty("DigraphHasLoops", IsDigraph);
 DeclareProperty("IsAcyclicDigraph", IsDigraph);
 DeclareProperty("IsAperiodicDigraph", IsDigraph);
@@ -32,6 +35,7 @@ DeclareProperty("IsUndirectedForest", IsDigraph);
 DeclareProperty("IsEdgeTransitive", IsDigraph);
 DeclareProperty("IsVertexTransitive", IsDigraph);
 DeclareProperty("IsEmptyDigraph", IsDigraph);
+DeclareProperty("IsNonemptyDigraph", IsDigraph);
 DeclareProperty("IsEulerianDigraph", IsDigraph);
 DeclareProperty("IsFunctionalDigraph", IsDigraph);
 DeclareProperty("IsHamiltonianDigraph", IsDigraph);
@@ -98,3 +102,8 @@ InstallTrueMethod(IsSymmetricDigraph, IsCompleteDigraph);
 InstallTrueMethod(IsSymmetricDigraph, IsDigraph and IsUndirectedForest);
 InstallTrueMethod(IsTransitiveDigraph, IsTournament and IsAcyclicDigraph);
 InstallTrueMethod(IsUndirectedForest, IsDigraph and IsUndirectedTree);
+
+InstallTrueMethod(IsNonemptyDigraph, IsDigraph and DigraphHasLoops);
+InstallTrueMethod(DigraphHasLoops, IsReflexiveDigraph and DigraphHasAVertex);
+InstallTrueMethod(DigraphHasAVertex, IsDigraph and IsNonemptyDigraph);
+InstallTrueMethod(DigraphHasAVertex, IsDigraph and IsDirectedTree);
