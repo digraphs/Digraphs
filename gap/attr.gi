@@ -765,7 +765,7 @@ InstallMethod(InDegrees, "for a digraph by out-neighbours",
 function(D)
   local adj, degs, x, i;
   adj := OutNeighbours(D);
-  degs := [1 .. DigraphNrVertices(D)] * 0;
+  degs := ListWithIdenticalEntries(DigraphNrVertices(D), 0);
   for x in adj do
     for i in x do
       degs[i] := degs[i] + 1;
@@ -1057,7 +1057,7 @@ function(D, v)
   fi;
 
   layerNumbers := [];
-  for i in [1 .. DigraphNrVertices(D)] do
+  for i in DigraphVertices(D) do
      layerNumbers[i] := laynum[orbnum[i]];
   od;
   data[v] := rec(layerNumbers    := layerNumbers,
@@ -1254,7 +1254,7 @@ function(D)
   local UNBLOCK, CIRCUIT, out, stack, endofstack, C, scc, n, blocked, B,
   c_comp, comp, s, loops, i;
 
-  if DigraphNrVertices(D) = 0 or DigraphNrEdges(D) = 0 then
+  if IsEmptyDigraph(D) then
     return [];
   fi;
 
@@ -1523,12 +1523,8 @@ InstallMethod(HamiltonianPath, "for a digraph", [IsDigraph],
 function(D)
   local path, iter, n;
 
-  if DigraphNrVertices(D) <= 1 and IsEmptyDigraph(D) then
-    if DigraphNrVertices(D) = 0 then
-      return [];
-    else
-      return [1];
-    fi;
+  if DigraphNrVertices(D) <= 1 then
+    return DigraphVertices(D);
   elif not IsStronglyConnectedDigraph(D) then
     return fail;
   fi;
