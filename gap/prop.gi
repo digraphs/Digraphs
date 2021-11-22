@@ -27,7 +27,7 @@ D -> IsDirectedTree(D) and IsSubset([0, 1], OutDegreeSet(D)));
 
 InstallMethod(IsCycleDigraph, "for a digraph", [IsDigraph],
 function(D)
-  return DigraphNrVertices(D) > 0
+  return DigraphHasAVertex(D)
      and DigraphNrEdges(D) = DigraphNrVertices(D)
      and IsStronglyConnectedDigraph(D);
 end);
@@ -393,8 +393,8 @@ D -> DigraphNrEdges(D) = 2 * (DigraphNrVertices(D) - 1)
 
 InstallMethod(IsUndirectedForest, "for a digraph", [IsDigraph],
 function(D)
-  if not IsSymmetricDigraph(D) or DigraphNrVertices(D) = 0
-      or IsMultiDigraph(D) then
+  if DigraphHasNoVertices(D) or not IsSymmetricDigraph(D) or IsMultiDigraph(D)
+      then
     return false;
   fi;
   return ForAll(DigraphConnectedComponents(D).comps,
