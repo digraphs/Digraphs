@@ -1,7 +1,7 @@
 #############################################################################
 ##
 ##  prop.gd
-##  Copyright (C) 2014-19                                James D. Mitchell
+##  Copyright (C) 2014-21                                James D. Mitchell
 ##
 ##  Licensing information can be found in the README file of this package.
 ##
@@ -66,12 +66,14 @@ DeclareSynonymAttr("IsQuasiorderDigraph", IsPreorderDigraph);
 DeclareOperation("DIGRAPHS_IsMeetJoinSemilatticeDigraph",
                  [IsHomogeneousList]);
 
+InstallTrueMethod(IsAcyclicDigraph, IsChainDigraph);
+InstallTrueMethod(IsAcyclicDigraph, IsDigraph and IsDirectedTree);
 InstallTrueMethod(IsAcyclicDigraph, IsEmptyDigraph);
 InstallTrueMethod(IsAcyclicDigraph, IsTournament and IsTransitiveDigraph);
 InstallTrueMethod(IsAntisymmetricDigraph, IsAcyclicDigraph);
-InstallTrueMethod(IsAntisymmetricDigraph, IsTournament);
+InstallTrueMethod(IsAntisymmetricDigraph, IsDigraph and IsTournament);
 InstallTrueMethod(IsBipartiteDigraph, IsCompleteBipartiteDigraph);
-InstallTrueMethod(IsBipartiteDigraph, IsUndirectedForest);
+InstallTrueMethod(IsBipartiteDigraph, IsDigraph and IsUndirectedForest);
 InstallTrueMethod(IsCompleteMultipartiteDigraph, IsCompleteBipartiteDigraph);
 InstallTrueMethod(IsConnectedDigraph, IsBiconnectedDigraph);
 InstallTrueMethod(IsConnectedDigraph, IsStronglyConnectedDigraph);
@@ -82,15 +84,17 @@ InstallTrueMethod(IsHamiltonianDigraph,
 InstallTrueMethod(IsInRegularDigraph, IsRegularDigraph);
 InstallTrueMethod(IsOutRegularDigraph, IsRegularDigraph);
 InstallTrueMethod(IsPreorderDigraph, IsPartialOrderDigraph);
+InstallTrueMethod(IsReflexiveDigraph,
+                  IsDigraph and IsVertexTransitive and DigraphHasLoops);
 InstallTrueMethod(IsRegularDigraph, IsInRegularDigraph and IsOutRegularDigraph);
-InstallTrueMethod(IsRegularDigraph, IsVertexTransitive);
+InstallTrueMethod(IsRegularDigraph, IsDigraph and IsVertexTransitive);
 InstallTrueMethod(IsStronglyConnectedDigraph,
                   IsConnectedDigraph and IsSymmetricDigraph);
 InstallTrueMethod(IsStronglyConnectedDigraph, IsCycleDigraph);
 InstallTrueMethod(IsStronglyConnectedDigraph, IsEulerianDigraph);
 InstallTrueMethod(IsStronglyConnectedDigraph, IsHamiltonianDigraph);
-InstallTrueMethod(IsStronglyConnectedDigraph, IsUndirectedTree);
+InstallTrueMethod(IsStronglyConnectedDigraph, IsDigraph and IsUndirectedTree);
 InstallTrueMethod(IsSymmetricDigraph, IsCompleteDigraph);
-InstallTrueMethod(IsSymmetricDigraph, IsUndirectedForest);
+InstallTrueMethod(IsSymmetricDigraph, IsDigraph and IsUndirectedForest);
 InstallTrueMethod(IsTransitiveDigraph, IsTournament and IsAcyclicDigraph);
-InstallTrueMethod(IsUndirectedForest, IsUndirectedTree);
+InstallTrueMethod(IsUndirectedForest, IsDigraph and IsUndirectedTree);
