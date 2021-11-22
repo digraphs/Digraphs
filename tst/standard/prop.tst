@@ -1549,6 +1549,29 @@ true
 gap> IsEdgeTransitive(Digraph([[2], [3, 3, 3], []]));
 Error, the argument <D> must be a digraph with no multiple edges,
 
+# DigraphHasNoVertices and DigraphHasAVertex
+gap> List([0 .. 3], i -> DigraphHasAVertex(EmptyDigraph(i)));
+[ false, true, true, true ]
+gap> List([0 .. 3], i -> DigraphHasNoVertices(EmptyDigraph(i)));
+[ true, false, false, false ]
+gap> DigraphHasAVertex(Digraph([]));
+false
+gap> DigraphHasNoVertices(Digraph([]));
+true
+gap> DigraphHasAVertex(Digraph([[1]]));
+true
+gap> DigraphHasNoVertices(Digraph([[1]]));
+false
+
+# IsNonemptyDigraph
+gap> ForAny([0 .. 10], i -> IsNonemptyDigraph(EmptyDigraph(i)));
+false
+gap> ForAny([0 .. 10], i -> IsNonemptyDigraph(Digraph(
+> ListWithIdenticalEntries(i, []))));
+false
+gap> IsNonemptyDigraph(Digraph([[], [3], []]));
+true
+
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(adj);
 gap> Unbind(circuit);
