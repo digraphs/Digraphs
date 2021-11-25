@@ -1873,6 +1873,10 @@ false
 gap> "brinkmann" in ListNamedDigraphs("man", 1000);
 true
 
+# OutNeighbours
+gap> OutNeighbours(OutNeighbours);
+Error, expected a digraph, not a function
+
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(G);
 gap> Unbind(adj);
