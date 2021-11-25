@@ -107,7 +107,7 @@ function(D, n)
     fi;
   fi;
 
-  # Only the null D with 0 vertices can be coloured with 0 colours
+  # Only the null digraph with 0 vertices can be coloured with 0 colours
   if n = 0 then
     if DigraphHasNoVertices(D) then
       return IdentityTransformation;
