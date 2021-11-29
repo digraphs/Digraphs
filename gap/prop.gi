@@ -1,7 +1,7 @@
 #############################################################################
 ##
 ##  prop.gi
-##  Copyright (C) 2014-19                                James D. Mitchell
+##  Copyright (C) 2014-21                                James D. Mitchell
 ##
 ##  Licensing information can be found in the README file of this package.
 ##
@@ -13,12 +13,21 @@ InstallMethod(IsMultiDigraph, "for a digraph by out-neighbours",
 [IsDigraphByOutNeighboursRep],
 IS_MULTI_DIGRAPH);
 
+InstallMethod(DigraphHasNoVertices, "for a digraph", [IsDigraph],
+D -> not DigraphHasAVertex(D));
+
+InstallMethod(DigraphHasAVertex, "for a digraph", [IsDigraph],
+D -> DigraphNrVertices(D) > 0);
+
+InstallMethod(IsNonemptyDigraph, "for a digraph", [IsDigraph],
+D -> not IsEmptyDigraph(D));
+
 InstallMethod(IsChainDigraph, "for a digraph", [IsDigraph],
 D -> IsDirectedTree(D) and IsSubset([0, 1], OutDegreeSet(D)));
 
 InstallMethod(IsCycleDigraph, "for a digraph", [IsDigraph],
 function(D)
-  return DigraphNrVertices(D) > 0
+  return DigraphHasAVertex(D)
      and DigraphNrEdges(D) = DigraphNrVertices(D)
      and IsStronglyConnectedDigraph(D);
 end);
@@ -384,8 +393,8 @@ D -> DigraphNrEdges(D) = 2 * (DigraphNrVertices(D) - 1)
 
 InstallMethod(IsUndirectedForest, "for a digraph", [IsDigraph],
 function(D)
-  if not IsSymmetricDigraph(D) or DigraphNrVertices(D) = 0
-      or IsMultiDigraph(D) then
+  if DigraphHasNoVertices(D) or not IsSymmetricDigraph(D) or IsMultiDigraph(D)
+      then
     return false;
   fi;
   return ForAll(DigraphConnectedComponents(D).comps,

@@ -717,7 +717,8 @@ false
     <K>false</K> if it is not. A digraph is <E>empty</E> if it has no
     edges.<P/>
 
-    <C>IsNullDigraph</C> is a synonym for <C>IsEmptyDigraph</C>.
+    <Ref Prop="IsNullDigraph"/> is a synonym for <Ref Prop="IsEmptyDigraph"/>.
+    See also <Ref Prop="IsNonemptyDigraph"/>.
     <P/>
 
     &MUTABLE_RECOMPUTED_PROP;
@@ -734,6 +735,93 @@ gap> D := Digraph([[], [1]]);
 gap> IsEmptyDigraph(D);
 false
 gap> IsNullDigraph(D);
+false]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="IsNonemptyDigraph">
+<ManSection>
+  <Prop Name="IsNonemptyDigraph" Arg="digraph"/>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
+  <Description>
+    Returns <K>true</K> if the digraph <A>digraph</A> is nonempty, and
+    <K>false</K> if it is not. A digraph is <E>nonempty</E> if it has at
+    least one edge.<P/>
+
+    See also <Ref Prop="IsEmptyDigraph"/>.
+    <P/>
+
+    &MUTABLE_RECOMPUTED_PROP;
+
+    <Example><![CDATA[
+gap> D := Digraph([[], []]);
+<immutable empty digraph with 2 vertices>
+gap> IsNonemptyDigraph(D);
+false
+gap> D := Digraph([[], [1]]);
+<immutable digraph with 2 vertices, 1 edge>
+gap> IsNonemptyDigraph(D);
+true]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphHasAVertex">
+<ManSection>
+  <Prop Name="DigraphHasAVertex" Arg="digraph"/>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
+  <Description>
+    Returns <K>true</K> if the digraph <A>digraph</A> has at least one vertex,
+    and <K>false</K> if it does not.<P/>
+
+    See also <Ref Prop="DigraphHasNoVertices"/>.
+    <P/>
+
+    &MUTABLE_RECOMPUTED_PROP;
+
+    <Example><![CDATA[
+gap> D := Digraph([]);
+<immutable empty digraph with 0 vertices>
+gap> DigraphHasAVertex(D);
+false
+gap> D := Digraph([[]]);
+<immutable empty digraph with 1 vertex>
+gap> DigraphHasAVertex(D);
+true
+gap> D := Digraph([[], [1]]);
+<immutable digraph with 2 vertices, 1 edge>
+gap> DigraphHasAVertex(D);
+true]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphHasNoVertices">
+<ManSection>
+  <Prop Name="DigraphHasNoVertices" Arg="digraph"/>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
+  <Description>
+    Returns <K>true</K> if the digraph <A>digraph</A> is the unique digraph
+    with zero vertices, and <K>false</K> otherwise.<P/>
+
+    See also <Ref Prop="DigraphHasAVertex"/>.
+    <P/>
+
+    &MUTABLE_RECOMPUTED_PROP;
+
+    <Example><![CDATA[
+gap> D := Digraph([]);
+<immutable empty digraph with 0 vertices>
+gap> DigraphHasNoVertices(D);
+true
+gap> D := Digraph([[]]);
+<immutable empty digraph with 1 vertex>
+gap> DigraphHasNoVertices(D);
+false
+gap> D := Digraph([[], [1]]);
+<immutable digraph with 2 vertices, 1 edge>
+gap> DigraphHasNoVertices(D);
 false]]></Example>
   </Description>
 </ManSection>

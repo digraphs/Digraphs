@@ -327,6 +327,56 @@ gap> OutNeighbours(D2);
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="OnTuplesDigraphs">
+<ManSection>
+  <Oper Name="OnTuplesDigraphs" Arg="list, perm"
+    Label="for a list of digraphs and a perm"/>
+  <Oper Name="OnSetsDigraphs" Arg="list, perm"
+    Label="for a set of digraphs and a perm"/>
+  <Returns>A list or set of digraphs.</Returns>
+  <Description>
+    If <A>list</A> is a list of digraphs, and <A>perm</A> is a
+    <E>permutation</E> of the vertices of the digraphs in <A>list</A>, then
+    <Ref Oper="OnTuplesDigraphs" Label="for a list of digraphs and a perm"/>
+    returns a new list constructed by applying <A>perm</A> via
+    <Ref Oper="OnDigraphs" Label="for a digraph and a perm"/>
+    to a copy (with the same mutability) of each entry of <A>list</A> in turn.
+    <P/>
+
+    More precisely, <C>OnTuplesDigraphs(<A>list</A>,<A>perm</A>)</C> is a list
+    of length <C>Length(<A>list</A>)</C>, whose <C>i</C>-th entry is
+    <C>OnDigraphs(DigraphCopy(<A>list</A>[i]), <A>perm</A>)</C>.
+    <P/>
+
+    If <A>list</A> is moreover a &GAP; set (i.e. a duplicate-free sorted list),
+    then <Ref Oper="OnSetsDigraphs" Label="for a set of digraphs and a perm"/>
+    returns the sorted output of
+    <Ref Oper="OnTuplesDigraphs" Label="for a list of digraphs and a perm"/>,
+    which is therefore again a set.
+    <Example><![CDATA[
+gap> list := [CycleDigraph(IsMutableDigraph, 6),
+>             DigraphReverse(CycleDigraph(6))];
+[ <mutable digraph with 6 vertices, 6 edges>, 
+  <immutable digraph with 6 vertices, 6 edges> ]
+gap> p := (1, 6)(2, 5)(3, 4);;
+gap> result_tuples := OnTuplesDigraphs(list, p);
+[ <mutable digraph with 6 vertices, 6 edges>, 
+  <immutable digraph with 6 vertices, 6 edges> ]
+gap> result_tuples[2] = OnDigraphs(list[2], p);
+true
+gap> result_tuples = list;
+false
+gap> result_tuples = Reversed(list);
+true
+gap> result_sets := OnSetsDigraphs(list, p);
+[ <immutable digraph with 6 vertices, 6 edges>, 
+  <mutable digraph with 6 vertices, 6 edges> ]
+gap> result_sets = list;
+true]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="DigraphAddVertex">
 <ManSection>
   <Oper Name="DigraphAddVertex" Arg="digraph[, label ]"/>
