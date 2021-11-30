@@ -2,7 +2,7 @@
 ##
 #W  extreme/oper.tst
 #Y  Copyright (C) 2015                                   James D. Mitchell
-##                                                       Michael C. Torpey
+##                                                       Michael C. Young
 ##
 ##  Licensing information can be found in the README file of this package.
 ##

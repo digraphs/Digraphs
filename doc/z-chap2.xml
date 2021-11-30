@@ -59,6 +59,11 @@
     <#Include Label="DigraphJoin">
     <#Include Label="DigraphCartesianProduct">
     <#Include Label="DigraphDirectProduct">
+    <#Include Label="ConormalProduct">
+    <#Include Label="HomomorphicProduct">
+    <#Include Label="LexicographicProduct">
+    <#Include Label="ModularProduct">
+    <#Include Label="StrongProduct">
     <#Include Label="DigraphCartesianProductProjections">
     <#Include Label="DigraphDirectProductProjections">
     <#Include Label="LineDigraph">
@@ -79,25 +84,54 @@
   </Section>
 
   <Section><Heading>Standard examples</Heading>
+    <#Include Label="AndrasfaiGraph">
+    <#Include Label="BananaTree">
+    <#Include Label="BinaryTree">
+    <#Include Label="BinomialTreeGraph">
+    <#Include Label="BishopsGraph">
+    <#Include Label="BondyGraph">
+    <#Include Label="BookGraph">
+    <#Include Label="StackedBookGraph">
     <#Include Label="ChainDigraph">
+    <#Include Label="CirculantGraph">
     <#Include Label="CompleteDigraph">
     <#Include Label="CompleteBipartiteDigraph">
     <#Include Label="CompleteMultipartiteDigraph">
     <#Include Label="CycleDigraph">
+    <#Include Label="CycleGraph">
     <#Include Label="EmptyDigraph">
+    <#Include Label="GearGraph">
+    <#Include Label="HaarGraph">
+    <#Include Label="HalvedCubeGraph">
+    <#Include Label="HanoiGraph">
+    <#Include Label="HelmGraph">
+    <#Include Label="HypercubeGraph">
     <#Include Label="JohnsonDigraph">
+    <#Include Label="KellerGraph">
+    <#Include Label="KingsGraph">
+    <#Include Label="KneserGraph">
+    <#Include Label="KnightsGraph">
+    <#Include Label="LindgrenSousselierGraph">
+    <#Include Label="LollipopGraph">
+    <#Include Label="MobiusLadderGraph">
+    <#Include Label="MycielskiGraph">
+    <#Include Label="OddGraph">
+    <#Include Label="PathGraph">
+    <#Include Label="PermutationStarGraph">
     <#Include Label="PetersenGraph">
     <#Include Label="GeneralisedPetersenGraph">
-    <#Include Label="BananaTree">
-    <#Include Label="LollipopGraph">
+    <#Include Label="PrismGraph">
+    <#Include Label="StackedPrismGraph">
+    <#Include Label="QueensGraph">
+    <#Include Label="RooksGraph">
     <#Include Label="SquareGridGraph">
     <#Include Label="TriangularGridGraph">
-    <#Include Label="HaarGraph">
-    <#Include Label="KingsGraph">
-    <#Include Label="KnightsGraph">
     <#Include Label="StarGraph">
     <#Include Label="TadpoleGraph">
-    <#Include Label="BookGraph">
+    <#Include Label="WalshHadamardGraph">
+    <#Include Label="WebGraph">
+    <#Include Label="WheelGraph">
+    <#Include Label="WindmillGraph">
   </Section>
 
 </Chapter>

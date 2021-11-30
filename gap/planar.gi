@@ -32,7 +32,7 @@
 
 InstallMethod(PlanarEmbedding, "for a digraph", [IsDigraph],
 function(D)
-  if DigraphNrEdges(D) = 0 or DigraphNrVertices(D) < 3 then
+  if IsEmptyDigraph(D) or DigraphNrVertices(D) < 3 then
     return [];
   elif HasIsPlanarDigraph(D) and not IsPlanarDigraph(D) then
     return fail;
@@ -43,7 +43,7 @@ end);
 
 InstallMethod(OuterPlanarEmbedding, "for a digraph", [IsDigraph],
 function(D)
-  if DigraphNrEdges(D) = 0 or DigraphNrVertices(D) < 3 then
+  if IsEmptyDigraph(D) or DigraphNrVertices(D) < 3 then
     return [];
   elif HasIsOuterPlanarDigraph(D) and not IsOuterPlanarDigraph(D) then
     return fail;

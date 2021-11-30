@@ -31,7 +31,7 @@ typedef UInt Block;
 #define MAXVERTS 512
 #endif
 
-#if SIZEOF_VOID_P == 8
+#if SYS_IS_64_BIT
 // To avoid division and mod
 static size_t const NR_BLOCKS_LOOKUP[MAXVERTS + 1] = {
     0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,

@@ -1,7 +1,7 @@
 #############################################################################
 ##
 ##  prop.gi
-##  Copyright (C) 2014-19                                James D. Mitchell
+##  Copyright (C) 2014-21                                James D. Mitchell
 ##
 ##  Licensing information can be found in the README file of this package.
 ##
@@ -13,12 +13,21 @@ InstallMethod(IsMultiDigraph, "for a digraph by out-neighbours",
 [IsDigraphByOutNeighboursRep],
 IS_MULTI_DIGRAPH);
 
+InstallMethod(DigraphHasNoVertices, "for a digraph", [IsDigraph],
+D -> not DigraphHasAVertex(D));
+
+InstallMethod(DigraphHasAVertex, "for a digraph", [IsDigraph],
+D -> DigraphNrVertices(D) > 0);
+
+InstallMethod(IsNonemptyDigraph, "for a digraph", [IsDigraph],
+D -> not IsEmptyDigraph(D));
+
 InstallMethod(IsChainDigraph, "for a digraph", [IsDigraph],
 D -> IsDirectedTree(D) and IsSubset([0, 1], OutDegreeSet(D)));
 
 InstallMethod(IsCycleDigraph, "for a digraph", [IsDigraph],
 function(D)
-  return DigraphNrVertices(D) > 0
+  return DigraphHasAVertex(D)
      and DigraphNrEdges(D) = DigraphNrVertices(D)
      and IsStronglyConnectedDigraph(D);
 end);
@@ -105,7 +114,7 @@ end);
 InstallMethod(IsCompleteBipartiteDigraph, "for a digraph",
 [IsDigraph],
 function(D)
-  local bicomps;
+  local bicomps, res;
   if IsMultiDigraph(D) then
     return false;
   fi;
@@ -113,7 +122,11 @@ function(D)
   if bicomps = fail then
     return false;
   fi;
-  return DigraphNrEdges(D) = 2 * Length(bicomps[1]) * Length(bicomps[2]);
+  res := DigraphNrEdges(D) = 2 * Length(bicomps[1]) * Length(bicomps[2]);
+  if res and DigraphNrVertices(D) = 2 then
+    SetIsCompleteDigraph(D, true);
+  fi;
+  return res;
 end);
 
 InstallMethod(IsCompleteMultipartiteDigraph, "for a digraph",
@@ -173,7 +186,7 @@ D -> DigraphNrVertices(D) <= 1 and IsEmptyDigraph(D));
 InstallMethod(IsAcyclicDigraph, "for a digraph by out-neighbours",
 [IsDigraphByOutNeighboursRep],
 function(D)
-  local n, i, record, FoundCycle, components;
+  local n;
   n := DigraphNrVertices(D);
   if n = 0 then
     return true;
@@ -188,26 +201,7 @@ function(D)
     fi;
     return false;
   fi;
-  record := NewDFSRecord(D);
-  FoundCycle := function(record, data)
-    record.stop := true;
-  end;
-  components := DigraphConnectedComponents(D);
-  if Size(components.comps) = 1 then
-    ExecuteDFS(record, [], 1, DFSDefault,
-                 DFSDefault, FoundCycle, DFSDefault);
-    return not record.stop;
-  fi;
-  # handles disconnected digraphs
-  for i in [1 .. Size(components.comps)] do
-    record := NewDFSRecord(D);
-    ExecuteDFS(record, [], components.comps[i][1],
-                 DFSDefault, DFSDefault, FoundCycle, DFSDefault);
-    if record.stop then
-      return false;
-    fi;
-  od;
-  return true;
+  return IS_ACYCLIC_DIGRAPH(OutNeighbours(D));
 end);
 
 # Complexity O(number of edges)
@@ -258,6 +252,10 @@ end);
 InstallMethod(IsFunctionalDigraph, "for a digraph by out-neighbours",
 [IsDigraphByOutNeighboursRep],
 D -> ForAll(OutNeighbours(D), x -> Length(x) = 1));
+
+InstallMethod(IsPermutationDigraph, "for a digraph by out-neighbours",
+[IsDigraphByOutNeighboursRep],
+D -> IsFunctionalDigraph(D) and IsEmpty(DigraphSources(D)));
 
 InstallMethod(IsTournament, "for a digraph", [IsDigraph],
 function(D)
@@ -327,37 +325,7 @@ D -> DigraphPeriod(D) = 1);
 
 InstallMethod(IsAntisymmetricDigraph, "for a digraph by out-neighbours",
 [IsDigraphByOutNeighboursRep],
-function(D)
-  local record, AncestorFunc, i, components;
-  if DigraphNrVertices(D) <= 1 then
-    return true;
-  fi;
-  record := NewDFSRecord(D);
-
-  AncestorFunc := function(record, data)
-    local pos, neighbours;
-    if record.child = record.current then
-      return;
-    fi;
-    # checks if the child has a symmetric edge with current node
-    neighbours := OutNeighboursOfVertex(record.graph, record.child);
-    pos := Position(neighbours, record.current);
-    if pos <> fail then
-      record.stop := true;
-    fi;
-  end;
-
-  components := DigraphConnectedComponents(D);
-  for i in [1 .. Size(components.comps)] do
-    record := NewDFSRecord(D);
-    ExecuteDFS(record, [], components.comps[i][1], DFSDefault, DFSDefault,
-               AncestorFunc, DFSDefault);
-    if record.stop then
-      return false;
-    fi;
-  od;
-  return true;
-end);
+D -> IS_ANTISYMMETRIC_DIGRAPH(OutNeighbours(D)));
 
 InstallMethod(IsTransitiveDigraph, "for a digraph by out-neighbours",
 [IsDigraphByOutNeighboursRep],
@@ -425,8 +393,8 @@ D -> DigraphNrEdges(D) = 2 * (DigraphNrVertices(D) - 1)
 
 InstallMethod(IsUndirectedForest, "for a digraph", [IsDigraph],
 function(D)
-  if not IsSymmetricDigraph(D) or DigraphNrVertices(D) = 0
-      or IsMultiDigraph(D) then
+  if DigraphHasNoVertices(D) or not IsSymmetricDigraph(D) or IsMultiDigraph(D)
+      then
     return false;
   fi;
   return ForAll(DigraphConnectedComponents(D).comps,

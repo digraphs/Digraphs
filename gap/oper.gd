@@ -42,12 +42,25 @@ DeclareGlobalFunction("DigraphEdgeUnion");
 DeclareGlobalFunction("DigraphCartesianProduct");
 DeclareGlobalFunction("DigraphDirectProduct");
 DeclareOperation("ModularProduct", [IsDigraph, IsDigraph]);
+DeclareOperation("StrongProduct", [IsDigraph, IsDigraph]);
+DeclareOperation("ConormalProduct", [IsDigraph, IsDigraph]);
+DeclareOperation("HomomorphicProduct", [IsDigraph, IsDigraph]);
+DeclareOperation("LexicographicProduct", [IsDigraph, IsDigraph]);
+
+DeclareSynonym("DigraphModularProduct", ModularProduct);
+DeclareSynonym("DigraphStrongProduct", StrongProduct);
+DeclareSynonym("DigraphConormalProduct", ConormalProduct);
+DeclareSynonym("DigraphHomomorphicProduct", HomomorphicProduct);
+DeclareSynonym("DigraphLexicographicProduct", LexicographicProduct);
 
 DeclareGlobalFunction("DIGRAPHS_CombinationOperProcessArgs");
+DeclareOperation("DIGRAPHS_GraphProduct", [IsDigraph, IsDigraph, IsFunction]);
 
 # 4. Actions . . .
 DeclareOperation("OnDigraphs", [IsDigraph, IsPerm]);
 DeclareOperation("OnDigraphs", [IsDigraph, IsTransformation]);
+DeclareOperation("OnTuplesDigraphs", [IsDigraphCollection, IsPerm]);
+DeclareOperation("OnSetsDigraphs", [IsDigraphCollection, IsPerm]);
 DeclareOperation("OnMultiDigraphs", [IsDigraph, IsPermCollection]);
 DeclareOperation("OnMultiDigraphs", [IsDigraph, IsPerm, IsPerm]);
 
@@ -92,6 +105,9 @@ DeclareOperation("IsMatching", [IsDigraph, IsHomogeneousList]);
 DeclareOperation("IsMaximalMatching", [IsDigraph, IsHomogeneousList]);
 DeclareOperation("IsMaximumMatching", [IsDigraph, IsHomogeneousList]);
 DeclareOperation("IsPerfectMatching", [IsDigraph, IsHomogeneousList]);
+DeclareOperation("IsDigraphPath",
+                 [IsDigraph, IsHomogeneousList, IsHomogeneousList]);
+DeclareOperation("IsDigraphPath", [IsDigraph, IsList]);
 
 # 9. Connectivity . . .
 DeclareOperation("DigraphFloydWarshall",
@@ -128,8 +144,3 @@ DeclareOperation("PartialOrderDigraphJoinOfVertices",
                  [IsDigraph, IsPosInt, IsPosInt]);
 DeclareOperation("PartialOrderDigraphMeetOfVertices",
                  [IsDigraph, IsPosInt, IsPosInt]);
-
-# 11. DFS
-DeclareOperation("NewDFSRecord", [IsDigraph]);
-DeclareOperation("DFSDefault", [IsRecord, IsObject]);
-DeclareGlobalFunction("ExecuteDFS");

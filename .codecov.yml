@@ -26,4 +26,4 @@ ignore:
  - "init.g"
  - "makedoc.g"
  - "read.g"
- - "tst/testall.g"
+ - "**/*.g"

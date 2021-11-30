@@ -92,12 +92,8 @@
     }                                               \
   }
 
-#if SIZEOF_VOID_P == 4 && DIGRAPHS_HAVE___BUILTIN_CTZLL
-#undef DIGRAPHS_HAVE___BUILTIN_CTZLL
-#endif
-
 // The following macro is bitmap_decode_ctz_callpack from https://git.io/fho4p
-#ifdef DIGRAPHS_HAVE___BUILTIN_CTZLL
+#if SYS_IS_64_BIT && defined(DIGRAPHS_HAVE___BUILTIN_CTZLL)
 #define FOR_SET_BITS(__bit_array, __nr_bits, __variable)     \
   for (size_t k = 0; k < NR_BLOCKS_LOOKUP[__nr_bits]; ++k) { \
     Block block = __bit_array->blocks[k];                    \

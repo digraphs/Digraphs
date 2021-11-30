@@ -184,7 +184,7 @@ function(D, src, ran)
                   "digraph <D> that is the 1st argument,");
   fi;
   Add(D!.OutNeighbours[src], ran);
-  if not IsMultiDigraph(D) then
+  if HaveEdgeLabelsBeenAssigned(D) and not IsMultiDigraph(D) then
     SetDigraphEdgeLabel(D, src, ran, 1);
   fi;
   return D;
@@ -517,6 +517,7 @@ function(arg)
   od;
   if IsMutableDigraph(D) then
     ClearDigraphEdgeLabels(D);
+    ClearDigraphVertexLabels(D);
     return D;
   fi;
   return ConvertToImmutableDigraphNC(arg[1]);
@@ -616,20 +617,140 @@ end);
 InstallMethod(ModularProduct, "for a digraph and digraph",
 [IsDigraph, IsDigraph],
 function(D1, D2)
-  local m, n, E1, E2, edges, next, map, u, v, w, x;
+  local edge_function;
 
-  if IsMultiDigraph(D1) or IsMultiDigraph(D2) then
-    ErrorNoReturn("ModularProduct does not support multidigraphs,");
+  edge_function := function(u, v, m, n, map)
+    local w, x, connections;
+    connections := [];
+    for w in OutNeighbours(D1)[u] do
+      for x in OutNeighbours(D2)[v] do
+        if (u = w) = (v = x) then
+          Add(connections, map(w, x));
+        fi;
+      od;
+    od;
+    for w in OutNeighbours(DigraphDual(D1))[u] do
+      for x in OutNeighbours(DigraphDual(D2))[v] do
+        if (u = w) = (v = x) then
+          Add(connections, map(w, x));
+        fi;
+      od;
+    od;
+    return connections;
+  end;
+
+  return DIGRAPHS_GraphProduct(D1, D2, edge_function);
+end);
+
+InstallMethod(StrongProduct, "for a digraph and digraph",
+[IsDigraph, IsDigraph],
+function(D1, D2)
+  local edge_function;
+
+  edge_function := function(u, v, m, n, map)
+    local w, x, connections;
+      connections := [];
+      for x in OutNeighbours(D2)[v] do
+        AddSet(connections, map(u, x));
+        for w in OutNeighbours(D1)[u] do
+          AddSet(connections, map(w, x));
+        od;
+      od;
+      for w in OutNeighbours(D1)[u] do
+        AddSet(connections, map(w, v));
+      od;
+    return connections;
+  end;
+
+  return DIGRAPHS_GraphProduct(D1, D2, edge_function);
+end);
+
+InstallMethod(ConormalProduct, "for a digraph and digraph",
+[IsDigraph, IsDigraph],
+function(D1, D2)
+  local edge_function;
+
+  edge_function := function(u, v, m, n, map)
+    local w, x, connections;
+      connections := [];
+      for w in OutNeighbours(D1)[u] do
+        for x in [1 .. n] do
+          AddSet(connections, map(w, x));
+        od;
+      od;
+      for x in OutNeighbours(D2)[v] do
+        for w in [1 .. m] do
+          AddSet(connections, map(w, x));
+        od;
+      od;
+    return connections;
+  end;
+
+  return DIGRAPHS_GraphProduct(D1, D2, edge_function);
+end);
+
+InstallMethod(HomomorphicProduct, "for a digraph and digraph",
+[IsDigraph, IsDigraph],
+function(D1, D2)
+  local edge_function;
+
+  edge_function := function(u, v, m, n, map)
+    local w, x, connections;
+      connections := [];
+      for x in [1 .. n] do
+        AddSet(connections, map(u, x));
+      od;
+      for w in OutNeighbours(D1)[u] do
+        for x in OutNeighbours(DigraphDual(D2))[v] do
+          AddSet(connections, map(w, x));
+        od;
+      od;
+    return connections;
+  end;
+
+  return DIGRAPHS_GraphProduct(D1, D2, edge_function);
+end);
+
+InstallMethod(LexicographicProduct, "for a digraph and digraph",
+[IsDigraph, IsDigraph],
+function(D1, D2)
+  local edge_function;
+
+  edge_function := function(u, v, m, n, map)
+    local w, x, connections;
+      connections := [];
+      for w in OutNeighbours(D1)[u] do
+        for x in [1 .. n] do
+          AddSet(connections, map(w, x));
+        od;
+      od;
+      for x in OutNeighbours(D2)[v] do
+        AddSet(connections, map(u, x));
+      od;
+    return connections;
+  end;
+
+  return DIGRAPHS_GraphProduct(D1, D2, edge_function);
+end);
+
+InstallMethod(DIGRAPHS_GraphProduct,
+"for a digraph, a digraph, and a function",
+[IsDigraph, IsDigraph, IsFunction],
+function(D1, D2, edge_function)
+  local m, n, edges, u, v, map;
+
+  if IsMultiDigraph(D1) then
+    ErrorNoReturn(
+      "the 1st argument (a digraph) must not satisfy IsMultiDigraph");
+  elif IsMultiDigraph(D2) then
+    ErrorNoReturn(
+      "the 2nd argument (a digraph) must not satisfy IsMultiDigraph");
   fi;
 
   m := DigraphNrVertices(D1);
   n := DigraphNrVertices(D2);
 
-  E1 := DigraphDual(D1);
-  E2 := DigraphDual(D2);
-
   edges := EmptyPlist(m * n);
-  next  := 0;
 
   map := function(a, b)
     return (a - 1) * n + b;
@@ -637,25 +758,11 @@ function(D1, D2)
 
   for u in [1 .. m] do
     for v in [1 .. n] do
-      next := next + 1;
-      edges[next] := [];
-      for w in OutNeighbours(D1)[u] do
-        for x in OutNeighbours(D2)[v] do
-          if (u = w) = (v = x) then
-            Add(edges[next], map(w, x));
-          fi;
-        od;
-      od;
-      for w in OutNeighbours(E1)[u] do
-        for x in OutNeighbours(E2)[v] do
-          if (u = w) = (v = x) then
-            Add(edges[next], map(w, x));
-          fi;
-        od;
-      od;
+      edges[map(u, v)] := edge_function(u, v, m, n, map);
     od;
   od;
-  return DigraphNC(edges);
+
+  return Digraph(edges);
 end);
 
 ###############################################################################
@@ -670,7 +777,7 @@ function(D, p)
     return D;
   elif ForAny(DigraphVertices(D), i -> i ^ p > DigraphNrVertices(D)) then
     ErrorNoReturn("the 2nd argument <p> must be a permutation that permutes ",
-                  "of the digraph <D> that is the 1st argument,");
+                  "the vertices of the digraph <D> that is the 1st argument,");
   fi;
   out := D!.OutNeighbours;
   out{DigraphVertices(D)} := Permuted(out, p);
@@ -717,6 +824,21 @@ function(D, t)
     return D;
   fi;
   return MakeImmutable(OnDigraphs(DigraphMutableCopy(D), t));
+end);
+
+InstallMethod(OnTuplesDigraphs,
+"for list of digraphs and a perm",
+[IsDigraphCollection and IsHomogeneousList, IsPerm],
+{L, p} -> List(L, D -> OnDigraphs(DigraphMutableCopyIfMutable(D), p)));
+
+InstallMethod(OnSetsDigraphs,
+"for a list of digraphs and a perm",
+[IsDigraphCollection and IsHomogeneousList, IsPerm],
+function(S, p)
+  if not IsSet(S) then
+    ErrorNoReturn("the first argument must be a set (a strictly sorted list),");
+  fi;
+  return Set(S, D -> OnDigraphs(DigraphMutableCopyIfMutable(D), p));
 end);
 
 # Not revising the following because multi-digraphs are being withdrawn in the
@@ -1282,7 +1404,7 @@ end);
 InstallMethod(DigraphPath, "for a digraph by out-neighbours and two pos ints",
 [IsDigraphByOutNeighboursRep, IsPosInt, IsPosInt],
 function(D, u, v)
-  local verts, record, out, path_info, PostOrderFunc, AncestorFunc, AddToPath;
+  local verts;
 
   verts := DigraphVertices(D);
   if not (u in verts and v in verts) then
@@ -1299,38 +1421,38 @@ function(D, u, v)
           DigraphConnectedComponents(D).id[v] then
     return fail;
   fi;
-  record := NewDFSRecord(D);
-  path_info := Stack();
-  AddToPath := function(current, child)
-    local edge;
-    edge := Position(OutNeighborsOfVertex(D, current), child);
-    Push(path_info, edge);
-    Push(path_info, child);
-  end;
-  AncestorFunc := function(record, data)
-    if u = v and record.child = u and Size(data) = 0 then
-      AddToPath(record.current, record.child);
-      record.preorder[v] := DigraphNrVertices(D) + 1;
-    fi;
-  end;
-  PostOrderFunc := function(record, data)
-    if record.child <> u and
-        record.preorder[record.child] <= record.preorder[v] then
-      AddToPath(record.current, record.child);
-    fi;
-  end;
-  ExecuteDFS(record, path_info, u,
-               DFSDefault, PostOrderFunc,
-               AncestorFunc, DFSDefault);
-  if Size(path_info) <= 1 then
-    return fail;
+  return DIGRAPH_PATH(OutNeighbours(D), u, v);
+end);
+
+InstallMethod(IsDigraphPath, "for a digraph and list",
+[IsDigraph, IsList],
+function(D, digraph_path_output)
+  if Length(digraph_path_output) <> 2 then
+    DError(["the 2nd argument (a list) must have length 2, ",
+            "but found length {}"],
+           Length(digraph_path_output));
   fi;
-  out := [[u], []];
-  while Size(path_info) <> 0 do
-    Add(out[1], Pop(path_info));
-    Add(out[2], Pop(path_info));
+  return IsDigraphPath(D, digraph_path_output[1], digraph_path_output[2]);
+end);
+
+InstallMethod(IsDigraphPath, "for a digraph, homog. list, and homog. list",
+[IsDigraph, IsHomogeneousList, IsHomogeneousList],
+function(D, nodes, edges)
+  local a, i;
+  if Length(nodes) <> Length(edges) + 1 then
+    DError(["the 2nd and 3rd arguments (lists) are incompatible, ",
+            "expected 3rd argument of length {}, got {}"],
+           Length(nodes) - 1,
+           Length(edges));
+  fi;
+  a := OutNeighbours(D);
+  for i in [1 .. Length(edges)] do
+    if nodes[i] > Length(a) or edges[i] > Length(a[nodes[i]])
+        or a[nodes[i]][edges[i]] <> nodes[i + 1] then
+      return false;
+    fi;
   od;
-  return out;
+  return true;
 end);
 
 InstallMethod(DigraphShortestPath,
@@ -1594,40 +1716,17 @@ end);
 InstallMethod(DigraphLongestDistanceFromVertex, "for a digraph and a pos int",
 [IsDigraphByOutNeighboursRep, IsPosInt],
 function(D, v)
-  local record, PreOrderFunc, PostOrderFunc, data, AncestorFunc;
+  local dist;
 
   if not v in DigraphVertices(D) then
     ErrorNoReturn("the 2nd argument <v> must be a vertex of the 1st ",
                   "argument <D>,");
   fi;
-  record := NewDFSRecord(D);
-  data := rec(depth := ListWithIdenticalEntries(DigraphNrVertices(D), 0),
-              prev := 0);
-  AncestorFunc := function(record, data)
-    record.stop := true;
-  end;
-  PostOrderFunc := function(record, data)
-    data.depth[record.current] := data.prev;
-    data.prev := data.prev + 1;
-  end;
-  PreOrderFunc := function(record, data)
-    local i, neighbours;
-    data.prev := 0;
-    neighbours := OutNeighborsOfVertex(record.graph, record.current);
-    for i in [1 .. Size(neighbours)] do
-      # need to bypass the CrossFunc
-      if record.postorder[neighbours[i]] <> -1 then
-        record.preorder[neighbours[i]] := -1;
-      fi;
-    od;
-  end;
-  ExecuteDFS(record, data, v,
-               PreOrderFunc, PostOrderFunc,
-               AncestorFunc, DFSDefault);
-  if record.stop then
+  dist := DIGRAPH_LONGEST_DIST_VERTEX(OutNeighbours(D), v);
+  if dist = -2 then
     return infinity;
   fi;
-  return data.depth[v];
+  return dist;
 end);
 
 InstallMethod(DigraphLayers, "for a digraph, and a positive integer",
@@ -1880,47 +1979,50 @@ end);
 InstallMethod(VerticesReachableFrom, "for a digraph and a vertex",
 [IsDigraph, IsPosInt],
 function(D, root)
-  local N, record, data, AncestorFunc, PreOrderFunc;
-
+  local N, index, current, succ, visited, prev, n, i, parent,
+  have_visited_root;
   N := DigraphNrVertices(D);
   if 0 = root or root > N then
     ErrorNoReturn("the 2nd argument (root) is not a vertex of the 1st ",
                   "argument (a digraph)");
   fi;
-
-  record := NewDFSRecord(D);
-  data := rec(result := [], root_is_child := false);
-
-  PreOrderFunc := function(record, data)
-    if record.current <> root then
-      Add(data.result, record.current);
+  index := ListWithIdenticalEntries(N, 0);
+  have_visited_root := false;
+  index[root] := 1;
+  current := root;
+  succ := OutNeighbours(D);
+  visited := [];
+  parent := [];
+  parent[root] := fail;
+  repeat
+    prev := current;
+    for i in [index[current] .. Length(succ[current])] do
+      n := succ[current][i];
+      if n = root and not have_visited_root then
+         Add(visited, root);
+         have_visited_root := true;
+      elif index[n] = 0 then
+        Add(visited, n);
+          parent[n] := current;
+          index[current] := i + 1;
+          current := n;
+          index[current] := 1;
+          break;
+      fi;
+    od;
+    if prev = current then
+      current := parent[current];
     fi;
-  end;
-
-  AncestorFunc := function(record, data)
-    if record.child = root and not data.root_is_child then
-      data.root_is_child := true;
-      Add(data.result, root);
-    fi;
-  end;
-
-  ExecuteDFS(record,
-               data,
-               root,
-               PreOrderFunc,
-               DFSDefault,
-               AncestorFunc,
-               DFSDefault);
-  return data.result;
+  until current = fail;
+  return visited;
 end);
 
 InstallMethod(DominatorTree, "for a digraph and a vertex",
 [IsDigraph, IsPosInt],
 function(D, root)
-  local M, preorder_num_to_node, PreOrderFunc, record, parent,
-  node_to_preorder_num, semi, lastlinked, label, bucket, idom, compress, eval,
-  pred, N, w, y, x, i, v;
-
+  local M, node_to_preorder_num, preorder_num_to_node, parent, index, next,
+  current, succ, prev, n, semi, lastlinked, label, bucket, idom,
+  compress, eval, pred, N, w, y, x, i, v;
   M := DigraphNrVertices(D);
 
   if 0 = root or root > M then
@@ -1928,25 +2030,36 @@ function(D, root)
                   "argument (a digraph)");
   fi;
 
-  preorder_num_to_node := [];
+  node_to_preorder_num := [];
+  node_to_preorder_num[root] := 1;
+  preorder_num_to_node := [root];
 
-  PreOrderFunc := function(record, data)
-    Add(data, record.current);
-  end;
-
-  record := NewDFSRecord(D);
-  ExecuteDFS(record,
-             preorder_num_to_node,
-             root,
-             PreOrderFunc,
-             DFSDefault,
-             DFSDefault,
-             DFSDefault);
-
-  parent := record.parent;
+  parent := [];
   parent[root] := fail;
-  node_to_preorder_num := record.preorder;
 
+  index := ListWithIdenticalEntries(M, 1);
+
+  next := 2;
+  current := root;
+  succ := OutNeighbours(D);
+  repeat
+    prev := current;
+    for i in [index[current] .. Length(succ[current])] do
+      n := succ[current][i];
+      if not IsBound(node_to_preorder_num[n]) then
+        Add(preorder_num_to_node, n);
+        parent[n] := current;
+        index[current] := i + 1;
+        node_to_preorder_num[n] := next;
+        next := next + 1;
+        current := n;
+        break;
+      fi;
+    od;
+    if prev = current then
+      current := parent[current];
+    fi;
+  until current = fail;
   semi := [1 .. M];
   lastlinked := M + 1;
   label := [];
@@ -1992,7 +2105,7 @@ function(D, root)
     od;
     bucket[w] := [];
     for v in pred[w] do
-      if node_to_preorder_num[v] <> -1 then
+      if IsBound(node_to_preorder_num[v]) then
         x := eval(v);
         if node_to_preorder_num[semi[x]] < node_to_preorder_num[semi[w]] then
           semi[w] := semi[x];
@@ -2102,51 +2215,4 @@ function(D, i, j)
   od;
 
   return fail;
-end);
-
-#############################################################################
-# 11. DFS
-#############################################################################
-
-InstallMethod(NewDFSRecord,
-"for a digraph", [IsDigraph],
-function(graph)
-  local record;
-  record := rec();
-  record.graph := graph;
-  record.child := -1;
-  record.current := -1;
-  record.stop := false;
-  record.parent := ListWithIdenticalEntries(DigraphNrVertices(graph), -1);
-  record.preorder := ListWithIdenticalEntries(DigraphNrVertices(graph), -1);
-  record.postorder := ListWithIdenticalEntries(DigraphNrVertices(graph), -1);
-  return record;
-end);
-
-InstallMethod(DFSDefault,
-"for a record and an object", [IsRecord, IsObject],
-function(record, data)
-end);
-
-# * PreOrderFunc is called with (record, data) when a vertex is popped from the
-#   stack for the first time.
-# * PostOrderFunc is called with (record, data) when all of record.child's
-#   children have been visited (i.e. when we backtrack from record.child to
-#   record.parent[record.child]).
-# * AncestorFunc is called with (record, data) when (record.current,
-#   record.child) is an edge and record.child is an ancestor of record.current.
-# * CrossFunc is called with (record, data) when (record.current, record.child)
-#   is an edge, the preorder value of record.current is greater than the
-#   preorder value of child, and record.current and child are unrelated
-#   by ancestry.
-InstallGlobalFunction(ExecuteDFS,
-function(record, data, start, PreOrderFunc, PostOrderFunc, AncestorFunc,
-         CrossFunc)
-  if not IsEqualSet(RecNames(record), ["stop", "graph", "child", "parent",
-                                    "preorder", "postorder", "current"]) then
-    ErrorNoReturn("the 1st argument <record> must be created with ",
-                  "NewDFSRecord,");
-  fi;
-  ExecuteDFS_C(record, data, start, PreOrderFunc, PostOrderFunc,
-               AncestorFunc, CrossFunc);
 end);

@@ -577,3 +577,40 @@ function(nr, n)
   od;
   return x;
 end);
+
+InstallGlobalFunction(DIGRAPHS_NumberBlist,
+function(blist)
+  local n, nr, i;
+  n := Length(blist);
+  nr := 0;
+  for i in [1 .. n] do
+    if blist[i] then
+      nr := 2 * nr + 1;
+    else
+      nr := 2 * nr;
+    fi;
+  od;
+  return nr + 1;   # to be in [1 .. 2 ^ n]
+end);
+
+InstallGlobalFunction(DError,
+function(arg)
+  local msg;
+  if not (IsString(arg[1]) or IsList(arg[1])) then
+    Error("expected a string or a list as the 1st argument");
+  elif IsList(arg[1]) and not ForAll(arg[1], IsString) then
+    Error("expected a list of strings as the 1st argument");
+  fi;
+  if IsList(arg[1]) then
+    arg[1] := Concatenation(arg[1]);
+  fi;
+  msg := CallFuncList(StringFormatted, arg);
+  RemoveCharacters(msg, "\\\n");
+  ErrorInner(
+      rec(context := ParentLVars(GetCurrentLVars()),
+          mayReturnVoid := false,
+          mayReturnObj := false,
+          lateMessage := "type 'quit;' to quit to outer loop",
+          printThisStatement := false),
+      [msg]);
+end);

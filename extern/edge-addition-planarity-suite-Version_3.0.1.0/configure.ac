@@ -1,5 +1,6 @@
-AC_INIT(planarity, 3.0.1.0, jboyer@acm.org)
+AC_INIT([planarity],[3.0.1.0],[jboyer@acm.org])
 AM_INIT_AUTOMAKE([subdir-objects] [foreign])
+AC_CONFIG_MACRO_DIRS([m4])
 AC_CONFIG_SRCDIR([c/])
 
 # The version of the libtool library is of the form current:revision:age
@@ -21,9 +22,10 @@ AC_SUBST(LT_REVISION)
 AC_SUBST(LT_AGE)
 
 AC_PROG_CC
-AC_PROG_LIBTOOL
 AC_PROG_INSTALL
+LT_INIT
 
 AC_CHECK_HEADERS([ctype.h stdio.h stdlib.h string.h time.h unistd.h])
 
-AC_OUTPUT(Makefile)
+AC_CONFIG_FILES([Makefile])
+AC_OUTPUT

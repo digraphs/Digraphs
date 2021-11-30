@@ -356,7 +356,7 @@ gap> CliquesFinder(gr, fail, [], infinity, [1 .. 5], [1 .. 5], false, 1, true);
 gap> CliquesFinder(gr, fail, [], infinity, [1], [1], false, 1, false);
 [  ]
 
-#  DIGRAPHS_BronKerbosch: easy cases
+#  CliquesFinder: easy cases
 gap> gr := ChainDigraph(5);;
 gap> CliquesFinder(gr, fail, [], infinity, [], [1 .. 4], false, 3, false);
 [  ]
@@ -373,7 +373,7 @@ gap> CliquesFinder(gr, fail, [], infinity, [1], [], false, 1, false);
 gap> CliquesFinder(gr, fail, [], infinity, [], [], false, 1, false);
 [ [ 1 ], [ 2 ], [ 3 ], [ 4 ], [ 5 ] ]
 
-#  DIGRAPHS_BronKerbosch: getting code coverage
+#  CliquesFinder: getting code coverage
 gap> gr := CompleteDigraph(5);;
 gap> CliquesFinder(gr, fail, [], infinity, [], [], true, 4, true);
 [  ]

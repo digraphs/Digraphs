@@ -1,7 +1,7 @@
 #############################################################################
 ##
 #W  examples.xml
-#Y  Copyright (C) 2019                              Murray T. Whyte
+#Y  Copyright (C) 2019-21                           Murray T. Whyte
 ##
 ##  Licensing information can be found in the README file of this package.
 ##
@@ -16,18 +16,11 @@
   <Description>
     If <A>n</A> is a non-negative integer, this function returns the
     <E>empty</E> or <E>null</E> digraph with <A>n</A> vertices. An empty
-    digraph is one with no edges.
-    <P/>
-      
-    If the optional first argument <A>filt</A> is present, then this should
-    specify the category or representation the digraph being created will
-    belong to. For example, if <A>filt</A> is <Ref Filt="IsMutableDigraph"/>,
-    then the digraph being created will be mutable, if <A>filt</A> is <Ref
-    Filt="IsImmutableDigraph"/>, then the digraph will be immutable. 
-    If the optional first argument <A>filt</A> is not present, then <Ref
-      Filt="IsImmutableDigraph"/> is used by default.<P/>
+    digraph is one with no edges. <P/>
 
-    <C>NullDigraph</C> is a synonym for <C>EmptyDigraph</C>.
+    <C>NullDigraph</C> is a synonym for <C>EmptyDigraph</C>. <P/>
+
+    &STANDARD_FILT_TEXT;
 
     <Example><![CDATA[
 gap> EmptyDigraph(20);
@@ -56,13 +49,7 @@ gap> EmptyDigraph(IsMutableDigraph, 10);
     <A>n</A> (containing the vertices <C>[m + 1 .. m + n]</C>).
     <P/>
 
-    If the optional first argument <A>filt</A> is present, then this should
-    specify the category or representation the digraph being created will
-    belong to. For example, if <A>filt</A> is <Ref Filt="IsMutableDigraph"/>,
-    then the digraph being created will be mutable, if <A>filt</A> is <Ref
-    Filt="IsImmutableDigraph"/>, then the digraph will be immutable. 
-    If the optional first argument <A>filt</A> is not present, then <Ref
-      Filt="IsImmutableDigraph"/> is used by default.
+    &STANDARD_FILT_TEXT;
 
     <Example><![CDATA[
 gap> CompleteBipartiteDigraph(2, 3);
@@ -86,13 +73,8 @@ gap> CompleteBipartiteDigraph(IsMutableDigraph, 3, 2);
       same independent set.
       <P/>
 
-      If the optional first argument <A>filt</A> is present, then this should
-      specify the category or representation the digraph being created will
-      belong to. For example, if <A>filt</A> is <Ref Filt="IsMutableDigraph"/>,
-      then the digraph being created will be mutable, if <A>filt</A> is <Ref
-      Filt="IsImmutableDigraph"/>, then the digraph will be immutable. 
-      If the optional first argument <A>filt</A> is not present, then <Ref
-        Filt="IsImmutableDigraph"/> is used by default.
+      &STANDARD_FILT_TEXT;
+
       <Example><![CDATA[
 gap> CompleteMultipartiteDigraph([5, 4, 2]);
 <immutable complete multipartite digraph with 11 vertices, 76 edges>
@@ -111,13 +93,8 @@ gap> CompleteMultipartiteDigraph(IsMutableDigraph, [5, 4, 2]);
     If <A>n</A> is a non-negative integer, this function returns the complete
     digraph with <A>n</A> vertices. See <Ref Prop="IsCompleteDigraph"/>. <P/>
 
-    If the optional first argument <A>filt</A> is present, then this should
-    specify the category or representation the digraph being created will
-    belong to. For example, if <A>filt</A> is <Ref Filt="IsMutableDigraph"/>,
-    then the digraph being created will be mutable, if <A>filt</A> is <Ref
-    Filt="IsImmutableDigraph"/>, then the digraph will be immutable. 
-    If the optional first argument <A>filt</A> is not present, then <Ref
-      Filt="IsImmutableDigraph"/> is used by default.
+    &STANDARD_FILT_TEXT;
+
     <Example><![CDATA[
 gap> CompleteDigraph(20);
 <immutable complete digraph with 20 vertices>
@@ -139,16 +116,11 @@ gap> CompleteDigraph(IsMutableDigraph, 10);
     for each vertex <C>i</C> (with <C>i</C> &lt; <C>n</C>), there is a directed
     edge with source <C>i</C> and range <C>i + 1</C>. <P/>
 
-    If the optional first argument <A>filt</A> is present, then this should
-    specify the category or representation the digraph being created will
-    belong to. For example, if <A>filt</A> is <Ref Filt="IsMutableDigraph"/>,
-    then the digraph being created will be mutable, if <A>filt</A> is <Ref
-    Filt="IsImmutableDigraph"/>, then the digraph will be immutable. 
-    If the optional first argument <A>filt</A> is not present, then <Ref
-      Filt="IsImmutableDigraph"/> is used by default.<P/>
-
     The <Ref Oper="DigraphReflexiveTransitiveClosure"/> of a chain represents a
-    total order.
+    total order. <P/>
+
+    &STANDARD_FILT_TEXT;
+
     <Example><![CDATA[
 gap> ChainDigraph(42);
 <immutable chain digraph with 42 vertices>
@@ -171,14 +143,9 @@ gap> ChainDigraph(IsMutableDigraph, 10);
     edge with source <C>i</C> and range <C>i + 1</C>. In addition, there is
     an edge with source <C>n</C> and range <C>1</C>. <P/>
 
-    If the optional first argument <A>filt</A> is present, then this should
-    specify the category or representation the digraph being created will
-    belong to. For example, if <A>filt</A> is <Ref Filt="IsMutableDigraph"/>,
-    then the digraph being created will be mutable, if <A>filt</A> is <Ref
-    Filt="IsImmutableDigraph"/>, then the digraph will be immutable. 
-    If the optional first argument <A>filt</A> is not present, then <Ref
-    Filt="IsImmutableDigraph"/> is used by default.
-  <Example><![CDATA[
+    &STANDARD_FILT_TEXT;
+
+    <Example><![CDATA[
 gap> CycleDigraph(1);
 <immutable digraph with 1 vertex, 1 edge>
 gap> CycleDigraph(123);
@@ -201,17 +168,12 @@ true
     returns a symmetric digraph which corresponds to the undirected <E>Johnson
     graph</E> <M>J(n, k)</M>. <P/>
 
-    If the optional first argument <A>filt</A> is present, then this should
-    specify the category or representation the digraph being created will
-    belong to. For example, if <A>filt</A> is <Ref Filt="IsMutableDigraph"/>,
-    then the digraph being created will be mutable, if <A>filt</A> is <Ref
-    Filt="IsImmutableDigraph"/>, then the digraph will be immutable. 
-    If the optional first argument <A>filt</A> is not present, then <Ref
-      Filt="IsImmutableDigraph"/> is used by default.<P/>
-
     The <E>Johnson graph</E> <M>J(n, k)</M> has vertices given by all the
     <A>k</A>-subsets of the range <C>[1 .. <A>n</A>]</C>, and two vertices are
-      connected by an edge iff their intersection has size <M><A>k</A> - 1</M>.
+    connected by an edge if and only if their intersection has size
+    <M><A>k</A> - 1</M>. <P/>
+
+    &STANDARD_FILT_TEXT;
 
     <Example><![CDATA[
 gap> gr := JohnsonDigraph(3, 1);
@@ -245,18 +207,12 @@ gap> JohnsonDigraph(IsMutableDigraph, 1, 0);
     many problems in graph theory. The Petersen graph is named after Julius
     Petersen, who in 1898 constructed it to be the smallest bridgeless cubic
     graph with no three-edge-coloring.</Q><P/>
-    
-    If the optional first argument <A>filt</A> is present, then this should
-    specify the category or representation the digraph being created will
-    belong to. For example, if <A>filt</A> is <Ref Filt="IsMutableDigraph"/>,
-    then the digraph being created will be mutable, if <A>filt</A> is <Ref
-    Filt="IsImmutableDigraph"/>, then the digraph will be immutable. 
-    If the optional first argument <A>filt</A> is not present, then <Ref
-      Filt="IsImmutableDigraph"/> is used by default.<P/>
 
-    See also <Ref Oper="GeneralisedPetersenGraph"/>.
+    See also <Ref Oper="GeneralisedPetersenGraph"/>. <P/>
 
-<Example><![CDATA[
+    &STANDARD_FILT_TEXT;
+
+    <Example><![CDATA[
 gap> ChromaticNumber(PetersenGraph());
 3
 gap> PetersenGraph(IsMutableDigraph);
@@ -287,17 +243,11 @@ gap> PetersenGraph(IsMutableDigraph);
     Coxeter and was given its name in 1969 by Mark Watkins.</Q>
     <P/>
 
-    If the optional first argument <A>filt</A> is present, then this should
-    specify the category or representation the digraph being created will
-    belong to. For example, if <A>filt</A> is <Ref Filt="IsMutableDigraph"/>,
-    then the digraph being created will be mutable, if <A>filt</A> is <Ref
-    Filt="IsImmutableDigraph"/>, then the digraph will be immutable. 
-    If the optional first argument <A>filt</A> is not present, then <Ref
-      Filt="IsImmutableDigraph"/> is used by default.<P/>
+    See also <Ref Oper="PetersenGraph"/>. <P/>
 
-    See also <Ref Oper="PetersenGraph"/>.
+    &STANDARD_FILT_TEXT;
 
-<Example><![CDATA[
+    <Example><![CDATA[
 gap> GeneralisedPetersenGraph(7, 2);
 <immutable symmetric digraph with 14 vertices, 42 edges>
 gap> GeneralisedPetersenGraph(40, 1);
@@ -316,7 +266,7 @@ gap> GeneralisedPetersenGraph(IsMutableDigraph, 9, 4);
 <#GAPDoc Label="LollipopGraph">
 <ManSection>
   <Oper Name="LollipopGraph" Arg="[filt, ]m, n"/>
-  <Returns>A digraph</Returns>
+  <Returns>A digraph.</Returns>
   <Description>
     If <A>m</A> and <A>n</A> are positive integers,
     then this operation returns the <E>(<A>m</A>,<A>n</A>)-lollipop graph</E>.
@@ -328,15 +278,9 @@ gap> GeneralisedPetersenGraph(IsMutableDigraph, 9, 4);
     connected by a bridge
     (the edge <C>[<A>m</A>, <A>m</A>+1]</C> and its reverse). <P/>
 
-    If the optional first argument <A>filt</A> is present, then this should
-    specify the category or representation the digraph being created will
-    belong to. For example, if <A>filt</A> is <Ref Filt="IsMutableDigraph"/>,
-    then the digraph being created will be mutable, if <A>filt</A> is <Ref
-    Filt="IsImmutableDigraph"/>, then the digraph will be immutable.
-    If the optional first argument <A>filt</A> is not present, then <Ref
-      Filt="IsImmutableDigraph"/> is used by default.
+    &STANDARD_FILT_TEXT;
 
-<Example><![CDATA[
+    <Example><![CDATA[
 gap> D := LollipopGraph(5, 3);
 <immutable connected symmetric digraph with 8 vertices, 26 edges>
 gap> CliqueNumber(D);
@@ -345,64 +289,6 @@ gap> DigraphUndirectedGirth(D);
 3
 gap> LollipopGraph(IsMutableDigraph, 3, 8);
 <mutable digraph with 11 vertices, 22 edges>
-]]></Example>
-  </Description>
-</ManSection>
-<#/GAPDoc>
-
-<#GAPDoc Label="KingsGraph">
-<ManSection>
-  <Oper Name="KingsGraph" Arg="[filt, ]n, k"/>
-  <Returns>A digraph.</Returns>
-  <Description>
-    If <A>n</A> and <A>k</A> are positive integers,
-    then this operation returns
-    the <E>king's graph</E> for an <A>n</A> by <A>k</A> board. <P/>
-
-    From
-    <URL>https://en.wikipedia.org/wiki/King%27s_graph</URL>:
-    <P/>
-
-    <Q>In graph theory, a king's graph is a graph that represents all legal 
-    moves of the king chess piece on a chessboard where each vertex represents 
-    a square on a chessboard and each edge is a legal move. More specifically, 
-    an <A>n</A> by <A>k</A> king's graph is a king's graph of an <A>n</A> by
-    <A>k</A> chessboard. It is the map graph formed from the squares of a chessboard 
-    by making a vertex for each square and an edge for each two squares that 
-    share an edge or a corner. It can also be constructed as the strong product 
-    of two path graphs.</Q>
-    <P/>
-    
-    In particular, the <C><A>n</A> * <A>k</A></C>  vertices can be arranged
-    into an <A>n</A> by <A>k</A> grid such that two vertices are adjacent in
-    the digraph if and only if they are orthogonally or diagonally adjacent in the grid.
-    The correspondence between vertices and grid positions is given by
-    <Ref Oper="DigraphVertexLabels"/>.  <P/>
-    
-    See also <Ref Oper="SquareGridGraph"/> and
-    <Ref Oper="TriangularGridGraph"/>. <P/>
-    
-    If the optional first argument <A>filt</A> is present, then this should
-    specify the category or representation the digraph being created will
-    belong to. For example, if <A>filt</A> is <Ref Filt="IsMutableDigraph"/>,
-    then the digraph being created will be mutable, if <A>filt</A> is <Ref
-    Filt="IsImmutableDigraph"/>, then the digraph will be immutable.
-    If the optional first argument <A>filt</A> is not present, then <Ref
-      Filt="IsImmutableDigraph"/> is used by default.<P/>
-    
-    <Example><![CDATA[
-gap> KingsGraph(8, 8);
-<immutable connected symmetric digraph with 64 vertices, 420 edges>
-gap> D := KingsGraph(IsMutable, 2, 7);
-<mutable digraph with 14 vertices, 62 edges>
-gap> IsPlanarDigraph(D);
-true
-gap> D := KingsGraph(3, 3);
-<immutable connected symmetric digraph with 9 vertices, 40 edges>
-gap> OutNeighbors(D);
-[ [ 2, 4, 5 ], [ 1, 3, 5, 4, 6 ], [ 2, 6, 5 ], [ 5, 1, 7, 2, 8 ], 
-  [ 4, 6, 2, 8, 3, 7, 1, 9 ], [ 5, 3, 9, 8, 2 ], [ 8, 4, 5 ], 
-  [ 7, 9, 5, 6, 4 ], [ 8, 6, 5 ] ]
 ]]></Example>
   </Description>
 </ManSection>
@@ -433,15 +319,9 @@ gap> OutNeighbors(D);
     See <URL>https://en.wikipedia.org/wiki/Lattice_graph</URL>
     for more information.  <P/>
 
-    If the optional first argument <A>filt</A> is present, then this should
-    specify the category or representation the digraph being created will
-    belong to. For example, if <A>filt</A> is <Ref Filt="IsMutableDigraph"/>,
-    then the digraph being created will be mutable, if <A>filt</A> is <Ref
-    Filt="IsImmutableDigraph"/>, then the digraph will be immutable.
-    If the optional first argument <A>filt</A> is not present, then <Ref
-      Filt="IsImmutableDigraph"/> is used by default.<P/>
-    
-<Example><![CDATA[
+    &STANDARD_FILT_TEXT;
+
+    <Example><![CDATA[
 gap> SquareGridGraph(5, 5);
 <immutable connected bipartite symmetric digraph with bicomponent size\
 s 13 and 12>
@@ -474,16 +354,10 @@ gap> GridGraph(IsMutable, 3, 4);
 
     See <URL>https://en.wikipedia.org/wiki/Lattice_graph#Other_kinds</URL>
     for more information.  <P/>
-    
-    If the optional first argument <A>filt</A> is present, then this should
-    specify the category or representation the digraph being created will
-    belong to. For example, if <A>filt</A> is <Ref Filt="IsMutableDigraph"/>,
-    then the digraph being created will be mutable, if <A>filt</A> is <Ref
-    Filt="IsImmutableDigraph"/>, then the digraph will be immutable.
-    If the optional first argument <A>filt</A> is not present, then <Ref
-      Filt="IsImmutableDigraph"/> is used by default.<P/>
 
-<Example><![CDATA[
+    &STANDARD_FILT_TEXT;
+
+    <Example><![CDATA[
 gap> TriangularGridGraph(3, 3);
 <immutable connected symmetric digraph with 9 vertices, 32 edges>
 gap> TriangularGridGraph(IsMutable, 3, 3);
@@ -499,22 +373,17 @@ gap> TriangularGridGraph(IsMutable, 3, 3);
   <Returns>A digraph.</Returns>
   <Description>
     If <A>k</A> is a positive integer, then this operation returns the
-    <E>star digraph</E> with <A>k</A> vertices, which is the
+    <E>star graph</E> with <A>k</A> vertices, which is the
     undirected tree in which vertex <C>1</C> is adjacent to all other
     vertices.  If <A>k</A> is at least <C>2</C>, then this is the complete
     bipartite digraph with bicomponents
     <C>[1]</C> and <C>[2 .. <A>k</A>]</C>. <P/>
-    
+
     See <Ref Prop="IsUndirectedTree"/>, <Ref Prop="IsCompleteBipartiteDigraph"/>,
     and <Ref Attr="DigraphBicomponents"/>. <P/>
 
-    If the optional first argument <A>filt</A> is present, then this should
-    specify the category or representation the digraph being created will
-    belong to. For example, if <A>filt</A> is <Ref Filt="IsMutableDigraph"/>,
-    then the digraph being created will be mutable, if <A>filt</A> is <Ref
-    Filt="IsImmutableDigraph"/>, then the digraph will be immutable. 
-    If the optional first argument <A>filt</A> is not present, then <Ref
-      Filt="IsImmutableDigraph"/> is used by default.<P/>
+    &STANDARD_FILT_TEXT;
+
     <Example><![CDATA[
 gap> StarGraph(IsMutable, 10);
 <mutable digraph with 10 vertices, 18 edges>
@@ -529,35 +398,244 @@ true
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="KingsGraph">
+<ManSection>
+  <Oper Name="KingsGraph" Arg="[filt, ]m, n"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>m</A> and <A>n</A> are positive integers, then this operation returns
+    the <E>king's graph</E> of an <A>m</A> by <A>n</A> chessboard,
+    as a symmetric digraph.
+    <P/>
+
+    The king's graph represents all possible moves of the king chess piece
+    across a chessboard.
+    &CHESSBOARD_DEFN;
+
+    The king can move only to any orthogonally or diagonally adjacent square.
+    Thus the <C><A>m</A> * <A>n</A></C> vertices of the king's graph can be
+    placed onto the <C><A>m</A> * <A>n</A></C> squares of an <A>m</A> by
+    <A>n</A> chessboard, such that two vertices are adjacent in the digraph if
+    and only if the corresponding squares are orthogonally or diagonally
+    adjacent on the chessboard.
+    <P/>
+
+    &CHESSBOARD_LABELS;
+
+    See <URL Text="Wikipedia">https://en.wikipedia.org/wiki/King's_graph</URL>
+    for further information.
+    See also <Ref Oper="SquareGridGraph"/>, <Ref Oper="TriangularGridGraph"/>,
+    and <Ref Oper="StrongProduct"/>.
+    <P/>
+
+    &STANDARD_FILT_TEXT;
+
+    <Example><![CDATA[
+gap> KingsGraph(8, 8);
+<immutable connected symmetric digraph with 64 vertices, 420 edges>
+gap> D := KingsGraph(IsMutable, 2, 7);
+<mutable digraph with 14 vertices, 62 edges>
+gap> IsPlanarDigraph(D);
+true
+gap> D := KingsGraph(3, 3);
+<immutable connected symmetric digraph with 9 vertices, 40 edges>
+gap> OutNeighbors(D);
+[ [ 2, 4, 5 ], [ 1, 3, 5, 4, 6 ], [ 2, 6, 5 ], [ 5, 1, 7, 2, 8 ], 
+  [ 4, 6, 2, 8, 3, 7, 1, 9 ], [ 5, 3, 9, 8, 2 ], [ 8, 4, 5 ], 
+  [ 7, 9, 5, 6, 4 ], [ 8, 6, 5 ] ]
+gap> IsSubdigraph(QueensGraph(3, 4), KingsGraph(3, 4));
+true
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="QueensGraph">
+<ManSection>
+  <Oper Name="QueensGraph" Arg="[filt, ]m, n"/>
+  <Oper Name="QueenGraph" Arg="[filt, ]m, n"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>m</A> and <A>n</A> are positive integers, then this operation returns
+    the <E>queen's graph</E> of an <A>m</A> by <A>n</A> chessboard,
+    as a symmetric digraph.
+    <P/>
+
+    The queen's graph represents all possible moves of the queen chess piece
+    across a chessboard.
+    &CHESSBOARD_DEFN;
+
+    The <C><A>m</A> * <A>n</A></C> vertices of the queen's graph can be placed
+    onto the <C><A>m</A> * <A>n</A></C> squares of an <A>m</A> by <A>n</A>
+    chessboard, such that two vertices are adjacent in the digraph if and only
+    if the queen can move between the corresponding squares in a single turn.
+    A legal queen's move is defined as one which moves the queen to
+    an (orthogonally or diagonally) adjacent square, or to a square which can be
+    reached through a series of such moves, with all of the small moves being
+    in the same direction.
+    <P/>
+
+    Note that the <Ref Oper="QueensGraph"/> is the
+    <Ref Func="DigraphEdgeUnion" Label="for a list of digraphs"/>
+    of the <Ref Oper="RooksGraph"/> and the <Ref Oper="BishopsGraph"/> of the
+    same dimensions.
+    <P/>
+
+    &CHESSBOARD_LABELS;
+
+    &STANDARD_FILT_TEXT;
+
+<Example><![CDATA[
+gap> QueensGraph(2, 5);
+<immutable connected symmetric digraph with 10 vertices, 66 edges>
+gap> D := QueensGraph(4, 3);
+<immutable connected symmetric digraph with 12 vertices, 92 edges>
+gap> IsRegularDigraph(D);
+false
+gap> QueensGraph(6, 9) =
+>    DigraphEdgeUnion(RooksGraph(6, 9), BishopsGraph(6, 9));
+true
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="RooksGraph">
+<ManSection>
+  <Oper Name="RooksGraph" Arg="[filt, ]m, n"/>
+  <Oper Name="RookGraph" Arg="[filt, ]m, n"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>m</A> and <A>n</A> are positive integers, then this operation returns
+    the <E>rook's graph</E> of an <A>m</A> by <A>n</A> chessboard,
+    as a symmetric digraph.
+    <P/>
+
+    A rook's graph represents all possible moves of the rook chess piece
+    across a chessboard.
+    &CHESSBOARD_DEFN;
+
+    The <C><A>m</A> * <A>n</A></C> vertices of the rook's graph can be placed
+    onto the <C><A>m</A> * <A>n</A></C> squares of an <A>m</A> by <A>n</A>
+    chessboard, such that two vertices are adjacent in the digraph if and only
+    if a rook can move between the corresponding squares in a single turn.
+    A legal rook's move is defined as one which moves the rook to
+    an orthogonally adjacent square, or to a square which can be
+    reached through a series of such moves, with all of the small moves being
+    in the same direction.
+    <P/>
+
+    &CHESSBOARD_LABELS;
+
+    See <URL Text="Wikipedia">https://en.wikipedia.org/wiki/Rook's_graph</URL>
+    for further information.
+    See also
+    <Ref Func="DigraphCartesianProduct" Label="for a list of digraphs"/> and
+    <Ref Oper="LineDigraph"/>.
+    <P/>
+
+    &STANDARD_FILT_TEXT;
+
+<Example><![CDATA[
+gap> D := RooksGraph(7, 4);
+<immutable connected regular symmetric digraph with 28 vertices, 252 e\
+dges>
+gap> RooksGraph(1, 8);
+<immutable connected regular symmetric digraph with 8 vertices, 56 edg\
+es>
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="BishopsGraph">
+<ManSection>
+  <Oper Name="BishopsGraph" Arg="[filt, ][color, ]m, n"/>
+  <Oper Name="BishopGraph" Arg="[filt, ][color, ]m, n"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>m</A> and <A>n</A> are positive integers, then this operation returns
+    the <E>bishop's graph</E> of an <A>m</A> by <A>n</A> chessboard,
+    as a symmetric digraph.
+    <P/>
+
+    A bishop's graph represents all possible moves of the bishop chess piece
+    across a chessboard.
+    &CHESSBOARD_DEFN;
+
+    The <C><A>m</A> * <A>n</A></C> vertices of the bishop's graph can be placed
+    onto the <C><A>m</A> * <A>n</A></C> squares of an <A>m</A> by <A>n</A>
+    chessboard, such that two vertices are adjacent in the digraph if and only
+    if a bishop can move between the corresponding squares in a single turn.
+    A legal bishop's move is defined as any move which moves the bishop piece to
+    a diagonally adjacent square or to a square which can be reached through a
+    series of diagonally adjacent squares, with all of these small
+    moves being in the same direction.<P/>
+
+    &CHESSBOARD_LABELS;
+
+    If the optional second argument <A>color</A> is present, then this should
+    be one of the strings <C>"dark"</C>, <C>"light"</C>, or <C>"both"</C>.
+    The default is <C>"both"</C>.
+    A bishop on a light square can only move to light squares, and a bishop
+    on a dark square can only move to dark squares.
+    This optional argument controls which bishops are represented in the
+    resulting digraph.
+    If <A>color</A> is <C>"both"</C>, then the resulting digraph will show all
+    the vertices of an <A>m</A> by <A>n</A> chessboard, and will be
+    disconnected (unless <C><A>m</A> = <A>n</A> = 1</C>).
+    Otherwise, <Ref Oper="BishopsGraph"/> returns the induced subdigraph of this
+    on the vertices that correspond to either the dark squares or the light
+    squares, according to the value of <A>color</A>.
+    <P/>
+    
+    &STANDARD_FILT_TEXT;
+
+<Example><![CDATA[
+gap> BishopsGraph(8, 8);
+<immutable symmetric digraph with 64 vertices, 560 edges>
+gap> D := BishopsGraph("dark", 3, 5);
+<immutable connected symmetric digraph with 8 vertices, 24 edges>
+gap> IsConnectedDigraph(D);       
+true
+gap> BishopsGraph("light", 4, 4);
+<immutable connected symmetric digraph with 8 vertices, 28 edges>
+gap> D := BishopsGraph("both", 1, 5);
+<immutable empty digraph with 5 vertices>
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="KnightsGraph">
 <ManSection>
   <Oper Name="KnightsGraph" Arg="[filt, ]m, n"/>
   <Returns>A digraph.</Returns>
   <Description>
-    If <A>m</A> and <A>n</A> are both positive integers, then this operation
-    returns the <E>Knight's Graph</E> for a <A>m</A> by <A>n</A> board. <P/>
-
-    From
-    <URL>https://en.wikipedia.org/wiki/Knight%27s_graph</URL>:
+    If <A>m</A> and <A>n</A> are positive integers, then this operation returns
+    the <E>knight's graph</E> of an <A>m</A> by <A>n</A> chessboard,
+    as a symmetric digraph.
     <P/>
 
-    <Q>In graph theory, a knight's graph, or a knight's tour graph, is a
-    graph that represents all legal moves of the knight chess piece on a
-    chessboard.  Each vertex of this graph represents a square of the
-    chessboard, and each edge connects two squares that are a knight's move
-    apart from each other. More specifically, an <A>m</A> by <A>n</A> knight's
-    graph is a knight's graph of an <A>m</A> by <A>n</A> chessboard.</Q>
+    A knight's graph represents all possible moves of the knight chess piece
+    across a chessboard.
+    &CHESSBOARD_DEFN;
+
+    The <C><A>m</A> * <A>n</A></C> vertices of the knight's graph can be placed
+    onto the <C><A>m</A> * <A>n</A></C> squares of an <A>m</A> by <A>n</A>
+    chessboard, such that two vertices are adjacent in the digraph if and only
+    if a knight can move between the corresponding squares in a single turn.
     <P/>
 
-    If the optional first argument <A>filt</A> is present, then this should
-    specify the category or representation the digraph being created will
-    belong to. For example, if <A>filt</A> is <Ref Filt="IsMutableDigraph"/>,
-    then the digraph being created will be mutable, if <A>filt</A> is <Ref
-    Filt="IsImmutableDigraph"/>, then the digraph will be immutable.
-    If the optional first argument <A>filt</A> is not present, then <Ref
-      Filt="IsImmutableDigraph"/> is used by default.<P/>
+    &CHESSBOARD_LABELS;
 
-<Example><![CDATA[
+    See <URL Text="Wikipedia">https://en.wikipedia.org/wiki/Knight's_graph</URL>
+    for further information.
+    <P/>
+
+    &STANDARD_FILT_TEXT;
+
+    <Example><![CDATA[
 gap> D := KnightsGraph(8, 8);
 <immutable connected symmetric digraph with 64 vertices, 336 edges>
 gap> IsConnectedDigraph(D);
@@ -581,15 +659,6 @@ gap> KnightsGraph(IsMutable, 3, 9);
     If <A>n</A> is a positive integer then this operation returns
     the <E>Haar graph</E> <M>H(<A>n</A>)</M>. <P/>
 
-    From
-    <URL>https://mathworld.wolfram.com/HaarGraph.html</URL>:
-    <P/>
-
-    <Q>A Haar graph H(<A>n</A>) is a bipartite regular vertex-transitive graph
-    indexed by a positive integer and obtained by a simple binary encoding of
-    cyclically adjacent vertices. Haar graphs may be connected or
-    disconnected.</Q><P/>
-
     The number of vertices in the Haar graph <M>H(<A>n</A>)</M> is
     equal to twice <M>m</M>, where <M>m</M> is the number of digits
     required to represent <A>n</A> in binary.
@@ -600,15 +669,9 @@ gap> KnightsGraph(IsMutable, 3, 9);
     the binary representation of <A>n</A> has a 1 in position
     (<M>j-i</M> modulo <M>m</M>) + 1 from the left. <P/>
 
-    If the optional first argument <A>filt</A> is present, then this should
-    specify the category or representation the digraph being created will
-    belong to. For example, if <A>filt</A> is <Ref Filt="IsMutableDigraph"/>,
-    then the digraph being created will be mutable, if <A>filt</A> is <Ref
-    Filt="IsImmutableDigraph"/>, then the digraph will be immutable.
-    If the optional first argument <A>filt</A> is not present, then <Ref
-      Filt="IsImmutableDigraph"/> is used by default.<P/>
+    &STANDARD_FILT_TEXT;
 
-<Example><![CDATA[
+    <Example><![CDATA[
 gap> HaarGraph(3);
 <immutable bipartite vertex-transitive symmetric digraph with bicompon\
 ent sizes 2 and 2>
@@ -625,7 +688,8 @@ ent sizes 5 and 5>
   <Oper Name="BananaTree" Arg="[filt, ]n, k"/>
   <Returns>A digraph</Returns>
   <Description>
-    If <A>n</A> and <A>k</A> are positive integers with <A>k</A> greater than <M>1</M>,
+    If <A>n</A> and <A>k</A> are positive integers
+    with <A>k</A> greater than <M>1</M>,
     then this operation returns the <E>banana tree</E>
     with parameters <A>n</A> and <A>k</A>, as defined below. <P/>
 
@@ -638,24 +702,19 @@ ent sizes 5 and 5>
     connecting one leaf of each of <A>n</A> copies of an <A>k</A>-star graph
     with a single root vertex that is distinct from all the stars.</Q>
     <P/>
-    
+
     Specifically, in the resulting digraph, vertex <C>1</C> is the 'root',
     and for each <C>m</C> in <C>[1 .. <A>k</A>]</C>,
     the <C>m</C>th star is on the vertices
     <C>[((m - 1) * n) + 2 .. (m * n) + 1]</C>,
     with the first of these being the 'centre' of the star,
     and the second being the 'leaf' adjacent <C>1</C>. <P/>
-    
-    If the optional first argument <A>filt</A> is present, then this should
-    specify the category or representation the digraph being created will
-    belong to. For example, if <A>filt</A> is <Ref Filt="IsMutableDigraph"/>,
-    then the digraph being created will be mutable, if <A>filt</A> is <Ref
-    Filt="IsImmutableDigraph"/>, then the digraph will be immutable.
-    If the optional first argument <A>filt</A> is not present, then <Ref
-      Filt="IsImmutableDigraph"/> is used by default.<P/>
 
-    See also <Ref Oper="StarGraph"/> and <Ref Prop="IsUndirectedTree"/>.
-<Example><![CDATA[
+    See also <Ref Oper="StarGraph"/> and <Ref Prop="IsUndirectedTree"/>. <P/>
+
+    &STANDARD_FILT_TEXT;
+
+    <Example><![CDATA[
 gap> D := BananaTree(2, 4);
 <immutable undirected tree digraph with 9 vertices>
 gap> D := BananaTree(3, 3);
@@ -674,25 +733,19 @@ gap> D := BananaTree(3, 4);
   <Oper Name="TadpoleGraph" Arg="[filt, ]m, n"/>
   <Returns>A digraph.</Returns>
   <Description>
-    The <E>Tadpole digraph</E> is the symmetric closure of the disjoint union
+    The <E>tadpole graph</E> is the symmetric closure of the disjoint union
     of the cycle digraph on <C>[1..<A>m</A>]</C> (the 'head' of the tadpole)
     and the chain digraph on <C>[<A>m</A>+1..<A>m</A>+<A>n</A>]</C>
     (the 'tail' of the tadpole), along with the additional
     edges <C>[1, <A>m</A>+1]</C> and <C>[1, <A>m</A>+1]</C>
-    which connect the 'head' and the 'tail'. For more details on the Tadpole digraph
+    which connect the 'head' and the 'tail'. For more details on the tadpole graph
     please refer to <URL>https://en.wikipedia.org/wiki/Tadpole_graph</URL>.<P/>
 
     See <Ref Oper="DigraphSymmetricClosure"/>,
     <Ref Func="DigraphDisjointUnion" Label="for a list of digraphs"/>,
     <Ref Oper="CycleDigraph"/>, and <Ref Oper="ChainDigraph"/>. <P/>
 
-    If the optional first argument <A>filt</A> is present, then this should
-    specify the category or representation the digraph being created will
-    belong to. For example, if <A>filt</A> is <Ref Filt="IsMutableDigraph"/>,
-    then the digraph being created will be mutable, if <A>filt</A> is <Ref
-    Filt="IsImmutableDigraph"/>, then the digraph will be immutable. 
-    If the optional first argument <A>filt</A> is not present, then <Ref
-      Filt="IsImmutableDigraph"/> is used by default.<P/>
+    &STANDARD_FILT_TEXT;
 
     <Example><![CDATA[
 gap> TadpoleGraph(10, 15);
@@ -711,20 +764,15 @@ true
   <Oper Name="BookGraph" Arg="[filt, ]m"/>
   <Returns>A digraph.</Returns>
   <Description>
-    The <E>Book digraph</E> is the Cartesian product of a complete digraph with 2 vertices
-    (as the "Book Spine") and the <M><A>m</A>+1</M> star digraph (as the "Pages").
-    For more details on the Book digraph please refer to <URL>https://mathworld.wolfram.com/BookGraph.html</URL>.<P/>
+    The <E>book graph</E> is the Cartesian product of a complete digraph with
+    two vertices (as the "book spine") and the <M><A>m</A>+1</M> star graph (as
+    the "pages").  For more details on the book graph please refer to
+    <URL>https://mathworld.wolfram.com/BookGraph.html</URL>.<P/>
 
     See <Ref Func="DigraphCartesianProduct" Label="for a positive number of digraphs"/>,
     <Ref Oper="CompleteDigraph"/>, and <Ref Oper="StarGraph"/>. <P/>
 
-    If the optional first argument <A>filt</A> is present, then this should
-    specify the category or representation the digraph being created will
-    belong to. For example, if <A>filt</A> is <Ref Filt="IsMutableDigraph"/>,
-    then the digraph being created will be mutable, if <A>filt</A> is <Ref
-    Filt="IsImmutableDigraph"/>, then the digraph will be immutable. 
-    If the optional first argument <A>filt</A> is not present, then <Ref
-      Filt="IsImmutableDigraph"/> is used by default.<P/>
+    &STANDARD_FILT_TEXT;
 
     <Example><![CDATA[
 gap> BookGraph(1);
@@ -740,6 +788,819 @@ true
 gap> IsBipartiteDigraph(BookGraph(24));
 true
 ]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="StackedBookGraph">
+<ManSection>
+  <Oper Name="StackedBookGraph" Arg="[filt, ]m, n"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    The <E>stacked book graph</E> is the Cartesian product of the symmetric
+    closure of the chain digraph with <A>n</A> vertices (as the "book spine")
+    and the <M><A>m</A>+1</M> star graph (as the "pages").
+    For more details on the stacked book graph please refer to
+    <URL>https://mathworld.wolfram.com/StackedBookGraph.html</URL>.<P/>
+
+    See <Ref Func="DigraphCartesianProduct" Label="for a positive number of digraphs"/>,
+    <Ref Oper="DigraphSymmetricClosure"/>, <Ref Oper="ChainDigraph"/>, and
+    <Ref Oper="StarGraph"/>. <P/>
+
+    &STANDARD_FILT_TEXT;
+
+    <Example><![CDATA[
+gap> StackedBookGraph(1, 1);
+<immutable bipartite symmetric digraph with bicomponent sizes 1 and 1>
+gap> StackedBookGraph(1, 2);
+<immutable bipartite symmetric digraph with bicomponent sizes 2 and 2>
+gap> StackedBookGraph(3, 4);
+<immutable bipartite symmetric digraph with bicomponent sizes 8 and 8>
+gap> StackedBookGraph(IsMutable, 12, 5);
+<mutable digraph with 65 vertices, 224 edges>
+gap> StackedBookGraph(5, 5);
+<immutable bipartite symmetric digraph with bicomponent sizes 13 and 1\
+7>
+gap> IsSymmetricDigraph(StackedBookGraph(24, 8));
+true
+gap> IsBipartiteDigraph(StackedBookGraph(24, 8));
+true
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="BinaryTree">
+<ManSection>
+  <Oper Name="BinaryTree" Arg="[filt, ]m"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    This function returns a binary tree of depth <A>m</A> with <C>2 ^ <A>m</A>
+    - 1</C> vertices. All edges are directed towards the root of the tree,
+    which is vertex <C>1</C>.
+    <P/>
+    Note that <C>BinaryTree(<A>m</A>)</C> is the induced subdigraph of
+    <C>BinaryTree(<A>m</A>+1)</C> on the vertices <C>[1..2^(<A>m</A>-1)]</C>.
+    <P/>
+
+    &STANDARD_FILT_TEXT;
+
+    <Example><![CDATA[
+gap> BinaryTree(1);
+<immutable empty digraph with 1 vertex>
+gap> BinaryTree(8);
+<immutable digraph with 255 vertices, 254 edges>
+gap> BinaryTree(IsMutableDigraph, 8);
+<mutable digraph with 255 vertices, 254 edges>
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="AndrasfaiGraph">
+<ManSection>
+  <Oper Name="AndrasfaiGraph" Arg="[filt, ]n"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>n</A> is an integer greater than 0, then this operation returns the
+    <A>n</A>th <E>Andrasfai graph</E>. The Andrasfai graph is a circulant graph
+    with <C>3<A>n</A> - 1</C> vertices. The indices of the Andrasfai graph
+    are given by the numbers between <C>1</C> and <C>3<A>n</A> - 1</C> that are
+    congruent to <C>1</C> mod <C>3</C> (that is, for each index <M>j</M>, vertex
+    <M>i</M> is adjacent to the <M>i + j</M>th and <M>i - j</M> vertices). The
+    graph has <C>6(3<A>n</A> - 1)</C> edges. The graph is triangle free.<P/>
+
+    As a circulant graph, the Andrasfai graph is biconnected, cyclic,
+    Hamiltonian, regular, and vertex transitive.<P/>
+
+    See <URL>https://mathworld.wolfram.com/AndrasfaiGraph.html</URL> for further
+    details.<P/>
+
+    &STANDARD_FILT_TEXT;
+
+<Example><![CDATA[
+gap> D := AndrasfaiGraph(4);
+<immutable Hamiltonian biconnected vertex-transitive symmetric digraph\
+ with 11 vertices, 44 edges>
+gap> IsBiconnectedDigraph(D);
+true
+gap> IsIsomorphicDigraph(D, CirculantGraph(11, [1, 4, 7, 10]));
+true]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="BinomialTreeGraph">
+<ManSection>
+  <Oper Name="BinomialTreeGraph" Arg="[filt, ]n"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>n</A> is a positive integer then this operation returns the <A>n</A>th
+    <E>binomial tree graph</E>. The binomial tree graph has <A>n</A> vertices
+    and <C><A>n</A>-1</C> undirected edges. The vertices of the binomial tree
+    graph are the numbers from 1 to <A>n</A> in binary representation, with a
+    vertex <C>v</C> having as a direct parent the vertex with binary
+    representation the same as <C>v</C> but with the lowest 1-bit cleared. For
+    example, the vertex <M>011</M> has parent <M>010</M>, and the vertex
+    <M>010</M> has parent <M>000</M>.<P/>
+
+    The binomial tree graph is an undirected tree, and is symmetric as a
+    digraph.<P/>
+
+    See <URL>https://metacpan.org/pod/Graph::Maker::BinomialTree</URL> for
+    further details.<P/>
+
+    &STANDARD_FILT_TEXT;
+
+<Example><![CDATA[
+gap> D := BinomialTreeGraph(9);
+<immutable undirected tree digraph with 9 vertices>]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="BondyGraph">
+<ManSection>
+  <Oper Name="BondyGraph" Arg="[filt, ]n"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>n</A> is a non-negative integer then this operation returns the
+    <A>n</A>th <E>Bondy graph</E>. The Bondy graphs are a family of
+    hypohamiltonian graphs: a graph which is not Hamiltonian itself but the
+    removal of any vertex produces a Hamiltonian graph. The Bondy graphs are the
+    <C>(3(2<A>n</A> + 1) + 2, 2)</C>-th Generalised Petersen graphs, and have
+    <C>12<A>n</A> + 10</C> vertices and <C>15 + 18<A>n</A></C> undirected
+    edges.<P/>
+
+    See <URL>https://mathworld.wolfram.com/HypohamiltonianGraph.html</URL> for
+    further details.<P/>
+
+    &STANDARD_FILT_TEXT;
+
+<Example><![CDATA[
+gap> D := BondyGraph(1);
+<immutable symmetric digraph with 22 vertices, 66 edges>
+gap> IsHamiltonianDigraph(D);
+false
+gap> G := List([1 .. 22], x -> DigraphRemoveVertex(D, x));;
+gap> ForAll(G, x -> IsHamiltonianDigraph(x));
+true]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="CirculantGraph">
+<ManSection>
+  <Oper Name="CirculantGraph" Arg="[filt, ]n, par"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>n</A> is an integer greater than 1, and <A>par</A> is a list of
+    integers that are contained in <C>[1..<A>n</A>]</C> then this operation
+    returns a <E>circulant graph</E>. The circulant graph is a graph on <A>n</A>
+    vertices, where for each element <M>j</M> of <A>par</A>, the <M>i</M>th
+    vertex is adjacent to the <M>(i + j)</M>th and <M>(i - j)</M>th
+    vertices.<P/>
+
+    If <A>par</A> is <M>[1]</M>, then the graph is the <A>n</A>th cyclic graph.
+    If <A>par</A> is <C>[1,2,...,Int(<A>n</A>/2)]</C>, then the graph is the
+    complete graph on <A>n</A> vertices. If <A>n</A> is at least 4 and
+    <A>par</A> is <C>[1,<A>n</A>]</C> then the graph is the <A>n</A>th Mobius
+    ladder graph.<P/>
+
+    A circulant graph is biconnected, cyclic, Hamiltonian, regular, and vertex
+    transitive.<P/>
+
+    See <URL>https://mathworld.wolfram.com/CirculantGraph.html</URL> for further
+    details.<P/>
+
+    &STANDARD_FILT_TEXT;
+
+<Example><![CDATA[
+gap> D := CirculantGraph(6, [1, 2, 3]);
+<immutable Hamiltonian biconnected vertex-transitive symmetric digraph\
+ with 6 vertices, 30 edges>
+gap> IsIsomorphicDigraph(D, CompleteDigraph(6));
+true]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="CycleGraph">
+<ManSection>
+  <Oper Name="CycleGraph" Arg="[filt, ]n"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>n</A> is an integer greater than 2 then this operation returns the
+    <A>n</A>th <E>cycle graph</E>, consisting of the cycle on <A>n</A> vertices.
+    The cycle graph, unlike the cycle digraph, is symmetric. The cycle graph
+    has <A>n</A> vertices and <A>n</A> undirected edges. The cycle graph is
+    simple so the non-simple graphs with a single vertex and single loop and
+    with two vertices and two edges between them are excluded.<P/>
+
+    See <URL>https://mathworld.wolfram.com/CycleGraph.html</URL> for
+    further details.<P/>
+
+    &STANDARD_FILT_TEXT;
+
+<Example><![CDATA[
+gap> D := CycleGraph(7);
+<immutable symmetric digraph with 7 vertices, 14 edges>]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="GearGraph">
+<ManSection>
+  <Oper Name="GearGraph" Arg="[filt, ]n"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>n</A> is a positive integer at least 3, then this operation
+    returns the <E>gear graph</E> with <C>2<A>n</A> + 1</C> vertices and
+    <C>3<A>n</A></C> undirected edges. The <A>n</A>th gear graph is the
+    <C>2<A></A></C>th cycle graph with one additional central vertex, to which
+    every other vertex of the cycle is connected. The gear graph is a symmetric
+    digraph.  A gear graph is a Matchstick graph, that is it is simple with a
+    planar graph embedding, and is a unit-distance graph (that is, it can be
+    embedded into the Euclidean plane with vertices being distinct points and
+    edges having length 1).<P/>
+
+    See <URL>https://mathworld.wolfram.com/GearGraph.html</URL> for further
+    details.<P/>
+
+    &STANDARD_FILT_TEXT;
+
+<Example><![CDATA[
+gap> D := GearGraph(4);
+<immutable symmetric digraph with 9 vertices, 24 edges>
+gap> ChromaticNumber(D);
+2
+gap> IsVertexTransitive(D);
+false]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="HalvedCubeGraph">
+<ManSection>
+  <Oper Name="HalvedCubeGraph" Arg="[filt, ]n"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>n</A> is a positive integer at least 1, then this operation returns
+    the <A>n</A>th <E>halved cube graph</E>, the graph of the <A>n</A>-
+    demihypercube. The vertices of the graph are those of the <A>n</A>th-
+    hypercube, with two vertices adjacent if and only if they are at distance 1
+    or 2 from each other. Equivalent constructions are as the second graph power
+    of the <C><A>n</A>-1</C>th hypercube graph, or as with vertices labelled as
+    the binary numbers where two vertices are adjacent if they differ in a
+    single bit, or with vertices labelled with the subset of binary numbers with
+    even Hamming weight, with edges connecting vertices with Hamming distance
+    exactly 2. The Halved Cube graph is distance regular and contains a
+    Hamiltonian cycle.<P/>
+
+    See <URL>https://mathworld.wolfram.com/HalvedCubeGraph.html</URL> for
+    further details.<P/>
+
+    &STANDARD_FILT_TEXT;
+
+<Example><![CDATA[
+gap> D := HalvedCubeGraph(3);
+<immutable Hamiltonian connected symmetric digraph with 4 vertices, 12\
+ edges>
+gap> IsDistanceRegularDigraph(D);
+true
+gap> IsHamiltonianDigraph(D);
+true]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="HanoiGraph">
+<ManSection>
+  <Oper Name="HanoiGraph" Arg="[filt, ]n"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>n</A> is positive integer then this operation returns the <A>n</A>th
+    <E>Hanoi graph</E>. The Hanoi graph's vertices represent the possible states
+     of the 'Tower of Hanoi' puzzle on three 'towers', while its edges represent
+     possible moves. The Hanoi graph has <C>3^<A>n</A></C> vertices, and
+     <C>Binomial(3, 3) * (3^<A>n</A> - 1) / 2</C> undirected edges.<P/>
+
+    The Hanoi graph is Hamiltonian. The graph superficially resembles the
+    Sierpinski triangle. The graph is also a 'penny graph' - a graph whose
+    vertices can be considered to be non-overlapping unit circles on a flat
+    surface, with two vertices adjacent only if the unit circles touch at a
+    single point. Thus the Hanoi graph is planar.<P/>
+
+    See <URL>https://mathworld.wolfram.com/HanoiGraph.html</URL> for
+    further details.<P/>
+
+    &STANDARD_FILT_TEXT;
+
+<Example><![CDATA[
+gap> D := HanoiGraph(5);
+<immutable Hamiltonian connected symmetric digraph with 243 vertices, \
+726 edges>
+gap> IsPlanarDigraph(D);
+true]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="HelmGraph">
+<ManSection>
+  <Oper Name="HelmGraph" Arg="[filt, ]n"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>n</A> is a positive integer at least 3, then this operation returns
+    the <A>n</A>th <E>helm graph</E>. The helm graph is the <A>n</A>-1th wheel
+    graph with, for each external vertex of the 'wheel', adjoining a new vertex
+    incident only to the first vertex. That is, the graph looks similar to
+    a ship's helm.<P/>
+
+    See <URL>https://mathworld.wolfram.com/WheelGraph.html</URL> for further
+    details.<P/>
+
+    &STANDARD_FILT_TEXT;
+
+<Example><![CDATA[
+gap> D := HelmGraph(4);
+<immutable symmetric digraph with 9 vertices, 24 edges>]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="HypercubeGraph">
+<ManSection>
+  <Oper Name="HypercubeGraph" Arg="[filt, ]n"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>n</A> is a non-negative integer, then this operation returns the
+    <A>n</A>th <E>hypercube graph</E>. The graph has <C>2^<A>n</A></C> vertices
+    and <C>2^(<A>n</A>-1)<A>n</A></C> edges. It is formed from the vertices and
+    edges of the <A>n</A>-dimensional hypercube. Alternatively, the graph can be
+    constructed by labelling each vertex with the binary numbers, with two
+    vertices adjacent if they have Hamming distance exactly one. The hypercube
+    graphs are Hamiltonian, distance-transitive and therefore distance-regular,
+    and bipartite.<P/>
+
+    See <URL>https://mathworld.wolfram.com/HypercubeGraph.html</URL> for further
+    details.<P/>
+
+    &STANDARD_FILT_TEXT;
+
+<Example><![CDATA[
+gap> D := HypercubeGraph(5);
+<immutable Hamiltonian connected bipartite symmetric digraph with bico\
+mponent sizes 16 and 16>
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="KellerGraph">
+<ManSection>
+  <Oper Name="KellerGraph" Arg="[filt, ]n"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>n</A> is a nonnegative integer then this operation returns the
+    <A>n</A>th or <A>n</A>-dimensional <E>Keller graph</E>. The graph has
+    vertices given by the <A>n</A>-tuples on the set <M>[0, 1, 2, 3]</M>.
+    Two vertices are adjacent if their respective tuples are such that they
+    differ in at least two coordinates and in at least one coordinate the
+    difference between the two is <C>2</C> mod <C>4</C>. The Keller graph has
+    <C>4^<A>n</A></C> vertices.<P/>
+
+    The Keller graphs were constructed with the intention of finding
+    counterexamples to Keller's conjecture
+    (<URL>https://mathworld.wolfram.com/KellersConjecture.html</URL>), and has
+    been used since for testing maximum clique algorithms.<P/>
+
+    If <A>n</A> is 1 then the graph is empty, for <A>n</A> greater than 1 the
+    chromatic number of the Keller graph is <C>2^<A>n</A></C> and the graph is
+    Hamiltonian.<P/>
+
+    See <URL>https://mathworld.wolfram.com/KellerGraph.html</URL> for further
+    details.<P/>
+
+    &STANDARD_FILT_TEXT;
+
+<Example><![CDATA[
+gap> D := KellerGraph(3);
+<immutable Hamiltonian connected symmetric digraph with 64 vertices, 2\
+176 edges>
+gap> ChromaticNumber(D);
+8]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="KneserGraph">
+<ManSection>
+  <Oper Name="KneserGraph" Arg="[filt, ]n, k"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>n</A> and <A>k</A> are integers greater than 0, with <A>k</A> less
+    than <A>n</A>, then this operation returns the <C>(<A>n</A>,<A>k</A>)</C>-th
+    <E>Kneser graph</E>. The Kneser graph's vertices correspond to the <A>k</A>-
+    element subsets of a set of <A>n</A> elements, with two vertices being
+    adjacent if and only if the subsets are disjoint. The graph has
+    <C>Binomial(<A>n</A>, <A>k</A>)</C> vertices and <C>Binomial(<A>n</A>,
+    <A>k</A>) * Binomial(<A>n</A> - <A>k</A>, <A>k</A>)</C> edges. Kneser graphs
+    are regular, edge transitive, and vertex transitive. If <A>k</A> is 1, then
+    the graph is the complete graph on <A>n</A> vertices. If <C>(<A>n</A>,
+    <A>k</A>)</C> is <C>(2m-1, <A>n</A>-1)</C>, then the graph is the <C>m</C>th
+    Odd graph. The Petersen graph is the <M>(5, 2)</M>th Kneser graph.<P/>
+
+    If <C><A>n</A> >= 2<A>k</A></C> then the graph's chromatic number is
+    <C><A>n</A> - 2<A>k</A> + 2</C>, and otherwise is 1. The Kneser graph
+    contains a Hamiltonian cycle if <C><A>n</A> >= ((3 + 5 ^ 0.5) / 2)<A>k</A> +
+    1</C>. The graph has clique number equal to the floor of <C><A>n</A> /
+    <A>k</A></C>.<P/>
+
+    See <URL>https://mathworld.wolfram.com/KneserGraph.html</URL> for further
+    details.<P/>
+
+    &STANDARD_FILT_TEXT;
+
+<Example><![CDATA[
+gap> D := KneserGraph(7, 3);
+<immutable edge- and vertex-transitive symmetric digraph with 35 verti\
+ces, 140 edges>
+gap> IsRegularDigraph(D);
+true
+gap> ChromaticNumber(D);
+3
+gap> CliqueNumber(D);
+2]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="LindgrenSousselierGraph">
+<ManSection>
+  <Oper Name="LindgrenSousselierGraph" Arg="[filt, ]n"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>n</A> is an integer greater than 0, then this operation returns the
+    <A>n</A>th <E>Lindgren-Sousselier graph</E>, an infinite family of
+    hyophamiltonian graphs - a graph that is non-Hamiltonian but removing
+    any vector gives a Hamiltonian graph. The graph has <C>6<A>n</A>+4</C>
+    vertices and <C>15 + 10(<A>n</A>-1)</C> undirected edges. The first
+    Lindgren-Sousselier graph is the Petersen graph, and is in fact the smallest
+    hyophamiltonian graph.<P/>
+
+    See <URL>https://mathworld.wolfram.com/HypohamiltonianGraph.html</URL>
+    for further details.<P/>
+
+    &STANDARD_FILT_TEXT;
+
+<Example><![CDATA[
+gap> D := LindgrenSousselierGraph(3);
+<immutable symmetric digraph with 22 vertices, 70 edges>
+gap> IsHamiltonianDigraph(D);
+false
+gap> IsHamiltonianDigraph(DigraphRemoveVertex(D, 1));
+true
+gap> IsIsomorphicDigraph(LindgrenSousselierGraph(1), PetersenGraph());
+true]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="MobiusLadderGraph">
+<ManSection>
+  <Oper Name="MobiusLadderGraph" Arg="[filt, ]n"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>n</A> is a positive integer at least 4, then this operation returns
+    the <E>Mobius ladder graph</E> that is obtained by introducing a 'twist'
+    in the <A>n</A>th prism graph, similar to the construction of a Mobius
+    strip. The Mobius ladder graph is isomorphic to the circulant graph
+    <C>Ci(2<A>n</A>, [1, <A>n</A>])</C>. The Mobius ladders are cubic,
+    symmetric, Hamiltonian, vertex-transitive, and graceful. They are also
+    non-planar and apex, meaning removing a single vertex produces a planar
+    graph.<P/>
+
+    See <URL>https://mathworld.wolfram.com/MoebiusLadder.html</URL> for further
+    details.<P/>
+
+    &STANDARD_FILT_TEXT;
+
+<Example><![CDATA[
+gap> D := MobiusLadderGraph(7);
+<immutable symmetric digraph with 14 vertices, 42 edges>
+gap> IsHamiltonianDigraph(D);
+true
+gap> IsVertexTransitive(D);
+true
+gap> IsPlanarDigraph(D);
+false
+gap> D2 := DigraphRemoveVertex(D, 1);
+<immutable digraph with 13 vertices, 36 edges>
+gap> IsPlanarDigraph(D2);
+true]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="MycielskiGraph">
+<ManSection>
+  <Oper Name="MycielskiGraph" Arg="[filt, ]n"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>n</A> is an integer greater than 1, then this operation returns the
+    <A>n</A>th <E>Mycielski graph</E>. The Mycielskian of a triangle-free graph
+    is a construction that adds vertices and edges to produce a new graph that
+    is still triangle-free but has a larger chromatic number. The Mycielski
+    graphs are a series of graphs with this construction repeated, starting
+    with the complete graph on two vertices. The graph has <C>3 * 2^(<A>n</A>-2)
+    - 1</C> vertices, with the number of edges being
+    <C>(18 - 27 * 2 ^ <A>n</A> + 14 * 3 ^ <A>n</A>) / 36</C>.<P/>
+
+    The Mycielski graph has chromatic number equal to <A>n</A>, clique number
+    equal to <M>2</M>, and is Hamiltonian. The graph is in fact the graph with
+    chromatic number <A>n</A> with the least possible vertices.<P/>
+
+    See <URL>https://mathworld.wolfram.com/MycielskiGraph.html</URL> for further
+    details.<P/>
+
+    &STANDARD_FILT_TEXT;
+
+<Example><![CDATA[
+gap> D := MycielskiGraph(4);
+<immutable Hamiltonian connected symmetric digraph with 11 vertices, 4\
+0 edges>
+gap> ChromaticNumber(D);
+4
+gap> CliqueNumber(D);
+2]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="OddGraph">
+<ManSection>
+  <Oper Name="OddGraph" Arg="[filt, ]n"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>n</A> is an integer greater than 0, then this operation returns the
+    <A>n</A>th <E>odd graph</E>. The odd graph has vertices labelled with the
+    <C><A>n</A>-1</C>-subsets of a <C>2<A>n</A>-1</C>-set, with two vertices
+    adjacent if and only if their subsets are disjoint. The <A>n</A>th odd graph
+    is the <C>(2<A>n</A>-1, <A>n</A>-1)</C>-th Kneser graph. The graph has
+    <C>Binomial(2<A>n</A>-1, <A>n</A>-1)</C> vertices and <C><A>n</A> *
+    Binomial(2<A>n</A>-1, <A>n</A>-1) / 2</C> edges.<P/>
+
+    The odd graph is regular and distance transitive (and therefore distance
+    regular). They have chromatic number equal to 3, and all Odd graphs with
+    <A>n</A> greater than 3 are Hamiltonian. They are also vertex and edge
+    transitive.<P/>
+
+    See <URL>https://mathworld.wolfram.com/OddGraph.html</URL> for further
+    details.<P/>
+
+    &STANDARD_FILT_TEXT;
+
+<Example><![CDATA[
+gap> D := OddGraph(4);
+<immutable edge- and vertex-transitive symmetric digraph with 35 verti\
+ces, 140 edges>
+gap> IsIsomorphicDigraph(D, KneserGraph(7, 3));
+true
+gap> ChromaticNumber(D);
+3]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="PathGraph">
+<ManSection>
+  <Oper Name="PathGraph" Arg="[filt, ]n"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>n</A> is a non-negative integer then this operation returns the
+    <A>n</A>th <E>path graph</E>, consisting of the path on <A>n</A> vertices.
+    This is the symmetric closure of the <Ref Oper="ChainDigraph"/>. The path
+    graph has <A>n</A> vertices and <C><A>n</A>-1</C> edges. The path graph is
+    an undirected tree.<P/>
+
+    See <URL>https://mathworld.wolfram.com/PathGraph.html</URL> for
+    further details.<P/>
+
+    &STANDARD_FILT_TEXT;
+
+<Example><![CDATA[
+gap> D := PathGraph(12);
+<immutable undirected tree digraph with 12 vertices>]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="PermutationStarGraph">
+<ManSection>
+  <Oper Name="PermutationStarGraph" Arg="[filt, ]n, k"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>n</A> is an integer at greater than 0 and <A>k</A> is an integer
+    greater than 1, and <A>k</A> less than or equal to <A>n</A>, then this
+    operation returns the <C>(<A>n</A>, <A>k</A>)</C>-th <E>permutation star
+    graph</E>. The vertices of the graph are given by the <A>k</A>-length
+    ordered subsets of an <A>n</A>-set, with two vertices being adjacent if one
+    is labelled <C>p1 p2 p3 ... pi ... p<A>k</A></C>, and the other is either
+    labelled <C>pi p2 p3 ... p1 ... p<A>k</A></C>, or labelled
+    <C>x p2 p3 ... pi ... p<A>k</A></C> where <C>x</C> is in
+    <C>[1..<A>n</A>]</C> and is not equal to <C>p1</C>. The graph has
+    <C><A>n</A>! / (<A>n</A> - <A>k</A>)!</C> vertices.<P/>
+
+    The permutation star graph is regular and vertex transitive. It has diameter
+    <C>2<A>k</A> - 1</C> if <A>k</A> less than or equal to <C>Int(<A>n</A> /
+    2)</C>, and diameter <C>Int((<A>n</A> - 1) / 2) + <A>k</A></C> if
+    <C><A>k</A> >= Int(<A>n</A> / 2) + 1</C>.<P/>
+
+    See <URL>https://mathworld.wolfram.com/PermutationStarGraph.html</URL> for
+    further details.<P/>
+
+    &STANDARD_FILT_TEXT;
+
+<Example><![CDATA[
+gap> D := PermutationStarGraph(6, 2);
+<immutable vertex-transitive symmetric digraph with 30 vertices, 150 e\
+dges>
+gap> DigraphDiameter(D);
+3]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="PrismGraph">
+<ManSection>
+  <Oper Name="PrismGraph" Arg="[filt, ]n"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>n</A> is a positive integer at least 3, then this operation returns
+    the <E>prism graph</E> that is the skeleton of the <A>n</A>-prism. It has
+    <C>2<A>n</A></C> vertices and <C>3<A>n</A></C> undirected edges. The prism
+    graph is a symmetric digraph. The <A>n</A>th prism graph is isomorphic to
+    the graph Cartesian product of the second path graph and the <A>n</A>th
+    cycle graph, isomorphic to the generalised Petersen graph
+    <C>GP(<A>n</A>,1)</C>. If <A>n</A> is odd then the prism graph is isomorphic
+    to the Circulant graph <C>Ci(2<A>n</A>, [2,<A>n</A>])</C>. The prism graph
+    is Hamiltonian.<P/>
+
+    See <URL>https://mathworld.wolfram.com/PrismGraph.html</URL> for further
+    details.<P/>
+
+    &STANDARD_FILT_TEXT;
+
+<Example><![CDATA[
+gap> D := PrismGraph(4);
+<immutable symmetric digraph with 8 vertices, 24 edges>
+gap> IsHamiltonianDigraph(D);
+true
+gap> D := PrismGraph(5);
+<immutable symmetric digraph with 10 vertices, 30 edges>
+gap> IsIsomorphicDigraph(D, CirculantGraph(10, [2, 5]));
+true]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="StackedPrismGraph">
+<ManSection>
+  <Oper Name="StackedPrismGraph" Arg="[filt, ]n, k"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>n</A> is an integer at least 3 and <A>k</A> is a positive integer then
+    this operation returns the <C>(<A>n</A>,<A>k</A>)</C>-th <E>stacked prism
+    graph</E>. The graph is <A>k</A> concentric <A>n</A>-Cycle graphs connected
+    by spokes.  The stacked prism is the graph Cartesian product of the
+    <A>n</A>th cycle graph and the <A>k</A>th path graph. The graph has
+    <C><A>n</A><A>k</A></C> vertices and <C><A>n</A>(2<A>k</A> - 1)</C>
+    undirected edges. If <A>k</A> is 1 then the graph is the <A>n</A>th cycle
+    graph, if <A>k</A> is 2 then the graph is the prism graph.
+     <P/>
+
+    See <URL>https://mathworld.wolfram.com/StackedPrismGraph.html</URL> for
+    further details.<P/>
+
+    &STANDARD_FILT_TEXT;
+
+<Example><![CDATA[
+gap> D := StackedPrismGraph(5, 2);
+<immutable symmetric digraph with 10 vertices, 30 edges>
+gap> IsIsomorphicDigraph(D, PrismGraph(5));
+true]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="WalshHadamardGraph">
+<ManSection>
+  <Oper Name="WalshHadamardGraph" Arg="[filt, ]n"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>n</A> is a positive integer at least 1, then this operation returns
+    the <E>Hadamard graph</E> constructed from the <A>n</A>th Hadamard matrix
+    (of dimension <C>2^<A>n</A></C>) as constructed by Joseph Walsh. A Hadamard
+    matrix is a square matrix with entries either <M>1</M> or <M>-1</M>, such
+    that all the rows are mutually orthogonal. The <A>n</A>th Walsh Hadamard
+    graph is a graph on <C>4<A>n</A></C> matrices split into four categories
+    <M>r_i+, r_i-, c_i+, c_i-</M>.  If <M>h_ij</M> are the elements of the
+    <A>n</A>th Walsh matrix, then if <M>h_ij = 1</M> then <M>(r_i+, c_j+)</M>
+    and <M>(r_i-, c_j-)</M> are edges, if <M>h_ij = -1</M> then <M>(r_i+,
+    c_j-)</M> and <M>(r_i-, c_j+)</M> are edges. Walsh Hadamard graphs are
+    distance transitive and distance regular.<P/>
+
+    See <URL>https://mathworld.wolfram.com/HadamardGraph.html</URL> for further
+    details.<P/>
+
+    &STANDARD_FILT_TEXT;
+
+<Example><![CDATA[
+gap> D := WalshHadamardGraph(5);
+<immutable symmetric digraph with 64 vertices, 1024 edges>
+gap> IsDistanceRegularDigraph(D);
+true]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="WebGraph">
+<ManSection>
+  <Oper Name="WebGraph" Arg="[filt, ]n"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>n</A> is an integer at least 3 then this operation returns the
+    <A>n</A>th <E>web graph</E>. The web graph is the <C>(<A>n</A>,3)</C>-th
+    stacked prism graph with the edges of the outer cycle removed. The graph
+    has <C>3<A>n</A></C> vertices and <C>4<A>n</A></C> undirected edges.<P/>
+
+    See <URL>https://mathworld.wolfram.com/WebGraph.html</URL> for
+    further details.<P/>
+
+    &STANDARD_FILT_TEXT;
+
+<Example><![CDATA[
+gap> D := WebGraph(5);
+<immutable symmetric digraph with 15 vertices, 40 edges>]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="WheelGraph">
+<ManSection>
+  <Oper Name="WheelGraph" Arg="[filt, ]n"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>n</A> is a positive integer at least 4, then this operation returns
+    the <A>n</A>th <E>wheel graph</E>. The Wheel graph is formed from an
+    <C><A>n</A>-1</C> cycle graph with a single additional vertex adjacent to
+    all vertices of the cycle. The graph has <A>n</A> vertices and
+    <C>2(<A>n</A>-1)</C> edges. Wheel graphs are the skeletons of
+    <C><A>n</A>-1</C> pyramids, and are self-dual. If <A>n</A> is odd, then the
+    chromatic number of the wheel graph is 3 and the Wheel graph is perfect, and
+    it is 4 otherwise. The wheel graph is also Hamiltonian and planar.<P/>
+
+    See <URL>https://mathworld.wolfram.com/WheelGraph.html</URL> for further
+    details.<P/>
+
+    &STANDARD_FILT_TEXT;
+
+<Example><![CDATA[
+gap> D := WheelGraph(8);
+<immutable Hamiltonian connected symmetric digraph with 8 vertices, 28\
+ edges>
+gap> ChromaticNumber(D);
+4
+gap> IsHamiltonianDigraph(D);
+true]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="WindmillGraph">
+<ManSection>
+  <Oper Name="WindmillGraph" Arg="[filt, ]n, m"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>n</A> and <A>m</A> are integers greater than 1 then this operation
+    returns the <C>(<A>n</A>, <A>m</A>)</C>-th <E>windmill graph</E>. The
+    windmill graph is formed from <A>m</A> copies of the complete graph on
+    <A>n</A> vertices with one shared vertex. The graph has <C><A>m</A>(<A>n</A>
+    - 1) + 1</C> vertices and <C><A>m</A> * <A>n</A> * (<A>n</A> - 1) / 2</C>
+    undirected edges. The windmill graph has chromatic number <A>n</A> and
+    diameter 2.<P/>
+
+    See <URL>https://mathworld.wolfram.com/WindmillGraph.html</URL> for
+    further details.<P/>
+
+    &STANDARD_FILT_TEXT;
+
+<Example><![CDATA[
+gap> D := WindmillGraph(4, 3);
+<immutable symmetric digraph with 10 vertices, 36 edges>
+gap> ChromaticNumber(D);
+4]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>

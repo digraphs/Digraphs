@@ -107,9 +107,9 @@ function(D, n)
     fi;
   fi;
 
-  # Only the null D with 0 vertices can be coloured with 0 colours
+  # Only the null digraph with 0 vertices can be coloured with 0 colours
   if n = 0 then
-    if DigraphNrVertices(D) = 0 then
+    if DigraphHasNoVertices(D) then
       return IdentityTransformation;
     fi;
     return fail;
@@ -238,7 +238,7 @@ end);
 
 # Finds a set S of homomorphism from gr1 to gr2 such that every homomorphism g
 # between the two graphs can expressed as a composition g = f * x of an element
-# f in S and an automorphism x of gr2
+# f in S and an automorphism x of gr2
 
 InstallMethod(HomomorphismsDigraphsRepresentatives,
 "for a digraph and a digraph",

@@ -2494,9 +2494,9 @@ gap> MinimalCommonSuperdigraph(PetersenGraph(),
 [ <immutable digraph with 10 vertices, 30 edges>, IdentityTransformation, 
   IdentityTransformation ]
 gap> MaximalCommonSubdigraph(Digraph([[1, 1]]), Digraph([[1]]));
-Error, ModularProduct does not support multidigraphs,
+Error, the 1st argument (a digraph) must not satisfy IsMultiDigraph
 gap> MinimalCommonSuperdigraph(Digraph([[1, 1]]), Digraph([[1]]));
-Error, ModularProduct does not support multidigraphs,
+Error, the 1st argument (a digraph) must not satisfy IsMultiDigraph
 
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(edges);

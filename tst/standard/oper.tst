@@ -97,8 +97,8 @@ gap> DigraphEdges(last);
 gap> h := (1, 2, 3, 4);
 (1,2,3,4)
 gap> OnDigraphs(gr, h);
-Error, the 2nd argument <p> must be a permutation that permutes of the digraph\
- <D> that is the 1st argument,
+Error, the 2nd argument <p> must be a permutation that permutes the vertices o\
+f the digraph <D> that is the 1st argument,
 gap> gr := Digraph([[1, 1, 1, 3, 5], [], [3, 2, 4, 5], [2, 5], [1, 2, 1]]);
 <immutable multidigraph with 5 vertices, 14 edges>
 gap> DigraphEdges(gr);
@@ -107,8 +107,8 @@ gap> DigraphEdges(gr);
 gap> p1 := (2, 4)(3, 6, 5);
 (2,4)(3,6,5)
 gap> OnDigraphs(gr, p1);
-Error, the 2nd argument <p> must be a permutation that permutes of the digraph\
- <D> that is the 1st argument,
+Error, the 2nd argument <p> must be a permutation that permutes the vertices o\
+f the digraph <D> that is the 1st argument,
 gap> p2 := (1, 3, 4, 2);
 (1,3,4,2)
 gap> OnDigraphs(gr, p2);
@@ -124,8 +124,8 @@ gap> DigraphEdges(gr);
 gap> p1 := (1, 5, 4, 2, 3);
 (1,5,4,2,3)
 gap> OnDigraphs(gr, p1);
-Error, the 2nd argument <p> must be a permutation that permutes of the digraph\
- <D> that is the 1st argument,
+Error, the 2nd argument <p> must be a permutation that permutes the vertices o\
+f the digraph <D> that is the 1st argument,
 gap> p2 := (1, 4)(2, 3);
 (1,4)(2,3)
 gap> OnDigraphs(gr, p2);
@@ -148,6 +148,55 @@ gap> gr := OnDigraphs(gr, t);
 <immutable multidigraph with 3 vertices, 3 edges>
 gap> OutNeighbours(gr);
 [ [ 2 ], [ 1, 1 ], [  ] ]
+
+#  OnTuplesDigraphs: for a digraph and a permutation
+gap> D := [ChainDigraph(3), CycleDigraph(4)];;
+gap> List(D, OutNeighbours);
+[ [ [ 2 ], [ 3 ], [  ] ], [ [ 2 ], [ 3 ], [ 4 ], [ 1 ] ] ]
+gap> List(OnTuplesDigraphs(D, (1, 3)), OutNeighbours);
+[ [ [  ], [ 1 ], [ 2 ] ], [ [ 4 ], [ 1 ], [ 2 ], [ 3 ] ] ]
+gap> D := [ChainDigraph(3), DigraphReverse(ChainDigraph(3))];;
+gap> List(D, OutNeighbours);
+[ [ [ 2 ], [ 3 ], [  ] ], [ [  ], [ 1 ], [ 2 ] ] ]
+gap> List(OnTuplesDigraphs(D, (1, 3)), OutNeighbours);
+[ [ [  ], [ 1 ], [ 2 ] ], [ [ 2 ], [ 3 ], [  ] ] ]
+gap> OnTuplesDigraphs(D, (1, 3)) = Permuted(D, (1, 2));
+true
+gap> D := EmptyDigraph(IsMutableDigraph, 3);;
+gap> DigraphAddEdge(D, 1, 1);;
+gap> out := OnTuplesDigraphs([D, D], (1, 2, 3));;
+gap> List(out, DigraphEdges);
+[ [ [ 2, 2 ] ], [ [ 2, 2 ] ] ]
+
+#  OnSetsDigraphs: for a digraph and a permutation
+gap> D := [DigraphReverse(ChainDigraph(3)), ChainDigraph(3)];;
+gap> IsSet(D);
+false
+gap> OnSetsDigraphs(D, (1, 2));
+Error, the first argument must be a set (a strictly sorted list),
+gap> D := Reversed(D);;
+gap> OnSetsDigraphs(D, (1, 3)) = D;
+true
+gap> OnSetsDigraphs(D, (1, 3)) = OnTuplesDigraphs(D, (1, 3));
+false
+gap> MinimalGeneratingSet(Stabilizer(SymmetricGroup(3), D, OnSetsDigraphs));
+[ (1,3) ]
+
+# Set of orbital graphs of G := TransitiveGroup(6, 4)
+# The stabiliser of this set is the normaliser of G in S_6
+gap> x := Set(["&ECA@_OG", "&EQHcQHc", "&EHcQHcQ"], DigraphFromDigraph6String);
+[ <immutable digraph with 6 vertices, 6 edges>, 
+  <immutable digraph with 6 vertices, 12 edges>, 
+  <immutable digraph with 6 vertices, 12 edges> ]
+gap> Stabiliser(SymmetricGroup(6), x, OnSetsDigraphs)
+> = Group([(1, 2, 3, 4, 5, 6), (1, 5)(2, 4)(3, 6)]);
+true
+gap> OnTuplesDigraphs(x, (2, 3)(5, 6)) = x;
+false
+gap> OnTuplesDigraphs(x, (2, 3)(5, 6)) = [x[1], x[3], x[2]];
+true
+gap> OnSetsDigraphs(x, (2, 3)(5, 6)) = x;
+true
 
 #  OnMultiDigraphs: for a pair of permutations
 gap> gr1 := CompleteDigraph(3);
@@ -575,6 +624,10 @@ gap> DigraphAddEdge(gr, [1, 2]);
 <immutable digraph with 2 vertices, 1 edge>
 gap> DigraphEdges(last);
 [ [ 1, 2 ] ]
+gap> n := 10 ^ 5;; D1 := EmptyDigraph(IsMutableDigraph, n);;
+gap> for i in [1 .. n - 1] do DigraphAddEdge(D1, i, i + 1); od;
+gap> D1 = ChainDigraph(n);
+true
 
 #  DigraphAddVertices
 gap> gr := Digraph([[1]]);;
@@ -1011,6 +1064,12 @@ true
 gap> L;
 [ <immutable cycle digraph with 3 vertices>, 
   <immutable digraph with 3 vertices, 3 edges> ]
+gap> D1 := ChainDigraph(IsMutableDigraph, 4);;
+gap> SetDigraphVertexLabels(D1, ["some", "nice", "vertex", "labels"]);;
+gap> D2 := DigraphReverse(ChainDigraph(5));;
+gap> DigraphEdgeUnion(D1, D2);;
+gap> DigraphVertexLabels(D1);
+[ 1 .. 5 ]
 
 #  DigraphJoin
 gap> gr := CompleteDigraph(20);
@@ -1279,16 +1338,6 @@ ent <D>,
 gap> DigraphPath(gr, 11, 11);
 Error, the 2nd and 3rd arguments <u> and <v> must be vertices of the 1st argum\
 ent <D>,
-gap> D := Digraph([[2], [3], [2, 3]]);
-<immutable digraph with 3 vertices, 4 edges>
-gap> DigraphPath(D, 1, 3);
-[ [ 1, 2, 3 ], [ 1, 1 ] ]
-gap> DigraphPath(D, 2, 1);
-fail
-gap> DigraphPath(D, 3, 3);
-[ [ 3, 3 ], [ 2 ] ]
-gap> DigraphPath(D, 1, 1);
-fail
 
 #  IteratorOfPaths
 gap> gr := CompleteDigraph(5);;
@@ -1855,7 +1904,7 @@ gap> D := CompleteDigraph(5);
 gap> VerticesReachableFrom(D, 1);
 [ 2, 1, 3, 4, 5 ]
 gap> VerticesReachableFrom(D, 3);
-[ 1, 3, 2, 4, 5 ]
+[ 1, 2, 3, 4, 5 ]
 gap> D := EmptyDigraph(5);
 <immutable empty digraph with 5 vertices>
 gap> VerticesReachableFrom(D, 1);
@@ -1901,7 +1950,7 @@ gap> VerticesReachableFrom(D, 1);
 gap> VerticesReachableFrom(D, 2);
 [ 4 ]
 gap> VerticesReachableFrom(D, 3);
-[ 1, 3, 2, 4, 5 ]
+[ 1, 2, 4, 3, 5 ]
 gap> VerticesReachableFrom(D, 4);
 [  ]
 gap> VerticesReachableFrom(D, 5);
@@ -1913,44 +1962,13 @@ gap> VerticesReachableFrom(D, 1);
 gap> VerticesReachableFrom(D, 2);
 [ 4 ]
 gap> VerticesReachableFrom(D, 3);
-[ 1, 3, 2, 4, 5 ]
+[ 1, 2, 4, 3, 5 ]
 gap> VerticesReachableFrom(D, 4);
 [  ]
 gap> VerticesReachableFrom(D, 5);
 [ 2, 4 ]
 gap> D;
 <mutable digraph with 5 vertices, 7 edges>
-
-# DigraphAddAllLoops - mutable
-gap> D := Digraph(IsMutableDigraph,
-> [[1], [3, 4], [5, 6], [4, 2, 3], [4, 5], [1]]);
-<mutable digraph with 6 vertices, 11 edges>
-gap> DigraphAddAllLoops(D);
-<mutable digraph with 6 vertices, 14 edges>
-gap> IsIdenticalObj(last, D);
-true
-gap> D := Digraph([[1], [3, 4], [5, 6], [4, 2, 3], [4, 5], [1]]);
-<immutable digraph with 6 vertices, 11 edges>
-gap> DigraphAddAllLoops(D);
-<immutable reflexive digraph with 6 vertices, 14 edges>
-gap> IsIdenticalObj(last, D);
-false
-gap> D := Digraph([[1], [3, 4], [5, 6], [4, 2, 3], [4, 5], [1]]);
-<immutable digraph with 6 vertices, 11 edges>
-gap> D := DigraphAddEdge(D, 1, 3);
-<immutable digraph with 6 vertices, 12 edges>
-gap> D := DigraphAddEdge(D, 1, 3);
-<immutable multidigraph with 6 vertices, 13 edges>
-gap> D := DigraphRemoveEdge(D, 1, 3);
-Error, the 1st argument <D> must be a digraph with no multiple edges,
-gap> D := Digraph([[1], [3, 4], [5, 6], [4, 2, 3], [4, 5], [1]]);
-<immutable digraph with 6 vertices, 11 edges>
-gap> D := DigraphAddEdge(D, 1, 3);
-<immutable digraph with 6 vertices, 12 edges>
-gap> D := DigraphRemoveEdge(D, 1, 3);
-<immutable digraph with 6 vertices, 11 edges>
-gap> D := DigraphRemoveEdge(D, 1, 3);
-<immutable digraph with 6 vertices, 11 edges>
 
 # DisjointUnion etc
 gap> D := DigraphMutableCopy(CycleDigraph(3));
@@ -2302,6 +2320,137 @@ gap> OutNeighbours(last);
   [ 23, 25, 33, 35, 38, 40, 1, 2, 6, 7, 11, 12, 16, 17, 26, 27, 41, 42, 49 ], 
   [ 21, 24, 31, 34, 36, 39, 2, 3, 7, 8, 12, 13, 17, 18, 27, 28, 42, 43, 50 ] ]
 
+#StrongProduct
+gap> D := Digraph([[2, 2], [1, 1, 3], [2]]);
+<immutable multidigraph with 3 vertices, 6 edges>
+gap> StrongProduct(D, D);
+Error, the 1st argument (a digraph) must not satisfy IsMultiDigraph
+gap> DigraphSymmetricClosure(ChainDigraph(6));
+<immutable symmetric digraph with 6 vertices, 10 edges>
+gap> StrongProduct(DigraphSymmetricClosure(ChainDigraph(10)), last);
+<immutable digraph with 60 vertices, 388 edges>
+gap> StrongProduct(NullDigraph(0), CompleteDigraph(5));
+<immutable empty digraph with 0 vertices>
+gap>  DigraphSymmetricClosure(CycleDigraph(4));
+<immutable symmetric digraph with 4 vertices, 8 edges>
+gap> StrongProduct(DigraphSymmetricClosure(ChainDigraph(3)), last);
+<immutable digraph with 12 vertices, 72 edges>
+gap> OutNeighbours(last);
+[ [ 2, 4, 5, 6, 8 ], [ 1, 3, 5, 6, 7 ], [ 2, 4, 6, 7, 8 ], [ 1, 3, 5, 7, 8 ], 
+  [ 1, 2, 4, 6, 8, 9, 10, 12 ], [ 1, 2, 3, 5, 7, 9, 10, 11 ], 
+  [ 2, 3, 4, 6, 8, 10, 11, 12 ], [ 1, 3, 4, 5, 7, 9, 11, 12 ], 
+  [ 5, 6, 8, 10, 12 ], [ 5, 6, 7, 9, 11 ], [ 6, 7, 8, 10, 12 ], 
+  [ 5, 7, 8, 9, 11 ] ]
+gap> StrongProduct(ChainDigraph(2), ChainDigraph(8));
+<immutable digraph with 16 vertices, 29 edges>
+
+#ConormalProduct
+gap> D := Digraph([[2, 4, 4], [1, 3], [2, 4], [1, 1, 3]]);
+<immutable multidigraph with 4 vertices, 10 edges>
+gap> ConormalProduct(D, D);
+Error, the 1st argument (a digraph) must not satisfy IsMultiDigraph
+gap> ConormalProduct(NullDigraph(10), CompleteDigraph(10));
+<immutable digraph with 100 vertices, 9000 edges>
+gap> ConormalProduct(PetersenGraph(), PetersenGraph());
+<immutable digraph with 100 vertices, 5100 edges>
+gap> DigraphSymmetricClosure(CycleDigraph(3));
+<immutable symmetric digraph with 3 vertices, 6 edges>
+gap> ConormalProduct(last, last);
+<immutable digraph with 9 vertices, 72 edges>
+gap> ConormalProduct(CycleDigraph(2), CycleDigraph(8));
+<immutable digraph with 16 vertices, 144 edges>
+
+#HomomorphicProduct
+gap> D := Digraph([[2, 3], [1, 3, 3], [1, 2, 2]]);
+<immutable multidigraph with 3 vertices, 8 edges>
+gap> HomomorphicProduct(D, D);                    
+Error, the 1st argument (a digraph) must not satisfy IsMultiDigraph
+gap> DigraphSymmetricClosure(CycleDigraph(6)); 
+<immutable symmetric digraph with 6 vertices, 12 edges>
+gap> HomomorphicProduct(PetersenGraph(), last);
+<immutable digraph with 60 vertices, 1080 edges>
+gap> HomomorphicProduct(NullDigraph(0), CompleteDigraph(11));
+<immutable empty digraph with 0 vertices>
+gap> DigraphSymmetricClosure(CycleDigraph(8));
+<immutable symmetric digraph with 8 vertices, 16 edges>
+gap> HomomorphicProduct(NullDigraph(10), last);
+<immutable digraph with 80 vertices, 640 edges>
+gap> OutNeighbours(last);
+[ [ 1, 2, 3, 4, 5, 6, 7, 8 ], [ 1, 2, 3, 4, 5, 6, 7, 8 ], 
+  [ 1, 2, 3, 4, 5, 6, 7, 8 ], [ 1, 2, 3, 4, 5, 6, 7, 8 ], 
+  [ 1, 2, 3, 4, 5, 6, 7, 8 ], [ 1, 2, 3, 4, 5, 6, 7, 8 ], 
+  [ 1, 2, 3, 4, 5, 6, 7, 8 ], [ 1, 2, 3, 4, 5, 6, 7, 8 ], 
+  [ 9, 10, 11, 12, 13, 14, 15, 16 ], [ 9, 10, 11, 12, 13, 14, 15, 16 ], 
+  [ 9, 10, 11, 12, 13, 14, 15, 16 ], [ 9, 10, 11, 12, 13, 14, 15, 16 ], 
+  [ 9, 10, 11, 12, 13, 14, 15, 16 ], [ 9, 10, 11, 12, 13, 14, 15, 16 ], 
+  [ 9, 10, 11, 12, 13, 14, 15, 16 ], [ 9, 10, 11, 12, 13, 14, 15, 16 ], 
+  [ 17, 18, 19, 20, 21, 22, 23, 24 ], [ 17, 18, 19, 20, 21, 22, 23, 24 ], 
+  [ 17, 18, 19, 20, 21, 22, 23, 24 ], [ 17, 18, 19, 20, 21, 22, 23, 24 ], 
+  [ 17, 18, 19, 20, 21, 22, 23, 24 ], [ 17, 18, 19, 20, 21, 22, 23, 24 ], 
+  [ 17, 18, 19, 20, 21, 22, 23, 24 ], [ 17, 18, 19, 20, 21, 22, 23, 24 ], 
+  [ 25, 26, 27, 28, 29, 30, 31, 32 ], [ 25, 26, 27, 28, 29, 30, 31, 32 ], 
+  [ 25, 26, 27, 28, 29, 30, 31, 32 ], [ 25, 26, 27, 28, 29, 30, 31, 32 ], 
+  [ 25, 26, 27, 28, 29, 30, 31, 32 ], [ 25, 26, 27, 28, 29, 30, 31, 32 ], 
+  [ 25, 26, 27, 28, 29, 30, 31, 32 ], [ 25, 26, 27, 28, 29, 30, 31, 32 ], 
+  [ 33, 34, 35, 36, 37, 38, 39, 40 ], [ 33, 34, 35, 36, 37, 38, 39, 40 ], 
+  [ 33, 34, 35, 36, 37, 38, 39, 40 ], [ 33, 34, 35, 36, 37, 38, 39, 40 ], 
+  [ 33, 34, 35, 36, 37, 38, 39, 40 ], [ 33, 34, 35, 36, 37, 38, 39, 40 ], 
+  [ 33, 34, 35, 36, 37, 38, 39, 40 ], [ 33, 34, 35, 36, 37, 38, 39, 40 ], 
+  [ 41, 42, 43, 44, 45, 46, 47, 48 ], [ 41, 42, 43, 44, 45, 46, 47, 48 ], 
+  [ 41, 42, 43, 44, 45, 46, 47, 48 ], [ 41, 42, 43, 44, 45, 46, 47, 48 ], 
+  [ 41, 42, 43, 44, 45, 46, 47, 48 ], [ 41, 42, 43, 44, 45, 46, 47, 48 ], 
+  [ 41, 42, 43, 44, 45, 46, 47, 48 ], [ 41, 42, 43, 44, 45, 46, 47, 48 ], 
+  [ 49, 50, 51, 52, 53, 54, 55, 56 ], [ 49, 50, 51, 52, 53, 54, 55, 56 ], 
+  [ 49, 50, 51, 52, 53, 54, 55, 56 ], [ 49, 50, 51, 52, 53, 54, 55, 56 ], 
+  [ 49, 50, 51, 52, 53, 54, 55, 56 ], [ 49, 50, 51, 52, 53, 54, 55, 56 ], 
+  [ 49, 50, 51, 52, 53, 54, 55, 56 ], [ 49, 50, 51, 52, 53, 54, 55, 56 ], 
+  [ 57, 58, 59, 60, 61, 62, 63, 64 ], [ 57, 58, 59, 60, 61, 62, 63, 64 ], 
+  [ 57, 58, 59, 60, 61, 62, 63, 64 ], [ 57, 58, 59, 60, 61, 62, 63, 64 ], 
+  [ 57, 58, 59, 60, 61, 62, 63, 64 ], [ 57, 58, 59, 60, 61, 62, 63, 64 ], 
+  [ 57, 58, 59, 60, 61, 62, 63, 64 ], [ 57, 58, 59, 60, 61, 62, 63, 64 ], 
+  [ 65, 66, 67, 68, 69, 70, 71, 72 ], [ 65, 66, 67, 68, 69, 70, 71, 72 ], 
+  [ 65, 66, 67, 68, 69, 70, 71, 72 ], [ 65, 66, 67, 68, 69, 70, 71, 72 ], 
+  [ 65, 66, 67, 68, 69, 70, 71, 72 ], [ 65, 66, 67, 68, 69, 70, 71, 72 ], 
+  [ 65, 66, 67, 68, 69, 70, 71, 72 ], [ 65, 66, 67, 68, 69, 70, 71, 72 ], 
+  [ 73, 74, 75, 76, 77, 78, 79, 80 ], [ 73, 74, 75, 76, 77, 78, 79, 80 ], 
+  [ 73, 74, 75, 76, 77, 78, 79, 80 ], [ 73, 74, 75, 76, 77, 78, 79, 80 ], 
+  [ 73, 74, 75, 76, 77, 78, 79, 80 ], [ 73, 74, 75, 76, 77, 78, 79, 80 ], 
+  [ 73, 74, 75, 76, 77, 78, 79, 80 ], [ 73, 74, 75, 76, 77, 78, 79, 80 ] ]
+gap> HomomorphicProduct(CompleteDigraph(8), CycleDigraph(8));
+<immutable digraph with 64 vertices, 3648 edges>
+
+#LexicographicProduct
+gap> D := Digraph([[2, 2, 2], [1, 1, 1]]);
+<immutable multidigraph with 2 vertices, 6 edges>
+gap> LexicographicProduct(CompleteDigraph(3), D);
+Error, the 2nd argument (a digraph) must not satisfy IsMultiDigraph
+gap> StrongProduct(NullDigraph(0), CompleteDigraph(3));
+<immutable empty digraph with 0 vertices>
+gap> D1 := Digraph([[2], [1, 3, 4], [2, 5], [2, 5], [3, 4]]);
+<immutable digraph with 5 vertices, 10 edges>
+gap> D2 := Digraph([[2], [1, 3, 4], [2], [2]]);              
+<immutable digraph with 4 vertices, 6 edges>
+gap> LexicographicProduct(D1, D2);
+<immutable digraph with 20 vertices, 190 edges>
+gap> OutNeighbours(last);
+[ [ 2, 5, 6, 7, 8 ], [ 1, 3, 4, 5, 6, 7, 8 ], [ 2, 5, 6, 7, 8 ], 
+  [ 2, 5, 6, 7, 8 ], [ 1, 2, 3, 4, 6, 9, 10, 11, 12, 13, 14, 15, 16 ], 
+  [ 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 ], 
+  [ 1, 2, 3, 4, 6, 9, 10, 11, 12, 13, 14, 15, 16 ], 
+  [ 1, 2, 3, 4, 6, 9, 10, 11, 12, 13, 14, 15, 16 ], 
+  [ 5, 6, 7, 8, 10, 17, 18, 19, 20 ], 
+  [ 5, 6, 7, 8, 9, 11, 12, 17, 18, 19, 20 ], 
+  [ 5, 6, 7, 8, 10, 17, 18, 19, 20 ], [ 5, 6, 7, 8, 10, 17, 18, 19, 20 ], 
+  [ 5, 6, 7, 8, 14, 17, 18, 19, 20 ], 
+  [ 5, 6, 7, 8, 13, 15, 16, 17, 18, 19, 20 ], 
+  [ 5, 6, 7, 8, 14, 17, 18, 19, 20 ], [ 5, 6, 7, 8, 14, 17, 18, 19, 20 ], 
+  [ 9, 10, 11, 12, 13, 14, 15, 16, 18 ], 
+  [ 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 20 ], 
+  [ 9, 10, 11, 12, 13, 14, 15, 16, 18 ], 
+  [ 9, 10, 11, 12, 13, 14, 15, 16, 18 ] ]
+gap> LexicographicProduct(ChainDigraph(3), CycleDigraph(7));   
+<immutable digraph with 21 vertices, 119 edges>
+
 # DigraphShortestPathSpanningTree
 gap> D := Digraph([[2, 3, 4], [1, 3, 4, 5], [1, 2], [5], [4]]);
 <immutable digraph with 5 vertices, 11 edges>
@@ -2501,7 +2650,8 @@ gap> Dominators(D, 2);
 [ ,,, [ 2 ] ]
 gap> Dominators(D, 1);
 [ , [ 1 ], [ 1 ], [ 2, 1 ], [ 3, 1 ] ]
-gap> D := Digraph(IsMutableDigraph, [[2, 3, 5], [1, 6], [4, 6, 7], [7, 8], [4], [], [8], []]);
+gap> D := Digraph(IsMutableDigraph, [[2, 3, 5], [1, 6], [4, 6, 7], [7, 8], [4],
+> [], [8], []]);
 <mutable digraph with 8 vertices, 12 edges>
 gap> Dominators(D, 1);
 [ , [ 1 ], [ 1 ], [ 1 ], [ 1 ], [ 1 ], [ 1 ], [ 1 ] ]
@@ -2558,6 +2708,54 @@ gap> DominatorTree(D, 1);
 rec( idom := [ fail ], preorder := [ 1 ] )
 gap> DominatorTree(D, 6);
 rec( idom := [ ,,,,, fail ], preorder := [ 6 ] )
+
+# IsDigraphPath
+gap> D := Digraph(IsMutableDigraph, Combinations([1 .. 5]), IsSubset);
+<mutable digraph with 32 vertices, 243 edges>
+gap> DigraphReflexiveTransitiveReduction(D);
+<mutable digraph with 32 vertices, 80 edges>
+gap> MakeImmutable(D);
+<immutable digraph with 32 vertices, 80 edges>
+gap> IsDigraphPath(D, []);
+Error, the 2nd argument (a list) must have length 2, but found length 0
+gap> IsDigraphPath(D, [1, 2, 3], []);
+Error, the 2nd and 3rd arguments (lists) are incompatible, expected 3rd argume\
+nt of length 2, got 0
+gap> IsDigraphPath(D, [1], []);
+true
+gap> IsDigraphPath(D, [1, 2], [5]);
+false
+gap> IsDigraphPath(D, [32, 31, 33], [1, 1]);
+false
+gap> IsDigraphPath(D, [32, 33, 31], [1, 1]);
+false
+gap> IsDigraphPath(D, [6, 9, 16, 17], [3, 3, 2]);
+true
+gap> IsDigraphPath(D, [33, 9, 16, 17], [3, 3, 2]);
+false
+gap> IsDigraphPath(D, [6, 9, 18, 1], [9, 10, 2]);
+false
+gap> IsDigraphPath(D, DigraphPath(D, 6, 1));
+true
+gap> ForAll(List(IteratorOfPaths(D, 6, 1)), x -> IsDigraphPath(D, x));
+true
+
+# IsDigraphPath: failing example with new DFS code (issue #487)
+gap> D := Digraph([
+>   [2, 3, 4, 5, 5], [6, 3, 4, 7, 5], [8, 9, 10, 8, 11],
+>   [12, 13, 14, 15, 16], [2, 13, 4, 12, 17], [6, 9, 4, 16, 11],
+>   [18, 13, 4, 12, 8], [8, 19, 10, 19, 20], [8, 9, 10, 8, 21],
+>   [12, 13, 14, 15, 16], [22, 13, 14, 12, 16], [23, 13, 24, 12, 8],
+>   [19, 9, 19, 8, 24], [19, 13, 19, 15, 16], [21, 19, 24, 19, 20],
+>   [25, 13, 10, 12, 8], [26, 13, 10, 12, 17], [6, 3, 4, 7, 27],
+>   [19, 19, 19, 19, 19], [28, 13, 19, 12, 16], [29, 13, 14, 12, 16],
+>   [23, 3, 24, 7, 30], [29, 9, 14, 16, 24], [12, 19, 14, 19, 19],
+>   [8, 8, 10, 24, 15], [8, 8, 10, 24, 31], [30, 19, 4, 19, 20],
+>   [19, 8, 19, 24, 12], [23, 9, 24, 16, 21], [6, 13, 4, 12, 17],
+>   [32, 13, 24, 12, 17], [29, 3, 14, 7, 7]]);;
+gap> path := DigraphPath(D, 5, 5);;
+gap> IsDigraphPath(D, path);
+true
 
 #DIGRAPHS_UnbindVariables
 gap> Unbind(a);
@@ -2621,81 +2819,6 @@ gap> Unbind(temp);
 gap> Unbind(U);
 gap> Unbind(u1);
 gap> Unbind(u2);
-
-# DFS
-
-# NewDFSRecord
-gap> NewDFSRecord(ChainDigraph(10));
-rec( child := -1, current := -1, 
-  graph := <immutable chain digraph with 10 vertices>, 
-  parent := [ -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 ], 
-  postorder := [ -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 ], 
-  preorder := [ -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 ], stop := false )
-gap> NewDFSRecord(CompleteDigraph(2));
-rec( child := -1, current := -1, 
-  graph := <immutable complete digraph with 2 vertices>, parent := [ -1, -1 ],
-  postorder := [ -1, -1 ], preorder := [ -1, -1 ], stop := false )
-gap> NewDFSRecord(Digraph([[1], [2], [1], [1], [2]]));
-rec( child := -1, current := -1, 
-  graph := <immutable digraph with 5 vertices, 5 edges>, 
-  parent := [ -1, -1, -1, -1, -1 ], postorder := [ -1, -1, -1, -1, -1 ], 
-  preorder := [ -1, -1, -1, -1, -1 ], stop := false )
-
-# DFSDefault
-gap> DFSDefault(rec(), []);
-gap> DFSDefault(rec(), rec());
-
-# ExecuteDFS
-gap> record := NewDFSRecord(CompleteDigraph(10));;
-gap> ExecuteDFS(record, [], 2, DFSDefault,
->               DFSDefault, DFSDefault, DFSDefault);
-gap> record.preorder;
-[ 2, 1, 3, 4, 5, 6, 7, 8, 9, 10 ]
-gap> record := NewDFSRecord(CompleteDigraph(15));;
-gap> data := rec(cycle_vertex := 0);;
-gap> AncestorFunc := function(record, data)
->       record.stop := true;
->       data.cycle_vertex := record.child;
->    end;;
-gap> ExecuteDFS(record, data, 1, DFSDefault,             
->               DFSDefault, AncestorFunc, DFSDefault);
-gap> record.stop;
-true
-gap> data.cycle_vertex;
-1
-gap> record.preorder;
-[ 1, 2, 3, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 ]
-gap> record := NewDFSRecord(Digraph([[2, 3], [4], [5], [], [4]]));;
-gap> CrossFunc := function(record, data)
->       record.stop := true;
->       Add(data, record.child);
->    end;;
-gap> data := [];;
-gap> ExecuteDFS(record, data, 1, DFSDefault,                         
->               DFSDefault, DFSDefault, CrossFunc);             
-gap> record.stop;
-true
-gap> data;
-[ 4 ]
-gap> AncestorFunc := function(record, data)
->      Add(data.cycle_vertex, record.child);
->    end;;
-gap> CrossFunc := function(record, data)
->      Add(data.cross_vertex, record.child);
->    end;;
-gap> record := NewDFSRecord(Digraph([[2, 3, 3], [4, 4], [5, 1, 1], [], [4]]));;
-gap> data := rec(cycle_vertex := [], cross_vertex := []);;
-gap> ExecuteDFS(record, data, 1, DFSDefault,                         
->               DFSDefault, AncestorFunc, CrossFunc);
-gap> data;
-rec( cross_vertex := [ 4 ], cycle_vertex := [ 1, 1 ] )
-gap> ExecuteDFS(rec(), data, 1, DFSDefault,                         
->               DFSDefault, AncestorFunc, CrossFunc);
-Error, the 1st argument <record> must be created with NewDFSRecord,
-gap> D := ChainDigraph(1);;
-gap> ExecuteDFS(NewDFSRecord(D), [], 3, DFSDefault, DFSDefault, DFSDefault,
-> DFSDefault);
-Error, the third argument <start> must be a vertex in your graph,
 
 #
 gap> DIGRAPHS_StopTest();

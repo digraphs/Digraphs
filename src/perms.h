@@ -2,11 +2,11 @@
 **
 *A  perms.h                  permutations                     Julius Jonusas
 **                                                            James Mitchell
-**                                                            Michael Torpey
 **                                                            Wilf A. Wilson
+**                                                            Michael Young
 **
-**  Copyright (C) 2014-15 - Julius Jonusas, James Mitchell, Michael Torpey,
-**  Wilf A. Wilson
+**  Copyright (C) 2014-15 - Julius Jonusas, James Mitchell, Wilf A. Wilson,
+**  Michael Young
 **
 **  This file is free software, see the digraphs/LICENSE.
 **
@@ -28,11 +28,8 @@
 #define MAXVERTS 512
 #define UNDEFINED MAXVERTS + 1
 
-#if SIZEOF_VOID_P == 8
-#define SMALLINTLIMIT 1152921504606846976
-#else
-#define SMALLINTLIMIT 268435456
-#endif
+// smallest positive integer that doesn't fit into a small integer object
+#define SMALLINTLIMIT (INT_INTOBJ_MAX + 1)
 
 typedef uint16_t* Perm;
 

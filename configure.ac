@@ -34,7 +34,7 @@ AC_PREFIX_DEFAULT('${abs_top_builddir}/../../bin/')
 dnl ##
 dnl ## Set the language
 dnl ##
-AC_PROG_CC_C99
+AC_PROG_CC
 AC_PROG_CXX
 AC_LANG([C++])
 
@@ -57,11 +57,6 @@ case $host_os in
          * ) CYGWIN=no;;
 esac
 AM_CONDITIONAL([SYS_IS_CYGWIN], [test "$CYGWIN" = "yes"])
-if test "$CYGWIN" = "yes"; then
-  AC_DEFINE(SYS_IS_CYGWIN32, 1, are we on CYGWIN?)
-else
-  AC_DEFINE(SYS_IS_CYGWIN32, 0, are we on CYGWIN?)
-fi
 
 dnl ## User setting: Debug mode (off by default)
 AC_ARG_ENABLE([debug],
@@ -134,7 +129,6 @@ AS_IF([test "x$with_intrinsics" == "xno" ],
 
 AS_IF([test "x$with_intrinsics" != "xno"],
       [AX_CHECK_COMPILE_FLAG(-march=native, AX_APPEND_FLAG(-march=native))
-       AX_CHECK_COMPILE_FLAG(-mpopcnt, AX_APPEND_FLAG(-mpopcnt))
       ])
 
 dnl compiler builtins
