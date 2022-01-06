@@ -45,6 +45,7 @@ DeclareAttribute("DigraphDegeneracy", IsDigraph);
 DeclareAttribute("DigraphDegeneracyOrdering", IsDigraph);
 DeclareAttribute("DIGRAPHS_Degeneracy", IsDigraph);
 DeclareAttribute("DigraphShortestDistances", IsDigraph);
+DeclareAttribute("Digraph2Kings", IsDigraph);
 DeclareAttribute("DigraphDiameter", IsDigraph);
 DeclareAttribute("DigraphGirth", IsDigraph);
 DeclareAttribute("DigraphOddGirth", IsDigraph);
