@@ -1065,7 +1065,7 @@ p -> AsDigraph(AsTransformation(p)));
 InstallMethod(AsBinaryRelation, "for a digraph", [IsDigraphByOutNeighboursRep],
 function(D)
   local rel;
-  if DigraphNrVertices(D) = 0 then
+  if DigraphHasNoVertices(D) then
     ErrorNoReturn("the argument <D> must be a digraph with at least 1 ",
                   "vertex,");
   elif IsMultiDigraph(D) then

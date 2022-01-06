@@ -184,7 +184,7 @@ function(D, src, ran)
                   "digraph <D> that is the 1st argument,");
   fi;
   Add(D!.OutNeighbours[src], ran);
-  if not IsMultiDigraph(D) then
+  if HaveEdgeLabelsBeenAssigned(D) and not IsMultiDigraph(D) then
     SetDigraphEdgeLabel(D, src, ran, 1);
   fi;
   return D;
@@ -852,6 +852,21 @@ function(D, t)
     return D;
   fi;
   return MakeImmutable(OnDigraphs(DigraphMutableCopy(D), t));
+end);
+
+InstallMethod(OnTuplesDigraphs,
+"for list of digraphs and a perm",
+[IsDigraphCollection and IsHomogeneousList, IsPerm],
+{L, p} -> List(L, D -> OnDigraphs(DigraphMutableCopyIfMutable(D), p)));
+
+InstallMethod(OnSetsDigraphs,
+"for a list of digraphs and a perm",
+[IsDigraphCollection and IsHomogeneousList, IsPerm],
+function(S, p)
+  if not IsSet(S) then
+    ErrorNoReturn("the first argument must be a set (a strictly sorted list),");
+  fi;
+  return Set(S, D -> OnDigraphs(DigraphMutableCopyIfMutable(D), p));
 end);
 
 # Not revising the following because multi-digraphs are being withdrawn in the

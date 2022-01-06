@@ -142,7 +142,7 @@ if DIGRAPHS_NautyAvailable then
                                                  colors);
       colors := NautyColorData(colors);
     fi;
-    if DigraphNrVertices(D) = 0 then
+    if DigraphHasNoVertices(D) then
       # This circumvents Issue #17 in NautyTracesInterface, whereby a graph
       # with 0 vertices causes a seg fault.
       return [Group(()), ()];
