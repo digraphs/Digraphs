@@ -22,9 +22,13 @@
     <#Include Label="IsSymmetricDigraph">
     <#Include Label="IsTournament">
     <#Include Label="IsTransitiveDigraph">
+  </Section>
+
+  <Section><Heading>Orders</Heading>
     <#Include Label="IsPreorderDigraph">
     <#Include Label="IsPartialOrderDigraph">
     <#Include Label="IsMeetSemilatticeDigraph">
+    <#Include Label="IsUpperSemimodularDigraph">
   </Section>
 
   <Section><Heading>Regularity</Heading>

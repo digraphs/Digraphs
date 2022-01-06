@@ -2774,6 +2774,36 @@ gap> D := DigraphRemoveEdge(D, 1, 3);
 gap> D := DigraphRemoveEdge(D, 1, 3);
 <immutable digraph with 6 vertices, 11 edges>
 
+# Semimodular lattices
+gap> D := DigraphFromDigraph6String("&C[o?");
+<immutable digraph with 4 vertices, 5 edges>
+gap> IsUpperSemimodularDigraph(D);
+false
+gap> IsLowerSemimodularDigraph(D);
+false
+gap> NonUpperSemimodularPair(D);
+Error, the argument (a digraph) is not a lattice
+gap> NonLowerSemimodularPair(D);
+Error, the argument (a digraph) is not a lattice
+gap> D := DigraphFromDigraph6String("&K~~]mKaC_EgLb?_?~?g?m?a?b");
+<immutable digraph with 12 vertices, 54 edges>
+gap> IsUpperSemimodularDigraph(D);
+true
+gap> NonUpperSemimodularPair(D);
+fail
+gap> IsLowerSemimodularDigraph(D);
+true
+gap> NonLowerSemimodularPair(D);
+fail
+gap> D := DigraphFromDigraph6String("&M~~sc`lYUZO__KIBboC_@h?U_?_GL?A_?c");
+<immutable digraph with 14 vertices, 66 edges>
+gap> IsUpperSemimodularDigraph(D);
+true
+gap> IsLowerSemimodularDigraph(D);
+false
+gap> NonLowerSemimodularPair(D);
+[ 10, 9 ]
+
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(adj);
 gap> Unbind(adj1);

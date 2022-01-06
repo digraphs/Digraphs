@@ -2399,3 +2399,40 @@ gap> Length(M);
   </Description>
 </ManSection>
 <#/GAPDoc>
+
+<#GAPDoc Label="NonUpperSemimodularPair">
+<ManSection>
+  <Attr Name="NonUpperSemimodularPair" Arg="D"/>
+  <Attr Name="NonLowerSemimodularPair" Arg="D"/>
+  <Returns>A pair of vertices or <K>fail</K>.</Returns>
+  <Description>
+    <C>NonUpperSemimodularPair</C> returns a pair of vertices in the digraph
+    <A>D</A> that witnesses the fact that <A>D</A> does not represent an upper
+    semimodular lattice, if such a pair exists. <P/> 
+
+    If the digraph <A>D</A> does not satisfy <Ref
+    Prop="IsLatticeDigraph"/>, then an error is given. Otherwise if the
+    digraph <A>D</A> does satisfy <Ref
+    Prop="IsLatticeDigraph"/>, then either a non-upper semimodular pair of
+    vertices is returned, or <K>fail</K> is returned if no such pair exists
+    (meaning that <A>D</A> is an upper semimodular lattice. <P/>
+
+    <C>NonLowerSemimodularPair</C> behaves in the analogous way to
+    <C>NonUpperSemimodularPair</C> with respect to lower semimodularity. <P/>
+
+    See <Ref Prop="IsUpperSemimodularDigraph"/> and <Ref
+    Prop="IsLowerSemimodularDigraph"/> for the definition of upper
+    semimodularity of a lattice. 
+
+    <Example><![CDATA[
+gap> D := DigraphFromDigraph6String(
+> "&M~~sc`lYUZO__KIBboC_@h?U_?_GL?A_?c");
+<immutable digraph with 14 vertices, 66 edges>
+gap> NonLowerSemimodularPair(D);
+[ 10, 9 ]
+gap> NonUpperSemimodularPair(D);
+fail
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>

@@ -2609,3 +2609,73 @@ function(D)
   M := List(DigraphLoops(D), x -> [x, x]);
   return Union(M, DIGRAPHS_MateToMatching(D, mateD));
 end);
+
+# The following function is a transliteration from python to GAP of
+# the function find_nonsemimodular_pair
+# in sage/src/sage/combinat/posets/hasse_diagram.py
+
+BindGlobal("DIGRAPHS_NonSemimodularPair",
+function(nbs)
+  local n, covers, covers_len, a, covers_a, b, e, a_i, b_i;
+  n := Length(nbs);
+
+  for e in [1 .. n] do
+    covers := nbs[e];
+    covers_len := Length(covers);
+    if covers_len < 2 then
+        continue;
+    fi;
+    for a_i in [1 .. covers_len] do
+      a := covers[a_i];
+      covers_a := nbs[a];
+      for b_i in [1 .. a_i] do
+        b := covers[b_i];
+        if not ForAny(nbs[b], j -> j in covers_a) then
+          return [a, b];
+        fi;
+      od;
+    od;
+  od;
+
+  return fail;
+end);
+
+InstallMethod(NonUpperSemimodularPair, "for a digraph",
+[IsDigraphByOutNeighboursRep],
+function(D)
+  if not IsLatticeDigraph(D) then
+    ErrorNoReturn("the argument (a digraph) is not a lattice");
+  fi;
+  D := DigraphReflexiveTransitiveReduction(DigraphMutableCopyIfMutable(D));
+  return DIGRAPHS_NonSemimodularPair(OutNeighbours(D));
+end);
+
+InstallMethod(NonLowerSemimodularPair, "for a digraph",
+[IsDigraphByOutNeighboursRep],
+function(D)
+  if not IsLatticeDigraph(D) then
+    ErrorNoReturn("the argument (a digraph) is not a lattice");
+  fi;
+  D := DigraphReflexiveTransitiveReduction(DigraphMutableCopyIfMutable(D));
+  return DIGRAPHS_NonSemimodularPair(InNeighbours(D));
+end);
+
+InstallMethod(IsUpperSemimodularDigraph, "for a digraph",
+[IsDigraphByOutNeighboursRep],
+function(D)
+  if not IsLatticeDigraph(D) then
+    return false;
+  fi;
+  D := DigraphReflexiveTransitiveReduction(DigraphMutableCopyIfMutable(D));
+  return DIGRAPHS_NonSemimodularPair(OutNeighbours(D)) = fail;
+end);
+
+InstallMethod(IsLowerSemimodularDigraph, "for a digraph",
+[IsDigraphByOutNeighboursRep],
+function(D)
+  if not IsLatticeDigraph(D) then
+    return false;
+  fi;
+  D := DigraphReflexiveTransitiveReduction(DigraphMutableCopyIfMutable(D));
+  return DIGRAPHS_NonSemimodularPair(InNeighbours(D)) = fail;
+end);

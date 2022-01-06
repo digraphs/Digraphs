@@ -120,3 +120,9 @@ DeclareAttribute("DigraphMaximumMatching", IsDigraph);
 
 DeclareAttribute("Bridges", IsDigraph);
 DeclareAttributeThatReturnsDigraph("StrongOrientation", IsDigraph);
+
+DeclareAttribute("NonUpperSemimodularPair", IsDigraph);
+DeclareAttribute("NonLowerSemimodularPair", IsDigraph);
+
+DeclareProperty("IsUpperSemimodularDigraph", IsDigraph);
+DeclareProperty("IsLowerSemimodularDigraph", IsDigraph);
