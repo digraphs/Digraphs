@@ -81,5 +81,5 @@ jobs:
           GAP_TESTFILE: "tst/github_actions/extreme.g"
       - uses: gap-actions/process-coverage@v2
         if: ${{ always() }}
-      - uses: codecov/codecov-action@v1
+      - uses: codecov/codecov-action@v2
         if: ${{ always() }}
