@@ -421,33 +421,52 @@ gap> D := DigraphByInNeighbours(IsMutableDigraph,
 
 <#GAPDoc Label="AsDigraph">
 <ManSection>
-  <Oper Name="AsDigraph" Arg="[filt, ]f[, n]"
-    Label="for a transformation or perm"/>
+  <Oper Name="AsDigraph" Arg="[filt, ]f[, n]" Label="for a binary relation"/>
   <Returns>A digraph, or <K>fail</K>.</Returns>
   <Description>
-    If <A>f</A> is a transformation or permutation,
-    and <A>n</A> is a non-negative integer
-    such that the restriction of <A>f</A> to <C>[1..<A>n</A>]</C> defines
-    a function of <C>[1..<A>n</A>]</C>, then <C>AsDigraph</C>
-    returns the functional digraph with <A>n</A> vertices defined by
-    <A>f</A>. See <Ref Prop="IsFunctionalDigraph"/>.
+
+      If <A>f</A> is a binary relation represented as one of the following in
+        &GAP;:
+      <List>
+        <Mark>
+          a transformation
+        </Mark>
+        <Item>
+          satisfying <Ref Filt="IsTransformation" BookName="ref"/>;
+        </Item>
+        <Mark>
+          a permutation
+        </Mark>
+        <Item>
+          satisfying <Ref Filt="IsPerm" BookName="ref"/>;
+        </Item>
+        <Mark>
+          a partial perm
+        </Mark>
+        <Item>
+          satisfying <Ref Filt="IsPartialPerm" BookName="ref"/>;
+        </Item>
+        <Mark>
+          a binary relation
+        </Mark>
+        <Item>
+          satisfying <Ref Filt="IsBinaryRelation" BookName="ref"/>;
+        </Item>
+      </List>
+      and <A>n</A> is a non-negative integer, then <C>AsDigraph</C> attempts
+      to construct a digraph with <A>n</A> vertices whose edges are determined
+      by <A>f</A>.<P/>
+
+    The digraph returned by <C>AsDigraph</C> has for each vertex
+    <C>v</C> in <C>[1 .. <A>n</A>]</C>, an edge with source <C>v</C> and range
+    <C>v ^ <A>f</A></C>.  If <C>v ^ <A>f</A></C> is greater than <A>n</A> for any
+    <C>v</C>, then <K>fail</K> is returned.
     <P/>
 
-    Specifically, the digraph returned by <C>AsDigraph</C> has  <A>n</A> edges:
-    for each vertex <C>v</C> in <C>[1..<A>n</A>]</C>, there is a unique edge
-    with source <C>v</C>; this edge has range <C>v^<A>f</A></C>.
-    <P/>
-
-    If the optional second argument <A>n</A> is not supplied, then
-    the degree of the transformation <A>f</A>,
-    or the largest moved point of the permutation <A>f</A>,
-    as applicable, is used by default.  If the restriction of
-    <A>f</A> to <C>[1..<A>n</A>]</C> does not define a function of
-    <C>[1..<A>n</A>]</C>, then <C>AsDigraph(<A>f</A>, <A>n</A>)</C>
-    returns <K>fail</K>.
-    <P/>
-
-    See also <Ref Attr="AsTransformation"/>.
+    If the optional second argument <A>n</A> is not supplied, then the degree
+    of the transformation <A>f</A>, the largest moved point of the permutation
+    <A>f</A>, the maximum of the degree and the codegree of the partial perm
+    <A>f</A>, or as applicable, is used by default.  
     <P/>
 
     &STANDARD_FILT_TEXT;

@@ -479,7 +479,8 @@ fail
 gap> f := ();;
 gap> D := AsDigraph(f);
 <immutable empty digraph with 0 vertices>
-gap> D = EmptyDigraph(0);;
+gap> D = EmptyDigraph(0);
+true
 gap> AsDigraph(f, 10);
 <immutable functional digraph with 10 vertices>
 gap> g := (1, 3, 7)(2, 6, 5, 8);;
@@ -510,6 +511,41 @@ gap> D := AsDigraph(IsMutableDigraph, h, 6);
 <mutable digraph with 6 vertices, 6 edges>
 gap> OutNeighbours(D);
 [ [ 1 ], [ 5 ], [ 2 ], [ 4 ], [ 3 ], [ 6 ] ]
+
+# AsDigraph for a partial perm
+gap> f := PartialPerm([]);;
+gap> D := AsDigraph(f);
+<immutable empty digraph with 0 vertices>
+gap> D = EmptyDigraph(0);
+true
+gap> AsDigraph(f, 10);
+<immutable empty digraph with 10 vertices>
+gap> x := AsPartialPerm((1, 3, 7)(2, 6, 5, 8));
+(1,3,7)(2,6,5,8)(4)
+gap> D := AsDigraph(x);
+<immutable digraph with 8 vertices, 8 edges>
+gap> AsDigraph(x, -1);
+Error, the 2nd argument <n> should be a non-negative integer,
+gap> AsDigraph(x, 0);
+<immutable empty digraph with 0 vertices>
+gap> D := AsDigraph(g, 10);
+<immutable functional digraph with 10 vertices>
+gap> AsDigraph(g, 7);
+fail
+gap> x := AsPartialPerm((2, 5, 3), 5);
+(1)(2,5,3)(4)
+gap> D := AsDigraph(IsMutableDigraph, x);
+<mutable digraph with 5 vertices, 5 edges>
+gap> AsDigraph(IsImmutableDigraph, x, 5);
+<immutable digraph with 5 vertices, 5 edges>
+gap> D = AsDigraph(IsImmutableDigraph, x, 5);
+true
+gap> D := AsDigraph(IsMutableDigraph, x, 6);
+<mutable digraph with 6 vertices, 5 edges>
+gap> OutNeighbours(D);
+[ [ 1 ], [ 5 ], [ 2 ], [ 4 ], [ 3 ], [  ] ]
+gap> AsDigraph(AsPartialPerm((2, 5, 3)), 2);
+fail
 
 #  RandomDigraph
 gap> IsImmutableDigraph(RandomDigraph(100, 0.2));

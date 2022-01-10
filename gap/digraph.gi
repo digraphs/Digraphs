@@ -1062,6 +1062,58 @@ InstallMethod(AsDigraph, "for a function and a perm",
 InstallMethod(AsDigraph, "for a perm", [IsPerm],
 p -> AsDigraph(AsTransformation(p)));
 
+InstallMethod(AsDigraphCons,
+"for IsMutableDigraph, a partial perm, and an integer",
+[IsMutableDigraph, IsPartialPerm, IsInt],
+function(filt, f, n)
+  local list, x, i;
+  if n < 0 then
+    ErrorNoReturn("the 2nd argument <n> should be a non-negative integer,");
+  fi;
+
+  list := EmptyPlist(n);
+  for i in [1 .. n] do
+    x := i ^ f;
+    if x > n then
+      return fail;
+    elif x <> 0 then
+      list[i] := [x];
+    else
+      list[i] := [];
+    fi;
+  od;
+  return DigraphNC(IsMutableDigraph, list);
+end);
+
+InstallMethod(AsDigraphCons,
+"for IsImmutableDigraph, a partial perm, and an integer",
+[IsImmutableDigraph, IsPartialPerm, IsInt],
+function(filt, f, n)
+  local D;
+  D := AsDigraph(IsMutableDigraph, f, n);
+  if D <> fail then
+    D := MakeImmutable(D);
+    SetIsMultiDigraph(D, false);
+  fi;
+  return D;
+end);
+
+InstallMethod(AsDigraph, "for a function, a partial perm, and an integer",
+[IsFunction, IsPartialPerm, IsInt], AsDigraphCons);
+
+InstallMethod(AsDigraph, "for a partial perm and an integer",
+[IsPartialPerm, IsInt],
+{t, n} -> AsDigraphCons(IsImmutableDigraph, t, n));
+
+InstallMethod(AsDigraph, "for a function and a partial perm",
+[IsFunction, IsPartialPerm],
+{func, t} -> AsDigraphCons(func, t, Maximum(DegreeOfPartialPerm(t),
+                                            CodegreeOfPartialPerm(t))));
+
+InstallMethod(AsDigraph, "for a partial perm", [IsPartialPerm],
+t -> AsDigraphCons(IsImmutableDigraph, t, Maximum(DegreeOfPartialPerm(t),
+                                                  CodegreeOfPartialPerm(t))));
+
 InstallMethod(AsBinaryRelation, "for a digraph", [IsDigraphByOutNeighboursRep],
 function(D)
   local rel;
