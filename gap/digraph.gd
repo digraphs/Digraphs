@@ -106,18 +106,24 @@ DeclareSynonym("DigraphByInNeighbors", DigraphByInNeighbours);
 DeclareConstructor("AsDigraphCons", [IsDigraph, IsBinaryRelation]);
 DeclareConstructor("AsDigraphCons", [IsDigraph, IsTransformation]);
 DeclareConstructor("AsDigraphCons", [IsDigraph, IsTransformation, IsInt]);
+DeclareConstructor("AsDigraphCons", [IsDigraph, IsPartialPerm]);
+DeclareConstructor("AsDigraphCons", [IsDigraph, IsPartialPerm, IsInt]);
 
 DeclareOperation("AsDigraph", [IsFunction, IsBinaryRelation]);
 DeclareOperation("AsDigraph", [IsFunction, IsTransformation]);
 DeclareOperation("AsDigraph", [IsFunction, IsTransformation, IsInt]);
 DeclareOperation("AsDigraph", [IsFunction, IsPerm]);
 DeclareOperation("AsDigraph", [IsFunction, IsPerm, IsInt]);
+DeclareOperation("AsDigraph", [IsFunction, IsPartialPerm]);
+DeclareOperation("AsDigraph", [IsFunction, IsPartialPerm, IsInt]);
 
 DeclareOperation("AsDigraph", [IsBinaryRelation]);
 DeclareOperation("AsDigraph", [IsTransformation]);
 DeclareOperation("AsDigraph", [IsTransformation, IsInt]);
 DeclareOperation("AsDigraph", [IsPerm]);
 DeclareOperation("AsDigraph", [IsPerm, IsInt]);
+DeclareOperation("AsDigraph", [IsPartialPerm]);
+DeclareOperation("AsDigraph", [IsPartialPerm, IsInt]);
 
 DeclareOperation("AsBinaryRelation", [IsDigraph]);
 DeclareOperation("AsSemigroup", [IsFunction, IsDigraph]);
