@@ -519,46 +519,58 @@ function(D)
   nr := DigraphNrVertices(D);
   # Recursive function call
   ZykovReduce := function(D)
-    local nr, D_contract, adjacent, vertices, v, x, y, x_i, y_i, found, deg;
+    local nr, D_contract, vertices, v, x, y, i, j, adjacent;
     nr := DigraphNrVertices(D);
     # Update upper bound if possible.
     chrom := Minimum(nr, chrom);
-    # Leaf nodes are either complete graphs or q-cliques. The chromatic number
-    # is then the smallest q-clique found.
+    # Leaf nodes are either complete graphs or cliques that have size equal to
+    # the current upper bound. The chromatic number is then the smallest clique
+    # found.
+    # Cliques finder arguments:
+    # digraph = D - The graph
+    # hook = fail - hook is not required
+    # user_param = [] - user_param is a list as hook is fail
+    # limit = 1 - We only need one clique
+    # include = exclude = [] - We check all vertices
+    # max = false - This clique need not be maximal
+    # size = chrom - We want a clique the size of our upper bound
+    # reps = true - As we only care about the existence of the clique,
+    # we can instead search for representatives which is more efficient.
     if not IsCompleteDigraph(D) and IsEmpty(CliquesFinder(D, fail, [], 1, [],
                                                           [], false, chrom,
                                                           true)) then
-      # Get adjacency function
-      adjacent := DigraphAdjacencyFunction(D);
       # Sort vertices by degree, so that higher degree vertices are picked first
-      vertices := [1 .. nr];
-      deg   := ShallowCopy(OutDegrees(D));
-      SortParallel(deg, vertices, {x, y} -> x > y);
+      # Picking higher degree vertices will make it more likely a clique will
+      # form in one of the modified graphs, which will terminate the recursion.
+      vertices := DigraphWelshPowellOrder(D);
+      # Get the adjacency function
+      adjacent := DigraphAdjacencyFunction(D);
       # Choose two non-adjacent vertices x, y
-      # This is just done by ascending ordering.
-      found := false;
-      for x_i in [1 .. nr] do
-        x := vertices[x_i];
-        for y_i in [x_i + 1 .. nr] do
-          y := vertices[y_i];
-          if not adjacent(x, y) then
-            found := true;
-            break;
-          fi;
-        od;
-        if found then
+      for i in [1 .. nr] do
+        x := vertices[i];
+        # Search for the first vertex not adjacent to all others
+        # This is guaranteed to exist as D is not the complete graph.
+        if OutDegreeOfVertex(D, x) < nr - 1 then
+          # Now search for a non-adjacent vertex, prioritising higher degree ones
+          for j in [i + 1 .. nr] do
+            y := vertices[j];
+            if not adjacent(x, y) then
+              break;
+            fi;
+          od;
           break;
         fi;
       od;
       Assert(1, x <> y, "x and y must be different");
-      Assert(1, found, "No adjacent vertices");
       # Colour the vertex contraction.
       # A contraction of a graph effectively merges two non adjacent vertices
       # into a single new vertex with the edges merged.
       # We merge y into x, keeping x.
+
+      # TODO Use DigraphContractEdge once it is implemented.
       D_contract := DigraphMutableCopy(D);
       for v in vertices do
-         # Iterate over all vertices that
+         # Iterate over all vertices that are not x or y
          if v = x or v = y then
            continue;
          fi;
@@ -580,8 +592,10 @@ function(D)
       DigraphRemoveEdge(D, [y, x]);
     fi;
   end;
-  # Algorithm requires an undirected graph.
-  D := DigraphSymmetricClosure(DigraphMutableCopy(D));
+  # Algorithm requires an undirected graph without multiple edges.
+  D := DigraphMutableCopy(D);
+  D := DigraphRemoveAllMultipleEdges(D);
+  D := DigraphSymmetricClosure(D);
   # Use greedy colouring as an upper bound
   chrom := RankOfTransformation(DigraphGreedyColouring(D), nr);
   ZykovReduce(D);
@@ -591,8 +605,8 @@ end
 
 BindGlobal("DIGRAPHS_ChromaticNumberChristofides",
 function(D)
-  local nr, I, n, T, b, unprocessed, i, v_without_t, j, u, min_occurences,
-  cur_occurences, chrom, colouring, stack, vertices;
+  local nr, I, n, T, b, unprocessed, i, v_without_t, j, u, min_occurrences,
+  cur_occurrences, chrom, colouring, stack, vertices;
 
   nr := DigraphNrVertices(D);
   vertices := List(DigraphVertices(D));
@@ -636,23 +650,20 @@ function(D)
         # Step 5
         # Pick u in V \ T such that u is in the fewest maximal independent sets.
         u := -1;
-        min_occurences := infinity;
-        for i in vertices do
-          # Skip elements of T.
-          if T[i] then
-            continue;
-          fi;
-          cur_occurences := 0;
-          for j in v_without_t do
-            if j[i] then
-              cur_occurences := cur_occurences + 1;
-            fi;
-          od;
-          if cur_occurences < min_occurences then
-            min_occurences := cur_occurences;
+        min_occurrences := infinity;
+        # Flip T to get V \ T
+        FlipBlist(T);
+        # Convert to list to iterate over the vertices.
+        for i in ListBlist(vertices, T) do
+          # Count how many times this vertex appears in a MIS
+          cur_occurrences := Number(v_without_t, j -> j[i]);
+          if cur_occurrences < min_occurrences then
+            min_occurrences := cur_occurrences;
             u := i;
           fi;
         od;
+        # Revert changes to T
+        FlipBlist(T);
         Assert(1, u <> -1, "Vertex must be picked");
         # Remove maximal independent sets not containing u.
         v_without_t := Filtered(v_without_t, x -> x[u]);
