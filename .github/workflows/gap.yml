@@ -102,3 +102,5 @@ jobs:
           curl --retry 5 -L -O "https://digraphs.github.io/Digraphs/${{ env.DIGRAPHS_LIB }}.tar.gz"
           tar xf "${{ env.DIGRAPHS_LIB }}.tar.gz"
       - uses: gap-actions/run-pkg-tests@cygwin-v2
+      - uses: gap-actions/process-coverage@cygwin-v2
+      - uses: codecov/codecov-action@v2
