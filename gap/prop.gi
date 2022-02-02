@@ -658,9 +658,6 @@ function(D)
 
   IsLatticeHomomorphism := function(map, L1, L2)
     local N, x, y;
-    if not IsLatticeDigraph(L1) or not IsLatticeDigraph(L2) then
-      return false;
-    fi;
     N := DigraphNrVertices(L1);
     for x in [1 .. N] do
       for y in [1 .. N] do
