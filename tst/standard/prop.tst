@@ -1279,6 +1279,33 @@ false
 gap> IsLatticeDigraph(gr);
 false
 
+# IsDistributiveLatticeDigraph
+gap> D := Digraph([[11, 10], [], [2], [2], [3], [4, 3], [6, 5], [7], [7],
+>      [8], [9, 8]]);
+<immutable digraph with 11 vertices, 14 edges>
+gap> IsDistributiveLatticeDigraph(D);
+false
+gap> D := DigraphReflexiveTransitiveClosure(D);
+<immutable preorder digraph with 11 vertices, 60 edges>
+gap> IsDistributiveLatticeDigraph(D);
+true
+gap> D := DigraphReflexiveTransitiveClosure(CycleDigraph(5));
+<immutable preorder digraph with 5 vertices, 25 edges>
+gap> IsDistributiveLatticeDigraph(D);
+false
+gap> D := Digraph([[2, 4], [3, 5], [9], [5, 6], [7], [7, 8], [9], [9], []]);
+<immutable digraph with 9 vertices, 12 edges>
+gap> D := DigraphReflexiveTransitiveClosure(D);
+<immutable preorder digraph with 9 vertices, 34 edges>
+gap> IsDistributiveLatticeDigraph(D);
+false
+gap> N5 := DigraphReflexiveTransitiveClosure(Digraph([[2, 4], [3], [5], [5], []]));
+<immutable preorder digraph with 5 vertices, 13 edges>
+gap> M5 := DigraphReflexiveTransitiveClosure(Digraph([[2, 3, 4], [5], [5], [5], []]));
+<immutable preorder digraph with 5 vertices, 12 edges>
+gap> IsDistributiveLatticeDigraph(N5) or IsDistributiveLatticeDigraph(M5);
+false
+
 # IsPartialOrderDigraph
 gap> gr := NullDigraph(5);
 <immutable empty digraph with 5 vertices>
