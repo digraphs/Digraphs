@@ -1305,6 +1305,13 @@ gap> M5 := DigraphReflexiveTransitiveClosure(Digraph([[2, 3, 4], [5], [5], [5], 
 <immutable preorder digraph with 5 vertices, 12 edges>
 gap> IsDistributiveLatticeDigraph(N5) or IsDistributiveLatticeDigraph(M5);
 false
+gap> D := Digraph([[2, 4], [3, 4], [5], [5], []]);
+<immutable digraph with 5 vertices, 6 edges>
+gap> D := DigraphReflexiveTransitiveClosure(D);
+<immutable preorder digraph with 5 vertices, 14 edges>
+gap> IsDistributiveLatticeDigraph(D);
+true
+
 
 # IsPartialOrderDigraph
 gap> gr := NullDigraph(5);
