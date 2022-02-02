@@ -651,7 +651,7 @@ end);
 
 InstallMethod(IsDistributiveLatticeDigraph, "for a digraph", [IsDigraph],
 function(D)
-  local N5, M5, IsLatticeHomomorphism, IsSublattice;
+  local N5, M3, IsLatticeHomomorphism, IsSublattice;
   if not IsLatticeDigraph(D) then
     return false;
   fi;
@@ -682,8 +682,8 @@ function(D)
 
   N5 := DigraphReflexiveTransitiveClosure(
         Digraph([[2, 4], [3], [5], [5], []]));
-  M5 := DigraphReflexiveTransitiveClosure(
+  M3 := DigraphReflexiveTransitiveClosure(
         Digraph([[2, 3, 4], [5], [5], [5], []]));
 
-  return not (IsSublattice(N5, D) or IsSublattice(M5, D));
+  return not (IsSublattice(N5, D) or IsSublattice(M3, D));
 end);
