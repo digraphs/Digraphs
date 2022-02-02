@@ -1295,6 +1295,44 @@ true
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="IsDistributiveLatticeDigraph">
+<ManSection>
+  <Prop Name="IsDistributiveLatticeDigraph" Arg="digraph"/>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
+  <Description>
+    <C>IsDistributiveLatticeDigraph</C> returns <K>true</K> if the digraph
+    <A>digraph</A> is a <E>distributive lattice digraph</E>.<P/>
+
+    A <E>distributive lattice digraph</E> is a <E>lattice digraph</E>
+    (<Ref Prop="IsLatticeDigraph"/>) which is distributive. That is to say,
+    the functions <Ref Oper="PartialOrderDigraphMeetOfVertices"/> and
+    <Ref Oper="PartialOrderDigraphJoinOfVertices"/> distribute over each other.<P/>
+    
+    Equivalently, a <E>distributive lattice digraph</E> is a <E>lattice digraph</E>
+    in which the <E>lattice digraphs</E> representing <M>M3</M> and <M>N5</M> are
+    not embeddable as lattices
+    (see <URL>https://en.wikipedia.org/wiki/Distributive_lattice)</URL>.<P/>
+
+    &MUTABLE_RECOMPUTED_PROP;
+
+    <Example><![CDATA[
+gap> D := Digraph([[2, 3], [4], [4], []]);
+<immutable digraph with 4 vertices, 4 edges>
+gap> D := DigraphReflexiveTransitiveClosure(D);
+<immutable preorder digraph with 4 vertices, 9 edges>
+gap> IsDistributiveLatticeDigraph(D);
+true
+gap> N5 := Digraph([[2, 4], [3], [5], [5], []]);
+<immutable digraph with 5 vertices, 5 edges>
+gap> N5 := DigraphReflexiveTransitiveClosure(N5);
+<immutable preorder digraph with 5 vertices, 13 edges>
+gap> IsDistributiveLatticeDigraph(N5);
+false]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+
 <#GAPDoc Label="IsPreorderDigraph">
 <ManSection>
   <Prop Name="IsPreorderDigraph" Arg="digraph"/>
