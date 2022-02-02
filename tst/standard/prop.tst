@@ -1312,7 +1312,6 @@ gap> D := DigraphReflexiveTransitiveClosure(D);
 gap> IsDistributiveLatticeDigraph(D);
 true
 
-
 # IsPartialOrderDigraph
 gap> gr := NullDigraph(5);
 <immutable empty digraph with 5 vertices>
