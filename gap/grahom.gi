@@ -97,8 +97,7 @@ InstallMethod(DigraphColouring, "for a digraph and an integer",
 function(D, n)
   if n < 0 then
     ErrorNoReturn("the 2nd argument <n> must be a non-negative integer,");
-  fi;
-  if HasDigraphGreedyColouring(D) then
+  elif HasDigraphGreedyColouring(D) then
     if DigraphGreedyColouring(D) = fail then
       return fail;
     elif RankOfTransformation(DigraphGreedyColouring(D),

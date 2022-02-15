@@ -1684,12 +1684,10 @@ InstallMethod(PermutationStarGraph, "for a function and two integers",
 InstallMethod(PrismGraphCons, "for IsMutableDigraph and an integer",
 [IsMutableDigraph, IsPosInt],
 function(filt, n)
-  local D;
   if n < 3 then
     ErrorNoReturn("the argument <n> must be an integer equal to 3 or more,");
   else
-    D := GeneralisedPetersenGraph(IsMutableDigraph, n, 1);
-    return D;
+    return GeneralisedPetersenGraph(IsMutableDigraph, n, 1);
   fi;
 end);
 
@@ -1797,8 +1795,7 @@ function(filt, n)
     D := DigraphRemoveEdge(D, i + 1, i);
   od;
   D := DigraphRemoveEdge(D, n, 1);
-  D := DigraphRemoveEdge(D, 1, n);
-  return D;
+  return DigraphRemoveEdge(D, 1, n);
 end);
 
 InstallMethod(WebGraphCons,

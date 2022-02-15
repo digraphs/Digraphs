@@ -159,8 +159,7 @@ function(D)
   local G, opt;
   if not IsSymmetricDigraph(D) then
     ErrorNoReturn("the argument <D> must be a symmetric digraph,");
-  fi;
-  if HasDigraphGroup(D) then
+  elif HasDigraphGroup(D) then
     G := DigraphGroup(D);
   else
     G := Group(());
