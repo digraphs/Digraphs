@@ -410,9 +410,7 @@ function(C, D, c1, c2)
   od;
   if not ForAll(class_sizes, x -> x = 0) then
     return false;
-  fi;
-
-  if IsMultiDigraph(C) then
+  elif IsMultiDigraph(C) then
     act := OnMultiDigraphs;
   else
     act := OnDigraphs;
@@ -443,9 +441,7 @@ function(C, D)
     return [label1[1] / label2[1], label1[2] / label2[2]];
   elif C = D then
     return ();
-  fi;
-
-  if HasBlissCanonicalLabelling(C) and HasBlissCanonicalLabelling(D)
+  elif HasBlissCanonicalLabelling(C) and HasBlissCanonicalLabelling(D)
       or not ((HasNautyCanonicalLabelling(C)
                and NautyCanonicalLabelling(C) <> fail)
               or (HasNautyCanonicalLabelling(D)
@@ -491,9 +487,7 @@ function(C, D, c1, c2)
   od;
   if not ForAll(class_sizes, x -> x = 0) then
     return fail;
-  fi;
-
-  if DIGRAPHS_UsingBliss or IsMultiDigraph(C) then
+  elif DIGRAPHS_UsingBliss or IsMultiDigraph(C) then
     label1 := BlissCanonicalLabelling(C, colour1);
     label2 := BlissCanonicalLabelling(D, colour2);
   else

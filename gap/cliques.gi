@@ -175,8 +175,7 @@ function(arg)
     ErrorNoReturn("at least 1 argument is required,");
   elif not IsDigraph(arg[1]) then
     ErrorNoReturn("the 1st argument must be a digraph,");
-  fi;
-  if not IsBound(arg[2])
+  elif not IsBound(arg[2])
       and HasDigraphMaximalIndependentSetsRepsAttr(arg[1]) then
     return DigraphMaximalIndependentSetsRepsAttr(arg[1]);
   fi;
@@ -203,8 +202,7 @@ function(arg)
     ErrorNoReturn("at least 1 argument is required,");
   elif not IsDigraph(arg[1]) then
     ErrorNoReturn("the 1st argument must be a digraph,");
-  fi;
-  if not IsBound(arg[2])
+  elif not IsBound(arg[2])
       and HasDigraphMaximalIndependentSetsAttr(arg[1]) then
     return DigraphMaximalIndependentSetsAttr(arg[1]);
   fi;
@@ -552,9 +550,7 @@ function(digraph, hook, user_param, limit, include, exclude, max, size, reps)
 
   if not IsDigraph(digraph) then
     ErrorNoReturn("the 1st argument <D> must be a digraph,");
-  fi;
-
-  if hook <> fail then
+  elif hook <> fail then
     if not (IsFunction(hook) and NumberArgumentsFunction(hook) = 2) then
       ErrorNoReturn("the 2nd argument <hook> must be fail, or a ",
                     "function with 2 arguments,");
@@ -584,14 +580,10 @@ function(digraph, hook, user_param, limit, include, exclude, max, size, reps)
 
   if not max in [true, false] then
     ErrorNoReturn("the 7th argument <max> must be true or false,");
-  fi;
-
-  if size <> fail and not IsPosInt(size) then
+  elif size <> fail and not IsPosInt(size) then
     ErrorNoReturn("the 8th argument <size> must be fail, or a ",
                   "positive integer,");
-  fi;
-
-  if not reps in [true, false] then
+  elif not reps in [true, false] then
     ErrorNoReturn("the 9th argument <reps> must be true or false,");
   fi;
 
