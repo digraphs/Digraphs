@@ -188,9 +188,7 @@ function(G, edges, n)
     ErrorNoReturn("the 3rd argument <n> must be a non-negative integer,");
   elif n = 0 then
     return EmptyDigraph(0);
-  fi;
-
-  if IsPosInt(edges[1]) then   # E consists of a single edge
+  elif IsPosInt(edges[1]) then   # E consists of a single edge
     edges := [edges];
   fi;
 

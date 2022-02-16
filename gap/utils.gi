@@ -600,8 +600,7 @@ function(arg)
     Error("expected a string or a list as the 1st argument");
   elif IsList(arg[1]) and not ForAll(arg[1], IsString) then
     Error("expected a list of strings as the 1st argument");
-  fi;
-  if IsList(arg[1]) then
+  elif IsList(arg[1]) then
     arg[1] := Concatenation(arg[1]);
   fi;
   msg := CallFuncList(StringFormatted, arg);

@@ -36,8 +36,7 @@ function(string, substring)
 
   if Length(string) = 0 then
     return [];
-  fi;
-  if Length(substring) = 1 then
+  elif Length(substring) = 1 then
     return SplitString(string, substring);
   fi;
 
@@ -104,8 +103,7 @@ function(file, D)
   g := DigraphGroup(D);
   if IsTrivial(g) then
     TryNextMethod();
-  fi;
-  if IO_Write(file, "DIGG") = fail then
+  elif IO_Write(file, "DIGG") = fail then
     return IO_Error;
   fi;
   out := [GeneratorsOfGroup(g),
@@ -499,9 +497,7 @@ function(arg)
     ErrorNoReturn("the argument <encoder> must be a function or fail,");
   elif not mode in ["a", "w"] then
     ErrorNoReturn("the argument <mode> must be \"a\" or \"w\",");
-  fi;
-
-  if IsString(name) and not IsExistingFile(name) then
+  elif IsString(name) and not IsExistingFile(name) then
     mode := "w";
   fi;
 

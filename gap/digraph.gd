@@ -81,10 +81,7 @@ DeclareConstructor("DigraphByAdjacencyMatrixConsNC",
                    [IsDigraph, IsHomogeneousList]);
 
 DeclareOperation("DigraphByAdjacencyMatrix", [IsFunction, IsHomogeneousList]);
-DeclareOperation("DigraphByAdjacencyMatrixNC", [IsFunction, IsHomogeneousList]);
-
 DeclareOperation("DigraphByAdjacencyMatrix", [IsHomogeneousList]);
-DeclareOperation("DigraphByAdjacencyMatrixNC", [IsHomogeneousList]);
 
 DeclareConstructor("DigraphByEdgesCons", [IsDigraph, IsList]);
 DeclareConstructor("DigraphByEdgesCons", [IsDigraph, IsList, IsInt]);

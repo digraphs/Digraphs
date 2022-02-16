@@ -853,9 +853,7 @@ InstallMethod(OnMultiDigraphs, "for a digraph and perm coll",
 function(D, perms)
   if Length(perms) <> 2 then
     ErrorNoReturn("the 2nd argument <perms> must be a pair of permutations,");
-  fi;
-
-  if ForAny([1 .. DigraphNrEdges(D)],
+  elif ForAny([1 .. DigraphNrEdges(D)],
             i -> i ^ perms[2] > DigraphNrEdges(D)) then
     ErrorNoReturn("the 2nd entry of the 2nd argument <perms> must ",
                   "permute the edges of the digraph <D> that is the 1st ",
@@ -1745,9 +1743,7 @@ function(D, v)
 
   if IsBound(layers[v]) then
     return layers[v];
-  fi;
-
-  if HasDigraphGroup(D) then
+  elif HasDigraphGroup(D) then
     gens  := GeneratorsOfGroup(DigraphGroup(D));
     sch   := DigraphSchreierVector(D);
     trace := DIGRAPHS_TraceSchreierVector(gens, sch, v);
@@ -1868,9 +1864,7 @@ function(D, list)
 
   if Length(list) <> 2 then
     ErrorNoReturn("the 2nd argument <list> must be a list of length 2,");
-  fi;
-
-  if list[1] > DigraphNrVertices(D) or
+  elif list[1] > DigraphNrVertices(D) or
       list[2] > DigraphNrVertices(D) then
       ErrorNoReturn("the 2nd argument <list> must consist of vertices of ",
                     "the 1st argument <D>,");

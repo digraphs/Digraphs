@@ -1407,15 +1407,13 @@ end);
 
 InstallMethod(DigraphBicomponents, "for a digraph", [IsDigraph],
 function(D)
-  local b;
 
   # Attribute only applies to bipartite digraphs
   if not IsBipartiteDigraph(D) then
     return fail;
   fi;
-  b := KernelOfTransformation(DIGRAPHS_Bipartite(D)[2],
+  return KernelOfTransformation(DIGRAPHS_Bipartite(D)[2],
                               DigraphNrVertices(D));
-  return b;
 end);
 
 InstallMethod(DigraphLoops, "for a digraph by out-neighbours",
@@ -1527,9 +1525,7 @@ function(D)
     return DigraphVertices(D);
   elif not IsStronglyConnectedDigraph(D) then
     return fail;
-  fi;
-
-  if DigraphNrVertices(D) < 256 then
+  elif DigraphNrVertices(D) < 256 then
     path := DigraphMonomorphism(CycleDigraph(DigraphNrVertices(D)), D);
     if path = fail then
       return fail;
@@ -1733,7 +1729,8 @@ InstallMethodThatReturnsDigraph(ReducedDigraph,
 "for a digraph by out-neighbours",
 [IsDigraphByOutNeighboursRep],
 function(D)
-  local v, niv, old, C, i;
+  local v, niv, old, i;
+
   if IsConnectedDigraph(D) then
     return D;
   fi;
@@ -1749,8 +1746,7 @@ function(D)
       UniteBlistList(v, niv, old[i]);
     fi;
   od;
-  C := InducedSubdigraph(D, ListBlist(v, niv));
-  return C;
+  return InducedSubdigraph(D, ListBlist(v, niv));
 end);
 
 InstallMethod(DigraphRemoveAllMultipleEdges,
