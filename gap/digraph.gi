@@ -1354,6 +1354,12 @@ function(filt, n)
   return RandomDigraphCons(IsImmutableDigraph, n, Float(Random([0 .. n])) / n);
 end);
 
+InstallMethod(RandomDigraphCons, "for IsHamiltonianDigraph and an integer",
+[IsHamiltonianDigraph, IsInt],
+function(filt, n)
+  return RandomDigraphCons(IsHamiltonianDigraph, n, Float(Random([0 .. n])) / n);
+end);
+
 InstallMethod(RandomDigraphCons,
 "for IsMutableDigraph, an integer, and a rational",
 [IsMutableDigraph, IsInt, IsRat],
@@ -1372,6 +1378,70 @@ function(filt, n, p)
     ErrorNoReturn("the 2nd argument <p> must be between 0 and 1,");
   fi;
   return DigraphNC(IsMutableDigraph, RANDOM_DIGRAPH(n, Int(p * 10000)));
+end);
+
+BindGlobal("DIGRAPHS_FillOutGraph", function(n, p, adjacencyList)
+
+    local i, j;
+
+    for i in [1 .. n] do
+        for j in [1 .. n] do
+            if (not (j in adjacencyList[i])) then
+                 if Float(Random([0 .. 99])/100) < Float(p) then
+                    Add(adjacencyList[i], j);
+                 fi;
+            fi;
+        od;
+    od;
+
+    return adjacencyList;
+
+end);
+
+InstallMethod(RandomDigraphCons,
+"for IsHamiltonianDigraph, a positive integer, and a float",
+[IsHamiltonianDigraph, IsPosInt, IsFloat],
+function(filt, n, p)
+  local adjacencyList, vertices, startVertex, hamiltonianCycle, x, i, j, graph;
+  
+      adjacencyList := [];
+  
+      for i in [1 .. n] do
+          Add(adjacencyList, []);
+      od;
+  
+      # Edge Case
+      if n = 1 then
+          if Float(Random([0 .. 99])/100) < Float(p) then
+              Add(adjacencyList[1], 1);
+              return Digraph(adjacencyList);
+          else
+              return Digraph(adjacencyList);
+          fi;
+      fi;
+  
+      vertices:= [1 .. n];
+  
+      # Starting from a random vertex, we create a Hamiltonian cycle
+      startVertex := Remove(vertices, Random(vertices));
+      hamiltonianCycle := [startVertex];
+  
+      # While there are remaining n-1 vertices to be added to the Hamiltonian cycle
+      for x in [1 .. n-1] do
+          # Create a random edge from the last vertex in the cycle, to random vertex not in the cycle
+          i := hamiltonianCycle[x];
+          j := Random(vertices);
+          Remove(vertices, Position(vertices, j));
+          Add(hamiltonianCycle, j);
+          Add(adjacencyList[i], j);
+      od;
+  
+      Add(adjacencyList[hamiltonianCycle[n]], startVertex);
+  
+      # Once we have created a Hamiltonian cycle, fill out the rest of the graph with random edges according to p
+      adjacencyList := DIGRAPHS_FillOutGraph(n, p, adjacencyList);
+      graph := Digraph(adjacencyList);
+      return graph;
 end);
 
 InstallMethod(RandomDigraphCons,
