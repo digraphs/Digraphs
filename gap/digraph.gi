@@ -1497,10 +1497,9 @@ InstallMethod(RandomDigraphCons,
 "for IsEulerianDigraph, a positive integer, and a float",
 [IsEulerianDigraph, IsPosInt, IsFloat],
 function(filt, n, p)
-    local adjacencyList, vertices, startVertex, circuitVertex, continueCircuit, rejectedEdges, verticesToCheck, potentialEdge, i, graph;
+    local adjacencyList, vertices, startVertex, circuitVertex, continueCircuit,  verticesToConsider, connectedVertices, verticesToCheck, i, graph;
 
     adjacencyList := [];
-
     for i in [1 .. n] do
         Add(adjacencyList, []);
     od;
@@ -1522,54 +1521,56 @@ function(filt, n, p)
     circuitVertex := startVertex;
     continueCircuit := true;
 
-    # We store the edges that are randomly decided not to be added, so that if a vertex is visited again in the circuit
-    # we don't consider adding an edge that had previously been rejected
-    rejectedEdges := [];
+    # This will keep track of the vertices left to consider when deciding whether to extend the cycle. For example,
+    # if we want to extend from the current circuitVertex, we can check - verticesToConsider[circuitVertex] -
+    # to see which vertices it hasn't previously considered.
+    verticesToConsider := [];
+    for i in [1 .. n] do
+        Add(verticesToConsider, [1 .. n]);
+    od;
+
+    # Eulerian graphs must be connected, so we store a list of connected vertices and check if a vertex isn't in the list
+    connectedVertices := [startVertex];
 
     while continueCircuit do
-        verticesToCheck := [1 .. n];
-
-        while Length(verticesToCheck) > 0 do
+        while Length(verticesToConsider[circuitVertex]) > 0 do
             # From the remaining vertices to check, select a random one to see if an edge will be added
-            i := Random(verticesToCheck);
-            Remove(verticesToCheck, Position(verticesToCheck, i));
-            potentialEdge := [circuitVertex, i];
+            i := Random(verticesToConsider[circuitVertex]);
+            Remove(verticesToConsider[circuitVertex], Position(verticesToConsider[circuitVertex], i));
 
-            # Check that the edge doesn't already exist, that it isn't a loop, and that it hasn't previously been rejected
-            if (not (i in adjacencyList[circuitVertex])) and (not (potentialEdge in rejectedEdges)) then
-                # First we guarantee that we get a connected graph by ensuring every vertex has non-zero out-degree
-                if (Length(adjacencyList[circuitVertex]) = 0 or Length(adjacencyList[i]) = 0) then
+            # Check that the edge doesn't already exist
+            if (not (i in adjacencyList[circuitVertex])) then
+                # First we guarantee that we get a connected graph by checking if the vertex isn't already connected
+                if (not (i in connectedVertices)) then
                     Add(adjacencyList[circuitVertex], i);
+                    Add(connectedVertices, i);
                     circuitVertex := i;
                     break;
                 elif Float(Random([0 .. 99])/100) < Float(p) then
                     Add(adjacencyList[circuitVertex], i);
                     circuitVertex := i;
                     break;
-                else
-                    Add(rejectedEdges, [circuitVertex, i]);
                 fi;
             fi;
-
-            # If there are not more vertices to consider, we can end the circuit
-            if Length(verticesToCheck) = 0 then
-                continueCircuit := false;
-            fi;
-
         od;
+
+        # If there are not more vertices to consider, we can end the circuit
+        if Length(verticesToConsider[circuitVertex]) = 0 then
+            continueCircuit := false;
+        fi;
     od;
 
-    # Finish the circuit by adding an edge back to the start vertex (if it isn't already the start vertex)
+    # Finish the circuit by adding an edge back to the start vertex (if it isn't already at the start vertex)
     if circuitVertex <> startVertex then
         # If an edge already exists between the finish vertex and the start vertex,
         # we must find another path to the start vertex to avoid generating a multidigraph.
         while (startVertex in adjacencyList[circuitVertex]) do
+            # Here we consider all possible edges again, including previously rejected edges, to guarantee a path
+            # back to the start
             verticesToCheck := [1 .. n];
-
             while Length(verticesToCheck) > 0 do
                 i := Random(verticesToCheck);
                 Remove(verticesToCheck, Position(verticesToCheck, i));
-
                 if (not (i in adjacencyList[circuitVertex])) then
                     Add(adjacencyList[circuitVertex], i);
                     circuitVertex := i;
@@ -1582,7 +1583,6 @@ function(filt, n, p)
 
     graph := Digraph(adjacencyList);
     return graph;
-
 end);
 
 InstallMethod(RandomDigraphCons,
