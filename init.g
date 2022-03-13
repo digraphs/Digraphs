@@ -32,7 +32,7 @@ if not IsBound(IsGraph) then
   IsGraph := ReturnFalse;
 fi;
 if not IsBound(Vertices) then
-  Vertices := IdFunc;
+  DeclareOperation("Vertices", [IsRecord]);
 fi;
 if not IsBound(Adjacency) then
   Adjacency := IdFunc;
