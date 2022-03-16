@@ -765,6 +765,91 @@ function(D1, D2, edge_function)
   return Digraph(edges);
 end);
 
+InstallMethod(AmalgamDigraphsIsomorphic,
+"for a digraph, a digraph, a list, and a list",
+[IsDigraph, IsDigraph, IsList, IsList],
+function(D1, D2, subdigraphVertices1, subdigraphVertices2)
+  local subdigraph1, subdigraph2, newSubdigraphVertices2, transformation, vertex;
+
+  subdigraph1 := InducedSubdigraph(D1, subdigraphVertices1);
+  subdigraph2 := InducedSubdigraph(D2, subdigraphVertices2);
+
+  if not IsIsomorphicDigraph(subdigraph1, subdigraph2) then
+    ErrorNoReturn(
+      "the two subdigraphs must be isomorphic.");
+  fi;
+
+  newSubdigraphVertices2 := [];
+  transformation := DigraphEmbedding(subdigraph2, subdigraph1);
+  for vertex in subdigraphVertices2 do
+    newSubdigraphVertices2[
+      Position(subdigraphVertices2, vertex) ^ transformation] := vertex;
+  od;
+
+  return AmalgamDigraphs(D1, D2, subdigraphVertices1, newSubdigraphVertices2);
+end);
+
+InstallMethod(AmalgamDigraphs,
+"for a digraph, a digraph, a list, and a list",
+[IsDigraph, IsDigraph, IsList, IsList],
+function(D1, D2, subdigraphVertices1, subdigraphVertices2)
+  local D, map, vertex, vertexList, size, iterator, edgeList, subLength;
+
+  if not InducedSubdigraph(D1, subdigraphVertices1) =
+         InducedSubdigraph(D2, subdigraphVertices2) then
+    ErrorNoReturn(
+      "the two subdigraphs must be equal.");
+  fi;
+
+  # Create a mutable copy so that the function also works on
+  # immutable input digraphs.
+  D := DigraphMutableCopy(D1);
+  subLength := Length(subdigraphVertices1);
+
+  # 'map' is a mapping from the vertices of D2 to the vertices of the
+  # final output graph. The idea is to map the subdigraph vertices of D2
+  # onto the subdigraph vertices of D1 and then map the rest of the vertices
+  # of D2 to other (higher) values. The mapping from D1 to the output graph
+  # can be understood as the identity mapping.
+  map := rec();
+
+  for vertex in [1 .. subLength] do
+    map.(subdigraphVertices2[vertex]) := subdigraphVertices1[vertex];
+  od;
+
+  vertexList := Difference(DigraphVertices(D2), subdigraphVertices2);
+  size := DigraphNrVertices(D1);
+  iterator := 1;
+  for vertex in vertexList do
+    map.(vertex) := iterator + size;
+    iterator := iterator + 1;
+  od;
+
+  # The problem with adding edges to the output graph was that the
+  # edges of of the subdigraph were added twice, creating multiple
+  # edges between certain pairs of points. A quick and readable fix
+  # would have been to use DigraphRemoveAllMultipleEdges, but I decided
+  # to check each of the edges being added to see if they were already
+  # in the subdigraph. This way the function does not end up adding edges
+  # only to delete them later.
+  edgeList := ShallowCopy(DigraphEdges(D2));
+  iterator := 1;
+  while iterator <= Length(edgeList) do
+    if edgeList[iterator][1] in subdigraphVertices2 and
+        edgeList[iterator][2] in subdigraphVertices2 then
+      Remove(edgeList, iterator);
+    else
+      edgeList[iterator] := [
+        map.(edgeList[iterator][1]), map.(edgeList[iterator][2])];
+      iterator := iterator + 1;
+    fi;
+  od;
+
+  DigraphAddVertices(D, DigraphNrVertices(D2) - subLength);
+  DigraphAddEdges(D, edgeList);
+  return [MakeImmutable(D), map];
+end);
+
 ###############################################################################
 # 4. Actions
 ###############################################################################

@@ -46,6 +46,9 @@ DeclareOperation("StrongProduct", [IsDigraph, IsDigraph]);
 DeclareOperation("ConormalProduct", [IsDigraph, IsDigraph]);
 DeclareOperation("HomomorphicProduct", [IsDigraph, IsDigraph]);
 DeclareOperation("LexicographicProduct", [IsDigraph, IsDigraph]);
+DeclareOperation("AmalgamDigraphs", [IsDigraph, IsDigraph, IsList, IsList]);
+DeclareOperation("AmalgamDigraphsIsomorphic",
+                 [IsDigraph, IsDigraph, IsList, IsList]);
 
 DeclareSynonym("DigraphModularProduct", ModularProduct);
 DeclareSynonym("DigraphStrongProduct", StrongProduct);
