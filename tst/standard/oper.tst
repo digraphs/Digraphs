@@ -2861,6 +2861,122 @@ gap> D := CycleDigraph(5);;
 gap> IsOrderIdeal(D, [1]);
 Error, the 1st argument (a digraph) must be a partial order digraph
 
+# AmalgamDigraphs
+gap> D1 := Digraph([[2, 3], [1, 3], [1, 2], [2], [3, 4]]);;
+gap> D2 := Digraph([[2, 6], [1, 3, 5], [4], [3], [4, 6], [1, 5]]);;
+gap> S := InducedSubdigraph(D1, [2, 3, 4, 5]);;
+gap> T := DigraphEmbedding(S, D2);;
+gap> U := AmalgamDigraphs(D2, D1, S, T);
+[ <immutable digraph with 7 vertices, 15 edges>, 
+  Transformation( [ 7, 4, 3, 5, 2, 6, 7 ] ) ]
+gap> U := AmalgamDigraphs(D1, D2, S, IdentityTransformation, T);
+Error, the 4th argument (a transformation) is not a digraph embedding from the\
+ 3rd argument (a digraph) into the 1st argument (a digraph)
+gap> D1 := Digraph([
+>   [2, 3], [1, 3, 4, 6], [1, 2, 5, 7], [2, 6], [3, 7], [2, 4, 7, 8],
+>   [3, 5, 6, 8], [6, 7]]);;
+gap> D2 := Digraph([
+>   [2, 3], [1, 4], [1, 5], [2, 5, 6], [3, 4, 7], [4, 7], [5, 6]]);;
+gap> S := InducedSubdigraph(D1, [2, 3, 6, 7]);;
+gap> T := DigraphEmbedding(S, D1);;
+gap> U := AmalgamDigraphs(D1, D2, S, T, IdentityTransformation);
+Error, the 5th argument (a transformation) is not a digraph embedding from the\
+ 3rd argument (a digraph) into the 2nd argument (a digraph)
+gap> D1 := Digraph([[2, 5], [1, 3], [4], [2, 5], [1, 4]]);;
+gap> D2 := Digraph([[2, 3], [1, 4], [1, 2], [3]]);;
+gap> S := Digraph([[2], [3], [1]]);;
+gap> map1 := DigraphEmbedding(S, D1);;
+gap> map2 := DigraphEmbedding(S, D2);;
+gap> U := AmalgamDigraphs(D1, D2, S, map1, map2);
+[ <immutable digraph with 6 vertices, 13 edges>, 
+  Transformation( [ 6, 2, 4, 3, 5, 6 ] ) ]
+gap> D1 := DigraphImmutableCopy(D1);
+<immutable digraph with 5 vertices, 9 edges>
+gap> U := AmalgamDigraphs(D1, D2, S, map1, map2);
+[ <immutable digraph with 6 vertices, 13 edges>, 
+  Transformation( [ 6, 2, 4, 3, 5, 6 ] ) ]
+gap> D1 := DigraphMutableCopy(D1);
+<mutable digraph with 5 vertices, 9 edges>
+gap> U := AmalgamDigraphs(D1, D2, S, map1, map2);
+[ <immutable digraph with 6 vertices, 13 edges>, 
+  Transformation( [ 6, 2, 4, 3, 5, 6 ] ) ]
+gap> D1;
+<immutable digraph with 6 vertices, 13 edges>
+gap> D1 := Digraph([[2, 5], [1, 3], [4], [2, 5], [1, 4]]);;
+gap> D2 := DigraphMutableCopy(D2);
+<mutable digraph with 4 vertices, 7 edges>
+gap> U := AmalgamDigraphs(D1, D2, S, map1, map2);
+[ <immutable digraph with 6 vertices, 13 edges>, 
+  Transformation( [ 6, 2, 4, 3, 5, 6 ] ) ]
+gap> D2;
+<mutable digraph with 4 vertices, 7 edges>
+gap> D1 := DigraphImmutableCopy(D1);
+<immutable digraph with 5 vertices, 9 edges>
+gap> U := AmalgamDigraphs(D1, D2, S, map1, map2);
+[ <immutable digraph with 6 vertices, 13 edges>, 
+  Transformation( [ 6, 2, 4, 3, 5, 6 ] ) ]
+gap> D1 := PetersenGraph();;
+gap> D2 := Digraph([[], [1, 3, 4], [1, 2, 5], [2, 6], [3, 6], [4, 5]]);;
+gap> S := CycleGraph(5);;
+gap> U := AmalgamDigraphs(D1, D2, S, IdentityTransformation);
+[ <immutable digraph with 11 vertices, 32 edges>, 
+  Transformation( [ 11, 1, 2, 5, 3, 4, 7, 8, 9, 10, 11 ] ) ]
+gap> U := AmalgamDigraphs(D1, D2, S);
+[ <immutable digraph with 11 vertices, 32 edges>, 
+  Transformation( [ 11, 1, 2, 5, 3, 4, 7, 8, 9, 10, 11 ] ) ]
+gap> D1 := Digraph([[2], [3, 4], [1], [1]]);;
+gap> D2 := Digraph([[3], [1], [2, 4, 5], [], []]);;
+gap> S := Digraph([[2], [3], [1]]);;
+gap> map1 := Transformation([1, 2, 4, 4]);;
+gap> map2 := Transformation([2, 1]);;
+gap> U := AmalgamDigraphs(D1, D2, S, map1, map2); 
+[ <immutable digraph with 6 vertices, 7 edges>, 
+  Transformation( [ 2, 1, 4, 5, 6, 6 ] ) ]
+gap> U := AmalgamDigraphs(D1, D2, S, map1); 
+[ <immutable digraph with 6 vertices, 7 edges>, 
+  Transformation( [ 1, 4, 2, 5, 6, 6 ] ) ]
+gap> U := AmalgamDigraphs(D1, D2, S);
+[ <immutable digraph with 6 vertices, 7 edges>, 
+  Transformation( [ 1, 3, 2, 5, 6, 6 ] ) ]
+gap> U := AmalgamDigraphs(D1, D2, S, Transformation([3, 2, 1]));
+Error, the 4th argument (a transformation) is not a digraph embedding from the\
+ 3rd argument (a digraph) into the 1st argument (a digraph)
+gap> U := AmalgamDigraphs(D1, D2, D1, IdentityTransformation);
+Error, no embeddings could be found from the 3rd argument (a digraph) to the 2\
+nd argument (a digraph)
+gap> U := AmalgamDigraphs(D1, D2, D1);
+Error, no embeddings could be found from the 3rd argument (a digraph) to the 2\
+nd argument (a digraph)
+gap> U := AmalgamDigraphs(D1, D2, D2);
+Error, no embeddings could be found from the 3rd argument (a digraph) to the 1\
+st argument (a digraph)
+gap> D1 := Digraph([[2, 3, 3], [3], []]);;
+gap> D2 := Digraph([[2, 3], [3, 4], [4], []]);;
+gap> S := Digraph([[2, 3], [3], []]);;
+gap> AmalgamDigraphs(D1, D2, S);
+Error, the 1st argument (a digraph) must not satisfy IsMultiDigraph
+gap> AmalgamDigraphs(D1, D2, S, IdentityTransformation);
+Error, the 1st argument (a digraph) must not satisfy IsMultiDigraph
+gap> AmalgamDigraphs(
+>   D1, D2, S, IdentityTransformation, IdentityTransformation);
+Error, the 1st argument (a digraph) must not satisfy IsMultiDigraph
+gap> AmalgamDigraphs(D2, D1, S);
+Error, the 2nd argument (a digraph) must not satisfy IsMultiDigraph
+gap> AmalgamDigraphs(D2, D1, S, IdentityTransformation);
+Error, the 2nd argument (a digraph) must not satisfy IsMultiDigraph
+gap> AmalgamDigraphs(
+>   D2, D1, S, IdentityTransformation, IdentityTransformation);
+Error, the 2nd argument (a digraph) must not satisfy IsMultiDigraph
+gap> D1 := PetersenGraph();;
+gap> S := Digraph([[2], [3, 3], [1]]);;
+gap> AmalgamDigraphs(D1, D1, S);
+Error, the 3rd argument (a digraph) must not satisfy IsMultiDigraph
+gap> AmalgamDigraphs(D1, D1, S, IdentityTransformation);
+Error, the 3rd argument (a digraph) must not satisfy IsMultiDigraph
+gap> AmalgamDigraphs(
+>   D1, D1, S, IdentityTransformation, IdentityTransformation);
+Error, the 3rd argument (a digraph) must not satisfy IsMultiDigraph
+
 # IsOrderFilter
 gap> D := DigraphByEdges([[1, 1], [1, 2], [1, 3], [2, 3], [3, 3], [2, 2], [2, 4], [4, 4], [1, 4]]);
 <immutable digraph with 4 vertices, 9 edges>
@@ -3311,6 +3427,9 @@ gap> Unbind(t);
 gap> Unbind(tclosure);
 gap> Unbind(u1);
 gap> Unbind(u2);
+gap> Unbind(S);
+gap> Unbind(map1);
+gap> Unbind(map2);
 gap> Unbind(x);
 gap> Unbind(TestPartialOrderDigraph);
 
