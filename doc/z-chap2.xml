@@ -75,6 +75,7 @@
     <#Include Label="DistanceDigraph">
     <#Include Label="DigraphClosure">
     <#Include Label="DigraphMycielskian">
+    <#Include Label="AmalgamDigraphs">
   </Section>
 
   <Section><Heading>Random digraphs</Heading>
