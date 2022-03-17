@@ -1913,6 +1913,116 @@ true
 gap> OutNeighbours(OutNeighbours);
 Error, expected a digraph, not a function
 
+# Random Connected Digraph
+gap> for n in [1 .. 20] do
+>   graph := RandomDigraph(IsConnectedDigraph, n, 0);
+>   if DigraphNrEdges(graph) <> n-1 then
+>     Print("False");
+>   fi;
+> od;
+gap> for n in [1 .. 20] do
+>   graph := RandomDigraph(IsConnectedDigraph, n, 1);
+>   if DigraphNrEdges(graph) <> (n * n) then
+>     Print("False");
+>   fi;
+> od;
+gap> for p in [1 .. 9] do
+>   graph := RandomDigraph(IsConnectedDigraph, 10, Float(p)/10);
+>   if (not IsConnectedDigraph(graph)) or (IsMultiDigraph(graph)) then
+>     Print("False");
+>   fi;
+> od;
+
+# Random Symmetric Digraph
+gap> for n in [1 .. 20] do
+>   graph := RandomDigraph(IsSymmetricDigraph, n, 0);
+>   if DigraphNrEdges(graph) <> 0 then
+>     Print("False");
+>   fi;
+> od;
+gap> for n in [1 .. 20] do
+>   graph := RandomDigraph(IsSymmetricDigraph, n, 1);
+>   if DigraphNrEdges(graph) <> (n * n) then
+>     Print("False");
+>   fi;
+> od;
+gap> for p in [1 .. 9] do
+>   graph := RandomDigraph(IsSymmetricDigraph, 10, Float(p)/10);
+>   if (not IsSymmetricDigraph(graph)) or (IsMultiDigraph(graph)) then
+>     Print("False");
+>   fi;
+> od;
+
+# Random Hamiltonian Digraph
+gap> graph := RandomDigraph(IsHamiltonianDigraph, 1, 0);;
+>   if DigraphNrEdges(graph) <> 0 then
+>     Print("False");
+>   fi;
+gap> graph := RandomDigraph(IsHamiltonianDigraph, 1, 1);;
+>   if DigraphNrEdges(graph) <> 1 then
+>     Print("False");
+>   fi;
+gap> for n in [2 .. 20] do
+>   graph := RandomDigraph(IsHamiltonianDigraph, n, 0);
+>   if DigraphNrEdges(graph) <> n then
+>     Print("False");
+>   fi;
+> od;
+gap> for n in [1 .. 20] do
+>   graph := RandomDigraph(IsHamiltonianDigraph, n, 1);
+>   if DigraphNrEdges(graph) <> (n * n) then
+>     Print("False");
+>   fi;
+> od;
+gap> for p in [1 .. 9] do
+>   graph := RandomDigraph(IsHamiltonianDigraph, 10, Float(p)/10);
+>   if (not IsHamiltonianDigraph(graph)) or (IsMultiDigraph(graph)) then
+>     Print("False");
+>   fi;
+> od;
+
+# Random Acyclic Digraph
+gap> for n in [1 .. 20] do
+>   graph := RandomDigraph(IsAcyclicDigraph, n, 0);
+>   if DigraphNrEdges(graph) <> 0 then
+>     Print("False");
+>   fi;
+> od;
+gap> for n in [1 .. 20] do
+>   graph := RandomDigraph(IsAcyclicDigraph, n, 1);
+>   if DigraphNrEdges(graph) <> (n * (n-1))/2 then
+>     Print("False");
+>   fi;
+> od;
+gap> for p in [1 .. 9] do
+>   graph := RandomDigraph(IsAcyclicDigraph, 10, Float(p)/10);
+>   if (not IsAcyclicDigraph(graph)) or (IsMultiDigraph(graph)) then
+>     Print("False");
+>   fi;
+> od;
+
+# Random Eulerian Digraph
+gap> graph := RandomDigraph(IsEulerianDigraph, 1, 0);;
+>   if DigraphNrEdges(graph) <> 0 then
+>     Print("False");
+>   fi;
+gap> graph := RandomDigraph(IsEulerianDigraph, 1, 1);;
+>   if DigraphNrEdges(graph) <> 1 then
+>     Print("False");
+>   fi;
+gap> for n in [2 .. 20] do
+>   graph := RandomDigraph(IsEulerianDigraph, n, 0);
+>   if DigraphNrEdges(graph) <> n then
+>     Print("False");
+>   fi;
+> od;
+gap> for p in [1 .. 9] do
+>   graph := RandomDigraph(IsEulerianDigraph, 10, Float(p)/10);
+>   if (not IsEulerianDigraph(graph)) or (IsMultiDigraph(graph)) then
+>     Print("False");
+>   fi;
+> od;
+
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(G);
 gap> Unbind(adj);
@@ -1966,6 +2076,8 @@ gap> Unbind(s);
 gap> Unbind(test);
 gap> Unbind(v);
 gap> Unbind(x);
+gap> Unbind(p);
+gap> Unbind(graph);
 
 #
 gap> DIGRAPHS_StopTest();
