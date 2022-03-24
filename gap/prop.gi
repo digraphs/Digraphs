@@ -97,19 +97,33 @@ function(D, join)
     od;
     Add(S, x);
   od;
-  return true;
+  return tab;
 end);
 
 InstallMethod(IsJoinSemilatticeDigraph, "for a digraph by out-neighbours",
 [IsDigraph],
 function(D)
-  return DIGRAPHS_IsMeetJoinSemilatticeDigraph(D, true);
+  local out;
+  out := DIGRAPHS_IsMeetJoinSemilatticeDigraph(D, true);
+  if out = false then
+    SetJoinSemilatticeDigraphJoinTable(D, fail);
+    return false;
+  fi;
+  SetJoinSemilatticeDigraphJoinTable(D, out);
+  return true;
 end);
 
 InstallMethod(IsMeetSemilatticeDigraph, "for a digraph",
 [IsDigraph],
 function(D)
-  return DIGRAPHS_IsMeetJoinSemilatticeDigraph(D, false);
+  local out;
+  out := DIGRAPHS_IsMeetJoinSemilatticeDigraph(D, false);
+  if out = false then
+    SetMeetSemilatticeDigraphMeetTable(D, fail);
+    return false;
+  fi;
+  SetMeetSemilatticeDigraphMeetTable(D, out);
+  return true;
 end);
 
 InstallMethod(IsStronglyConnectedDigraph, "for a digraph by out-neighbours",

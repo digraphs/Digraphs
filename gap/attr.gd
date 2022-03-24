@@ -126,3 +126,6 @@ DeclareAttribute("NonLowerSemimodularPair", IsDigraph);
 
 DeclareProperty("IsUpperSemimodularDigraph", IsDigraph);
 DeclareProperty("IsLowerSemimodularDigraph", IsDigraph);
+
+DeclareProperty("JoinSemilatticeDigraphJoinTable", IsDigraph);
+DeclareProperty("MeetSemilatticeDigraphMeetTable", IsDigraph);
