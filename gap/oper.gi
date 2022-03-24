@@ -2194,7 +2194,12 @@ InstallMethod(PartialOrderDigraphJoinOfVertices,
 "for a digraph by out-neighbours and two positive integers",
 [IsDigraphByOutNeighboursRep, IsPosInt, IsPosInt],
 function(D, i, j)
-  local x, nbs, intr;
+  local x, nbs, intr, tab;
+
+  if HasJoinSemilatticeDigraphJoinTable(D) then
+    tab := JoinSemilatticeDigraphJoinTable(D);
+    return tab[i, j];
+  fi;
 
   if not IsPartialOrderDigraph(D) then
     ErrorNoReturn("the 1st argument <D> must satisfy ",
@@ -2222,7 +2227,12 @@ InstallMethod(PartialOrderDigraphMeetOfVertices,
 "for a digraph and two positive integers",
 [IsDigraph, IsPosInt, IsPosInt],
 function(D, i, j)
-  local x, nbs, intr;
+  local x, nbs, intr, tab;
+
+  if HasMeetSemilatticeDigraphMeetTable(D) then
+    tab := MeetSemilatticeDigraphMeetTable(D);
+    return tab[i, j];
+  fi;
 
   if not IsPartialOrderDigraph(D) then
     ErrorNoReturn("the 1st argument <D> must satisfy ",
