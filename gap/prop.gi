@@ -38,58 +38,78 @@ D -> IsConnectedDigraph(D) and IsEmpty(ArticulationPoints(D)));
 InstallMethod(IsBridgelessDigraph, "for a digraph", [IsDigraph],
 D -> IsConnectedDigraph(D) and IsEmpty(Bridges(D)));
 
-InstallMethod(DIGRAPHS_IsMeetJoinSemilatticeDigraph, "for a homogeneous list",
-[IsHomogeneousList],
-function(nbs)
-  local i, j, k, n, x, len;
+InstallMethod(DIGRAPHS_IsMeetJoinSemilatticeDigraph, "for a digraph and a bool",
+[IsDigraph, IsBool],
+function(D, join)
+  local P, U, ord, tab, S, N, i, x, T, l, q, z, y, nbs;
 
-  # The IsHomogenousList assumes the list <nbs> contains no or only empty lists
-  n := Length(nbs);
-  for i in [1 .. n] do
-    for j in [i + 1 .. n] do
-      if j in nbs[i] or i in nbs[j] then
-        continue;
-      fi;
-      x := Intersection(nbs[i], nbs[j]);
-      if IsEmpty(x) then
+  if not IsPartialOrderDigraph(D) then
+    return false;
+  fi;
+
+  D   := DigraphMutableCopyIfMutable(D);
+  N   := DigraphNrVertices(D);
+  tab := List([1 .. N], x -> []);  # table of meets/joins
+
+  if join then
+    nbs := OutNeighbours(D);
+    P   := DigraphTopologicalSort(D);
+    U   := OutNeighbours(DigraphReflexiveTransitiveReduction(D));
+  else
+    nbs := InNeighbours(D);
+    P   := Reversed(DigraphTopologicalSort(D));
+    U   := InNeighbours(DigraphReflexiveTransitiveReduction(D));
+  fi;
+
+  ord := [];
+  for i in [1 .. N] do
+    ord[P[i]] := i;
+  od;
+
+  S := [];
+
+  for x in P do
+    tab[x, x] := x;
+    for y in S do
+      T := [];  # EmptyPlist didn't improve speed
+      for z in U[x] do
+        Add(T, tab[y, z]);  # SetAdd didn't improve speed
+      od;
+      T := Set(T);
+      l := Length(T);
+      if l = 0 then
         return false;
       fi;
-      len := Length(x);
-      k := x[len];  # Check whether <k> is the meet of <i> and <j>
-      if Length(nbs[k]) < len then
-        return false;
-      fi;
+      q := T[l];
+      for i in [1 .. l - 1] do
+        z := T[i];
+        if ord[z] > ord[q] then
+          q := z;
+        fi;
+      od;
+      for z in T do
+        if not z in nbs[q] then
+          return false;
+        fi;
+      od;
+      tab[x, y] := q;
+      tab[y, x] := q;
     od;
+    Add(S, x);
   od;
   return true;
 end);
 
 InstallMethod(IsJoinSemilatticeDigraph, "for a digraph by out-neighbours",
-[IsDigraphByOutNeighboursRep],
+[IsDigraph],
 function(D)
-  local topo;
-  if not IsPartialOrderDigraph(D) then
-    return false;
-  fi;
-  topo := DigraphTopologicalSort(D);
-  D := DigraphMutableCopy(D);
-  D := OnDigraphs(D, PermList(topo) ^ -1);
-  Apply(D!.OutNeighbours, Set);
-  return DIGRAPHS_IsMeetJoinSemilatticeDigraph(D!.OutNeighbours);
+  return DIGRAPHS_IsMeetJoinSemilatticeDigraph(D, true);
 end);
 
 InstallMethod(IsMeetSemilatticeDigraph, "for a digraph",
-[IsDigraphByOutNeighboursRep],
+[IsDigraph],
 function(D)
-  local topo, list;
-  if not IsPartialOrderDigraph(D) then
-    return false;
-  fi;
-  topo := Reversed(DigraphTopologicalSort(D));
-  D := OnDigraphs(DigraphMutableCopyIfMutable(D), PermList(topo) ^ -1);
-  list := InNeighboursMutableCopy(D);
-  Apply(list, Set);
-  return DIGRAPHS_IsMeetJoinSemilatticeDigraph(list);
+  return DIGRAPHS_IsMeetJoinSemilatticeDigraph(D, false);
 end);
 
 InstallMethod(IsStronglyConnectedDigraph, "for a digraph by out-neighbours",
