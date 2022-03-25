@@ -1712,6 +1712,16 @@ gap> gr := CycleDigraph(5);
 <immutable cycle digraph with 5 vertices>
 gap> PartialOrderDigraphJoinOfVertices(gr, 1, 4);
 Error, the 1st argument <D> must satisfy IsPartialOrderDigraph,
+gap> D := DigraphReflexiveTransitiveClosure(ChainDigraph(4));
+<immutable preorder digraph with 4 vertices, 10 edges>
+gap> IsJoinSemilatticeDigraph(D);
+true
+gap> PartialOrderDigraphJoinOfVertices(D, 2, 3);
+3
+gap> IsMeetSemilatticeDigraph(D);
+true
+gap> PartialOrderDigraphMeetOfVertices(D, 2, 3);
+2
 
 #Join semilattice on 9 vertices
 gap> gr := DigraphFromDiSparse6String(".HiR@AeNcC?oD?G`oAGXIoAGXAe_COqDK^F");
