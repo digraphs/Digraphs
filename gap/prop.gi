@@ -38,6 +38,8 @@ D -> IsConnectedDigraph(D) and IsEmpty(ArticulationPoints(D)));
 InstallMethod(IsBridgelessDigraph, "for a digraph", [IsDigraph],
 D -> IsConnectedDigraph(D) and IsEmpty(Bridges(D)));
 
+# The method below is based on Listing 11.9 of 'Free Lattices'
+# by Ralph Freese et. al.
 InstallMethod(DIGRAPHS_IsMeetJoinSemilatticeDigraph, "for a digraph and a bool",
 [IsDigraph, IsBool],
 function(D, join)
