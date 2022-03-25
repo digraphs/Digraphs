@@ -49,7 +49,7 @@ function(D, join)
     return false;
   fi;
 
-  D   := DigraphMutableCopyIfMutable(D);
+  D   := DigraphImmutableCopyIfMutable(D);
   N   := DigraphNrVertices(D);
   tab := List([1 .. N], x -> []);  # table of meets/joins
 

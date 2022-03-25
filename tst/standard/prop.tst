@@ -1240,6 +1240,12 @@ gap> IsMeetSemilatticeDigraph(D);
 false
 gap> D;
 <mutable digraph with 4 vertices, 3 edges>
+gap> D := Digraph(IsMutable, [[2, 3], [4], [4], []]);
+<mutable digraph with 4 vertices, 4 edges>
+gap> DigraphReflexiveTransitiveClosure(D);
+<mutable digraph with 4 vertices, 9 edges>
+gap> IsJoinSemilatticeDigraph(D);
+true
 
 # Join semilattice on 9 vertices
 gap> gr := DigraphFromDiSparse6String(".HiR@AeNcC?oD?G`oAGXIoAGXAe_COqDK^F");
