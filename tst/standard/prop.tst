@@ -1208,6 +1208,38 @@ gap> IsMeetSemilatticeDigraph(gr);
 false
 gap> IsJoinSemilatticeDigraph(gr);
 false
+gap> D := DigraphReflexiveTransitiveClosure(ChainDigraph(10));
+<immutable preorder digraph with 10 vertices, 55 edges>
+gap> IsMeetSemilatticeDigraph(D);
+true
+gap> IsJoinSemilatticeDigraph(D);
+true
+gap> D := DigraphReflexiveTransitiveClosure(ChainDigraph(10));
+<immutable preorder digraph with 10 vertices, 55 edges>
+gap> IsJoinSemilatticeDigraph(D);
+true
+gap> IsMeetSemilatticeDigraph(D);
+true
+gap> D := DigraphAddVertex(D, 11);
+<immutable digraph with 11 vertices, 55 edges>
+gap> D := DigraphAddEdge(D, [11, 4]);
+<immutable digraph with 11 vertices, 56 edges>
+gap> D := DigraphReflexiveTransitiveClosure(D);
+<immutable preorder digraph with 11 vertices, 63 edges>
+gap> IsJoinSemilatticeDigraph(D);
+true
+gap> IsMeetSemilatticeDigraph(D);
+false
+gap> D := Digraph([[1], [2]]);
+<immutable digraph with 2 vertices, 2 edges>
+gap> IsJoinSemilatticeDigraph(D);
+false
+gap> D := ChainDigraph(IsMutable, 4);
+<mutable digraph with 4 vertices, 3 edges>
+gap> IsMeetSemilatticeDigraph(D);
+false
+gap> D;
+<mutable digraph with 4 vertices, 3 edges>
 
 # Join semilattice on 9 vertices
 gap> gr := DigraphFromDiSparse6String(".HiR@AeNcC?oD?G`oAGXIoAGXAe_COqDK^F");
