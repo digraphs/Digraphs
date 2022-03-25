@@ -2436,3 +2436,45 @@ fail
   </Description>
 </ManSection>
 <#/GAPDoc>
+
+<#GAPDoc Label="MeetSemilatticeDigraphMeetTable">
+<ManSection>
+  <Attr Name="MeetSemilatticeDigraphMeetTable" Arg="digraph"/>
+  <Attr Name="JoinSemilatticeDigraphJoinTable" Arg="digraph"/>
+  <Returns>A matrix or <K>fail</K>.</Returns>
+  <Description>
+    <C>MeetSemilatticeDigraphMeetTable</C> returns the <E>meet table</E> of
+    <A>digraph</A> if <A>digraph</A> is a meet semilattice digraph
+    <Ref Prop="IsMeetSemilatticeDigraph"/>. Similarly,
+    <C>JoinSemilatticeDigraphJoinTable</C> returns the <E>join table</E> of
+    <A>digraph</A> if <A>digraph</A> is a join semilattice digraph.
+    <Ref Prop="IsJoinSemilatticeDigraph"/>.<P/>
+
+    Where <A>digraph</A> is a meet semilattice digraph with <M>n</M> vertices,
+    the <E>meet table</E> of <A>digraph</A> is the matrix <M>A</M> such that
+    the <M>(i, j)</M> entry of <M>A</M> is equal to the meet of vertices
+    <M>i</M> and <M>j</M>.<P/>
+
+    Similarly, where <A>digraph</A> is a join semilattice digraph with <M>n</M>
+    vertices, the <E>join table</E> of <A>digraph</A> is the matrix <M>A</M>
+    such that the <M>(i, j)</M> entry of <M>A</M> is equal to the join of
+    vertices <M>i</M> and <M>j</M>.
+
+    <Example><![CDATA[
+gap> D := Digraph([[1, 2, 3, 4], [2, 4], [3, 4], [4]]);
+<immutable digraph with 4 vertices, 9 edges>
+gap> IsJoinSemilatticeDigraph(D);
+true
+gap> Display(JoinSemilatticeDigraphJoinTable(D));
+[ [  1,  2,  3,  4 ],
+  [  2,  2,  4,  4 ],
+  [  3,  4,  3,  4 ],
+  [  4,  4,  4,  4 ] ]
+gap> D := CycleDigraph(5);
+<immutable cycle digraph with 5 vertices>
+gap> JoinSemilatticeDigraphJoinTable(D);
+fail
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
