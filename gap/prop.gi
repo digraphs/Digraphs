@@ -50,6 +50,11 @@ function(D, join)
   fi;
 
   D   := DigraphImmutableCopyIfMutable(D);
+
+  if IsMultiDigraph(D) then
+    D := DigraphRemoveAllMultipleEdges(D);
+  fi;
+
   N   := DigraphNrVertices(D);
   tab := List([1 .. N], x -> []);  # table of meets/joins
 
