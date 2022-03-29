@@ -78,9 +78,9 @@ function(D, join)
   for x in P do
     tab[x, x] := x;
     for y in S do
-      T := [];  # EmptyPlist didn't improve speed
+      T := [];
       for z in U[x] do
-        Add(T, tab[y, z]);  # SetAdd didn't improve speed
+        Add(T, tab[y, z]);
       od;
       T := Set(T);
       l := Length(T);
