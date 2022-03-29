@@ -25,7 +25,7 @@ if not IsBound(DIGRAPH_OUT_NBS) and
 fi;
 
 BindGlobal("DIGRAPHS_IsGrapeLoaded",
-           IsPackageMarkedForLoading("grape", "4.8.1"));
+           {} -> IsPackageMarkedForLoading("grape", "4.8.1"));
 
 # To avoid warnings when GRAPE is not loaded
 if not IsBound(IsGraph) then

@@ -211,7 +211,7 @@ gap> DigraphRange(gr);
 [ 2, 3, 2 ]
 gap> gr;
 <immutable digraph with 3 vertices, 3 edges>
-gap> if DIGRAPHS_IsGrapeLoaded then
+gap> if DIGRAPHS_IsGrapeLoaded() then
 >   g := Graph(gr);
 >   if not Digraph(g) = gr then
 >     Print("fail");
@@ -1627,7 +1627,7 @@ gap> MakeImmutable(D);
 # 
 gap> D := NullDigraph(10);
 <immutable empty digraph with 10 vertices>
-gap> if DIGRAPHS_IsGrapeLoaded then
+gap> if DIGRAPHS_IsGrapeLoaded() then
 >   D := Graph(D);
 >   if D <> rec(
 >       adjacencies := [[]],

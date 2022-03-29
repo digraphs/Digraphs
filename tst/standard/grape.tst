@@ -129,7 +129,7 @@ rec( adjacencies := [ [ 2, 4 ] ], group := Group([ (1,3), (1,2)(3,4) ]),
   schreierVector := [ -1, 2, 1, 2 ] )
 
 #  Digraph: copying group from Grape
-gap> if DIGRAPHS_IsGrapeLoaded then
+gap> if DIGRAPHS_IsGrapeLoaded() then
 >   gr := Digraph(JohnsonGraph(5, 3));
 > else
 >   gr := JohnsonDigraph(5, 3);
@@ -140,7 +140,7 @@ gap> HasDigraphGroup(gr);
 true
 gap> DigraphGroup(gr);
 Group([ (1,7,10,6,3)(2,8,4,9,5), (4,7)(5,8)(6,9) ])
-gap> if DIGRAPHS_IsGrapeLoaded then
+gap> if DIGRAPHS_IsGrapeLoaded() then
 >   gr := Digraph(CompleteGraph(Group((1, 2, 3), (1, 2))));
 > else
 >   gr := Digraph([[2, 3], [1, 3], [1, 2]]);
@@ -150,7 +150,7 @@ gap> HasDigraphGroup(gr);
 true
 gap> DigraphGroup(gr);
 Group([ (1,2,3), (1,2) ])
-gap> if DIGRAPHS_IsGrapeLoaded then
+gap> if DIGRAPHS_IsGrapeLoaded() then
 >   gr := Digraph(Graph(Group([()]),
 >                       [1, 2, 3],
 >                       OnPoints,
@@ -252,7 +252,7 @@ true
 #  Graph
 gap> gr := Digraph([[2, 2], []]);
 <immutable multidigraph with 2 vertices, 2 edges>
-gap> if DIGRAPHS_IsGrapeLoaded then
+gap> if DIGRAPHS_IsGrapeLoaded() then
 >   Graph(gr);
 > fi;
 
