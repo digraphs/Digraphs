@@ -1,8 +1,17 @@
 # CHANGELOG – Digraphs package for GAP
-Copyright © 2014-21 by Jan De Beule, Julius Jonušas, James D. Mitchell,
+Copyright © 2014-22 by Jan De Beule, Julius Jonušas, James D. Mitchell,
 Wilf A. Wilson, Michael Young et al.
 
 Licensing information can be found in the `LICENSE` file.
+
+## Version 1.5.1 (released 29/03/2022)
+
+This minor release contains several bugfixes and technical changes. This includes:
+
+* Bugfix: vertex labels are no longer wrongly retained when using `DigraphEdgeUnion`. This was reported by [Wilf A. Wilson][] in [Issue #496](https://github.com/digraphs/Digraphs/issues/496) and fixed by Joseph Edwards in [PR #507](https://github.com/digraphs/Digraphs/pull/507).
+* Bugfix: a segfault could be caused by calling `OutNeighbours` with an inappropriate argument. This was reported by [Wilf A. Wilson][] in [Issue #518](https://github.com/digraphs/Digraphs/issues/518) and fixed by [James D. Mitchell][] in [PR #519](https://github.com/digraphs/Digraphs/pull/519).
+* [Wilf A. Wilson][] improved the performance of `DigraphAddEdge` for digraphs without edge labels in [PR #509](https://github.com/digraphs/Digraphs/pull/509).
+* [Max Horn][] changed the declaration of the variable `Vertices` to improve compatibility with  Grape in [PR #530](https://github.com/digraphs/Digraphs/pull/530).
 
 ## Version 1.5.0 (released 27/10/2021)
 
