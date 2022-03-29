@@ -132,7 +132,7 @@ function(D)
          "the Grape graph will have fewer\n#I  edges than the original,");
   fi;
 
-  if not DIGRAPHS_IsGrapeLoaded then
+  if not DIGRAPHS_IsGrapeLoaded() then
     Info(InfoWarning, 1, "Grape is not loaded,");
   fi;
 
