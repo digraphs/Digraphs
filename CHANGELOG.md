@@ -1,8 +1,17 @@
 # CHANGELOG – Digraphs package for GAP
-Copyright © 2014-21 by Jan De Beule, Julius Jonušas, James D. Mitchell,
+Copyright © 2014-22 by Jan De Beule, Julius Jonušas, James D. Mitchell,
 Wilf A. Wilson, Michael Young et al.
 
 Licensing information can be found in the `LICENSE` file.
+
+## Version 1.5.1 (released 29/03/2022)
+
+This minor release contains several bugfixes and technical changes. This includes:
+
+* Bugfix: vertex labels are no longer wrongly retained when using `DigraphEdgeUnion`. This was reported by [Wilf A. Wilson][] in [Issue #496](https://github.com/digraphs/Digraphs/issues/496) and fixed by Joseph Edwards in [PR #507](https://github.com/digraphs/Digraphs/pull/507).
+* Bugfix: a segfault could be caused by calling `OutNeighbours` with an inappropriate argument. This was reported by [Wilf A. Wilson][] in [Issue #518](https://github.com/digraphs/Digraphs/issues/518) and fixed by [James D. Mitchell][] in [PR #519](https://github.com/digraphs/Digraphs/pull/519).
+* [Wilf A. Wilson][] improved the performance of `DigraphAddEdge` for digraphs without edge labels in [PR #509](https://github.com/digraphs/Digraphs/pull/509).
+* [Max Horn][] changed the declaration of the variable `Vertices` to improve compatibility with  Grape in [PR #530](https://github.com/digraphs/Digraphs/pull/530).
 
 ## Version 1.5.0 (released 27/10/2021)
 
@@ -21,7 +30,7 @@ Racine, and Ben Spiers as contributors to the package.
 
 We especially wish to highlight the greatly expanded functionality for creating digraphs that are either famous one-off examples, or are part of a family of standard examples.
 
-In particular, Finn Buck, Lea Racine, [James D. Mitchell][], Marina Anagnostopoulou-Merkouri, and Ben Spiers implemented functions to construct many more families of standard examples (currently documented in Section 3.5), which were added in in PRs
+In particular, Marina Anagnostopoulou-Merkouri, Finn Buck, [James D. Mitchell][], Lea Racine, and Ben Spiers implemented functions to construct many more families of standard examples (currently documented in Section 3.5), which were added in in PRs
 [#408](https://github.com/digraphs/Digraphs/pull/408),
 [#409](https://github.com/digraphs/Digraphs/pull/409),
 [#411](https://github.com/digraphs/Digraphs/pull/411),
@@ -36,7 +45,7 @@ In particular, Finn Buck, Lea Racine, [James D. Mitchell][], Marina Anagnostopou
 [#456](https://github.com/digraphs/Digraphs/pull/456), and
 [#490](https://github.com/digraphs/Digraphs/pull/490).
 
-Furthermore,  Reinis Cirpons, Tom Conti-Leslie, and Murray Whyte added a database of one-off named graphs and digraphs in [PR #404](https://github.com/digraphs/Digraphs/pull/404).
+Furthermore, Marina Anagnostopoulou-Merkouri, Reinis Cirpons, Tom Conti-Leslie, Lea Racine, Maria Tsalakou, and Murray Whyte added a database of one-off named graphs and digraphs in [PR #404](https://github.com/digraphs/Digraphs/pull/404).
 These digraphs can be constructed by calling `Digraph` with a string of appropriate name, e.g. `Digraph("brinkmann")`.
 The available names can be accessed with the `ListNamedDigraphs` function.
 

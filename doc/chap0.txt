@@ -3,7 +3,7 @@
                                     [1X[5XDigraphs[105X[101X
   
   
-                                 Version 1.5.0
+                                 Version 1.5.1
   
   
                                   Jan De Beule
@@ -18,11 +18,19 @@
   
                                 Michael C. Young
   
+                        Marina Anagnostopoulou-Merkouri
+  
+                                   Finn Buck
+  
                                  Stuart Burrell
   
                                  Reinis Cirpons
   
+                                Tom Conti-Leslie
+  
                                   Luke Elliott
+  
+                                 Ewan Gilligan
   
                                     Max Horn
   
@@ -30,9 +38,13 @@
   
                                 Markus Pfeiffer
   
+                                   Lea Racine
+  
                               Christopher Russell
   
                                    Finn Smith
+  
+                                   Ben Spiers
   
                                   Murray White
   
@@ -65,7 +77,7 @@
   
   -------------------------------------------------------
   [1XCopyright[101X
-  [33X[0;0Y©  2014-21  by  Jan  De  Beule,  Julius  Jonušas, James D. Mitchell, Wilf A.
+  [33X[0;0Y©  2014-22  by  Jan  De  Beule,  Julius  Jonušas, James D. Mitchell, Wilf A.
   Wilson, Michael Young et al.[133X
   
   [33X[0;0Y[5XDigraphs[105X  is  free  software; you can redistribute it and/or modify it under

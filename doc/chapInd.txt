@@ -94,8 +94,7 @@
       for a positive number of digraphs 3.3-32 
   [2XDigraphDirectProductProjections[102X 3.3-39 
   [2XDigraphDisjointUnion[102X, for a list of digraphs 3.3-28 
-      for an
-      arbitrary number of digraphs 3.3-28 
+      for an arbitrary number of digraphs 3.3-28 
   [2XDigraphDistanceSet[102X, for a digraph, a pos int, and a list 5.3-5 
       for a digraph, a pos int, and an int 5.3-5 
   [2XDigraphDual[102X 3.3-11 
