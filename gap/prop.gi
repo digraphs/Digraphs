@@ -43,7 +43,7 @@ D -> IsConnectedDigraph(D) and IsEmpty(Bridges(D)));
 InstallMethod(DIGRAPHS_IsMeetJoinSemilatticeDigraph, "for a digraph and a bool",
 [IsDigraph, IsBool],
 function(D, join)
-  local P, U, ord, tab, S, N, i, x, T, l, q, z, y, nbs;
+  local P, U, ord, tab, S, N, i, x, T, l, q, z, y;
 
   if not IsPartialOrderDigraph(D) then
     return false;
@@ -59,11 +59,9 @@ function(D, join)
   tab := List([1 .. N], x -> []);  # table of meets/joins
 
   if join then
-    nbs := OutNeighbours(D);
     P   := DigraphTopologicalSort(D);
     U   := OutNeighbours(DigraphReflexiveTransitiveReduction(D));
   else
-    nbs := InNeighbours(D);
     P   := Reversed(DigraphTopologicalSort(D));
     U   := InNeighbours(DigraphReflexiveTransitiveReduction(D));
   fi;
@@ -95,7 +93,9 @@ function(D, join)
         fi;
       od;
       for z in T do
-        if not z in nbs[q] then
+        if join and not IsDigraphEdge(D, q, z) then
+          return false;
+        elif not join and not IsDigraphEdge(D, z, q) then
           return false;
         fi;
       od;
