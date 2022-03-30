@@ -4,6 +4,10 @@ Wilf A. Wilson, Michael Young et al.
 
 Licensing information can be found in the `LICENSE` file.
 
+## Version 1.5.2 (released 30/03/2022)
+
+This is a very minor release containing technical changes for maintaining compatibility with other GAP packages.
+
 ## Version 1.5.1 (released 29/03/2022)
 
 This minor release contains several bugfixes and technical changes. This includes:
