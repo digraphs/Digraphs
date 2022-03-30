@@ -23,11 +23,11 @@ gap> OutNeighbours(gr);
 [ [ 8 ], [ 4, 5, 6, 8, 9 ], [ 2, 4, 5, 7, 10 ], [ 9 ], [ 1, 4, 6, 7, 9 ], 
   [ 2, 3, 6, 7, 10 ], [ 3, 4, 5, 8, 9 ], [ 3, 4, 9, 10 ], 
   [ 1, 2, 3, 5, 6, 9, 10 ], [ 2, 4, 5, 6, 9 ] ]
-gap> not DIGRAPHS_IsGrapeLoaded
-> or (DIGRAPHS_IsGrapeLoaded and Digraph(Graph(gr)) = gr);
+gap> not DIGRAPHS_IsGrapeLoaded()
+> or (DIGRAPHS_IsGrapeLoaded() and Digraph(Graph(gr)) = gr);
 true
-gap> not DIGRAPHS_IsGrapeLoaded
-> or (DIGRAPHS_IsGrapeLoaded and Graph(Digraph(Graph(gr))).adjacencies =
+gap> not DIGRAPHS_IsGrapeLoaded()
+> or (DIGRAPHS_IsGrapeLoaded() and Graph(Digraph(Graph(gr))).adjacencies =
 >     Graph(gr).adjacencies);
 true
 gap> adj := [
@@ -38,8 +38,8 @@ gap> adj := [
 > [1, 6, 8, 9, 11, 12, 13, 14], [2, 4, 7, 9, 10, 11, 13, 15, 16]];;
 gap> func := function(x, y) return y in adj[x]; end;
 function( x, y ) ... end
-gap> not DIGRAPHS_IsGrapeLoaded or
-> (DIGRAPHS_IsGrapeLoaded and
+gap> not DIGRAPHS_IsGrapeLoaded() or
+> (DIGRAPHS_IsGrapeLoaded() and
 >  Digraph(Graph(Group(()), [1 .. 20], OnPoints, func, true)) = Digraph(adj));
 true
 
