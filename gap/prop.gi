@@ -99,7 +99,7 @@ function(D)
   if not IsPartialOrderDigraph(D) then
     return [false, fail];
   elif IsMultiDigraph(D) then
-    Error();
+    ErrorNoReturn("the argument must not be a multidigraph,");
   fi;
   copy   := DigraphMutableCopyIfMutable(D); # copy iff D is mutable
   P      := DigraphTopologicalSort(D);
@@ -116,7 +116,7 @@ function(D)
   if not IsPartialOrderDigraph(D) then
     return [false, fail];
   elif IsMultiDigraph(D) then
-    Error();
+    ErrorNoReturn("the argument must not be a multidigraph,");
   fi;
   copy   := DigraphMutableCopyIfMutable(D); # copy iff D is mutable
   P      := Reversed(DigraphTopologicalSort(D));
