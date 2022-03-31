@@ -40,7 +40,8 @@ D -> IsConnectedDigraph(D) and IsEmpty(Bridges(D)));
 
 # The method below is based on Listing 11.9 of 'Free Lattices'
 # by Ralph Freese et. al.
-InstallMethod(DIGRAPHS_MeetJoinTable, "for a digraph, a list, a list, and a bool",
+InstallMethod(DIGRAPHS_MeetJoinTable, "for a digraph, a list, a list,
+                                         and a bool",
 [IsDigraph, IsList, IsList, IsBool],
 function(D, P, U, join)
   local ord, tab, S, N, i, x, T, l, q, z, y;
@@ -101,9 +102,9 @@ function(D)
   elif IsMultiDigraph(D) then
     ErrorNoReturn("the argument must not be a multidigraph,");
   fi;
-  copy   := DigraphMutableCopyIfMutable(D); # copy iff D is mutable
+  copy   := DigraphMutableCopyIfMutable(D);
   P      := DigraphTopologicalSort(D);
-  U      := OutNeighbours(DigraphReflexiveTransitiveReduction(copy)); # copy iff D is immutable
+  U      := OutNeighbours(DigraphReflexiveTransitiveReduction(copy));
   tab    := DIGRAPHS_MeetJoinTable(D, P, U, true);
   SetDigraphJoinTable(D, tab);
   return [tab <> fail, tab];
@@ -118,9 +119,9 @@ function(D)
   elif IsMultiDigraph(D) then
     ErrorNoReturn("the argument must not be a multidigraph,");
   fi;
-  copy   := DigraphMutableCopyIfMutable(D); # copy iff D is mutable
+  copy   := DigraphMutableCopyIfMutable(D);
   P      := Reversed(DigraphTopologicalSort(D));
-  U      := InNeighbours(DigraphReflexiveTransitiveReduction(copy)); # copy iff D is immutable
+  U      := InNeighbours(DigraphReflexiveTransitiveReduction(copy));
   tab    := DIGRAPHS_MeetJoinTable(D, P, U, false);
   SetDigraphMeetTable(D, tab);
   return [tab <> fail, tab];
