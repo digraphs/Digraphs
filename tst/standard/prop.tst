@@ -1246,6 +1246,20 @@ gap> DigraphReflexiveTransitiveClosure(D);
 <mutable digraph with 4 vertices, 9 edges>
 gap> IsJoinSemilatticeDigraph(D);
 true
+gap> D := Digraph([[1, 2, 2], [2]]);
+<immutable multidigraph with 2 vertices, 4 edges>
+gap> IsJoinSemilatticeDigraph(D);
+Error, the argument must not be a multidigraph,
+gap> IsMeetSemilatticeDigraph(D);
+Error, the argument must not be a multidigraph,
+gap> D := DigraphReflexiveTransitiveClosure(ChainDigraph(4));
+<immutable preorder digraph with 4 vertices, 10 edges>
+gap> AdjacencyMatrix(D);
+[ [ 1, 1, 1, 1 ], [ 0, 1, 1, 1 ], [ 0, 0, 1, 1 ], [ 0, 0, 0, 1 ] ]
+gap> IsJoinSemilatticeDigraph(D);
+true
+gap> IsMeetSemilatticeDigraph(D);
+true
 
 # Join semilattice on 9 vertices
 gap> gr := DigraphFromDiSparse6String(".HiR@AeNcC?oD?G`oAGXIoAGXAe_COqDK^F");
