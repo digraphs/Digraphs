@@ -2196,8 +2196,8 @@ InstallMethod(PartialOrderDigraphJoinOfVertices,
 function(D, i, j)
   local x, nbs, intr, tab;
 
-  if HasJoinSemilatticeDigraphJoinTable(D) then
-    tab := JoinSemilatticeDigraphJoinTable(D);
+  if HasDigraphJoinTable(D) then
+    tab := DigraphJoinTable(D);
     return tab[i, j];
   fi;
 
@@ -2229,8 +2229,8 @@ InstallMethod(PartialOrderDigraphMeetOfVertices,
 function(D, i, j)
   local x, nbs, intr, tab;
 
-  if HasMeetSemilatticeDigraphMeetTable(D) then
-    tab := MeetSemilatticeDigraphMeetTable(D);
+  if HasDigraphMeetTable(D) then
+    tab := DigraphMeetTable(D);
     return tab[i, j];
   fi;
 

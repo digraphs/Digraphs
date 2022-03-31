@@ -28,7 +28,7 @@
     <#Include Label="IsPreorderDigraph">
     <#Include Label="IsPartialOrderDigraph">
     <#Include Label="IsMeetSemilatticeDigraph">
-    <#Include Label="MeetSemilatticeDigraphMeetTable">
+    <#Include Label="DigraphMeetTable">
     <#Include Label="IsUpperSemimodularDigraph">
   </Section>
 

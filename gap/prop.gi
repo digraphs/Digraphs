@@ -105,7 +105,7 @@ function(D)
   P      := DigraphTopologicalSort(D);
   U      := OutNeighbours(DigraphReflexiveTransitiveReduction(copy)); # copy iff D is immutable
   tab    := DIGRAPHS_MeetJoinTable(D, P, U, true);
-  SetJoinSemilatticeDigraphJoinTable(D, tab);
+  SetDigraphJoinTable(D, tab);
   return [tab <> fail, tab];
 end);
 
@@ -122,7 +122,7 @@ function(D)
   P      := Reversed(DigraphTopologicalSort(D));
   U      := InNeighbours(DigraphReflexiveTransitiveReduction(copy)); # copy iff D is immutable
   tab    := DIGRAPHS_MeetJoinTable(D, P, U, false);
-  SetMeetSemilatticeDigraphMeetTable(D, tab);
+  SetDigraphMeetTable(D, tab);
   return [tab <> fail, tab];
 end);
 

@@ -2670,10 +2670,10 @@ function(D)
   return DIGRAPHS_NonSemimodularPair(InNeighbours(D)) = fail;
 end);
 
-InstallMethod(JoinSemilatticeDigraphJoinTable, "for a digraph",
+InstallMethod(DigraphJoinTable, "for a digraph",
 [IsDigraph],
 D -> DIGRAPHS_IsJoinSemilatticeAndJoinTable(D)[2]);
 
-InstallMethod(MeetSemilatticeDigraphMeetTable, "for a digraph",
+InstallMethod(DigraphMeetTable, "for a digraph",
 [IsDigraph],
 D -> DIGRAPHS_IsMeetSemilatticeAndMeetTable(D)[2]);
