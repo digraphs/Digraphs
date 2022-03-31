@@ -40,9 +40,9 @@ D -> IsConnectedDigraph(D) and IsEmpty(Bridges(D)));
 
 # The method below is based on Listing 11.9 of 'Free Lattices'
 # by Ralph Freese et. al.
-InstallMethod(DIGRAPHS_MeetJoinTable, "for a digraph, a list, and a list of lists",
-[IsDigraph, IsList, IsList],
-function(D, P, U)
+InstallMethod(DIGRAPHS_MeetJoinTable, "for a digraph, a list, a list, and a bool",
+[IsDigraph, IsList, IsList, IsBool],
+function(D, P, U, join)
   local ord, tab, S, N, i, x, T, l, q, z, y;
 
   N   := DigraphNrVertices(D);
@@ -75,7 +75,9 @@ function(D, P, U)
         fi;
       od;
       for z in T do
-        if not IsDigraphEdge(D, q, z) then
+        if join and not IsDigraphEdge(D, q, z) then
+          return false;
+        elif not join and not IsDigraphEdge(D, z, q) then
           return false;
         fi;
       od;
@@ -99,7 +101,7 @@ function(D)
   copy   := DigraphMutableCopyIfMutable(D); # copy iff D is mutable
   P      := DigraphTopologicalSort(D);
   U      := OutNeighbours(DigraphReflexiveTransitiveReduction(copy)); # copy iff D is immutable
-  tab    := DIGRAPHS_MeetJoinTable(D, P, U);
+  tab    := DIGRAPHS_MeetJoinTable(D, P, U, true);
   if tab = fail then
     SetJoinSemilatticeDigraphJoinTable(D, fail);
     return [false, fail];
@@ -120,7 +122,7 @@ function(D)
   copy   := DigraphMutableCopyIfMutable(D); # copy iff D is mutable
   P      := Reversed(DigraphTopologicalSort(D));
   U      := InNeighbours(DigraphReflexiveTransitiveReduction(copy)); # copy iff D is immutable
-  tab    := DIGRAPHS_MeetJoinTable(D, P, U);
+  tab    := DIGRAPHS_MeetJoinTable(D, P, U, false);
   if tab = fail then
     SetJoinSemilatticeDigraphJoinTable(D, fail);
     return [false, fail];
