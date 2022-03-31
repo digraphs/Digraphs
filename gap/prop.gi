@@ -49,10 +49,12 @@ function(D, join)
     return false;
   fi;
 
-  D   := DigraphImmutableCopyIfMutable(D);
-
   if IsMultiDigraph(D) then
-    D := DigraphRemoveAllMultipleEdges(D);
+    D := DigraphMutableCopy(D); # copy 1
+    DigraphRemoveAllMultipleEdges(D);
+    MakeImmutable(D);
+  else 
+    D := DigraphImmutableCopyIfMutable(D); # copy 1
   fi;
 
   N   := DigraphNrVertices(D);
@@ -60,7 +62,7 @@ function(D, join)
 
   if join then
     P   := DigraphTopologicalSort(D);
-    U   := OutNeighbours(DigraphReflexiveTransitiveReduction(D));
+    U   := OutNeighbours(DigraphReflexiveTransitiveReduction(D)); # copy 2 required
   else
     P   := Reversed(DigraphTopologicalSort(D));
     U   := InNeighbours(DigraphReflexiveTransitiveReduction(D));
@@ -107,12 +109,25 @@ function(D, join)
   return tab;
 end);
 
+DIGRAPHS_IsMeetJoinSemilatticeDigraph := function(D)
+  return 
+end;
+
 InstallMethod(IsJoinSemilatticeDigraph, "for a digraph by out-neighbours",
 [IsDigraph],
 function(D)
   local out;
-  out := DIGRAPHS_IsMeetJoinSemilatticeDigraph(D, true);
-  if out = false then
+  if not IsPartialOrderDigraph(D) then
+    return false;
+  elif IsMultiDigraph(D) then
+    Error();
+  fi;
+
+  D   := DigraphImmutableCopyIfMutable(D); # copy 1
+  P   := DigraphTopologicalSort(D);
+  U   := OutNeighbours(DigraphReflexiveTransitiveReduction(D)); # copy 2 required
+  out := DIGRAPHS_IsMeetJoinSemilatticeDigraph(D, P, U);
+  if out = fail then
     SetJoinSemilatticeDigraphJoinTable(D, fail);
     return false;
   fi;
@@ -124,12 +139,20 @@ InstallMethod(IsMeetSemilatticeDigraph, "for a digraph",
 [IsDigraph],
 function(D)
   local out;
-  out := DIGRAPHS_IsMeetJoinSemilatticeDigraph(D, false);
-  if out = false then
-    SetMeetSemilatticeDigraphMeetTable(D, fail);
+  if not IsPartialOrderDigraph(D) then
+    return false;
+  elif IsMultiDigraph(D) then
+    Error();
+  fi;
+  copy   := DigraphMutableCopyIfMutable(D); # copy iff D is mutable
+  P      := Reversed(DigraphTopologicalSort(D));
+  U      := InNeighbours(DigraphReflexiveTransitiveReduction(copy)); # copy iff D is immutable
+  out    := DIGRAPHS_IsMeetJoinSemilatticeDigraph(D, P, U);
+  if out = fail then
+    SetJoinSemilatticeDigraphJoinTable(D, fail);
     return false;
   fi;
-  SetMeetSemilatticeDigraphMeetTable(D, out);
+  SetJoinSemilatticeDigraphJoinTable(D, out);
   return true;
 end);
 
