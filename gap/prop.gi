@@ -65,7 +65,7 @@ function(D, P, U, join)
       T := Set(T);
       l := Length(T);
       if l = 0 then
-        return false;
+        return fail;
       fi;
       q := T[l];
       for i in [1 .. l - 1] do
@@ -76,9 +76,9 @@ function(D, P, U, join)
       od;
       for z in T do
         if join and not IsDigraphEdge(D, q, z) then
-          return false;
+          return fail;
         elif not join and not IsDigraphEdge(D, z, q) then
-          return false;
+          return fail;
         fi;
       od;
       tab[x, y] := q;
@@ -94,7 +94,7 @@ InstallMethod(DIGRAPHS_IsJoinSemilatticeAndJoinTable, "for a digraph",
 function(D)
   local tab, copy, P, U;
   if not IsPartialOrderDigraph(D) then
-    return false;
+    return [false, fail];
   elif IsMultiDigraph(D) then
     Error();
   fi;
@@ -102,12 +102,8 @@ function(D)
   P      := DigraphTopologicalSort(D);
   U      := OutNeighbours(DigraphReflexiveTransitiveReduction(copy)); # copy iff D is immutable
   tab    := DIGRAPHS_MeetJoinTable(D, P, U, true);
-  if tab = fail then
-    SetJoinSemilatticeDigraphJoinTable(D, fail);
-    return [false, fail];
-  fi;
   SetJoinSemilatticeDigraphJoinTable(D, tab);
-  return [true, tab];
+  return [tab <> fail, tab];
 end);
 
 InstallMethod(DIGRAPHS_IsMeetSemilatticeAndMeetTable, "for a digraph",
@@ -115,7 +111,7 @@ InstallMethod(DIGRAPHS_IsMeetSemilatticeAndMeetTable, "for a digraph",
 function(D)
   local tab, copy, P, U;
   if not IsPartialOrderDigraph(D) then
-    return false;
+    return [false, fail];
   elif IsMultiDigraph(D) then
     Error();
   fi;
@@ -123,12 +119,8 @@ function(D)
   P      := Reversed(DigraphTopologicalSort(D));
   U      := InNeighbours(DigraphReflexiveTransitiveReduction(copy)); # copy iff D is immutable
   tab    := DIGRAPHS_MeetJoinTable(D, P, U, false);
-  if tab = fail then
-    SetJoinSemilatticeDigraphJoinTable(D, fail);
-    return [false, fail];
-  fi;
-  SetJoinSemilatticeDigraphJoinTable(D, tab);
-  return [true, tab];
+  SetMeetSemilatticeDigraphMeetTable(D, tab);
+  return [tab <> fail, tab];
 end);
 
 InstallMethod(IsJoinSemilatticeDigraph, "for a digraph",
