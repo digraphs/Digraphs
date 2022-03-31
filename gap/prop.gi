@@ -45,6 +45,9 @@ InstallMethod(DIGRAPHS_MeetJoinTable, "for a digraph, a list, a list, and a bool
 function(D, P, U, join)
   local ord, tab, S, N, i, x, T, l, q, z, y;
 
+  # The algorithm runs for joins where the argument <join> is true. Otherwise
+  # it is run for meets.
+
   N   := DigraphNrVertices(D);
   tab := List([1 .. N], x -> []);  # table of meets/joins
 
