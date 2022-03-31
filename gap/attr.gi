@@ -2672,24 +2672,8 @@ end);
 
 InstallMethod(JoinSemilatticeDigraphJoinTable, "for a digraph",
 [IsDigraph],
-function(D)
-  local out;
-  out := DIGRAPHS_IsMeetJoinSemilatticeDigraph(D, true);
-  if out = false then
-    SetIsJoinSemilatticeDigraph(D, false);
-    return fail;
-  fi;
-  return out;
-end);
+D -> DIGRAPHS_IsJoinSemilatticeAndJoinTable(D)[2]);
 
 InstallMethod(MeetSemilatticeDigraphMeetTable, "for a digraph",
 [IsDigraph],
-function(D)
-  local out;
-  out := DIGRAPHS_IsMeetJoinSemilatticeDigraph(D, false);
-  if out = false then
-    SetIsMeetSemilatticeDigraph(D, false);
-    return fail;
-  fi;
-  return out;
-end);
+D -> DIGRAPHS_IsMeetSemilatticeAndMeetTable(D)[2]);
