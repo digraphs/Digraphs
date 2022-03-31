@@ -2194,11 +2194,10 @@ InstallMethod(PartialOrderDigraphJoinOfVertices,
 "for a digraph by out-neighbours and two positive integers",
 [IsDigraphByOutNeighboursRep, IsPosInt, IsPosInt],
 function(D, i, j)
-  local x, nbs, intr, tab;
+  local x, nbs, intr;
 
   if HasDigraphJoinTable(D) then
-    tab := DigraphJoinTable(D);
-    return tab[i, j];
+    return DigraphJoinTable(D)[i, j];
   fi;
 
   if not IsPartialOrderDigraph(D) then
@@ -2227,11 +2226,10 @@ InstallMethod(PartialOrderDigraphMeetOfVertices,
 "for a digraph and two positive integers",
 [IsDigraph, IsPosInt, IsPosInt],
 function(D, i, j)
-  local x, nbs, intr, tab;
+  local x, nbs, intr;
 
   if HasDigraphMeetTable(D) then
-    tab := DigraphMeetTable(D);
-    return tab[i, j];
+    return DigraphMeetTable(D)[i, j];
   fi;
 
   if not IsPartialOrderDigraph(D) then
