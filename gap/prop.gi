@@ -40,8 +40,8 @@ D -> IsConnectedDigraph(D) and IsEmpty(Bridges(D)));
 
 # The method below is based on Listing 11.9 of 'Free Lattices'
 # by Ralph Freese et. al.
-InstallMethod(DIGRAPHS_MeetJoinTable, "for a digraph, a list, a list,
-                                         and a bool",
+InstallMethod(DIGRAPHS_MeetJoinTable,
+"for a digraph, a list, a list, and a bool",
 [IsDigraph, IsList, IsList, IsBool],
 function(D, P, U, join)
   local ord, tab, S, N, i, x, T, l, q, z, y;
