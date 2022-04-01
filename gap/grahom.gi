@@ -754,3 +754,141 @@ function(D1, D2)
                         Transformation([1 .. Size(embedding2)], embedding2)];
 
 end);
+
+InstallMethod(LatticeDigraphEmbedding, "for a pair of digraphs",
+[IsDigraph, IsDigraph],
+function(L1, L2)
+  local join1, join2, meet1, meet2, N1, N2, map, conditions, out1, out2, in1,
+  in2, defined, FindNextAmong, called, Recurse, try_next_value, not_in_image;
+
+  join1 := DigraphJoinTable(L1);
+  join2 := DigraphJoinTable(L2);
+  meet1 := DigraphMeetTable(L1);
+  meet2 := DigraphMeetTable(L2);
+
+  if join1 = fail or meet1 = fail then
+    Error("the first argument must be a lattice digraph");
+  elif join2 = fail or meet2 = fail then
+    Error("the second argument must be a lattice digraph");
+  fi;
+
+  N1         := DigraphNrVertices(L1);
+  N2         := DigraphNrVertices(L2);
+  map        := EmptyPlist(N1);
+  conditions := [List([1 .. N1], x -> BlistList([1 .. N2], [1 .. N2]))];
+
+  if N2 < N1 then
+    return fail;
+  fi;
+
+  out1 := OutNeighbours(L1);
+  out2 := OutNeighbours(L2);
+
+  in1 := InNeighbours(L1);
+  in2 := InNeighbours(L2);
+
+  defined      := BlistList([1 .. N1], []);
+  not_in_image := BlistList([1 .. N2], [1 .. N2]);
+
+  FindNextAmong := function(among, depth)
+    local nr_options, min, next, x;
+
+    next := fail;
+    min  := N2 + 1;
+
+    for x in among do
+      if not defined[x] then
+        nr_options := SizeBlist(IntersectionBlist(conditions[depth][x],
+                                                  not_in_image));
+        if nr_options = 0 then
+          return fail;
+        elif nr_options < min then
+          min  := nr_options;
+          next := x;
+        fi;
+      fi;
+    od;
+    return next;
+  end;
+
+  called := 0;
+
+  Recurse := function(last_defined, depth, print)
+    local next, value, prev, x;
+
+    called := called + 1;
+
+    if depth = N1 + 1 then  # When depth = N1 + 1, we have defined all images
+      return true;
+    fi;
+    # Find the next vertex, i.e. the one with fewest options
+    next := FindNextAmong([1 .. N1], depth);
+    if next = fail then
+      return false;
+    fi;
+
+    value := 0;
+    while true do
+      value := Position(conditions[depth][next], true, value);
+      if value = fail then
+        break;
+      fi;
+      map[next]             := value;
+      not_in_image[value]   := false;
+      conditions[depth + 1] := StructuralCopy(conditions[depth]);
+
+      # meets and joins map to meets and joins, respectively
+      for prev in [1 .. N1] do
+        if defined[prev] then
+          IntersectBlist(conditions[depth + 1][join1[prev][next]],
+                         BlistList([1 .. N2], [join2[map[prev]][map[next]]]));
+          IntersectBlist(conditions[depth + 1][meet1[prev][next]],
+                         BlistList([1 .. N2], [meet2[map[prev]][map[next]]]));
+        fi;
+      od;
+
+      defined[next]  := true;
+      try_next_value := false;
+        # If the value map[next] breaks a previously defined image of map,
+        # try the next possible value for map[next]
+        for x in [1 .. N1] do
+          if defined[x] and not conditions[depth + 1][x][map[x]] then
+            try_next_value := true;
+            break;
+          fi;
+        od;
+      for x in [1 .. N1] do
+        if x in out1[next] then
+          IntersectBlist(conditions[depth + 1][x],
+                         BlistList([1 .. N2], out2[value]));
+        else
+          IntersectBlist(conditions[depth + 1][x],
+                         List(BlistList([1 .. N2], out2[value]),
+                         y -> not y));
+        fi;
+        if x in in1[next] then
+          IntersectBlist(conditions[depth + 1][x],
+                         BlistList([1 .. N2], in2[value]));
+        else
+          IntersectBlist(conditions[depth + 1][x],
+                         List(BlistList([1 .. N2], in2[value]),
+                         y -> not y));
+        fi;
+      od;
+
+      if not try_next_value and Recurse(next, depth + 1, print) then
+        return true;
+      fi;
+      Unbind(conditions[depth + 1]);
+      Unbind(map[next]);
+      not_in_image[value] := true;
+      defined[next]       := false;
+    od;
+    return false;
+  end;
+
+  if Recurse(1, 1, false) then
+    return map;
+  fi;
+  return fail;
+end);

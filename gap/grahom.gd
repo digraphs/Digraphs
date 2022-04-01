@@ -95,3 +95,5 @@ DeclareOperation("DigraphsRespectsColouring",
 
 DeclareOperation("MaximalCommonSubdigraph", [IsDigraph, IsDigraph]);
 DeclareOperation("MinimalCommonSuperdigraph", [IsDigraph, IsDigraph]);
+
+DeclareOperation("LatticeDigraphEmbedding", [IsDigraph, IsDigraph]);
