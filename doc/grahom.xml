@@ -861,3 +861,31 @@ gap> MinimalCommonSuperdigraph(NullDigraph(0), CompleteDigraph(10));
     </Description>
   </ManSection>
 <#/GAPDoc>
+
+<#GAPDoc Label="LatticeDigraphEmbedding">
+<ManSection>
+  <Oper Name="LatticeDigraphEmbedding" Arg="L1, L2"/>
+  <Returns>A transformation, or <K>fail</K>.</Returns>
+  <Description>
+    <C>LatticeDigraphEmbedding</C> returns a single <E>injective</E> <Ref
+      Oper="DigraphHomomorphism"/> between <A>L1</A> and <A>L2</A>, with
+      the the property that it is a <E>lattice homomorphism</E>. If one
+      does not exist, <K>fail</K> is returned.<P/>
+
+      A <E>lattice homomorphism</E> is a digraph homomorphism which
+      respects meets and joins of every pair of vertices.
+    <Example><![CDATA[
+gap> D := DigraphReflexiveTransitiveClosure(ChainDigraph(5));
+<immutable preorder digraph with 5 vertices, 15 edges>
+gap> L1 := DigraphReflexiveTransitiveClosure(ChainDigraph(5));
+<immutable preorder digraph with 5 vertices, 15 edges>
+gap> L2 := DigraphReflexiveTransitiveClosure(ChainDigraph(6));
+<immutable preorder digraph with 6 vertices, 21 edges>
+gap> LatticeDigraphEmbedding(L1, L2);
+[ 1, 2, 3, 4, 5 ]
+gap> LatticeDigraphEmbedding(L2, L1);
+fail
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
