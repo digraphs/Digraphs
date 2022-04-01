@@ -767,9 +767,9 @@ function(L1, L2)
   meet2 := DigraphMeetTable(L2);
 
   if join1 = fail or meet1 = fail then
-    Error("the first argument must be a lattice digraph");
+    ErrorNoReturn("the first argument must be a lattice digraph,");
   elif join2 = fail or meet2 = fail then
-    Error("the second argument must be a lattice digraph");
+    ErrorNoReturn("the second argument must be a lattice digraph,");
   fi;
 
   N1         := DigraphNrVertices(L1);
