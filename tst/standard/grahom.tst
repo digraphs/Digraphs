@@ -2566,6 +2566,14 @@ gap> DigraphEmbedding(G, D);
 IdentityTransformation
 gap> LatticeDigraphEmbedding(G, D);
 fail
+gap> D := CycleDigraph(5);
+<immutable cycle digraph with 5 vertices>
+gap> G := Digraph([[1]]);
+<immutable digraph with 1 vertex, 1 edge>
+gap> LatticeDigraphEmbedding(D, G);
+Error, the first argument must be a lattice digraph,
+gap> LatticeDigraphEmbedding(G, D);
+Error, the second argument must be a lattice digraph,
 
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(edges);
