@@ -826,7 +826,7 @@ function(D1, D2, subdigraphVertices1, subdigraphVertices2)
   od;
 
   # The problem with adding edges to the output graph was that the
-  # edges of of the subdigraph were added twice, creating multiple
+  # edges of the subdigraph were added twice, creating multiple
   # edges between certain pairs of points. A quick and readable fix
   # would have been to use DigraphRemoveAllMultipleEdges, but I decided
   # to check each of the edges being added to see if they were already
