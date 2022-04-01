@@ -797,7 +797,7 @@ function(D1, D2, subdigraphVertices1, subdigraphVertices2)
 
   if not InducedSubdigraph(D1, subdigraphVertices1) =
          InducedSubdigraph(D2, subdigraphVertices2) then
-    ErrorNoReturn(
+    ErrorNoReturn("the subdigraph induced by the 3rd argument (a list) in the 1st argument (a digraph) does not equal the subdigraph induced by the 4th argument (a list) in the 2nd argument (a digraph)");
       "the two subdigraphs must be equal.");
   fi;
 
