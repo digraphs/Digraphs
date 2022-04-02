@@ -771,12 +771,16 @@ InstallMethod(AmalgamDigraphsIsomorphic,
 function(D1, D2, subdigraphVertices1, subdigraphVertices2)
   local subdigraph1, subdigraph2, newSubdigraphVertices2, transformation, vertex;
 
-  subdigraph1 := InducedSubdigraph(D1, subdigraphVertices1);
-  subdigraph2 := InducedSubdigraph(D2, subdigraphVertices2);
+  subdigraph1 := InducedSubdigraph(DigraphImmutableCopyIfMutable(D1),
+                 subdigraphVertices1);
+  subdigraph2 := InducedSubdigraph(DigraphImmutableCopyIfMutable(D2),
+                 subdigraphVertices2);
 
   if not IsIsomorphicDigraph(subdigraph1, subdigraph2) then
     ErrorNoReturn(
-      "the two subdigraphs must be isomorphic.");
+      "the subdigraph induced by the 3rd argument (a list) in the 1st ",
+      "argument (a digraph) is not ismorphic to the subdigraph induced ",
+      "by the 4th argument (a list) in the 2nd argument (a digraph)");
   fi;
 
   newSubdigraphVertices2 := [];
@@ -793,18 +797,21 @@ InstallMethod(AmalgamDigraphs,
 "for a digraph, a digraph, a list, and a list",
 [IsDigraph, IsDigraph, IsList, IsList],
 function(D1, D2, subdigraphVertices1, subdigraphVertices2)
-  local D, map, vertex, vertexList, size, iterator, edgeList, subLength;
+  local D, map, vertex, vertexList, size, iterator, edgeList;
 
-  if not InducedSubdigraph(D1, subdigraphVertices1) =
-         InducedSubdigraph(D2, subdigraphVertices2) then
-    ErrorNoReturn("the subdigraph induced by the 3rd argument (a list) in the 1st argument (a digraph) does not equal the subdigraph induced by the 4th argument (a list) in the 2nd argument (a digraph)");
-      "the two subdigraphs must be equal.");
+  if not InducedSubdigraph(DigraphImmutableCopyIfMutable(D1),
+         subdigraphVertices1) = 
+         InducedSubdigraph(DigraphImmutableCopyIfMutable(D2),
+         subdigraphVertices2) then
+    ErrorNoReturn(
+      "the subdigraph induced by the 3rd argument (a list) in the 1st ",
+      "argument (a digraph) does not equal the subdigraph induced by the ",
+      "4th argument (a list) in the 2nd argument (a digraph)");
   fi;
 
   # Create a mutable copy so that the function also works on
   # immutable input digraphs.
   D := DigraphMutableCopy(D1);
-  subLength := Length(subdigraphVertices1);
 
   # 'map' is a mapping from the vertices of D2 to the vertices of the
   # final output graph. The idea is to map the subdigraph vertices of D2
@@ -813,10 +820,11 @@ function(D1, D2, subdigraphVertices1, subdigraphVertices2)
   # can be understood as the identity mapping.
   map := rec();
 
-  for vertex in [1 .. subLength] do
+  for vertex in [1 .. Length(subdigraphVertices1)] do
     map.(subdigraphVertices2[vertex]) := subdigraphVertices1[vertex];
   od;
 
+  # Delete??
   vertexList := Difference(DigraphVertices(D2), subdigraphVertices2);
   size := DigraphNrVertices(D1);
   iterator := 1;
@@ -845,9 +853,9 @@ function(D1, D2, subdigraphVertices1, subdigraphVertices2)
     fi;
   od;
 
-  DigraphAddVertices(D, DigraphNrVertices(D2) - subLength);
+  DigraphAddVertices(D, DigraphNrVertices(D2) - Length(subdigraphVertices1));
   DigraphAddEdges(D, edgeList);
-  return [MakeImmutable(D), map];
+  return [Immutable(D), map];
 end);
 
 ###############################################################################
