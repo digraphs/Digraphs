@@ -2772,7 +2772,9 @@ gap> U := AmalgamDigraphs(D1, D2, [2, 3, 6, 7], [4, 5, 6, 7]);
 [ <immutable digraph with 11 vertices, 32 edges>, 
   rec( 1 := 9, 2 := 10, 3 := 11, 4 := 2, 5 := 3, 6 := 6, 7 := 7 ) ]
 gap> AmalgamDigraphs(D1, D2, [3, 6, 2, 7], [4, 5, 7, 6]);
-Error, the two subdigraphs must be equal.
+Error, the subdigraph induced by the 3rd argument (a list) in the 1st argument\
+ (a digraph) does not equal the subdigraph induced by the 4th argument (a list\
+) in the 2nd argument (a digraph)
 gap> D1 := PetersenGraph();;
 gap> U := AmalgamDigraphs(D1, D1, [3, 4, 6, 8, 9], [3, 4, 6, 8, 9]);
 [ <immutable digraph with 15 vertices, 50 edges>, 
@@ -2790,7 +2792,9 @@ gap> U := AmalgamDigraphsIsomorphic(D1, D2, [3, 4, 6, 8, 9],
   rec( 1 := 11, 2 := 3, 3 := 12, 4 := 4, 5 := 8, 6 := 9, 7 := 6, 8 := 13 ) ]
 gap> U := AmalgamDigraphsIsomorphic(D1, D2, [3, 4, 10, 8, 9],
 >   [2, 4, 5, 6, 7]);
-Error, the two subdigraphs must be isomorphic.
+Error, the subdigraph induced by the 3rd argument (a list) in the 1st argument\
+ (a digraph) is not ismorphic to the subdigraph induced by the 4th argument (a\
+ list) in the 2nd argument (a digraph)
 
 #DIGRAPHS_UnbindVariables
 gap> Unbind(a);
