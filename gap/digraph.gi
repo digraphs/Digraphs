@@ -728,9 +728,15 @@ function(D)
   Add(strings, String(outnbs_rep));
 
   N              := DigraphNrVertices(D);
-  props          := [IsCycleDigraph, IsCompleteDigraph, IsChainDigraph,
+  props          := [x -> IsCycleDigraph(x)
+                          and x = CycleDigraph(DigraphNrVertices(x)),
+                     IsCompleteDigraph,
+                     x -> IsChainDigraph(x)
+                          and x = ChainDigraph(DigraphNrVertices(x)),
                      IsEmptyDigraph];
-  creators_props := ["CycleDigraph", "CompleteDigraph", "ChainDigraph",
+  creators_props := ["CycleDigraph",
+                     "CompleteDigraph",
+                     "ChainDigraph",
                      "EmptyDigraph"];
   for i in [1 .. Length(props)] do
     if props[i](D) then
