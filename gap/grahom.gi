@@ -844,8 +844,10 @@ function(L1, L2)
       # meets and joins map to meets and joins, respectively
       for prev in [1 .. N1] do
         if defined[prev] then
-          IntersectBlist(conditions[depth + 1][join1[prev][next]], mask[join2[map[prev]][map[next]]]);
-          IntersectBlist(conditions[depth + 1][meet1[prev][next]], mask[meet2[map[prev]][map[next]]]);
+          IntersectBlist(conditions[depth + 1][join1[prev][next]],
+                         mask[join2[map[prev]][map[next]]]);
+          IntersectBlist(conditions[depth + 1][meet1[prev][next]],
+                         mask[meet2[map[prev]][map[next]]]);
         fi;
       od;
 
@@ -890,7 +892,7 @@ function(L1, L2)
 
   if Recurse(1, 1, false) then
     Append(map, [N1 + 1 .. N2]);
-    return p ^-1  * Transformation(map);
+    return p ^ -1 * Transformation(map);
   fi;
   return fail;
 end);
