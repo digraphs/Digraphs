@@ -2508,7 +2508,7 @@ gap> D := DigraphReflexiveTransitiveClosure(D);
 gap> G := DigraphReflexiveTransitiveClosure(G);
 <immutable preorder digraph with 4 vertices, 10 edges>
 gap> LatticeDigraphEmbedding(D, G);
-[ 4, 3, 2, 1 ]
+Transformation( [ 4, 3, 2, 1 ] )
 gap> D := Digraph([[2], [3], [4], []]);
 <immutable digraph with 4 vertices, 3 edges>
 gap> G := Digraph([[2], [3], [4], [5], []]);
@@ -2520,7 +2520,7 @@ gap> G := DigraphReflexiveTransitiveClosure(G);
 gap> LatticeDigraphEmbedding(G, D);
 fail
 gap> LatticeDigraphEmbedding(D, G);
-[ 1, 2, 3, 4 ]
+IdentityTransformation
 gap> D := Digraph([[2, 3, 5], [4, 6], [4, 7, 9], [8, 11], [6, 10], [11],
 >   [8, 12], [14], [10, 13], [11, 12], [14], [14], [14], []]);
 <immutable digraph with 14 vertices, 23 edges>
@@ -2531,7 +2531,7 @@ gap> D := DigraphReflexiveTransitiveClosure(D);
 gap> N5 := DigraphReflexiveTransitiveClosure(N5);
 <immutable preorder digraph with 5 vertices, 13 edges>
 gap> LatticeDigraphEmbedding(N5, D);
-[ 1, 2, 6, 9, 11 ]
+Transformation( [ 1, 9, 10, 2, 11, 6, 7, 8, 9, 10, 11 ] )
 gap> D := Digraph([[2], [3], [4], []]);
 <immutable digraph with 4 vertices, 3 edges>
 gap> G := Digraph([[2, 3], [4], [4], []]);
@@ -2553,7 +2553,7 @@ gap> N5 := DigraphReflexiveTransitiveClosure(N5);
 gap> H := DigraphReflexiveTransitiveClosure(H);
 <immutable preorder digraph with 7 vertices, 22 edges>
 gap> LatticeDigraphEmbedding(N5, H);
-[ 7, 4, 2, 5, 1 ]
+Transformation( [ 7, 5, 3, 4, 1, 6, 7 ] )
 gap> D := Digraph([[2, 6], [3, 7], [4], [], [4], [5, 7], [4]]);
 <immutable digraph with 7 vertices, 9 edges>
 gap> G := DigraphRemoveVertex(D, 7);
