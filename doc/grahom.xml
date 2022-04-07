@@ -882,7 +882,7 @@ gap> L1 := DigraphReflexiveTransitiveClosure(ChainDigraph(5));
 gap> L2 := DigraphReflexiveTransitiveClosure(ChainDigraph(6));
 <immutable preorder digraph with 6 vertices, 21 edges>
 gap> LatticeDigraphEmbedding(L1, L2);
-[ 1, 2, 3, 4, 5 ]
+IdentityTransformation
 gap> LatticeDigraphEmbedding(L2, L1);
 fail
 ]]></Example>
