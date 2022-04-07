@@ -762,7 +762,7 @@ function(L1, L2)
   in1, in2, mask, defined, not_in_image, FindNextAmong, Recurse;
 
   p := PermList(Reversed(DigraphWelshPowellOrder(L1)));
-  L1 := OnDigraphs(L1, p);
+  L1 := OnDigraphs(L1, p ^ -1);
 
   # We compute the join/meet table to avoid having to do this twice if L1 or L2
   # is mutable
@@ -890,7 +890,7 @@ function(L1, L2)
 
   if Recurse(1, 1, false) then
     Append(map, [N1 + 1 .. N2]);
-    return Transformation(map) ^ p;
+    return p ^-1  * Transformation(map);
   fi;
   return fail;
 end);
