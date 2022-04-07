@@ -1443,6 +1443,36 @@ infinity
 gap> DigraphLongestDistanceFromVertex(gr, 16);
 Error, the 2nd argument <v> must be a vertex of the 1st argument <D>,
 
+#  DigraphRandomWalk
+gap> gr := CompleteDigraph(5);
+<immutable complete digraph with 5 vertices>
+gap> path := DigraphRandomWalk(gr, 1, 100);;
+gap> Length(path[1]);
+101
+gap> ForAll(path[1], i -> i in [1 .. 5]);
+true
+gap> Length(path[2]);
+100
+gap> ForAll(path[2], i -> i in [1 .. 4]);
+true
+gap> gr := ChainDigraph(5);
+<immutable chain digraph with 5 vertices>
+gap> DigraphRandomWalk(gr, 2, 100);
+[ [ 2, 3, 4, 5 ], [ 1, 1, 1 ] ]
+gap> DigraphRandomWalk(gr, 2, 2);  
+[ [ 2, 3, 4 ], [ 1, 1 ] ]
+gap> DigraphRandomWalk(gr, 5, 100);
+[ [ 5 ], [  ] ]
+gap> gr := CompleteBipartiteDigraph(10, 8);;
+gap> DigraphRandomWalk(gr, 3, 0);           
+[ [ 3 ], [  ] ]
+gap> DigraphRandomWalk(gr, 19, 5);
+Error, the 2nd argument <v> must be a vertex of the 1st argument <D>,
+gap> DigraphRandomWalk(gr, 123, 5);
+Error, the 2nd argument <v> must be a vertex of the 1st argument <D>,
+gap> DigraphRandomWalk(gr, 3, -1); 
+Error, the 3rd argument <t> must be a non-negative int,
+
 #  DigraphLayers
 gap> gr := CompleteDigraph(4);
 <immutable complete digraph with 4 vertices>
