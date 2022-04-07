@@ -758,34 +758,43 @@ end);
 InstallMethod(LatticeDigraphEmbedding, "for a pair of digraphs",
 [IsDigraph, IsDigraph],
 function(L1, L2)
-  local join1, join2, meet1, meet2, N1, N2, map, conditions, out1, out2, in1,
-  in2, defined, FindNextAmong, called, Recurse, try_next_value, not_in_image;
+  local join1, meet1, meet2, join2, N1, N2, map, conditions, out1, out2, in1,
+  in2, mask, defined, not_in_image, FindNextAmong, called, Recurse, try_next_value;
 
+  # We compute the join/meet table to avoid having to do this twice if L1 or L2
+  # is mutable
   join1 := DigraphJoinTable(L1);
-  join2 := DigraphJoinTable(L2);
   meet1 := DigraphMeetTable(L1);
-  meet2 := DigraphMeetTable(L2);
 
   if join1 = fail or meet1 = fail then
-    ErrorNoReturn("the first argument must be a lattice digraph,");
-  elif join2 = fail or meet2 = fail then
-    ErrorNoReturn("the second argument must be a lattice digraph,");
+    ErrorNoReturn("the 1st argument (a digraph) must be a lattice digraph");
+  fi;
+
+  meet2 := DigraphMeetTable(L2);
+  join2 := DigraphJoinTable(L2);
+
+  if join2 = fail or meet2 = fail then
+    ErrorNoReturn("the 2nd argument (a digraph) must be a lattice digraph");
   fi;
 
   N1         := DigraphNrVertices(L1);
   N2         := DigraphNrVertices(L2);
-  map        := EmptyPlist(N1);
-  conditions := [List([1 .. N1], x -> BlistList([1 .. N2], [1 .. N2]))];
 
   if N2 < N1 then
     return fail;
   fi;
 
-  out1 := OutNeighbours(L1);
-  out2 := OutNeighbours(L2);
+  map        := EmptyPlist(N1);
+  conditions := [List([1 .. N1], x -> BlistList([1 .. N2], [1 .. N2]))];
 
-  in1 := InNeighbours(L1);
-  in2 := InNeighbours(L2);
+
+  out1 := BooleanAdjacencyMatrix(L1);
+  out2 := BooleanAdjacencyMatrixMutableCopy(L2);
+
+  in1 := TransposedMat(BooleanAdjacencyMatrix(L1));
+  in2 := TransposedMatMutable(BooleanAdjacencyMatrixMutableCopy(L2));
+
+  mask := List([1 .. N2], i -> BlistList([1 .. N2], [i]));
 
   defined      := BlistList([1 .. N1], []);
   not_in_image := BlistList([1 .. N2], [1 .. N2]);
@@ -840,10 +849,8 @@ function(L1, L2)
       # meets and joins map to meets and joins, respectively
       for prev in [1 .. N1] do
         if defined[prev] then
-          IntersectBlist(conditions[depth + 1][join1[prev][next]],
-                         BlistList([1 .. N2], [join2[map[prev]][map[next]]]));
-          IntersectBlist(conditions[depth + 1][meet1[prev][next]],
-                         BlistList([1 .. N2], [meet2[map[prev]][map[next]]]));
+          IntersectBlist(conditions[depth + 1][join1[prev][next]], mask[join2[map[prev]][map[next]]]);
+          IntersectBlist(conditions[depth + 1][meet1[prev][next]], mask[meet2[map[prev]][map[next]]]);
         fi;
       od;
 
@@ -858,21 +865,19 @@ function(L1, L2)
           fi;
         od;
       for x in [1 .. N1] do
-        if x in out1[next] then
-          IntersectBlist(conditions[depth + 1][x],
-                         BlistList([1 .. N2], out2[value]));
+        if out1[next][x] then
+          IntersectBlist(conditions[depth + 1][x], out2[value]);
         else
-          IntersectBlist(conditions[depth + 1][x],
-                         List(BlistList([1 .. N2], out2[value]),
-                         y -> not y));
+          FlipBlist(out2[value]);
+          IntersectBlist(conditions[depth + 1][x], out2[value]);
+          FlipBlist(out2[value]);
         fi;
-        if x in in1[next] then
-          IntersectBlist(conditions[depth + 1][x],
-                         BlistList([1 .. N2], in2[value]));
+        if in1[next][x] then
+          IntersectBlist(conditions[depth + 1][x], in2[value]);
         else
-          IntersectBlist(conditions[depth + 1][x],
-                         List(BlistList([1 .. N2], in2[value]),
-                         y -> not y));
+          FlipBlist(in2[value]);
+          IntersectBlist(conditions[depth + 1][x], in2[value]);
+          FlipBlist(in2[value]);
         fi;
       od;
 
