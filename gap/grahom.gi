@@ -758,8 +758,11 @@ end);
 InstallMethod(LatticeDigraphEmbedding, "for a pair of digraphs",
 [IsDigraph, IsDigraph],
 function(L1, L2)
-  local join1, meet1, meet2, join2, N1, N2, map, conditions, out1, out2, in1,
-  in2, mask, defined, not_in_image, FindNextAmong, called, Recurse, try_next_value;
+  local join1, meet1, meet2, join2, N1, N2, p, map, conditions, out1, out2,
+  in1, in2, mask, defined, not_in_image, FindNextAmong, Recurse;
+
+  p := PermList(Reversed(DigraphWelshPowellOrder(L1)));
+  L1 := OnDigraphs(L1, p);
 
   # We compute the join/meet table to avoid having to do this twice if L1 or L2
   # is mutable
@@ -777,8 +780,8 @@ function(L1, L2)
     ErrorNoReturn("the 2nd argument (a digraph) must be a lattice digraph");
   fi;
 
-  N1         := DigraphNrVertices(L1);
-  N2         := DigraphNrVertices(L2);
+  N1 := DigraphNrVertices(L1);
+  N2 := DigraphNrVertices(L2);
 
   if N2 < N1 then
     return fail;
@@ -786,7 +789,6 @@ function(L1, L2)
 
   map        := EmptyPlist(N1);
   conditions := [List([1 .. N1], x -> BlistList([1 .. N2], [1 .. N2]))];
-
 
   out1 := BooleanAdjacencyMatrix(L1);
   out2 := BooleanAdjacencyMatrixMutableCopy(L2);
@@ -820,12 +822,8 @@ function(L1, L2)
     return next;
   end;
 
-  called := 0;
-
   Recurse := function(last_defined, depth, print)
-    local next, value, prev, x;
-
-    called := called + 1;
+    local next, value, try_next_value, prev, x;
 
     if depth = N1 + 1 then  # When depth = N1 + 1, we have defined all images
       return true;
@@ -836,13 +834,10 @@ function(L1, L2)
       return false;
     fi;
 
-    value := 0;
-    while true do
-      value := Position(conditions[depth][next], true, value);
-      if value = fail then
-        break;
-      fi;
+    value := Position(conditions[depth][next], true, 0);
+    while value <> fail do
       map[next]             := value;
+      defined[next]         := true;
       not_in_image[value]   := false;
       conditions[depth + 1] := StructuralCopy(conditions[depth]);
 
@@ -854,46 +849,48 @@ function(L1, L2)
         fi;
       od;
 
-      defined[next]  := true;
       try_next_value := false;
-        # If the value map[next] breaks a previously defined image of map,
-        # try the next possible value for map[next]
-        for x in [1 .. N1] do
-          if defined[x] and not conditions[depth + 1][x][map[x]] then
-            try_next_value := true;
-            break;
-          fi;
-        od;
+      # If the value map[next] breaks a previously defined image of map,
+      # try the next possible value for map[next]
       for x in [1 .. N1] do
-        if out1[next][x] then
-          IntersectBlist(conditions[depth + 1][x], out2[value]);
-        else
-          FlipBlist(out2[value]);
-          IntersectBlist(conditions[depth + 1][x], out2[value]);
-          FlipBlist(out2[value]);
-        fi;
-        if in1[next][x] then
-          IntersectBlist(conditions[depth + 1][x], in2[value]);
-        else
-          FlipBlist(in2[value]);
-          IntersectBlist(conditions[depth + 1][x], in2[value]);
-          FlipBlist(in2[value]);
+        if defined[x] and not conditions[depth + 1][x][map[x]] then
+          try_next_value := true;
+          break;
         fi;
       od;
-
-      if not try_next_value and Recurse(next, depth + 1, print) then
-        return true;
+      if not try_next_value then
+        for x in [1 .. N1] do
+          if out1[next][x] then
+            IntersectBlist(conditions[depth + 1][x], out2[value]);
+          else
+            FlipBlist(out2[value]);
+            IntersectBlist(conditions[depth + 1][x], out2[value]);
+            FlipBlist(out2[value]);
+          fi;
+          if in1[next][x] then
+            IntersectBlist(conditions[depth + 1][x], in2[value]);
+          else
+            FlipBlist(in2[value]);
+            IntersectBlist(conditions[depth + 1][x], in2[value]);
+            FlipBlist(in2[value]);
+          fi;
+        od;
+        if Recurse(next, depth + 1, print) then
+          return true;
+        fi;
       fi;
       Unbind(conditions[depth + 1]);
       Unbind(map[next]);
       not_in_image[value] := true;
       defined[next]       := false;
+      value := Position(conditions[depth][next], true, value);
     od;
     return false;
   end;
 
   if Recurse(1, 1, false) then
-    return map;
+    Append(map, [N1 + 1 .. N2]);
+    return Transformation(map) ^ p;
   fi;
   return fail;
 end);
