@@ -2762,7 +2762,7 @@ gap> D1 := Digraph([[2, 3], [1, 3], [1, 2], [2], [3, 4]]);;
 gap> D2 := Digraph([[2, 6], [1, 3, 5], [4], [3], [4, 6], [1, 5]]);;
 gap> U := AmalgamDigraphs(D1, D2, [2, 3, 4, 5], [4, 3, 5, 2]);
 [ <immutable digraph with 7 vertices, 15 edges>, 
-  rec( 1 := 6, 2 := 5, 3 := 3, 4 := 2, 5 := 4, 6 := 7 ) ]
+  Transformation( [ 6, 5, 3, 2, 4, 7, 7 ] ) ]
 gap> D1 := Digraph([
 >   [2, 3], [1, 3, 4, 6], [1, 2, 5, 7], [2, 6], [3, 7], [2, 4, 7, 8],
 >   [3, 5, 6, 8], [6, 7]]);;
@@ -2770,7 +2770,7 @@ gap> D2 := Digraph([
 >   [2, 3], [1, 4], [1, 5], [2, 5, 6], [3, 4, 7], [4, 7], [5, 6]]);;
 gap> U := AmalgamDigraphs(D1, D2, [2, 3, 6, 7], [4, 5, 6, 7]);
 [ <immutable digraph with 11 vertices, 32 edges>, 
-  rec( 1 := 9, 2 := 10, 3 := 11, 4 := 2, 5 := 3, 6 := 6, 7 := 7 ) ]
+  Transformation( [ 9, 10, 11, 2, 3, 6, 7, 8, 9, 10, 11 ] ) ]
 gap> AmalgamDigraphs(D1, D2, [3, 6, 2, 7], [4, 5, 7, 6]);
 Error, the subdigraph induced by the 3rd argument (a list) in the 1st argument\
  (a digraph) does not equal the subdigraph induced by the 4th argument (a list\
@@ -2778,8 +2778,8 @@ Error, the subdigraph induced by the 3rd argument (a list) in the 1st argument\
 gap> D1 := PetersenGraph();;
 gap> U := AmalgamDigraphs(D1, D1, [3, 4, 6, 8, 9], [3, 4, 6, 8, 9]);
 [ <immutable digraph with 15 vertices, 50 edges>, 
-  rec( 1 := 11, 10 := 15, 2 := 12, 3 := 3, 4 := 4, 5 := 13, 6 := 6, 7 := 14, 
-      8 := 8, 9 := 9 ) ]
+  Transformation( [ 11, 12, 3, 4, 13, 6, 14, 8, 9, 15, 11, 12, 13, 14, 15 ] ) 
+ ]
 
 # AmalgamDigraphsIsomorphic
 gap> D1 := PetersenGraph();;
@@ -2789,7 +2789,7 @@ gap> D2 := Digraph([
 gap> U := AmalgamDigraphsIsomorphic(D1, D2, [3, 4, 6, 8, 9],
 >   [2, 4, 5, 6, 7]);
 [ <immutable digraph with 13 vertices, 42 edges>, 
-  rec( 1 := 11, 2 := 3, 3 := 12, 4 := 4, 5 := 8, 6 := 9, 7 := 6, 8 := 13 ) ]
+  Transformation( [ 11, 3, 12, 4, 8, 9, 6, 13, 9, 10, 11, 12, 13 ] ) ]
 gap> U := AmalgamDigraphsIsomorphic(D1, D2, [3, 4, 10, 8, 9],
 >   [2, 4, 5, 6, 7]);
 Error, the subdigraph induced by the 3rd argument (a list) in the 1st argument\

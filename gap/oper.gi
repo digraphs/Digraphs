@@ -797,82 +797,53 @@ InstallMethod(AmalgamDigraphs,
 "for a digraph, a digraph, a list, and a list",
 [IsDigraph, IsDigraph, IsList, IsList],
 function(D1, D2, subdigraphVertices1, subdigraphVertices2)
-  local D, map, vertex, vertexList, size, iterator, edgeList, edge;
+  local D, n, map, T, vertex, edge;
 
   if not InducedSubdigraph(DigraphImmutableCopyIfMutable(D1),
-         subdigraphVertices1) = 
+         subdigraphVertices1) =
          InducedSubdigraph(DigraphImmutableCopyIfMutable(D2),
          subdigraphVertices2) then
     ErrorNoReturn(
-      "the subdigraph induced by the 3rd argument (a list) in the 1st ",
-      "argument (a digraph) does not equal the subdigraph induced by the ",
-      "4th argument (a list) in the 2nd argument (a digraph)");
+        "the subdigraph induced by the 3rd argument (a list) in the 1st ",
+        "argument (a digraph) does not equal the subdigraph induced by the ",
+        "4th argument (a list) in the 2nd argument (a digraph)");
   fi;
 
-  # Create a mutable copy so that the function also works on
-  # immutable input digraphs and also does not change mutable
-  # digraphs in place.
-  D := DigraphMutableCopy(D1);
+  # Create a mutable copy so that the function also works if
+  # D1 is immutable. If D1 is a mutable digraph then
+  # D1 will be changed in place.
+  D := DigraphMutableCopyIfImmutable(D1);
+
+  n := DigraphNrVertices(D2) + DigraphNrVertices(D1);
+  n := n - Length(subdigraphVertices1);
 
   # 'map' is a mapping from the vertices of D2 to the vertices of the
   # final output graph. The idea is to map the subdigraph vertices of D2
   # onto the subdigraph vertices of D1 and then map the rest of the vertices
   # of D2 to other (higher) values. The mapping from D1 to the output graph
   # can be understood as the identity mapping.
-  map := [1 .. DigraphNrVertices(D2)];
+
+  map := [1 .. n];
 
   for vertex in [1 .. Length(subdigraphVertices1)] do
     map[subdigraphVertices2[vertex]] := subdigraphVertices1[vertex];
   od;
 
-  # Delete??
-  # vertexList := Difference(DigraphVertices(D2), subdigraphVertices2);
-  # size := DigraphNrVertices(D1);
-  # iterator := 1;
-  # for vertex in vertexList do
-  #   map[vertex] := iterator + size;
-  #   iterator := iterator + 1;
-  # od;
+  map{Difference(DigraphVertices(D2), subdigraphVertices2)} :=
+        [DigraphNrVertices(D1) + 1 .. n];
 
-
-  iterator := 1;
-  for edge in [1 .. DigraphNrEdges(D2)] do
-    Add(edgeList, []);
-    for vertex in [1, 2] do
-      if DigraphEdges(D2)[edge][vertex] in subdigraphVertices2 then
-        DigraphEdges(D2)[edge][vertex] := DigraphEdges(D2)[edge][vertex] ^ Transformation(map);
-      else
-        DigraphEdges(D2)[edge][vertex] := # But we still need a mapping for the non-subdigraph vertices
-      fi;
-    od;
-  od;
-
-
-
-  # The problem with adding edges to the output graph was that the
-  # edges of the subdigraph were added twice, creating multiple
-  # edges between certain pairs of points. A quick and readable fix
-  # would have been to use DigraphRemoveAllMultipleEdges, but I decided
-  # to check each of the edges being added to see if they were already
-  # in the subdigraph. This way the function does not end up adding edges
-  # only to delete them later.
-  
-  # edgeList := ShallowCopy(DigraphEdges(D2));
-  # iterator := 1;
-  # while iterator <= Length(edgeList) do
-  #   if edgeList[iterator][1] in subdigraphVertices2 and
-  #       edgeList[iterator][2] in subdigraphVertices2 then
-  #     Remove(edgeList, iterator);
-  #   else
-  #     edgeList[iterator] := [
-  #       map.(edgeList[iterator][1]), map.(edgeList[iterator][2])];
-  #     iterator := iterator + 1;
-  #   fi;
-  # od;
+  T := Transformation(map);
 
   DigraphAddVertices(D, DigraphNrVertices(D2) - Length(subdigraphVertices1));
-  DigraphAddEdges(D, edgeList);
-  return [Immutable(DigraphRemoveAllMultipleEdges(D)), map];
+
+  for edge in DigraphEdges(D2) do
+    if not (edge[1] in subdigraphVertices2
+        and edge[2] in subdigraphVertices2) then
+      DigraphAddEdge(D, [edge[1] ^ T, edge[2] ^ T]);
+    fi;
+  od;
+
+  return [MakeImmutable(D), T];
 end);
 
 ###############################################################################
