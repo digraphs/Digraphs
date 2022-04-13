@@ -97,4 +97,12 @@ DeclareOperation("MaximalCommonSubdigraph", [IsDigraph, IsDigraph]);
 DeclareOperation("MinimalCommonSuperdigraph", [IsDigraph, IsDigraph]);
 
 DeclareOperation("LatticeDigraphEmbedding", [IsDigraph, IsDigraph]);
-DeclareOperation("IsLatticeHomomorphism", [IsDigraph, IsDigraph, IsTransformation]);
+DeclareOperation("IsLatticeHomomorphism",
+                 [IsDigraph, IsDigraph, IsTransformation]);
+DeclareOperation("IsLatticeEndomorphism", [IsDigraph, IsTransformation]);
+DeclareOperation("IsLatticeEpimorphism",
+                 [IsDigraph, IsDigraph, IsTransformation]);
+DeclareOperation("IsLatticeEmbedding",
+                 [IsDigraph, IsDigraph, IsTransformation]);
+DeclareSynonym("IsLatticeMonomorphism", IsLatticeEmbedding);
+

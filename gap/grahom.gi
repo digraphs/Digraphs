@@ -925,3 +925,23 @@ function(L1, L2, map)
   od;
   return true;
 end);
+
+InstallMethod(IsLatticeEndomorphism, "for a digraph and a transformation",
+[IsDigraph, IsTransformation],
+{L, map} -> IsLatticeHomomorphism(L, L, map));
+
+InstallMethod(IsLatticeEpimorphism,
+"for a digraph, a digraph, and a transformation",
+[IsDigraph, IsDigraph, IsTransformation],
+function(L1, L2, map)
+  return IsLatticeHomomorphism(L1, L2, map)
+    and OnSets(DigraphVertices(L1), map) = DigraphVertices(L2);
+end);
+
+InstallMethod(IsLatticeEmbedding,
+"for a digraph, a digraph, and a transformation",
+[IsDigraph, IsDigraph, IsTransformation],
+function(L1, L2, map)
+  return IsLatticeHomomorphism(L1, L2, map)
+    and IsInjectiveListTrans(DigraphVertices(L1), map);
+end);
