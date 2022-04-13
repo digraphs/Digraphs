@@ -2598,6 +2598,14 @@ gap> IsDigraphEmbedding(D, G, IdentityTransformation);
 true
 gap> IsLatticeHomomorphism(D, G, IdentityTransformation);
 false
+gap> D := CycleDigraph(3);
+<immutable cycle digraph with 3 vertices>
+gap> G := Digraph([[1]]);
+<immutable digraph with 1 vertex, 1 edge>
+gap> IsLatticeHomomorphism(D, G, IdentityTransformation);
+Error, the 1st argument (a digraph) must be a lattice digraph
+gap> IsLatticeHomomorphism(G, D, IdentityTransformation);
+Error, the 2nd argument (a digraph) must be a lattice digraph
 
 # IsLatticeHomomorphism (for permutations)
 gap> D := Digraph([[2, 3], [4], [4], []]);
