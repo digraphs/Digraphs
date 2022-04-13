@@ -889,3 +889,33 @@ fail
   </Description>
 </ManSection>
 <#/GAPDoc>
+
+<#GAPDoc Label="IsLatticeHomomorphism">
+<ManSection>
+  <Oper Name="IsLatticeHomomorphism" Arg="L1, L2, map"/>
+  <Returns>A boolean.</Returns>
+  <Description>
+    <C>IsLatticeHomomorphism</C> takes a pair of lattices <A>L1</A> and <A>L2</A>,
+       and a transformation <A>map</A>, returning <K>true</K> if <A>map</A> is a
+       <E>lattice homomorphism</E> from <A>L1</A> to <A>L2</A>, and <K>false</K>
+       otherwise.<P/>
+
+       A <E>lattice homomorphism</E> is a digraph homomorphism which
+       respects meets and joins of every pair of vertices.
+    <Example><![CDATA[
+gap> G := Digraph([[2, 4], [3, 7], [6], [5, 7], [6], [], [6]]);
+<immutable digraph with 7 vertices, 9 edges>
+gap> D := DigraphRemoveVertex(G, 7);
+<immutable digraph with 6 vertices, 6 edges>
+gap> G := DigraphReflexiveTransitiveClosure(G);
+<immutable preorder digraph with 7 vertices, 22 edges>
+gap> D := DigraphReflexiveTransitiveClosure(D);
+<immutable preorder digraph with 6 vertices, 17 edges>
+gap> IsDigraphEmbedding(D, G, IdentityTransformation);
+true
+gap> IsLatticeHomomorphism(D, G, IdentityTransformation);
+false
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
