@@ -2599,6 +2599,18 @@ true
 gap> IsLatticeHomomorphism(D, G, IdentityTransformation);
 false
 
+# IsLatticeHomomorphism (for permutations)
+gap> D := Digraph([[2, 3], [4], [4], []]);
+<immutable digraph with 4 vertices, 4 edges>
+gap> D := DigraphReflexiveTransitiveClosure(D);
+<immutable preorder digraph with 4 vertices, 9 edges>
+gap> IsLatticeHomomorphism(D, D, (2, 3));
+true
+gap> IsLatticeHomomorphism(D, D, (1, 2, 3, 4, 5));
+false
+gap> IsLatticeHomomorphism(D, D, (1, 4));
+false
+
 # IsLatticeEndomorphism (for transformations)
 gap> D := Digraph([[2, 3], [4], [4], []]);
 <immutable digraph with 4 vertices, 4 edges>
@@ -2608,6 +2620,12 @@ gap> f := Transformation([1, 3, 2, 4]);
 Transformation( [ 1, 3, 2 ] )
 gap> IsLatticeEndomorphism(D, f);
 true
+
+# IsLatticeEndomorphism (for permutations)
+gap> IsLatticeEndomorphism(D, (2, 3));
+true
+gap> IsLatticeEndomorphism(D, (5, 6));
+false
 
 # IsLatticeEmbedding and IsLatticeMonomorphism (for transformations)
 gap> D := Digraph([[2, 3], [4], [4], []]);
@@ -2627,7 +2645,25 @@ Transformation( [ 1, 1, 1, 1 ] )
 gap> IsLatticeEmbedding(D, G, f);
 false
 
-# IsLatticeEpimorphism
+# IsLatticeEmbedding and IsLatticeMonomorphism (for permutations)
+gap> D := Digraph([[2, 3], [4], [4], []]);
+<immutable digraph with 4 vertices, 4 edges>
+gap> G := Digraph([[2, 3], [4], [4], [5], []]);
+<immutable digraph with 5 vertices, 5 edges>
+gap> D := DigraphReflexiveTransitiveClosure(D);
+<immutable preorder digraph with 4 vertices, 9 edges>
+gap> G := DigraphReflexiveTransitiveClosure(G);
+<immutable preorder digraph with 5 vertices, 14 edges>
+gap> IsLatticeEmbedding(D, G, (2, 3));
+true
+gap> IsLatticeEmbedding(D, G, ());
+true
+gap> IsLatticeEmbedding(D, G, (1, 2, 3));
+false
+gap> IsLatticeMonomorphism(D, G, ());
+true
+
+# IsLatticeEpimorphism (for transformations)
 gap> D := Digraph([[2, 3], [4], [4], []]);
 <immutable digraph with 4 vertices, 4 edges>
 gap> D := DigraphReflexiveTransitiveClosure(D);
@@ -2642,6 +2678,22 @@ gap> IsLatticeEpimorphism(G, D, f);
 true
 gap> IsLatticeEpimorphism(D, G, f);
 false
+
+# IsLatticeEpimorphism (for permutations)
+gap> D := Digraph([[2, 3], [4], [4], []]);
+<immutable digraph with 4 vertices, 4 edges>
+gap> D := DigraphReflexiveTransitiveClosure(D);
+<immutable preorder digraph with 4 vertices, 9 edges>
+gap> G := Digraph([[2, 3], [4], [4], [5], []]);
+<immutable digraph with 5 vertices, 5 edges>
+gap> G := DigraphReflexiveTransitiveClosure(G);
+<immutable preorder digraph with 5 vertices, 14 edges>
+gap> IsLatticeEpimorphism(D, G, (2, 3));
+false
+gap> IsLatticeEpimorphism(G, D, (2, 3));
+false
+gap> IsLatticeEpimorphism(D, D, (2, 3));
+true
 
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(edges);
