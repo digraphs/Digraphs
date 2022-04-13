@@ -2575,6 +2575,30 @@ Error, the 1st argument (a digraph) must be a lattice digraph
 gap> LatticeDigraphEmbedding(G, D);
 Error, the 2nd argument (a digraph) must be a lattice digraph
 
+# IsLatticeHomomorphism
+gap> D := DigraphFromDigraph6String("&G~tSrCO{D?oC");
+<immutable digraph with 8 vertices, 27 edges>
+gap> G := DigraphFromDigraph6String("&J~}|SggsO__r?a?{?g?o?_");
+<immutable digraph with 11 vertices, 43 edges>
+gap> f := LatticeDigraphEmbedding(D, G);
+Transformation( [ 1, 8, 6, 10, 2, 9, 7, 11, 9, 10, 11 ] )
+gap> IsLatticeHomomorphism(f, D, G);
+true
+gap> IsLatticeHomomorphism(f, G, D);
+false
+gap> G := Digraph([[2, 4], [3, 7], [6], [5, 7], [6], [], [6]]);
+<immutable digraph with 7 vertices, 9 edges>
+gap> D := DigraphRemoveVertex(G, 7);
+<immutable digraph with 6 vertices, 6 edges>
+gap> G := DigraphReflexiveTransitiveClosure(G);
+<immutable preorder digraph with 7 vertices, 22 edges>
+gap> D := DigraphReflexiveTransitiveClosure(D);
+<immutable preorder digraph with 6 vertices, 17 edges>
+gap> IsDigraphEmbedding(D, G, IdentityTransformation);
+true
+gap> IsLatticeHomomorphism(D, G, IdentityTransformation);
+false
+
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(edges);
 gap> Unbind(epis);
