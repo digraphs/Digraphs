@@ -940,9 +940,18 @@ function(L1, L2, map)
   return true;
 end);
 
+InstallMethod(IsLatticeHomomorphism,
+"for a digraph, a digraph, and a permutation",
+[IsDigraph, IsDigraph, IsPerm],
+{L1, L2, perm} -> IsLatticeHomomorphism(L1, L2, AsTransformation(perm)));
+
 InstallMethod(IsLatticeEndomorphism, "for a digraph and a transformation",
 [IsDigraph, IsTransformation],
 {L, map} -> IsLatticeHomomorphism(L, L, map));
+
+InstallMethod(IsLatticeEndomorphism, "for a digraph and a permutation",
+[IsDigraph, IsPerm],
+{L, perm} -> IsLatticeHomomorphism(L, L, AsTransformation(perm)));
 
 InstallMethod(IsLatticeEpimorphism,
 "for a digraph, a digraph, and a transformation",
@@ -952,6 +961,14 @@ function(L1, L2, map)
     and OnSets(DigraphVertices(L1), map) = DigraphVertices(L2);
 end);
 
+InstallMethod(IsLatticeEpimorphism,
+"for a digraph, a digraph, and a permutation",
+[IsDigraph, IsDigraph, IsPerm],
+function(L1, L2, perm)
+  return IsLatticeHomomorphism(L1, L2, AsTransformation(perm))
+    and OnSets(DigraphVertices(L1), perm) = DigraphVertices(L2);
+end);
+
 InstallMethod(IsLatticeEmbedding,
 "for a digraph, a digraph, and a transformation",
 [IsDigraph, IsDigraph, IsTransformation],
@@ -959,3 +976,8 @@ function(L1, L2, map)
   return IsLatticeHomomorphism(L1, L2, map)
     and IsInjectiveListTrans(DigraphVertices(L1), map);
 end);
+
+InstallMethod(IsLatticeEmbedding,
+"for a digraph, a digraph, and a permutation",
+[IsDigraph, IsDigraph, IsPerm],
+{L1, L2, perm} -> IsLatticeHomomorphism(L1, L2, AsTransformation(perm)));
