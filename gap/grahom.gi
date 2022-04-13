@@ -896,3 +896,31 @@ function(L1, L2)
   fi;
   return fail;
 end);
+
+InstallMethod(IsLatticeHomomorphism,
+"for a transformation and a pair of digraphs",
+[IsDigraph, IsDigraph, IsTransformation],
+function(L1, L2, map)
+  local N1, N2, x, y, meet1, meet2, join1, join2;
+  N1 := DigraphNrVertices(L1);
+  N2 := DigraphNrVertices(L2);
+  join1 := DigraphJoinTable(L1);
+  meet1 := DigraphMeetTable(L1);
+  join2 := DigraphJoinTable(L2);
+  meet2 := DigraphMeetTable(L2);
+
+  if Maximum(ImageSetOfTransformation(map, N1)) > N2 then
+    return false;
+  fi;
+  # The above checks if the <x ^ map> and <y ^ map> entries of meet2 and join2 exist
+
+  for x in [1 .. N1] do
+    for y in [1 .. N1] do
+      if meet2[x ^ map, y ^ map] <> meet1[x, y] ^ map
+          or join2[x ^ map, y ^ map] <> join1[x, y] ^ map then
+        return false;
+      fi;
+    od;
+  od;
+  return true;
+end);

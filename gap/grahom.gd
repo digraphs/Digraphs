@@ -97,3 +97,4 @@ DeclareOperation("MaximalCommonSubdigraph", [IsDigraph, IsDigraph]);
 DeclareOperation("MinimalCommonSuperdigraph", [IsDigraph, IsDigraph]);
 
 DeclareOperation("LatticeDigraphEmbedding", [IsDigraph, IsDigraph]);
+DeclareOperation("IsLatticeHomomorphism", [IsDigraph, IsDigraph, IsTransformation]);
