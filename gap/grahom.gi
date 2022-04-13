@@ -912,7 +912,8 @@ function(L1, L2, map)
   if Maximum(ImageSetOfTransformation(map, N1)) > N2 then
     return false;
   fi;
-  # The above checks if the <x ^ map> and <y ^ map> entries of meet2 and join2 exist
+  # The above checks if the <x ^ map> and <y ^ map> entries of
+  # meet2 and join2 exist
 
   for x in [1 .. N1] do
     for y in [1 .. N1] do
