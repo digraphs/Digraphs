@@ -903,9 +903,15 @@ InstallMethod(IsLatticeHomomorphism,
 function(L1, L2, map)
   local N1, N2, x, y, meet1, meet2, join1, join2;
 
+  N1 := DigraphNrVertices(L1);
+  N2 := DigraphNrVertices(L2);
+
+  if LargestMovedPoint(map) > N1 then
+    return false;
+  fi;
+
   # We compute the join/meet table to avoid having to do this twice if L1 or L2
   # is mutable
-
   join1 := DigraphJoinTable(L1);
   meet1 := DigraphMeetTable(L1);
 
@@ -919,9 +925,6 @@ function(L1, L2, map)
   if join2 = fail or meet2 = fail then
     ErrorNoReturn("the 2nd argument (a digraph) must be a lattice digraph");
   fi;
-
-  N1 := DigraphNrVertices(L1);
-  N2 := DigraphNrVertices(L2);
 
   if Maximum(ImageSetOfTransformation(map, N1)) > N2 then
     return false;
