@@ -2876,6 +2876,48 @@ true
 gap> B[14, 15] = z;
 true
 
+# DigraphAbsorptionProbabilities
+gap> gr := Digraph([[2, 3, 4], [3], [2], []]);
+<immutable digraph with 4 vertices, 5 edges>
+gap> DigraphStronglyConnectedComponents(gr).comps;  # this ordering is used
+[ [ 2, 3 ], [ 4 ], [ 1 ] ]
+gap> DigraphAbsorptionProbabilities(gr);
+[ [ 2/3, 1/3, 0 ], [ 1, 0, 0 ], [ 1, 0, 0 ], [ 0, 1, 0 ] ]
+gap> soccer := Digraph([[7, 2, 3, 5, 1, 4],  # Motivating example:
+>                       [7, 2, 3, 5, 5, 4],  # game of 'Soccer Dice'
+>                       [7, 5, 5, 5, 5, 1],
+>                       [7, 7, 2, 5, 5, 5],
+>                       [6, 6, 7, 7, 7, 4],
+>                       [], []]);;
+gap> DigraphStronglyConnectedComponents(soccer).comps;  # this ordering is used
+[ [ 7 ], [ 6 ], [ 1, 2, 3, 5, 4 ] ]
+gap> DigraphAbsorptionProbabilities(soccer) =
+>     [[3473 / 4493, 1020 / 4493, 0],
+>      [3365 / 4493, 1128 / 4493, 0],
+>      [3211 / 4493, 1282 / 4493, 0],
+>      [3471 / 4493, 1022 / 4493, 0],
+>      [2825 / 4493, 1668 / 4493, 0],
+>      [0, 1, 0],
+>      [1, 0, 0]];
+true
+gap> DigraphAbsorptionProbabilities(EmptyDigraph(0));
+[  ]
+gap> DigraphAbsorptionProbabilities(EmptyDigraph(1));
+[ [ 1 ] ]
+gap> DigraphAbsorptionProbabilities(CompleteDigraph(5));
+[ [ 1 ], [ 1 ], [ 1 ], [ 1 ], [ 1 ] ]
+gap> DigraphAbsorptionProbabilities(ChainDigraph(4));
+[ [ 0, 0, 0, 1 ], [ 0, 0, 0, 1 ], [ 0, 0, 0, 1 ], [ 0, 0, 0, 1 ] ]
+gap> gr := ChainDigraph(250);;
+gap> probs := DigraphAbsorptionProbabilities(gr);;
+gap> scc := DigraphStronglyConnectedComponents(gr);;
+gap> sink := DigraphSinks(gr)[1];;
+gap> ForAll(probs,  # all zeros except for the sink
+>           v -> ForAll([1 .. 250],
+>                       comp -> v[comp] = 0
+>                       or (v[comp] = 1 and scc.id[comp] = sink)));
+true
+
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(adj);
 gap> Unbind(adj1);
@@ -2894,12 +2936,15 @@ gap> Unbind(j);
 gap> Unbind(mat);
 gap> Unbind(multiple);
 gap> Unbind(nbs);
+gap> Unbind(probs);
 gap> Unbind(r);
 gap> Unbind(rd);
 gap> Unbind(reflextrans);
 gap> Unbind(reflextrans1);
 gap> Unbind(reflextrans2);
 gap> Unbind(scc);
+gap> Unbind(sink);
+gap> Unbind(soccer);
 gap> Unbind(str);
 gap> Unbind(topo);
 gap> Unbind(trans);
