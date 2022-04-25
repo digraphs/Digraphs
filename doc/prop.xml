@@ -1311,7 +1311,8 @@ true
     Equivalently, a <E>distributive lattice digraph</E> is a <E>lattice digraph</E>
     in which the <E>lattice digraphs</E> representing <M>M3</M> and <M>N5</M> are
     not embeddable as lattices
-    (see <URL>https://en.wikipedia.org/wiki/Distributive_lattice)</URL>.<P/>
+    (see <URL>https://en.wikipedia.org/wiki/Distributive_lattice</URL> and
+    <Ref Prop="IsLatticeEmbedding"/>).<P/>
 
     &MUTABLE_RECOMPUTED_PROP;
 
