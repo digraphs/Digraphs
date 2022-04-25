@@ -869,7 +869,7 @@ gap> MinimalCommonSuperdigraph(NullDigraph(0), CompleteDigraph(10));
   <Description>
     <C>LatticeDigraphEmbedding</C> returns a single <E>injective</E> <Ref
       Oper="DigraphHomomorphism"/> between <A>L1</A> and <A>L2</A>, with
-      the the property that it is a <E>lattice homomorphism</E>. If one
+      the property that it is a <E>lattice homomorphism</E>. If one
       does not exist, <K>fail</K> is returned.<P/>
 
       A <E>lattice homomorphism</E> is a digraph homomorphism which
@@ -892,10 +892,11 @@ fail
 
 <#GAPDoc Label="IsLatticeHomomorphism">
 <ManSection>
-  <Oper Name="IsLatticeHomomorphism" Arg="L1, L2, map"/>
   <Oper Name="IsLatticeHomomorphism" Arg="L1, L2, map" 
         Label="for digraphs and a permutation or transformation"/>
   <Oper Name="IsLatticeEpimorphism" Arg="L1, L2, map"
+        Label="for digraphs and a permutation or transformation"/>
+  <Oper Name="IsLatticeEmbedding" Arg="L1, L2, map"
         Label="for digraphs and a permutation or transformation"/>
   <Oper Name="IsLatticeMonomorphism" Arg="L1, L2, map"
         Label="for digraphs and a permutation or transformation"/>
@@ -904,6 +905,11 @@ fail
   <Returns><K>true</K> or <K>false</K>.</Returns>
 
   <Description>
+    A transformation or permutation <A>map</A> is a <E>lattice homomorphism</E>
+    if <A>map</A> respects meets and joins of every pair of vertices, and
+    <A>map</A> fixes every <C>i</C> which is not a vertex of <A>L1</A>.
+    <P/>
+
     <C>IsLatticeHomomorphism</C> returns <K>true</K> if the permutation
     or transformation <A>map</A> is a lattice homomorphism from the lattice digraph
     <A>L1</A> to the lattice digraph <A>L2</A>.
@@ -931,10 +937,6 @@ fail
     <E>lattice homomorphism</E> from <A>L1</A> to <A>L2</A>, and <K>false</K>
     otherwise. If <A>L1</A> or <A>L2</A> is not a lattice, then <K>false</K>
     is returned.<P/>
-
-    A transformation or permutation <A>map</A> is a <E>lattice homomorphism</E>
-    if <A>map</A> respects meets and joins of every pair of vertices, and
-    <A>map</A> fixes every <C>i</C> which is not a vertex of <A>L1</A>.
     <Example><![CDATA[
 gap> G := Digraph([[2, 4], [3, 7], [6], [5, 7], [6], [], [6]]);
 <immutable digraph with 7 vertices, 9 edges>
