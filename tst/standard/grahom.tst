@@ -2574,6 +2574,46 @@ gap> LatticeDigraphEmbedding(D, G);
 Error, the 1st argument (a digraph) must be a lattice digraph
 gap> LatticeDigraphEmbedding(G, D);
 Error, the 2nd argument (a digraph) must be a lattice digraph
+gap> s := ".|}oGCAAB`?w[OL@@P?ga@@DO`SKTDEBW_kZGDbHGw]OdQqSodEEcgw{eTcSAXOnDBRa`SrFCdrLC\
+> kWLEwCGz\\nFwHuO]Oqbko{bdgS\\@CcQsbyMg_QHzyEedRiYy@ChkHdAhVBMpRquK^UrSYu[cVKIi\
+> \\]oaGTkdCmXrsj@fPRKUbUq_VJzQ`aqZptI|fUTKejeujYLvLpWu[Mf^";
+".|}oGCAAB`?w[OL@@P?ga@@DO`SKTDEBW_kZGDbHGw]OdQqSodEEcgw{eTcSAXOnDBRa`SrFCdrLC\
+kWLEwCGz\\nFwHuO]Oqbko{bdgS\\@CcQsbyMg_QHzyEedRiYy@ChkHdAhVBMpRquK^UrSYu[cVKIi\
+\\]oaGTkdCmXrsj@fPRKUbUq_VJzQ`aqZptI|fUTKejeujYLvLpWu[Mf^"
+gap> G := DigraphFromDiSparse6String(s);
+<immutable digraph with 61 vertices, 176 edges>
+gap> G := DigraphReflexiveTransitiveClosure(G);
+<immutable preorder digraph with 61 vertices, 660 edges>
+gap> D := DigraphFromDiSparse6String(".DsGEA_QM@Gs");
+<immutable digraph with 5 vertices, 14 edges>
+gap> f := LatticeDigraphEmbedding(D, G);
+Transformation( [ 1, 3, 2, 9, 10, 6, 7, 8, 9, 10 ] )
+gap> f := IsLatticeEmbedding(D, G, f);
+true
+gap> D := DigraphFromDiSparse6String(".F{GE@I@M@HGCbU@GsTn");
+<immutable digraph with 7 vertices, 25 edges>
+gap> G := DigraphFromDiSparse6String(".|}oGCI@@AO_cKLD__gWeIECpp?gV?_bWOuGLcb`{AAQ`Cg`I\
+> IRIpa`UQRIRQSweXgDRLIESMTRc[\m\\NSrc_k]OQb@t@NIEYH_sbbBqCu[egHgW|LXMHjXxOilGCyiybSigyTO\
+> hddaxaW^Ogd{S[OjEbZEUPQkXA\\OpoitbHhIGhtMHGkUlhaxesZTrYLJ^TjTrfGnXKvN@iv[Mf^");
+<immutable digraph with 61 vertices, 176 edges>
+gap> G := DigraphReflexiveTransitiveClosure(G);
+<immutable preorder digraph with 61 vertices, 660 edges>
+gap> f := LatticeDigraphEmbedding(D, G);
+Transformation( [ 1, 3, 4, 10, 8, 11, 13, 8, 9, 10, 11, 12, 13 ] )
+gap> IsLatticeEmbedding(D, G, f);
+true
+gap> D := DigraphFromDiSparse6String(".Ww__`aB_`DdeFaFbEcGHIdfKkhLM`obOeKOgLPRcPQiMQRj\
+> NSTU");
+<immutable digraph with 24 vertices, 49 edges>
+gap> G := DigraphFromDiSparse6String(".Yy___bb`BdEaC_`HcDH`aKeKcEfIJNgLMN_dQkQfMRSaHQgJ\
+> RUiLSUoPTVW");
+<immutable digraph with 26 vertices, 57 edges>
+gap> D := DigraphReflexiveTransitiveClosure(D);
+<immutable preorder digraph with 24 vertices, 148 edges>
+gap> G := DigraphReflexiveTransitiveClosure(G);
+<immutable preorder digraph with 26 vertices, 162 edges>
+gap> LatticeDigraphEmbedding(D, G);
+fail
 
 # IsLatticeHomomorphism (for transformations)
 gap> D := DigraphFromDigraph6String("&G~tSrCO{D?oC");
