@@ -651,36 +651,19 @@ end);
 
 InstallMethod(IsDistributiveLatticeDigraph, "for a digraph", [IsDigraph],
 function(D)
-  local N5, M3, IsLatticeHomomorphism, IsSublattice;
+  local N5, M3;
   if not IsLatticeDigraph(D) then
     return false;
   fi;
-
-  IsLatticeHomomorphism := function(map, L1, L2)
-    local N, x, y;
-    N := DigraphNrVertices(L1);
-    for x in [1 .. N] do
-      for y in [1 .. N] do
-        if PartialOrderDigraphMeetOfVertices(L2, x ^ map, y ^ map) <>
-            PartialOrderDigraphMeetOfVertices(L1, x, y) ^ map
-            or PartialOrderDigraphJoinOfVertices(L2, x ^ map, y ^ map) <>
-               PartialOrderDigraphJoinOfVertices(L1, x, y) ^ map then
-          return false;
-        fi;
-      od;
-    od;
-    return true;
-  end;
-
-  IsSublattice := function(L1, L2)
-    return ForAny(EmbeddingsDigraphsRepresentatives(L1, L2),
-               x -> IsLatticeHomomorphism(x, L1, L2));
-  end;
 
   N5 := DigraphReflexiveTransitiveClosure(
         Digraph([[2, 4], [3], [5], [5], []]));
   M3 := DigraphReflexiveTransitiveClosure(
         Digraph([[2, 3, 4], [5], [5], [5], []]));
 
-  return not (IsSublattice(N5, D) or IsSublattice(M3, D));
+  if LatticeDigraphEmbedding(N5, D) <> fail or
+       LatticeDigraphEmbedding(M3, D) <> fail then
+    return false;
+  fi;
+  return true;
 end);
