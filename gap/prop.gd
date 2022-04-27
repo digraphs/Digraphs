@@ -67,8 +67,8 @@ DeclareSynonymAttr("IsAntiSymmetricDigraph", IsAntisymmetricDigraph);
 DeclareSynonymAttr("IsNullDigraph", IsEmptyDigraph);
 DeclareSynonymAttr("IsQuasiorderDigraph", IsPreorderDigraph);
 
-DeclareOperation("DIGRAPHS_IsMeetJoinSemilatticeDigraph",
-                 [IsHomogeneousList]);
+DeclareOperation("DIGRAPHS_IsJoinSemilatticeAndJoinTable", [IsDigraph]);
+DeclareOperation("DIGRAPHS_IsMeetSemilatticeAndMeetTable", [IsDigraph]);
 
 InstallTrueMethod(IsAcyclicDigraph, IsChainDigraph);
 InstallTrueMethod(IsAcyclicDigraph, IsDigraph and IsDirectedTree);
