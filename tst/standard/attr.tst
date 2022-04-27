@@ -2804,6 +2804,78 @@ false
 gap> NonLowerSemimodularPair(D);
 [ 10, 9 ]
 
+# DigraphJoinTable and DigraphMeetTable
+gap> D := DigraphReflexiveTransitiveClosure(ChainDigraph(4));
+<immutable preorder digraph with 4 vertices, 10 edges>
+gap> x := PartialOrderDigraphJoinOfVertices(D, 1, 3);
+3
+gap> y := PartialOrderDigraphMeetOfVertices(D, 3, 2);
+2
+gap> A := DigraphJoinTable(D);
+[ [ 1, 2, 3, 4 ], [ 2, 2, 3, 4 ], [ 3, 3, 3, 4 ], [ 4, 4, 4, 4 ] ]
+gap> B := DigraphMeetTable(D);
+[ [ 1, 1, 1, 1 ], [ 1, 2, 2, 2 ], [ 1, 2, 3, 3 ], [ 1, 2, 3, 4 ] ]
+gap> A[1, 3] = x;
+true
+gap> B[3, 2] = y;
+true
+gap> D := Digraph(IsMutable, [[2, 3], [4], [4], []]);
+<mutable digraph with 4 vertices, 4 edges>
+gap> DigraphReflexiveTransitiveClosure(D);
+<mutable digraph with 4 vertices, 9 edges>
+gap> x := PartialOrderDigraphJoinOfVertices(D, 2, 3);;
+gap> y := PartialOrderDigraphMeetOfVertices(D, 2, 3);;
+gap> z := PartialOrderDigraphMeetOfVertices(D, 1, 4);;
+gap> A := DigraphJoinTable(D);
+[ [ 1, 2, 3, 4 ], [ 2, 2, 4, 4 ], [ 3, 4, 3, 4 ], [ 4, 4, 4, 4 ] ]
+gap> B := DigraphMeetTable(D);
+[ [ 1, 1, 1, 1 ], [ 1, 2, 1, 2 ], [ 1, 1, 3, 3 ], [ 1, 2, 3, 4 ] ]
+gap> D;
+<mutable digraph with 4 vertices, 9 edges>
+gap> A[2, 3] = x;
+true
+gap> B[2, 3] = y;
+true
+gap> B[1, 4] = z;
+true
+gap> D := ChainDigraph(3);
+<immutable chain digraph with 3 vertices>
+gap> DigraphJoinTable(D);
+fail
+gap> D := DigraphAddVertex(D, 4);
+<immutable digraph with 4 vertices, 2 edges>
+gap> D := DigraphAddEdge(D, [4, 3]);
+<immutable digraph with 4 vertices, 3 edges>
+gap> D := DigraphReflexiveTransitiveClosure(D);
+<immutable preorder digraph with 4 vertices, 8 edges>
+gap> x := PartialOrderDigraphJoinOfVertices(D, 1, 3);;
+gap> y := PartialOrderDigraphJoinOfVertices(D, 1, 4);;
+gap> z := PartialOrderDigraphJoinOfVertices(D, 1, 2);;
+gap> A := DigraphJoinTable(D);
+[ [ 1, 2, 3, 3 ], [ 2, 2, 3, 3 ], [ 3, 3, 3, 3 ], [ 3, 3, 3, 4 ] ]
+gap> A[1, 3] = x;
+true
+gap> A[1, 4] = y;
+true
+gap> A[1, 2] = z;
+true
+gap> DigraphMeetTable(D);
+fail
+gap> D := DigraphFromDigraph6String(
+> "&Q~~~VObJJtD?BB?`@?@?~~?Ob?Jt?E^?AT?@p??`??P??N??D??B??@");
+<immutable digraph with 18 vertices, 97 edges>
+gap> x := PartialOrderDigraphJoinOfVertices(D, 4, 8);;
+gap> y := PartialOrderDigraphJoinOfVertices(D, 1, 10);;
+gap> z := PartialOrderDigraphMeetOfVertices(D, 14, 15);;
+gap> A := DigraphJoinTable(D);;
+gap> B := DigraphMeetTable(D);;
+gap> A[4, 8] = x;
+true
+gap> A[1, 10] = y;
+true
+gap> B[14, 15] = z;
+true
+
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(adj);
 gap> Unbind(adj1);

@@ -2675,3 +2675,11 @@ function(D)
   D := DigraphReflexiveTransitiveReduction(DigraphMutableCopyIfMutable(D));
   return DIGRAPHS_NonSemimodularPair(InNeighbours(D)) = fail;
 end);
+
+InstallMethod(DigraphJoinTable, "for a digraph",
+[IsDigraph],
+D -> DIGRAPHS_IsJoinSemilatticeAndJoinTable(D)[2]);
+
+InstallMethod(DigraphMeetTable, "for a digraph",
+[IsDigraph],
+D -> DIGRAPHS_IsMeetSemilatticeAndMeetTable(D)[2]);
