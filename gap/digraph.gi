@@ -1429,14 +1429,20 @@ function(filt, n, p)
   return DigraphNC(IsMutableDigraph, RANDOM_DIGRAPH(n, Int(p * 10000)));
 end);
 
+# This function takes an existing adjacency list after solely creating 
+# a Hamiltonian cycle or tree, and randomly adds edges between all 
+# remaining vertices in the graph.
 BindGlobal("DIGRAPHS_FillOutGraph", function(n, p, adjacencyList)
 
-    local i, j;
+    local vertices, i, j;
 
-    for i in [1 .. n] do
-        for j in [1 .. n] do
+    vertices := [1 .. n];
+    probability := [0 .. 99];
+
+    for i in vertices do
+        for j in vertices do
             if (not (j in adjacencyList[i])) then
-                 if Float(Random([0 .. 99])/100) < Float(p) then
+                 if Float(Random(probability) / 100) < p then
                     Add(adjacencyList[i], j);
                  fi;
             fi;
@@ -1451,102 +1457,109 @@ InstallMethod(RandomDigraphCons,
 "for IsHamiltonianDigraph, a positive integer, and a float",
 [IsHamiltonianDigraph, IsPosInt, IsFloat],
 function(filt, n, p)
-    local adjacencyList, vertices, startVertex, hamiltonianCycle, x, i, j, graph;
-  
-    adjacencyList := [];
-  
-    for i in [1 .. n] do
+    local adjacencyList, vertices, startVertex, hamiltonianCycle, x, i, j;
+
+    adjacencyList := EmptyPlist(n);
+
+    vertices := [1 .. n];
+
+    for i in vertices do
         Add(adjacencyList, []);
     od;
-  
+
     # Edge Case
     if n = 1 then
-        if Float(Random([0 .. 99])/100) < Float(p) then
+        if Float(Random([0 .. 99]) / 100) < p then
             Add(adjacencyList[1], 1);
-            return Digraph(adjacencyList);
-        else
-            return Digraph(adjacencyList);
         fi;
+        return DigraphNC(adjacencyList);
     fi;
-  
-    vertices:= [1 .. n];
-    
+
     # Starting from a random vertex, we create a Hamiltonian cycle
     startVertex := Remove(vertices, Random(vertices));
-    hamiltonianCycle := [startVertex];
-    
-    # While there are remaining n-1 vertices to be added to the Hamiltonian cycle
-    for x in [1 .. n-1] do
-        # Create a random edge from the last vertex in the cycle, to random vertex not in the cycle
+    hamiltonianCycle := EmptyPlist(n);
+    hamiltonianCycle[1] := startVertex;
+
+    # While there are remaining n-1 vertices to be added to the Hamiltonian 
+    # cycle
+    for x in [1 .. n - 1] do
+        # Create a random edge from the last vertex in the cycle
+        # to a random vertex not in the cycle
         i := hamiltonianCycle[x];
-        j := Random(vertices);
-        Remove(vertices, Position(vertices, j));
+        j := Remove(vertices, Random([1 .. Length(vertices)]));
         Add(hamiltonianCycle, j);
         Add(adjacencyList[i], j);
     od;
-    
+
     Add(adjacencyList[hamiltonianCycle[n]], startVertex);
-    
-    # Once we have created a Hamiltonian cycle, fill out the rest of the graph with random edges according to p
+
+    # Once we have created a Hamiltonian cycle, fill out the rest of the graph
+    # with random edges according to p
     adjacencyList := DIGRAPHS_FillOutGraph(n, p, adjacencyList);
-    graph := Digraph(adjacencyList);
-    return graph;
+
+    return DigraphNC(adjacencyList);
 end);
 
 InstallMethod(RandomDigraphCons,
 "for IsEulerianDigraph, a positive integer, and a float",
 [IsEulerianDigraph, IsPosInt, IsFloat],
 function(filt, n, p)
-    local adjacencyList, vertices, startVertex, circuitVertex, continueCircuit,  verticesToConsider, connectedVertices, verticesToCheck, i, graph;
+    local adjacencyList, vertices, probability, startVertex, circuitVertex, i, 
+    continueCircuit, verticesToConsider, connectedVertices, verticesToCheck;
 
-    adjacencyList := [];
-    for i in [1 .. n] do
+    adjacencyList := EmptyPlist(n);
+
+    vertices := [1 .. n];
+    probability := [0 .. 99];
+
+    for i in vertices do
         Add(adjacencyList, []);
     od;
 
     # Edge Case
     if n = 1 then
-        if Float(Random([0 .. 99])/100) < Float(p) then
+        if Float(Random(probability) / 100) < p then
             Add(adjacencyList[1], 1);
-            return Digraph(adjacencyList);
-        else
-            return Digraph(adjacencyList);
         fi;
+        return DigraphNC(adjacencyList);
     fi;
-
-    vertices:= [1 .. n];
 
     # Starting from a random vertex, we create an Eulerian circuit
     startVertex := Random(vertices);
     circuitVertex := startVertex;
     continueCircuit := true;
 
-    # This will keep track of the vertices left to consider when deciding whether to extend the cycle. For example,
-    # if we want to extend from the current circuitVertex, we can check - verticesToConsider[circuitVertex] -
+    # This will keep track of the vertices left to consider when deciding 
+    # whether to extend the cycle. For example, if we want to extend from the 
+    # current circuitVertex, we can check - verticesToConsider[circuitVertex] -
     # to see which vertices it hasn't previously considered.
-    verticesToConsider := [];
-    for i in [1 .. n] do
+    verticesToConsider := EmptyPlist(n);
+    for i in vertices do
         Add(verticesToConsider, [1 .. n]);
     od;
 
-    # Eulerian graphs must be connected, so we store a list of connected vertices and check if a vertex isn't in the list
+    # Eulerian graphs must be connected, so we store a list of connected
+    # vertices and check if a vertex isn't in the list
     connectedVertices := [startVertex];
 
     while continueCircuit do
         while Length(verticesToConsider[circuitVertex]) > 0 do
-            # From the remaining vertices to check, select a random one to see if an edge will be added
+            # From the remaining vertices to check, select a random one to see
+            # if an edge will be added
             i := Random(verticesToConsider[circuitVertex]);
-            Remove(verticesToConsider[circuitVertex], Position(verticesToConsider[circuitVertex], i));
+            Remove(verticesToConsider[circuitVertex], 
+            Position(verticesToConsider[circuitVertex], i));
 
             # Check that the edge doesn't already exist
             if (not (i in adjacencyList[circuitVertex])) then
-                # First we guarantee that we get a connected graph by checking if the vertex isn't already connected
+                # First we guarantee that we get a connected graph by checking 
+                # if the vertex isn't already connected
                 if (not (i in connectedVertices)) then
                     Add(adjacencyList[circuitVertex], i);
                     Add(connectedVertices, i);
                     circuitVertex := i;
                     break;
-                elif Float(Random([0 .. 99])/100) < Float(p) then
+                elif Float(Random(probability) / 100) < p then
                     Add(adjacencyList[circuitVertex], i);
                     circuitVertex := i;
                     break;
@@ -1560,17 +1573,18 @@ function(filt, n, p)
         fi;
     od;
 
-    # Finish the circuit by adding an edge back to the start vertex (if it isn't already at the start vertex)
+    # Finish the circuit by adding an edge back to the start vertex 
+    # (if it isn't already at the start vertex)
     if circuitVertex <> startVertex then
-        # If an edge already exists between the finish vertex and the start vertex,
-        # we must find another path to the start vertex to avoid generating a multidigraph.
+        # If an edge already exists between the finish vertex and the start 
+        # vertex, we must find another path to the start vertex to avoid 
+        # generating a multidigraph.
         while (startVertex in adjacencyList[circuitVertex]) do
-            # Here we consider all possible edges again, including previously rejected edges, to guarantee a path
-            # back to the start
+            # Here we consider all possible edges again, including previously 
+            # rejected edges, to guarantee a path back to the start
             verticesToCheck := [1 .. n];
             while Length(verticesToCheck) > 0 do
-                i := Random(verticesToCheck);
-                Remove(verticesToCheck, Position(verticesToCheck, i));
+                i := Remove(verticesToCheck, Random(verticesToCheck));
                 if (not (i in adjacencyList[circuitVertex])) then
                     Add(adjacencyList[circuitVertex], i);
                     circuitVertex := i;
@@ -1581,93 +1595,97 @@ function(filt, n, p)
         Add(adjacencyList[circuitVertex], startVertex);
     fi;
 
-    graph := Digraph(adjacencyList);
-    return graph;
+    return DigraphNC(adjacencyList);
 end);
 
 InstallMethod(RandomDigraphCons,
 "for IsConnectedDigraph, a positive integer, and a float",
 [IsConnectedDigraph, IsPosInt, IsFloat],
 function(filt, n, p)
-    local adjacencyList, vertices, startVertex, tree, x, i, j, graph;
+    local adjacencyList, vertices, startVertex, tree, x, i, j;
 
-    adjacencyList := [];
+    adjacencyList := EmptyPlist(n);
 
-    for i in [1 .. n] do
+    vertices := [1 .. n];
+
+    for i in vertices do
         Add(adjacencyList, []);
     od;
 
-    vertices:= [1 .. n];
-
-    # Starting from a random vertex, we first create a tree to guarantee connectivity
+    # Starting from a random vertex, we first create a tree to guarantee 
+    # connectivity
     startVertex := Remove(vertices, Random(vertices));
     tree := [startVertex];
 
     # While there are n-1 remaining vertices to be added to the tree
-    for x in [1 .. n-1] do
-        # Create an edge from a random vertex in the tree, to a random vertex outside of it
+    for x in [1 .. n - 1] do
+        # Create an edge from a random vertex in the tree, to a random vertex 
+        # outside of it
         i := Random(tree);
-        j := Random(vertices);
-        Remove(vertices, Position(vertices, j));
+        j := Remove(vertices, Random([1 .. Length(vertices)]));
         Add(tree, j);
         Add(adjacencyList[i], j);
     od;
 
-    # Once the tree has been created, we fill out the rest of the graph with random edges according to p
+    # Once the tree has been created, we fill out the rest of the graph with 
+    # random edges according to p
     adjacencyList := DIGRAPHS_FillOutGraph(n, p, adjacencyList);
-    graph := Digraph(adjacencyList);
-    return graph;
+    return DigraphNC(adjacencyList);
 end);
 
 InstallMethod(RandomDigraphCons,
 "for IsAcyclicDigraph, a positive integer, and a float",
 [IsAcyclicDigraph, IsPosInt, IsFloat],
 function(filt, n, p)
-    local adjacencyList, vertices, i, j, graph;
+    local adjacencyList, vertices, probability, i, j;
 
-    adjacencyList := [];
+    adjacencyList := EmptyPlist(n);
 
-    for i in [1 .. n] do
+    vertices := [1 .. n];
+    probability := [0 .. 99];
+
+    for i in vertices do
         Add(adjacencyList, []);
     od;
 
-    vertices:= [1 .. n];
-
-    # We shuffle the vertices and treat the order of the vertices as a hierarchy where all vertices to the right of
-    # a vertex in the list are potential edges. This idea is that the edges flow downwards in the hierarchy, avoiding cycles.
+    # We shuffle the vertices and treat the order of the vertices as a 
+    # hierarchy where all vertices to the right of a vertex in the list are 
+    # potential edges. This idea is that the edges flow downwards in the 
+    # hierarchy, avoiding cycles.
     Shuffle(vertices);
 
-    # From position i in the list, we consider all vertices j to the right of it
-    for i in [1 .. n] do
-        for j in [i+1 .. n] do
-            if Float(Random([0 .. 99])/100) < Float(p) then
+    # From position i in the list, we consider all vertices j to the right of i
+    for i in vertices do
+        for j in [i + 1 .. n] do
+            if Float(Random(probability) / 100) < p then
                 Add(adjacencyList[vertices[i]], vertices[j]);
             fi;
         od;
     od;
 
-    graph := Digraph(adjacencyList);
-    return graph;
+    return DigraphNC(adjacencyList);
 end);
 
 InstallMethod(RandomDigraphCons,
 "for IsSymmetricDigraph, a positive integer, and a float",
 [IsSymmetricDigraph, IsPosInt, IsFloat],
 function(filt, n, p)
-    local adjacencyList, vertices, i, j, graph;
+    local adjacencyList, vertices, probability, i, j;
 
-    adjacencyList := [];
+    adjacencyList := EmptyPlist(n);
 
-    for i in [1 .. n] do
+    vertices := [1 .. n];
+    probability := [0 .. 99];
+
+    for i in vertices do
         Add(adjacencyList, []);
     od;
 
-    vertices:= [1 .. n];
-
-    for i in [1 .. n] do
+    for i in vertices do
         for j in [i .. n] do
-            if Float(Random([0 .. 99])/100) < Float(p) then
-                # If it's a self-loop, only add one edge otherwise we would have a multi-edge.
+            if Float(Random(probability) / 100) < p then
+                # If it's a self-loop, only add one edge otherwise we would 
+                # have a multi-edge.
                 if i = j then
                     Add(adjacencyList[i], j);
                 else
@@ -1678,8 +1696,7 @@ function(filt, n, p)
         od;
     od;
 
-    graph := Digraph(adjacencyList);
-    return graph;
+    return DigraphNC(adjacencyList);
 end);
 
 InstallMethod(RandomDigraphCons,

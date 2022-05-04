@@ -770,19 +770,19 @@ gap> List(D, x -> Size(x));
       <Ref Filt='IsConnectedDigraph'/>, <Ref Filt='IsSymmetricDigraph'/>, <Ref Filt='IsAcyclicDigraph'/>, <Ref Filt='IsEulerianDigraph'/>, <Ref Filt='IsHamiltonianDigraph'/>.<P/>
       
     For <Ref Filt='IsConnectedDigraph'/>, a random tree is first created independent of the value of <A>p</A>,
-      guaranteeing connectivity (with n-1 edges), and then edges are added between the remaining pairs
+      guaranteeing connectivity (with <M><A>n</A>-1</M> edges), and then edges are added between the remaining pairs
       of vertices with probability approximately <A>p</A>.<P/>
       
-    For <Ref Filt='IsHamiltonianDigraph'/>, a random Hamiltonian Cycle is first created independent of the
-      value of <A>p</A> (with n edges), and then edges are added between the remaining pairs of vertices 
+    For <Ref Filt='IsHamiltonianDigraph'/>, a random Hamiltonian cycle is first created independent of the
+      value of <A>p</A> (with <A>n</A> edges), and then edges are added between the remaining pairs of vertices 
       with probability approximately <A>p</A>.<P/>
       
-    For <Ref Filt='IsEulerianDigraph'/>, a random Eulerian Cycle is created where <A>p</A> influences how 
+    For <Ref Filt='IsEulerianDigraph'/>, a random Eulerian cycle is created where <A>p</A> influences how 
       long the cycle will be. The cycle grows by randomly considering edges that extend the cycle, and 
       adding an edge with probability approximately <A>p</A>. The cycle stops when we get back to the start vertex 
       and have no more edges left to consider from it that extend the cycle further (any possible edge from the 
       start vertex has either been added to the cycle, or rejected, leaving no more edges to consider). Thus 
-      <A>p = 1</A> does not necessarily guarantee a complete digraph. Instead, it guarantees that all edges 
+      <M><A>p</A> = 1</M> does not necessarily guarantee a complete digraph. Instead, it guarantees that all edges 
       considered up to the point where the cycle stops, are added.<P/>
       
     For <Ref Filt='IsAcyclicDigraph'/> and <Ref Filt='IsSymmetricDigraph'/>, edges are added between any 

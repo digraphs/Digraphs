@@ -1932,6 +1932,10 @@ gap> for p in [1 .. 9] do
 >     Print("False");
 >   fi;
 > od;
+gap> graph := RandomDigraph(IsConnectedDigraph, 10);;
+>   if not IsConnectedDigraph(graph) then
+>     Print("False");
+>   fi;
 
 # Random Symmetric Digraph
 gap> for n in [1 .. 20] do
@@ -1952,6 +1956,10 @@ gap> for p in [1 .. 9] do
 >     Print("False");
 >   fi;
 > od;
+gap> graph := RandomDigraph(IsSymmetricDigraph, 10);;
+>   if not IsSymmetricDigraph(graph) then
+>     Print("False");
+>   fi;
 
 # Random Hamiltonian Digraph
 gap> graph := RandomDigraph(IsHamiltonianDigraph, 1, 0);;
@@ -1980,6 +1988,10 @@ gap> for p in [1 .. 9] do
 >     Print("False");
 >   fi;
 > od;
+gap> graph := RandomDigraph(IsHamiltonianDigraph, 10);;
+>   if not IsHamiltonianDigraph(graph) then
+>     Print("False");
+>   fi;
 
 # Random Acyclic Digraph
 gap> for n in [1 .. 20] do
@@ -2000,6 +2012,10 @@ gap> for p in [1 .. 9] do
 >     Print("False");
 >   fi;
 > od;
+gap> graph := RandomDigraph(IsAcyclicDigraph, 10);;
+>   if not IsAcyclicDigraph(graph) then
+>     Print("False");
+>   fi;
 
 # Random Eulerian Digraph
 gap> graph := RandomDigraph(IsEulerianDigraph, 1, 0);;
@@ -2022,6 +2038,10 @@ gap> for p in [1 .. 9] do
 >     Print("False");
 >   fi;
 > od;
+gap> graph := RandomDigraph(IsEulerianDigraph, 10);;
+>   if not IsEulerianDigraph(graph) then
+>     Print("False");
+>   fi;
 
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(G);
