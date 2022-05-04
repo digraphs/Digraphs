@@ -125,6 +125,7 @@ DeclareOperation("IteratorOfPaths", [IsList, IsPosInt, IsPosInt]);
 DeclareOperation("IteratorOfPathsNC", [IsList, IsPosInt, IsPosInt]);
 DeclareOperation("IsReachable", [IsDigraph, IsPosInt, IsPosInt]);
 DeclareOperation("DigraphLongestDistanceFromVertex", [IsDigraph, IsPosInt]);
+DeclareOperation("DigraphRandomWalk", [IsDigraph, IsPosInt, IsInt]);
 
 DeclareOperation("DigraphLayers", [IsDigraph, IsPosInt]);
 DeclareAttribute("DIGRAPHS_Layers", IsDigraph, "mutable");

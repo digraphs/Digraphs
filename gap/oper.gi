@@ -1727,6 +1727,41 @@ function(D, v)
   return dist;
 end);
 
+InstallMethod(DigraphRandomWalk,
+"for a digraph, a pos int and a non-negative int",
+[IsDigraph, IsPosInt, IsInt],
+function(D, v, t)
+  local vertices, edge_indices, i, neighbours, index;
+
+  # Check input
+  if v > DigraphNrVertices(D) then
+    ErrorNoReturn("the 2nd argument <v> must be ",
+                  "a vertex of the 1st argument <D>,");
+  elif t < 0 then
+    ErrorNoReturn("the 3rd argument <t> must be a non-negative int,");
+  fi;
+
+  # Prepare output lists
+  vertices     := [v];
+  edge_indices := [];
+
+  # Iterate to desired length
+  for i in [1 .. t] do
+    neighbours := OutNeighboursOfVertex(D, v);
+    if IsEmpty(neighbours) then
+      break;  # Sink: path ends here
+    fi;
+    # Follow a random edge
+    index := Random(1, Length(neighbours));
+    v     := neighbours[index];
+    vertices[i + 1] := v;
+    edge_indices[i] := index;
+  od;
+
+  # Format matches that of DigraphPath
+  return [vertices, edge_indices];
+end);
+
 InstallMethod(DigraphLayers, "for a digraph, and a positive integer",
 [IsDigraph, IsPosInt],
 function(D, v)
