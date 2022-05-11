@@ -46,9 +46,13 @@ DeclareOperation("StrongProduct", [IsDigraph, IsDigraph]);
 DeclareOperation("ConormalProduct", [IsDigraph, IsDigraph]);
 DeclareOperation("HomomorphicProduct", [IsDigraph, IsDigraph]);
 DeclareOperation("LexicographicProduct", [IsDigraph, IsDigraph]);
-DeclareOperation("AmalgamDigraphs", [IsDigraph, IsDigraph, IsList, IsList]);
-DeclareOperation("AmalgamDigraphsIsomorphic",
-                 [IsDigraph, IsDigraph, IsList, IsList]);
+DeclareOperation("AmalgamDigraphs", 
+                 [IsDigraph, IsDigraph, IsDigraph,
+                  IsTransformation, IsTransformation]);
+DeclareOperation("AmalgamDigraphs", 
+                 [IsDigraph, IsDigraph, IsDigraph, IsTransformation]);
+DeclareOperation("AmalgamDigraphs", 
+                 [IsDigraph, IsDigraph, IsDigraph,]);
 
 DeclareSynonym("DigraphModularProduct", ModularProduct);
 DeclareSynonym("DigraphStrongProduct", StrongProduct);
@@ -58,6 +62,9 @@ DeclareSynonym("DigraphLexicographicProduct", LexicographicProduct);
 
 DeclareGlobalFunction("DIGRAPHS_CombinationOperProcessArgs");
 DeclareOperation("DIGRAPHS_GraphProduct", [IsDigraph, IsDigraph, IsFunction]);
+DeclareOperation("NOCHECKS_AmalgamDigraphs", 
+                 [IsDigraph, IsDigraph, IsDigraph,
+                  IsTransformation, IsTransformation]);
 
 # 4. Actions . . .
 DeclareOperation("OnDigraphs", [IsDigraph, IsPerm]);

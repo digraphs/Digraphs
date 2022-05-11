@@ -765,48 +765,34 @@ function(D1, D2, edge_function)
   return Digraph(edges);
 end);
 
-InstallMethod(AmalgamDigraphsIsomorphic,
-"for a digraph, a digraph, a list, and a list",
-[IsDigraph, IsDigraph, IsList, IsList],
-function(D1, D2, subdigraphVertices1, subdigraphVertices2)
-  local subdigraph1, subdigraph2, newSubdigraphVertices2, transformation, vertex;
-
-  subdigraph1 := InducedSubdigraph(DigraphImmutableCopyIfMutable(D1),
-                 subdigraphVertices1);
-  subdigraph2 := InducedSubdigraph(DigraphImmutableCopyIfMutable(D2),
-                 subdigraphVertices2);
-
-  if not IsIsomorphicDigraph(subdigraph1, subdigraph2) then
-    ErrorNoReturn(
-      "the subdigraph induced by the 3rd argument (a list) in the 1st ",
-      "argument (a digraph) is not ismorphic to the subdigraph induced ",
-      "by the 4th argument (a list) in the 2nd argument (a digraph)");
-  fi;
-
-  newSubdigraphVertices2 := [];
-  transformation := DigraphEmbedding(subdigraph2, subdigraph1);
-  for vertex in subdigraphVertices2 do
-    newSubdigraphVertices2[
-      Position(subdigraphVertices2, vertex) ^ transformation] := vertex;
-  od;
-
-  return AmalgamDigraphs(D1, D2, subdigraphVertices1, newSubdigraphVertices2);
-end);
-
 InstallMethod(AmalgamDigraphs,
 "for a digraph, a digraph, a list, and a list",
-[IsDigraph, IsDigraph, IsList, IsList],
-function(D1, D2, subdigraphVertices1, subdigraphVertices2)
-  local D, n, map, T, vertex, edge;
+[IsDigraph, IsDigraph, IsDigraph, IsTransformation, IsTransformation],
+function(D1, D2, S, map1, map2)
+  local D, n, imageList1, imageList2, map, edge, T;
 
-  if not InducedSubdigraph(DigraphImmutableCopyIfMutable(D1),
-         subdigraphVertices1) =
-         InducedSubdigraph(DigraphImmutableCopyIfMutable(D2),
-         subdigraphVertices2) then
+  if IsMultiDigraph(D1) then
     ErrorNoReturn(
-        "the subdigraph induced by the 3rd argument (a list) in the 1st ",
-        "argument (a digraph) does not equal the subdigraph induced by the ",
-        "4th argument (a list) in the 2nd argument (a digraph)");
+      "the 1st argument (a digraph) must not satisfy IsMultiDigraph");
+  elif IsMultiDigraph(D2) then
+    ErrorNoReturn(
+      "the 2nd argument (a digraph) must not satisfy IsMultiDigraph");
+  elif IsMultiDigraph(S) then
+    ErrorNoReturn(
+      "the 3rd argument (a digraph) must not satisfy IsMultiDigraph");
+  fi;
+
+  if not IsDigraphEmbedding(S, D1, map1) then
+    ErrorNoReturn(
+      "the 4th argument (a transformation) is not ",
+      "a digraph embedding from the 3rd argument (a digraph) into ",
+      "the 1st argument (a digraph)");
+  fi;
+  if not IsDigraphEmbedding(S, D2, map2) then
+    ErrorNoReturn(
+      "the 5th argument (a transformation) is not ",
+      "a digraph embedding from the 3rd argument (a digraph) into ",
+      "the 2nd argument (a digraph)");
   fi;
 
   # Create a mutable copy so that the function also works if
@@ -814,31 +800,128 @@ function(D1, D2, subdigraphVertices1, subdigraphVertices2)
   # D1 will be changed in place.
   D := DigraphMutableCopyIfImmutable(D1);
 
-  n := DigraphNrVertices(D2) + DigraphNrVertices(D1);
-  n := n - Length(subdigraphVertices1);
+  n := DigraphNrVertices(D2) + DigraphNrVertices(D1) - DigraphNrVertices(S);
 
-  # 'map' is a mapping from the vertices of D2 to the vertices of the
-  # final output graph. The idea is to map the subdigraph vertices of D2
-  # onto the subdigraph vertices of D1 and then map the rest of the vertices
-  # of D2 to other (higher) values. The mapping from D1 to the output graph
-  # can be understood as the identity mapping.
+  # 'map' is an embedding of D2 into the final output graph. 
+  # The embedding of D1 into the final output graph is the identity mapping.
 
   map := [1 .. n];
 
-  for vertex in [1 .. Length(subdigraphVertices1)] do
-    map[subdigraphVertices2[vertex]] := subdigraphVertices1[vertex];
-  od;
+  imageList1 := OnTuples([1 .. DigraphNrVertices(S)], map1);
+  imageList2 := OnTuples([1 .. DigraphNrVertices(S)], map2);
 
-  map{Difference(DigraphVertices(D2), subdigraphVertices2)} :=
+  map{imageList2} := imageList1;
+  map{Difference(DigraphVertices(D2), imageList2)} :=
         [DigraphNrVertices(D1) + 1 .. n];
 
   T := Transformation(map);
 
-  DigraphAddVertices(D, DigraphNrVertices(D2) - Length(subdigraphVertices1));
+  DigraphAddVertices(D, DigraphNrVertices(D2) - DigraphNrVertices(S));
 
   for edge in DigraphEdges(D2) do
-    if not (edge[1] in subdigraphVertices2
-        and edge[2] in subdigraphVertices2) then
+    if not (edge[1] in imageList2
+        and edge[2] in imageList2) then
+      DigraphAddEdge(D, [edge[1] ^ T, edge[2] ^ T]);
+    fi;
+  od;
+
+  return [MakeImmutable(D), T];
+end);
+
+InstallMethod(AmalgamDigraphs,
+"for a digraph, a digraph, a list, and a list",
+[IsDigraph, IsDigraph, IsDigraph, IsTransformation],
+function(D1, D2, S, map1)
+  local map2;
+
+  if IsMultiDigraph(D1) then
+    ErrorNoReturn(
+      "the 1st argument (a digraph) must not satisfy IsMultiDigraph");
+  elif IsMultiDigraph(D2) then
+    ErrorNoReturn(
+      "the 2nd argument (a digraph) must not satisfy IsMultiDigraph");
+  elif IsMultiDigraph(S) then
+    ErrorNoReturn(
+      "the 3rd argument (a digraph) must not satisfy IsMultiDigraph");
+  fi;
+
+  if not IsDigraphEmbedding(S, D1, map1) then
+    ErrorNoReturn(
+      "the 4th argument (a transformation) is not ",
+      "a digraph embedding from the 3rd argument (a digraph) into ",
+      "the 1st argument (a digraph)");
+  fi;
+
+  map2 := DigraphEmbedding(S, D2);
+    if map2 = fail then
+    ErrorNoReturn(
+      "no embeddings could be found from the 3rd argument ",
+      "(a digraph) to the 2nd argument (a digraph)"); 
+  fi;
+
+  return NOCHECKS_AmalgamDigraphs(D1, D2, S, map1, map2);
+end);
+
+InstallMethod(AmalgamDigraphs,
+"for a digraph, a digraph, a list, and a list",
+[IsDigraph, IsDigraph, IsDigraph],
+function(D1, D2, S)
+  local map1, map2;
+
+  if IsMultiDigraph(D1) then
+    ErrorNoReturn(
+      "the 1st argument (a digraph) must not satisfy IsMultiDigraph");
+  elif IsMultiDigraph(D2) then
+    ErrorNoReturn(
+      "the 2nd argument (a digraph) must not satisfy IsMultiDigraph");
+  elif IsMultiDigraph(S) then
+    ErrorNoReturn(
+      "the 3rd argument (a digraph) must not satisfy IsMultiDigraph");
+  fi;
+
+  map1 := DigraphEmbedding(S, D1);
+  if map1 = fail then
+    ErrorNoReturn(
+      "no embeddings could be found from the 3rd argument ",
+      "(a digraph) to the 1st argument (a digraph)");
+  fi;
+
+  map2 := DigraphEmbedding(S, D2);
+  if map2 = fail then
+    ErrorNoReturn(
+      "no embeddings could be found from the 3rd argument ",
+      "(a digraph) to the 2nd argument (a digraph)"); 
+  fi;
+
+  return NOCHECKS_AmalgamDigraphs(D1, D2, S, map1, map2);
+end);
+
+InstallMethod(NOCHECKS_AmalgamDigraphs,
+"for a digraph, a digraph, a list, and a list",
+[IsDigraph, IsDigraph, IsDigraph, IsTransformation, IsTransformation],
+function(D1, D2, S, map1, map2)
+  local D, n, imageList1, imageList2, map, edge, T;
+
+  D := DigraphMutableCopyIfImmutable(D1);
+
+  n := DigraphNrVertices(D2) + DigraphNrVertices(D1) - DigraphNrVertices(S);
+
+  map := [1 .. n];
+
+  imageList1 := OnTuples([1 .. DigraphNrVertices(S)], map1);
+  imageList2 := OnTuples([1 .. DigraphNrVertices(S)], map2);
+
+  map{imageList2} := imageList1;
+  map{Difference(DigraphVertices(D2), imageList2)} :=
+        [DigraphNrVertices(D1) + 1 .. n];
+
+  T := Transformation(map);
+
+  DigraphAddVertices(D, DigraphNrVertices(D2) - DigraphNrVertices(S));
+
+  for edge in DigraphEdges(D2) do
+    if not (edge[1] in imageList2
+        and edge[2] in imageList2) then
       DigraphAddEdge(D, [edge[1] ^ T, edge[2] ^ T]);
     fi;
   od;

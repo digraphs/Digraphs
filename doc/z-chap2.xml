@@ -75,7 +75,6 @@
     <#Include Label="DigraphClosure">
     <#Include Label="DigraphMycielskian">
     <#Include Label="AmalgamDigraphs">
-    <#Include Label="AmalgamDigraphsIsomorphic">
   </Section>
 
   <Section><Heading>Random digraphs</Heading>

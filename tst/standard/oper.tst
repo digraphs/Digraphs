@@ -2760,41 +2760,118 @@ true
 # AmalgamDigraphs
 gap> D1 := Digraph([[2, 3], [1, 3], [1, 2], [2], [3, 4]]);;
 gap> D2 := Digraph([[2, 6], [1, 3, 5], [4], [3], [4, 6], [1, 5]]);;
-gap> U := AmalgamDigraphs(D1, D2, [2, 3, 4, 5], [4, 3, 5, 2]);
+gap> S := InducedSubdigraph(D1, [2, 3, 4, 5]);;
+gap> T := DigraphEmbedding(S, D2);;
+gap> U := AmalgamDigraphs(D2, D1, S, T);
 [ <immutable digraph with 7 vertices, 15 edges>, 
-  Transformation( [ 6, 5, 3, 2, 4, 7, 7 ] ) ]
+  Transformation( [ 7, 4, 3, 5, 2, 6, 7 ] ) ]
+gap> U := AmalgamDigraphs(D1, D2, S, IdentityTransformation, T);
+Error, the 4th argument (a transformation) is not a digraph embedding from the\
+ 3rd argument (a digraph) into the 1st argument (a digraph)
 gap> D1 := Digraph([
 >   [2, 3], [1, 3, 4, 6], [1, 2, 5, 7], [2, 6], [3, 7], [2, 4, 7, 8],
 >   [3, 5, 6, 8], [6, 7]]);;
 gap> D2 := Digraph([
 >   [2, 3], [1, 4], [1, 5], [2, 5, 6], [3, 4, 7], [4, 7], [5, 6]]);;
-gap> U := AmalgamDigraphs(D1, D2, [2, 3, 6, 7], [4, 5, 6, 7]);
+gap> S := InducedSubdigraph(D1, [2, 3, 6, 7]);;
+gap> T := DigraphEmbedding(S, D1);;
+gap> U := AmalgamDigraphs(D1, D2, S, T, IdentityTransformation);
+Error, the 5th argument (a transformation) is not a digraph embedding from the\
+ 3rd argument (a digraph) into the 2nd argument (a digraph)
+gap> D1 := Digraph([[2, 5], [1, 3], [4], [2, 5], [1, 4]]);;
+gap> D2 := Digraph([[2, 3], [1, 4], [1, 2], [3]]);;
+gap> S := Digraph([[2], [3], [1]]);;
+gap> map1 := DigraphEmbedding(S, D1);;
+gap> map2 := DigraphEmbedding(S, D2);;
+gap> U := AmalgamDigraphs(D1, D2, S, map1, map2);
+[ <immutable digraph with 6 vertices, 13 edges>, 
+  Transformation( [ 6, 2, 4, 3, 5, 6 ] ) ]
+gap> D1 := DigraphImmutableCopy(D1);
+<immutable digraph with 5 vertices, 9 edges>
+gap> U := AmalgamDigraphs(D1, D2, S, map1, map2);
+[ <immutable digraph with 6 vertices, 13 edges>, 
+  Transformation( [ 6, 2, 4, 3, 5, 6 ] ) ]
+gap> D1 := DigraphMutableCopy(D1);
+<mutable digraph with 5 vertices, 9 edges>
+gap> U := AmalgamDigraphs(D1, D2, S, map1, map2);
+[ <immutable digraph with 6 vertices, 13 edges>, 
+  Transformation( [ 6, 2, 4, 3, 5, 6 ] ) ]
+gap> D1;
+<immutable digraph with 6 vertices, 13 edges>
+gap> D1 := Digraph([[2, 5], [1, 3], [4], [2, 5], [1, 4]]);;
+gap> D2 := DigraphMutableCopy(D2);
+<mutable digraph with 4 vertices, 7 edges>
+gap> U := AmalgamDigraphs(D1, D2, S, map1, map2);
+[ <immutable digraph with 6 vertices, 13 edges>, 
+  Transformation( [ 6, 2, 4, 3, 5, 6 ] ) ]
+gap> D2;
+<mutable digraph with 4 vertices, 7 edges>
+gap> D1 := DigraphImmutableCopy(D1);
+<immutable digraph with 5 vertices, 9 edges>
+gap> U := AmalgamDigraphs(D1, D2, S, map1, map2);
+[ <immutable digraph with 6 vertices, 13 edges>, 
+  Transformation( [ 6, 2, 4, 3, 5, 6 ] ) ]
+gap> D1 := PetersenGraph();;
+gap> D2 := Digraph([[], [1, 3, 4], [1, 2, 5], [2, 6], [3, 6], [4, 5]]);;
+gap> S := CycleGraph(5);;
+gap> U := AmalgamDigraphs(D1, D2, S, IdentityTransformation);
 [ <immutable digraph with 11 vertices, 32 edges>, 
-  Transformation( [ 9, 10, 11, 2, 3, 6, 7, 8, 9, 10, 11 ] ) ]
-gap> AmalgamDigraphs(D1, D2, [3, 6, 2, 7], [4, 5, 7, 6]);
-Error, the subdigraph induced by the 3rd argument (a list) in the 1st argument\
- (a digraph) does not equal the subdigraph induced by the 4th argument (a list\
-) in the 2nd argument (a digraph)
+  Transformation( [ 11, 1, 2, 5, 3, 4, 7, 8, 9, 10, 11 ] ) ]
+gap> U := AmalgamDigraphs(D1, D2, S);
+[ <immutable digraph with 11 vertices, 32 edges>, 
+  Transformation( [ 11, 1, 2, 5, 3, 4, 7, 8, 9, 10, 11 ] ) ]
+gap> D1 := Digraph([[2], [3, 4], [1], [1]]);;
+gap> D2 := Digraph([[3], [1], [2, 4, 5], [], []]);;
+gap> S := Digraph([[2], [3], [1]]);;
+gap> map1 := Transformation([1, 2, 4, 4]);;
+gap> map2 := Transformation([2, 1]);;
+gap> U := AmalgamDigraphs(D1, D2, S, map1, map2); 
+[ <immutable digraph with 6 vertices, 7 edges>, 
+  Transformation( [ 2, 1, 4, 5, 6, 6 ] ) ]
+gap> U := AmalgamDigraphs(D1, D2, S, map1); 
+[ <immutable digraph with 6 vertices, 7 edges>, 
+  Transformation( [ 1, 4, 2, 5, 6, 6 ] ) ]
+gap> U := AmalgamDigraphs(D1, D2, S);
+[ <immutable digraph with 6 vertices, 7 edges>, 
+  Transformation( [ 1, 3, 2, 5, 6, 6 ] ) ]
+gap> U := AmalgamDigraphs(D1, D2, S, Transformation([3, 2, 1]));
+Error, the 4th argument (a transformation) is not a digraph embedding from the\
+ 3rd argument (a digraph) into the 1st argument (a digraph)
+gap> U := AmalgamDigraphs(D1, D2, D1, IdentityTransformation);
+Error, no embeddings could be found from the 3rd argument (a digraph) to the 2\
+nd argument (a digraph)
+gap> U := AmalgamDigraphs(D1, D2, D1);
+Error, no embeddings could be found from the 3rd argument (a digraph) to the 2\
+nd argument (a digraph)
+gap> U := AmalgamDigraphs(D1, D2, D2);
+Error, no embeddings could be found from the 3rd argument (a digraph) to the 1\
+st argument (a digraph)
+gap> D1 := Digraph([[2, 3, 3], [3], []]);;
+gap> D2 := Digraph([[2, 3], [3, 4], [4], []]);;
+gap> S := Digraph([[2, 3], [3], []]);;
+gap> AmalgamDigraphs(D1, D2, S);
+Error, the 1st argument (a digraph) must not satisfy IsMultiDigraph
+gap> AmalgamDigraphs(D1, D2, S, IdentityTransformation);
+Error, the 1st argument (a digraph) must not satisfy IsMultiDigraph
+gap> AmalgamDigraphs(
+>   D1, D2, S, IdentityTransformation, IdentityTransformation);
+Error, the 1st argument (a digraph) must not satisfy IsMultiDigraph
+gap> AmalgamDigraphs(D2, D1, S);
+Error, the 2nd argument (a digraph) must not satisfy IsMultiDigraph
+gap> AmalgamDigraphs(D2, D1, S, IdentityTransformation);
+Error, the 2nd argument (a digraph) must not satisfy IsMultiDigraph
+gap> AmalgamDigraphs(
+>   D2, D1, S, IdentityTransformation, IdentityTransformation);
+Error, the 2nd argument (a digraph) must not satisfy IsMultiDigraph
 gap> D1 := PetersenGraph();;
-gap> U := AmalgamDigraphs(D1, D1, [3, 4, 6, 8, 9], [3, 4, 6, 8, 9]);
-[ <immutable digraph with 15 vertices, 50 edges>, 
-  Transformation( [ 11, 12, 3, 4, 13, 6, 14, 8, 9, 15, 11, 12, 13, 14, 15 ] ) 
- ]
-
-# AmalgamDigraphsIsomorphic
-gap> D1 := PetersenGraph();;
-gap> D2 := Digraph([
->   [2, 4], [1, 3, 4, 5], [2, 5], [1, 2, 6], [2, 3, 7], [4, 7, 8],
->   [5, 6, 8], [6, 7]]);;
-gap> U := AmalgamDigraphsIsomorphic(D1, D2, [3, 4, 6, 8, 9],
->   [2, 4, 5, 6, 7]);
-[ <immutable digraph with 13 vertices, 42 edges>, 
-  Transformation( [ 11, 3, 12, 4, 8, 9, 6, 13, 9, 10, 11, 12, 13 ] ) ]
-gap> U := AmalgamDigraphsIsomorphic(D1, D2, [3, 4, 10, 8, 9],
->   [2, 4, 5, 6, 7]);
-Error, the subdigraph induced by the 3rd argument (a list) in the 1st argument\
- (a digraph) is not ismorphic to the subdigraph induced by the 4th argument (a\
- list) in the 2nd argument (a digraph)
+gap> S := Digraph([[2], [3, 3], [1]]);;
+gap> AmalgamDigraphs(D1, D1, S);
+Error, the 3rd argument (a digraph) must not satisfy IsMultiDigraph
+gap> AmalgamDigraphs(D1, D1, S, IdentityTransformation);
+Error, the 3rd argument (a digraph) must not satisfy IsMultiDigraph
+gap> AmalgamDigraphs(
+>   D1, D1, S, IdentityTransformation, IdentityTransformation);
+Error, the 3rd argument (a digraph) must not satisfy IsMultiDigraph
 
 #DIGRAPHS_UnbindVariables
 gap> Unbind(a);
@@ -2858,6 +2935,9 @@ gap> Unbind(temp);
 gap> Unbind(U);
 gap> Unbind(u1);
 gap> Unbind(u2);
+gap> Unbind(S);
+gap> Unbind(map1);
+gap> Unbind(map2);
 
 #
 gap> DIGRAPHS_StopTest();
