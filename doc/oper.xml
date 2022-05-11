@@ -1535,6 +1535,36 @@ gap> DigraphShortestPath(D, 1, 1);
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="DigraphRandomWalk">
+<ManSection>
+  <Oper Name="DigraphRandomWalk" Arg="digraph, v, t"/>
+  <Returns>A pair of lists.</Returns>
+  <Description>
+    Returns a directed path corresponding to a <E>random walk</E> in the digraph
+    <A>digraph</A>, starting at vertex <A>v</A> and having length no more than
+    <A>t</A>.
+    <P/>
+
+    A random walk is defined as follows.  The path begins at <A>v</A>, and at
+    each step it follows a random edge leaving the current vertex.  It continues
+    through the digraph in this way until it has traversed <A>t</A> edges, or
+    until it reaches a vertex with no out-edges (a <E>sink</E>) and therefore
+    cannot continue.
+    <P/>
+    
+    The output has the same form as that of <Ref Oper="DigraphPath"/>.
+    <P/>
+
+<Log><![CDATA[
+gap> D := Digraph([[1, 2], [3], [2, 4], [1], [2, 4]]);                
+<immutable digraph with 5 vertices, 8 edges>
+gap> DigraphRandomWalk(D, 1, 4);
+[ [ 1, 2, 3, 2, 3 ], [ 2, 1, 1, 1 ] ]
+]]></Log>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="IteratorOfPaths">
 <ManSection>
   <Oper Name="IteratorOfPaths" Arg="digraph, u, v"/>
