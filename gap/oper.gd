@@ -46,13 +46,13 @@ DeclareOperation("StrongProduct", [IsDigraph, IsDigraph]);
 DeclareOperation("ConormalProduct", [IsDigraph, IsDigraph]);
 DeclareOperation("HomomorphicProduct", [IsDigraph, IsDigraph]);
 DeclareOperation("LexicographicProduct", [IsDigraph, IsDigraph]);
-DeclareOperation("AmalgamDigraphs", 
+DeclareOperation("AmalgamDigraphs",
                  [IsDigraph, IsDigraph, IsDigraph,
                   IsTransformation, IsTransformation]);
-DeclareOperation("AmalgamDigraphs", 
+DeclareOperation("AmalgamDigraphs",
                  [IsDigraph, IsDigraph, IsDigraph, IsTransformation]);
-DeclareOperation("AmalgamDigraphs", 
-                 [IsDigraph, IsDigraph, IsDigraph,]);
+DeclareOperation("AmalgamDigraphs",
+                 [IsDigraph, IsDigraph, IsDigraph]);
 
 DeclareSynonym("DigraphModularProduct", ModularProduct);
 DeclareSynonym("DigraphStrongProduct", StrongProduct);
@@ -62,7 +62,7 @@ DeclareSynonym("DigraphLexicographicProduct", LexicographicProduct);
 
 DeclareGlobalFunction("DIGRAPHS_CombinationOperProcessArgs");
 DeclareOperation("DIGRAPHS_GraphProduct", [IsDigraph, IsDigraph, IsFunction]);
-DeclareOperation("NOCHECKS_AmalgamDigraphs", 
+DeclareOperation("NOCHECKS_AmalgamDigraphs",
                  [IsDigraph, IsDigraph, IsDigraph,
                   IsTransformation, IsTransformation]);
 
@@ -135,6 +135,7 @@ DeclareOperation("IteratorOfPaths", [IsList, IsPosInt, IsPosInt]);
 DeclareOperation("IteratorOfPathsNC", [IsList, IsPosInt, IsPosInt]);
 DeclareOperation("IsReachable", [IsDigraph, IsPosInt, IsPosInt]);
 DeclareOperation("DigraphLongestDistanceFromVertex", [IsDigraph, IsPosInt]);
+DeclareOperation("DigraphRandomWalk", [IsDigraph, IsPosInt, IsInt]);
 
 DeclareOperation("DigraphLayers", [IsDigraph, IsPosInt]);
 DeclareAttribute("DIGRAPHS_Layers", IsDigraph, "mutable");

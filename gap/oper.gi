@@ -766,7 +766,7 @@ function(D1, D2, edge_function)
 end);
 
 InstallMethod(AmalgamDigraphs,
-"for a digraph, a digraph, a list, and a list",
+"for a digraph, a digraph, a digraph, a transformation, and a transformation",
 [IsDigraph, IsDigraph, IsDigraph, IsTransformation, IsTransformation],
 function(D1, D2, S, map1, map2)
   local D, n, imageList1, imageList2, map, edge, T;
@@ -802,7 +802,7 @@ function(D1, D2, S, map1, map2)
 
   n := DigraphNrVertices(D2) + DigraphNrVertices(D1) - DigraphNrVertices(S);
 
-  # 'map' is an embedding of D2 into the final output graph. 
+  # 'map' is an embedding of D2 into the final output graph.
   # The embedding of D1 into the final output graph is the identity mapping.
 
   map := [1 .. n];
@@ -829,7 +829,7 @@ function(D1, D2, S, map1, map2)
 end);
 
 InstallMethod(AmalgamDigraphs,
-"for a digraph, a digraph, a list, and a list",
+"for a digraph, a digraph, a digraph, and a transformation",
 [IsDigraph, IsDigraph, IsDigraph, IsTransformation],
 function(D1, D2, S, map1)
   local map2;
@@ -856,14 +856,14 @@ function(D1, D2, S, map1)
     if map2 = fail then
     ErrorNoReturn(
       "no embeddings could be found from the 3rd argument ",
-      "(a digraph) to the 2nd argument (a digraph)"); 
+      "(a digraph) to the 2nd argument (a digraph)");
   fi;
 
   return NOCHECKS_AmalgamDigraphs(D1, D2, S, map1, map2);
 end);
 
 InstallMethod(AmalgamDigraphs,
-"for a digraph, a digraph, a list, and a list",
+"for a digraph, a digraph, and a digraph",
 [IsDigraph, IsDigraph, IsDigraph],
 function(D1, D2, S)
   local map1, map2;
@@ -890,14 +890,14 @@ function(D1, D2, S)
   if map2 = fail then
     ErrorNoReturn(
       "no embeddings could be found from the 3rd argument ",
-      "(a digraph) to the 2nd argument (a digraph)"); 
+      "(a digraph) to the 2nd argument (a digraph)");
   fi;
 
   return NOCHECKS_AmalgamDigraphs(D1, D2, S, map1, map2);
 end);
 
 InstallMethod(NOCHECKS_AmalgamDigraphs,
-"for a digraph, a digraph, a list, and a list",
+"for a digraph, a digraph, a digraph, a transformation, and a transformation",
 [IsDigraph, IsDigraph, IsDigraph, IsTransformation, IsTransformation],
 function(D1, D2, S, map1, map2)
   local D, n, imageList1, imageList2, map, edge, T;
@@ -1889,6 +1889,41 @@ function(D, v)
     return infinity;
   fi;
   return dist;
+end);
+
+InstallMethod(DigraphRandomWalk,
+"for a digraph, a pos int and a non-negative int",
+[IsDigraph, IsPosInt, IsInt],
+function(D, v, t)
+  local vertices, edge_indices, i, neighbours, index;
+
+  # Check input
+  if v > DigraphNrVertices(D) then
+    ErrorNoReturn("the 2nd argument <v> must be ",
+                  "a vertex of the 1st argument <D>,");
+  elif t < 0 then
+    ErrorNoReturn("the 3rd argument <t> must be a non-negative int,");
+  fi;
+
+  # Prepare output lists
+  vertices     := [v];
+  edge_indices := [];
+
+  # Iterate to desired length
+  for i in [1 .. t] do
+    neighbours := OutNeighboursOfVertex(D, v);
+    if IsEmpty(neighbours) then
+      break;  # Sink: path ends here
+    fi;
+    # Follow a random edge
+    index := Random(1, Length(neighbours));
+    v     := neighbours[index];
+    vertices[i + 1] := v;
+    edge_indices[i] := index;
+  od;
+
+  # Format matches that of DigraphPath
+  return [vertices, edge_indices];
 end);
 
 InstallMethod(DigraphLayers, "for a digraph, and a positive integer",
