@@ -1024,7 +1024,7 @@
   [33X[0;0YIf    [3XD1[103X    and    [3XD2[103X    are   digraphs   without   multiple   edges,   then
   [10XMaximalCommonSubdigraph[110X  returns  a  maximal  common subgraph [10XM[110X of [3XD1[103X and [3XD2[103X
   with  the  maximum  number  of vertices. So [10XM[110X is a digraph which embeds into
-  both  [3XD1[103X and [3XD2[103X and has the largest number of vertices amoung such digraphs.
+  both  [3XD1[103X  and [3XD2[103X and has the largest number of vertices among such digraphs.
   It  returns  a list [10X[M, t1, t2][110X where [10XM[110X is the maximal common subdigraph and
   [10Xt1, t2[110X are transformations embedding [10XM[110X into [3XD1[103X and [3XD2[103X respectively.[133X
   
@@ -1049,8 +1049,8 @@
   [33X[0;0YIf    [3XD1[103X    and    [3XD2[103X    are   digraphs   without   multiple   edges,   then
   [10XMinimalCommonSuperdigraph[110X  returns a minimal common superdigraph [10XM[110X of [3XD1[103X and
   [3XD2[103X with the minimum number of vertices. So [10XM[110X is a digraph into which both [3XD1[103X
-  and  [3XD2[103X  embed and has the smallest number of vertices amoung such digraphs.
-  It returns a list [10X[M, t1, t2][110X where [10XM[110X is the minimal common superdigraph and
+  and [3XD2[103X embed and has the smallest number of vertices among such digraphs. It
+  returns  a  list  [10X[M, t1, t2][110X where [10XM[110X is the minimal common superdigraph and
   [10Xt1, t2[110X are transformations embedding [3XD1[103X and [3XD2[103X respectively into [10XM[110X.[133X
   
   [4X[32X  Example  [32X[104X
