@@ -219,7 +219,17 @@ rec(
     Place         := "St Andrews",
     Institution   := "University of St Andrews"),
 
-  rec(
+rec(
+    LastName      := "Sharma",
+    FirstNames    := "Kamran",
+    IsAuthor      := false,
+    IsMaintainer  := false,
+    Email         := "kks4@st-andrews.ac.uk",
+    PostalAddress := _STANDREWSCS,
+    Place         := "St Andrews",
+    Institution   := "University of St Andrews"),
+
+rec(
     LastName      := "Smith",
     FirstNames    := "Finn",
     IsAuthor      := false,
