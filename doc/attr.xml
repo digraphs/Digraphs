@@ -1119,7 +1119,7 @@ gap> ArticulationPoints(D);
   <Attr Name="DigraphAbsorptionProbabilities" Arg="digraph"/>
   <Returns>A matrix of rational numbers.</Returns>
   <Description>
-    A random walk of infinite length through a digraph may pass through several
+    A random walk of infinite length through a finite digraph may pass through several
     different strongly connected components (SCCs).  However, with probability 1
     it must eventually reach an SCC which it can never leave, because the SCC
     has no out-edges leading to other SCCs.  We may say that such an SCC has
