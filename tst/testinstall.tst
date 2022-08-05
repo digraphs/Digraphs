@@ -385,6 +385,33 @@ gap> D := Digraph([[2, 2, 2, 2, 2], []]);;
 gap> GeneratorsOfEndomorphismMonoid(D);
 Error, expected a digraph without multiple edges!
 
+# Issue 517: bug in String for digraphs satisfying IsChainDigraph or
+# IsCycleDigraph but not being equal to ChainDigraph or CycleDigraph.
+gap> D := ChainDigraph(4);
+<immutable chain digraph with 4 vertices>
+gap> D := DigraphReverse(D);
+<immutable digraph with 4 vertices, 3 edges>
+gap> IsChainDigraph(D);
+true
+gap> D = ChainDigraph(4);
+false
+gap> String(D);
+"DigraphFromDigraph6String(\"&CACG\")"
+gap> String(ChainDigraph(4));
+"ChainDigraph(4)"
+gap> D := CycleDigraph(4);
+<immutable cycle digraph with 4 vertices>
+gap> D := DigraphReverse(D);
+<immutable digraph with 4 vertices, 4 edges>
+gap> IsCycleDigraph(D);
+true
+gap> D = CycleDigraph(4);
+false
+gap> String(D);
+"DigraphFromDigraph6String(\"&CECG\")"
+gap> String(CycleDigraph(4));
+"CycleDigraph(4)"
+
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(gr2);
 gap> Unbind(gr);
