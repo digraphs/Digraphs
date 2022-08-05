@@ -808,7 +808,7 @@ false
   <C>MaximalCommonSubdigraph</C> returns a maximal common subgraph <C>M</C> of
   <A>D1</A> and <A>D2</A> with the maximum number of vertices. So <C>M</C> is a
   digraph which embeds into both <A>D1</A> and <A>D2</A> and has the largest
-  number of vertices amoung such digraphs.
+  number of vertices among such digraphs.
 
   It returns a list <C>[M, t1, t2]</C> where <C>M</C> is the maximal common
   subdigraph and <C>t1, t2</C> are transformations embedding <C>M</C> into
@@ -839,7 +839,7 @@ gap> MaximalCommonSubdigraph(NullDigraph(0), CompleteDigraph(10));
   <C>MinimalCommonSuperdigraph</C> returns a minimal common superdigraph
   <C>M</C> of <A>D1</A> and <A>D2</A> with the minimum number of vertices.
   So <C>M</C> is a digraph into which both <A>D1</A> and <A>D2</A> embed and
-  has the smallest number of vertices amoung such digraphs.
+  has the smallest number of vertices among such digraphs.
  
   It returns a list <C>[M, t1, t2]</C> where <C>M</C> is the minimal common 
   superdigraph and <C>t1, t2</C> are transformations embedding <A>D1</A> and

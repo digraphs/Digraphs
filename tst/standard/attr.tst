@@ -2741,7 +2741,7 @@ gap> D := Digraph(IsImmutableDigraph,
 gap> IsReflexiveDigraph(D);
 true
 gap> IsIdenticalObj(D, DigraphAddAllLoops(D));
-true
+false
 
 # DigraphAddAllLoops - mutable
 gap> D := Digraph(IsMutableDigraph,

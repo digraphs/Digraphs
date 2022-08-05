@@ -4,6 +4,15 @@ Wilf A. Wilson, Michael Young et al.
 
 Licensing information can be found in the `LICENSE` file.
 
+## Version 1.5.3 (released 20/05/2022)
+
+This is a minor release including the following changes:
+
+* digraph: fix String method for chains/cycles by @james-d-mitchell in https://github.com/digraphs/Digraphs/pull/542
+* Disable edge labels if not already set in some cases by @james-d-mitchell in https://github.com/digraphs/Digraphs/pull/540
+* build: remove the default flag -march=native by @james-d-mitchell in https://github.com/digraphs/Digraphs/pull/541
+* doc: fix typos by @james-d-mitchell in https://github.com/digraphs/Digraphs/pull/544
+
 ## Version 1.5.2 (released 30/03/2022)
 
 This is a very minor release containing technical changes for maintaining compatibility with other GAP packages.

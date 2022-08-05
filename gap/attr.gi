@@ -1787,30 +1787,24 @@ function(D)
   return D;
 end);
 
-InstallMethod(DigraphAddAllLoops, "for a digraph by out-neighbours",
-[IsDigraphByOutNeighboursRep],
+InstallMethod(DigraphAddAllLoops, "for a digraph", [IsDigraph],
 function(D)
-  local ismulti, C, list, v;
-  if HasIsReflexiveDigraph(D) and IsReflexiveDigraph(D) then
-    return D;
-  fi;
-  ismulti := IsMultiDigraph(D);
+  local C, v;
   C := DigraphMutableCopyIfImmutable(D);
-  list := C!.OutNeighbours;
-  Assert(1, IsMutable(list));
-  for v in DigraphVertices(C) do
-    if not v in list[v] then
-      Add(list[v], v);
-      if not ismulti then
-        SetDigraphEdgeLabel(C, v, v, 1);
+
+  if not (HasIsReflexiveDigraph(D) and IsReflexiveDigraph(D)) then
+    for v in DigraphVertices(C) do
+      if not IsDigraphEdge(D, v, v) then
+        DigraphAddEdge(C, v, v);
       fi;
-    fi;
-  od;
+    od;
+  fi;
+
   if IsImmutableDigraph(D) then
     MakeImmutable(C);
     SetDigraphAddAllLoopsAttr(D, C);
     SetIsReflexiveDigraph(C, true);
-    SetIsMultiDigraph(C, ismulti);
+    SetIsMultiDigraph(C, IsMultiDigraph(D));
     SetDigraphHasLoops(C, DigraphHasAVertex(C));
   fi;
   return C;
