@@ -93,8 +93,10 @@ endif
 all-local: digraphs.la
 	$(mkdir_p) $(top_srcdir)/$(BINARCHDIR) $(top_srcdir)/bin/lib
 if WITH_INCLUDED_PLANARITY
+	rm -f $(top_srcdir)/bin/lib/*  # workaround for macOS code signing
 	cp -RL @PLANARITY_SUITE_DIR@/.libs/*  $(top_srcdir)/bin/lib/
 endif
+	rm -f $(GAPINSTALLLIB)/digraphs.so  # workaround for macOS code signing
 if SYS_IS_CYGWIN
 	cp .libs/digraphs.dll $(GAPINSTALLLIB)/digraphs.so
 if WITH_INCLUDED_PLANARITY
