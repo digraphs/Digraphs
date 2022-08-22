@@ -839,6 +839,8 @@ function(L1, L2)
       map[next]             := value;
       defined[next]         := true;
       not_in_image[value]   := false;
+      # TODO(later): can we avoid copying the entire "conditions" here, like in
+      # the C-code?
       conditions[depth + 1] := StructuralCopy(conditions[depth]);
 
       # meets and joins map to meets and joins, respectively
@@ -932,6 +934,8 @@ function(L1, L2, map)
   # The above checks if the <x ^ map> and <y ^ map> entries of
   # meet2 and join2 exist
 
+  # TODO(later): can we avoid checking all joins and meets, i.e. by only
+  # checking the join-irreducible nodes or something?
   for x in [1 .. N1] do
     for y in [1 .. N1] do
       if meet2[x ^ map, y ^ map] <> meet1[x, y] ^ map

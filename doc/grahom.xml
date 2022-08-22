@@ -867,13 +867,18 @@ gap> MinimalCommonSuperdigraph(NullDigraph(0), CompleteDigraph(10));
   <Oper Name="LatticeDigraphEmbedding" Arg="L1, L2"/>
   <Returns>A transformation, or <K>fail</K>.</Returns>
   <Description>
+    If <A>L1</A> and <A>L2</A> are lattice digraphs (<Ref
+      Prop="IsLatticeDigraph"/> returns <K>true</K>, then 
     <C>LatticeDigraphEmbedding</C> returns a single <E>injective</E> <Ref
       Oper="DigraphHomomorphism"/> between <A>L1</A> and <A>L2</A>, with
-      the property that it is a <E>lattice homomorphism</E>. If one
-      does not exist, <K>fail</K> is returned.<P/>
+      the property that it is a <E>lattice homomorphism</E>. If no such
+      homomorphism exists, <K>fail</K> is returned.<P/>
 
-      A <E>lattice homomorphism</E> is a digraph homomorphism which
-      respects meets and joins of every pair of vertices.
+      A <E>lattice homomorphism</E> is a digraph homomorphism which respects
+      meets and joins of every pair of vertices. Note that every injective
+      lattice homomorphism <C>map</C> is an embedding, in the sense that
+      the inverse of <C>map</C> is a lattice homomorphism also.
+
     <Example><![CDATA[
 gap> D := DigraphReflexiveTransitiveClosure(ChainDigraph(5));
 <immutable preorder digraph with 5 vertices, 15 edges>
@@ -905,6 +910,13 @@ fail
   <Returns><K>true</K> or <K>false</K>.</Returns>
 
   <Description>
+    Each of the function described in this section (except
+    <C>IsLatticeEndomorphism</C>) takes a pair of digraphs <A>L1</A> and
+    <A>L2</A>, and a transformation <A>map</A>, returning <K>true</K> if
+    <A>map</A> is a <E>lattice homomorphism</E> from <A>L1</A> to <A>L2</A>,
+      and <K>false</K> otherwise. If <A>L1</A> or <A>L2</A> is not a lattice,
+      then <K>false</K> is returned.<P/>
+
     A transformation or permutation <A>map</A> is a <E>lattice homomorphism</E>
     if <A>map</A> respects meets and joins of every pair of vertices, and
     <A>map</A> fixes every <C>i</C> which is not a vertex of <A>L1</A>.
@@ -930,13 +942,7 @@ fail
     <C>IsLatticeEndomorphism</C> returns <K>true</K> if the permutation
     or transformation <A>map</A> is an lattice endomorphism of the
     lattice digraph <A>L</A>.
-    <P/>
 
-    <C>IsLatticeHomomorphism</C> takes a pair of digraphs <A>L1</A> and <A>L2</A>,
-    and a transformation <A>map</A>, returning <K>true</K> if <A>map</A> is a
-    <E>lattice homomorphism</E> from <A>L1</A> to <A>L2</A>, and <K>false</K>
-    otherwise. If <A>L1</A> or <A>L2</A> is not a lattice, then <K>false</K>
-    is returned.<P/>
     <Example><![CDATA[
 gap> G := Digraph([[2, 4], [3, 7], [6], [5, 7], [6], [], [6]]);
 <immutable digraph with 7 vertices, 9 edges>
