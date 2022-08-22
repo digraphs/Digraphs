@@ -861,3 +861,120 @@ gap> MinimalCommonSuperdigraph(NullDigraph(0), CompleteDigraph(10));
     </Description>
   </ManSection>
 <#/GAPDoc>
+
+<#GAPDoc Label="LatticeDigraphEmbedding">
+<ManSection>
+  <Oper Name="LatticeDigraphEmbedding" Arg="L1, L2"/>
+  <Returns>A transformation, or <K>fail</K>.</Returns>
+  <Description>
+    If <A>L1</A> and <A>L2</A> are lattice digraphs (<Ref
+      Prop="IsLatticeDigraph"/> returns <K>true</K>, then 
+    <C>LatticeDigraphEmbedding</C> returns a single <E>injective</E> <Ref
+      Oper="DigraphHomomorphism"/> between <A>L1</A> and <A>L2</A>, with
+      the property that it is a <E>lattice homomorphism</E>. If no such
+      homomorphism exists, <K>fail</K> is returned.<P/>
+
+      A <E>lattice homomorphism</E> is a digraph homomorphism which respects
+      meets and joins of every pair of vertices. Note that every injective
+      lattice homomorphism <C>map</C> is an embedding, in the sense that
+      the inverse of <C>map</C> is a lattice homomorphism also.
+
+    <Example><![CDATA[
+gap> D := DigraphReflexiveTransitiveClosure(ChainDigraph(5));
+<immutable preorder digraph with 5 vertices, 15 edges>
+gap> L1 := DigraphReflexiveTransitiveClosure(ChainDigraph(5));
+<immutable preorder digraph with 5 vertices, 15 edges>
+gap> L2 := DigraphReflexiveTransitiveClosure(ChainDigraph(6));
+<immutable preorder digraph with 6 vertices, 21 edges>
+gap> LatticeDigraphEmbedding(L1, L2);
+IdentityTransformation
+gap> LatticeDigraphEmbedding(L2, L1);
+fail
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="IsLatticeHomomorphism">
+<ManSection>
+  <Oper Name="IsLatticeHomomorphism" Arg="L1, L2, map" 
+        Label="for digraphs and a permutation or transformation"/>
+  <Oper Name="IsLatticeEpimorphism" Arg="L1, L2, map"
+        Label="for digraphs and a permutation or transformation"/>
+  <Oper Name="IsLatticeEmbedding" Arg="L1, L2, map"
+        Label="for digraphs and a permutation or transformation"/>
+  <Oper Name="IsLatticeMonomorphism" Arg="L1, L2, map"
+        Label="for digraphs and a permutation or transformation"/>
+  <Oper Name="IsLatticeEndomorphism" Arg="L, map"
+        Label="for digraphs and a permutation or transformation"/>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
+
+  <Description>
+    Each of the function described in this section (except
+    <C>IsLatticeEndomorphism</C>) takes a pair of digraphs <A>L1</A> and
+    <A>L2</A>, and a transformation <A>map</A>, returning <K>true</K> if
+    <A>map</A> is a <E>lattice homomorphism</E> from <A>L1</A> to <A>L2</A>,
+      and <K>false</K> otherwise. If <A>L1</A> or <A>L2</A> is not a lattice,
+      then <K>false</K> is returned.<P/>
+
+    A transformation or permutation <A>map</A> is a <E>lattice homomorphism</E>
+    if <A>map</A> respects meets and joins of every pair of vertices, and
+    <A>map</A> fixes every <C>i</C> which is not a vertex of <A>L1</A>.
+    <P/>
+
+    <C>IsLatticeHomomorphism</C> returns <K>true</K> if the permutation
+    or transformation <A>map</A> is a lattice homomorphism from the lattice digraph
+    <A>L1</A> to the lattice digraph <A>L2</A>.
+    <P/>
+
+    <C>IsLatticeEpimorphism</C> returns <K>true</K> if the permutation
+    or transformation <A>map</A> is a surjective lattice homomorphism from
+    the lattice digraph <A>L1</A> to the lattice digraph <A>L2</A>.
+    <P/>
+
+    <C>IsLatticeEmbedding</C> returns <K>true</K> if the permutation
+    or transformation <A>map</A> is an injective lattice homomorphism from
+    the lattice digraph <A>L1</A> to the lattice digraph <A>L2</A>.
+    The function <C>IsLatticeMonomorphism</C> is a synonym of 
+    <C>IsLatticeEmbedding</C>.
+    <P/>
+
+    <C>IsLatticeEndomorphism</C> returns <K>true</K> if the permutation
+    or transformation <A>map</A> is an lattice endomorphism of the
+    lattice digraph <A>L</A>.
+
+    <Example><![CDATA[
+gap> G := Digraph([[2, 4], [3, 7], [6], [5, 7], [6], [], [6]]);
+<immutable digraph with 7 vertices, 9 edges>
+gap> D := DigraphRemoveVertex(G, 7);
+<immutable digraph with 6 vertices, 6 edges>
+gap> G := DigraphReflexiveTransitiveClosure(G);
+<immutable preorder digraph with 7 vertices, 22 edges>
+gap> D := DigraphReflexiveTransitiveClosure(D);
+<immutable preorder digraph with 6 vertices, 17 edges>
+gap> IsDigraphEmbedding(D, G, IdentityTransformation);
+true
+gap> IsLatticeHomomorphism(D, G, IdentityTransformation);
+false
+gap> D := Digraph([[2, 3], [4], [4], []]);
+<immutable digraph with 4 vertices, 4 edges>
+gap> G := Digraph([[2, 3], [4], [4], [5], []]);
+<immutable digraph with 5 vertices, 5 edges>
+gap> D := DigraphReflexiveTransitiveClosure(D);
+<immutable preorder digraph with 4 vertices, 9 edges>
+gap> G := DigraphReflexiveTransitiveClosure(G);
+<immutable preorder digraph with 5 vertices, 14 edges>
+gap> IsLatticeEmbedding(D, G, IdentityTransformation);
+true
+gap> IsLatticeMonomorphism(D, G, IdentityTransformation);
+true
+gap> f := Transformation([1, 2, 3, 4, 4]);
+Transformation( [ 1, 2, 3, 4, 4 ] )
+gap> IsLatticeEpimorphism(G, D, f);
+true
+gap> IsLatticeEndomorphism(D, (2, 3));
+true
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>

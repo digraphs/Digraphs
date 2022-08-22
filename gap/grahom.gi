@@ -754,3 +754,237 @@ function(D1, D2)
                         Transformation([1 .. Size(embedding2)], embedding2)];
 
 end);
+
+InstallMethod(LatticeDigraphEmbedding, "for a pair of digraphs",
+[IsDigraph, IsDigraph],
+function(L1, L2)
+  local join1, meet1, meet2, join2, N1, N2, p, map, conditions, out1, out2,
+  in1, in2, mask, defined, not_in_image, FindNextAmong, Recurse;
+
+  p := PermList(Reversed(DigraphWelshPowellOrder(L1)));
+  L1 := OnDigraphs(L1, p ^ -1);
+
+  # We compute the join/meet table to avoid having to do this twice if L1 or L2
+  # is mutable
+  join1 := DigraphJoinTable(L1);
+  meet1 := DigraphMeetTable(L1);
+
+  if join1 = fail or meet1 = fail then
+    ErrorNoReturn("the 1st argument (a digraph) must be a lattice digraph");
+  fi;
+
+  meet2 := DigraphMeetTable(L2);
+  join2 := DigraphJoinTable(L2);
+
+  if join2 = fail or meet2 = fail then
+    ErrorNoReturn("the 2nd argument (a digraph) must be a lattice digraph");
+  fi;
+
+  N1 := DigraphNrVertices(L1);
+  N2 := DigraphNrVertices(L2);
+
+  if N2 < N1 then
+    return fail;
+  fi;
+
+  map        := EmptyPlist(N1);
+  conditions := [List([1 .. N1], x -> BlistList([1 .. N2], [1 .. N2]))];
+
+  out1 := BooleanAdjacencyMatrix(L1);
+  out2 := BooleanAdjacencyMatrixMutableCopy(L2);
+
+  in1 := TransposedMat(BooleanAdjacencyMatrix(L1));
+  in2 := TransposedMatMutable(BooleanAdjacencyMatrixMutableCopy(L2));
+
+  mask := List([1 .. N2], i -> BlistList([1 .. N2], [i]));
+
+  defined      := BlistList([1 .. N1], []);
+  not_in_image := BlistList([1 .. N2], [1 .. N2]);
+
+  FindNextAmong := function(among, depth)
+    local nr_options, min, next, x;
+
+    next := fail;
+    min  := N2 + 1;
+
+    for x in among do
+      if not defined[x] then
+        nr_options := SizeBlist(IntersectionBlist(conditions[depth][x],
+                                                  not_in_image));
+        if nr_options = 0 then
+          return fail;
+        elif nr_options < min then
+          min  := nr_options;
+          next := x;
+        fi;
+      fi;
+    od;
+    return next;
+  end;
+
+  Recurse := function(last_defined, depth, print)
+    local next, value, try_next_value, prev, x;
+
+    if depth = N1 + 1 then  # When depth = N1 + 1, we have defined all images
+      return true;
+    fi;
+    # Find the next vertex, i.e. the one with fewest options
+    next := FindNextAmong([1 .. N1], depth);
+    if next = fail then
+      return false;
+    fi;
+
+    value := Position(conditions[depth][next], true, 0);
+    while value <> fail do
+      map[next]             := value;
+      defined[next]         := true;
+      not_in_image[value]   := false;
+      # TODO(later): can we avoid copying the entire "conditions" here, like in
+      # the C-code?
+      conditions[depth + 1] := StructuralCopy(conditions[depth]);
+
+      # meets and joins map to meets and joins, respectively
+      for prev in [1 .. N1] do
+        if defined[prev] then
+          IntersectBlist(conditions[depth + 1][join1[prev][next]],
+                         mask[join2[map[prev]][map[next]]]);
+          IntersectBlist(conditions[depth + 1][meet1[prev][next]],
+                         mask[meet2[map[prev]][map[next]]]);
+        fi;
+      od;
+
+      try_next_value := false;
+      # If the value map[next] breaks a previously defined image of map,
+      # try the next possible value for map[next]
+      for x in [1 .. N1] do
+        if defined[x] and not conditions[depth + 1][x][map[x]] then
+          try_next_value := true;
+          break;
+        fi;
+      od;
+      if not try_next_value then
+        for x in [1 .. N1] do
+          if out1[next][x] then
+            IntersectBlist(conditions[depth + 1][x], out2[value]);
+          else
+            FlipBlist(out2[value]);
+            IntersectBlist(conditions[depth + 1][x], out2[value]);
+            FlipBlist(out2[value]);
+          fi;
+          if in1[next][x] then
+            IntersectBlist(conditions[depth + 1][x], in2[value]);
+          else
+            FlipBlist(in2[value]);
+            IntersectBlist(conditions[depth + 1][x], in2[value]);
+            FlipBlist(in2[value]);
+          fi;
+        od;
+        if Recurse(next, depth + 1, print) then
+          return true;
+        fi;
+      fi;
+      Unbind(conditions[depth + 1]);
+      Unbind(map[next]);
+      not_in_image[value] := true;
+      defined[next]       := false;
+      value := Position(conditions[depth][next], true, value);
+    od;
+    return false;
+  end;
+
+  if Recurse(1, 1, false) then
+    Append(map, [N1 + 1 .. N2]);
+    return p ^ -1 * Transformation(map);
+  fi;
+  return fail;
+end);
+
+InstallMethod(IsLatticeHomomorphism,
+"for a transformation and a pair of digraphs",
+[IsDigraph, IsDigraph, IsTransformation],
+function(L1, L2, map)
+  local N1, N2, x, y, meet1, meet2, join1, join2;
+
+  N1 := DigraphNrVertices(L1);
+  N2 := DigraphNrVertices(L2);
+
+  if LargestMovedPoint(map) > N1 then
+    return false;
+  fi;
+
+  # We compute the join/meet table to avoid having to do this twice if L1 or L2
+  # is mutable
+  join1 := DigraphJoinTable(L1);
+  meet1 := DigraphMeetTable(L1);
+
+  if join1 = fail or meet1 = fail then
+    ErrorNoReturn("the 1st argument (a digraph) must be a lattice digraph");
+  fi;
+
+  join2 := DigraphJoinTable(L2);
+  meet2 := DigraphMeetTable(L2);
+
+  if join2 = fail or meet2 = fail then
+    ErrorNoReturn("the 2nd argument (a digraph) must be a lattice digraph");
+  fi;
+
+  if Maximum(ImageSetOfTransformation(map, N1)) > N2 then
+    return false;
+  fi;
+  # The above checks if the <x ^ map> and <y ^ map> entries of
+  # meet2 and join2 exist
+
+  # TODO(later): can we avoid checking all joins and meets, i.e. by only
+  # checking the join-irreducible nodes or something?
+  for x in [1 .. N1] do
+    for y in [1 .. N1] do
+      if meet2[x ^ map, y ^ map] <> meet1[x, y] ^ map
+          or join2[x ^ map, y ^ map] <> join1[x, y] ^ map then
+        return false;
+      fi;
+    od;
+  od;
+  return true;
+end);
+
+InstallMethod(IsLatticeHomomorphism,
+"for a digraph, a digraph, and a permutation",
+[IsDigraph, IsDigraph, IsPerm],
+{L1, L2, perm} -> IsLatticeHomomorphism(L1, L2, AsTransformation(perm)));
+
+InstallMethod(IsLatticeEndomorphism, "for a digraph and a transformation",
+[IsDigraph, IsTransformation],
+{L, map} -> IsLatticeHomomorphism(L, L, map));
+
+InstallMethod(IsLatticeEndomorphism, "for a digraph and a permutation",
+[IsDigraph, IsPerm],
+{L, perm} -> IsLatticeHomomorphism(L, L, AsTransformation(perm)));
+
+InstallMethod(IsLatticeEpimorphism,
+"for a digraph, a digraph, and a transformation",
+[IsDigraph, IsDigraph, IsTransformation],
+function(L1, L2, map)
+  return IsLatticeHomomorphism(L1, L2, map)
+    and OnSets(DigraphVertices(L1), map) = DigraphVertices(L2);
+end);
+
+InstallMethod(IsLatticeEpimorphism,
+"for a digraph, a digraph, and a permutation",
+[IsDigraph, IsDigraph, IsPerm],
+function(L1, L2, perm)
+  return IsLatticeHomomorphism(L1, L2, AsTransformation(perm))
+    and OnSets(DigraphVertices(L1), perm) = DigraphVertices(L2);
+end);
+
+InstallMethod(IsLatticeEmbedding,
+"for a digraph, a digraph, and a transformation",
+[IsDigraph, IsDigraph, IsTransformation],
+function(L1, L2, map)
+  return IsLatticeHomomorphism(L1, L2, map)
+    and IsInjectiveListTrans(DigraphVertices(L1), map);
+end);
+
+InstallMethod(IsLatticeEmbedding,
+"for a digraph, a digraph, and a permutation",
+[IsDigraph, IsDigraph, IsPerm],
+{L1, L2, perm} -> IsLatticeHomomorphism(L1, L2, AsTransformation(perm)));

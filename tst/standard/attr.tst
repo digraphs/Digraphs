@@ -2804,6 +2804,36 @@ false
 gap> NonLowerSemimodularPair(D);
 [ 10, 9 ]
 
+# DigraphJoinTable and DigraphMeetTable
+gap> D := DigraphReflexiveTransitiveClosure(ChainDigraph(4));
+<immutable preorder digraph with 4 vertices, 10 edges>
+gap> DigraphJoinTable(D);
+[ [ 1, 2, 3, 4 ], [ 2, 2, 3, 4 ], [ 3, 3, 3, 4 ], [ 4, 4, 4, 4 ] ]
+gap> D := Digraph(IsMutable, [[2, 3], [4], [4], []]);
+<mutable digraph with 4 vertices, 4 edges>
+gap> DigraphReflexiveTransitiveClosure(D);
+<mutable digraph with 4 vertices, 9 edges>
+gap> DigraphMeetTable(D);
+[ [ 1, 1, 1, 1 ], [ 1, 2, 1, 2 ], [ 1, 1, 3, 3 ], [ 1, 2, 3, 4 ] ]
+gap> D;
+<mutable digraph with 4 vertices, 9 edges>
+gap> DigraphJoinTable(D);
+[ [ 1, 2, 3, 4 ], [ 2, 2, 4, 4 ], [ 3, 4, 3, 4 ], [ 4, 4, 4, 4 ] ]
+gap> D := ChainDigraph(3);
+<immutable chain digraph with 3 vertices>
+gap> DigraphJoinTable(D);
+fail
+gap> D := DigraphAddVertex(D, 4);
+<immutable digraph with 4 vertices, 2 edges>
+gap> D := DigraphAddEdge(D, [4, 3]);
+<immutable digraph with 4 vertices, 3 edges>
+gap> D := DigraphReflexiveTransitiveClosure(D);
+<immutable preorder digraph with 4 vertices, 8 edges>
+gap> DigraphJoinTable(D);
+[ [ 1, 2, 3, 3 ], [ 2, 2, 3, 3 ], [ 3, 3, 3, 3 ], [ 3, 3, 3, 4 ] ]
+gap> DigraphMeetTable(D);
+fail
+
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(adj);
 gap> Unbind(adj1);

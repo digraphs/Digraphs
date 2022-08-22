@@ -72,6 +72,8 @@ from} $E_a$ \emph{to} $E_b$. In this case we say that $E_a$ and $E_b$ are
     <#Include Label="DigraphWelshPowellOrder">
     <#Include Label="ChromaticNumber">
     <#Include Label="DigraphCore">
+    <#Include Label="LatticeDigraphEmbedding">
+    <#Include Label="IsLatticeHomomorphism">
   </Section>
 
 </Chapter>

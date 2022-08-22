@@ -95,3 +95,22 @@ DeclareOperation("DigraphsRespectsColouring",
 
 DeclareOperation("MaximalCommonSubdigraph", [IsDigraph, IsDigraph]);
 DeclareOperation("MinimalCommonSuperdigraph", [IsDigraph, IsDigraph]);
+
+DeclareOperation("LatticeDigraphEmbedding", [IsDigraph, IsDigraph]);
+
+DeclareOperation("IsLatticeHomomorphism",
+                 [IsDigraph, IsDigraph, IsTransformation]);
+DeclareOperation("IsLatticeHomomorphism",
+                 [IsDigraph, IsDigraph, IsPerm]);
+DeclareOperation("IsLatticeEndomorphism", [IsDigraph, IsTransformation]);
+DeclareOperation("IsLatticeEndomorphism", [IsDigraph, IsPerm]);
+DeclareOperation("IsLatticeEpimorphism",
+                 [IsDigraph, IsDigraph, IsTransformation]);
+DeclareOperation("IsLatticeEpimorphism",
+                 [IsDigraph, IsDigraph, IsPerm]);
+DeclareOperation("IsLatticeEmbedding",
+                 [IsDigraph, IsDigraph, IsTransformation]);
+DeclareOperation("IsLatticeEmbedding",
+                 [IsDigraph, IsDigraph, IsPerm]);
+DeclareSynonym("IsLatticeMonomorphism", IsLatticeEmbedding);
+

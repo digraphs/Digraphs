@@ -2196,6 +2196,10 @@ InstallMethod(PartialOrderDigraphJoinOfVertices,
 function(D, i, j)
   local x, nbs, intr;
 
+  if HasDigraphJoinTable(D) then
+    return DigraphJoinTable(D)[i, j];
+  fi;
+
   if not IsPartialOrderDigraph(D) then
     ErrorNoReturn("the 1st argument <D> must satisfy ",
                   "IsPartialOrderDigraph,");
@@ -2223,6 +2227,10 @@ InstallMethod(PartialOrderDigraphMeetOfVertices,
 [IsDigraph, IsPosInt, IsPosInt],
 function(D, i, j)
   local x, nbs, intr;
+
+  if HasDigraphMeetTable(D) then
+    return DigraphMeetTable(D)[i, j];
+  fi;
 
   if not IsPartialOrderDigraph(D) then
     ErrorNoReturn("the 1st argument <D> must satisfy ",

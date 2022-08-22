@@ -38,59 +38,102 @@ D -> IsConnectedDigraph(D) and IsEmpty(ArticulationPoints(D)));
 InstallMethod(IsBridgelessDigraph, "for a digraph", [IsDigraph],
 D -> IsConnectedDigraph(D) and IsEmpty(Bridges(D)));
 
-InstallMethod(DIGRAPHS_IsMeetJoinSemilatticeDigraph, "for a homogeneous list",
-[IsHomogeneousList],
-function(nbs)
-  local i, j, k, n, x, len;
+# The method below is based on Listing 11.9 of 'Free Lattices'
+# by Ralph Freese et. al.
+InstallMethod(DIGRAPHS_MeetJoinTable,
+"for a digraph, a list, a list, and a bool",
+[IsDigraph, IsList, IsList, IsBool],
+function(D, P, U, join)
+  local ord, tab, S, N, i, x, T, l, q, z, y;
 
-  # The IsHomogenousList assumes the list <nbs> contains no or only empty lists
-  n := Length(nbs);
-  for i in [1 .. n] do
-    for j in [i + 1 .. n] do
-      if j in nbs[i] or i in nbs[j] then
-        continue;
-      fi;
-      x := Intersection(nbs[i], nbs[j]);
-      if IsEmpty(x) then
-        return false;
-      fi;
-      len := Length(x);
-      k := x[len];  # Check whether <k> is the meet of <i> and <j>
-      if Length(nbs[k]) < len then
-        return false;
-      fi;
-    od;
+  # The algorithm runs for joins where the argument <join> is true. Otherwise
+  # it is run for meets.
+
+  N   := DigraphNrVertices(D);
+  tab := List([1 .. N], x -> []);  # table of meets/joins
+
+  ord := [];
+  for i in [1 .. N] do
+    ord[P[i]] := i;
   od;
-  return true;
+
+  S := [];
+
+  for x in P do
+    tab[x, x] := x;
+    for y in S do
+      T := [];
+      for z in U[x] do
+        Add(T, tab[y, z]);
+      od;
+      T := Set(T);
+      l := Length(T);
+      if l = 0 then
+        return fail;
+      fi;
+      q := T[l];
+      for i in [1 .. l - 1] do
+        z := T[i];
+        if ord[z] > ord[q] then
+          q := z;
+        fi;
+      od;
+      for z in T do
+        if join and not IsDigraphEdge(D, q, z) then
+          return fail;
+        elif not join and not IsDigraphEdge(D, z, q) then
+          return fail;
+        fi;
+      od;
+      tab[x, y] := q;
+      tab[y, x] := q;
+    od;
+    Add(S, x);
+  od;
+  return tab;
 end);
 
-InstallMethod(IsJoinSemilatticeDigraph, "for a digraph by out-neighbours",
-[IsDigraphByOutNeighboursRep],
+InstallMethod(DIGRAPHS_IsJoinSemilatticeAndJoinTable, "for a digraph",
+[IsDigraph],
 function(D)
-  local topo;
+  local tab, copy, P, U;
   if not IsPartialOrderDigraph(D) then
-    return false;
+    return [false, fail];
+  elif IsMultiDigraph(D) then
+    ErrorNoReturn("the argument must not be a multidigraph,");
   fi;
-  topo := DigraphTopologicalSort(D);
-  D := DigraphMutableCopy(D);
-  D := OnDigraphs(D, PermList(topo) ^ -1);
-  Apply(D!.OutNeighbours, Set);
-  return DIGRAPHS_IsMeetJoinSemilatticeDigraph(D!.OutNeighbours);
+  copy   := DigraphMutableCopyIfMutable(D);
+  P      := DigraphTopologicalSort(D);
+  U      := OutNeighbours(DigraphReflexiveTransitiveReduction(copy));
+  tab    := DIGRAPHS_MeetJoinTable(D, P, U, true);
+  SetDigraphJoinTable(D, tab);
+  return [tab <> fail, tab];
 end);
+
+InstallMethod(DIGRAPHS_IsMeetSemilatticeAndMeetTable, "for a digraph",
+[IsDigraph],
+function(D)
+  local tab, copy, P, U;
+  if not IsPartialOrderDigraph(D) then
+    return [false, fail];
+  elif IsMultiDigraph(D) then
+    ErrorNoReturn("the argument must not be a multidigraph,");
+  fi;
+  copy   := DigraphMutableCopyIfMutable(D);
+  P      := Reversed(DigraphTopologicalSort(D));
+  U      := InNeighbours(DigraphReflexiveTransitiveReduction(copy));
+  tab    := DIGRAPHS_MeetJoinTable(D, P, U, false);
+  SetDigraphMeetTable(D, tab);
+  return [tab <> fail, tab];
+end);
+
+InstallMethod(IsJoinSemilatticeDigraph, "for a digraph",
+[IsDigraph],
+D -> DIGRAPHS_IsJoinSemilatticeAndJoinTable(D)[1]);
 
 InstallMethod(IsMeetSemilatticeDigraph, "for a digraph",
-[IsDigraphByOutNeighboursRep],
-function(D)
-  local topo, list;
-  if not IsPartialOrderDigraph(D) then
-    return false;
-  fi;
-  topo := Reversed(DigraphTopologicalSort(D));
-  D := OnDigraphs(DigraphMutableCopyIfMutable(D), PermList(topo) ^ -1);
-  list := InNeighboursMutableCopy(D);
-  Apply(list, Set);
-  return DIGRAPHS_IsMeetJoinSemilatticeDigraph(list);
-end);
+[IsDigraph],
+D -> DIGRAPHS_IsMeetSemilatticeAndMeetTable(D)[1]);
 
 InstallMethod(IsStronglyConnectedDigraph, "for a digraph by out-neighbours",
 [IsDigraphByOutNeighboursRep],
