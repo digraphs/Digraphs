@@ -67,7 +67,6 @@ DeclareSynonymAttr("IsAntiSymmetricDigraph", IsAntisymmetricDigraph);
 DeclareSynonymAttr("IsNullDigraph", IsEmptyDigraph);
 DeclareSynonymAttr("IsQuasiorderDigraph", IsPreorderDigraph);
 
-DeclareOperation("DIGRAPHS_MeetJoinTable", [IsDigraph, IsList, IsList, IsBool]);
 DeclareOperation("DIGRAPHS_IsJoinSemilatticeAndJoinTable", [IsDigraph]);
 DeclareOperation("DIGRAPHS_IsMeetSemilatticeAndMeetTable", [IsDigraph]);
 
