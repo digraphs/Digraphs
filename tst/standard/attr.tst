@@ -2875,7 +2875,6 @@ gap> A[1, 10] = y;
 true
 gap> B[14, 15] = z;
 true
->>>>>>> eec15197 (Add meet and join table functions)
 
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(adj);
