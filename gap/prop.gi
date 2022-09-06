@@ -40,9 +40,7 @@ D -> IsConnectedDigraph(D) and IsEmpty(Bridges(D)));
 
 # The method below is based on Listing 11.9 of 'Free Lattices'
 # by Ralph Freese et. al.
-InstallMethod(DIGRAPHS_MeetJoinTable,
-"for a digraph, a list, a list, and a bool",
-[IsDigraph, IsList, IsList, IsBool],
+BindGlobal("DIGRAPHS_MeetJoinTable",
 function(D, P, U, join)
   local ord, tab, S, N, i, x, T, l, q, z, y;
 
@@ -106,7 +104,9 @@ function(D)
   P      := DigraphTopologicalSort(D);
   U      := OutNeighbours(DigraphReflexiveTransitiveReduction(copy));
   tab    := DIGRAPHS_MeetJoinTable(D, P, U, true);
-  SetDigraphJoinTable(D, tab);
+  if IsImmutableDigraph(D) then
+    SetDigraphJoinTable(D, tab);
+  fi;
   return [tab <> fail, tab];
 end);
 
@@ -123,7 +123,9 @@ function(D)
   P      := Reversed(DigraphTopologicalSort(D));
   U      := InNeighbours(DigraphReflexiveTransitiveReduction(copy));
   tab    := DIGRAPHS_MeetJoinTable(D, P, U, false);
-  SetDigraphMeetTable(D, tab);
+  if IsImmutableDigraph(D) then
+    SetDigraphMeetTable(D, tab);
+  fi;
   return [tab <> fail, tab];
 end);
 
