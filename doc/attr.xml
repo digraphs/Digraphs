@@ -2443,22 +2443,22 @@ fail
   <Attr Name="DigraphJoinTable" Arg="digraph"/>
   <Returns>A matrix or <K>fail</K>.</Returns>
   <Description>
-    <C>DigraphMeetTable</C> returns the <E>meet table</E> of the digraph
-    <A>digraph</A> if <A>digraph</A> is a meet semilattice digraph <Ref
-    Prop="IsMeetSemilatticeDigraph"/>. Similarly, <C>DigraphJoinTable</C>
-    returns the <E>join table</E> of <A>digraph</A> if <A>digraph</A> is a join
-    semilattice digraph. <Ref Prop="IsJoinSemilatticeDigraph"/>.<P/>
+    <C>DigraphMeetTable</C> returns the <E>meet table</E> of
+    <A>digraph</A> if <A>digraph</A> is a meet semilattice digraph
+    <Ref Prop="IsMeetSemilatticeDigraph"/>. Similarly,
+    <C>DigraphJoinTable</C> returns the <E>join table</E> of
+    <A>digraph</A> if <A>digraph</A> is a join semilattice digraph.
+    <Ref Prop="IsJoinSemilatticeDigraph"/>.<P/>
 
-    Where <A>digraph</A> is a meet semilattice digraph with <M>n</M> vertices,
+    When <A>digraph</A> is a meet semilattice digraph with <M>n</M> vertices,
     the <E>meet table</E> of <A>digraph</A> is the matrix <M>A</M> such that
-    the <M>(i, j)</M> entry of <M>A</M> is equal to the meet of vertices
+    the <M>(i, j)</M> entry of <M>A</M> is the meet of vertices
     <M>i</M> and <M>j</M>.<P/>
 
-    Similarly, where <A>digraph</A> is a join semilattice digraph with <M>n</M>
+    Similarly, when <A>digraph</A> is a join semilattice digraph with <M>n</M>
     vertices, the <E>join table</E> of <A>digraph</A> is the matrix <M>A</M>
-    such that the <M>(i, j)</M> entry of <M>A</M> is equal to the join of
-    vertices <M>i</M> and <M>j</M>.
-
+    such that the <M>(i, j)</M> entry of <M>A</M> is the join of
+    vertices <M>i</M> and <M>j</M>. Otherwise, each function returns <K>fail</K>.
     <Example><![CDATA[
 gap> D := Digraph([[1, 2, 3, 4], [2, 4], [3, 4], [4]]);
 <immutable digraph with 4 vertices, 9 edges>
