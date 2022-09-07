@@ -30,6 +30,7 @@
     <#Include Label="IsMeetSemilatticeDigraph">
     <#Include Label="DigraphMeetTable">
     <#Include Label="IsUpperSemimodularDigraph">
+    <#Include Label="IsDistributiveLatticeDigraph">
   </Section>
 
   <Section><Heading>Regularity</Heading>
