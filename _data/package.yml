@@ -1,12 +1,14 @@
 name: Digraphs
-version: 1.5.3
-date: 2022-05-20
+version: 1.6.0
+date: 2022-09-08
 description: |
     Graphs, digraphs, and multidigraphs in GAP
 
 authors:
     - name: Jan De Beule
       url: http://homepages.vub.ac.be/~jdbeule/
+    - name: Joe Edwards
+      url: https://github.com/Joseph-Edwards
     - name: Julius Jonusas
       url: http://julius.jonusas.work
     - name: James Mitchell
@@ -28,33 +30,49 @@ contributors:
     - name: Marina Anagnostopoulou-Merkouri
       url: mailto:mam49@st-andrews.ac.uk
     - name: Finn Buck
-      url: mailto:flb5@st-andrews.ac.uk
+      url: mailto:finneganlbuck@gmail.com
     - name: Stuart Burrell
-      url: mailto:sb235@st-andrews.ac.uk
+      url: https://stuartburrell.github.io
+    - name: Graham Campbell
     - name: Reinis Cirpons
       url: mailto:rc234@st-andrews.ac.uk
+    - name: Ashley Clayton
+      url: mailto:ac323@st-andrews.ac.uk
     - name: Tom Conti-Leslie
-      url: mailto:tdcl@st-andrews.ac.uk
+      url: https://tomcontileslie.com
     - name: Luke Elliott
       url: mailto:le27@st-andrews.ac.uk
+    - name: Isuru Fernando
+      url: mailto:isuruf@gmail.com
     - name: Ewan Gilligan
       url: mailto:eg207@st-andrews.ac.uk
+    - name: Sebastian Gutsche
+      url: mailto:gutsche@momo.math.rwth-aachen.de
     - name: Samantha Harper
       url: mailto:seh25@st-andrews.ac.uk
     - name: Max Horn
       url: https://www.quendi.de/math
     - name: Christopher Jefferson
       url: https://caj.host.cs.st-andrews.ac.uk
+    - name: Olexandr Konovalov
+      url: https://www.st-andrews.ac.uk/computer-science/people/obk1/
+    - name: Andrea Lee
+      url: mailto:ahwl1@st-andrews.ac.uk
     - name: Markus Pfeiffer
-      url: https://www.morphism.de/~markusp
+      url: https://www.morphism.de/~markusp/
     - name: Lea Racine
       url: mailto:lr217@st-andrews.ac.uk
     - name: Christopher Russell
-      url: mailto:cr66@st-andrews.ac.uk
+    - name: Artur Schaefer
+      url: mailto:as305@st-and.ac.uk
+    - name: Isabella Scott
+      url: mailto:iscott@uchicago.edu
+    - name: Kamran Sharma
+      url: mailto:kks4@st-andrews.ac.uk
     - name: Finn Smith
       url: mailto:fls3@st-andrews.ac.uk
     - name: Ben Spiers
-      url: mailto:bs201@st-andrews.ac.uk
+      url: mailto:bspiers972@outlook.com
     - name: Murray Whyte
       url: mailto:mw231@st-andrews.ac.uk
 
@@ -87,11 +105,11 @@ packageinfo: https://digraphs.github.io/Digraphs/PackageInfo.g
 
 downloads:
     - name: .tar.gz
-      url: https://github.com/digraphs/Digraphs/releases/download/v1.5.3/digraphs-1.5.3.tar.gz
+      url: https://github.com/digraphs/Digraphs/releases/download/v1.6.0/digraphs-1.6.0.tar.gz
 
 abstract: |
     The <b>Digraphs</b> package is a <b>GAP</b> package for digraphs and multidigraphs.
 
 status: deposited
-doc-html: doc/chap0.html
+doc-html: doc/chap0_mj.html
 doc-pdf: doc/manual.pdf

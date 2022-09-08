@@ -22,7 +22,7 @@
   [33X[0;0YFrom  the  definition  of  cliques and independent sets, it follows that the
   presence  of  loops  and  multiple  edges  in a digraph is irrelevant to the
   existence   of   cliques   and   independent   sets   in  the  digraph.  See
-  [2XDigraphHasLoops[102X  ([14X6.1-1[114X)  and  [2XIsMultiDigraph[102X  ([14X6.1-10[114X) for more information
+  [2XDigraphHasLoops[102X  ([14X6.2-1[114X)  and  [2XIsMultiDigraph[102X  ([14X6.2-11[114X) for more information
   about  these  properties. Therefore given a digraph [3Xdigraph[103X, the cliques and
   independent sets of [3Xdigraph[103X are equal to the cliques and independent sets of
   the digraph:[133X

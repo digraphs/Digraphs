@@ -125,7 +125,7 @@
   [6XReturns:[106X  [33X[0;10YAn integer.[133X
   
   [33X[0;0YThis  function  returns  the  number  of  loops  of the digraph [3Xdigraph[103X. See
-  [2XDigraphHasLoops[102X ([14X6.1-1[114X).[133X
+  [2XDigraphHasLoops[102X ([14X6.2-1[114X).[133X
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27XD := Digraph([[2, 3], [1, 4], [3, 3, 5], [], [2, 5]]);[127X[104X
@@ -478,7 +478,7 @@
   [33X[0;0YA  [13Xmatching[113X [10XM[110X of a digraph [3Xdigraph[103X is a subset of the edges of [3Xdigraph[103X, i.e.
   [10XDigraphEdges([3Xdigraph[103X[10X)[110X, such that no pair of distinct edges in [10XM[110X are incident
   to  the  same vertex of [3Xdigraph[103X. Note that this definition allows a matching
-  to  contain loops. See [2XDigraphHasLoops[102X ([14X6.1-1[114X). The matching [10XM[110X is [13Xmaximal[113X if
+  to  contain loops. See [2XDigraphHasLoops[102X ([14X6.2-1[114X). The matching [10XM[110X is [13Xmaximal[113X if
   it  is  contained in no larger matching of the digraph, is [13Xmaximum[113X if it has
   the  greatest cardinality among all matchings and is [13Xperfect[113X if every vertex
   of  the  digraph  is  incident  to an edge in the matching. Every maximum or
@@ -541,7 +541,7 @@
   [33X[0;0YThis function returns a maximum matching of the digraph [3Xdigraph[103X.[133X
   
   [33X[0;0YFor the definition of a maximum matching, see [2XIsMaximumMatching[102X ([14X5.1-16[114X). If
-  [3Xdigraph[103X  is  bipartite  (see [2XIsBipartiteDigraph[102X ([14X6.1-3[114X)), then the algorithm
+  [3Xdigraph[103X  is  bipartite  (see [2XIsBipartiteDigraph[102X ([14X6.2-3[114X)), then the algorithm
   used   has   complexity  [10XO(m*sqrt(n))[110X.  Otherwise  for  general  graphs  the
   complexity  is  [10XO(m*n*log(n))[110X. Here [10Xn[110X is the number of vertices and [10Xm[110X is the
   number of edges.[133X
@@ -1009,7 +1009,7 @@
   
   [33X[0;0YIf  [3Xdigraph[103X  is  a digraph, then [10XDigraphLoops[110X returns the list consisting of
   the  [2XDigraphVertices[102X  ([14X5.1-1[114X)  of  [3Xdigraph[103X  at  which  there  is a loop. See
-  [2XDigraphHasLoops[102X ([14X6.1-1[114X).[133X
+  [2XDigraphHasLoops[102X ([14X6.2-1[114X).[133X
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27XD := Digraph([[2], [3], []]);[127X[104X
@@ -1028,44 +1028,7 @@
     [4X[28X[ 1 ][128X[104X
   [4X[32X[104X
   
-  [1X5.2-15 PartialOrderDigraphMeetOfVertices[101X
-  
-  [33X[1;0Y[29X[2XPartialOrderDigraphMeetOfVertices[102X( [3Xdigraph[103X, [3Xu[103X, [3Xv[103X ) [32X operation[133X
-  [33X[1;0Y[29X[2XPartialOrderDigraphJoinOfVertices[102X( [3Xdigraph[103X, [3Xu[103X, [3Xv[103X ) [32X operation[133X
-  [6XReturns:[106X  [33X[0;10YA positive integer or [9Xfail[109X[133X
-  
-  [33X[0;0YIf  the  first  argument  is  a  partial order digraph [2XIsPartialOrderDigraph[102X
-  ([14X6.1-16[114X)  then  these  operations  return  the meet, or the join, of the two
-  input  vertices.  If  the  meet  (or  join)  is  does not exist then [9Xfail[109X is
-  returned.  The meet (or join) is guaranteed to exist when the first argument
-  satisfies  [2XIsMeetSemilatticeDigraph[102X  ([14X6.1-17[114X)  (or  [2XIsJoinSemilatticeDigraph[102X
-  ([14X6.1-17[114X)) - see the documentation for these properties for the definition of
-  the meet (or the join).[133X
-  
-  [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27XD := Digraph([[1], [1, 2], [1, 3], [1, 2, 3, 4]]);[127X[104X
-    [4X[28X<immutable digraph with 4 vertices, 9 edges>[128X[104X
-    [4X[25Xgap>[125X [27XPartialOrderDigraphMeetOfVertices(D, 2, 3);[127X[104X
-    [4X[28X4[128X[104X
-    [4X[25Xgap>[125X [27XPartialOrderDigraphJoinOfVertices(D, 2, 3);[127X[104X
-    [4X[28X1[128X[104X
-    [4X[25Xgap>[125X [27XPartialOrderDigraphMeetOfVertices(D, 1, 2);[127X[104X
-    [4X[28X2[128X[104X
-    [4X[25Xgap>[125X [27XPartialOrderDigraphJoinOfVertices(D, 3, 4);[127X[104X
-    [4X[28X3[128X[104X
-    [4X[25Xgap>[125X [27XD := Digraph([[1], [2], [1, 2, 3], [1, 2, 4]]);[127X[104X
-    [4X[28X<immutable digraph with 4 vertices, 8 edges>[128X[104X
-    [4X[25Xgap>[125X [27XPartialOrderDigraphMeetOfVertices(D, 3, 4);[127X[104X
-    [4X[28Xfail[128X[104X
-    [4X[25Xgap>[125X [27XPartialOrderDigraphJoinOfVertices(D, 3, 4);[127X[104X
-    [4X[28Xfail[128X[104X
-    [4X[25Xgap>[125X [27XPartialOrderDigraphMeetOfVertices(D, 1, 2);[127X[104X
-    [4X[28Xfail[128X[104X
-    [4X[25Xgap>[125X [27XPartialOrderDigraphJoinOfVertices(D, 1, 2);[127X[104X
-    [4X[28Xfail[128X[104X
-  [4X[32X[104X
-  
-  [1X5.2-16 DegreeMatrix[101X
+  [1X5.2-15 DegreeMatrix[101X
   
   [33X[1;0Y[29X[2XDegreeMatrix[102X( [3Xdigraph[103X ) [32X attribute[133X
   [6XReturns:[106X  [33X[0;10YA square matrix of non-negative integers.[133X
@@ -1102,7 +1065,7 @@
     [4X[28X  [  0,  0,  1 ] ][128X[104X
   [4X[32X[104X
   
-  [1X5.2-17 LaplacianMatrix[101X
+  [1X5.2-16 LaplacianMatrix[101X
   
   [33X[1;0Y[29X[2XLaplacianMatrix[102X( [3Xdigraph[103X ) [32X attribute[133X
   [6XReturns:[106X  [33X[0;10YA square matrix of integers.[133X
@@ -1112,7 +1075,7 @@
   AdjacencyMatrix(digraph)[110X. If [3Xdigraph[103X has no vertices, then the empty list is
   returned.[133X
   
-  [33X[0;0YSee [2XDegreeMatrix[102X ([14X5.2-16[114X) and [2XAdjacencyMatrix[102X ([14X5.2-1[114X) for more information.[133X
+  [33X[0;0YSee [2XDegreeMatrix[102X ([14X5.2-15[114X) and [2XAdjacencyMatrix[102X ([14X5.2-1[114X) for more information.[133X
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27Xgr := Digraph([[1, 2, 3], [4], [1, 3, 4], []]);[127X[104X
@@ -1133,9 +1096,81 @@
   [4X[32X[104X
   
   
-  [1X5.3 [33X[0;0YReachability and connectivity[133X[101X
+  [1X5.3 [33X[0;0YOrders[133X[101X
   
-  [1X5.3-1 DigraphDiameter[101X
+  [1X5.3-1 PartialOrderDigraphMeetOfVertices[101X
+  
+  [33X[1;0Y[29X[2XPartialOrderDigraphMeetOfVertices[102X( [3Xdigraph[103X, [3Xu[103X, [3Xv[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XPartialOrderDigraphJoinOfVertices[102X( [3Xdigraph[103X, [3Xu[103X, [3Xv[103X ) [32X operation[133X
+  [6XReturns:[106X  [33X[0;10YA positive integer or [9Xfail[109X[133X
+  
+  [33X[0;0YIf  the  first  argument  is  a  partial order digraph [2XIsPartialOrderDigraph[102X
+  ([14X6.3-2[114X) then these operations return the meet, or the join, of the two input
+  vertices. If the meet (or join) is does not exist then [9Xfail[109X is returned. The
+  meet  (or  join)  is  guaranteed  to exist when the first argument satisfies
+  [2XIsMeetSemilatticeDigraph[102X ([14X6.3-3[114X) (or [2XIsJoinSemilatticeDigraph[102X ([14X6.3-3[114X)) - see
+  the  documentation  for  these properties for the definition of the meet (or
+  the join).[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27XD := Digraph([[1], [1, 2], [1, 3], [1, 2, 3, 4]]);[127X[104X
+    [4X[28X<immutable digraph with 4 vertices, 9 edges>[128X[104X
+    [4X[25Xgap>[125X [27XPartialOrderDigraphMeetOfVertices(D, 2, 3);[127X[104X
+    [4X[28X4[128X[104X
+    [4X[25Xgap>[125X [27XPartialOrderDigraphJoinOfVertices(D, 2, 3);[127X[104X
+    [4X[28X1[128X[104X
+    [4X[25Xgap>[125X [27XPartialOrderDigraphMeetOfVertices(D, 1, 2);[127X[104X
+    [4X[28X2[128X[104X
+    [4X[25Xgap>[125X [27XPartialOrderDigraphJoinOfVertices(D, 3, 4);[127X[104X
+    [4X[28X3[128X[104X
+    [4X[25Xgap>[125X [27XD := Digraph([[1], [2], [1, 2, 3], [1, 2, 4]]);[127X[104X
+    [4X[28X<immutable digraph with 4 vertices, 8 edges>[128X[104X
+    [4X[25Xgap>[125X [27XPartialOrderDigraphMeetOfVertices(D, 3, 4);[127X[104X
+    [4X[28Xfail[128X[104X
+    [4X[25Xgap>[125X [27XPartialOrderDigraphJoinOfVertices(D, 3, 4);[127X[104X
+    [4X[28Xfail[128X[104X
+    [4X[25Xgap>[125X [27XPartialOrderDigraphMeetOfVertices(D, 1, 2);[127X[104X
+    [4X[28Xfail[128X[104X
+    [4X[25Xgap>[125X [27XPartialOrderDigraphJoinOfVertices(D, 1, 2);[127X[104X
+    [4X[28Xfail[128X[104X
+  [4X[32X[104X
+  
+  [1X5.3-2 NonUpperSemimodularPair[101X
+  
+  [33X[1;0Y[29X[2XNonUpperSemimodularPair[102X( [3XD[103X ) [32X attribute[133X
+  [33X[1;0Y[29X[2XNonLowerSemimodularPair[102X( [3XD[103X ) [32X attribute[133X
+  [6XReturns:[106X  [33X[0;10YA pair of vertices or [9Xfail[109X.[133X
+  
+  [33X[0;0Y[10XNonUpperSemimodularPair[110X  returns  a  pair  of vertices in the digraph [3XD[103X that
+  witnesses  the  fact that [3XD[103X does not represent an upper semimodular lattice,
+  if such a pair exists.[133X
+  
+  [33X[0;0YIf the digraph [3XD[103X does not satisfy [2XIsLatticeDigraph[102X ([14X6.3-3[114X), then an error is
+  given.  Otherwise  if  the  digraph [3XD[103X does satisfy [2XIsLatticeDigraph[102X ([14X6.3-3[114X),
+  then either a non-upper semimodular pair of vertices is returned, or [9Xfail[109X is
+  returned  if  no  such  pair  exists (meaning that [3XD[103X is an upper semimodular
+  lattice.[133X
+  
+  [33X[0;0Y[10XNonLowerSemimodularPair[110X     behaves     in     the    analogous    way    to
+  [10XNonUpperSemimodularPair[110X with respect to lower semimodularity.[133X
+  
+  [33X[0;0YSee  [2XIsUpperSemimodularDigraph[102X ([14X6.3-5[114X) and [2XIsLowerSemimodularDigraph[102X ([14X6.3-5[114X)
+  for the definition of upper semimodularity of a lattice.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27XD := DigraphFromDigraph6String([127X[104X
+    [4X[25X>[125X [27X"&M~~sc`lYUZO__KIBboC_@h?U_?_GL?A_?c");[127X[104X
+    [4X[28X<immutable digraph with 14 vertices, 66 edges>[128X[104X
+    [4X[25Xgap>[125X [27XNonLowerSemimodularPair(D);[127X[104X
+    [4X[28X[ 10, 9 ][128X[104X
+    [4X[25Xgap>[125X [27XNonUpperSemimodularPair(D);[127X[104X
+    [4X[28Xfail[128X[104X
+  [4X[32X[104X
+  
+  
+  [1X5.4 [33X[0;0YReachability and connectivity[133X[101X
+  
+  [1X5.4-1 DigraphDiameter[101X
   
   [33X[1;0Y[29X[2XDigraphDiameter[102X( [3Xdigraph[103X ) [32X attribute[133X
   [6XReturns:[106X  [33X[0;10YAn integer or [10Xfail[110X.[133X
@@ -1147,7 +1182,7 @@
   vertices.  Otherwise  then  the  diameter  of [3Xdigraph[103X is undefined, and this
   function returns the value [10Xfail[110X.[133X
   
-  [33X[0;0YSee [2XDigraphShortestDistances[102X ([14X5.3-3[114X).[133X
+  [33X[0;0YSee [2XDigraphShortestDistances[102X ([14X5.4-3[114X).[133X
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27XD := Digraph([[2], [3], [4, 5], [5], [1, 2, 3, 4, 5]]);[127X[104X
@@ -1166,7 +1201,7 @@
     [4X[28X4[128X[104X
   [4X[32X[104X
   
-  [1X5.3-2 DigraphShortestDistance[101X
+  [1X5.4-2 DigraphShortestDistance[101X
   
   [33X[1;0Y[29X[2XDigraphShortestDistance[102X( [3Xdigraph[103X, [3Xu[103X, [3Xv[103X ) [32X operation[133X
   [33X[1;0Y[29X[2XDigraphShortestDistance[102X( [3Xdigraph[103X, [3Xlist[103X ) [32X operation[133X
@@ -1204,7 +1239,7 @@
     [4X[28X0[128X[104X
   [4X[32X[104X
   
-  [1X5.3-3 DigraphShortestDistances[101X
+  [1X5.4-3 DigraphShortestDistances[101X
   
   [33X[1;0Y[29X[2XDigraphShortestDistances[102X( [3Xdigraph[103X ) [32X attribute[133X
   [6XReturns:[106X  [33X[0;10YA square matrix.[133X
@@ -1237,7 +1272,7 @@
     [4X[28X[ [ 0, 1, 2 ], [ 2, 0, 1 ], [ 1, 2, 0 ] ][128X[104X
   [4X[32X[104X
   
-  [1X5.3-4 DigraphLongestDistanceFromVertex[101X
+  [1X5.4-4 DigraphLongestDistanceFromVertex[101X
   
   [33X[1;0Y[29X[2XDigraphLongestDistanceFromVertex[102X( [3Xdigraph[103X, [3Xv[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YAn integer, or [9Xinfinity[109X.[133X
@@ -1274,7 +1309,7 @@
     [4X[28Xinfinity[128X[104X
   [4X[32X[104X
   
-  [1X5.3-5 DigraphDistanceSet[101X
+  [1X5.4-5 DigraphDistanceSet[101X
   
   [33X[1;0Y[29X[2XDigraphDistanceSet[102X( [3Xdigraph[103X, [3Xvertex[103X, [3Xdistance[103X ) [32X operation[133X
   [33X[1;0Y[29X[2XDigraphDistanceSet[102X( [3Xdigraph[103X, [3Xvertex[103X, [3Xdistances[103X ) [32X operation[133X
@@ -1299,7 +1334,7 @@
     [4X[28X[ 2 ][128X[104X
   [4X[32X[104X
   
-  [1X5.3-6 DigraphGirth[101X
+  [1X5.4-6 DigraphGirth[101X
   
   [33X[1;0Y[29X[2XDigraphGirth[102X( [3Xdigraph[103X ) [32X attribute[133X
   [6XReturns:[106X  [33X[0;10YAn integer, or [9Xinfinity[109X.[133X
@@ -1316,7 +1351,7 @@
   of  vertices  in  [3Xdigraph[103X.  If  the  digraph  has  known  automorphisms [see
   [2XDigraphGroup[102X ([14X7.2-10[114X)], then the performance is likely to be better.[133X
   
-  [33X[0;0YFor symmetric digraphs, see also [2XDigraphUndirectedGirth[102X ([14X5.3-8[114X).[133X
+  [33X[0;0YFor symmetric digraphs, see also [2XDigraphUndirectedGirth[102X ([14X5.4-8[114X).[133X
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27XD := Digraph([[1], [1]]);[127X[104X
@@ -1337,7 +1372,7 @@
     [4X[28X2[128X[104X
   [4X[32X[104X
   
-  [1X5.3-7 DigraphOddGirth[101X
+  [1X5.4-7 DigraphOddGirth[101X
   
   [33X[1;0Y[29X[2XDigraphOddGirth[102X( [3Xdigraph[103X ) [32X attribute[133X
   [6XReturns:[106X  [33X[0;10YAn integer, or [9Xinfinity[109X.[133X
@@ -1351,7 +1386,7 @@
   return  [9Xinfinity[109X,  even  if  [3Xdigraph[103X has a directed cycle of even length. If
   [3Xdigraph[103X contains a loop, then this function will return [10X1[110X.[133X
   
-  [33X[0;0YSee also [2XDigraphGirth[102X ([14X5.3-6[114X).[133X
+  [33X[0;0YSee also [2XDigraphGirth[102X ([14X5.4-6[114X).[133X
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27XD := Digraph([[2], [3, 1], [1]]);[127X[104X
@@ -1374,7 +1409,7 @@
     [4X[28X5[128X[104X
   [4X[32X[104X
   
-  [1X5.3-8 DigraphUndirectedGirth[101X
+  [1X5.4-8 DigraphUndirectedGirth[101X
   
   [33X[1;0Y[29X[2XDigraphUndirectedGirth[102X( [3Xdigraph[103X ) [32X attribute[133X
   [6XReturns:[106X  [33X[0;10YAn integer or [9Xinfinity[109X.[133X
@@ -1408,7 +1443,7 @@
     [4X[28X5[128X[104X
   [4X[32X[104X
   
-  [1X5.3-9 DigraphConnectedComponents[101X
+  [1X5.4-9 DigraphConnectedComponents[101X
   
   [33X[1;0Y[29X[2XDigraphConnectedComponents[102X( [3Xdigraph[103X ) [32X attribute[133X
   [33X[1;0Y[29X[2XDigraphNrConnectedComponents[102X( [3Xdigraph[103X ) [32X attribute[133X
@@ -1420,7 +1455,7 @@
   directed  path  (ignoring  the  orientation  of  edges)  between  them. More
   formally, two vertices are in the same weakly connected component of [3Xdigraph[103X
   if  and  only  if  they  are  in  the same strongly connected component (see
-  [2XDigraphStronglyConnectedComponents[102X  ([14X5.3-11[114X)) of the [2XDigraphSymmetricClosure[102X
+  [2XDigraphStronglyConnectedComponents[102X  ([14X5.4-11[114X)) of the [2XDigraphSymmetricClosure[102X
   ([14X3.3-12[114X) of [3Xdigraph[103X.[133X
   
   [33X[0;0YThe  set  of weakly connected components is a partition of the vertex set of
@@ -1462,14 +1497,14 @@
     [4X[28Xrec( comps := [ [ 1, 2 ], [ 3, 4, 5 ] ], id := [ 1, 1, 2, 2, 2 ] )[128X[104X
   [4X[32X[104X
   
-  [1X5.3-10 DigraphConnectedComponent[101X
+  [1X5.4-10 DigraphConnectedComponent[101X
   
   [33X[1;0Y[29X[2XDigraphConnectedComponent[102X( [3Xdigraph[103X, [3Xvertex[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA list of vertices.[133X
   
   [33X[0;0YIf  [3Xvertex[103X  is  a vertex in the digraph [3Xdigraph[103X, then this operation returns
   the connected component of [3Xvertex[103X in [3Xdigraph[103X. See [2XDigraphConnectedComponents[102X
-  ([14X5.3-9[114X) for more information.[133X
+  ([14X5.4-9[114X) for more information.[133X
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27XD := Digraph([[3], [2], [1, 2], [4]]);[127X[104X
@@ -1482,7 +1517,7 @@
     [4X[28X[ 4 ][128X[104X
   [4X[32X[104X
   
-  [1X5.3-11 DigraphStronglyConnectedComponents[101X
+  [1X5.4-11 DigraphStronglyConnectedComponents[101X
   
   [33X[1;0Y[29X[2XDigraphStronglyConnectedComponents[102X( [3Xdigraph[103X ) [32X attribute[133X
   [33X[1;0Y[29X[2XDigraphNrStronglyConnectedComponents[102X( [3Xdigraph[103X ) [32X attribute[133X
@@ -1532,14 +1567,14 @@
     [4X[28Xrec( comps := [ [ 1, 2 ], [ 3, 4, 5 ] ], id := [ 1, 1, 2, 2, 2 ] )[128X[104X
   [4X[32X[104X
   
-  [1X5.3-12 DigraphStronglyConnectedComponent[101X
+  [1X5.4-12 DigraphStronglyConnectedComponent[101X
   
   [33X[1;0Y[29X[2XDigraphStronglyConnectedComponent[102X( [3Xdigraph[103X, [3Xvertex[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA list of vertices.[133X
   
   [33X[0;0YIf  [3Xvertex[103X  is  a vertex in the digraph [3Xdigraph[103X, then this operation returns
   the    strongly    connected   component   of   [3Xvertex[103X   in   [3Xdigraph[103X.   See
-  [2XDigraphStronglyConnectedComponents[102X ([14X5.3-11[114X) for more information.[133X
+  [2XDigraphStronglyConnectedComponents[102X ([14X5.4-11[114X) for more information.[133X
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27XD := Digraph([[3], [2], [1, 2], [3]]);[127X[104X
@@ -1552,13 +1587,13 @@
     [4X[28X[ 4 ][128X[104X
   [4X[32X[104X
   
-  [1X5.3-13 DigraphBicomponents[101X
+  [1X5.4-13 DigraphBicomponents[101X
   
   [33X[1;0Y[29X[2XDigraphBicomponents[102X( [3Xdigraph[103X ) [32X attribute[133X
   [6XReturns:[106X  [33X[0;10YA pair of lists of vertices, or [9Xfail[109X.[133X
   
   [33X[0;0YIf  [3Xdigraph[103X  is a bipartite digraph, i.e. if it satisfies [2XIsBipartiteDigraph[102X
-  ([14X6.1-3[114X), then [10XDigraphBicomponents[110X returns a pair of bicomponents of [3Xdigraph[103X.
+  ([14X6.2-3[114X), then [10XDigraphBicomponents[110X returns a pair of bicomponents of [3Xdigraph[103X.
   Otherwise, [10XDigraphBicomponents[110X returns [9Xfail[109X.[133X
   
   [33X[0;0YFor  a bipartite digraph, the vertices can be partitioned into two non-empty
@@ -1569,7 +1604,7 @@
   
   [33X[0;0YFor  a bipartite digraph with at least 3 vertices, there is a unique pair of
   bicomponents  of  bipartite  if  and  only  if the digraph is connected. See
-  [2XIsConnectedDigraph[102X ([14X6.3-3[114X) for more information.[133X
+  [2XIsConnectedDigraph[102X ([14X6.5-3[114X) for more information.[133X
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27XD := CycleDigraph(3);[127X[104X
@@ -1590,13 +1625,13 @@
     [4X[28X[ [ 1, 2 ], [ 3, 4, 5 ] ][128X[104X
   [4X[32X[104X
   
-  [1X5.3-14 ArticulationPoints[101X
+  [1X5.4-14 ArticulationPoints[101X
   
   [33X[1;0Y[29X[2XArticulationPoints[102X( [3Xdigraph[103X ) [32X attribute[133X
   [6XReturns:[106X  [33X[0;10YA list of vertices.[133X
   
   [33X[0;0YA connected digraph is [13Xbiconnected[113X if it is still connected (in the sense of
-  [2XIsConnectedDigraph[102X  ([14X6.3-3[114X))  when  any  vertex  is  removed. If the digraph
+  [2XIsConnectedDigraph[102X  ([14X6.5-3[114X))  when  any  vertex  is  removed. If the digraph
   [3Xdigraph[103X  is  not  biconnected but is connected, then any vertex [10Xv[110X of [3Xdigraph[103X
   whose  removal  makes  the  resulting  digraph  disconnected  is  called  an
   [13Xarticulation point[113X.[133X
@@ -1609,13 +1644,13 @@
   [33X[0;0YThe  method  used  in  this  operation  has complexity [22XO(m+n)[122X where [22Xm[122X is the
   number of edges and [22Xn[122X is the number of vertices in the digraph.[133X
   
-  [33X[0;0YIf [3XD[103X has a bridge (see [2XBridges[102X ([14X5.3-15[114X)), then a node incident to the bridge
+  [33X[0;0YIf [3XD[103X has a bridge (see [2XBridges[102X ([14X5.4-15[114X)), then a node incident to the bridge
   is an articulation point if and only if it has degree at least [22X2[122X. It follows
   that  if [3XD[103X has a bridge and at least [22X3[122X nodes, then at least one of the nodes
   incident to the bridge is an articulation point. The converse does not hold,
   there are digraphs with articulation points, but no bridges.[133X
   
-  [33X[0;0YSee also [2XIsBiconnectedDigraph[102X ([14X6.3-4[114X) and [2XIsBridgelessDigraph[102X ([14X6.3-5[114X).[133X
+  [33X[0;0YSee also [2XIsBiconnectedDigraph[102X ([14X6.5-4[114X) and [2XIsBridgelessDigraph[102X ([14X6.5-5[114X).[133X
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27XArticulationPoints(CycleDigraph(5));[127X[104X
@@ -1633,13 +1668,13 @@
     [4X[28X[ 3, 2 ][128X[104X
   [4X[32X[104X
   
-  [1X5.3-15 Bridges[101X
+  [1X5.4-15 Bridges[101X
   
   [33X[1;0Y[29X[2XBridges[102X( [3XD[103X ) [32X attribute[133X
   [6XReturns:[106X  [33X[0;10YA (possibly empty) list of edges.[133X
   
   [33X[0;0YA  connected  digraph  is  [13X2-edge-connected[113X if it is still connected (in the
-  sense  of  [2XIsConnectedDigraph[102X  ([14X6.3-3[114X))  when  any  edge  is removed. If the
+  sense  of  [2XIsConnectedDigraph[102X  ([14X6.5-3[114X))  when  any  edge  is removed. If the
   digraph  [3XD[103X is not 2-edge-connected but is connected, then any edge [10X[u, v][110X of
   [3XD[103X whose removal makes the resulting digraph disconnected is called a [13Xbridge[113X.[133X
   
@@ -1652,13 +1687,13 @@
   number of edges and [22Xn[122X is the number of vertices in the digraph.[133X
   
   [33X[0;0YIf  [3XD[103X  has  a  bridge, then a node incident to the bridge is an articulation
-  point  (see  [2XArticulationPoints[102X  ([14X5.3-14[114X))  if  and only if it has degree at
+  point  (see  [2XArticulationPoints[102X  ([14X5.4-14[114X))  if  and only if it has degree at
   least  [22X2[122X.  It  follows  that if [3XD[103X has a bridge and at least [22X3[122X nodes, then at
   least  one of the nodes incident to the bridge is an articulation point. The
   converse  does not hold, there are digraphs with articulation points, but no
   bridges.[133X
   
-  [33X[0;0YSee also [2XIsBiconnectedDigraph[102X ([14X6.3-4[114X) and [2XIsBridgelessDigraph[102X ([14X6.3-5[114X).[133X
+  [33X[0;0YSee also [2XIsBiconnectedDigraph[102X ([14X6.5-4[114X) and [2XIsBridgelessDigraph[102X ([14X6.5-5[114X).[133X
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27XD := Digraph([[2, 5], [1, 3, 4, 5], [2, 4], [2, 3], [1, 2]]);[127X[104X
@@ -1675,7 +1710,7 @@
     [4X[28X[  ][128X[104X
   [4X[32X[104X
   
-  [1X5.3-16 StrongOrientation[101X
+  [1X5.4-16 StrongOrientation[101X
   
   [33X[1;0Y[29X[2XStrongOrientation[102X( [3XD[103X ) [32X operation[133X
   [33X[1;0Y[29X[2XStrongOrientationAttr[102X( [3XD[103X ) [32X attribute[133X
@@ -1685,7 +1720,7 @@
   strongly  connected  subdigraph  [10XC[110X of [3XD[103X such that for every edge [10X[u, v][110X of [3XD[103X
   either  [10X[u,  v][110X  or  [10X[v,  u][110X  is an edge of [10XC[110X but not both. Robbin's Theorem
   states  that  a  digraph  admits  a  strong orientation if and only if it is
-  bridgeless (see [2XIsBridgelessDigraph[102X ([14X6.3-5[114X)).[133X
+  bridgeless (see [2XIsBridgelessDigraph[102X ([14X6.5-5[114X)).[133X
   
   [33X[0;0YThis  operation  returns  a  strong  orientation  of  the  digraph [3XD[103X if [3XD[103X is
   symmetric  and [3XD[103X admits a strong orientation. If [3XD[103X is symmetric but does not
@@ -1715,7 +1750,7 @@
     [4X[28Xfail[128X[104X
   [4X[32X[104X
   
-  [1X5.3-17 DigraphPeriod[101X
+  [1X5.4-17 DigraphPeriod[101X
   
   [33X[1;0Y[29X[2XDigraphPeriod[102X( [3Xdigraph[103X ) [32X attribute[133X
   [6XReturns:[106X  [33X[0;10YAn integer.[133X
@@ -1728,7 +1763,7 @@
   See Section [14X1.1-1[114X for the definition of a directed cycle.[133X
   
   [33X[0;0YA digraph with a period of [22X1[122X is said to be [13Xaperiodic[113X. See [2XIsAperiodicDigraph[102X
-  ([14X6.3-7[114X).[133X
+  ([14X6.5-7[114X).[133X
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27XD := Digraph([[6], [1], [2], [3], [4, 4], [5]]);[127X[104X
@@ -1751,7 +1786,7 @@
     [4X[28X1[128X[104X
   [4X[32X[104X
   
-  [1X5.3-18 DigraphFloydWarshall[101X
+  [1X5.4-18 DigraphFloydWarshall[101X
   
   [33X[1;0Y[29X[2XDigraphFloydWarshall[102X( [3Xdigraph[103X, [3Xfunc[103X, [3Xnopath[103X, [3Xedge[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA matrix.[133X
@@ -1807,7 +1842,7 @@
     [4X[28X  [   3,  -1,  -1,   2,   1,   1 ] ][128X[104X
   [4X[32X[104X
   
-  [1X5.3-19 IsReachable[101X
+  [1X5.4-19 IsReachable[101X
   
   [33X[1;0Y[29X[2XIsReachable[102X( [3Xdigraph[103X, [3Xu[103X, [3Xv[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
@@ -1833,7 +1868,7 @@
     [4X[28Xfalse[128X[104X
   [4X[32X[104X
   
-  [1X5.3-20 IsDigraphPath[101X
+  [1X5.4-20 IsDigraphPath[101X
   
   [33X[1;0Y[29X[2XIsDigraphPath[102X( [3XD[103X, [3Xv[103X, [3Xa[103X ) [32X operation[133X
   [33X[1;0Y[29X[2XIsDigraphPath[102X( [3XD[103X, [3Xlist[103X ) [32X operation[133X
@@ -1872,7 +1907,7 @@
     [4X[28Xtrue[128X[104X
   [4X[32X[104X
   
-  [1X5.3-21 VerticesReachableFrom[101X
+  [1X5.4-21 VerticesReachableFrom[101X
   
   [33X[1;0Y[29X[2XVerticesReachableFrom[102X( [3Xdigraph[103X, [3Xroot[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA list.[133X
@@ -1914,7 +1949,7 @@
     [4X[28X[  ][128X[104X
   [4X[32X[104X
   
-  [1X5.3-22 DigraphPath[101X
+  [1X5.4-22 DigraphPath[101X
   
   [33X[1;0Y[29X[2XDigraphPath[102X( [3Xdigraph[103X, [3Xu[103X, [3Xv[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA pair of lists, or [9Xfail[109X.[133X
@@ -1939,7 +1974,7 @@
   [33X[0;0YThe  method for [10XDigraphPath[110X has worst case complexity of [22XO(m + n)[122X where [22Xm[122X is
   the number of edges and [22Xn[122X the number of vertices in [3Xdigraph[103X.[133X
   
-  [33X[0;0YSee also [2XIsDigraphPath[102X ([14X5.3-20[114X).[133X
+  [33X[0;0YSee also [2XIsDigraphPath[102X ([14X5.4-20[114X).[133X
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27XD := Digraph([[2], [3], [2, 3]]);[127X[104X
@@ -1954,7 +1989,7 @@
     [4X[28Xfail[128X[104X
   [4X[32X[104X
   
-  [1X5.3-23 DigraphShortestPath[101X
+  [1X5.4-23 DigraphShortestPath[101X
   
   [33X[1;0Y[29X[2XDigraphShortestPath[102X( [3Xdigraph[103X, [3Xu[103X, [3Xv[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA pair of lists, or [9Xfail[109X.[133X
@@ -1965,7 +2000,7 @@
   [9Xfail[109X.  See Section [14X'[33X[0;0YDefinitions[133X'[114X for the definition of a directed path and a
   directed cycle.[133X
   
-  [33X[0;0YSee  [2XDigraphPath[102X  ([14X5.3-22[114X)  for  details  on  the  output.  The  method  for
+  [33X[0;0YSee  [2XDigraphPath[102X  ([14X5.4-22[114X)  for  details  on  the  output.  The  method  for
   [10XDigraphShortestPath[110X  has  worst  case  complexity of [22XO(m + n)[122X where [22Xm[122X is the
   number of edges and [22Xn[122X the number of vertices in [3Xdigraph[103X.[133X
   
@@ -1982,7 +2017,29 @@
     [4X[28X[ [ 1, 1 ], [ 1 ] ][128X[104X
   [4X[32X[104X
   
-  [1X5.3-24 Dominators[101X
+  [1X5.4-24 DigraphRandomWalk[101X
+  
+  [33X[1;0Y[29X[2XDigraphRandomWalk[102X( [3Xdigraph[103X, [3Xv[103X, [3Xt[103X ) [32X operation[133X
+  [6XReturns:[106X  [33X[0;10YA pair of lists.[133X
+  
+  [33X[0;0YReturns  a  directed  path  corresponding  to  a  [13Xrandom walk[113X in the digraph
+  [3Xdigraph[103X, starting at vertex [3Xv[103X and having length no more than [3Xt[103X.[133X
+  
+  [33X[0;0YA  random walk is defined as follows. The path begins at [3Xv[103X, and at each step
+  it  follows  a  random edge leaving the current vertex. It continues through
+  the  digraph in this way until it has traversed [3Xt[103X edges, or until it reaches
+  a vertex with no out-edges (a [13Xsink[113X) and therefore cannot continue.[133X
+  
+  [33X[0;0YThe output has the same form as that of [2XDigraphPath[102X ([14X5.4-22[114X).[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27XD := Digraph([[1, 2], [3], [2, 4], [1], [2, 4]]);                [127X[104X
+    [4X[28X<immutable digraph with 5 vertices, 8 edges>[128X[104X
+    [4X[25Xgap>[125X [27XDigraphRandomWalk(D, 1, 4);[127X[104X
+    [4X[28X[ [ 1, 2, 3, 2, 3 ], [ 2, 1, 1, 1 ] ][128X[104X
+  [4X[32X[104X
+  
+  [1X5.4-25 Dominators[101X
   
   [33X[1;0Y[29X[2XDominators[102X( [3Xdigraph[103X, [3Xroot[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA list of lists.[133X
@@ -2016,7 +2073,7 @@
     [4X[28X[ [ 4, 3, 6 ], [ 3, 6 ], [ 6 ], [ 3, 6 ] ][128X[104X
   [4X[32X[104X
   
-  [1X5.3-25 DominatorTree[101X
+  [1X5.4-26 DominatorTree[101X
   
   [33X[1;0Y[29X[2XDominatorTree[102X( [3Xdigraph[103X, [3Xroot[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA record.[133X
@@ -2055,7 +2112,7 @@
     [4X[28Xrec( idom := [ 2, fail, 2, 2, 2 ], preorder := [ 2, 1, 3, 4, 5 ] )[128X[104X
   [4X[32X[104X
   
-  [1X5.3-26 IteratorOfPaths[101X
+  [1X5.4-27 IteratorOfPaths[101X
   
   [33X[1;0Y[29X[2XIteratorOfPaths[102X( [3Xdigraph[103X, [3Xu[103X, [3Xv[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YAn iterator.[133X
@@ -2065,7 +2122,7 @@
   non-trivial  directed  paths (or directed cycles, in the case that [3Xu[103X [10X=[110X [3Xv[103X) in
   [3Xdigraph[103X from the vertex [3Xu[103X to the vertex [3Xv[103X.[133X
   
-  [33X[0;0YSee  [2XDigraphPath[102X  ([14X5.3-22[114X) for more information about the repesentation of a
+  [33X[0;0YSee  [2XDigraphPath[102X  ([14X5.4-22[114X) for more information about the repesentation of a
   directed  path  or  directed  cycle  which  is  used,  and  see  [14X'Reference:
   Iterators'[114X  for  more information about iterators. See Section [14X'[33X[0;0YDefinitions[133X'[114X
   for the definition of a directed path and a directed cycle.[133X
@@ -2089,7 +2146,7 @@
     [4X[28X[ [ 4, 1, 2, 3 ], [ 1, 4, 1 ] ][128X[104X
   [4X[32X[104X
   
-  [1X5.3-27 DigraphAllSimpleCircuits[101X
+  [1X5.4-28 DigraphAllSimpleCircuits[101X
   
   [33X[1;0Y[29X[2XDigraphAllSimpleCircuits[102X( [3Xdigraph[103X ) [32X attribute[133X
   [6XReturns:[106X  [33X[0;10YA list of lists of vertices.[133X
@@ -2137,7 +2194,7 @@
     [4X[28X[ [ 1, 2, 3 ] ][128X[104X
   [4X[32X[104X
   
-  [1X5.3-28 DigraphLongestSimpleCircuit[101X
+  [1X5.4-29 DigraphLongestSimpleCircuit[101X
   
   [33X[1;0Y[29X[2XDigraphLongestSimpleCircuit[102X( [3Xdigraph[103X ) [32X attribute[133X
   [6XReturns:[106X  [33X[0;10YA list of vertices, or [9Xfail[109X.[133X
@@ -2149,7 +2206,7 @@
   [33X[0;0YThis  attribute  computes  [10XDigraphAllSimpleCircuits([110X[3Xdigraph[103X[10X)[110X to find all the
   simple  circuits  of  [3Xdigraph[103X,  and  returns one of maximal length. A simple
   circuit  is  represented as a list of vertices, in the same way as described
-  in [2XDigraphAllSimpleCircuits[102X ([14X5.3-27[114X).[133X
+  in [2XDigraphAllSimpleCircuits[102X ([14X5.4-28[114X).[133X
   
   [33X[0;0YIf  [3Xdigraph[103X  has  no  simple  circuits, then this attribute returns [9Xfail[109X. If
   [3Xdigraph[103X  has multiple simple circuits of maximal length, then this attribute
@@ -2171,7 +2228,7 @@
     [4X[28X[ 1, 2, 3, 4, 8, 7, 6, 5 ][128X[104X
   [4X[32X[104X
   
-  [1X5.3-29 DigraphLayers[101X
+  [1X5.4-30 DigraphLayers[101X
   
   [33X[1;0Y[29X[2XDigraphLayers[102X( [3Xdigraph[103X, [3Xvertex[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA list.[133X
@@ -2186,13 +2243,13 @@
     [4X[28X[ [ 1 ], [ 2, 3, 4 ] ][128X[104X
   [4X[32X[104X
   
-  [1X5.3-30 DigraphDegeneracy[101X
+  [1X5.4-31 DigraphDegeneracy[101X
   
   [33X[1;0Y[29X[2XDigraphDegeneracy[102X( [3Xdigraph[103X ) [32X attribute[133X
   [6XReturns:[106X  [33X[0;10YA non-negative integer, or [9Xfail[109X.[133X
   
   [33X[0;0YIf   [3Xdigraph[103X   is   a   symmetric  digraph  without  multiple  edges  -  see
-  [2XIsSymmetricDigraph[102X   ([14X6.1-12[114X)   and  [2XIsMultiDigraph[102X  ([14X6.1-10[114X)  -  then  this
+  [2XIsSymmetricDigraph[102X   ([14X6.2-14[114X)   and  [2XIsMultiDigraph[102X  ([14X6.2-11[114X)  -  then  this
   attribute returns the degeneracy of [3Xdigraph[103X.[133X
   
   [33X[0;0YThe  degeneracy  of a digraph is the least integer [10Xk[110X such that every induced
@@ -2219,13 +2276,13 @@
     [4X[28X3[128X[104X
   [4X[32X[104X
   
-  [1X5.3-31 DigraphDegeneracyOrdering[101X
+  [1X5.4-32 DigraphDegeneracyOrdering[101X
   
   [33X[1;0Y[29X[2XDigraphDegeneracyOrdering[102X( [3Xdigraph[103X ) [32X attribute[133X
   [6XReturns:[106X  [33X[0;10YA list of integers, or [9Xfail[109X.[133X
   
   [33X[0;0YIf   [3Xdigraph[103X   is  a  digraph  for  which  [10XDigraphDegeneracy([110X[3Xdigraph[103X[10X)[110X  is  a
-  non-negative  integer  [10Xk[110X  -  see  [2XDigraphDegeneracy[102X  ([14X5.3-30[114X)  -  then  this
+  non-negative  integer  [10Xk[110X  -  see  [2XDigraphDegeneracy[102X  ([14X5.4-31[114X)  -  then  this
   attribute  returns  a degeneracy ordering of the vertices of the vertices of
   [3Xdigraph[103X.[133X
   
@@ -2253,7 +2310,7 @@
     [4X[28X[ 6, 5, 4, 1, 3, 2 ][128X[104X
   [4X[32X[104X
   
-  [1X5.3-32 HamiltonianPath[101X
+  [1X5.4-33 HamiltonianPath[101X
   
   [33X[1;0Y[29X[2XHamiltonianPath[102X( [3Xdigraph[103X ) [32X attribute[133X
   [6XReturns:[106X  [33X[0;10YA list or [9Xfail[109X.[133X
@@ -2263,7 +2320,7 @@
   [33X[0;0YA  [13XHamiltonian path[113X of a digraph with [10Xn[110X vertices is directed cycle of length
   [10Xn[110X.  If  [3Xdigraph[103X  is  a  digraph  that contains a Hamiltonian path, then this
   function returns one, described in the form used by [2XDigraphAllSimpleCircuits[102X
-  ([14X5.3-27[114X).  Note if [3Xdigraph[103X has 0 or 1 vertices, then [10XHamiltonianPath[110X returns
+  ([14X5.4-28[114X).  Note if [3Xdigraph[103X has 0 or 1 vertices, then [10XHamiltonianPath[110X returns
   [10X[][110X or [10X[1][110X, respectively.[133X
   
   [33X[0;0YThe  method  used  in  this  attribute has the same worst case complexity as
@@ -2292,7 +2349,7 @@
     [4X[28Xfail[128X[104X
   [4X[32X[104X
   
-  [1X5.3-33 NrSpanningTrees[101X
+  [1X5.4-34 NrSpanningTrees[101X
   
   [33X[1;0Y[29X[2XNrSpanningTrees[102X( [3Xdigraph[103X ) [32X attribute[133X
   [6XReturns:[106X  [33X[0;10YAn integer.[133X
@@ -2300,7 +2357,7 @@
   [33X[0;0YReturns  the  number  of  spanning  trees  of the symmetric digraph [3Xdigraph[103X.
   [10XNrSpanningTrees[110X will return an error if [3Xdigraph[103X is not a symmetric digraph.[133X
   
-  [33X[0;0YSee  [2XIsSymmetricDigraph[102X  ([14X6.1-12[114X)  and  [2XIsUndirectedSpanningTree[102X ([14X4.1-2[114X) for
+  [33X[0;0YSee  [2XIsSymmetricDigraph[102X  ([14X6.2-14[114X)  and  [2XIsUndirectedSpanningTree[102X ([14X4.1-2[114X) for
   more information.[133X
   
   [4X[32X  Example  [32X[104X
@@ -2319,7 +2376,7 @@
     [4X[28X1134225[128X[104X
   [4X[32X[104X
   
-  [1X5.3-34 DigraphDijkstra[101X
+  [1X5.4-35 DigraphDijkstra[101X
   
   [33X[1;0Y[29X[2XDigraphDijkstra[102X( [3Xdigraph[103X, [3Xsource[103X, [3Xtarget[103X ) [32X operation[133X
   [33X[1;0Y[29X[2XDigraphDijkstra[102X( [3Xdigraph[103X, [3Xsource[103X ) [32X operation[133X
@@ -2353,9 +2410,9 @@
   [4X[32X[104X
   
   
-  [1X5.4 [33X[0;0YCayley graphs of groups[133X[101X
+  [1X5.5 [33X[0;0YCayley graphs of groups[133X[101X
   
-  [1X5.4-1 GroupOfCayleyDigraph[101X
+  [1X5.5-1 GroupOfCayleyDigraph[101X
   
   [33X[1;0Y[29X[2XGroupOfCayleyDigraph[102X( [3Xdigraph[103X ) [32X attribute[133X
   [33X[1;0Y[29X[2XSemigroupOfCayleyDigraph[102X( [3Xdigraph[103X ) [32X attribute[133X
@@ -2367,7 +2424,7 @@
   [33X[0;0YIf  [3Xdigraph[103X  is  a  Cayley graph of a semigroup [10XS[110X and [3Xdigraph[103X belongs to the
   category [2XIsCayleyDigraph[102X ([14X3.1-4[114X), then [10XSemigroupOfCayleyDigraph[110X returns [10XS[110X.[133X
   
-  [33X[0;0YSee also [2XGeneratorsOfCayleyDigraph[102X ([14X5.4-2[114X).[133X
+  [33X[0;0YSee also [2XGeneratorsOfCayleyDigraph[102X ([14X5.5-2[114X).[133X
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27XG := DihedralGroup(IsPermGroup, 8);[127X[104X
@@ -2378,7 +2435,7 @@
     [4X[28Xtrue[128X[104X
   [4X[32X[104X
   
-  [1X5.4-2 GeneratorsOfCayleyDigraph[101X
+  [1X5.5-2 GeneratorsOfCayleyDigraph[101X
   
   [33X[1;0Y[29X[2XGeneratorsOfCayleyDigraph[102X( [3Xdigraph[103X ) [32X attribute[133X
   [6XReturns:[106X  [33X[0;10YA list of generators.[133X
@@ -2388,7 +2445,7 @@
   [2XIsCayleyDigraph[102X  ([14X3.1-4[114X),  then [10XGeneratorsOfCayleyDigraph[110X return the list of
   generators [10Xgens[110X over which [3Xdigraph[103X is defined.[133X
   
-  [33X[0;0YSee also [2XGroupOfCayleyDigraph[102X ([14X5.4-1[114X) or [2XSemigroupOfCayleyDigraph[102X ([14X5.4-1[114X).[133X
+  [33X[0;0YSee also [2XGroupOfCayleyDigraph[102X ([14X5.5-1[114X) or [2XSemigroupOfCayleyDigraph[102X ([14X5.5-1[114X).[133X
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27XG := DihedralGroup(IsPermGroup, 8);[127X[104X
@@ -2404,9 +2461,9 @@
   [4X[32X[104X
   
   
-  [1X5.5 [33X[0;0YAssociated semigroups[133X[101X
+  [1X5.6 [33X[0;0YAssociated semigroups[133X[101X
   
-  [1X5.5-1 AsSemigroup[101X
+  [1X5.6-1 AsSemigroup[101X
   
   [33X[1;0Y[29X[2XAsSemigroup[102X( [3Xfilt[103X, [3Xdigraph[103X ) [32X operation[133X
   [33X[1;0Y[29X[2XAsMonoid[102X( [3Xfilt[103X, [3Xdigraph[103X ) [32X operation[133X
@@ -2414,18 +2471,18 @@
   
   [33X[0;0YThe    operation    [10XAsSemigroup[110X    requires    that   [3Xfilt[103X   be   equal   to
   [2XIsPartialPermSemigroup[102X  ([14XReference: IsPartialPermSemigroup[114X). If [3Xdigraph[103X is a
-  [2XIsJoinSemilatticeDigraph[102X   ([14X6.1-17[114X)   or   [2XIsLatticeDigraph[102X   ([14X6.1-17[114X)  then
+  [2XIsJoinSemilatticeDigraph[102X    ([14X6.3-3[114X)   or   [2XIsLatticeDigraph[102X   ([14X6.3-3[114X)   then
   [10XAsSemigroup[110X  returns a semigroup of partial perms which is isomorphic to the
   semigroup  whose  elements  are  the  vertices  of  [3Xdigraph[103X  with the binary
-  operation  [2XPartialOrderDigraphJoinOfVertices[102X  ([14X5.2-15[114X). If [3Xdigraph[103X satisfies
-  [2XIsMeetSemilatticeDigraph[102X  ([14X6.1-17[114X) but not [2XIsJoinSemilatticeDigraph[102X ([14X6.1-17[114X)
+  operation  [2XPartialOrderDigraphJoinOfVertices[102X  ([14X5.3-1[114X).  If [3Xdigraph[103X satisfies
+  [2XIsMeetSemilatticeDigraph[102X  ([14X6.3-3[114X)  but  not [2XIsJoinSemilatticeDigraph[102X ([14X6.3-3[114X)
   then [10XAsSemigroup[110X returns a semigroup of partial perms which is isomorphic to
   the  semigroup  whose  elements  are the vertices of [3Xdigraph[103X with the binary
-  operation [2XPartialOrderDigraphMeetOfVertices[102X ([14X5.2-15[114X).[133X
+  operation [2XPartialOrderDigraphMeetOfVertices[102X ([14X5.3-1[114X).[133X
   
   [33X[0;0YThe operation [10XAsMonoid[110X behaves similarly to [10XAsSemigroup[110X except that [3Xfilt[103X may
   also  be  equal  to  [2XIsPartialPermMonoid[102X  ([14XReference:  IsPartialPermMonoid[114X),
-  [3Xdigraph[103X  must  satisfy  [2XIsLatticeDigraph[102X  ([14X6.1-17[114X), and the output satisfies
+  [3Xdigraph[103X  must  satisfy  [2XIsLatticeDigraph[102X  ([14X6.3-3[114X),  and the output satisfies
   [2XIsMonoid[102X ([14XReference: IsMonoid[114X).[133X
   
   [33X[0;0YThe output of both of these operations is guaranteed to be of minimal degree
@@ -2453,20 +2510,20 @@
     [4X[28X3[128X[104X
   [4X[32X[104X
   
-  [1X5.5-2 AsSemigroup[101X
+  [1X5.6-2 AsSemigroup[101X
   
   [33X[1;0Y[29X[2XAsSemigroup[102X( [3Xfilt[103X, [3XY[103X, [3Xgps[103X, [3Xhoms[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA Clifford semigroup of partial perms.[133X
   
   [33X[0;0YThe    operation    [10XAsSemigroup[110X    requires    that   [3Xfilt[103X   be   equal   to
   [2XIsPartialPermSemigroup[102X   ([14XReference:  IsPartialPermSemigroup[114X).  If  [3XY[103X  is  a
-  [2XIsJoinSemilatticeDigraph[102X  ([14X6.1-17[114X) or [2XIsMeetSemilatticeDigraph[102X ([14X6.1-17[114X), [3Xgps[103X
-  is  a  list  of  groups  corresponding  to  each  vertex, and [3Xhoms[103X is a list
-  containing  for  each  edge  [10X(i, j)[110X in the transitive reduction of [3Xdigraph[103X a
-  triple  [10X[i, j, hom][110X where [10Xhom[110X is a group homomorphism from [10Xgps[i][110X to [10Xgps[j][110X,
-  and  the  diagram  of  homomorphisms  commutes,  then  [10XAsSemigroup[110X returns a
-  semigroup  of partial perms which is isomorphic to the strong semilattice of
-  groups [22XS[Y; gps; homs][122X.[133X
+  [2XIsJoinSemilatticeDigraph[102X ([14X6.3-3[114X) or [2XIsMeetSemilatticeDigraph[102X ([14X6.3-3[114X), [3Xgps[103X is
+  a list of groups corresponding to each vertex, and [3Xhoms[103X is a list containing
+  for  each edge [10X(i, j)[110X in the transitive reduction of [3Xdigraph[103X a triple [10X[i, j,
+  hom][110X  where  [10Xhom[110X  is  a  group  homomorphism  from [10Xgps[i][110X to [10Xgps[j][110X, and the
+  diagram  of  homomorphisms commutes, then [10XAsSemigroup[110X returns a semigroup of
+  partial  perms  which is isomorphic to the strong semilattice of groups [22XS[Y;
+  gps; homs][122X.[133X
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27XG1 := AlternatingGroup(4);;[127X[104X
@@ -2492,9 +2549,9 @@
   [4X[32X[104X
   
   
-  [1X5.6 [33X[0;0YPlanarity[133X[101X
+  [1X5.7 [33X[0;0YPlanarity[133X[101X
   
-  [1X5.6-1 KuratowskiPlanarSubdigraph[101X
+  [1X5.7-1 KuratowskiPlanarSubdigraph[101X
   
   [33X[1;0Y[29X[2XKuratowskiPlanarSubdigraph[102X( [3Xdigraph[103X ) [32X attribute[133X
   [6XReturns:[106X  [33X[0;10YA list or [9Xfail[109X.[133X
@@ -2510,7 +2567,7 @@
   [33X[0;0YThe  directions  and multiplicities of any edges in [3Xdigraph[103X are ignored when
   considering whether or not [3Xdigraph[103X is planar.[133X
   
-  [33X[0;0YSee also [2XIsPlanarDigraph[102X ([14X6.4-1[114X) and [2XSubdigraphHomeomorphicToK33[102X ([14X5.6-5[114X).[133X
+  [33X[0;0YSee also [2XIsPlanarDigraph[102X ([14X6.6-1[114X) and [2XSubdigraphHomeomorphicToK33[102X ([14X5.7-5[114X).[133X
   
   [33X[0;0YThis      method      uses      the      reference     implementation     in
   [5Xedge-addition-planarity-suite[105X  by  John Boyer of the algorithms described in
@@ -2548,7 +2605,7 @@
     [4X[28X  [ 7, 9, 3 ], [  ], [  ] ][128X[104X
   [4X[32X[104X
   
-  [1X5.6-2 KuratowskiOuterPlanarSubdigraph[101X
+  [1X5.7-2 KuratowskiOuterPlanarSubdigraph[101X
   
   [33X[1;0Y[29X[2XKuratowskiOuterPlanarSubdigraph[102X( [3Xdigraph[103X ) [32X attribute[133X
   [6XReturns:[106X  [33X[0;10YA list or [9Xfail[109X.[133X
@@ -2564,8 +2621,8 @@
   [33X[0;0YThe  directions  and multiplicities of any edges in [3Xdigraph[103X are ignored when
   considering whether or not [3Xdigraph[103X is outer planar.[133X
   
-  [33X[0;0YSee  also  [2XIsOuterPlanarDigraph[102X ([14X6.4-2[114X), [2XSubdigraphHomeomorphicToK4[102X ([14X5.6-5[114X),
-  and [2XSubdigraphHomeomorphicToK23[102X ([14X5.6-5[114X).[133X
+  [33X[0;0YSee  also  [2XIsOuterPlanarDigraph[102X ([14X6.6-2[114X), [2XSubdigraphHomeomorphicToK4[102X ([14X5.7-5[114X),
+  and [2XSubdigraphHomeomorphicToK23[102X ([14X5.7-5[114X).[133X
   
   [33X[0;0YThis      method      uses      the      reference     implementation     in
   [5Xedge-addition-planarity-suite[105X  by  John Boyer of the algorithms described in
@@ -2605,7 +2662,7 @@
     [4X[28X  [  ] ][128X[104X
   [4X[32X[104X
   
-  [1X5.6-3 PlanarEmbedding[101X
+  [1X5.7-3 PlanarEmbedding[101X
   
   [33X[1;0Y[29X[2XPlanarEmbedding[102X( [3Xdigraph[103X ) [32X attribute[133X
   [6XReturns:[106X  [33X[0;10YA list or [9Xfail[109X.[133X
@@ -2618,7 +2675,7 @@
   [33X[0;0YThe  directions  and  multiplicities  of any edges in [3Xdigraph[103X are ignored by
   [10XPlanarEmbedding[110X.[133X
   
-  [33X[0;0YSee also [2XIsPlanarDigraph[102X ([14X6.4-1[114X).[133X
+  [33X[0;0YSee also [2XIsPlanarDigraph[102X ([14X6.6-1[114X).[133X
   
   [33X[0;0YThis      method      uses      the      reference     implementation     in
   [5Xedge-addition-planarity-suite[105X  by  John Boyer of the algorithms described in
@@ -2652,7 +2709,7 @@
     [4X[28Xfail[128X[104X
   [4X[32X[104X
   
-  [1X5.6-4 OuterPlanarEmbedding[101X
+  [1X5.7-4 OuterPlanarEmbedding[101X
   
   [33X[1;0Y[29X[2XOuterPlanarEmbedding[102X( [3Xdigraph[103X ) [32X attribute[133X
   [6XReturns:[106X  [33X[0;10YA list or [9Xfail[109X.[133X
@@ -2665,7 +2722,7 @@
   [33X[0;0YThe  directions  and  multiplicities  of any edges in [3Xdigraph[103X are ignored by
   [10XOuterPlanarEmbedding[110X.[133X
   
-  [33X[0;0YSee also [2XIsOuterPlanarDigraph[102X ([14X6.4-2[114X).[133X
+  [33X[0;0YSee also [2XIsOuterPlanarDigraph[102X ([14X6.6-2[114X).[133X
   
   [33X[0;0YThis      method      uses      the      reference     implementation     in
   [5Xedge-addition-planarity-suite[105X  by  John Boyer of the algorithms described in
@@ -2701,7 +2758,7 @@
     [4X[28X[ [ 3, 4 ], [ 4, 3 ], [  ], [  ] ][128X[104X
   [4X[32X[104X
   
-  [1X5.6-5 SubdigraphHomeomorphicToK23[101X
+  [1X5.7-5 SubdigraphHomeomorphicToK23[101X
   
   [33X[1;0Y[29X[2XSubdigraphHomeomorphicToK23[102X( [3Xdigraph[103X ) [32X attribute[133X
   [33X[1;0Y[29X[2XSubdigraphHomeomorphicToK33[102X( [3Xdigraph[103X ) [32X attribute[133X
@@ -2715,7 +2772,7 @@
   complete  graph  with  [10X4[110X  vertices. If [3Xdigraph[103X has no such subdigraphs, then
   [9Xfail[109X is returned.[133X
   
-  [33X[0;0YSee  also  [2XIsPlanarDigraph[102X ([14X6.4-1[114X) and [2XIsOuterPlanarDigraph[102X ([14X6.4-2[114X) for more
+  [33X[0;0YSee  also  [2XIsPlanarDigraph[102X ([14X6.6-1[114X) and [2XIsOuterPlanarDigraph[102X ([14X6.6-2[114X) for more
   details.[133X
   
   [33X[0;0YThis      method      uses      the      reference     implementation     in

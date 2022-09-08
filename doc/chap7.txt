@@ -85,6 +85,46 @@
     [4X[28X  [ 5 ], [ 5, 4 ] ][128X[104X
   [4X[32X[104X
   
+  [1X7.1-3 OnTuplesDigraphs[101X
+  
+  [33X[1;0Y[29X[2XOnTuplesDigraphs[102X( [3Xlist[103X, [3Xperm[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XOnSetsDigraphs[102X( [3Xlist[103X, [3Xperm[103X ) [32X operation[133X
+  [6XReturns:[106X  [33X[0;10YA list or set of digraphs.[133X
+  
+  [33X[0;0YIf  [3Xlist[103X is a list of digraphs, and [3Xperm[103X is a [13Xpermutation[113X of the vertices of
+  the  digraphs  in [3Xlist[103X, then [2XOnTuplesDigraphs[102X returns a new list constructed
+  by applying [3Xperm[103X via [2XOnDigraphs[102X ([14X7.1-1[114X) to a copy (with the same mutability)
+  of each entry of [3Xlist[103X in turn.[133X
+  
+  [33X[0;0YMore   precisely,   [10XOnTuplesDigraphs([3Xlist[103X[10X,[3Xperm[103X[10X)[110X   is   a   list   of  length
+  [10XLength([3Xlist[103X[10X)[110X, whose [10Xi[110X-th entry is [10XOnDigraphs(DigraphCopy([3Xlist[103X[10X[i]), [3Xperm[103X[10X)[110X.[133X
+  
+  [33X[0;0YIf  [3Xlist[103X  is  moreover  a  [5XGAP[105X set (i.e. a duplicate-free sorted list), then
+  [2XOnSetsDigraphs[102X  returns  the  sorted  output  of  [2XOnTuplesDigraphs[102X, which is
+  therefore again a set.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xlist := [CycleDigraph(IsMutableDigraph, 6),[127X[104X
+    [4X[25X>[125X [27X            DigraphReverse(CycleDigraph(6))];[127X[104X
+    [4X[28X[ <mutable digraph with 6 vertices, 6 edges>, [128X[104X
+    [4X[28X  <immutable digraph with 6 vertices, 6 edges> ][128X[104X
+    [4X[25Xgap>[125X [27Xp := (1, 6)(2, 5)(3, 4);;[127X[104X
+    [4X[25Xgap>[125X [27Xresult_tuples := OnTuplesDigraphs(list, p);[127X[104X
+    [4X[28X[ <mutable digraph with 6 vertices, 6 edges>, [128X[104X
+    [4X[28X  <immutable digraph with 6 vertices, 6 edges> ][128X[104X
+    [4X[25Xgap>[125X [27Xresult_tuples[2] = OnDigraphs(list[2], p);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27Xresult_tuples = list;[127X[104X
+    [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27Xresult_tuples = Reversed(list);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27Xresult_sets := OnSetsDigraphs(list, p);[127X[104X
+    [4X[28X[ <immutable digraph with 6 vertices, 6 edges>, [128X[104X
+    [4X[28X  <mutable digraph with 6 vertices, 6 edges> ][128X[104X
+    [4X[25Xgap>[125X [27Xresult_sets = list;[127X[104X
+    [4X[28Xtrue[128X[104X
+  [4X[32X[104X
+  
   
   [1X7.2 [33X[0;0YIsomorphisms and canonical labellings[133X[101X
   
@@ -293,7 +333,7 @@
   vertices [edges] to be the same colour.[133X
   
   [33X[0;0YUnlike  [2XAutomorphismGroup[102X ([14X7.2-2[114X), it is possible to obtain the automorphism
-  group of an edge-coloured multidigraph (see [2XIsMultiDigraph[102X ([14X6.1-10[114X)) when no
+  group of an edge-coloured multidigraph (see [2XIsMultiDigraph[102X ([14X6.2-11[114X)) when no
   two  edges  share the same source, range, and colour. The [13Xautomorphism group[113X
   of  a  vertex/edge-coloured  digraph  [3Xdigraph[103X  with colouring [3Xc[103X is the group
   consisting   of   its   vertex/edge-colour   preserving   automorphisms;  an
@@ -362,7 +402,7 @@
   (and may depend of the version used).[133X
   
   [33X[0;0Y[10XBlissCanonicalLabelling[110X  can  only  be  computed  if [3Xdigraph[103X has no multiple
-  edges; see [2XIsMultiDigraph[102X ([14X6.1-10[114X).[133X
+  edges; see [2XIsMultiDigraph[102X ([14X6.2-11[114X).[133X
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27Xdigraph1 := DigraphFromDiSparse6String(".ImNS_AiB?qRN");[127X[104X
@@ -417,7 +457,7 @@
   (and may depend of the version used).[133X
   
   [33X[0;0Y[10XBlissCanonicalLabelling[110X  can  only  be  computed  if [3Xdigraph[103X has no multiple
-  edges;  see  [2XIsMultiDigraph[102X  ([14X6.1-10[114X). The canonical labelling of [3Xdigraph[103X is
+  edges;  see  [2XIsMultiDigraph[102X  ([14X6.2-11[114X). The canonical labelling of [3Xdigraph[103X is
   given  as  a  permutation  of  its vertices. The canonical representative of
   [3Xdigraph[103X  can  be created from [3Xdigraph[103X and its canonical labelling [10Xp[110X by using
   the operation [2XOnDigraphs[102X ([14X7.1-1[114X):[133X
@@ -1604,7 +1644,7 @@
   ([10Xn[110X-)colouring of a digraph can be defined to be a [2XDigraphEpimorphism[102X ([14X7.3-6[114X)
   from   a   digraph   onto  the  complete  digraph  (with  [10Xn[110X  vertices);  see
   [2XCompleteDigraph[102X  ([14X3.5-11[114X).  Note  that a digraph with loops ([2XDigraphHasLoops[102X
-  ([14X6.1-1[114X)) does not have a proper [10Xn[110X-colouring for any value [10Xn[110X.[133X
+  ([14X6.2-1[114X)) does not have a proper [10Xn[110X-colouring for any value [10Xn[110X.[133X
   
   [33X[0;0YIf   [3Xdigraph[103X   is   a   digraph  and  [3Xn[103X  is  a  non-negative  integer,  then
   [10XDigraphColouring([3Xdigraph[103X[10X,  [3Xn[103X[10X)[110X  returns  an epimorphism from [3Xdigraph[103X onto the
@@ -1613,7 +1653,7 @@
   [33X[0;0YSee also [2XDigraphGreedyColouring[102X ([14X7.3-15[114X) and[133X
   
   [33X[0;0YNote that a digraph with at least two vertices has a 2-colouring if and only
-  if it is bipartite, see [2XIsBipartiteDigraph[102X ([14X6.1-3[114X).[133X
+  if it is bipartite, see [2XIsBipartiteDigraph[102X ([14X6.2-3[114X).[133X
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27XDigraphColouring(CompleteDigraph(5), 4);[127X[104X
@@ -1638,7 +1678,7 @@
   
   [33X[0;0YA [13Xproper colouring[113X of a digraph is a labelling of its vertices in such a way
   that adjacent vertices have different labels. Note that a digraph with loops
-  ([2XDigraphHasLoops[102X ([14X6.1-1[114X)) does not have any proper colouring.[133X
+  ([2XDigraphHasLoops[102X ([14X6.2-1[114X)) does not have any proper colouring.[133X
   
   [33X[0;0YIf  [3Xdigraph[103X  is a digraph and [3Xorder[103X is a dense list consisting of all of the
   vertices  of  [3Xdigraph[103X  (in  any  order),  then [10XDigraphGreedyColouring[110X uses a
@@ -1687,7 +1727,7 @@
   colouring  can  be defined to be a [2XDigraphEpimorphism[102X ([14X7.3-6[114X) from a digraph
   onto a complete digraph.[133X
   
-  [33X[0;0YIf  [3Xdigraph[103X  is  a  digraph without loops (see [2XDigraphHasLoops[102X ([14X6.1-1[114X), then
+  [33X[0;0YIf  [3Xdigraph[103X  is  a  digraph without loops (see [2XDigraphHasLoops[102X ([14X6.2-1[114X), then
   [10XChromaticNumber[110X  returns the least non-negative integer [10Xn[110X such that there is
   a  proper colouring of [3Xdigraph[103X with [10Xn[110X colours. In other words, for a digraph
   with  at  least  one vertex, [10XChromaticNumber[110X returns the least number [10Xn[110X such
@@ -1748,5 +1788,101 @@
     [4X[28X<mutable digraph with 5 vertices, 5 edges>[128X[104X
     [4X[25Xgap>[125X [27XDigraphCore(D);[127X[104X
     [4X[28X[ 2, 3, 4, 5 ][128X[104X
+  [4X[32X[104X
+  
+  [1X7.3-19 LatticeDigraphEmbedding[101X
+  
+  [33X[1;0Y[29X[2XLatticeDigraphEmbedding[102X( [3XL1[103X, [3XL2[103X ) [32X operation[133X
+  [6XReturns:[106X  [33X[0;10YA transformation, or [9Xfail[109X.[133X
+  
+  [33X[0;0YIf  [3XL1[103X  and  [3XL2[103X are lattice digraphs ([2XIsLatticeDigraph[102X ([14X6.3-3[114X) returns [9Xtrue[109X,
+  then  [10XLatticeDigraphEmbedding[110X returns a single [13Xinjective[113X [2XDigraphHomomorphism[102X
+  ([14X7.3-2[114X)  between  [3XL1[103X  and  [3XL2[103X,  with  the  property  that  it  is  a [13Xlattice
+  homomorphism[113X. If no such homomorphism exists, [9Xfail[109X is returned.[133X
+  
+  [33X[0;0YA  [13Xlattice  homomorphism[113X  is a digraph homomorphism which respects meets and
+  joins  of  every  pair  of  vertices.  Note  that  every  injective  lattice
+  homomorphism  [10Xmap[110X is an embedding, in the sense that the inverse of [10Xmap[110X is a
+  lattice homomorphism also.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27XD := DigraphReflexiveTransitiveClosure(ChainDigraph(5));[127X[104X
+    [4X[28X<immutable preorder digraph with 5 vertices, 15 edges>[128X[104X
+    [4X[25Xgap>[125X [27XL1 := DigraphReflexiveTransitiveClosure(ChainDigraph(5));[127X[104X
+    [4X[28X<immutable preorder digraph with 5 vertices, 15 edges>[128X[104X
+    [4X[25Xgap>[125X [27XL2 := DigraphReflexiveTransitiveClosure(ChainDigraph(6));[127X[104X
+    [4X[28X<immutable preorder digraph with 6 vertices, 21 edges>[128X[104X
+    [4X[25Xgap>[125X [27XLatticeDigraphEmbedding(L1, L2);[127X[104X
+    [4X[28XIdentityTransformation[128X[104X
+    [4X[25Xgap>[125X [27XLatticeDigraphEmbedding(L2, L1);[127X[104X
+    [4X[28Xfail[128X[104X
+  [4X[32X[104X
+  
+  [1X7.3-20 IsLatticeHomomorphism[101X
+  
+  [33X[1;0Y[29X[2XIsLatticeHomomorphism[102X( [3XL1[103X, [3XL2[103X, [3Xmap[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XIsLatticeEpimorphism[102X( [3XL1[103X, [3XL2[103X, [3Xmap[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XIsLatticeEmbedding[102X( [3XL1[103X, [3XL2[103X, [3Xmap[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XIsLatticeMonomorphism[102X( [3XL1[103X, [3XL2[103X, [3Xmap[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XIsLatticeEndomorphism[102X( [3XL[103X, [3Xmap[103X ) [32X operation[133X
+  [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
+  
+  [33X[0;0YEach    of    the    function    described    in    this   section   (except
+  [10XIsLatticeEndomorphism[110X)   takes   a  pair  of  digraphs  [3XL1[103X  and  [3XL2[103X,  and  a
+  transformation  [3Xmap[103X, returning [9Xtrue[109X if [3Xmap[103X is a [13Xlattice homomorphism[113X from [3XL1[103X
+  to  [3XL2[103X,  and  [9Xfalse[109X  otherwise.  If [3XL1[103X or [3XL2[103X is not a lattice, then [9Xfalse[109X is
+  returned.[133X
+  
+  [33X[0;0YA  transformation  or  permutation  [3Xmap[103X  is  a  [13Xlattice  homomorphism[113X if [3Xmap[103X
+  respects  meets  and  joins of every pair of vertices, and [3Xmap[103X fixes every [10Xi[110X
+  which is not a vertex of [3XL1[103X.[133X
+  
+  [33X[0;0Y[10XIsLatticeHomomorphism[110X  returns [9Xtrue[109X if the permutation or transformation [3Xmap[103X
+  is a lattice homomorphism from the lattice digraph [3XL1[103X to the lattice digraph
+  [3XL2[103X.[133X
+  
+  [33X[0;0Y[10XIsLatticeEpimorphism[110X  returns  [9Xtrue[109X if the permutation or transformation [3Xmap[103X
+  is  a  surjective  lattice  homomorphism  from the lattice digraph [3XL1[103X to the
+  lattice digraph [3XL2[103X.[133X
+  
+  [33X[0;0Y[10XIsLatticeEmbedding[110X  returns [9Xtrue[109X if the permutation or transformation [3Xmap[103X is
+  an injective lattice homomorphism from the lattice digraph [3XL1[103X to the lattice
+  digraph   [3XL2[103X.   The   function   [10XIsLatticeMonomorphism[110X   is   a  synonym  of
+  [10XIsLatticeEmbedding[110X.[133X
+  
+  [33X[0;0Y[10XIsLatticeEndomorphism[110X  returns [9Xtrue[109X if the permutation or transformation [3Xmap[103X
+  is an lattice endomorphism of the lattice digraph [3XL[103X.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27XG := Digraph([[2, 4], [3, 7], [6], [5, 7], [6], [], [6]]);[127X[104X
+    [4X[28X<immutable digraph with 7 vertices, 9 edges>[128X[104X
+    [4X[25Xgap>[125X [27XD := DigraphRemoveVertex(G, 7);[127X[104X
+    [4X[28X<immutable digraph with 6 vertices, 6 edges>[128X[104X
+    [4X[25Xgap>[125X [27XG := DigraphReflexiveTransitiveClosure(G);[127X[104X
+    [4X[28X<immutable preorder digraph with 7 vertices, 22 edges>[128X[104X
+    [4X[25Xgap>[125X [27XD := DigraphReflexiveTransitiveClosure(D);[127X[104X
+    [4X[28X<immutable preorder digraph with 6 vertices, 17 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsDigraphEmbedding(D, G, IdentityTransformation);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XIsLatticeHomomorphism(D, G, IdentityTransformation);[127X[104X
+    [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27XD := Digraph([[2, 3], [4], [4], []]);[127X[104X
+    [4X[28X<immutable digraph with 4 vertices, 4 edges>[128X[104X
+    [4X[25Xgap>[125X [27XG := Digraph([[2, 3], [4], [4], [5], []]);[127X[104X
+    [4X[28X<immutable digraph with 5 vertices, 5 edges>[128X[104X
+    [4X[25Xgap>[125X [27XD := DigraphReflexiveTransitiveClosure(D);[127X[104X
+    [4X[28X<immutable preorder digraph with 4 vertices, 9 edges>[128X[104X
+    [4X[25Xgap>[125X [27XG := DigraphReflexiveTransitiveClosure(G);[127X[104X
+    [4X[28X<immutable preorder digraph with 5 vertices, 14 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsLatticeEmbedding(D, G, IdentityTransformation);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XIsLatticeMonomorphism(D, G, IdentityTransformation);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27Xf := Transformation([1, 2, 3, 4, 4]);[127X[104X
+    [4X[28XTransformation( [ 1, 2, 3, 4, 4 ] )[128X[104X
+    [4X[25Xgap>[125X [27XIsLatticeEpimorphism(G, D, f);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XIsLatticeEndomorphism(D, (2, 3));[127X[104X
+    [4X[28Xtrue[128X[104X
   [4X[32X[104X
   

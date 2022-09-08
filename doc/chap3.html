@@ -43,7 +43,7 @@
 </span>
 <div class="ContSSBlock">
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X7FBC4BDB82FBEDD2">3.2-1 AsBinaryRelation</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X855E2AC47A4F5B55">3.2-2 AsDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X86834E307EACC670">3.2-2 AsDigraph</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X7B335342839E5146">3.2-3 Graph</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X7C4F13E080EC16B0">3.2-4 AsGraph</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X7C5360B2799943F3">3.2-5 AsTransformation</a></span>
@@ -256,7 +256,7 @@
 
 <p>Let <var class="Arg">G</var> be a group acting on the objects in <var class="Arg">list</var> via the action <var class="Arg">act</var>, and let <var class="Arg">adj</var> be a function taking two objects from <var class="Arg">list</var> as arguments and returning <code class="code">true</code> or <code class="code">false</code>. The function <var class="Arg">adj</var> will describe the adjacency between objects from <var class="Arg">list</var>, which is invariant under the action of <var class="Arg">G</var>. This variant of the constructor returns a digraph with vertices the objects of <var class="Arg">list</var> and directed edges <code class="code">[x, y]</code> when <code class="code">f(x, y)</code> is <code class="code">true</code>.</p>
 
-<p>The action of the group <var class="Arg">G</var> on the objects in <var class="Arg">list</var> is stored in the attribute <code class="func">DigraphGroup</code> (<a href="chap7.html#X803ACEDA7BBAC5B3"><span class="RefLink">7.2-10</span></a>), and is used to speed up operations like <code class="func">DigraphDiameter</code> (<a href="chap5.html#X7F16B9EB8398459C"><span class="RefLink">5.3-1</span></a>).</p>
+<p>The action of the group <var class="Arg">G</var> on the objects in <var class="Arg">list</var> is stored in the attribute <code class="func">DigraphGroup</code> (<a href="chap7.html#X803ACEDA7BBAC5B3"><span class="RefLink">7.2-10</span></a>), and is used to speed up operations like <code class="func">DigraphDiameter</code> (<a href="chap5.html#X7F16B9EB8398459C"><span class="RefLink">5.4-1</span></a>).</p>
 
 </dd>
 <dt><strong class="Mark">for a Grape package graph</strong></dt>
@@ -457,7 +457,7 @@ function( x, y ) ... end
 
 <p>If the optional second argument <var class="Arg">gens</var> is not present, then the generators of <var class="Arg">G</var> are used by default.</p>
 
-<p>The digraph created by this operation belongs to the category <code class="func">IsCayleyDigraph</code> (<a href="chap3.html#X7E749324800B38A5"><span class="RefLink">3.1-4</span></a>), the group <var class="Arg">G</var> can be recovered from the digraph using <code class="func">GroupOfCayleyDigraph</code> (<a href="chap5.html#X7A000B1D7CCF7093"><span class="RefLink">5.4-1</span></a>), and the generators <var class="Arg">gens</var> can be obtained using <code class="func">GeneratorsOfCayleyDigraph</code> (<a href="chap5.html#X8528455987D7D2BF"><span class="RefLink">5.4-2</span></a>).</p>
+<p>The digraph created by this operation belongs to the category <code class="func">IsCayleyDigraph</code> (<a href="chap3.html#X7E749324800B38A5"><span class="RefLink">3.1-4</span></a>), the group <var class="Arg">G</var> can be recovered from the digraph using <code class="func">GroupOfCayleyDigraph</code> (<a href="chap5.html#X7A000B1D7CCF7093"><span class="RefLink">5.5-1</span></a>), and the generators <var class="Arg">gens</var> can be obtained using <code class="func">GeneratorsOfCayleyDigraph</code> (<a href="chap5.html#X8528455987D7D2BF"><span class="RefLink">5.5-2</span></a>).</p>
 
 <p>Note that this function can only return an immutable digraph.</p>
 
@@ -514,20 +514,47 @@ true
 Binary Relation on 4 points
 </pre></div>
 
-<p><a id="X855E2AC47A4F5B55" name="X855E2AC47A4F5B55"></a></p>
+<p><a id="X86834E307EACC670" name="X86834E307EACC670"></a></p>
 
 <h5>3.2-2 AsDigraph</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; AsDigraph</code>( [<var class="Arg">filt</var>, ]<var class="Arg">f</var>[, <var class="Arg">n</var>] )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: A digraph, or <code class="keyw">fail</code>.</p>
 
-<p>If <var class="Arg">f</var> is a transformation or permutation, and <var class="Arg">n</var> is a non-negative integer such that the restriction of <var class="Arg">f</var> to <code class="code">[1..<var class="Arg">n</var>]</code> defines a function of <code class="code">[1..<var class="Arg">n</var>]</code>, then <code class="code">AsDigraph</code> returns the functional digraph with <var class="Arg">n</var> vertices defined by <var class="Arg">f</var>. See <code class="func">IsFunctionalDigraph</code> (<a href="chap6.html#X7E8F37E585DAED52"><span class="RefLink">6.1-9</span></a>).</p>
+<p>If <var class="Arg">f</var> is a binary relation represented as one of the following in <strong class="pkg">GAP</strong>:</p>
 
-<p>Specifically, the digraph returned by <code class="code">AsDigraph</code> has <var class="Arg">n</var> edges: for each vertex <code class="code">v</code> in <code class="code">[1..<var class="Arg">n</var>]</code>, there is a unique edge with source <code class="code">v</code>; this edge has range <code class="code">v^<var class="Arg">f</var></code>.</p>
 
-<p>If the optional second argument <var class="Arg">n</var> is not supplied, then the degree of the transformation <var class="Arg">f</var>, or the largest moved point of the permutation <var class="Arg">f</var>, as applicable, is used by default. If the restriction of <var class="Arg">f</var> to <code class="code">[1..<var class="Arg">n</var>]</code> does not define a function of <code class="code">[1..<var class="Arg">n</var>]</code>, then <code class="code">AsDigraph(<var class="Arg">f</var>, <var class="Arg">n</var>)</code> returns <code class="keyw">fail</code>.</p>
+<dl>
+<dt><strong class="Mark">
+          a transformation
+        </strong></dt>
+<dd><p>satisfying <code class="func">IsTransformation</code> (<a href="https://www.gap-system.org/Manuals/doc/ref/chap53_mj.html#X7B6259467974FB70"><span class="RefLink">Reference: IsTransformation</span></a>);</p>
 
-<p>See also <code class="func">AsTransformation</code> (<a href="chap3.html#X7C5360B2799943F3"><span class="RefLink">3.2-5</span></a>).</p>
+</dd>
+<dt><strong class="Mark">
+          a permutation
+        </strong></dt>
+<dd><p>satisfying <code class="func">IsPerm</code> (<a href="https://www.gap-system.org/Manuals/doc/ref/chap42_mj.html#X7AA69C6686FC49EA"><span class="RefLink">Reference: IsPerm</span></a>);</p>
+
+</dd>
+<dt><strong class="Mark">
+          a partial perm
+        </strong></dt>
+<dd><p>satisfying <code class="func">IsPartialPerm</code> (<a href="https://www.gap-system.org/Manuals/doc/ref/chap54_mj.html#X7EECE133792B30FC"><span class="RefLink">Reference: IsPartialPerm</span></a>);</p>
+
+</dd>
+<dt><strong class="Mark">
+          a binary relation
+        </strong></dt>
+<dd><p>satisfying <code class="func">IsBinaryRelation</code> (<a href="https://www.gap-system.org/Manuals/doc/ref/chap33_mj.html#X838651287FCCEFD8"><span class="RefLink">Reference: IsBinaryRelation</span></a>);</p>
+
+</dd>
+</dl>
+<p>and <var class="Arg">n</var> is a non-negative integer, then <code class="code">AsDigraph</code> attempts to construct a digraph with <var class="Arg">n</var> vertices whose edges are determined by <var class="Arg">f</var>.</p>
+
+<p>The digraph returned by <code class="code">AsDigraph</code> has for each vertex <code class="code">v</code> in <code class="code">[1 .. <var class="Arg">n</var>]</code>, an edge with source <code class="code">v</code> and range <code class="code">v ^ <var class="Arg">f</var></code>. If <code class="code">v ^ <var class="Arg">f</var></code> is greater than <var class="Arg">n</var> for any <code class="code">v</code>, then <code class="keyw">fail</code> is returned.</p>
+
+<p>If the optional second argument <var class="Arg">n</var> is not supplied, then the degree of the transformation <var class="Arg">f</var>, the largest moved point of the permutation <var class="Arg">f</var>, the maximum of the degree and the codegree of the partial perm <var class="Arg">f</var>, or as applicable, is used by default.</p>
 
 <p>If the optional first argument <var class="Arg">filt</var> is present, then this should specify the category or representation the digraph being created will belong to. For example, if <var class="Arg">filt</var> is <code class="func">IsMutableDigraph</code> (<a href="chap3.html#X7D7EDF83820ED6F5"><span class="RefLink">3.1-2</span></a>), then the digraph being created will be mutable, if <var class="Arg">filt</var> is <code class="func">IsImmutableDigraph</code> (<a href="chap3.html#X7CAFAA89804F80BD"><span class="RefLink">3.1-3</span></a>), then the digraph will be immutable. If the optional first argument <var class="Arg">filt</var> is not present, then <code class="func">IsImmutableDigraph</code> (<a href="chap3.html#X7CAFAA89804F80BD"><span class="RefLink">3.1-3</span></a>) is used by default.</p>
 
@@ -612,7 +639,7 @@ rec( adjacencies := [ [ 1, 2 ], [ 3 ], [  ] ], group := Group(()),
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; AsTransformation</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
 <p>Returns: A transformation, or <code class="keyw">fail</code></p>
 
-<p>If <var class="Arg">digraph</var> is a functional digraph, then <code class="code">AsTransformation</code> returns the transformation which is defined by <var class="Arg">digraph</var>. See <code class="func">IsFunctionalDigraph</code> (<a href="chap6.html#X7E8F37E585DAED52"><span class="RefLink">6.1-9</span></a>). Otherwise, <code class="code">AsTransformation(</code><var class="Arg">digraph</var><code class="code">)</code> returns <code class="keyw">fail</code>.</p>
+<p>If <var class="Arg">digraph</var> is a functional digraph, then <code class="code">AsTransformation</code> returns the transformation which is defined by <var class="Arg">digraph</var>. See <code class="func">IsFunctionalDigraph</code> (<a href="chap6.html#X7E8F37E585DAED52"><span class="RefLink">6.2-9</span></a>). Otherwise, <code class="code">AsTransformation(</code><var class="Arg">digraph</var><code class="code">)</code> returns <code class="keyw">fail</code>.</p>
 
 <p>If <var class="Arg">digraph</var> is a functional digraph with <span class="SimpleMath">n</span> vertices, then <code class="code">AsTransformation(</code><var class="Arg">digraph</var><code class="code">)</code> will return the transformation <code class="code">f</code> of degree at most <span class="SimpleMath">n</span> where for each <span class="SimpleMath">1 ≤ i ≤ n</span>, <code class="code">i ^ f</code> is equal to the unique out-neighbour of vertex <code class="code">i</code> in <var class="Arg">digraph</var>.</p>
 
@@ -807,7 +834,7 @@ true
 
 <p>If <var class="Arg">digraph</var> is immutable, then a new immutable digraph is returned. Otherwise, the mutable digraph <var class="Arg">digraph</var> is changed in-place into such a digraph described above.</p>
 
-<p>See <code class="func">IsSymmetricDigraph</code> (<a href="chap6.html#X81B3EA7887219860"><span class="RefLink">6.1-12</span></a>), <code class="func">IsMultiDigraph</code> (<a href="chap6.html#X7BB84CFC7E8B2B26"><span class="RefLink">6.1-10</span></a>), and <code class="func">DigraphHasLoops</code> (<a href="chap6.html#X7D92935C7D535187"><span class="RefLink">6.1-1</span></a>) for more information.</p>
+<p>See <code class="func">IsSymmetricDigraph</code> (<a href="chap6.html#X81B3EA7887219860"><span class="RefLink">6.2-14</span></a>), <code class="func">IsMultiDigraph</code> (<a href="chap6.html#X7BB84CFC7E8B2B26"><span class="RefLink">6.2-11</span></a>), and <code class="func">DigraphHasLoops</code> (<a href="chap6.html#X7D92935C7D535187"><span class="RefLink">6.2-1</span></a>) for more information.</p>
 
 
 <div class="example"><pre>
@@ -843,7 +870,7 @@ true
 
 <p>If <var class="Arg">digraph</var> is immutable, then a new immutable digraph is returned. Otherwise, the mutable digraph <var class="Arg">digraph</var> is changed in-place.</p>
 
-<p>See <code class="func">IsAntisymmetricDigraph</code> (<a href="chap6.html#X7DB1BC2286FC08E2"><span class="RefLink">6.1-2</span></a>) for more information.</p>
+<p>See <code class="func">IsAntisymmetricDigraph</code> (<a href="chap6.html#X7DB1BC2286FC08E2"><span class="RefLink">6.2-2</span></a>) for more information.</p>
 
 
 <div class="example"><pre>
@@ -879,7 +906,7 @@ true
 
 <p>If <var class="Arg">digraph</var> is a digraph with at least one vertex, then <code class="code">UndirectedSpanningForest</code> returns an undirected spanning forest of <var class="Arg">digraph</var>, otherwise this attribute returns <code class="keyw">fail</code>. See <code class="func">IsUndirectedSpanningForest</code> (<a href="chap4.html#X833C3299787E2309"><span class="RefLink">4.1-2</span></a>) for the definition of an undirected spanning forest.</p>
 
-<p>If <var class="Arg">digraph</var> is a digraph with at least one vertex and whose <code class="func">MaximalSymmetricSubdigraph</code> (<a href="chap3.html#X829E3EAC7C4B3B1E"><span class="RefLink">3.3-5</span></a>) is connected (see <code class="func">IsConnectedDigraph</code> (<a href="chap6.html#X83C08C0B7EC1A91F"><span class="RefLink">6.3-3</span></a>)), then <code class="code">UndirectedSpanningTree</code> returns an undirected spanning tree of <var class="Arg">digraph</var>, otherwise this attribute returns <code class="keyw">fail</code>. See <code class="func">IsUndirectedSpanningTree</code> (<a href="chap4.html#X833C3299787E2309"><span class="RefLink">4.1-2</span></a>) for the definition of an undirected spanning tree.</p>
+<p>If <var class="Arg">digraph</var> is a digraph with at least one vertex and whose <code class="func">MaximalSymmetricSubdigraph</code> (<a href="chap3.html#X829E3EAC7C4B3B1E"><span class="RefLink">3.3-5</span></a>) is connected (see <code class="func">IsConnectedDigraph</code> (<a href="chap6.html#X83C08C0B7EC1A91F"><span class="RefLink">6.5-3</span></a>)), then <code class="code">UndirectedSpanningTree</code> returns an undirected spanning tree of <var class="Arg">digraph</var>, otherwise this attribute returns <code class="keyw">fail</code>. See <code class="func">IsUndirectedSpanningTree</code> (<a href="chap4.html#X833C3299787E2309"><span class="RefLink">4.1-2</span></a>) for the definition of an undirected spanning tree.</p>
 
 <p>If <var class="Arg">digraph</var> is immutable, then an immutable digraph is returned. Otherwise, the mutable digraph <var class="Arg">digraph</var> is changed in-place into an undirected spanning tree of <var class="Arg">digraph</var>.</p>
 
@@ -929,11 +956,11 @@ fail
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphShortestPathSpanningTree</code>( <var class="Arg">digraph</var>, <var class="Arg">v</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: A digraph, or <code class="keyw">fail</code>.</p>
 
-<p>If <var class="Arg">v</var> is a vertex in <var class="Arg">digraph</var> and every other vertex of <var class="Arg">digraph</var> is reachable from <var class="Arg">v</var>, then this operation returns the shortest path spanning tree of <var class="Arg">digraph</var> rooted at <var class="Arg">v</var>. If there exist vertices in <var class="Arg">digraph</var> (other than <var class="Arg">v</var>) that are not reachable from <var class="Arg">v</var>, then <code class="code">DigraphShortestPathSpanningTree</code> returns <code class="keyw">fail</code>. See <code class="func">IsReachable</code> (<a href="chap5.html#X7FBAB09E7C0BE5CF"><span class="RefLink">5.3-19</span></a>).</p>
+<p>If <var class="Arg">v</var> is a vertex in <var class="Arg">digraph</var> and every other vertex of <var class="Arg">digraph</var> is reachable from <var class="Arg">v</var>, then this operation returns the shortest path spanning tree of <var class="Arg">digraph</var> rooted at <var class="Arg">v</var>. If there exist vertices in <var class="Arg">digraph</var> (other than <var class="Arg">v</var>) that are not reachable from <var class="Arg">v</var>, then <code class="code">DigraphShortestPathSpanningTree</code> returns <code class="keyw">fail</code>. See <code class="func">IsReachable</code> (<a href="chap5.html#X7FBAB09E7C0BE5CF"><span class="RefLink">5.4-19</span></a>).</p>
 
 <p>The <em>shortest path spanning tree of <var class="Arg">digraph</var> rooted at <var class="Arg">v</var></em> is a subdigraph of <var class="Arg">digraph</var> that is a directed tree, with unique source vertex <var class="Arg">v</var>, and where for each other vertex <var class="Arg">u</var> in <var class="Arg">digraph</var>, the unique directed path from <var class="Arg">v</var> to <var class="Arg">u</var> in the tree is the lexicographically-least shortest directed path from <var class="Arg">v</var> to <var class="Arg">u</var> in <var class="Arg">digraph</var>.</p>
 
-<p>See <code class="func">IsDirectedTree</code> (<a href="chap6.html#X7B46EA6C7B2DF2FB"><span class="RefLink">6.3-8</span></a>), <code class="func">DigraphSources</code> (<a href="chap5.html#X7F5C6268839BE98C"><span class="RefLink">5.1-7</span></a>), and <code class="func">DigraphShortestPath</code> (<a href="chap5.html#X80E9D645843973A6"><span class="RefLink">5.3-23</span></a>).</p>
+<p>See <code class="func">IsDirectedTree</code> (<a href="chap6.html#X7B46EA6C7B2DF2FB"><span class="RefLink">6.5-8</span></a>), <code class="func">DigraphSources</code> (<a href="chap5.html#X7F5C6268839BE98C"><span class="RefLink">5.1-7</span></a>), and <code class="func">DigraphShortestPath</code> (<a href="chap5.html#X80E9D645843973A6"><span class="RefLink">5.4-23</span></a>).</p>
 
 <p>If <var class="Arg">digraph</var> belongs to <code class="func">IsMutableDigraph</code> (<a href="chap3.html#X7D7EDF83820ED6F5"><span class="RefLink">3.1-2</span></a>), then <var class="Arg">digraph</var> is modified in place. If <var class="Arg">digraph</var> belongs to <code class="func">IsImmutableDigraph</code> (<a href="chap3.html#X7CAFAA89804F80BD"><span class="RefLink">3.1-3</span></a>), then the spanning tree is a new immutable digraph.</p>
 
@@ -1063,7 +1090,7 @@ true
 
 <p>If <var class="Arg">digraph</var> is a digraph, then this attribute gives the minimal symmetric digraph which has the same vertices and contains all the edges of <var class="Arg">digraph</var>.</p>
 
-<p>A digraph is <em>symmetric</em> if its adjacency matrix <code class="func">AdjacencyMatrix</code> (<a href="chap5.html#X7DC2CD70830BEE60"><span class="RefLink">5.2-1</span></a>) is symmetric. For a digraph with multiple edges this means that there are the same number of edges from a vertex <code class="code">u</code> to a vertex <code class="code">v</code> as there are from <code class="code">v</code> to <code class="code">u</code>; see <code class="func">IsSymmetricDigraph</code> (<a href="chap6.html#X81B3EA7887219860"><span class="RefLink">6.1-12</span></a>).</p>
+<p>A digraph is <em>symmetric</em> if its adjacency matrix <code class="func">AdjacencyMatrix</code> (<a href="chap5.html#X7DC2CD70830BEE60"><span class="RefLink">5.2-1</span></a>) is symmetric. For a digraph with multiple edges this means that there are the same number of edges from a vertex <code class="code">u</code> to a vertex <code class="code">v</code> as there are from <code class="code">v</code> to <code class="code">u</code>; see <code class="func">IsSymmetricDigraph</code> (<a href="chap6.html#X81B3EA7887219860"><span class="RefLink">6.2-14</span></a>).</p>
 
 <p>If <var class="Arg">digraph</var> is immutable, then a new immutable digraph is returned. Otherwise, the mutable digraph <var class="Arg">digraph</var> is changed in-place into its symmetric closure.</p>
 
@@ -2136,7 +2163,7 @@ true
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DistanceDigraph</code>( <var class="Arg">digraph</var>, <var class="Arg">list</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: A digraph.</p>
 
-<p>The first argument is a digraph, the second argument is a non-negative integer or a list of positive integers. This operation returns a digraph on the same set of vertices as <var class="Arg">digraph</var>, with two vertices being adjacent if and only if the distance between them in <var class="Arg">digraph</var> equals <var class="Arg">i</var> or is a number in <var class="Arg">list</var>. See <code class="func">DigraphShortestDistance</code> (<a href="chap5.html#X8104A9D37BCD8A05"><span class="RefLink">5.3-2</span></a>).</p>
+<p>The first argument is a digraph, the second argument is a non-negative integer or a list of positive integers. This operation returns a digraph on the same set of vertices as <var class="Arg">digraph</var>, with two vertices being adjacent if and only if the distance between them in <var class="Arg">digraph</var> equals <var class="Arg">i</var> or is a number in <var class="Arg">list</var>. See <code class="func">DigraphShortestDistance</code> (<a href="chap5.html#X8104A9D37BCD8A05"><span class="RefLink">5.4-2</span></a>).</p>
 
 <p>If <var class="Arg">digraph</var> is mutable, then <var class="Arg">digraph</var> is modified in-place. If <var class="Arg">digraph</var> is immutable, then a new immutable digraph constructed as described above is returned.</p>
 
@@ -2158,7 +2185,7 @@ true
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphClosure</code>( <var class="Arg">digraph</var>, <var class="Arg">k</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: A digraph.</p>
 
-<p>Given a symmetric loopless digraph with no multiple edges <var class="Arg">digraph</var>, the <em><var class="Arg">k</var>-closure of <var class="Arg">digraph</var></em> is defined to be the unique smallest symmetric loopless digraph <code class="code">C</code> with no multiple edges on the vertices of <var class="Arg">digraph</var> that contains all the edges of <var class="Arg">digraph</var> and satsifies the property that the sum of the degrees of every two non-adjacenct vertices in <code class="code">C</code> is less than <var class="Arg">k</var>. See <code class="func">IsSymmetricDigraph</code> (<a href="chap6.html#X81B3EA7887219860"><span class="RefLink">6.1-12</span></a>), <code class="func">DigraphHasLoops</code> (<a href="chap6.html#X7D92935C7D535187"><span class="RefLink">6.1-1</span></a>), <code class="func">IsMultiDigraph</code> (<a href="chap6.html#X7BB84CFC7E8B2B26"><span class="RefLink">6.1-10</span></a>), and <code class="func">OutDegreeOfVertex</code> (<a href="chap5.html#X7A09EB648070276D"><span class="RefLink">5.2-10</span></a>).</p>
+<p>Given a symmetric loopless digraph with no multiple edges <var class="Arg">digraph</var>, the <em><var class="Arg">k</var>-closure of <var class="Arg">digraph</var></em> is defined to be the unique smallest symmetric loopless digraph <code class="code">C</code> with no multiple edges on the vertices of <var class="Arg">digraph</var> that contains all the edges of <var class="Arg">digraph</var> and satsifies the property that the sum of the degrees of every two non-adjacenct vertices in <code class="code">C</code> is less than <var class="Arg">k</var>. See <code class="func">IsSymmetricDigraph</code> (<a href="chap6.html#X81B3EA7887219860"><span class="RefLink">6.2-14</span></a>), <code class="func">DigraphHasLoops</code> (<a href="chap6.html#X7D92935C7D535187"><span class="RefLink">6.2-1</span></a>), <code class="func">IsMultiDigraph</code> (<a href="chap6.html#X7BB84CFC7E8B2B26"><span class="RefLink">6.2-11</span></a>), and <code class="func">OutDegreeOfVertex</code> (<a href="chap5.html#X7A09EB648070276D"><span class="RefLink">5.2-10</span></a>).</p>
 
 <p>The operation <code class="code">DigraphClosure</code> returns the <var class="Arg">k</var>-closure of <var class="Arg">digraph</var>.</p>
 
@@ -2223,7 +2250,17 @@ true
 
 <p>If the optional first argument <var class="Arg">filt</var> is present, then this should specify the category or representation the digraph being created will belong to. For example, if <var class="Arg">filt</var> is <code class="func">IsMutableDigraph</code> (<a href="chap3.html#X7D7EDF83820ED6F5"><span class="RefLink">3.1-2</span></a>), then the digraph being created will be mutable, if <var class="Arg">filt</var> is <code class="func">IsImmutableDigraph</code> (<a href="chap3.html#X7CAFAA89804F80BD"><span class="RefLink">3.1-3</span></a>), then the digraph will be immutable. If the optional first argument <var class="Arg">filt</var> is not present, then <code class="func">IsImmutableDigraph</code> (<a href="chap3.html#X7CAFAA89804F80BD"><span class="RefLink">3.1-3</span></a>) is used by default.</p>
 
-<p>If <var class="Arg">n</var> is a positive integer, then this function returns a random digraph with <var class="Arg">n</var> vertices and without multiple edges. The result may or may not have loops.</p>
+<p>The other implemented filters are as follows: <code class="func">IsConnectedDigraph</code> (<a href="chap6.html#X83C08C0B7EC1A91F"><span class="RefLink">6.5-3</span></a>), <code class="func">IsSymmetricDigraph</code> (<a href="chap6.html#X81B3EA7887219860"><span class="RefLink">6.2-14</span></a>), <code class="func">IsAcyclicDigraph</code> (<a href="chap6.html#X7BD08D4478218F77"><span class="RefLink">6.5-1</span></a>), <code class="func">IsEulerianDigraph</code> (<a href="chap6.html#X79DFBB198525544E"><span class="RefLink">6.5-10</span></a>), <code class="func">IsHamiltonianDigraph</code> (<a href="chap6.html#X79EFEBC37C2D262D"><span class="RefLink">6.5-11</span></a>).</p>
+
+<p>For <code class="func">IsConnectedDigraph</code> (<a href="chap6.html#X83C08C0B7EC1A91F"><span class="RefLink">6.5-3</span></a>), a random tree is first created independent of the value of <var class="Arg">p</var>, guaranteeing connectivity (with <span class="SimpleMath"><var class="Arg">n</var>-1</span> edges), and then edges are added between the remaining pairs of vertices with probability approximately <var class="Arg">p</var>.</p>
+
+<p>For <code class="func">IsHamiltonianDigraph</code> (<a href="chap6.html#X79EFEBC37C2D262D"><span class="RefLink">6.5-11</span></a>), a random Hamiltonian cycle is first created independent of the value of <var class="Arg">p</var> (with <var class="Arg">n</var> edges), and then edges are added between the remaining pairs of vertices with probability approximately <var class="Arg">p</var>.</p>
+
+<p>For <code class="func">IsEulerianDigraph</code> (<a href="chap6.html#X79DFBB198525544E"><span class="RefLink">6.5-10</span></a>), a random Eulerian cycle is created where <var class="Arg">p</var> influences how long the cycle will be. The cycle grows by randomly considering edges that extend the cycle, and adding an edge with probability approximately <var class="Arg">p</var>. The cycle stops when we get back to the start vertex and have no more edges left to consider from it that extend the cycle further (any possible edge from the start vertex has either been added to the cycle, or rejected, leaving no more edges to consider). Thus <span class="SimpleMath"><var class="Arg">p</var> = 1</span> does not necessarily guarantee a complete digraph. Instead, it guarantees that all edges considered up to the point where the cycle stops, are added.</p>
+
+<p>For <code class="func">IsAcyclicDigraph</code> (<a href="chap6.html#X7BD08D4478218F77"><span class="RefLink">6.5-1</span></a>) and <code class="func">IsSymmetricDigraph</code> (<a href="chap6.html#X81B3EA7887219860"><span class="RefLink">6.2-14</span></a>), edges are added between any pairs of vertices with probability approximately <var class="Arg">p</var>.</p>
+
+<p>If <var class="Arg">n</var> is a positive integer, then this function returns a random digraph with <var class="Arg">n</var> vertices and without multiple edges. The result may or may not have loops. If using <code class="func">IsAcyclicDigraph</code> (<a href="chap6.html#X7BD08D4478218F77"><span class="RefLink">6.5-1</span></a>), the resulting graph will not have any loops by definition.</p>
 
 <p>If the optional second argument <var class="Arg">p</var> is a float with value <span class="SimpleMath">0 ≤</span> <var class="Arg"> p </var> <span class="SimpleMath">≤ 1</span>, then an edge will exist between each pair of vertices with probability approximately <var class="Arg">p</var>. If <var class="Arg">p</var> is not specified, then a random probability will be assumed (chosen with uniform probability).</p>
 
@@ -2235,6 +2272,16 @@ true
 &lt;immutable digraph with 10000 vertices, 2300438 edges&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">RandomDigraph(IsMutableDigraph, 1000, 1 / 2);</span>
 &lt;mutable digraph with 1000 vertices, 499739 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">RandomDigraph(IsConnectedDigraph, 1000, 0.75);</span>
+&lt;immutable digraph with 1000 vertices, 750265 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">RandomDigraph(IsSymmetricDigraph, 1000);</span>
+&lt;immutable digraph with 1000 vertices, 329690 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">RandomDigraph(IsAcyclicDigraph, 1000, 0.25);</span>
+&lt;immutable digraph with 1000 vertices, 125070 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">RandomDigraph(IsHamiltonianDigraph, 1000, 0.5);</span>
+&lt;immutable digraph with 1000 vertices, 500327 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">RandomDigraph(IsEulerianDigraph, 1000, 0.5);</span>
+&lt;immutable digraph with 1000 vertices, 433869 edges&gt;
 </pre></div>
 
 <p><a id="X78FE275E7E77D56F" name="X78FE275E7E77D56F"></a></p>
@@ -2265,7 +2312,7 @@ true
 
 <p>If the optional first argument <var class="Arg">filt</var> is present, then this should specify the category or representation the digraph being created will belong to. For example, if <var class="Arg">filt</var> is <code class="func">IsMutableDigraph</code> (<a href="chap3.html#X7D7EDF83820ED6F5"><span class="RefLink">3.1-2</span></a>), then the digraph being created will be mutable, if <var class="Arg">filt</var> is <code class="func">IsImmutableDigraph</code> (<a href="chap3.html#X7CAFAA89804F80BD"><span class="RefLink">3.1-3</span></a>), then the digraph will be immutable. If the optional first argument <var class="Arg">filt</var> is not present, then <code class="func">IsImmutableDigraph</code> (<a href="chap3.html#X7CAFAA89804F80BD"><span class="RefLink">3.1-3</span></a>) is used by default.</p>
 
-<p>If <var class="Arg">n</var> is a non-negative integer, this function returns a random tournament with <var class="Arg">n</var> vertices. See <code class="func">IsTournament</code> (<a href="chap6.html#X7DD8D1A185EBE865"><span class="RefLink">6.1-13</span></a>).</p>
+<p>If <var class="Arg">n</var> is a non-negative integer, this function returns a random tournament with <var class="Arg">n</var> vertices. See <code class="func">IsTournament</code> (<a href="chap6.html#X7DD8D1A185EBE865"><span class="RefLink">6.2-15</span></a>).</p>
 
 
 <div class="example"><pre>
@@ -2284,7 +2331,7 @@ true
 
 <p>If the optional first argument <var class="Arg">filt</var> is present, then this should specify the category or representation the digraph being created will belong to. For example, if <var class="Arg">filt</var> is <code class="func">IsMutableDigraph</code> (<a href="chap3.html#X7D7EDF83820ED6F5"><span class="RefLink">3.1-2</span></a>), then the digraph being created will be mutable, if <var class="Arg">filt</var> is <code class="func">IsImmutableDigraph</code> (<a href="chap3.html#X7CAFAA89804F80BD"><span class="RefLink">3.1-3</span></a>), then the digraph will be immutable. If the optional first argument <var class="Arg">filt</var> is not present, then <code class="func">IsImmutableDigraph</code> (<a href="chap3.html#X7CAFAA89804F80BD"><span class="RefLink">3.1-3</span></a>) is used by default.</p>
 
-<p>If <var class="Arg">n</var> is a positive integer, this function return a random lattice with <code class="code">m</code> vertices, where it is guaranteed that <code class="code">m</code> is between <var class="Arg">n</var> and <code class="code">2 * <var class="Arg">n</var></code>. See <code class="func">IsLatticeDigraph</code> (<a href="chap6.html#X78D3E17B7F737516"><span class="RefLink">6.1-17</span></a>).</p>
+<p>If <var class="Arg">n</var> is a positive integer, this function return a random lattice with <code class="code">m</code> vertices, where it is guaranteed that <code class="code">m</code> is between <var class="Arg">n</var> and <code class="code">2 * <var class="Arg">n</var></code>. See <code class="func">IsLatticeDigraph</code> (<a href="chap6.html#X78D3E17B7F737516"><span class="RefLink">6.3-3</span></a>).</p>
 
 
 <div class="example"><pre>
@@ -2338,7 +2385,7 @@ true</pre></div>
 
 <p>Specifically, in the resulting digraph, vertex <code class="code">1</code> is the 'root', and for each <code class="code">m</code> in <code class="code">[1 .. <var class="Arg">k</var>]</code>, the <code class="code">m</code>th star is on the vertices <code class="code">[((m - 1) * n) + 2 .. (m * n) + 1]</code>, with the first of these being the 'centre' of the star, and the second being the 'leaf' adjacent <code class="code">1</code>.</p>
 
-<p>See also <code class="func">StarGraph</code> (<a href="chap3.html#X78F78C077CBAE1EC"><span class="RefLink">3.5-43</span></a>) and <code class="func">IsUndirectedTree</code> (<a href="chap6.html#X80FC20FA7AC4BC2A"><span class="RefLink">6.3-9</span></a>).</p>
+<p>See also <code class="func">StarGraph</code> (<a href="chap3.html#X78F78C077CBAE1EC"><span class="RefLink">3.5-43</span></a>) and <code class="func">IsUndirectedTree</code> (<a href="chap6.html#X80FC20FA7AC4BC2A"><span class="RefLink">6.5-9</span></a>).</p>
 
 <p>If the optional first argument <var class="Arg">filt</var> is present, then this should specify the category or representation the digraph being created will belong to. For example, if <var class="Arg">filt</var> is <code class="func">IsMutableDigraph</code> (<a href="chap3.html#X7D7EDF83820ED6F5"><span class="RefLink">3.1-2</span></a>), then the digraph being created will be mutable, if <var class="Arg">filt</var> is <code class="func">IsImmutableDigraph</code> (<a href="chap3.html#X7CAFAA89804F80BD"><span class="RefLink">3.1-3</span></a>), then the digraph will be immutable. If the optional first argument <var class="Arg">filt</var> is not present, then <code class="func">IsImmutableDigraph</code> (<a href="chap3.html#X7CAFAA89804F80BD"><span class="RefLink">3.1-3</span></a>) is used by default.</p>
 
@@ -2568,7 +2615,7 @@ true</pre></div>
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; CompleteDigraph</code>( [<var class="Arg">filt</var>, ]<var class="Arg">n</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: A digraph.</p>
 
-<p>If <var class="Arg">n</var> is a non-negative integer, this function returns the complete digraph with <var class="Arg">n</var> vertices. See <code class="func">IsCompleteDigraph</code> (<a href="chap6.html#X81F28D4D879FE3B2"><span class="RefLink">6.1-5</span></a>).</p>
+<p>If <var class="Arg">n</var> is a non-negative integer, this function returns the complete digraph with <var class="Arg">n</var> vertices. See <code class="func">IsCompleteDigraph</code> (<a href="chap6.html#X81F28D4D879FE3B2"><span class="RefLink">6.2-5</span></a>).</p>
 
 <p>If the optional first argument <var class="Arg">filt</var> is present, then this should specify the category or representation the digraph being created will belong to. For example, if <var class="Arg">filt</var> is <code class="func">IsMutableDigraph</code> (<a href="chap3.html#X7D7EDF83820ED6F5"><span class="RefLink">3.1-2</span></a>), then the digraph being created will be mutable, if <var class="Arg">filt</var> is <code class="func">IsImmutableDigraph</code> (<a href="chap3.html#X7CAFAA89804F80BD"><span class="RefLink">3.1-3</span></a>), then the digraph will be immutable. If the optional first argument <var class="Arg">filt</var> is not present, then <code class="func">IsImmutableDigraph</code> (<a href="chap3.html#X7CAFAA89804F80BD"><span class="RefLink">3.1-3</span></a>) is used by default.</p>
 
@@ -3352,7 +3399,7 @@ s 13 and 12&gt;
 
 <p>If <var class="Arg">k</var> is a positive integer, then this operation returns the <em>star graph</em> with <var class="Arg">k</var> vertices, which is the undirected tree in which vertex <code class="code">1</code> is adjacent to all other vertices. If <var class="Arg">k</var> is at least <code class="code">2</code>, then this is the complete bipartite digraph with bicomponents <code class="code">[1]</code> and <code class="code">[2 .. <var class="Arg">k</var>]</code>.</p>
 
-<p>See <code class="func">IsUndirectedTree</code> (<a href="chap6.html#X80FC20FA7AC4BC2A"><span class="RefLink">6.3-9</span></a>), <code class="func">IsCompleteBipartiteDigraph</code> (<a href="chap6.html#X790A4DBF8533516E"><span class="RefLink">6.1-4</span></a>), and <code class="func">DigraphBicomponents</code> (<a href="chap5.html#X7F1B5A2782F598B1"><span class="RefLink">5.3-13</span></a>).</p>
+<p>See <code class="func">IsUndirectedTree</code> (<a href="chap6.html#X80FC20FA7AC4BC2A"><span class="RefLink">6.5-9</span></a>), <code class="func">IsCompleteBipartiteDigraph</code> (<a href="chap6.html#X790A4DBF8533516E"><span class="RefLink">6.2-4</span></a>), and <code class="func">DigraphBicomponents</code> (<a href="chap5.html#X7F1B5A2782F598B1"><span class="RefLink">5.4-13</span></a>).</p>
 
 <p>If the optional first argument <var class="Arg">filt</var> is present, then this should specify the category or representation the digraph being created will belong to. For example, if <var class="Arg">filt</var> is <code class="func">IsMutableDigraph</code> (<a href="chap3.html#X7D7EDF83820ED6F5"><span class="RefLink">3.1-2</span></a>), then the digraph being created will be mutable, if <var class="Arg">filt</var> is <code class="func">IsImmutableDigraph</code> (<a href="chap3.html#X7CAFAA89804F80BD"><span class="RefLink">3.1-3</span></a>), then the digraph will be immutable. If the optional first argument <var class="Arg">filt</var> is not present, then <code class="func">IsImmutableDigraph</code> (<a href="chap3.html#X7CAFAA89804F80BD"><span class="RefLink">3.1-3</span></a>) is used by default.</p>
 

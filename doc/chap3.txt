@@ -127,7 +127,7 @@
   
         [33X[0;6YThe  action  of  the  group  [3XG[103X on the objects in [3Xlist[103X is stored in the
         attribute  [2XDigraphGroup[102X  ([14X7.2-10[114X),  and is used to speed up operations
-        like [2XDigraphDiameter[102X ([14X5.3-1[114X).[133X
+        like [2XDigraphDiameter[102X ([14X5.4-1[114X).[133X
   
   [8Xfor a Grape package graph[108X
         [33X[0;6Yif  [3Xobj[103X is a [5XGrape[105X package graph (i.e. a record for which the function
@@ -369,8 +369,8 @@
   
   [33X[0;0YThe   digraph   created   by   this   operation   belongs  to  the  category
   [2XIsCayleyDigraph[102X ([14X3.1-4[114X), the group [3XG[103X can be recovered from the digraph using
-  [2XGroupOfCayleyDigraph[102X  ([14X5.4-1[114X), and the generators [3Xgens[103X can be obtained using
-  [2XGeneratorsOfCayleyDigraph[102X ([14X5.4-2[114X).[133X
+  [2XGroupOfCayleyDigraph[102X  ([14X5.5-1[114X), and the generators [3Xgens[103X can be obtained using
+  [2XGeneratorsOfCayleyDigraph[102X ([14X5.5-2[114X).[133X
   
   [33X[0;0YNote that this function can only return an immutable digraph.[133X
   
@@ -437,20 +437,31 @@
   [33X[1;0Y[29X[2XAsDigraph[102X( [[3Xfilt[103X, ][3Xf[103X[, [3Xn[103X] ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA digraph, or [9Xfail[109X.[133X
   
-  [33X[0;0YIf  [3Xf[103X  is  a  transformation or permutation, and [3Xn[103X is a non-negative integer
-  such  that the restriction of [3Xf[103X to [10X[1..[3Xn[103X[10X][110X defines a function of [10X[1..[3Xn[103X[10X][110X, then
-  [10XAsDigraph[110X  returns  the functional digraph with [3Xn[103X vertices defined by [3Xf[103X. See
-  [2XIsFunctionalDigraph[102X ([14X6.1-9[114X).[133X
+  [33X[0;0YIf [3Xf[103X is a binary relation represented as one of the following in [5XGAP[105X:[133X
   
-  [33X[0;0YSpecifically, the digraph returned by [10XAsDigraph[110X has [3Xn[103X edges: for each vertex
-  [10Xv[110X in [10X[1..[3Xn[103X[10X][110X, there is a unique edge with source [10Xv[110X; this edge has range [10Xv^[3Xf[103X[10X[110X.[133X
+  [8X a transformation [108X
+        [33X[0;6Ysatisfying [2XIsTransformation[102X ([14XReference: IsTransformation[114X);[133X
+  
+  [8X a permutation [108X
+        [33X[0;6Ysatisfying [2XIsPerm[102X ([14XReference: IsPerm[114X);[133X
+  
+  [8X a partial perm [108X
+        [33X[0;6Ysatisfying [2XIsPartialPerm[102X ([14XReference: IsPartialPerm[114X);[133X
+  
+  [8X a binary relation [108X
+        [33X[0;6Ysatisfying [2XIsBinaryRelation[102X ([14XReference: IsBinaryRelation[114X);[133X
+  
+  [33X[0;0Yand  [3Xn[103X  is  a  non-negative  integer, then [10XAsDigraph[110X attempts to construct a
+  digraph with [3Xn[103X vertices whose edges are determined by [3Xf[103X.[133X
+  
+  [33X[0;0YThe digraph returned by [10XAsDigraph[110X has for each vertex [10Xv[110X in [10X[1 .. [3Xn[103X[10X][110X, an edge
+  with  source  [10Xv[110X  and range [10Xv ^ [3Xf[103X[10X[110X. If [10Xv ^ [3Xf[103X[10X[110X is greater than [3Xn[103X for any [10Xv[110X, then
+  [9Xfail[109X is returned.[133X
   
   [33X[0;0YIf  the  optional  second argument [3Xn[103X is not supplied, then the degree of the
-  transformation  [3Xf[103X,  or  the  largest  moved  point  of the permutation [3Xf[103X, as
-  applicable,  is  used by default. If the restriction of [3Xf[103X to [10X[1..[3Xn[103X[10X][110X does not
-  define a function of [10X[1..[3Xn[103X[10X][110X, then [10XAsDigraph([3Xf[103X[10X, [3Xn[103X[10X)[110X returns [9Xfail[109X.[133X
-  
-  [33X[0;0YSee also [2XAsTransformation[102X ([14X3.2-5[114X).[133X
+  transformation  [3Xf[103X, the largest moved point of the permutation [3Xf[103X, the maximum
+  of  the  degree and the codegree of the partial perm [3Xf[103X, or as applicable, is
+  used by default.[133X
   
   [33X[0;0YIf the optional first argument [3Xfilt[103X is present, then this should specify the
   category  or  representation  the  digraph being created will belong to. For
@@ -540,7 +551,7 @@
   [6XReturns:[106X  [33X[0;10YA transformation, or [9Xfail[109X[133X
   
   [33X[0;0YIf  [3Xdigraph[103X  is  a  functional  digraph,  then  [10XAsTransformation[110X returns the
-  transformation which is defined by [3Xdigraph[103X. See [2XIsFunctionalDigraph[102X ([14X6.1-9[114X).
+  transformation which is defined by [3Xdigraph[103X. See [2XIsFunctionalDigraph[102X ([14X6.2-9[114X).
   Otherwise, [10XAsTransformation([110X[3Xdigraph[103X[10X)[110X returns [9Xfail[109X.[133X
   
   [33X[0;0YIf    [3Xdigraph[103X    is   a   functional   digraph   with   [22Xn[122X   vertices,   then
@@ -749,8 +760,8 @@
   Otherwise,  the  mutable  digraph  [3Xdigraph[103X  is  changed in-place into such a
   digraph described above.[133X
   
-  [33X[0;0YSee    [2XIsSymmetricDigraph[102X    ([14X6.1-12[114X),    [2XIsMultiDigraph[102X    ([14X6.1-10[114X),    and
-  [2XDigraphHasLoops[102X ([14X6.1-1[114X) for more information.[133X
+  [33X[0;0YSee    [2XIsSymmetricDigraph[102X    ([14X6.2-14[114X),    [2XIsMultiDigraph[102X    ([14X6.2-11[114X),    and
+  [2XDigraphHasLoops[102X ([14X6.2-1[114X) for more information.[133X
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27XD := Digraph([[2, 2], [1, 3], [4], [3, 1]]);[127X[104X
@@ -789,7 +800,7 @@
   [33X[0;0YIf  [3Xdigraph[103X  is  immutable,  then  a  new  immutable  digraph  is  returned.
   Otherwise, the mutable digraph [3Xdigraph[103X is changed in-place.[133X
   
-  [33X[0;0YSee [2XIsAntisymmetricDigraph[102X ([14X6.1-2[114X) for more information.[133X
+  [33X[0;0YSee [2XIsAntisymmetricDigraph[102X ([14X6.2-2[114X) for more information.[133X
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27XD := Digraph([[2, 2], [1, 3], [4], [3, 1]]);[127X[104X
@@ -827,7 +838,7 @@
   
   [33X[0;0YIf   [3Xdigraph[103X   is   a   digraph   with   at   least  one  vertex  and  whose
   [2XMaximalSymmetricSubdigraph[102X  ([14X3.3-5[114X)  is  connected  (see  [2XIsConnectedDigraph[102X
-  ([14X6.3-3[114X)), then [10XUndirectedSpanningTree[110X returns an undirected spanning tree of
+  ([14X6.5-3[114X)), then [10XUndirectedSpanningTree[110X returns an undirected spanning tree of
   [3Xdigraph[103X, otherwise this attribute returns [9Xfail[109X. See [2XIsUndirectedSpanningTree[102X
   ([14X4.1-2[114X) for the definition of an undirected spanning tree.[133X
   
@@ -884,7 +895,7 @@
   from  [3Xv[103X,  then  this  operation  returns  the shortest path spanning tree of
   [3Xdigraph[103X  rooted at [3Xv[103X. If there exist vertices in [3Xdigraph[103X (other than [3Xv[103X) that
   are not reachable from [3Xv[103X, then [10XDigraphShortestPathSpanningTree[110X returns [9Xfail[109X.
-  See [2XIsReachable[102X ([14X5.3-19[114X).[133X
+  See [2XIsReachable[102X ([14X5.4-19[114X).[133X
   
   [33X[0;0YThe  [13Xshortest  path  spanning tree of [3Xdigraph[103X rooted at [3Xv[103X[113X is a subdigraph of
   [3Xdigraph[103X  that is a directed tree, with unique source vertex [3Xv[103X, and where for
@@ -892,8 +903,8 @@
   tree  is  the  lexicographically-least shortest directed path from [3Xv[103X to [3Xu[103X in
   [3Xdigraph[103X.[133X
   
-  [33X[0;0YSee  [2XIsDirectedTree[102X ([14X6.3-8[114X), [2XDigraphSources[102X ([14X5.1-7[114X), and [2XDigraphShortestPath[102X
-  ([14X5.3-23[114X).[133X
+  [33X[0;0YSee  [2XIsDirectedTree[102X ([14X6.5-8[114X), [2XDigraphSources[102X ([14X5.1-7[114X), and [2XDigraphShortestPath[102X
+  ([14X5.4-23[114X).[133X
   
   [33X[0;0YIf  [3Xdigraph[103X belongs to [2XIsMutableDigraph[102X ([14X3.1-2[114X), then [3Xdigraph[103X is modified in
   place.  If  [3Xdigraph[103X belongs to [2XIsImmutableDigraph[102X ([14X3.1-3[114X), then the spanning
@@ -1035,7 +1046,7 @@
   [33X[0;0YA  digraph  is  [13Xsymmetric[113X if its adjacency matrix [2XAdjacencyMatrix[102X ([14X5.2-1[114X) is
   symmetric.  For  a digraph with multiple edges this means that there are the
   same number of edges from a vertex [10Xu[110X to a vertex [10Xv[110X as there are from [10Xv[110X to [10Xu[110X;
-  see [2XIsSymmetricDigraph[102X ([14X6.1-12[114X).[133X
+  see [2XIsSymmetricDigraph[102X ([14X6.2-14[114X).[133X
   
   [33X[0;0YIf  [3Xdigraph[103X  is  immutable,  then  a  new  immutable  digraph  is  returned.
   Otherwise,  the  mutable  digraph  [3Xdigraph[103X  is  changed  in-place  into  its
@@ -2213,7 +2224,7 @@
   integer  or a list of positive integers. This operation returns a digraph on
   the same set of vertices as [3Xdigraph[103X, with two vertices being adjacent if and
   only  if  the  distance  between  them in [3Xdigraph[103X equals [3Xi[103X or is a number in
-  [3Xlist[103X. See [2XDigraphShortestDistance[102X ([14X5.3-2[114X).[133X
+  [3Xlist[103X. See [2XDigraphShortestDistance[102X ([14X5.4-2[114X).[133X
   
   [33X[0;0YIf  [3Xdigraph[103X  is  mutable,  then  [3Xdigraph[103X is modified in-place. If [3Xdigraph[103X is
   immutable,  then  a  new immutable digraph constructed as described above is
@@ -2239,8 +2250,8 @@
   digraph  [10XC[110X  with  no multiple edges on the vertices of [3Xdigraph[103X that contains
   all  the  edges  of  [3Xdigraph[103X  and satsifies the property that the sum of the
   degrees  of  every  two  non-adjacenct  vertices  in  [10XC[110X  is less than [3Xk[103X. See
-  [2XIsSymmetricDigraph[102X   ([14X6.1-12[114X),   [2XDigraphHasLoops[102X   ([14X6.1-1[114X),   [2XIsMultiDigraph[102X
-  ([14X6.1-10[114X), and [2XOutDegreeOfVertex[102X ([14X5.2-10[114X).[133X
+  [2XIsSymmetricDigraph[102X   ([14X6.2-14[114X),   [2XDigraphHasLoops[102X   ([14X6.2-1[114X),   [2XIsMultiDigraph[102X
+  ([14X6.2-11[114X), and [2XOutDegreeOfVertex[102X ([14X5.2-10[114X).[133X
   
   [33X[0;0YThe operation [10XDigraphClosure[110X returns the [3Xk[103X-closure of [3Xdigraph[103X.[133X
   
@@ -2308,8 +2319,37 @@
   will  be immutable. If the optional first argument [3Xfilt[103X is not present, then
   [2XIsImmutableDigraph[102X ([14X3.1-3[114X) is used by default.[133X
   
+  [33X[0;0YThe  other  implemented  filters are as follows: [2XIsConnectedDigraph[102X ([14X6.5-3[114X),
+  [2XIsSymmetricDigraph[102X  ([14X6.2-14[114X),  [2XIsAcyclicDigraph[102X  ([14X6.5-1[114X),  [2XIsEulerianDigraph[102X
+  ([14X6.5-10[114X), [2XIsHamiltonianDigraph[102X ([14X6.5-11[114X).[133X
+  
+  [33X[0;0YFor  [2XIsConnectedDigraph[102X  ([14X6.5-3[114X), a random tree is first created independent
+  of  the  value  of  [3Xp[103X,  guaranteeing connectivity (with [22X[3Xn[103X-1[122X edges), and then
+  edges  are  added  between  the remaining pairs of vertices with probability
+  approximately [3Xp[103X.[133X
+  
+  [33X[0;0YFor  [2XIsHamiltonianDigraph[102X  ([14X6.5-11[114X),  a  random  Hamiltonian  cycle is first
+  created  independent  of  the  value of [3Xp[103X (with [3Xn[103X edges), and then edges are
+  added between the remaining pairs of vertices with probability approximately
+  [3Xp[103X.[133X
+  
+  [33X[0;0YFor  [2XIsEulerianDigraph[102X  ([14X6.5-10[114X), a random Eulerian cycle is created where [3Xp[103X
+  influences  how  long  the  cycle  will  be.  The  cycle  grows  by randomly
+  considering edges that extend the cycle, and adding an edge with probability
+  approximately  [3Xp[103X.  The  cycle stops when we get back to the start vertex and
+  have  no  more  edges left to consider from it that extend the cycle further
+  (any possible edge from the start vertex has either been added to the cycle,
+  or  rejected,  leaving  no  more  edges  to  consider).  Thus [22X[3Xp[103X = 1[122X does not
+  necessarily  guarantee  a  complete digraph. Instead, it guarantees that all
+  edges considered up to the point where the cycle stops, are added.[133X
+  
+  [33X[0;0YFor  [2XIsAcyclicDigraph[102X  ([14X6.5-1[114X)  and  [2XIsSymmetricDigraph[102X  ([14X6.2-14[114X), edges are
+  added between any pairs of vertices with probability approximately [3Xp[103X.[133X
+  
   [33X[0;0YIf [3Xn[103X is a positive integer, then this function returns a random digraph with
-  [3Xn[103X vertices and without multiple edges. The result may or may not have loops.[133X
+  [3Xn[103X vertices and without multiple edges. The result may or may not have loops.
+  If  using  [2XIsAcyclicDigraph[102X  ([14X6.5-1[114X),  the resulting graph will not have any
+  loops by definition.[133X
   
   [33X[0;0YIf the optional second argument [3Xp[103X is a float with value [22X0 ≤[122X [3X p [103X [22X≤ 1[122X, then an
   edge will exist between each pair of vertices with probability approximately
@@ -2323,6 +2363,16 @@
     [4X[28X<immutable digraph with 10000 vertices, 2300438 edges>[128X[104X
     [4X[25Xgap>[125X [27XRandomDigraph(IsMutableDigraph, 1000, 1 / 2);[127X[104X
     [4X[28X<mutable digraph with 1000 vertices, 499739 edges>[128X[104X
+    [4X[25Xgap>[125X [27XRandomDigraph(IsConnectedDigraph, 1000, 0.75);[127X[104X
+    [4X[28X<immutable digraph with 1000 vertices, 750265 edges>[128X[104X
+    [4X[25Xgap>[125X [27XRandomDigraph(IsSymmetricDigraph, 1000);[127X[104X
+    [4X[28X<immutable digraph with 1000 vertices, 329690 edges>[128X[104X
+    [4X[25Xgap>[125X [27XRandomDigraph(IsAcyclicDigraph, 1000, 0.25);[127X[104X
+    [4X[28X<immutable digraph with 1000 vertices, 125070 edges>[128X[104X
+    [4X[25Xgap>[125X [27XRandomDigraph(IsHamiltonianDigraph, 1000, 0.5);[127X[104X
+    [4X[28X<immutable digraph with 1000 vertices, 500327 edges>[128X[104X
+    [4X[25Xgap>[125X [27XRandomDigraph(IsEulerianDigraph, 1000, 0.5);[127X[104X
+    [4X[28X<immutable digraph with 1000 vertices, 433869 edges>[128X[104X
   [4X[32X[104X
   
   [1X3.4-2 RandomMultiDigraph[101X
@@ -2361,7 +2411,7 @@
   [2XIsImmutableDigraph[102X ([14X3.1-3[114X) is used by default.[133X
   
   [33X[0;0YIf  [3Xn[103X  is  a non-negative integer, this function returns a random tournament
-  with [3Xn[103X vertices. See [2XIsTournament[102X ([14X6.1-13[114X).[133X
+  with [3Xn[103X vertices. See [2XIsTournament[102X ([14X6.2-15[114X).[133X
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27XRandomTournament(10);[127X[104X
@@ -2384,7 +2434,7 @@
   
   [33X[0;0YIf  [3Xn[103X  is  a  positive integer, this function return a random lattice with [10Xm[110X
   vertices,  where  it  is  guaranteed  that  [10Xm[110X  is  between  [3Xn[103X and [10X2 * [3Xn[103X[10X[110X. See
-  [2XIsLatticeDigraph[102X ([14X6.1-17[114X).[133X
+  [2XIsLatticeDigraph[102X ([14X6.3-3[114X).[133X
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27XRandomLattice(10);[127X[104X
@@ -2449,7 +2499,7 @@
   + 1][110X, with the first of these being the 'centre' of the star, and the second
   being the 'leaf' adjacent [10X1[110X.[133X
   
-  [33X[0;0YSee also [2XStarGraph[102X ([14X3.5-43[114X) and [2XIsUndirectedTree[102X ([14X6.3-9[114X).[133X
+  [33X[0;0YSee also [2XStarGraph[102X ([14X3.5-43[114X) and [2XIsUndirectedTree[102X ([14X6.5-9[114X).[133X
   
   [33X[0;0YIf the optional first argument [3Xfilt[103X is present, then this should specify the
   category  or  representation  the  digraph being created will belong to. For
@@ -2759,7 +2809,7 @@
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
   [33X[0;0YIf  [3Xn[103X  is a non-negative integer, this function returns the complete digraph
-  with [3Xn[103X vertices. See [2XIsCompleteDigraph[102X ([14X6.1-5[114X).[133X
+  with [3Xn[103X vertices. See [2XIsCompleteDigraph[102X ([14X6.2-5[114X).[133X
   
   [33X[0;0YIf the optional first argument [3Xfilt[103X is present, then this should specify the
   category  or  representation  the  digraph being created will belong to. For
@@ -3856,8 +3906,8 @@
   all  other vertices. If [3Xk[103X is at least [10X2[110X, then this is the complete bipartite
   digraph with bicomponents [10X[1][110X and [10X[2 .. [3Xk[103X[10X][110X.[133X
   
-  [33X[0;0YSee   [2XIsUndirectedTree[102X   ([14X6.3-9[114X),  [2XIsCompleteBipartiteDigraph[102X  ([14X6.1-4[114X),  and
-  [2XDigraphBicomponents[102X ([14X5.3-13[114X).[133X
+  [33X[0;0YSee   [2XIsUndirectedTree[102X   ([14X6.5-9[114X),  [2XIsCompleteBipartiteDigraph[102X  ([14X6.2-4[114X),  and
+  [2XDigraphBicomponents[102X ([14X5.4-13[114X).[133X
   
   [33X[0;0YIf the optional first argument [3Xfilt[103X is present, then this should specify the
   category  or  representation  the  digraph being created will belong to. For

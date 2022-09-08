@@ -337,7 +337,7 @@
   
   [33X[0;0YThis  function  produces a graphical representation of the symmetric digraph
   [3Xdigraph[103X.  [10XDotSymmetricDigraph[110X  will  return  an  error  if  [3Xdigraph[103X is not a
-  symmetric digraph. See [2XIsSymmetricDigraph[102X ([14X6.1-12[114X).[133X
+  symmetric digraph. See [2XIsSymmetricDigraph[102X ([14X6.2-14[114X).[133X
   
   [33X[0;0YThe function [10XDotSymmetricColoredDigraph[110X differs from [10XDotDigraph[110X only in that
   the  values  given in the two lists are used to color the vertices and edges
@@ -451,7 +451,7 @@
   
   [33X[0;0YThis function produces a graphical representation of a partial order digraph
   [3Xdigraph[103X.  [10XDotPartialOrderDigraph[110X  will  return  an error if [3Xdigraph[103X is not a
-  partial order digraph. See [2XIsPartialOrderDigraph[102X ([14X6.1-16[114X).[133X
+  partial order digraph. See [2XIsPartialOrderDigraph[102X ([14X6.3-2[114X).[133X
   
   [33X[0;0YSince  [3Xdigraph[103X  is a partial order, it is both reflexive and transitive. The
   output   of   [10XDotPartialOrderDigraph[110X   is  the  [2XDotDigraph[102X  ([14X9.1-2[114X)  of  the
@@ -480,13 +480,13 @@
   
   [33X[0;0YThis  function  produces  a  graphical  representation of a preorder digraph
   [3Xdigraph[103X.  [10XDotPreorderDigraph[110X  will  return  an  error  if  [3Xdigraph[103X  is not a
-  preorder digraph. See [2XIsPreorderDigraph[102X ([14X6.1-15[114X).[133X
+  preorder digraph. See [2XIsPreorderDigraph[102X ([14X6.3-1[114X).[133X
   
   [33X[0;0YA  preorder  digraph  is  reflexive  and transitive but in general it is not
   anti-symmetric  and  may  have strongly connected components containing more
   than  one  vertex.  The  [2XQuotientDigraph[102X  ([14X3.3-9[114X)  [3XQ[103X obtained by forming the
   quotient  of  [3Xdigraph[103X  by  the  partition  of its vertices into the strongly
-  connected  components  satisfies  [2XIsPartialOrderDigraph[102X ([14X6.1-16[114X). Thus every
+  connected  components  satisfies  [2XIsPartialOrderDigraph[102X  ([14X6.3-2[114X). Thus every
   vertex  of  [3XQ[103X  corresponds to a strongly connected component of [3Xdigraph[103X. The
   output          of          [10XDotPreorderDigraph[110X          displays         the
   [2XDigraphReflexiveTransitiveReduction[102X ([14X3.3-14[114X) of [3XQ[103X with vertices displayed as
@@ -991,7 +991,7 @@
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
   [33X[0;0YThis  function  takes  a  string  [3Xstr[103X,  decodes  it,  and  then  returns the
-  tournament  [see  [2XIsTournament[102X  ([14X6.1-13[114X)] which it defines, according to the
+  tournament  [see  [2XIsTournament[102X  ([14X6.2-15[114X)] which it defines, according to the
   following rules.[133X
   
   [33X[0;0YThe characters of the string [3Xstr[103X represent the entries in the upper triangle
@@ -1146,7 +1146,7 @@
   from   a   file   in   DIMACS   format,   as   appropriate.   The  operation
   [10XWriteDIMACSDigraph[110X  records  the  vertices  and edges of [3Xdigraph[103X. The vertex
   labels  of  [3Xdigraph[103X  will  be  recorded  only  if  they  are  integers.  See
-  [2XIsSymmetricDigraph[102X ([14X6.1-12[114X) and [2XDigraphVertexLabels[102X ([14X5.1-10[114X).[133X
+  [2XIsSymmetricDigraph[102X ([14X6.2-14[114X) and [2XDigraphVertexLabels[102X ([14X5.1-10[114X).[133X
   
   [33X[0;0YThe  first  argument  [3Xfilename[103X  should be the name of the file which will be
   written  to or read from. A file can contain one symmetric digraph in DIMACS

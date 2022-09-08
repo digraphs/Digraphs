@@ -78,17 +78,17 @@
   
   [33X[0;0YAn [13Xundirected spanning tree[113X of a digraph [3Xsuper[103X is a subdigraph of [3Xsuper[103X that
   is  an  undirected  tree  (see  [2XIsSubdigraph[102X  ([14X4.1-1[114X)  and  [2XIsUndirectedTree[102X
-  ([14X6.3-9[114X)).  Note  that  a digraph whose [2XMaximalSymmetricSubdigraph[102X ([14X3.3-5[114X) is
+  ([14X6.5-9[114X)).  Note  that  a digraph whose [2XMaximalSymmetricSubdigraph[102X ([14X3.3-5[114X) is
   not  connected  has  no  undirected  spanning  trees (see [2XIsConnectedDigraph[102X
-  ([14X6.3-3[114X)).[133X
+  ([14X6.5-3[114X)).[133X
   
   [33X[0;0YAn  [13Xundirected  spanning  forest[113X of a digraph [3Xsuper[103X is a subdigraph of [3Xsuper[103X
   that    is    an   undirected   forest   (see   [2XIsSubdigraph[102X   ([14X4.1-1[114X)   and
-  [2XIsUndirectedForest[102X  ([14X6.3-9[114X)),  and  is  not  contained  in  any  larger such
+  [2XIsUndirectedForest[102X  ([14X6.5-9[114X)),  and  is  not  contained  in  any  larger such
   subdigraph  of  [3Xsuper[103X.  Equivalently,  an  undirected  spanning  forest is a
   subdigraph  of  [3Xsuper[103X  whose connected components coincide with those of the
   [2XMaximalSymmetricSubdigraph[102X  ([14X3.3-5[114X) of [3Xsuper[103X (see [2XDigraphConnectedComponents[102X
-  ([14X5.3-9[114X)).[133X
+  ([14X5.4-9[114X)).[133X
   
   [33X[0;0YNote  that an undirected spanning tree is an undirected spanning forest that
   is connected.[133X

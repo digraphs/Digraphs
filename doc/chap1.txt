@@ -4,7 +4,7 @@
   
   [1X1.1 [33X[0;0YIntroduction[133X[101X
   
-  [33X[0;0YThis  is  the manual for version 1.5.3 of the [5XDigraphs[105X package. This package
+  [33X[0;0YThis  is  the manual for version 1.6.0 of the [5XDigraphs[105X package. This package
   was developed at the University of St Andrews by:[133X
   
   [30X    [33X[0;6YJan De Beule,[133X
@@ -72,7 +72,7 @@
   [33X[0;0YThe  [5Xedge-addition-planarity-suite[105X is also included in [5XDigraphs[105X; see [BM04],
   [Boy06],  [BM06],  and  [Boy12]  .  The  [5Xedge-addition-planarity-suite[105X is an
   open-source  implementation  of  the  edge  addition  planar graph embedding
-  algorithm  and related algorithms by John M. Boyer. See Section [14X6.4[114X for more
+  algorithm  and related algorithms by John M. Boyer. See Section [14X6.6[114X for more
   details.[133X
   
   [33X[0;0YFrom  version  1.0.0  of  this  package,  digraphs  can be either mutable or

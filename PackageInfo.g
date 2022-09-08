@@ -9,14 +9,14 @@
 ##
 
 ##  <#GAPDoc Label="PKGVERSIONDATA">
-##  <!ENTITY VERSION                  "1.5.3">
+##  <!ENTITY VERSION                  "1.6.0">
 ##  <!ENTITY GAPVERS                  "4.10.0">
 ##  <!ENTITY GRAPEVERS                "4.8.1">
 ##  <!ENTITY IOVERS                   "4.5.1">
 ##  <!ENTITY ORBVERS                  "4.8.2">
 ##  <!ENTITY DATASTRUCTURESVERS       "0.2.5">
 ##  <!ENTITY NAUTYTRACESINTERFACEVERS "0.2">
-##  <!ENTITY ARCHIVENAME    "digraphs-1.5.3">
+##  <!ENTITY ARCHIVENAME    "digraphs-1.6.0">
 ##  <!ENTITY COPYRIGHTYEARS "2014-22">
 ##  <#/GAPDoc>
 
@@ -28,8 +28,8 @@ _STANDREWSCS := Concatenation(["Jack Cole Building, North Haugh, ",
 SetPackageInfo(rec(
 PackageName := "Digraphs",
 Subtitle := "Graphs, digraphs, and multidigraphs in GAP",
-Version := "1.5.3",
-Date := "20/05/2022",  # dd/mm/yyyy format
+Version := "1.6.0",
+Date := "08/09/2022",  # dd/mm/yyyy format
 License := "GPL-3.0-or-later",
 ArchiveFormats := ".tar.gz",
 
@@ -72,7 +72,7 @@ Persons := [
     FirstNames    := "Finn",
     IsAuthor      := false,
     IsMaintainer  := false,
-    Email         := "flb5@st-andrews.ac.uk",
+    Email         := "finneganlbuck@gmail.com",
     PostalAddress := _STANDREWSMATHS,
     Place         := "St Andrews",
     Institution   := "University of St Andrews"),
@@ -82,12 +82,14 @@ Persons := [
     FirstNames    := "Stuart",
     IsAuthor      := false,
     IsMaintainer  := false,
-    Email         := "sb235@st-andrews.ac.uk",
-    PostalAddress := Concatenation([
-                       "CREEM, The Observatory, Buchanan Gardens, ",
-                       "St Andrews, Fife, KY16 9LZ, Scotland"]),
-    Place         := "St Andrews",
-    Institution   := "University of St Andrews"),
+    Email         := "stuartburrell1994@gmail.com",
+    WWWHome       := "https://stuartburrell.github.io"),
+
+  rec(
+    LastName      := "Campbell",
+    FirstNames    := "Graham",
+    IsAuthor      := false,
+    IsMaintainer  := false),
 
   rec(
     LastName      := "Cirpons",
@@ -100,14 +102,33 @@ Persons := [
     Institution   := "University of St Andrews"),
 
   rec(
+    LastName      := "Clayton",
+    FirstNames    := "Ashley",
+    IsAuthor      := false,
+    IsMaintainer  := false,
+    Email         := "ac323@st-andrews.ac.uk",
+    PostalAddress := _STANDREWSMATHS,
+    Place         := "St Andrews",
+    Institution   := "University of St Andrews"),
+
+  rec(
     LastName      := "Conti-Leslie",
     FirstNames    := "Tom",
     IsAuthor      := false,
     IsMaintainer  := false,
-    Email         := "tdcl@st-andrews.ac.uk",
+    Email         := "tom.contileslie@gmail.com",
+    WWWHome       := "https://tomcontileslie.com"),
+
+  rec(
+    LastName      := "Edwards",
+    FirstNames    := "Joe",
+    IsAuthor      := true,
+    IsMaintainer  := false,
+    Email         := "je53@st-andrews.ac.uk",
     PostalAddress := _STANDREWSMATHS,
     Place         := "St Andrews",
-    Institution   := "University of St Andrews"),
+    Institution   := "University of St Andrews",
+    WWWHome       := "https://github.com/Joseph-Edwards"),
 
   rec(
     LastName      := "Elliott",
@@ -115,29 +136,37 @@ Persons := [
     IsAuthor      := false,
     IsMaintainer  := false,
     Email         := "le27@st-andrews.ac.uk",
-    PostalAddress := _STANDREWSMATHS,
+    PostalAddress := _STANDREWSMATHS,  # TODO update
     Place         := "St Andrews",
     Institution   := "University of St Andrews"),
+
+  rec(
+    LastName      := "Fernando",
+    FirstNames    := "Isuru",
+    IsAuthor      := false,
+    IsMaintainer  := false,
+    Email         := "isuruf@gmail.com"),
 
   rec(
     LastName      := "Gilligan",
     FirstNames    := "Ewan",
     IsAuthor      := false,
     IsMaintainer  := false,
-    Email         := "eg207@st-andrews.ac.uk",
-    PostalAddress := _STANDREWSMATHS,
-    Place         := "St Andrews",
-    Institution   := "University of St Andrews"),
+    Email         := "eg207@st-andrews.ac.uk"),
 
-rec(
+  rec(
+    LastName      := "Gutsche",
+    FirstNames    := "Sebastian",
+    IsAuthor      := false,
+    IsMaintainer  := false,
+    Email         := "gutsche@momo.math.rwth-aachen.de"),
+
+  rec(
     LastName      := "Harper",
     FirstNames    := "Samantha",
     IsAuthor      := false,
     IsMaintainer  := false,
-    Email         := "seh25@st-andrews.ac.uk",
-    PostalAddress := _STANDREWSMATHS,
-    Place         := "St Andrews",
-    Institution   := "University of St Andrews"),
+    Email         := "seh25@st-andrews.ac.uk"),
 
   rec(
     LastName      := "Horn",
@@ -169,13 +198,31 @@ rec(
     FirstNames    := "Julius",
     IsAuthor      := true,
     IsMaintainer  := false,
-    Email         := "julius.jonusas@tuwien.ac.at",
+    Email         := "j.jonusas@gmail.com",
     WWWHome       := "http://julius.jonusas.work",
-    PostalAddress := Concatenation([
-                       "Institut für Diskrete Mathematik und Geometrie, ",
-                       "Wiedner Hauptstrasse 8-10, 1040 Wien, Austria"]),
-    Place         := "Wien, Austria",
-    Institution   := "TU Wien"),
+    Place         := "Brussels, Belgium"),
+
+  rec(
+    LastName      := "Konovalov",
+    FirstNames    := "Olexandr",
+    IsAuthor      := false,
+    IsMaintainer  := false,
+    PostalAddress := _STANDREWSCS,
+    Email         := "obk1@st-andrews.ac.uk",
+    WWWHome       :=
+      "https://www.st-andrews.ac.uk/computer-science/people/obk1/",
+    Place         := "St Andrews",
+    Institution   := "University of St Andrews"),
+
+  rec(
+    LastName      := "Lee",
+    FirstNames    := "Andrea",
+    IsAuthor      := false,
+    IsMaintainer  := false,
+    PostalAddress := _STANDREWSMATHS,
+    Email         := "ahwl1@st-andrews.ac.uk",
+    Place         := "St Andrews",
+    Institution   := "University of St Andrews"),
 
   rec(
     LastName      := "Mitchell",
@@ -194,10 +241,7 @@ rec(
     IsAuthor      := false,
     IsMaintainer  := false,
     Email         := "markus.pfeiffer@morphism.de",
-    WWWHome       := "https://www.morphism.de/~markusp",
-    PostalAddress := _STANDREWSCS,
-    Place         := "St Andrews",
-    Institution   := "University of St Andrews"),
+    WWWHome       := "https://www.morphism.de/~markusp/"),
 
   rec(
     LastName      := "Racine",
@@ -205,7 +249,7 @@ rec(
     IsAuthor      := false,
     IsMaintainer  := false,
     Email         := "lr217@st-andrews.ac.uk",
-    PostalAddress := _STANDREWSMATHS,
+    PostalAddress := _STANDREWSCS,
     Place         := "St Andrews",
     Institution   := "University of St Andrews"),
 
@@ -213,9 +257,31 @@ rec(
     LastName      := "Russell",
     FirstNames    := "Christopher",
     IsAuthor      := false,
+    IsMaintainer  := false),
+
+  rec(
+    LastName      := "Schaefer",
+    FirstNames    := "Artur",
+    IsAuthor      := false,
     IsMaintainer  := false,
-    Email         := "cr66@st-andrews.ac.uk",
-    PostalAddress := _STANDREWSMATHS,
+    Email         := "as305@st-and.ac.uk"),
+
+  rec(
+    LastName      := "Scott",
+    FirstNames    := "Isabella",
+    IsAuthor      := false,
+    IsMaintainer  := false,
+    Email         := "iscott@uchicago.edu",
+    Place         := "Chicago",
+    Institution   := "University of Chicago"),
+
+  rec(
+    LastName      := "Sharma",
+    FirstNames    := "Kamran",
+    IsAuthor      := false,
+    IsMaintainer  := false,
+    Email         := "kks4@st-andrews.ac.uk",
+    PostalAddress := _STANDREWSCS,
     Place         := "St Andrews",
     Institution   := "University of St Andrews"),
 
@@ -234,10 +300,7 @@ rec(
     FirstNames    := "Ben",
     IsAuthor      := false,
     IsMaintainer  := false,
-    Email         := "bs201@st-andrews.ac.uk",
-    PostalAddress := _STANDREWSMATHS,
-    Place         := "St Andrews",
-    Institution   := "University of St Andrews"),
+    Email         := "bspiers972@outlook.com"),
 
   rec(
     LastName      := "Tsalakou",
@@ -296,7 +359,7 @@ AbstractHTML := Concatenation("The <b>Digraphs</b> package is a <b>GAP</b> ",
 PackageDoc := rec(
   BookName  := "Digraphs",
   ArchiveURLSubset := ["doc"],
-  HTMLStart := "doc/chap0.html",
+  HTMLStart := "doc/chap0_mj.html",
   PDFFile   := "doc/manual.pdf",
   SixFile   := "doc/manual.six",
   LongTitle := "Digraphs - Methods for digraphs",

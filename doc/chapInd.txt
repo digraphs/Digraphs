@@ -8,13 +8,13 @@
   [2XAdjacencyMatrixMutableCopy[102X 5.2-1 
   [2XAdjacencyMatrixUpperTriangleLineDecoder[102X 9.2-10 
   [2XAndrasfaiGraph[102X 3.5-1 
-  [2XArticulationPoints[102X 5.3-14 
+  [2XArticulationPoints[102X 5.4-14 
   [2XAsBinaryRelation[102X 3.2-1 
-  [2XAsDigraph[102X, for a transformation or perm 3.2-2 
+  [2XAsDigraph[102X, for a binary relation 3.2-2 
   [2XAsGraph[102X 3.2-4 
-  [2XAsMonoid[102X 5.5-1 
-  [2XAsSemigroup[102X, for a filter and a digraph 5.5-1 
-      for a filter, semilattice digraph, and two lists 5.5-2 
+  [2XAsMonoid[102X 5.6-1 
+  [2XAsSemigroup[102X, for a filter and a digraph 5.6-1 
+      for a filter, semilattice digraph, and two lists 5.6-2 
   [2XAsTransformation[102X 3.2-5 
   [2XAutomorphismGroup[102X, for a digraph 7.2-2 
       for a digraph and a homogeneous list 7.2-5 
@@ -35,7 +35,7 @@
   [2XBookGraph[102X 3.5-7 
   [2XBooleanAdjacencyMatrix[102X 5.2-3 
   [2XBooleanAdjacencyMatrixMutableCopy[102X 5.2-3 
-  [2XBridges[102X 5.3-15 
+  [2XBridges[102X 5.4-15 
   [2XCayleyDigraph[102X 3.1-12 
   [2XChainDigraph[102X 3.5-9 
   [2XCharacteristicPolynomial[102X 5.2-2 
@@ -49,7 +49,7 @@
   [2XConormalProduct[102X 3.3-33 
   [2XCycleDigraph[102X 3.5-14 
   [2XCycleGraph[102X 3.5-15 
-  [2XDegreeMatrix[102X 5.2-16 
+  [2XDegreeMatrix[102X 5.2-15 
   [2XDigraph[102X 3.1-7 
       for a group, list, function, and function 3.1-7 
       for a list and function 3.1-7 
@@ -64,8 +64,8 @@
   [2XDigraphAddVertices[102X, for a digraph and a list of labels 3.3-16 
       for a digraph and an integer 3.3-16 
   [2XDigraphAdjacencyFunction[102X 5.2-4 
-  [2XDigraphAllSimpleCircuits[102X 5.3-27 
-  [2XDigraphBicomponents[102X 5.3-13 
+  [2XDigraphAllSimpleCircuits[102X 5.4-28 
+  [2XDigraphBicomponents[102X 5.4-13 
   [2XDigraphByAdjacencyMatrix[102X 3.1-8 
   [2XDigraphByEdges[102X 3.1-9 
   [2XDigraphByInNeighbors[102X 3.1-11 
@@ -79,25 +79,24 @@
   [2XDigraphCliquesReps[102X 8.1-4 
   [2XDigraphClosure[102X 3.3-46 
   [2XDigraphColouring[102X, for a digraph and a number of colours 7.3-14 
-  [2XDigraphConnectedComponent[102X 5.3-10 
-  [2XDigraphConnectedComponents[102X 5.3-9 
+  [2XDigraphConnectedComponent[102X 5.4-10 
+  [2XDigraphConnectedComponents[102X 5.4-9 
   [2XDigraphCopy[102X 3.3-1 
   [2XDigraphCopySameMutability[102X 3.3-1 
   [2XDigraphCore[102X 7.3-18 
   [2XDigraphCycle[102X 3.5-14 
-  [2XDigraphDegeneracy[102X 5.3-30 
-  [2XDigraphDegeneracyOrdering[102X 5.3-31 
-  [2XDigraphDiameter[102X 5.3-1 
-  [2XDigraphDijkstra[102X, for a source 5.3-34 
-      for a source and target 5.3-34 
+  [2XDigraphDegeneracy[102X 5.4-31 
+  [2XDigraphDegeneracyOrdering[102X 5.4-32 
+  [2XDigraphDiameter[102X 5.4-1 
+  [2XDigraphDijkstra[102X, for a source 5.4-35 
+      for a source and target 5.4-35 
   [2XDigraphDirectProduct[102X, for a list of digraphs 3.3-32 
       for a positive number of digraphs 3.3-32 
   [2XDigraphDirectProductProjections[102X 3.3-39 
   [2XDigraphDisjointUnion[102X, for a list of digraphs 3.3-28 
-      for an
-      arbitrary number of digraphs 3.3-28 
-  [2XDigraphDistanceSet[102X, for a digraph, a pos int, and a list 5.3-5 
-      for a digraph, a pos int, and an int 5.3-5 
+      for an arbitrary number of digraphs 3.3-28 
+  [2XDigraphDistanceSet[102X, for a digraph, a pos int, and a list 5.4-5 
+      for a digraph, a pos int, and an int 5.4-5 
   [2XDigraphDual[102X 3.3-11 
   [2XDigraphDualAttr[102X 3.3-11 
   [2XDigraphEdgeLabel[102X 5.1-11 
@@ -109,18 +108,20 @@
   [2XDigraphEpimorphism[102X 7.3-6 
   [2XDigraphFamily[102X 3.1-6 
   [2XDigraphFile[102X 9.2-4 
-  [2XDigraphFloydWarshall[102X 5.3-18 
+  [2XDigraphFloydWarshall[102X 5.4-18 
   [2XDigraphFromDigraph6String[102X 9.2-2 
   [2XDigraphFromDiSparse6String[102X 9.2-2 
   [2XDigraphFromGraph6String[102X 9.2-2 
   [2XDigraphFromPlainTextString[102X 9.2-12 
   [2XDigraphFromSparse6String[102X 9.2-2 
-  [2XDigraphGirth[102X 5.3-6 
+  [2XDigraphGirth[102X 5.4-6 
   [2XDigraphGreedyColouring[102X, for a digraph 7.3-15 
       for a digraph and vertex order 7.3-15 
       for a digraph and vertex order function 7.3-15 
   [2XDigraphGroup[102X 7.2-10 
-  [2XDigraphHasLoops[102X 6.1-1 
+  [2XDigraphHasAVertex[102X 6.1-1 
+  [2XDigraphHasLoops[102X 6.2-1 
+  [2XDigraphHasNoVertices[102X 6.1-2 
   [2XDigraphHomomorphism[102X 7.3-2 
   [2XDigraphImmutableCopy[102X 3.3-1 
   [2XDigraphImmutableCopyIfImmutable[102X 3.3-2 
@@ -131,9 +132,10 @@
   [2XDigraphInEdges[102X 5.1-13 
   [2XDigraphJoin[102X, for a list of digraphs 3.3-30 
       for a positive number of digraphs 3.3-30 
-  [2XDigraphLayers[102X 5.3-29 
-  [2XDigraphLongestDistanceFromVertex[102X 5.3-4 
-  [2XDigraphLongestSimpleCircuit[102X 5.3-28 
+  [2XDigraphJoinTable[102X 6.3-4 
+  [2XDigraphLayers[102X 5.4-30 
+  [2XDigraphLongestDistanceFromVertex[102X 5.4-4 
+  [2XDigraphLongestSimpleCircuit[102X 5.4-29 
   [2XDigraphLoops[102X 5.2-14 
   [2XDigraphMaximalClique[102X 8.1-3 
   [2XDigraphMaximalCliques[102X 8.1-4 
@@ -147,25 +149,27 @@
   [2XDigraphMaximalIndependentSetsRepsAttr[102X 8.2-3 
   [2XDigraphMaximalMatching[102X 5.1-17 
   [2XDigraphMaximumMatching[102X 5.1-18 
+  [2XDigraphMeetTable[102X 6.3-4 
   [2XDigraphMonomorphism[102X 7.3-4 
   [2XDigraphMutableCopy[102X 3.3-1 
   [2XDigraphMutableCopyIfImmutable[102X 3.3-2 
   [2XDigraphMutableCopyIfMutable[102X 3.3-2 
   [2XDigraphMycielskian[102X 3.3-47 
   [2XDigraphMycielskianAttr[102X 3.3-47 
-  [2XDigraphNrConnectedComponents[102X 5.3-9 
+  [2XDigraphNrConnectedComponents[102X 5.4-9 
   [2XDigraphNrEdges[102X 5.1-4 
   [2XDigraphNrLoops[102X 5.1-5 
-  [2XDigraphNrStronglyConnectedComponents[102X 5.3-11 
+  [2XDigraphNrStronglyConnectedComponents[102X 5.4-11 
   [2XDigraphNrVertices[102X 5.1-2 
-  [2XDigraphOddGirth[102X 5.3-7 
+  [2XDigraphOddGirth[102X 5.4-7 
   [2XDigraphOrbitReps[102X 7.2-12 
   [2XDigraphOrbits[102X 7.2-11 
   [2XDigraphOutEdges[102X 5.1-14 
-  [2XDigraphPath[102X 5.3-22 
-  [2XDigraphPeriod[102X 5.3-17 
+  [2XDigraphPath[102X 5.4-22 
+  [2XDigraphPeriod[102X 5.4-17 
   [2XDigraphPlainTextLineDecoder[102X 9.2-8 
   [2XDigraphPlainTextLineEncoder[102X 9.2-8 
+  [2XDigraphRandomWalk[102X 5.4-24 
   [2XDigraphRange[102X 5.2-5 
   [2XDigraphReflexiveTransitiveClosure[102X 3.3-13 
   [2XDigraphReflexiveTransitiveClosureAttr[102X 3.3-13 
@@ -188,11 +192,11 @@
   [2XDigraphReverseEdges[102X, for a digraph and a list of edges 3.3-27 
   [5XDigraphs[105X package overview 1. 
   [2XDigraphSchreierVector[102X 7.2-13 
-  [2XDigraphShortestDistance[102X, for a digraph and a list 5.3-2 
-      for a digraph and two vertices 5.3-2 
-      for a digraph, a list, and a list 5.3-2 
-  [2XDigraphShortestDistances[102X 5.3-3 
-  [2XDigraphShortestPath[102X 5.3-23 
+  [2XDigraphShortestDistance[102X, for a digraph and a list 5.4-2 
+      for a digraph and two vertices 5.4-2 
+      for a digraph, a list, and a list 5.4-2 
+  [2XDigraphShortestDistances[102X 5.4-3 
+  [2XDigraphShortestPath[102X 5.4-23 
   [2XDigraphShortestPathSpanningTree[102X 3.3-8 
   [2XDigraphSinks[102X 5.1-6 
   [2XDigraphsMakeDoc[102X 2.4-1 
@@ -203,8 +207,8 @@
   [2XDigraphsTestExtreme[102X 2.5-3 
   [2XDigraphsTestInstall[102X 2.5-1 
   [2XDigraphsTestStandard[102X 2.5-2 
-  [2XDigraphStronglyConnectedComponent[102X 5.3-12 
-  [2XDigraphStronglyConnectedComponents[102X 5.3-11 
+  [2XDigraphStronglyConnectedComponent[102X 5.4-12 
+  [2XDigraphStronglyConnectedComponents[102X 5.4-11 
   [2XDigraphsUseBliss[102X 7.2-1 
   [2XDigraphsUseNauty[102X 7.2-1 
   [2XDigraphSymmetricClosure[102X 3.3-12 
@@ -214,7 +218,7 @@
   [2XDigraphTransitiveClosureAttr[102X 3.3-13 
   [2XDigraphTransitiveReduction[102X 3.3-14 
   [2XDigraphTransitiveReductionAttr[102X 3.3-14 
-  [2XDigraphUndirectedGirth[102X 5.3-8 
+  [2XDigraphUndirectedGirth[102X 5.4-8 
   [2XDigraphVertexLabel[102X 5.1-9 
   [2XDigraphVertexLabels[102X 5.1-10 
   [2XDigraphVertices[102X 5.1-1 
@@ -222,8 +226,8 @@
   [2XDiSparse6String[102X 9.2-3 
   [2XDistanceDigraph[102X, for digraph and int 3.3-45 
       for digraph and list 3.3-45 
-  [2XDominators[102X 5.3-24 
-  [2XDominatorTree[102X 5.3-25 
+  [2XDominators[102X 5.4-25 
+  [2XDominatorTree[102X 5.4-26 
   [2XDotColoredDigraph[102X 9.1-2 
   [2XDotDigraph[102X 9.1-2 
   [2XDotEdgeColoredDigraph[102X 9.1-2 
@@ -248,16 +252,16 @@
   [2XEpimorphismsDigraphsRepresentatives[102X 7.3-7 
   [2XGearGraph[102X 3.5-17 
   [2XGeneralisedPetersenGraph[102X 3.5-36 
-  [2XGeneratorsOfCayleyDigraph[102X 5.4-2 
+  [2XGeneratorsOfCayleyDigraph[102X 5.5-2 
   [2XGeneratorsOfEndomorphismMonoid[102X 7.3-13 
   [2XGeneratorsOfEndomorphismMonoidAttr[102X 7.3-13 
   [2XGraph[102X 3.2-3 
   [2XGraph6String[102X 9.2-3 
   [2XGridGraph[102X 3.5-41 
-  [2XGroupOfCayleyDigraph[102X 5.4-1 
+  [2XGroupOfCayleyDigraph[102X 5.5-1 
   [2XHaarGraph[102X 3.5-18 
   [2XHalvedCubeGraph[102X 3.5-19 
-  [2XHamiltonianPath[102X 5.3-32 
+  [2XHamiltonianPath[102X 5.4-33 
   [2XHanoiGraph[102X 3.5-20 
   [2XHelmGraph[102X 3.5-21 
   [2XHomomorphicProduct[102X 3.3-34 
@@ -276,27 +280,27 @@
   [2XInNeighbours[102X 5.2-7 
   [2XInNeighboursMutableCopy[102X 5.2-7 
   [2XInNeighboursOfVertex[102X 5.2-13 
-  [2XIsAcyclicDigraph[102X 6.3-1 
-  [2XIsAntisymmetricDigraph[102X 6.1-2 
-  [2XIsAntiSymmetricDigraph[102X 6.1-2 
-  [2XIsAperiodicDigraph[102X 6.3-7 
-  [2XIsBiconnectedDigraph[102X 6.3-4 
-  [2XIsBipartiteDigraph[102X 6.1-3 
-  [2XIsBridgelessDigraph[102X 6.3-5 
+  [2XIsAcyclicDigraph[102X 6.5-1 
+  [2XIsAntiSymmetricDigraph[102X 6.2-2 
+  [2XIsAntisymmetricDigraph[102X 6.2-2 
+  [2XIsAperiodicDigraph[102X 6.5-7 
+  [2XIsBiconnectedDigraph[102X 6.5-4 
+  [2XIsBipartiteDigraph[102X 6.2-3 
+  [2XIsBridgelessDigraph[102X 6.5-5 
   [2XIsCayleyDigraph[102X 3.1-4 
-  [2XIsChainDigraph[102X 6.3-2 
+  [2XIsChainDigraph[102X 6.5-2 
   [2XIsClique[102X 8.1-1 
-  [2XIsCompleteBipartiteDigraph[102X 6.1-4 
-  [2XIsCompleteDigraph[102X 6.1-5 
-  [2XIsCompleteMultipartiteDigraph[102X 6.1-6 
-  [2XIsConnectedDigraph[102X 6.3-3 
-  [2XIsCycleDigraph[102X 6.3-12 
+  [2XIsCompleteBipartiteDigraph[102X 6.2-4 
+  [2XIsCompleteDigraph[102X 6.2-5 
+  [2XIsCompleteMultipartiteDigraph[102X 6.2-6 
+  [2XIsConnectedDigraph[102X 6.5-3 
+  [2XIsCycleDigraph[102X 6.5-12 
   [2XIsDigraph[102X 3.1-1 
   [2XIsDigraphAutomorphism[102X 7.2-20 
       for a digraph and a transformation or permutation 7.2-20 
   [2XIsDigraphColouring[102X 7.2-21 
       for a transformation 7.2-21 
-  [2XIsDigraphCore[102X 6.5-1 
+  [2XIsDigraphCore[102X 6.7-1 
   [2XIsDigraphEdge[102X, for digraph and list 5.1-15 
       for digraph and two pos ints 5.1-15 
   [2XIsDigraphEmbedding[102X 7.3-11 
@@ -311,65 +315,76 @@
       for digraphs and transformation or permutation 7.2-20 
   [2XIsDigraphMonomorphism[102X 7.3-10 
       for digraphs and a permutation or transformation 7.3-10 
-  [2XIsDigraphPath[102X 5.3-20 
-      for a digraph and list 5.3-20 
+  [2XIsDigraphPath[102X 5.4-20 
+      for a digraph and list 5.4-20 
   [2XIsDigraphWithAdjacencyFunction[102X 3.1-5 
-  [2XIsDirectedTree[102X 6.3-8 
-  [2XIsDistanceRegularDigraph[102X 6.2-4 
-  [2XIsEdgeTransitive[102X 6.5-2 
-  [2XIsEmptyDigraph[102X 6.1-7 
-  [2XIsEquivalenceDigraph[102X 6.1-8 
-  [2XIsEulerianDigraph[102X 6.3-10 
-  [2XIsFunctionalDigraph[102X 6.1-9 
-  [2XIsHamiltonianDigraph[102X 6.3-11 
+  [2XIsDirectedTree[102X 6.5-8 
+  [2XIsDistanceRegularDigraph[102X 6.4-4 
+  [2XIsDistributiveLatticeDigraph[102X 6.3-6 
+  [2XIsEdgeTransitive[102X 6.7-2 
+  [2XIsEmptyDigraph[102X 6.2-7 
+  [2XIsEquivalenceDigraph[102X 6.2-8 
+  [2XIsEulerianDigraph[102X 6.5-10 
+  [2XIsFunctionalDigraph[102X 6.2-9 
+  [2XIsHamiltonianDigraph[102X 6.5-11 
   [2XIsImmutableDigraph[102X 3.1-3 
   [2XIsIndependentSet[102X 8.2-1 
-  [2XIsInRegularDigraph[102X 6.2-1 
+  [2XIsInRegularDigraph[102X 6.4-1 
   [2XIsIsomorphicDigraph[102X, for digraphs 7.2-15 
       for digraphs and homogeneous lists 7.2-16 
-  [2XIsJoinSemilatticeDigraph[102X 6.1-17 
-  [2XIsLatticeDigraph[102X 6.1-17 
+  [2XIsJoinSemilatticeDigraph[102X 6.3-3 
+  [2XIsLatticeDigraph[102X 6.3-3 
+  [2XIsLatticeEmbedding[102X, for digraphs and a permutation or transformation 7.3-20 
+  [2XIsLatticeEndomorphism[102X, for digraphs and a permutation or transformation 7.3-20 
+  [2XIsLatticeEpimorphism[102X, for digraphs and a permutation or transformation 7.3-20 
+  [2XIsLatticeHomomorphism[102X, for digraphs and a permutation or transformation 7.3-20 
+  [2XIsLatticeMonomorphism[102X, for digraphs and a permutation or transformation 7.3-20 
+  [2XIsLowerSemimodularDigraph[102X 6.3-5 
   [2XIsMatching[102X 5.1-16 
   [2XIsMaximalClique[102X 8.1-1 
   [2XIsMaximalIndependentSet[102X 8.2-1 
   [2XIsMaximalMatching[102X 5.1-16 
   [2XIsMaximumMatching[102X 5.1-16 
-  [2XIsMeetSemilatticeDigraph[102X 6.1-17 
-  [2XIsMultiDigraph[102X 6.1-10 
+  [2XIsMeetSemilatticeDigraph[102X 6.3-3 
+  [2XIsMultiDigraph[102X 6.2-11 
   [2XIsMutableDigraph[102X 3.1-2 
-  [2XIsNullDigraph[102X 6.1-7 
+  [2XIsNonemptyDigraph[102X 6.2-12 
+  [2XIsNullDigraph[102X 6.2-7 
   [2XIsomorphismDigraphs[102X, for digraphs 7.2-17 
       for digraphs and homogeneous lists 7.2-18 
-  [2XIsOuterPlanarDigraph[102X 6.4-2 
-  [2XIsOutRegularDigraph[102X 6.2-2 
-  [2XIsPartialOrderDigraph[102X 6.1-16 
+  [2XIsOuterPlanarDigraph[102X 6.6-2 
+  [2XIsOutRegularDigraph[102X 6.4-2 
+  [2XIsPartialOrderDigraph[102X 6.3-2 
   [2XIsPerfectMatching[102X 5.1-16 
-  [2XIsPlanarDigraph[102X 6.4-1 
-  [2XIsPreorderDigraph[102X 6.1-15 
-  [2XIsQuasiorderDigraph[102X 6.1-15 
-  [2XIsReachable[102X 5.3-19 
-  [2XIsReflexiveDigraph[102X 6.1-11 
-  [2XIsRegularDigraph[102X 6.2-3 
-  [2XIsStronglyConnectedDigraph[102X 6.3-6 
+  [2XIsPermutationDigraph[102X 6.2-10 
+  [2XIsPlanarDigraph[102X 6.6-1 
+  [2XIsPreorderDigraph[102X 6.3-1 
+  [2XIsQuasiorderDigraph[102X 6.3-1 
+  [2XIsReachable[102X 5.4-19 
+  [2XIsReflexiveDigraph[102X 6.2-13 
+  [2XIsRegularDigraph[102X 6.4-3 
+  [2XIsStronglyConnectedDigraph[102X 6.5-6 
   [2XIsSubdigraph[102X 4.1-1 
-  [2XIsSymmetricDigraph[102X 6.1-12 
-  [2XIsTournament[102X 6.1-13 
-  [2XIsTransitiveDigraph[102X 6.1-14 
-  [2XIsUndirectedForest[102X 6.3-9 
+  [2XIsSymmetricDigraph[102X 6.2-14 
+  [2XIsTournament[102X 6.2-15 
+  [2XIsTransitiveDigraph[102X 6.2-16 
+  [2XIsUndirectedForest[102X 6.5-9 
   [2XIsUndirectedSpanningForest[102X 4.1-2 
   [2XIsUndirectedSpanningTree[102X 4.1-2 
-  [2XIsUndirectedTree[102X 6.3-9 
-  [2XIsVertexTransitive[102X 6.5-3 
+  [2XIsUndirectedTree[102X 6.5-9 
+  [2XIsUpperSemimodularDigraph[102X 6.3-5 
+  [2XIsVertexTransitive[102X 6.7-3 
   [2XIteratorFromDigraphFile[102X 9.2-7 
-  [2XIteratorOfPaths[102X 5.3-26 
+  [2XIteratorOfPaths[102X 5.4-27 
   [2XJohnsonDigraph[102X 3.5-23 
   [2XKellerGraph[102X 3.5-24 
   [2XKingsGraph[102X 3.5-25 
   [2XKneserGraph[102X 3.5-26 
   [2XKnightsGraph[102X 3.5-27 
-  [2XKuratowskiOuterPlanarSubdigraph[102X 5.6-2 
-  [2XKuratowskiPlanarSubdigraph[102X 5.6-1 
-  [2XLaplacianMatrix[102X 5.2-17 
+  [2XKuratowskiOuterPlanarSubdigraph[102X 5.7-2 
+  [2XKuratowskiPlanarSubdigraph[102X 5.7-1 
+  [2XLaplacianMatrix[102X 5.2-16 
+  [2XLatticeDigraphEmbedding[102X 7.3-19 
   [2XLexicographicProduct[102X 3.3-35 
   [2XLindgrenSousselierGraph[102X 3.5-28 
   [2XLineDigraph[102X 3.3-40 
@@ -393,31 +408,35 @@
   [2XNautyCanonicalDigraph[102X 7.2-9 
   [2XNautyCanonicalLabelling[102X, for a digraph 7.2-7 
       for a digraph and a list 7.2-8 
-  [2XNrSpanningTrees[102X 5.3-33 
+  [2XNonLowerSemimodularPair[102X 5.3-2 
+  [2XNonUpperSemimodularPair[102X 5.3-2 
+  [2XNrSpanningTrees[102X 5.4-34 
   [2XNullDigraph[102X 3.5-16 
   [2XOddGraph[102X 3.5-32 
   [2XOnDigraphs[102X, for a digraph and a perm 7.1-1 
       for a digraph and a transformation 7.1-1 
   [2XOnMultiDigraphs[102X 7.1-2 
       for a digraph, perm, and perm 7.1-2 
+  [2XOnSetsDigraphs[102X, for a set of digraphs and a perm 7.1-3 
+  [2XOnTuplesDigraphs[102X, for a list of digraphs and a perm 7.1-3 
   [2XOutDegreeOfVertex[102X 5.2-10 
   [2XOutDegrees[102X 5.2-8 
   [2XOutDegreeSequence[102X 5.2-8 
   [2XOutDegreeSet[102X 5.2-8 
-  [2XOuterPlanarEmbedding[102X 5.6-4 
+  [2XOuterPlanarEmbedding[102X 5.7-4 
   [2XOutNeighbors[102X 5.2-6 
   [2XOutNeighborsMutableCopy[102X 5.2-6 
   [2XOutNeighborsOfVertex[102X 5.2-11 
   [2XOutNeighbours[102X 5.2-6 
   [2XOutNeighboursMutableCopy[102X 5.2-6 
   [2XOutNeighboursOfVertex[102X 5.2-11 
-  [2XPartialOrderDigraphJoinOfVertices[102X 5.2-15 
-  [2XPartialOrderDigraphMeetOfVertices[102X 5.2-15 
+  [2XPartialOrderDigraphJoinOfVertices[102X 5.3-1 
+  [2XPartialOrderDigraphMeetOfVertices[102X 5.3-1 
   [2XPathGraph[102X 3.5-33 
   [2XPermutationStarGraph[102X 3.5-34 
   [2XPetersenGraph[102X 3.5-35 
   [2XPlainTextString[102X 9.2-12 
-  [2XPlanarEmbedding[102X 5.6-3 
+  [2XPlanarEmbedding[102X 5.7-3 
   [2XPrintString[102X 9.2-1 
   [2XPrismGraph[102X 3.5-37 
   [2XQueenGraph[102X 3.5-39 
@@ -435,7 +454,7 @@
   [2XRepresentativeOutNeighbours[102X 7.2-19 
   [2XRookGraph[102X 3.5-40 
   [2XRooksGraph[102X 3.5-40 
-  [2XSemigroupOfCayleyDigraph[102X 5.4-1 
+  [2XSemigroupOfCayleyDigraph[102X 5.5-1 
   [2XSetDigraphEdgeLabel[102X 5.1-11 
   [2XSetDigraphEdgeLabels[102X, for a digraph and a function 5.1-12 
       for a digraph and a list of lists 5.1-12 
@@ -448,12 +467,12 @@
   [2XStackedPrismGraph[102X 3.5-38 
   [2XStarGraph[102X 3.5-43 
   [2XString[102X 9.2-1 
-  [2XStrongOrientation[102X 5.3-16 
-  [2XStrongOrientationAttr[102X 5.3-16 
+  [2XStrongOrientation[102X 5.4-16 
+  [2XStrongOrientationAttr[102X 5.4-16 
   [2XStrongProduct[102X 3.3-37 
-  [2XSubdigraphHomeomorphicToK23[102X 5.6-5 
-  [2XSubdigraphHomeomorphicToK33[102X 5.6-5 
-  [2XSubdigraphHomeomorphicToK4[102X 5.6-5 
+  [2XSubdigraphHomeomorphicToK23[102X 5.7-5 
+  [2XSubdigraphHomeomorphicToK33[102X 5.7-5 
+  [2XSubdigraphHomeomorphicToK4[102X 5.7-5 
   [2XTadpoleGraph[102X 3.5-44 
   [2XTCodeDecoder[102X 9.2-11 
   [2XTournamentLineDecoder[102X 9.2-9 
@@ -462,7 +481,7 @@
   [2XUndirectedSpanningForestAttr[102X 3.3-7 
   [2XUndirectedSpanningTree[102X 3.3-7 
   [2XUndirectedSpanningTreeAttr[102X 3.3-7 
-  [2XVerticesReachableFrom[102X 5.3-21 
+  [2XVerticesReachableFrom[102X 5.4-21 
   [2XWalshHadamardGraph[102X 3.5-45 
   [2XWebGraph[102X 3.5-46 
   [2XWheelGraph[102X 3.5-47 

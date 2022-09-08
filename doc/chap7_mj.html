@@ -30,6 +30,7 @@
 <div class="ContSSBlock">
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X808972017C486F1F">7.1-1 OnDigraphs</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X7AFBA7608498F9CE">7.1-2 OnMultiDigraphs</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X7F6A97E6870CDDA3">7.1-3 OnTuplesDigraphs</a></span>
 </div></div>
 <div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap7_mj.html#X7E48B9F87A0F22D4">7.2 <span class="Heading">Isomorphisms and canonical labellings</span></a>
 </span>
@@ -79,6 +80,8 @@
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X7F9CB3B27B9590DB">7.3-16 DigraphWelshPowellOrder</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X807D49358529A37C">7.3-17 ChromaticNumber</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X863487EF7D64EF56">7.3-18 DigraphCore</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X7EEA340C81FCA52D">7.3-19 LatticeDigraphEmbedding</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X7E183D4979D324EF">7.3-20 IsLatticeHomomorphism</a></span>
 </div></div>
 </div>
 
@@ -150,6 +153,42 @@ true
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">OutNeighbours(D2);</span>
 [ [  ], [  ], [  ], [  ], [  ], [ 6 ], [ 6, 3, 6 ], [ 4, 10, 4 ], 
   [ 5 ], [ 5, 4 ] ]</pre></div>
+
+<p><a id="X7F6A97E6870CDDA3" name="X7F6A97E6870CDDA3"></a></p>
+
+<h5>7.1-3 OnTuplesDigraphs</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; OnTuplesDigraphs</code>( <var class="Arg">list</var>, <var class="Arg">perm</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; OnSetsDigraphs</code>( <var class="Arg">list</var>, <var class="Arg">perm</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
+<p>Returns: A list or set of digraphs.</p>
+
+<p>If <var class="Arg">list</var> is a list of digraphs, and <var class="Arg">perm</var> is a <em>permutation</em> of the vertices of the digraphs in <var class="Arg">list</var>, then <code class="func">OnTuplesDigraphs</code> returns a new list constructed by applying <var class="Arg">perm</var> via <code class="func">OnDigraphs</code> (<a href="chap7_mj.html#X808972017C486F1F"><span class="RefLink">7.1-1</span></a>) to a copy (with the same mutability) of each entry of <var class="Arg">list</var> in turn.</p>
+
+<p>More precisely, <code class="code">OnTuplesDigraphs(<var class="Arg">list</var>,<var class="Arg">perm</var>)</code> is a list of length <code class="code">Length(<var class="Arg">list</var>)</code>, whose <code class="code">i</code>-th entry is <code class="code">OnDigraphs(DigraphCopy(<var class="Arg">list</var>[i]), <var class="Arg">perm</var>)</code>.</p>
+
+<p>If <var class="Arg">list</var> is moreover a <strong class="pkg">GAP</strong> set (i.e. a duplicate-free sorted list), then <code class="func">OnSetsDigraphs</code> returns the sorted output of <code class="func">OnTuplesDigraphs</code>, which is therefore again a set.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">list := [CycleDigraph(IsMutableDigraph, 6),</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">            DigraphReverse(CycleDigraph(6))];</span>
+[ &lt;mutable digraph with 6 vertices, 6 edges&gt;, 
+  &lt;immutable digraph with 6 vertices, 6 edges&gt; ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">p := (1, 6)(2, 5)(3, 4);;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">result_tuples := OnTuplesDigraphs(list, p);</span>
+[ &lt;mutable digraph with 6 vertices, 6 edges&gt;, 
+  &lt;immutable digraph with 6 vertices, 6 edges&gt; ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">result_tuples[2] = OnDigraphs(list[2], p);</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">result_tuples = list;</span>
+false
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">result_tuples = Reversed(list);</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">result_sets := OnSetsDigraphs(list, p);</span>
+[ &lt;immutable digraph with 6 vertices, 6 edges&gt;, 
+  &lt;mutable digraph with 6 vertices, 6 edges&gt; ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">result_sets = list;</span>
+true</pre></div>
 
 <p><a id="X7E48B9F87A0F22D4" name="X7E48B9F87A0F22D4"></a></p>
 
@@ -309,7 +348,7 @@ true</pre></div>
 </ul>
 <p>Giving <var class="Arg">vert_colours</var> [<var class="Arg">edge_colours</var>] as <code class="code">fail</code> is equivalent to setting all vertices [edges] to be the same colour.</p>
 
-<p>Unlike <code class="func">AutomorphismGroup</code> (<a href="chap7_mj.html#X858C32127A190175"><span class="RefLink">7.2-2</span></a>), it is possible to obtain the automorphism group of an edge-coloured multidigraph (see <code class="func">IsMultiDigraph</code> (<a href="chap6_mj.html#X7BB84CFC7E8B2B26"><span class="RefLink">6.1-10</span></a>)) when no two edges share the same source, range, and colour. The <em>automorphism group</em> of a vertex/edge-coloured digraph <var class="Arg">digraph</var> with colouring <var class="Arg">c</var> is the group consisting of its vertex/edge-colour preserving automorphisms; an <em>automorphism</em> of <var class="Arg">digraph</var> is an isomorphism of vertex/edge-coloured digraphs from <var class="Arg">digraph</var> to itself. This group is equal to the subgroup of <code class="code">AutomorphismGroup(<var class="Arg">digraph</var>)</code> consisting of those automorphisms that preserve the colouring specified by <var class="Arg">colours</var>. See <code class="func">AutomorphismGroup</code> (<a href="chap7_mj.html#X858C32127A190175"><span class="RefLink">7.2-2</span></a>), and see <code class="func">IsomorphismDigraphs</code> (<a href="chap7_mj.html#X7ED93C0F86D9D34F"><span class="RefLink">7.2-18</span></a>) for more information about isomorphisms of coloured digraphs.</p>
+<p>Unlike <code class="func">AutomorphismGroup</code> (<a href="chap7_mj.html#X858C32127A190175"><span class="RefLink">7.2-2</span></a>), it is possible to obtain the automorphism group of an edge-coloured multidigraph (see <code class="func">IsMultiDigraph</code> (<a href="chap6_mj.html#X7BB84CFC7E8B2B26"><span class="RefLink">6.2-11</span></a>)) when no two edges share the same source, range, and colour. The <em>automorphism group</em> of a vertex/edge-coloured digraph <var class="Arg">digraph</var> with colouring <var class="Arg">c</var> is the group consisting of its vertex/edge-colour preserving automorphisms; an <em>automorphism</em> of <var class="Arg">digraph</var> is an isomorphism of vertex/edge-coloured digraphs from <var class="Arg">digraph</var> to itself. This group is equal to the subgroup of <code class="code">AutomorphismGroup(<var class="Arg">digraph</var>)</code> consisting of those automorphisms that preserve the colouring specified by <var class="Arg">colours</var>. See <code class="func">AutomorphismGroup</code> (<a href="chap7_mj.html#X858C32127A190175"><span class="RefLink">7.2-2</span></a>), and see <code class="func">IsomorphismDigraphs</code> (<a href="chap7_mj.html#X7ED93C0F86D9D34F"><span class="RefLink">7.2-18</span></a>) for more information about isomorphisms of coloured digraphs.</p>
 
 <p>If <var class="Arg">digraph</var> is not a multidigraph then the automorphism group is returned as a group of permutations on the set of vertices of <var class="Arg">digraph</var>.</p>
 
@@ -359,7 +398,7 @@ true
 
 <p><code class="code">BlissCanonicalLabelling</code> returns a canonical labelling of the digraph <var class="Arg">digraph</var> found using <span class="URL"><a href="http://www.tcs.tkk.fi/Software/bliss/">bliss</a></span> by Tommi Junttila and Petteri Kaski. <code class="code">NautyCanonicalLabelling</code> returns a canonical labelling of the digraph <var class="Arg">digraph</var> found using <span class="URL"><a href="https://pallini.di.uniroma1.it/">nauty</a></span> by Brendan McKay and Adolfo Piperno. Note that the canonical labellings returned by <span class="URL"><a href="http://www.tcs.tkk.fi/Software/bliss/">bliss</a></span> and <span class="URL"><a href="https://pallini.di.uniroma1.it/">nauty</a></span> are not usually the same (and may depend of the version used).</p>
 
-<p><code class="code">BlissCanonicalLabelling</code> can only be computed if <var class="Arg">digraph</var> has no multiple edges; see <code class="func">IsMultiDigraph</code> (<a href="chap6_mj.html#X7BB84CFC7E8B2B26"><span class="RefLink">6.1-10</span></a>).</p>
+<p><code class="code">BlissCanonicalLabelling</code> can only be computed if <var class="Arg">digraph</var> has no multiple edges; see <code class="func">IsMultiDigraph</code> (<a href="chap6_mj.html#X7BB84CFC7E8B2B26"><span class="RefLink">6.2-11</span></a>).</p>
 
 
 <div class="example"><pre>
@@ -410,7 +449,7 @@ true</pre></div>
 </ul>
 <p>If <var class="Arg">digraph</var> and <var class="Arg">colours</var> together form a coloured digraph, <code class="code">BlissCanonicalLabelling</code> returns a canonical labelling of the digraph <var class="Arg">digraph</var> found using <span class="URL"><a href="http://www.tcs.tkk.fi/Software/bliss/">bliss</a></span> by Tommi Junttila and Petteri Kaski. Similarly, <code class="code">NautyCanonicalLabelling</code> returns a canonical labelling of the digraph <var class="Arg">digraph</var> found using <span class="URL"><a href="https://pallini.di.uniroma1.it/">nauty</a></span> by Brendan McKay and Adolfo Piperno. Note that the canonical labellings returned by <span class="URL"><a href="http://www.tcs.tkk.fi/Software/bliss/">bliss</a></span> and <span class="URL"><a href="https://pallini.di.uniroma1.it/">nauty</a></span> are not usually the same (and may depend of the version used).</p>
 
-<p><code class="code">BlissCanonicalLabelling</code> can only be computed if <var class="Arg">digraph</var> has no multiple edges; see <code class="func">IsMultiDigraph</code> (<a href="chap6_mj.html#X7BB84CFC7E8B2B26"><span class="RefLink">6.1-10</span></a>). The canonical labelling of <var class="Arg">digraph</var> is given as a permutation of its vertices. The canonical representative of <var class="Arg">digraph</var> can be created from <var class="Arg">digraph</var> and its canonical labelling <code class="code">p</code> by using the operation <code class="func">OnDigraphs</code> (<a href="chap7_mj.html#X808972017C486F1F"><span class="RefLink">7.1-1</span></a>):</p>
+<p><code class="code">BlissCanonicalLabelling</code> can only be computed if <var class="Arg">digraph</var> has no multiple edges; see <code class="func">IsMultiDigraph</code> (<a href="chap6_mj.html#X7BB84CFC7E8B2B26"><span class="RefLink">6.2-11</span></a>). The canonical labelling of <var class="Arg">digraph</var> is given as a permutation of its vertices. The canonical representative of <var class="Arg">digraph</var> can be created from <var class="Arg">digraph</var> and its canonical labelling <code class="code">p</code> by using the operation <code class="func">OnDigraphs</code> (<a href="chap7_mj.html#X808972017C486F1F"><span class="RefLink">7.1-1</span></a>):</p>
 
 
 <div class="example"><pre><span class="GAPprompt">gap&gt;</span> <span class="GAPinput">OnDigraphs(digraph, p);</span></pre></div>
@@ -1512,13 +1551,13 @@ false
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphColouring</code>( <var class="Arg">digraph</var>, <var class="Arg">n</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: A transformation, or <code class="keyw">fail</code>.</p>
 
-<p>A <em>proper colouring</em> of a digraph is a labelling of its vertices in such a way that adjacent vertices have different labels. A <em>proper <code class="code">n</code>-colouring</em> is a proper colouring that uses exactly <code class="code">n</code> colours. Equivalently, a proper (<code class="code">n</code>-)colouring of a digraph can be defined to be a <code class="func">DigraphEpimorphism</code> (<a href="chap7_mj.html#X7CB5AD9F861684FD"><span class="RefLink">7.3-6</span></a>) from a digraph onto the complete digraph (with <code class="code">n</code> vertices); see <code class="func">CompleteDigraph</code> (<a href="chap3_mj.html#X812417E278198D9C"><span class="RefLink">3.5-11</span></a>). Note that a digraph with loops (<code class="func">DigraphHasLoops</code> (<a href="chap6_mj.html#X7D92935C7D535187"><span class="RefLink">6.1-1</span></a>)) does not have a proper <code class="code">n</code>-colouring for any value <code class="code">n</code>.</p>
+<p>A <em>proper colouring</em> of a digraph is a labelling of its vertices in such a way that adjacent vertices have different labels. A <em>proper <code class="code">n</code>-colouring</em> is a proper colouring that uses exactly <code class="code">n</code> colours. Equivalently, a proper (<code class="code">n</code>-)colouring of a digraph can be defined to be a <code class="func">DigraphEpimorphism</code> (<a href="chap7_mj.html#X7CB5AD9F861684FD"><span class="RefLink">7.3-6</span></a>) from a digraph onto the complete digraph (with <code class="code">n</code> vertices); see <code class="func">CompleteDigraph</code> (<a href="chap3_mj.html#X812417E278198D9C"><span class="RefLink">3.5-11</span></a>). Note that a digraph with loops (<code class="func">DigraphHasLoops</code> (<a href="chap6_mj.html#X7D92935C7D535187"><span class="RefLink">6.2-1</span></a>)) does not have a proper <code class="code">n</code>-colouring for any value <code class="code">n</code>.</p>
 
 <p>If <var class="Arg">digraph</var> is a digraph and <var class="Arg">n</var> is a non-negative integer, then <code class="code">DigraphColouring(<var class="Arg">digraph</var>, <var class="Arg">n</var>)</code> returns an epimorphism from <var class="Arg">digraph</var> onto the complete digraph with <var class="Arg">n</var> vertices if one exists, else it returns <code class="keyw">fail</code>.</p>
 
 <p>See also <code class="func">DigraphGreedyColouring</code> (<a href="chap7_mj.html#X7AB7200D831013C1"><span class="RefLink">7.3-15</span></a>) and</p>
 
-<p>Note that a digraph with at least two vertices has a 2-colouring if and only if it is bipartite, see <code class="func">IsBipartiteDigraph</code> (<a href="chap6_mj.html#X860CFB0C8665F356"><span class="RefLink">6.1-3</span></a>).</p>
+<p>Note that a digraph with at least two vertices has a 2-colouring if and only if it is bipartite, see <code class="func">IsBipartiteDigraph</code> (<a href="chap6_mj.html#X860CFB0C8665F356"><span class="RefLink">6.2-3</span></a>).</p>
 
 
 <div class="example"><pre>
@@ -1544,7 +1583,7 @@ Transformation( [ 2, 1, 2, 1, 2, 1, 2, 1, 2, 1 ] )
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphGreedyColouring</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
 <p>Returns: A transformation, or <code class="keyw">fail</code>.</p>
 
-<p>A <em>proper colouring</em> of a digraph is a labelling of its vertices in such a way that adjacent vertices have different labels. Note that a digraph with loops (<code class="func">DigraphHasLoops</code> (<a href="chap6_mj.html#X7D92935C7D535187"><span class="RefLink">6.1-1</span></a>)) does not have any proper colouring.</p>
+<p>A <em>proper colouring</em> of a digraph is a labelling of its vertices in such a way that adjacent vertices have different labels. Note that a digraph with loops (<code class="func">DigraphHasLoops</code> (<a href="chap6_mj.html#X7D92935C7D535187"><span class="RefLink">6.2-1</span></a>)) does not have any proper colouring.</p>
 
 <p>If <var class="Arg">digraph</var> is a digraph and <var class="Arg">order</var> is a dense list consisting of all of the vertices of <var class="Arg">digraph</var> (in any order), then <code class="code">DigraphGreedyColouring</code> uses a greedy algorithm with the specified order to obtain some proper colouring of <var class="Arg">digraph</var>, which may not use the minimal number of colours.</p>
 
@@ -1588,7 +1627,7 @@ Transformation( [ 1, 2, 1, 2, 1, 2, 1, 2, 1, 2 ] )
 
 <p>A <em>proper colouring</em> of a digraph is a labelling of its vertices in such a way that adjacent vertices have different labels. Equivalently, a proper digraph colouring can be defined to be a <code class="func">DigraphEpimorphism</code> (<a href="chap7_mj.html#X7CB5AD9F861684FD"><span class="RefLink">7.3-6</span></a>) from a digraph onto a complete digraph.</p>
 
-<p>If <var class="Arg">digraph</var> is a digraph without loops (see <code class="func">DigraphHasLoops</code> (<a href="chap6_mj.html#X7D92935C7D535187"><span class="RefLink">6.1-1</span></a>), then <code class="code">ChromaticNumber</code> returns the least non-negative integer <code class="code">n</code> such that there is a proper colouring of <var class="Arg">digraph</var> with <code class="code">n</code> colours. In other words, for a digraph with at least one vertex, <code class="code">ChromaticNumber</code> returns the least number <code class="code">n</code> such that <code class="code">DigraphColouring(<var class="Arg">digraph</var>, n)</code> does not return <code class="keyw">fail</code>. See <code class="func">DigraphColouring</code> (<a href="chap7_mj.html#X86D0A74B83D6B9A7"><span class="RefLink">7.3-14</span></a>).</p>
+<p>If <var class="Arg">digraph</var> is a digraph without loops (see <code class="func">DigraphHasLoops</code> (<a href="chap6_mj.html#X7D92935C7D535187"><span class="RefLink">6.2-1</span></a>), then <code class="code">ChromaticNumber</code> returns the least non-negative integer <code class="code">n</code> such that there is a proper colouring of <var class="Arg">digraph</var> with <code class="code">n</code> colours. In other words, for a digraph with at least one vertex, <code class="code">ChromaticNumber</code> returns the least number <code class="code">n</code> such that <code class="code">DigraphColouring(<var class="Arg">digraph</var>, n)</code> does not return <code class="keyw">fail</code>. See <code class="func">DigraphColouring</code> (<a href="chap7_mj.html#X86D0A74B83D6B9A7"><span class="RefLink">7.3-14</span></a>).</p>
 
 <p>It is possible to select the algorithm to compute the chromatic number via the use of value options. The permitted algorithms and values to pass as options are:</p>
 
@@ -1648,6 +1687,88 @@ Transformation( [ 1, 2, 1, 2, 1, 2, 1, 2, 1, 2 ] )
 &lt;mutable digraph with 5 vertices, 5 edges&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphCore(D);</span>
 [ 2, 3, 4, 5 ]
+</pre></div>
+
+<p><a id="X7EEA340C81FCA52D" name="X7EEA340C81FCA52D"></a></p>
+
+<h5>7.3-19 LatticeDigraphEmbedding</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; LatticeDigraphEmbedding</code>( <var class="Arg">L1</var>, <var class="Arg">L2</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
+<p>Returns: A transformation, or <code class="keyw">fail</code>.</p>
+
+<p>If <var class="Arg">L1</var> and <var class="Arg">L2</var> are lattice digraphs (<code class="func">IsLatticeDigraph</code> (<a href="chap6_mj.html#X78D3E17B7F737516"><span class="RefLink">6.3-3</span></a>) returns <code class="keyw">true</code>, then <code class="code">LatticeDigraphEmbedding</code> returns a single <em>injective</em> <code class="func">DigraphHomomorphism</code> (<a href="chap7_mj.html#X85E9B019877AD7FE"><span class="RefLink">7.3-2</span></a>) between <var class="Arg">L1</var> and <var class="Arg">L2</var>, with the property that it is a <em>lattice homomorphism</em>. If no such homomorphism exists, <code class="keyw">fail</code> is returned.</p>
+
+<p>A <em>lattice homomorphism</em> is a digraph homomorphism which respects meets and joins of every pair of vertices. Note that every injective lattice homomorphism <code class="code">map</code> is an embedding, in the sense that the inverse of <code class="code">map</code> is a lattice homomorphism also.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">D := DigraphReflexiveTransitiveClosure(ChainDigraph(5));</span>
+&lt;immutable preorder digraph with 5 vertices, 15 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">L1 := DigraphReflexiveTransitiveClosure(ChainDigraph(5));</span>
+&lt;immutable preorder digraph with 5 vertices, 15 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">L2 := DigraphReflexiveTransitiveClosure(ChainDigraph(6));</span>
+&lt;immutable preorder digraph with 6 vertices, 21 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">LatticeDigraphEmbedding(L1, L2);</span>
+IdentityTransformation
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">LatticeDigraphEmbedding(L2, L1);</span>
+fail
+</pre></div>
+
+<p><a id="X7E183D4979D324EF" name="X7E183D4979D324EF"></a></p>
+
+<h5>7.3-20 IsLatticeHomomorphism</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsLatticeHomomorphism</code>( <var class="Arg">L1</var>, <var class="Arg">L2</var>, <var class="Arg">map</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsLatticeEpimorphism</code>( <var class="Arg">L1</var>, <var class="Arg">L2</var>, <var class="Arg">map</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsLatticeEmbedding</code>( <var class="Arg">L1</var>, <var class="Arg">L2</var>, <var class="Arg">map</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsLatticeMonomorphism</code>( <var class="Arg">L1</var>, <var class="Arg">L2</var>, <var class="Arg">map</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsLatticeEndomorphism</code>( <var class="Arg">L</var>, <var class="Arg">map</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
+<p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
+
+<p>Each of the function described in this section (except <code class="code">IsLatticeEndomorphism</code>) takes a pair of digraphs <var class="Arg">L1</var> and <var class="Arg">L2</var>, and a transformation <var class="Arg">map</var>, returning <code class="keyw">true</code> if <var class="Arg">map</var> is a <em>lattice homomorphism</em> from <var class="Arg">L1</var> to <var class="Arg">L2</var>, and <code class="keyw">false</code> otherwise. If <var class="Arg">L1</var> or <var class="Arg">L2</var> is not a lattice, then <code class="keyw">false</code> is returned.</p>
+
+<p>A transformation or permutation <var class="Arg">map</var> is a <em>lattice homomorphism</em> if <var class="Arg">map</var> respects meets and joins of every pair of vertices, and <var class="Arg">map</var> fixes every <code class="code">i</code> which is not a vertex of <var class="Arg">L1</var>.</p>
+
+<p><code class="code">IsLatticeHomomorphism</code> returns <code class="keyw">true</code> if the permutation or transformation <var class="Arg">map</var> is a lattice homomorphism from the lattice digraph <var class="Arg">L1</var> to the lattice digraph <var class="Arg">L2</var>.</p>
+
+<p><code class="code">IsLatticeEpimorphism</code> returns <code class="keyw">true</code> if the permutation or transformation <var class="Arg">map</var> is a surjective lattice homomorphism from the lattice digraph <var class="Arg">L1</var> to the lattice digraph <var class="Arg">L2</var>.</p>
+
+<p><code class="code">IsLatticeEmbedding</code> returns <code class="keyw">true</code> if the permutation or transformation <var class="Arg">map</var> is an injective lattice homomorphism from the lattice digraph <var class="Arg">L1</var> to the lattice digraph <var class="Arg">L2</var>. The function <code class="code">IsLatticeMonomorphism</code> is a synonym of <code class="code">IsLatticeEmbedding</code>.</p>
+
+<p><code class="code">IsLatticeEndomorphism</code> returns <code class="keyw">true</code> if the permutation or transformation <var class="Arg">map</var> is an lattice endomorphism of the lattice digraph <var class="Arg">L</var>.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">G := Digraph([[2, 4], [3, 7], [6], [5, 7], [6], [], [6]]);</span>
+&lt;immutable digraph with 7 vertices, 9 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">D := DigraphRemoveVertex(G, 7);</span>
+&lt;immutable digraph with 6 vertices, 6 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">G := DigraphReflexiveTransitiveClosure(G);</span>
+&lt;immutable preorder digraph with 7 vertices, 22 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">D := DigraphReflexiveTransitiveClosure(D);</span>
+&lt;immutable preorder digraph with 6 vertices, 17 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsDigraphEmbedding(D, G, IdentityTransformation);</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsLatticeHomomorphism(D, G, IdentityTransformation);</span>
+false
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">D := Digraph([[2, 3], [4], [4], []]);</span>
+&lt;immutable digraph with 4 vertices, 4 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">G := Digraph([[2, 3], [4], [4], [5], []]);</span>
+&lt;immutable digraph with 5 vertices, 5 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">D := DigraphReflexiveTransitiveClosure(D);</span>
+&lt;immutable preorder digraph with 4 vertices, 9 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">G := DigraphReflexiveTransitiveClosure(G);</span>
+&lt;immutable preorder digraph with 5 vertices, 14 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsLatticeEmbedding(D, G, IdentityTransformation);</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsLatticeMonomorphism(D, G, IdentityTransformation);</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">f := Transformation([1, 2, 3, 4, 4]);</span>
+Transformation( [ 1, 2, 3, 4, 4 ] )
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsLatticeEpimorphism(G, D, f);</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsLatticeEndomorphism(D, (2, 3));</span>
+true
 </pre></div>
 
 

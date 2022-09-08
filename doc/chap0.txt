@@ -3,7 +3,7 @@
                                     [1X[5XDigraphs[105X[101X
   
   
-                                 Version 1.5.3
+                                 Version 1.6.0
   
   
                                   Jan De Beule
@@ -276,104 +276,117 @@
       5.2-12 InDegreeOfVertex
       5.2-13 InNeighboursOfVertex
       5.2-14 DigraphLoops
-      5.2-15 PartialOrderDigraphMeetOfVertices
-      5.2-16 DegreeMatrix
-      5.2-17 LaplacianMatrix
-    5.3 [33X[0;0YReachability and connectivity[133X
-      5.3-1 DigraphDiameter
-      5.3-2 DigraphShortestDistance
-      5.3-3 DigraphShortestDistances
-      5.3-4 DigraphLongestDistanceFromVertex
-      5.3-5 DigraphDistanceSet
-      5.3-6 DigraphGirth
-      5.3-7 DigraphOddGirth
-      5.3-8 DigraphUndirectedGirth
-      5.3-9 DigraphConnectedComponents
-      5.3-10 DigraphConnectedComponent
-      5.3-11 DigraphStronglyConnectedComponents
-      5.3-12 DigraphStronglyConnectedComponent
-      5.3-13 DigraphBicomponents
-      5.3-14 ArticulationPoints
-      5.3-15 Bridges
-      5.3-16 StrongOrientation
-      5.3-17 DigraphPeriod
-      5.3-18 DigraphFloydWarshall
-      5.3-19 IsReachable
-      5.3-20 IsDigraphPath
-      5.3-21 VerticesReachableFrom
-      5.3-22 DigraphPath
-      5.3-23 DigraphShortestPath
-      5.3-24 Dominators
-      5.3-25 DominatorTree
-      5.3-26 IteratorOfPaths
-      5.3-27 DigraphAllSimpleCircuits
-      5.3-28 DigraphLongestSimpleCircuit
-      5.3-29 DigraphLayers
-      5.3-30 DigraphDegeneracy
-      5.3-31 DigraphDegeneracyOrdering
-      5.3-32 HamiltonianPath
-      5.3-33 NrSpanningTrees
-      5.3-34 DigraphDijkstra
-    5.4 [33X[0;0YCayley graphs of groups[133X
-      5.4-1 GroupOfCayleyDigraph
-      5.4-2 GeneratorsOfCayleyDigraph
-    5.5 [33X[0;0YAssociated semigroups[133X
-      5.5-1 AsSemigroup
-      5.5-2 AsSemigroup
-    5.6 [33X[0;0YPlanarity[133X
-      5.6-1 KuratowskiPlanarSubdigraph
-      5.6-2 KuratowskiOuterPlanarSubdigraph
-      5.6-3 PlanarEmbedding
-      5.6-4 OuterPlanarEmbedding
-      5.6-5 SubdigraphHomeomorphicToK23
+      5.2-15 DegreeMatrix
+      5.2-16 LaplacianMatrix
+    5.3 [33X[0;0YOrders[133X
+      5.3-1 PartialOrderDigraphMeetOfVertices
+      5.3-2 NonUpperSemimodularPair
+    5.4 [33X[0;0YReachability and connectivity[133X
+      5.4-1 DigraphDiameter
+      5.4-2 DigraphShortestDistance
+      5.4-3 DigraphShortestDistances
+      5.4-4 DigraphLongestDistanceFromVertex
+      5.4-5 DigraphDistanceSet
+      5.4-6 DigraphGirth
+      5.4-7 DigraphOddGirth
+      5.4-8 DigraphUndirectedGirth
+      5.4-9 DigraphConnectedComponents
+      5.4-10 DigraphConnectedComponent
+      5.4-11 DigraphStronglyConnectedComponents
+      5.4-12 DigraphStronglyConnectedComponent
+      5.4-13 DigraphBicomponents
+      5.4-14 ArticulationPoints
+      5.4-15 Bridges
+      5.4-16 StrongOrientation
+      5.4-17 DigraphPeriod
+      5.4-18 DigraphFloydWarshall
+      5.4-19 IsReachable
+      5.4-20 IsDigraphPath
+      5.4-21 VerticesReachableFrom
+      5.4-22 DigraphPath
+      5.4-23 DigraphShortestPath
+      5.4-24 DigraphRandomWalk
+      5.4-25 Dominators
+      5.4-26 DominatorTree
+      5.4-27 IteratorOfPaths
+      5.4-28 DigraphAllSimpleCircuits
+      5.4-29 DigraphLongestSimpleCircuit
+      5.4-30 DigraphLayers
+      5.4-31 DigraphDegeneracy
+      5.4-32 DigraphDegeneracyOrdering
+      5.4-33 HamiltonianPath
+      5.4-34 NrSpanningTrees
+      5.4-35 DigraphDijkstra
+    5.5 [33X[0;0YCayley graphs of groups[133X
+      5.5-1 GroupOfCayleyDigraph
+      5.5-2 GeneratorsOfCayleyDigraph
+    5.6 [33X[0;0YAssociated semigroups[133X
+      5.6-1 AsSemigroup
+      5.6-2 AsSemigroup
+    5.7 [33X[0;0YPlanarity[133X
+      5.7-1 KuratowskiPlanarSubdigraph
+      5.7-2 KuratowskiOuterPlanarSubdigraph
+      5.7-3 PlanarEmbedding
+      5.7-4 OuterPlanarEmbedding
+      5.7-5 SubdigraphHomeomorphicToK23
   6 [33X[0;0YProperties of digraphs[133X
-    6.1 [33X[0;0YEdge properties[133X
-      6.1-1 DigraphHasLoops
-      6.1-2 IsAntiSymmetricDigraph
-      6.1-3 IsBipartiteDigraph
-      6.1-4 IsCompleteBipartiteDigraph
-      6.1-5 IsCompleteDigraph
-      6.1-6 IsCompleteMultipartiteDigraph
-      6.1-7 IsEmptyDigraph
-      6.1-8 IsEquivalenceDigraph
-      6.1-9 IsFunctionalDigraph
-      6.1-10 IsMultiDigraph
-      6.1-11 IsReflexiveDigraph
-      6.1-12 IsSymmetricDigraph
-      6.1-13 IsTournament
-      6.1-14 IsTransitiveDigraph
-      6.1-15 IsPreorderDigraph
-      6.1-16 IsPartialOrderDigraph
-      6.1-17 IsMeetSemilatticeDigraph
-    6.2 [33X[0;0YRegularity[133X
-      6.2-1 IsInRegularDigraph
-      6.2-2 IsOutRegularDigraph
-      6.2-3 IsRegularDigraph
-      6.2-4 IsDistanceRegularDigraph
-    6.3 [33X[0;0YConnectivity and cycles[133X
-      6.3-1 IsAcyclicDigraph
-      6.3-2 IsChainDigraph
-      6.3-3 IsConnectedDigraph
-      6.3-4 IsBiconnectedDigraph
-      6.3-5 IsBridgelessDigraph
-      6.3-6 IsStronglyConnectedDigraph
-      6.3-7 IsAperiodicDigraph
-      6.3-8 IsDirectedTree
-      6.3-9 IsUndirectedTree
-      6.3-10 IsEulerianDigraph
-      6.3-11 IsHamiltonianDigraph
-      6.3-12 IsCycleDigraph
-    6.4 [33X[0;0YPlanarity[133X
-      6.4-1 IsPlanarDigraph
-      6.4-2 IsOuterPlanarDigraph
-    6.5 [33X[0;0YHomomorphisms and transformations[133X
-      6.5-1 IsDigraphCore
-      6.5-2 IsEdgeTransitive
-      6.5-3 IsVertexTransitive
+    6.1 [33X[0;0YVertex properties[133X
+      6.1-1 DigraphHasAVertex
+      6.1-2 DigraphHasNoVertices
+    6.2 [33X[0;0YEdge properties[133X
+      6.2-1 DigraphHasLoops
+      6.2-2 IsAntiSymmetricDigraph
+      6.2-3 IsBipartiteDigraph
+      6.2-4 IsCompleteBipartiteDigraph
+      6.2-5 IsCompleteDigraph
+      6.2-6 IsCompleteMultipartiteDigraph
+      6.2-7 IsEmptyDigraph
+      6.2-8 IsEquivalenceDigraph
+      6.2-9 IsFunctionalDigraph
+      6.2-10 IsPermutationDigraph
+      6.2-11 IsMultiDigraph
+      6.2-12 IsNonemptyDigraph
+      6.2-13 IsReflexiveDigraph
+      6.2-14 IsSymmetricDigraph
+      6.2-15 IsTournament
+      6.2-16 IsTransitiveDigraph
+    6.3 [33X[0;0YOrders[133X
+      6.3-1 IsPreorderDigraph
+      6.3-2 IsPartialOrderDigraph
+      6.3-3 IsMeetSemilatticeDigraph
+      6.3-4 DigraphMeetTable
+      6.3-5 IsUpperSemimodularDigraph
+      6.3-6 IsDistributiveLatticeDigraph
+    6.4 [33X[0;0YRegularity[133X
+      6.4-1 IsInRegularDigraph
+      6.4-2 IsOutRegularDigraph
+      6.4-3 IsRegularDigraph
+      6.4-4 IsDistanceRegularDigraph
+    6.5 [33X[0;0YConnectivity and cycles[133X
+      6.5-1 IsAcyclicDigraph
+      6.5-2 IsChainDigraph
+      6.5-3 IsConnectedDigraph
+      6.5-4 IsBiconnectedDigraph
+      6.5-5 IsBridgelessDigraph
+      6.5-6 IsStronglyConnectedDigraph
+      6.5-7 IsAperiodicDigraph
+      6.5-8 IsDirectedTree
+      6.5-9 IsUndirectedTree
+      6.5-10 IsEulerianDigraph
+      6.5-11 IsHamiltonianDigraph
+      6.5-12 IsCycleDigraph
+    6.6 [33X[0;0YPlanarity[133X
+      6.6-1 IsPlanarDigraph
+      6.6-2 IsOuterPlanarDigraph
+    6.7 [33X[0;0YHomomorphisms and transformations[133X
+      6.7-1 IsDigraphCore
+      6.7-2 IsEdgeTransitive
+      6.7-3 IsVertexTransitive
   7 [33X[0;0YHomomorphisms[133X
     7.1 [33X[0;0YActing on digraphs[133X
       7.1-1 OnDigraphs
       7.1-2 OnMultiDigraphs
+      7.1-3 OnTuplesDigraphs
     7.2 [33X[0;0YIsomorphisms and canonical labellings[133X
       7.2-1 DigraphsUseNauty
       7.2-2 AutomorphismGroup
@@ -417,6 +430,8 @@
       7.3-16 DigraphWelshPowellOrder
       7.3-17 ChromaticNumber
       7.3-18 DigraphCore
+      7.3-19 LatticeDigraphEmbedding
+      7.3-20 IsLatticeHomomorphism
   8 [33X[0;0YFinding cliques and independent sets[133X
     8.1 [33X[0;0YFinding cliques[133X
       8.1-1 IsClique
