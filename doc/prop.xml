@@ -1312,7 +1312,8 @@ true
     in which the <E>lattice digraphs</E> representing <M>M3</M> and <M>N5</M> are
     not embeddable as lattices
     (see <URL>https://en.wikipedia.org/wiki/Distributive_lattice</URL> and
-    <Ref Prop="IsLatticeEmbedding"/>).<P/>
+    <Ref Prop="IsLatticeEmbedding" 
+    Label="for digraphs and a permutation or transformation"/>).<P/>
 
     &MUTABLE_RECOMPUTED_PROP;
 

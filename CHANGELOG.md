@@ -4,6 +4,35 @@ Wilf A. Wilson, Michael Young et al.
 
 Licensing information can be found in the `LICENSE` file.
 
+## Version 1.6.0 (released 08/09/2022)
+
+This is a minor release including a number of new features:
+
+* Implement `IsPermutationDigraph` by @baydrea in
+  https://github.com/digraphs/Digraphs/pull/513
+* Add more implications (including some implications of falsity) by @wilfwilson
+  in https://github.com/digraphs/Digraphs/pull/494
+* Add `OnTuplesDigraphs` and `OnSetsDigraphs` by @wilfwilson in
+  https://github.com/digraphs/Digraphs/pull/449
+* Add checks for upper/lower semimodular lattices by @james-d-mitchell in
+  https://github.com/digraphs/Digraphs/pull/375
+* Add `AsDigraph` for partial perms by @james-d-mitchell in
+  https://github.com/digraphs/Digraphs/pull/526
+* Add `DigraphRandomWalk` by @mtorpey in
+  https://github.com/digraphs/Digraphs/pull/543
+* Add constructors for random digraphs with particular properties by
+  @KamranKSharma in https://github.com/digraphs/Digraphs/pull/531
+* Add `LatticeDigraphEmbedding` method by @MTWhyte in https://github.com/digraphs/Digraphs/pull/538
+* Add `IsDistributiveLatticeDigraph` property by @MTWhyte in https://github.com/digraphs/Digraphs/pull/528
+
+The following improvements were also made:
+
+* Make improvements to `IsMeetSemilatticeDigraph` and
+  `IsJoinSemilatticeDigraph`  by @MTWhyte in
+  https://github.com/digraphs/Digraphs/pull/556
+* Add a workaround for macOS code signing issues by @fingolfin in
+  https://github.com/digraphs/Digraphs/pull/555
+
 ## Version 1.5.3 (released 20/05/2022)
 
 This is a minor release including the following changes:
