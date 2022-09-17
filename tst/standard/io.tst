@@ -415,6 +415,12 @@ gap> OutNeighbours(gr);
 [ [ 2, 4 ], [  ], [ 1, 2, 4 ], [ 2 ] ]
 gap> gr := TournamentLineDecoder("");
 <immutable empty digraph with 1 vertex>
+gap> fname := Concatenation(DIGRAPHS_Dir(), "/data/tourn4.txt");;
+gap> ReadDigraphs(fname, TournamentLineDecoder);
+[ <immutable digraph with 4 vertices, 6 edges>, 
+  <immutable digraph with 4 vertices, 6 edges>, 
+  <immutable digraph with 4 vertices, 6 edges>, 
+  <immutable digraph with 4 vertices, 6 edges> ]
 
 #  AdjacencyMatrixUpperTriangleLineDecoder
 gap> gr := AdjacencyMatrixUpperTriangleLineDecoder("100101");

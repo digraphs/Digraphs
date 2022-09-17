@@ -1254,6 +1254,7 @@ BindGlobal("DIGRAPHS_TournamentLineDecoder",
 function(func, s)
   local out, pos, n, i, j;
   pos := 0;
+  s := Chomp(s);
   n := (Sqrt(8 * Length(s) + 1) + 1) / 2;
   out := List([1 .. n], x -> []);
   for i in [1 .. n - 1] do
