@@ -15,7 +15,7 @@
 #include <stdlib.h>   // for malloc, NULL
 
 // GAP headers
-#include "src/compiled.h"
+#include "compiled.h"
 
 // Digraphs package headers
 #include "bitarray.h"        // for BitArray
