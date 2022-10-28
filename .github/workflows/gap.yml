@@ -24,6 +24,7 @@ jobs:
         gap-branch:
           - master
           - stable-4.11
+          - stable-4.12
         pkgs-to-clone:
           - NautyTracesInterface
         ABI: ['']
