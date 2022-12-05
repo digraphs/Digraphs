@@ -41,7 +41,7 @@ jobs:
             ABI: 32
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: "Install dependencies"
         if: ${{ runner.os == 'macOS' }}
         run: brew install automake
@@ -82,7 +82,7 @@ jobs:
           GAP_TESTFILE: "tst/github_actions/extreme.g"
       - uses: gap-actions/process-coverage@v2
         if: ${{ always() }}
-      - uses: codecov/codecov-action@v2
+      - uses: codecov/codecov-action@v3
         if: ${{ always() }}
 
   test-cygwin:
@@ -92,7 +92,7 @@ jobs:
     env:
       CHERE_INVOKING: 1
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: gap-actions/setup-cygwin@v1
       - uses: gap-actions/setup-gap@cygwin-v2
         with:
@@ -104,4 +104,4 @@ jobs:
           tar xf "${{ env.DIGRAPHS_LIB }}.tar.gz"
       - uses: gap-actions/run-pkg-tests@cygwin-v2
       - uses: gap-actions/process-coverage@cygwin-v2
-      - uses: codecov/codecov-action@v2
+      - uses: codecov/codecov-action@v3
