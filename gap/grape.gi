@@ -104,7 +104,7 @@ function(G, gens)
   fi;
 
   # vertex i in the Cayley digraph corresponds to elts[i].
-  elts := AsList(G);
+  elts := AsSet(G);
   adj := {x, y} -> LeftQuotient(x, y) in gens;
 
   D := Digraph(IsImmutableDigraph, G, elts, OnLeftInverse, adj);
