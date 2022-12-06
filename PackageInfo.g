@@ -9,7 +9,7 @@
 ##
 
 ##  <#GAPDoc Label="PKGVERSIONDATA">
-##  <!ENTITY VERSION                  "1.6.0">
+##  <!ENTITY VERSION                  "1.6.1">
 ##  <!ENTITY GAPVERS                  "4.10.0">
 ##  <!ENTITY GRAPEVERS                "4.8.1">
 ##  <!ENTITY IOVERS                   "4.5.1">
@@ -28,8 +28,8 @@ _STANDREWSCS := Concatenation(["Jack Cole Building, North Haugh, ",
 SetPackageInfo(rec(
 PackageName := "Digraphs",
 Subtitle := "Graphs, digraphs, and multidigraphs in GAP",
-Version := "1.6.0",
-Date := "08/09/2022",  # dd/mm/yyyy format
+Version := "1.6.1",
+Date := "06/12/2022",  # dd/mm/yyyy format
 License := "GPL-3.0-or-later",
 ArchiveFormats := ".tar.gz",
 
@@ -229,7 +229,7 @@ Persons := [
     FirstNames    := "James",
     IsAuthor      := true,
     IsMaintainer  := true,
-    Email         := "jdm3@st-and.ac.uk",
+    Email         := "jdm3@st-andrews.ac.uk",
     WWWHome       := "https://jdbm.me",
     PostalAddress := _STANDREWSMATHS,
     Place         := "St Andrews",
