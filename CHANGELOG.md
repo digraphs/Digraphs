@@ -4,6 +4,14 @@ Wilf A. Wilson, Michael Young et al.
 
 Licensing information can be found in the `LICENSE` file.
 
+## Version 1.6.1 (released 06/12/2022)
+
+This is a minor release fixing a number of minor issues:
+
+* Use `compiled.h` instead of `src/compiled.h` by @fingolfin in https://github.com/digraphs/Digraphs/pull/560
+* Fix tourn decoder by @james-d-mitchell in https://github.com/digraphs/Digraphs/pull/559
+* Change `CayleyDigraph` to use `AsSet` by @fingolfin in https://github.com/digraphs/Digraphs/pull/564
+
 ## Version 1.6.0 (released 08/09/2022)
 
 This is a minor release including a number of new features:
