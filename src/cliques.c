@@ -6,7 +6,7 @@
 //
 // This file is free software, see the digraphs/LICENSE.
 
-#include <cliques.h>
+#include "cliques.h"
 
 // C headers
 #include <stdbool.h>  // for true, false, bool

@@ -24,8 +24,9 @@ AC_DEFUN([AX_CHECK_BLISS], [
                         [AC_MSG_ERROR([no external bliss headers found])])
         AC_LANG_POP()
   fi
-  AM_CONDITIONAL([WITH_INCLUDED_BLISS], [test "x$with_external_bliss" = xno])
   if test "x$with_external_bliss" = xno ; then
+    WITH_INCLUDED_BLISS=yes
+    AC_SUBST(WITH_INCLUDED_BLISS)
     AC_DEFINE([WITH_INCLUDED_BLISS],
               [1],
               [define that we should use the vendored bliss])

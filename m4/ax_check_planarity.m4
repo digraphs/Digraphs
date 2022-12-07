@@ -24,8 +24,9 @@ AC_DEFUN([AX_CHECK_PLANARITY], [
                         [AC_MSG_ERROR([no external planarity headers found])])
         AC_LANG_POP()
   fi
-  AM_CONDITIONAL([WITH_INCLUDED_PLANARITY], [test "x$with_external_planarity" = xno])
   if test "x$with_external_planarity" = xno ; then
+    WITH_INCLUDED_PLANARITY=yes
+    AC_SUBST(WITH_INCLUDED_PLANARITY)
     AC_DEFINE([WITH_INCLUDED_PLANARITY], 
               [1], 
               [define that we should use the vendored planarity])
