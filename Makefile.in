@@ -1,5 +1,5 @@
 #
-# Makefile rules for the curlInterface package
+# Makefile rules for the digraphs package
 #
 KEXT_NAME = digraphs
 
