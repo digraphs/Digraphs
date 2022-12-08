@@ -502,12 +502,12 @@ end);
 # A vertex z dominates a pair of vertices {x, y} if z->x and z->y
 # A pair of vertices {x, y} dominates a vertex z if x->z and y->z
 # Theorem 4.1: a strongly connected digraph with n vertices in which every pair
-# of non-adjacent dominated vertices {x,y} satifies either of:
+# of non-adjacent dominated vertices {x,y} satisfies either of:
 # 1.(full degree of x) ≥ n and (full degree of y) ≥ n - 1
 # 2.(full degree of y) ≥ n and (full degree of x) ≥ n - 1
 # Is Hamiltonian.
 # Theorem 4.2: a strongly connected digraph with n vertices in which every pair
-# of non-adjacent vertices {x,y} which is dominated or dominating satifies:
+# of non-adjacent vertices {x,y} which is dominated or dominating satisfies:
 # 1. (out degree of x) + (in degree of y) ≥ n
 # 2. (out degree of y) + (in degree of x) ≥ n
 # Is Hamiltonian.

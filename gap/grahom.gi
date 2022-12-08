@@ -31,7 +31,7 @@ function(arg)
       colours := fail;
       G := AutomorphismGroup(DigraphRemoveAllMultipleEdges(D));
     else
-      ErrorNoReturn("the 2nd argument must be a homogenous list,");
+      ErrorNoReturn("the 2nd argument must be a homogeneous list,");
     fi;
   else
     if HasGeneratorsOfEndomorphismMonoidAttr(D) then

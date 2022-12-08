@@ -302,7 +302,7 @@ function(D)
     od;
     return index;
   end;
-  # Iterate over vetex subsets
+  # Iterate over vertex subsets
   subset_iter := IteratorOfCombinations(vertices);
   # Skip the first one, which should be the empty set
   S := NextIterator(subset_iter);
@@ -345,7 +345,7 @@ function(D)
     # Undo the changes made.
     UniteBlist(vertex_blist, I);
   od;
-  # Iterate over vetex subset blists.
+  # Iterate over vertex subset blists.
   subset_iter := ListWithIdenticalEntries(n, [true, false]);
   subset_iter := IteratorOfCartesianProduct2(subset_iter);
   # Skip the first one, which should be the empty set

@@ -168,10 +168,10 @@ gap> GeneratorsOfEndomorphismMonoid(gr);
 gap> gr := EmptyDigraph(2);
 <immutable empty digraph with 2 vertices>
 gap> GeneratorsOfEndomorphismMonoid(gr, Group(()), Group((1, 2)));
-Error, the 2nd argument must be a homogenous list,
+Error, the 2nd argument must be a homogeneous list,
 gap> gr := EmptyDigraph(2);;
 gap> GeneratorsOfEndomorphismMonoid(gr, Group(()));
-Error, the 2nd argument must be a homogenous list,
+Error, the 2nd argument must be a homogeneous list,
 gap> gr := EmptyDigraph(2);;
 gap> GeneratorsOfEndomorphismMonoid(gr, 1);
 [ Transformation( [ 2, 1 ] ) ]

@@ -398,7 +398,7 @@ function(arg)
   fi;
 
   if not (IsString(name) or IsFile(name)) then
-    ErrorNoReturn("the 1st argument <filenname> must be a string or IO ",
+    ErrorNoReturn("the 1st argument <filename> must be a string or IO ",
                   "file object,");
   elif not (IsFunction(decoder) or decoder = fail) then
     ErrorNoReturn("the argument <decoder> must be a function or fail,");

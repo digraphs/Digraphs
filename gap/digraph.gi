@@ -1166,7 +1166,7 @@ function(filt, D)
   red := DigraphReflexiveTransitiveReduction(D);
   top := DigraphTopologicalSort(D);
   # im[i] will store the image of the idempotent partial perm corresponding to
-  # vertex i of the arugment <D>
+  # vertex i of the argument <D>
   im         := [];
   im[top[1]] := [];
   max        := 1;

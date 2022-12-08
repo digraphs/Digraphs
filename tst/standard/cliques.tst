@@ -548,11 +548,11 @@ Error, the 1st argument <digraph> must be a digraph, not integer,
 gap> DigraphsCliquesFinder(NullDigraph(513), 2, 3, 4, 5, 6, 7, 8);
 Error, the 1st argument <digraph> must have at most 512 vertices, found 513,
 gap> DigraphsCliquesFinder(NullDigraph(1), fail, 3, 4, 5, 6, 7, 8);
-Error, the 2rd argument <hook> is fail and so the 3th argument must be a mutab\
+Error, the 2nd argument <hook> is fail and so the 3th argument must be a mutab\
 le list, not integer,
 gap> f := function(n) end;;
 gap> DigraphsCliquesFinder(NullDigraph(1), f, [], 4, 5, 6, 7, 8);
-Error, the 2rd argument <hook> must be a function with 2 arguments,
+Error, the 2nd argument <hook> must be a function with 2 arguments,
 gap> DigraphsCliquesFinder(NullDigraph(1), fail, [], fail, 5, 6, 7, 8);
 Error, the 4th argument <limit> must be an integer or infinity, not boolean or\
  fail,

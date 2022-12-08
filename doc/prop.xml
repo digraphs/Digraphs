@@ -1341,7 +1341,7 @@ false]]></Example>
   <Prop Name="IsQuasiorderDigraph" Arg="digraph"/>
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
-    A digraph is a preorder digraph if and only if the digraph satisifies both
+    A digraph is a preorder digraph if and only if the digraph satisfies both
     <Ref Prop="IsReflexiveDigraph"/> and <Ref Prop="IsTransitiveDigraph"/>.
     A preorder digraph (or quasiorder digraph) <A>digraph</A> corresponds to
     the preorder relation <M>\leq</M> defined by <M>x \leq y</M> if and only
@@ -1377,7 +1377,7 @@ false
   <Prop Name="IsPartialOrderDigraph" Arg="digraph"/>
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
-    A digraph is a partial order digraph if and only if the digraph satisifies
+    A digraph is a partial order digraph if and only if the digraph satisfies
     all of <Ref Prop="IsReflexiveDigraph"/>,
     <Ref Prop="IsAntisymmetricDigraph"/> and <Ref Prop="IsTransitiveDigraph"/>.
     A partial order <A>digraph</A> corresponds
@@ -1410,7 +1410,7 @@ true
   <Prop Name="IsEquivalenceDigraph" Arg="digraph"/>
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
-    A digraph is an equivalence digraph if and only if the digraph satisifies
+    A digraph is an equivalence digraph if and only if the digraph satisfies
     all of <Ref Prop="IsReflexiveDigraph"/>,
     <Ref Prop="IsSymmetricDigraph"/> and <Ref Prop="IsTransitiveDigraph"/>.
     A partial order <A>digraph</A> corresponds to an equivalence relation.

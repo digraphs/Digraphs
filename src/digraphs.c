@@ -502,7 +502,7 @@ static Obj FuncDIGRAPH_TRANS_REDUCTION(Obj self, Obj D) {
     return D;
   }
 
-  // Create the GAP out-neighbours strcture of the result
+  // Create the GAP out-neighbours structure of the result
   Obj ot_list = NEW_PLIST(T_PLIST_TAB, n);
   SET_LEN_PLIST(ot_list, n);
   for (UInt i = 1; i <= n; i++) {
