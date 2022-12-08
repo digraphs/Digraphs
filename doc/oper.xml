@@ -791,7 +791,7 @@ gap> InDegreeOfVertex(D, 4);
 <ManSection>
   <Oper Name="InNeighboursOfVertex" Arg="digraph, vertex"/>
   <Oper Name="InNeighborsOfVertex" Arg="digraph, vertex"/>
-  <Returns>A list of postitive vertices.</Returns>
+  <Returns>A list of positive vertices.</Returns>
   <Description>
 
     This operation returns the list <C>inn</C> of vertices of the digraph
@@ -991,7 +991,7 @@ false
     <A>func</A>, <A>nopath</A>, and <A>edge</A>.
     The arguments <A>nopath</A> and <A>edge</A> can be arbitrary &GAP; objects.
     The argument <A>func</A> must be a function which accepts 4 arguments:
-    the matrix <C>mat</C>, followed by 3 postive integers. The function
+    the matrix <C>mat</C>, followed by 3 positive integers. The function
     <A>func</A> is where the work to calculate the desired outcome must be
     performed. <P/>
 
@@ -1577,7 +1577,7 @@ gap> DigraphRandomWalk(D, 1, 4);
     to the vertex <A>v</A>.
     <P/>
 
-    See <Ref Oper="DigraphPath"/> for more information about the repesentation
+    See <Ref Oper="DigraphPath"/> for more information about the representation
     of a directed path or directed cycle which is used, and see <Ref
       Sect="Iterators" BookName="ref"/> for more information about iterators.
     See Section <Ref Subsect="Definitions" Style="Text"/> for the definition of

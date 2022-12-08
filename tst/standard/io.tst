@@ -62,7 +62,7 @@ false
 gap> list[10] = gr;
 true
 gap> ReadDigraphs(34, DigraphFromGraph6String, 5);
-Error, the 1st argument <filenname> must be a string or IO file object,
+Error, the 1st argument <filename> must be a string or IO file object,
 gap> ReadDigraphs(str, (1, 6, 5), 5);
 Error, the argument <decoder> must be a function or fail,
 gap> ReadDigraphs(str, DigraphFromGraph6String, 0);

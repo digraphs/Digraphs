@@ -63,7 +63,7 @@ gap> not DIGRAPHS_NautyAvailable or
 true
 
 # Complete bipartitite graph with parts of size m and n
-# shoud have automorphism group S_m x S_n
+# should have automorphism group S_m x S_n
 gap> m := 5;; n := 4;;
 gap> gr := CompleteBipartiteDigraph(m, n);
 <immutable complete bipartite digraph with bicomponent sizes 5 and 4>

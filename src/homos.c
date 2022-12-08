@@ -1851,7 +1851,7 @@ static bool init_data_from_args(Obj digraph1_obj,
 //                      of the function. It seems in many cases to be a good
 //                      idea for this to be the DigraphWelshPowellOrder, i.e.
 //                      vertices ordered from highest to lowest degree.
-// 13. aut_grp_obj      an optional argument that can specifiy the
+// 13. aut_grp_obj      an optional argument that can specify the
 //                      automorphisms of the graph that will be used in the
 //                      recursive search. If not given, the full automorphism
 //                      group will be used.

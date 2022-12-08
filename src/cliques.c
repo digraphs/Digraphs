@@ -111,7 +111,7 @@ static UInt
 clique_hook_gap_list(void* user_param, Obj clique_list, Obj gap_func) {
   Obj n = CALL_2ARGS(gap_func, user_param, clique_list);
   if (!IS_INTOBJ(n)) {
-    ErrorQuit("the 2rd argument <hook> must be a function which returns "
+    ErrorQuit("the 2nd argument <hook> must be a function which returns "
               "an integer,",
               0L,
               0L);
@@ -427,7 +427,7 @@ static int BronKerbosch(uint16_t    depth,
 // The arguments are as follows:
 //
 // 1. digraphs_obj    the digraph to search for cliques in
-// 2. hook_obj        a funtion to apply to every clique found, or Fail if no
+// 2. hook_obj        a function to apply to every clique found, or Fail if no
 //                    such function is needed
 // 3. user_param_obj  GAP variable that can be used in the hook_obj, must be a
 //                    plist if hook_obj is Fail
@@ -444,7 +444,7 @@ static int BronKerbosch(uint16_t    depth,
 // 7. max_obj         True if only maximal cliques need to be found and False
 //                    otherwise
 // 8. size_obj        an integer specifying the size of cliques to be found
-// 9. aut_grp_obj     an optional argument that can specifiy the automorphisms
+// 9. aut_grp_obj     an optional argument that can specify the automorphisms
 //                    of the graph that will be used in the recursive search.
 //                    If not given, the full automorphism group will be used.
 //
@@ -485,14 +485,14 @@ Obj FuncDigraphsCliquesFinder(Obj self, Obj args) {
   }
   if (hook_obj == Fail) {
     if (!IS_LIST(user_param_obj) || !IS_MUTABLE_OBJ(user_param_obj)) {
-      ErrorQuit("the 2rd argument <hook> is fail and so the 3th argument must "
+      ErrorQuit("the 2nd argument <hook> is fail and so the 3th argument must "
                 "be a mutable list, not %s,",
                 (Int) TNAM_OBJ(user_param_obj),
                 0L);
     }
   } else if (!IS_FUNC(hook_obj) || NARG_FUNC(hook_obj) != 2) {
     ErrorQuit(
-        "the 2rd argument <hook> must be a function with 2 arguments,", 0L, 0L);
+        "the 2nd argument <hook> must be a function with 2 arguments,", 0L, 0L);
   }
   if (!IS_INTOBJ(limit_obj) && limit_obj != Infinity) {
     ErrorQuit("the 4th argument <limit> must be an integer "

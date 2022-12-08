@@ -310,8 +310,8 @@ This is a minor release that fixes several bugs:
 This is a minor release of the Digraphs package.  The main change in this
 release is the reintroduction of the three-argument version of
 `DigraphAddVertices`, which accepts a digraph, a number of vertices to add, and
-a list of labels for the new vertices.  The removal inadvertantly broke
-backwards compatbility with some third-party pre-existing code that relied on
+a list of labels for the new vertices.  The removal inadvertently broke
+backwards compatibility with some third-party pre-existing code that relied on
 this functionality in the Digraphs package (see
 [Issue #264](https://github.com/digraphs/Digraphs/issues/264)).
 
