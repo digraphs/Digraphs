@@ -107,6 +107,11 @@ sudo chown -R gap: $GAP_HOME/pkg/digraphs
 
 bold "Compiling the Digraphs package..."
 cd "$GAP_HOME/pkg/digraphs"
+
+aclocal --version
+autoconf --version
+autoheader --version
+
 ./autogen.sh
 ./configure $PKG_FLAGS $EXTRA_PKG_FLAGS
 make
