@@ -209,8 +209,7 @@ Persons := [
     IsMaintainer  := false,
     PostalAddress := _STANDREWSCS,
     Email         := "obk1@st-andrews.ac.uk",
-    WWWHome       :=
-      "https://www.st-andrews.ac.uk/computer-science/people/obk1/",
+    WWWHome       := "https://olexandr-konovalov.github.io/",
     Place         := "St Andrews",
     Institution   := "University of St Andrews"),
 
