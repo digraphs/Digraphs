@@ -70,3 +70,223 @@ gap> EdgeWeights(g);
     </Description>
     </ManSection>
 <#/GAPDoc>
+
+<#GAPDoc Label="DigraphEdgeWeightedMinimumSpanningTree">
+    <ManSection>
+    <Attr Name="DigraphEdgeWeightedMinimumSpanningTree" Arg="digraph"/>
+    <Returns>A record.</Returns>
+    <Description>
+        This function returns the record with 2 components <C>total</C> and <C>mst</C>. 
+        The first component <C>total</C> represents the sum of the edge weights of the digraph that is returns. 
+        The second component <C>mst</C> is the edge weighted digraph representation of the mst.
+        <P/>
+
+        This algorithm only works on connected undirected graphs. If it is given a disconnected digraph, it will error. 
+        The function will internally convert <A>digraph</A> representation to an undirected representation.
+
+        See <Ref Attr="EdgeWeights" Func="EdgeWeightedDigraph"/>.
+    <Example><![CDATA[
+gap> g := EdgeWeightedDigraph([[2],[1],[1,2]], [[12],[5],[6,9]]);
+<immutable digraph with 3 vertices, 4 edges>
+gap> DigraphEdgeWeightedMinimumSpanningTree(g);
+rec( mst := <immutable digraph with 3 vertices, 2 edges>, total := 11 
+ )]]></Example>
+    </Description>
+    </ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphEdgeWeightedShortestPath">
+    <ManSection>
+    <Oper Name="DigraphEdgeWeightedShortestPath" Arg="digraph, start"/>
+    <Returns>A record.</Returns>
+    <Description>
+        This operation, given a edge weighted <A>digraph</A> and a <A>start</A> vertex will return a record
+        with 3 components. The first component is the distances which is a list of shortest distance 
+        to each node from the <A>start</A> node. The distance from the start node to itself is always 0.
+        The second component is the edges, which signifies which edge was taken to get to that vertex from the parent of that node
+        which is the third component; a list of vertices which are the parents of that vertex. Using both these components
+        together, you can find the shortest edge weighted path to all other vertices from a starting vertex. In 
+        In cases, where a path doesn't exist and therefore there are no distances, edges or parents, the lists will
+        contain a fail. 
+        <P/>
+
+        This operation can handle negative edge weights BUT it will error if a negative cycle exists.
+        <P/>
+
+        See <Ref Attr="EdgeWeights" Func="EdgeWeightedDigraph"/>.
+    <Example><![CDATA[
+gap> g := EdgeWeightedDigraph([[2,3],[4],[4],[]],[[5,1],[6],[11],[]]);
+<immutable digraph with 4 vertices, 4 edges>
+gap> DigraphEdgeWeightedShortestPath(g,1);
+rec( distances := [ 0, 5, 1, 11 ], edges := [ fail, 1, 2, 1 ], 
+  parents := [ fail, 1, 1, 2 ] )
+gap> ncg := EdgeWeightedDigraph([[2],[3],[1]],[[-1],[-2],[-3]]);
+<immutable digraph with 3 vertices, 3 edges>
+gap> DigraphEdgeWeightedShortestPath(ncg,1);
+Error, negative cycle exists,
+]]></Example>
+    </Description>
+    </ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphEdgeWeightedShortestPaths">
+    <ManSection>
+    <Attr Name="DigraphEdgeWeightedShortestPaths" Arg="digraph"/>
+    <Returns>A list of lists of integers, floats or rationals.</Returns>
+    <Description>
+        Given an edge weighted <A>digraph</A>, this returns a list of lists
+        of the shortest distance from one vertex to every other vertex.
+        If no paths exist, then fail will be returned in the 2D list.
+        This will return an incorrect answer if negative cycles exists.
+
+        See <Ref Attr="EdgeWeights" Func="EdgeWeightedDigraph"/>.
+    <Example><![CDATA[
+gap> g := EdgeWeightedDigraph([[2],[3],[1]],[[1],[2],[3]]);
+<immutable digraph with 3 vertices, 3 edges>
+gap> DigraphEdgeWeightedShortestPaths(g);
+rec( distances := [ [ 0, 1, 3 ], [ 5, 0, 2 ], [ 3, 4, 0 ] ], 
+  edges := [ [ fail, 1, 1 ], [ 1, fail, 1 ], [ 1, 1, fail ] ], 
+  parents := [ [ fail, 1, 1 ], [ 2, fail, 2 ], [ 3, 3, fail ] ] )]]></Example>
+    </Description>
+    </ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphMaximumFlow">
+    <ManSection>
+    <Attr Name="DigraphMaximumFlow" Arg="digraph, start, destination"/>
+    <Returns>A record.</Returns>
+    <Description>
+        Given an edge weighted <A>digraph</A>, this returns a record with 3 components. 
+        The first component is the flow inbound into vertex v which is a list of lists. 
+        If there are multiple edges, the algorithm will fill up the edges sequentially so 
+        if there are 3 edges outbound from u to v with capacities, 5,10,15 and there is a flow of 15, it will fill the first two edges 5 and 10. 
+        If there is a flow of 9, then the flow will contain a list with flows 5 and 4. <P/>
+
+        This can be coupled with the second component which is a list of list of the vertices that each flow comes from. Using this, 
+        allows the path of the flow and the flow to be obtained using the first component. <P/>
+
+        The third and last component is the maximum flow value which is the highest flow that we can obtain from start to destination. <P/>
+
+        See <Ref Attr="EdgeWeights" Func="EdgeWeightedDigraph"/>.
+    <Example><![CDATA[
+gap> g := EdgeWeightedDigraph([[2,2],[3],[]],[[3,2],[1],[]]);
+<immutable multidigraph with 3 vertices, 3 edges>
+gap> DigraphMaximumFlow(g, 1, 3);
+rec( flows := [ [  ], [ 1, 0 ], [ 1 ] ], maxFlow := 1, 
+  parents := [ [  ], [ 1, 1 ], [ 2 ] ] )]]></Example>
+    </Description>
+    </ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="RandomUniqueEdgeWeightedDigraph">
+    <ManSection>
+    <Attr Name="RandomUniqueEdgeWeightedDigraph" Arg="[filt, ]n[,p]"/>
+    <Returns>An edge weighted digraph.</Returns>
+    <Description>
+        &STANDARD_FILT_TEXT;
+
+        As well as the filters implemented in <Ref Oper="RandomDigraph"/>, the following filters are implemented:
+        <Ref Filt="IsStronglyConnectedDigraph"/>.
+
+        For <Ref Filt="IsStronglyConnectedDigraph"/>, first a random connected tree is created which it self may have numerous
+        strongly connected components (scc) which are then them selves connected. For each sequential pair of strongly connected component
+        , a random u from the first scc and v from the second scc and given a directed edge from u to v. This is then repeated with an edge from a random vertex
+        in the second scc to the first scc.
+
+        If <A>n</A> is a positive integer, then this function returns a random edge weighted
+        digraph with <A>n</A> vertices, without multiple edges but with unique edge weights. The result
+        may or may not have loops. If using <Ref Filt='IsAcyclicDigraph'/>, the resulting graph 
+        will not have any loops by definition.<P/>
+
+        If the optional second argument <A>p</A> is a float with value
+        <M>0 \leq </M> <A> p </A> <M> \leq 1</M>, then an edge will exist between each
+        pair of vertices with probability approximately <A>p</A>.
+        If <A>p</A> is not specified, then a random probability will be assumed
+        (chosen with uniform probability).<P/>
+    <Example><![CDATA[
+gap> g := RandomUniqueEdgeWeightedDigraph(
+>     IsStronglyConnectedDigraph, 5, 1);
+<immutable digraph with 5 vertices, 25 edges>
+gap> g := RandomUniqueEdgeWeightedDigraph(5, 1);
+<immutable digraph with 5 vertices, 25 edges>]]></Example>
+    </Description>
+    </ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphFromPaths">
+    <ManSection>
+    <Attr Name="DigraphFromPaths" Arg="digraph, record"/>
+    <Returns>An edge weighted digraph.</Returns>
+    <Description>
+        Given a <A>digraph</A> and a <A>record</A> of distances, edges and parents
+        this will compute the start vertex and will build a digraph of the shortest path from the start vertex
+        to all other vertices.
+
+    <Example><![CDATA[
+gap> g := EdgeWeightedDigraph([[2],[3],[]],[[2],[1],[]]);
+<immutable digraph with 3 vertices, 2 edges>
+gap> sp := DigraphEdgeWeightedShortestPath(g, 1);
+rec( distances := [ 0, 2, 3 ], edges := [ fail, 1, 1 ], 
+  parents := [ fail, 1, 2 ] )
+gap> sd := DigraphFromPaths(g, sp);
+<immutable digraph with 3 vertices, 2 edges>]]></Example>
+    </Description>
+    </ManSection>
+<#/GAPDoc>
+
+
+<#GAPDoc Label="DigraphFromPath">
+    <ManSection>
+    <Attr Name="DigraphFromPath" Arg="digraph, record, dest"/>
+    <Returns>An edge weighted digraph.</Returns>
+    <Description>
+        Given a <A>digraph</A> and a <A>record</A> of distances, edges and parents
+        this will compute the start vertex and will build a digraph of the shortest path from the start vertex
+        to <A>dest</A> vertex.
+
+    <Example><![CDATA[
+gap> g := EdgeWeightedDigraph([[2],[3],[]],[[2],[1],[]]);
+<immutable digraph with 3 vertices, 2 edges>
+gap> sp := DigraphEdgeWeightedShortestPath(g, 1);
+rec( distances := [ 0, 2, 3 ], edges := [ fail, 1, 1 ], 
+  parents := [ fail, 1, 2 ] )
+gap> sd := DigraphFromPath(g, sp, 3);
+<immutable digraph with 3 vertices, 2 edges>
+gap> sd := DigraphFromPath(g, sp, 2);
+<immutable digraph with 3 vertices, 1 edge>]]></Example>
+    </Description>
+    </ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DotEdgeWeightedDigraph">
+    <ManSection>
+    <Attr Name="DotEdgeWeightedDigraph" Arg="digraph, subdigraph, record"/>
+    <Returns>A string.</Returns>
+    <Description>
+        Given an<A>digraph</A>, <A>subdigraph</A> and a <A>record</A> of a subdigraph within the original digraph,
+        using the record optional parameters, this will return a DOT of the subdigraph within the original digraph.<P/>
+
+        Optional parameters in the <A>record</A> include:
+        - highlightColour (default blue): the colour of the path of the subdigraph
+        - edgeColour (default black): the colour of the non subdigraph path
+        - vertColor (default lightpink): the colour of the vertices
+        - sourceColour (default green): the colour of a source vertex
+        - destColour (default red): the colour of a destination vertex
+
+        An empty record may be passed as a parameters, in which case the default values will be used.
+
+    <Example><![CDATA[
+gap> g := EdgeWeightedDigraph([[2],[3],[]],[[2],[1],[]]);
+<immutable digraph with 3 vertices, 2 edges>
+gap> sp := DigraphEdgeWeightedShortestPath(g, 1);
+rec( distances := [ 0, 2, 3 ], edges := [ fail, 1, 1 ], 
+  parents := [ fail, 1, 2 ] )
+gap> sd := DigraphFromPath(g, sp, 3);
+<immutable digraph with 3 vertices, 2 edges>
+gap> DotEdgeWeightedDigraph(g, sd, rec());
+"//dot\ndigraph hgn{\nnode [shape=circle]\n1[color=lightpink, style=fi\
+lled]\n2[color=lightpink, style=filled]\n3[color=lightpink, style=fill\
+ed]\n1 -> 2[color=blue, label=2]\n2 -> 3[color=blue, label=1]\n}\n"]]></Example>
+    </Description>
+    </ManSection>
+<#/GAPDoc>

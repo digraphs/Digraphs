@@ -159,6 +159,18 @@ function(D, vert, edge)
   fi;
 end);
 
+# https://graphs.grevian.org/example
+InstallMethod(DotColoredEdgeWeightedDigraph, "for a digraph by out-neighbours and three lists",
+[IsDigraphByOutNeighboursRep, IsList, IsList, IsList],
+function(D, vert, edge, weight)
+  local vert_func, edge_func;
+  if DIGRAPHS_ValidVertColors(D, vert) and DIGRAPHS_ValidEdgeColors(D, edge) then
+    vert_func := i -> StringFormatted("[color={}, style=filled]", vert[i]);
+    edge_func := {i, j} -> StringFormatted("[color={}, label={}]", edge[i][j], weight[i][j]);
+    return DIGRAPHS_DotDigraph(D, [vert_func], [edge_func]);
+  fi;
+end);
+
 InstallMethod(DotVertexColoredDigraph,
 "for a digraph by out-neighbours and a list",
 [IsDigraphByOutNeighboursRep, IsList],
