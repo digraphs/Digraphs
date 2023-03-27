@@ -102,6 +102,7 @@ gap> Splash(DotDigraph(RandomDigraph(4)));
   <ManSection>
     <Attr Name="DotDigraph" Arg="digraph"/>
     <Oper Name="DotColoredDigraph" Arg="digraph, vert, edge"/>
+    <Oper Name="DotColoredEdgeWeightedDigraph" Arg="digraph, vert, edge, weight"/>
     <Oper Name="DotVertexLabelledDigraph" Arg="digraph"/>
     <Oper Name="DotVertexColoredDigraph" Arg="digraph, vert"/>
     <Oper Name="DotEdgeColoredDigraph" Arg="digraph, edge"/>
@@ -121,6 +122,13 @@ gap> Splash(DotDigraph(RandomDigraph(4)));
       representation. The list for edge colours should be a list of lists
       with the same shape of the outneighbours of the digraph that contains strings 
       that correspond to colours accepted by the graphviz software. If the lists 
+      are not the appropriate size, or have holes then the function will return
+      an error.<P/>
+
+      <C>DotColoredEdgeWeightedDigraph</C> differs from <C>DotColoredDigraph</C> only
+      in that the values given in the third list is used to label the weights of the edges of
+      the graph when displayed. The list for weight should be a list of equal length to the list
+      for vertex and edge colours.If the lists 
       are not the appropriate size, or have holes then the function will return
       an error.<P/>
 
