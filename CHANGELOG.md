@@ -1,8 +1,27 @@
 # CHANGELOG – Digraphs package for GAP
-Copyright © 2014-22 by Jan De Beule, Julius Jonušas, James D. Mitchell,
+Copyright © 2014-23 by Jan De Beule, Julius Jonušas, James D. Mitchell,
 Wilf A. Wilson, Michael Young et al.
 
 Licensing information can be found in the `LICENSE` file.
+
+## Version 1.6.2 (released 05/04/2023)
+
+* PackageInfo.g: link to Mathjax manual by default by @fingolfin in
+  https://github.com/digraphs/Digraphs/pull/554
+* PackageInfo.g: link to Mathjax manual by default by @fingolfin in
+  https://github.com/digraphs/Digraphs/pull/558
+* ci: change master to main on azure by @james-d-mitchell in
+  https://github.com/digraphs/Digraphs/pull/567
+* Rewrite buildsystem to use Makefile.gappkg by @fingolfin in
+  https://github.com/digraphs/Digraphs/pull/566
+* Update two M4 files, correct a comment by @fingolfin in
+  https://github.com/digraphs/Digraphs/pull/568
+* Fix some typos found by codespell by @fingolfin in
+  https://github.com/digraphs/Digraphs/pull/569
+* Avoid src/ prefix for GAP headers by @fingolfin in
+  https://github.com/digraphs/Digraphs/pull/571
+* Use same URL as in my other packages by @olexandr-konovalov in
+  https://github.com/digraphs/Digraphs/pull/572
 
 ## Version 1.6.1 (released 06/12/2022)
 
@@ -65,7 +84,7 @@ This minor release contains several bugfixes and technical changes. This include
 
 ## Version 1.5.0 (released 27/10/2021)
 
-This is a fairly major release of the Digraphs package, containing some bugfixes and several new features. 
+This is a fairly major release of the Digraphs package, containing some bugfixes and several new features.
 
 In this version, we welcome Finn Buck, Tom Conti-Leslie, Ewan Gilligan, Lea
 Racine, and Ben Spiers as contributors to the package.
@@ -146,7 +165,7 @@ and improvements to the documentation. These include the following:
 
 ## Version 1.4.0 (released 27/01/2021)
 
-In this release there are several new features and improvements. 
+In this release there are several new features and improvements.
 
 The following improvements and bugfixes have been made:
 
@@ -159,7 +178,7 @@ The following improvements and bugfixes have been made:
   Harper.
 * a bug in `GeneratorsOfEndomorphismMonoid` that caused GAP to crash when
   called with a multidigraph was reported by [Wilf A. Wilson][] and
-  fixed by [James D. Mitchell][] 
+  fixed by [James D. Mitchell][]
 *  [Wilf A. Wilson][] made some improvements to the manual.
 * the performance of `DigraphCopy` was improved by Marina
   Anagnostopoulou-Merkouri and Sam Harper.
@@ -168,17 +187,17 @@ The main new features are:
 
 * the attribute `DigraphNrLoops` was introduced by Marina
   Anagnostopoulou-Merkouri and Sam Harper.
-* the operations 
+* the operations
   * `DotColoredDigraph`
   * `DotVertexColoredDigraph`
   * `DotEdgeColoredDigraph`
   * `DotSymmetricColoredDigraph`
-  * `DotSymmetricVertexColoredDigraph` 
-  * `DotSymmetricEdgeColoredDigraph` 
+  * `DotSymmetricVertexColoredDigraph`
+  * `DotSymmetricEdgeColoredDigraph`
   were introduced by Marina Anagnostopoulou-Merkouri and Sam Harper.
-* the operation `VerticesReachableFrom` was introduced by 
+* the operation `VerticesReachableFrom` was introduced by
   Marina Anagnostopoulou-Merkouri.
-* the operation `ModularProduct` was introduced by Luke Elliott and  
+* the operation `ModularProduct` was introduced by Luke Elliott and
   [James D. Mitchell][]
 
 ## Version 1.3.1 (released 27/11/2020)
@@ -203,7 +222,7 @@ and [Wilf A. Wilson][].
 
 This is a minor release adding some new features to Digraphs, principally
 functionality relating to computing matchings by Reinis Ciprons, and an
-implementation of Dijkstra's algorithm for shortest paths by 
+implementation of Dijkstra's algorithm for shortest paths by
 [Markus Pfeiffer][] and [Maria Tsalakou][], and methods for producing a concise
 string representation of a digraph by Murray Whyte.
 
