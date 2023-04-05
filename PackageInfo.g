@@ -1,7 +1,7 @@
 #############################################################################
 ##
 ##  PackageInfo.g
-##  Copyright (C) 2015-22                                James D. Mitchell
+##  Copyright (C) 2015-23                                  James D. Mitchell
 ##
 ##  Licensing information can be found in the README.md file of this package.
 ##
@@ -9,7 +9,7 @@
 ##
 
 ##  <#GAPDoc Label="PKGVERSIONDATA">
-##  <!ENTITY VERSION                  "1.6.1">
+##  <!ENTITY VERSION                  "1.6.2">
 ##  <!ENTITY GAPVERS                  "4.10.0">
 ##  <!ENTITY GRAPEVERS                "4.8.1">
 ##  <!ENTITY IOVERS                   "4.5.1">
@@ -28,8 +28,8 @@ _STANDREWSCS := Concatenation(["Jack Cole Building, North Haugh, ",
 SetPackageInfo(rec(
 PackageName := "Digraphs",
 Subtitle := "Graphs, digraphs, and multidigraphs in GAP",
-Version := "1.6.1",
-Date := "06/12/2022",  # dd/mm/yyyy format
+Version := "1.6.2",
+Date := "05/04/2023",  # dd/mm/yyyy format
 License := "GPL-3.0-or-later",
 ArchiveFormats := ".tar.gz",
 
@@ -209,8 +209,7 @@ Persons := [
     IsMaintainer  := false,
     PostalAddress := _STANDREWSCS,
     Email         := "obk1@st-andrews.ac.uk",
-    WWWHome       :=
-      "https://www.st-andrews.ac.uk/computer-science/people/obk1/",
+    WWWHome       := "https://olexandr-konovalov.github.io/",
     Place         := "St Andrews",
     Institution   := "University of St Andrews"),
 

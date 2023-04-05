@@ -985,7 +985,7 @@
   
   [33X[1;0Y[29X[2XInNeighboursOfVertex[102X( [3Xdigraph[103X, [3Xvertex[103X ) [32X operation[133X
   [33X[1;0Y[29X[2XInNeighborsOfVertex[102X( [3Xdigraph[103X, [3Xvertex[103X ) [32X operation[133X
-  [6XReturns:[106X  [33X[0;10YA list of postitive vertices.[133X
+  [6XReturns:[106X  [33X[0;10YA list of positive vertices.[133X
   
   [33X[0;0YThis  operation  returns  the list [10Xinn[110X of vertices of the digraph [3Xdigraph[103X. A
   vertex  [10Xi[110X appears in the list [10Xinn[110X each time there exists an edge with source
@@ -1798,7 +1798,7 @@
   [33X[0;0YThe  operation  [10XDigraphFloydWarshall[110X  is  customised  by the arguments [3Xfunc[103X,
   [3Xnopath[103X,  and  [3Xedge[103X.  The  arguments  [3Xnopath[103X  and  [3Xedge[103X  can be arbitrary [5XGAP[105X
   objects. The argument [3Xfunc[103X must be a function which accepts 4 arguments: the
-  matrix  [10Xmat[110X,  followed by 3 postive integers. The function [3Xfunc[103X is where the
+  matrix  [10Xmat[110X, followed by 3 positive integers. The function [3Xfunc[103X is where the
   work to calculate the desired outcome must be performed.[133X
   
   [33X[0;0YThis  method  initialises the matrix [10Xmat[110X by setting entry [10Xmat[i][j][110X to equal
@@ -2122,7 +2122,7 @@
   non-trivial  directed  paths (or directed cycles, in the case that [3Xu[103X [10X=[110X [3Xv[103X) in
   [3Xdigraph[103X from the vertex [3Xu[103X to the vertex [3Xv[103X.[133X
   
-  [33X[0;0YSee  [2XDigraphPath[102X  ([14X5.4-22[114X) for more information about the repesentation of a
+  [33X[0;0YSee  [2XDigraphPath[102X ([14X5.4-22[114X) for more information about the representation of a
   directed  path  or  directed  cycle  which  is  used,  and  see  [14X'Reference:
   Iterators'[114X  for  more information about iterators. See Section [14X'[33X[0;0YDefinitions[133X'[114X
   for the definition of a directed path and a directed cycle.[133X

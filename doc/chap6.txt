@@ -285,8 +285,8 @@
   [33X[1;0Y[29X[2XIsEquivalenceDigraph[102X( [3Xdigraph[103X ) [32X property[133X
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
   
-  [33X[0;0YA  digraph  is  an equivalence digraph if and only if the digraph satisifies
-  all   of   [2XIsReflexiveDigraph[102X   ([14X6.2-13[114X),  [2XIsSymmetricDigraph[102X  ([14X6.2-14[114X)  and
+  [33X[0;0YA digraph is an equivalence digraph if and only if the digraph satisfies all
+  of    [2XIsReflexiveDigraph[102X    ([14X6.2-13[114X),    [2XIsSymmetricDigraph[102X   ([14X6.2-14[114X)   and
   [2XIsTransitiveDigraph[102X  ([14X6.2-16[114X).  A  partial  order  [3Xdigraph[103X corresponds to an
   equivalence relation.[133X
   
@@ -556,7 +556,7 @@
   [33X[1;0Y[29X[2XIsQuasiorderDigraph[102X( [3Xdigraph[103X ) [32X property[133X
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
   
-  [33X[0;0YA  digraph  is a preorder digraph if and only if the digraph satisifies both
+  [33X[0;0YA  digraph  is  a preorder digraph if and only if the digraph satisfies both
   [2XIsReflexiveDigraph[102X  ([14X6.2-13[114X)  and  [2XIsTransitiveDigraph[102X  ([14X6.2-16[114X). A preorder
   digraph (or quasiorder digraph) [3Xdigraph[103X corresponds to the preorder relation
   [22X≤[122X defined by [22Xx ≤ y[122X if and only if [10X[x, y][110X is an edge of [3Xdigraph[103X.[133X
@@ -588,7 +588,7 @@
   [33X[1;0Y[29X[2XIsPartialOrderDigraph[102X( [3Xdigraph[103X ) [32X property[133X
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
   
-  [33X[0;0YA  digraph  is a partial order digraph if and only if the digraph satisifies
+  [33X[0;0YA  digraph  is  a partial order digraph if and only if the digraph satisfies
   all  of  [2XIsReflexiveDigraph[102X  ([14X6.2-13[114X),  [2XIsAntisymmetricDigraph[102X  ([14X6.2-2[114X)  and
   [2XIsTransitiveDigraph[102X  ([14X6.2-16[114X).  A  partial  order [3Xdigraph[103X corresponds to the
   partial  order  relation [22X≤[122X defined by [22Xx ≤ y[122X if and only if [10X[x, y][110X is an edge

@@ -513,7 +513,7 @@
   [33X[1;0Y[29X[2XDotHighlightedDigraph[102X( [3Xdigraph[103X, [3Xverts[103X[, [3Xcolour1[103X, [3Xcolour2[103X] ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA string.[133X
   
-  [33X[0;0Y[10XDotHighlightedDigraph[110X  produces  a  graphical  represenation  of the digraph
+  [33X[0;0Y[10XDotHighlightedDigraph[110X  produces  a  graphical  representation of the digraph
   [3Xdigraph[103X,  where  the vertices in the list [3Xverts[103X, and edges between them, are
   drawn  with  colour  [3Xcolour1[103X and all other vertices and edges in [3Xdigraph[103X are
   drawn  with  colour  [3Xcolour2[103X.  If  [3Xcolour1[103X  and  [3Xcolour2[103X  are not given then
@@ -540,7 +540,7 @@
   [8X Graph6 [108X
         [33X[0;6Y[13X  Graph6 [113X is a graph data format for storing undirected graphs with no
         multiple  edges  nor  loops  of  size  up  to  [22X2^36  -  1[122X in printable
-        chracters.  The  format consists of two parts. The first part uses one
+        characters.  The format consists of two parts. The first part uses one
         to eight bytes to store the number of vertices. And the second part is
         the   upper   half  of  the  adjacency  matrix  converted  into  ASCII
         characters.    For    a    more    detail   description   see   Graph6
@@ -568,7 +568,7 @@
         digraphs.  In  this  format  the  list  of  edges  is partitioned into
         inceasing  and  decreasing  edges,  depending whether the edge has its
         source  bigger  than  the  range.  Then both sets of edges are written
-        separetly in [13X Sparse6 [113X format with a separation symbol in between.[133X
+        separately in [13X Sparse6 [113X format with a separation symbol in between.[133X
   
   [1X9.2-1 String[101X
   

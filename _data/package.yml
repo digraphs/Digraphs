@@ -1,6 +1,6 @@
 name: Digraphs
-version: 1.6.1
-date: 2022-12-06
+version: 1.6.2
+date: 2023-04-05
 description: |
     Graphs, digraphs, and multidigraphs in GAP
 
@@ -55,7 +55,7 @@ contributors:
     - name: Christopher Jefferson
       url: https://caj.host.cs.st-andrews.ac.uk
     - name: Olexandr Konovalov
-      url: https://www.st-andrews.ac.uk/computer-science/people/obk1/
+      url: https://olexandr-konovalov.github.io/
     - name: Andrea Lee
       url: mailto:ahwl1@st-andrews.ac.uk
     - name: Markus Pfeiffer
@@ -105,7 +105,7 @@ packageinfo: https://digraphs.github.io/Digraphs/PackageInfo.g
 
 downloads:
     - name: .tar.gz
-      url: https://github.com/digraphs/Digraphs/releases/download/v1.6.1/digraphs-1.6.1.tar.gz
+      url: https://github.com/digraphs/Digraphs/releases/download/v1.6.2/digraphs-1.6.2.tar.gz
 
 abstract: |
     The <b>Digraphs</b> package is a <b>GAP</b> package for digraphs and multidigraphs.

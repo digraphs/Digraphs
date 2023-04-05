@@ -2070,7 +2070,7 @@ true
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; EdgeUndirectedDigraph</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: A digraph.</p>
 
-<p>Given a symmetric digraph <var class="Arg">digraph</var>, the operation returns the symmetric digraph obtained by associating a vertex with each edge of <var class="Arg">digraph</var>, ignoring directions and multiplicites, and adding an edge between two vertices if and only if the corresponding edges have a vertex in common.</p>
+<p>Given a symmetric digraph <var class="Arg">digraph</var>, the operation returns the symmetric digraph obtained by associating a vertex with each edge of <var class="Arg">digraph</var>, ignoring directions and multiplicities, and adding an edge between two vertices if and only if the corresponding edges have a vertex in common.</p>
 
 <p>Note that the returned digraph is always a new immutable digraph, and the argument <var class="Arg">digraph</var> is never modified.</p>
 
@@ -2089,7 +2089,7 @@ true
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DoubleDigraph</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: A digraph.</p>
 
-<p>Let <var class="Arg">digraph</var> be a digraph with vertex set <code class="code">V</code>. This function returns the double digraph of <var class="Arg">digraph</var>. The vertex set of the double digraph is the orginal vertex set together with a duplicate. The edges are <code class="code">[u_1, v_2]</code> and <code class="code">[u_2, v_1]</code> if and only if <code class="code">[u, v]</code> is an edge in <var class="Arg">digraph</var>, together with the original edges and their duplicates.</p>
+<p>Let <var class="Arg">digraph</var> be a digraph with vertex set <code class="code">V</code>. This function returns the double digraph of <var class="Arg">digraph</var>. The vertex set of the double digraph is the original vertex set together with a duplicate. The edges are <code class="code">[u_1, v_2]</code> and <code class="code">[u_2, v_1]</code> if and only if <code class="code">[u, v]</code> is an edge in <var class="Arg">digraph</var>, together with the original edges and their duplicates.</p>
 
 <p>If <var class="Arg">digraph</var> is mutable, then <var class="Arg">digraph</var> is modified in-place. If <var class="Arg">digraph</var> is immutable, then a new immutable digraph constructed as described above is returned.</p>
 
@@ -2108,7 +2108,7 @@ true
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; BipartiteDoubleDigraph</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: A digraph.</p>
 
-<p>Let <var class="Arg">digraph</var> be a digraph with vertex set <code class="code">V</code>. This function returns the bipartite double digraph of <var class="Arg">digraph</var>. The vertex set of the double digraph is the original vertex set together with a duplicate. The edges are <code class="code">[u_1, v_2]</code> and <code class="code">[u_2, v_1]</code> if and only if <code class="code">[u, v]</code> is an edge in <var class="Arg">digraph</var>. The resulting graph is bipartite, since the orignal edges are not included in the resulting digraph.</p>
+<p>Let <var class="Arg">digraph</var> be a digraph with vertex set <code class="code">V</code>. This function returns the bipartite double digraph of <var class="Arg">digraph</var>. The vertex set of the double digraph is the original vertex set together with a duplicate. The edges are <code class="code">[u_1, v_2]</code> and <code class="code">[u_2, v_1]</code> if and only if <code class="code">[u, v]</code> is an edge in <var class="Arg">digraph</var>. The resulting graph is bipartite, since the original edges are not included in the resulting digraph.</p>
 
 <p>If <var class="Arg">digraph</var> is mutable, then <var class="Arg">digraph</var> is modified in-place. If <var class="Arg">digraph</var> is immutable, then a new immutable digraph constructed as described above is returned.</p>
 

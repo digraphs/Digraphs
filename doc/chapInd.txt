@@ -26,8 +26,8 @@
   [2XBishopGraph[102X 3.5-5 
   [2XBishopsGraph[102X 3.5-5 
   [2XBlissAutomorphismGroup[102X, for a digraph 7.2-3 
-      for a digraph and homogenous list 7.2-3 
-      for a digraph, homogenous list, and list 7.2-3 
+      for a digraph and homogeneous list 7.2-3 
+      for a digraph, homogeneous list, and list 7.2-3 
   [2XBlissCanonicalDigraph[102X 7.2-9 
   [2XBlissCanonicalLabelling[102X, for a digraph 7.2-7 
       for a digraph and a list 7.2-8 

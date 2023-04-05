@@ -490,7 +490,7 @@ true
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DotHighlightedDigraph</code>( <var class="Arg">digraph</var>, <var class="Arg">verts</var>[, <var class="Arg">colour1</var>, <var class="Arg">colour2</var>] )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: A string.</p>
 
-<p><code class="code">DotHighlightedDigraph</code> produces a graphical represenation of the digraph <var class="Arg">digraph</var>, where the vertices in the list <var class="Arg">verts</var>, and edges between them, are drawn with colour <var class="Arg">colour1</var> and all other vertices and edges in <var class="Arg">digraph</var> are drawn with colour <var class="Arg">colour2</var>. If <var class="Arg">colour1</var> and <var class="Arg">colour2</var> are not given then <code class="code">DotHighlightedDigraph</code> uses black and grey respectively.</p>
+<p><code class="code">DotHighlightedDigraph</code> produces a graphical representation of the digraph <var class="Arg">digraph</var>, where the vertices in the list <var class="Arg">verts</var>, and edges between them, are drawn with colour <var class="Arg">colour1</var> and all other vertices and edges in <var class="Arg">digraph</var> are drawn with colour <var class="Arg">colour2</var>. If <var class="Arg">colour1</var> and <var class="Arg">colour2</var> are not given then <code class="code">DotHighlightedDigraph</code> uses black and grey respectively.</p>
 
 <p>Note that <code class="code">DotHighlightedDigraph</code> does not validate the colours <var class="Arg">colour1</var> and <var class="Arg">colour2</var> - consult the GraphViz documentation to see what is available. See <code class="func">DotDigraph</code> (<a href="chap9.html#X7F9B99C478EE093A"><span class="RefLink">9.1-2</span></a>) for more details on the output.</p>
 
@@ -511,7 +511,7 @@ true
 
 <dl>
 <dt><strong class="Mark"> Graph6 </strong></dt>
-<dd><p><em> Graph6 </em> is a graph data format for storing undirected graphs with no multiple edges nor loops of size up to <span class="SimpleMath">2^36 - 1</span> in printable chracters. The format consists of two parts. The first part uses one to eight bytes to store the number of vertices. And the second part is the upper half of the adjacency matrix converted into ASCII characters. For a more detail description see <span class="URL"><a href=" http://cs.anu.edu.au/~bdm/data/formats.txt">Graph6</a></span>.</p>
+<dd><p><em> Graph6 </em> is a graph data format for storing undirected graphs with no multiple edges nor loops of size up to <span class="SimpleMath">2^36 - 1</span> in printable characters. The format consists of two parts. The first part uses one to eight bytes to store the number of vertices. And the second part is the upper half of the adjacency matrix converted into ASCII characters. For a more detail description see <span class="URL"><a href=" http://cs.anu.edu.au/~bdm/data/formats.txt">Graph6</a></span>.</p>
 
 </dd>
 <dt><strong class="Mark"> Sparse6 </strong></dt>
@@ -523,7 +523,7 @@ true
 
 </dd>
 <dt><strong class="Mark"> DiSparse6 </strong></dt>
-<dd><p><em>DiSparse6</em> is a new format based on <em> Sparse6 </em>, but designed for digraphs. In this format the list of edges is partitioned into inceasing and decreasing edges, depending whether the edge has its source bigger than the range. Then both sets of edges are written separetly in <em> Sparse6 </em> format with a separation symbol in between.</p>
+<dd><p><em>DiSparse6</em> is a new format based on <em> Sparse6 </em>, but designed for digraphs. In this format the list of edges is partitioned into inceasing and decreasing edges, depending whether the edge has its source bigger than the range. Then both sets of edges are written separately in <em> Sparse6 </em> format with a separation symbol in between.</p>
 
 </dd>
 </dl>

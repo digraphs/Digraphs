@@ -2120,8 +2120,8 @@
   
   [33X[0;0YGiven  a  symmetric  digraph  [3Xdigraph[103X,  the  operation returns the symmetric
   digraph obtained by associating a vertex with each edge of [3Xdigraph[103X, ignoring
-  directions and multiplicites, and adding an edge between two vertices if and
-  only if the corresponding edges have a vertex in common.[133X
+  directions  and  multiplicities,  and adding an edge between two vertices if
+  and only if the corresponding edges have a vertex in common.[133X
   
   [33X[0;0YNote  that  the  returned digraph is always a new immutable digraph, and the
   argument [3Xdigraph[103X is never modified.[133X
@@ -2139,7 +2139,7 @@
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
   [33X[0;0YLet [3Xdigraph[103X be a digraph with vertex set [10XV[110X. This function returns the double
-  digraph  of  [3Xdigraph[103X.  The  vertex  set of the double digraph is the orginal
+  digraph  of  [3Xdigraph[103X.  The  vertex set of the double digraph is the original
   vertex  set  together  with  a duplicate. The edges are [10X[u_1, v_2][110X and [10X[u_2,
   v_1][110X if and only if [10X[u, v][110X is an edge in [3Xdigraph[103X, together with the original
   edges and their duplicates.[133X
@@ -2164,7 +2164,7 @@
   bipartite double digraph of [3Xdigraph[103X. The vertex set of the double digraph is
   the  original vertex set together with a duplicate. The edges are [10X[u_1, v_2][110X
   and  [10X[u_2,  v_1][110X  if and only if [10X[u, v][110X is an edge in [3Xdigraph[103X. The resulting
-  graph  is  bipartite,  since  the  orignal  edges  are  not  included in the
+  graph  is  bipartite,  since  the  original  edges  are  not included in the
   resulting digraph.[133X
   
   [33X[0;0YIf  [3Xdigraph[103X  is  mutable,  then  [3Xdigraph[103X is modified in-place. If [3Xdigraph[103X is
