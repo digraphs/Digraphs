@@ -1582,7 +1582,8 @@ function(filt, n, p)
             # rejected edges, to guarantee a path back to the start
             verticesToCheck := [1 .. n];
             while Length(verticesToCheck) > 0 do
-                i := Remove(verticesToCheck, Random(verticesToCheck));
+                i := Remove(verticesToCheck,
+                            Random([1 .. Length(verticesToCheck)]));
                 if (not (i in adjacencyList[circuitVertex])) then
                     Add(adjacencyList[circuitVertex], i);
                     circuitVertex := i;
