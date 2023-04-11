@@ -437,8 +437,8 @@ latex",
 gap> Splash("string", rec(path := "~/", filename := "filename"));
 Error, the component "type" of the 2nd argument <a record>  must be "dot" or "\
 latex",
-gap> Splash("string", rec(viewer := "xpdf"));
-Error, the viewer "xpdf" specified in the option `viewer` is not available,
+gap> Splash("string", rec(viewer := "bad"));
+Error, the viewer "bad" specified in the option `viewer` is not available,
 gap> Splash("string", rec(type := "dot", engine := "dott"));
 Error, the component "engine" of the 2nd argument <a record> must be one of: "\
 dot", "neato", "twopi", "circo", "fdp", "sfdp", or "patchwork"
