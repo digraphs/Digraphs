@@ -69,6 +69,7 @@
     <#Include Label="DigraphPath">
     <#Include Label="DigraphShortestPath">
     <#Include Label="DigraphRandomWalk">
+    <#Include Label="DigraphAbsorptionProbabilities">
     <#Include Label="Dominators">
     <#Include Label="DominatorTree">
     <#Include Label="IteratorOfPaths">

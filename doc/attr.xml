@@ -1114,6 +1114,44 @@ gap> ArticulationPoints(D);
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="DigraphAbsorptionProbabilities">
+<ManSection>
+  <Attr Name="DigraphAbsorptionProbabilities" Arg="digraph"/>
+  <Returns>A matrix of rational numbers.</Returns>
+  <Description>
+    A random walk of infinite length through a finite digraph may pass through several
+    different strongly connected components (SCCs).  However, with probability 1
+    it must eventually reach an SCC which it can never leave, because the SCC
+    has no out-edges leading to other SCCs.  We may say that such an SCC has
+    <E>absorbed</E> the random walk, and we can calculate the probability of
+    each SCC absorbing a walk starting at a given vertex.
+    <P/>
+    
+    <C>DigraphAbsorptionProbabilities</C> returns an <M>m \times n</M> matrix
+    <C>mat</C>, where <M>m</M> is the number of vertices in <C>digraph</C> and
+    <M>n</M> is the number of strongly connected components.  Each entry
+    <C>mat[i][j]</C> is a rational number representing the probability that an
+    unbounded random walk starting at vertex <C>i</C> will be absorbed by
+    strongly connected component <C>j</C> – that is, the probability that it
+    will reach the component and never leave.
+    <P/>
+
+    Strongly connected components are indexed in the order given by
+    <Ref Attr="DigraphStronglyConnectedComponents"/>. See also
+    <Ref Oper="DigraphRandomWalk"/>.
+    <P/>
+<Example><![CDATA[
+gap> gr := Digraph([[2, 3, 4], [3], [2], []]);
+<immutable digraph with 4 vertices, 5 edges>
+gap> DigraphStronglyConnectedComponents(gr).comps;
+[ [ 2, 3 ], [ 4 ], [ 1 ] ]
+gap> DigraphAbsorptionProbabilities(gr);
+[ [ 2/3, 1/3, 0 ], [ 1, 0, 0 ], [ 1, 0, 0 ], [ 0, 1, 0 ] ]
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="StrongOrientation">
 <ManSection>
   <Oper Name="StrongOrientation" Arg="D"/>

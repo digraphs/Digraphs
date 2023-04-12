@@ -196,6 +196,97 @@ function(I, subtracted_set, size_bound)
 end
 );
 
+InstallMethod(DigraphAbsorptionProbabilities,
+"for a digraph",
+[IsDigraph],
+function(D)
+  local scc, is_sink_comp, transient_vertices, i, comp, v, sink_comps,
+        nr_transients, transient_mat, absorption_mat, neighbours, chance, w,
+        w_comp, sink_comp_index, j, N, chances_of_absorption, output, comp_no,
+        c;
+  # No vertices: trivial matrix
+  if DigraphNrVertices(D) = 0 then
+    return [];
+  fi;
+
+  scc := DigraphStronglyConnectedComponents(D);
+
+  # One SCC only: all vertices stay in it with probability 1.
+  if Length(scc.comps) = 1 then
+    return ListWithIdenticalEntries(DigraphNrVertices(D), [1]);
+  fi;
+
+  # Find the "sink components" (components from which there is no escape)
+  # We could use QuotientDigraph and DigraphSinks here, but this avoids copying.
+  is_sink_comp := ListWithIdenticalEntries(Length(scc.comps), true);
+  transient_vertices := [];
+  for i in [1 .. Length(scc.comps)] do
+    comp := scc.comps[i];
+    for v in comp do
+      if ForAny(OutNeighboursOfVertex(D, v), w -> not w in comp) then
+        is_sink_comp[i] := false;
+        Append(transient_vertices, comp);
+        break;
+      fi;
+    od;
+  od;
+  sink_comps := Positions(is_sink_comp, true);
+  nr_transients := Length(transient_vertices);
+
+  # transient_mat[i][j] is the chance of going
+  # from transient vertex i to transient vertex j
+  transient_mat := NullMat(nr_transients, nr_transients);
+
+  # absorption_mat[i][j] is the chance of going
+  # from transient vertex i to sink component j
+  absorption_mat := NullMat(nr_transients, Length(sink_comps));
+
+  for i in [1 .. Length(transient_vertices)] do
+    v := transient_vertices[i];
+    neighbours := OutNeighboursOfVertex(D, v);
+    chance := 1 / Length(neighbours);  # chance of following each edge
+    for w in neighbours do
+      w_comp := scc.id[w];
+      if is_sink_comp[w_comp] then
+        # w is in a sink component
+        sink_comp_index := Position(sink_comps, w_comp);
+        Assert(1, w in scc.comps[sink_comps[sink_comp_index]]);
+        absorption_mat[i][sink_comp_index] :=
+            absorption_mat[i][sink_comp_index] + chance;
+      else
+        # w is a transient vertex
+        j := Position(transient_vertices, w);
+        transient_mat[i][j] := transient_mat[i][j] + chance;
+      fi;
+    od;
+  od;
+
+  # Compute the chances as t tends to infinity using formula (I - Q)^-1 * R
+  N := Inverse(IdentityMat(nr_transients) - transient_mat);
+  chances_of_absorption := N * absorption_mat;
+
+  # Rows are vertices, columns are SCCs
+  output := NullMat(DigraphNrVertices(D), Length(scc.comps));
+
+  # Non-transient vertices stay in their own SCC with probability 1
+  for comp_no in sink_comps do
+    for v in scc.comps[comp_no] do
+      output[v][comp_no] := 1;
+    od;
+  od;
+
+  # Transient vertices have chances as calculated above
+  for i in [1 .. Length(transient_vertices)] do
+    v := transient_vertices[i];
+    for j in [1 .. Length(sink_comps)] do
+      c := sink_comps[j];
+      output[v][c] := chances_of_absorption[i][j];
+    od;
+  od;
+
+  return output;
+end);
+
 BindGlobal("DIGRAPHS_ChromaticNumberLawler",
 function(D)
   local n, vertices, subset_colours, s, S, i, I, subset_iter, x,
