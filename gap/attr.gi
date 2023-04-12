@@ -217,6 +217,7 @@ function(D)
   fi;
 
   # Find the "sink components" (components from which there is no escape)
+  # We could use QuotientDigraph and DigraphSinks here, but this avoids copying.
   is_sink_comp := ListWithIdenticalEntries(Length(scc.comps), true);
   transient_vertices := [];
   for i in [1 .. Length(scc.comps)] do
