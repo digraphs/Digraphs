@@ -924,10 +924,12 @@ gap> ReadDigraphs(filename, IO_Unpickle);
 [ <immutable digraph with 30 vertices, 870 edges> ]
 
 #  DIGRAPHS_UnbindVariables
+gap> Unbind(D);
 gap> Unbind(badfilename);
 gap> Unbind(f);
-gap> Unbind(read);
+gap> Unbind(file);
 gap> Unbind(filename);
+gap> Unbind(fname);
 gap> Unbind(gr);
 gap> Unbind(gr2);
 gap> Unbind(it);
@@ -937,8 +939,9 @@ gap> Unbind(list2);
 gap> Unbind(mult);
 gap> Unbind(newfilename);
 gap> Unbind(rdgr);
+gap> Unbind(read);
 gap> Unbind(str);
-gap> Unbind(file);
+gap> Unbind(x);
 
 #
 gap> DIGRAPHS_StopTest();

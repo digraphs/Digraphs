@@ -413,19 +413,20 @@ gap> String(CycleDigraph(4));
 "CycleDigraph(4)"
 
 #  DIGRAPHS_UnbindVariables
-gap> Unbind(gr2);
-gap> Unbind(gr);
-gap> Unbind(G);
-gap> Unbind(p);
-gap> Unbind(i);
-gap> Unbind(gr1);
-gap> Unbind(topo);
-gap> Unbind(source);
-gap> Unbind(range);
-gap> Unbind(r);
-gap> Unbind(func);
+gap> Unbind(D);
 gap> Unbind(adj);
 gap> Unbind(d);
+gap> Unbind(f);
+gap> Unbind(func);
+gap> Unbind(gr);
+gap> Unbind(gr1);
+gap> Unbind(gr2);
+gap> Unbind(i);
+gap> Unbind(out);
+gap> Unbind(p);
+gap> Unbind(r);
+gap> Unbind(str);
+gap> Unbind(topo);
 
 #E#
 gap> DIGRAPHS_StopTest();

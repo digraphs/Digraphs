@@ -1000,22 +1000,27 @@ gap> Number(FullTransformationMonoid(5),
 5
 
 #  DIGRAPHS_UnbindVariables
-gap> Unbind(canon);
 gap> Unbind(D);
-gap> Unbind(ec);
 gap> Unbind(G);
+gap> Unbind(canon);
+gap> Unbind(cols);
+gap> Unbind(ec);
 gap> Unbind(gr);
 gap> Unbind(gr1);
 gap> Unbind(gr2);
 gap> Unbind(gr3);
 gap> Unbind(gr4);
 gap> Unbind(gr5);
+gap> Unbind(gr6);
+gap> Unbind(gr7);
 gap> Unbind(i);
 gap> Unbind(iso);
 gap> Unbind(j);
 gap> Unbind(m);
 gap> Unbind(n);
+gap> Unbind(nauty);
 gap> Unbind(p);
+gap> Unbind(t);
 gap> Unbind(vc);
 
 #

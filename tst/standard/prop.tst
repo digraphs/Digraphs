@@ -1848,10 +1848,14 @@ gap> HasIsMultiDigraph(D) and not IsMultiDigraph(D);
 true
 
 #  DIGRAPHS_UnbindVariables
+gap> Unbind(D);
+gap> Unbind(G);
+gap> Unbind(M5);
+gap> Unbind(N5);
 gap> Unbind(adj);
 gap> Unbind(circuit);
 gap> Unbind(complete100);
-gap> Unbind(G);
+gap> Unbind(g);
 gap> Unbind(g1);
 gap> Unbind(g2);
 gap> Unbind(g3);

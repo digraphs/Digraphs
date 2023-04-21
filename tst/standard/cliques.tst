@@ -624,8 +624,10 @@ gap> CliquesFinder(CompleteDigraph(3), f, [], 4, [], [], false, 2, true);
 [ 2 ]
 
 #  DIGRAPHS_UnbindVariables
-gap> Unbind(f);
+gap> Unbind(D);
 gap> Unbind(c);
+gap> Unbind(cliques);
+gap> Unbind(f);
 gap> Unbind(gr);
 gap> Unbind(lim);
 gap> Unbind(out);
