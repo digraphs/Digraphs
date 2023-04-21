@@ -318,17 +318,14 @@ gap> IsomorphismDigraphs(EmptyDigraph(1), gr1);
 fail
 
 #  DIGRAPHS_UnbindVariables
+gap> Unbind(G);
 gap> Unbind(H);
 gap> Unbind(gr);
 gap> Unbind(gr1);
 gap> Unbind(gr2);
-gap> Unbind(gr3);
-gap> Unbind(gr4);
 gap> Unbind(graph5);
 gap> Unbind(group5);
-gap> Unbind(iso);
 gap> Unbind(p);
-gap> Unbind(perms);
 gap> Unbind(treeAuts);
 gap> Unbind(trees);
 

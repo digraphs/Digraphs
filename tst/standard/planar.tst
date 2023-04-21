@@ -237,6 +237,9 @@ gap> IS_PLANAR(CompleteDigraph(2));
 Error, Digraphs: boyers_planarity_check (C): the 1st argument must be an antis\
 ymmetric digraph
 
+#  DIGRAPHS_UnbindVariables
+gap> Unbind(D);
+
 #
 gap> DIGRAPHS_StopTest();
 gap> STOP_TEST("Digraphs package: standard/planar.tst", 0);
