@@ -209,4 +209,4 @@ Error, there is no edge from 2 to
 
 #
 gap> DIGRAPHS_StopTest();
-gap> STOP_TEST("Digraphs package: standard/grape.tst", 0);
+gap> STOP_TEST("Digraphs package: standard/labels.tst", 0);
