@@ -808,6 +808,12 @@ gap> WindmillGraph(-1, 0);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `WindmillGraph' on 2 arguments
 
+#  DIGRAPHS_UnbindVariables
+gap> Unbind(D);
+gap> Unbind(G8_3);
+gap> Unbind(gr);
+gap> Unbind(grrt);
+
 #
 gap> DIGRAPHS_StopTest();
 gap> STOP_TEST("Digraphs package: standard/examples.tst", 0);

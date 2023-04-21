@@ -2919,17 +2919,35 @@ gap> ForAll(probs,  # all zeros except for the sink
 true
 
 #  DIGRAPHS_UnbindVariables
+gap> Unbind(A);
+gap> Unbind(B);
+gap> Unbind(D);
+gap> Unbind(D1);
+gap> Unbind(D2);
+gap> Unbind(G);
+gap> Unbind(H);
+gap> Unbind(M);
+gap> Unbind(M1);
+gap> Unbind(P);
+gap> Unbind(S);
+gap> Unbind(a);
 gap> Unbind(adj);
 gap> Unbind(adj1);
 gap> Unbind(adj2);
+gap> Unbind(b);
 gap> Unbind(circuit);
 gap> Unbind(complete15);
 gap> Unbind(cycle12);
+gap> Unbind(e);
+gap> Unbind(erev);
+gap> Unbind(filename);
 gap> Unbind(forest);
+gap> Unbind(g);
 gap> Unbind(gr);
 gap> Unbind(gr1);
 gap> Unbind(gr2);
 gap> Unbind(gr3);
+gap> Unbind(gr4);
 gap> Unbind(grid);
 gap> Unbind(i);
 gap> Unbind(j);
@@ -2937,21 +2955,28 @@ gap> Unbind(mat);
 gap> Unbind(multiple);
 gap> Unbind(nbs);
 gap> Unbind(probs);
+gap> Unbind(proj);
 gap> Unbind(r);
 gap> Unbind(rd);
 gap> Unbind(reflextrans);
 gap> Unbind(reflextrans1);
 gap> Unbind(reflextrans2);
+gap> Unbind(rev);
+gap> Unbind(rgr);
 gap> Unbind(scc);
 gap> Unbind(sink);
 gap> Unbind(soccer);
 gap> Unbind(str);
+gap> Unbind(temp);
 gap> Unbind(topo);
 gap> Unbind(trans);
 gap> Unbind(trans1);
 gap> Unbind(trans2);
 gap> Unbind(tree);
 gap> Unbind(wcc);
+gap> Unbind(x);
+gap> Unbind(y);
+gap> Unbind(z);
 
 #
 gap> DIGRAPHS_StopTest();

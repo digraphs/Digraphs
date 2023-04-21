@@ -634,13 +634,17 @@ Error, the viewer "asdfasfa" specified in the option `viewer` is not available\
 ,
 
 #  DIGRAPHS_UnbindVariables
+gap> Unbind(D);
 gap> Unbind(adj);
+gap> Unbind(backup);
 gap> Unbind(dot);
+gap> Unbind(edgecolors);
 gap> Unbind(gr);
 gap> Unbind(gr1);
 gap> Unbind(gr2);
 gap> Unbind(r);
 gap> Unbind(tmpdir);
+gap> Unbind(vertcolors);
 
 #
 gap> DIGRAPHS_StopTest();
