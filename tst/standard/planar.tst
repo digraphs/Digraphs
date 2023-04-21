@@ -239,6 +239,6 @@ ymmetric digraph
 
 #
 gap> DIGRAPHS_StopTest();
-gap> STOP_TEST("Digraphs package: standard/attr.tst", 0);
+gap> STOP_TEST("Digraphs package: standard/planar.tst", 0);
 
 #T# DigraphSource and DigraphRange
