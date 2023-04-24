@@ -137,6 +137,10 @@ InstallMethod(IsMeetSemilatticeDigraph, "for a digraph",
 [IsDigraph],
 D -> DIGRAPHS_IsMeetSemilatticeAndMeetTable(D)[1]);
 
+InstallImmediateMethod(IsStronglyConnectedDigraph,
+IsDigraph and HasDigraphStronglyConnectedComponents, 0,
+D -> Length(DigraphStronglyConnectedComponents(D).comps) = 1);
+
 InstallMethod(IsStronglyConnectedDigraph, "for a digraph by out-neighbours",
 [IsDigraphByOutNeighboursRep],
 D -> IS_STRONGLY_CONNECTED_DIGRAPH(OutNeighbours(D)));
@@ -207,6 +211,10 @@ function(D)
   fi;
   return true;
 end);
+
+InstallImmediateMethod(IsConnectedDigraph,
+IsDigraph and HasDigraphConnectedComponents, 0,
+D -> Length(DigraphConnectedComponents(D).comps) = 1);
 
 InstallMethod(IsConnectedDigraph, "for a digraph", [IsDigraph],
 function(D)
