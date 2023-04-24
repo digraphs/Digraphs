@@ -156,6 +156,10 @@ gap> gr := Digraph([[2], []]);
 <immutable digraph with 2 vertices, 1 edge>
 gap> DigraphStronglyConnectedComponents(gr);
 rec( comps := [ [ 2 ], [ 1 ] ], id := [ 2, 1 ] )
+gap> HasIsStronglyConnectedDigraph(gr);
+true
+gap> IsStronglyConnectedDigraph(gr);
+false
 gap> IsAcyclicDigraph(gr);
 true
 gap> gr := Digraph([[1, 2], []]);
@@ -168,6 +172,10 @@ gap> gr := Digraph([[2], [1]]);
 <immutable digraph with 2 vertices, 2 edges>
 gap> DigraphStronglyConnectedComponents(gr);
 rec( comps := [ [ 1, 2 ] ], id := [ 1, 1 ] )
+gap> HasIsStronglyConnectedDigraph(gr);
+true
+gap> IsStronglyConnectedDigraph(gr);
+true
 gap> IsAcyclicDigraph(gr);
 false
 gap> gr := Digraph([
@@ -561,6 +569,8 @@ gap> gr := Digraph([[2], [1]]);
 <immutable digraph with 2 vertices, 2 edges>
 gap> IsStronglyConnectedDigraph(gr);
 true
+gap> HasIsConnectedDigraph(gr);
+true
 gap> IsConnectedDigraph(gr);
 true
 gap> gr := Digraph([[2], [3], [], []]);
@@ -569,6 +579,14 @@ gap> IsConnectedDigraph(gr);
 false
 gap> gr := Digraph([[2], [3], [], [3]]);
 <immutable digraph with 4 vertices, 3 edges>
+gap> IsConnectedDigraph(gr);
+true
+gap> gr := Digraph([[2], [3], [], [3]]);
+<immutable digraph with 4 vertices, 3 edges>
+gap> DigraphConnectedComponents(gr);
+rec( comps := [ [ 1, 2, 3, 4 ] ], id := [ 1, 1, 1, 1 ] )
+gap> HasIsConnectedDigraph(gr);
+true
 gap> IsConnectedDigraph(gr);
 true
 
