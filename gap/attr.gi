@@ -192,25 +192,15 @@ function(I, subtracted_set, size_bound)
 end
 );
 
-InstallMethod(DigraphAbsorptionProbabilities,
+InstallMethod(DIGRAPHS_AbsorbingMarkovChain,
 "for a digraph",
 [IsDigraph],
 function(D)
+  # Helper for DigraphAbsorptionProbabilities and DigraphAbsorptionExpectedSteps
   local scc, is_sink_comp, transient_vertices, i, comp, v, sink_comps,
         nr_transients, transient_mat, absorption_mat, neighbours, chance, w,
-        w_comp, sink_comp_index, j, N, chances_of_absorption, output, comp_no,
-        c;
-  # No vertices: trivial matrix
-  if DigraphNrVertices(D) = 0 then
-    return [];
-  fi;
-
+        w_comp, sink_comp_index, j, fundamental_mat;
   scc := DigraphStronglyConnectedComponents(D);
-
-  # One SCC only: all vertices stay in it with probability 1.
-  if Length(scc.comps) = 1 then
-    return ListWithIdenticalEntries(DigraphNrVertices(D), [1]);
-  fi;
 
   # Find the "sink components" (components from which there is no escape)
   # We could use QuotientDigraph and DigraphSinks here, but this avoids copying.
@@ -228,6 +218,14 @@ function(D)
   od;
   sink_comps := Positions(is_sink_comp, true);
   nr_transients := Length(transient_vertices);
+
+  # If no transient vertices, then we can't return anything interesting.
+  if nr_transients = 0 then
+    return rec(transient_vertices := transient_vertices,
+               fundamental_mat := [],
+               sink_comps := sink_comps,
+               absorption_mat := []);
+  fi;
 
   # transient_mat[i][j] is the chance of going
   # from transient vertex i to transient vertex j
@@ -257,21 +255,57 @@ function(D)
     od;
   od;
 
-  # Compute the chances as t tends to infinity using formula (I - Q)^-1 * R
-  N := Inverse(IdentityMat(nr_transients) - transient_mat);
-  chances_of_absorption := N * absorption_mat;
+  # "Fundamental matrix": mat[i][j] is the expected number of visits to each
+  # transient vertex j given a random walk starting at transient vertex i.
+  # Compute this using formula (I - Q)^-1
+  fundamental_mat := Inverse(IdentityMat(nr_transients) - transient_mat);
 
-  # Rows are vertices, columns are SCCs
+  # Return all info needed for further computation in DigraphAbsorption* methods
+  return rec(transient_vertices := transient_vertices,
+             fundamental_mat := fundamental_mat,
+             sink_comps := sink_comps,
+             absorption_mat := absorption_mat);
+end);
+
+InstallMethod(DigraphAbsorptionProbabilities,
+"for a digraph",
+[IsDigraph],
+function(D)
+  local scc, markov, chances_of_absorption, output, sink_comps, comp_no, v,
+        transient_vertices, i, j, c;
+  # Strongly connected components are an important part of definition
+  scc := DigraphStronglyConnectedComponents(D);
+
+  # One SCC only (or none): all vertices stay in it with probability 1.
+  if Length(scc.comps) <= 1 then
+    return ListWithIdenticalEntries(DigraphNrVertices(D), [1]);
+  fi;
+
+  # Get data about absorbing Markov chain represented by this digraph
+  markov := DIGRAPHS_AbsorbingMarkovChain(D);
+
+  # Calculate chances of absorption
+  # Rows are transient vertices, columns are absorbing SCCs
+  if Length(markov.transient_vertices) = 0 then
+    chances_of_absorption := [];
+  else
+    chances_of_absorption := markov.fundamental_mat * markov.absorption_mat;
+  fi;
+
+  # Convert to output format
+  # Rows are all vertices, columns are all SCCs
   output := NullMat(DigraphNrVertices(D), Length(scc.comps));
 
   # Non-transient vertices stay in their own SCC with probability 1
+  sink_comps := markov.sink_comps;
   for comp_no in sink_comps do
     for v in scc.comps[comp_no] do
       output[v][comp_no] := 1;
     od;
   od;
 
-  # Transient vertices have chances as calculated above
+  # Transient vertices have chances as calculated in Markov code
+  transient_vertices := markov.transient_vertices;
   for i in [1 .. Length(transient_vertices)] do
     v := transient_vertices[i];
     for j in [1 .. Length(sink_comps)] do
@@ -281,6 +315,28 @@ function(D)
   od;
 
   return output;
+end);
+
+InstallMethod(DigraphAbsorptionExpectedSteps,
+"for a digraph",
+[IsDigraph],
+function(D)
+  local markov, N, transient_expected_steps, out, i;
+  if DigraphNrVertices(D) = 0 then
+    return [];
+  fi;
+  markov := DIGRAPHS_AbsorbingMarkovChain(D);
+  N := markov.fundamental_mat;
+  if Length(N) = 0 then  # no transient vertices
+    transient_expected_steps := [];
+  else
+    transient_expected_steps := N * ListWithIdenticalEntries(Length(N), 1);
+  fi;
+  out := ListWithIdenticalEntries(DigraphNrVertices(D), 0);
+  for i in [1 .. Length(transient_expected_steps)] do
+    out[markov.transient_vertices[i]] := transient_expected_steps[i];
+  od;
+  return out;
 end);
 
 BindGlobal("DIGRAPHS_ChromaticNumberLawler",

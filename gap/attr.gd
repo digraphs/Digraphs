@@ -51,7 +51,9 @@ DeclareAttribute("DigraphOddGirth", IsDigraph);
 DeclareAttribute("DigraphUndirectedGirth", IsDigraph);
 DeclareAttribute("ArticulationPoints", IsDigraph);
 DeclareSynonymAttr("CutVertices", ArticulationPoints);
+DeclareAttribute("DIGRAPHS_AbsorbingMarkovChain", IsDigraph);
 DeclareAttribute("DigraphAbsorptionProbabilities", IsDigraph);
+DeclareAttribute("DigraphAbsorptionExpectedSteps", IsDigraph);
 
 DeclareAttribute("DigraphAllSimpleCircuits", IsDigraph);
 DeclareAttribute("DigraphLongestSimpleCircuit", IsDigraph);
