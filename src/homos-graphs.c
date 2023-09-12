@@ -240,6 +240,7 @@ static void bliss_hook(void*               user_param_arg,  // perm_coll!
     p[i] = i;
   }
   add_perm_coll((PermColl*) user_param_arg, p);
+  free(p);
 }
 
 #ifdef DIGRAPHS_WITH_INCLUDED_BLISS
