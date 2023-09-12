@@ -105,3 +105,35 @@ jobs:
       - uses: gap-actions/run-pkg-tests@cygwin-v2
       - uses: gap-actions/process-coverage@cygwin-v2
       - uses: codecov/codecov-action@v3
+
+  with-external-planarity-bliss:
+    runs-on: "ubuntu-latest"
+    env:
+      GAPBRANCH: "stable-4.12"
+      ABI: 64
+      PKG_CONFIG_PATH: "/home/runner/micromamba/envs/digraphs/lib/pkgconfig:/home/runner/micromamba/envs/digraphs/share/pkgconfig/"
+      LD_LIBRARY_PATH: "/home/runner/micromamba/envs/digraphs/lib"
+      CFLAGS: "-I/home/runner/micromamba/envs/digraphs/include"
+      LDFLAGS: "-L/home/runner/micromamba/envs/digraphs/lib"
+    defaults:
+      run:
+        shell: bash -l {0}
+    steps:
+      - uses: actions/checkout@v3
+      - name: "Install micromamba environment from environment.yml . . ."
+        uses: mamba-org/setup-micromamba@v1
+        with:
+            environment-file: environment.yml
+            cache-environment: true
+      - name: "Activate \"digraphs\" environment . . ."
+        run:  micromamba activate digraphs
+      - name: "Install GAP and clone/compile necessary packages"
+        uses: gap-actions/setup-gap@v2
+        with:
+          GAP_PKGS_TO_BUILD: "io orb profiling grape datastructures"
+      - name: "Build Digraphs"
+        uses: gap-actions/build-pkg@v1
+        with:
+          CONFIGFLAGS: --with-external-planarity --with-external-bliss
+      - name: "Run Digraphs package's tst/teststandard.g"
+        uses: gap-actions/run-pkg-tests@v2

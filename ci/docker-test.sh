@@ -14,27 +14,27 @@ bold() {
 # Check required environment variables are set
 ################################################################################
 
-if [[ -z "${SUITE}" ]] ; then 
+if [[ -z "${SUITE}" ]] ; then
   bold "Error, environment variable SUITE is undefined"
   exit 1
 fi
 
-if [[ -z "${GAP_HOME}" ]] ; then 
+if [[ -z "${GAP_HOME}" ]] ; then
   bold "Error, environment variable GAP_HOME is undefined"
   exit 1
 fi
 
-if [[ -z "${GAP_VERSION}" ]] ; then 
+if [[ -z "${GAP_VERSION}" ]] ; then
   bold "Error, environment variable GAP_VERSION is undefined"
   exit 1
 fi
 
-if [[ -z "${DIGRAPHS_LIB}" ]] ; then 
+if [[ -z "${DIGRAPHS_LIB}" ]] ; then
   bold "Error, environment variable GAP_VERSION is undefined"
   exit 1
 fi
 
-if [[ -z "${PACKAGES}" ]] ; then 
+if [[ -z "${PACKAGES}" ]] ; then
   bold "Error, environment variable GAP_VERSION is undefined"
   exit 1
 fi
@@ -44,7 +44,7 @@ if [ "$SUITE" == "coverage" ] && [ -z "${THRESHOLD}" ] ; then
   exit 1
 fi
 
-if [ "$SUITE" != "test" ] && [ "$SUITE" != "coverage" ] && [ "$SUITE" != "conda" ] ; then
+if [ "$SUITE" != "test" ] && [ "$SUITE" != "coverage" ] ; then
   bold "Error, unrecognised suite: $SUITE"
   exit 1
 fi
@@ -62,14 +62,14 @@ GAPSH="$GAP_HOME/bin/gap.sh"
 DIG_DIR="$GAP_HOME/pkg/digraphs"
 
 ################################################################################
-# Install system dependencies 
+# Install system dependencies
 ################################################################################
 
 bold "Installing dependencies (apt-get). . ."
 sudo apt-get --yes update
 sudo apt-get install libtool curl git xdg-utils --yes
 
-if [ "$GAP_VERSION" == "master" ]; then 
+if [ "$GAP_VERSION" == "master" ]; then
   # Stops the documentation from failing to compile because enumitem.sty isn't
   # available
   sudo apt-get remove texlive-latex-base --yes
@@ -77,25 +77,6 @@ fi
 
 if [ "$SUITE" == "coverage" ]; then
   sudo apt-get install python3 --yes
-fi
-
-if [ "$SUITE" == "conda" ]; then
-  bold "Installing dependencies (conda). . ."
-  wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
-  chmod +x miniconda.sh;
-  ./miniconda.sh -b;
-  export PATH=/home/gap/miniconda3/bin:$PATH;
-  conda update --yes conda;
-  conda install -c conda-forge --yes mamba;
-  mamba install -c conda-forge --yes bliss;
-  mamba install -c conda-forge --yes planarity;
-  export PKG_CONFIG_PATH="/home/gap/miniconda3/lib/pkgconfig:/home/gap/miniconda3/share/pkgconfig"
-  export LD_LIBRARY_PATH="/home/gap/miniconda3/lib"
-  export CFLAGS="-I/home/gap/miniconda3/include"
-  export LDFLAGS="-L/home/gap/miniconda3/lib"
-  EXTREME=no
-  EXTRA_PKG_FLAGS="--with-external-planarity --with-external-bliss --without-intrinsics"
-  SUITE="test"
 fi
 
 bold "Fixing permissions . . . "
@@ -147,7 +128,7 @@ for PKG in "${PKGS[@]}"; do
   else
     VERSION=`grep "\"$PKG\"" $GAP_HOME/pkg/digraphs/PackageInfo.g | awk -F'"' '{print $4}' | cut -c3-`
   fi
-  
+
   if [ -z $VERSION ]; then
     bold "Could not determine the version number of the package $PKG!! Aborting..."
     exit 1

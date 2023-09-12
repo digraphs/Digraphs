@@ -79,12 +79,3 @@ jobs:
   steps:
   - script: ci/azure-gap.sh
     displayName: 'Running the Digraphs package for GAP tests in docker container. . .'
-- job: external_planarity_bliss
-  variables:
-    SUITE: conda
-    ABI: 64
-    GAP_VERSION: 4.11.0
-    PACKAGES: required
-  steps:
-  - script: ci/azure-gap.sh
-    displayName: 'Running the Digraphs package for GAP tests in docker container. . .'
