@@ -531,7 +531,9 @@ static void set_automorphisms(Obj aut_grp_obj, PermColl* out) {
   for (UInt i = 1; i <= LEN_LIST(gens); ++i) {
     Obj gen_obj = ELM_LIST(gens, i);
     if (LargestMovedPointPerm(gen_obj) > 0) {
-      add_perm_coll(out, new_perm_from_gap(gen_obj, PERM_DEGREE));
+      Perm const p = new_perm_from_gap(gen_obj, PERM_DEGREE);
+      add_perm_coll(out, p);
+      free(p);
     }
   }
 }
