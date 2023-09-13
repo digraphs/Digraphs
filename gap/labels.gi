@@ -57,7 +57,7 @@ InstallMethod(SetDigraphVertexLabels, "for a digraph and list",
 [IsDigraph, IsList],
 function(D, names)
   if Length(names) <> DigraphNrVertices(D) then
-    ErrorNoReturn("the 2nd arument <names> must be a list with length equal ",
+    ErrorNoReturn("the 2nd argument <names> must be a list with length equal ",
                   "to the number of vertices of the digraph <D> that is the ",
                   "1st argument,");
   fi;
