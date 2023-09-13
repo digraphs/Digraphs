@@ -18,8 +18,8 @@ gap> gr := RandomDigraph(10);;
 gap> DigraphVertexLabels(gr);
 [ 1 .. 10 ]
 gap> SetDigraphVertexLabels(gr, ["a", "b", 10]);
-Error, the 2nd arument <names> must be a list with length equal to the number \
-of vertices of the digraph <D> that is the 1st argument,
+Error, the 2nd argument <names> must be a list with length equal to the number\
+ of vertices of the digraph <D> that is the 1st argument,
 gap> gr := RandomDigraph(3);;
 gap> SetDigraphVertexLabels(gr, ["a", "b", 10]);
 gap> DigraphVertexLabels(gr);

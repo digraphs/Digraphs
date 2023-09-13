@@ -1,0 +1,8 @@
+name: codespell
+on: [pull_request]
+jobs:
+  codespell:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: codespell-project/actions-codespell@v1.0
