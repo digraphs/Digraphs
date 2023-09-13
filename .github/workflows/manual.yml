@@ -3,6 +3,9 @@ on:
   workflow_dispatch:
   pull_request:
   push:
+    branches:
+      - main
+      - stable-*.*
   schedule:
     # Every day at 3:20 AM UTC
     - cron: '20 3 * * *'
@@ -11,8 +14,6 @@ jobs:
   manual:
     name: "compile and upload manual"
     runs-on: ubuntu-latest
-    # Don't run this twice for PRs from branches in the same repository
-    if: ${{ !(github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository) }}
     steps:
       - uses: actions/checkout@v3
       - name: "Install TeX Live"
