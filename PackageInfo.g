@@ -9,7 +9,7 @@
 ##
 
 ##  <#GAPDoc Label="PKGVERSIONDATA">
-##  <!ENTITY VERSION                  "1.6.2">
+##  <!ENTITY VERSION                  "1.6.3">
 ##  <!ENTITY GAPVERS                  "4.10.0">
 ##  <!ENTITY GRAPEVERS                "4.8.1">
 ##  <!ENTITY IOVERS                   "4.5.1">
@@ -28,8 +28,8 @@ _STANDREWSCS := Concatenation(["Jack Cole Building, North Haugh, ",
 SetPackageInfo(rec(
 PackageName := "Digraphs",
 Subtitle := "Graphs, digraphs, and multidigraphs in GAP",
-Version := "1.6.2",
-Date := "05/04/2023",  # dd/mm/yyyy format
+Version := "1.6.3",
+Date := "13/09/2023",  # dd/mm/yyyy format
 License := "GPL-3.0-or-later",
 ArchiveFormats := ".tar.gz",
 
