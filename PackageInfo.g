@@ -304,7 +304,7 @@ Persons := [
   rec(
     LastName      := "Tsalakou",
     FirstNames    := "Maria",
-    IsAuthor      := true,
+    IsAuthor      := false,
     IsMaintainer  := false,
     Email         := "mt200@st-andrews.ac.uk",
     WWWHome       := "https://mariatsalakou.github.io/",
