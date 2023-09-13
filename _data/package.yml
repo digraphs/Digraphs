@@ -1,20 +1,16 @@
 name: Digraphs
-version: 1.6.2
-date: 2023-04-05
+version: 1.6.3
+date: 2023-09-13
 description: |
     Graphs, digraphs, and multidigraphs in GAP
 
 authors:
     - name: Jan De Beule
       url: http://homepages.vub.ac.be/~jdbeule/
-    - name: Joe Edwards
-      url: https://github.com/Joseph-Edwards
     - name: Julius Jonusas
       url: http://julius.jonusas.work
     - name: James Mitchell
       url: https://jdbm.me
-    - name: Maria Tsalakou
-      url: https://mariatsalakou.github.io/
     - name: Wilf A. Wilson
       url: https://wilf.me
     - name: Michael Young
@@ -40,6 +36,8 @@ contributors:
       url: mailto:ac323@st-andrews.ac.uk
     - name: Tom Conti-Leslie
       url: https://tomcontileslie.com
+    - name: Joe Edwards
+      url: https://github.com/Joseph-Edwards
     - name: Luke Elliott
       url: mailto:le27@st-andrews.ac.uk
     - name: Isuru Fernando
@@ -73,6 +71,8 @@ contributors:
       url: mailto:fls3@st-andrews.ac.uk
     - name: Ben Spiers
       url: mailto:bspiers972@outlook.com
+    - name: Maria Tsalakou
+      url: https://mariatsalakou.github.io/
     - name: Murray Whyte
       url: mailto:mw231@st-andrews.ac.uk
 
@@ -98,6 +98,7 @@ suggested-pkgs:
       url: "https://gap-packages.github.io/grape"
     - name: "nautytracesinterface"
       version: ">=0.2"
+      url: "http://TODO/"
 
 www: https://digraphs.github.io/Digraphs
 readme: README.md
@@ -105,7 +106,7 @@ packageinfo: https://digraphs.github.io/Digraphs/PackageInfo.g
 
 downloads:
     - name: .tar.gz
-      url: https://github.com/digraphs/Digraphs/releases/download/v1.6.2/digraphs-1.6.2.tar.gz
+      url: https://github.com/digraphs/Digraphs/releases/download/v1.6.3/digraphs-1.6.3.tar.gz
 
 abstract: |
     The <b>Digraphs</b> package is a <b>GAP</b> package for digraphs and multidigraphs.
