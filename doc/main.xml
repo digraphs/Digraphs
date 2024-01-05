@@ -41,7 +41,7 @@
   <#Include SYSTEM="z-chap0.xml"> <!-- intro -->
   <#Include SYSTEM="z-chap1.xml"> <!-- installing -->
   <#Include SYSTEM="z-chap2.xml"> <!-- creating -->
-  <#Include SYSTEM="z-chap3.xml"> <!-- operators/hashs -->
+  <#Include SYSTEM="z-chap3.xml"> <!-- operators/hashes -->
   <#Include SYSTEM="z-chap4.xml"> <!-- attributes, operations -->
   <#Include SYSTEM="z-chap5.xml"> <!-- properties -->
   <#Include SYSTEM="z-chap6.xml"> <!-- homomorphisms -->

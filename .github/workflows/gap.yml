@@ -3,6 +3,9 @@ on:
   workflow_dispatch:
   pull_request:
   push:
+    branches:
+      - main
+      - stable-*.*
   schedule:
     # Every day at 3:30 AM UTC
     - cron: '30 3 * * *'
@@ -14,8 +17,6 @@ jobs:
   test-unix:
     name: "${{ matrix.os }}${{ matrix.ABI }} / GAP ${{ matrix.gap-branch }}"
     runs-on: "${{ matrix.os }}-latest"
-    # Don't run this twice for PRs from branches in the same repository
-    if: ${{ !(github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository) }}
     strategy:
       fail-fast: false
       matrix:
@@ -61,34 +62,27 @@ jobs:
           curl --retry 5 -L -O "https://digraphs.github.io/Digraphs/${{ env.DIGRAPHS_LIB }}.tar.gz"
           tar xf "${{ env.DIGRAPHS_LIB }}.tar.gz"
       - name: "Run DigraphsTestInstall"
-        if: ${{ always() }}
         uses: gap-actions/run-pkg-tests@v2
         with:
           GAP_TESTFILE: "tst/github_actions/install.g"
       - name: "Run DigraphsTestStandard"
-        if: ${{ always() }}
         uses: gap-actions/run-pkg-tests@v2
         with:
           GAP_TESTFILE: "tst/github_actions/standard.g"
       - name: "Run DigraphsTestManualExamples"
-        if: ${{ always() }}
         uses: gap-actions/run-pkg-tests@v2
         with:
           GAP_TESTFILE: "tst/github_actions/examples.g"
       - name: "Run DigraphsTestExtreme"
-        if: ${{ always() }}
         uses: gap-actions/run-pkg-tests@v2
         with:
           GAP_TESTFILE: "tst/github_actions/extreme.g"
       - uses: gap-actions/process-coverage@v2
-        if: ${{ always() }}
       - uses: codecov/codecov-action@v3
-        if: ${{ always() }}
 
   test-cygwin:
     name: "cygwin / GAP master"
     runs-on: windows-2019
-    if: ${{ !(github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository) }}
     env:
       CHERE_INVOKING: 1
     steps:

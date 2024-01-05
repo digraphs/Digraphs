@@ -2341,35 +2341,37 @@ InstallMethod(DigraphReflexiveTransitiveReductionAttr,
 "for an immutable digraph",
 [IsImmutableDigraph], DigraphReflexiveTransitiveReduction);
 
-InstallMethod(UndirectedSpanningForest, "for a digraph by out-neighbours",
-[IsDigraphByOutNeighboursRep],
+InstallMethod(UndirectedSpanningForest,
+"for a mutable digraph by out-neighbours",
+[IsMutableDigraph and IsDigraphByOutNeighboursRep],
+function(D)
+  if DigraphHasNoVertices(D) then
+    return fail;
+  fi;
+  MaximalSymmetricSubdigraph(D);
+  D!.OutNeighbours := DIGRAPH_SYMMETRIC_SPANNING_FOREST(D!.OutNeighbours);
+  ClearDigraphEdgeLabels(D);
+  return D;
+end);
+
+InstallMethod(UndirectedSpanningForest, "for an immutable digraph",
+[IsImmutableDigraph], UndirectedSpanningForestAttr);
+
+InstallMethod(UndirectedSpanningForestAttr, "for an immutable digraph",
+[IsImmutableDigraph and IsDigraphByOutNeighboursRep],
 function(D)
   local C;
   if DigraphHasNoVertices(D) then
     return fail;
   fi;
-  C := MaximalSymmetricSubdigraph(D)!.OutNeighbours;
-  C := DIGRAPH_SYMMETRIC_SPANNING_FOREST(C);
-  if IsMutableDigraph(D) then
-    D!.OutNeighbours := C;
-    ClearDigraphEdgeLabels(D);
-    return D;
-  fi;
+  C := MaximalSymmetricSubdigraph(D);
+  C := DIGRAPH_SYMMETRIC_SPANNING_FOREST(C!.OutNeighbours);
   C := ConvertToImmutableDigraphNC(C);
-  SetUndirectedSpanningForestAttr(D, C);
   SetIsUndirectedForest(C, true);
   SetIsMultiDigraph(C, false);
   SetDigraphHasLoops(C, false);
   return C;
 end);
-
-InstallMethod(UndirectedSpanningForest,
-"for a digraph with known undirected spanning forest",
-[IsDigraph and HasUndirectedSpanningForestAttr], SUM_FLAGS,
-UndirectedSpanningForestAttr);
-
-InstallMethod(UndirectedSpanningForestAttr, "for an immutable digraph",
-[IsImmutableDigraph], UndirectedSpanningForest);
 
 InstallMethod(UndirectedSpanningTree, "for a mutable digraph",
 [IsMutableDigraph],

@@ -1,0 +1,14 @@
+name: codespell
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    branches:
+      - main
+      - stable-*.*
+jobs:
+  codespell:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: codespell-project/actions-codespell@v2

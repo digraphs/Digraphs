@@ -58,7 +58,7 @@ printf "\033[1m";
 printf "Running Test(\"$1\"); in GAP . . .\n"; 
 printf "\033[0m"; 
 printf "\033[2m";
-~/gap/bin/gap.sh -A -m 1g -T <<< "Test(\"$1\"); quit;";
+~/gap/gap -A -m 1g -T <<< "Test(\"$1\"); quit;";
 printf "\033[0m"; 
 
 printf "\033[1m";

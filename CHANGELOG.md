@@ -4,6 +4,21 @@ Wilf A. Wilson, Michael Young et al.
 
 Licensing information can be found in the `LICENSE` file.
 
+## Version 1.6.3 (released 13/09/2023)
+
+This is a minor release with some bug fixes, and other issues resolved:
+
+* There was a minor bug in the `RandomDigraph` method for `IsEulerianDigraph`,
+  resolved by @mtorpey
+* Joe Edwards and Maria Tsalakou were incorrectly listed as authors resolved
+  partially by @james-d-mitchell in https://github.com/digraphs/Digraphs/pull/576
+* Standardise the way that `UndirectedSpanningForest` works in relation to
+  mutability by @wilfwilson in https://github.com/digraphs/Digraphs/pull/582
+* Add immediate methods for connected and strongly connected digraphs by
+  @mtorpey
+* There was a minor memory leak in the kernel extension resolved by
+  @james-d-mitchell
+
 ## Version 1.6.2 (released 05/04/2023)
 
 * PackageInfo.g: link to Mathjax manual by default by @fingolfin in

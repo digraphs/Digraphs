@@ -1,7 +1,7 @@
 #############################################################################
 ##
 #W  standard/attr.tst
-#Y  Copyright (C) 2014-17                                James D. Mitchell
+#Y  Copyright (C) 2014-24                                James D. Mitchell
 ##                                                          Wilf A. Wilson
 ##
 ##  Licensing information can be found in the README file of this package.
@@ -789,8 +789,8 @@ gap> IsSymmetricDigraph(gr);
 true
 
 #  Digraph(Reflexive)TransitiveClosure
-gap> gr := Digraph(rec(DigraphNrVertices := 2, 
->                      DigraphSource := [1, 1], 
+gap> gr := Digraph(rec(DigraphNrVertices := 2,
+>                      DigraphSource := [1, 1],
 >                      DigraphRange := [2, 2]));
 <immutable multidigraph with 2 vertices, 2 edges>
 gap> DigraphReflexiveTransitiveClosure(gr);
@@ -1606,7 +1606,7 @@ gap> ChromaticNumber(gr : lawler);
 gap> ChromaticNumber(gr : lawler);
 3
 
-#  Test ChromaticNumber Byskov 
+#  Test ChromaticNumber Byskov
 gap> ChromaticNumber(NullDigraph(10) : byskov);
 1
 gap> ChromaticNumber(CompleteDigraph(10) : byskov);
@@ -1767,7 +1767,7 @@ true
 # ArticulationPoints
 gap> ArticulationPoints(CycleDigraph(5));
 [  ]
-gap> StrongOrientation(DigraphSymmetricClosure(CycleDigraph(5))) 
+gap> StrongOrientation(DigraphSymmetricClosure(CycleDigraph(5)))
 > = CycleDigraph(5);
 true
 gap> ArticulationPoints(Digraph([[2, 7], [3, 5], [4], [2], [6], [1], []]));
@@ -1890,8 +1890,8 @@ gap> Bridges(D);
 # StrongOrientation
 gap> filename := Concatenation(DIGRAPHS_Dir(), "/data/graph5.g6.gz");;
 gap> D := ReadDigraphs(filename);;
-gap> ForAll(D, 
->           d -> StrongOrientation(d) = fail 
+gap> ForAll(D,
+>           d -> StrongOrientation(d) = fail
 >                or IsStronglyConnectedDigraph(StrongOrientation(d)));
 true
 gap> Number(D, d -> StrongOrientation(d) <> fail);
@@ -1901,7 +1901,7 @@ gap> Number(D, IsBridgelessDigraph);
 gap> D := Filtered(D, d -> StrongOrientation(d) <> fail);;
 gap> ForAll(D, d -> IsSubdigraph(d, StrongOrientation(d)));
 true
-gap> ForAll(D, 
+gap> ForAll(D,
 > d -> DigraphNrEdges(d) / 2 = DigraphNrEdges(StrongOrientation(d)));
 true
 
@@ -1985,8 +1985,8 @@ gap> g := Digraph([[2, 4, 6, 10], [1, 3, 4, 5, 6, 7, 9, 10], [1, 5, 7, 8],
 <immutable digraph with 10 vertices, 43 edges>
 gap> HamiltonianPath(g);
 [ 1, 4, 6, 9, 10, 3, 8, 5, 7, 2 ]
-gap> IsDigraphMonomorphism(CycleDigraph(10), 
->                          g, 
+gap> IsDigraphMonomorphism(CycleDigraph(10),
+>                          g,
 >                          Transformation(HamiltonianPath(g)));
 true
 gap> g := CompleteMultipartiteDigraph([1, 30]);
@@ -2404,7 +2404,7 @@ gap> RankOfTransformation(proj[3]);
 gap> S := ImageSetOfTransformation(proj[2]);;
 gap> IsIsomorphicDigraph(CycleDigraph(4), InducedSubdigraph(D, S));
 true
-gap> G := DigraphRemoveLoops(RandomDigraph(12));; 
+gap> G := DigraphRemoveLoops(RandomDigraph(12));;
 gap> H := DigraphRemoveLoops(RandomDigraph(50));;
 gap> D := DigraphCartesianProduct(G, H);;
 gap> proj := DigraphCartesianProductProjections(D);;
@@ -2431,7 +2431,7 @@ gap> P := DigraphRemoveAllMultipleEdges(
 > ReducedDigraph(OnDigraphs(D, proj[2])));;
 gap> IsIsomorphicDigraph(CycleDigraph(4), P);
 true
-gap> G := RandomDigraph(12);; 
+gap> G := RandomDigraph(12);;
 gap> H := RandomDigraph(50);;
 gap> D := DigraphDirectProduct(G, H);;
 gap> proj := DigraphDirectProductProjections(D);;
@@ -2510,21 +2510,21 @@ true
 gap> Length(M);
 111
 gap> M1 := [
-> [1, 198], [2, 61], [3, 219], [4, 189], [5, 10], [6, 63], [7, 98], [8, 26], 
-> [9, 62], [11, 18], [12, 81], [13, 155], [14, 67], [15, 30], [16, 125], 
-> [17, 168], [19, 23], [20, 162], [21, 143], [22, 197], [24, 166], [25, 79], 
-> [27, 154], [28, 56], [29, 70], [31, 221], [32, 92], [33, 90], [34, 134], 
-> [35, 101], [36, 54], [37, 39], [38, 209], [40, 108], [41, 130], [42, 218], 
-> [43, 144], [44, 120], [45, 116], [46, 192], [47, 217], [48, 159], [49, 203], 
-> [50, 128], [51, 141], [52, 66], [53, 188], [55, 57], [58, 82], [59, 171], 
-> [60, 99], [64, 126], [65, 216], [68, 208], [69, 102], [71, 182], [72, 96], 
-> [73, 137], [74, 184], [75, 152], [76, 111], [77, 185], [78, 167], [80, 207], 
-> [83, 97], [84, 201], [85, 202], [86, 206], [87, 117], [88, 94], [89, 112], 
-> [91, 115], [93, 176], [95, 195], [100, 158], [103, 170], [104, 114], 
-> [105, 131], [106, 139], [107, 177], [109, 127], [110, 133], [113, 212], 
-> [118, 119], [121, 199], [122, 142], [123, 157], [124, 145], [129, 183], 
-> [132, 181], [135, 178], [136, 172], [138, 150], [140, 165], [146, 210], 
-> [147, 211], [148, 149], [151, 161], [153, 187], [156, 191], [160, 193], 
+> [1, 198], [2, 61], [3, 219], [4, 189], [5, 10], [6, 63], [7, 98], [8, 26],
+> [9, 62], [11, 18], [12, 81], [13, 155], [14, 67], [15, 30], [16, 125],
+> [17, 168], [19, 23], [20, 162], [21, 143], [22, 197], [24, 166], [25, 79],
+> [27, 154], [28, 56], [29, 70], [31, 221], [32, 92], [33, 90], [34, 134],
+> [35, 101], [36, 54], [37, 39], [38, 209], [40, 108], [41, 130], [42, 218],
+> [43, 144], [44, 120], [45, 116], [46, 192], [47, 217], [48, 159], [49, 203],
+> [50, 128], [51, 141], [52, 66], [53, 188], [55, 57], [58, 82], [59, 171],
+> [60, 99], [64, 126], [65, 216], [68, 208], [69, 102], [71, 182], [72, 96],
+> [73, 137], [74, 184], [75, 152], [76, 111], [77, 185], [78, 167], [80, 207],
+> [83, 97], [84, 201], [85, 202], [86, 206], [87, 117], [88, 94], [89, 112],
+> [91, 115], [93, 176], [95, 195], [100, 158], [103, 170], [104, 114],
+> [105, 131], [106, 139], [107, 177], [109, 127], [110, 133], [113, 212],
+> [118, 119], [121, 199], [122, 142], [123, 157], [124, 145], [129, 183],
+> [132, 181], [135, 178], [136, 172], [138, 150], [140, 165], [146, 210],
+> [147, 211], [148, 149], [151, 161], [153, 187], [156, 191], [160, 193],
 > [163, 169], [164, 174], [173, 175], [179, 220], [180, 213], [186, 214],
 > [190, 205], [194, 204], [196, 200], [215, 222]];;
 gap> M = M1;
@@ -2546,14 +2546,14 @@ true
 gap> Length(M);
 63
 gap> M1 := [
-> [1, 76], [2, 56], [3, 95], [4, 57], [5, 22], [6, 60], [7, 30], [8, 125], 
-> [9, 52], [10, 100], [11, 28], [12, 89], [13, 40], [14, 105], [15, 37], 
-> [16, 67], [17, 91], [18, 58], [19, 120], [20, 73], [21, 87], [23, 63], 
-> [24, 85], [25, 99], [26, 45], [27, 46], [29, 90], [31, 78], [32, 98], 
-> [33, 74], [34, 108], [35, 86], [36, 117], [38, 48], [39, 119], [41, 84], 
-> [42, 75], [43, 71], [44, 123], [47, 88], [49, 114], [50, 83], [51, 68], 
-> [53, 92], [54, 59], [55, 64], [61, 77], [62, 116], [65, 118], [66, 107], 
-> [69, 104], [70, 103], [72, 121], [79, 115], [80, 113], [81, 94], [82, 122], 
+> [1, 76], [2, 56], [3, 95], [4, 57], [5, 22], [6, 60], [7, 30], [8, 125],
+> [9, 52], [10, 100], [11, 28], [12, 89], [13, 40], [14, 105], [15, 37],
+> [16, 67], [17, 91], [18, 58], [19, 120], [20, 73], [21, 87], [23, 63],
+> [24, 85], [25, 99], [26, 45], [27, 46], [29, 90], [31, 78], [32, 98],
+> [33, 74], [34, 108], [35, 86], [36, 117], [38, 48], [39, 119], [41, 84],
+> [42, 75], [43, 71], [44, 123], [47, 88], [49, 114], [50, 83], [51, 68],
+> [53, 92], [54, 59], [55, 64], [61, 77], [62, 116], [65, 118], [66, 107],
+> [69, 104], [70, 103], [72, 121], [79, 115], [80, 113], [81, 94], [82, 122],
 > [93, 110], [96, 109], [97, 112], [101, 111], [102, 106], [124, 126]];;
 gap> M = M1;
 true
@@ -2918,7 +2918,7 @@ gap> ForAll(probs,  # all zeros except for the sink
 >                       or (v[comp] = 1 and scc.id[comp] = sink)));
 true
 
-#  DIGRAPHS_UnbindVariables
+# Unbind local variables, auto-generated by etc/tst-unbind-local-vars.py
 gap> Unbind(A);
 gap> Unbind(B);
 gap> Unbind(D);
@@ -2934,9 +2934,11 @@ gap> Unbind(a);
 gap> Unbind(adj);
 gap> Unbind(adj1);
 gap> Unbind(adj2);
+gap> Unbind(adjacencies);
 gap> Unbind(b);
 gap> Unbind(circuit);
 gap> Unbind(complete15);
+gap> Unbind(comps);
 gap> Unbind(cycle12);
 gap> Unbind(e);
 gap> Unbind(erev);
@@ -2949,11 +2951,16 @@ gap> Unbind(gr2);
 gap> Unbind(gr3);
 gap> Unbind(gr4);
 gap> Unbind(grid);
+gap> Unbind(group);
 gap> Unbind(i);
+gap> Unbind(id);
+gap> Unbind(isGraph);
 gap> Unbind(j);
 gap> Unbind(mat);
 gap> Unbind(multiple);
+gap> Unbind(names);
 gap> Unbind(nbs);
+gap> Unbind(order);
 gap> Unbind(probs);
 gap> Unbind(proj);
 gap> Unbind(r);
@@ -2961,9 +2968,11 @@ gap> Unbind(rd);
 gap> Unbind(reflextrans);
 gap> Unbind(reflextrans1);
 gap> Unbind(reflextrans2);
+gap> Unbind(representatives);
 gap> Unbind(rev);
 gap> Unbind(rgr);
 gap> Unbind(scc);
+gap> Unbind(schreierVector);
 gap> Unbind(sink);
 gap> Unbind(soccer);
 gap> Unbind(str);
