@@ -117,7 +117,7 @@ end);
 ## Returns a list where the first position is the automorphism group, and the
 ## second is the canonical labelling.
 BindGlobal("BLISS_DATA",
-function(D, vert_colours, edge_colours, calling_function_name)
+function(D, vert_colours, edge_colours)
   if vert_colours <> fail then
     vert_colours := DIGRAPHS_ValidateVertexColouring(DigraphNrVertices(D),
                                                      vert_colours);
@@ -128,7 +128,7 @@ function(D, vert_colours, edge_colours, calling_function_name)
   return BLISS_DATA_NC(D, vert_colours, edge_colours);
 end);
 
-BindGlobal("BLISS_DATA_NO_COLORS", D -> BLISS_DATA(D, fail, fail, ""));
+BindGlobal("BLISS_DATA_NO_COLORS", D -> BLISS_DATA(D, fail, fail));
 
 if DIGRAPHS_NautyAvailable then
   BindGlobal("NAUTY_DATA",
@@ -179,10 +179,7 @@ end);
 InstallMethod(BlissCanonicalLabelling, "for a digraph and vertex coloring",
 [IsDigraph, IsHomogeneousList],
 function(D, colors)
-  return BLISS_DATA(D,
-                    colors,
-                    fail,
-                    "BlissCanonicalLabelling")[2];
+  return BLISS_DATA(D, colors, fail)[2];
 end);
 
 InstallMethod(NautyCanonicalLabelling, "for a digraph",
@@ -291,20 +288,14 @@ end);
 InstallMethod(BlissAutomorphismGroup, "for a digraph and vertex coloring",
 [IsDigraph, IsHomogeneousList],
 function(D, colors)
-  return BLISS_DATA(D,
-                    colors,
-                    fail,
-                    "AutomorphismGroup")[1];
+  return BLISS_DATA(D, colors, fail)[1];
 end);
 
 InstallMethod(BlissAutomorphismGroup,
 "for a digraph, vertex colouring, and edge colouring",
 [IsDigraph, IsHomogeneousList, IsList],
 function(digraph, vert_colours, edge_colours)
-  return BLISS_DATA(digraph,
-                    vert_colours,
-                    edge_colours,
-                    "AutomorphismGroup")[1];
+  return BLISS_DATA(digraph, vert_colours, edge_colours)[1];
 end);
 
 InstallMethod(BlissAutomorphismGroup,
@@ -314,10 +305,7 @@ function(digraph, vert_colours, edge_colours)
   if not vert_colours = fail then
     TryNextMethod();
   fi;
-  return BLISS_DATA(digraph,
-                    vert_colours,
-                    edge_colours,
-                    "AutomorphismGroup")[1];
+  return BLISS_DATA(digraph, vert_colours, edge_colours)[1];
 end);
 
 InstallMethod(NautyAutomorphismGroup, "for a digraph and vertex coloring",

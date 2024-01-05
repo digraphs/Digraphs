@@ -821,7 +821,7 @@ function(L1, L2)
     return next;
   end;
 
-  Recurse := function(last_defined, depth, print)
+  Recurse := function(depth, print)
     local next, value, try_next_value, prev, x;
 
     if depth = N1 + 1 then  # When depth = N1 + 1, we have defined all images
@@ -878,7 +878,7 @@ function(L1, L2)
             FlipBlist(in2[value]);
           fi;
         od;
-        if Recurse(next, depth + 1, print) then
+        if Recurse(depth + 1, print) then
           return true;
         fi;
       fi;
@@ -891,7 +891,7 @@ function(L1, L2)
     return false;
   end;
 
-  if Recurse(1, 1, false) then
+  if Recurse(1, false) then
     Append(map, [N1 + 1 .. N2]);
     return p ^ -1 * Transformation(map);
   fi;
