@@ -178,9 +178,7 @@ end);
 
 InstallMethod(BlissCanonicalLabelling, "for a digraph and vertex coloring",
 [IsDigraph, IsHomogeneousList],
-function(D, colors)
-  return BLISS_DATA(D, colors, fail)[2];
-end);
+{D, colors} -> BLISS_DATA(D, colors, fail)[2]);
 
 InstallMethod(NautyCanonicalLabelling, "for a digraph",
 [IsDigraph],
@@ -286,17 +284,13 @@ function(D)
 end);
 
 InstallMethod(BlissAutomorphismGroup, "for a digraph and vertex coloring",
-[IsDigraph, IsHomogeneousList],
-function(D, colors)
-  return BLISS_DATA(D, colors, fail)[1];
-end);
+[IsDigraph, IsHomogeneousList], {D, colors} -> BLISS_DATA(D, colors, fail)[1]);
 
 InstallMethod(BlissAutomorphismGroup,
 "for a digraph, vertex colouring, and edge colouring",
 [IsDigraph, IsHomogeneousList, IsList],
-function(digraph, vert_colours, edge_colours)
-  return BLISS_DATA(digraph, vert_colours, edge_colours)[1];
-end);
+{digraph, vert_colours, edge_colours}
+-> BLISS_DATA(digraph, vert_colours, edge_colours)[1]);
 
 InstallMethod(BlissAutomorphismGroup,
 "for a digraph, fail, and edge colouring",
