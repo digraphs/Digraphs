@@ -58,7 +58,7 @@ env | grep -v "^LS_COLORS"
 # Common curl settings
 CURL="curl --connect-timeout 5 --max-time 40 --retry 5 --retry-delay 0  -L"
 TESTLOG="$GAP_HOME/testlog.txt"
-GAPSH="$GAP_HOME/bin/gap.sh"
+GAPSH="$GAP_HOME/gap"
 DIG_DIR="$GAP_HOME/pkg/digraphs"
 
 ################################################################################

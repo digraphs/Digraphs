@@ -38,7 +38,7 @@ OutputAnnotatedCodeCoverageFiles(x, filesdir, outdir);
 QUIT_GAP(0);
 '''
 
-_RUN_GAP = '../../bin/gap.sh -A -q -m 1g -o 2g -T --cover ' + _DIR + '/profile.gz -c "' + _COMMANDS.replace('"', '\\"') + '"'
+_RUN_GAP = '../../gap -A -q -m 1g -o 2g -T --cover ' + _DIR + '/profile.gz -c "' + _COMMANDS.replace('"', '\\"') + '"'
 
 try:
     pro = subprocess.Popen(_RUN_GAP, shell=True)
