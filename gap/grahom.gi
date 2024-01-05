@@ -925,9 +925,7 @@ function(L1, L2, map)
 
   if join2 = fail or meet2 = fail then
     ErrorNoReturn("the 2nd argument (a digraph) must be a lattice digraph");
-  fi;
-
-  if Maximum(ImageSetOfTransformation(map, N1)) > N2 then
+  elif Maximum(ImageSetOfTransformation(map, N1)) > N2 then
     return false;
   fi;
   # The above checks if the <x ^ map> and <y ^ map> entries of

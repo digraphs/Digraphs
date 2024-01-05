@@ -2195,9 +2195,7 @@ function(D, i, j)
 
   if HasDigraphJoinTable(D) then
     return DigraphJoinTable(D)[i, j];
-  fi;
-
-  if not IsPartialOrderDigraph(D) then
+  elif not IsPartialOrderDigraph(D) then
     ErrorNoReturn("the 1st argument <D> must satisfy ",
                   "IsPartialOrderDigraph,");
   elif not i in DigraphVertices(D) then
@@ -2227,9 +2225,7 @@ function(D, i, j)
 
   if HasDigraphMeetTable(D) then
     return DigraphMeetTable(D)[i, j];
-  fi;
-
-  if not IsPartialOrderDigraph(D) then
+  elif not IsPartialOrderDigraph(D) then
     ErrorNoReturn("the 1st argument <D> must satisfy ",
                   "IsPartialOrderDigraph,");
   elif not i in DigraphVertices(D) then
