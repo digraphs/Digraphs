@@ -727,7 +727,7 @@ function(D1, D2)
   L := MaximalCommonSubdigraph(D1, D2);
   L[2] := List([1 .. DigraphNrVertices(L[1])], x -> x ^ L[2]);
   L[3] := List([1 .. DigraphNrVertices(L[1])], x -> x ^ L[3]);
-  out := List(OutNeighbours(D1), x -> ShallowCopy(x));
+  out := List(OutNeighbours(D1), ShallowCopy);
   newvertices := Filtered(DigraphVertices(D2), x -> not x in L[3]);
   embedding1 := [1 .. DigraphNrVertices(D1)];
 

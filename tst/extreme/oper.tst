@@ -113,15 +113,15 @@ gap> list := ReadDigraphs(Concatenation(DIGRAPHS_Dir(),
 > "/digraphs-lib/fining.p.gz"));;
 gap> gr := list[4];;
 gap> gr2 := DigraphCopy(gr);;
-gap> layers1 := List(DigraphLayers(gr, 1), x -> Set(x));;
-gap> layers2 := List(DigraphLayers(gr2, 1), x -> Set(x));;
+gap> layers1 := List(DigraphLayers(gr, 1), Set);;
+gap> layers2 := List(DigraphLayers(gr2, 1), Set);;
 gap> layers1 = layers2;
 true
 gap> layers := [];;
 gap> for i in list do
 > Add(layers, DigraphLayers(i, 1));
 > od;
-gap> List(layers, x -> Size(x));
+gap> List(layers, Size);
 [ 3, 3, 5, 5, 7, 9 ]
 gap> gr := list[4];;
 gap> DigraphLayers(gr, 1);

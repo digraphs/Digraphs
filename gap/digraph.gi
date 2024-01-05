@@ -287,9 +287,9 @@ function(filt, record)
     record.DigraphNrVertices := Length(record.DigraphVertices);
   fi;
 
-  if not ForAll(record.DigraphSource, x -> cmp(x)) then
+  if not ForAll(record.DigraphSource, cmp) then
     ErrorNoReturn("the record component 'DigraphSource' is invalid,");
-  elif not ForAll(record.DigraphRange, x -> cmp(x)) then
+  elif not ForAll(record.DigraphRange, cmp) then
     ErrorNoReturn("the record component 'DigraphRange' is invalid,");
   fi;
 
@@ -742,7 +742,7 @@ function(D)
     fi;
   od;
 
-  lengths := List(strings, x -> Length(x));
+  lengths := List(strings, Length);
   return strings[Position(lengths, Minimum(lengths))];
 end);
 
@@ -1218,7 +1218,7 @@ function(filt, digraph, gps, homs)
       ErrorNoReturn("the second argument must be a join semilattice ",
                     "digraph or a meet semilattice digraph,");
     fi;
-  elif not ForAll(gps, x -> IsGroup(x)) then
+  elif not ForAll(gps, IsGroup) then
     ErrorNoReturn("the third argument must be a list of groups,");
   elif not Length(gps) = DigraphNrVertices(digraph) then
     ErrorNoReturn("the third argument must have length equal to the number ",

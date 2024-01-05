@@ -33,7 +33,7 @@ gap> DigraphFromGraph6String(str);
 <immutable symmetric digraph with 5 vertices, 6 edges>
 gap>  l := ["BW", "C]", "DQw", "ECO_", "FCZUo", "GCZenS", "HCQTndn",
 > "H?qcyxf"];;
-gap> List(l, x -> DigraphFromGraph6String(x));
+gap> List(l, DigraphFromGraph6String);
 [ <immutable symmetric digraph with 3 vertices, 4 edges>, 
   <immutable symmetric digraph with 4 vertices, 8 edges>, 
   <immutable symmetric digraph with 5 vertices, 10 edges>, 
@@ -234,7 +234,7 @@ IO_OK
 
 # Note that some vertices in gr[2] are lost due to the file format not
 # supporting isolated vertices (i.e. vertices exist only because they are
-# involved in an edge). 
+# involved in an edge).
 gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/test.txt");;
 gap> ReadDigraphs(filename);
 [ <immutable digraph with 5 vertices, 7 edges>, 
@@ -471,7 +471,7 @@ Error, the 2nd argument <s> must be a non-empty string,
 gap> DigraphFromDiSparse6String("");
 Error, the 2nd argument <s> must be a non-empty string,
 
-#  DiSparse6 
+#  DiSparse6
 gap> DigraphFromDiSparse6String("I'm a string");
 Error, the 2nd argument <s> is not a valid disparse6 string,
 gap> DigraphFromDiSparse6String(".~~");
@@ -488,7 +488,7 @@ gap> gr := Digraph([[], [], [1, 2]]);;
 gap> DiSparse6String(gr);
 ".BoN"
 
-#  Plain text encoding  
+#  Plain text encoding
 gap> gr := CompleteDigraph(3);
 <immutable complete digraph with 3 vertices>
 gap> str := PlainTextString(gr);
