@@ -50,7 +50,7 @@
       <Item>
 	<E>DiSparse6</E> is a new format based on <E> Sparse6 </E>, but
 	designed for digraphs. In this format the list of edges is
-	partitioned into inceasing and decreasing edges, depending whether the
+	partitioned into increasing and decreasing edges, depending whether the
 	edge has its source bigger than the range. Then both sets of edges are
 	written separately in <E> Sparse6 </E> format with a separation symbol
 	in between.
