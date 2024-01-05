@@ -1600,9 +1600,7 @@ InstallMethod(OddGraph, "for a function and an integer",
 
 InstallMethod(PathGraphCons, "for IsMutableDigraph and an integer",
 [IsMutableDigraph, IsPosInt],
-function(filt, n)
-  return DigraphSymmetricClosure(ChainDigraph(IsMutableDigraph, n));
-end);
+{filt, n} -> DigraphSymmetricClosure(ChainDigraph(IsMutableDigraph, n)));
 
 InstallMethod(PathGraphCons,
 "for IsImmutableDigraph, integer",

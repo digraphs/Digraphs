@@ -193,9 +193,8 @@ end);
 InstallMethod(DigraphAddEdge,
 "for an immutable digraph and two positive integers",
 [IsImmutableDigraph, IsPosInt, IsPosInt],
-function(D, src, ran)
-  return MakeImmutable(DigraphAddEdge(DigraphMutableCopy(D), src, ran));
-end);
+{D, src, ran}
+-> MakeImmutable(DigraphAddEdge(DigraphMutableCopy(D), src, ran)));
 
 InstallMethod(DigraphAddEdge, "for a mutable digraph and a list",
 [IsMutableDigraph, IsList],
@@ -250,9 +249,8 @@ end);
 InstallMethod(DigraphRemoveEdge,
 "for a immutable digraph and two positive integers",
 [IsImmutableDigraph, IsPosInt, IsPosInt],
-function(D, src, ran)
-  return MakeImmutable(DigraphRemoveEdge(DigraphMutableCopy(D), src, ran));
-end);
+{D, src, ran}
+-> MakeImmutable(DigraphRemoveEdge(DigraphMutableCopy(D), src, ran)));
 
 InstallMethod(DigraphRemoveEdge, "for a mutable digraph and a list",
 [IsMutableDigraph, IsList],
@@ -752,9 +750,7 @@ function(D1, D2, edge_function)
 
   edges := EmptyPlist(m * n);
 
-  map := function(a, b)
-    return (a - 1) * n + b;
-  end;
+  map := {a, b} -> (a - 1) * n + b;
 
   for u in [1 .. m] do
     for v in [1 .. n] do
@@ -984,9 +980,8 @@ end);
 InstallMethod(QuotientDigraph,
 "for an immutable digraph and a homogeneous list",
 [IsImmutableDigraph, IsHomogeneousList],
-function(D, partition)
-  return MakeImmutable(QuotientDigraph(DigraphMutableCopy(D), partition));
-end);
+{D, partition} ->
+MakeImmutable(QuotientDigraph(DigraphMutableCopy(D), partition)));
 
 #############################################################################
 # 6. In and out degrees, neighbours, and edges of vertices

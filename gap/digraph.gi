@@ -416,16 +416,14 @@ end);
 InstallMethod(DigraphCons,
 "for IsImmutableDigraph, a number of vertices, source, and range",
 [IsImmutableDigraph, IsInt, IsList, IsList],
-function(filt, N, src, ran)
-  return MakeImmutable(DigraphCons(IsMutableDigraph, N, src, ran));
-end);
+{filt, N, src, ran}
+-> MakeImmutable(DigraphCons(IsMutableDigraph, N, src, ran)));
 
 InstallMethod(DigraphCons,
 "for IsImmutableDigraph, a list of vertices, source, and range",
 [IsImmutableDigraph, IsList, IsList, IsList],
-function(filt, domain, src, ran)
-  return MakeImmutable(DigraphCons(IsMutableDigraph, domain, src, ran));
-end);
+{filt, domain, src, ran} ->
+MakeImmutable(DigraphCons(IsMutableDigraph, domain, src, ran)));
 
 InstallMethod(Digraph, "for a filter and a record", [IsFunction, IsRecord],
 DigraphCons);
@@ -1344,45 +1342,38 @@ end);
 
 InstallMethod(RandomDigraphCons, "for IsMutableDigraph and an integer",
 [IsMutableDigraph, IsInt],
-function(filt, n)
-  return RandomDigraphCons(IsMutableDigraph, n, Float(Random([0 .. n])) / n);
-end);
+{filt, n}
+-> RandomDigraphCons(IsMutableDigraph, n, Float(Random([0 .. n])) / n));
 
 InstallMethod(RandomDigraphCons, "for IsMutableDigraph and an integer",
 [IsImmutableDigraph, IsInt],
-function(filt, n)
-  return RandomDigraphCons(IsImmutableDigraph, n, Float(Random([0 .. n])) / n);
-end);
+{filt, n}
+-> RandomDigraphCons(IsImmutableDigraph, n, Float(Random([0 .. n])) / n));
 
 InstallMethod(RandomDigraphCons, "for IsHamiltonianDigraph and an integer",
 [IsHamiltonianDigraph, IsInt],
-function(filt, n)
-  return RandomDigraphCons(IsHamiltonianDigraph, n, Float(Random([0 .. n])) / n);
-end);
+{filt, n}
+-> RandomDigraphCons(IsHamiltonianDigraph, n, Float(Random([0 .. n])) / n));
 
 InstallMethod(RandomDigraphCons, "for IsEulerianDigraph and an integer",
 [IsEulerianDigraph, IsInt],
-function(filt, n)
-  return RandomDigraphCons(IsEulerianDigraph, n, Float(Random([0 .. n])) / n);
-end);
+{filt, n}
+-> RandomDigraphCons(IsEulerianDigraph, n, Float(Random([0 .. n])) / n));
 
 InstallMethod(RandomDigraphCons, "for IsConnectedDigraph and an integer",
 [IsConnectedDigraph, IsInt],
-function(filt, n)
-  return RandomDigraphCons(IsConnectedDigraph, n, Float(Random([0 .. n])) / n);
-end);
+{filt, n}
+-> RandomDigraphCons(IsConnectedDigraph, n, Float(Random([0 .. n])) / n));
 
 InstallMethod(RandomDigraphCons, "for IsAcyclicDigraph and an integer",
 [IsAcyclicDigraph, IsInt],
-function(filt, n)
-  return RandomDigraphCons(IsAcyclicDigraph, n, Float(Random([0 .. n])) / n);
-end);
+{filt, n}
+-> RandomDigraphCons(IsAcyclicDigraph, n, Float(Random([0 .. n])) / n));
 
 InstallMethod(RandomDigraphCons, "for IsSymmetricDigraph and an integer",
 [IsSymmetricDigraph, IsInt],
-function(filt, n)
-  return RandomDigraphCons(IsSymmetricDigraph, n, Float(Random([0 .. n])) / n);
-end);
+{filt, n}
+-> RandomDigraphCons(IsSymmetricDigraph, n, Float(Random([0 .. n])) / n));
 
 InstallMethod(RandomDigraphCons,
 "for IsMutableDigraph, an integer, and a rational",

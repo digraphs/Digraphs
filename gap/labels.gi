@@ -79,9 +79,7 @@ function(D)
 end);
 
 InstallMethod(HaveEdgeLabelsBeenAssigned, "for a digraph", [IsDigraph],
-function(D)
-  return IsBound(D!.edgelabels);
-end);
+D -> IsBound(D!.edgelabels));
 
 InstallMethod(SetDigraphEdgeLabel,
 "for a digraph, a pos int, a pos int, and an object",

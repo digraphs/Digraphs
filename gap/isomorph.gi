@@ -128,10 +128,7 @@ function(D, vert_colours, edge_colours, calling_function_name)
   return BLISS_DATA_NC(D, vert_colours, edge_colours);
 end);
 
-BindGlobal("BLISS_DATA_NO_COLORS",
-function(D)
-  return BLISS_DATA(D, fail, fail, "");
-end);
+BindGlobal("BLISS_DATA_NO_COLORS", D -> BLISS_DATA(D, fail, fail, ""));
 
 if DIGRAPHS_NautyAvailable then
   BindGlobal("NAUTY_DATA",

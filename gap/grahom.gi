@@ -475,9 +475,8 @@ end);
 
 InstallMethod(DigraphsRespectsColouring,
 [IsDigraph, IsDigraph, IsPerm, IsList, IsList],
-function(src, ran, x, cols1, cols2)
-  return DigraphsRespectsColouring(src, ran, AsTransformation(x), cols1, cols2);
-end);
+{src, ran, x, cols1, cols2}
+-> DigraphsRespectsColouring(src, ran, AsTransformation(x), cols1, cols2));
 
 InstallMethod(IsDigraphHomomorphism,
 "for a digraph by out-neighbours, a digraph, and a perm",
