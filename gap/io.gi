@@ -1608,10 +1608,20 @@ function(D)
   return List(list, i -> CharInt(i + 63));
 end);
 
+BindGlobal("DIGRAPHS_AddBinary",
+function(blist, k, nextbit, i)
+  local b;
+  for b in [1 .. k] do
+    blist[nextbit] := Int((i mod (2 ^ (k - b + 1))) / (2 ^ (k - b))) = 1;
+    nextbit := nextbit + 1;
+  od;
+  return nextbit;
+end);
+
 InstallMethod(Sparse6String, "for a digraph by out-neighbours",
 [IsDigraphByOutNeighboursRep],
 function(D)
-  local list, n, lenlist, adj, nredges, k, blist, v, nextbit, AddBinary, i, j,
+  local list, n, lenlist, adj, nredges, k, blist, v, nextbit, i, j,
         bitstopad, pos, block;
   if not IsSymmetricDigraph(D) then
     ErrorNoReturn("the argument <D> must be a symmetric digraph,");
@@ -1646,13 +1656,6 @@ function(D)
   blist := BlistList([1 .. nredges * (k + 1) / 2], []);
   v := 0;
   nextbit := 1;
-  AddBinary := function(blist, i)
-    local b;
-    for b in [1 .. k] do
-      blist[nextbit] := Int((i mod (2 ^ (k - b + 1))) / (2 ^ (k - b))) = 1;
-      nextbit := nextbit + 1;
-    od;
-  end;
   for i in [1 .. Length(adj)] do
     for j in adj[i] do
       if i < j then
@@ -1666,13 +1669,12 @@ function(D)
         v := v + 1;
       elif i > v + 2 then
         blist[nextbit] := true;
-        nextbit := nextbit + 1;
-        AddBinary(blist, i - 1);
+        nextbit := DIGRAPHS_AddBinary(blist, k, nextbit + 1, i - 1);
         v := i - 1;
         blist[nextbit] := false;
         nextbit := nextbit + 1;
       fi;
-      AddBinary(blist, j - 1);
+      nextbit := DIGRAPHS_AddBinary(blist, k, nextbit, j - 1);
     od;
   od;
 
@@ -1719,7 +1721,7 @@ InstallMethod(DiSparse6String, "for a digraph by out-neighbours",
 [IsDigraphByOutNeighboursRep],
 function(D)
   local list, n, lenlist, adj, source_i, range_i, source_d, range_d, len1,
-  len2, sort_d, perm, sort_i, k, blist, v, nextbit, AddBinary, bitstopad,
+  len2, sort_d, perm, sort_i, k, blist, v, nextbit, bitstopad,
   pos, block, i, j;
 
   list := [];
@@ -1798,13 +1800,6 @@ function(D)
   blist := [];
   v := 0;
   nextbit := 1;
-  AddBinary := function(blist, i)
-    local b;
-    for b in [1 .. k] do
-      blist[nextbit] := Int((i mod (2 ^ (k - b + 1))) / (2 ^ (k - b))) = 1;
-      nextbit := nextbit + 1;
-    od;
-  end;
   for i in [1 .. Length(source_d)] do
     if source_d[i] = v then
       blist[nextbit] := false;
@@ -1815,19 +1810,17 @@ function(D)
       v := v + 1;
     elif source_d[i] > v + 1 then  # is this check necessary
       blist[nextbit] := true;
-      nextbit := nextbit + 1;
-      AddBinary(blist, source_d[i]);
+      nextbit := DIGRAPHS_AddBinary(blist, k, nextbit + 1, source_d[i]);
       v := source_d[i];
       blist[nextbit] := false;
       nextbit := nextbit + 1;
     fi;
-    AddBinary(blist, range_d[i]);
+    nextbit := DIGRAPHS_AddBinary(blist, k, nextbit, range_d[i]);
   od;
 
   # Add a separation symbol (1 n).
   blist[nextbit] := true;
-  nextbit := nextbit + 1;
-  AddBinary(blist, n);
+  nextbit := DIGRAPHS_AddBinary(blist, k, nextbit + 1, n);
 
   # Repeat everything for increasing edges
   v := 0;
@@ -1841,13 +1834,12 @@ function(D)
       v := v + 1;
     elif range_i[i] > v + 1 then  # is this check necessary
       blist[nextbit] := true;
-      nextbit := nextbit + 1;
-      AddBinary(blist, range_i[i]);
+      nextbit := DIGRAPHS_AddBinary(blist, k, nextbit + 1, range_i[i]);
       v := range_i[i];
       blist[nextbit] := false;
       nextbit := nextbit + 1;
     fi;
-    AddBinary(blist, source_i[i]);
+    nextbit := DIGRAPHS_AddBinary(blist, k, nextbit, source_i[i]);
   od;
 
   # Add padding bits:

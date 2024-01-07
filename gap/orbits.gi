@@ -87,7 +87,7 @@ function(D)
   return out;
 end);
 
-InstallImmediateMethod(DigraphGroup, IsDigraph and HasAutomorphismGroup, 0,
+BindGlobal("DIGRAPHS_DigraphGroup",
 function(D)
   if IsMultiDigraph(D) then
     return Range(Projection(AutomorphismGroup(D), 1));
@@ -95,14 +95,10 @@ function(D)
   return AutomorphismGroup(D);
 end);
 
-InstallMethod(DigraphGroup, "for a digraph",
-[IsDigraph],
-function(D)
-  if IsMultiDigraph(D) then
-    return Range(Projection(AutomorphismGroup(D), 1));
-  fi;
-  return AutomorphismGroup(D);
-end);
+InstallImmediateMethod(DigraphGroup, IsDigraph and HasAutomorphismGroup, 0,
+DIGRAPHS_DigraphGroup);
+
+InstallMethod(DigraphGroup, "for a digraph", [IsDigraph], DIGRAPHS_DigraphGroup);
 
 InstallMethod(DigraphOrbits, "for a digraph",
 [IsDigraph],
