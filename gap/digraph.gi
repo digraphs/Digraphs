@@ -1410,6 +1410,11 @@ InstallMethod(RandomDigraphCons,
 {filt, n, p} -> RandomDigraphCons(IsConnectedDigraph, n, Float(p)));
 
 InstallMethod(RandomDigraphCons,
+"for IsStronglyConnectedDigraph, an integer, and a rational",
+[IsStronglyConnectedDigraph, IsInt, IsRat],
+{filt, n, p} -> RandomDigraphCons(IsStronglyConnectedDigraph, n, Float(p)));
+
+InstallMethod(RandomDigraphCons,
 "for IsAcyclicDigraph, an integer, and a rational",
 [IsAcyclicDigraph, IsInt, IsRat],
 {filt, n, p} -> RandomDigraphCons(IsAcyclicDigraph, n, Float(p)));
@@ -1630,6 +1635,44 @@ function(filt, n, p)
     # random edges according to p
     adjacencyList := DIGRAPHS_FillOutGraph(n, p, adjacencyList);
     return DigraphNC(adjacencyList);
+end);
+
+InstallMethod(RandomDigraphCons,
+"for IsStronglyConnectedDigraph, a positive integer, and a float",
+[IsStronglyConnectedDigraph, IsPosInt, IsFloat],
+function(filt, n, p)
+  local d, adjMatrix, stronglyConnectedComponents,
+  scc_a, scc_b, i, random_u, random_v;
+
+  d := RandomDigraph(n, p);
+
+  stronglyConnectedComponents := DigraphStronglyConnectedComponents(d);
+
+  adjMatrix := AdjacencyMatrixMutableCopy(d);
+
+  for i in [1 .. Size(stronglyConnectedComponents.comps) - 1] do
+      scc_a := stronglyConnectedComponents.comps[i];
+      scc_b := stronglyConnectedComponents.comps[i + 1];
+
+      # add a connection from u to v
+      random_u := Random(scc_a);
+      random_v := Random(scc_b);
+
+      adjMatrix[random_u][random_v] := 1;
+  od;
+
+  # connect end scc to first scc
+  scc_a := stronglyConnectedComponents.comps[
+    Size(stronglyConnectedComponents.comps)];
+  scc_b := stronglyConnectedComponents.comps[1];
+
+  # add a connection from u to v
+  random_u := Random(scc_a);
+  random_v := Random(scc_b);
+
+  adjMatrix[random_u][random_v] := 1;
+
+  return DigraphByAdjacencyMatrix(adjMatrix);
 end);
 
 InstallMethod(RandomDigraphCons,
