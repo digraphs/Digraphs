@@ -77,9 +77,7 @@ function(imm, G, obj, act, adj)
   D := DigraphNC(imm, out);
 
   if IsImmutableDigraph(D) then
-    adj_func := function(u, v)
-      return adj(obj[u], obj[v]);
-    end;
+    adj_func := {u, v} -> adj(obj[u], obj[v]);
     SetFilterObj(D, IsDigraphWithAdjacencyFunction);
     SetDigraphAdjacencyFunction(D, adj_func);
     SetDigraphGroup(D, Range(hom));

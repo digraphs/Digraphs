@@ -980,7 +980,7 @@ gap> gr := DigraphAddEdges(gr, [[2, 3], [5, 6], [9, 10]]);
 gap> gr = ChainDigraph(14);
 true
 gap> n := 10;;
-gap> DigraphDisjointUnion(List([1 .. n], x -> EmptyDigraph(x))) =
+gap> DigraphDisjointUnion(List([1 .. n], EmptyDigraph)) =
 > EmptyDigraph(Int(n * (n + 1) / 2));
 true
 gap> D1 := CycleDigraph(3);; D2 := DigraphReverse(D1);;

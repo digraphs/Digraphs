@@ -193,9 +193,8 @@ end);
 InstallMethod(DigraphAddEdge,
 "for an immutable digraph and two positive integers",
 [IsImmutableDigraph, IsPosInt, IsPosInt],
-function(D, src, ran)
-  return MakeImmutable(DigraphAddEdge(DigraphMutableCopy(D), src, ran));
-end);
+{D, src, ran}
+-> MakeImmutable(DigraphAddEdge(DigraphMutableCopy(D), src, ran)));
 
 InstallMethod(DigraphAddEdge, "for a mutable digraph and a list",
 [IsMutableDigraph, IsList],
@@ -250,9 +249,8 @@ end);
 InstallMethod(DigraphRemoveEdge,
 "for a immutable digraph and two positive integers",
 [IsImmutableDigraph, IsPosInt, IsPosInt],
-function(D, src, ran)
-  return MakeImmutable(DigraphRemoveEdge(DigraphMutableCopy(D), src, ran));
-end);
+{D, src, ran}
+-> MakeImmutable(DigraphRemoveEdge(DigraphMutableCopy(D), src, ran)));
 
 InstallMethod(DigraphRemoveEdge, "for a mutable digraph and a list",
 [IsMutableDigraph, IsList],
@@ -619,7 +617,8 @@ InstallMethod(ModularProduct, "for a digraph and digraph",
 function(D1, D2)
   local edge_function;
 
-  edge_function := function(u, v, m, n, map)
+  edge_function := function(u, v, m, n, map)  # gaplint: disable=W000
+    # neither m nor n is used, but can't replace them both with _
     local w, x, connections;
     connections := [];
     for w in OutNeighbours(D1)[u] do
@@ -647,7 +646,8 @@ InstallMethod(StrongProduct, "for a digraph and digraph",
 function(D1, D2)
   local edge_function;
 
-  edge_function := function(u, v, m, n, map)
+  edge_function := function(u, v, m, n, map)  # gaplint: disable=W000
+    # neither m nor n is used, but can't replace them both with _
     local w, x, connections;
       connections := [];
       for x in OutNeighbours(D2)[v] do
@@ -694,7 +694,7 @@ InstallMethod(HomomorphicProduct, "for a digraph and digraph",
 function(D1, D2)
   local edge_function;
 
-  edge_function := function(u, v, m, n, map)
+  edge_function := function(u, v, _, n, map)
     local w, x, connections;
       connections := [];
       for x in [1 .. n] do
@@ -716,7 +716,7 @@ InstallMethod(LexicographicProduct, "for a digraph and digraph",
 function(D1, D2)
   local edge_function;
 
-  edge_function := function(u, v, m, n, map)
+  edge_function := function(u, v, _, n, map)
     local w, x, connections;
       connections := [];
       for w in OutNeighbours(D1)[u] do
@@ -752,9 +752,7 @@ function(D1, D2, edge_function)
 
   edges := EmptyPlist(m * n);
 
-  map := function(a, b)
-    return (a - 1) * n + b;
-  end;
+  map := {a, b} -> (a - 1) * n + b;
 
   for u in [1 .. m] do
     for v in [1 .. n] do
@@ -984,9 +982,8 @@ end);
 InstallMethod(QuotientDigraph,
 "for an immutable digraph and a homogeneous list",
 [IsImmutableDigraph, IsHomogeneousList],
-function(D, partition)
-  return MakeImmutable(QuotientDigraph(DigraphMutableCopy(D), partition));
-end);
+{D, partition} ->
+MakeImmutable(QuotientDigraph(DigraphMutableCopy(D), partition)));
 
 #############################################################################
 # 6. In and out degrees, neighbours, and edges of vertices
@@ -2198,9 +2195,7 @@ function(D, i, j)
 
   if HasDigraphJoinTable(D) then
     return DigraphJoinTable(D)[i, j];
-  fi;
-
-  if not IsPartialOrderDigraph(D) then
+  elif not IsPartialOrderDigraph(D) then
     ErrorNoReturn("the 1st argument <D> must satisfy ",
                   "IsPartialOrderDigraph,");
   elif not i in DigraphVertices(D) then
@@ -2230,9 +2225,7 @@ function(D, i, j)
 
   if HasDigraphMeetTable(D) then
     return DigraphMeetTable(D)[i, j];
-  fi;
-
-  if not IsPartialOrderDigraph(D) then
+  elif not IsPartialOrderDigraph(D) then
     ErrorNoReturn("the 1st argument <D> must satisfy ",
                   "IsPartialOrderDigraph,");
   elif not i in DigraphVertices(D) then

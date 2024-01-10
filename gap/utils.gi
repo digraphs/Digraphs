@@ -34,11 +34,7 @@ function()
 end);
 
 InstallGlobalFunction(DIGRAPHS_Test,
-function(filename)
-  return DIGRAPHS_RunTest(function()
-                            return Test(filename, rec(showProgress := false));
-                          end);
-end);
+fname -> DIGRAPHS_RunTest({} -> Test(fname, rec(showProgress := false))));
 
 # The parameter <func> should be a 0-argument function which returns true or
 # false.
@@ -106,10 +102,7 @@ function()
                          "main.xml", DIGRAPHS_DocXMLFiles, "Single");
 end);
 
-InstallGlobalFunction(DIGRAPHS_Dir,
-function()
-  return GAPInfo.PackagesLoaded.digraphs[1];
-end);
+InstallGlobalFunction(DIGRAPHS_Dir, {} -> GAPInfo.PackagesLoaded.digraphs[1]);
 
 #############################################################################
 # User facing stuff
@@ -163,9 +156,7 @@ function(arg)
   fi;
 
   dir := DirectoriesPackageLibrary("digraphs", "tst/standard/");
-  return DIGRAPHS_RunTest(function()
-                            return TestDirectory(dir, opts);
-                          end);
+  return DIGRAPHS_RunTest({} -> TestDirectory(dir, opts));
 end);
 
 InstallGlobalFunction(DigraphsTestExtreme,
@@ -207,9 +198,7 @@ function(arg)
   fi;
 
   dir := DirectoriesPackageLibrary("digraphs", "tst/extreme/");
-  return DIGRAPHS_RunTest(function()
-                            return TestDirectory(dir, opts);
-                          end);
+  return DIGRAPHS_RunTest({} -> TestDirectory(dir, opts));
 end);
 
 InstallGlobalFunction(DigraphsMakeDoc,
