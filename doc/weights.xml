@@ -1,0 +1,72 @@
+#############################################################################
+##
+#W  weights.xml
+#Y  Copyright (C) 2023                               Raiyan Chowdhury
+##
+##  Licensing information can be found in the README file of this package.
+##
+#############################################################################
+##
+
+
+<#GAPDoc Label="EdgeWeights">
+    <ManSection>
+    <Attr Name="EdgeWeights" Arg="digraph"/>
+    <Oper Name="EdgeWeightsMutableCopy" Arg="digraph"/>
+    <Returns>A list of lists of integers, floats or rationals.</Returns>
+    <Description>
+     <C>EdgeWeights</C> returns the list of lists of edge weights of
+    the edges of the digraph <A>digraph</A>.<P/>
+
+    More specifically, <C>weights[i][j]</C> is the weight given to the <C>j</C>th edge from vertex <C>i</C>, according to the ordering of edges given by <C>OutNeighbours(digraph)[i]</C>.<P/>
+
+    The function <C>EdgeWeights</C> returns an immutable list of immutable
+    lists, whereas the function <C>EdgeWeightsMutableCopy</C> returns a copy
+    of <C>EdgeWeights</C> which is a mutable list of mutable lists.<P/>
+
+    The edge weights of a digraph cannot be computed and must be set either 
+    using <C>SetEdgeWeights</C> or <Ref Func="EdgeWeightedDigraph" />.<P/>
+    <Example><![CDATA[
+gap> gr := EdgeWeightedDigraph([[2], [3], [1]], [[5], [10], [15]]);
+<immutable digraph with 3 vertices, 3 edges>
+gap> EdgeWeights(gr);
+[ [ 5 ], [ 10 ], [ 15 ] ]
+gap> a := EdgeWeightsMutableCopy(gr);
+[ [ 5 ], [ 10 ], [ 15 ] ]
+gap> a[1][1] := 100;
+100
+gap> a;
+[ [ 100 ], [ 10 ], [ 15 ] ]
+gap> b := EdgeWeights(gr);
+[ [ 5 ], [ 10 ], [ 15 ] ]
+gap> b[1][1] := 534;
+Error, List Assignment: <list> must be a mutable list
+]]></Example>
+    </Description>
+    </ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="EdgeWeightedDigraph">
+    <ManSection>
+    <Func Name="EdgeWeightedDigraph" Arg="digraph, weights"/>
+    <Returns>A digraph or <K>fail</K></Returns>
+    <Description>
+        The arugment <A>digraph</A> may be a digraph or a list of lists of integers, floats or rationals.<P/>
+
+        <A>weights</A> must be a list of lists of integers, floats or rationals
+         of an equal size and shape to <C>OutNeighbours(digraph)</C>, otherwise it will fail.<P/>
+
+        This will create a digraph and set the EdgeWeights to <A>weights</A>.<P/>
+
+        See <Ref Attr="EdgeWeights"/>.
+    <Example><![CDATA[
+gap> g := EdgeWeightedDigraph(Digraph([[2], [1]]), [[5], [15]]);
+<immutable digraph with 2 vertices, 2 edges>
+gap> g := EdgeWeightedDigraph([[2], [1]], [[5], [15]]);
+<immutable digraph with 2 vertices, 2 edges>
+gap> EdgeWeights(g);
+[ [ 5 ], [ 15 ] ]
+]]></Example>
+    </Description>
+    </ManSection>
+<#/GAPDoc>

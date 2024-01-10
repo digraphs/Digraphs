@@ -28,7 +28,8 @@ BindGlobal("DIGRAPHS_DocXMLFiles",
             "orbits.xml",
             "planar.xml",
             "prop.xml",
-            "utils.xml"]);
+            "utils.xml",
+            "weights.xml"]);
 
 BindGlobal("DIGRAPHS_MakeDoc",
 function(pkgdir)

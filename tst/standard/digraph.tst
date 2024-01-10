@@ -1937,6 +1937,15 @@ gap> graph := RandomDigraph(IsConnectedDigraph, 10);;
 >     Print("False");
 >   fi;
 
+# Random Strongly Connected Digraph
+gap> for n in [1 .. 20] do
+>   c := RandomDigraph(IsConnectedDigraph, n, 0);
+>   s := RandomDigraph(IsStronglyConnectedDigraph, n, 0);
+>   if DigraphNrEdges(c) > DigraphNrEdges(s) then
+>     Print("False");
+>   fi;
+> od;
+
 # Random Symmetric Digraph
 gap> for n in [1 .. 20] do
 >   graph := RandomDigraph(IsSymmetricDigraph, n, 0);

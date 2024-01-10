@@ -24,6 +24,11 @@
     <#Include Label="IsTransitiveDigraph">
   </Section>
 
+  <Section><Heading>Edge Weights</Heading>
+    <#Include Label="EdgeWeights">
+    <#Include Label="EdgeWeightedDigraph">
+  </Section>
+
   <Section><Heading>Orders</Heading>
     <#Include Label="IsPreorderDigraph">
     <#Include Label="IsPartialOrderDigraph">

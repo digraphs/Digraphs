@@ -411,6 +411,10 @@ gap> String(D);
 "DigraphFromDigraph6String(\"&CECG\")"
 gap> String(CycleDigraph(4));
 "CycleDigraph(4)"
+gap> d := EdgeWeightedDigraph([[2], [1]], [[5], [10]]);
+<immutable digraph with 2 vertices, 2 edges>
+gap> EdgeWeights(d);
+[ [ 5 ], [ 10 ] ]
 
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(gr2);
