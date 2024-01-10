@@ -475,9 +475,8 @@ end);
 
 InstallMethod(DigraphsRespectsColouring,
 [IsDigraph, IsDigraph, IsPerm, IsList, IsList],
-function(src, ran, x, cols1, cols2)
-  return DigraphsRespectsColouring(src, ran, AsTransformation(x), cols1, cols2);
-end);
+{src, ran, x, cols1, cols2}
+-> DigraphsRespectsColouring(src, ran, AsTransformation(x), cols1, cols2));
 
 InstallMethod(IsDigraphHomomorphism,
 "for a digraph by out-neighbours, a digraph, and a perm",
@@ -728,7 +727,7 @@ function(D1, D2)
   L := MaximalCommonSubdigraph(D1, D2);
   L[2] := List([1 .. DigraphNrVertices(L[1])], x -> x ^ L[2]);
   L[3] := List([1 .. DigraphNrVertices(L[1])], x -> x ^ L[3]);
-  out := List(OutNeighbours(D1), x -> ShallowCopy(x));
+  out := List(OutNeighbours(D1), ShallowCopy);
   newvertices := Filtered(DigraphVertices(D2), x -> not x in L[3]);
   embedding1 := [1 .. DigraphNrVertices(D1)];
 
@@ -822,7 +821,7 @@ function(L1, L2)
     return next;
   end;
 
-  Recurse := function(last_defined, depth, print)
+  Recurse := function(depth, print)
     local next, value, try_next_value, prev, x;
 
     if depth = N1 + 1 then  # When depth = N1 + 1, we have defined all images
@@ -879,7 +878,7 @@ function(L1, L2)
             FlipBlist(in2[value]);
           fi;
         od;
-        if Recurse(next, depth + 1, print) then
+        if Recurse(depth + 1, print) then
           return true;
         fi;
       fi;
@@ -892,7 +891,7 @@ function(L1, L2)
     return false;
   end;
 
-  if Recurse(1, 1, false) then
+  if Recurse(1, false) then
     Append(map, [N1 + 1 .. N2]);
     return p ^ -1 * Transformation(map);
   fi;
@@ -926,9 +925,7 @@ function(L1, L2, map)
 
   if join2 = fail or meet2 = fail then
     ErrorNoReturn("the 2nd argument (a digraph) must be a lattice digraph");
-  fi;
-
-  if Maximum(ImageSetOfTransformation(map, N1)) > N2 then
+  elif Maximum(ImageSetOfTransformation(map, N1)) > N2 then
     return false;
   fi;
   # The above checks if the <x ^ map> and <y ^ map> entries of

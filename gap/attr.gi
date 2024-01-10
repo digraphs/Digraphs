@@ -154,15 +154,11 @@ end);
 
 InstallMethod(ArticulationPoints, "for a digraph by out-neighbours",
 [IsDigraphByOutNeighboursRep],
-function(D)
-  return DIGRAPHS_ArticulationPointsBridgesStrongOrientation(D)[2];
-end);
+D -> DIGRAPHS_ArticulationPointsBridgesStrongOrientation(D)[2]);
 
 InstallMethod(Bridges, "for a digraph by out-neighbours",
 [IsDigraphByOutNeighboursRep],
-function(D)
-  return DIGRAPHS_ArticulationPointsBridgesStrongOrientation(D)[3];
-end);
+D -> DIGRAPHS_ArticulationPointsBridgesStrongOrientation(D)[3]);
 
 InstallMethodThatReturnsDigraph(StrongOrientation,
 "for a digraph by out-neighbours",

@@ -13,7 +13,7 @@
 
 InstallMethod(EmptyDigraphCons, "for IsMutableDigraph and an integer",
 [IsMutableDigraph, IsInt],
-function(filt, n)
+function(_, n)
   if n < 0 then
     ErrorNoReturn("the argument <n> must be a non-negative integer,");
   fi;
@@ -22,7 +22,7 @@ end);
 
 InstallMethod(EmptyDigraphCons, "for IsImmutableDigraph and an integer",
 [IsImmutableDigraph, IsInt],
-function(filt, n)
+function(_, n)
   local D;
   if n < 0 then
     ErrorNoReturn("the argument <n> must be a non-negative integer,");
@@ -43,7 +43,7 @@ InstallMethod(EmptyDigraph, "for a function and an integer",
 InstallMethod(CompleteBipartiteDigraphCons,
 "for IsMutableDigraph and two positive integers",
 [IsMutableDigraph, IsPosInt, IsPosInt],
-function(filt, m, n)
+function(_, m, n)
   local src, ran, count, k, i, j;
   src := EmptyPlist(2 * m * n);
   ran := EmptyPlist(2 * m * n);
@@ -66,7 +66,7 @@ end);
 InstallMethod(CompleteBipartiteDigraphCons,
 "for IsImmutableDigraph and two positive integers",
 [IsImmutableDigraph, IsPosInt, IsPosInt],
-function(filt, m, n)
+function(_, m, n)
   local D, aut;
   D := MakeImmutable(CompleteBipartiteDigraph(IsMutableDigraph, m, n));
   SetIsSymmetricDigraph(D, true);
@@ -98,7 +98,7 @@ CompleteBipartiteDigraphCons);
 InstallMethod(CompleteMultipartiteDigraphCons,
 "for IsMutableDigraph and a list",
 [IsMutableDigraph, IsList],
-function(filt, list)
+function(_, list)
   local M, N, out, start, next, i, v;
   if not ForAll(list, IsPosInt) then
     ErrorNoReturn("the argument <list> must be a list of positive ",
@@ -127,7 +127,7 @@ end);
 InstallMethod(CompleteMultipartiteDigraphCons,
 "for IsImmutableDigraph and a list",
 [IsImmutableDigraph, IsList],
-function(filt, list)
+function(_, list)
   local D;
   D := MakeImmutable(CompleteMultipartiteDigraph(IsMutableDigraph, list));
   SetIsEmptyDigraph(D, Length(list) <= 1);
@@ -148,7 +148,7 @@ InstallMethod(CompleteMultipartiteDigraph, "for a function and a list",
 
 InstallMethod(ChainDigraphCons, "for IsMutableDigraph and a positive integer",
 [IsMutableDigraph, IsPosInt],
-function(filt, n)
+function(_, n)
   local list, i;
   list := EmptyPlist(n);
   for i in [1 .. n - 1] do
@@ -161,7 +161,7 @@ end);
 InstallMethod(ChainDigraphCons,
 "for IsImmutableDigraph and a positive integer",
 [IsImmutableDigraph, IsPosInt],
-function(filt, n)
+function(_, n)
   local D;
   D := MakeImmutable(ChainDigraphCons(IsMutableDigraph, n));
   SetIsChainDigraph(D, true);
@@ -186,7 +186,7 @@ n -> ChainDigraphCons(IsImmutableDigraph, n));
 
 InstallMethod(CompleteDigraphCons, "for IsMutableDigraph and an integer",
 [IsMutableDigraph, IsInt],
-function(filt, n)
+function(_, n)
   local verts, out, i;
   if n < 0 then
     ErrorNoReturn("the argument <n> must be a non-negative integer,");
@@ -203,7 +203,7 @@ end);
 
 InstallMethod(CompleteDigraphCons, "for IsImmutableDigraph and an integer",
 [IsImmutableDigraph, IsInt],
-function(filt, n)
+function(_, n)
   local D;
   D := MakeImmutable(CompleteDigraphCons(IsMutableDigraph, n));
   SetIsEmptyDigraph(D, n <= 1);
@@ -227,7 +227,7 @@ n -> CompleteDigraphCons(IsImmutableDigraph, n));
 
 InstallMethod(CycleDigraphCons, "for IsMutableDigraph and a positive integer",
 [IsMutableDigraph, IsPosInt],
-function(filt, n)
+function(_, n)
   local list, i;
   list := EmptyPlist(n);
   for i in [1 .. n - 1] do
@@ -240,7 +240,7 @@ end);
 InstallMethod(CycleDigraphCons,
 "for IsImmutableDigraph and a positive integer",
 [IsImmutableDigraph, IsPosInt],
-function(filt, n)
+function(_, n)
   local D;
   D := MakeImmutable(CycleDigraphCons(IsMutableDigraph, n));
   SetIsAcyclicDigraph(D, false);
@@ -268,7 +268,7 @@ n -> CycleDigraphCons(IsImmutableDigraph, n));
 InstallMethod(JohnsonDigraphCons,
 "for IsMutableDigraph and two integers",
 [IsMutableDigraph, IsInt, IsInt],
-function(filt, n, k)
+function(_, n, k)
   if n < 0 or k < 0 then
     ErrorNoReturn("the arguments <n> and <k> must be ",
                   "non-negative integers,");
@@ -281,7 +281,7 @@ end);
 InstallMethod(JohnsonDigraphCons,
 "for IsImmutableDigraph, integer, integer",
 [IsImmutableDigraph, IsInt, IsInt],
-function(filt, n, k)
+function(_, n, k)
   local D;
   D := MakeImmutable(JohnsonDigraphCons(IsMutableDigraph, n, k));
   SetIsMultiDigraph(D, false);
@@ -297,7 +297,7 @@ InstallMethod(JohnsonDigraph, "for integer, integer", [IsInt, IsInt],
 {n, k} -> JohnsonDigraphCons(IsImmutableDigraph, n, k));
 
 InstallMethod(PetersenGraphCons, "for IsMutableDigraph", [IsMutableDigraph],
-function(filt)
+function(_)
   local mat;
   mat := [[0, 1, 0, 0, 1, 1, 0, 0, 0, 0],
           [1, 0, 1, 0, 0, 0, 1, 0, 0, 0],
@@ -315,7 +315,7 @@ end);
 
 InstallMethod(PetersenGraphCons, "for IsImmutableDigraph",
 [IsImmutableDigraph],
-filt -> MakeImmutable(PetersenGraphCons(IsMutableDigraph)));
+_ -> MakeImmutable(PetersenGraphCons(IsMutableDigraph)));
 
 InstallMethod(PetersenGraph, "for a function", [IsFunction],
 PetersenGraphCons);
@@ -352,7 +352,7 @@ end);
 InstallMethod(GeneralisedPetersenGraphCons,
 "for IsImmutableDigraph, positive integer, int",
 [IsImmutableDigraph, IsPosInt, IsInt],
-function(filt, n, k)
+function(_, n, k)
   local D;
   D := MakeImmutable(GeneralisedPetersenGraphCons(IsMutableDigraph, n, k));
   SetIsMultiDigraph(D, false);
@@ -371,7 +371,7 @@ InstallMethod(GeneralisedPetersenGraph, "for a positive integer and integer",
 InstallMethod(LollipopGraphCons,
 "for IsMutableDigraph and two positive integers",
 [IsMutableDigraph, IsPosInt, IsPosInt],
-function(filt, m, n)
+function(_, m, n)
   local D;
   D := DigraphDisjointUnion(CompleteDigraph(IsMutableDigraph, m),
   DigraphSymmetricClosure(ChainDigraph(IsMutableDigraph, n)));
@@ -382,7 +382,7 @@ end);
 InstallMethod(LollipopGraphCons,
 "for IsImmutableDigraph and two positive integers",
 [IsImmutableDigraph, IsPosInt, IsPosInt],
-function(filt, m, n)
+function(_, m, n)
   local D;
   D := MakeImmutable(LollipopGraphCons(IsMutableDigraph, m, n));
   SetIsMultiDigraph(D, false);
@@ -412,7 +412,7 @@ InstallMethod(LollipopGraph, "for a function and two pos int",
 InstallMethod(SquareGridGraphCons,
 "for IsMutableDigraph and two positive integers",
 [IsMutableDigraph, IsPosInt, IsPosInt],
-function(filt, n, k)
+function(_, n, k)
   local D1, D2;
   D1 := DigraphSymmetricClosure(ChainDigraph(IsMutableDigraph, n));
   D2 := DigraphSymmetricClosure(ChainDigraph(IsMutableDigraph, k));
@@ -422,7 +422,7 @@ end);
 InstallMethod(SquareGridGraphCons,
 "for IsImmutableDigraph and two positive integers",
 [IsImmutableDigraph, IsPosInt, IsPosInt],
-function(filt, n, k)
+function(_, n, k)
   local D;
   D := MakeImmutable(SquareGridGraphCons(IsMutableDigraph, n, k));
   SetIsMultiDigraph(D, false);
@@ -447,7 +447,7 @@ InstallMethod(SquareGridGraph, "for two integers", [IsPosInt, IsPosInt],
 InstallMethod(TriangularGridGraphCons,
 "for IsMutableDigraph and two integers",
 [IsMutableDigraph, IsPosInt, IsPosInt],
-function(filt, n, k)
+function(_, n, k)
   local D, a, b, i, j;
   D := SquareGridGraph(IsMutableDigraph, n, k);
   for i in [1 .. (k - 1)] do
@@ -464,7 +464,7 @@ end);
 InstallMethod(TriangularGridGraphCons,
 "for IsImmutableDigraph and two positive integers",
 [IsImmutableDigraph, IsPosInt, IsPosInt],
-function(filt, n, k)
+function(_, n, k)
   local D;
   D := MakeImmutable(TriangularGridGraphCons(IsMutableDigraph, n, k));
   SetIsMultiDigraph(D, false);
@@ -486,7 +486,7 @@ InstallMethod(TriangularGridGraph, "for two positive integers",
 
 InstallMethod(StarGraphCons, "for IsMutableDigraph and a positive integer",
 [IsMutableDigraph, IsPosInt],
-function(filt, k)
+function(_, k)
   if k = 1 then
     return EmptyDigraph(IsMutable, 1);
   fi;
@@ -503,7 +503,7 @@ InstallMethod(StarGraph, "for integer", [IsPosInt],
 InstallMethod(StarGraphCons,
 "for IsImmutableDigraph and a positive integer",
 [IsImmutableDigraph, IsPosInt],
-function(filt, k)
+function(_, k)
   local D;
   D := MakeImmutable(StarGraph(IsMutableDigraph, k));
   SetIsMultiDigraph(D, false);
@@ -515,7 +515,7 @@ end);
 InstallMethod(KingsGraphCons,
 "for IsMutableDigraph and two positive integers",
 [IsMutableDigraph, IsPosInt, IsPosInt],
-function(filt, n, k)
+function(_, n, k)
   local D, a, b, i, j;
   D := TriangularGridGraph(IsMutableDigraph, n, k);
   for i in [1 .. (k - 1)] do
@@ -532,7 +532,7 @@ end);
 InstallMethod(KingsGraphCons,
 "for IsImmutableDigraph and two positive integers",
 [IsImmutableDigraph, IsPosInt, IsPosInt],
-function(filt, n, k)
+function(_, n, k)
   local D;
   D := MakeImmutable(KingsGraphCons(IsMutableDigraph, n, k));
   SetIsMultiDigraph(D, false);
@@ -555,7 +555,7 @@ InstallMethod(KingsGraph, "two positive integers",
 InstallMethod(QueensGraphCons,
 "for IsMutableDigraph and two integers",
 [IsMutableDigraph, IsPosInt, IsPosInt],
-function(filt, m, n)
+function(_, m, n)
   local D1, D2, labels;
   D1 := RooksGraphCons(IsMutableDigraph, m, n);
   D2 := BishopsGraphCons(IsMutableDigraph, m, n);
@@ -568,7 +568,7 @@ end);
 InstallMethod(QueensGraphCons,
 "for IsImmutableDigraph and two positive integers",
 [IsImmutableDigraph, IsPosInt, IsPosInt],
-function(filt, m, n)
+function(_, m, n)
   local D;
   D := MakeImmutable(QueensGraphCons(IsMutableDigraph, m, n));
   SetIsMultiDigraph(D, false);
@@ -589,7 +589,7 @@ InstallMethod(QueensGraph, "for two positive integers",
 InstallMethod(RooksGraphCons,
 "for IsMutableDigraph and two positive integers",
 [IsMutableDigraph, IsPosInt, IsPosInt],
-function(filt, m, n)
+function(_, m, n)
   local D1, D2;
   D1 := CompleteDigraph(IsMutableDigraph, m);
   D2 := CompleteDigraph(n);
@@ -599,7 +599,7 @@ end);
 InstallMethod(RooksGraphCons,
 "for IsImmutableDigraph and two positive integers",
 [IsImmutableDigraph, IsPosInt, IsPosInt],
-function(filt, m, n)
+function(_, m, n)
   local D;
   D := MakeImmutable(RooksGraphCons(IsMutableDigraph, m, n));
   SetIsMultiDigraph(D, false);
@@ -622,7 +622,7 @@ InstallMethod(RooksGraph, "for two positive integers",
 InstallMethod(BishopsGraphCons,
 "for IsMutableDigraph, a string and two positive integers",
 [IsMutableDigraph, IsString, IsPosInt, IsPosInt],
-function(filt, color, m, n)
+function(_, color, m, n)
   local both, dark, nr, D1, D2, upL, inc, step, labels, v, not_final_row, i, j,
         is_dark_square, range;
 
@@ -705,7 +705,7 @@ end);
 InstallMethod(BishopsGraphCons,
 "for IsImmutableDigraph, a string and two positive integers",
 [IsImmutableDigraph, IsString, IsPosInt, IsPosInt],
-function(filt, color, m, n)
+function(_, color, m, n)
   local D;
   D := MakeImmutable(BishopsGraphCons(IsMutableDigraph, color, m, n));
   SetIsMultiDigraph(D, false);
@@ -726,12 +726,12 @@ InstallMethod(BishopsGraph, "for a string and two positive integers",
 InstallMethod(BishopsGraphCons,
 "for IsMutableDigraph and two positive integers",
 [IsMutableDigraph, IsPosInt, IsPosInt],
-{filt, m, n} -> BishopsGraphCons(IsMutableDigraph, "both", m, n));
+{_, m, n} -> BishopsGraphCons(IsMutableDigraph, "both", m, n));
 
 InstallMethod(BishopsGraphCons,
 "for IsImmutableDigraph and two positive integers",
 [IsImmutableDigraph, IsPosInt, IsPosInt],
-function(filt, m, n)
+function(_, m, n)
   local D;
   D := MakeImmutable(BishopsGraphCons(IsMutableDigraph, "both", m, n));
   SetIsMultiDigraph(D, false);
@@ -752,7 +752,7 @@ InstallMethod(BishopsGraph, "for two positive integers",
 InstallMethod(KnightsGraphCons,
 "for IsMutableDigraph and two positive integers",
 [IsMutableDigraph, IsPosInt, IsPosInt],
-function(filt, m, n)
+function(_, m, n)
   local D, moves, labels, v, r, s, range, j, i, move;
 
   D := EmptyDigraph(IsMutableDigraph, m * n);
@@ -781,7 +781,7 @@ end);
 InstallMethod(KnightsGraphCons,
 "for IsImmutableDigraph and two positive integers",
 [IsImmutableDigraph, IsPosInt, IsPosInt],
-function(filt, m, n)
+function(_, m, n)
   local D;
   D := MakeImmutable(KnightsGraphCons(IsMutableDigraph, m, n));
   SetIsMultiDigraph(D, false);
@@ -800,7 +800,7 @@ InstallMethod(KnightsGraph, "for two positive integers", [IsPosInt, IsPosInt],
 InstallMethod(HaarGraphCons,
 "for IsMutableDigraph and a positive integer",
 [IsMutableDigraph, IsPosInt],
-function(filt, n)
+function(_, n)
   local m, binaryList, D, i, j;
   m := Log(n, 2) + 1;
   binaryList := DIGRAPHS_BlistNumber(n + 1, m);
@@ -820,7 +820,7 @@ end);
 InstallMethod(HaarGraphCons,
 "for IsImmutableDigraph and a positive integer",
 [IsImmutableDigraph, IsPosInt],
-function(filt, n)
+function(_, n)
   local D;
   D := MakeImmutable(HaarGraphCons(IsMutableDigraph, n));
   SetIsMultiDigraph(D, false);
@@ -841,7 +841,7 @@ InstallMethod(HaarGraph, "for a positive integer", [IsPosInt],
 InstallMethod(BananaTreeCons,
 "for IsMutableDigraph and two positive integers",
 [IsMutableDigraph, IsPosInt, IsPosInt],
-function(filt, m, n)
+function(_, m, n)
   local D, j, list;
   if n = 1 then
     ErrorNoReturn("The second argument must be an integer",
@@ -859,7 +859,7 @@ end);
 InstallMethod(BananaTreeCons,
 "for IsImmutableDigraph and two positive integers",
 [IsImmutableDigraph, IsPosInt, IsPosInt],
-function(filt, m, n)
+function(_, m, n)
   local D;
   D := MakeImmutable(BananaTreeCons(IsMutableDigraph, m, n));
   SetIsMultiDigraph(D, false);
@@ -879,7 +879,7 @@ InstallMethod(BananaTree, "for a function and two positive integers",
 InstallMethod(TadpoleGraphCons,
 "for IsMutableDigraph and two positive integers",
 [IsMutableDigraph, IsPosInt, IsPosInt],
-function(filt, m, n)
+function(_, m, n)
   local tail, graph;
   if m < 3 then
     ErrorNoReturn("the first argument <m> must be an integer greater than 2");
@@ -901,7 +901,7 @@ InstallMethod(TadpoleGraph, "for two positive integers", [IsPosInt, IsPosInt],
 InstallMethod(TadpoleGraphCons,
 "for IsImmutableDigraph and two positive integers",
 [IsImmutableDigraph, IsPosInt, IsPosInt],
-function(filt, m, n)
+function(_, m, n)
   local D;
   D := MakeImmutable(TadpoleGraph(IsMutableDigraph, m, n));
   SetIsMultiDigraph(D, false);
@@ -923,7 +923,7 @@ m -> BookGraphCons(IsImmutableDigraph, m));
 InstallMethod(BookGraphCons,
 "for IsImmutableDigraph and a positive integer",
 [IsImmutableDigraph, IsPosInt],
-function(filt, m)
+function(_, m)
   local D;
   D := MakeImmutable(BookGraph(IsMutableDigraph, m));
   SetIsMultiDigraph(D, false);
@@ -935,7 +935,7 @@ end);
 InstallMethod(StackedBookGraphCons,
 "for IsMutableDigraph and two positive integers",
 [IsMutableDigraph, IsPosInt, IsPosInt],
-function(filt, m, n)
+function(_, m, n)
   local book;
   book := DigraphSymmetricClosure(ChainDigraph(IsMutable, n));
   return DigraphCartesianProduct(book, StarGraph(IsMutable, m + 1));
@@ -952,7 +952,7 @@ InstallMethod(StackedBookGraph, "for two positive integers",
 InstallMethod(StackedBookGraphCons,
 "for IsImmutableDigraph and two positive integers",
 [IsImmutableDigraph, IsPosInt, IsPosInt],
-function(filt, m, n)
+function(_, m, n)
   local D;
   D := MakeImmutable(StackedBookGraph(IsMutableDigraph, m, n));
   SetIsMultiDigraph(D, false);
@@ -964,7 +964,7 @@ end);
 InstallMethod(BinaryTreeCons,
 "for IsMutableDigraph and positive integer",
 [IsMutableDigraph, IsPosInt],
-function(filt, depth)
+function(_, depth)
   local D, x, i, j;
   D := [[]];
   for i in [1 .. depth - 1] do
@@ -979,7 +979,7 @@ end);
 InstallMethod(BinaryTreeCons,
 "for IsImmutableDigraph and positive integer",
 [IsImmutableDigraph, IsPosInt],
-function(filt, depth)
+function(_, depth)
   local D;
   D := BinaryTreeCons(IsMutableDigraph, depth);
   MakeImmutable(D);
@@ -994,7 +994,7 @@ InstallMethod(BinaryTree, "for a function and a positive integer",
 
 InstallMethod(AndrasfaiGraphCons, "for IsMutableDigraph and an integer",
 [IsMutableDigraph, IsPosInt],
-function(filt, n)
+function(_, n)
   local js;
   js := List([0 .. (n - 1)], x -> (3 * x) + 1);
   return CirculantGraph(IsMutableDigraph, (3 * n) - 1, js);
@@ -1003,7 +1003,7 @@ end);
 InstallMethod(AndrasfaiGraphCons,
 "for IsImmutableDigraph, integer",
 [IsImmutableDigraph, IsPosInt],
-function(filt, n)
+function(_, n)
   local D;
   D := MakeImmutable(AndrasfaiGraphCons(IsMutableDigraph, n));
   SetIsMultiDigraph(D, false);
@@ -1024,7 +1024,7 @@ InstallMethod(AndrasfaiGraph, "for a function and an integer",
 
 InstallMethod(BinomialTreeGraphCons, "for IsMutableDigraph and an integer",
 [IsMutableDigraph, IsPosInt],
-function(filt, n)
+function(_, n)
   local bits, is2n, verts, D, rep, pos, parent, parVert, i;
   bits := Log(n, 2);
   is2n := IsEvenInt(n) and IsPrimePowerInt(n);
@@ -1050,7 +1050,7 @@ end);
 InstallMethod(BinomialTreeGraphCons,
 "for IsImmutableDigraph, integer",
 [IsImmutableDigraph, IsPosInt],
-function(filt, n)
+function(_, n)
   local D;
   D := MakeImmutable(BinomialTreeGraphCons(IsMutableDigraph, n));
   SetIsMultiDigraph(D, false);
@@ -1068,7 +1068,7 @@ InstallMethod(BinomialTreeGraph, "for a function and an integer",
 
 InstallMethod(BondyGraphCons, "for IsMutableDigraph and an integer",
 [IsMutableDigraph, IsInt],
-function(filt, n)
+function(_, n)
   if n < 0 then
     ErrorNoReturn("the argument <n> must be a non-negative integer,");
   fi;
@@ -1078,7 +1078,7 @@ end);
 InstallMethod(BondyGraphCons,
 "for IsImmutableDigraph, integer",
 [IsImmutableDigraph, IsInt],
-function(filt, n)
+function(_, n)
   local D;
   D := MakeImmutable(BondyGraphCons(IsMutableDigraph, n));
   SetIsMultiDigraph(D, false);
@@ -1095,7 +1095,7 @@ InstallMethod(BondyGraph, "for a function and an integer",
 
 InstallMethod(CirculantGraphCons, "for IsMutableDigraph, an integer and a list",
 [IsMutableDigraph, IsPosInt, IsList],
-function(filt, n, par)
+function(_, n, par)
   local D, i, j;
   if (n < 2) or (not ForAll(par, x -> IsInt(x) and x in [1 .. n])) then
     ErrorNoReturn("arguments must be an integer <n> greater ",
@@ -1123,7 +1123,7 @@ end);
 InstallMethod(CirculantGraphCons,
 "for IsImmutableDigraph, integer, list of integers",
 [IsImmutableDigraph, IsPosInt, IsList],
-function(filt, n, par)
+function(_, n, par)
   local D;
   D := MakeImmutable(CirculantGraphCons(IsMutableDigraph, n, par));
   SetIsMultiDigraph(D, false);
@@ -1154,7 +1154,7 @@ end);
 InstallMethod(CycleGraphCons,
 "for IsImmutableDigraph, integer",
 [IsImmutableDigraph, IsPosInt],
-function(filt, n)
+function(_, n)
   local D;
   D := MakeImmutable(CycleGraphCons(IsMutableDigraph, n));
   SetIsMultiDigraph(D, false);
@@ -1170,7 +1170,7 @@ InstallMethod(CycleGraph, "for a function and an integer",
 
 InstallMethod(GearGraphCons, "for IsMutableDigraph and an integer",
 [IsMutableDigraph, IsPosInt],
-function(filt, n)
+function(_, n)
   local D, i, central;
   if n < 3 then
     ErrorNoReturn("the argument <n> must be an integer greater than 2,");
@@ -1188,7 +1188,7 @@ end);
 InstallMethod(GearGraphCons,
 "for IsImmutableDigraph, integer",
 [IsImmutableDigraph, IsPosInt],
-function(filt, n)
+function(_, n)
   local D;
   D := MakeImmutable(GearGraphCons(IsMutableDigraph, n));
   SetIsMultiDigraph(D, false);
@@ -1204,7 +1204,7 @@ InstallMethod(GearGraph, "for a function and an integer",
 
 InstallMethod(HalvedCubeGraphCons, "for IsMutableDigraph and an integer",
 [IsMutableDigraph, IsPosInt],
-function(filt, n)
+function(_, n)
   local D, tuples, vertices, i, j;
   tuples := Tuples([0, 1], n);
   vertices := List([1 .. (2 ^ (n - 1))], x -> []);
@@ -1231,7 +1231,7 @@ end);
 InstallMethod(HalvedCubeGraphCons,
 "for IsImmutableDigraph, integer",
 [IsImmutableDigraph, IsPosInt],
-function(filt, n)
+function(_, n)
   local D;
   D := MakeImmutable(HalvedCubeGraphCons(IsMutableDigraph, n));
   SetIsMultiDigraph(D, false);
@@ -1250,7 +1250,7 @@ InstallMethod(HalvedCubeGraph, "for a function and an integer",
 
 InstallMethod(HanoiGraphCons, "for IsMutableDigraph and an integer",
 [IsMutableDigraph, IsPosInt],
-function(filt, n)
+function(_, n)
   local D, nrVert, prevNrVert, exp, i;
   D := Digraph(IsMutableDigraph, []);
   nrVert := 3 ^ n;
@@ -1274,7 +1274,7 @@ end);
 InstallMethod(HanoiGraphCons,
 "for IsImmutableDigraph, integer",
 [IsImmutableDigraph, IsPosInt],
-function(filt, n)
+function(_, n)
   local D;
   D := MakeImmutable(HanoiGraphCons(IsMutableDigraph, n));
   SetIsMultiDigraph(D, false);
@@ -1292,7 +1292,7 @@ InstallMethod(HanoiGraph, "for a function and an integer",
 
 InstallMethod(HelmGraphCons, "for IsMutableDigraph and an integer",
 [IsMutableDigraph, IsPosInt],
-function(filt, n)
+function(_, n)
   local D;
   if n < 3 then
     ErrorNoReturn("the argument <n> must be an integer greater than 2,");
@@ -1307,7 +1307,7 @@ end);
 InstallMethod(HelmGraphCons,
 "for IsImmutableDigraph, integer",
 [IsImmutableDigraph, IsPosInt],
-function(filt, n)
+function(_, n)
   local D;
   D := MakeImmutable(HelmGraphCons(IsMutableDigraph, n));
   SetIsMultiDigraph(D, false);
@@ -1324,7 +1324,7 @@ InstallMethod(HelmGraph, "for a function and an integer",
 InstallMethod(HypercubeGraphCons,
 "for IsImmutableDigraph, integer",
 [IsImmutableDigraph, IsInt],
-function(filt, n)
+function(_, n)
   local D;
   D := MakeImmutable(HypercubeGraphCons(IsMutableDigraph, n));
   SetIsMultiDigraph(D, false);
@@ -1338,7 +1338,7 @@ end);
 
 InstallMethod(HypercubeGraphCons, "for IsMutableDigraph and an integer",
 [IsMutableDigraph, IsInt],
-function(filt, n)
+function(_, n)
   local D, vertices, i, j;
   if n < 0 then
     ErrorNoReturn("the argument <n> must be a non-negative integer,");
@@ -1365,7 +1365,7 @@ InstallMethod(HypercubeGraph, "for a function and an integer",
 
 InstallMethod(KellerGraphCons, "for IsMutableDigraph and an integer",
 [IsMutableDigraph, IsInt],
-function(filt, n)
+function(_, n)
   local D, vertices, i, j;
   if n < 0 then
     ErrorNoReturn("the argument <n> must be a non-negative integer,");
@@ -1390,7 +1390,7 @@ end);
 InstallMethod(KellerGraphCons,
 "for IsImmutableDigraph, integer",
 [IsImmutableDigraph, IsInt],
-function(filt, n)
+function(_, n)
   local D;
   D := MakeImmutable(KellerGraphCons(IsMutableDigraph, n));
   SetIsMultiDigraph(D, false);
@@ -1412,7 +1412,7 @@ InstallMethod(KellerGraph, "for a function and an integer",
 
 InstallMethod(KneserGraphCons, "for IsMutableDigraph and two integers",
 [IsMutableDigraph, IsPosInt, IsPosInt],
-function(filt, n, k)
+function(_, n, k)
   local D, vertices, i, j;
   if n < k then
     ErrorNoReturn("argument <n> must be greater than or equal to argument <k>,");
@@ -1433,7 +1433,7 @@ end);
 InstallMethod(KneserGraphCons,
 "for IsImmutableDigraph, integer, integer",
 [IsImmutableDigraph, IsPosInt, IsPosInt],
-function(filt, n, k)
+function(_, n, k)
   local D;
   D := MakeImmutable(KneserGraphCons(IsMutableDigraph, n, k));
   SetIsMultiDigraph(D, false);
@@ -1462,7 +1462,7 @@ InstallMethod(KneserGraph, "for a function and two integers",
 
 InstallMethod(LindgrenSousselierGraphCons, "for IsMutableDigraph and an integer",
 [IsMutableDigraph, IsPosInt],
-function(filt, n)
+function(_, n)
   local D, central, i, threei;
   central := 6 * n + 4;
   D := CycleGraph(IsMutableDigraph, central - 1);
@@ -1484,7 +1484,7 @@ end);
 InstallMethod(LindgrenSousselierGraphCons,
 "for IsImmutableDigraph, integer",
 [IsImmutableDigraph, IsPosInt],
-function(filt, n)
+function(_, n)
   local D;
   D := MakeImmutable(LindgrenSousselierGraphCons(IsMutableDigraph, n));
   SetIsMultiDigraph(D, false);
@@ -1501,7 +1501,7 @@ InstallMethod(LindgrenSousselierGraph, "for a function and an integer",
 
 InstallMethod(MobiusLadderGraphCons, "for IsMutableDigraph and an integer",
 [IsMutableDigraph, IsPosInt],
-function(filt, n)
+function(_, n)
   local D, i;
   if n < 4 then
     ErrorNoReturn("the argument <n> must be an integer equal to 4 or more,");
@@ -1517,7 +1517,7 @@ end);
 InstallMethod(MobiusLadderGraphCons,
 "for IsImmutableDigraph, integer",
 [IsImmutableDigraph, IsPosInt],
-function(filt, n)
+function(_, n)
   local D;
   D := MakeImmutable(MobiusLadderGraphCons(IsMutableDigraph, n));
   SetIsMultiDigraph(D, false);
@@ -1533,7 +1533,7 @@ InstallMethod(MobiusLadderGraph, "for a function and an integer",
 
 InstallMethod(MycielskiGraphCons, "for IsMutableDigraph and an integer",
 [IsMutableDigraph, IsPosInt],
-function(filt, n)
+function(_, n)
   local D, i;
   if n < 2 then
     ErrorNoReturn("the argument <n> must be an integer greater than 1,");
@@ -1550,7 +1550,7 @@ end);
 InstallMethod(MycielskiGraphCons,
 "for IsImmutableDigraph, integer",
 [IsImmutableDigraph, IsPosInt],
-function(filt, n)
+function(_, n)
   local D;
   D := MakeImmutable(MycielskiGraphCons(IsMutableDigraph, n));
   SetIsMultiDigraph(D, false);
@@ -1569,7 +1569,7 @@ InstallMethod(MycielskiGraph, "for a function and an integer",
 
 InstallMethod(OddGraphCons, "for IsMutableDigraph and an integer",
 [IsMutableDigraph, IsInt],
-function(filt, n)
+function(_, n)
   if n < 1 then
     ErrorNoReturn("the argument <n> must be an integer greater than 0,");
   fi;
@@ -1579,7 +1579,7 @@ end);
 InstallMethod(OddGraphCons,
 "for IsImmutableDigraph, integer",
 [IsImmutableDigraph, IsInt],
-function(filt, n)
+function(_, n)
   local D;
   D := MakeImmutable(OddGraphCons(IsMutableDigraph, n));
   SetIsMultiDigraph(D, false);
@@ -1600,14 +1600,12 @@ InstallMethod(OddGraph, "for a function and an integer",
 
 InstallMethod(PathGraphCons, "for IsMutableDigraph and an integer",
 [IsMutableDigraph, IsPosInt],
-function(filt, n)
-  return DigraphSymmetricClosure(ChainDigraph(IsMutableDigraph, n));
-end);
+{_, n} -> DigraphSymmetricClosure(ChainDigraph(IsMutableDigraph, n)));
 
 InstallMethod(PathGraphCons,
 "for IsImmutableDigraph, integer",
 [IsImmutableDigraph, IsPosInt],
-function(filt, n)
+function(_, n)
   local D;
   D := MakeImmutable(PathGraphCons(IsMutableDigraph, n));
   SetIsMultiDigraph(D, false);
@@ -1625,7 +1623,7 @@ InstallMethod(PathGraph, "for a function and an integer",
 
 InstallMethod(PermutationStarGraphCons, "for IsMutableDigraph and two integers",
 [IsMutableDigraph, IsPosInt, IsInt],
-function(filt, n, k)
+function(_, n, k)
   local D, permList, vertices, bList, pos, i, j;
   if k < 0 then
     ErrorNoReturn("the arguments <n> and <k> must be integers, ",
@@ -1660,7 +1658,7 @@ end);
 InstallMethod(PermutationStarGraphCons,
 "for IsImmutableDigraph, integer, integer",
 [IsImmutableDigraph, IsPosInt, IsInt],
-function(filt, n, k)
+function(_, n, k)
   local D;
   D := MakeImmutable(PermutationStarGraphCons(IsMutableDigraph, n, k));
   SetIsMultiDigraph(D, false);
@@ -1683,7 +1681,7 @@ InstallMethod(PermutationStarGraph, "for a function and two integers",
 
 InstallMethod(PrismGraphCons, "for IsMutableDigraph and an integer",
 [IsMutableDigraph, IsPosInt],
-function(filt, n)
+function(_, n)
   if n < 3 then
     ErrorNoReturn("the argument <n> must be an integer equal to 3 or more,");
   else
@@ -1694,7 +1692,7 @@ end);
 InstallMethod(PrismGraphCons,
 "for IsImmutableDigraph, integer",
 [IsImmutableDigraph, IsPosInt],
-function(filt, n)
+function(_, n)
   local D;
   D := MakeImmutable(PrismGraphCons(IsMutableDigraph, n));
   SetIsMultiDigraph(D, false);
@@ -1710,7 +1708,7 @@ InstallMethod(PrismGraph, "for a function and an integer",
 
 InstallMethod(StackedPrismGraphCons, "for IsMutableDigraph and two integers",
 [IsMutableDigraph, IsPosInt, IsPosInt],
-function(filt, n, k)
+function(_, n, k)
   if n < 3 then
     ErrorNoReturn("the arguments <n> and <k> must be integers, ",
                   "with <n> greater than 2 and <k> greater than 0,");
@@ -1722,7 +1720,7 @@ end);
 InstallMethod(StackedPrismGraphCons,
 "for IsImmutableDigraph, integer, integer",
 [IsImmutableDigraph, IsPosInt, IsPosInt],
-function(filt, n, k)
+function(_, n, k)
   local D;
   D := MakeImmutable(StackedPrismGraphCons(IsMutableDigraph, n, k));
   SetIsMultiDigraph(D, false);
@@ -1738,7 +1736,7 @@ InstallMethod(StackedPrismGraph, "for a function and two integers",
 
 InstallMethod(WalshHadamardGraphCons, "for IsMutableDigraph and an integer",
 [IsMutableDigraph, IsPosInt],
-function(filt, n)
+function(_, n)
   local H_2, H_n, i, D, j, sideHn;
   H_2 := [[1, 1],
           [1, -1]];
@@ -1767,7 +1765,7 @@ end);
 InstallMethod(WalshHadamardGraphCons,
 "for IsImmutableDigraph, integer",
 [IsImmutableDigraph, IsPosInt],
-function(filt, n)
+function(_, n)
   local D;
   D := MakeImmutable(WalshHadamardGraphCons(IsMutableDigraph, n));
   SetIsMultiDigraph(D, false);
@@ -1784,7 +1782,7 @@ InstallMethod(WalshHadamardGraph, "for a function and an integer",
 
 InstallMethod(WebGraphCons, "for IsMutableDigraph and an integer",
 [IsMutableDigraph, IsPosInt],
-function(filt, n)
+function(_, n)
   local D, i;
   if n < 3 then
     ErrorNoReturn("the argument <n> must be an integer greater than 2,");
@@ -1801,7 +1799,7 @@ end);
 InstallMethod(WebGraphCons,
 "for IsImmutableDigraph, integer",
 [IsImmutableDigraph, IsPosInt],
-function(filt, n)
+function(_, n)
   local D;
   D := MakeImmutable(WebGraphCons(IsMutableDigraph, n));
   SetIsMultiDigraph(D, false);
@@ -1817,7 +1815,7 @@ InstallMethod(WebGraph, "for a function and an integer",
 
 InstallMethod(WheelGraphCons, "for IsMutableDigraph and an integer",
 [IsMutableDigraph, IsPosInt],
-function(filt, n)
+function(_, n)
   local D;
   if n < 4 then
     ErrorNoReturn("the argument <n> must be an integer greater than 3,");
@@ -1832,7 +1830,7 @@ end);
 InstallMethod(WheelGraphCons,
 "for IsImmutableDigraph, integer",
 [IsImmutableDigraph, IsPosInt],
-function(filt, n)
+function(_, n)
   local D;
   D := MakeImmutable(WheelGraphCons(IsMutableDigraph, n));
   SetIsMultiDigraph(D, false);
@@ -1855,7 +1853,7 @@ InstallMethod(WheelGraph, "for a function and an integer",
 
 InstallMethod(WindmillGraphCons, "for IsMutableDigraph and two integers",
 [IsMutableDigraph, IsPosInt, IsPosInt],
-function(filt, n, m)
+function(_, n, m)
   local D, i, K, nrVert;
   if m < 2 or n < 2 then
     ErrorNoReturn("the arguments <n> and <m> must be integers greater than 1,");
@@ -1877,7 +1875,7 @@ end);
 InstallMethod(WindmillGraphCons,
 "for IsImmutableDigraph, integer, integer",
 [IsImmutableDigraph, IsPosInt, IsPosInt],
-function(filt, n, m)
+function(_, n, m)
   local D;
   D := MakeImmutable(WindmillGraphCons(IsMutableDigraph, n, m));
   SetIsMultiDigraph(D, false);

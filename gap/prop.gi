@@ -623,7 +623,7 @@ function(D)
   # complete digraph on 2 vertices.
 
   proper_endo_found := false;
-  hook := function(unneded_argument, T)
+  hook := function(_, T)
     # the hook is required by HomomorphismDigraphsFinder to have two arguments,
     # the 1st of which is user_param, which this method doesn't need.
     if RankOfTransformation(T, [1 .. N]) < N then

@@ -943,7 +943,7 @@ gap> D := BondyGraph(1);
 gap> IsHamiltonianDigraph(D);
 false
 gap> G := List([1 .. 22], x -> DigraphRemoveVertex(D, x));;
-gap> ForAll(G, x -> IsHamiltonianDigraph(x));
+gap> ForAll(G, IsHamiltonianDigraph);
 true]]></Example>
   </Description>
 </ManSection>

@@ -752,7 +752,7 @@ gap> T := AsSemigroup(IsPartialPermSemigroup,
 gap> Size(T);
 20
 gap> D := GreensDClasses(T);;
-gap> List(D, x -> Size(x));
+gap> List(D, Size);
 [ 6, 12, 2 ]
 ]]></Example>
     </Description>

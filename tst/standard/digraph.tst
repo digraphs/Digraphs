@@ -684,8 +684,8 @@ gap> D := [
 > "&G~sC~EocF?oC", "&F~lQG{IB?_", "&G~s[~EocF?oC", "&G~tKpCO{D?oC",
 > "&F~jrGcMB?_", "&I~|SrNCKNoR?{@OB?C", "&F~lQG{IB?_", "&F~irgcIB?_",
 > "&F~kqG{IB?_"];;
-gap> D := List(D, x -> DigraphFromDigraph6String(x));;
-gap> iso := [];; 
+gap> D := List(D, DigraphFromDigraph6String);;
+gap> iso := [];;
 gap> iso_distr := [];;
 gap> eq := [];;
 gap> eq_distr := [];;
@@ -1523,7 +1523,7 @@ gap> gr;
 gap> Size(T);
 32
 gap> D := GreensDClasses(T);;
-gap> List(D, x -> Size(x));
+gap> List(D, Size);
 [ 6, 24, 2 ]
 gap> for i in [1 .. 3] do
 > for j in [1 .. 3] do
@@ -1550,7 +1550,7 @@ gap> T := AsSemigroup(IsPartialPermSemigroup, gr2, [G1, G2, G3, G4],
 > [[1, 3, hom13], [2, 3, hom23], [4, 1, hom41], [4, 2, hom42]]);;
 gap> Size(T);
 56
-gap> List(GreensDClasses(T), x -> Size(x));
+gap> List(GreensDClasses(T), Size);
 [ 6, 24, 2, 24 ]
 gap> List(GreensDClasses(T), x -> Size(x) = Size(GroupHClassOfGreensDClass(x)));
 [ true, true, true, true ]
@@ -1572,7 +1572,7 @@ gap> T := AsSemigroup(IsPartialPermSemigroup, gr4, [G1, G2, G3, G4, G5],
 > [[2, 1, hom21], [3, 1, hom31], [4, 1, hom41], [5, 2, hom52], [5, 3, hom53]]);;
 gap> Size(T);
 90
-gap> List(GreensDClasses(T), x -> Size(x));
+gap> List(GreensDClasses(T), Size);
 [ 24, 24, 6, 24, 12 ]
 gap> U := AsSemigroup(IsPartialPermSemigroup,
 > DigraphReverse(gr4),
