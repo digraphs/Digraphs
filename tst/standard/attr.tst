@@ -2920,6 +2920,20 @@ gap> DigraphAbsorptionExpectedSteps(ChainDigraph(5));
 gap> DigraphAbsorptionExpectedSteps(CompleteDigraph(5));
 [ 0, 0, 0, 0, 0 ]
 
+# DigraphAbsorptionExpectedSteps: mutable digraphs
+gap> gr := Digraph(IsMutableDigraph, [[1, 2], [2]]);;
+gap> IsMutableDigraph(gr);
+true
+gap> DigraphAbsorptionExpectedSteps(gr);
+[ 2, 0 ]
+gap> DigraphAbsorptionExpectedSteps(gr);
+[ 2, 0 ]
+gap> DigraphAddEdge(gr, [2, 1]);;
+gap> DigraphAbsorptionExpectedSteps(gr);
+[ 0, 0 ]
+gap> DigraphAbsorptionExpectedSteps(gr);
+[ 0, 0 ]
+
 # Absorption motivating example: game of 'Soccer Dice'
 gap> soccer := Digraph([[7, 2, 3, 5, 1, 4],
 >                       [7, 2, 3, 5, 5, 4],
