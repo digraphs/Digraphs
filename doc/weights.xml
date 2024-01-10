@@ -51,7 +51,7 @@ Error, List Assignment: <list> must be a mutable list
     <Func Name="EdgeWeightedDigraph" Arg="digraph, weights"/>
     <Returns>A digraph or <K>fail</K></Returns>
     <Description>
-        The arugment <A>digraph</A> may be a digraph or a list of lists of integers, floats or rationals.<P/>
+        The argument <A>digraph</A> may be a digraph or a list of lists of integers, floats or rationals.<P/>
 
         <A>weights</A> must be a list of lists of integers, floats or rationals
          of an equal size and shape to <C>OutNeighbours(digraph)</C>, otherwise it will fail.<P/>

@@ -43,7 +43,7 @@ function(digraph, weights)
 
       outNeighbourWeights := weights[u];
 
-      # check number of out neigbours for u
+      # check number of out neighbours for u
       # and number of weights given is the same
       if Size(outNeighbours) <> Size(outNeighbourWeights) then
           ErrorNoReturn(
@@ -51,11 +51,11 @@ function(digraph, weights)
                u, " must be equal,");
       fi;
 
-      # check all elements of out neighbours are approriate
+      # check all elements of out neighbours are appropriate
       for idx in [1 .. Size(outNeighbours)] do
 
-          if not (IsInt(outNeighbourWeights[idx]) 
-          or IsFloat(outNeighbourWeights[idx]) 
+          if not (IsInt(outNeighbourWeights[idx])
+          or IsFloat(outNeighbourWeights[idx])
           or IsRat(outNeighbourWeights[idx])) then
               ErrorNoReturn(
             "out neighbour weight must be an integer, float or rational,");

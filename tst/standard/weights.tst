@@ -51,13 +51,11 @@ Error, the number of out neighbours and weights must be equal,
 
 # incorrect digraph and weights
 gap> d := EdgeWeightedDigraph([[2, 2], []], [[5], []]);
-Error, the sizes of the out neighbours and weights for vertex 1 must\
- be equal,
+Error, the sizes of the out neighbours and weights for vertex 1 must be equal,
 
 # incorrect digraph and weights
 gap> d := EdgeWeightedDigraph([[2], []], [[5, 10], []]);
-Error, the sizes of the out neighbours and weights for vertex 1 must\
- be equal,
+Error, the sizes of the out neighbours and weights for vertex 1 must be equal,
 
 # changing edge weights mutable copy
 gap> d := EdgeWeightedDigraph([[2], [1]], [[5], [10]]);
