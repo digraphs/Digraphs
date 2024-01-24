@@ -42,7 +42,7 @@ jobs:
             ABI: 32
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: "Install dependencies"
         if: ${{ runner.os == 'macOS' }}
         run: brew install automake
@@ -86,7 +86,7 @@ jobs:
     env:
       CHERE_INVOKING: 1
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: gap-actions/setup-cygwin@v1
       - uses: gap-actions/setup-gap@cygwin-v2
         with:
@@ -113,7 +113,7 @@ jobs:
       run:
         shell: bash -l {0}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: "Install micromamba environment from environment.yml . . ."
         uses: mamba-org/setup-micromamba@v1
         with:
