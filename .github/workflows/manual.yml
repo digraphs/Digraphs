@@ -35,7 +35,7 @@ jobs:
           GAP_PKGS_TO_BUILD: ''
       - uses: gap-actions/build-pkg-docs@v1
       - name: "Upload compiled manuals"
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: "Digraphs manual"
           retention-days: 7
