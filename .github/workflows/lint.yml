@@ -24,7 +24,7 @@ jobs:
     - name: "Check out the repository"
       uses: actions/checkout@v4
     - name: "Set up Python"
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
     - name: "Install ${{ matrix.linter }} with pip"
       run: pip install ${{ matrix.linter }}
     - name: "Run ${{ matrix.linter }} on the Digraphs package"
