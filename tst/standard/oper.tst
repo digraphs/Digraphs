@@ -2823,6 +2823,8 @@ gap> Unbind(C);
 gap> Unbind(D);
 gap> Unbind(D1);
 gap> Unbind(D2);
+gap> Unbind(D3);
+gap> Unbind(D3_edges);
 gap> Unbind(DD);
 gap> Unbind(G);
 gap> Unbind(G1);
