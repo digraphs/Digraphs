@@ -2043,6 +2043,60 @@ function(D, root)
   return visited;
 end);
 
+InstallMethod(VerticesReachableFrom, "for a digraph and a list of vertices",
+[IsDigraph, IsList],
+function(D, roots)
+    local accessible_from_node, candidate, root, i, visited, visited_as_ints, N;
+    N := DigraphNrVertices(D);
+    visited := BlistList([1..N], []);
+    for root in roots do
+      if not(visited[root]) then
+        accessible_from_node := VerticesReachableFrom(D, root);
+        for candidate in accessible_from_node do
+          if not(visited[candidate]) then
+            visited[candidate] :=true;
+          fi;
+        od;
+      fi;
+    od;
+
+    visited_as_ints := [];
+
+    for i in [1..N] do
+      if visited[i] then;
+        Add(visited_as_ints, i);
+      fi;
+    od;
+
+    return visited_as_ints;
+end);
+
+InstallMethod(IsOrderIdeal, "for a digraph and a list of vertices",
+[IsDigraph, IsList],
+# Check if digraph represents a partial order
+function(D, roots)
+  local reachable_vertices, N;
+  if not(IsPartialOrderDigraph(D)) then
+    ErrorNoReturn("the 1st element (a digraph) must be a partial order digraph");
+  fi;
+
+  N := Length(roots);
+  vertex_in_subset := BlistList([1..N], []);
+  reachable := VerticesReachableFrom(D, roots);
+
+  for i in roots do
+    vertex_in_subset[i] := true;
+  od;
+
+  for i in reachable_vertices do
+    if(not(vertex_in_subset[i])) then
+      return false;
+    fi;
+  od;
+
+  return Length(reachable) == Length(reachable);
+end);
+
 InstallMethod(DominatorTree, "for a digraph and a vertex",
 [IsDigraph, IsPosInt],
 function(D, root)

@@ -2797,6 +2797,27 @@ gap> path := DigraphPath(D, 5, 5);;
 gap> IsDigraphPath(D, path);
 true
 
+gap> D1 := CompleteDigraph(5);
+<immutable complete digraph with 5 vertices>
+gap> D2 := CompleteDigraph(10);
+<immutable complete digraph with 10 vertices>
+gap> VerticesReachableFrom(D1, [1]);
+[ 1, 2, 3, 4, 5 ]
+gap> VerticesReachableFrom(D1, [1,2]);
+[ 1, 2, 3, 4, 5 ]
+gap> VerticesReachableFrom(D2, [1]);
+[ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ]
+gap> D3 := CompleteDigraph(7);
+<immutable complete digraph with 7 vertices>
+gap> D3_edges := [1..7];
+[ 1 .. 7 ]
+gap> for i in D3_edges do
+>      D3 := DigraphRemoveEdge(D3, [1, i]);
+>      D3 := DigraphRemoveEdge(D3, [i, 1]);
+>    od;
+gap> VerticesReachableFrom(D3, [1]);
+[  ]
+
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(C);
 gap> Unbind(D);
