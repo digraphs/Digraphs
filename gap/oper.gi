@@ -2075,7 +2075,7 @@ InstallMethod(IsOrderIdeal, "for a digraph and a list of vertices",
 [IsDigraph, IsList],
 # Check if digraph represents a partial order
 function(D, roots)
-  local reachable_vertices, N;
+  local reachable_vertices, vertex_in_subset, i, N;
   if not(IsPartialOrderDigraph(D)) then
     ErrorNoReturn("the 1st element (a digraph) must be a partial order digraph");
   fi;
@@ -2094,7 +2094,7 @@ function(D, roots)
     fi;
   od;
 
-  return Length(reachable) == Length(reachable);
+  return Length(reachable) = Length(roots);
 end);
 
 InstallMethod(DominatorTree, "for a digraph and a vertex",
