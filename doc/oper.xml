@@ -1415,9 +1415,9 @@ gap> VerticesReachableFrom(D, [3]);
 [ 1, 2, 3, 4, 5 ]
 gap> D := EmptyDigraph(5);
 <immutable empty digraph with 5 vertices>
-gap> VerticesReachableFrom(D, [1,2,3,4]);
+gap> VerticesReachableFrom(D, [1, 2, 3, 4]);
 [  ]
-gap> VerticesReachableFrom(D, [3,4,5,6]);
+gap> VerticesReachableFrom(D, [3, 4, 5, 6]);
 [  ]
 gap> D := ChainDigraph(5);
 <immutable chain digraph with 5 vertices>
