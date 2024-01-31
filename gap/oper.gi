@@ -2048,13 +2048,13 @@ InstallMethod(VerticesReachableFrom, "for a digraph and a list of vertices",
 function(D, roots)
     local accessible_from_node, candidate, root, i, visited, visited_as_ints, N;
     N := DigraphNrVertices(D);
-    visited := BlistList([1..N], []);
+    visited := BlistList([1 .. N], []);
     for root in roots do
       if not(visited[root]) then
         accessible_from_node := VerticesReachableFrom(D, root);
         for candidate in accessible_from_node do
           if not(visited[candidate]) then
-            visited[candidate] :=true;
+            visited[candidate] := true;
           fi;
         od;
       fi;
@@ -2062,7 +2062,7 @@ function(D, roots)
 
     visited_as_ints := [];
 
-    for i in [1..N] do
+    for i in [1 .. N] do
       if visited[i] then;
         Add(visited_as_ints, i);
       fi;
@@ -2081,7 +2081,7 @@ function(D, roots)
   fi;
 
   N := Length(roots);
-  vertex_in_subset := BlistList([1..N], []);
+  vertex_in_subset := BlistList([1 .. N], []);
   reachable := VerticesReachableFrom(D, roots);
 
   for i in roots do
