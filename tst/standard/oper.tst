@@ -2818,17 +2818,17 @@ gap> VerticesReachableFrom(D3, [1]);
 [  ]
 gap> TestPartialOrderDigraph := Digraph([[1, 3], [2, 3], [3]]);
 <immutable digraph with 3 vertices, 5 edges>
-gap> IsOrderIdeal(TestPartialOrderDigraph, [ 1, 2, 3 ]);
+gap> IsOrderIdeal(TestPartialOrderDigraph, [1, 2, 3]);
 true
 gap> TestPartialOrderDigraph2 := Digraph([[1, 3], [2, 3], [3]]);
 <immutable digraph with 3 vertices, 5 edges>
 gap> TestUnion := DigraphDisjointUnion(TestPartialOrderDigraph, TestPartialOrderDigraph2);
 <immutable digraph with 6 vertices, 10 edges>
-gap> IsOrderIdeal(TestUnion, [ 1, 2, 3 ]);
+gap> IsOrderIdeal(TestUnion, [1, 2, 3]);
 true
-gap> IsOrderIdeal(TestUnion, [ 4, 5, 6 ]);
+gap> IsOrderIdeal(TestUnion, [4, 5, 6]);
 true
-gap> IsOrderIdeal(TestUnion, [ 1, 5, 6 ]);
+gap> IsOrderIdeal(TestUnion, [1, 5, 6]);
 false
 
 #  DIGRAPHS_UnbindVariables
