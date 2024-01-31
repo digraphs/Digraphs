@@ -1395,6 +1395,38 @@ gap> VerticesReachableFrom(D, 5);
 ]]></Example>
   </Description>
 </ManSection>
+
+<ManSection>
+  <Oper Name="VerticesReachableFrom" Arg="digraph, root"/>
+  <Returns>A list.</Returns>
+  <Description>
+    This operation returns a list of the vertices  <A>v</A>, for which there exists
+    a non-trivial directed walk from any of the provided <A>root</A>s to vertex <A>v</A> in the digraph
+    <A>digraph</A>. See Section <Ref Subsect="Definitions" Style="Number" />
+    for the definition of a non-trivial directed walk.
+    <P/>
+
+<Example><![CDATA[
+gap> D := CompleteDigraph(5);
+<immutable complete digraph with 5 vertices>
+gap> VerticesReachableFrom(D, [1]);
+[ 2, 1, 3, 4, 5 ]
+gap> VerticesReachableFrom(D, [3]);
+[ 1, 2, 3, 4, 5 ]
+gap> D := EmptyDigraph(5);
+<immutable empty digraph with 5 vertices>
+gap> VerticesReachableFrom(D, [1,2,3,4]);
+[  ]
+gap> VerticesReachableFrom(D, [3,4,5,6]);
+[  ]
+gap> D := ChainDigraph(5);
+<immutable chain digraph with 5 vertices>
+gap> VerticesReachableFrom(D, [3, 4]);
+[ 4, 5 ]
+]]></Example>
+  </Description>
+</ManSection>
+
 <#/GAPDoc>
 
 
