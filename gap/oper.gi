@@ -2094,7 +2094,7 @@ function(D, roots)
     fi;
   od;
 
-  return Length(reachable) = Length(roots);
+  return Length(reachable_vertices) = Length(roots);
 end);
 
 InstallMethod(DominatorTree, "for a digraph and a vertex",
