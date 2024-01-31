@@ -2082,7 +2082,7 @@ function(D, roots)
 
   N := Length(roots);
   vertex_in_subset := BlistList([1 .. N], []);
-  reachable := VerticesReachableFrom(D, roots);
+  reachable_vertices := VerticesReachableFrom(D, roots);
 
   for i in roots do
     vertex_in_subset[i] := true;
