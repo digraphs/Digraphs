@@ -2796,7 +2796,6 @@ gap> D := Digraph([
 gap> path := DigraphPath(D, 5, 5);;
 gap> IsDigraphPath(D, path);
 true
-
 gap> D1 := CompleteDigraph(5);
 <immutable complete digraph with 5 vertices>
 gap> D2 := CompleteDigraph(10);
