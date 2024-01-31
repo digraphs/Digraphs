@@ -2816,6 +2816,10 @@ gap> for i in D3_edges do
 >    od;
 gap> VerticesReachableFrom(D3, [1]);
 [  ]
+gap> TestPartialOrderDigraph := Digraph([[1, 3], [2, 3], [3]]);
+<immutable digraph with 3 vertices, 5 edges>
+gap> IsOrderIdeal(TestPartialOrderDigraph, [ 1,2,3 ]);
+true
 
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(C);
@@ -2876,6 +2880,7 @@ gap> Unbind(tclosure);
 gap> Unbind(u1);
 gap> Unbind(u2);
 gap> Unbind(x);
+gap> Unbind(IsPartialOrderDigraph);
 
 #
 gap> DIGRAPHS_StopTest();
