@@ -2186,12 +2186,11 @@ function(D, root)
   return result;
 end);
 
-InstallMethod(DigraphCycleBasis, 
-"for a digraph",
+InstallMethod(DigraphCycleBasis, "for a digraph",
 [IsDigraph],
 function(G)
-  local EdgeOneHotVectorGF2, DigraphCycleBasisConnected, EdgeAllocConnComp, 
-  FailSafeMatMul, EdgesList, En, ComponentsRecord, WhereDoTheyGo, 
+  local EdgeOneHotVectorGF2, DigraphCycleBasisConnected, EdgeAllocConnComp,
+  FailSafeMatMul, EdgesList, En, ComponentsRecord, WhereDoTheyGo,
   InjectionMatList, ConnectedComponents, ConnectedResults, ComponentsBases;
 
   G := DigraphImmutableCopy(G);
@@ -2217,7 +2216,7 @@ function(G)
   
   EdgeOneHotVectorGF2 := function(Positions, dim)
     local res, i;
-    res := List([1..dim], i -> 0 * Z(2));
+    res := List([1 .. dim], i -> 0 * Z(2));
     for i in Positions do
       res[i] := Z(2);
     od;
@@ -2225,8 +2224,8 @@ function(G)
   end;
 
   DigraphCycleBasisConnected := function(G)
-    local ListSort, ListZip, WalkToEdges, EdgesList, E, CycleVectors, 
-    GSubTreeEdges, DirectedTree, e, meet, pathEdges1, pathEdges2, eEdge;
+    local ListSort, ListZip, WalkToEdges, EdgesList, E, CycleVectors,
+    GSubTreeEdges, DirectedTree, e, pathEdges1, pathEdges2, eEdge;
 
     # if it is not symmetric, fail
     if not IsSymmetricDigraph(G) then
@@ -2260,7 +2259,7 @@ function(G)
     end;
 
     ListZip := function(L1, L2)
-      return List([1..Minimum(Length(L1), Length(L2))], i -> [L1[i], L2[i]]);
+      return List([1 .. Minimum(Length(L1), Length(L2))], i -> [L1[i], L2[i]]);
     end;
 
     WalkToEdges := function(EdgesList, Walk)
@@ -2271,9 +2270,8 @@ function(G)
         return [];
       fi;
 
-      return List(ListZip(Walk{[1..len-1]}, Walk{[2..len]}), 
-        x -> Position(EdgesList, ListSort(x))
-      );
+      return List(ListZip(Walk{[1 .. len - 1]}, Walk{[2 .. len]}),
+        x -> Position(EdgesList, ListSort(x)));
     end;
 
     G := DigraphImmutableCopy(G);
@@ -2281,9 +2279,8 @@ function(G)
     E := Length(EdgesList);
 
     DirectedTree := DigraphShortestPathSpanningTree(G, 1);
-    GSubTreeEdges := Filtered(EdgesList, 
-      x -> not (ListSort(x) in DigraphEdges(DirectedTree))
-    );
+    GSubTreeEdges := Filtered(EdgesList,
+      x -> not (ListSort(x) in DigraphEdges(DirectedTree)));
 
     if Length(GSubTreeEdges) = 0 then
       return [EdgesList, []];
@@ -2292,11 +2289,9 @@ function(G)
     CycleVectors := [];
     for e in GSubTreeEdges do
       pathEdges1 := EdgeOneHotVectorGF2(
-        WalkToEdges(EdgesList, DigraphPath(DirectedTree, 1, e[1])[1]), E
-      );
+        WalkToEdges(EdgesList, DigraphPath(DirectedTree, 1, e[1])[1]), E);
       pathEdges2 := EdgeOneHotVectorGF2(
-        WalkToEdges(EdgesList, DigraphPath(DirectedTree, 1, e[2])[1]), E
-      );
+        WalkToEdges(EdgesList, DigraphPath(DirectedTree, 1, e[2])[1]), E);
       eEdge := EdgeOneHotVectorGF2([Position(EdgesList, e)], E);
       Add(CycleVectors, pathEdges1 + pathEdges2 + eEdge);
     od;
@@ -2314,33 +2309,28 @@ function(G)
   end;
 
   FailSafeMatMul := function(a, b) 
-    if a = [] then 
-      return []; 
+    if a = [] then
+      return [];
     fi;
-    return a * b; 
+    return a * b;
   end;
-
 
   EdgesList := Filtered(DigraphEdges(G), x -> x[1] <= x[2]);
   En := Length(EdgesList);
   ComponentsRecord := DigraphConnectedComponents(G);
   WhereDoTheyGo := EdgeAllocConnComp(EdgesList, ComponentsRecord);
 
-  InjectionMatList := List(WhereDoTheyGo, 
-    x -> List(x, i -> EdgeOneHotVectorGF2([i], En))
-  );
+  InjectionMatList := List(WhereDoTheyGo,
+    x -> List(x, i -> EdgeOneHotVectorGF2([i], En)));
 
-  ConnectedComponents := List(ComponentsRecord.comps, 
-    x -> InducedSubdigraph(G, x)
-  );
+  ConnectedComponents := List(ComponentsRecord.comps,
+    x -> InducedSubdigraph(G, x));
 
-  ConnectedResults := List(ConnectedComponents, 
-    x -> DigraphCycleBasisConnected(x)
-  );
+  ConnectedResults := List(ConnectedComponents,
+    x -> DigraphCycleBasisConnected(x));
 
-  ComponentsBases := List([1..Length(ConnectedComponents)], 
-    x -> FailSafeMatMul(ConnectedResults[x][2], InjectionMatList[x])
-  );
+  ComponentsBases := List([1 .. Length(ConnectedComponents)],
+    x -> FailSafeMatMul(ConnectedResults[x][2], InjectionMatList[x]));
 
   return [EdgesList, Concatenation(ComponentsBases)];
 end);
