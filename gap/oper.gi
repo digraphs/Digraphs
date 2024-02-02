@@ -2213,7 +2213,7 @@ function(G)
   if IsEmptyDigraph(G) then
     return [[], []];
   fi;
-  
+
   EdgeOneHotVectorGF2 := function(Positions, dim)
     local res, i;
     res := List([1 .. dim], i -> 0 * Z(2));
@@ -2308,7 +2308,7 @@ function(G)
     return res;
   end;
 
-  FailSafeMatMul := function(a, b) 
+  FailSafeMatMul := function(a, b)
     if a = [] then
       return [];
     fi;
