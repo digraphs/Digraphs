@@ -193,8 +193,9 @@ end);
 InstallMethod(DigraphAddEdge,
 "for an immutable digraph and two positive integers",
 [IsImmutableDigraph, IsPosInt, IsPosInt],
-{D, src, ran}
--> MakeImmutable(DigraphAddEdge(DigraphMutableCopy(D), src, ran)));
+function(D, src, ran)
+  return MakeImmutable(DigraphAddEdge(DigraphMutableCopy(D), src, ran));
+end);
 
 InstallMethod(DigraphAddEdge, "for a mutable digraph and a list",
 [IsMutableDigraph, IsList],
@@ -249,8 +250,9 @@ end);
 InstallMethod(DigraphRemoveEdge,
 "for a immutable digraph and two positive integers",
 [IsImmutableDigraph, IsPosInt, IsPosInt],
-{D, src, ran}
--> MakeImmutable(DigraphRemoveEdge(DigraphMutableCopy(D), src, ran)));
+function(D, src, ran)
+  return MakeImmutable(DigraphRemoveEdge(DigraphMutableCopy(D), src, ran));
+end);
 
 InstallMethod(DigraphRemoveEdge, "for a mutable digraph and a list",
 [IsMutableDigraph, IsList],
@@ -617,8 +619,7 @@ InstallMethod(ModularProduct, "for a digraph and digraph",
 function(D1, D2)
   local edge_function;
 
-  edge_function := function(u, v, m, n, map)  # gaplint: disable=W000
-    # neither m nor n is used, but can't replace them both with _
+  edge_function := function(u, v, m, n, map)
     local w, x, connections;
     connections := [];
     for w in OutNeighbours(D1)[u] do
@@ -646,8 +647,7 @@ InstallMethod(StrongProduct, "for a digraph and digraph",
 function(D1, D2)
   local edge_function;
 
-  edge_function := function(u, v, m, n, map)  # gaplint: disable=W000
-    # neither m nor n is used, but can't replace them both with _
+  edge_function := function(u, v, m, n, map)
     local w, x, connections;
       connections := [];
       for x in OutNeighbours(D2)[v] do
@@ -694,7 +694,7 @@ InstallMethod(HomomorphicProduct, "for a digraph and digraph",
 function(D1, D2)
   local edge_function;
 
-  edge_function := function(u, v, _, n, map)
+  edge_function := function(u, v, m, n, map)
     local w, x, connections;
       connections := [];
       for x in [1 .. n] do
@@ -716,7 +716,7 @@ InstallMethod(LexicographicProduct, "for a digraph and digraph",
 function(D1, D2)
   local edge_function;
 
-  edge_function := function(u, v, _, n, map)
+  edge_function := function(u, v, m, n, map)
     local w, x, connections;
       connections := [];
       for w in OutNeighbours(D1)[u] do
@@ -752,7 +752,9 @@ function(D1, D2, edge_function)
 
   edges := EmptyPlist(m * n);
 
-  map := {a, b} -> (a - 1) * n + b;
+  map := function(a, b)
+    return (a - 1) * n + b;
+  end;
 
   for u in [1 .. m] do
     for v in [1 .. n] do
@@ -982,8 +984,9 @@ end);
 InstallMethod(QuotientDigraph,
 "for an immutable digraph and a homogeneous list",
 [IsImmutableDigraph, IsHomogeneousList],
-{D, partition} ->
-MakeImmutable(QuotientDigraph(DigraphMutableCopy(D), partition)));
+function(D, partition)
+  return MakeImmutable(QuotientDigraph(DigraphMutableCopy(D), partition));
+end);
 
 #############################################################################
 # 6. In and out degrees, neighbours, and edges of vertices
@@ -2183,6 +2186,142 @@ function(D, root)
   return result;
 end);
 
+InstallMethod(DigraphCycleBasis, 
+"for a digraph",
+[IsDigraph],
+function(G)
+  local EdgeOneHotVectorGF2, DigraphCycleBasisConnected, EdgeAllocConnComp, FailSafeMatMul, EdgesList, En, ComponentsRecord, WhereDoTheyGo, InjectionMatList, ConnectedComponents, ConnectedResults, ComponentsBases;
+
+  G := DigraphImmutableCopy(G);
+
+  # if it is not symmetric, throw an error
+  if not IsSymmetricDigraph(G) then
+    Error("GraphCycleBasis: Graph is not symmetric");
+  fi;
+
+  # If it has multiple edges, throw an error
+  if IsMultiDigraph(G) then
+    Error("GraphCycleBasis: Graph has multiple edges");
+  fi;
+
+  # If it contains loops, throw an error
+  if DigraphHasLoops(G) then
+    Error("GraphCycleBasis: Graph has loops");
+  fi;
+
+  if IsEmptyDigraph(G) then
+    return [[], []];
+  fi;
+  
+  EdgeOneHotVectorGF2 := function(Positions, dim)
+    local res, i;
+    res := List([1..dim], i -> 0 * Z(2));
+    for i in Positions do
+      res[i] := Z(2);
+    od;
+    return res;
+  end;
+
+  DigraphCycleBasisConnected := function(G)
+    local ListSort, ListZip, WalkToEdges, EdgesList, E, CycleVectors, GSubTreeEdges, DirectedTree, e, meet, pathEdges1, pathEdges2, eEdge;
+
+    # if it is not symmetric, fail
+    if not IsSymmetricDigraph(G) then
+      return fail;
+    fi;
+
+    # If it has multiple edges, fail
+    if IsMultiDigraph(G) then
+      return fail;
+    fi;
+
+    # If it is not connected, fail
+    if not IsConnectedDigraph(G) then
+      return fail;
+    fi;
+
+    # If it contains loops, fail
+    if DigraphHasLoops(G) then
+      return fail;
+    fi;
+
+    if IsEmptyDigraph(G) then
+      return [[], []];
+    fi;
+
+    ListSort := function(L)
+      local LCopy;
+      LCopy := ShallowCopy(L);
+      Sort(LCopy);
+      return LCopy;
+    end;
+
+    ListZip := function(L1, L2)
+      return List([1..Minimum(Length(L1), Length(L2))], i -> [L1[i], L2[i]]);
+    end;
+
+    WalkToEdges := function(EdgesList, Walk)
+      local len;
+      len := Length(Walk);
+
+      if len < 2 then
+        return [];
+      fi;
+
+      return List(ListZip(Walk{[1..len-1]}, Walk{[2..len]}), x -> Position(EdgesList, ListSort(x)));
+    end;
+
+    G := DigraphImmutableCopy(G);
+    EdgesList := Filtered(DigraphEdges(G), x -> x[1] <= x[2]);
+    E := Length(EdgesList);
+
+    DirectedTree := DigraphShortestPathSpanningTree(G, 1);
+    GSubTreeEdges := Filtered(EdgesList, x -> not (ListSort(x) in DigraphEdges(DirectedTree)));
+
+    if Length(GSubTreeEdges) = 0 then
+      return [EdgesList, []];
+    fi;
+
+    CycleVectors := [];
+    for e in GSubTreeEdges do
+      pathEdges1 := EdgeOneHotVectorGF2(WalkToEdges(EdgesList, DigraphPath(DirectedTree, 1, e[1])[1]), E);
+      pathEdges2 := EdgeOneHotVectorGF2(WalkToEdges(EdgesList, DigraphPath(DirectedTree, 1, e[2])[1]), E);
+      eEdge := EdgeOneHotVectorGF2([Position(EdgesList, e)], E);
+      Add(CycleVectors, pathEdges1 + pathEdges2 + eEdge);
+    od;
+
+    return [EdgesList, BaseMat(CycleVectors)];
+  end;
+
+  EdgeAllocConnComp := function(EdgesList, ConnectedComponentsRecord)
+    local res, e;
+    res := List(ConnectedComponentsRecord.comps, x -> []);
+    for e in EdgesList do
+      Add(res[(ConnectedComponentsRecord.id[e[1]])], Position(EdgesList, e));
+    od;
+    return res;
+  end;
+
+  FailSafeMatMul := function(a, b) 
+    if a = [] then 
+      return []; 
+    fi;
+    return a * b; 
+  end;
+
+
+  EdgesList := Filtered(DigraphEdges(G), x -> x[1] <= x[2]);
+  En := Length(EdgesList);
+  ComponentsRecord := DigraphConnectedComponents(G);
+  WhereDoTheyGo := EdgeAllocConnComp(EdgesList, ComponentsRecord);
+  InjectionMatList := List(WhereDoTheyGo, x -> List(x, i -> EdgeOneHotVectorGF2([i], En)));
+  ConnectedComponents := List(ComponentsRecord.comps, x -> InducedSubdigraph(G, x));
+  ConnectedResults := List(ConnectedComponents, x -> DigraphCycleBasisConnected(x));
+  ComponentsBases := List([1..Length(ConnectedComponents)], x -> FailSafeMatMul(ConnectedResults[x][2], InjectionMatList[x]));
+  return [EdgesList, Concatenation(ComponentsBases)];
+end;
+)
+
 #############################################################################
 # 10. Operations for vertices
 #############################################################################
@@ -2195,7 +2334,9 @@ function(D, i, j)
 
   if HasDigraphJoinTable(D) then
     return DigraphJoinTable(D)[i, j];
-  elif not IsPartialOrderDigraph(D) then
+  fi;
+
+  if not IsPartialOrderDigraph(D) then
     ErrorNoReturn("the 1st argument <D> must satisfy ",
                   "IsPartialOrderDigraph,");
   elif not i in DigraphVertices(D) then
@@ -2225,7 +2366,9 @@ function(D, i, j)
 
   if HasDigraphMeetTable(D) then
     return DigraphMeetTable(D)[i, j];
-  elif not IsPartialOrderDigraph(D) then
+  fi;
+
+  if not IsPartialOrderDigraph(D) then
     ErrorNoReturn("the 1st argument <D> must satisfy ",
                   "IsPartialOrderDigraph,");
   elif not i in DigraphVertices(D) then

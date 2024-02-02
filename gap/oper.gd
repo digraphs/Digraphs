@@ -139,6 +139,7 @@ DeclareOperation("DigraphShortestPathSpanningTree", [IsDigraph, IsPosInt]);
 DeclareOperation("VerticesReachableFrom", [IsDigraph, IsPosInt]);
 DeclareOperation("Dominators", [IsDigraph, IsPosInt]);
 DeclareOperation("DominatorTree", [IsDigraph, IsPosInt]);
+DeclareOperation("DigraphCycleBasis", [IsDigraph]);
 
 # 10. Operations for vertices . . .
 DeclareOperation("PartialOrderDigraphJoinOfVertices",
