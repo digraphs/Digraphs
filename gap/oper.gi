@@ -2190,7 +2190,9 @@ InstallMethod(DigraphCycleBasis,
 "for a digraph",
 [IsDigraph],
 function(G)
-  local EdgeOneHotVectorGF2, DigraphCycleBasisConnected, EdgeAllocConnComp, FailSafeMatMul, EdgesList, En, ComponentsRecord, WhereDoTheyGo, InjectionMatList, ConnectedComponents, ConnectedResults, ComponentsBases;
+  local EdgeOneHotVectorGF2, DigraphCycleBasisConnected, EdgeAllocConnComp, 
+  FailSafeMatMul, EdgesList, En, ComponentsRecord, WhereDoTheyGo, 
+  InjectionMatList, ConnectedComponents, ConnectedResults, ComponentsBases;
 
   G := DigraphImmutableCopy(G);
 
@@ -2223,7 +2225,8 @@ function(G)
   end;
 
   DigraphCycleBasisConnected := function(G)
-    local ListSort, ListZip, WalkToEdges, EdgesList, E, CycleVectors, GSubTreeEdges, DirectedTree, e, meet, pathEdges1, pathEdges2, eEdge;
+    local ListSort, ListZip, WalkToEdges, EdgesList, E, CycleVectors, 
+    GSubTreeEdges, DirectedTree, e, meet, pathEdges1, pathEdges2, eEdge;
 
     # if it is not symmetric, fail
     if not IsSymmetricDigraph(G) then
@@ -2268,7 +2271,9 @@ function(G)
         return [];
       fi;
 
-      return List(ListZip(Walk{[1..len-1]}, Walk{[2..len]}), x -> Position(EdgesList, ListSort(x)));
+      return List(ListZip(Walk{[1..len-1]}, Walk{[2..len]}), 
+        x -> Position(EdgesList, ListSort(x))
+      );
     end;
 
     G := DigraphImmutableCopy(G);
@@ -2276,7 +2281,9 @@ function(G)
     E := Length(EdgesList);
 
     DirectedTree := DigraphShortestPathSpanningTree(G, 1);
-    GSubTreeEdges := Filtered(EdgesList, x -> not (ListSort(x) in DigraphEdges(DirectedTree)));
+    GSubTreeEdges := Filtered(EdgesList, 
+      x -> not (ListSort(x) in DigraphEdges(DirectedTree))
+    );
 
     if Length(GSubTreeEdges) = 0 then
       return [EdgesList, []];
@@ -2284,8 +2291,12 @@ function(G)
 
     CycleVectors := [];
     for e in GSubTreeEdges do
-      pathEdges1 := EdgeOneHotVectorGF2(WalkToEdges(EdgesList, DigraphPath(DirectedTree, 1, e[1])[1]), E);
-      pathEdges2 := EdgeOneHotVectorGF2(WalkToEdges(EdgesList, DigraphPath(DirectedTree, 1, e[2])[1]), E);
+      pathEdges1 := EdgeOneHotVectorGF2(
+        WalkToEdges(EdgesList, DigraphPath(DirectedTree, 1, e[1])[1]), E
+      );
+      pathEdges2 := EdgeOneHotVectorGF2(
+        WalkToEdges(EdgesList, DigraphPath(DirectedTree, 1, e[2])[1]), E
+      );
       eEdge := EdgeOneHotVectorGF2([Position(EdgesList, e)], E);
       Add(CycleVectors, pathEdges1 + pathEdges2 + eEdge);
     od;
@@ -2314,13 +2325,25 @@ function(G)
   En := Length(EdgesList);
   ComponentsRecord := DigraphConnectedComponents(G);
   WhereDoTheyGo := EdgeAllocConnComp(EdgesList, ComponentsRecord);
-  InjectionMatList := List(WhereDoTheyGo, x -> List(x, i -> EdgeOneHotVectorGF2([i], En)));
-  ConnectedComponents := List(ComponentsRecord.comps, x -> InducedSubdigraph(G, x));
-  ConnectedResults := List(ConnectedComponents, x -> DigraphCycleBasisConnected(x));
-  ComponentsBases := List([1..Length(ConnectedComponents)], x -> FailSafeMatMul(ConnectedResults[x][2], InjectionMatList[x]));
+
+  InjectionMatList := List(WhereDoTheyGo, 
+    x -> List(x, i -> EdgeOneHotVectorGF2([i], En))
+  );
+
+  ConnectedComponents := List(ComponentsRecord.comps, 
+    x -> InducedSubdigraph(G, x)
+  );
+
+  ConnectedResults := List(ConnectedComponents, 
+    x -> DigraphCycleBasisConnected(x)
+  );
+
+  ComponentsBases := List([1..Length(ConnectedComponents)], 
+    x -> FailSafeMatMul(ConnectedResults[x][2], InjectionMatList[x])
+  );
+
   return [EdgesList, Concatenation(ComponentsBases)];
-end;
-)
+end);
 
 #############################################################################
 # 10. Operations for vertices
