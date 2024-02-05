@@ -2184,8 +2184,8 @@ function(D, root)
 end);
 
 # Computes the fundamental cycle basis of a symmetric digraph
-# For each connected component, Find a spanning tree and then find the 
-# fundamental cycle basis. Then combine the fundamental cycle basis of each 
+# For each connected component, Find a spanning tree and then find the
+# fundamental cycle basis. Then combine the fundamental cycle basis of each
 # connected component.
 # Related paper : https://dl.acm.org/doi/pdf/10.1145/363219.363232
 InstallMethod(DigraphCycleBasis, "for a digraph",
