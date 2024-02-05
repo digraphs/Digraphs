@@ -699,8 +699,8 @@ InstallMethod(PrintString, "for a digraph", [IsDigraph], String);
 InstallMethod(String, "for a digraph",
 [IsDigraph],
 function(D)
-  local n, N, i, mut, streps, outnbs_rep, lengths, strings, creators_streps,
-        creators_props, props;
+  local n, N, i, mut, streps, outnbs_rep, lengths, strings,
+        out_neighbours_string, creators_streps, creators_props, props;
   if IsMutableDigraph(D) then
     mut := "IsMutableDigraph, ";
   else
@@ -722,7 +722,11 @@ function(D)
                  ReplacedString(streps[n], "\\", "\\\\"), "\"", ")"));
   od;
 
-  outnbs_rep := Concatenation("Digraph(", mut, String(OutNeighbours(D)), ")");
+  out_neighbours_string := String(OutNeighbours(D));
+  # print empty lists with two spaces for consistency
+  # see https://github.com/gap-system/gap/pull/5418
+  out_neighbours_string := ReplacedString(out_neighbours_string, "[ ]", "[  ]");
+  outnbs_rep := Concatenation("Digraph(", mut, out_neighbours_string, ")");
   Add(strings, String(outnbs_rep));
 
   N              := DigraphNrVertices(D);

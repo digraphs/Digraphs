@@ -1179,9 +1179,9 @@ gap> gr1 := EmptyDigraph(0);;
 gap> gr2 := DigraphCopy(gr1);
 <immutable empty digraph with 0 vertices>
 gap> String(gr2);
-"Digraph([ ])"
+"Digraph([  ])"
 gap> PrintString(gr2);
-"Digraph([ ])"
+"Digraph([  ])"
 gap> D := CycleDigraph(10 * 10 ^ 5);
 <immutable cycle digraph with 1000000 vertices>
 gap> D1 := DigraphCopy(D);
@@ -1348,7 +1348,7 @@ gap> list := [[1, 2], []];
 gap> D := DigraphNC(IsMutableDigraph, list);
 <mutable digraph with 2 vertices, 2 edges>
 gap> PrintString(D);
-"Digraph(IsMutableDigraph, [ [ 1, 2 ], [ ] ])"
+"Digraph(IsMutableDigraph, [ [ 1, 2 ], [  ] ])"
 gap> EvalString(String(D)) = D;
 true
 gap> DigraphByAdjacencyMatrix(IsMutableDigraph, []);
@@ -1802,7 +1802,7 @@ gap> String(G);
 gap> D := Digraph([]);
 <immutable empty digraph with 0 vertices>
 gap> String(D);
-"Digraph([ ])"
+"Digraph([  ])"
 gap> D := CompleteDigraph(7);
 <immutable complete digraph with 7 vertices>
 gap> String(D);
