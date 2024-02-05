@@ -2797,6 +2797,68 @@ gap> path := DigraphPath(D, 5, 5);;
 gap> IsDigraphPath(D, path);
 true
 
+# DigraphCycleBasis
+gap> D := NullDigraph(0);
+<immutable empty digraph with 0 vertices>
+gap> DigraphCycleBasis(D);
+[ [  ], [  ] ]
+gap> D := NullDigraph(6);
+<immutable empty digraph with 6 vertices>
+gap> DigraphCycleBasis(D);
+[ [  ], [  ] ]
+gap> D := CycleDigraph(3);
+<immutable cycle digraph with 3 vertices>
+gap> DigraphCycleBasis(D);
+Error, GraphCycleBasis: Graph is not symmetric
+gap> D := Digraph([[1]]);
+<immutable digraph with 1 vertex, 1 edge>
+gap> DigraphCycleBasis(D);
+Error, GraphCycleBasis: Graph has loops
+gap> D := Digraph([[2, 2], [1]]);
+<immutable multidigraph with 2 vertices, 3 edges>
+gap> DigraphCycleBasis(D);
+Error, GraphCycleBasis: Graph is not symmetric
+gap> D := CompleteDigraph(5);
+<immutable complete digraph with 5 vertices>
+gap> DigraphCycleBasis(D);
+[ [ [ 1, 2 ], [ 1, 3 ], [ 1, 4 ], [ 1, 5 ], [ 2, 3 ], [ 2, 4 ], [ 2, 5 ], 
+      [ 3, 4 ], [ 3, 5 ], [ 4, 5 ] ], 
+  [ [ Z(2)^0, Z(2)^0, 0*Z(2), 0*Z(2), Z(2)^0, 0*Z(2), 0*Z(2), 0*Z(2), 0*Z(2), 
+          0*Z(2) ], 
+      [ 0*Z(2), Z(2)^0, Z(2)^0, 0*Z(2), Z(2)^0, Z(2)^0, 0*Z(2), 0*Z(2), 
+          0*Z(2), 0*Z(2) ], 
+      [ 0*Z(2), 0*Z(2), Z(2)^0, Z(2)^0, 0*Z(2), Z(2)^0, Z(2)^0, 0*Z(2), 
+          0*Z(2), 0*Z(2) ], 
+      [ 0*Z(2), 0*Z(2), 0*Z(2), 0*Z(2), Z(2)^0, Z(2)^0, 0*Z(2), Z(2)^0, 
+          0*Z(2), 0*Z(2) ], 
+      [ 0*Z(2), 0*Z(2), 0*Z(2), 0*Z(2), 0*Z(2), Z(2)^0, Z(2)^0, Z(2)^0, 
+          Z(2)^0, 0*Z(2) ], 
+      [ 0*Z(2), 0*Z(2), 0*Z(2), 0*Z(2), 0*Z(2), 0*Z(2), 0*Z(2), Z(2)^0, 
+          Z(2)^0, Z(2)^0 ] ] ]
+gap> D := DigraphSymmetricClosure(ChainDigraph(10));
+<immutable symmetric digraph with 10 vertices, 18 edges>
+gap> DigraphCycleBasis(D);
+[ [ [ 1, 2 ], [ 2, 3 ], [ 3, 4 ], [ 4, 5 ], [ 5, 6 ], [ 6, 7 ], [ 7, 8 ], 
+      [ 8, 9 ], [ 9, 10 ] ], [  ] ]
+gap> D := Digraph([[2, 6], [1, 3, 5, 6], [2, 5], [5, 6], [2, 3, 4, 6], [1, 2, 4, 5]]);
+<immutable digraph with 6 vertices, 18 edges>
+gap> DigraphCycleBasis(D);
+[ [ [ 1, 2 ], [ 1, 6 ], [ 2, 3 ], [ 2, 5 ], [ 2, 6 ], [ 3, 5 ], [ 4, 5 ], 
+      [ 4, 6 ], [ 5, 6 ] ], 
+  [ [ Z(2)^0, Z(2)^0, 0*Z(2), 0*Z(2), Z(2)^0, 0*Z(2), 0*Z(2), 0*Z(2), 0*Z(2) ]
+        , [ 0*Z(2), 0*Z(2), Z(2)^0, Z(2)^0, 0*Z(2), Z(2)^0, 0*Z(2), 0*Z(2), 
+          0*Z(2) ], 
+      [ 0*Z(2), 0*Z(2), 0*Z(2), Z(2)^0, Z(2)^0, 0*Z(2), Z(2)^0, Z(2)^0, 
+          0*Z(2) ], 
+      [ 0*Z(2), 0*Z(2), 0*Z(2), 0*Z(2), 0*Z(2), 0*Z(2), Z(2)^0, Z(2)^0, 
+          Z(2)^0 ] ] ]
+gap> D := DigraphDisjointUnion(CompleteDigraph(3), CycleGraph(4));
+<immutable digraph with 7 vertices, 14 edges>
+gap> DigraphCycleBasis(D);
+[ [ [ 1, 2 ], [ 1, 3 ], [ 2, 3 ], [ 4, 5 ], [ 4, 7 ], [ 5, 6 ], [ 6, 7 ] ], 
+  [ [ Z(2)^0, Z(2)^0, Z(2)^0, 0*Z(2), 0*Z(2), 0*Z(2), 0*Z(2) ], 
+      [ 0*Z(2), 0*Z(2), 0*Z(2), Z(2)^0, Z(2)^0, Z(2)^0, Z(2)^0 ] ] ]
+
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(C);
 gap> Unbind(D);
