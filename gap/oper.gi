@@ -617,7 +617,8 @@ InstallMethod(ModularProduct, "for a digraph and digraph",
 function(D1, D2)
   local edge_function;
 
-  edge_function := function(u, v, m, n, map)
+  edge_function := function(u, v, m, n, map)  # gaplint: disable=W000
+    # neither m nor n is used, but can't replace them both with _
     local w, x, connections;
     connections := [];
     for w in OutNeighbours(D1)[u] do
@@ -645,7 +646,8 @@ InstallMethod(StrongProduct, "for a digraph and digraph",
 function(D1, D2)
   local edge_function;
 
-  edge_function := function(u, v, m, n, map)
+  edge_function := function(u, v, m, n, map)  # gaplint: disable=W000
+    # neither m nor n is used, but can't replace them both with _
     local w, x, connections;
       connections := [];
       for x in OutNeighbours(D2)[v] do
@@ -692,7 +694,7 @@ InstallMethod(HomomorphicProduct, "for a digraph and digraph",
 function(D1, D2)
   local edge_function;
 
-  edge_function := function(u, v, m, n, map)
+  edge_function := function(u, v, _, n, map)
     local w, x, connections;
       connections := [];
       for x in [1 .. n] do
@@ -714,7 +716,7 @@ InstallMethod(LexicographicProduct, "for a digraph and digraph",
 function(D1, D2)
   local edge_function;
 
-  edge_function := function(u, v, m, n, map)
+  edge_function := function(u, v, _, n, map)
     local w, x, connections;
       connections := [];
       for w in OutNeighbours(D1)[u] do
