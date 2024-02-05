@@ -2222,30 +2222,6 @@ function(G)
     local ListSort, ListZip, WalkToEdges, EdgesList, E, CycleVectors,
     GSubTreeEdges, DirectedTree, e, pathEdges1, pathEdges2, eEdge;
 
-    # if it is not symmetric, fail
-    if not IsSymmetricDigraph(G) then
-      return fail;
-    fi;
-
-    # If it has multiple edges, fail
-    if IsMultiDigraph(G) then
-      return fail;
-    fi;
-
-    # If it is not connected, fail
-    if not IsConnectedDigraph(G) then
-      return fail;
-    fi;
-
-    # If it contains loops, fail
-    if DigraphHasLoops(G) then
-      return fail;
-    fi;
-
-    if IsEmptyDigraph(G) then
-      return [[], []];
-    fi;
-
     ListSort := function(L)
       local LCopy;
       LCopy := ShallowCopy(L);
@@ -2261,9 +2237,9 @@ function(G)
       local len;
       len := Length(Walk);
 
-      if len < 2 then
-        return [];
-      fi;
+      # if len < 2 then
+      #   return [];
+      # fi;
 
       return List(ListZip(Walk{[1 .. len - 1]}, Walk{[2 .. len]}),
         x -> Position(EdgesList, ListSort(x)));
