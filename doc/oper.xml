@@ -2257,3 +2257,42 @@ true
   </Description>
 </ManSection>
 <#/GAPDoc>
+
+<#GAPDoc Label="DigraphCycleBasis">
+<ManSection>
+  <Oper Name="DigraphCycleBasis" Arg="digraph"/>
+  <Returns>A list and a matrix</Returns>
+  <Description>
+    If <A>digraph</A> is a symmetric loopless digraph with no multiple edges, then
+    <C>DigraphCycleBasis</C> calculates the <E>fundamental cycle basis</E> of
+    <A>digraph</A> and returns a list of edges and a matrix of a basis vectors.
+    See <Ref Prop="IsSymmetricDigraph"/>, <Ref Prop="DigraphHasLoops"/>, and <Ref
+    Prop="IsMultiDigraph"/>
+    The first list contains half of the edges in the edges of the digraph, one 
+    for each pair of symmetric edges, and the rows of the matrix are the cycle
+    vectors of the form <M>(GF(2))^m</M> where <M>m</M> is the length of the
+    list of edges. <P/>
+
+    A <E>fundamental cycle basis</E> is a basis of the cycle space of
+    the digraph such that each cycle contains an edge that is not included in
+    any other basis cycle.  The fundamental cycle basis is unique up to
+    reordering of the basis vectors.  The number of basis vectors in the
+    fundamental cycle basis is <M>m - n + c</M>, where <M>m</M> is the number
+    of edges, <M>n</M> is the number of vertices, and <M>c</M> is the number of
+    connected components.  See <Ref Oper="DigraphConnectedComponents"/>. <P/>
+    <Example><![CDATA[
+gap> D := CycleGraph(4);     
+<immutable symmetric digraph with 4 vertices, 8 edges>
+gap> DigraphCycleBasis(D);
+[ [ [ 1, 2 ], [ 1, 4 ], [ 2, 3 ], [ 3, 4 ] ], [ [ Z(2)^0, Z(2)^0, Z(2)^0, Z(2)^0 ] ] ]
+gap> D := CompleteDigraph(4);                                     
+<immutable complete digraph with 4 vertices>
+gap> DigraphCycleBasis(D);
+[ [ [ 1, 2 ], [ 1, 3 ], [ 1, 4 ], [ 2, 3 ], [ 2, 4 ], [ 3, 4 ] ], 
+  [ [ Z(2)^0, Z(2)^0, 0*Z(2), Z(2)^0, 0*Z(2), 0*Z(2) ], [ 0*Z(2), Z(2)^0, Z(2)^0, Z(2)^0, Z(2)^0, 0*Z(2) ], 
+      [ 0*Z(2), 0*Z(2), 0*Z(2), Z(2)^0, Z(2)^0, Z(2)^0 ] ] ]
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+

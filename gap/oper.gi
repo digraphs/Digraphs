@@ -2183,14 +2183,16 @@ function(D, root)
   return result;
 end);
 
+# Computes the fundamental cycle basis of a symmetric digraph
+# For each connected component, Find a spanning tree and then find the fundamental cycle basis
+# Then combine the fundamental cycle basis of each connected component
+# Related paper : https://dl.acm.org/doi/pdf/10.1145/363219.363232#:~:text=The%20algorithm%20may%20be%20concisely,%3D%20~%2C%20X%20%3D%20V.
 InstallMethod(DigraphCycleBasis, "for a digraph",
 [IsDigraph],
 function(G)
   local EdgeOneHotVectorGF2, DigraphCycleBasisConnected, EdgeAllocConnComp,
   FailSafeMatMul, EdgesList, En, ComponentsRecord, WhereDoTheyGo,
   InjectionMatList, ConnectedComponents, ConnectedResults, ComponentsBases;
-
-  G := DigraphImmutableCopy(G);
 
   # if it is not symmetric, throw an error
   if not IsSymmetricDigraph(G) then
@@ -2269,7 +2271,7 @@ function(G)
       Add(CycleVectors, pathEdges1 + pathEdges2 + eEdge);
     od;
 
-    return [EdgesList, BaseMat(CycleVectors)];
+    return [EdgesList, CycleVectors];
   end;
 
   EdgeAllocConnComp := function(EdgesList, ConnectedComponentsRecord)
