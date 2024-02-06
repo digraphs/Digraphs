@@ -1381,9 +1381,9 @@ gap> VerticesReachableFrom(D, 3);
 gap> D := CycleDigraph(4);
 <immutable cycle digraph with 4 vertices>
 gap> VerticesReachableFrom(D, 1);
-[ 2, 3, 4, 1 ]
+[ 1, 2, 3, 4 ]
 gap> VerticesReachableFrom(D, 3);
-[ 4, 1, 2, 3 ]
+[ 1, 2, 3, 4 ]
 gap> D := ChainDigraph(5);
 <immutable chain digraph with 5 vertices>
 gap> VerticesReachableFrom(D, 1);
