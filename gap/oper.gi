@@ -2017,7 +2017,7 @@ function(D, roots)
   queue := [];
   for root in roots do
     Add(queue, root); # TODO: Structure differently for complexity reasons
-  end;
+  od;
 
   index = 0
   while index <= Length(queue) do
