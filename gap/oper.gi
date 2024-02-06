@@ -2038,13 +2038,7 @@ function(D, roots)
     index := index + 1;
   od;
   
-  visited_as_ints := [];
-
-  for i in [1 .. N] do
-    if visited[i] then;
-      Add(visited_as_ints, i);
-    fi;
-  od;
+  visited_as_ints := ListBlist([1 .. N], visited);  
 
   return visited_as_ints;
 end);
@@ -2054,7 +2048,7 @@ InstallMethod(IsOrderIdeal, "for a digraph and a list of vertices",
 # Check if digraph represents a partial order
 function(D, roots)
   local reachable_vertices, vertex_in_subset, i, N;
-  if not(IsPartialOrderDigraph(D)) then
+  if not IsPartialOrderDigraph(D) then
     ErrorNoReturn("the 1st element (a digraph) must be a partial order digraph");
   fi;
 
