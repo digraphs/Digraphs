@@ -2006,7 +2006,7 @@ InstallMethod(VerticesReachableFrom, "for a digraph and a vertex",
 [IsDigraph, IsPosInt],
 function(D, root)
   local N;
-  N := DigraphNrVertices(root);
+  N := DigraphNrVertices(D);
 
   if 0 = root or root > N then
     ErrorNoReturn("the 2nd argument (root) is not a vertex of the 1st ",
@@ -2016,13 +2016,14 @@ function(D, root)
   return VerticesReachableFrom(D, [root]);
 end);
 
-InstallMethod(VerticesReachableFrom, "for a digraph and a vertex",
+InstallMethod(VerticesReachableFrom, "for a digraph and a list of vertices",
 [IsDigraph, IsList],
 function(D, roots)
   local N, index, current, succ, visited, prev, n, i, parent,
   have_visited_root, queue, root, element, neighbour, visited_as_ints, all_neighbors, node_neighbours;
   N := DigraphNrVertices(D);
   visited := BlistList([1 .. N], []);
+
   for root in roots do
     if 0 = root or root > N then
       ErrorNoReturn("an element of the 2nd argument (roots) is not a vertex of the 1st ",
