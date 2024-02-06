@@ -2019,7 +2019,7 @@ end);
 InstallMethod(VerticesReachableFrom, "for a digraph and a list of vertices",
 [IsDigraph, IsList],
 function(D, roots)
-  local N, index, current, succ, visited, prev, n, i, parent,
+  local N, index, visited, prev, n, i, parent, queue_tail,
   have_visited_root, queue, root, element, neighbour, visited_as_ints, all_neighbors, node_neighbours;
   N := DigraphNrVertices(D);
   visited := BlistList([1 .. N], []);
@@ -2032,19 +2032,23 @@ function(D, roots)
   od;
 
   all_neighbors := OutNeighbors(D);
-  queue := [];
+  queue := ListWithIdenticalEntries(N, -1);
+  queue_tail := 0;
   for root in roots do
-    Add(queue, root); # TODO: Structure differently for complexity reasons
+    queue_tail := queue_tail + 1; 
+    queue[queue_tail] := root;
   od;
 
+  # reset index
   index := 1;
-  while index <= Length(queue) do
+  while index <= Length(queue) and queue[index] > 0 do
     element := queue[index];
     node_neighbours := all_neighbors[element];
     for neighbour in node_neighbours do
       if not visited[neighbour] then;
         visited[neighbour] := true;
-        Add(queue, neighbour);
+        queue_tail := queue_tail + 1;
+        queue[queue_tail] := neighbour;
       fi;
     od;
     index := index + 1;
@@ -2072,7 +2076,7 @@ function(D, roots)
   od;
 
   for i in reachable_vertices do
-    if(not(vertex_in_subset[i])) then
+    if not vertex_in_subset[i] then
       return false;
     fi;
   od;
