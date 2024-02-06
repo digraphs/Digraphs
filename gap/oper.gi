@@ -2003,44 +2003,40 @@ function(D, v)
 end);
 
 InstallMethod(VerticesReachableFrom, "for a digraph and a vertex",
-[IsDigraph, IsPosInt],
-function(D, root)
+[IsDigraph, IsList],
+function(D, roots)
   local N, index, current, succ, visited, prev, n, i, parent,
   have_visited_root;
   N := DigraphNrVertices(D);
-  if 0 = root or root > N then
-    ErrorNoReturn("the 2nd argument (root) is not a vertex of the 1st ",
-                  "argument (a digraph)");
-  fi;
-  index := ListWithIdenticalEntries(N, 0);
-  have_visited_root := false;
-  index[root] := 1;
-  current := root;
-  succ := OutNeighbours(D);
-  visited := [];
-  parent := [];
-  parent[root] := fail;
-  repeat
-    prev := current;
-    for i in [index[current] .. Length(succ[current])] do
-      n := succ[current][i];
-      if n = root and not have_visited_root then
-         Add(visited, root);
-         have_visited_root := true;
-      elif index[n] = 0 then
-        Add(visited, n);
-          parent[n] := current;
-          index[current] := i + 1;
-          current := n;
-          index[current] := 1;
-          break;
-      fi;
+  visited := BlistList([1 .. N], []);
+  # if 0 = root or root > N then
+  #   ErrorNoReturn("the 2nd argument (root) is not a vertex of the 1st ",
+  #                 "argument (a digraph)");
+  # fi;
+
+  queue := [];
+  for root in roots do
+    Add(queue, root) # TODO: Structure differently for complexity reasons
+  end;
+
+  index = 0
+  while index <= Length(queue) do
+    element = queue[index]
+    neighbours := OutNeighbors(element);
+    for neighbour in neighbours do
+      visited[neighbours] = 1;
+      Add(queue, neighbour);
     od;
-    if prev = current then
-      current := parent[current];
+    index +=1;
+  od;
+  
+  visited_as_ints := [];
+
+  for i in [1 .. N] do
+    if visited[i] then;
+      Add(visited_as_ints, i);
     fi;
-  until current = fail;
-  return visited;
+  od;
 end);
 
 InstallMethod(VerticesReachableFrom, "for a digraph and a list of vertices",
