@@ -2003,6 +2003,12 @@ function(D, v)
 end);
 
 InstallMethod(VerticesReachableFrom, "for a digraph and a vertex",
+[IsDigraph, IsPosInt],
+function(D, root)
+  return VerticesReachableFrom(D, [root]);
+end);
+
+InstallMethod(VerticesReachableFrom, "for a digraph and a vertex",
 [IsDigraph, IsList],
 function(D, roots)
   local N, index, current, succ, visited, prev, n, i, parent,
@@ -2025,7 +2031,7 @@ function(D, roots)
     node_neighbours := all_neighbors[element];
     for neighbour in node_neighbours do
       if not visited[neighbour] then;
-        visited[neighbour] := 1;
+        visited[neighbour] := true;
         Add(queue, neighbour);
       fi;
     od;
