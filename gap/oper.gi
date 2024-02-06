@@ -2006,25 +2006,25 @@ InstallMethod(VerticesReachableFrom, "for a digraph and a vertex",
 [IsDigraph, IsList],
 function(D, roots)
   local N, index, current, succ, visited, prev, n, i, parent,
-  have_visited_root, queue, root, element, neighbours, neighbour, visited_as_ints;
+  have_visited_root, queue, root, element, neighbour, visited_as_ints, all_neighbors, node_neighbours;
   N := DigraphNrVertices(D);
   visited := BlistList([1 .. N], []);
   # if 0 = root or root > N then
   #   ErrorNoReturn("the 2nd argument (root) is not a vertex of the 1st ",
   #                 "argument (a digraph)");
   # fi;
-
+  all_neighbors := OutNeighbors(D);
   queue := [];
   for root in roots do
     Add(queue, root); # TODO: Structure differently for complexity reasons
   od;
 
-  index := 0;
+  index := 1;
   while index <= Length(queue) do
     element := queue[index];
-    neighbours := OutNeighbors(element);
-    for neighbour in neighbours do
-      visited[neighbours] := 1;
+    node_neighbours := all_neighbors[element];
+    for neighbour in node_neighbours do
+      visited[neighbour] := 1;
       Add(queue, neighbour);
     od;
     index := index + 1;
@@ -2039,34 +2039,6 @@ function(D, roots)
   od;
 
   return visited_as_ints;
-end);
-
-InstallMethod(VerticesReachableFrom, "for a digraph and a list of vertices",
-[IsDigraph, IsList],
-function(D, roots)
-    local accessible_from_node, candidate, root, i, visited, visited_as_ints, N;
-    N := DigraphNrVertices(D);
-    visited := BlistList([1 .. N], []);
-    for root in roots do
-      if not(visited[root]) then
-        accessible_from_node := VerticesReachableFrom(D, root);
-        for candidate in accessible_from_node do
-          if not(visited[candidate]) then
-            visited[candidate] := true;
-          fi;
-        od;
-      fi;
-    od;
-
-    visited_as_ints := [];
-
-    for i in [1 .. N] do
-      if visited[i] then;
-        Add(visited_as_ints, i);
-      fi;
-    od;
-
-    return visited_as_ints;
 end);
 
 InstallMethod(IsOrderIdeal, "for a digraph and a list of vertices",
