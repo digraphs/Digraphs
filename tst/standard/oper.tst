@@ -1951,6 +1951,8 @@ gap> VerticesReachableFrom(D, 1);
 [  ]
 gap> VerticesReachableFrom(D, 3);
 [  ]
+gap> VerticesReachableFrom(D, 6);
+Error, the 2nd argument (root) is not a vertex of the 1st argument (a digraph)
 gap> D := CycleDigraph(4);
 <immutable cycle digraph with 4 vertices>
 gap> VerticesReachableFrom(D, 1);
