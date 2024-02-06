@@ -2024,8 +2024,10 @@ function(D, roots)
     element := queue[index];
     node_neighbours := all_neighbors[element];
     for neighbour in node_neighbours do
-      visited[neighbour] := 1;
-      Add(queue, neighbour);
+      if not visited[neighbour] then;
+        visited[neighbour] := 1;
+        Add(queue, neighbour);
+      fi;
     od;
     index := index + 1;
   od;
