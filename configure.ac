@@ -108,7 +108,7 @@ AC_ARG_WITH([intrinsics],
                             [do not use compiler intrinsics even if available])]
            )
 
-AS_IF([test "x$with_intrinsics" == "xno" ],
+AS_IF([test "x$with_intrinsics" = "xno" ],
       [AC_MSG_NOTICE([compiler intrinsics will not be used even if available])])
 
 dnl compiler builtins
