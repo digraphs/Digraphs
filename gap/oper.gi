@@ -2019,7 +2019,7 @@ function(D, roots)
     Add(queue, root); # TODO: Structure differently for complexity reasons
   od;
 
-  index = 0
+  index = 0;
   while index <= Length(queue) do
     element = queue[index]
     neighbours := OutNeighbors(element);
