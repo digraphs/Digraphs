@@ -2006,7 +2006,7 @@ InstallMethod(VerticesReachableFrom, "for a digraph and a vertex",
 [IsDigraph, IsList],
 function(D, roots)
   local N, index, current, succ, visited, prev, n, i, parent,
-  have_visited_root, queue, root, element, neighbours, neighbour;
+  have_visited_root, queue, root, element, neighbours, neighbour, visited_as_ints;
   N := DigraphNrVertices(D);
   visited := BlistList([1 .. N], []);
   # if 0 = root or root > N then
