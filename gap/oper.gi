@@ -2006,7 +2006,7 @@ InstallMethod(VerticesReachableFrom, "for a digraph and a vertex",
 [IsDigraph, IsList],
 function(D, roots)
   local N, index, current, succ, visited, prev, n, i, parent,
-  have_visited_root, queue, root, element;
+  have_visited_root, queue, root, element, neighbours, neighbour;
   N := DigraphNrVertices(D);
   visited := BlistList([1 .. N], []);
   # if 0 = root or root > N then
@@ -2024,10 +2024,10 @@ function(D, roots)
     element := queue[index];
     neighbours := OutNeighbors(element);
     for neighbour in neighbours do
-      visited[neighbours] = 1;
+      visited[neighbours] := 1;
       Add(queue, neighbour);
     od;
-    index +=1;
+    index := index + 1;
   od;
   
   visited_as_ints := [];
