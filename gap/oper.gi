@@ -2006,7 +2006,7 @@ InstallMethod(VerticesReachableFrom, "for a digraph and a vertex",
 [IsDigraph, IsList],
 function(D, roots)
   local N, index, current, succ, visited, prev, n, i, parent,
-  have_visited_root;
+  have_visited_root, queue, root;
   N := DigraphNrVertices(D);
   visited := BlistList([1 .. N], []);
   # if 0 = root or root > N then
@@ -2016,7 +2016,7 @@ function(D, roots)
 
   queue := [];
   for root in roots do
-    Add(queue, root) # TODO: Structure differently for complexity reasons
+    Add(queue, root); # TODO: Structure differently for complexity reasons
   end;
 
   index = 0
@@ -2037,6 +2037,8 @@ function(D, roots)
       Add(visited_as_ints, i);
     fi;
   od;
+
+  return visited_as_ints;
 end);
 
 InstallMethod(VerticesReachableFrom, "for a digraph and a list of vertices",
