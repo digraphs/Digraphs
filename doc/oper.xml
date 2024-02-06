@@ -1397,13 +1397,13 @@ gap> VerticesReachableFrom(D, 5);
 </ManSection>
 
 <ManSection>
-  <Oper Name="VerticesReachableFrom" Arg="digraph, root"/>
+  <Oper Name="VerticesReachableFrom" Arg="D, list"/>
   <Returns>A list.</Returns>
   <Description>
     This operation returns a list of the vertices  <A>v</A>, for which there exists
-    a non-trivial directed walk from any of the provided <A>root</A>s to vertex <A>v</A> in the digraph
+    a non-trivial directed walk from any of the elements of the provided list to vertex <A>v</A> in the digraph
     <A>digraph</A>. See Section <Ref Subsect="Definitions" Style="Number" />
-    for the definition of a non-trivial directed walk.
+    for the definition of a non-trivial directed walk. The function will throw an error if the list provided contains entries that are not vertices of the digraph.
     <P/>
 
 <Example><![CDATA[
@@ -2295,22 +2295,22 @@ true
   <Oper Name="IsOrderIdeal" Arg="D, subset" Label="for a digraph and list"/>
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
-    This function returns <K>true</K> if the specified subset is "downwards" closed, i.e. contains every node less than the given nodes.
+    This function returns <K>true</K> if the specified subset is "downwards" closed, i.e. contains every node less than the given nodes. 
+    The function can only be used on digraphs satisfying <K>IsPartialOrderDigraph</K> and will throw an error if passed a digraph that is not a partial order digraph.
 
     <Example><![CDATA[
-gap> TestPartialOrderDigraph := Digraph([[1, 3], [2, 3], [3]]);
+gap> D1 := Digraph([[1, 3], [2, 3], [3]]);
 <immutable digraph with 3 vertices, 5 edges>
-gap> TestPartialOrderDigraph2 := Digraph([[1, 3], [2, 3], [3]]);
 <immutable digraph with 3 vertices, 5 edges>
-gap> IsOrderIdeal(TestPartialOrderDigraph, [1, 2, 3]);
+gap> IsOrderIdeal(D, [1, 2, 3]);
 true
-gap> TestUnion := DigraphDisjointUnion(TestPartialOrderDigraph, TestPartialOrderDigraph2);
+gap> D2 := DigraphDisjointUnion(D, D);
 <immutable digraph with 6 vertices, 10 edges>
-gap> IsOrderIdeal(TestUnion, [1, 2, 3]);
+gap> IsOrderIdeal(D2, [1, 2, 3]);
 true
-gap> IsOrderIdeal(TestUnion, [4, 5, 6]);
+gap> IsOrderIdeal(D2, [4, 5, 6]);
 true
-gap> IsOrderIdeal(TestUnion, [1, 5, 6]);
+gap> IsOrderIdeal(D2, [1, 5, 6]);
 false
 ]]></Example>
   </Description>
