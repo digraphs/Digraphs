@@ -2056,9 +2056,7 @@ function(D, roots)
     index := index + 1;
   od;
 
-  visited_as_ints := ListBlist([1 .. N], visited);
-
-  return visited_as_ints;
+  return ListBlist([1 .. N], visited);
 end);
 
 InstallMethod(IsOrderIdeal, "for a digraph and a list of vertices",
