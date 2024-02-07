@@ -136,7 +136,7 @@ function(digraph)
 
     weights := EdgeWeights(digraph);
 
-    # create a list of edges containining u-v
+    # create a list of edges containing u-v
     # w: the weight of the edge
     # u: the start vertex
     # v: the finishing vertex of that edge
@@ -214,7 +214,7 @@ DIGRAPHS_Edge_Weighted_Dijkstra := function(digraph, source)
     digraphVertices := DigraphVertices(digraph);
     nrVertices      := Size(digraphVertices);
 
-    # Create an adjacancy map for the edges with their associated weight
+    # Create an adjacency map for the edges with their associated weight
     adj := HashMap();
     for u in digraphVertices do
         adj[u] := HashMap();
@@ -415,7 +415,7 @@ DIGRAPHS_Edge_Weighted_FloydWarshall := function(digraph)
     nrVertices      := Size(digraphVertices);
     outs            := OutNeighbors(digraph);
 
-    # Create adjacancy matrix
+    # Create adjacency matrix
     adjMatrix := EmptyPlist(nrVertices);
     parents   := EmptyPlist(nrVertices);
     edges     := EmptyPlist(nrVertices);
@@ -873,40 +873,32 @@ end;
 
 InstallMethod(RandomUniqueEdgeWeightedDigraph,
 "for a pos int", [IsPosInt],
-function(n)
-    return DIGRAPHS_Random_Edge_Weighted_Digraph_N(n);
-end);
+DIGRAPHS_Random_Edge_Weighted_Digraph_N);
 
 InstallMethod(RandomUniqueEdgeWeightedDigraph,
 "for a pos int and a float", [IsPosInt, IsFloat],
-function(n, p)
-    return DIGRAPHS_Random_Edge_Weighted_Digraph_N_P(n, p);
-end);
+{n, p} -> DIGRAPHS_Random_Edge_Weighted_Digraph_N_P(n, p));
 
 InstallMethod(RandomUniqueEdgeWeightedDigraph,
 "for a pos int and a rational", [IsPosInt, IsRat],
-function(n, p)
-    return DIGRAPHS_Random_Edge_Weighted_Digraph_N_P(n, p);
-end);
+{n, p} -> DIGRAPHS_Random_Edge_Weighted_Digraph_N_P(n, p));
 
 InstallMethod(RandomUniqueEdgeWeightedDigraph,
 "for a func, a pos int, and a float", [IsFunction, IsPosInt, IsFloat],
-function(filt, n, p)
-    return DIGRAPHS_Random_Edge_Weighted_Digraph_Filt_N_P(filt, n, p);
-end);
+{filt, n, p} -> DIGRAPHS_Random_Edge_Weighted_Digraph_Filt_N_P(filt, n, p));
 
 InstallMethod(RandomUniqueEdgeWeightedDigraph,
 "for a func, a pos int, and a rational", [IsFunction, IsPosInt, IsRat],
-function(filt, n, p)
-    return DIGRAPHS_Random_Edge_Weighted_Digraph_Filt_N_P(filt, n, p);
-end);
+{filt, n, p} -> DIGRAPHS_Random_Edge_Weighted_Digraph_Filt_N_P(filt, n, p));
 
 #############################################################################
 # 7. Painting Edge Weighted Digraph
 #############################################################################
 InstallMethod(DigraphFromPath, "for a digraph, a record, and a pos int",
 [IsDigraph, IsRecord, IsPosInt],
-function(digraph, record, destination)
+function(_, record, destination)
+    # TODO: digraph is not used, which is surprising and may suggest
+    # confusion in design.  We should work this out.
     local idx, distances, edges, p, parents,
     nrVertices, outNeighbours, vertex;
 
@@ -923,7 +915,7 @@ function(digraph, record, destination)
     od;
 
     vertex := destination;
-    # while vertex isnt the start vertex
+    # while vertex isn't the start vertex
     while parents[vertex] <> fail do
         p := parents[vertex];  # parent of vertex is p
 
@@ -936,7 +928,8 @@ end);
 
 InstallMethod(DigraphFromPaths,
 "for a digraph, and a record", [IsDigraph, IsRecord],
-function(digraph, record)
+function(_, record)
+    # TODO: digraph is not used - see DigraphFromPath
     local idx, distances, edges, parents, nrVertices, outNeighbours,
     u, v;
 

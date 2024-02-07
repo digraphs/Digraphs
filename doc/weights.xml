@@ -86,7 +86,7 @@ gap> EdgeWeights(g);
 
         See <Ref Attr="EdgeWeights" Func="EdgeWeightedDigraph"/>.
     <Example><![CDATA[
-gap> g := EdgeWeightedDigraph([[2],[1],[1,2]], [[12],[5],[6,9]]);
+gap> g := EdgeWeightedDigraph([[2], [1], [1, 2]], [[12], [5], [6, 9]]);
 <immutable digraph with 3 vertices, 4 edges>
 gap> DigraphEdgeWeightedMinimumSpanningTree(g);
 rec( mst := <immutable digraph with 3 vertices, 2 edges>, total := 11 
@@ -115,14 +115,14 @@ rec( mst := <immutable digraph with 3 vertices, 2 edges>, total := 11
 
         See <Ref Attr="EdgeWeights" Func="EdgeWeightedDigraph"/>.
     <Example><![CDATA[
-gap> g := EdgeWeightedDigraph([[2,3],[4],[4],[]],[[5,1],[6],[11],[]]);
+gap> g := EdgeWeightedDigraph([[2, 3], [4], [4], []], [[5, 1], [6], [11], []]);
 <immutable digraph with 4 vertices, 4 edges>
-gap> DigraphEdgeWeightedShortestPath(g,1);
+gap> DigraphEdgeWeightedShortestPath(g, 1);
 rec( distances := [ 0, 5, 1, 11 ], edges := [ fail, 1, 2, 1 ], 
   parents := [ fail, 1, 1, 2 ] )
-gap> ncg := EdgeWeightedDigraph([[2],[3],[1]],[[-1],[-2],[-3]]);
+gap> ncg := EdgeWeightedDigraph([[2], [3], [1]], [[-1], [-2], [-3]]);
 <immutable digraph with 3 vertices, 3 edges>
-gap> DigraphEdgeWeightedShortestPath(ncg,1);
+gap> DigraphEdgeWeightedShortestPath(ncg, 1);
 Error, negative cycle exists,
 ]]></Example>
     </Description>
@@ -141,7 +141,7 @@ Error, negative cycle exists,
 
         See <Ref Attr="EdgeWeights" Func="EdgeWeightedDigraph"/>.
     <Example><![CDATA[
-gap> g := EdgeWeightedDigraph([[2],[3],[1]],[[1],[2],[3]]);
+gap> g := EdgeWeightedDigraph([[2], [3], [1]], [[1], [2], [3]]);
 <immutable digraph with 3 vertices, 3 edges>
 gap> DigraphEdgeWeightedShortestPaths(g);
 rec( distances := [ [ 0, 1, 3 ], [ 5, 0, 2 ], [ 3, 4, 0 ] ], 
@@ -159,7 +159,7 @@ rec( distances := [ [ 0, 1, 3 ], [ 5, 0, 2 ], [ 3, 4, 0 ] ],
         Given an edge weighted <A>digraph</A>, this returns a record with 3 components. 
         The first component is the flow inbound into vertex v which is a list of lists. 
         If there are multiple edges, the algorithm will fill up the edges sequentially so 
-        if there are 3 edges outbound from u to v with capacities, 5,10,15 and there is a flow of 15, it will fill the first two edges 5 and 10. 
+        if there are 3 edges outbound from u to v with capacities, 5, 10, 15 and there is a flow of 15, it will fill the first two edges 5 and 10. 
         If there is a flow of 9, then the flow will contain a list with flows 5 and 4. <P/>
 
         This can be coupled with the second component which is a list of list of the vertices that each flow comes from. Using this, 
@@ -169,7 +169,7 @@ rec( distances := [ [ 0, 1, 3 ], [ 5, 0, 2 ], [ 3, 4, 0 ] ],
 
         See <Ref Attr="EdgeWeights" Func="EdgeWeightedDigraph"/>.
     <Example><![CDATA[
-gap> g := EdgeWeightedDigraph([[2,2],[3],[]],[[3,2],[1],[]]);
+gap> g := EdgeWeightedDigraph([[2, 2], [3], []], [[3, 2], [1], []]);
 <immutable multidigraph with 3 vertices, 3 edges>
 gap> DigraphMaximumFlow(g, 1, 3);
 rec( flows := [ [  ], [ 1, 0 ], [ 1 ] ], maxFlow := 1, 
@@ -180,7 +180,7 @@ rec( flows := [ [  ], [ 1, 0 ], [ 1 ] ], maxFlow := 1,
 
 <#GAPDoc Label="RandomUniqueEdgeWeightedDigraph">
     <ManSection>
-    <Attr Name="RandomUniqueEdgeWeightedDigraph" Arg="[filt, ]n[,p]"/>
+    <Attr Name="RandomUniqueEdgeWeightedDigraph" Arg="[filt, ]n[, p]"/>
     <Returns>An edge weighted digraph.</Returns>
     <Description>
         &STANDARD_FILT_TEXT;
@@ -223,7 +223,7 @@ gap> g := RandomUniqueEdgeWeightedDigraph(5, 1);
         to all other vertices.
 
     <Example><![CDATA[
-gap> g := EdgeWeightedDigraph([[2],[3],[]],[[2],[1],[]]);
+gap> g := EdgeWeightedDigraph([[2], [3], []], [[2], [1], []]);
 <immutable digraph with 3 vertices, 2 edges>
 gap> sp := DigraphEdgeWeightedShortestPath(g, 1);
 rec( distances := [ 0, 2, 3 ], edges := [ fail, 1, 1 ], 
@@ -245,7 +245,7 @@ gap> sd := DigraphFromPaths(g, sp);
         to <A>dest</A> vertex.
 
     <Example><![CDATA[
-gap> g := EdgeWeightedDigraph([[2],[3],[]],[[2],[1],[]]);
+gap> g := EdgeWeightedDigraph([[2], [3], []], [[2], [1], []]);
 <immutable digraph with 3 vertices, 2 edges>
 gap> sp := DigraphEdgeWeightedShortestPath(g, 1);
 rec( distances := [ 0, 2, 3 ], edges := [ fail, 1, 1 ], 
@@ -276,7 +276,7 @@ gap> sd := DigraphFromPath(g, sp, 2);
         An empty record may be passed as a parameters, in which case the default values will be used.
 
     <Example><![CDATA[
-gap> g := EdgeWeightedDigraph([[2],[3],[]],[[2],[1],[]]);
+gap> g := EdgeWeightedDigraph([[2], [3], []], [[2], [1], []]);
 <immutable digraph with 3 vertices, 2 edges>
 gap> sp := DigraphEdgeWeightedShortestPath(g, 1);
 rec( distances := [ 0, 2, 3 ], edges := [ fail, 1, 1 ], 
