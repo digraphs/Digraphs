@@ -2034,7 +2034,7 @@ function(D, roots)
   od;
 
   graph_out_neighbors := OutNeighbors(D);
-  queue := ListWithIdenticalEntries(N, -1);
+  queue := EmptyPlist(N);
   queue_tail := 0;
   for root in roots do
     queue_tail := queue_tail + 1;
@@ -2042,7 +2042,7 @@ function(D, roots)
   od;
 
   index := 1;
-  while index <= Length(queue) and queue[index] > 0 do
+  while IsBound(queue[index]) do
     element := queue[index];
     node_neighbours := graph_out_neighbors[element];
     for neighbour in node_neighbours do
