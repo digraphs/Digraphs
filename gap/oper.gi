@@ -12,7 +12,7 @@
 # This file is organised as follows:
 #
 # 1.  Adding and removing vertices
-# 2.  Adding, removing, and reversing edges
+# 2.  Adding, removing, contracting, and reversing edges
 # 3.  Ways of combining digraphs
 # 4.  Actions
 # 5.  Substructures and quotients
@@ -305,6 +305,34 @@ function(D, u, v)
     RemoveDigraphEdgeLabel(D, u, pos);
   fi;
   return D;
+end);
+
+InstallMethod(DigraphContractEdge,
+"for a mutable digraph by out-neighbours and two positive integers",
+[IsMutableDigraph and IsDigraphByOutNeighboursRep, IsPosInt, IsPosInt],
+function(D, src, ran)
+  local V, P;
+  if IsMultiDigraph(D) then
+    ErrorNoReturn("the 1st argument <D> must be a digraph with no multiple ",
+                  "edges,");
+  elif (src = ran) then
+    ErrorNoReturn("the 1st argument <src> cannot equal the 2nd argument",
+                  " <ran>,");
+  elif not IsDigraphEdge(D, src, ran) then
+    ErrorNoReturn("[<src>, <ran>] must be an edge of the digraph <D> ",
+                  "(the 2nd, 3rd and 1st arguments, respectively),");
+  fi;
+  V := Difference(DigraphVertices(D), [src, ran]);
+  P := List(V, z -> [z]);
+  Add(P, [src, ran]);
+  return QuotientDigraph(D, P);
+end);
+
+InstallMethod(DigraphContractEdge,
+"for a immutable digraph and two positive integers",
+[IsImmutableDigraph, IsPosInt, IsPosInt],
+function(D, src, ran)
+  return MakeImmutable(DigraphContractEdge(DigraphMutableCopy(D), src, ran));
 end);
 
 InstallMethod(DigraphReverseEdge,
