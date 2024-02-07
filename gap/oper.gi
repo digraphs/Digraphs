@@ -2019,9 +2019,10 @@ end);
 InstallMethod(VerticesReachableFrom, "for a digraph and a list of vertices",
 [IsDigraph, IsList],
 function(D, roots)
-  local N, index, visited, prev, n, i, parent, queue_tail,
-  have_visited_root, queue, root, element, neighbour, visited_as_ints,
-  graph_out_neighbors, node_neighbours;
+  local N, index, visited, queue_tail, queue,
+  root, element, neighbour, visited_as_ints, graph_out_neighbors,
+  node_neighbours;
+
   N := DigraphNrVertices(D);
   visited := BlistList([1 .. N], []);
 
@@ -2037,11 +2038,10 @@ function(D, roots)
   queue := ListWithIdenticalEntries(N, -1);
   queue_tail := 0;
   for root in roots do
-    queue_tail := queue_tail + 1; 
+    queue_tail := queue_tail + 1;
     queue[queue_tail] := root;
   od;
 
-  # reset index
   index := 1;
   while index <= Length(queue) and queue[index] > 0 do
     element := queue[index];
@@ -2056,7 +2056,7 @@ function(D, roots)
     index := index + 1;
   od;
 
-  visited_as_ints := ListBlist([1 .. N], visited);  
+  visited_as_ints := ListBlist([1 .. N], visited);
 
   return visited_as_ints;
 end);
