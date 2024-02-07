@@ -78,7 +78,7 @@ jobs:
         with:
           GAP_TESTFILE: "tst/github_actions/extreme.g"
       - uses: gap-actions/process-coverage@v2
-      - uses: codecov/codecov-action@v3
+      - uses: codecov/codecov-action@v4
 
   test-cygwin:
     name: "cygwin / GAP master"
@@ -98,7 +98,7 @@ jobs:
           tar xf "${{ env.DIGRAPHS_LIB }}.tar.gz"
       - uses: gap-actions/run-pkg-tests@cygwin-v2
       - uses: gap-actions/process-coverage@cygwin-v2
-      - uses: codecov/codecov-action@v3
+      - uses: codecov/codecov-action@v4
 
   with-external-planarity-bliss:
     runs-on: "ubuntu-latest"
