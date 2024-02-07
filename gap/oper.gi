@@ -2020,8 +2020,7 @@ InstallMethod(VerticesReachableFrom, "for a digraph and a list of vertices",
 [IsDigraph, IsList],
 function(D, roots)
   local N, index, visited, queue_tail, queue,
-  root, element, neighbour, visited_as_ints, graph_out_neighbors,
-  node_neighbours;
+  root, element, neighbour, graph_out_neighbors, node_neighbours;
 
   N := DigraphNrVertices(D);
   visited := BlistList([1 .. N], []);
