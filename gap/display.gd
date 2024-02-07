@@ -10,7 +10,8 @@
 
 DeclareAttribute("DotDigraph", IsDigraph);
 DeclareOperation("DotColoredDigraph", [IsDigraph, IsList, IsList]);
-DeclareOperation("DotColoredEdgeWeightedDigraph", [IsDigraph, IsList, IsList, IsList]);
+DeclareOperation("DotColoredEdgeWeightedDigraph",
+                 [IsDigraph, IsList, IsList, IsList]);
 DeclareOperation("DotVertexColoredDigraph", [IsDigraph, IsList]);
 DeclareOperation("DotEdgeColoredDigraph", [IsDigraph, IsList]);
 DeclareOperation("DotVertexLabelledDigraph", [IsDigraph]);

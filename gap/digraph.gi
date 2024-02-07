@@ -1372,9 +1372,8 @@ InstallMethod(RandomDigraphCons, "for IsConnectedDigraph and an integer",
 InstallMethod(RandomDigraphCons,
 "for IsStronglyConnectedDigraph, an integer, and a rational",
 [IsStronglyConnectedDigraph, IsInt],
-function(filt, n)
-  return RandomDigraphCons(IsStronglyConnectedDigraph, n, Float(Random([0 .. n])) / n);
-end);
+{_, n} ->
+RandomDigraphCons(IsStronglyConnectedDigraph, n, Float(Random([0 .. n])) / n));
 
 InstallMethod(RandomDigraphCons, "for IsAcyclicDigraph and an integer",
 [IsAcyclicDigraph, IsInt],
@@ -1647,7 +1646,7 @@ end);
 InstallMethod(RandomDigraphCons,
 "for IsStronglyConnectedDigraph, a positive integer, and a float",
 [IsStronglyConnectedDigraph, IsPosInt, IsFloat],
-function(filt, n, p)
+function(_, n, p)
   local d, adjMatrix, stronglyConnectedComponents,
   scc_a, scc_b, i, random_u, random_v;
 

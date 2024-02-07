@@ -104,31 +104,31 @@ gap> DigraphEdgeWeightedMinimumSpanningTree(d);
 rec( mst := <immutable empty digraph with 1 vertex>, total := 0 )
 
 # digraph with cycle
-gap> d := EdgeWeightedDigraph([[2],[3],[1]],[[5],[10],[15]]);
+gap> d := EdgeWeightedDigraph([[2], [3], [1]], [[5], [10], [15]]);
 <immutable digraph with 3 vertices, 3 edges>
 gap> DigraphEdgeWeightedMinimumSpanningTree(d);              
 rec( mst := <immutable digraph with 3 vertices, 2 edges>, total := 15 )
 
 # digraph with negative edge
-gap> d := EdgeWeightedDigraph([[2],[]],[[-5],[]]);  
+gap> d := EdgeWeightedDigraph([[2], []], [[-5], []]);  
 <immutable digraph with 2 vertices, 1 edge>
 gap> DigraphEdgeWeightedMinimumSpanningTree(d);
 rec( mst := <immutable digraph with 2 vertices, 1 edge>, total := -5 )
 
 # digraph with negative cycle
-gap> d := EdgeWeightedDigraph([[2],[3],[1]],[[-5],[-10],[-15]]);
+gap> d := EdgeWeightedDigraph([[2], [3], [1]], [[-5], [-10], [-15]]);
 <immutable digraph with 3 vertices, 3 edges>
 gap> DigraphEdgeWeightedMinimumSpanningTree(d);
 rec( mst := <immutable digraph with 3 vertices, 2 edges>, total := -25 )
 
 # digraph with parallel edges
-gap> d := EdgeWeightedDigraph([[2,2,2],[1]],[[10,5,15],[7]]);  
+gap> d := EdgeWeightedDigraph([[2, 2, 2], [1]], [[10, 5, 15], [7]]);  
 <immutable multidigraph with 2 vertices, 4 edges>
 gap> DigraphEdgeWeightedMinimumSpanningTree(d);
 rec( mst := <immutable digraph with 2 vertices, 1 edge>, total := 5 )
 
 # graph one node
-gap> d := EdgeWeightedDigraph([[]],[[]]);           
+gap> d := EdgeWeightedDigraph([[]], [[]]);           
 <immutable empty digraph with 1 vertex>
 gap> DigraphEdgeWeightedShortestPath(d, 1);
 rec( distances := [ 0 ], edges := [ fail ], parents := [ fail ] )
@@ -140,74 +140,74 @@ rec( distances := [ 0, fail ], edges := [ fail, fail ],
   parents := [ fail, fail ] )
 
 # graph with one node and self loop
-gap> d := EdgeWeightedDigraph([[1]],[[5]]);
+gap> d := EdgeWeightedDigraph([[1]], [[5]]);
 <immutable digraph with 1 vertex, 1 edge>
 gap> DigraphEdgeWeightedShortestPath(d, 1);
 rec( distances := [ 0 ], edges := [ fail ], parents := [ fail ] )
 
 # graph with two nodes and self loop on second node
-gap> d := EdgeWeightedDigraph([[2],[1,2]],[[5],[5,5]]);
+gap> d := EdgeWeightedDigraph([[2], [1, 2]], [[5], [5, 5]]);
 <immutable digraph with 2 vertices, 3 edges>
 gap> DigraphEdgeWeightedShortestPath(d, 1);
 rec( distances := [ 0, 5 ], edges := [ fail, 1 ], parents := [ fail, 1 ] )
 
 # graph with cycle
-gap> d := EdgeWeightedDigraph([[2],[3],[1]],[[2],[3],[4]]);
+gap> d := EdgeWeightedDigraph([[2], [3], [1]], [[2], [3], [4]]);
 <immutable digraph with 3 vertices, 3 edges>
 gap> DigraphEdgeWeightedShortestPath(d, 1);
 rec( distances := [ 0, 2, 5 ], edges := [ fail, 1, 1 ], 
   parents := [ fail, 1, 2 ] )
 
 # parallel edges
-gap> d := EdgeWeightedDigraph([[2,2,2],[1]],[[10,5,15],[7]]);   
+gap> d := EdgeWeightedDigraph([[2, 2, 2], [1]], [[10, 5, 15], [7]]);   
 <immutable multidigraph with 2 vertices, 4 edges>
 gap> DigraphEdgeWeightedShortestPath(d, 1);
 rec( distances := [ 0, 5 ], edges := [ fail, 2 ], parents := [ fail, 1 ] )
 
 # negative edges
-gap> d := EdgeWeightedDigraph([[2],[1]],[[-2],[7]]);          
+gap> d := EdgeWeightedDigraph([[2], [1]], [[-2], [7]]);          
 <immutable digraph with 2 vertices, 2 edges>
 gap> DigraphEdgeWeightedShortestPath(d, 1);
 rec( distances := [ 0, -2 ], edges := [ fail, 1 ], parents := [ fail, 1 ] )
 
 # parallel negative edges
-gap> d := EdgeWeightedDigraph([[2,2,2],[1]],[[-2,-3,-4],[7]]);
+gap> d := EdgeWeightedDigraph([[2, 2, 2], [1]], [[-2, -3, -4], [7]]);
 <immutable multidigraph with 2 vertices, 4 edges>
 gap> DigraphEdgeWeightedShortestPath(d, 1);
 rec( distances := [ 0, -4 ], edges := [ fail, 3 ], parents := [ fail, 1 ] )
 
 # negative cycle
-gap> d := EdgeWeightedDigraph([[2,2,2],[1]],[[-10,5,-15],[7]]);
+gap> d := EdgeWeightedDigraph([[2, 2, 2], [1]], [[-10, 5, -15], [7]]);
 <immutable multidigraph with 2 vertices, 4 edges>
 gap> DigraphEdgeWeightedShortestPath(d, 1);
 Error, negative cycle exists,
 
 # source not in graph pos int
-gap> d := EdgeWeightedDigraph([[2],[1]],[[2],[7]]);
+gap> d := EdgeWeightedDigraph([[2], [1]], [[2], [7]]);
 <immutable digraph with 2 vertices, 2 edges>
 gap> DigraphEdgeWeightedShortestPath(d, 3);
 Error, source vertex does not exist within digraph
 
 # no path exists
-gap> d := EdgeWeightedDigraph([[1],[2]],[[5],[10]]);
+gap> d := EdgeWeightedDigraph([[1], [2]], [[5], [10]]);
 <immutable digraph with 2 vertices, 2 edges>
 gap> DigraphEdgeWeightedShortestPath(d, 1);
 rec( distances := [ 0, fail ], edges := [ fail, fail ], 
   parents := [ fail, fail ] )
 
 # no path exists with negative edge weight
-gap> d := EdgeWeightedDigraph([[2],[2],[]],[[-5],[10],[]]);
+gap> d := EdgeWeightedDigraph([[2], [2], []], [[-5], [10], []]);
 <immutable digraph with 3 vertices, 2 edges>
 gap> r := DigraphEdgeWeightedShortestPath(d, 1);;
-gap> r.distances = [ 0, -5, fail ];
+gap> r.distances = [0, -5, fail];
 true
-gap> r.edges = [ fail, 1, fail ];
+gap> r.edges = [fail, 1, fail];
 true
-gap> r.parents = [ fail, 1, fail ];
+gap> r.parents = [fail, 1, fail];
 true
 
 # parallel edges
-gap> d := EdgeWeightedDigraph([[2,2,2],[]],[[3,2,1],[]]);
+gap> d := EdgeWeightedDigraph([[2, 2, 2], []], [[3, 2, 1], []]);
 <immutable multidigraph with 2 vertices, 3 edges>
 gap> DigraphEdgeWeightedShortestPaths(d); 
 rec( distances := [ [ 0, 1 ], [ fail, 0 ] ], 
@@ -215,7 +215,7 @@ rec( distances := [ [ 0, 1 ], [ fail, 0 ] ],
   parents := [ [ fail, 1 ], [ fail, fail ] ] )
 
 # negative cycle
-gap> d := EdgeWeightedDigraph([[2],[3],[1]],[[-3],[-5],[-7]]);
+gap> d := EdgeWeightedDigraph([[2], [3], [1]], [[-3], [-5], [-7]]);
 <immutable digraph with 3 vertices, 3 edges>
 gap> DigraphEdgeWeightedShortestPaths(d);
 Error, negative cycle exists,
@@ -227,7 +227,7 @@ Error, no 1st choice method found for `DigraphEdgeWeightedShortestPath' on 2 a\
 rguments
 
 # testing johnson
-gap> d := EdgeWeightedDigraph([[2],[3],[],[],[]],[[3],[5],[],[],[]]);
+gap> d := EdgeWeightedDigraph([[2], [3], [], [], []], [[3], [5], [], [], []]);
 <immutable digraph with 5 vertices, 2 edges>
 gap> DigraphEdgeWeightedShortestPaths(d);
 rec( distances := [ [ 0, 3, 8, fail, fail ], [ fail, 0, 5, fail, fail ], 
@@ -241,63 +241,63 @@ rec( distances := [ [ 0, 3, 8, fail, fail ], [ fail, 0, 5, fail, fail ],
       [ fail, fail, fail, fail, fail ] ] )
 
 # empty digraphs
-gap> d := EdgeWeightedDigraph([],[]);
+gap> d := EdgeWeightedDigraph([], []);
 <immutable empty digraph with 0 vertices>
 gap> DigraphMaximumFlow(d, 1, 1);
 Error, invalid source,
 
 # single vertex (also empty digraphs)
-gap> d := EdgeWeightedDigraph([[]],[[]]);
+gap> d := EdgeWeightedDigraph([[]], [[]]);
 <immutable empty digraph with 1 vertex>
 gap> DigraphMaximumFlow(d, 1, 1);        
 rec( flows := [ [  ] ], maxFlow := 0, parents := [ [  ] ] )
 
 # source = dest
-gap> d := EdgeWeightedDigraph([[2],[]],[[5],[]]);
+gap> d := EdgeWeightedDigraph([[2], []], [[5], []]);
 <immutable digraph with 2 vertices, 1 edge>
 gap> DigraphMaximumFlow(d, 1, 1);                
 rec( flows := [ [  ], [  ] ], maxFlow := 0, parents := [ [  ], [  ] ] )
 
 # has loop 
-gap> d := EdgeWeightedDigraph([[1,2],[]],[[5,10],[]]);
+gap> d := EdgeWeightedDigraph([[1, 2], []], [[5, 10], []]);
 <immutable digraph with 2 vertices, 2 edges>
 gap> DigraphMaximumFlow(d, 1, 2);
 rec( flows := [ [  ], [ 10 ] ], maxFlow := 10, parents := [ [  ], [ 1 ] ] )
 
 # invalid source
-gap> d := EdgeWeightedDigraph([[1,2],[]],[[5,10],[]]);                
+gap> d := EdgeWeightedDigraph([[1, 2], []], [[5, 10], []]);                
 <immutable digraph with 2 vertices, 2 edges>
 gap> DigraphMaximumFlow(d, 5, 2);
 Error, invalid source,
 
 # invalid sink
-gap> d := EdgeWeightedDigraph([[1,2],[]],[[5,10],[]]);
+gap> d := EdgeWeightedDigraph([[1, 2], []], [[5, 10], []]);
 <immutable digraph with 2 vertices, 2 edges>
 gap> DigraphMaximumFlow(d, 1, 5);
 Error, invalid sink,
 
 # sink not reachable
-gap> d := EdgeWeightedDigraph([[1],[]],[[5],[]]);     
+gap> d := EdgeWeightedDigraph([[1], []], [[5], []]);     
 <immutable digraph with 2 vertices, 1 edge>
 gap> DigraphMaximumFlow(d, 1, 2);
 rec( flows := [ [  ], [  ] ], maxFlow := 0, parents := [ [  ], [  ] ] )
 
 # source has in neighbours
-gap> d := EdgeWeightedDigraph([[2],[3],[]],[[5],[10],[]]); 
+gap> d := EdgeWeightedDigraph([[2], [3], []], [[5], [10], []]); 
 <immutable digraph with 3 vertices, 2 edges>
 gap> DigraphMaximumFlow(d, 2, 3);
 rec( flows := [ [  ], [  ], [ 10 ] ], maxFlow := 10, 
   parents := [ [  ], [  ], [ 2 ] ] )
 
 # sink has out neighbours
-gap> d := EdgeWeightedDigraph([[2],[3],[2]],[[5],[10],[7]]);
+gap> d := EdgeWeightedDigraph([[2], [3], [2]], [[5], [10], [7]]);
 <immutable digraph with 3 vertices, 3 edges>
 gap> DigraphMaximumFlow(d, 2, 3);                           
 rec( flows := [ [  ], [  ], [ 10 ] ], maxFlow := 10, 
   parents := [ [  ], [  ], [ 2 ] ] )
 
 # cycle
-gap> d := EdgeWeightedDigraph([[2],[3],[1]],[[5],[10],[7]]);
+gap> d := EdgeWeightedDigraph([[2], [3], [1]], [[5], [10], [7]]);
 <immutable digraph with 3 vertices, 3 edges>
 gap> DigraphMaximumFlow(d, 1, 3);
 rec( flows := [ [  ], [ 5 ], [ 5 ] ], maxFlow := 5, 
@@ -325,32 +325,32 @@ gap> DigraphNrVertices(d);
 gap> d := EdgeWeightedDigraph([[2], [1]], [[5], [10]]);;
 gap> sp := DigraphEdgeWeightedShortestPath(d, 1);;
 gap> sd := DigraphFromPaths(d, sp);;
-gap> DotEdgeWeightedDigraph(d, sd, rec(sourceColour:="red"));;
+gap> DotEdgeWeightedDigraph(d, sd, rec(sourceColour := "red"));;
 
 # dot tests
 gap> d := EdgeWeightedDigraph([[2], [1]], [[5], [10]]);;
 gap> sp := DigraphEdgeWeightedShortestPath(d, 1);;
 gap> sd := DigraphFromPaths(d, sp);;
-gap> DotEdgeWeightedDigraph(d, sd, rec(source:=1));;
+gap> DotEdgeWeightedDigraph(d, sd, rec(source := 1));;
 
 # dot tests
 gap> d := EdgeWeightedDigraph([[2], [1]], [[5], [10]]);;
 gap> sp := DigraphEdgeWeightedShortestPath(d, 1);;
 gap> sd := DigraphFromPaths(d, sp);;
-gap> DotEdgeWeightedDigraph(d, sd, rec(source:=500));
+gap> DotEdgeWeightedDigraph(d, sd, rec(source := 500));
 Error, source vertex does not exist,
 
 # dot tests
 gap> d := EdgeWeightedDigraph([[2], [1]], [[5], [10]]);;
 gap> sp := DigraphEdgeWeightedShortestPath(d, 1);;
 gap> sd := DigraphFromPaths(d, sp);;
-gap> DotEdgeWeightedDigraph(d, sd, rec(dest:=2));;
+gap> DotEdgeWeightedDigraph(d, sd, rec(dest := 2));;
 
 # dot tests
 gap> d := EdgeWeightedDigraph([[2], [1]], [[5], [10]]);;
 gap> sp := DigraphEdgeWeightedShortestPath(d, 1);;
 gap> sd := DigraphFromPaths(d, sp);;
-gap> DotEdgeWeightedDigraph(d, sd, rec(dest:=500));
+gap> DotEdgeWeightedDigraph(d, sd, rec(dest := 500));
 Error, destination vertex does not exist,
 
 #
