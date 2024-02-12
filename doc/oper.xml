@@ -2267,19 +2267,31 @@ true
     <C>DigraphCycleBasis</C> calculates the <E>fundamental cycle basis</E> of
     <A>digraph</A> and returns a list of edges and a matrix of a basis vectors.
     See <Ref Prop="IsSymmetricDigraph"/>, <Ref Prop="DigraphHasLoops"/>, and <Ref
-    Prop="IsMultiDigraph"/>
-    The first list contains half of the edges in the edges of the digraph, one 
+    Prop="IsMultiDigraph"/>.
+    The first list contains half of the edges of the digraph, one 
     for each pair of symmetric edges, and the rows of the matrix are the cycle
-    vectors of the form <M>(GF(2))^m</M> where <M>m</M> is the length of the
-    list of edges. <P/>
+    vectors belonging to <M>(GF(2))^m</M> where <M>m</M> is the length of the
+    list of edges. As a result, the symmetric difference of the cycles is 
+    naturally an addition.<P/>
 
-    A <E>fundamental cycle basis</E> is a basis of the cycle space of
-    the digraph such that each cycle contains an edge that is not included in
-    any other basis cycle.  The fundamental cycle basis is unique up to
-    reordering of the basis vectors.  The number of basis vectors in the
-    fundamental cycle basis is <M>m - n + c</M>, where <M>m</M> is the number
+    A graph is <E>eulerian</E> if every vertex has an even degree. A <E>cycle
+    space</E> of a graph is a subspace of <M>(GF(2))^m</M> representing the set 
+    of all <E>eulerian</E> subgraphs of the graph. A <E>cycle basis</E> is a 
+    basis of the cycle space. A <E>fundamental cycle basis</E> is a special 
+    kind of basis of the cycle space where there is a specific spanning tree 
+    (forest, when the graph is disconnected) of the graph and each basis 
+    corresponds to the unique cycle created by adding an edge outside the 
+    spanning tree of the graph to the spanning tree. In this function, the 
+    spanning forest is rooted in the vertex with the smallest label for each 
+    connected component of the graph. 
+    
+    The fundamental cycle basis is unique up to reordering of the basis vectors.  
+    The number of basis vectors in the fundamental cycle basis is 
+    <M>m - n + c</M>, where <M>m</M> is the number
     of edges, <M>n</M> is the number of vertices, and <M>c</M> is the number of
-    connected components.  See <Ref Oper="DigraphConnectedComponents"/>. <P/>
+    connected components.  See <Ref Oper="DigraphConnectedComponents"/>.
+
+
     <Example><![CDATA[
 gap> D := CycleGraph(4);     
 <immutable symmetric digraph with 4 vertices, 8 edges>
