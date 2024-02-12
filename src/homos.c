@@ -1821,6 +1821,35 @@ static bool init_data_from_args(Obj digraph1_obj,
   return true;
 }
 
+// CODE GOES HERE
+static void free_homos_data(){
+    // srand(time(0));
+#ifdef DIGRAPHS_ENABLE_STATS
+    free(STATS);
+#endif
+    free(DIGRAPH1);
+    free(DIGRAPH2);
+    free(GRAPH1);
+    free(GRAPH2);
+    free(IMAGE_RESTRICT);
+    ORB_LOOKUP     = new_bit_array(MAXVERTS);
+    for (uint16_t i = 0; i < MAXVERTS; i++) {
+      free(BLISS_GRAPH[i]);
+      free(REPS[i]);
+      free(BIT_ARRAY_BUFFER[i]);
+      free(MAP_UNDEFINED[i]);
+      free(STAB_GENS[i]);
+    }
+    free(BLISS_GRAPH);
+    free(REPS);
+    free(BIT_ARRAY_BUFFER);
+    free(MAP_UNDEFINED);
+    free(STAB_GENS);
+    free(VALS);
+    free(CONDITIONS);
+    free(SCHREIER_SIMS);
+    is_initialized = false;
+}
 // The next function is the main function for accessing the homomorphisms code.
 //
 // The arguments are:
