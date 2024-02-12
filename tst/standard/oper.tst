@@ -2809,15 +2809,15 @@ gap> DigraphCycleBasis(D);
 gap> D := CycleDigraph(3);
 <immutable cycle digraph with 3 vertices>
 gap> DigraphCycleBasis(D);
-Error, GraphCycleBasis: Graph is not symmetric
+Error, the 1st argument (a digraph) must be symmetric
 gap> D := Digraph([[1]]);
 <immutable digraph with 1 vertex, 1 edge>
 gap> DigraphCycleBasis(D);
-Error, GraphCycleBasis: Graph has loops
+Error, the 1st argument (a digraph) must not have any loops
 gap> D := Digraph([[2, 2], [1, 1]]);
 <immutable multidigraph with 2 vertices, 4 edges>
 gap> DigraphCycleBasis(D);
-Error, GraphCycleBasis: Graph has multiple edges
+Error, the 1st argument (a digraph) must not have multiple edges
 gap> D := CompleteDigraph(5);
 <immutable complete digraph with 5 vertices>
 gap> DigraphCycleBasis(D);
