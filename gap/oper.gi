@@ -2186,9 +2186,9 @@ end);
 # Computes the fundamental cycle basis of a symmetric digraph
 # First, notice that the cycle space is composed of orthogonal subspaces
 # corresponding to the cycle spaces of the connected components.
-# e.g. if G has G1, G2 and G3 connected 
-# components with B1, B2 and B3 cycle basis matrix respectively, then the 
-# resulting cycle basis matrix of G is 
+# e.g. if G has G1, G2 and G3 connected
+# components with B1, B2 and B3 cycle basis matrix respectively, then the
+# resulting cycle basis matrix of G is
 # [[ B1,  0,  0],
 #  [  0, B2,  0],
 #  [  0,  0, B3]]
@@ -2200,10 +2200,10 @@ end);
 # there is one to one correspondence between the edges not in the spanning tree
 # and the fundamental cycles basis.
 # (See : https://en.wikipedia.org/wiki/Cycle_basis#Fundamental_cycles)
-# The set of edges that form the base cycle is computed by finding the path 
-# from the root to the each sides of the edge and then adding the edge to the 
+# The set of edges that form the base cycle is computed by finding the path
+# from the root to the each sides of the edge and then adding the edge to the
 # path. Then, it is converted to a binary vector where the i-th entry is 1 if
-# the i-th edge in the 'EdgesList' is in the cycle and 0 otherwise. 
+# the i-th edge in the 'EdgesList' is in the cycle and 0 otherwise.
 # Related paper : https://dl.acm.org/doi/pdf/10.1145/363219.363232
 InstallMethod(DigraphCycleBasis, "for a digraph",
 [IsDigraph],
@@ -2212,19 +2212,16 @@ function(G)
   FailSafeMatMul, EdgesList, En, ComponentsRecord, WhereDoTheyGo,
   InjectionMatList, ConnectedComponents, ConnectedResults, ComponentsBases;
 
-  # if it is not symmetric, throw an error
   if not IsSymmetricDigraph(G) then
-    Error("GraphCycleBasis: Graph is not symmetric");
+    Error("the 1st argument (a digraph) must be symmetric");
   fi;
 
-  # If it has multiple edges, throw an error
   if IsMultiDigraph(G) then
-    Error("GraphCycleBasis: Graph has multiple edges");
+    Error("the 1st argument (a digraph) must not have multiple edges");
   fi;
 
-  # If it contains loops, throw an error
   if DigraphHasLoops(G) then
-    Error("GraphCycleBasis: Graph has loops");
+    Error("the 1st argument (a digraph) must not have any loops");
   fi;
 
   if IsEmptyDigraph(G) then
@@ -2241,22 +2238,13 @@ function(G)
   EdgeOneHotVectorGF2 := function(Positions, dim)
     local res, i;
     res := List([1 .. dim], i -> 0 * Z(2));
-    for i in Positions do
-      res[i] := Z(2);
-    od;
+    res{Positions} := List(Positions, x -> Z(2));
     return res;
   end;
 
   DigraphCycleBasisConnected := function(G)
-    local ListSort, ListZip, WalkToEdges, EdgesList, E, CycleVectors,
+    local ListZip, WalkToEdges, EdgesList, E, CycleVectors,
     GSubTreeEdges, DirectedTree, e, pathEdges1, pathEdges2, eEdge;
-
-    ListSort := function(L)
-      local LCopy;
-      LCopy := ShallowCopy(L);
-      Sort(LCopy);
-      return LCopy;
-    end;
 
     ListZip := function(L1, L2)
       return List([1 .. Minimum(Length(L1), Length(L2))], i -> [L1[i], L2[i]]);
@@ -2271,7 +2259,7 @@ function(G)
       # fi;
 
       return List(ListZip(Walk{[1 .. len - 1]}, Walk{[2 .. len]}),
-        x -> Position(EdgesList, ListSort(x)));
+        x -> Position(EdgesList, AsSortedList(x)));
     end;
 
     G := DigraphImmutableCopy(G);
@@ -2280,7 +2268,7 @@ function(G)
 
     DirectedTree := DigraphShortestPathSpanningTree(G, 1);
     GSubTreeEdges := Filtered(EdgesList,
-      x -> not (ListSort(x) in DigraphEdges(DirectedTree)));
+      x -> not (AsSortedList(x) in DigraphEdges(DirectedTree)));
 
     if Length(GSubTreeEdges) = 0 then
       return [EdgesList, []];
