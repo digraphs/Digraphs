@@ -1588,6 +1588,8 @@ static void init_partial_map_and_find_digraph_homos(Obj partial_map_obj,
 // finding homomorphisms. If true is returned everything was initialised ok, if
 // false is returned, then the arguments already imply that there can be no
 // homomorphisms.
+
+static bool is_initialized = false;  // did we call this method before?
 static bool init_data_from_args(Obj digraph1_obj,
                                 Obj digraph2_obj,
                                 Obj hook_obj,
@@ -1601,7 +1603,6 @@ static bool init_data_from_args(Obj digraph1_obj,
                                 Obj colors2_obj,
                                 Obj order_obj,
                                 Obj aut_grp_obj) {
-  static bool is_initialized = false;  // did we call this method before?
   if (!is_initialized) {
     // srand(time(0));
     is_initialized = true;
