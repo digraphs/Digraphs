@@ -20,6 +20,9 @@
 // Digraphs package headers
 #include "digraphs-debug.h"  // for DIGRAPHS_ASSERT
 
+uint16_t MAXVERTS = 512;
+uint16_t UNDEFINED = 512;
+
 Perm new_perm(uint16_t const degree) {
   DIGRAPHS_ASSERT(degree <= MAXVERTS);
   return malloc(degree * sizeof(uint16_t));
