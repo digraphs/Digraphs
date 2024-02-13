@@ -28,12 +28,24 @@ uint16_t PERM_DEGREE = 0;
 SchreierSims* new_schreier_sims(void) {
   SchreierSims* ss = malloc(sizeof(SchreierSims));
   ss->tmp_perm     = new_perm(MAXVERTS);
+  ss -> strong_gens = (PermColl**)calloc(MAXVERTS, sizeof(PermColl*));
   for (uint16_t i = 0; i < MAXVERTS; ++i) {
     ss->strong_gens[i] = new_perm_coll(MAXVERTS, MAXVERTS);
   }
+  ss -> transversal = (Perm*)calloc(MAXVERTS, sizeof(Perm));
+  ss -> inversal = (Perm*)calloc(MAXVERTS, sizeof(Perm));
+
   for (size_t i = 0; i < MAXVERTS * MAXVERTS; ++i) {
     ss->transversal[i] = new_perm(MAXVERTS);
     ss->inversal[i]    = new_perm(MAXVERTS);
+  }
+
+  ss -> base = (uint16_t*) calloc(MAXVERTS, sizeof(uint16_t));
+  ss -> orbits = (uint16_t*) calloc(MAXVERTS, sizeof(uint16_t));
+  ss -> size_orbits = (uint16_t*) calloc(MAXVERTS, sizeof(uint16_t));
+
+  if(ss->tmp_perm == NULL || ss->strong_gens == NULL || ss->transversal == NULL || ss->inversal == NULL || ss -> base == NULL || ss->orbits == NULL || ss->size_orbits == NULL){
+    // throw an error and free up memory
   }
   return ss;
 }
