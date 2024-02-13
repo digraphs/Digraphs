@@ -2068,11 +2068,11 @@ function(D, roots)
     ErrorNoReturn("the 1st argument (a digraph) must be a partial order digraph");
   fi;
 
-  N := Length(roots);
+  N := DigraphNrVertices(D);
   vertex_in_subset := BlistList([1 .. N], roots);
   reachable_vertices := VerticesReachableFrom(D, roots);
 
-  return Length(reachable_vertices) = Length(roots) and not ForAny(reachable_vertices, x -> vertex_in_subset[x]);
+  return Length(reachable_vertices) = Length(roots) and ForAll(reachable_vertices, x -> vertex_in_subset[x]);
 
 end);
 
