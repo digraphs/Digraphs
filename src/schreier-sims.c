@@ -22,6 +22,7 @@
 #include "digraphs-debug.h"  // for DIGRAPHS_ASSERT
 
 uint16_t PERM_DEGREE = 0;
+uint16_t CURRENT_MAX_VERTS = 0;
 
 // Schreier-Sims set up
 
