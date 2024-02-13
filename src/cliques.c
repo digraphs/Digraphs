@@ -652,7 +652,7 @@ Obj FuncDigraphsCliquesFinder(Obj self, Obj args) {
   }
   // Check if include and exclude have empty intersection
   if (include_size != 0 && exclude_size != 0) {
-    bool lookup[MAXVERTS] = {false};
+    bool* lookup = calloc(MAXVERTS, sizeof(bool));
     for (UInt i = 1; i <= include_size; ++i) {
       lookup[INT_INTOBJ(ELM_LIST(include_obj, i)) - 1] = true;
     }
