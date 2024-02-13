@@ -187,6 +187,7 @@ static uint16_t* ORDER = NULL;  // internal -> external
 static PermColl**     STAB_GENS = NULL;  // stabiliser generators
 static SchreierSims* SCHREIER_SIMS;
 
+static uint16_t CURRENT_MAX_VERTS = 0;
 #ifdef DIGRAPHS_ENABLE_STATS
 struct homo_stats_struct {
   time_t last_print;
@@ -1609,37 +1610,42 @@ static bool init_data_from_args(Obj digraph1_obj,
 #ifdef DIGRAPHS_ENABLE_STATS
     STATS = malloc(sizeof(HomoStats));
 #endif
+    LARGEST_GRAPH_VERTEX_COUNT = MAX(
+      DigraphNrVertices(digraph1_obj),
+      DigraphNrVertices(digraph2_obj),
+    );
+    CALCULATED_MAXVERTS = MAX(CURRENT_MAX_VERTS, LARGEST_GRAPH_VERTEX_COUNT);
 
-    DIGRAPH1 = new_digraph(MAXVERTS);
-    DIGRAPH2 = new_digraph(MAXVERTS);
+    DIGRAPH1 = new_digraph(CALCULATED_MAXVERTS);
+    DIGRAPH2 = new_digraph(CALCULATED_MAXVERTS);
 
-    GRAPH1 = new_graph(MAXVERTS);
-    GRAPH2 = new_graph(MAXVERTS);
+    GRAPH1 = new_graph(CALCULATED_MAXVERTS);
+    GRAPH2 = new_graph(CALCULATED_MAXVERTS);
 
-    IMAGE_RESTRICT = new_bit_array(MAXVERTS);
-    ORB_LOOKUP     = new_bit_array(MAXVERTS);
-    REPS           = malloc(MAXVERTS * sizeof(BitArray*));
-    BIT_ARRAY_BUFFER = (BitArray**)calloc(MAXVERTS, sizeof(BitArray*));
-    MAP_UNDEFINED = (BitArray**)calloc(MAXVERTS, sizeof(BitArray*));
-    BLISS_GRAPH = (BlissGraph**)calloc(3*MAXVERTS, sizeof(BlissGraph*));
-    MAP = (uint16_t*)calloc(MAXVERTS, sizeof(uint16_t));
-    COLORS2 = (uint16_t*)calloc(MAXVERTS, sizeof(uint16_t));
-    INVERSE_ORDER = (uint16_t*)calloc(MAXVERTS, sizeof(uint16_t));
-    MAP_BUFFER = (uint16_t*)calloc(MAXVERTS, sizeof(uint16_t));
-    ORB = (uint16_t*)calloc(MAXVERTS, sizeof(uint16_t));
-    ORDER = (uint16_t*)calloc(MAXVERTS, sizeof(uint16_t));
-    STAB_GENS = (PermColl**)calloc(MAXVERTS, sizeof(PermColl*));
+    IMAGE_RESTRICT = new_bit_array(CALCULATED_MAXVERTS);
+    ORB_LOOKUP     = new_bit_array(CALCULATED_MAXVERTS);
+    REPS           = malloc(CALCULATED_MAXVERTS * sizeof(BitArray*));
+    BIT_ARRAY_BUFFER = (BitArray**)calloc(CALCULATED_MAXVERTS, sizeof(BitArray*));
+    MAP_UNDEFINED = (BitArray**)calloc(CALCULATED_MAXVERTS, sizeof(BitArray*));
+    BLISS_GRAPH = (BlissGraph**)calloc(3*CALCULATED_MAXVERTS, sizeof(BlissGraph*));
+    MAP = (uint16_t*)calloc(CALCULATED_MAXVERTS, sizeof(uint16_t));
+    COLORS2 = (uint16_t*)calloc(CALCULATED_MAXVERTS, sizeof(uint16_t));
+    INVERSE_ORDER = (uint16_t*)calloc(CALCULATED_MAXVERTS, sizeof(uint16_t));
+    MAP_BUFFER = (uint16_t*)calloc(CALCULATED_MAXVERTS, sizeof(uint16_t));
+    ORB = (uint16_t*)calloc(CALCULATED_MAXVERTS, sizeof(uint16_t));
+    ORDER = (uint16_t*)calloc(CALCULATED_MAXVERTS, sizeof(uint16_t));
+    STAB_GENS = (PermColl**)calloc(CALCULATED_MAXVERTS, sizeof(PermColl*));
 
-    for (uint16_t i = 0; i < MAXVERTS; i++) {
+    for (uint16_t i = 0; i < CALCULATED_MAXVERTS; i++) {
       BLISS_GRAPH[i]      = bliss_digraphs_new(i);
-      REPS[i]             = new_bit_array(MAXVERTS);
-      BIT_ARRAY_BUFFER[i] = new_bit_array(MAXVERTS);
-      MAP_UNDEFINED[i]    = new_bit_array(MAXVERTS);
-      STAB_GENS[i]        = new_perm_coll(MAXVERTS, MAXVERTS);
+      REPS[i]             = new_bit_array(CALCULATED_MAXVERTS);
+      BIT_ARRAY_BUFFER[i] = new_bit_array(CALCULATED_MAXVERTS);
+      MAP_UNDEFINED[i]    = new_bit_array(CALCULATED_MAXVERTS);
+      STAB_GENS[i]        = new_perm_coll(CALCULATED_MAXVERTS, CALCULATED_MAXVERTS);
     }
-    VALS          = new_bit_array(MAXVERTS);
-    CONDITIONS    = new_conditions(MAXVERTS, MAXVERTS);
-    SCHREIER_SIMS = new_schreier_sims();
+    VALS          = new_bit_array(CALCULATED_MAXVERTS);
+    CONDITIONS    = new_conditions(CALCULATED_MAXVERTS, CALCULATED_MAXVERTS);
+    SCHREIER_SIMS = new_schreier_sims(CALCULATED_MAXVERTS);
   }
 #ifdef DIGRAPHS_ENABLE_STATS
   clear_stats(STATS);
