@@ -2026,7 +2026,7 @@ function(D, roots)
   visited := BlistList([1 .. N], []);
 
   for root in roots do
-    if 0 = root or root > N then
+    if not IsPosInt(N) or 0 = root or root > N then
       ErrorNoReturn("an element of the 2nd argument ",
                     "(roots) is not a vertex of the 1st ",
                     "argument (a digraph)");
