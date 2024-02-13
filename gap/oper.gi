@@ -2022,9 +2022,6 @@ function(D, roots)
   local N, index, visited, queue_tail, queue,
   root, element, neighbour, graph_out_neighbors, node_neighbours;
 
-  N := DigraphNrVertices(D);
-  visited := BlistList([1 .. N], []);
-
   for root in roots do
     if not IsPosInt(N) or 0 = root or root > N then
       ErrorNoReturn("an element of the 2nd argument ",
@@ -2032,6 +2029,9 @@ function(D, roots)
                     "argument (a digraph)");
     fi;
   od;
+
+  N := DigraphNrVertices(D);
+  visited := BlistList([1 .. N], []);
 
   graph_out_neighbors := OutNeighbors(D);
   queue := EmptyPlist(N);
