@@ -2066,8 +2066,7 @@ function(D, roots)
   local reachable_vertices, vertex_in_subset, N;
   if not IsPartialOrderDigraph(D) then
     ErrorNoReturn(
-      "the 1st argument (a digraph) must be a partial order digraph"
-    );
+      "the 1st argument (a digraph) must be a partial order digraph");
   fi;
 
   N := DigraphNrVertices(D);
