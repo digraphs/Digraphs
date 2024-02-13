@@ -2295,7 +2295,7 @@ true
   <Oper Name="IsOrderIdeal" Arg="D, subset" Label="for a digraph and list"/>
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
-    This function returns <K>true</K> if the specified subset is "downwards" closed, i.e. contains every node less than the given nodes. 
+    This function returns <K>true</K> if the specified subset is "downwards" closed, i.e. contains every vertex less than the given vertices. 
     The function can only be used on digraphs satisfying <Ref Prop="IsPartialOrderDigraph"/> and will throw an error if passed a digraph that is not a partial order digraph.
 
     <Example><![CDATA[
