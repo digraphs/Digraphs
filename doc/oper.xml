@@ -1400,7 +1400,7 @@ gap> VerticesReachableFrom(D, 5);
   <Oper Name="VerticesReachableFrom" Arg="D, list"/>
   <Returns>A list.</Returns>
   <Description>
-    This operation returns a list of the vertices  <A>v</A>, for which there exists
+    This operation returns a list of the vertices  <C>v</C>, for which there exists
     a non-trivial directed walk from any of the vertices in <A>list</A> to vertex <C>v</C> in the digraph
     <A>digraph</A>. See Section <Ref Subsect="Definitions" Style="Number" />
     for the definition of a non-trivial directed walk. The function will throw an error if the list provided contains entries that are not vertices of the digraph.
