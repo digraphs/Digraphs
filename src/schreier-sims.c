@@ -32,8 +32,8 @@ SchreierSims* new_schreier_sims(void) {
   for (uint16_t i = 0; i < MAXVERTS; ++i) {
     ss->strong_gens[i] = new_perm_coll(MAXVERTS, MAXVERTS);
   }
-  ss -> transversal = (Perm*)calloc(MAXVERTS, sizeof(Perm));
-  ss -> inversal = (Perm*)calloc(MAXVERTS, sizeof(Perm));
+  ss -> transversal = (Perm*)calloc(MAXVERTS * MAXVERTS, sizeof(Perm));
+  ss -> inversal = (Perm*)calloc(MAXVERTS * MAXVERTS, sizeof(Perm));
 
   for (size_t i = 0; i < MAXVERTS * MAXVERTS; ++i) {
     ss->transversal[i] = new_perm(MAXVERTS);
@@ -41,9 +41,9 @@ SchreierSims* new_schreier_sims(void) {
   }
 
   ss -> base = (uint16_t*) calloc(MAXVERTS, sizeof(uint16_t));
-  ss -> orbits = (uint16_t*) calloc(MAXVERTS, sizeof(uint16_t));
+  ss -> orbits = (uint16_t*) calloc(MAXVERTS * MAXVERTS, sizeof(uint16_t));
   ss -> size_orbits = (uint16_t*) calloc(MAXVERTS, sizeof(uint16_t));
-
+  ss -> orb_lookup = (bool*) calloc(MAXVERTS * MAXVERTS, sizeof(bool));
   if(ss->tmp_perm == NULL || ss->strong_gens == NULL || ss->transversal == NULL || ss->inversal == NULL || ss -> base == NULL || ss->orbits == NULL || ss->size_orbits == NULL){
     // throw an error and free up memory
   }
