@@ -2068,19 +2068,11 @@ function(D, roots)
   fi;
 
   N := Length(roots);
-  vertex_in_subset := BlistList([1 .. N], []);
+  vertex_in_subset := BlistList([1 .. N], roots);
   reachable_vertices := VerticesReachableFrom(D, roots);
-  for i in roots do
-    vertex_in_subset[i] := true;
-  od;
 
-  for i in reachable_vertices do
-    if not vertex_in_subset[i] then
-      return false;
-    fi;
-  od;
+  return Length(reachable_vertices) = Length(roots) and not ForAny(reachable_vertices, x -> vertex_in_subset[x]);
 
-  return Length(reachable_vertices) = Length(roots);
 end);
 
 InstallMethod(DominatorTree, "for a digraph and a vertex",
