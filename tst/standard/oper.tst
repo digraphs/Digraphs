@@ -2837,7 +2837,7 @@ gap> IsOrderIdeal(TestUnion, [1, 5, 6]);
 false
 gap> D := CycleDigraph(5);;
 gap> IsOrderIdeal(D, [1]);
-Error, the 1st element (a digraph) must be a partial order digraph
+Error, the 1st argument (a digraph) must be a partial order digraph
 
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(C);
