@@ -21,7 +21,7 @@
 #include "digraphs-debug.h"  // for DIGRAPHS_ASSERT
 
 uint16_t MAXVERTS = 512;
-uint16_t UNDEFINED = 512;
+uint16_t UNDEFINED = 513;
 
 Perm new_perm(uint16_t const degree) {
   DIGRAPHS_ASSERT(degree <= MAXVERTS);
