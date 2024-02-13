@@ -2063,7 +2063,7 @@ InstallMethod(IsOrderIdeal, "for a digraph and a list of vertices",
 [IsDigraph, IsList],
 # Check if digraph represents a partial order
 function(D, roots)
-  local reachable_vertices, vertex_in_subset, i, N;
+  local reachable_vertices, vertex_in_subset, N;
   if not IsPartialOrderDigraph(D) then
     ErrorNoReturn("the 1st argument (a digraph) must be a partial order digraph");
   fi;
@@ -2072,7 +2072,8 @@ function(D, roots)
   vertex_in_subset := BlistList([1 .. N], roots);
   reachable_vertices := VerticesReachableFrom(D, roots);
 
-  return Length(reachable_vertices) = Length(roots) and ForAll(reachable_vertices, x -> vertex_in_subset[x]);
+  return Length(reachable_vertices) = Length(roots)
+    and ForAll(reachable_vertices, x -> vertex_in_subset[x]);
 
 end);
 
