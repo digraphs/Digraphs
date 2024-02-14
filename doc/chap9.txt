@@ -451,7 +451,7 @@
   
   [33X[0;0YThis function produces a graphical representation of a partial order digraph
   [3Xdigraph[103X.  [10XDotPartialOrderDigraph[110X  will  return  an error if [3Xdigraph[103X is not a
-  partial order digraph. See [2XIsPartialOrderDigraph[102X ([14X6.3-2[114X).[133X
+  partial order digraph. See [2XIsPartialOrderDigraph[102X ([14X6.4-2[114X).[133X
   
   [33X[0;0YSince  [3Xdigraph[103X  is a partial order, it is both reflexive and transitive. The
   output   of   [10XDotPartialOrderDigraph[110X   is  the  [2XDotDigraph[102X  ([14X9.1-2[114X)  of  the
@@ -480,13 +480,13 @@
   
   [33X[0;0YThis  function  produces  a  graphical  representation of a preorder digraph
   [3Xdigraph[103X.  [10XDotPreorderDigraph[110X  will  return  an  error  if  [3Xdigraph[103X  is not a
-  preorder digraph. See [2XIsPreorderDigraph[102X ([14X6.3-1[114X).[133X
+  preorder digraph. See [2XIsPreorderDigraph[102X ([14X6.4-1[114X).[133X
   
   [33X[0;0YA  preorder  digraph  is  reflexive  and transitive but in general it is not
   anti-symmetric  and  may  have strongly connected components containing more
   than  one  vertex.  The  [2XQuotientDigraph[102X  ([14X3.3-9[114X)  [3XQ[103X obtained by forming the
   quotient  of  [3Xdigraph[103X  by  the  partition  of its vertices into the strongly
-  connected  components  satisfies  [2XIsPartialOrderDigraph[102X  ([14X6.3-2[114X). Thus every
+  connected  components  satisfies  [2XIsPartialOrderDigraph[102X  ([14X6.4-2[114X). Thus every
   vertex  of  [3XQ[103X  corresponds to a strongly connected component of [3Xdigraph[103X. The
   output          of          [10XDotPreorderDigraph[110X          displays         the
   [2XDigraphReflexiveTransitiveReduction[102X ([14X3.3-14[114X) of [3XQ[103X with vertices displayed as
@@ -566,7 +566,7 @@
   [8X DiSparse6 [108X
         [33X[0;6Y[13XDiSparse6[113X  is  a  new  format  based  on  [13X  Sparse6 [113X, but designed for
         digraphs.  In  this  format  the  list  of  edges  is partitioned into
-        inceasing  and  decreasing  edges,  depending whether the edge has its
+        increasing  and  decreasing  edges, depending whether the edge has its
         source  bigger  than  the  range.  Then both sets of edges are written
         separately in [13X Sparse6 [113X format with a separation symbol in between.[133X
   

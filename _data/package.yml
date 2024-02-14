@@ -1,6 +1,6 @@
 name: Digraphs
-version: 1.6.3
-date: 2023-09-13
+version: 1.7.0
+date: 2024-02-14
 description: |
     Graphs, digraphs, and multidigraphs in GAP
 
@@ -30,6 +30,7 @@ contributors:
     - name: Stuart Burrell
       url: https://stuartburrell.github.io
     - name: Graham Campbell
+    - name: Raiyan Chowdhury
     - name: Reinis Cirpons
       url: mailto:rc234@st-andrews.ac.uk
     - name: Ashley Clayton
@@ -56,6 +57,8 @@ contributors:
       url: https://olexandr-konovalov.github.io/
     - name: Andrea Lee
       url: mailto:ahwl1@st-andrews.ac.uk
+    - name: Michael Orlitzky
+      url: https://michael.orlitzky.com/
     - name: Markus Pfeiffer
       url: https://www.morphism.de/~markusp/
     - name: Lea Racine
@@ -98,7 +101,6 @@ suggested-pkgs:
       url: "https://gap-packages.github.io/grape"
     - name: "nautytracesinterface"
       version: ">=0.2"
-      url: "http://TODO/"
 
 www: https://digraphs.github.io/Digraphs
 readme: README.md
@@ -106,7 +108,7 @@ packageinfo: https://digraphs.github.io/Digraphs/PackageInfo.g
 
 downloads:
     - name: .tar.gz
-      url: https://github.com/digraphs/Digraphs/releases/download/v1.6.3/digraphs-1.6.3.tar.gz
+      url: https://github.com/digraphs/Digraphs/releases/download/v1.7.0/digraphs-1.7.0.tar.gz
 
 abstract: |
     The <b>Digraphs</b> package is a <b>GAP</b> package for digraphs and multidigraphs.

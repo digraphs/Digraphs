@@ -3,7 +3,7 @@
                                     [1X[5XDigraphs[105X[101X
   
   
-                                 Version 1.6.3
+                                 Version 1.7.0
   
   
                                   Jan De Beule
@@ -77,7 +77,7 @@
   
   -------------------------------------------------------
   [1XCopyright[101X
-  [33X[0;0Y©  2014-22  by  Jan  De  Beule,  Julius  Jonušas, James D. Mitchell, Wilf A.
+  [33X[0;0Y©  2014-24  by  Jan  De  Beule,  Julius  Jonušas, James D. Mitchell, Wilf A.
   Wilson, Michael Young et al.[133X
   
   [33X[0;0Y[5XDigraphs[105X  is  free  software; you can redistribute it and/or modify it under
@@ -306,17 +306,19 @@
       5.4-22 DigraphPath
       5.4-23 DigraphShortestPath
       5.4-24 DigraphRandomWalk
-      5.4-25 Dominators
-      5.4-26 DominatorTree
-      5.4-27 IteratorOfPaths
-      5.4-28 DigraphAllSimpleCircuits
-      5.4-29 DigraphLongestSimpleCircuit
-      5.4-30 DigraphLayers
-      5.4-31 DigraphDegeneracy
-      5.4-32 DigraphDegeneracyOrdering
-      5.4-33 HamiltonianPath
-      5.4-34 NrSpanningTrees
-      5.4-35 DigraphDijkstra
+      5.4-25 DigraphAbsorptionProbabilities
+      5.4-26 DigraphAbsorptionExpectedSteps
+      5.4-27 Dominators
+      5.4-28 DominatorTree
+      5.4-29 IteratorOfPaths
+      5.4-30 DigraphAllSimpleCircuits
+      5.4-31 DigraphLongestSimpleCircuit
+      5.4-32 DigraphLayers
+      5.4-33 DigraphDegeneracy
+      5.4-34 DigraphDegeneracyOrdering
+      5.4-35 HamiltonianPath
+      5.4-36 NrSpanningTrees
+      5.4-37 DigraphDijkstra
     5.5 [33X[0;0YCayley graphs of groups[133X
       5.5-1 GroupOfCayleyDigraph
       5.5-2 GeneratorsOfCayleyDigraph
@@ -350,38 +352,41 @@
       6.2-14 IsSymmetricDigraph
       6.2-15 IsTournament
       6.2-16 IsTransitiveDigraph
-    6.3 [33X[0;0YOrders[133X
-      6.3-1 IsPreorderDigraph
-      6.3-2 IsPartialOrderDigraph
-      6.3-3 IsMeetSemilatticeDigraph
-      6.3-4 DigraphMeetTable
-      6.3-5 IsUpperSemimodularDigraph
-      6.3-6 IsDistributiveLatticeDigraph
-    6.4 [33X[0;0YRegularity[133X
-      6.4-1 IsInRegularDigraph
-      6.4-2 IsOutRegularDigraph
-      6.4-3 IsRegularDigraph
-      6.4-4 IsDistanceRegularDigraph
-    6.5 [33X[0;0YConnectivity and cycles[133X
-      6.5-1 IsAcyclicDigraph
-      6.5-2 IsChainDigraph
-      6.5-3 IsConnectedDigraph
-      6.5-4 IsBiconnectedDigraph
-      6.5-5 IsBridgelessDigraph
-      6.5-6 IsStronglyConnectedDigraph
-      6.5-7 IsAperiodicDigraph
-      6.5-8 IsDirectedTree
-      6.5-9 IsUndirectedTree
-      6.5-10 IsEulerianDigraph
-      6.5-11 IsHamiltonianDigraph
-      6.5-12 IsCycleDigraph
-    6.6 [33X[0;0YPlanarity[133X
-      6.6-1 IsPlanarDigraph
-      6.6-2 IsOuterPlanarDigraph
-    6.7 [33X[0;0YHomomorphisms and transformations[133X
-      6.7-1 IsDigraphCore
-      6.7-2 IsEdgeTransitive
-      6.7-3 IsVertexTransitive
+    6.3 [33X[0;0YEdge Weights[133X
+      6.3-1 EdgeWeights
+      6.3-2 EdgeWeightedDigraph
+    6.4 [33X[0;0YOrders[133X
+      6.4-1 IsPreorderDigraph
+      6.4-2 IsPartialOrderDigraph
+      6.4-3 IsMeetSemilatticeDigraph
+      6.4-4 DigraphMeetTable
+      6.4-5 IsUpperSemimodularDigraph
+      6.4-6 IsDistributiveLatticeDigraph
+    6.5 [33X[0;0YRegularity[133X
+      6.5-1 IsInRegularDigraph
+      6.5-2 IsOutRegularDigraph
+      6.5-3 IsRegularDigraph
+      6.5-4 IsDistanceRegularDigraph
+    6.6 [33X[0;0YConnectivity and cycles[133X
+      6.6-1 IsAcyclicDigraph
+      6.6-2 IsChainDigraph
+      6.6-3 IsConnectedDigraph
+      6.6-4 IsBiconnectedDigraph
+      6.6-5 IsBridgelessDigraph
+      6.6-6 IsStronglyConnectedDigraph
+      6.6-7 IsAperiodicDigraph
+      6.6-8 IsDirectedTree
+      6.6-9 IsUndirectedTree
+      6.6-10 IsEulerianDigraph
+      6.6-11 IsHamiltonianDigraph
+      6.6-12 IsCycleDigraph
+    6.7 [33X[0;0YPlanarity[133X
+      6.7-1 IsPlanarDigraph
+      6.7-2 IsOuterPlanarDigraph
+    6.8 [33X[0;0YHomomorphisms and transformations[133X
+      6.8-1 IsDigraphCore
+      6.8-2 IsEdgeTransitive
+      6.8-3 IsVertexTransitive
   7 [33X[0;0YHomomorphisms[133X
     7.1 [33X[0;0YActing on digraphs[133X
       7.1-1 OnDigraphs

@@ -1795,7 +1795,7 @@
   [33X[1;0Y[29X[2XLatticeDigraphEmbedding[102X( [3XL1[103X, [3XL2[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA transformation, or [9Xfail[109X.[133X
   
-  [33X[0;0YIf  [3XL1[103X  and  [3XL2[103X are lattice digraphs ([2XIsLatticeDigraph[102X ([14X6.3-3[114X) returns [9Xtrue[109X,
+  [33X[0;0YIf  [3XL1[103X  and  [3XL2[103X are lattice digraphs ([2XIsLatticeDigraph[102X ([14X6.4-3[114X) returns [9Xtrue[109X,
   then  [10XLatticeDigraphEmbedding[110X returns a single [13Xinjective[113X [2XDigraphHomomorphism[102X
   ([14X7.3-2[114X)  between  [3XL1[103X  and  [3XL2[103X,  with  the  property  that  it  is  a [13Xlattice
   homomorphism[113X. If no such homomorphism exists, [9Xfail[109X is returned.[133X

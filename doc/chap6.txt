@@ -548,9 +548,73 @@
   [4X[32X[104X
   
   
-  [1X6.3 [33X[0;0YOrders[133X[101X
+  [1X6.3 [33X[0;0YEdge Weights[133X[101X
   
-  [1X6.3-1 IsPreorderDigraph[101X
+  [1X6.3-1 EdgeWeights[101X
+  
+  [33X[1;0Y[29X[2XEdgeWeights[102X( [3Xdigraph[103X ) [32X attribute[133X
+  [33X[1;0Y[29X[2XEdgeWeightsMutableCopy[102X( [3Xdigraph[103X ) [32X operation[133X
+  [6XReturns:[106X  [33X[0;10YA list of lists of integers, floats or rationals.[133X
+  
+  [33X[0;0Y[10XEdgeWeights[110X  returns  the  list of lists of edge weights of the edges of the
+  digraph [3Xdigraph[103X.[133X
+  
+  [33X[0;0YMore  specifically,  [10Xweights[i][j][110X  is the weight given to the [10Xj[110Xth edge from
+  vertex    [10Xi[110X,    according    to    the    ordering   of   edges   given   by
+  [10XOutNeighbours(digraph)[i][110X.[133X
+  
+  [33X[0;0YThe  function  [10XEdgeWeights[110X  returns  an  immutable  list of immutable lists,
+  whereas  the  function  [10XEdgeWeightsMutableCopy[110X returns a copy of [10XEdgeWeights[110X
+  which is a mutable list of mutable lists.[133X
+  
+  [33X[0;0YThe  edge  weights  of  a  digraph cannot be computed and must be set either
+  using [10XSetEdgeWeights[110X or [2XEdgeWeightedDigraph[102X ([14X6.3-2[114X).[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xgr := EdgeWeightedDigraph([[2], [3], [1]], [[5], [10], [15]]);[127X[104X
+    [4X[28X<immutable digraph with 3 vertices, 3 edges>[128X[104X
+    [4X[25Xgap>[125X [27XEdgeWeights(gr);[127X[104X
+    [4X[28X[ [ 5 ], [ 10 ], [ 15 ] ][128X[104X
+    [4X[25Xgap>[125X [27Xa := EdgeWeightsMutableCopy(gr);[127X[104X
+    [4X[28X[ [ 5 ], [ 10 ], [ 15 ] ][128X[104X
+    [4X[25Xgap>[125X [27Xa[1][1] := 100;[127X[104X
+    [4X[28X100[128X[104X
+    [4X[25Xgap>[125X [27Xa;[127X[104X
+    [4X[28X[ [ 100 ], [ 10 ], [ 15 ] ][128X[104X
+    [4X[25Xgap>[125X [27Xb := EdgeWeights(gr);[127X[104X
+    [4X[28X[ [ 5 ], [ 10 ], [ 15 ] ][128X[104X
+    [4X[25Xgap>[125X [27Xb[1][1] := 534;[127X[104X
+    [4X[28XError, List Assignment: <list> must be a mutable list[128X[104X
+  [4X[32X[104X
+  
+  [1X6.3-2 EdgeWeightedDigraph[101X
+  
+  [33X[1;0Y[29X[2XEdgeWeightedDigraph[102X( [3Xdigraph[103X, [3Xweights[103X ) [32X function[133X
+  [6XReturns:[106X  [33X[0;10YA digraph or [9Xfail[109X[133X
+  
+  [33X[0;0YThe argument [3Xdigraph[103X may be a digraph or a list of lists of integers, floats
+  or rationals.[133X
+  
+  [33X[0;0Y[3Xweights[103X must be a list of lists of integers, floats or rationals of an equal
+  size and shape to [10XOutNeighbours(digraph)[110X, otherwise it will fail.[133X
+  
+  [33X[0;0YThis will create a digraph and set the EdgeWeights to [3Xweights[103X.[133X
+  
+  [33X[0;0YSee [2XEdgeWeights[102X ([14X6.3-1[114X).[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27Xg := EdgeWeightedDigraph(Digraph([[2], [1]]), [[5], [15]]);[127X[104X
+    [4X[28X<immutable digraph with 2 vertices, 2 edges>[128X[104X
+    [4X[25Xgap>[125X [27Xg := EdgeWeightedDigraph([[2], [1]], [[5], [15]]);[127X[104X
+    [4X[28X<immutable digraph with 2 vertices, 2 edges>[128X[104X
+    [4X[25Xgap>[125X [27XEdgeWeights(g);[127X[104X
+    [4X[28X[ [ 5 ], [ 15 ] ][128X[104X
+  [4X[32X[104X
+  
+  
+  [1X6.4 [33X[0;0YOrders[133X[101X
+  
+  [1X6.4-1 IsPreorderDigraph[101X
   
   [33X[1;0Y[29X[2XIsPreorderDigraph[102X( [3Xdigraph[103X ) [32X property[133X
   [33X[1;0Y[29X[2XIsQuasiorderDigraph[102X( [3Xdigraph[103X ) [32X property[133X
@@ -583,7 +647,7 @@
     [4X[28Xfalse[128X[104X
   [4X[32X[104X
   
-  [1X6.3-2 IsPartialOrderDigraph[101X
+  [1X6.4-2 IsPartialOrderDigraph[101X
   
   [33X[1;0Y[29X[2XIsPartialOrderDigraph[102X( [3Xdigraph[103X ) [32X property[133X
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
@@ -612,7 +676,7 @@
     [4X[28Xtrue[128X[104X
   [4X[32X[104X
   
-  [1X6.3-3 IsMeetSemilatticeDigraph[101X
+  [1X6.4-3 IsMeetSemilatticeDigraph[101X
   
   [33X[1;0Y[29X[2XIsMeetSemilatticeDigraph[102X( [3Xdigraph[103X ) [32X property[133X
   [33X[1;0Y[29X[2XIsJoinSemilatticeDigraph[102X( [3Xdigraph[103X ) [32X property[133X
@@ -624,7 +688,7 @@
   a join semilattice; and [10XIsLatticeDigraph[110X returns [9Xtrue[109X if the digraph [3Xdigraph[103X
   is both a meet and a join semilattice.[133X
   
-  [33X[0;0YFor  a partial order digraph [2XIsPartialOrderDigraph[102X ([14X6.3-2[114X) the corresponding
+  [33X[0;0YFor  a partial order digraph [2XIsPartialOrderDigraph[102X ([14X6.4-2[114X) the corresponding
   partial  order  is the relation [22X≤[122X, defined by [22Xx ≤ y[122X if and only if [10X[x, y][110X is
   an  edge. A digraph is a [13Xmeet semilattice[113X if it is a partial order and every
   pair  of  vertices  has  a  greatest  lower bound (meet) with respect to the
@@ -662,16 +726,16 @@
     [4X[28Xtrue[128X[104X
   [4X[32X[104X
   
-  [1X6.3-4 DigraphMeetTable[101X
+  [1X6.4-4 DigraphMeetTable[101X
   
   [33X[1;0Y[29X[2XDigraphMeetTable[102X( [3Xdigraph[103X ) [32X attribute[133X
   [33X[1;0Y[29X[2XDigraphJoinTable[102X( [3Xdigraph[103X ) [32X attribute[133X
   [6XReturns:[106X  [33X[0;10YA matrix or [9Xfail[109X.[133X
   
   [33X[0;0Y[10XDigraphMeetTable[110X  returns  the  [13Xmeet  table[113X  of [3Xdigraph[103X if [3Xdigraph[103X is a meet
-  semilattice    digraph    [2XIsMeetSemilatticeDigraph[102X    ([14X6.3-3[114X).    Similarly,
+  semilattice    digraph    [2XIsMeetSemilatticeDigraph[102X    ([14X6.4-3[114X).    Similarly,
   [10XDigraphJoinTable[110X  returns  the  [13Xjoin  table[113X  of [3Xdigraph[103X if [3Xdigraph[103X is a join
-  semilattice digraph. [2XIsJoinSemilatticeDigraph[102X ([14X6.3-3[114X).[133X
+  semilattice digraph. [2XIsJoinSemilatticeDigraph[102X ([14X6.4-3[114X).[133X
   
   [33X[0;0YWhen  [3Xdigraph[103X  is a meet semilattice digraph with [22Xn[122X vertices, the [13Xmeet table[113X
   of  [3Xdigraph[103X  is  the matrix [22XA[122X such that the [22X(i, j)[122X entry of [22XA[122X is the meet of
@@ -697,7 +761,7 @@
     [4X[28Xfail[128X[104X
   [4X[32X[104X
   
-  [1X6.3-5 IsUpperSemimodularDigraph[101X
+  [1X6.4-5 IsUpperSemimodularDigraph[101X
   
   [33X[1;0Y[29X[2XIsUpperSemimodularDigraph[102X( [3XD[103X ) [32X property[133X
   [33X[1;0Y[29X[2XIsLowerSemimodularDigraph[102X( [3XD[103X ) [32X property[133X
@@ -713,7 +777,7 @@
   semimodular[113X  if  whenever the meet of [10Xa[110X and [10Xb[110X is covered by [10Xa[110X, the join of [10Xa[110X
   and [10Xb[110X covers [10Xb[110X. [13XLower semimodularity[113X is defined analogously.[133X
   
-  [33X[0;0YSee  also  [2XIsLatticeDigraph[102X  ([14X6.3-3[114X),  [2XNonUpperSemimodularPair[102X  ([14X5.3-2[114X), and
+  [33X[0;0YSee  also  [2XIsLatticeDigraph[102X  ([14X6.4-3[114X),  [2XNonUpperSemimodularPair[102X  ([14X5.3-2[114X), and
   [2XNonLowerSemimodularPair[102X  ([14X5.3-2[114X).  If  the argument [3Xdigraph[103X is mutable, then
   the return value of this property is recomputed every time it is called.[133X
   
@@ -727,7 +791,7 @@
     [4X[28Xfalse[128X[104X
   [4X[32X[104X
   
-  [1X6.3-6 IsDistributiveLatticeDigraph[101X
+  [1X6.4-6 IsDistributiveLatticeDigraph[101X
   
   [33X[1;0Y[29X[2XIsDistributiveLatticeDigraph[102X( [3Xdigraph[103X ) [32X property[133X
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
@@ -736,7 +800,7 @@
   [13Xdistributive lattice digraph[113X.[133X
   
   [33X[0;0YA  [13Xdistributive  lattice  digraph[113X  is  a  [13Xlattice  digraph[113X ([2XIsLatticeDigraph[102X
-  ([14X6.3-3[114X))   which   is   distributive.   That   is   to  say,  the  functions
+  ([14X6.4-3[114X))   which   is   distributive.   That   is   to  say,  the  functions
   [2XPartialOrderDigraphMeetOfVertices[102X                 ([14X5.3-1[114X)                and
   [2XPartialOrderDigraphJoinOfVertices[102X ([14X5.3-1[114X) distribute over each other.[133X
   
@@ -764,16 +828,16 @@
   [4X[32X[104X
   
   
-  [1X6.4 [33X[0;0YRegularity[133X[101X
+  [1X6.5 [33X[0;0YRegularity[133X[101X
   
-  [1X6.4-1 IsInRegularDigraph[101X
+  [1X6.5-1 IsInRegularDigraph[101X
   
   [33X[1;0Y[29X[2XIsInRegularDigraph[102X( [3Xdigraph[103X ) [32X property[133X
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
   
   [33X[0;0YThis  property is [9Xtrue[109X if there is an integer [10Xn[110X such that for every vertex [10Xv[110X
   of  digraph  [3Xdigraph[103X  there  are  exactly [10Xn[110X edges terminating in [10Xv[110X. See also
-  [2XIsOutRegularDigraph[102X ([14X6.4-2[114X) and [2XIsRegularDigraph[102X ([14X6.4-3[114X).[133X
+  [2XIsOutRegularDigraph[102X ([14X6.5-2[114X) and [2XIsRegularDigraph[102X ([14X6.5-3[114X).[133X
   
   [33X[0;0YIf  the  argument [3Xdigraph[103X is mutable, then the return value of this property
   is recomputed every time it is called.[133X
@@ -785,7 +849,7 @@
     [4X[28Xfalse[128X[104X
   [4X[32X[104X
   
-  [1X6.4-2 IsOutRegularDigraph[101X
+  [1X6.5-2 IsOutRegularDigraph[101X
   
   [33X[1;0Y[29X[2XIsOutRegularDigraph[102X( [3Xdigraph[103X ) [32X property[133X
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
@@ -793,7 +857,7 @@
   [33X[0;0YThis  property is [9Xtrue[109X if there is an integer [10Xn[110X such that for every vertex [10Xv[110X
   of digraph [3Xdigraph[103X there are exactly [10Xn[110X edges starting at [10Xv[110X.[133X
   
-  [33X[0;0YSee also [2XIsInRegularDigraph[102X ([14X6.4-1[114X) and [2XIsRegularDigraph[102X ([14X6.4-3[114X).[133X
+  [33X[0;0YSee also [2XIsInRegularDigraph[102X ([14X6.5-1[114X) and [2XIsRegularDigraph[102X ([14X6.5-3[114X).[133X
   
   [33X[0;0YIf  the  argument [3Xdigraph[103X is mutable, then the return value of this property
   is recomputed every time it is called.[133X
@@ -805,7 +869,7 @@
     [4X[28Xfalse[128X[104X
   [4X[32X[104X
   
-  [1X6.4-3 IsRegularDigraph[101X
+  [1X6.5-3 IsRegularDigraph[101X
   
   [33X[1;0Y[29X[2XIsRegularDigraph[102X( [3Xdigraph[103X ) [32X property[133X
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
@@ -813,8 +877,8 @@
   [33X[0;0YThis  property is [9Xtrue[109X if there is an integer [10Xn[110X such that for every vertex [10Xv[110X
   of  digraph [3Xdigraph[103X there are exactly [10Xn[110X edges starting and terminating at [10Xv[110X.
   In  other  words, the property is [9Xtrue[109X if [3Xdigraph[103X is both in-regular and and
-  out-regular.  See  also  [2XIsInRegularDigraph[102X  ([14X6.4-1[114X) and [2XIsOutRegularDigraph[102X
-  ([14X6.4-2[114X).[133X
+  out-regular.  See  also  [2XIsInRegularDigraph[102X  ([14X6.5-1[114X) and [2XIsOutRegularDigraph[102X
+  ([14X6.5-2[114X).[133X
   
   [33X[0;0YIf  the  argument [3Xdigraph[103X is mutable, then the return value of this property
   is recomputed every time it is called.[133X
@@ -826,7 +890,7 @@
     [4X[28Xfalse[128X[104X
   [4X[32X[104X
   
-  [1X6.4-4 IsDistanceRegularDigraph[101X
+  [1X6.5-4 IsDistanceRegularDigraph[101X
   
   [33X[1;0Y[29X[2XIsDistanceRegularDigraph[102X( [3Xdigraph[103X ) [32X property[133X
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
@@ -861,9 +925,9 @@
   [4X[32X[104X
   
   
-  [1X6.5 [33X[0;0YConnectivity and cycles[133X[101X
+  [1X6.6 [33X[0;0YConnectivity and cycles[133X[101X
   
-  [1X6.5-1 IsAcyclicDigraph[101X
+  [1X6.6-1 IsAcyclicDigraph[101X
   
   [33X[1;0Y[29X[2XIsAcyclicDigraph[102X( [3Xdigraph[103X ) [32X property[133X
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
@@ -904,7 +968,7 @@
     [4X[28Xfalse[128X[104X
   [4X[32X[104X
   
-  [1X6.5-2 IsChainDigraph[101X
+  [1X6.6-2 IsChainDigraph[101X
   
   [33X[1;0Y[29X[2XIsChainDigraph[102X( [3Xdigraph[103X ) [32X property[133X
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
@@ -914,7 +978,7 @@
   is not; see [2XChainDigraph[102X ([14X3.5-9[114X).[133X
   
   [33X[0;0YA  digraph  is  a [13Xchain[113X if and only if it is a directed tree, in which every
-  vertex has out degree at most one; see [2XIsDirectedTree[102X ([14X6.5-8[114X) and [2XOutDegrees[102X
+  vertex has out degree at most one; see [2XIsDirectedTree[102X ([14X6.6-8[114X) and [2XOutDegrees[102X
   ([14X5.2-8[114X).[133X
   
   [33X[0;0YIf  the  argument [3Xdigraph[103X is mutable, then the return value of this property
@@ -943,7 +1007,7 @@
     [4X[28Xtrue[128X[104X
   [4X[32X[104X
   
-  [1X6.5-3 IsConnectedDigraph[101X
+  [1X6.6-3 IsConnectedDigraph[101X
   
   [33X[1;0Y[29X[2XIsConnectedDigraph[102X( [3Xdigraph[103X ) [32X property[133X
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
@@ -976,14 +1040,14 @@
     [4X[28Xfalse[128X[104X
   [4X[32X[104X
   
-  [1X6.5-4 IsBiconnectedDigraph[101X
+  [1X6.6-4 IsBiconnectedDigraph[101X
   
   [33X[1;0Y[29X[2XIsBiconnectedDigraph[102X( [3Xdigraph[103X ) [32X property[133X
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
   
   [33X[0;0YA connected digraph is [13Xbiconnected[113X if it is still connected (in the sense of
-  [2XIsConnectedDigraph[102X  ([14X6.5-3[114X)) when any vertex is removed. If [3XD[103X has at least 3
-  vertices, then [10XIsBiconnectedDigraph[110X implies [2XIsBridgelessDigraph[102X ([14X6.5-5[114X); see
+  [2XIsConnectedDigraph[102X  ([14X6.6-3[114X)) when any vertex is removed. If [3XD[103X has at least 3
+  vertices, then [10XIsBiconnectedDigraph[110X implies [2XIsBridgelessDigraph[102X ([14X6.6-5[114X); see
   [2XArticulationPoints[102X   ([14X5.4-14[114X)  or  [2XBridges[102X  ([14X5.4-15[114X)  for  a  more  detailed
   explanation.[133X
   
@@ -997,7 +1061,7 @@
   number of edges and [22Xn[122X is the number of vertices in the digraph.[133X
   
   [33X[0;0YSee    also    [2XBridges[102X    ([14X5.4-15[114X),    [2XArticulationPoints[102X    ([14X5.4-14[114X),   and
-  [2XIsBridgelessDigraph[102X ([14X6.5-5[114X).[133X
+  [2XIsBridgelessDigraph[102X ([14X6.6-5[114X).[133X
   
   [33X[0;0YIf  the  argument [3Xdigraph[103X is mutable, then the return value of this property
   is recomputed every time it is called.[133X
@@ -1016,14 +1080,14 @@
     [4X[28Xtrue[128X[104X
   [4X[32X[104X
   
-  [1X6.5-5 IsBridgelessDigraph[101X
+  [1X6.6-5 IsBridgelessDigraph[101X
   
   [33X[1;0Y[29X[2XIsBridgelessDigraph[102X( [3Xdigraph[103X ) [32X property[133X
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
   
   [33X[0;0YA  connected digraph is [13Xbridgeless[113X if it is still connected (in the sense of
-  [2XIsConnectedDigraph[102X  ([14X6.5-3[114X))  when  any  edge  is removed. If [3Xdigraph[103X has at
-  least    3    vertices,    then    [2XIsBiconnectedDigraph[102X    ([14X6.5-4[114X)   implies
+  [2XIsConnectedDigraph[102X  ([14X6.6-3[114X))  when  any  edge  is removed. If [3Xdigraph[103X has at
+  least    3    vertices,    then    [2XIsBiconnectedDigraph[102X    ([14X6.6-4[114X)   implies
   [10XIsBridgelessDigraph[110X; see [2XArticulationPoints[102X ([14X5.4-14[114X) or [2XBridges[102X ([14X5.4-15[114X) for
   a more detailed explanation.[133X
   
@@ -1037,7 +1101,7 @@
   number of edges and [22Xn[122X is the number of vertices in the digraph.[133X
   
   [33X[0;0YSee    also    [2XBridges[102X    ([14X5.4-15[114X),    [2XArticulationPoints[102X    ([14X5.4-14[114X),   and
-  [2XIsBiconnectedDigraph[102X ([14X6.5-4[114X).[133X
+  [2XIsBiconnectedDigraph[102X ([14X6.6-4[114X).[133X
   
   [33X[0;0YIf  the  argument [3Xdigraph[103X is mutable, then the return value of this property
   is recomputed every time it is called.[133X
@@ -1072,7 +1136,7 @@
     [4X[28Xtrue[128X[104X
   [4X[32X[104X
   
-  [1X6.5-6 IsStronglyConnectedDigraph[101X
+  [1X6.6-6 IsStronglyConnectedDigraph[101X
   
   [33X[1;0Y[29X[2XIsStronglyConnectedDigraph[102X( [3Xdigraph[103X ) [32X property[133X
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
@@ -1110,7 +1174,7 @@
     [4X[28Xfalse[128X[104X
   [4X[32X[104X
   
-  [1X6.5-7 IsAperiodicDigraph[101X
+  [1X6.6-7 IsAperiodicDigraph[101X
   
   [33X[1;0Y[29X[2XIsAperiodicDigraph[102X( [3Xdigraph[103X ) [32X property[133X
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
@@ -1136,7 +1200,7 @@
     [4X[28Xtrue[128X[104X
   [4X[32X[104X
   
-  [1X6.5-8 IsDirectedTree[101X
+  [1X6.6-8 IsDirectedTree[101X
   
   [33X[1;0Y[29X[2XIsDirectedTree[102X( [3Xdigraph[103X ) [32X property[133X
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
@@ -1172,7 +1236,7 @@
     [4X[28Xtrue[128X[104X
   [4X[32X[104X
   
-  [1X6.5-9 IsUndirectedTree[101X
+  [1X6.6-9 IsUndirectedTree[101X
   
   [33X[1;0Y[29X[2XIsUndirectedTree[102X( [3Xdigraph[103X ) [32X property[133X
   [33X[1;0Y[29X[2XIsUndirectedForest[102X( [3Xdigraph[103X ) [32X property[133X
@@ -1223,7 +1287,7 @@
     [4X[28Xfalse[128X[104X
   [4X[32X[104X
   
-  [1X6.5-10 IsEulerianDigraph[101X
+  [1X6.6-10 IsEulerianDigraph[101X
   
   [33X[1;0Y[29X[2XIsEulerianDigraph[102X( [3Xdigraph[103X ) [32X property[133X
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
@@ -1257,7 +1321,7 @@
     [4X[28Xtrue[128X[104X
   [4X[32X[104X
   
-  [1X6.5-11 IsHamiltonianDigraph[101X
+  [1X6.6-11 IsHamiltonianDigraph[101X
   
   [33X[1;0Y[29X[2XIsHamiltonianDigraph[102X( [3Xdigraph[103X ) [32X property[133X
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
@@ -1294,7 +1358,7 @@
     [4X[28Xtrue[128X[104X
   [4X[32X[104X
   
-  [1X6.5-12 IsCycleDigraph[101X
+  [1X6.6-12 IsCycleDigraph[101X
   
   [33X[1;0Y[29X[2XIsCycleDigraph[102X( [3Xdigraph[103X ) [32X property[133X
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
@@ -1327,9 +1391,9 @@
   [4X[32X[104X
   
   
-  [1X6.6 [33X[0;0YPlanarity[133X[101X
+  [1X6.7 [33X[0;0YPlanarity[133X[101X
   
-  [1X6.6-1 IsPlanarDigraph[101X
+  [1X6.7-1 IsPlanarDigraph[101X
   
   [33X[1;0Y[29X[2XIsPlanarDigraph[102X( [3Xdigraph[103X ) [32X property[133X
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
@@ -1344,7 +1408,7 @@
   it  is  not.  The  directions and multiplicities of any edges in [3Xdigraph[103X are
   ignored by [10XIsPlanarDigraph[110X.[133X
   
-  [33X[0;0YSee also [2XIsOuterPlanarDigraph[102X ([14X6.6-2[114X).[133X
+  [33X[0;0YSee also [2XIsOuterPlanarDigraph[102X ([14X6.7-2[114X).[133X
   
   [33X[0;0YThis      method      uses      the      reference     implementation     in
   [5Xedge-addition-planarity-suite[105X  by  John Boyer of the algorithms described in
@@ -1369,7 +1433,7 @@
     [4X[28Xfalse[128X[104X
   [4X[32X[104X
   
-  [1X6.6-2 IsOuterPlanarDigraph[101X
+  [1X6.7-2 IsOuterPlanarDigraph[101X
   
   [33X[1;0Y[29X[2XIsOuterPlanarDigraph[102X( [3Xdigraph[103X ) [32X property[133X
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
@@ -1385,7 +1449,7 @@
   [9Xfalse[109X  if  it  is  not.  The  directions  and multiplicities of any edges in
   [3Xdigraph[103X are ignored by [10XIsPlanarDigraph[110X.[133X
   
-  [33X[0;0YSee   also   [2XIsPlanarDigraph[102X   ([14X6.6-1[114X).   This  method  uses  the  reference
+  [33X[0;0YSee   also   [2XIsPlanarDigraph[102X   ([14X6.7-1[114X).   This  method  uses  the  reference
   implementation   in  [5Xedge-addition-planarity-suite[105X  by  John  Boyer  of  the
   algorithms described in [BM06].[133X
   
@@ -1416,9 +1480,9 @@
   [4X[32X[104X
   
   
-  [1X6.7 [33X[0;0YHomomorphisms and transformations[133X[101X
+  [1X6.8 [33X[0;0YHomomorphisms and transformations[133X[101X
   
-  [1X6.7-1 IsDigraphCore[101X
+  [1X6.8-1 IsDigraphCore[101X
   
   [33X[1;0Y[29X[2XIsDigraphCore[102X( [3Xdigraph[103X ) [32X property[133X
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
@@ -1445,7 +1509,7 @@
     [4X[28Xfalse[128X[104X
   [4X[32X[104X
   
-  [1X6.7-2 IsEdgeTransitive[101X
+  [1X6.8-2 IsEdgeTransitive[101X
   
   [33X[1;0Y[29X[2XIsEdgeTransitive[102X( [3Xdigraph[103X ) [32X property[133X
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
@@ -1467,7 +1531,7 @@
     [4X[28XError, the argument <D> must be a digraph with no multiple edges,[128X[104X
   [4X[32X[104X
   
-  [1X6.7-3 IsVertexTransitive[101X
+  [1X6.8-3 IsVertexTransitive[101X
   
   [33X[1;0Y[29X[2XIsVertexTransitive[102X( [3Xdigraph[103X ) [32X property[133X
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X

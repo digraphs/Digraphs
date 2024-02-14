@@ -97,17 +97,19 @@
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X8039170B82A32257">5.4-22 DigraphPath</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X80E9D645843973A6">5.4-23 DigraphShortestPath</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X7C45396C808308C4">5.4-24 DigraphRandomWalk</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X7FE79CB278CE6991">5.4-25 Dominators</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X7D66A0FB7F6100FB">5.4-26 DominatorTree</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X7C0416FE7A69CA2C">5.4-27 IteratorOfPaths</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X7ECD16838704FAAA">5.4-28 DigraphAllSimpleCircuits</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X7C735C4E86BDD5F6">5.4-29 DigraphLongestSimpleCircuit</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X870E04307C5F213F">5.4-30 DigraphLayers</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X7B2E42327DA118E0">5.4-31 DigraphDegeneracy</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X827C2BD17A4547E3">5.4-32 DigraphDegeneracyOrdering</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X863FDFC4839A3B82">5.4-33 HamiltonianPath</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X82F30D5681466BC6">5.4-34 NrSpanningTrees</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X79352A8286D1D8F6">5.4-35 DigraphDijkstra</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X787459247B2005E6">5.4-25 DigraphAbsorptionProbabilities</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X7B0A62CF7F6F23E9">5.4-26 DigraphAbsorptionExpectedSteps</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X7FE79CB278CE6991">5.4-27 Dominators</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X7D66A0FB7F6100FB">5.4-28 DominatorTree</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X7C0416FE7A69CA2C">5.4-29 IteratorOfPaths</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X7ECD16838704FAAA">5.4-30 DigraphAllSimpleCircuits</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X7C735C4E86BDD5F6">5.4-31 DigraphLongestSimpleCircuit</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X870E04307C5F213F">5.4-32 DigraphLayers</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X7B2E42327DA118E0">5.4-33 DigraphDegeneracy</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X827C2BD17A4547E3">5.4-34 DigraphDegeneracyOrdering</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X863FDFC4839A3B82">5.4-35 HamiltonianPath</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X82F30D5681466BC6">5.4-36 NrSpanningTrees</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X79352A8286D1D8F6">5.4-37 DigraphDijkstra</a></span>
 </div></div>
 <div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap5.html#X82F900777D677F55">5.5 <span class="Heading">Cayley graphs of groups</span></a>
 </span>
@@ -1208,7 +1210,7 @@ false
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; PartialOrderDigraphJoinOfVertices</code>( <var class="Arg">digraph</var>, <var class="Arg">u</var>, <var class="Arg">v</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: A positive integer or <code class="keyw">fail</code></p>
 
-<p>If the first argument is a partial order digraph <code class="func">IsPartialOrderDigraph</code> (<a href="chap6.html#X82BAE6D37D49A145"><span class="RefLink">6.3-2</span></a>) then these operations return the meet, or the join, of the two input vertices. If the meet (or join) is does not exist then <code class="keyw">fail</code> is returned. The meet (or join) is guaranteed to exist when the first argument satisfies <code class="func">IsMeetSemilatticeDigraph</code> (<a href="chap6.html#X78D3E17B7F737516"><span class="RefLink">6.3-3</span></a>) (or <code class="func">IsJoinSemilatticeDigraph</code> (<a href="chap6.html#X78D3E17B7F737516"><span class="RefLink">6.3-3</span></a>)) - see the documentation for these properties for the definition of the meet (or the join).</p>
+<p>If the first argument is a partial order digraph <code class="func">IsPartialOrderDigraph</code> (<a href="chap6.html#X82BAE6D37D49A145"><span class="RefLink">6.4-2</span></a>) then these operations return the meet, or the join, of the two input vertices. If the meet (or join) is does not exist then <code class="keyw">fail</code> is returned. The meet (or join) is guaranteed to exist when the first argument satisfies <code class="func">IsMeetSemilatticeDigraph</code> (<a href="chap6.html#X78D3E17B7F737516"><span class="RefLink">6.4-3</span></a>) (or <code class="func">IsJoinSemilatticeDigraph</code> (<a href="chap6.html#X78D3E17B7F737516"><span class="RefLink">6.4-3</span></a>)) - see the documentation for these properties for the definition of the meet (or the join).</p>
 
 
 <div class="example"><pre>
@@ -1244,11 +1246,11 @@ fail
 
 <p><code class="code">NonUpperSemimodularPair</code> returns a pair of vertices in the digraph <var class="Arg">D</var> that witnesses the fact that <var class="Arg">D</var> does not represent an upper semimodular lattice, if such a pair exists.</p>
 
-<p>If the digraph <var class="Arg">D</var> does not satisfy <code class="func">IsLatticeDigraph</code> (<a href="chap6.html#X78D3E17B7F737516"><span class="RefLink">6.3-3</span></a>), then an error is given. Otherwise if the digraph <var class="Arg">D</var> does satisfy <code class="func">IsLatticeDigraph</code> (<a href="chap6.html#X78D3E17B7F737516"><span class="RefLink">6.3-3</span></a>), then either a non-upper semimodular pair of vertices is returned, or <code class="keyw">fail</code> is returned if no such pair exists (meaning that <var class="Arg">D</var> is an upper semimodular lattice.</p>
+<p>If the digraph <var class="Arg">D</var> does not satisfy <code class="func">IsLatticeDigraph</code> (<a href="chap6.html#X78D3E17B7F737516"><span class="RefLink">6.4-3</span></a>), then an error is given. Otherwise if the digraph <var class="Arg">D</var> does satisfy <code class="func">IsLatticeDigraph</code> (<a href="chap6.html#X78D3E17B7F737516"><span class="RefLink">6.4-3</span></a>), then either a non-upper semimodular pair of vertices is returned, or <code class="keyw">fail</code> is returned if no such pair exists (meaning that <var class="Arg">D</var> is an upper semimodular lattice.</p>
 
 <p><code class="code">NonLowerSemimodularPair</code> behaves in the analogous way to <code class="code">NonUpperSemimodularPair</code> with respect to lower semimodularity.</p>
 
-<p>See <code class="func">IsUpperSemimodularDigraph</code> (<a href="chap6.html#X7DEDCD177E5AE824"><span class="RefLink">6.3-5</span></a>) and <code class="func">IsLowerSemimodularDigraph</code> (<a href="chap6.html#X7DEDCD177E5AE824"><span class="RefLink">6.3-5</span></a>) for the definition of upper semimodularity of a lattice.</p>
+<p>See <code class="func">IsUpperSemimodularDigraph</code> (<a href="chap6.html#X7DEDCD177E5AE824"><span class="RefLink">6.4-5</span></a>) and <code class="func">IsLowerSemimodularDigraph</code> (<a href="chap6.html#X7DEDCD177E5AE824"><span class="RefLink">6.4-5</span></a>) for the definition of upper semimodularity of a lattice.</p>
 
 
 <div class="example"><pre>
@@ -1659,7 +1661,7 @@ rec( comps := [ [ 1, 2 ], [ 3, 4, 5 ] ], id := [ 1, 1, 2, 2, 2 ] )
 
 <p>For a bipartite digraph, the vertices can be partitioned into two non-empty sets such that the source and range of any edge are in distinct sets. The parts of this partition are called <em>bicomponents</em> of <var class="Arg">digraph</var>. Equivalently, a pair of bicomponents of <var class="Arg">digraph</var> consists of the color-classes of a 2-coloring of <var class="Arg">digraph</var>.</p>
 
-<p>For a bipartite digraph with at least 3 vertices, there is a unique pair of bicomponents of bipartite if and only if the digraph is connected. See <code class="func">IsConnectedDigraph</code> (<a href="chap6.html#X83C08C0B7EC1A91F"><span class="RefLink">6.5-3</span></a>) for more information.</p>
+<p>For a bipartite digraph with at least 3 vertices, there is a unique pair of bicomponents of bipartite if and only if the digraph is connected. See <code class="func">IsConnectedDigraph</code> (<a href="chap6.html#X83C08C0B7EC1A91F"><span class="RefLink">6.6-3</span></a>) for more information.</p>
 
 
 <div class="example"><pre>
@@ -1688,7 +1690,7 @@ fail
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; ArticulationPoints</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
 <p>Returns: A list of vertices.</p>
 
-<p>A connected digraph is <em>biconnected</em> if it is still connected (in the sense of <code class="func">IsConnectedDigraph</code> (<a href="chap6.html#X83C08C0B7EC1A91F"><span class="RefLink">6.5-3</span></a>)) when any vertex is removed. If the digraph <var class="Arg">digraph</var> is not biconnected but is connected, then any vertex <code class="code">v</code> of <var class="Arg">digraph</var> whose removal makes the resulting digraph disconnected is called an <em>articulation point</em>.</p>
+<p>A connected digraph is <em>biconnected</em> if it is still connected (in the sense of <code class="func">IsConnectedDigraph</code> (<a href="chap6.html#X83C08C0B7EC1A91F"><span class="RefLink">6.6-3</span></a>)) when any vertex is removed. If the digraph <var class="Arg">digraph</var> is not biconnected but is connected, then any vertex <code class="code">v</code> of <var class="Arg">digraph</var> whose removal makes the resulting digraph disconnected is called an <em>articulation point</em>.</p>
 
 <p><code class="code">ArticulationPoints</code> returns a list of the articulation points of <var class="Arg">digraph</var>, if any, and, in particular, returns the empty list if <var class="Arg">digraph</var> is not connected.</p>
 
@@ -1698,7 +1700,7 @@ fail
 
 <p>If <var class="Arg">D</var> has a bridge (see <code class="func">Bridges</code> (<a href="chap5.html#X84D5A125848BD800"><span class="RefLink">5.4-15</span></a>)), then a node incident to the bridge is an articulation point if and only if it has degree at least <span class="SimpleMath">2</span>. It follows that if <var class="Arg">D</var> has a bridge and at least <span class="SimpleMath">3</span> nodes, then at least one of the nodes incident to the bridge is an articulation point. The converse does not hold, there are digraphs with articulation points, but no bridges.</p>
 
-<p>See also <code class="func">IsBiconnectedDigraph</code> (<a href="chap6.html#X838FAF2D825977BE"><span class="RefLink">6.5-4</span></a>) and <code class="func">IsBridgelessDigraph</code> (<a href="chap6.html#X7D2A6572820B7F24"><span class="RefLink">6.5-5</span></a>).</p>
+<p>See also <code class="func">IsBiconnectedDigraph</code> (<a href="chap6.html#X838FAF2D825977BE"><span class="RefLink">6.6-4</span></a>) and <code class="func">IsBridgelessDigraph</code> (<a href="chap6.html#X7D2A6572820B7F24"><span class="RefLink">6.6-5</span></a>).</p>
 
 
 <div class="example"><pre>
@@ -1724,7 +1726,7 @@ fail
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; Bridges</code>( <var class="Arg">D</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
 <p>Returns: A (possibly empty) list of edges.</p>
 
-<p>A connected digraph is <em>2-edge-connected</em> if it is still connected (in the sense of <code class="func">IsConnectedDigraph</code> (<a href="chap6.html#X83C08C0B7EC1A91F"><span class="RefLink">6.5-3</span></a>)) when any edge is removed. If the digraph <var class="Arg">D</var> is not 2-edge-connected but is connected, then any edge <code class="code">[u, v]</code> of <var class="Arg">D</var> whose removal makes the resulting digraph disconnected is called a <em>bridge</em>.</p>
+<p>A connected digraph is <em>2-edge-connected</em> if it is still connected (in the sense of <code class="func">IsConnectedDigraph</code> (<a href="chap6.html#X83C08C0B7EC1A91F"><span class="RefLink">6.6-3</span></a>)) when any edge is removed. If the digraph <var class="Arg">D</var> is not 2-edge-connected but is connected, then any edge <code class="code">[u, v]</code> of <var class="Arg">D</var> whose removal makes the resulting digraph disconnected is called a <em>bridge</em>.</p>
 
 <p><code class="code">Bridges</code> returns a list of the bridges of <var class="Arg">D</var>, if any, and, in particular, returns the empty list if <var class="Arg">D</var> is not connected.</p>
 
@@ -1734,7 +1736,7 @@ fail
 
 <p>If <var class="Arg">D</var> has a bridge, then a node incident to the bridge is an articulation point (see <code class="func">ArticulationPoints</code> (<a href="chap5.html#X7DDE06E47E605DD7"><span class="RefLink">5.4-14</span></a>)) if and only if it has degree at least <span class="SimpleMath">2</span>. It follows that if <var class="Arg">D</var> has a bridge and at least <span class="SimpleMath">3</span> nodes, then at least one of the nodes incident to the bridge is an articulation point. The converse does not hold, there are digraphs with articulation points, but no bridges.</p>
 
-<p>See also <code class="func">IsBiconnectedDigraph</code> (<a href="chap6.html#X838FAF2D825977BE"><span class="RefLink">6.5-4</span></a>) and <code class="func">IsBridgelessDigraph</code> (<a href="chap6.html#X7D2A6572820B7F24"><span class="RefLink">6.5-5</span></a>).</p>
+<p>See also <code class="func">IsBiconnectedDigraph</code> (<a href="chap6.html#X838FAF2D825977BE"><span class="RefLink">6.6-4</span></a>) and <code class="func">IsBridgelessDigraph</code> (<a href="chap6.html#X7D2A6572820B7F24"><span class="RefLink">6.6-5</span></a>).</p>
 
 
 <div class="example"><pre>
@@ -1760,7 +1762,7 @@ fail
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; StrongOrientationAttr</code>( <var class="Arg">D</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
 <p>Returns: A digraph or <code class="keyw">fail</code>.</p>
 
-<p>A <em>strong orientation</em> of a connected symmetric digraph <var class="Arg">D</var> (if it exists) is a strongly connected subdigraph <code class="code">C</code> of <var class="Arg">D</var> such that for every edge <code class="code">[u, v]</code> of <var class="Arg">D</var> either <code class="code">[u, v]</code> or <code class="code">[v, u]</code> is an edge of <code class="code">C</code> but not both. Robbin's Theorem states that a digraph admits a strong orientation if and only if it is bridgeless (see <code class="func">IsBridgelessDigraph</code> (<a href="chap6.html#X7D2A6572820B7F24"><span class="RefLink">6.5-5</span></a>)).</p>
+<p>A <em>strong orientation</em> of a connected symmetric digraph <var class="Arg">D</var> (if it exists) is a strongly connected subdigraph <code class="code">C</code> of <var class="Arg">D</var> such that for every edge <code class="code">[u, v]</code> of <var class="Arg">D</var> either <code class="code">[u, v]</code> or <code class="code">[v, u]</code> is an edge of <code class="code">C</code> but not both. Robbin's Theorem states that a digraph admits a strong orientation if and only if it is bridgeless (see <code class="func">IsBridgelessDigraph</code> (<a href="chap6.html#X7D2A6572820B7F24"><span class="RefLink">6.6-5</span></a>)).</p>
 
 <p>This operation returns a strong orientation of the digraph <var class="Arg">D</var> if <var class="Arg">D</var> is symmetric and <var class="Arg">D</var> admits a strong orientation. If <var class="Arg">D</var> is symmetric but does not admit a strong orientation, then <code class="keyw">fail</code> is returned. If <var class="Arg">D</var> is not symmetric, then an error is given.</p>
 
@@ -1797,7 +1799,7 @@ fail
 
 <p>If a digraph <var class="Arg">digraph</var> has at least one directed cycle, then the period is the greatest positive integer which divides the lengths of all directed cycles of <var class="Arg">digraph</var>. If <var class="Arg">digraph</var> has no directed cycles, then this function returns <span class="SimpleMath">0</span>. See Section <a href="chap1.html#X84541F61810C741D"><span class="RefLink">1.1-1</span></a> for the definition of a directed cycle.</p>
 
-<p>A digraph with a period of <span class="SimpleMath">1</span> is said to be <em>aperiodic</em>. See <code class="func">IsAperiodicDigraph</code> (<a href="chap6.html#X80E883967EBE839E"><span class="RefLink">6.5-7</span></a>).</p>
+<p>A digraph with a period of <span class="SimpleMath">1</span> is said to be <em>aperiodic</em>. See <code class="func">IsAperiodicDigraph</code> (<a href="chap6.html#X80E883967EBE839E"><span class="RefLink">6.6-7</span></a>).</p>
 
 
 <div class="example"><pre>
@@ -2058,9 +2060,53 @@ fail
 [ [ 1, 2, 3, 2, 3 ], [ 2, 1, 1, 1 ] ]
 </pre></div>
 
+<p><a id="X787459247B2005E6" name="X787459247B2005E6"></a></p>
+
+<h5>5.4-25 DigraphAbsorptionProbabilities</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphAbsorptionProbabilities</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
+<p>Returns: A matrix of rational numbers.</p>
+
+<p>A random walk of infinite length through a finite digraph may pass through several different strongly connected components (SCCs). However, with probability 1 it must eventually reach an SCC which it can never leave, because the SCC has no out-edges leading to other SCCs. We may say that such an SCC has <em>absorbed</em> the random walk, and we can calculate the probability of each SCC absorbing a walk starting at a given vertex.</p>
+
+<p><code class="code">DigraphAbsorptionProbabilities</code> returns an <span class="SimpleMath">m × n</span> matrix <code class="code">mat</code>, where <span class="SimpleMath">m</span> is the number of vertices in <code class="code">digraph</code> and <span class="SimpleMath">n</span> is the number of strongly connected components. Each entry <code class="code">mat[i][j]</code> is a rational number representing the probability that an unbounded random walk starting at vertex <code class="code">i</code> will be absorbed by strongly connected component <code class="code">j</code> – that is, the probability that it will reach the component and never leave.</p>
+
+<p>Strongly connected components are indexed in the order given by <code class="func">DigraphStronglyConnectedComponents</code> (<a href="chap5.html#X833ECD6B7A84944C"><span class="RefLink">5.4-11</span></a>). See also <code class="func">DigraphRandomWalk</code> (<a href="chap5.html#X7C45396C808308C4"><span class="RefLink">5.4-24</span></a>) and <code class="func">DigraphAbsorptionExpectedSteps</code> (<a href="chap5.html#X7B0A62CF7F6F23E9"><span class="RefLink">5.4-26</span></a>).</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[2, 3, 4], [3], [2], []]);</span>
+&lt;immutable digraph with 4 vertices, 5 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphStronglyConnectedComponents(gr).comps;</span>
+[ [ 2, 3 ], [ 4 ], [ 1 ] ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphAbsorptionProbabilities(gr);</span>
+[ [ 2/3, 1/3, 0 ], [ 1, 0, 0 ], [ 1, 0, 0 ], [ 0, 1, 0 ] ]
+</pre></div>
+
+<p><a id="X7B0A62CF7F6F23E9" name="X7B0A62CF7F6F23E9"></a></p>
+
+<h5>5.4-26 DigraphAbsorptionExpectedSteps</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphAbsorptionExpectedSteps</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
+<p>Returns: A list of rational numbers.</p>
+
+<p>A random walk of unbounded length through a finite digraph may pass through several different strongly connected components (SCCs). However, with probability 1 it must eventually reach an SCC which it can never leave, because the SCC has no out-edges leading to other SCCs. When this happens, we say the walk has been <em>absorbed</em>.</p>
+
+<p><code class="code">DigraphAbsorptionExpectedSteps</code> returns a list <code class="code">L</code> with length equal to the number of vertices of <var class="Arg">digraph</var>, where <code class="code">L[v]</code> is the expected number of steps a random walk starting at vertex <code class="code">v</code> should take before it is absorbed – that is, the expected number of steps to reach an SCC that it can never leave.</p>
+
+<p>See also <code class="func">DigraphRandomWalk</code> (<a href="chap5.html#X7C45396C808308C4"><span class="RefLink">5.4-24</span></a>) and <code class="func">DigraphAbsorptionProbabilities</code> (<a href="chap5.html#X787459247B2005E6"><span class="RefLink">5.4-25</span></a>).</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph([[2], [3, 4], [], [2]]);</span>
+&lt;immutable digraph with 4 vertices, 4 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphAbsorptionExpectedSteps(gr);</span>
+[ 4, 3, 0, 4 ]
+</pre></div>
+
 <p><a id="X7FE79CB278CE6991" name="X7FE79CB278CE6991"></a></p>
 
-<h5>5.4-25 Dominators</h5>
+<h5>5.4-27 Dominators</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; Dominators</code>( <var class="Arg">digraph</var>, <var class="Arg">root</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: A list of lists.</p>
@@ -2087,7 +2133,7 @@ fail
 
 <p><a id="X7D66A0FB7F6100FB" name="X7D66A0FB7F6100FB"></a></p>
 
-<h5>5.4-26 DominatorTree</h5>
+<h5>5.4-28 DominatorTree</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DominatorTree</code>( <var class="Arg">digraph</var>, <var class="Arg">root</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: A record.</p>
@@ -2127,14 +2173,14 @@ rec( idom := [ 2, fail, 2, 2, 2 ], preorder := [ 2, 1, 3, 4, 5 ] )
 
 <p><a id="X7C0416FE7A69CA2C" name="X7C0416FE7A69CA2C"></a></p>
 
-<h5>5.4-27 IteratorOfPaths</h5>
+<h5>5.4-29 IteratorOfPaths</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IteratorOfPaths</code>( <var class="Arg">digraph</var>, <var class="Arg">u</var>, <var class="Arg">v</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: An iterator.</p>
 
 <p>If <var class="Arg">digraph</var> is a digraph or a list of adjacencies which defines a digraph - see <code class="func">OutNeighbours</code> (<a href="chap5.html#X7E9880767AE68E00"><span class="RefLink">5.2-6</span></a>) - then this operation returns an iterator of the non-trivial directed paths (or directed cycles, in the case that <var class="Arg">u</var> <code class="code">=</code> <var class="Arg">v</var>) in <var class="Arg">digraph</var> from the vertex <var class="Arg">u</var> to the vertex <var class="Arg">v</var>.</p>
 
-<p>See <code class="func">DigraphPath</code> (<a href="chap5.html#X8039170B82A32257"><span class="RefLink">5.4-22</span></a>) for more information about the representation of a directed path or directed cycle which is used, and see <a href="https://www.gap-system.org/Manuals/doc/ref/chap30_mj.html#X85A3F00985453F95"><span class="RefLink">Reference: Iterators</span></a> for more information about iterators. See Section <a href="chap1.html#X84541F61810C741D"><span class="RefLink"><span class="Heading">Definitions</span></span></a> for the definition of a directed path and a directed cycle.</p>
+<p>See <code class="func">DigraphPath</code> (<a href="chap5.html#X8039170B82A32257"><span class="RefLink">5.4-22</span></a>) for more information about the representation of a directed path or directed cycle which is used, and see <a href="https://www.gap-system.org/Manuals/doc/ref/chap30.html#X85A3F00985453F95"><span class="RefLink">Reference: Iterators</span></a> for more information about iterators. See Section <a href="chap1.html#X84541F61810C741D"><span class="RefLink"><span class="Heading">Definitions</span></span></a> for the definition of a directed path and a directed cycle.</p>
 
 
 <div class="example"><pre>
@@ -2158,7 +2204,7 @@ true
 
 <p><a id="X7ECD16838704FAAA" name="X7ECD16838704FAAA"></a></p>
 
-<h5>5.4-28 DigraphAllSimpleCircuits</h5>
+<h5>5.4-30 DigraphAllSimpleCircuits</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphAllSimpleCircuits</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
 <p>Returns: A list of lists of vertices.</p>
@@ -2196,14 +2242,14 @@ true
 
 <p><a id="X7C735C4E86BDD5F6" name="X7C735C4E86BDD5F6"></a></p>
 
-<h5>5.4-29 DigraphLongestSimpleCircuit</h5>
+<h5>5.4-31 DigraphLongestSimpleCircuit</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphLongestSimpleCircuit</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
 <p>Returns: A list of vertices, or <code class="keyw">fail</code>.</p>
 
 <p>If <var class="Arg">digraph</var> is a digraph, then <code class="code">DigraphLongestSimpleCircuit</code> returns the longest <em>simple circuit</em> in <var class="Arg">digraph</var>. See Section <a href="chap1.html#X84541F61810C741D"><span class="RefLink">1.1-1</span></a> for the definition of simple circuit, and the definition of length for a simple circuit.</p>
 
-<p>This attribute computes <code class="code">DigraphAllSimpleCircuits(</code><var class="Arg">digraph</var><code class="code">)</code> to find all the simple circuits of <var class="Arg">digraph</var>, and returns one of maximal length. A simple circuit is represented as a list of vertices, in the same way as described in <code class="func">DigraphAllSimpleCircuits</code> (<a href="chap5.html#X7ECD16838704FAAA"><span class="RefLink">5.4-28</span></a>).</p>
+<p>This attribute computes <code class="code">DigraphAllSimpleCircuits(</code><var class="Arg">digraph</var><code class="code">)</code> to find all the simple circuits of <var class="Arg">digraph</var>, and returns one of maximal length. A simple circuit is represented as a list of vertices, in the same way as described in <code class="func">DigraphAllSimpleCircuits</code> (<a href="chap5.html#X7ECD16838704FAAA"><span class="RefLink">5.4-30</span></a>).</p>
 
 <p>If <var class="Arg">digraph</var> has no simple circuits, then this attribute returns <code class="keyw">fail</code>. If <var class="Arg">digraph</var> has multiple simple circuits of maximal length, then this attribute returns one of them.</p>
 
@@ -2226,7 +2272,7 @@ fail
 
 <p><a id="X870E04307C5F213F" name="X870E04307C5F213F"></a></p>
 
-<h5>5.4-30 DigraphLayers</h5>
+<h5>5.4-32 DigraphLayers</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphLayers</code>( <var class="Arg">digraph</var>, <var class="Arg">vertex</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: A list.</p>
@@ -2242,7 +2288,7 @@ fail
 
 <p><a id="X7B2E42327DA118E0" name="X7B2E42327DA118E0"></a></p>
 
-<h5>5.4-31 DigraphDegeneracy</h5>
+<h5>5.4-33 DigraphDegeneracy</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphDegeneracy</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
 <p>Returns: A non-negative integer, or <code class="keyw">fail</code>.</p>
@@ -2273,12 +2319,12 @@ fail
 
 <p><a id="X827C2BD17A4547E3" name="X827C2BD17A4547E3"></a></p>
 
-<h5>5.4-32 DigraphDegeneracyOrdering</h5>
+<h5>5.4-34 DigraphDegeneracyOrdering</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphDegeneracyOrdering</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
 <p>Returns: A list of integers, or <code class="keyw">fail</code>.</p>
 
-<p>If <var class="Arg">digraph</var> is a digraph for which <code class="code">DigraphDegeneracy(</code><var class="Arg">digraph</var><code class="code">)</code> is a non-negative integer <code class="code">k</code> - see <code class="func">DigraphDegeneracy</code> (<a href="chap5.html#X7B2E42327DA118E0"><span class="RefLink">5.4-31</span></a>) - then this attribute returns a degeneracy ordering of the vertices of the vertices of <var class="Arg">digraph</var>.</p>
+<p>If <var class="Arg">digraph</var> is a digraph for which <code class="code">DigraphDegeneracy(</code><var class="Arg">digraph</var><code class="code">)</code> is a non-negative integer <code class="code">k</code> - see <code class="func">DigraphDegeneracy</code> (<a href="chap5.html#X7B2E42327DA118E0"><span class="RefLink">5.4-33</span></a>) - then this attribute returns a degeneracy ordering of the vertices of the vertices of <var class="Arg">digraph</var>.</p>
 
 <p>A degeneracy ordering of <var class="Arg">digraph</var> is a list <code class="code">ordering</code> of the vertices of <var class="Arg">digraph</var> ordered such that for any position <code class="code">i</code> of the list, the vertex <code class="code">ordering[i]</code> has at most <code class="code">k</code> neighbours in later position of the list.</p>
 
@@ -2304,14 +2350,14 @@ fail
 
 <p><a id="X863FDFC4839A3B82" name="X863FDFC4839A3B82"></a></p>
 
-<h5>5.4-33 HamiltonianPath</h5>
+<h5>5.4-35 HamiltonianPath</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; HamiltonianPath</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
 <p>Returns: A list or <code class="keyw">fail</code>.</p>
 
 <p>Returns a Hamiltonian path if one exists, <code class="keyw">fail</code> if not.</p>
 
-<p>A <em>Hamiltonian path</em> of a digraph with <code class="code">n</code> vertices is directed cycle of length <code class="code">n</code>. If <var class="Arg">digraph</var> is a digraph that contains a Hamiltonian path, then this function returns one, described in the form used by <code class="func">DigraphAllSimpleCircuits</code> (<a href="chap5.html#X7ECD16838704FAAA"><span class="RefLink">5.4-28</span></a>). Note if <var class="Arg">digraph</var> has 0 or 1 vertices, then <code class="code">HamiltonianPath</code> returns <code class="code">[]</code> or <code class="code">[1]</code>, respectively.</p>
+<p>A <em>Hamiltonian path</em> of a digraph with <code class="code">n</code> vertices is directed cycle of length <code class="code">n</code>. If <var class="Arg">digraph</var> is a digraph that contains a Hamiltonian path, then this function returns one, described in the form used by <code class="func">DigraphAllSimpleCircuits</code> (<a href="chap5.html#X7ECD16838704FAAA"><span class="RefLink">5.4-30</span></a>). Note if <var class="Arg">digraph</var> has 0 or 1 vertices, then <code class="code">HamiltonianPath</code> returns <code class="code">[]</code> or <code class="code">[1]</code>, respectively.</p>
 
 <p>The method used in this attribute has the same worst case complexity as <code class="func">DigraphMonomorphism</code> (<a href="chap7.html#X82D0FCD87D47ACA8"><span class="RefLink">7.3-4</span></a>).</p>
 
@@ -2341,7 +2387,7 @@ fail
 
 <p><a id="X82F30D5681466BC6" name="X82F30D5681466BC6"></a></p>
 
-<h5>5.4-34 NrSpanningTrees</h5>
+<h5>5.4-36 NrSpanningTrees</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; NrSpanningTrees</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
 <p>Returns: An integer.</p>
@@ -2369,7 +2415,7 @@ fail
 
 <p><a id="X79352A8286D1D8F6" name="X79352A8286D1D8F6"></a></p>
 
-<h5>5.4-35 DigraphDijkstra</h5>
+<h5>5.4-37 DigraphDijkstra</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphDijkstra</code>( <var class="Arg">digraph</var>, <var class="Arg">source</var>, <var class="Arg">target</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphDijkstra</code>( <var class="Arg">digraph</var>, <var class="Arg">source</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
@@ -2457,11 +2503,11 @@ true</pre></div>
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; AsMonoid</code>( <var class="Arg">filt</var>, <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: A semilattice of partial perms.</p>
 
-<p>The operation <code class="code">AsSemigroup</code> requires that <var class="Arg">filt</var> be equal to <code class="func">IsPartialPermSemigroup</code> (<a href="https://www.gap-system.org/Manuals/doc/ref/chap54_mj.html#X7D161674800B50E0"><span class="RefLink">Reference: IsPartialPermSemigroup</span></a>). If <var class="Arg">digraph</var> is a <code class="func">IsJoinSemilatticeDigraph</code> (<a href="chap6.html#X78D3E17B7F737516"><span class="RefLink">6.3-3</span></a>) or <code class="func">IsLatticeDigraph</code> (<a href="chap6.html#X78D3E17B7F737516"><span class="RefLink">6.3-3</span></a>) then <code class="code">AsSemigroup</code> returns a semigroup of partial perms which is isomorphic to the semigroup whose elements are the vertices of <var class="Arg">digraph</var> with the binary operation <code class="func">PartialOrderDigraphJoinOfVertices</code> (<a href="chap5.html#X7DDB33B686B3A2C6"><span class="RefLink">5.3-1</span></a>). If <var class="Arg">digraph</var> satisfies <code class="func">IsMeetSemilatticeDigraph</code> (<a href="chap6.html#X78D3E17B7F737516"><span class="RefLink">6.3-3</span></a>) but not <code class="func">IsJoinSemilatticeDigraph</code> (<a href="chap6.html#X78D3E17B7F737516"><span class="RefLink">6.3-3</span></a>) then <code class="code">AsSemigroup</code> returns a semigroup of partial perms which is isomorphic to the semigroup whose elements are the vertices of <var class="Arg">digraph</var> with the binary operation <code class="func">PartialOrderDigraphMeetOfVertices</code> (<a href="chap5.html#X7DDB33B686B3A2C6"><span class="RefLink">5.3-1</span></a>).</p>
+<p>The operation <code class="code">AsSemigroup</code> requires that <var class="Arg">filt</var> be equal to <code class="func">IsPartialPermSemigroup</code> (<a href="https://www.gap-system.org/Manuals/doc/ref/chap54.html#X7D161674800B50E0"><span class="RefLink">Reference: IsPartialPermSemigroup</span></a>). If <var class="Arg">digraph</var> is a <code class="func">IsJoinSemilatticeDigraph</code> (<a href="chap6.html#X78D3E17B7F737516"><span class="RefLink">6.4-3</span></a>) or <code class="func">IsLatticeDigraph</code> (<a href="chap6.html#X78D3E17B7F737516"><span class="RefLink">6.4-3</span></a>) then <code class="code">AsSemigroup</code> returns a semigroup of partial perms which is isomorphic to the semigroup whose elements are the vertices of <var class="Arg">digraph</var> with the binary operation <code class="func">PartialOrderDigraphJoinOfVertices</code> (<a href="chap5.html#X7DDB33B686B3A2C6"><span class="RefLink">5.3-1</span></a>). If <var class="Arg">digraph</var> satisfies <code class="func">IsMeetSemilatticeDigraph</code> (<a href="chap6.html#X78D3E17B7F737516"><span class="RefLink">6.4-3</span></a>) but not <code class="func">IsJoinSemilatticeDigraph</code> (<a href="chap6.html#X78D3E17B7F737516"><span class="RefLink">6.4-3</span></a>) then <code class="code">AsSemigroup</code> returns a semigroup of partial perms which is isomorphic to the semigroup whose elements are the vertices of <var class="Arg">digraph</var> with the binary operation <code class="func">PartialOrderDigraphMeetOfVertices</code> (<a href="chap5.html#X7DDB33B686B3A2C6"><span class="RefLink">5.3-1</span></a>).</p>
 
-<p>The operation <code class="code">AsMonoid</code> behaves similarly to <code class="code">AsSemigroup</code> except that <var class="Arg">filt</var> may also be equal to <code class="func">IsPartialPermMonoid</code> (<a href="https://www.gap-system.org/Manuals/doc/ref/chap54_mj.html#X7D161674800B50E0"><span class="RefLink">Reference: IsPartialPermMonoid</span></a>), <var class="Arg">digraph</var> must satisfy <code class="func">IsLatticeDigraph</code> (<a href="chap6.html#X78D3E17B7F737516"><span class="RefLink">6.3-3</span></a>), and the output satisfies <code class="func">IsMonoid</code> (<a href="https://www.gap-system.org/Manuals/doc/ref/chap51_mj.html#X861C523483C6248C"><span class="RefLink">Reference: IsMonoid</span></a>).</p>
+<p>The operation <code class="code">AsMonoid</code> behaves similarly to <code class="code">AsSemigroup</code> except that <var class="Arg">filt</var> may also be equal to <code class="func">IsPartialPermMonoid</code> (<a href="https://www.gap-system.org/Manuals/doc/ref/chap54.html#X7D161674800B50E0"><span class="RefLink">Reference: IsPartialPermMonoid</span></a>), <var class="Arg">digraph</var> must satisfy <code class="func">IsLatticeDigraph</code> (<a href="chap6.html#X78D3E17B7F737516"><span class="RefLink">6.4-3</span></a>), and the output satisfies <code class="func">IsMonoid</code> (<a href="https://www.gap-system.org/Manuals/doc/ref/chap51.html#X861C523483C6248C"><span class="RefLink">Reference: IsMonoid</span></a>).</p>
 
-<p>The output of both of these operations is guaranteed to be of minimal degree (see <code class="func">DegreeOfPartialPermSemigroup</code> (<a href="https://www.gap-system.org/Manuals/doc/ref/chap54_mj.html#X7D7F0BAB82F0D820"><span class="RefLink">Reference: DegreeOfPartialPermSemigroup</span></a>)). Furthermore the <code class="func">GeneratorsOfSemigroup</code> (<a href="https://www.gap-system.org/Manuals/doc/ref/chap51_mj.html#X78147A247963F23B"><span class="RefLink">Reference: GeneratorsOfSemigroup</span></a>) of the output is guaranteed to be the unique generating set of minimal size.</p>
+<p>The output of both of these operations is guaranteed to be of minimal degree (see <code class="func">DegreeOfPartialPermSemigroup</code> (<a href="https://www.gap-system.org/Manuals/doc/ref/chap54.html#X7D7F0BAB82F0D820"><span class="RefLink">Reference: DegreeOfPartialPermSemigroup</span></a>)). Furthermore the <code class="func">GeneratorsOfSemigroup</code> (<a href="https://www.gap-system.org/Manuals/doc/ref/chap51.html#X78147A247963F23B"><span class="RefLink">Reference: GeneratorsOfSemigroup</span></a>) of the output is guaranteed to be the unique generating set of minimal size.</p>
 
 
 <div class="example"><pre>
@@ -2489,7 +2535,7 @@ true
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; AsSemigroup</code>( <var class="Arg">filt</var>, <var class="Arg">Y</var>, <var class="Arg">gps</var>, <var class="Arg">homs</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: A Clifford semigroup of partial perms.</p>
 
-<p>The operation <code class="code">AsSemigroup</code> requires that <var class="Arg">filt</var> be equal to <code class="func">IsPartialPermSemigroup</code> (<a href="https://www.gap-system.org/Manuals/doc/ref/chap54_mj.html#X7D161674800B50E0"><span class="RefLink">Reference: IsPartialPermSemigroup</span></a>). If <var class="Arg">Y</var> is a <code class="func">IsJoinSemilatticeDigraph</code> (<a href="chap6.html#X78D3E17B7F737516"><span class="RefLink">6.3-3</span></a>) or <code class="func">IsMeetSemilatticeDigraph</code> (<a href="chap6.html#X78D3E17B7F737516"><span class="RefLink">6.3-3</span></a>), <var class="Arg">gps</var> is a list of groups corresponding to each vertex, and <var class="Arg">homs</var> is a list containing for each edge <code class="code">(i, j)</code> in the transitive reduction of <var class="Arg">digraph</var> a triple <code class="code">[i, j, hom]</code> where <code class="code">hom</code> is a group homomorphism from <code class="code">gps[i]</code> to <code class="code">gps[j]</code>, and the diagram of homomorphisms commutes, then <code class="code">AsSemigroup</code> returns a semigroup of partial perms which is isomorphic to the strong semilattice of groups <span class="SimpleMath">S[Y; gps; homs]</span>.</p>
+<p>The operation <code class="code">AsSemigroup</code> requires that <var class="Arg">filt</var> be equal to <code class="func">IsPartialPermSemigroup</code> (<a href="https://www.gap-system.org/Manuals/doc/ref/chap54.html#X7D161674800B50E0"><span class="RefLink">Reference: IsPartialPermSemigroup</span></a>). If <var class="Arg">Y</var> is a <code class="func">IsJoinSemilatticeDigraph</code> (<a href="chap6.html#X78D3E17B7F737516"><span class="RefLink">6.4-3</span></a>) or <code class="func">IsMeetSemilatticeDigraph</code> (<a href="chap6.html#X78D3E17B7F737516"><span class="RefLink">6.4-3</span></a>), <var class="Arg">gps</var> is a list of groups corresponding to each vertex, and <var class="Arg">homs</var> is a list containing for each edge <code class="code">(i, j)</code> in the transitive reduction of <var class="Arg">digraph</var> a triple <code class="code">[i, j, hom]</code> where <code class="code">hom</code> is a group homomorphism from <code class="code">gps[i]</code> to <code class="code">gps[j]</code>, and the diagram of homomorphisms commutes, then <code class="code">AsSemigroup</code> returns a semigroup of partial perms which is isomorphic to the strong semilattice of groups <span class="SimpleMath">S[Y; gps; homs]</span>.</p>
 
 
 <div class="example"><pre>
@@ -2511,7 +2557,7 @@ true
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">Size(T);</span>
 20
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">D := GreensDClasses(T);;</span>
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">List(D, x -&gt; Size(x));</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">List(D, Size);</span>
 [ 6, 12, 2 ]
 </pre></div>
 
@@ -2530,7 +2576,7 @@ true
 
 <p>The directions and multiplicities of any edges in <var class="Arg">digraph</var> are ignored when considering whether or not <var class="Arg">digraph</var> is planar.</p>
 
-<p>See also <code class="func">IsPlanarDigraph</code> (<a href="chap6.html#X8606D415858C40AA"><span class="RefLink">6.6-1</span></a>) and <code class="func">SubdigraphHomeomorphicToK33</code> (<a href="chap5.html#X806D2D6B85E0B269"><span class="RefLink">5.7-5</span></a>).</p>
+<p>See also <code class="func">IsPlanarDigraph</code> (<a href="chap6.html#X8606D415858C40AA"><span class="RefLink">6.7-1</span></a>) and <code class="func">SubdigraphHomeomorphicToK33</code> (<a href="chap5.html#X806D2D6B85E0B269"><span class="RefLink">5.7-5</span></a>).</p>
 
 <p>This method uses the reference implementation in <span class="URL"><a href="https://github.com/graph-algorithms/edge-addition-planarity-suite">edge-addition-planarity-suite</a></span> by John Boyer of the algorithms described in <a href="chapBib.html#biBBM06">[BM06]</a>.</p>
 
@@ -2578,7 +2624,7 @@ false
 
 <p>The directions and multiplicities of any edges in <var class="Arg">digraph</var> are ignored when considering whether or not <var class="Arg">digraph</var> is outer planar.</p>
 
-<p>See also <code class="func">IsOuterPlanarDigraph</code> (<a href="chap6.html#X8251E8B187E7F059"><span class="RefLink">6.6-2</span></a>), <code class="func">SubdigraphHomeomorphicToK4</code> (<a href="chap5.html#X806D2D6B85E0B269"><span class="RefLink">5.7-5</span></a>), and <code class="func">SubdigraphHomeomorphicToK23</code> (<a href="chap5.html#X806D2D6B85E0B269"><span class="RefLink">5.7-5</span></a>).</p>
+<p>See also <code class="func">IsOuterPlanarDigraph</code> (<a href="chap6.html#X8251E8B187E7F059"><span class="RefLink">6.7-2</span></a>), <code class="func">SubdigraphHomeomorphicToK4</code> (<a href="chap5.html#X806D2D6B85E0B269"><span class="RefLink">5.7-5</span></a>), and <code class="func">SubdigraphHomeomorphicToK23</code> (<a href="chap5.html#X806D2D6B85E0B269"><span class="RefLink">5.7-5</span></a>).</p>
 
 <p>This method uses the reference implementation in <span class="URL"><a href="https://github.com/graph-algorithms/edge-addition-planarity-suite">edge-addition-planarity-suite</a></span> by John Boyer of the algorithms described in <a href="chapBib.html#biBBM06">[BM06]</a>.</p>
 
@@ -2627,7 +2673,7 @@ false
 
 <p>The directions and multiplicities of any edges in <var class="Arg">digraph</var> are ignored by <code class="code">PlanarEmbedding</code>.</p>
 
-<p>See also <code class="func">IsPlanarDigraph</code> (<a href="chap6.html#X8606D415858C40AA"><span class="RefLink">6.6-1</span></a>).</p>
+<p>See also <code class="func">IsPlanarDigraph</code> (<a href="chap6.html#X8606D415858C40AA"><span class="RefLink">6.7-1</span></a>).</p>
 
 <p>This method uses the reference implementation in <span class="URL"><a href="https://github.com/graph-algorithms/edge-addition-planarity-suite">edge-addition-planarity-suite</a></span> by John Boyer of the algorithms described in <a href="chapBib.html#biBBM06">[BM06]</a>.</p>
 
@@ -2671,7 +2717,7 @@ fail
 
 <p>The directions and multiplicities of any edges in <var class="Arg">digraph</var> are ignored by <code class="code">OuterPlanarEmbedding</code>.</p>
 
-<p>See also <code class="func">IsOuterPlanarDigraph</code> (<a href="chap6.html#X8251E8B187E7F059"><span class="RefLink">6.6-2</span></a>).</p>
+<p>See also <code class="func">IsOuterPlanarDigraph</code> (<a href="chap6.html#X8251E8B187E7F059"><span class="RefLink">6.7-2</span></a>).</p>
 
 <p>This method uses the reference implementation in <span class="URL"><a href="https://github.com/graph-algorithms/edge-addition-planarity-suite">edge-addition-planarity-suite</a></span> by John Boyer of the algorithms described in <a href="chapBib.html#biBBM06">[BM06]</a>.</p>
 
@@ -2717,7 +2763,7 @@ fail
 
 <p>These attributes return the immutable list of lists of out-neighbours of a subdigraph of the digraph <var class="Arg">digraph</var> which is homeomorphic to one of the following: the complete bipartite graph with vertex sets of sizes <code class="code">2</code> and <code class="code">3</code>; the complete bipartite graph with vertex sets of sizes <code class="code">3</code> and <code class="code">3</code>; or the complete graph with <code class="code">4</code> vertices. If <var class="Arg">digraph</var> has no such subdigraphs, then <code class="keyw">fail</code> is returned.</p>
 
-<p>See also <code class="func">IsPlanarDigraph</code> (<a href="chap6.html#X8606D415858C40AA"><span class="RefLink">6.6-1</span></a>) and <code class="func">IsOuterPlanarDigraph</code> (<a href="chap6.html#X8251E8B187E7F059"><span class="RefLink">6.6-2</span></a>) for more details.</p>
+<p>See also <code class="func">IsPlanarDigraph</code> (<a href="chap6.html#X8606D415858C40AA"><span class="RefLink">6.7-1</span></a>) and <code class="func">IsOuterPlanarDigraph</code> (<a href="chap6.html#X8251E8B187E7F059"><span class="RefLink">6.7-2</span></a>) for more details.</p>
 
 <p>This method uses the reference implementation in <span class="URL"><a href="https://github.com/graph-algorithms/edge-addition-planarity-suite">edge-addition-planarity-suite</a></span> by John Boyer of the algorithms described in <a href="chapBib.html#biBBM06">[BM06]</a>.</p>
 
