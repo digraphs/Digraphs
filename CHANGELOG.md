@@ -4,6 +4,40 @@ Wilf A. Wilson, Michael Young et al.
 
 Licensing information can be found in the `LICENSE` file.
 
+## Version 1.7.0 (released 14/02/2024)
+
+This is a minor release with some new features, and some other improvements in
+code quality.
+
+## What's Changed
+* Change test that relies on xpdf not being installed by @mtorpey in
+  https://github.com/digraphs/Digraphs/pull/578
+* DigraphAbsorptionProbabilities by @mtorpey in
+  https://github.com/digraphs/Digraphs/pull/548
+* Fix test files: strings and unbinds by @mtorpey in
+  https://github.com/digraphs/Digraphs/pull/579
+* Add immediate methods for connected and strongly connected graphs by @mtorpey
+  in https://github.com/digraphs/Digraphs/pull/583
+* kernel: fix mem leaks for permutations allocated but not freed. by
+  @james-d-mitchell in https://github.com/digraphs/Digraphs/pull/589
+* Remove references to bin/gap.sh by @fingolfin in
+  https://github.com/digraphs/Digraphs/pull/597
+* Fix prototype warnings by @fingolfin in
+  https://github.com/digraphs/Digraphs/pull/598
+* Added EdgeWeightedDigraph by @RaiyanC in
+  https://github.com/digraphs/Digraphs/pull/575
+* Add AbsorptionExpectedSteps by @mtorpey in
+  https://github.com/digraphs/Digraphs/pull/585
+* Fix a typo by @fingolfin in https://github.com/digraphs/Digraphs/pull/608
+* configure.ac: fix bashism in string equality test by @orlitzky in
+  https://github.com/digraphs/Digraphs/pull/613
+
+## New Contributors
+* @RaiyanC made their first contribution in https://github.com/digraphs/Digraphs/pull/575
+* @orlitzky made their first contribution in https://github.com/digraphs/Digraphs/pull/613
+
+**Full Changelog**: https://github.com/digraphs/Digraphs/compare/v1.6.3...v1.7.0
+
 ## Version 1.6.3 (released 13/09/2023)
 
 This is a minor release with some bug fixes, and other issues resolved:
