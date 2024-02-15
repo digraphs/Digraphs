@@ -2842,12 +2842,11 @@ gap> res := DigraphCycleBasis(D);
   [ <a GF2 vector of length 9>, <a GF2 vector of length 9>, 
       <a GF2 vector of length 9>, <a GF2 vector of length 9> ] ]
 gap> List(res[2], x -> List(x));
-[ [ Z(2)^0, Z(2)^0, 0*Z(2), 0*Z(2), Z(2)^0, 0*Z(2), 0*Z(2), 0*Z(2), 0*Z(2) ]
-    , [ Z(2)^0, Z(2)^0, 0*Z(2), Z(2)^0, 0*Z(2), 0*Z(2), 0*Z(2), 0*Z(2), 
-      Z(2)^0 ], 
-  [ 0*Z(2), 0*Z(2), Z(2)^0, Z(2)^0, 0*Z(2), Z(2)^0, 0*Z(2), 0*Z(2), 0*Z(2) ]
-    , [ Z(2)^0, Z(2)^0, 0*Z(2), Z(2)^0, 0*Z(2), 0*Z(2), Z(2)^0, Z(2)^0, 
-      0*Z(2) ] ]
+[ [ Z(2)^0, Z(2)^0, 0*Z(2), 0*Z(2), Z(2)^0, 0*Z(2), 0*Z(2), 0*Z(2), \
+0*Z(2) ], 
+  [ Z(2)^0, Z(2)^0, 0*Z(2), Z(2)^0, 0*Z(2), 0*Z(2), 0*Z(2), 0*Z(2), Z(2)^0 ], 
+  [ 0*Z(2), 0*Z(2), Z(2)^0, Z(2)^0, 0*Z(2), Z(2)^0, 0*Z(2), 0*Z(2), 0*Z(2) ], 
+  [ Z(2)^0, Z(2)^0, 0*Z(2), Z(2)^0, 0*Z(2), 0*Z(2), Z(2)^0, Z(2)^0, 0*Z(2) ] ]
 gap> D := DigraphDisjointUnion(CycleGraph(3), CycleGraph(4));
 <immutable digraph with 7 vertices, 14 edges>
 gap> res := DigraphCycleBasis(D);
