@@ -2208,7 +2208,7 @@ end);
 InstallMethod(DigraphCycleBasis, "for a digraph",
 [IsDigraph],
 function(G)
-  local OutNbr, InNbr, n, ToSortOut, ToSortIn, partialSum, m, roots, visited, 
+  local OutNbr, InNbr, n, ToSortOut, ToSortIn, partialSum, m, roots, visited,
         path, unusedEdges, i, s, queue, u, v, p, cycle, B, e;
 
   # Catch multigraphs?
@@ -2264,7 +2264,7 @@ function(G)
   fi;
 
   # # Early warning for large matrix
-  # if 20000 < n or (n * Log(Float(n)) / 2 < Float(m) and 
+  # if 20000 < n or (n * Log(Float(n)) / 2 < Float(m) and
   #   (10 ^ 11) / 2 < m * (m - n + 1)) then
   #   Info(InfoWarning, 1, "The resulting matrix is likely to be very large.");
   # fi;
