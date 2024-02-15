@@ -2208,119 +2208,120 @@ end);
 InstallMethod(DigraphCycleBasis, "for a digraph",
 [IsDigraph],
 function(G)
-  local EdgeOneHotVectorGF2, DigraphCycleBasisConnected, EdgeAllocConnComp,
-  FailSafeMatMul, EdgesList, En, ComponentsRecord, WhereDoTheyGo,
-  InjectionMatList, ConnectedComponents, ConnectedResults, ComponentsBases;
+  local OutNbr, InNbr, n, ToSortOut, ToSortIn, partialSum, m, roots, visited, path, unusedEdges,
+        i, s, queue, u, v, p, cycle, B, e, Bool2GF2, b, bool;
 
-  if not IsSymmetricDigraph(G) then
-    Error("the 1st argument (a digraph) must be symmetric");
-  fi;
+  # Catch multigraphs?
 
-  if IsMultiDigraph(G) then
-    Error("the 1st argument (a digraph) must not have multiple edges");
-  fi;
+  # Take a maximal antisymmetric subgraph of G
+  G := MaximalAntiSymmetricSubdigraph(G);
+  OutNbr := OutNeighbors(G);
+  InNbr := InNeighbors(G);
+  Unbind(G);
 
-  if DigraphHasLoops(G) then
-    Error("the 1st argument (a digraph) must not have any loops");
-  fi;
-
-  if IsEmptyDigraph(G) then
-    return [[], []];
-  fi;
-
-  # A small helper function to convert a list of positions to a binary vector
-  # For each edges not in the spanning tree, the set of edges used in the cycle
-  # basis is found.
-  # This maybe good enough combined with symmetric difference operation but
-  # given that it natually forms a nice vector space with addition as the
-  # operation, this function is used to convert the set of edges to a binary
-  # vector.
-  EdgeOneHotVectorGF2 := function(Positions, dim)
-    local res, i;
-    res := List([1 .. dim], i -> 0 * Z(2));
-    res{Positions} := List(Positions, x -> Z(2));
-    return res;
-  end;
-
-  DigraphCycleBasisConnected := function(G)
-    local ListZip, WalkToEdges, EdgesList, E, CycleVectors,
-    GSubTreeEdges, DirectedTree, e, pathEdges1, pathEdges2, eEdge;
-
-    ListZip := function(L1, L2)
-      return List([1 .. Minimum(Length(L1), Length(L2))], i -> [L1[i], L2[i]]);
-    end;
-
-    WalkToEdges := function(EdgesList, Walk)
-      local len;
-      len := Length(Walk);
-
-      # if len < 2 then
-      #   return [];
-      # fi;
-
-      return List(ListZip(Walk{[1 .. len - 1]}, Walk{[2 .. len]}),
-        x -> Position(EdgesList, AsSortedList(x)));
-    end;
-
-    G := DigraphImmutableCopy(G);
-    EdgesList := Filtered(DigraphEdges(G), x -> x[1] <= x[2]);
-    E := Length(EdgesList);
-
-    DirectedTree := DigraphShortestPathSpanningTree(G, 1);
-    GSubTreeEdges := Filtered(EdgesList,
-      x -> not (AsSortedList(x) in DigraphEdges(DirectedTree)));
-
-    if Length(GSubTreeEdges) = 0 then
-      return [EdgesList, []];
+  n := Length(OutNbr);
+  # If each sublist of OutNbr & InNbr is not sorted, sort it
+  ToSortOut := [];
+  ToSortIn := [];
+  for i in [1 .. n] do
+    if i in OutNbr[i] then
+      Error("the 1st argument (a digraph) must not have any loops");
+    elif not IsSet(OutNbr[i]) then
+      Add(ToSortOut, i);
     fi;
-
-    CycleVectors := [];
-    for e in GSubTreeEdges do
-      pathEdges1 := EdgeOneHotVectorGF2(
-        WalkToEdges(EdgesList, DigraphPath(DirectedTree, 1, e[1])[1]), E);
-      pathEdges2 := EdgeOneHotVectorGF2(
-        WalkToEdges(EdgesList, DigraphPath(DirectedTree, 1, e[2])[1]), E);
-      eEdge := EdgeOneHotVectorGF2([Position(EdgesList, e)], E);
-      Add(CycleVectors, pathEdges1 + pathEdges2 + eEdge);
-    od;
-
-    return [EdgesList, CycleVectors];
-  end;
-
-  EdgeAllocConnComp := function(EdgesList, ConnectedComponentsRecord)
-    local res, e;
-    res := List(ConnectedComponentsRecord.comps, x -> []);
-    for e in EdgesList do
-      Add(res[(ConnectedComponentsRecord.id[e[1]])], Position(EdgesList, e));
-    od;
-    return res;
-  end;
-
-  FailSafeMatMul := function(a, b)
-    if a = [] then
-      return [];
+    if not IsSet(InNbr[i]) then
+      Add(ToSortIn, i);
     fi;
-    return a * b;
-  end;
+  od;
+  if not IsEmpty(ToSortOut) then
+    OutNbr := ShallowCopy(OutNbr);
+    for i in ToSortOut do
+      OutNbr[i] := AsSet(OutNbr[i]);
+    od;
+    MakeImmutable(OutNbr);
+  fi;
+  if not IsEmpty(ToSortIn) then
+    InNbr := ShallowCopy(InNbr);
+    for i in ToSortIn do
+      InNbr[i] := AsSet(InNbr[i]);
+    od;
+    MakeImmutable(InNbr);
+  fi;
 
-  EdgesList := Filtered(DigraphEdges(G), x -> x[1] <= x[2]);
-  En := Length(EdgesList);
-  ComponentsRecord := DigraphConnectedComponents(G);
-  WhereDoTheyGo := EdgeAllocConnComp(EdgesList, ComponentsRecord);
+  # Quick early return for too few vertices
+  if n < 3 then
+    return [OutNbr, []];
+  fi;
+  # Find the paritial sum of each row of OutNbr
+  partialSum := [0];
+  for i in [1 .. n-1] do
+    Add(partialSum, Last(partialSum) + Length(OutNbr[i]));
+  od;
+  m := Last(partialSum) + Length(OutNbr[n]);
+  # Quick early return for too few edges
+  if m < 3 then
+    return [OutNbr, []];
+  fi;
 
-  InjectionMatList := List(WhereDoTheyGo,
-    x -> List(x, i -> EdgeOneHotVectorGF2([i], En)));
+  # # Early warning for large matrix
+  # if 20000 < n or
+  #   (n * Log(Float(n)) / 2 < Float(m) and (10^11) / 2 < m * (m - n + 1)) then
+  #   Info(InfoWarning, 1, "The resulting matrix is likely to be very large.");
+  # fi;
 
-  ConnectedComponents := List(ComponentsRecord.comps,
-    x -> InducedSubdigraph(G, x));
+  # Travese the graph, breath first search
+  roots := []; # Maybe save Length(roots) as DigraphNrConnectedComponents?
+  visited := BlistList([1 .. n], []);
+  path := List([1 .. n], i -> ZeroVector(GF(2), m));
+  unusedEdges := [];
+  while not ForAll(visited, IdFunc) do
+    s := Position(visited, false);
+    Add(roots, s);
+    visited[s] := true;
+    queue := [s];
+    while not IsEmpty(queue) do
+      u := Remove(queue, 1);
+      for p in [1 .. Length(OutNbr[u])] do
+        v := OutNbr[u][p];
+        i := partialSum[u] + p;
+        if not visited[v] then
+          visited[v] := true;
+          path[v] := ShallowCopy(path[u]);
+          path[v][i] := Z(2);
+          Add(queue, v);
+        elif v in queue then
+          Add(unusedEdges, [u, i, v]);
+        fi;
+      od;
+      for v in InNbr[u] do
+        p := Position(OutNbr[v], u);
+        i := partialSum[v] + p;
+        if not visited[v] then
+          visited[v] := true;
+          path[v] := ShallowCopy(path[u]);
+          path[v][i] := Z(2);
+          Add(queue, v);
+        elif v in queue then
+          Add(unusedEdges, [v, i, u]);
+        fi;
+      od;
+    od;
+  od;
 
-  ConnectedResults := List(ConnectedComponents,
-    x -> DigraphCycleBasisConnected(x));
+  # Second, more accurate warning for large matrix
+  if (10^11) / 2 < m * (m - n + Length(roots)) then
+    Info(InfoWarning, 1, "The resulting matrix is going to be very large.");
+  fi;
 
-  ComponentsBases := List([1 .. Length(ConnectedComponents)],
-    x -> FailSafeMatMul(ConnectedResults[x][2], InjectionMatList[x]));
+  # Create the matrix B
+  B := [];
+  for e in unusedEdges do
+    cycle := path[e[1]] + path[e[3]];
+    cycle[e[2]] := Z(2);
+    Add(B, cycle);
+  od;
 
-  return [EdgesList, Concatenation(ComponentsBases)];
+  return [OutNbr, B];
 end);
 
 #############################################################################
