@@ -2252,7 +2252,7 @@ function(G)
   if n < 3 then
     return [OutNbr, []];
   fi;
-  # Find the paritial sum of each row of OutNbr
+  # Find the partial sum of each row of OutNbr
   partialSum := [0];
   for i in [1 .. n - 1] do
     Add(partialSum, Last(partialSum) + Length(OutNbr[i]));
@@ -2269,7 +2269,7 @@ function(G)
   #   Info(InfoWarning, 1, "The resulting matrix is likely to be very large.");
   # fi;
 
-  # Travese the graph, breath first search
+  # Traverse the graph, breath first search
   roots := [];  # Maybe save Length(roots) as DigraphNrConnectedComponents?
   visited := BlistList([1 .. n], []);
   path := List([1 .. n], i -> ZeroVector(GF(2), m));
