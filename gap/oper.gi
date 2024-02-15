@@ -2208,8 +2208,8 @@ end);
 InstallMethod(DigraphCycleBasis, "for a digraph",
 [IsDigraph],
 function(G)
-  local OutNbr, InNbr, n, ToSortOut, ToSortIn, partialSum, m, roots, visited, path, unusedEdges,
-        i, s, queue, u, v, p, cycle, B, e, Bool2GF2, b, bool;
+  local OutNbr, InNbr, n, ToSortOut, ToSortIn, partialSum, m, roots, visited, 
+        path, unusedEdges, i, s, queue, u, v, p, cycle, B, e;
 
   # Catch multigraphs?
 
@@ -2254,7 +2254,7 @@ function(G)
   fi;
   # Find the paritial sum of each row of OutNbr
   partialSum := [0];
-  for i in [1 .. n-1] do
+  for i in [1 .. n - 1] do
     Add(partialSum, Last(partialSum) + Length(OutNbr[i]));
   od;
   m := Last(partialSum) + Length(OutNbr[n]);
@@ -2264,13 +2264,13 @@ function(G)
   fi;
 
   # # Early warning for large matrix
-  # if 20000 < n or
-  #   (n * Log(Float(n)) / 2 < Float(m) and (10^11) / 2 < m * (m - n + 1)) then
+  # if 20000 < n or (n * Log(Float(n)) / 2 < Float(m) and 
+  #   (10 ^ 11) / 2 < m * (m - n + 1)) then
   #   Info(InfoWarning, 1, "The resulting matrix is likely to be very large.");
   # fi;
 
   # Travese the graph, breath first search
-  roots := []; # Maybe save Length(roots) as DigraphNrConnectedComponents?
+  roots := [];  # Maybe save Length(roots) as DigraphNrConnectedComponents?
   visited := BlistList([1 .. n], []);
   path := List([1 .. n], i -> ZeroVector(GF(2), m));
   unusedEdges := [];
@@ -2309,7 +2309,7 @@ function(G)
   od;
 
   # Second, more accurate warning for large matrix
-  if (10^11) / 2 < m * (m - n + Length(roots)) then
+  if (10 ^ 11) / 2 < m * (m - n + Length(roots)) then
     Info(InfoWarning, 1, "The resulting matrix is going to be very large.");
   fi;
 
