@@ -23,6 +23,11 @@
 uint16_t MAXVERTS = 512;
 uint16_t UNDEFINED = MAXVERTS + 1;
 
+static void set_maxverts(uint16_t NEWMAXVERTS){
+  MAXVERTS = NEWMAXVERTS;
+  UNDEFINED = MAXVERTS + 1;
+}
+
 Perm new_perm(uint16_t const degree) {
   DIGRAPHS_ASSERT(degree <= MAXVERTS);
   return malloc(degree * sizeof(uint16_t));

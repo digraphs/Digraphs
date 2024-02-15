@@ -31,14 +31,11 @@ BitArray* new_bit_array(uint16_t const nr_bits) {
   return bit_array;
 }
 
-// free_bit_array is not currently used, but kept in case it is required in the
-// future. JDM 2019
-
-// void free_bit_array(BitArray* const bit_array) {
-//   DIGRAPHS_ASSERT(bit_array != NULL);
-//   free(bit_array->blocks);
-//   free(bit_array);
-// }
+void free_bit_array(BitArray* const bit_array) {
+  DIGRAPHS_ASSERT(bit_array != NULL);
+  free(bit_array->blocks);
+  free(bit_array);
+}
 
 void set_bit_array_from_gap_int(BitArray* const bit_array, Obj o) {
   DIGRAPHS_ASSERT(bit_array != NULL);

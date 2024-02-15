@@ -1839,6 +1839,45 @@ static bool init_data_from_args(Obj digraph1_obj,
   return true;
 }
 
+static bool clear_initialised_structures(){
+  free(DIGRAPH1);
+  free(DIGRAPH2;)
+  free(GRAPH1);
+  free(GRAPH2);
+
+  // TODO: CLEAR THE BIT ARRAYS
+  free(IMAGE_RESTRICT);
+  free(ORB_LOOKUP);
+  // IMAGE_RESTRICT = new_bit_array(CALCULATED_MAXVERTS);
+  // ORB_LOOKUP     = new_bit_array(CALCULATED_MAXVERTS);
+  REPS           = malloc(CALCULATED_MAXVERTS * sizeof(BitArray*));
+  BIT_ARRAY_BUFFER = (BitArray**)calloc(CALCULATED_MAXVERTS, sizeof(BitArray*));
+  MAP_UNDEFINED = (BitArray**)calloc(CALCULATED_MAXVERTS, sizeof(BitArray*));
+  BLISS_GRAPH = (BlissGraph**)calloc(3*CALCULATED_MAXVERTS, sizeof(BlissGraph*));
+  MAP = (uint16_t*)calloc(CALCULATED_MAXVERTS, sizeof(uint16_t));
+  COLORS2 = (uint16_t*)calloc(CALCULATED_MAXVERTS, sizeof(uint16_t));
+  INVERSE_ORDER = (uint16_t*)calloc(CALCULATED_MAXVERTS, sizeof(uint16_t));
+  MAP_BUFFER = (uint16_t*)calloc(CALCULATED_MAXVERTS, sizeof(uint16_t));
+  ORB = (uint16_t*)calloc(CALCULATED_MAXVERTS, sizeof(uint16_t));
+  ORDER = (uint16_t*)calloc(CALCULATED_MAXVERTS, sizeof(uint16_t));
+  STAB_GENS = (PermColl**)calloc(CALCULATED_MAXVERTS, sizeof(PermColl*));
+
+  for (uint16_t i = 0; i < CALCULATED_MAXVERTS; i++) {
+    // Memory leaks here
+    // BLISS_GRAPH[i]      = bliss_digraphs_new(i);
+    free_bit_array(REPS[i]);
+    free_bit_array(BIT_ARRAY_BUFFER[i]);
+    free_bit_array(MAP_UNDEFINED[i]);
+    // STAB_GENS[i] = new_perm_coll(CALCULATED_MAXVERTS, CALCULATED_MAXVERTS);
+  }
+  free(BLISS_GRAPH);
+  free(REPS);
+  free(BIT_ARRAY_BUFFER);
+  free(STAB_GENS);
+  free_bit_array(VALS);
+  SCHREIER_SIMS = new_schreier_sims(CALCULATED_MAXVERTS);
+}
+
 // CODE GOES HERE
 static void free_homos_data(){
     // srand(time(0));
