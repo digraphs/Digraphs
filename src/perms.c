@@ -21,11 +21,11 @@
 #include "digraphs-debug.h"  // for DIGRAPHS_ASSERT
 
 uint16_t MAXVERTS = 512;
-uint16_t UNDEFINED = MAXVERTS + 1;
+uint16_t UNDEFINED = 512+1;
 
 static void set_maxverts(uint16_t NEWMAXVERTS){
   MAXVERTS = NEWMAXVERTS;
-  UNDEFINED = MAXVERTS + 1;
+  UNDEFINED = NEWMAXVERTS + 1;
 }
 
 Perm new_perm(uint16_t const degree) {

@@ -1589,7 +1589,6 @@ static void init_partial_map_and_find_digraph_homos(Obj partial_map_obj,
 // finding homomorphisms. If true is returned everything was initialised ok, if
 // false is returned, then the arguments already imply that there can be no
 // homomorphisms.
-
 static bool is_initialized = false;  // did we call this method before?
 static bool init_data_from_args(Obj digraph1_obj,
                                 Obj digraph2_obj,
@@ -1612,7 +1611,7 @@ static bool init_data_from_args(Obj digraph1_obj,
 #endif
     LARGEST_GRAPH_VERTEX_COUNT = MAX(
       DigraphNrVertices(digraph1_obj),
-      DigraphNrVertices(digraph2_obj),
+      DigraphNrVertices(digraph2_obj)
     );
     CALCULATED_MAXVERTS = MAX(CURRENT_MAX_VERTS, LARGEST_GRAPH_VERTEX_COUNT);
 
@@ -1841,7 +1840,7 @@ static bool init_data_from_args(Obj digraph1_obj,
 
 static bool clear_initialised_structures(){
   free(DIGRAPH1);
-  free(DIGRAPH2;)
+  free(DIGRAPH2);
   free(GRAPH1);
   free(GRAPH2);
 

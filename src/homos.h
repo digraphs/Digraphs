@@ -20,4 +20,7 @@
 
 Obj FuncHomomorphismDigraphsFinder(Obj self, Obj args);
 
+static uint16_t LARGEST_GRAPH_VERTEX_COUNT = 0;
+static uint16_t CALCULATED_MAXVERTS = 0;
+
 #endif  // DIGRAPHS_SRC_HOMOS_H_
