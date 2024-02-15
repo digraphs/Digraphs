@@ -2255,9 +2255,9 @@ function(G)
   # Find the partial sum of each row of OutNbr
   partialSum := [0];
   for i in [1 .. n - 1] do
-    Add(partialSum, Last(partialSum) + Length(OutNbr[i]));
+    Add(partialSum, partialSum[i] + Length(OutNbr[i]));
   od;
-  m := Last(partialSum) + Length(OutNbr[n]);
+  m := partialSum[n] + Length(OutNbr[n]);
   # Quick early return for too few edges
   if m < 3 then
     return [OutNbr, []];
