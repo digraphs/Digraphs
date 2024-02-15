@@ -199,7 +199,7 @@ static const Block MASK_LOOKUP[NUMBER_BITS_PER_BLOCK] = {0x1,
                                                   0x8000000000000000};
 
 static const Block get_mask(uint16_t N){
-  if(N < LOOKUP_SIZE){
+  if(N < NUMBER_BITS_PER_BLOCK){
     return MASK_LOOKUP[N];
   } else{
     return (Block)1 << N;
@@ -327,7 +327,7 @@ static const Block MASK_LOOKUP[NUMBER_BITS_PER_BLOCK] = {
     0x40000000, 0x80000000};
 
 static const Block get_mask(uint16_t N){
-  if(N < LOOKUP_SIZE){
+  if(N < NUMBER_BITS_PER_BLOCK){
     return MASK_LOOKUP[N];
   } else{
     return (Block)1 << N;
