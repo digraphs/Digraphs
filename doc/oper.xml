@@ -2261,23 +2261,44 @@ true
 <#GAPDoc Label="DigraphCycleBasis">
 <ManSection>
   <Oper Name="DigraphCycleBasis" Arg="digraph"/>
-  <Returns>A list and a matrix</Returns>
+  <Returns>A list and a list of GF(2) vectors</Returns>
   <Description>
     If <A>digraph</A> is a symmetric loopless digraph with no multiple edges, then
     <C>DigraphCycleBasis</C> calculates the <E>fundamental cycle basis</E> of
-    <A>digraph</A> and returns a list of edges and a matrix of a basis vectors.
+    <A>digraph</A> and returns a list of edges and a list of a basis vectors.
     See <Ref Prop="IsSymmetricDigraph"/>, <Ref Prop="DigraphHasLoops"/>, and <Ref
     Prop="IsMultiDigraph"/>.
-    The first list contains half of the edges of the digraph, one 
-    for each pair of symmetric edges, and the rows of the matrix are the cycle
-    vectors belonging to <M>(GF(2))^m</M> where <M>m</M> is the length of the
-    list of edges. As a result, the symmetric difference of the cycles is 
-    naturally an addition.<P/>
+    The first list contains the out-neighours that provides the ordering 
+    on the edges with the symmetric edges appearing only once.
+    It is <E>OutNeighbours(MaximalAntiSymmetricSubdigraph(G))</E>. 
+    See <Ref Oper="MaximalAntiSymmetricSubdigraph"/> 
+    <Ref Oper="OutNeighbours"/>.
+    The second list contains the basis vectors of the cycle space of the
+    digraph. These vectors belongs to <M>(GF(2))^m</M> where <M>m</M> is the 
+    length of the list of edges.<P/>
 
     A graph is <E>eulerian</E> if every vertex has an even degree. A <E>cycle
     space</E> of a graph is a subspace of <M>(GF(2))^m</M> representing the set 
-    of all <E>eulerian</E> subgraphs of the graph. A <E>cycle basis</E> is a 
-    basis of the cycle space. A <E>fundamental cycle basis</E> is a special 
+    of all <E>eulerian</E> subgraphs of the graph. A subgraph can be uniquely 
+    identified using the edges that is contains. Therefore, given some ordering
+    on the edges of the graph, a subgraph can be represented by a vector in
+    <M>(GF(2))^m</M> where the <M>i</M>-th entry is 1 if the <M>i</M>-th edge
+    is in the subgraph and 0 otherwise. In this function, the ordering of the
+    edges is returned as the first list which corresponds to 
+    <E>OutNeighbours(MaximalAntiSymmetricSubdigraph(G))</E>. 
+    See <Ref Oper="MaximalAntiSymmetricSubdigraph"/> 
+    <Ref Oper="OutNeighbours"/>.
+    The first basis vector for complete digraph with 4 vertices shown below 
+    represents edges [1, 2], [1, 3] and [2, 3] <i class="e">cycle subgraph
+    between vertices 1, 2 and 3</i>
+
+    The cycle space is closed under the symmetric difference of the edges of 
+    the graph. This nicely corresponds to the addition of vectors in 
+    <M>(GF(2))^m</M> which makes the vector space formulation of the cycle
+    space very natural.
+    
+    A <E>cycle basis</E> is a basis of the cycle space. 
+    A <E>fundamental cycle basis</E> is a special 
     kind of basis of the cycle space where there is a specific spanning tree 
     (forest, when the graph is disconnected) of the graph and each basis 
     corresponds to the unique cycle created by adding an edge outside the 
@@ -2293,18 +2314,25 @@ true
 
 
     <Example><![CDATA[
-gap> D := CycleGraph(4);     
+gap> D := CycleGraph(4);
 <immutable symmetric digraph with 4 vertices, 8 edges>
-gap> DigraphCycleBasis(D);
-[ [ [ 1, 2 ], [ 1, 4 ], [ 2, 3 ], [ 3, 4 ] ], 
-  [ [ Z(2)^0, Z(2)^0, Z(2)^0, Z(2)^0 ] ] ]
+gap> res := DigraphCycleBasis(D);
+[ [ [ 2, 4 ], [ 3 ], [ 4 ], [  ] ], [ <a GF2 vector of length 4> ] ]
+gap> List(res[2][1]);
+[ Z(2)^0, Z(2)^0, Z(2)^0, Z(2)^0 ]
+
 gap> D := CompleteDigraph(4);                                     
 <immutable complete digraph with 4 vertices>
-gap> DigraphCycleBasis(D);
-[ [ [ 1, 2 ], [ 1, 3 ], [ 1, 4 ], [ 2, 3 ], [ 2, 4 ], [ 3, 4 ] ], 
-  [ [ Z(2)^0, Z(2)^0, 0*Z(2), Z(2)^0, 0*Z(2), 0*Z(2) ], 
-      [ Z(2)^0, 0*Z(2), Z(2)^0, 0*Z(2), Z(2)^0, 0*Z(2) ], 
-      [ 0*Z(2), Z(2)^0, Z(2)^0, 0*Z(2), 0*Z(2), Z(2)^0 ] ] ]
+gap> res := DigraphCycleBasis(D);
+[ [ [ 2, 3, 4 ], [ 3, 4 ], [ 4 ], [  ] ], 
+  [ <a GF2 vector of length 6>, <a GF2 vector of length 6>, 
+      <a GF2 vector of length 6> ] ]
+gap> List(res[2][1]);            
+[ Z(2)^0, Z(2)^0, 0*Z(2), Z(2)^0, 0*Z(2), 0*Z(2) ]
+gap> List(res[2][2]);
+[ Z(2)^0, 0*Z(2), Z(2)^0, 0*Z(2), Z(2)^0, 0*Z(2) ]
+gap> List(res[2][3]);
+[ 0*Z(2), Z(2)^0, Z(2)^0, 0*Z(2), 0*Z(2), Z(2)^0 ]
 ]]></Example>
   </Description>
 </ManSection>
