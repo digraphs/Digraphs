@@ -2209,10 +2209,11 @@ InstallMethod(DigraphCycleBasis, "for a digraph",
 [IsDigraph],
 function(G)
   local OutNbr, InNbr, n, ToSortOut, ToSortIn, partialSum, m, roots, visited,
-        path, unusedEdges, i, s, queue, u, v, p, cycle, B, e;
+        path, unusedEdges, i, s, queue, u, v, p, cycle, c1, c2, B, e;
 
   # Catch multigraphs?
 
+  # First pass over the edges of the graph
   # Take a maximal antisymmetric subgraph of G
   G := MaximalAntiSymmetricSubdigraph(G);
   OutNbr := OutNeighbors(G);
@@ -2264,14 +2265,21 @@ function(G)
   fi;
 
   # # Early warning for large matrix
+  # # Written when the traversal loop below was very slow
+  # # To give the accurate warning for large matrix, we need n, m and the 
+  # # number of connected components which is not available at this point.
+  # # Here, we give a rough warning based on n and m.
   # if 20000 < n or (n * Log(Float(n)) / 2 < Float(m) and
   #   (10 ^ 11) / 2 < m * (m - n + 1)) then
   #   Info(InfoWarning, 1, "The resulting matrix is likely to be very large.");
   # fi;
 
   # Traverse the graph, breath first search
-  roots := [];  # Maybe save Length(roots) as DigraphNrConnectedComponents?
+  roots := [];  
+  # Maybe save Length(roots) as DigraphNrConnectedComponents? 
+  # other biproducts?
   visited := BlistList([1 .. n], []);
+  # path := List([1 .. n], i -> Vector(GF(2), List([1 .. m], i -> 0*Z(2))));
   path := List([1 .. n], i -> ZeroVector(GF(2), m));
   unusedEdges := [];
   while not ForAll(visited, IdFunc) do
@@ -2309,11 +2317,20 @@ function(G)
   od;
 
   # Second, more accurate warning for large matrix
+  # The warning is printed roughly when the result matrix will take up 
+  # more than 8GB of RAM.
   if (10 ^ 11) / 2 < m * (m - n + Length(roots)) then
     Info(InfoWarning, 1, "The resulting matrix is going to be very large.");
   fi;
 
   # Create the matrix B
+  # The testing show that this is the most time consuming part
+  # and there is a possible performance left on the table.
+  # The traversal loop above discards the order the edges are added.
+  # However, if this order is somehow efficiently preserved, we can know 
+  # precisly which edges will cancel out as initial common path between 
+  # path[e[1]] and path[e[3]] before diverging at some point. Possibly 
+  # reducing the number of computation needed.
   B := [];
   for e in unusedEdges do
     cycle := path[e[1]] + path[e[3]];
