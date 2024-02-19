@@ -2289,8 +2289,8 @@ true
     See <Ref Oper="MaximalAntiSymmetricSubdigraph"/> 
     <Ref Oper="OutNeighbours"/>.
     The first basis vector for complete digraph with 4 vertices shown below 
-    represents edges [1, 2], [1, 3] and [2, 3] <i class="e">cycle subgraph
-    between vertices 1, 2 and 3</i>
+    represents edges [1, 2], [1, 3] and [2, 3] i.e. cycle subgraph
+    between vertices 1, 2 and 3
 
     The cycle space is closed under the symmetric difference of the edges of 
     the graph. This nicely corresponds to the addition of vectors in 

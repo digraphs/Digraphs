@@ -2209,7 +2209,7 @@ InstallMethod(DigraphCycleBasis, "for a digraph",
 [IsDigraph],
 function(G)
   local OutNbr, InNbr, n, ToSortOut, ToSortIn, partialSum, m, roots, visited,
-        path, unusedEdges, i, s, queue, u, v, p, cycle, c1, c2, B, e;
+        path, unusedEdges, i, s, queue, u, v, p, cycle, B, e;
 
   # Catch multigraphs?
 
@@ -2328,7 +2328,7 @@ function(G)
   # and there is a possible performance left on the table.
   # The traversal loop above discards the order the edges are added.
   # However, if this order is somehow efficiently preserved, we can know
-  # precisly which edges will cancel out as initial common path between
+  # precisely which edges will cancel out as initial common path between
   # path[e[1]] and path[e[3]] before diverging at some point. Possibly
   # reducing the number of computation needed.
   B := [];
