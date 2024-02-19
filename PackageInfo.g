@@ -9,14 +9,14 @@
 ##
 
 ##  <#GAPDoc Label="PKGVERSIONDATA">
-##  <!ENTITY VERSION                  "1.7.0">
+##  <!ENTITY VERSION                  "1.7.1">
 ##  <!ENTITY GAPVERS                  "4.10.0">
 ##  <!ENTITY GRAPEVERS                "4.8.1">
 ##  <!ENTITY IOVERS                   "4.5.1">
 ##  <!ENTITY ORBVERS                  "4.8.2">
 ##  <!ENTITY DATASTRUCTURESVERS       "0.2.5">
 ##  <!ENTITY NAUTYTRACESINTERFACEVERS "0.2">
-##  <!ENTITY ARCHIVENAME    "digraphs-1.7.0">
+##  <!ENTITY ARCHIVENAME    "digraphs-1.7.1">
 ##  <!ENTITY COPYRIGHTYEARS "2014-24">
 ##  <#/GAPDoc>
 
@@ -28,8 +28,8 @@ _STANDREWSCS := Concatenation(["Jack Cole Building, North Haugh, ",
 SetPackageInfo(rec(
 PackageName := "Digraphs",
 Subtitle := "Graphs, digraphs, and multidigraphs in GAP",
-Version := "1.7.0",
-Date := "14/02/2024",  # dd/mm/yyyy format
+Version := "1.7.1",
+Date := "19/02/2024",  # dd/mm/yyyy format
 License := "GPL-3.0-or-later",
 ArchiveFormats := ".tar.gz",
 
@@ -353,7 +353,14 @@ Persons := [
     WWWHome       := "https://mct25.host.cs.st-andrews.ac.uk",
     PostalAddress := _STANDREWSCS,
     Place         := "St Andrews",
-    Institution   := "University of St Andrews")],
+    Institution   := "University of St Andrews"),
+
+  rec(
+    LastName      := "Zickgraf",
+    FirstNames    := "Fabian",
+    IsAuthor      := false,
+    IsMaintainer  := false,
+    Email         := "f.zickgraf@dashdos.com")],
 
 Status := "deposited",
 

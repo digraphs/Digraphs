@@ -1,6 +1,6 @@
 name: Digraphs
-version: 1.7.0
-date: 2024-02-14
+version: 1.7.1
+date: 2024-02-19
 description: |
     Graphs, digraphs, and multidigraphs in GAP
 
@@ -78,6 +78,8 @@ contributors:
       url: https://mariatsalakou.github.io/
     - name: Murray Whyte
       url: mailto:mw231@st-andrews.ac.uk
+    - name: Fabian Zickgraf
+      url: mailto:f.zickgraf@dashdos.com
 
 GAP: ">=4.10.0"
 
@@ -98,7 +100,6 @@ suggested-pkgs:
       url: "http://www.math.rwth-aachen.de/~Frank.Luebeck/GAPDoc"
     - name: "grape"
       version: ">=4.8.1"
-      url: "https://gap-packages.github.io/grape"
     - name: "nautytracesinterface"
       version: ">=0.2"
 
@@ -108,7 +109,7 @@ packageinfo: https://digraphs.github.io/Digraphs/PackageInfo.g
 
 downloads:
     - name: .tar.gz
-      url: https://github.com/digraphs/Digraphs/releases/download/v1.7.0/digraphs-1.7.0.tar.gz
+      url: https://github.com/digraphs/Digraphs/releases/download/v1.7.1/digraphs-1.7.1.tar.gz
 
 abstract: |
     The <b>Digraphs</b> package is a <b>GAP</b> package for digraphs and multidigraphs.
