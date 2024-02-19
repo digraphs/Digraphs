@@ -2320,7 +2320,6 @@ gap> res := DigraphCycleBasis(D);
 [ [ [ 2, 4 ], [ 3 ], [ 4 ], [  ] ], [ <a GF2 vector of length 4> ] ]
 gap> List(res[2][1]);
 [ Z(2)^0, Z(2)^0, Z(2)^0, Z(2)^0 ]
-
 gap> D := CompleteDigraph(4);                                     
 <immutable complete digraph with 4 vertices>
 gap> res := DigraphCycleBasis(D);
