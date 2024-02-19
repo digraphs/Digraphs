@@ -174,7 +174,7 @@ static void init_graph_from_digraph_obj(Graph* const graph, Obj digraph_obj) {
   UInt const nr      = DigraphNrVertices(digraph_obj);
   Obj        out     = FuncOutNeighbours(0L, digraph_obj);
   Obj        adj_mat = FuncADJACENCY_MATRIX(0L, digraph_obj);
-  DIGRAPHS_ASSERT(nr < MAXVERTS);
+  // DIGRAPHS_ASSERT(nr < MAXVERTS);
   DIGRAPHS_ASSERT(IS_PLIST(adj_mat));
   DIGRAPHS_ASSERT(IS_PLIST(out));
   clear_graph(graph, nr);

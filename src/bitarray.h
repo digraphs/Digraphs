@@ -22,7 +22,7 @@
 
 // Digraphs headers
 #include "digraphs-debug.h"  // for DIGRAPHS_ASSERT
-
+#include <stdio.h>
 typedef UInt Block;
 
 #define NUMBER_BITS_PER_BLOCK (sizeof(Block) * CHAR_BIT)

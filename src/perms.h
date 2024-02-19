@@ -33,6 +33,7 @@ extern uint16_t MAXVERTS;
 extern uint16_t UNDEFINED;
 #endif
 
+void set_maxverts(uint16_t maxverts);
 typedef uint16_t* Perm;
 
 Perm new_perm(uint16_t const);

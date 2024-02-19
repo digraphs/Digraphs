@@ -25,25 +25,25 @@ uint16_t PERM_DEGREE = 0;
 
 // Schreier-Sims set up
 
-SchreierSims* new_schreier_sims(uint16_t calculated_max_verts) {
+SchreierSims* new_schreier_sims() {
   SchreierSims* ss = malloc(sizeof(SchreierSims));
-  ss->tmp_perm     = new_perm(calculated_max_verts);
-  ss -> strong_gens = (PermColl**)calloc(calculated_max_verts, sizeof(PermColl*));
-  for (uint16_t i = 0; i < calculated_max_verts; ++i) {
-    ss->strong_gens[i] = new_perm_coll(calculated_max_verts, calculated_max_verts);
+  ss->tmp_perm     = new_perm(MAXVERTS);
+  ss -> strong_gens = (PermColl**)calloc(MAXVERTS, sizeof(PermColl*));
+  for (uint16_t i = 0; i < MAXVERTS; ++i) {
+    ss->strong_gens[i] = new_perm_coll(MAXVERTS, MAXVERTS);
   }
-  ss -> transversal = (Perm*)calloc(calculated_max_verts * calculated_max_verts, sizeof(Perm));
-  ss -> inversal = (Perm*)calloc(calculated_max_verts * calculated_max_verts, sizeof(Perm));
+  ss -> transversal = (Perm*)calloc(MAXVERTS * MAXVERTS, sizeof(Perm));
+  ss -> inversal = (Perm*)calloc(MAXVERTS * MAXVERTS, sizeof(Perm));
 
-  for (size_t i = 0; i < calculated_max_verts * calculated_max_verts; ++i) {
-    ss->transversal[i] = new_perm(calculated_max_verts);
-    ss->inversal[i]    = new_perm(calculated_max_verts);
+  for (size_t i = 0; i < MAXVERTS * MAXVERTS; ++i) {
+    ss->transversal[i] = new_perm(MAXVERTS);
+    ss->inversal[i]    = new_perm(MAXVERTS);
   }
 
-  ss -> base = (uint16_t*) calloc(calculated_max_verts, sizeof(uint16_t));
-  ss -> orbits = (uint16_t*) calloc(calculated_max_verts * calculated_max_verts, sizeof(uint16_t));
-  ss -> size_orbits = (uint16_t*) calloc(calculated_max_verts, sizeof(uint16_t));
-  ss -> orb_lookup = (bool*) calloc(calculated_max_verts * calculated_max_verts, sizeof(bool));
+  ss -> base = (uint16_t*) calloc(MAXVERTS, sizeof(uint16_t));
+  ss -> orbits = (uint16_t*) calloc(MAXVERTS * MAXVERTS, sizeof(uint16_t));
+  ss -> size_orbits = (uint16_t*) calloc(MAXVERTS, sizeof(uint16_t));
+  ss -> orb_lookup = (bool*) calloc(MAXVERTS * MAXVERTS, sizeof(bool));
   if(ss->tmp_perm == NULL || ss->strong_gens == NULL || ss->transversal == NULL || ss->inversal == NULL || ss -> base == NULL || ss->orbits == NULL || ss->size_orbits == NULL){
     // throw an error and free up memory
   }

@@ -23,9 +23,9 @@
 uint16_t MAXVERTS = 512;
 uint16_t UNDEFINED = 512+1;
 
-static void set_maxverts(uint16_t NEWMAXVERTS){
-  MAXVERTS = NEWMAXVERTS;
-  UNDEFINED = NEWMAXVERTS + 1;
+void set_maxverts(uint16_t maxverts){
+  MAXVERTS = maxverts;
+  UNDEFINED = maxverts + 1;
 }
 
 Perm new_perm(uint16_t const degree) {
