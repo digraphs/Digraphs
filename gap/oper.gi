@@ -2282,7 +2282,7 @@ function(G)
   if CompareVersionNumbers(GAPInfo.Version, "4.12") then
     path := List([1 .. n], i -> ZeroVector(GF(2), m));
   else
-    path := List([1 .. n], i -> Vector(GF(2), List([1 .. m], i -> 0*Z(2))));
+    path := List([1 .. n], i -> Vector(GF(2), List([1 .. m], i -> Zero(GF(2)))));
   fi;
   unusedEdges := [];
   while not ForAll(visited, IdFunc) do
