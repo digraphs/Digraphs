@@ -1,8 +1,13 @@
 # CHANGELOG – Digraphs package for GAP
-Copyright © 2014-23 by Jan De Beule, Julius Jonušas, James D. Mitchell,
+Copyright © 2014-24 by Jan De Beule, Julius Jonušas, James D. Mitchell,
 Wilf A. Wilson, Michael Young et al.
 
 Licensing information can be found in the `LICENSE` file.
+
+## Version 1.7.1 (released 19/02/2024)
+
+This is a minor release with some changes related to forthcoming changes in
+GAP. These changes were implemented by Fabian Zickgraf.
 
 ## Version 1.7.0 (released 14/02/2024)
 
