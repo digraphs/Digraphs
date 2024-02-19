@@ -2835,7 +2835,7 @@ gap> D := DigraphSymmetricClosure(ChainDigraph(10));
 gap> DigraphCycleBasis(D);
 [ [ [ 2 ], [ 3 ], [ 4 ], [ 5 ], [ 6 ], [ 7 ], [ 8 ], [ 9 ], [ 10 ], [  ] ], 
   [  ] ]
-gap> D := Digraph([[2, 6], [1, 3, 5, 6], [2, 5], [5, 6], [2, 3, 4, 6], [1, 2, 4, 5]]);
+gap> D := Digraph([[2, 6], [3, 5, 1, 6], [2, 5], [6, 5], [4, 3, 2, 6], [4, 1, 5, 2]]);
 <immutable digraph with 6 vertices, 18 edges>
 gap> res := DigraphCycleBasis(D);       
 [ [ [ 2, 6 ], [ 3, 5, 6 ], [ 5 ], [ 5, 6 ], [ 6 ], [  ] ], 
