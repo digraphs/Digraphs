@@ -22,18 +22,18 @@
 
 // Digraphs headers
 #include "digraphs-debug.h"  // for DIGRAPHS_ASSERT
-#include <stdio.h>
+
 typedef UInt Block;
 
 #define NUMBER_BITS_PER_BLOCK (sizeof(Block) * CHAR_BIT)
 
-#ifndef LOOKUP_SIZE
-#define LOOKUP_SIZE 512
+#ifndef LOOKUPSIZE
+#define LOOKUPSIZE 512
 #endif
 
 #if SYS_IS_64_BIT
 // To avoid division and mod
-static size_t const NR_BLOCKS_LOOKUP[LOOKUP_SIZE + 1] = {
+static size_t const NR_BLOCKS_LOOKUP[LOOKUPSIZE + 1] = {
     0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
     1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
     1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
@@ -55,17 +55,8 @@ static size_t const NR_BLOCKS_LOOKUP[LOOKUP_SIZE + 1] = {
     8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
     8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
     8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8};
-static uint16_t get_quotient(uint16_t number);
 
-static uint16_t get_number_of_blocks(uint16_t N){
-  if(N < LOOKUP_SIZE){
-    return NR_BLOCKS_LOOKUP[N];
-  } else{
-    return get_quotient(N+63);
-  }
-}
-
-static size_t const REMAINDER_LOOKUP[LOOKUP_SIZE + 1] = {
+static size_t const REMAINDER[LOOKUPSIZE + 1] = {
     0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15, 16, 17, 18,
     19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37,
     38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56,
@@ -94,15 +85,7 @@ static size_t const REMAINDER_LOOKUP[LOOKUP_SIZE + 1] = {
     27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45,
     46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 0};
 
-static uint16_t get_remainder(uint16_t number){
-  if(number < LOOKUP_SIZE){
-    return REMAINDER_LOOKUP[number];
-  } else {
-    return number % 64;
-  }
-}
-
-static size_t const QUOTIENT_LOOKUP[LOOKUP_SIZE + 1] = {
+static size_t const QUOTIENT[LOOKUPSIZE + 1] = {
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
@@ -125,15 +108,7 @@ static size_t const QUOTIENT_LOOKUP[LOOKUP_SIZE + 1] = {
     7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
     7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 8};
 
-static uint16_t get_quotient(uint16_t number){
-  if(number < LOOKUP_SIZE){
-    return QUOTIENT_LOOKUP[number];
-  } else {
-    return number / 64;
-  }
-}
-
-static const Block MASK_LOOKUP[NUMBER_BITS_PER_BLOCK] = {0x1,
+static const Block MASK[NUMBER_BITS_PER_BLOCK] = {0x1,
                                                   0x2,
                                                   0x4,
                                                   0x8,
@@ -197,17 +172,8 @@ static const Block MASK_LOOKUP[NUMBER_BITS_PER_BLOCK] = {0x1,
                                                   0x2000000000000000,
                                                   0x4000000000000000,
                                                   0x8000000000000000};
-
-static const Block get_mask(uint16_t N){
-  if(N < NUMBER_BITS_PER_BLOCK){
-    return MASK_LOOKUP[N];
-  } else{
-    return (Block)1 << N;
-  }
-}
-
 #else
-static size_t const NR_BLOCKS_LOOKUP[LOOKUP_SIZE + 1] = {
+static size_t const NR_BLOCKS_LOOKUP[LOOKUPSIZE + 1] = {
     0,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,
     1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  2,  2,  2,  2,  2,
     2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,
@@ -236,15 +202,7 @@ static size_t const NR_BLOCKS_LOOKUP[LOOKUP_SIZE + 1] = {
     15, 15, 15, 15, 15, 15, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16,
     16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16};
 
-static uint16_t get_number_of_blocks(uint16_t N){
-  if(N < LOOKUP_SIZE){
-    return NR_BLOCKS_LOOKUP[N];
-  } else{
-    return get_quotient(N+31);
-  }
-}
-
-static size_t const REMAINDER_LOOKUP[LOOKUP_SIZE + 1] = {
+static size_t const REMAINDER[LOOKUPSIZE + 1] = {
     0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15, 16, 17, 18,
     19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 0,  1,  2,  3,  4,  5,
     6,  7,  8,  9,  10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24,
@@ -273,15 +231,7 @@ static size_t const REMAINDER_LOOKUP[LOOKUP_SIZE + 1] = {
     27, 28, 29, 30, 31, 0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13,
     14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 0};
 
-static void get_remainder(uint16_t number){
-  if(number < LOOKUP_SIZE){
-    return REMAINDER_LOOKUP[number];
-  } else {
-    return number % 32;
-  }
-}
-
-static size_t const QUOTIENT[LOOKUP_SIZE + 1] = {
+static size_t const QUOTIENT[LOOKUPSIZE + 1] = {
     0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
     0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  1,  1,  1,  1,  1,
     1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,
@@ -310,29 +260,13 @@ static size_t const QUOTIENT[LOOKUP_SIZE + 1] = {
     14, 14, 14, 14, 14, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15,
     15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 16};
 
-static void get_quotient(uint16_t number){
-  if(number < LOOKUP_SIZE){
-    return QUOTIENT_LOOKUP[number];
-  } else {
-    return number / 32;
-  }
-}
-
-static const Block MASK_LOOKUP[NUMBER_BITS_PER_BLOCK] = {
+static const Block MASK[NUMBER_BITS_PER_BLOCK] = {
     0x1,        0x2,       0x4,       0x8,       0x10,       0x20,
     0x40,       0x80,      0x100,     0x200,     0x400,      0x800,
     0x1000,     0x2000,    0x4000,    0x8000,    0x10000,    0x20000,
     0x40000,    0x80000,   0x100000,  0x200000,  0x400000,   0x800000,
     0x1000000,  0x2000000, 0x4000000, 0x8000000, 0x10000000, 0x20000000,
     0x40000000, 0x80000000};
-
-static const Block get_mask(uint16_t N){
-  if(N < NUMBER_BITS_PER_BLOCK){
-    return MASK_LOOKUP[N];
-  } else{
-    return (Block)1 << N;
-  }
-}
 
 #endif
 
@@ -358,7 +292,7 @@ static inline void init_bit_array(BitArray* const bit_array,
                                   uint16_t const  nr_bits) {
   DIGRAPHS_ASSERT(bit_array != NULL);
   DIGRAPHS_ASSERT(nr_bits <= bit_array->nr_bits);
-  uint16_t const nr_blocks = get_number_of_blocks(nr_bits);
+  uint16_t const nr_blocks = NR_BLOCKS_LOOKUP[nr_bits];
   if (val) {
     memset((void*) bit_array->blocks, ~0, (size_t) sizeof(Block) * nr_blocks);
   } else {
@@ -373,9 +307,9 @@ set_bit_array(BitArray* const bit_array, uint16_t const pos, bool const val) {
   DIGRAPHS_ASSERT(bit_array != NULL);
   DIGRAPHS_ASSERT(pos < bit_array->nr_bits);
   if (val) {
-    bit_array->blocks[get_quotient(pos)] |= get_mask(get_remainder(pos));
+    bit_array->blocks[QUOTIENT[pos]] |= MASK[REMAINDER[pos]];
   } else {
-    bit_array->blocks[get_quotient(pos)] &= ~get_mask(get_remainder(pos));
+    bit_array->blocks[QUOTIENT[pos]] &= ~MASK[REMAINDER[pos]];
   }
 }
 
@@ -385,7 +319,7 @@ static inline bool get_bit_array(BitArray const* const bit_array,
                                  uint16_t const        pos) {
   DIGRAPHS_ASSERT(bit_array != NULL);
   DIGRAPHS_ASSERT(pos < bit_array->nr_bits);
-  return bit_array->blocks[get_quotient(pos)] & get_mask(get_remainder(pos));
+  return bit_array->blocks[QUOTIENT[pos]] & MASK[REMAINDER[pos]];
 }
 
 //! Intersect the BitArray's pointed to by \p bit_array1 and \p bit_array2. The
@@ -399,7 +333,7 @@ static inline void intersect_bit_arrays(BitArray* const       bit_array1,
   DIGRAPHS_ASSERT(bit_array1->nr_blocks == bit_array2->nr_blocks);
   DIGRAPHS_ASSERT(nr_bits <= bit_array1->nr_bits);
   DIGRAPHS_ASSERT(nr_bits <= bit_array2->nr_bits);
-  uint16_t const nr_blocks = get_number_of_blocks(nr_bits);
+  uint16_t const nr_blocks = NR_BLOCKS_LOOKUP[nr_bits];
   for (uint16_t i = 0; i < nr_blocks; i++) {
     bit_array1->blocks[i] &= bit_array2->blocks[i];
   }
@@ -416,7 +350,7 @@ static inline void union_bit_arrays(BitArray* const       bit_array1,
   DIGRAPHS_ASSERT(bit_array1->nr_blocks == bit_array2->nr_blocks);
   DIGRAPHS_ASSERT(nr_bits <= bit_array1->nr_bits);
   DIGRAPHS_ASSERT(nr_bits <= bit_array2->nr_bits);
-  uint16_t const nr_blocks = get_number_of_blocks(nr_bits);
+  uint16_t const nr_blocks = NR_BLOCKS_LOOKUP[nr_bits];
   for (uint16_t i = 0; i < nr_blocks; i++) {
     bit_array1->blocks[i] |= bit_array2->blocks[i];
   }
@@ -432,7 +366,7 @@ static inline void complement_bit_arrays(BitArray* const       bit_array1,
   DIGRAPHS_ASSERT(bit_array1->nr_blocks == bit_array2->nr_blocks);
   DIGRAPHS_ASSERT(nr_bits <= bit_array1->nr_bits);
   DIGRAPHS_ASSERT(nr_bits <= bit_array2->nr_bits);
-  uint16_t const nr_blocks = get_number_of_blocks(nr_bits);
+  uint16_t const nr_blocks = NR_BLOCKS_LOOKUP[nr_bits];
   for (uint16_t i = 0; i < nr_blocks; i++) {
     bit_array1->blocks[i] &= ~bit_array2->blocks[i];
   }
@@ -448,7 +382,7 @@ static inline void copy_bit_array(BitArray* const       bit_array1,
   DIGRAPHS_ASSERT(bit_array1->nr_blocks == bit_array2->nr_blocks);
   DIGRAPHS_ASSERT(nr_bits <= bit_array1->nr_bits);
   DIGRAPHS_ASSERT(nr_bits <= bit_array2->nr_bits);
-  uint16_t const nr_blocks = get_number_of_blocks(nr_bits);
+  uint16_t const nr_blocks = NR_BLOCKS_LOOKUP[nr_bits];
   for (uint16_t i = 0; i < nr_blocks; i++) {
     bit_array1->blocks[i] = bit_array2->blocks[i];
   }
@@ -460,7 +394,7 @@ static inline uint16_t size_bit_array(BitArray const* const bit_array,
   DIGRAPHS_ASSERT(bit_array != NULL);
   DIGRAPHS_ASSERT(nr_bits <= bit_array->nr_bits);
   Block const*   blocks    = bit_array->blocks;
-  uint16_t const nr_blocks = get_number_of_blocks(nr_bits);
+  uint16_t const nr_blocks = NR_BLOCKS_LOOKUP[nr_bits];
   return COUNT_TRUES_BLOCKS(blocks, nr_blocks);
 }
 
