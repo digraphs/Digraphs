@@ -62,16 +62,16 @@ void set_bit_array_from_gap_list(BitArray* const bit_array, Obj list_obj) {
 
 // print_bit_array is not used, but can be useful for debugging.
 
-// static void print_bit_array(BitArray const* const bit_array) {
-//   if (bit_array == NULL) {
-//     printf("NULL");
-//     return;
-//   }
-//   printf("<bit array {");
-//   for (uint16_t i = 0; i < bit_array->nr_bits; i++) {
-//     if (get_bit_array(bit_array, i)) {
-//       printf(" %d", i);
-//     }
-//   }
-//   printf(" }>\n");
-// }
+void print_bit_array(BitArray const* const bit_array) {
+  if (bit_array == NULL) {
+    printf("NULL");
+    return;
+  }
+  printf("<bit array {");
+  for (uint16_t i = 0; i < bit_array->nr_bits; i++) {
+    if (get_bit_array(bit_array, i)) {
+      printf(" %d", i);
+    }
+  }
+  printf(" }>\n");
+}

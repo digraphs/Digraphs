@@ -642,6 +642,14 @@ static void find_graph_homos(uint16_t        depth,
       STORE_MIN_BREAK(min, next, n, i);
     }
   }
+  printf("\n");
+  printf("%u\n", MAXVERTS);
+  printf("%u\n", GRAPH1->nr_vertices);
+  printf("%u\n", GRAPH2->nr_vertices);
+  printf("%u\n", next);
+  printf("%u\n", depth);
+  printf("%u\n", GRAPH1->neighbours[pos]);
+  print_bit_array(MAP_UNDEFINED[depth]);
   DIGRAPHS_ASSERT(get_bit_array(MAP_UNDEFINED[depth], next));
 
   if (rank < hint) {

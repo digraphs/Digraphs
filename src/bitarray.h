@@ -355,7 +355,7 @@ static inline void union_bit_arrays(BitArray* const       bit_array1,
     bit_array1->blocks[i] |= bit_array2->blocks[i];
   }
 }
-
+void print_bit_array(BitArray const* const bit_array);
 //! Sets \p bit_array1 to be 0 in every position that \p bit_array2 is 1.
 static inline void complement_bit_arrays(BitArray* const       bit_array1,
                                          BitArray const* const bit_array2,

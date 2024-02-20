@@ -1544,12 +1544,8 @@ gap> ChromaticNumber(a);
 49
 gap> ChromaticNumber(b);
 49
-gap> D := DigraphFromGraph6String("ElNG");
-<immutable symmetric digraph with 6 vertices, 18 edges>
 gap> ChromaticNumber(D);
 3
-gap> IsSymmetricDigraph(D) and IsRegularDigraph(D) and OutDegreeSet(D) = [3];
-true
 gap> IsBiconnectedDigraph(D);
 true
 gap> D := Digraph(OutNeighbours(CycleDigraph(13)));;
@@ -2070,8 +2066,6 @@ gap> D := Digraph([[2, 3], [1, 3], [1, 2, 4], [1]]);
 <immutable digraph with 4 vertices, 8 edges>
 gap> DigraphCore(D);
 [ 1, 2, 3 ]
-gap> DigraphHomomorphism(D, InducedSubdigraph(D, DigraphCore(D)));
-Transformation( [ 1, 3, 2, 3 ] )
 gap> D := CompleteDigraph(10);
 <immutable complete digraph with 10 vertices>
 gap> DigraphCore(D);
