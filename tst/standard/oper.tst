@@ -2836,16 +2836,16 @@ gap> DigraphCycleBasis(D);
 [ [ [ 2 ], [ 3 ], [ 4 ], [ 5 ], [ 6 ], [ 7 ], [ 8 ], [ 9 ], [ 10 ], [  ] ],
   [  ] ]
 gap> D := Digraph([[6], [3, 1, 6], [2], [6, 5], [4, 3, 2, 6], [4, 1, 5, 2]]);
-<immutable digraph with 6 vertices, 18 edges>
+<immutable digraph with 6 vertices, 15 edges>
 gap> res := DigraphCycleBasis(D);
-[ [ [ 2, 6 ], [ 3, 5, 6 ], [ 5 ], [ 5, 6 ], [ 6 ], [  ] ],
+[ [ [ 6 ], [ 1, 3, 6 ], [  ], [ 5, 6 ], [ 2, 3, 6 ], [  ] ],
   [ <a GF2 vector of length 9>, <a GF2 vector of length 9>,
       <a GF2 vector of length 9>, <a GF2 vector of length 9> ] ]
 gap> List(res[2], x -> List(x));
-[ [ Z(2)^0, Z(2)^0, 0*Z(2), 0*Z(2), Z(2)^0, 0*Z(2), 0*Z(2), 0*Z(2), 0*Z(2) ],
-  [ Z(2)^0, Z(2)^0, 0*Z(2), Z(2)^0, 0*Z(2), 0*Z(2), 0*Z(2), 0*Z(2), Z(2)^0 ],
-  [ 0*Z(2), 0*Z(2), Z(2)^0, Z(2)^0, 0*Z(2), Z(2)^0, 0*Z(2), 0*Z(2), 0*Z(2) ],
-  [ Z(2)^0, Z(2)^0, 0*Z(2), Z(2)^0, 0*Z(2), 0*Z(2), Z(2)^0, Z(2)^0, 0*Z(2) ] ]
+[ [ Z(2)^0, Z(2)^0, 0*Z(2), Z(2)^0, 0*Z(2), 0*Z(2), 0*Z(2), 0*Z(2), 0*Z(2) ], 
+  [ Z(2)^0, Z(2)^0, 0*Z(2), 0*Z(2), 0*Z(2), 0*Z(2), Z(2)^0, 0*Z(2), Z(2)^0 ], 
+  [ 0*Z(2), 0*Z(2), 0*Z(2), 0*Z(2), Z(2)^0, Z(2)^0, 0*Z(2), 0*Z(2), Z(2)^0 ], 
+  [ Z(2)^0, Z(2)^0, Z(2)^0, 0*Z(2), 0*Z(2), 0*Z(2), 0*Z(2), Z(2)^0, Z(2)^0 ] ]
 gap> D := DigraphDisjointUnion(CycleGraph(3), CycleGraph(4));
 <immutable digraph with 7 vertices, 14 edges>
 gap> res := DigraphCycleBasis(D);
