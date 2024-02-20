@@ -55,9 +55,9 @@ static size_t const NR_BLOCKS_LOOKUP[LOOKUP_SIZE + 1] = {
     8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
     8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
     8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8};
-static const uint16_t get_quotient(uint16_t number);
+static uint16_t get_quotient(uint16_t number);
 
-static const uint16_t get_number_of_blocks(uint16_t N){
+static uint16_t get_number_of_blocks(uint16_t N){
   if(N < LOOKUP_SIZE){
     return NR_BLOCKS_LOOKUP[N];
   } else{
@@ -125,7 +125,7 @@ static size_t const QUOTIENT_LOOKUP[LOOKUP_SIZE + 1] = {
     7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
     7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 8};
 
-static const uint16_t get_quotient(uint16_t number){
+static uint16_t get_quotient(uint16_t number){
   if(number < LOOKUP_SIZE){
     return QUOTIENT_LOOKUP[number];
   } else {
@@ -236,7 +236,7 @@ static size_t const NR_BLOCKS_LOOKUP[LOOKUP_SIZE + 1] = {
     15, 15, 15, 15, 15, 15, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16,
     16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16};
 
-static const uint16_t get_number_of_blocks(uint16_t N){
+static uint16_t get_number_of_blocks(uint16_t N){
   if(N < LOOKUP_SIZE){
     return NR_BLOCKS_LOOKUP[N];
   } else{
