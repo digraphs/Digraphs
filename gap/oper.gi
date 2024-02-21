@@ -2221,33 +2221,44 @@ function(G)
   Unbind(G);
 
   n := Length(OutNbr);
-  # If each sublist of OutNbr & InNbr is not sorted, sort it
-  ToSortOut := [];
-  ToSortIn := [];
+  # Check for loops without sorting the OutNbr and InNbr
+  # It seems that MaximalAntiSymmetricSubdigraph already sorts them.
   for i in [1 .. n] do
     if i in OutNbr[i] then
-      Error("the 1st argument (a digraph) must not have any loops");
-    elif not IsSet(OutNbr[i]) then
-      Add(ToSortOut, i);
+      ErrorNoReturn("the 1st argument (a digraph) must not have any loops");
     fi;
-    if not IsSet(InNbr[i]) then
-      Add(ToSortIn, i);
+    if i in InNbr[i] then
+      ErrorNoReturn("the 1st argument (a digraph) must not have any loops");
     fi;
   od;
-  if not IsEmpty(ToSortOut) then
-    OutNbr := ShallowCopy(OutNbr);
-    for i in ToSortOut do
-      OutNbr[i] := AsSet(OutNbr[i]);
-    od;
-    MakeImmutable(OutNbr);
-  fi;
-  if not IsEmpty(ToSortIn) then
-    InNbr := ShallowCopy(InNbr);
-    for i in ToSortIn do
-      InNbr[i] := AsSet(InNbr[i]);
-    od;
-    MakeImmutable(InNbr);
-  fi;
+
+  # If each sublist of OutNbr & InNbr is not sorted, sort it
+  # ToSortOut := [];
+  # ToSortIn := [];
+  # for i in [1 .. n] do
+  #   if i in OutNbr[i] then
+  #     Error("the 1st argument (a digraph) must not have any loops");
+  #   elif not IsSet(OutNbr[i]) then
+  #     Add(ToSortOut, i);
+  #   fi;
+  #   if not IsSet(InNbr[i]) then
+  #     Add(ToSortIn, i);
+  #   fi;
+  # od;
+  # if not IsEmpty(ToSortOut) then
+  #   OutNbr := ShallowCopy(OutNbr);
+  #   for i in ToSortOut do
+  #     OutNbr[i] := AsSet(OutNbr[i]);
+  #   od;
+  #   MakeImmutable(OutNbr);
+  # fi;
+  # if not IsEmpty(ToSortIn) then
+  #   InNbr := ShallowCopy(InNbr);
+  #   for i in ToSortIn do
+  #     InNbr[i] := AsSet(InNbr[i]);
+  #   od;
+  #   MakeImmutable(InNbr);
+  # fi;
 
   # Quick early return for too few vertices
   if n < 3 then
