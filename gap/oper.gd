@@ -36,6 +36,7 @@ DeclareOperation("DigraphReverseEdges", [IsDigraph, IsList]);
 DeclareOperation("DigraphClosure", [IsDigraph, IsPosInt]);
 
 DeclareOperation("DigraphContractEdge", [IsDigraph, IsPosInt, IsPosInt]);
+DeclareOperation("DigraphContractEdge", [IsDigraph, IsList]);
 
 # 3. Ways of combining digraphs . . .
 DeclareGlobalFunction("DigraphDisjointUnion");

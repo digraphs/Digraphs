@@ -381,8 +381,7 @@ InstallMethod(DigraphContractEdge,
 "for a mutable digraph and two positive integers",
 [IsMutableDigraph, IsPosInt, IsPosInt],
 function(D, u, v)
-  local w, neighbours, transformations_to_edge, transformations_to_old_edges, old_edge, new_edge, neighbour, t, copy;
-
+  local w, neighbours, transformations_to_edge, transformations_to_old_edges, old_edge, new_edge, neighbour, t, copy, vertices;
 
   if not IsDigraphEdge(D, u, v) then # Check if [u, v] is an edge in digraph D
     ErrorNoReturn("u, v is not an edge of D");
@@ -398,7 +397,6 @@ function(D, u, v)
 
   if IsDigraphEdge(D, v, u) then # if (v, u) is an edge, disallow loops, so also remove (v, u)
     DigraphRemoveEdge(D, v, u);
-    
   fi;
 
   # remove the contracted edge
@@ -409,7 +407,8 @@ function(D, u, v)
   
   DigraphAddVertex(D, [DigraphVertexLabel(D, u), DigraphVertexLabel(D, v)]); # add vertex w
 
-  w := Last(DigraphVertices(D)); # w is the new vertix identifier 
+  vertices := DigraphVertices(D);
+  w := vertices[Length(vertices)]; # w is the new vertix identifier 
 
   # Handle loops from edges u or w, with the same source / range
   if IsDigraphEdge(D, u, u) and IsDigraphEdge(D, v, v) then DigraphAddEdge(D, w, w); SetDigraphEdgeLabel(D, w, w, [DigraphEdgeLabel(copy, u, u), DigraphEdgeLabel(copy, v, v)]);
@@ -444,7 +443,7 @@ InstallMethod(DigraphContractEdge,
 "for an immutable digraph and two positive integers",
 [IsImmutableDigraph, IsPosInt, IsPosInt],
 function(D, u, v)
-  local w, neighbours, transformations_to_edge, transformations_to_old_edges, existing_edges, edges_to_not_include, NewDigraph, new_edge, old_edge, neighbour, t;
+  local w, neighbours, transformations_to_edge, transformations_to_old_edges, existing_edges, edges_to_not_include, NewDigraph, new_edge, old_edge, neighbour, t, vertices;
 
   if not IsDigraphEdge(D, u, v) then # Check if [u, v] is an edge in digraph D
     ErrorNoReturn("u, v is not an edge of D");
@@ -474,7 +473,8 @@ function(D, u, v)
   # add vertex w with combined labels from u and v
   NewDigraph := DigraphAddVertex(NewDigraph, [DigraphVertexLabel(D, u), DigraphVertexLabel(D, v)]); # add vertex w
 
-  w := Last(DigraphVertices(NewDigraph)); # w is the new vertix identifier 
+  vertices := DigraphVertices(D);
+  w := vertices[Length(vertices)]; # w is the new vertix identifier 
 
   # Handle loops from edges u or w, with the same source / range
   if IsDigraphEdge(D, u, u) and IsDigraphEdge(D, v, v) then NewDigraph := DigraphAddEdge(NewDigraph, w, w); SetDigraphEdgeLabel(NewDigraph, w, w, [DigraphEdgeLabel(D, u, u), DigraphEdgeLabel(D, v, v)]);
@@ -528,6 +528,16 @@ function(D, u, v)
 
   return NewDigraph;
 
+end);
+
+InstallMethod(DigraphContractEdge,
+"for a digraph and a list",
+[IsDigraph, IsList],
+function(D, edge)
+  if Length(edge) <> 2 then
+    ErrorNoReturn("the 2nd argument <edge> must be a list of length 2,");
+  fi;
+  return DigraphContractEdge(D, edge[1], edge[2]);
 end);
 
 #############################################################################
