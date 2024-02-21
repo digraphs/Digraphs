@@ -416,6 +416,19 @@ gap> d := EdgeWeightedDigraph([[2], [1]], [[5], [10]]);
 gap> EdgeWeights(d);
 [ [ 5 ], [ 10 ] ]
 
+# Issue 617: bug in DigraphRemoveEdge, wasn't removing edge labels
+gap> D := DigraphByEdges(IsMutableDigraph, [[1, 2], [2, 3], [3, 4], [4, 1], [1, 1]]);;
+gap> DigraphEdgeLabels(D);
+[ [ 1, 1 ], [ 1 ], [ 1 ], [ 1 ] ]
+gap> DigraphRemoveEdge(D, [1, 2]);;
+gap> DigraphEdgeLabels(D);
+[ [ 1 ], [ 1 ], [ 1 ], [ 1 ] ]
+gap> D := DigraphByEdges(IsMutableDigraph, [[1, 2], [2, 3], [3, 4], [4, 1], [1, 1]]);;
+gap> SetDigraphEdgeLabel(D, 1, 2, "test");
+gap> DigraphRemoveEdge(D, 1, 2);;
+gap> DigraphEdgeLabels(D);
+[ [ 1 ], [ 1 ], [ 1 ], [ 1 ] ]
+
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(D);
 gap> Unbind(adj);

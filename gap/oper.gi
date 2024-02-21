@@ -241,7 +241,7 @@ function(D, src, ran)
   pos := Position(D!.OutNeighbours[src], ran);
   if pos <> fail then
     Remove(D!.OutNeighbours[src], pos);
-    Remove(DigraphEdgeLabels(D)[src], pos);
+    RemoveDigraphEdgeLabel(D, src, pos);
   fi;
   return D;
 end);
