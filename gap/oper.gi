@@ -473,7 +473,7 @@ function(D, u, v)
   # add vertex w with combined labels from u and v
   NewDigraph := DigraphAddVertex(NewDigraph, [DigraphVertexLabel(D, u), DigraphVertexLabel(D, v)]); # add vertex w
 
-  vertices := DigraphVertices(D);
+  vertices := DigraphVertices(NewDigraph);
   w := vertices[Length(vertices)]; # w is the new vertix identifier 
 
   # Handle loops from edges u or w, with the same source / range
