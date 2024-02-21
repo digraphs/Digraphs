@@ -2897,6 +2897,286 @@ gap> List(res[2], x -> List(x));
 [ [ Z(2)^0, Z(2)^0, Z(2)^0, 0*Z(2), 0*Z(2), 0*Z(2), 0*Z(2) ], 
   [ 0*Z(2), 0*Z(2), 0*Z(2), Z(2)^0, Z(2)^0, Z(2)^0, Z(2)^0 ] ]
 
+# DigraphContractEdge
+
+# DigraphContractEdge: multi digraphs
+gap> D := Digraph([[2, 3, 3], [2], [1]]);;
+gap> DigraphContractEdge(D, 1, 3);
+Error, Cannot contract an edge for a MultiDigraph
+
+# DigraphContractEdge: Edge does not exist
+gap> D := DigraphByEdges([[1, 2], [2, 1]]);;
+gap> DigraphContractEdge(D, 1, 3);
+Error, u, v is not an edge of D
+
+# DigraphContractEdge: Edge is a looped edge (u = v)
+gap> D := DigraphByEdges([[1, 1], [2, 1], [1, 2]]);;
+gap> DigraphVertexLabels(D);; 
+gap> C := DigraphContractEdge(D, 1, 1);
+Error, Cannot contract an edge with the same source and range
+gap> DigraphHasLoops(D);
+true
+gap> DigraphEdges(D);
+[ [ 1, 1 ], [ 2, 1 ], [ 1, 2 ] ]
+gap> DigraphVertexLabels(D);
+[ 1, 2 ]
+
+# DigraphContractEdge: Loop contracting to an empty Digraph
+gap> D := DigraphByEdges([[1, 2], [2, 1]]);;
+gap> SetDigraphVertexLabel(D, 1, "1");;
+gap> SetDigraphVertexLabel(D, 2, "2");;
+gap> C := DigraphContractEdge(D, 2, 1);;
+gap> DigraphEdges(C);
+[  ]
+gap> DigraphVertices(C);
+[ 1 ]
+gap> DigraphVertexLabel(C, 1);
+[ "2", "1" ]
+
+# DigraphContractEdge: Double loop contracting, one edge result
+gap> D := DigraphByEdges([[1, 2], [1, 3], [2, 1]]);;
+gap> DigraphVertexLabels(D);;
+gap> C := DigraphContractEdge(D, 2, 1);;
+gap> DigraphEdges(C);
+[ [ 2, 1 ] ]
+gap> DigraphVertices(C);
+[ 1, 2 ]
+gap> DigraphVertexLabels(C);
+[ 3, [ 2, 1 ] ]
+
+# DigraphContractEdge: Loop contracting, leaving another loop remaining
+gap> D := DigraphByEdges([[1, 2], [1, 3], [3, 1], [2, 1]]);;
+gap> DigraphVertexLabels(D);;
+gap> C := DigraphContractEdge(D, 2, 1);;
+gap> DigraphEdges(C);
+[ [ 1, 2 ], [ 2, 1 ] ]
+gap> DigraphVertices(C);
+[ 1, 2 ]
+gap> DigraphVertexLabels(C);
+[ 3, [ 2, 1 ] ]
+
+# DigraphContractEdge: Test with a larger graph, vertex labels and an edge label, making sure D was not modified
+gap> D := DigraphByEdges([[2, 1], [1, 3], [3, 1], [4, 2], [4, 5], [3, 4], [5, 3]]);;
+gap> SetDigraphVertexLabels(D, ["1", "2", "3", "4", "5"]);;
+gap> SetDigraphEdgeLabel(D, 2, 1, "newlabel");
+gap> C := DigraphContractEdge(D, 3, 4);;
+gap> DigraphEdges(C);
+[ [ 1, 4 ], [ 2, 1 ], [ 3, 4 ], [ 4, 1 ], [ 4, 2 ], [ 4, 3 ] ]
+gap> DigraphVertexLabels(C);
+[ "1", "2", "5", [ "3", "4" ] ]
+gap> DigraphEdgeLabel(C, 2, 1);
+"newlabel"
+gap> DigraphEdges(D);
+[ [ 2, 1 ], [ 1, 3 ], [ 3, 1 ], [ 4, 2 ], [ 4, 5 ], [ 3, 4 ], [ 5, 3 ] ]
+gap> DigraphVertices(D);
+[ 1 .. 5 ]
+gap> DigraphVertexLabels(D);
+[ "1", "2", "3", "4", "5" ]
+
+# DigraphContractEdge: Test with a loop (u, u)
+gap> D := DigraphByEdges([[1, 2], [2, 3], [3, 4], [4, 1], [1, 1]]);;
+gap> DigraphVertexLabels(D);;
+gap> C := DigraphContractEdge(D, 1, 2);;
+gap> DigraphEdges(C);
+[ [ 1, 2 ], [ 2, 3 ], [ 3, 3 ], [ 3, 1 ] ]
+gap> DigraphVertices(C);
+[ 1 .. 3 ]
+gap> DigraphVertexLabels(C);
+[ 3, 4, [ 1, 2 ] ]
+
+# DigraphContractEdge: Test with a loop (w, w)
+gap> D := DigraphByEdges([[1, 2], [2, 3], [3, 4], [4, 1], [1, 1], [2, 1]]);;
+gap> C := DigraphContractEdge(D, 2, 1);;
+gap> DigraphEdges(C);
+[ [ 1, 2 ], [ 2, 3 ], [ 3, 3 ], [ 3, 1 ] ]
+gap> DigraphVertices(C);
+[ 1 .. 3 ]
+
+# DigraphContractEdge: Test with a loop (w, w)
+gap> D := DigraphByEdges([[1, 2], [2, 3], [3, 4], [4, 1], [1, 1], [2, 1]]);;
+gap> DigraphVertexLabels(D);;
+gap> C := DigraphContractEdge(D, 2, 1);;
+gap> DigraphEdges(C);
+[ [ 1, 2 ], [ 2, 3 ], [ 3, 3 ], [ 3, 1 ] ]
+gap> DigraphVertices(C);
+[ 1 .. 3 ]
+gap> DigraphVertexLabels(C);
+[ 3, 4, [ 2, 1 ] ]
+
+# DigraphContractEdge: Test with a single edge (u, v)
+gap> D := DigraphByEdges([[1, 2]]);;
+gap> DigraphVertexLabels(D);;
+gap> C := DigraphContractEdge(D, 1, 2);;
+gap> DigraphEdges(C);
+[  ]
+gap> DigraphVertices(C);
+[ 1 ]
+gap> DigraphVertexLabels(C);
+[ [ 1, 2 ] ]
+
+# DigraphContractEdge: Test with a single node, with one loop, and one incident edge
+gap> D := DigraphByEdges([[1, 1], [2, 1]]);;
+gap> DigraphVertexLabels(D);;
+gap> C := DigraphContractEdge(D, 2, 1);;
+gap> DigraphEdges(C);
+[ [ 1, 1 ] ]
+gap> DigraphVertices(C);
+[ 1 ]
+gap> DigraphVertexLabels(C);
+[ [ 2, 1 ] ]
+
+# DigraphContractEdge: Standard test
+gap> D := DigraphByEdges([[2, 1], [3, 1], [3, 4], [1, 4], [4, 2], [5, 2], [4, 5], [5, 5]]);;
+gap> DigraphVertexLabels(D);;
+gap> C := DigraphContractEdge(D, 2, 1);;
+gap> DigraphEdges(C);
+[ [ 1, 4 ], [ 1, 2 ], [ 2, 4 ], [ 2, 3 ], [ 3, 4 ], [ 3, 3 ], [ 4, 2 ] ]
+gap> DigraphVertices(C);
+[ 1 .. 4 ]
+gap> DigraphVertexLabels(C);
+[ 3, 4, 5, [ 2, 1 ] ]
+
+# DigraphContractEdge: Disconnected test
+gap> D := DigraphByEdges([[1, 2], [1, 3], [2, 1], [2, 2], [2, 3], [3, 2], [4, 4], [4, 5], [4, 6], [5, 5], [5, 4]]);;
+gap> DigraphVertexLabels(D);;
+gap> C := DigraphContractEdge(D, 4, 5);;
+gap> DigraphEdges(C);
+[ [ 1, 2 ], [ 1, 3 ], [ 2, 1 ], [ 2, 2 ], [ 2, 3 ], [ 3, 2 ], [ 5, 5 ], 
+  [ 5, 4 ] ]
+gap> DigraphVertexLabels(C);
+[ 1, 2, 3, 6, [ 4, 5 ] ]
+
+# DigraphContractEdge: MultiDigraph (mutable)
+gap> D := Digraph(IsMutableDigraph, [[2, 3, 3], [2], [1]]);;
+gap> DigraphContractEdge(D, 1, 3);
+Error, Cannot contract an edge for a MultiDigraph
+
+# DigraphContractEdge: Edge does not exist (mutable)
+gap> D := DigraphByEdges(IsMutableDigraph, [[1, 2], [2, 1]]);;
+gap> DigraphContractEdge(D, 1, 3);
+Error, u, v is not an edge of D
+
+# DigraphContractEdge: Edge is a looped edge (u = v) (mutable)
+gap> D := DigraphByEdges(IsMutableDigraph, [[1, 1], [2, 1], [1, 2]]);;
+gap> DigraphVertexLabels(D);; 
+gap> DigraphContractEdge(D, 1, 1);
+Error, Cannot contract an edge with the same source and range
+gap> DigraphHasLoops(D);
+true
+gap> DigraphEdges(D);
+[ [ 1, 1 ], [ 1, 2 ], [ 2, 1 ] ]
+gap> DigraphVertexLabels(D);
+[ 1, 2 ]
+
+# DigraphContractEdge: Loop contracting to an empty Digraph (mutable)
+gap> D := DigraphByEdges(IsMutableDigraph, [[1, 2], [2, 1]]);;
+gap> SetDigraphVertexLabel(D, 1, "1");;
+gap> SetDigraphVertexLabel(D, 2, "2");;
+gap> DigraphContractEdge(D, 2, 1);;
+gap> DigraphEdges(D);
+[  ]
+gap> DigraphVertices(D);
+[ 1 ]
+gap> DigraphVertexLabel(D, 1);
+[ "2", "1" ]
+
+# DigraphContractEdge: Double loop contracting, one edge result (mutable)
+gap> D := DigraphByEdges(IsMutableDigraph, [[1, 2], [1, 3], [2, 1]]);;
+gap> DigraphVertexLabels(D);;
+gap> DigraphContractEdge(D, 2, 1);;
+gap> DigraphEdges(D);
+[ [ 2, 1 ] ]
+gap> DigraphVertices(D);
+[ 1, 2 ]
+gap> DigraphVertexLabels(D);
+[ 3, [ 2, 1 ] ]
+
+# DigraphContractEdge: Loop contracting, leaving another loop remaining (mutable)
+gap> D := DigraphByEdges(IsMutableDigraph, [[1, 2], [1, 3], [3, 1], [2, 1]]);;
+gap> DigraphVertexLabels(D);;
+gap> DigraphContractEdge(D, 2, 1);;
+gap> DigraphEdges(D);
+[ [ 1, 2 ], [ 2, 1 ] ]
+gap> DigraphVertices(D);
+[ 1, 2 ]
+gap> DigraphVertexLabels(D);
+[ 3, [ 2, 1 ] ]
+
+# DigraphContractEdge: Test with a larger graph, vertex labels and an edge label (mutable)
+gap> D := DigraphByEdges(IsMutableDigraph, [[2, 1], [1, 3], [3, 1], [4, 2], [4, 5], [3, 4], [5, 3]]);;
+gap> SetDigraphVertexLabels(D, ["1", "2", "3", "4", "5"]);;
+gap> SetDigraphEdgeLabel(D, 2, 1, "newlabel");
+gap> DigraphContractEdge(D, 3, 4);;
+gap> DigraphEdges(D);
+[ [ 1, 4 ], [ 2, 1 ], [ 3, 4 ], [ 4, 1 ], [ 4, 2 ], [ 4, 3 ] ]
+gap> DigraphVertexLabels(D);
+[ "1", "2", "5", [ "3", "4" ] ]
+gap> DigraphEdgeLabel(D, 2, 1);
+"newlabel"
+
+# DigraphContractEdge: Test with a loop (u, u) (mutable)
+gap> D := DigraphByEdges(IsMutableDigraph, [[1, 2], [2, 3], [3, 4], [4, 1], [1, 1]]);;
+gap> DigraphVertexLabels(D);;
+gap> DigraphContractEdge(D, 1, 2);;
+gap> DigraphEdges(D);
+[ [ 1, 2 ], [ 2, 3 ], [ 3, 3 ], [ 3, 1 ] ]
+gap> DigraphVertices(D);
+[ 1 .. 3 ]
+gap> DigraphVertexLabels(D);
+[ 3, 4, [ 1, 2 ] ]
+
+# DigraphContractEdge: Test with a loop (w, w) (mutable)
+gap> D := DigraphByEdges(IsMutableDigraph, [[1, 2], [2, 3], [3, 4], [4, 1], [1, 1], [2, 1]]);;
+gap> DigraphVertexLabels(D);;
+gap> DigraphContractEdge(D, 2, 1);;
+gap> DigraphEdges(D);
+[ [ 1, 2 ], [ 2, 3 ], [ 3, 3 ], [ 3, 1 ] ]
+gap> DigraphVertices(D);
+[ 1 .. 3 ]
+gap> DigraphVertexLabels(D);
+[ 3, 4, [ 2, 1 ] ]
+
+# DigraphContractEdge: Test with a single edge (u, v) (mutable)
+gap> D := DigraphByEdges(IsMutableDigraph, [[1, 2]]);;
+gap> DigraphVertexLabels(D);;
+gap> DigraphContractEdge(D, 1, 2);;
+gap> DigraphEdges(D);
+[  ]
+gap> DigraphVertices(D);
+[ 1 ]
+gap> DigraphVertexLabels(D);
+[ [ 1, 2 ] ]
+
+# DigraphContractEdge: Test with a single node, with one loop, and one incident edge (mutable)
+gap> D := DigraphByEdges(IsMutableDigraph, [[1, 1], [2, 1]]);;
+gap> DigraphVertexLabels(D);;
+gap> DigraphContractEdge(D, 2, 1);;
+gap> DigraphEdges(D);
+[ [ 1, 1 ] ]
+gap> DigraphVertices(D);
+[ 1 ]
+gap> DigraphVertexLabels(D);
+[ [ 2, 1 ] ]
+
+# DigraphContractEdge: Standard test (mutable)
+gap> D := DigraphByEdges(IsMutableDigraph, [[2, 1], [3, 1], [3, 4], [1, 4], [4, 2], [5, 2], [4, 5], [5, 5]]);;
+gap> DigraphVertexLabels(D);;
+gap> DigraphContractEdge(D, 2, 1);;
+gap> DigraphEdges(D);
+[ [ 1, 2 ], [ 1, 4 ], [ 2, 3 ], [ 2, 4 ], [ 3, 3 ], [ 3, 4 ], [ 4, 2 ] ]
+gap> DigraphVertexLabels(D);
+[ 3, 4, 5, [ 2, 1 ] ]
+
+# DigraphContractEdge: Disconnected test (mutable)
+gap> D := DigraphByEdges(IsMutableDigraph, [[1, 2], [1, 3], [2, 1], [2, 2], [2, 3], [3, 2], [4, 4], [4, 5], [4, 6], [5, 5], [5, 4]]);;
+gap> DigraphVertexLabels(D);;
+gap> DigraphContractEdge(D, 4, 5);;
+gap> DigraphEdges(D);
+[ [ 1, 2 ], [ 1, 3 ], [ 2, 1 ], [ 2, 2 ], [ 2, 3 ], [ 3, 2 ], [ 5, 5 ], 
+  [ 5, 4 ] ]
+gap> DigraphVertexLabels(D);
+[ 1, 2, 3, 6, [ 4, 5 ] ]
+
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(C);
 gap> Unbind(D);

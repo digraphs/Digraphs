@@ -429,7 +429,21 @@ gap> DigraphRemoveEdge(D, 1, 2);;
 gap> DigraphEdgeLabels(D);
 [ [ 1 ], [ 1 ], [ 1 ], [ 1 ] ]
 
+# DigraphContractEdge
+gap> D := DigraphByEdges(IsMutableDigraph, [[1, 2], [2, 1]]);
+<mutable digraph with 2 vertices, 2 edges>
+gap> DigraphContractEdge(D, 2, 1);
+gap> DigraphEdges(D);
+[  ]
+gap> D := DigraphByEdges([[1, 2], [2, 1], [2, 3]]);
+<immutable digraph with 3 vertices, 3 edges>
+gap> C := DigraphContractEdge(D, 2, 1);
+<immutable digraph with 2 vertices, 1 edge>
+gap> DigraphEdges(C);
+[ [ 2, 1 ] ]
+
 #  DIGRAPHS_UnbindVariables
+gap> Unbind(C);
 gap> Unbind(D);
 gap> Unbind(adj);
 gap> Unbind(d);
