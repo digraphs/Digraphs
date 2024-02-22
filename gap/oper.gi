@@ -2227,9 +2227,6 @@ function(G)
     if i in OutNbr[i] then
       ErrorNoReturn("the 1st argument (a digraph) must not have any loops");
     fi;
-    if i in InNbr[i] then
-      ErrorNoReturn("the 1st argument (a digraph) must not have any loops");
-    fi;
   od;
 
   # If each sublist of OutNbr & InNbr is not sorted, sort it
