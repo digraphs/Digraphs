@@ -2229,34 +2229,6 @@ function(G)
     fi;
   od;
 
-  # If each sublist of OutNbr & InNbr is not sorted, sort it
-  # ToSortOut := [];
-  # ToSortIn := [];
-  # for i in [1 .. n] do
-  #   if i in OutNbr[i] then
-  #     Error("the 1st argument (a digraph) must not have any loops");
-  #   elif not IsSet(OutNbr[i]) then
-  #     Add(ToSortOut, i);
-  #   fi;
-  #   if not IsSet(InNbr[i]) then
-  #     Add(ToSortIn, i);
-  #   fi;
-  # od;
-  # if not IsEmpty(ToSortOut) then
-  #   OutNbr := ShallowCopy(OutNbr);
-  #   for i in ToSortOut do
-  #     OutNbr[i] := AsSet(OutNbr[i]);
-  #   od;
-  #   MakeImmutable(OutNbr);
-  # fi;
-  # if not IsEmpty(ToSortIn) then
-  #   InNbr := ShallowCopy(InNbr);
-  #   for i in ToSortIn do
-  #     InNbr[i] := AsSet(InNbr[i]);
-  #   od;
-  #   MakeImmutable(InNbr);
-  # fi;
-
   # Quick early return for too few vertices
   if n < 3 then
     return [OutNbr, []];
@@ -2282,46 +2254,46 @@ function(G)
   #   Info(InfoWarning, 1, "The resulting matrix is likely to be very large.");
   # fi;
 
-  # Traverse the graph, breath first search
+  # Traverse the graph, depth first search
   roots := [];
   # Maybe save Length(roots) as DigraphNrConnectedComponents?
   # other biproducts?
   visited := BlistList([1 .. n], []);
   if CompareVersionNumbers(GAPInfo.Version, "4.12") then
-    path := List([1 .. n], i -> ZeroVector(GF(2), m));
+    path := List([1 .. n], i -> NewZeroVector(IsGF2VectorRep, GF(2), m));
   else
     path := List([1 .. n], i -> Vector(GF(2), List([1 .. m], i -> Zero(GF(2)))));
   fi;
   unusedEdges := [];
-  while not ForAll(visited, IdFunc) do
+  while ForAny(visited, x -> x = false) do
     s := Position(visited, false);
     Add(roots, s);
-    visited[s] := true;
+    visited[s] := s;
     queue := [s];
     while not IsEmpty(queue) do
       u := Remove(queue, 1);
       for p in [1 .. Length(OutNbr[u])] do
         v := OutNbr[u][p];
         i := partialSum[u] + p;
-        if not visited[v] then
-          visited[v] := true;
+        if visited[v] = false then
+          visited[v] := u;
           path[v] := ShallowCopy(path[u]);
           path[v][i] := Z(2);
           Add(queue, v);
         elif v in queue then
-          Add(unusedEdges, [u, i, v]);
+          Add(unusedEdges, [u, i, v, visited[v]]);
         fi;
       od;
       for v in InNbr[u] do
         p := Position(OutNbr[v], u);
         i := partialSum[v] + p;
-        if not visited[v] then
-          visited[v] := true;
+        if visited[v] = false then
+          visited[v] := u;
           path[v] := ShallowCopy(path[u]);
           path[v][i] := Z(2);
           Add(queue, v);
         elif v in queue then
-          Add(unusedEdges, [v, i, u]);
+          Add(unusedEdges, [u, i, v, visited[v]]);
         fi;
       od;
     od;
@@ -2344,8 +2316,9 @@ function(G)
   # reducing the number of computation needed.
   B := [];
   for e in unusedEdges do
-    cycle := path[e[1]] + path[e[3]];
+    cycle := path[e[1]] + path[e[4]];
     cycle[e[2]] := Z(2);
+    cycle[e[3]] := Z(2);
     Add(B, cycle);
   od;
 
