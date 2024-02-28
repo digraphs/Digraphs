@@ -2327,11 +2327,11 @@ gap> res := DigraphCycleBasis(D);
   [ <a GF2 vector of length 6>, <a GF2 vector of length 6>, 
       <a GF2 vector of length 6> ] ]
 gap> List(res[2][1]);            
-[ Z(2)^0, Z(2)^0, 0*Z(2), Z(2)^0, 0*Z(2), 0*Z(2) ]
-gap> List(res[2][2]);
 [ Z(2)^0, 0*Z(2), Z(2)^0, 0*Z(2), Z(2)^0, 0*Z(2) ]
-gap> List(res[2][3]);
+gap> List(res[2][2]);
 [ 0*Z(2), Z(2)^0, Z(2)^0, 0*Z(2), 0*Z(2), Z(2)^0 ]
+gap> List(res[2][3]);
+[ Z(2)^0, Z(2)^0, 0*Z(2), Z(2)^0, 0*Z(2), 0*Z(2) ]
 ]]></Example>
   </Description>
 </ManSection>

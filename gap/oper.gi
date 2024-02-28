@@ -2209,7 +2209,7 @@ InstallMethod(DigraphCycleBasis, "for a digraph",
 [IsDigraph],
 function(G)
   local OutNbr, InNbr, n, partialSum, m, roots, visited, path, unusedEdges, i,
-        s, queue, u, v, p, cycle, B, e;
+        c, s, queue, u, v, p, cycle, B, e;
 
   # Catch multigraphs?
 
@@ -2259,67 +2259,64 @@ function(G)
   # Maybe save Length(roots) as DigraphNrConnectedComponents?
   # other biproducts?
   visited := BlistList([1 .. n], []);
-  if CompareVersionNumbers(GAPInfo.Version, "4.12") then
-    path := List([1 .. n], i -> NewZeroVector(IsGF2VectorRep, GF(2), m));
-  else
-    path := List([1 .. n], i -> Vector(GF(2), List([1 .. m], i -> Zero(GF(2)))));
-  fi;
   unusedEdges := [];
   while ForAny(visited, x -> x = false) do
     s := Position(visited, false);
     Add(roots, s);
-    visited[s] := s;
+    visited[s] := [0, s];
     queue := [s];
     while not IsEmpty(queue) do
-      u := Remove(queue, 1);
+      u := Remove(queue);
       for p in [1 .. Length(OutNbr[u])] do
         v := OutNbr[u][p];
         i := partialSum[u] + p;
         if visited[v] = false then
-          visited[v] := u;
-          path[v] := ShallowCopy(path[u]);
-          path[v][i] := Z(2);
+          visited[v] := [i, u];
           Add(queue, v);
         elif v in queue then
-          Add(unusedEdges, [u, i, v, visited[v]]);
+          Add(unusedEdges, [u, i, v, visited[v][1], visited[v][2]]);
         fi;
       od;
       for v in InNbr[u] do
         p := Position(OutNbr[v], u);
         i := partialSum[v] + p;
         if visited[v] = false then
-          visited[v] := u;
-          path[v] := ShallowCopy(path[u]);
-          path[v][i] := Z(2);
+          visited[v] := [i, u];
           Add(queue, v);
         elif v in queue then
-          Add(unusedEdges, [u, i, v, visited[v]]);
+          Add(unusedEdges, [u, i, v, visited[v][1], visited[v][2]]);
         fi;
       od;
     od;
   od;
 
+  c := Length(unusedEdges);
+
   # Second, more accurate warning for large matrix
   # The warning is printed roughly when the result matrix will take up
   # more than 8GB of RAM.
-  if (10 ^ 11) / 2 < m * (m - n + Length(roots)) then
+  if (10 ^ 11) / 2 < m * c then
     Info(InfoWarning, 1, "The resulting matrix is going to be very large.");
   fi;
 
   # Create the matrix B
-  # The testing show that this is the most time consuming part
-  # and there is a possible performance left on the table.
-  # The traversal loop above discards the order the edges are added.
-  # However, if this order is somehow efficiently preserved, we can know
-  # precisely which edges will cancel out as initial common path between
-  # path[e[1]] and path[e[3]] before diverging at some point. Possibly
-  # reducing the number of computation needed.
-  B := [];
-  for e in unusedEdges do
-    cycle := path[e[1]] + path[e[4]];
-    cycle[e[2]] := Z(2);
-    cycle[e[3]] := Z(2);
-    Add(B, cycle);
+  if CompareVersionNumbers(GAPInfo.Version, "4.12") then
+    B := List([1 .. c], i -> NewZeroVector(IsGF2VectorRep, GF(2), m));
+  else
+    B := List([1 .. c], i -> Vector(GF(2), List([1 .. m], i -> Zero(GF(2)))));
+  fi;
+
+  for i in [1 .. c] do
+    u := unusedEdges[i][1];
+    v := unusedEdges[i][5];
+
+    while u <> v do
+      B[i][visited[u][1]] := Z(2);
+      u := visited[u][2];
+    od;
+    
+    B[i][unusedEdges[i][2]] := Z(2);
+    B[i][unusedEdges[i][4]] := Z(2);
   od;
 
   return [OutNbr, B];
