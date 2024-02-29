@@ -9,35 +9,37 @@
 ##
 # AN's code, adapted by WW
 
-BindGlobal("DIGRAPHS_DotDigraph",
+BindGlobal("GV_DIGRAPHS_DotDigraph",
 function(D, node_funcs, edge_funcs)
-  local str, out, i, func, j, l;
-  str   := "//dot\n";
-  Append(str, "digraph hgn{\n");
-  Append(str, "node [shape=circle]\n");
+  local out, nodes, tail, head, node, edge, graph, i, func, j, l;
+
+  graph := GV_Digraph("hgn");
+  GV_SetAttr(graph, "node [shape=\"circle\"]");
+
   for i in DigraphVertices(D) do
-    Append(str, StringFormatted("{}", i));
+    node := GV_AddNode(graph, StringFormatted("{}", i));
     for func in node_funcs do
-      Append(str, func(i));
+      func(graph, node, i);
     od;
-    Append(str, "\n");
   od;
+
+  nodes := GV_Nodes(graph);
   out := OutNeighbours(D);
   for i in DigraphVertices(D) do
     l := Length(out[i]);
     for j in [1 .. l] do
-      Append(str, StringFormatted("{} -> {}", i, out[i][j]));
+      tail := nodes[String(i)];
+      head := nodes[String(out[i][j])];
+      edge := GV_AddEdge(graph, tail, head);
       for func in edge_funcs do
-        Append(str, func(i, j));
+        func(graph, edge, i, j);
       od;
-      Append(str, "\n");
     od;
   od;
-  Append(str, "}\n");
-  return str;
+  return graph;
 end);
 
-BindGlobal("DIGRAPHS_ValidRGBValue",
+BindGlobal("GV_DIGRAPHS_ValidRGBValue",
 function(str)
   local l, chars, x, i;
   l := Length(str);
@@ -59,22 +61,22 @@ function(str)
   fi;
 end);
 
-BindGlobal("DIGRAPHS_GraphvizColorsList", fail);
+BindGlobal("GV_DIGRAPHS_GraphvizColorsList", fail);
 
-BindGlobal("DIGRAPHS_GraphvizColors",
+BindGlobal("GV_DIGRAPHS_GraphvizColors",
 function()
   local f;
-  if DIGRAPHS_GraphvizColorsList = fail then
+  if GV_DIGRAPHS_GraphvizColorsList = fail then
     f := IO_File(Concatenation(DIGRAPHS_Dir(), "/data/colors.p"));
-    MakeReadWriteGlobal("DIGRAPHS_GraphvizColorsList");
-    DIGRAPHS_GraphvizColorsList := IO_Unpickle(f);
-    MakeReadOnlyGlobal("DIGRAPHS_GraphvizColorsList");
+    MakeReadWriteGlobal("GV_DIGRAPHS_GraphvizColorsList");
+    GV_DIGRAPHS_GraphvizColorsList := IO_Unpickle(f);
+    MakeReadOnlyGlobal("GV_DIGRAPHS_GraphvizColorsList");
     IO_Close(f);
   fi;
-  return DIGRAPHS_GraphvizColorsList;
+  return GV_DIGRAPHS_GraphvizColorsList;
 end);
 
-BindGlobal("DIGRAPHS_ValidVertColors",
+BindGlobal("GV_DIGRAPHS_ValidVertColors",
 function(D, verts)
   local v, sum, colors, col;
   v := DigraphVertices(D);
@@ -83,12 +85,12 @@ function(D, verts)
     ErrorNoReturn("the number of vertex colors must be the same as the number",
     " of vertices, expected ", Length(v), " but found ", Length(verts), "");
   fi;
-  colors := DIGRAPHS_GraphvizColors();
+  colors := GV_DIGRAPHS_GraphvizColors();
   if Length(verts) = Length(v) then
     for col in verts do
       if not IsString(col) then
         ErrorNoReturn("expected a string");
-      elif DIGRAPHS_ValidRGBValue(col) = false and
+      elif GV_DIGRAPHS_ValidRGBValue(col) = false and
           (col in colors) = false then
         ErrorNoReturn("expected RGB Value or valid color name as defined",
         " by GraphViz 2.44.1 X11 Color Scheme",
@@ -103,14 +105,14 @@ function(D, verts)
   fi;
 end);
 
-BindGlobal("DIGRAPHS_ValidEdgeColors",
+BindGlobal("GV_DIGRAPHS_ValidEdgeColors",
 function(D, edge)
   local out, l, counter, sum, colors, v, col;
   out := OutNeighbours(D);
   l := Length(edge);
   counter := 0;
   sum := 0;
-  colors := DIGRAPHS_GraphvizColors();
+  colors := GV_DIGRAPHS_GraphvizColors();
   if Length(edge) <> Length(out) then
     ErrorNoReturn("the list of edge colors needs to have the",
     " same shape as the out-neighbours of the digraph");
@@ -124,7 +126,7 @@ function(D, edge)
         for col in edge[v] do
           if not IsString(col) then
             ErrorNoReturn("expected a string");
-          elif DIGRAPHS_ValidRGBValue(col) = false and
+          elif GV_DIGRAPHS_ValidRGBValue(col) = false and
               (col in colors) = false then
             ErrorNoReturn("expected RGB Value or valid color name as defined",
             " by GraphViz 2.44.1 X11 Color Scheme",
@@ -144,261 +146,183 @@ function(D, edge)
   fi;
 end);
 
+InstallMethod(GV_DotDigraph, "for a digraph by out-neighbours",
+[IsDigraphByOutNeighboursRep],
+D -> GV_DIGRAPHS_DotDigraph(D, [], []));
+
 InstallMethod(DotDigraph, "for a digraph by out-neighbours",
 [IsDigraphByOutNeighboursRep],
-D -> DIGRAPHS_DotDigraph(D, [], []));
+D -> GV_String(GV_DotDigraph(D)));
 
-InstallMethod(DotColoredDigraph, "for a digraph by out-neighbours and two lists",
+InstallMethod(GV_DotColoredDigraph, "for a digraph by out-neighbours and two lists",
 [IsDigraphByOutNeighboursRep, IsList, IsList],
 function(D, vert, edge)
   local vert_func, edge_func;
-  if DIGRAPHS_ValidVertColors(D, vert) and DIGRAPHS_ValidEdgeColors(D, edge) then
-    vert_func := i -> StringFormatted("[color={}, style=filled]", vert[i]);
-    edge_func := {i, j} -> StringFormatted("[color={}]", edge[i][j]);
-    return DIGRAPHS_DotDigraph(D, [vert_func], [edge_func]);
+  if GV_DIGRAPHS_ValidVertColors(D, vert) and GV_DIGRAPHS_ValidEdgeColors(D, edge) then
+    vert_func := {g, n, i} -> GV_SetAttrs(n, rec(color := vert[i], style := "filled"));
+    edge_func := {g, e, i, j} -> GV_SetAttrs(e, rec(color := edge[i][j]));
+    return GV_DIGRAPHS_DotDigraph(D, [vert_func], [edge_func]);
   fi;
 end);
 
-InstallMethod(DotVertexColoredDigraph,
+InstallMethod(DotColoredDigraph, "for a digraph by out-neighbours and two lists",
+[IsDigraphByOutNeighboursRep, IsList, IsList],
+{D, vert, edge} -> GV_String(GV_DotColoredDigraph(D, vert, edge)));
+
+InstallMethod(GV_DotVertexColoredDigraph,
 "for a digraph by out-neighbours and a list",
 [IsDigraphByOutNeighboursRep, IsList],
 function(D, vert)
   local func;
-  if DIGRAPHS_ValidVertColors(D, vert) then
-    func := i -> StringFormatted("[color={}, style=filled]", vert[i]);
-    return DIGRAPHS_DotDigraph(D, [func], []);
+  if GV_DIGRAPHS_ValidVertColors(D, vert) then
+    func := {g, n, i} -> GV_SetAttrs(n, rec(color := vert[i], style := "filled"));
+    return GV_DIGRAPHS_DotDigraph(D, [func], []);
+  fi;
+end);
+
+InstallMethod(DotVertexColoredDigraph, 
+"for a digraph by out-neighbours and a list",
+[IsDigraphByOutNeighboursRep, IsList],
+{D, vert} -> GV_String(GV_DotVertexColoredDigraph(D, vert)));
+
+InstallMethod(GV_DotEdgeColoredDigraph,
+"for a digraph by out-neighbours and a list",
+[IsDigraphByOutNeighboursRep, IsList],
+function(D, edge)
+  local func;
+  if GV_DIGRAPHS_ValidEdgeColors(D, edge) then
+    func := {g, e, i, j} -> GV_SetAttrs(e, rec(color := edge[i][j]));
+    return GV_DIGRAPHS_DotDigraph(D, [], [func]);
   fi;
 end);
 
 InstallMethod(DotEdgeColoredDigraph,
 "for a digraph by out-neighbours and a list",
 [IsDigraphByOutNeighboursRep, IsList],
-function(D, edge)
+{D, edge} -> GV_String(GV_DotEdgeColoredDigraph(D, edge)));
+
+InstallMethod(GV_DotVertexLabelledDigraph, "for a digraph by out-neighbours",
+[IsDigraphByOutNeighboursRep],
+function(D)
   local func;
-  if DIGRAPHS_ValidEdgeColors(D, edge) then
-    func := {i, j} -> StringFormatted("[color={}]", edge[i][j]);
-    return DIGRAPHS_DotDigraph(D, [], [func]);
-  fi;
+  func := {g, n, i} -> GV_SetAttrs(n, rec(label := DigraphVertexLabel(D, i)));
+  return GV_DIGRAPHS_DotDigraph(D, [func], []);
 end);
 
 InstallMethod(DotVertexLabelledDigraph, "for a digraph by out-neighbours",
 [IsDigraphByOutNeighboursRep],
-function(D)
-  local func;
-  func := i -> StringFormatted(" [label=\"{}\"]", DigraphVertexLabel(D, i));
-  return DIGRAPHS_DotDigraph(D, [func], []);
-end);
+{D} -> GV_String(GV_DotVertexLabelledDigraph(D)));
 
-BindGlobal("DIGRAPHS_DotSymmetricDigraph",
+
+BindGlobal("GV_DIGRAPHS_DotSymmetricDigraph",
 function(D, node_funcs, edge_funcs)
-  local out, str, i, j, func;
+  local graph, node, nodes, edge, out, n1, n2, str, i, j, func;
   if not IsSymmetricDigraph(D) then
     ErrorNoReturn("the argument <D> must be a symmetric digraph,");
   fi;
-  out   := OutNeighbours(D);
-  str   := "//dot\n";
-  Append(str, "graph hgn{\n");
-  Append(str, "node [shape=circle]\n\n");
+
+  out := OutNeighbours(D);
+  
+  graph := GV_Graph("hgn");
+  GV_SetAttr(graph, "node [shape=\"circle\"]");
   for i in DigraphVertices(D) do
-    Append(str, StringFormatted("{}", i));
+    node := GV_AddNode(graph, StringFormatted("{}", i));
     for func in node_funcs do
-      Append(str, func(i));
+      func(graph, node, i);
     od;
-    Append(str, "\n");
   od;
+
+  nodes := GV_Nodes(graph);
   for i in DigraphVertices(D) do
     for j in [1 .. Length(out[i])] do
       if out[i][j] >= i then
-        Append(str, StringFormatted("{} -- {}", i, out[i][j]));
+        n1 := nodes[String(i)];
+        n2 := nodes[String(out[i][j])];
+        edge := GV_AddEdge(graph, n1, n2);
         for func in edge_funcs do
-          Append(str, func(i, j));
+          func(graph, edge, i, j);
         od;
-        Append(str, "\n");
       fi;
     od;
   od;
-  Append(str, "}\n");
-  return str;
+  return graph;
 end);
+
+InstallMethod(GV_DotSymmetricDigraph, "for a digraph by out-neighbours",
+[IsDigraphByOutNeighboursRep],
+D -> GV_DIGRAPHS_DotSymmetricDigraph(D, [], []));
 
 InstallMethod(DotSymmetricDigraph, "for a digraph by out-neighbours",
 [IsDigraphByOutNeighboursRep],
-D -> DIGRAPHS_DotSymmetricDigraph(D, [], []));
+D -> GV_String(GV_DotSymmetricDigraph(D)));
 
-InstallMethod(DotSymmetricColoredDigraph,
+InstallMethod(GV_DotSymmetricColoredDigraph,
 "for a digraph by out-neighbours and two lists",
 [IsDigraphByOutNeighboursRep, IsList, IsList],
 function(D, vert, edge)
   local vert_func, edge_func;
-  if DIGRAPHS_ValidVertColors(D, vert) and DIGRAPHS_ValidEdgeColors(D, edge) then
-    vert_func := i -> StringFormatted("[color={}, style=filled]", vert[i]);
-    edge_func := {i, j} -> StringFormatted("[color={}]", edge[i][j]);
-    return DIGRAPHS_DotSymmetricDigraph(D, [vert_func], [edge_func]);
+  if GV_DIGRAPHS_ValidVertColors(D, vert) and GV_DIGRAPHS_ValidEdgeColors(D, edge) then
+    vert_func := {g, n, i} -> GV_SetAttrs(n, rec(color := vert[i], style := "filled"));
+    edge_func := {g, e, i, j} -> GV_SetAttrs(e, rec(color := edge[i][j]));
+    return GV_DIGRAPHS_DotSymmetricDigraph(D, [vert_func], [edge_func]);
   fi;
 end);
 
-InstallMethod(DotSymmetricVertexColoredDigraph,
+InstallMethod(GV_DotSymmetricVertexColoredDigraph,
 "for a digraph by out-neighbours and a list",
 [IsDigraphByOutNeighboursRep, IsList],
 function(D, vert)
   local func;
-  if DIGRAPHS_ValidVertColors(D, vert) then
-    func := i -> StringFormatted ("[color={}, style=filled]", vert[i]);
-    return DIGRAPHS_DotSymmetricDigraph(D, [func], []);
+  if GV_DIGRAPHS_ValidVertColors(D, vert) then
+    func := {g, n, i} -> GV_SetAttrs(n, rec(color := vert[i], style := "filled"));
+    return GV_DIGRAPHS_DotSymmetricDigraph(D, [func], []);
+  fi;
+end);
+
+InstallMethod(GV_DotSymmetricEdgeColoredDigraph,
+"for a digraph by out-neighbours and a list",
+[IsDigraphByOutNeighboursRep, IsList],
+function(D, edge)
+  local func;
+  if GV_DIGRAPHS_ValidEdgeColors(D, edge) then
+    func := {g, e, i, j} -> GV_SetAttrs(e, rec(color := edge[i][j]));
+    return GV_DIGRAPHS_DotSymmetricDigraph(D, [], [func]);
   fi;
 end);
 
 InstallMethod(DotSymmetricEdgeColoredDigraph,
 "for a digraph by out-neighbours and a list",
 [IsDigraphByOutNeighboursRep, IsList],
-function(D, edge)
-  local func;
-  if DIGRAPHS_ValidEdgeColors(D, edge) then
-    func := {i, j} -> StringFormatted("[color={}]", edge[i][j]);
-    return DIGRAPHS_DotSymmetricDigraph(D, [], [func]);
-  fi;
+{D, edge} -> GV_String(GV_DotSymmetricEdgeColoredDigraph(D, edge)));
+
+DeclareOperation("GV_Splash", [IsGVGraph, IsRecord]);
+InstallMethod(GV_Splash, "for a graphviz graph and a record",
+[IsGVGraph, IsRecord],
+function(g, r)
+  Splash(GV_String(g), r); 
+  return; 
 end);
-
-# AN's code
-
-if not IsBound(Splash) then  # This function is written by A. Egri-Nagy
-  BindGlobal("VizViewers",
-             ["xpdf", "xdg-open", "open", "evince", "okular", "gv"]);
-
-  BindGlobal("Splash",
-  function(arg)
-    local str, opt, path, dir, tdir, file, viewer, type, inn, filetype, out,
-          engine;
-
-    if not IsString(arg[1]) then
-      ErrorNoReturn("the 1st argument must be a string,");
-    fi;
-    str := arg[1];
-
-    opt := rec();
-    if IsBound(arg[2]) and IsRecord(arg[2]) then
-      opt := arg[2];
-    elif IsBound(arg[2]) then
-      ErrorNoReturn("the 2nd argument must be a record,");
-    fi;
-
-    # path
-    path := UserHomeExpand("~/");  # default
-    if IsBound(opt.path) then
-      path := opt.path;
-    fi;
-
-    # directory
-    if IsBound(opt.directory) then
-      if not opt.directory in DirectoryContents(path) then
-        Exec(Concatenation("mkdir ", path, opt.directory));
-      fi;
-      dir := Concatenation(path, opt.directory, "/");
-    elif IsBound(opt.path) then
-      if not "tmp.viz" in DirectoryContents(path) then
-        tdir := Directory(Concatenation(path, "/", "tmp.viz"));
-        dir := Filename(tdir, "");
-      fi;
-    else
-      tdir := DirectoryTemporary();
-      dir := Filename(tdir, "");
-    fi;
-
-    # file
-    file := "vizpicture";  # default
-    if IsBound(opt.filename) then
-      file := opt.filename;
-    fi;
-
-    # viewer
-    if IsBound(opt.viewer) then
-      viewer := opt.viewer;
-      if not IsString(viewer) then
-        ErrorNoReturn("the option `viewer` must be a string, not an ",
-                      TNAM_OBJ(viewer), ",");
-      elif Filename(DirectoriesSystemPrograms(), viewer) = fail then
-        ErrorNoReturn("the viewer \"", viewer, "\" specified in the option ",
-                      "`viewer` is not available,");
-      fi;
-    else
-      viewer := First(VizViewers, x ->
-                      Filename(DirectoriesSystemPrograms(), x) <> fail);
-      if viewer = fail then
-        ErrorNoReturn("none of the default viewers ", VizViewers,
-                      " is available, please specify an available viewer",
-                      " in the options record component `viewer`,");
-      fi;
-    fi;
-
-    # type
-    if IsBound(opt.type) and (opt.type = "latex" or opt.type = "dot") then
-      type := opt.type;
-    elif Length(str) >= 6 and str{[1 .. 6]} = "%latex" then
-      type := "latex";
-    elif Length(str) >= 5 and str{[1 .. 5]} = "//dot" then
-      type := "dot";
-    else
-      ErrorNoReturn("the component \"type\" of the 2nd argument <a record> ",
-                    " must be \"dot\" or \"latex\",");
-    fi;
-    if type = "latex" then
-      inn := Concatenation(dir, file, ".tex");
-    else  # type = "dot"
-      inn := Concatenation(dir, file, ".dot");
-    fi;
-
-    # output type and name
-    filetype := "pdf";  # default
-    if IsBound(opt.filetype) and IsString(opt.filetype) and type <> "latex" then
-      filetype := opt.filetype;
-    fi;
-    out := Concatenation(dir, file, ".", filetype);
-
-    # engine
-    engine := "dot";  # default
-    if IsBound(opt.engine) then
-      engine := opt.engine;
-      if not engine in ["dot", "neato", "twopi", "circo",
-                        "fdp", "sfdp", "patchwork"] then
-        ErrorNoReturn("the component \"engine\" of the 2nd argument ",
-                      "<a record> must be one of: \"dot\", \"neato\", ",
-                      "\"twopi\", \"circo\", \"fdp\", \"sfdp\", ",
-                      "or \"patchwork\"");
-      fi;
-    fi;
-
-    # Write and compile the file
-    FileString(inn, str);
-    if type = "latex" then
-      # Requires GAP >= 4.11:
-      # Exec(StringFormatted("cd {}; pdflatex {} 2>/dev/null 1>/dev/null", dir);
-      Exec(Concatenation("cd ", dir, ";",
-                         "pdflatex ", file, " 2>/dev/null 1>/dev/null"));
-    else  # type = "dot"
-      # Requires GAP >= 4.11:
-      # Exec(StringFormatted("{} -T {} {} -o {}", engine, filetype, inn, out));
-      Exec(Concatenation(engine, " -T", filetype, " ", inn, " -o ", out));
-    fi;
-    Exec(Concatenation(viewer, " ", out, " 2>/dev/null 1>/dev/null &"));
-  end);
-fi;
 
 # CR's code
 
-InstallMethod(DotPartialOrderDigraph, "for a partial order digraph",
+InstallMethod(GV_DotPartialOrderDigraph, "for a partial order digraph",
 [IsDigraph],
 function(D)
   if not IsPartialOrderDigraph(D) then
     ErrorNoReturn("the argument <D> must be a partial order digraph,");
   fi;
   D := DigraphMutableCopyIfMutable(D);
-  return DotDigraph(DigraphReflexiveTransitiveReduction(D));
+  return GV_DotDigraph(DigraphReflexiveTransitiveReduction(D));
 end);
 
-InstallMethod(DotPreorderDigraph, "for a preorder digraph",
+InstallMethod(DotPartialOrderDigraph, "for a partial order digraph",
+[IsDigraph],
+{D} -> GV_String(GV_DotPartialOrderDigraph(D)));
+
+InstallMethod(GV_DotPreorderDigraph, "for a preorder digraph",
 [IsDigraph],
 function(D)
-  local comps, quo, red, str, c, x, e;
+  local comps, quo, red, str, c, x, e, node, graph, label, head, tail, nodes;
   if not IsPreorderDigraph(D) then
     ErrorNoReturn("the argument <D> must be a preorder digraph,");
   fi;
@@ -410,43 +334,58 @@ function(D)
   quo    := DigraphRemoveAllMultipleEdges(QuotientDigraph(D, comps));
   red    := DigraphReflexiveTransitiveReduction(quo);
 
-  str   := "//dot\n";
-  Append(str, "digraph graphname {\n");
-  Append(str, "node [shape=Mrecord, height=0.5, fixedsize=true]");
-  Append(str, "ranksep=1;\n");
+  graph := GV_Digraph("graphname");
+  GV_SetAttr(graph, "node [shape=\"Mrecord\"]");
+  GV_SetAttr(graph, "height=\"0.5\"");
+  GV_SetAttr(graph, "fixedsize=\"true\"");
+  GV_SetAttr(graph, "ranksep=\"1\"");
 
   # Each vertex of the quotient D is labelled by its preimage.
   for c in [1 .. Length(comps)] do
-    Append(str, String(c));
-    Append(str, " [label=\"");
-    Append(str, String(comps[c][1]));
+
+    # create node w/ label
+    label := "\"";
+    Append(label, String(comps[c][1]));
     for x in comps[c]{[2 .. Length(comps[c])]} do
-      Append(str, "|");
-      Append(str, String(x));
+      Append(label, "|");
+      Append(label, String(x));
     od;
-    Append(str, "\", width=");
-    Append(str, String(Float(Length(comps[c]) / 2)));
-    Append(str, "]\n");
+    Append(label, "\"");
+
+    node := GV_AddNode(graph, String(c));
+    GV_SetAttr(node, "label", label);
+    GV_SetAttr(node, "width", String(Float(Length(comps[c]) / 2)));
   od;
 
   # Add the edges of the quotient D.
+  nodes := GV_Nodes(graph);
   for e in DigraphEdges(red) do
-    Append(str, Concatenation(String(e[1]), " -> ", String(e[2]), "\n"));
+    tail := nodes[String(e[1])];
+    head := nodes[String(e[2])];
+    GV_AddEdge(graph, tail, head);
   od;
 
-  Append(str, "}");
-  return str;
+  return graph;
 end);
+
+InstallMethod(DotPreorderDigraph, "for a preorder digraph",
+[IsDigraph],
+{D} -> GV_String(GV_DotPreorderDigraph(D)));
+
+
+InstallMethod(GV_DotHighlightedDigraph, "for a digraph and list",
+[IsDigraph, IsList],
+{D, list} -> GV_DotHighlightedDigraph(D, list, "black", "grey"));
 
 InstallMethod(DotHighlightedDigraph, "for a digraph and list",
 [IsDigraph, IsList],
-{D, list} -> DotHighlightedDigraph(D, list, "black", "grey"));
+{D, list} -> GV_String(GV_DotHighlightedDigraph(D, list, "black", "grey")));
 
-InstallMethod(DotHighlightedDigraph,
+InstallMethod(GV_DotHighlightedDigraph,
 "for a digraph by out-neighbours, list, and two strings",
 [IsDigraphByOutNeighboursRep, IsList, IsString, IsString],
 function(D, highverts, highcolour, lowcolour)
-  local lowverts, out, str, i, j;
+  local lowverts, graph, node, edge, nodes, out, i, j;
 
   if not IsSubset(DigraphVertices(D), highverts) then
     ErrorNoReturn("the 2nd argument <highverts> must be a list of vertices ",
@@ -461,55 +400,44 @@ function(D, highverts, highcolour, lowcolour)
 
   lowverts  := Difference(DigraphVertices(D), highverts);
   out       := OutNeighbours(D);
-  str       := "//dot\n";
 
-  Append(str, "digraph hgn{\n");
-
-  Append(str, "subgraph lowverts{\n");
-  Append(str, Concatenation("node [shape=circle, color=",
-                            lowcolour,
-                            "]\n edge [color=",
-                            lowcolour,
-                            "]\n"));
+  graph := GV_Digraph("hgn");
 
   for i in lowverts do
-    Append(str, Concatenation(String(i), "\n"));
+    node := GV_AddNode(graph, String(i));
+    GV_SetAttrs(node, rec( shape := "circle", color := lowcolour));
   od;
 
-  Append(str, "}\n");
-
-  Append(str, "subgraph highverts{\n");
-  Append(str, Concatenation("node [shape=circle, color=",
-                            highcolour,
-                            "]\n edge [color=",
-                            highcolour,
-                            "]\n"));
 
   for i in highverts do
-    Append(str, Concatenation(String(i), "\n"));
+    node := GV_AddNode(graph, String(i));
+    GV_SetAttrs(node, rec( shape := "circle", color := highcolour));
   od;
 
-  Append(str, "}\n");
-
-  Append(str, "subgraph lowverts{\n");
+  nodes := GV_Nodes(graph);
   for i in lowverts do
     for j in out[i] do
-      Append(str, Concatenation(String(i), " -> ", String(j), "\n"));
+      edge := GV_AddEdge(graph, nodes[String(i)], nodes[String(j)]);
+      GV_SetAttr(edge, "color", lowcolour);
     od;
   od;
-  Append(str, "}\n");
 
-  Append(str, "subgraph highverts{\n");
   for i in highverts do
     for j in out[i] do
-      Append(str, Concatenation(String(i), " -> ", String(j)));
+      edge := GV_AddEdge(graph, nodes[String(i)], nodes[String(j)]);
+      GV_SetAttr(edge, "color", highcolour);
       if j in lowverts then
-        Append(str, Concatenation(" [color=", lowcolour, "]"));
+        GV_SetAttr(edge, "color", lowcolour);
       fi;
-      Append(str, "\n");
     od;
   od;
-  Append(str, "}\n}\n");
 
-  return str;
+  return graph;
 end);
+
+
+InstallMethod(DotHighlightedDigraph,
+"for a digraph by out-neighbours, list, and two strings",
+[IsDigraphByOutNeighboursRep, IsList, IsString, IsString],
+{D, highverts, highcolour, lowcolour} ->
+  GV_String(GV_DotHighlightedDigraph(D, highverts, highcolour, lowcolour)));
