@@ -2208,8 +2208,8 @@ end);
 InstallMethod(DigraphCycleBasis, "for a digraph",
 [IsDigraph],
 function(G)
-  local OutNbr, InNbr, n, partialSum, m, roots, visited, path, unusedEdges, i,
-        c, s, queue, u, v, p, cycle, B, e;
+  local OutNbr, InNbr, n, partialSum, m, roots, visited, unusedEdges, i, c, s,
+    queue, u, v, p, B;
 
   # Catch multigraphs?
 
@@ -2314,7 +2314,7 @@ function(G)
       B[i][visited[u][1]] := Z(2);
       u := visited[u][2];
     od;
-    
+
     B[i][unusedEdges[i][2]] := Z(2);
     B[i][unusedEdges[i][4]] := Z(2);
   od;
