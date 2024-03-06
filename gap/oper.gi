@@ -593,7 +593,7 @@ InstallMethod(DigraphContractEdge,
 [IsMutableDigraph, IsDenseList],
 function(D, edge)
   if Length(edge) <> 2 then
-    ErrorNoReturn("the 2nd argument <edge> must be a list of length 2,");
+    ErrorNoReturn("the 2nd argument <edge> must be a list of length 2");
   fi;
   DigraphContractEdge(D, edge[1], edge[2]);
 end);
@@ -603,7 +603,7 @@ InstallMethod(DigraphContractEdge,
 [IsImmutableDigraph, IsDenseList],
 function(D, edge)
   if Length(edge) <> 2 then
-    ErrorNoReturn("the 2nd argument <edge> must be a list of length 2,");
+    ErrorNoReturn("the 2nd argument <edge> must be a list of length 2");
   fi;
   return DigraphContractEdge(D, edge[1], edge[2]);
 end);

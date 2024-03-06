@@ -2899,6 +2899,11 @@ gap> List(res[2], x -> List(x));
 
 # DigraphContractEdge
 
+# DigraphContractEdge: wrong length list
+gap> D := Digraph([[2, 3, 3], [2], [1]]);;
+gap> DigraphContractEdge(D, [1]);
+Error, the 2nd argument <edge> must be a list of length 2
+
 # DigraphContractEdge: multi digraphs
 gap> D := Digraph([[2, 3, 3], [2], [1]]);;
 gap> DigraphContractEdge(D, 1, 3);
@@ -3036,6 +3041,17 @@ gap> DigraphVertices(C);
 gap> DigraphVertexLabels(C);
 [ 3, 4, 5, [ 2, 1 ] ]
 
+# DigraphContractEdge: Standard test (list)
+gap> D := DigraphByEdges([[2, 1], [3, 1], [3, 4], [1, 4], [4, 2], [5, 2], [4, 5], [5, 5]]);;
+gap> DigraphVertexLabels(D);;
+gap> C := DigraphContractEdge(D, [2, 1]);;
+gap> DigraphEdges(C);
+[ [ 1, 4 ], [ 1, 2 ], [ 2, 4 ], [ 2, 3 ], [ 3, 4 ], [ 3, 3 ], [ 4, 2 ] ]
+gap> DigraphVertices(C);
+[ 1 .. 4 ]
+gap> DigraphVertexLabels(C);
+[ 3, 4, 5, [ 2, 1 ] ]
+
 # DigraphContractEdge: Disconnected test
 gap> D := DigraphByEdges([[1, 2], [1, 3], [2, 1], [2, 2], [2, 3], [3, 2], [4, 4], [4, 5], [4, 6], [5, 5], [5, 4]]);;
 gap> DigraphVertexLabels(D);;
@@ -3045,6 +3061,11 @@ gap> DigraphEdges(C);
   [ 5, 4 ] ]
 gap> DigraphVertexLabels(C);
 [ 1, 2, 3, 6, [ 4, 5 ] ]
+
+# DigraphContractEdge: wrong length list (mutable
+gap> D := Digraph(IsMutableDigraph, [[2, 3, 3], [2], [1]]);;
+gap> DigraphContractEdge(D, [1]);
+Error, the 2nd argument <edge> must be a list of length 2
 
 # DigraphContractEdge: MultiDigraph (mutable)
 gap> D := Digraph(IsMutableDigraph, [[2, 3, 3], [2], [1]]);;
@@ -3162,6 +3183,15 @@ gap> DigraphVertexLabels(D);
 gap> D := DigraphByEdges(IsMutableDigraph, [[2, 1], [3, 1], [3, 4], [1, 4], [4, 2], [5, 2], [4, 5], [5, 5]]);;
 gap> DigraphVertexLabels(D);;
 gap> DigraphContractEdge(D, 2, 1);;
+gap> DigraphEdges(D);
+[ [ 1, 2 ], [ 1, 4 ], [ 2, 3 ], [ 2, 4 ], [ 3, 3 ], [ 3, 4 ], [ 4, 2 ] ]
+gap> DigraphVertexLabels(D);
+[ 3, 4, 5, [ 2, 1 ] ]
+
+# DigraphContractEdge: Standard test (list, mutable)
+gap> D := DigraphByEdges(IsMutableDigraph, [[2, 1], [3, 1], [3, 4], [1, 4], [4, 2], [5, 2], [4, 5], [5, 5]]);;
+gap> DigraphVertexLabels(D);;
+gap> DigraphContractEdge(D, [2, 1]);;
 gap> DigraphEdges(D);
 [ [ 1, 2 ], [ 1, 4 ], [ 2, 3 ], [ 2, 4 ], [ 3, 3 ], [ 3, 4 ], [ 4, 2 ] ]
 gap> DigraphVertexLabels(D);
