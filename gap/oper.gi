@@ -408,7 +408,7 @@ function(D, u, v)
   DigraphAddVertex(D, [DigraphVertexLabel(D, u), DigraphVertexLabel(D, v)]); # add vertex w
 
   vertices := DigraphVertices(D);
-  w := vertices[Length(vertices)]; # w is the new vertix identifier 
+  w := vertices[Length(vertices)]; # w is the new vertex identifier 
 
   # Handle loops from edges u or w, with the same source / range
   if IsDigraphEdge(D, u, u) and IsDigraphEdge(D, v, v) then DigraphAddEdge(D, w, w); SetDigraphEdgeLabel(D, w, w, [DigraphEdgeLabel(copy, u, u), DigraphEdgeLabel(copy, v, v)]);
@@ -474,7 +474,7 @@ function(D, u, v)
   NewDigraph := DigraphAddVertex(NewDigraph, [DigraphVertexLabel(D, u), DigraphVertexLabel(D, v)]); # add vertex w
 
   vertices := DigraphVertices(NewDigraph);
-  w := vertices[Length(vertices)]; # w is the new vertix identifier 
+  w := vertices[Length(vertices)]; # w is the new vertex identifier 
 
   # Handle loops from edges u or w, with the same source / range
   if IsDigraphEdge(D, u, u) and IsDigraphEdge(D, v, v) then NewDigraph := DigraphAddEdge(NewDigraph, w, w); SetDigraphEdgeLabel(NewDigraph, w, w, [DigraphEdgeLabel(D, u, u), DigraphEdgeLabel(D, v, v)]);
@@ -531,8 +531,18 @@ function(D, u, v)
 end);
 
 InstallMethod(DigraphContractEdge,
-"for a digraph and a list",
-[IsDigraph, IsList],
+"for a mutable digraph and a dense list",
+[IsMutableDigraph, IsDenseList],
+function(D, edge)
+  if Length(edge) <> 2 then
+    ErrorNoReturn("the 2nd argument <edge> must be a list of length 2,");
+  fi;
+  DigraphContractEdge(D, edge[1], edge[2]);
+end);
+
+InstallMethod(DigraphContractEdge,
+"for an immutable digraph and a dense list",
+[IsImmutableDigraph, IsDenseList],
 function(D, edge)
   if Length(edge) <> 2 then
     ErrorNoReturn("the 2nd argument <edge> must be a list of length 2,");
