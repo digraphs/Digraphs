@@ -1929,7 +1929,7 @@ true
   <Returns>A digraph.</Returns>
   <Description>
     If <A>edge</A> is a pair of vertices of <A>digraph</A>, or <A>src</A> and
-    <A>ran</A> are vertices of <A>digraph</A>, where <A>ran</A> <> <A>src</A>, 
+    <A>ran</A> are vertices of <A>digraph</A>, where <A>ran</A> &lt;&gt <A>src</A>, 
     then this operation returns a new digraph constructed from <A>digraph</A>,
     unless <A>digraph</A> belongs to <Filt Prop="IsMutableDigraph">;
     in this case changes are made directly to <A>digraph</A>. 
