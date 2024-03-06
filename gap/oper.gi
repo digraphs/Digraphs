@@ -2209,25 +2209,19 @@ InstallMethod(DigraphCycleBasis, "for a digraph",
 [IsDigraph],
 function(G)
   local OutNbr, InNbr, n, partialSum, m, roots, visited, unusedEdges, i, c, s,
-    queue, u, v, p, B;
+    z, queue, u, v, p, B;
 
-  # Catch multigraphs?
+  # Check for loops 
+  if DigraphHasLoops(G) then
+    ErrorNoReturn("the 1st argument (a digraph) must not have any loops");
+  fi;
 
-  # First pass over the edges of the graph
-  # Take a maximal antisymmetric subgraph of G
   G := MaximalAntiSymmetricSubdigraph(G);
   OutNbr := OutNeighbors(G);
   InNbr := InNeighbors(G);
   Unbind(G);
 
   n := Length(OutNbr);
-  # Check for loops without sorting the OutNbr and InNbr
-  # It seems that MaximalAntiSymmetricSubdigraph already sorts them.
-  for i in [1 .. n] do
-    if i in OutNbr[i] then
-      ErrorNoReturn("the 1st argument (a digraph) must not have any loops");
-    fi;
-  od;
 
   # Quick early return for too few vertices
   if n < 3 then
@@ -2244,20 +2238,8 @@ function(G)
     return [OutNbr, []];
   fi;
 
-  # # Early warning for large matrix
-  # # Written when the traversal loop below was very slow
-  # # To give the accurate warning for large matrix, we need n, m and the
-  # # number of connected components which is not available at this point.
-  # # Here, we give a rough warning based on n and m.
-  # if 20000 < n or (n * Log(Float(n)) / 2 < Float(m) and
-  #   (10 ^ 11) / 2 < m * (m - n + 1)) then
-  #   Info(InfoWarning, 1, "The resulting matrix is likely to be very large.");
-  # fi;
-
   # Traverse the graph, depth first search
   roots := [];
-  # Maybe save Length(roots) as DigraphNrConnectedComponents?
-  # other biproducts?
   visited := BlistList([1 .. n], []);
   unusedEdges := [];
   while ForAny(visited, x -> x = false) do
@@ -2292,18 +2274,32 @@ function(G)
 
   c := Length(unusedEdges);
 
-  # Second, more accurate warning for large matrix
+  # Warning for large matrix
   # The warning is printed roughly when the result matrix will take up
   # more than 8GB of RAM.
   if (10 ^ 11) / 2 < m * c then
-    Info(InfoWarning, 1, "The resulting matrix is going to be very large.");
+    Info(InfoWarning, 1, StringFormatted(
+    "The resulting matrix is going to be large of size {} \x {} ",
+    m, c));
   fi;
 
   # Create the matrix B
+  # The algorithm so far is O(m). However, the creation of the matrix B is
+  # O(m * c) ~= O(m^2) which is the most expensive part of the function.
+  # Hence, a nice thing to do would be to create an object that would 
+  # lazy compute the matrix B on demand. 
+  # For implimentation of such an object, it would need to know :
+  # - m : The number of edges 
+  # - unusedEdges : The list of unused edges to be converted to a basis vector
+  # - visited : The result of the depth first search above
+
+  # ToDo : In the case the Digraph package requires GAP 4.12 or over,
+  # remove the following if statement.
   if CompareVersionNumbers(GAPInfo.Version, "4.12") then
     B := List([1 .. c], i -> NewZeroVector(IsGF2VectorRep, GF(2), m));
   else
-    B := List([1 .. c], i -> Vector(GF(2), List([1 .. m], i -> Zero(GF(2)))));
+    z := List([1 .. m], i -> Zero(GF(2)));
+    B := List([1 .. c], i -> Vector(GF(2), z));
   fi;
 
   for i in [1 .. c] do

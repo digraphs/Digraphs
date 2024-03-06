@@ -2312,6 +2312,7 @@ true
     of edges, <M>n</M> is the number of vertices, and <M>c</M> is the number of
     connected components.  See <Ref Oper="DigraphConnectedComponents"/>.
 
+    # Catch multigraphs? in the doc
 
     <Example><![CDATA[
 gap> D := CycleGraph(4);
