@@ -2211,7 +2211,7 @@ function(G)
   local OutNbr, InNbr, n, partialSum, m, roots, visited, unusedEdges, i, c, s,
     z, queue, u, v, p, B;
 
-  # Check for loops 
+  # Check for loops
   if DigraphHasLoops(G) then
     ErrorNoReturn("the 1st argument (a digraph) must not have any loops");
   fi;
@@ -2286,10 +2286,10 @@ function(G)
   # Create the matrix B
   # The algorithm so far is O(m). However, the creation of the matrix B is
   # O(m * c) ~= O(m^2) which is the most expensive part of the function.
-  # Hence, a nice thing to do would be to create an object that would 
-  # lazy compute the matrix B on demand. 
-  # For implimentation of such an object, it would need to know :
-  # - m : The number of edges 
+  # Hence, a nice thing to do would be to create an object that would
+  # lazy compute the matrix B on demand.
+  # For implementation of such an object, it would need to know :
+  # - m : The number of edges
   # - unusedEdges : The list of unused edges to be converted to a basis vector
   # - visited : The result of the depth first search above
 

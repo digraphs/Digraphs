@@ -2266,6 +2266,8 @@ true
     If <A>digraph</A> is a symmetric loopless digraph with no multiple edges, then
     <C>DigraphCycleBasis</C> calculates the <E>fundamental cycle basis</E> of
     <A>digraph</A> and returns a list of edges and a list of a basis vectors.
+    If <A>digraph</A> contains a loop, it will throw an error. If <A>digraph</A>
+    contains multiple edges, only one of the edges will be considered.
     See <Ref Prop="IsSymmetricDigraph"/>, <Ref Prop="DigraphHasLoops"/>, and <Ref
     Prop="IsMultiDigraph"/>.
     The first list contains the out-neighours that provides the ordering 
@@ -2312,7 +2314,10 @@ true
     of edges, <M>n</M> is the number of vertices, and <M>c</M> is the number of
     connected components.  See <Ref Oper="DigraphConnectedComponents"/>.
 
-    # Catch multigraphs? in the doc
+    The complexity of the main traversal of the graph is <M>O(m + n)</M> and
+    the complexity of the computation of the basis is <M>O(m^2)</M> where <M>m</M>
+    is the number of edges and <M>n</M> is the number of vertices in the graph.
+    
 
     <Example><![CDATA[
 gap> D := CycleGraph(4);
