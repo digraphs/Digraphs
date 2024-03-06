@@ -173,6 +173,12 @@ gap> SortedList(DigraphLayers(gr, 6)[2]);
 gap> SortedList(DigraphLayers(gr, 1500)[2]);
 [ 81, 82, 169, 253, 254 ]
 
+# DigraphCycleBasis
+gap> gr := CompleteDigraph(800);
+<immutable complete digraph with 800 vertices>
+gap> DigraphCycleBasis(g);;
+#I  The resulting matrix is going to be very large.
+
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(d);
 gap> Unbind(gr);
