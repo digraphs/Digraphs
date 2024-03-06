@@ -1929,23 +1929,23 @@ true
   <Returns>A digraph.</Returns>
   <Description>
     If <A>edge</A> is a pair of vertices of <A>digraph</A>, or <A>src</A> and
-    <A>ran</A> are vertices of <A>digraph</A>, where <A>ran</A> &lt;&gt <A>src</A>, 
+    <A>ran</A> are vertices of <A>digraph</A>, where <A>ran</A> &lt;&gt; <A>src</A>, 
     then this operation returns a new digraph constructed from <A>digraph</A>,
-    unless <A>digraph</A> belongs to <Filt Prop="IsMutableDigraph">;
+    unless <A>digraph</A> belongs to <Ref Filt="IsMutableDigraph"/>;
     in this case changes are made directly to <A>digraph</A>. 
-    <A>digraph</A> must not belong to <Ref Filt="IsMultiDigraph">.
+    <A>digraph</A> must not belong to <Ref Filt="IsMultiDigraph"/>. <P/>
 
-    A new vertex <M>v</M> is added; <A>src</A> and <A>ran</A> are both 
+    A new vertex <C>v</C> is added; <A>src</A> and <A>ran</A> are both 
     removed. Any incident edges of <A>src</A> or <A>ran</A> are now 
-    incident to <M>v</>, preserving their direction.
-    If <A>digraph</A> belongs to <Ref Filt="HaveEdgeLabelsBeenAssigned">,
-    edge labels are preserved. The edge label of <A>[src, ran]</A>
-    is removed. Assigned vertex labels for <A>src</A> and <A>ran</A> are 
-    combined into a list, and assigned to new vertex <M>v</M>. 
+    incident to <C>v</C>, preserving their direction.
+    If <A>digraph</A> belongs to <C>HaveEdgeLabelsBeenAssigned</C>, edge labels are preserved. 
+    The edge label of <A>[src, ran]</A> is removed. 
+    Assigned vertex labels for <A>src</A> and <A>ran</A> are
+    combined into a list, and assigned to new vertex <C>v</C>. <P/>
 
     If an edge <A>[src, src]</A> or <A>[ran, ran]</A> exists,
-    a singular edge <M>[v, v]</M> is created. If edge <A>[ran, src]</A>
-    exists, this is also removed. 
+    a singular edge <C>[v, v]</C> is created. If edge <A>[ran, src]</A>
+    exists, this is also removed. <P/>
 
     <Example><![CDATA[
 gap> D := DigraphByEdges([[1, 2], [2, 1]]);
@@ -1953,14 +1953,15 @@ gap> D := DigraphByEdges([[1, 2], [2, 1]]);
 gap> D2 := DigraphContractEdge(D, 1, 2);
 <immutable empty digraph with 1 vertex>
 gap> DigraphEdges(D2);
+[  ]
 gap> D := DigraphByEdges(IsMutableDigraph, [[1, 2], [2, 3], [3, 4]]);
 <mutable digraph with 4 vertices, 3 edges>
-gap> DigraphVertexLabels(D);; # setting vertex labels
+gap> DigraphVertexLabels(D);;  # setting vertex labels
 gap> DigraphContractEdge(D, [2, 3]);
 gap> DigraphEdges(D);
 [ [ 1, 3 ], [ 3, 2 ] ]
 gap> DigraphVertexLabels(D);
-[ 1, 4, [ 2, 3 ] ] # combined vertex label of contracted edge
+[ 1, 4, [ 2, 3 ] ]
 ]]></Example>
   </Description>
 </ManSection>
