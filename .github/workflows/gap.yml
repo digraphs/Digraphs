@@ -28,6 +28,7 @@ jobs:
           - stable-4.12
         pkgs-to-clone:
           - NautyTracesInterface
+          - mpan322/graphviz
         ABI: ['']
 
         include:
