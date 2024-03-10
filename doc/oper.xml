@@ -2281,7 +2281,8 @@ true
 
     A graph is <E>eulerian</E> if every vertex has an even degree. A <E>cycle
     space</E> of a graph is a subspace of <M>(GF(2))^m</M> representing the set 
-    of all <E>eulerian</E> subgraphs of the graph. A subgraph can be uniquely 
+    of all <E>eulerian</E> subgraphs without isolated vertices. 
+    An eulerian subgraph without isolated vertices can uniquely be 
     identified using the edges that is contains. Therefore, given some ordering
     on the edges of the graph, a subgraph can be represented by a vector in
     <M>(GF(2))^m</M> where the <M>i</M>-th entry is 1 if the <M>i</M>-th edge
