@@ -25,7 +25,6 @@
 #include "compiled.h"
 
 #define MAXVERTS 512
-#define UNDEFINED MAXVERTS + 1
 
 // smallest positive integer that doesn't fit into a small integer object
 #define SMALLINTLIMIT (INT_INTOBJ_MAX + 1)
