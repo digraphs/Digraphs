@@ -67,6 +67,9 @@
 
 #define NUMBER_BITS_PER_BLOCK (sizeof(Block) * CHAR_BIT)
 
+#ifndef homos_maxverts
+uint16_t homos_maxverts=0;
+#endif
 // The next line can be used instead of the first line of STORE_MIN to
 // randomise which vertex of minimum degree is used next, but I didn't find any
 // cases where this made things faster.
@@ -157,9 +160,9 @@ static bool ORDERED;  // true if the vertices of the domain/source digraph
                       // should be considered in a different order than they are
                       // given, false otherwise.
 
-static BitArray* BIT_ARRAY_BUFFER[MAXVERTS];  // A buffer
+static BitArray** BIT_ARRAY_BUFFER = NULL;  // A buffer
 static BitArray* IMAGE_RESTRICT;              // Values in MAP must be in this
-static BitArray* MAP_UNDEFINED[MAXVERTS];     // Undefined positions in MAP
+static BitArray** MAP_UNDEFINED = NULL;     // Undefined positions in MAP
 static BitArray* ORB_LOOKUP;                  // points in orbit
 static BitArray* VALS;                        // Values in MAP already
 
@@ -173,18 +176,18 @@ static Digraph* DIGRAPH2;
 static Graph* GRAPH1;  // Graphs to hold incoming GAP symmetric digraphs
 static Graph* GRAPH2;
 
-static BlissGraph* BLISS_GRAPH[3 * MAXVERTS];
+static BlissGraph** BLISS_GRAPH = NULL;
 
-static uint16_t MAP[MAXVERTS];            // partial image list
-static uint16_t COLORS2[MAXVERTS];        // colors of range (di)graph
-static uint16_t INVERSE_ORDER[MAXVERTS];  // external -> internal
-static uint16_t MAP_BUFFER[MAXVERTS];     // For converting from internal ->
+static uint16_t* MAP = NULL;            // partial image list
+static uint16_t* COLORS2 = NULL;        // colors of range (di)graph
+static uint16_t* INVERSE_ORDER = NULL;  // external -> internal
+static uint16_t* MAP_BUFFER = NULL;     // For converting from internal ->
                                           // external and back when calling the
                                           // hook functions.
-static uint16_t ORB[MAXVERTS];    // Array for containing nodes in an orbit.
-static uint16_t ORDER[MAXVERTS];  // internal -> external
+static uint16_t* ORB = NULL;    // Array for containing nodes in an orbit.
+static uint16_t* ORDER = NULL;  // internal -> external
 
-static PermColl*     STAB_GENS[MAXVERTS];  // stabiliser generators
+static PermColl**    STAB_GENS = NULL;  // stabiliser generators
 static SchreierSims* SCHREIER_SIMS;
 
 #ifdef DIGRAPHS_ENABLE_STATS
@@ -1608,11 +1611,9 @@ static bool init_data_from_args(Obj digraph1_obj,
   if (calculated_max_verts > homos_maxverts) {
     homos_maxverts = calculated_max_verts;
     // srand(time(0));
-    is_initialized = true;
 #ifdef DIGRAPHS_ENABLE_STATS
     STATS = malloc(sizeof(HomoStats));
 #endif
-
     DIGRAPH1 = new_digraph(MAXVERTS);
     DIGRAPH2 = new_digraph(MAXVERTS);
 
@@ -1622,6 +1623,17 @@ static bool init_data_from_args(Obj digraph1_obj,
     IMAGE_RESTRICT = new_bit_array(MAXVERTS);
     ORB_LOOKUP     = new_bit_array(MAXVERTS);
     REPS           = malloc(MAXVERTS * sizeof(BitArray*));
+    BIT_ARRAY_BUFFER = (BitArray**)calloc(MAXVERTS, sizeof(BitArray*));
+    MAP_UNDEFINED = (BitArray**)calloc(MAXVERTS, sizeof(BitArray*));
+    BLISS_GRAPH = (BlissGraph**)calloc(3*MAXVERTS, sizeof(BlissGraph*));
+    MAP = (uint16_t*)calloc(MAXVERTS, sizeof(uint16_t));
+    COLORS2 = (uint16_t*)calloc(MAXVERTS, sizeof(uint16_t));
+    INVERSE_ORDER = (uint16_t*)calloc(MAXVERTS, sizeof(uint16_t));
+    MAP_BUFFER = (uint16_t*)calloc(MAXVERTS, sizeof(uint16_t));
+    ORB = (uint16_t*)calloc(MAXVERTS, sizeof(uint16_t));
+    ORDER = (uint16_t*)calloc(MAXVERTS, sizeof(uint16_t));
+    STAB_GENS = (PermColl**)calloc(MAXVERTS, sizeof(PermColl*));
+
     for (uint16_t i = 0; i < MAXVERTS; i++) {
       BLISS_GRAPH[i]      = bliss_digraphs_new(i);
       REPS[i]             = new_bit_array(MAXVERTS);

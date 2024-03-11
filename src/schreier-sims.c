@@ -17,6 +17,7 @@
 // C headers
 #include "stdlib.h"  // for NULL
 #include "string.h"  // for memset
+#include "globals.h"
 
 // Digraphs package headers
 #include "digraphs-debug.h"  // for DIGRAPHS_ASSERT
@@ -25,16 +26,26 @@ uint16_t PERM_DEGREE = 0;
 
 // Schreier-Sims set up
 
-SchreierSims* new_schreier_sims(void) {
+SchreierSims* new_schreier_sims() {
   SchreierSims* ss = malloc(sizeof(SchreierSims));
-  ss->tmp_perm     = new_perm(MAXVERTS);
-  for (uint16_t i = 0; i < MAXVERTS; ++i) {
-    ss->strong_gens[i] = new_perm_coll(MAXVERTS, MAXVERTS);
+  ss->tmp_perm     = new_perm(homos_maxverts);
+  ss -> strong_gens = (PermColl**)calloc(homos_maxverts, sizeof(PermColl*));
+  for (uint16_t i = 0; i < homos_maxverts; ++i) {
+    ss->strong_gens[i] = new_perm_coll(homos_maxverts, homos_maxverts);
   }
-  for (size_t i = 0; i < MAXVERTS * MAXVERTS; ++i) {
-    ss->transversal[i] = new_perm(MAXVERTS);
-    ss->inversal[i]    = new_perm(MAXVERTS);
+  ss -> transversal = (Perm*)calloc(homos_maxverts * homos_maxverts, sizeof(Perm));
+  ss -> inversal = (Perm*)calloc(homos_maxverts * homos_maxverts, sizeof(Perm));
+
+  for (size_t i = 0; i < homos_maxverts * homos_maxverts; ++i) {
+    ss->transversal[i] = new_perm(homos_maxverts);
+    ss->inversal[i]    = new_perm(homos_maxverts);
   }
+
+  ss -> base = (uint16_t*) calloc(homos_maxverts, sizeof(uint16_t));
+  ss -> orbits = (uint16_t*) calloc(homos_maxverts * homos_maxverts, sizeof(uint16_t));
+  ss -> size_orbits = (uint16_t*) calloc(homos_maxverts, sizeof(uint16_t));
+  ss -> orb_lookup = (bool*) calloc(homos_maxverts * homos_maxverts, sizeof(bool));
+
   return ss;
 }
 
@@ -69,7 +80,7 @@ static inline Perm get_transversal_ss(SchreierSims const* const ss,
                                       uint16_t const            j) {
   DIGRAPHS_ASSERT(i < ss->degree);
   DIGRAPHS_ASSERT(j < ss->degree);
-  return ss->transversal[i * MAXVERTS + j];
+  return ss->transversal[i * homos_maxverts + j];
 }
 
 static inline Perm get_inversal_ss(SchreierSims const* const ss,
@@ -77,7 +88,7 @@ static inline Perm get_inversal_ss(SchreierSims const* const ss,
                                    uint16_t const            j) {
   DIGRAPHS_ASSERT(i < ss->degree);
   DIGRAPHS_ASSERT(j < ss->degree);
-  return ss->inversal[i * MAXVERTS + j];
+  return ss->inversal[i * homos_maxverts + j];
 }
 
 static inline void add_base_point_ss(SchreierSims* ss, uint16_t const pt) {

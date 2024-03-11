@@ -1,2 +1,6 @@
-uint16_t cliques_maxverts = 0;
-uint16_t homos_maxverts = 0;
+#ifndef cliques_maxverts
+extern uint16_t cliques_maxverts;
+#endif
+#ifndef homos_maxverts
+extern uint16_t homos_maxverts;
+#endif
