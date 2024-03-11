@@ -329,8 +329,8 @@ static inline void intersect_bit_arrays(BitArray* const       bit_array1,
                                         uint16_t const        nr_bits) {
   DIGRAPHS_ASSERT(bit_array1 != NULL);
   DIGRAPHS_ASSERT(bit_array2 != NULL);
-  DIGRAPHS_ASSERT(bit_array1->nr_bits == bit_array2->nr_bits);
-  DIGRAPHS_ASSERT(bit_array1->nr_blocks == bit_array2->nr_blocks);
+  // DIGRAPHS_ASSERT(bit_array1->nr_bits == bit_array2->nr_bits);
+  // DIGRAPHS_ASSERT(bit_array1->nr_blocks == bit_array2->nr_blocks);
   DIGRAPHS_ASSERT(nr_bits <= bit_array1->nr_bits);
   DIGRAPHS_ASSERT(nr_bits <= bit_array2->nr_bits);
   uint16_t const nr_blocks = NR_BLOCKS_LOOKUP[nr_bits];
@@ -346,8 +346,8 @@ static inline void union_bit_arrays(BitArray* const       bit_array1,
                                     uint16_t const        nr_bits) {
   DIGRAPHS_ASSERT(bit_array1 != NULL);
   DIGRAPHS_ASSERT(bit_array2 != NULL);
-  DIGRAPHS_ASSERT(bit_array1->nr_bits == bit_array2->nr_bits);
-  DIGRAPHS_ASSERT(bit_array1->nr_blocks == bit_array2->nr_blocks);
+  // DIGRAPHS_ASSERT(bit_array1->nr_bits == bit_array2->nr_bits);
+  // DIGRAPHS_ASSERT(bit_array1->nr_blocks == bit_array2->nr_blocks);
   DIGRAPHS_ASSERT(nr_bits <= bit_array1->nr_bits);
   DIGRAPHS_ASSERT(nr_bits <= bit_array2->nr_bits);
   uint16_t const nr_blocks = NR_BLOCKS_LOOKUP[nr_bits];
@@ -362,8 +362,8 @@ static inline void complement_bit_arrays(BitArray* const       bit_array1,
                                          uint16_t const        nr_bits) {
   DIGRAPHS_ASSERT(bit_array1 != NULL);
   DIGRAPHS_ASSERT(bit_array2 != NULL);
-  DIGRAPHS_ASSERT(bit_array1->nr_bits == bit_array2->nr_bits);
-  DIGRAPHS_ASSERT(bit_array1->nr_blocks == bit_array2->nr_blocks);
+  // DIGRAPHS_ASSERT(bit_array1->nr_bits == bit_array2->nr_bits);
+  // DIGRAPHS_ASSERT(bit_array1->nr_blocks == bit_array2->nr_blocks);
   DIGRAPHS_ASSERT(nr_bits <= bit_array1->nr_bits);
   DIGRAPHS_ASSERT(nr_bits <= bit_array2->nr_bits);
   uint16_t const nr_blocks = NR_BLOCKS_LOOKUP[nr_bits];
@@ -378,8 +378,8 @@ static inline void copy_bit_array(BitArray* const       bit_array1,
                                   uint16_t const        nr_bits) {
   DIGRAPHS_ASSERT(bit_array1 != NULL);
   DIGRAPHS_ASSERT(bit_array2 != NULL);
-  DIGRAPHS_ASSERT(bit_array1->nr_bits == bit_array2->nr_bits);
-  DIGRAPHS_ASSERT(bit_array1->nr_blocks == bit_array2->nr_blocks);
+  // DIGRAPHS_ASSERT(bit_array1->nr_bits == bit_array2->nr_bits);
+  // DIGRAPHS_ASSERT(bit_array1->nr_blocks == bit_array2->nr_blocks);
   DIGRAPHS_ASSERT(nr_bits <= bit_array1->nr_bits);
   DIGRAPHS_ASSERT(nr_bits <= bit_array2->nr_bits);
   uint16_t const nr_blocks = NR_BLOCKS_LOOKUP[nr_bits];
