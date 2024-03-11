@@ -2036,11 +2036,9 @@ function(D, roots)
 
   graph_out_neighbors := OutNeighbors(D);
   queue := EmptyPlist(N);
-  queue_tail := 0;
-  for root in roots do
-    queue_tail := queue_tail + 1;
-    queue[queue_tail] := root;
-  od;
+  Append(queue, roots);
+
+  queue_tail := Length(roots);
 
   index := 1;
   while IsBound(queue[index]) do
