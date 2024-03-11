@@ -207,20 +207,20 @@ static bool init_data_from_args(Obj         digraph_obj,
                                 Obj*        group,
                                 CliqueData* data) {
   static bool is_initialised = false;
-  if (!is_initialised) {
-    is_initialised = true;
+  if (DigraphNrVertices(digraph_obj) > cliques_maxverts) {
+    cliques_maxverts = DigraphNrVertices(digraph_obj);
 
-    data->graph = new_graph(MAXVERTS);
+    data->graph = new_graph(cliques_maxverts);
 
     // Currently Conditions are a nr1 x nr1 array of BitArrays, so both
     // values have to be set to MAXVERTS
-    data->clique = new_bit_array(MAXVERTS);
+    data->clique = new_bit_array(cliques_maxverts);
     data->try_   = new_conditions(MAXVERTS, MAXVERTS);
     data->ban    = new_conditions(MAXVERTS, MAXVERTS);
     data->to_try = new_conditions(MAXVERTS, MAXVERTS);
 
     data->orbit         = Fail;
-    data->temp_bitarray = new_bit_array(MAXVERTS);
+    data->temp_bitarray = new_bit_array(cliques_maxverts);
   }
 
   uint16_t nr = DigraphNrVertices(digraph_obj);
@@ -655,7 +655,7 @@ Obj FuncDigraphsCliquesFinder(Obj self, Obj args) {
   }
   // Check if include and exclude have empty intersection
   if (include_size != 0 && exclude_size != 0) {
-    bool lookup[MAXVERTS] = {false};
+    bool* lookup = calloc(cliques_maxverts, sizeof(bool));
     for (UInt i = 1; i <= include_size; ++i) {
       lookup[INT_INTOBJ(ELM_LIST(include_obj, i)) - 1] = true;
     }
