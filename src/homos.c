@@ -343,7 +343,7 @@ static void init_digraph_from_digraph_obj(Digraph* const digraph,
   DIGRAPHS_ASSERT(CALL_1ARGS(IsDigraph, digraph_obj) == True);
   UInt const nr  = DigraphNrVertices(digraph_obj);
   Obj        out = FuncOutNeighbours(0L, digraph_obj);
-  DIGRAPHS_ASSERT(nr < MAXVERTS);
+  DIGRAPHS_ASSERT(nr < MACHINE_MAXVERTS);
   DIGRAPHS_ASSERT(IS_PLIST(out));
   clear_digraph(digraph, nr);
 
@@ -378,7 +378,7 @@ static void init_graph_from_digraph_obj(Graph* const graph,
   DIGRAPHS_ASSERT(CALL_1ARGS(IsSymmetricDigraph, digraph_obj) == True);
   UInt const nr  = DigraphNrVertices(digraph_obj);
   Obj        out = FuncOutNeighbours(0L, digraph_obj);
-  DIGRAPHS_ASSERT(nr < MAXVERTS);
+  DIGRAPHS_ASSERT(nr < MACHINE_MAXVERTS);
   DIGRAPHS_ASSERT(IS_PLIST(out));
   clear_graph(graph, nr);
 
@@ -1912,7 +1912,7 @@ Obj FuncHomomorphismDigraphsFinder(Obj self, Obj args) {
     ErrorQuit("the 1st argument <digraph1> must be a digraph, not %s,",
               (Int) TNAM_OBJ(digraph1_obj),
               0L);
-  } else if (DigraphNrVertices(digraph1_obj) > MAXVERTS) {
+  } else if (DigraphNrVertices(digraph1_obj) > MACHINE_MAXVERTS) {
     ErrorQuit("the 1st argument <digraph1> must have at most 512 vertices, "
               "found %d,",
               DigraphNrVertices(digraph1_obj),
@@ -1922,7 +1922,7 @@ Obj FuncHomomorphismDigraphsFinder(Obj self, Obj args) {
     ErrorQuit("the 2nd argument <digraph2> must be a digraph, not %s,",
               (Int) TNAM_OBJ(digraph2_obj),
               0L);
-  } else if (DigraphNrVertices(digraph2_obj) > MAXVERTS) {
+  } else if (DigraphNrVertices(digraph2_obj) > MACHINE_MAXVERTS) {
     ErrorQuit("the 2nd argument <digraph2> must have at most 512 vertices, "
               "found %d,",
               DigraphNrVertices(digraph2_obj),
