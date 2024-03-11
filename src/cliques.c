@@ -22,7 +22,7 @@
 #include "conditions.h"      // for Conditions
 #include "digraphs-debug.h"  // for DIGRAPHS_ASSERT
 #include "homos-graphs.h"    // for Digraph, Graph, . . .
-#include "perms.h"           // for MAXVERTS, UNDEFINED, PermColl, Perm
+#include "perms.h"           // for UNDEFINED, PermColl, Perm
 
 ////////////////////////////////////////////////////////////////////////////////
 // Macros
@@ -215,9 +215,9 @@ static bool init_data_from_args(Obj         digraph_obj,
     // Currently Conditions are a nr1 x nr1 array of BitArrays, so both
     // values have to be set to MAXVERTS
     data->clique = new_bit_array(cliques_maxverts);
-    data->try_   = new_conditions(MAXVERTS, MAXVERTS);
-    data->ban    = new_conditions(MAXVERTS, MAXVERTS);
-    data->to_try = new_conditions(MAXVERTS, MAXVERTS);
+    data->try_   = new_conditions(MACHINE_MAXVERTS, MACHINE_MAXVERTS);
+    data->ban    = new_conditions(MACHINE_MAXVERTS, MACHINE_MAXVERTS);
+    data->to_try = new_conditions(MACHINE_MAXVERTS, MACHINE_MAXVERTS);
 
     data->orbit         = Fail;
     data->temp_bitarray = new_bit_array(cliques_maxverts);

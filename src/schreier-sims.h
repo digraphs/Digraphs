@@ -20,7 +20,7 @@
 #include <stdint.h>   // for uint16_t
 
 // Digraphs headers
-#include "perms.h"  // for MAXVERTS, Perm, PermColl
+#include "perms.h"  // for Perm, PermColl
 
 extern uint16_t PERM_DEGREE;
 

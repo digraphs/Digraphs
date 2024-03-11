@@ -24,7 +24,6 @@
 // GAP headers
 #include "compiled.h"
 
-#define MAXVERTS 512
 #define MACHINE_MAXVERTS 512
 
 // smallest positive integer that doesn't fit into a small integer object
