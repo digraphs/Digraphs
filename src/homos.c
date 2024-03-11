@@ -1614,35 +1614,35 @@ static bool init_data_from_args(Obj digraph1_obj,
 #ifdef DIGRAPHS_ENABLE_STATS
     STATS = malloc(sizeof(HomoStats));
 #endif
-    DIGRAPH1 = new_digraph(MAXVERTS);
-    DIGRAPH2 = new_digraph(MAXVERTS);
+    DIGRAPH1 = new_digraph(homos_maxverts);
+    DIGRAPH2 = new_digraph(homos_maxverts);
 
-    GRAPH1 = new_graph(MAXVERTS);
-    GRAPH2 = new_graph(MAXVERTS);
+    GRAPH1 = new_graph(homos_maxverts);
+    GRAPH2 = new_graph(homos_maxverts);
 
-    IMAGE_RESTRICT = new_bit_array(MAXVERTS);
-    ORB_LOOKUP     = new_bit_array(MAXVERTS);
-    REPS           = malloc(MAXVERTS * sizeof(BitArray*));
-    BIT_ARRAY_BUFFER = (BitArray**)calloc(MAXVERTS, sizeof(BitArray*));
-    MAP_UNDEFINED = (BitArray**)calloc(MAXVERTS, sizeof(BitArray*));
-    BLISS_GRAPH = (BlissGraph**)calloc(3*MAXVERTS, sizeof(BlissGraph*));
-    MAP = (uint16_t*)calloc(MAXVERTS, sizeof(uint16_t));
-    COLORS2 = (uint16_t*)calloc(MAXVERTS, sizeof(uint16_t));
-    INVERSE_ORDER = (uint16_t*)calloc(MAXVERTS, sizeof(uint16_t));
-    MAP_BUFFER = (uint16_t*)calloc(MAXVERTS, sizeof(uint16_t));
-    ORB = (uint16_t*)calloc(MAXVERTS, sizeof(uint16_t));
-    ORDER = (uint16_t*)calloc(MAXVERTS, sizeof(uint16_t));
-    STAB_GENS = (PermColl**)calloc(MAXVERTS, sizeof(PermColl*));
+    IMAGE_RESTRICT = new_bit_array(homos_maxverts);
+    ORB_LOOKUP     = new_bit_array(homos_maxverts);
+    REPS           = malloc(homos_maxverts * sizeof(BitArray*));
+    BIT_ARRAY_BUFFER = (BitArray**)calloc(homos_maxverts, sizeof(BitArray*));
+    MAP_UNDEFINED = (BitArray**)calloc(homos_maxverts, sizeof(BitArray*));
+    BLISS_GRAPH = (BlissGraph**)calloc(3*homos_maxverts, sizeof(BlissGraph*));
+    MAP = (uint16_t*)calloc(homos_maxverts, sizeof(uint16_t));
+    COLORS2 = (uint16_t*)calloc(homos_maxverts, sizeof(uint16_t));
+    INVERSE_ORDER = (uint16_t*)calloc(homos_maxverts, sizeof(uint16_t));
+    MAP_BUFFER = (uint16_t*)calloc(homos_maxverts, sizeof(uint16_t));
+    ORB = (uint16_t*)calloc(homos_maxverts, sizeof(uint16_t));
+    ORDER = (uint16_t*)calloc(homos_maxverts, sizeof(uint16_t));
+    STAB_GENS = (PermColl**)calloc(homos_maxverts, sizeof(PermColl*));
 
-    for (uint16_t i = 0; i < MAXVERTS; i++) {
+    for (uint16_t i = 0; i < homos_maxverts; i++) {
       BLISS_GRAPH[i]      = bliss_digraphs_new(i);
-      REPS[i]             = new_bit_array(MAXVERTS);
-      BIT_ARRAY_BUFFER[i] = new_bit_array(MAXVERTS);
-      MAP_UNDEFINED[i]    = new_bit_array(MAXVERTS);
-      STAB_GENS[i]        = new_perm_coll(MAXVERTS, MAXVERTS);
+      REPS[i]             = new_bit_array(homos_maxverts);
+      BIT_ARRAY_BUFFER[i] = new_bit_array(homos_maxverts);
+      MAP_UNDEFINED[i]    = new_bit_array(homos_maxverts);
+      STAB_GENS[i]        = new_perm_coll(homos_maxverts, homos_maxverts);
     }
-    VALS          = new_bit_array(MAXVERTS);
-    CONDITIONS    = new_conditions(MAXVERTS, MAXVERTS);
+    VALS          = new_bit_array(homos_maxverts);
+    CONDITIONS    = new_conditions(homos_maxverts, homos_maxverts);
     SCHREIER_SIMS = new_schreier_sims();
   }
 #ifdef DIGRAPHS_ENABLE_STATS

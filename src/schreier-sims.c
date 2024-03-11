@@ -50,7 +50,7 @@ SchreierSims* new_schreier_sims() {
 }
 
 void init_ss(SchreierSims* ss, uint16_t degree) {
-  DIGRAPHS_ASSERT(degree <= MAXVERTS);
+  DIGRAPHS_ASSERT(degree <= homos_maxverts);
   for (uint16_t i = 0; i < degree; ++i) {
     clear_perm_coll(ss->strong_gens[i]);
     ss->strong_gens[i]->degree = degree;
