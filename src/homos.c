@@ -25,7 +25,7 @@
 // 1. Try other bit hacks for iterating through set bits
 
 #include "homos.h"
-
+#include "globals.h"
 // C headers
 #include <limits.h>   // for CHAR_BIT
 #include <setjmp.h>   // for longjmp, setjmp, jmp_buf
@@ -1602,7 +1602,11 @@ static bool init_data_from_args(Obj digraph1_obj,
                                 Obj order_obj,
                                 Obj aut_grp_obj) {
   static bool is_initialized = false;  // did we call this method before?
-  if (!is_initialized) {
+  uint16_t calculated_max_verts = MAX(
+    DigraphNrVertices(digraph1_obj),
+    DigraphNrVertices(digraph2_obj));
+  if (calculated_max_verts > homos_maxverts) {
+    homos_maxverts = calculated_max_verts;
     // srand(time(0));
     is_initialized = true;
 #ifdef DIGRAPHS_ENABLE_STATS
