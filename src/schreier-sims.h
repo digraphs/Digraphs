@@ -26,13 +26,13 @@ extern uint16_t PERM_DEGREE;
 
 struct schreier_sims_struct {
   uint16_t  degree;
-  PermColl* strong_gens[MAXVERTS];  // strong generators
-  Perm      transversal[MAXVERTS * MAXVERTS];
-  Perm      inversal[MAXVERTS * MAXVERTS];
-  bool      orb_lookup[MAXVERTS * MAXVERTS];
-  uint16_t  orbits[MAXVERTS * MAXVERTS];
-  uint16_t  size_orbits[MAXVERTS];
-  uint16_t  base[MAXVERTS];
+  PermColl** strong_gens;  // strong generators
+  Perm*      transversal;
+  Perm*      inversal;
+  bool*      orb_lookup;
+  uint16_t*  orbits;
+  uint16_t*  size_orbits;
+  uint16_t*  base;
   Perm      tmp_perm;
   uint16_t  size_base;
 };
