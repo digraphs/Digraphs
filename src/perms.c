@@ -21,17 +21,17 @@
 #include "digraphs-debug.h"  // for DIGRAPHS_ASSERT
 
 Perm new_perm(uint16_t const degree) {
-  DIGRAPHS_ASSERT(degree <= MAXVERTS);
+  DIGRAPHS_ASSERT(degree <= MACHINE_MAXVERTS);
   return malloc(degree * sizeof(uint16_t));
 }
 
 Perm new_perm_from_gap(Obj gap_perm_obj, uint16_t const degree) {
   UInt lmp = LargestMovedPointPerm(gap_perm_obj);
-  DIGRAPHS_ASSERT(lmp <= MAXVERTS);
-  if (lmp > MAXVERTS) {
+  DIGRAPHS_ASSERT(lmp <= MACHINE_MAXVERTS);
+  if (lmp > MACHINE_MAXVERTS) {
     ErrorQuit("expected permutations of degree at most %d, but got a "
               "permutation of degree %d",
-              MAXVERTS,
+              MACHINE_MAXVERTS,
               lmp);
   }
 

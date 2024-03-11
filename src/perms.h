@@ -25,6 +25,7 @@
 #include "compiled.h"
 
 #define MAXVERTS 512
+#define MACHINE_MAXVERTS 512
 
 // smallest positive integer that doesn't fit into a small integer object
 #define SMALLINTLIMIT (INT_INTOBJ_MAX + 1)
@@ -36,14 +37,14 @@ Perm new_perm(uint16_t const);
 Perm new_perm_from_gap(Obj, uint16_t const);
 
 static inline void id_perm(Perm x, uint16_t const degree) {
-  DIGRAPHS_ASSERT(degree <= MAXVERTS);
+  DIGRAPHS_ASSERT(degree <= MACHINE_MAXVERTS);
   for (uint16_t i = 0; i < degree; i++) {
     x[i] = i;
   }
 }
 
 static inline bool is_one(Perm const x, uint16_t const degree) {
-  DIGRAPHS_ASSERT(degree <= MAXVERTS);
+  DIGRAPHS_ASSERT(degree <= MACHINE_MAXVERTS);
   for (uint16_t i = 0; i < degree; i++) {
     if (x[i] != i) {
       return false;
@@ -53,7 +54,7 @@ static inline bool is_one(Perm const x, uint16_t const degree) {
 }
 
 static inline bool eq_perms(Perm const x, Perm const y, uint16_t const degree) {
-  DIGRAPHS_ASSERT(degree <= MAXVERTS);
+  DIGRAPHS_ASSERT(degree <= MACHINE_MAXVERTS);
   for (uint16_t i = 0; i < degree; i++) {
     if (x[i] != y[i]) {
       return false;
@@ -72,7 +73,7 @@ prod_perms(Perm xy, Perm const x, Perm const y, uint16_t const degree) {
 }
 
 static inline void invert_perm(Perm x, Perm const y, uint16_t const degree) {
-  DIGRAPHS_ASSERT(degree <= MAXVERTS);
+  DIGRAPHS_ASSERT(degree <= MACHINE_MAXVERTS);
   for (uint16_t i = 0; i < degree; i++) {
     x[y[i]] = i;
   }

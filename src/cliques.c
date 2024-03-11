@@ -177,7 +177,7 @@ static void init_graph_from_digraph_obj(Graph* const graph, Obj digraph_obj) {
   UInt const nr      = DigraphNrVertices(digraph_obj);
   Obj        out     = FuncOutNeighbours(0L, digraph_obj);
   Obj        adj_mat = FuncADJACENCY_MATRIX(0L, digraph_obj);
-  DIGRAPHS_ASSERT(nr < MAXVERTS);
+  DIGRAPHS_ASSERT(nr < MACHINE_MAXVERTS);
   DIGRAPHS_ASSERT(IS_PLIST(adj_mat));
   DIGRAPHS_ASSERT(IS_PLIST(out));
   clear_graph(graph, nr);
@@ -480,10 +480,10 @@ Obj FuncDigraphsCliquesFinder(Obj self, Obj args) {
     ErrorQuit("the 1st argument <digraph> must be a digraph, not %s,",
               (Int) TNAM_OBJ(digraph_obj),
               0L);
-  } else if (DigraphNrVertices(digraph_obj) > MAXVERTS) {
+  } else if (DigraphNrVertices(digraph_obj) > MACHINE_MAXVERTS) {
     ErrorQuit("the 1st argument <digraph> must have at most %d vertices, "
               "found %d,",
-              MAXVERTS,
+              MACHINE_MAXVERTS,
               DigraphNrVertices(digraph_obj));
   }
   if (hook_obj == Fail) {
