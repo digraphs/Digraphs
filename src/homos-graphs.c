@@ -63,30 +63,30 @@ Graph* new_graph(uint16_t const nr_verts) {
 // free_digraph is not currently used, but kept in case it is required in
 // the future. JDM 2019
 
-// void free_digraph(Digraph* const digraph) {
-//   DIGRAPHS_ASSERT(digraph != NULL);
-//   uint16_t const nr = digraph->nr_vertices;
-//   for (uint16_t i = 0; i < nr; i++) {
-//     free_bit_array(digraph->in_neighbours[i]);
-//     free_bit_array(digraph->out_neighbours[i]);
-//   }
-//   free(digraph->in_neighbours);
-//   free(digraph->out_neighbours);
-//   free(digraph);
-// }
+void free_digraph(Digraph* const digraph) {
+  DIGRAPHS_ASSERT(digraph != NULL);
+  uint16_t const nr = digraph->nr_vertices;
+  for (uint16_t i = 0; i < nr; i++) {
+    free_bit_array(digraph->in_neighbours[i]);
+    free_bit_array(digraph->out_neighbours[i]);
+  }
+  free(digraph->in_neighbours);
+  free(digraph->out_neighbours);
+  free(digraph);
+}
 
 // free_graph is not currently used, but kept in case it is required in
 // the future. JDM 2019
 
-// void free_graph(Graph* const graph) {
-//   DIGRAPHS_ASSERT(graph != NULL);
-//   uint16_t const nr = graph->nr_vertices;
-//   for (uint16_t i = 0; i < nr; i++) {
-//     free_bit_array(graph->neighbours[i]);
-//   }
-//   free(graph->neighbours);
-//   free(graph);
-// }
+void free_graph(Graph* const graph) {
+  DIGRAPHS_ASSERT(graph != NULL);
+  uint16_t const nr = graph->nr_vertices;
+  for (uint16_t i = 0; i < nr; i++) {
+    free_bit_array(graph->neighbours[i]);
+  }
+  free(graph->neighbours);
+  free(graph);
+}
 
 void clear_digraph(Digraph* const digraph, uint16_t const nr_verts) {
   DIGRAPHS_ASSERT(digraph != NULL);

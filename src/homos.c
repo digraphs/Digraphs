@@ -291,6 +291,31 @@ homo_hook_collect(void* user_param, uint16_t const nr, uint16_t const* map) {
 //   printf(" }>");
 // }
 
+static void free_homos_data(){
+    // srand(time(0));
+    free_digraph(DIGRAPH1);
+    free_digraph(DIGRAPH2);
+    free_graph(GRAPH1);
+    free_graph(GRAPH2);
+    // free_bit_array(IMAGE_RESTRICT);
+    // ORB_LOOKUP     = new_bit_array(MAXVERTS);
+    for (uint16_t i = 0; i < homos_maxverts; i++) {
+      free_bit_array(&BLISS_GRAPH[i]);
+      free_bit_array(&REPS[i]);
+      free_bit_array(&BIT_ARRAY_BUFFER[i]);
+      free_bit_array(&MAP_UNDEFINED[i]);
+      free_bit_array(&STAB_GENS[i]);
+    }
+    free(BLISS_GRAPH);
+    free(REPS);
+    free(BIT_ARRAY_BUFFER);
+    free(MAP_UNDEFINED);
+    free(STAB_GENS);
+    free(VALS);
+    free(CONDITIONS);
+    free(SCHREIER_SIMS);
+}
+
 static void get_automorphism_group_from_gap(Obj digraph_obj, PermColl* out) {
   DIGRAPHS_ASSERT(CALL_1ARGS(IsDigraph, digraph_obj) == True);
   if (CALL_1ARGS(IsMultiDigraph, digraph_obj) == True) {
@@ -1610,6 +1635,7 @@ static bool init_data_from_args(Obj digraph1_obj,
     DigraphNrVertices(digraph1_obj),
     DigraphNrVertices(digraph2_obj));
   if (calculated_max_verts > homos_maxverts) {
+    // free_homos_data();
     homos_maxverts = calculated_max_verts;
     homos_undefined = homos_maxverts + 1;
     // srand(time(0));
