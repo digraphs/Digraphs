@@ -72,13 +72,10 @@ PermColl* new_perm_coll(uint16_t const capacity, uint16_t const degree) {
   return coll;
 }
 
-// free_perm_coll is not currently used, but kept in case it is required in the
-// future. JDM 2019
-
-// void free_perm_coll(PermColl* coll) {
-//   for (uint16_t i = 0; i < coll->size; i++) {
-//     free(coll->perms[i]);
-//   }
-//   free(coll->perms);
-//   free(coll);
-// }
+void free_perm_coll(PermColl* coll) {
+  for (uint16_t i = 0; i < coll->size; i++) {
+    free(coll->perms[i]);
+  }
+  free(coll->perms);
+  free(coll);
+}
