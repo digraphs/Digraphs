@@ -291,7 +291,12 @@ homo_hook_collect(void* user_param, uint16_t const nr, uint16_t const* map) {
 //   printf(" }>");
 // }
 
+static bool is_initialized = false;  // did we call this method before?
 static void free_homos_data(){
+    if(!is_initialized){
+      return;
+    }
+
     free_digraph(DIGRAPH1);
     free_digraph(DIGRAPH2);
     free_graph(GRAPH1);
@@ -313,6 +318,7 @@ static void free_homos_data(){
     free(VALS);
     free(CONDITIONS);
     free(SCHREIER_SIMS);
+    is_initialized = false;
 }
 
 static void get_automorphism_group_from_gap(Obj digraph_obj, PermColl* out) {
@@ -1629,12 +1635,13 @@ static bool init_data_from_args(Obj digraph1_obj,
                                 Obj colors2_obj,
                                 Obj order_obj,
                                 Obj aut_grp_obj) {
-  static bool is_initialized = false;  // did we call this method before?
   uint16_t calculated_max_verts = MAX(
     DigraphNrVertices(digraph1_obj),
     DigraphNrVertices(digraph2_obj));
-  if (calculated_max_verts > homos_maxverts) {
+  if ((calculated_max_verts > homos_maxverts) || !is_initialized) {
     free_homos_data();
+    is_initialized = true;
+
     homos_maxverts = calculated_max_verts;
     homos_undefined = homos_maxverts + 1;
     // srand(time(0));
