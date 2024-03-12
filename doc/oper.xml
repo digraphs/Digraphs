@@ -1353,23 +1353,29 @@ false
 <#GAPDoc Label="VerticesReachableFrom">
 <ManSection>
   <Oper Name="VerticesReachableFrom" Arg="digraph, root"/>
+  <Oper Name="VerticesReachableFrom" Arg="digraph, list"/>
   <Returns>A list.</Returns>
   <Description>
-    This operation returns a list of the vertices  <A>v</A>, for which there exists
-    a non-trivial directed walk from vertex <A>root</A> to vertex <A>v</A> in the digraph
+    This operation returns a list of the vertices <C>v</C>, for which there
+    exists a non-trivial directed walk from the vertex <A>root</A>, or any of
+    the list of vertices <A>list</A>, to vertex <C>v</C> in the digraph
     <A>digraph</A>. See Section <Ref Subsect="Definitions" Style="Number" />
     for the definition of a non-trivial directed walk.
     <P/>
 
-    The method for <C>VerticesReachableFrom</C> has worst case complexity of <M>O(m +
-      n)</M> where <M>m</M> is the number of edges and <M>n</M> the number of
-    vertices in <A>digraph</A>.
+    The method for <C>VerticesReachableFrom</C> has worst case complexity of
+    <M>O(m + n)</M> where <M>m</M> is the number of edges and <M>n</M> the
+    number of vertices in <A>digraph</A>.
+    <P/>
+
+    This function returns an error if <A>root</A>, or any vertex in <A>list</A>,
+    is not a vertices of <A>digraph</A>.
 
 <Example><![CDATA[
 gap> D := CompleteDigraph(5);
 <immutable complete digraph with 5 vertices>
 gap> VerticesReachableFrom(D, 1);
-[ 2, 1, 3, 4, 5 ]
+[ 1, 2, 3, 4, 5 ]
 gap> VerticesReachableFrom(D, 3);
 [ 1, 2, 3, 4, 5 ]
 gap> D := EmptyDigraph(5);
@@ -1378,12 +1384,16 @@ gap> VerticesReachableFrom(D, 1);
 [  ]
 gap> VerticesReachableFrom(D, 3);
 [  ]
+gap> VerticesReachableFrom(D, [1, 2, 3, 4]);
+[  ]
+gap> VerticesReachableFrom(D, [3, 4, 5]);
+[  ]
 gap> D := CycleDigraph(4);
 <immutable cycle digraph with 4 vertices>
 gap> VerticesReachableFrom(D, 1);
-[ 2, 3, 4, 1 ]
+[ 1, 2, 3, 4 ]
 gap> VerticesReachableFrom(D, 3);
-[ 4, 1, 2, 3 ]
+[ 1, 2, 3, 4 ]
 gap> D := ChainDigraph(5);
 <immutable chain digraph with 5 vertices>
 gap> VerticesReachableFrom(D, 1);
@@ -1392,11 +1402,12 @@ gap> VerticesReachableFrom(D, 3);
 [ 4, 5 ]
 gap> VerticesReachableFrom(D, 5);
 [  ]
+gap> VerticesReachableFrom(D, [3, 4]);
+[ 4, 5 ]
 ]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
-
 
 <#GAPDoc Label="DigraphPath">
 <ManSection>
@@ -2344,3 +2355,29 @@ gap> List(res[2][3]);
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="IsOrderIdeal">
+<ManSection>
+  <Oper Name="IsOrderIdeal" Arg="D, subset" Label="for a digraph and list"/>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
+  <Description>
+    This function returns <K>true</K> if the specified subset is "downwards" closed, i.e. contains every vertex less than the given vertices in the order defined by <A>D</A>. 
+    The function can only be used on digraphs satisfying <Ref Prop="IsPartialOrderDigraph"/> and will throw an error if passed a digraph that is not a partial order digraph.
+
+    <Example><![CDATA[
+gap> D1 := Digraph([[1, 3], [2, 3], [3]]);
+<immutable digraph with 3 vertices, 5 edges>
+<immutable digraph with 3 vertices, 5 edges>
+gap> IsOrderIdeal(D, [1, 2, 3]);
+true
+gap> D2 := DigraphDisjointUnion(D, D);
+<immutable digraph with 6 vertices, 10 edges>
+gap> IsOrderIdeal(D2, [1, 2, 3]);
+true
+gap> IsOrderIdeal(D2, [4, 5, 6]);
+true
+gap> IsOrderIdeal(D2, [1, 5, 6]);
+false
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>

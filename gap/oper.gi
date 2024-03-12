@@ -241,7 +241,7 @@ function(D, src, ran)
   pos := Position(D!.OutNeighbours[src], ran);
   if pos <> fail then
     Remove(D!.OutNeighbours[src], pos);
-    Remove(DigraphEdgeLabels(D)[src], pos);
+    RemoveDigraphEdgeLabel(D, src, pos);
   fi;
   return D;
 end);
@@ -2005,42 +2005,75 @@ end);
 InstallMethod(VerticesReachableFrom, "for a digraph and a vertex",
 [IsDigraph, IsPosInt],
 function(D, root)
-  local N, index, current, succ, visited, prev, n, i, parent,
-  have_visited_root;
+  local N;
   N := DigraphNrVertices(D);
+
   if 0 = root or root > N then
     ErrorNoReturn("the 2nd argument (root) is not a vertex of the 1st ",
                   "argument (a digraph)");
   fi;
-  index := ListWithIdenticalEntries(N, 0);
-  have_visited_root := false;
-  index[root] := 1;
-  current := root;
-  succ := OutNeighbours(D);
-  visited := [];
-  parent := [];
-  parent[root] := fail;
-  repeat
-    prev := current;
-    for i in [index[current] .. Length(succ[current])] do
-      n := succ[current][i];
-      if n = root and not have_visited_root then
-         Add(visited, root);
-         have_visited_root := true;
-      elif index[n] = 0 then
-        Add(visited, n);
-          parent[n] := current;
-          index[current] := i + 1;
-          current := n;
-          index[current] := 1;
-          break;
+
+  return VerticesReachableFrom(D, [root]);
+end);
+
+InstallMethod(VerticesReachableFrom, "for a digraph and a list of vertices",
+[IsDigraph, IsList],
+function(D, roots)
+  local N, index, visited, queue_tail, queue,
+  root, element, neighbour, graph_out_neighbors, node_neighbours;
+
+  N := DigraphNrVertices(D);
+
+  for root in roots do
+    if not IsPosInt(N) or 0 = root or root > N then
+      ErrorNoReturn("an element of the 2nd argument ",
+                    "(roots) is not a vertex of the 1st ",
+                    "argument (a digraph)");
+    fi;
+  od;
+
+  visited := BlistList([1 .. N], []);
+
+  graph_out_neighbors := OutNeighbors(D);
+  queue := EmptyPlist(N);
+  Append(queue, roots);
+
+  queue_tail := Length(roots);
+
+  index := 1;
+  while IsBound(queue[index]) do
+    element := queue[index];
+    node_neighbours := graph_out_neighbors[element];
+    for neighbour in node_neighbours do
+      if not visited[neighbour] then;
+        visited[neighbour] := true;
+        queue_tail := queue_tail + 1;
+        queue[queue_tail] := neighbour;
       fi;
     od;
-    if prev = current then
-      current := parent[current];
-    fi;
-  until current = fail;
-  return visited;
+    index := index + 1;
+  od;
+
+  return ListBlist([1 .. N], visited);
+end);
+
+InstallMethod(IsOrderIdeal, "for a digraph and a list of vertices",
+[IsDigraph, IsList],
+# Check if digraph represents a partial order
+function(D, roots)
+  local reachable_vertices, vertex_in_subset, N;
+  if not IsPartialOrderDigraph(D) then
+    ErrorNoReturn(
+      "the 1st argument (a digraph) must be a partial order digraph");
+  fi;
+
+  N := DigraphNrVertices(D);
+  vertex_in_subset := BlistList([1 .. N], roots);
+  reachable_vertices := VerticesReachableFrom(D, roots);
+
+  return Length(reachable_vertices) = Length(roots)
+    and ForAll(reachable_vertices, x -> vertex_in_subset[x]);
+
 end);
 
 InstallMethod(DominatorTree, "for a digraph and a vertex",

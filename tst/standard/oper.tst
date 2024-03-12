@@ -1942,7 +1942,7 @@ gap> DigraphShortestPath(gr, 12, 5014);
 gap> D := CompleteDigraph(5);
 <immutable complete digraph with 5 vertices>
 gap> VerticesReachableFrom(D, 1);
-[ 2, 1, 3, 4, 5 ]
+[ 1, 2, 3, 4, 5 ]
 gap> VerticesReachableFrom(D, 3);
 [ 1, 2, 3, 4, 5 ]
 gap> D := EmptyDigraph(5);
@@ -1951,12 +1951,14 @@ gap> VerticesReachableFrom(D, 1);
 [  ]
 gap> VerticesReachableFrom(D, 3);
 [  ]
+gap> VerticesReachableFrom(D, 6);
+Error, the 2nd argument (root) is not a vertex of the 1st argument (a digraph)
 gap> D := CycleDigraph(4);
 <immutable cycle digraph with 4 vertices>
 gap> VerticesReachableFrom(D, 1);
-[ 2, 3, 4, 1 ]
+[ 1, 2, 3, 4 ]
 gap> VerticesReachableFrom(D, 3);
-[ 4, 1, 2, 3 ]
+[ 1, 2, 3, 4 ]
 gap> D := ChainDigraph(5);
 <immutable chain digraph with 5 vertices>
 gap> VerticesReachableFrom(D, 1);
@@ -1968,29 +1970,29 @@ gap> VerticesReachableFrom(D, 5);
 gap> D := Digraph([[2, 3, 5], [1, 6], [4, 6, 7], [7, 8], [4], [], [8, 6], []]);
 <immutable digraph with 8 vertices, 13 edges>
 gap> VerticesReachableFrom(D, 1);
-[ 2, 1, 6, 3, 4, 7, 8, 5 ]
+[ 1, 2, 3, 4, 5, 6, 7, 8 ]
 gap> VerticesReachableFrom(D, 2);
-[ 1, 2, 3, 4, 7, 8, 6, 5 ]
+[ 1, 2, 3, 4, 5, 6, 7, 8 ]
 gap> VerticesReachableFrom(D, 3);
-[ 4, 7, 8, 6 ]
+[ 4, 6, 7, 8 ]
 gap> VerticesReachableFrom(D, 4);
-[ 7, 8, 6 ]
+[ 6, 7, 8 ]
 gap> VerticesReachableFrom(D, 5);
-[ 4, 7, 8, 6 ]
+[ 4, 6, 7, 8 ]
 gap> VerticesReachableFrom(D, 6);
 [  ]
 gap> VerticesReachableFrom(D, 7);
-[ 8, 6 ]
+[ 6, 8 ]
 gap> VerticesReachableFrom(D, 8);
 [  ]
 gap> D := Digraph([[1, 2, 3], [4], [1, 5], [], [2]]);
 <immutable digraph with 5 vertices, 7 edges>
 gap> VerticesReachableFrom(D, 1);
-[ 1, 2, 4, 3, 5 ]
+[ 1, 2, 3, 4, 5 ]
 gap> VerticesReachableFrom(D, 2);
 [ 4 ]
 gap> VerticesReachableFrom(D, 3);
-[ 1, 2, 4, 3, 5 ]
+[ 1, 2, 3, 4, 5 ]
 gap> VerticesReachableFrom(D, 4);
 [  ]
 gap> VerticesReachableFrom(D, 5);
@@ -1998,11 +2000,11 @@ gap> VerticesReachableFrom(D, 5);
 gap> D := Digraph(IsMutableDigraph, [[1, 2, 3], [4], [1, 5], [], [2]]);
 <mutable digraph with 5 vertices, 7 edges>
 gap> VerticesReachableFrom(D, 1);
-[ 1, 2, 4, 3, 5 ]
+[ 1, 2, 3, 4, 5 ]
 gap> VerticesReachableFrom(D, 2);
 [ 4 ]
 gap> VerticesReachableFrom(D, 3);
-[ 1, 2, 4, 3, 5 ]
+[ 1, 2, 3, 4, 5 ]
 gap> VerticesReachableFrom(D, 4);
 [  ]
 gap> VerticesReachableFrom(D, 5);
@@ -2796,6 +2798,46 @@ gap> D := Digraph([
 gap> path := DigraphPath(D, 5, 5);;
 gap> IsDigraphPath(D, path);
 true
+gap> D1 := CompleteDigraph(5);
+<immutable complete digraph with 5 vertices>
+gap> D2 := CompleteDigraph(10);
+<immutable complete digraph with 10 vertices>
+gap> VerticesReachableFrom(D1, [1]);
+[ 1, 2, 3, 4, 5 ]
+gap> VerticesReachableFrom(D1, [1, 2]);
+[ 1, 2, 3, 4, 5 ]
+gap> VerticesReachableFrom(D2, [1]);
+[ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ]
+gap> VerticesReachableFrom(D2, [1, 11]);
+Error, an element of the 2nd argument (roots) is not a vertex of the 1st argum\
+ent (a digraph)
+gap> D3 := CompleteDigraph(7);
+<immutable complete digraph with 7 vertices>
+gap> D3_edges := [1 .. 7];
+[ 1 .. 7 ]
+gap> for i in D3_edges do
+>      D3 := DigraphRemoveEdge(D3, [1, i]);
+>      D3 := DigraphRemoveEdge(D3, [i, 1]);
+>    od;
+gap> VerticesReachableFrom(D3, [1]);
+[  ]
+gap> TestPartialOrderDigraph := Digraph([[1, 3], [2, 3], [3]]);
+<immutable digraph with 3 vertices, 5 edges>
+gap> IsOrderIdeal(TestPartialOrderDigraph, [1, 2, 3]);
+true
+gap> TestPartialOrderDigraph2 := Digraph([[1, 3], [2, 3], [3]]);
+<immutable digraph with 3 vertices, 5 edges>
+gap> TestUnion := DigraphDisjointUnion(TestPartialOrderDigraph, TestPartialOrderDigraph2);
+<immutable digraph with 6 vertices, 10 edges>
+gap> IsOrderIdeal(TestUnion, [1, 2, 3]);
+true
+gap> IsOrderIdeal(TestUnion, [4, 5, 6]);
+true
+gap> IsOrderIdeal(TestUnion, [1, 5, 6]);
+false
+gap> D := CycleDigraph(5);;
+gap> IsOrderIdeal(D, [1]);
+Error, the 1st argument (a digraph) must be a partial order digraph
 
 # DigraphCycleBasis
 gap> D := NullDigraph(0);
@@ -2860,6 +2902,8 @@ gap> Unbind(C);
 gap> Unbind(D);
 gap> Unbind(D1);
 gap> Unbind(D2);
+gap> Unbind(D3);
+gap> Unbind(D3_edges);
 gap> Unbind(DD);
 gap> Unbind(G);
 gap> Unbind(G1);
@@ -2913,6 +2957,7 @@ gap> Unbind(tclosure);
 gap> Unbind(u1);
 gap> Unbind(u2);
 gap> Unbind(x);
+gap> Unbind(TestPartialOrderDigraph);
 
 #
 gap> DIGRAPHS_StopTest();
