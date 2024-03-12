@@ -2241,8 +2241,8 @@ end);
 InstallMethod(DigraphCycleBasis, "for a digraph",
 [IsDigraph],
 function(G)
-  local OutNbr, InNbr, n, partialSum, m, roots, visited, unusedEdges, i, c, s,
-    z, stack, u, v, p, B;
+  local OutNbr, InNbr, n, partialSum, m, visited, unusedEdges, i, c, s, stack
+    z, u, v, p, B;
 
   # Check for loops
   if DigraphHasLoops(G) then
