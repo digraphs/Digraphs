@@ -2209,7 +2209,7 @@ InstallMethod(DigraphCycleBasis, "for a digraph",
 [IsDigraph],
 function(G)
   local OutNbr, InNbr, n, partialSum, m, roots, visited, unusedEdges, i, c, s,
-    z, queue, u, v, p, B;
+    z, stack, u, v, p, B;
 
   # Check for loops
   if DigraphHasLoops(G) then
@@ -2239,24 +2239,22 @@ function(G)
   fi;
 
   # Traverse the graph, depth first search
-  roots := [];
   visited := BlistList([1 .. n], []);
   unusedEdges := [];
   while ForAny(visited, x -> x = false) do
     s := Position(visited, false);
-    Add(roots, s);
     visited[s] := [0, s];
-    queue := [s];
-    while not IsEmpty(queue) do
-      u := Remove(queue);
+    stack := [s];
+    while not IsEmpty(stack) do
+      u := Remove(stack);
       for p in [1 .. Length(OutNbr[u])] do
         v := OutNbr[u][p];
         i := partialSum[u] + p;
         if visited[v] = false then
           visited[v] := [i, u];
-          Add(queue, v);
-        elif v in queue then
-          Add(unusedEdges, [u, i, v, visited[v][1], visited[v][2]]);
+          Add(stack, v);
+        elif v in stack then
+          Add(unusedEdges, [u, i, visited[v][1], visited[v][2]]);
         fi;
       od;
       for v in InNbr[u] do
@@ -2264,9 +2262,9 @@ function(G)
         i := partialSum[v] + p;
         if visited[v] = false then
           visited[v] := [i, u];
-          Add(queue, v);
-        elif v in queue then
-          Add(unusedEdges, [u, i, v, visited[v][1], visited[v][2]]);
+          Add(stack, v);
+        elif v in stack then
+          Add(unusedEdges, [u, i, visited[v][1], visited[v][2]]);
         fi;
       od;
     od;
@@ -2293,7 +2291,7 @@ function(G)
   # - unusedEdges : The list of unused edges to be converted to a basis vector
   # - visited : The result of the depth first search above
 
-  # ToDo : In the case the Digraph package requires GAP 4.12 or over,
+  # TODO : In the case the Digraph package requires GAP 4.12 or over,
   # remove the following if statement.
   if CompareVersionNumbers(GAPInfo.Version, "4.12") then
     B := List([1 .. c], i -> NewZeroVector(IsGF2VectorRep, GF(2), m));
@@ -2304,7 +2302,7 @@ function(G)
 
   for i in [1 .. c] do
     u := unusedEdges[i][1];
-    v := unusedEdges[i][5];
+    v := unusedEdges[i][4];
 
     while u <> v do
       B[i][visited[u][1]] := Z(2);
@@ -2312,7 +2310,7 @@ function(G)
     od;
 
     B[i][unusedEdges[i][2]] := Z(2);
-    B[i][unusedEdges[i][4]] := Z(2);
+    B[i][unusedEdges[i][3]] := Z(2);
   od;
 
   return [OutNbr, B];
