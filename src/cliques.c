@@ -197,6 +197,19 @@ static void init_graph_from_digraph_obj(Graph* const graph, Obj digraph_obj) {
   }
 }
 
+static bool is_initialized = false;
+
+static bool free_cliques_data(CliqueData* data){
+  if(is_initialized){
+    free_bit_array(data->clique);
+    free_conditions(data->try_);
+    free_conditions(data->ban);
+    free_conditions(data->to_try);
+    free_bit_array(data->temp_bitarray);
+    is_initialized = false;
+  }
+}
+
 // Initialise the global variables
 static bool init_data_from_args(Obj         digraph_obj,
                                 Obj         hook_obj,
@@ -206,8 +219,9 @@ static bool init_data_from_args(Obj         digraph_obj,
                                 Obj         max_obj,
                                 Obj*        group,
                                 CliqueData* data) {
-  static bool is_initialised = false;
-  if (DigraphNrVertices(digraph_obj) + 1 > cliques_maxverts) {
+  if (DigraphNrVertices(digraph_obj) + 1 > cliques_maxverts || !is_initialized) {
+    free_cliques_data(data);
+    is_initialized = true;
     cliques_maxverts = DigraphNrVertices(digraph_obj) + 1;
 
     data->graph = new_graph(cliques_maxverts);
