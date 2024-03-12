@@ -47,15 +47,15 @@ Conditions* new_conditions(uint16_t const nr1, uint16_t const nr2) {
 // free_conditions is not currently used, but kept in case it is required in
 // the future. JDM 2019
 
-// void free_conditions(Conditions* const conditions) {
-//   DIGRAPHS_ASSERT(conditions != NULL);
-//   for (uint64_t i = 0; i < ((uint64_t) conditions->nr1 * conditions->nr1);
-//        i++) {
-//     free_bit_array(conditions->bit_array[i]);
-//   }
-//   free(conditions->bit_array);
-//   free(conditions->changed);
-//   free(conditions->height);
-//   free(conditions->sizes);
-//   free(conditions);
-// }
+void free_conditions(Conditions* const conditions) {
+  DIGRAPHS_ASSERT(conditions != NULL);
+  for (uint64_t i = 0; i < ((uint64_t) conditions->nr1 * conditions->nr1);
+       i++) {
+    free_bit_array(conditions->bit_array[i]);
+  }
+  free(conditions->bit_array);
+  free(conditions->changed);
+  free(conditions->height);
+  free(conditions->sizes);
+  free(conditions);
+}
