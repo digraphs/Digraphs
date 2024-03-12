@@ -207,17 +207,17 @@ static bool init_data_from_args(Obj         digraph_obj,
                                 Obj*        group,
                                 CliqueData* data) {
   static bool is_initialised = false;
-  if (DigraphNrVertices(digraph_obj) > cliques_maxverts) {
-    cliques_maxverts = DigraphNrVertices(digraph_obj);
+  if (DigraphNrVertices(digraph_obj) + 1 > cliques_maxverts) {
+    cliques_maxverts = DigraphNrVertices(digraph_obj) + 1;
 
     data->graph = new_graph(cliques_maxverts);
 
     // Currently Conditions are a nr1 x nr1 array of BitArrays, so both
     // values have to be set to MAXVERTS
     data->clique = new_bit_array(cliques_maxverts);
-    data->try_   = new_conditions(MACHINE_MAXVERTS, MACHINE_MAXVERTS);
-    data->ban    = new_conditions(MACHINE_MAXVERTS, MACHINE_MAXVERTS);
-    data->to_try = new_conditions(MACHINE_MAXVERTS, MACHINE_MAXVERTS);
+    data->try_   = new_conditions(cliques_maxverts, cliques_maxverts);
+    data->ban    = new_conditions(cliques_maxverts, cliques_maxverts);
+    data->to_try = new_conditions(cliques_maxverts, cliques_maxverts);
 
     data->orbit         = Fail;
     data->temp_bitarray = new_bit_array(cliques_maxverts);
