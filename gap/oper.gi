@@ -2239,10 +2239,10 @@ function(G)
   fi;
 
   # Traverse the graph, depth first search
+  s := 1;
   visited := BlistList([1 .. n], []);
   unusedEdges := [];
-  while ForAny(visited, x -> x = false) do
-    s := Position(visited, false);
+  while s <> fail do
     visited[s] := [0, s];
     stack := [s];
     while not IsEmpty(stack) do
@@ -2268,6 +2268,7 @@ function(G)
         fi;
       od;
     od;
+    s := Position(visited, false, s);
   od;
 
   c := Length(unusedEdges);
