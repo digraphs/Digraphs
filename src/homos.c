@@ -292,7 +292,6 @@ homo_hook_collect(void* user_param, uint16_t const nr, uint16_t const* map) {
 // }
 
 static void free_homos_data(){
-    // srand(time(0));
     free_digraph(DIGRAPH1);
     free_digraph(DIGRAPH2);
     free_graph(GRAPH1);
@@ -1635,7 +1634,7 @@ static bool init_data_from_args(Obj digraph1_obj,
     DigraphNrVertices(digraph1_obj),
     DigraphNrVertices(digraph2_obj));
   if (calculated_max_verts > homos_maxverts) {
-    // free_homos_data();
+    free_homos_data();
     homos_maxverts = calculated_max_verts;
     homos_undefined = homos_maxverts + 1;
     // srand(time(0));
