@@ -300,11 +300,11 @@ static void free_homos_data(){
     // free_bit_array(IMAGE_RESTRICT);
     // ORB_LOOKUP     = new_bit_array(MAXVERTS);
     for (uint16_t i = 0; i < homos_maxverts; i++) {
-      free_bit_array(&BLISS_GRAPH[i]);
-      free_bit_array(&REPS[i]);
-      free_bit_array(&BIT_ARRAY_BUFFER[i]);
-      free_bit_array(&MAP_UNDEFINED[i]);
-      free_bit_array(&STAB_GENS[i]);
+      bliss_digraphs_release(BLISS_GRAPH[i]);
+      free_bit_array(REPS[i]);
+      free_bit_array(BIT_ARRAY_BUFFER[i]);
+      free_bit_array(MAP_UNDEFINED[i]);
+      free_perm_coll(STAB_GENS[i]);
     }
     free(BLISS_GRAPH);
     free(REPS);
