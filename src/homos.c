@@ -297,8 +297,8 @@ static void free_homos_data(){
     free_digraph(DIGRAPH2);
     free_graph(GRAPH1);
     free_graph(GRAPH2);
-    // free_bit_array(IMAGE_RESTRICT);
-    // ORB_LOOKUP     = new_bit_array(MAXVERTS);
+    free_bit_array(IMAGE_RESTRICT);
+    free_bit_array(ORB_LOOKUP);
     for (uint16_t i = 0; i < homos_maxverts; i++) {
       bliss_digraphs_release(BLISS_GRAPH[i]);
       free_bit_array(REPS[i]);
