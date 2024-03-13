@@ -128,10 +128,6 @@ gap> HomomorphismDigraphsFinder(gr1, gr1, fail, [], 1, 2, 0, [1, 2],
 > [], [[1, 2], [2]], [[1, 2]]);
 Error, the 2nd argument <partition> does not define a colouring of the vertice\
 s [1 .. 2], since it contains the vertex 2 more than once,
-gap> gr := CompleteDigraph(513);;
-gap> HomomorphismDigraphsFinder(gr, gr, fail, [], 1, fail, 0, [1 .. 513],
-> [], fail, fail);
-Error, the 1st argument <digraph1> must have at most 512 vertices, found 513,
 gap> HomomorphismDigraphsFinder(gr1, gr1, fail, [], 1, 2, 0, [1, 2],
 > [], [1, 2], [2, 1]);
 [ Transformation( [ 2, 1 ] ) ]
