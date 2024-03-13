@@ -69,7 +69,9 @@
 
 #ifndef homos_maxverts
 uint16_t homos_maxverts=0;
-uint16_t homos_undefined=1;
+#endif
+#ifndef homos_undefined
+uint16_t homos_undefined=65535;
 #endif
 // The next line can be used instead of the first line of STORE_MIN to
 // randomise which vertex of minimum degree is used next, but I didn't find any
@@ -1643,7 +1645,6 @@ static bool init_data_from_args(Obj digraph1_obj,
     is_initialized = true;
 
     homos_maxverts = calculated_max_verts;
-    homos_undefined = homos_maxverts + 1;
     // srand(time(0));
 #ifdef DIGRAPHS_ENABLE_STATS
     STATS = malloc(sizeof(HomoStats));
