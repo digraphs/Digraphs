@@ -20,13 +20,14 @@
 
 // Digraphs package headers
 #include "digraphs-debug.h"  // for DIGRAPHS_ASSERT
+#include "safemalloc.h"
 
 uint16_t PERM_DEGREE = 0;
 
 // Schreier-Sims set up
 
 SchreierSims* new_schreier_sims(void) {
-  SchreierSims* ss = malloc(sizeof(SchreierSims));
+  SchreierSims* ss = safe_malloc(sizeof(SchreierSims));
   ss->tmp_perm     = new_perm(MAXVERTS);
   for (uint16_t i = 0; i < MAXVERTS; ++i) {
     ss->strong_gens[i] = new_perm_coll(MAXVERTS, MAXVERTS);

@@ -24,6 +24,7 @@
 #include "digraphs-debug.h"  // for DIGRAPHS_ASSERT
 #include "homos.h"           // for FuncHomomorphismDigraphsFinder
 #include "planar.h"          // for FUNC_IS_PLANAR, . . .
+#include "safemalloc.h"
 
 #undef PACKAGE
 #undef PACKAGE_BUGREPORT
@@ -184,7 +185,7 @@ static Obj FuncGABOW_SCC(Obj self, Obj digraph) {
 
   comps = NEW_PLIST_IMM(T_PLIST_TAB, n);
 
-  stack2 = malloc((4 * n + 2) * sizeof(UInt));
+  stack2 = safe_malloc((4 * n + 2) * sizeof(UInt));
   frames = stack2 + n + 1;
   end2   = 0;
 
@@ -292,7 +293,7 @@ static Obj FuncDIGRAPH_CONNECTED_COMPONENTS(Obj self, Obj digraph) {
     gid    = NEW_PLIST_IMM(T_PLIST_EMPTY, 0);
     gcomps = NEW_PLIST_IMM(T_PLIST_EMPTY, 0);
   } else {
-    id = malloc(n * sizeof(UInt));
+    id = safe_malloc(n * sizeof(UInt));
     for (i = 0; i < n; i++) {
       id[i] = i;
     }
@@ -308,7 +309,7 @@ static Obj FuncDIGRAPH_CONNECTED_COMPONENTS(Obj self, Obj digraph) {
     }
 
     // "Normalise" id, giving it sensible labels
-    nid     = malloc(n * sizeof(UInt));
+    nid     = safe_malloc(n * sizeof(UInt));
     nrcomps = 0;
     for (i = 0; i < n; i++) {
       f      = UF_FIND(id, i);
@@ -347,7 +348,7 @@ static Obj FuncIS_ACYCLIC_DIGRAPH(Obj self, Obj adj) {
 
   // init the buf
   ptr   = calloc(nr + 1, sizeof(UInt));
-  stack = malloc((2 * nr + 2) * sizeof(UInt));
+  stack = safe_malloc((2 * nr + 2) * sizeof(UInt));
 
   for (i = 1; i <= nr; i++) {
     nbs = ELM_PLIST(adj, i);
@@ -418,7 +419,7 @@ static Obj FuncDIGRAPH_LONGEST_DIST_VERTEX(Obj self, Obj adj, Obj start) {
 
   ptr   = calloc(nr + 1, sizeof(UInt));
   depth = calloc(nr + 1, sizeof(UInt));
-  stack = malloc((2 * nr + 2) * sizeof(UInt));
+  stack = safe_malloc((2 * nr + 2) * sizeof(UInt));
 
   level    = 1;
   stack[0] = i;
@@ -505,7 +506,7 @@ static Obj FuncDIGRAPH_TRANS_REDUCTION(Obj self, Obj D) {
   // Create data structures needed for computation
   UInt* ptr   = calloc(n + 1, sizeof(UInt));
   bool* mat   = calloc(n * n, sizeof(bool));
-  UInt* stack = malloc((2 * n + 2) * sizeof(UInt));
+  UInt* stack = safe_malloc((2 * n + 2) * sizeof(UInt));
 
   // Start a depth-first search from each source of the digraph
   for (UInt i = 1; i <= n; i++) {
@@ -605,7 +606,7 @@ static Obj FuncDIGRAPH_PATH(Obj self, Obj adj, Obj u, Obj v) {
 
   // init the buf
   ptr   = calloc(nr + 1, sizeof(UInt));
-  stack = malloc((2 * nr + 2) * sizeof(UInt));
+  stack = safe_malloc((2 * nr + 2) * sizeof(UInt));
 
   level    = 1;
   stack[0] = i;
@@ -674,7 +675,7 @@ Obj FuncIS_ANTISYMMETRIC_DIGRAPH(Obj self, Obj adj) {
 
   // init the buf (is this correct length?)
   ptr   = calloc(nr + 1, sizeof(UInt));
-  stack = malloc((4 * nr + 4) * sizeof(UInt));
+  stack = safe_malloc((4 * nr + 4) * sizeof(UInt));
 
   for (i = 1; i <= nr; i++) {
     nbs = ELM_PLIST(adj, i);
@@ -751,7 +752,7 @@ static Obj FuncIS_STRONGLY_CONNECTED_DIGRAPH(Obj self, Obj digraph) {
   }
 
   nextid = 1;
-  bag    = malloc(n * 4 * sizeof(UInt));
+  bag    = safe_malloc(n * 4 * sizeof(UInt));
   ptr1   = bag;
   ptr2   = bag + n;
   fptr   = bag + n * 2;
@@ -818,7 +819,7 @@ static Obj FuncDIGRAPH_TOPO_SORT(Obj self, Obj adj) {
 
   // init the buf
   ptr   = calloc(nr + 1, sizeof(UInt));
-  stack = malloc((2 * nr + 2) * sizeof(UInt));
+  stack = safe_malloc((2 * nr + 2) * sizeof(UInt));
   count = 0;
 
   for (i = 1; i <= nr; i++) {
@@ -913,7 +914,7 @@ static Obj FuncDIGRAPH_SYMMETRIC_SPANNING_FOREST(Obj self, Obj adj) {
 
   // init the buffer
   ptr   = calloc(nr + 1, sizeof(UInt));
-  stack = malloc((2 * nr + 2) * sizeof(UInt));
+  stack = safe_malloc((2 * nr + 2) * sizeof(UInt));
 
   for (i = 1; i <= nr; i++) {
     // perform DFS only on still-undiscovered non-trivial connected components
@@ -1155,7 +1156,7 @@ static Obj FLOYD_WARSHALL(Obj digraph,
   }
 
   // Initialise the n x n matrix with val1 and val2
-  dist = malloc(n * n * sizeof(Int));
+  dist = safe_malloc(n * n * sizeof(Int));
   for (i = 0; i < n * n; i++) {
     dist[i] = val1;
   }
@@ -1178,7 +1179,7 @@ static Obj FLOYD_WARSHALL(Obj digraph,
 
   if (copy) {
     // This is the special case for IS_TRANSITIVE_DIGRAPH
-    adj = malloc(n * n * sizeof(Int));
+    adj = safe_malloc(n * n * sizeof(Int));
     for (i = 0; i < n * n; i++) {
       adj[i] = dist[i];
     }

@@ -18,9 +18,10 @@
 
 // Digraphs headers
 #include "digraphs-debug.h"  // for DIGRAPHS_ASSERT
+#include "safemalloc.h"
 
 BitArray* new_bit_array(uint16_t const nr_bits) {
-  BitArray* bit_array  = malloc(sizeof(BitArray));
+  BitArray* bit_array  = safe_malloc(sizeof(BitArray));
   bit_array->nr_bits   = nr_bits;
   bit_array->nr_blocks = ((nr_bits % NUMBER_BITS_PER_BLOCK) == 0
                               ? nr_bits / NUMBER_BITS_PER_BLOCK
