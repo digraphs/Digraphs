@@ -46,6 +46,7 @@
 #include "homos-graphs.h"     // for Digraph, Graph, . . .
 #include "perms.h"            // for MAXVERTS, UNDEFINED, PermColl, Perm
 #include "schreier-sims.h"    // for PermColl, . . .
+#include "safemalloc.h"
 
 #ifdef DIGRAPHS_WITH_INCLUDED_BLISS
 #include "bliss-0.73/bliss_C.h"  // for bliss_digraphs_release, . . .
@@ -1606,7 +1607,7 @@ static bool init_data_from_args(Obj digraph1_obj,
     // srand(time(0));
     is_initialized = true;
 #ifdef DIGRAPHS_ENABLE_STATS
-    STATS = malloc(sizeof(HomoStats));
+    STATS = safe_malloc(sizeof(HomoStats));
 #endif
 
     DIGRAPH1 = new_digraph(MAXVERTS);
@@ -1617,7 +1618,7 @@ static bool init_data_from_args(Obj digraph1_obj,
 
     IMAGE_RESTRICT = new_bit_array(MAXVERTS);
     ORB_LOOKUP     = new_bit_array(MAXVERTS);
-    REPS           = malloc(MAXVERTS * sizeof(BitArray*));
+    REPS           = safe_malloc(MAXVERTS * sizeof(BitArray*));
     for (uint16_t i = 0; i < MAXVERTS; i++) {
       BLISS_GRAPH[i]      = bliss_digraphs_new(i);
       REPS[i]             = new_bit_array(MAXVERTS);
