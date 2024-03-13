@@ -2839,6 +2839,64 @@ gap> D := CycleDigraph(5);;
 gap> IsOrderIdeal(D, [1]);
 Error, the 1st argument (a digraph) must be a partial order digraph
 
+# DigraphCycleBasis
+gap> D := NullDigraph(0);
+<immutable empty digraph with 0 vertices>
+gap> DigraphCycleBasis(D);
+[ [  ], [  ] ]
+gap> D := NullDigraph(6);
+<immutable empty digraph with 6 vertices>
+gap> DigraphCycleBasis(D);
+[ [ [  ], [  ], [  ], [  ], [  ], [  ] ], [  ] ]
+gap> D := Digraph([[1]]);
+<immutable digraph with 1 vertex, 1 edge>
+gap> DigraphCycleBasis(D);
+Error, the 1st argument (a digraph) must not have any loops
+gap> D := CompleteDigraph(5);
+<immutable complete digraph with 5 vertices>
+gap> res := DigraphCycleBasis(D);
+[ [ [ 2, 3, 4, 5 ], [ 3, 4, 5 ], [ 4, 5 ], [ 5 ], [  ] ], 
+  [ <a GF2 vector of length 10>, <a GF2 vector of length 10>, 
+      <a GF2 vector of length 10>, <a GF2 vector of length 10>, 
+      <a GF2 vector of length 10>, <a GF2 vector of length 10> ] ]
+gap> List(res[2], x -> List(x));
+[ [ Z(2)^0, 0*Z(2), 0*Z(2), Z(2)^0, 0*Z(2), 0*Z(2), Z(2)^0, 0*Z(2), 0*Z(2), 
+      0*Z(2) ], 
+  [ 0*Z(2), Z(2)^0, 0*Z(2), Z(2)^0, 0*Z(2), 0*Z(2), 0*Z(2), 0*Z(2), Z(2)^0, 
+      0*Z(2) ], 
+  [ 0*Z(2), 0*Z(2), Z(2)^0, Z(2)^0, 0*Z(2), 0*Z(2), 0*Z(2), 0*Z(2), 0*Z(2), 
+      Z(2)^0 ], 
+  [ Z(2)^0, 0*Z(2), Z(2)^0, 0*Z(2), 0*Z(2), Z(2)^0, 0*Z(2), 0*Z(2), 0*Z(2), 
+      0*Z(2) ], 
+  [ 0*Z(2), Z(2)^0, Z(2)^0, 0*Z(2), 0*Z(2), 0*Z(2), 0*Z(2), Z(2)^0, 0*Z(2), 
+      0*Z(2) ], 
+  [ Z(2)^0, Z(2)^0, 0*Z(2), 0*Z(2), Z(2)^0, 0*Z(2), 0*Z(2), 0*Z(2), 0*Z(2), 
+      0*Z(2) ] ]
+gap> D := DigraphSymmetricClosure(ChainDigraph(10));
+<immutable symmetric digraph with 10 vertices, 18 edges>
+gap> DigraphCycleBasis(D);
+[ [ [ 2 ], [ 3 ], [ 4 ], [ 5 ], [ 6 ], [ 7 ], [ 8 ], [ 9 ], [ 10 ], [  ] ], 
+  [  ] ]
+gap> D := Digraph([[6], [3, 1, 6], [2], [6, 5], [4, 3, 2, 6], [4, 1, 5, 2]]);
+<immutable digraph with 6 vertices, 15 edges>
+gap> res := DigraphCycleBasis(D);
+[ [ [ 6 ], [ 1, 3, 6 ], [  ], [ 5, 6 ], [ 2, 3, 6 ], [  ] ], 
+  [ <a GF2 vector of length 9>, <a GF2 vector of length 9>, 
+      <a GF2 vector of length 9>, <a GF2 vector of length 9> ] ]
+gap> List(res[2], x -> List(x));
+[ [ Z(2)^0, Z(2)^0, 0*Z(2), Z(2)^0, 0*Z(2), 0*Z(2), 0*Z(2), 0*Z(2), 0*Z(2) ], 
+  [ 0*Z(2), 0*Z(2), Z(2)^0, 0*Z(2), 0*Z(2), 0*Z(2), Z(2)^0, Z(2)^0, 0*Z(2) ], 
+  [ Z(2)^0, Z(2)^0, 0*Z(2), 0*Z(2), 0*Z(2), 0*Z(2), Z(2)^0, 0*Z(2), Z(2)^0 ], 
+  [ Z(2)^0, Z(2)^0, 0*Z(2), 0*Z(2), Z(2)^0, Z(2)^0, Z(2)^0, 0*Z(2), 0*Z(2) ] ]
+gap> D := DigraphDisjointUnion(CycleGraph(3), CycleGraph(4));
+<immutable digraph with 7 vertices, 14 edges>
+gap> res := DigraphCycleBasis(D);
+[ [ [ 2, 3 ], [ 3 ], [  ], [ 5, 7 ], [ 6 ], [ 7 ], [  ] ], 
+  [ <a GF2 vector of length 7>, <a GF2 vector of length 7> ] ]
+gap> List(res[2], x -> List(x));
+[ [ Z(2)^0, Z(2)^0, Z(2)^0, 0*Z(2), 0*Z(2), 0*Z(2), 0*Z(2) ], 
+  [ 0*Z(2), 0*Z(2), 0*Z(2), Z(2)^0, Z(2)^0, Z(2)^0, Z(2)^0 ] ]
+
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(C);
 gap> Unbind(D);
@@ -2892,6 +2950,7 @@ gap> Unbind(p2);
 gap> Unbind(path);
 gap> Unbind(qr);
 gap> Unbind(r);
+gap> Unbind(res);
 gap> Unbind(rtclosure);
 gap> Unbind(t);
 gap> Unbind(tclosure);

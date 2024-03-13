@@ -141,6 +141,7 @@ DeclareOperation("VerticesReachableFrom", [IsDigraph, IsList]);
 DeclareOperation("IsOrderIdeal", [IsDigraph, IsList]);
 DeclareOperation("Dominators", [IsDigraph, IsPosInt]);
 DeclareOperation("DominatorTree", [IsDigraph, IsPosInt]);
+DeclareOperation("DigraphCycleBasis", [IsDigraph]);
 
 # 10. Operations for vertices . . .
 DeclareOperation("PartialOrderDigraphJoinOfVertices",
