@@ -2136,8 +2136,6 @@ gap> HomomorphismDigraphsFinder(CycleDigraph(5),
 # More arg/error checks
 gap> HomomorphismDigraphsFinder(0);
 Error, there must be 11 or 12 arguments, found 1,
-gap> DigraphHomomorphism(NullDigraph(1), NullDigraph(513));
-Error, the 2nd argument <digraph2> must have at most 512 vertices, found 513,
 gap> HomomorphismDigraphsFinder(NullDigraph(1), NullDigraph(510), fail, [], 1,
 > false, 0, 0, 0, 0, 0);
 Error, the 6th argument <hint> must be an integer or fail, not boolean or fail\
