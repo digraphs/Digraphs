@@ -25,7 +25,7 @@
 extern uint16_t PERM_DEGREE;
 
 struct schreier_sims_struct {
-  uint16_t  degree;
+  uint16_t   degree;
   PermColl** strong_gens;  // strong generators
   Perm*      transversal;
   Perm*      inversal;
@@ -33,8 +33,8 @@ struct schreier_sims_struct {
   uint16_t*  orbits;
   uint16_t*  size_orbits;
   uint16_t*  base;
-  Perm      tmp_perm;
-  uint16_t  size_base;
+  Perm       tmp_perm;
+  uint16_t   size_base;
 };
 
 typedef struct schreier_sims_struct SchreierSims;

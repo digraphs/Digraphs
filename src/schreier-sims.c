@@ -15,9 +15,9 @@
 #include "schreier-sims.h"
 
 // C headers
+#include "globals.h"
 #include "stdlib.h"  // for NULL
 #include "string.h"  // for memset
-#include "globals.h"
 
 // Digraphs package headers
 #include "digraphs-debug.h"  // for DIGRAPHS_ASSERT
@@ -29,22 +29,25 @@ uint16_t PERM_DEGREE = 0;
 SchreierSims* new_schreier_sims() {
   SchreierSims* ss = malloc(sizeof(SchreierSims));
   ss->tmp_perm     = new_perm(homos_maxverts);
-  ss -> strong_gens = (PermColl**)calloc(homos_maxverts, sizeof(PermColl*));
+  ss->strong_gens  = (PermColl**) calloc(homos_maxverts, sizeof(PermColl*));
   for (uint16_t i = 0; i < homos_maxverts; ++i) {
     ss->strong_gens[i] = new_perm_coll(homos_maxverts, homos_maxverts);
   }
-  ss -> transversal = (Perm*)calloc(homos_maxverts * homos_maxverts, sizeof(Perm));
-  ss -> inversal = (Perm*)calloc(homos_maxverts * homos_maxverts, sizeof(Perm));
+  ss->transversal =
+      (Perm*) calloc(homos_maxverts * homos_maxverts, sizeof(Perm));
+  ss->inversal = (Perm*) calloc(homos_maxverts * homos_maxverts, sizeof(Perm));
 
   for (size_t i = 0; i < homos_maxverts * homos_maxverts; ++i) {
     ss->transversal[i] = new_perm(homos_maxverts);
     ss->inversal[i]    = new_perm(homos_maxverts);
   }
 
-  ss -> base = (uint16_t*) calloc(homos_maxverts, sizeof(uint16_t));
-  ss -> orbits = (uint16_t*) calloc(homos_maxverts * homos_maxverts, sizeof(uint16_t));
-  ss -> size_orbits = (uint16_t*) calloc(homos_maxverts, sizeof(uint16_t));
-  ss -> orb_lookup = (bool*) calloc(homos_maxverts * homos_maxverts, sizeof(bool));
+  ss->base = (uint16_t*) calloc(homos_maxverts, sizeof(uint16_t));
+  ss->orbits =
+      (uint16_t*) calloc(homos_maxverts * homos_maxverts, sizeof(uint16_t));
+  ss->size_orbits = (uint16_t*) calloc(homos_maxverts, sizeof(uint16_t));
+  ss->orb_lookup =
+      (bool*) calloc(homos_maxverts * homos_maxverts, sizeof(bool));
 
   return ss;
 }
