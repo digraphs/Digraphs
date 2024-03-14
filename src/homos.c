@@ -25,7 +25,6 @@
 // 1. Try other bit hacks for iterating through set bits
 
 #include "homos.h"
-#include "globals.h"
 // C headers
 #include <limits.h>   // for CHAR_BIT
 #include <setjmp.h>   // for longjmp, setjmp, jmp_buf
@@ -39,6 +38,7 @@
 #include "compiled.h"
 
 // Digraphs package headers
+#include "globals.h"
 #include "bitarray.h"         // for BitArray
 #include "conditions.h"       // for Conditions
 #include "digraphs-config.h"  // for DIGRAPHS_HAVE___BUILTIN_CTZLL
