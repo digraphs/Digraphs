@@ -25,7 +25,7 @@ BitArray* new_bit_array(uint16_t const nr_bits) {
   bit_array->nr_blocks = ((nr_bits % NUMBER_BITS_PER_BLOCK) == 0
                               ? nr_bits / NUMBER_BITS_PER_BLOCK
                               : nr_bits / NUMBER_BITS_PER_BLOCK + 1);
-  bit_array->blocks = calloc(bit_array->nr_blocks, NUMBER_BITS_PER_BLOCK);
+  bit_array->blocks    = calloc(bit_array->nr_blocks, NUMBER_BITS_PER_BLOCK);
   return bit_array;
 }
 
