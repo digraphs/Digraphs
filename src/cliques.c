@@ -60,7 +60,7 @@ extern Obj Group;
 extern Obj ClosureGroup;
 
 #ifndef cliques_maxverts
-uint16_t cliques_maxverts=0;
+uint16_t cliques_maxverts = 0;
 #endif
 ////////////////////////////////////////////////////////////////////////////////
 // Global variables
@@ -199,8 +199,8 @@ static void init_graph_from_digraph_obj(Graph* const graph, Obj digraph_obj) {
 
 static bool is_initialized = false;
 
-static bool free_cliques_data(CliqueData* data){
-  if(is_initialized){
+static bool free_cliques_data(CliqueData* data) {
+  if (is_initialized) {
     free_bit_array(data->clique);
     free_conditions(data->try_);
     free_conditions(data->ban);
@@ -219,9 +219,10 @@ static bool init_data_from_args(Obj         digraph_obj,
                                 Obj         max_obj,
                                 Obj*        group,
                                 CliqueData* data) {
-  if (DigraphNrVertices(digraph_obj) + 1 > cliques_maxverts || !is_initialized) {
+  if (DigraphNrVertices(digraph_obj) + 1 > cliques_maxverts
+      || !is_initialized) {
     free_cliques_data(data);
-    is_initialized = true;
+    is_initialized   = true;
     cliques_maxverts = DigraphNrVertices(digraph_obj) + 1;
 
     data->graph = new_graph(cliques_maxverts);
