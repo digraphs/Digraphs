@@ -44,7 +44,7 @@
 #include "digraphs-config.h"  // for DIGRAPHS_HAVE___BUILTIN_CTZLL
 #include "digraphs-debug.h"   // for DIGRAPHS_ASSERT
 #include "homos-graphs.h"     // for Digraph, Graph, . . .
-#include "perms.h"            // for homos_undefined, PermColl, Perm
+#include "perms.h"            // for UNDEFINED, PermColl, Perm
 #include "schreier-sims.h"    // for PermColl, . . .
 
 #ifdef DIGRAPHS_WITH_INCLUDED_BLISS
@@ -70,8 +70,8 @@
 #ifndef homos_maxverts
 uint16_t homos_maxverts=0;
 #endif
-#ifndef homos_undefined
-uint16_t homos_undefined=65535;
+#ifndef UNDEFINED
+uint16_t UNDEFINED=65535;
 #endif
 // The next line can be used instead of the first line of STORE_MIN to
 // randomise which vertex of minimum degree is used next, but I didn't find any
@@ -165,7 +165,7 @@ static bool ORDERED;  // true if the vertices of the domain/source digraph
 
 static BitArray** BIT_ARRAY_BUFFER = NULL;  // A buffer
 static BitArray* IMAGE_RESTRICT;              // Values in MAP must be in this
-static BitArray** MAP_UNDEFINED = NULL;     // homos_undefined positions in MAP
+static BitArray** MAP_UNDEFINED = NULL;     // UNDEFINED positions in MAP
 static BitArray* ORB_LOOKUP;                  // points in orbit
 static BitArray* VALS;                        // Values in MAP already
 
@@ -620,7 +620,7 @@ static void find_graph_homos(uint16_t        depth,
 #endif
   if (depth == GRAPH1->nr_vertices) {
     // Every position in MAP is assigned . . .
-    if (hint != homos_undefined && rank != hint) {
+    if (hint != UNDEFINED && rank != hint) {
 #ifdef DIGRAPHS_ENABLE_STATS
       STATS->nr_dead_branches++;
 #endif
@@ -638,7 +638,7 @@ static void find_graph_homos(uint16_t        depth,
   }
 
   uint16_t next = 0;          // the next position to fill
-  uint16_t min  = homos_undefined;  // the minimum number of candidates for MAP[next]
+  uint16_t min  = UNDEFINED;  // the minimum number of candidates for MAP[next]
   uint16_t i;
 
   BitArray* possible = BIT_ARRAY_BUFFER[depth];
@@ -712,7 +712,7 @@ static void find_graph_homos(uint16_t        depth,
                          hint,
                          count);
       }
-      MAP[next] = homos_undefined;
+      MAP[next] = UNDEFINED;
       set_bit_array(VALS, i, false);
       set_bit_array(MAP_UNDEFINED[depth], next, true);
     }
@@ -732,7 +732,7 @@ static void find_graph_homos(uint16_t        depth,
                      max_results,
                      hint,
                      count);
-    MAP[next] = homos_undefined;
+    MAP[next] = UNDEFINED;
     set_bit_array(MAP_UNDEFINED[depth], next, true);
   }
   END_FOR_SET_BITS
@@ -788,7 +788,7 @@ static void find_graph_monos(uint16_t        depth,
   }
 
   uint16_t next = 0;          // the next position to fill
-  uint16_t min  = homos_undefined;  // the minimum number of candidates for MAP[next]
+  uint16_t min  = UNDEFINED;  // the minimum number of candidates for MAP[next]
   uint16_t i;
 
   BitArray* possible = BIT_ARRAY_BUFFER[depth];
@@ -850,7 +850,7 @@ static void find_graph_monos(uint16_t        depth,
     } else {
       find_graph_monos(depth + 1, next, rep_depth, true, max_results, count);
     }
-    MAP[next] = homos_undefined;
+    MAP[next] = UNDEFINED;
     set_bit_array(VALS, i, false);
     set_bit_array(MAP_UNDEFINED[depth], next, true);
   }
@@ -910,7 +910,7 @@ static void find_graph_embeddings(uint16_t        depth,
   }
 
   uint16_t next = 0;          // the next position to fill
-  uint16_t min  = homos_undefined;  // the minimum number of candidates for MAP[next]
+  uint16_t min  = UNDEFINED;  // the minimum number of candidates for MAP[next]
   uint16_t i;
 
   BitArray* possible = BIT_ARRAY_BUFFER[depth];
@@ -982,7 +982,7 @@ static void find_graph_embeddings(uint16_t        depth,
       find_graph_embeddings(
           depth + 1, next, rep_depth, true, max_results, count);
     }
-    MAP[next] = homos_undefined;
+    MAP[next] = UNDEFINED;
     set_bit_array(VALS, i, false);
     set_bit_array(MAP_UNDEFINED[depth], next, true);
   }
@@ -1004,16 +1004,16 @@ static void init_partial_map_and_find_graph_homos(Obj partial_map_obj,
                                                   Obj injective_obj) {
   uint16_t depth                = 0;
   uint16_t rep_depth            = 0;
-  uint16_t last_defined         = homos_undefined;
+  uint16_t last_defined         = UNDEFINED;
   bool     last_stab_is_trivial = (STAB_GENS[0]->size == 0 ? true : false);
   uint16_t rank                 = 0;
-  uint16_t next                 = homos_undefined;
+  uint16_t next                 = UNDEFINED;
 
   if (partial_map_obj != Fail) {
     for (next = 0; next < LEN_LIST(partial_map_obj); ++next) {
       if (ISB_LIST(partial_map_obj, next + 1)) {
         if (depth > 0) {
-          DIGRAPHS_ASSERT(last_defined != homos_undefined);
+          DIGRAPHS_ASSERT(last_defined != UNDEFINED);
           copy_bit_array(MAP_UNDEFINED[depth],
                          MAP_UNDEFINED[depth - 1],
                          GRAPH1->nr_vertices);
@@ -1170,7 +1170,7 @@ static void find_digraph_homos(uint16_t        depth,
 #endif
   if (depth == DIGRAPH1->nr_vertices) {
     // we've assigned every position in <MAP>
-    if (hint != homos_undefined && rank != hint) {
+    if (hint != UNDEFINED && rank != hint) {
 #ifdef DIGRAPHS_ENABLE_STATS
       STATS->nr_dead_branches++;
 #endif
@@ -1188,7 +1188,7 @@ static void find_digraph_homos(uint16_t        depth,
   }
 
   uint16_t next = 0;          // the next position to fill
-  uint16_t min  = homos_undefined;  // the minimum number of candidates for MAP[next]
+  uint16_t min  = UNDEFINED;  // the minimum number of candidates for MAP[next]
   uint16_t i;
 
   if (depth > 0) {  // this is not the first call of the function
@@ -1248,7 +1248,7 @@ static void find_digraph_homos(uint16_t        depth,
                            hint,
                            count);
       }
-      MAP[next] = homos_undefined;
+      MAP[next] = UNDEFINED;
       set_bit_array(VALS, i, false);
       set_bit_array(MAP_UNDEFINED[depth], next, true);
     }
@@ -1268,7 +1268,7 @@ static void find_digraph_homos(uint16_t        depth,
                        max_results,
                        hint,
                        count);
-    MAP[next] = homos_undefined;
+    MAP[next] = UNDEFINED;
     set_bit_array(MAP_UNDEFINED[depth], next, true);
   }
   END_FOR_SET_BITS
@@ -1334,7 +1334,7 @@ static void find_digraph_monos(uint16_t        depth,
   }
 
   uint16_t next = 0;          // the next position to fill
-  uint16_t min  = homos_undefined;  // the minimum number of candidates for MAP[next]
+  uint16_t min  = UNDEFINED;  // the minimum number of candidates for MAP[next]
   uint16_t i;
 
   if (depth > 0) {  // this is not the first call of the function
@@ -1383,7 +1383,7 @@ static void find_digraph_monos(uint16_t        depth,
     } else {
       find_digraph_monos(depth + 1, next, rep_depth, true, max_results, count);
     }
-    MAP[next] = homos_undefined;
+    MAP[next] = UNDEFINED;
     set_bit_array(VALS, i, false);
     set_bit_array(MAP_UNDEFINED[depth], next, true);
   }
@@ -1457,7 +1457,7 @@ static void find_digraph_embeddings(uint16_t        depth,
   }
 
   uint16_t next = 0;          // the next position to fill
-  uint16_t min  = homos_undefined;  // the minimum number of candidates for MAP[next]
+  uint16_t min  = UNDEFINED;  // the minimum number of candidates for MAP[next]
   uint16_t i;
 
   if (depth > 0) {  // this is not the first call of the function
@@ -1509,7 +1509,7 @@ static void find_digraph_embeddings(uint16_t        depth,
       find_digraph_embeddings(
           depth + 1, next, rep_depth, true, max_results, count);
     }
-    MAP[next] = homos_undefined;
+    MAP[next] = UNDEFINED;
     set_bit_array(VALS, i, false);
     set_bit_array(MAP_UNDEFINED[depth], next, true);
   }
@@ -1531,16 +1531,16 @@ static void init_partial_map_and_find_digraph_homos(Obj partial_map_obj,
                                                     Obj injective_obj) {
   uint16_t depth                = 0;
   uint16_t rep_depth            = 0;
-  uint16_t last_defined         = homos_undefined;
+  uint16_t last_defined         = UNDEFINED;
   bool     last_stab_is_trivial = (STAB_GENS[0]->size == 0 ? true : false);
   uint16_t rank                 = 0;
-  uint16_t next                 = homos_undefined;
+  uint16_t next                 = UNDEFINED;
 
   if (partial_map_obj != Fail) {
     for (next = 0; next < LEN_LIST(partial_map_obj); ++next) {
       if (ISB_LIST(partial_map_obj, next + 1)) {
         if (depth > 0) {
-          DIGRAPHS_ASSERT(last_defined != homos_undefined);
+          DIGRAPHS_ASSERT(last_defined != UNDEFINED);
           copy_bit_array(MAP_UNDEFINED[depth],
                          MAP_UNDEFINED[depth - 1],
                          DIGRAPH1->nr_vertices);
@@ -1837,7 +1837,7 @@ static bool init_data_from_args(Obj digraph1_obj,
 
   for (uint16_t i = 0; i < nr1; i++) {
     store_size_conditions(CONDITIONS, i);
-    MAP[i] = homos_undefined;
+    MAP[i] = UNDEFINED;
   }
   for (uint16_t i = nr1; i < MAX(nr1, nr2); i++) {
     MAP[i] = i;
@@ -1868,7 +1868,7 @@ static bool init_data_from_args(Obj digraph1_obj,
     set_automorphisms(aut_grp_obj, STAB_GENS[0]);
   }
 
-  compute_stabs_and_orbit_reps(nr1, nr2, 0, 0, homos_undefined, true);
+  compute_stabs_and_orbit_reps(nr1, nr2, 0, 0, UNDEFINED, true);
   return true;
 }
 
@@ -2206,7 +2206,7 @@ Obj FuncHomomorphismDigraphsFinder(Obj self, Obj args) {
   uint64_t max_results =
       (max_results_obj == Infinity ? SMALLINTLIMIT
                                    : INT_INTOBJ(max_results_obj));
-  uint16_t hint  = (IS_INTOBJ(hint_obj) ? INT_INTOBJ(hint_obj) : homos_undefined);
+  uint16_t hint  = (IS_INTOBJ(hint_obj) ? INT_INTOBJ(hint_obj) : UNDEFINED);
   uint64_t count = 0;
 
   // go!
