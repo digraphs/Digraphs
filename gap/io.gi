@@ -1459,6 +1459,37 @@ function(name, D)
   return IO_OK;
 end);
 
+InstallMethod(WriteDreadnautGraph, "for a digraph", [IsString, IsDigraph],
+function(name, D)
+  local file, n, verts, nbs, labels, i, j;
+
+  file := IO_CompressedFile(UserHomeExpand(name), "w");
+  if file = fail then
+    ErrorNoReturn("cannot open the file given as the 1st argument <name>,");
+  fi;
+
+  n := DigraphNrVertices(D);
+  verts := DigraphVertices(D);
+  nbs := OutNeighbours(D);
+
+
+  IO_WriteLine(file, "d");
+  IO_WriteLine(file, "$=1");
+
+  IO_WriteLine(file, Concatenation("n=", String(n)));
+
+  IO_WriteLine(file, "g");
+  for i in [1 .. n] do
+    labels := List(nbs[i], j -> String(j)); 
+    IO_WriteLine(file, Concatenation(String(i), ":", JoinStringsWithSeparator(labels, " "), ";"));
+  od;
+
+  IO_WriteLine(file, ".");
+  
+  IO_Close(file);
+  return;
+end);
+
 InstallGlobalFunction(DigraphPlainTextLineEncoder,
 {delimiter1, delimiter2, offset} ->
 function(D)
