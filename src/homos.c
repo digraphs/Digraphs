@@ -38,14 +38,14 @@
 #include "compiled.h"
 
 // Digraphs package headers
-#include "globals.h"
 #include "bitarray.h"         // for BitArray
 #include "conditions.h"       // for Conditions
 #include "digraphs-config.h"  // for DIGRAPHS_HAVE___BUILTIN_CTZLL
 #include "digraphs-debug.h"   // for DIGRAPHS_ASSERT
-#include "homos-graphs.h"     // for Digraph, Graph, . . .
-#include "perms.h"            // for UNDEFINED, PermColl, Perm
-#include "schreier-sims.h"    // for PermColl, . . .
+#include "globals.h"
+#include "homos-graphs.h"   // for Digraph, Graph, . . .
+#include "perms.h"          // for UNDEFINED, PermColl, Perm
+#include "schreier-sims.h"  // for PermColl, . . .
 
 #ifdef DIGRAPHS_WITH_INCLUDED_BLISS
 #include "bliss-0.73/bliss_C.h"  // for bliss_digraphs_release, . . .
@@ -1654,11 +1654,13 @@ static bool init_data_from_args(Obj digraph1_obj,
     GRAPH1 = new_graph(HOMOS_STRUCTURE_SIZE);
     GRAPH2 = new_graph(HOMOS_STRUCTURE_SIZE);
 
-    IMAGE_RESTRICT   = new_bit_array(HOMOS_STRUCTURE_SIZE);
-    ORB_LOOKUP       = new_bit_array(HOMOS_STRUCTURE_SIZE);
-    REPS             = malloc(HOMOS_STRUCTURE_SIZE * sizeof(BitArray*));
-    BIT_ARRAY_BUFFER = (BitArray**) calloc(HOMOS_STRUCTURE_SIZE, sizeof(BitArray*));
-    MAP_UNDEFINED    = (BitArray**) calloc(HOMOS_STRUCTURE_SIZE, sizeof(BitArray*));
+    IMAGE_RESTRICT = new_bit_array(HOMOS_STRUCTURE_SIZE);
+    ORB_LOOKUP     = new_bit_array(HOMOS_STRUCTURE_SIZE);
+    REPS           = malloc(HOMOS_STRUCTURE_SIZE * sizeof(BitArray*));
+    BIT_ARRAY_BUFFER =
+        (BitArray**) calloc(HOMOS_STRUCTURE_SIZE, sizeof(BitArray*));
+    MAP_UNDEFINED =
+        (BitArray**) calloc(HOMOS_STRUCTURE_SIZE, sizeof(BitArray*));
     BLISS_GRAPH =
         (BlissGraph**) calloc(3 * HOMOS_STRUCTURE_SIZE, sizeof(BlissGraph*));
     MAP           = (uint16_t*) calloc(HOMOS_STRUCTURE_SIZE, sizeof(uint16_t));
@@ -1667,14 +1669,14 @@ static bool init_data_from_args(Obj digraph1_obj,
     MAP_BUFFER    = (uint16_t*) calloc(HOMOS_STRUCTURE_SIZE, sizeof(uint16_t));
     ORB           = (uint16_t*) calloc(HOMOS_STRUCTURE_SIZE, sizeof(uint16_t));
     ORDER         = (uint16_t*) calloc(HOMOS_STRUCTURE_SIZE, sizeof(uint16_t));
-    STAB_GENS     = (PermColl**) calloc(HOMOS_STRUCTURE_SIZE, sizeof(PermColl*));
+    STAB_GENS = (PermColl**) calloc(HOMOS_STRUCTURE_SIZE, sizeof(PermColl*));
 
     for (uint16_t i = 0; i < HOMOS_STRUCTURE_SIZE; i++) {
       BLISS_GRAPH[i]      = bliss_digraphs_new(i);
       REPS[i]             = new_bit_array(HOMOS_STRUCTURE_SIZE);
       BIT_ARRAY_BUFFER[i] = new_bit_array(HOMOS_STRUCTURE_SIZE);
       MAP_UNDEFINED[i]    = new_bit_array(HOMOS_STRUCTURE_SIZE);
-      STAB_GENS[i]        = new_perm_coll(HOMOS_STRUCTURE_SIZE, HOMOS_STRUCTURE_SIZE);
+      STAB_GENS[i] = new_perm_coll(HOMOS_STRUCTURE_SIZE, HOMOS_STRUCTURE_SIZE);
     }
     VALS          = new_bit_array(HOMOS_STRUCTURE_SIZE);
     CONDITIONS    = new_conditions(HOMOS_STRUCTURE_SIZE, HOMOS_STRUCTURE_SIZE);

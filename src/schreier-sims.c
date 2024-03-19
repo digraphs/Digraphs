@@ -29,22 +29,25 @@ uint16_t PERM_DEGREE = 0;
 SchreierSims* new_schreier_sims() {
   SchreierSims* ss = malloc(sizeof(SchreierSims));
   ss->tmp_perm     = new_perm(HOMOS_STRUCTURE_SIZE);
-  ss->strong_gens  = (PermColl**) calloc(HOMOS_STRUCTURE_SIZE, sizeof(PermColl*));
+  ss->strong_gens =
+      (PermColl**) calloc(HOMOS_STRUCTURE_SIZE, sizeof(PermColl*));
   for (uint16_t i = 0; i < HOMOS_STRUCTURE_SIZE; ++i) {
-    ss->strong_gens[i] = new_perm_coll(HOMOS_STRUCTURE_SIZE, HOMOS_STRUCTURE_SIZE);
+    ss->strong_gens[i] =
+        new_perm_coll(HOMOS_STRUCTURE_SIZE, HOMOS_STRUCTURE_SIZE);
   }
   ss->transversal =
       (Perm*) calloc(HOMOS_STRUCTURE_SIZE * HOMOS_STRUCTURE_SIZE, sizeof(Perm));
-  ss->inversal = (Perm*) calloc(HOMOS_STRUCTURE_SIZE * HOMOS_STRUCTURE_SIZE, sizeof(Perm));
+  ss->inversal =
+      (Perm*) calloc(HOMOS_STRUCTURE_SIZE * HOMOS_STRUCTURE_SIZE, sizeof(Perm));
 
   for (size_t i = 0; i < HOMOS_STRUCTURE_SIZE * HOMOS_STRUCTURE_SIZE; ++i) {
     ss->transversal[i] = new_perm(HOMOS_STRUCTURE_SIZE);
     ss->inversal[i]    = new_perm(HOMOS_STRUCTURE_SIZE);
   }
 
-  ss->base = (uint16_t*) calloc(HOMOS_STRUCTURE_SIZE, sizeof(uint16_t));
-  ss->orbits =
-      (uint16_t*) calloc(HOMOS_STRUCTURE_SIZE * HOMOS_STRUCTURE_SIZE, sizeof(uint16_t));
+  ss->base   = (uint16_t*) calloc(HOMOS_STRUCTURE_SIZE, sizeof(uint16_t));
+  ss->orbits = (uint16_t*) calloc(HOMOS_STRUCTURE_SIZE * HOMOS_STRUCTURE_SIZE,
+                                  sizeof(uint16_t));
   ss->size_orbits = (uint16_t*) calloc(HOMOS_STRUCTURE_SIZE, sizeof(uint16_t));
   ss->orb_lookup =
       (bool*) calloc(HOMOS_STRUCTURE_SIZE * HOMOS_STRUCTURE_SIZE, sizeof(bool));

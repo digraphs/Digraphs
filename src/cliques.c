@@ -222,7 +222,7 @@ static bool init_data_from_args(Obj         digraph_obj,
   if (DigraphNrVertices(digraph_obj) + 1 > CLIQUES_STRUCTURE_SIZE
       || !is_initialized) {
     free_cliques_data(data);
-    is_initialized   = true;
+    is_initialized         = true;
     CLIQUES_STRUCTURE_SIZE = DigraphNrVertices(digraph_obj) + 1;
 
     data->graph = new_graph(CLIQUES_STRUCTURE_SIZE);
@@ -230,9 +230,10 @@ static bool init_data_from_args(Obj         digraph_obj,
     // Currently Conditions are a nr1 x nr1 array of BitArrays, so both
     // values have to be set to MAXVERTS
     data->clique = new_bit_array(CLIQUES_STRUCTURE_SIZE);
-    data->try_   = new_conditions(CLIQUES_STRUCTURE_SIZE, CLIQUES_STRUCTURE_SIZE);
-    data->ban    = new_conditions(CLIQUES_STRUCTURE_SIZE, CLIQUES_STRUCTURE_SIZE);
-    data->to_try = new_conditions(CLIQUES_STRUCTURE_SIZE, CLIQUES_STRUCTURE_SIZE);
+    data->try_ = new_conditions(CLIQUES_STRUCTURE_SIZE, CLIQUES_STRUCTURE_SIZE);
+    data->ban  = new_conditions(CLIQUES_STRUCTURE_SIZE, CLIQUES_STRUCTURE_SIZE);
+    data->to_try =
+        new_conditions(CLIQUES_STRUCTURE_SIZE, CLIQUES_STRUCTURE_SIZE);
 
     data->orbit         = Fail;
     data->temp_bitarray = new_bit_array(CLIQUES_STRUCTURE_SIZE);

@@ -1,3 +1,16 @@
+/*******************************************************************************
+**
+*A  globals.h                  GAP package Digraphs          James Mitchell
+**                                                           Daniel Pointon
+**
+**
+**
+**  Copyright (C) 2024 - James Mitchell, Daniel Pointon
+**
+**  This file is free software, see the digraphs/LICENSE.
+**
+*******************************************************************************/
+
 #ifndef DIGRAPHS_SRC_GLOBALS_H_
 #define DIGRAPHS_SRC_GLOBALS_H_
 extern uint16_t CLIQUES_STRUCTURE_SIZE;
