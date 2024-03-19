@@ -16,4 +16,4 @@
 extern uint16_t CLIQUES_STRUCTURE_SIZE;
 extern uint16_t HOMOS_STRUCTURE_SIZE;
 extern uint16_t UNDEFINED;
-#endif // DIGRAPHS_SRC_GLOBALS_H_
+#endif  // DIGRAPHS_SRC_GLOBALS_H_
