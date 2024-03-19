@@ -59,8 +59,8 @@ extern Obj OnTuples;
 extern Obj Group;
 extern Obj ClosureGroup;
 
-#ifndef cliques_maxverts
-uint16_t cliques_maxverts = 0;
+#ifndef CLIQUES_STRUCTURE_SIZE
+uint16_t CLIQUES_STRUCTURE_SIZE = 0;
 #endif
 ////////////////////////////////////////////////////////////////////////////////
 // Global variables
@@ -219,23 +219,23 @@ static bool init_data_from_args(Obj         digraph_obj,
                                 Obj         max_obj,
                                 Obj*        group,
                                 CliqueData* data) {
-  if (DigraphNrVertices(digraph_obj) + 1 > cliques_maxverts
+  if (DigraphNrVertices(digraph_obj) + 1 > CLIQUES_STRUCTURE_SIZE
       || !is_initialized) {
     free_cliques_data(data);
     is_initialized   = true;
-    cliques_maxverts = DigraphNrVertices(digraph_obj) + 1;
+    CLIQUES_STRUCTURE_SIZE = DigraphNrVertices(digraph_obj) + 1;
 
-    data->graph = new_graph(cliques_maxverts);
+    data->graph = new_graph(CLIQUES_STRUCTURE_SIZE);
 
     // Currently Conditions are a nr1 x nr1 array of BitArrays, so both
     // values have to be set to MAXVERTS
-    data->clique = new_bit_array(cliques_maxverts);
-    data->try_   = new_conditions(cliques_maxverts, cliques_maxverts);
-    data->ban    = new_conditions(cliques_maxverts, cliques_maxverts);
-    data->to_try = new_conditions(cliques_maxverts, cliques_maxverts);
+    data->clique = new_bit_array(CLIQUES_STRUCTURE_SIZE);
+    data->try_   = new_conditions(CLIQUES_STRUCTURE_SIZE, CLIQUES_STRUCTURE_SIZE);
+    data->ban    = new_conditions(CLIQUES_STRUCTURE_SIZE, CLIQUES_STRUCTURE_SIZE);
+    data->to_try = new_conditions(CLIQUES_STRUCTURE_SIZE, CLIQUES_STRUCTURE_SIZE);
 
     data->orbit         = Fail;
-    data->temp_bitarray = new_bit_array(cliques_maxverts);
+    data->temp_bitarray = new_bit_array(CLIQUES_STRUCTURE_SIZE);
   }
 
   uint16_t nr = DigraphNrVertices(digraph_obj);
@@ -670,7 +670,7 @@ Obj FuncDigraphsCliquesFinder(Obj self, Obj args) {
   }
   // Check if include and exclude have empty intersection
   if (include_size != 0 && exclude_size != 0) {
-    bool* lookup = calloc(cliques_maxverts, sizeof(bool));
+    bool* lookup = calloc(CLIQUES_STRUCTURE_SIZE, sizeof(bool));
     for (UInt i = 1; i <= include_size; ++i) {
       lookup[INT_INTOBJ(ELM_LIST(include_obj, i)) - 1] = true;
     }

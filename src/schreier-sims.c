@@ -28,32 +28,32 @@ uint16_t PERM_DEGREE = 0;
 
 SchreierSims* new_schreier_sims() {
   SchreierSims* ss = malloc(sizeof(SchreierSims));
-  ss->tmp_perm     = new_perm(homos_maxverts);
-  ss->strong_gens  = (PermColl**) calloc(homos_maxverts, sizeof(PermColl*));
-  for (uint16_t i = 0; i < homos_maxverts; ++i) {
-    ss->strong_gens[i] = new_perm_coll(homos_maxverts, homos_maxverts);
+  ss->tmp_perm     = new_perm(HOMOS_STRUCTURE_SIZE);
+  ss->strong_gens  = (PermColl**) calloc(HOMOS_STRUCTURE_SIZE, sizeof(PermColl*));
+  for (uint16_t i = 0; i < HOMOS_STRUCTURE_SIZE; ++i) {
+    ss->strong_gens[i] = new_perm_coll(HOMOS_STRUCTURE_SIZE, HOMOS_STRUCTURE_SIZE);
   }
   ss->transversal =
-      (Perm*) calloc(homos_maxverts * homos_maxverts, sizeof(Perm));
-  ss->inversal = (Perm*) calloc(homos_maxverts * homos_maxverts, sizeof(Perm));
+      (Perm*) calloc(HOMOS_STRUCTURE_SIZE * HOMOS_STRUCTURE_SIZE, sizeof(Perm));
+  ss->inversal = (Perm*) calloc(HOMOS_STRUCTURE_SIZE * HOMOS_STRUCTURE_SIZE, sizeof(Perm));
 
-  for (size_t i = 0; i < homos_maxverts * homos_maxverts; ++i) {
-    ss->transversal[i] = new_perm(homos_maxverts);
-    ss->inversal[i]    = new_perm(homos_maxverts);
+  for (size_t i = 0; i < HOMOS_STRUCTURE_SIZE * HOMOS_STRUCTURE_SIZE; ++i) {
+    ss->transversal[i] = new_perm(HOMOS_STRUCTURE_SIZE);
+    ss->inversal[i]    = new_perm(HOMOS_STRUCTURE_SIZE);
   }
 
-  ss->base = (uint16_t*) calloc(homos_maxverts, sizeof(uint16_t));
+  ss->base = (uint16_t*) calloc(HOMOS_STRUCTURE_SIZE, sizeof(uint16_t));
   ss->orbits =
-      (uint16_t*) calloc(homos_maxverts * homos_maxverts, sizeof(uint16_t));
-  ss->size_orbits = (uint16_t*) calloc(homos_maxverts, sizeof(uint16_t));
+      (uint16_t*) calloc(HOMOS_STRUCTURE_SIZE * HOMOS_STRUCTURE_SIZE, sizeof(uint16_t));
+  ss->size_orbits = (uint16_t*) calloc(HOMOS_STRUCTURE_SIZE, sizeof(uint16_t));
   ss->orb_lookup =
-      (bool*) calloc(homos_maxverts * homos_maxverts, sizeof(bool));
+      (bool*) calloc(HOMOS_STRUCTURE_SIZE * HOMOS_STRUCTURE_SIZE, sizeof(bool));
 
   return ss;
 }
 
 void init_ss(SchreierSims* ss, uint16_t degree) {
-  DIGRAPHS_ASSERT(degree <= homos_maxverts);
+  DIGRAPHS_ASSERT(degree <= HOMOS_STRUCTURE_SIZE);
   for (uint16_t i = 0; i < degree; ++i) {
     clear_perm_coll(ss->strong_gens[i]);
     ss->strong_gens[i]->degree = degree;
@@ -83,7 +83,7 @@ static inline Perm get_transversal_ss(SchreierSims const* const ss,
                                       uint16_t const            j) {
   DIGRAPHS_ASSERT(i < ss->degree);
   DIGRAPHS_ASSERT(j < ss->degree);
-  return ss->transversal[i * homos_maxverts + j];
+  return ss->transversal[i * HOMOS_STRUCTURE_SIZE + j];
 }
 
 static inline Perm get_inversal_ss(SchreierSims const* const ss,
@@ -91,7 +91,7 @@ static inline Perm get_inversal_ss(SchreierSims const* const ss,
                                    uint16_t const            j) {
   DIGRAPHS_ASSERT(i < ss->degree);
   DIGRAPHS_ASSERT(j < ss->degree);
-  return ss->inversal[i * homos_maxverts + j];
+  return ss->inversal[i * HOMOS_STRUCTURE_SIZE + j];
 }
 
 static inline void add_base_point_ss(SchreierSims* ss, uint16_t const pt) {
