@@ -272,7 +272,7 @@ static size_t const REMAINDER_LOOKUP[LOOKUP_SIZE + 1] = {
     27, 28, 29, 30, 31, 0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13,
     14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 0};
 
-static void get_remainder(uint16_t number) {
+static uint16_t get_remainder(uint16_t number) {
   if (number < LOOKUP_SIZE) {
     return REMAINDER_LOOKUP[number];
   } else {
@@ -309,7 +309,7 @@ static size_t const QUOTIENT[LOOKUP_SIZE + 1] = {
     14, 14, 14, 14, 14, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15,
     15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 16};
 
-static void get_quotient(uint16_t number) {
+static uint16_t get_quotient(uint16_t number) {
   if (number < LOOKUP_SIZE) {
     return QUOTIENT_LOOKUP[number];
   } else {
