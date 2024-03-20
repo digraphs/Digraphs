@@ -1468,9 +1468,6 @@ function(name, D)
     ErrorNoReturn("cannot open the file given as the 1st argument <name>,");
   fi;
 
-  if not IsDigraph(D) then
-    ErrorNoReturn("the 2nd argument <D> must be a digraph,");
-  fi;
   
   n := DigraphNrVertices(D);
   verts := DigraphVertices(D);
@@ -1493,7 +1490,7 @@ function(name, D)
   od;
   
   IO_Close(file);
-  return;
+  return IO_OK;
 end);
 
 InstallGlobalFunction(DigraphPlainTextLineEncoder,

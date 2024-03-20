@@ -927,11 +927,17 @@ gap> ReadDigraphs(filename, IO_Unpickle);
 gap> gr := EmptyDigraph(0);;
 gap> filename := "does/not/exist.dre";;
 gap> WriteDreadnautGraph(filename, gr);
-Error, the 2nd argument <D> must be a non-empty digraph
+Error, cannot open the file given as the 1st argument <name>,
 gap> WriteDreadnautGraph(filename, 0); 
-Error, the 2nd argument <D> must be a digraph
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `WriteDreadnautGraph' on 2 arguments
 gap> WriteDreadnautGraph(".", RandomDigraph(2));
-Error, cannot open the file given as the 1st argument
+Error, cannot open the file given as the 1st argument <name>,
+gap> filename := "tmp.dre";;
+gap> D := CompleteDigraph(3);;
+gap> WriteDreadnautGraph(filename, CompleteDigraph(3));
+IO_OK
+gap> Exec("rm -f tmp.dre");
 
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(D);
