@@ -1468,9 +1468,17 @@ function(name, D)
     ErrorNoReturn("cannot open the file given as the 1st argument <name>,");
   fi;
 
+  if not IsDigraph(D) then
+    ErrorNoReturn("the 2nd argument <D> must be a digraph,");
+  fi;
+  
   n := DigraphNrVertices(D);
   verts := DigraphVertices(D);
   nbs := OutNeighbours(D);
+
+  if n = 0 then
+    ErrorNoReturn("the 2nd argument <D> must be a non-empty digraph,");
+  fi;
 
 
   IO_WriteLine(file, "d");
@@ -1481,10 +1489,8 @@ function(name, D)
   IO_WriteLine(file, "g");
   for i in [1 .. n] do
     labels := List(nbs[i], j -> String(j)); 
-    IO_WriteLine(file, Concatenation(String(i), ":", JoinStringsWithSeparator(labels, " "), ";"));
+    IO_WriteLine(file, Concatenation(String(i), " : ", JoinStringsWithSeparator(labels, " "), ";"));
   od;
-
-  IO_WriteLine(file, ".");
   
   IO_Close(file);
   return;

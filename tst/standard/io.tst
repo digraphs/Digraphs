@@ -923,6 +923,16 @@ gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/test.p");;
 gap> ReadDigraphs(filename, IO_Unpickle);
 [ <immutable digraph with 30 vertices, 870 edges> ]
 
+# WriteDreadnautGraph
+gap> gr := EmptyDigraph(0);;
+gap> filename := "does/not/exist.dre";;
+gap> WriteDreadnautGraph(filename, gr);
+Error, the 2nd argument <D> must be a non-empty digraph
+gap> WriteDreadnautGraph(filename, 0); 
+Error, the 2nd argument <D> must be a digraph
+gap> WriteDreadnautGraph(".", RandomDigraph(2));
+Error, cannot open the file given as the 1st argument
+
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(D);
 gap> Unbind(badfilename);
