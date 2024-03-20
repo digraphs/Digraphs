@@ -936,8 +936,14 @@ Error, cannot open the file given as the 1st argument <name>,
 gap> filename := "tmp.dre";;
 gap> D := CompleteDigraph(3);;
 gap> WriteDreadnautGraph(filename, CompleteDigraph(3));
-IO_OK
 gap> Exec("rm -f tmp.dre");
+
+# ReadDreadnautGraph
+gap> filename := "tmp.dre";;
+gap> D = CompleteDigraph(3);;
+gap> WriteDreadnautGraph(filename, D);
+gap> ReadDreadnautGraph(filename, D);
+<immutable complete digraph with 3 vertices>
 
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(D);
