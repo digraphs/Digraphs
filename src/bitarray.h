@@ -16,7 +16,7 @@
 #include <stdbool.h>  // for bool
 #include <stddef.h>   // for size_t
 #include <stdint.h>   // for uint16_t
-
+#include <stdio.h> //TODO: REMOVE
 // GAP headers
 #include "compiled.h"  // for COUNT_TRUES_BLOCKS, Obj, . . .
 
@@ -54,13 +54,13 @@ static size_t const NR_BLOCKS_LOOKUP[LOOKUP_SIZE + 1] = {
     8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
     8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
     8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8};
-static uint16_t get_quotient(uint16_t number);
+static size_t get_quotient(uint16_t number);
 
-static uint16_t get_number_of_blocks(uint16_t N) {
+static size_t get_number_of_blocks(uint16_t N) {
   if (N < LOOKUP_SIZE) {
     return NR_BLOCKS_LOOKUP[N];
   } else {
-    return get_quotient(N + 63);
+    return (size_t) get_quotient(N + 63);
   }
 }
 
@@ -93,11 +93,11 @@ static size_t const REMAINDER_LOOKUP[LOOKUP_SIZE + 1] = {
     27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45,
     46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 0};
 
-static uint16_t get_remainder(uint16_t number) {
-  if (number < LOOKUP_SIZE) {
+static size_t get_remainder(uint16_t number) {
+  if (number < 512) {
     return REMAINDER_LOOKUP[number];
   } else {
-    return number % 64;
+    return (size_t) number % 64;
   }
 }
 
@@ -124,11 +124,11 @@ static size_t const QUOTIENT_LOOKUP[LOOKUP_SIZE + 1] = {
     7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
     7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 8};
 
-static uint16_t get_quotient(uint16_t number) {
-  if (number < LOOKUP_SIZE) {
+static size_t get_quotient(uint16_t number) {
+  if (number < 512) {
     return QUOTIENT_LOOKUP[number];
   } else {
-    return number / 64;
+    return (size_t) number / 64;
   }
 }
 
