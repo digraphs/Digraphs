@@ -306,7 +306,7 @@ static void free_homos_data() {
   free_bit_array(IMAGE_RESTRICT);
   free_bit_array(ORB_LOOKUP);
   for (uint16_t i = 0; i < HOMOS_STRUCTURE_SIZE; i++) {
-    bliss_digraphs_release(BLISS_GRAPH[i]);
+    // bliss_digraphs_release(BLISS_GRAPH[i]);
     free_bit_array(REPS[i]);
     free_bit_array(BIT_ARRAY_BUFFER[i]);
     free_bit_array(MAP_UNDEFINED[i]);
