@@ -8,20 +8,20 @@
 #############################################################################
 ##
 
-DeclareAttribute("GV_DotDigraph", IsDigraph);
-DeclareOperation("GV_DotColoredDigraph", [IsDigraph, IsList, IsList]);
-DeclareOperation("GV_DotVertexColoredDigraph", [IsDigraph, IsList]);
-DeclareOperation("GV_DotEdgeColoredDigraph", [IsDigraph, IsList]);
-DeclareOperation("GV_DotVertexLabelledDigraph", [IsDigraph]);
-DeclareAttribute("GV_DotSymmetricDigraph", IsDigraph);
-DeclareOperation("GV_DotSymmetricColoredDigraph", [IsDigraph, IsList, IsList]);
-DeclareOperation("GV_DotSymmetricVertexColoredDigraph", [IsDigraph, IsList]);
-DeclareOperation("GV_DotSymmetricEdgeColoredDigraph", [IsDigraph, IsList]);
-DeclareAttribute("GV_DotPartialOrderDigraph", IsDigraph);
-DeclareAttribute("GV_DotPreorderDigraph", IsDigraph);
-DeclareSynonym("GV_DotQuasiorderDigraph", GV_DotPreorderDigraph);
-DeclareOperation("GV_DotHighlightedDigraph", [IsDigraph, IsList]);
-DeclareOperation("GV_DotHighlightedDigraph",
+DeclareAttribute("GraphvizDotDigraph", IsDigraph);
+DeclareOperation("GraphvizDotColoredDigraph", [IsDigraph, IsList, IsList]);
+DeclareOperation("GraphvizDotVertexColoredDigraph", [IsDigraph, IsList]);
+DeclareOperation("GraphvizDotEdgeColoredDigraph", [IsDigraph, IsList]);
+DeclareOperation("GraphvizDotVertexLabelledDigraph", [IsDigraph]);
+DeclareAttribute("GraphvizDotSymmetricDigraph", IsDigraph);
+DeclareOperation("GraphvizDotSymmetricColoredDigraph", [IsDigraph, IsList, IsList]);
+DeclareOperation("GraphvizDotSymmetricVertexColoredDigraph", [IsDigraph, IsList]);
+DeclareOperation("GraphvizDotSymmetricEdgeColoredDigraph", [IsDigraph, IsList]);
+DeclareAttribute("GraphvizDotPartialOrderDigraph", IsDigraph);
+DeclareAttribute("GraphvizDotPreorderDigraph", IsDigraph);
+DeclareSynonym("GraphvizDotQuasiorderDigraph", GraphvizDotPreorderDigraph);
+DeclareOperation("GraphvizDotHighlightedDigraph", [IsDigraph, IsList]);
+DeclareOperation("GraphvizDotHighlightedDigraph",
                  [IsDigraph, IsList, IsString, IsString]);
 
 DeclareAttribute("DotDigraph", IsDigraph);
