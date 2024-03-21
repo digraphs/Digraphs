@@ -1391,44 +1391,52 @@ end);
 
 InstallGlobalFunction(ReadDreadnautGraph, "for a digraph", [IsString],
 function(name)
-  local file
+  local file config graphData line edgeList foundG configEndIndex;
   file := IO_CompressedFile(UserHomeExpand(name), "r");
 
   if file = fail then
     ErrorNoReturn("cannot open the file given as the 1st argument <name>,");
   fi;
 
-   # Initialize variables
-    content := "";
-    foundG := false;
-    configEndIndex := 0;
+  # Initialize variables
+  config := "";
+  foundG := false;
+  configEndIndex := 0;
 
-    # Read file line by line until 'g' is found
-    repeat
-        line := ReadLine(file);
-        if not IsEOF(line) then
-            content := Concatenation(content, line, "\n"); # Keep newlines for clarity
-            if PositionSublist(line, 'g') <> fail; then
-                foundG := true; # Mark that 'g' has been found
-                configEndIndex := Length(content);
-            fi;
-        fi;
-    until foundG or IsEOF(line);
+  # Read file line by line until 'g' is found
+  repeat
+      line := IO_ReadLine(file);
+      if not IsEmpty(line) then
+          config := Concatenation(config, line); # Keep newlines for clarity
+          if PositionSublist(line, "g") <> fail then
+              foundG := true; # Mark that 'g' has been found
+              configEndIndex := Length(config);
+          fi;
+      fi;
+  until foundG or IsEmpty(line);
 
-    if not foundG then
-        ErrorNoReturn("g is not defined. Check your file and ensure g is declared.");
-    fi;
-    # Split the content
-    config := Substring(content, 1, configEndIndex);
-    graphData := Substring(content, configEndIndex + 1, Length(content));
+  if not foundG then
+      ErrorNoReturn("g is not defined. Check your file and ensure g is declared.");
+  fi;
+  # Split the content
+  graphData := "";
 
-    rconf := ParseDreadnautConfig(config);
-    if rconf.dExists then
-      edgeList := ParseDreadnautGraph(graphData);
-      return Digraph(edgeList);
-    else
-      return DigraphSymmetricClosure(Digraph(edgeList));
-)
+  repeat
+      line := IO_ReadLine(file);
+      if not IsEmpty(line) then
+          graphData := Concatenation(graphData, line); # Keep newlines for clarity
+      fi;
+  until IsEmpty(line);
+
+  #if "d" is in config, then the graph is directed
+  if PositionSublist(config, "d") <> fail then
+    edgeList := DIGRAPHS_ParseDreadnautGraph(graphData);
+    return Digraph(edgeList);
+  else
+    return DigraphSymmetricClosure(Digraph(edgeList));
+  fi;
+end);
+
 
 
 BindGlobal("ParseDreadnautConfig", function(config)
@@ -1436,47 +1444,37 @@ BindGlobal("ParseDreadnautConfig", function(config)
 
     dollarValue := fail; 
     nValue := fail; 
-    dExists := false; 
+    dExists := PositionSublist(config, "d"); 
 
-    # Search for the '$' part, if present
-    startPos := PositionSublist(config, "$");
-    if startPos <> fail then
-        # Assuming the value follows immediately or after an equals sign
-        tempStr := Substring(config, startPos + 1, Length(config));
-        if First(tempStr) = '=' then
-            tempStr := Rest(tempStr); # Skip '='
-        fi;
-        endPos := PositionSublist(tempStr, " ");
-        if endPos = fail then
-            endPos := Length(tempStr) + 1; # Use the rest of the string
-        fi;
-        dollarValue := Substring(tempStr, 1, endPos - 1);
-    fi;
+    for char in ["n","$"] do
+      startPos := PositionSublist(config, char);
+      if startPos <> fail then
+          # Assuming the value follows immediately or after an equals sign
+          tempStr := config{[startPos+1..startPos+2]};
+          if char = "$" then
+            if First(tempStr) = '=' then
+              dollarValue := tempStr[2];
+            else
+              dollarValue := tempStr[1];
+            fi;
+          else
+            if First(tempStr) = '=' then
+              nValue := tempStr[2];
+            else
+              nValue := tempStr[1];
+            fi;
+          fi;
 
-    # Search for the 'n' part
-    startPos := PositionSublist(config, "n");
-    if startPos <> fail then
-        tempStr := Substring(config, startPos + 1, Length(config)); # Skip 'n'
-        if First(tempStr) = '=' then
-            tempStr := Rest(tempStr); # Skip '='
-        fi;
-        endPos := Minimum([PositionSublist(tempStr, " "), PositionSublist(tempStr, "g"), Length(tempStr) + 1]) - 1;
-        nValue := Int(Substring(tempStr, 1, endPos));
-        if nValue = fail then
-            Error("Invalid 'n' value.");
-        fi;
-    else
-        Error("The 'n' part is required but was not found.");
-    fi;
-
-    # Check if the 'd' part exists
-    dExists := PositionSublist(config, "d") <> fail;
+      else 
+        ErrorNoReturn(StringFormatted("{} not specified.", char));
+      fi;
+    od;
 
     return rec(dollarPart := dollarValue, nValue := nValue, dExists := dExists);
 end);
 
-BindGlobal("ParseDreadnautGraph", function(graphData)
-    local lines, digraph, edgeList, i, line, parts, vertex, connectedTo;
+BindGlobal("DIGRAPHS_ParseDreadnautGraph", function(graphData)
+    local lines, digraph, edgeList, i, line, parts, vertex, connectedTo, adjacencyPart, flag;
 
     # Split the graph data into lines
     lines := SplitString(graphData, "\n");
@@ -1484,30 +1482,49 @@ BindGlobal("ParseDreadnautGraph", function(graphData)
     # Initialize an empty list to hold the edges
     edgeList := [];
 
+    flag = false;
+
     # Iterate over each line to extract edges
     for i in [1..Length(lines)] do
         line := lines[i];
         if IsEmpty(line) or line = "\n" then
-            continue;
+            continue;  # Skip empty lines
         fi;
 
-        # if line[Length(line)] = "." then
-        #     line := Substring(line, 1, Length(line) - 1);
-        # fi;
-
+        if PositionSublist(line, ".") <> fail then
+            flag = true;
+        fi;
+        
+        # Separate the vertex identifier from its adjacency list
+        # Remove spaces around ':' to consistently identify the split point
+        line := ReplacedString(line, " :", ":");
+        line := ReplacedString(line, ": ", ":");
         parts := SplitString(line, ":");
+      
+        # Extract the vertex number and its adjacency list
         vertex := Int(parts[1]);
-        connectedTo := List([2..Length(parts)-1], x -> Int(parts[x]));
-        # Assuming -1 marks the end of the list
-        Remove(connectedTo, -1);
-        for j in connectedTo do
-            Add(edgeList, [vertex, j]);
-        od;
+        adjacencyPart := parts[2];
+        
+        # Handle the adjacency list, terminating with ';'
+        adjacencyPart := ReplacedString(adjacencyPart, ";", " ");  # Replace ';' with space for uniform splitting
+        NormalizeWhitespace(adjacencyPart);  # Remove extra spaces
+        connectedTo := List(SplitString(adjacencyPart, " "), x -> Int(x));
+        Filtered(connectedTo, y -> IsInt(y));  # Ensure only integers are included
+
+        # Add edges to the edge list
+        Add(edgeList, connectedTo);
+
+        if flag then
+          for j in [1..Length(lines)-i] do
+            Add(edgeList, []);
+          od;
+          break;
+        fi;
     od;
 
-    # Construct the digraph from the edge list
     return edgeList;
 end);
+
 
 
 ################################################################################
@@ -1611,7 +1628,7 @@ function(name, D)
   od;
   
   IO_Close(file);
-  return IO_OK;
+  return;
 end);
 
 InstallGlobalFunction(DigraphPlainTextLineEncoder,
