@@ -942,8 +942,8 @@ gap> Exec("rm -f tmp.dre");
 gap> filename := "tmp.dre";;
 gap> D = CompleteDigraph(3);;
 gap> WriteDreadnautGraph(filename, D);
-gap> ReadDreadnautGraph(filename, D);
-<immutable complete digraph with 3 vertices>
+gap> ReadDreadnautGraph(filename) = D;
+true
 gap> Exec("rm -f tmp.dre");
 
 #  DIGRAPHS_UnbindVariables

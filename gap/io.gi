@@ -1389,9 +1389,95 @@ function(str)
   return ConvertToImmutableDigraphNC(out);
 end);
 
-InstallGlobalFunction(ReadDreadnautGraph, "for a digraph", [IsString],
+BindGlobal("DIGRAPHS_ParseDreadnautConfig", 
+function(config)
+    local nValue, dExists, dollarValue, tempStr, Pos, getValue;
+
+
+    config := ReplacedString(config, " ", ""); # Remove spaces
+    config := ReplacedString(config, "\n", ""); # Remove newlines
+    config := ReplacedString(config, "\r", ""); # Remove carriage returns
+    config := ReplacedString(config, "\t", ""); # Remove tabs
+    config := ReplacedString(config, "=", ""); 
+
+    getValue := function(config, key)
+    local Pos, tempStr;
+      Pos := PositionSublist(config, key) + 1;
+      tempStr := "";
+
+      while IsInt(Int(config{[Pos]})) do
+        Concatenation(tempStr, config{[Pos]});
+        Pos := Pos + 1;
+        if Pos > Length(config) then
+          break;
+        fi;
+      od;
+      return Int(tempStr);
+    end;
+
+    dExists := PositionSublist(config, "d"); 
+    dollarValue := getValue(config, "$");
+    nValue := getValue(config, "n");
+
+    return rec(dollarPart := dollarValue, nValue := nValue, dExists := dExists);
+end);
+
+BindGlobal("DIGRAPHS_ParseDreadnautGraph", 
+function(graphData, r)
+    local lines, digraph, edgeList, line, parts, vertex, connectedTo, adjacencyPart, flag, i, j;
+
+    # Split the graph data into lines
+    lines := SplitString(graphData, "\n");
+
+    # Initialize an empty list to hold the edges
+    edgeList := [];
+
+    flag := false;
+
+    # Iterate over each line to extract edges
+    for i in [1..Length(lines)] do
+        line := lines[i];
+        if IsEmpty(line) or line = "\n" then
+            continue;  # Skip empty lines
+        fi;
+
+        if PositionSublist(line, ".") <> fail then
+            flag := true;
+        fi;
+        
+        # Separate the vertex identifier from its adjacency list
+        # Remove spaces around ':' to consistently identify the split point
+        line := ReplacedString(line, " :", ":");
+        line := ReplacedString(line, ": ", ":");
+        parts := SplitString(line, ":");
+      
+        # Extract the vertex number and its adjacency list
+        vertex := Int(parts[1]);
+        adjacencyPart := parts[2];
+        
+        # Handle the adjacency list, terminating with ';'
+        adjacencyPart := ReplacedString(adjacencyPart, ";", " ");  # Replace ';' with space for uniform splitting
+        NormalizeWhitespace(adjacencyPart);  # Remove extra spaces
+        connectedTo := List(SplitString(adjacencyPart, " "), x -> Int(x));
+        Filtered(connectedTo, y -> IsInt(y));  # Ensure only integers are included
+
+        # Add edges to the edge list
+        Add(edgeList, connectedTo);
+
+        if flag <> false then
+          for j in [1..r.nValue-i] do
+            Add(edgeList, []);
+          od;
+          break;
+        fi;
+    od;
+
+    return edgeList;
+end);
+
+InstallMethod(ReadDreadnautGraph, "for a digraph", [IsString],
 function(name)
-  local file config graphData line edgeList foundG configEndIndex;
+  local file, config, graphData, line, edgeList, foundG, configEndIndex, r;
   file := IO_CompressedFile(UserHomeExpand(name), "r");
 
   if file = fail then
@@ -1428,102 +1514,19 @@ function(name)
       fi;
   until IsEmpty(line);
 
-  #if "d" is in config, then the graph is directed
-  if PositionSublist(config, "d") <> fail then
-    edgeList := DIGRAPHS_ParseDreadnautGraph(graphData);
+  r := DIGRAPHS_ParseDreadnautConfig(config);
+  edgeList := DIGRAPHS_ParseDreadnautGraph(graphData, r);
+
+  if r.dollarValue <> 1 then
+    Info(InfoWarning, 1, "The vertex numbering in the dreadnaut file does not start at 1, but will be read in as such.");
+
+  if r.dExists <> fail then
     return Digraph(edgeList);
   else
     return DigraphSymmetricClosure(Digraph(edgeList));
   fi;
 end);
 
-
-
-BindGlobal("ParseDreadnautConfig", function(config)
-    local nValue, dExists, dollarValue, startPos, endPos, tempStr;
-
-    dollarValue := fail; 
-    nValue := fail; 
-    dExists := PositionSublist(config, "d"); 
-
-    for char in ["n","$"] do
-      startPos := PositionSublist(config, char);
-      if startPos <> fail then
-          # Assuming the value follows immediately or after an equals sign
-          tempStr := config{[startPos+1..startPos+2]};
-          if char = "$" then
-            if First(tempStr) = '=' then
-              dollarValue := tempStr[2];
-            else
-              dollarValue := tempStr[1];
-            fi;
-          else
-            if First(tempStr) = '=' then
-              nValue := tempStr[2];
-            else
-              nValue := tempStr[1];
-            fi;
-          fi;
-
-      else 
-        ErrorNoReturn(StringFormatted("{} not specified.", char));
-      fi;
-    od;
-
-    return rec(dollarPart := dollarValue, nValue := nValue, dExists := dExists);
-end);
-
-BindGlobal("DIGRAPHS_ParseDreadnautGraph", function(graphData)
-    local lines, digraph, edgeList, i, line, parts, vertex, connectedTo, adjacencyPart, flag;
-
-    # Split the graph data into lines
-    lines := SplitString(graphData, "\n");
-
-    # Initialize an empty list to hold the edges
-    edgeList := [];
-
-    flag = false;
-
-    # Iterate over each line to extract edges
-    for i in [1..Length(lines)] do
-        line := lines[i];
-        if IsEmpty(line) or line = "\n" then
-            continue;  # Skip empty lines
-        fi;
-
-        if PositionSublist(line, ".") <> fail then
-            flag = true;
-        fi;
-        
-        # Separate the vertex identifier from its adjacency list
-        # Remove spaces around ':' to consistently identify the split point
-        line := ReplacedString(line, " :", ":");
-        line := ReplacedString(line, ": ", ":");
-        parts := SplitString(line, ":");
-      
-        # Extract the vertex number and its adjacency list
-        vertex := Int(parts[1]);
-        adjacencyPart := parts[2];
-        
-        # Handle the adjacency list, terminating with ';'
-        adjacencyPart := ReplacedString(adjacencyPart, ";", " ");  # Replace ';' with space for uniform splitting
-        NormalizeWhitespace(adjacencyPart);  # Remove extra spaces
-        connectedTo := List(SplitString(adjacencyPart, " "), x -> Int(x));
-        Filtered(connectedTo, y -> IsInt(y));  # Ensure only integers are included
-
-        # Add edges to the edge list
-        Add(edgeList, connectedTo);
-
-        if flag then
-          for j in [1..Length(lines)-i] do
-            Add(edgeList, []);
-          od;
-          break;
-        fi;
-    od;
-
-    return edgeList;
-end);
 
 
 
