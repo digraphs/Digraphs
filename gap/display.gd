@@ -1,4 +1,4 @@
-#############################################################################
+############################################################################
 ##
 ##  display.gd
 ##  Copyright (C) 2017-19                                James D. Mitchell
@@ -7,6 +7,22 @@
 ##
 #############################################################################
 ##
+
+DeclareAttribute("GraphvizDotDigraph", IsDigraph);
+DeclareOperation("GraphvizDotColoredDigraph", [IsDigraph, IsList, IsList]);
+DeclareOperation("GraphvizDotVertexColoredDigraph", [IsDigraph, IsList]);
+DeclareOperation("GraphvizDotEdgeColoredDigraph", [IsDigraph, IsList]);
+DeclareOperation("GraphvizDotVertexLabelledDigraph", [IsDigraph]);
+DeclareAttribute("GraphvizDotSymmetricDigraph", IsDigraph);
+DeclareOperation("GraphvizDotSymmetricColoredDigraph", [IsDigraph, IsList, IsList]);
+DeclareOperation("GraphvizDotSymmetricVertexColoredDigraph", [IsDigraph, IsList]);
+DeclareOperation("GraphvizDotSymmetricEdgeColoredDigraph", [IsDigraph, IsList]);
+DeclareAttribute("GraphvizDotPartialOrderDigraph", IsDigraph);
+DeclareAttribute("GraphvizDotPreorderDigraph", IsDigraph);
+DeclareSynonym("GraphvizDotQuasiorderDigraph", GraphvizDotPreorderDigraph);
+DeclareOperation("GraphvizDotHighlightedDigraph", [IsDigraph, IsList]);
+DeclareOperation("GraphvizDotHighlightedDigraph",
+                 [IsDigraph, IsList, IsString, IsString]);
 
 DeclareAttribute("DotDigraph", IsDigraph);
 DeclareOperation("DotColoredDigraph", [IsDigraph, IsList, IsList]);
@@ -23,3 +39,4 @@ DeclareSynonym("DotQuasiorderDigraph", DotPreorderDigraph);
 DeclareOperation("DotHighlightedDigraph", [IsDigraph, IsList]);
 DeclareOperation("DotHighlightedDigraph",
                  [IsDigraph, IsList, IsString, IsString]);
+
