@@ -1,7 +1,7 @@
 #############################################################################
 ##
 ##  PackageInfo.g
-##  Copyright (C) 2015-23                                  James D. Mitchell
+##  Copyright (C) 2015-24                                  James D. Mitchell
 ##
 ##  Licensing information can be found in the README.md file of this package.
 ##
@@ -9,15 +9,15 @@
 ##
 
 ##  <#GAPDoc Label="PKGVERSIONDATA">
-##  <!ENTITY VERSION                  "1.6.3">
+##  <!ENTITY VERSION                  "1.7.1">
 ##  <!ENTITY GAPVERS                  "4.10.0">
 ##  <!ENTITY GRAPEVERS                "4.8.1">
 ##  <!ENTITY IOVERS                   "4.5.1">
 ##  <!ENTITY ORBVERS                  "4.8.2">
 ##  <!ENTITY DATASTRUCTURESVERS       "0.2.5">
 ##  <!ENTITY NAUTYTRACESINTERFACEVERS "0.2">
-##  <!ENTITY ARCHIVENAME    "digraphs-1.6.0">
-##  <!ENTITY COPYRIGHTYEARS "2014-22">
+##  <!ENTITY ARCHIVENAME    "digraphs-1.7.1">
+##  <!ENTITY COPYRIGHTYEARS "2014-24">
 ##  <#/GAPDoc>
 
 _STANDREWSMATHS := Concatenation(["Mathematical Institute, North Haugh, ",
@@ -28,8 +28,8 @@ _STANDREWSCS := Concatenation(["Jack Cole Building, North Haugh, ",
 SetPackageInfo(rec(
 PackageName := "Digraphs",
 Subtitle := "Graphs, digraphs, and multidigraphs in GAP",
-Version := "1.6.3",
-Date := "13/09/2023",  # dd/mm/yyyy format
+Version := "1.7.1",
+Date := "19/02/2024",  # dd/mm/yyyy format
 License := "GPL-3.0-or-later",
 ArchiveFormats := ".tar.gz",
 
@@ -92,6 +92,12 @@ Persons := [
     IsMaintainer  := false),
 
   rec(
+    LastName      := "Chowdhury",
+    FirstNames    := "Raiyan",
+    IsAuthor      := false,
+    IsMaintainer  := false),
+
+  rec(
     LastName      := "Cirpons",
     FirstNames    := "Reinis",
     IsAuthor      := false,
@@ -121,10 +127,10 @@ Persons := [
 
   rec(
     LastName      := "Edwards",
-    FirstNames    := "Joe",
+    FirstNames    := "Joseph",
     IsAuthor      := false,
     IsMaintainer  := false,
-    Email         := "je53@st-andrews.ac.uk",
+    Email         := "jde1@st-andrews.ac.uk",
     PostalAddress := _STANDREWSMATHS,
     Place         := "St Andrews",
     Institution   := "University of St Andrews",
@@ -235,6 +241,14 @@ Persons := [
     Institution   := "University of St Andrews"),
 
   rec(
+    LastName      := "Orlitzky",
+    FirstNames    := "Michael",
+    IsAuthor      := false,
+    IsMaintainer  := false,
+    Email         := "michael@orlitzky.com",
+    WWWHome       := "https://michael.orlitzky.com/"),
+
+  rec(
     LastName      := "Pfeiffer",
     FirstNames    := "Markus",
     IsAuthor      := false,
@@ -339,7 +353,14 @@ Persons := [
     WWWHome       := "https://mct25.host.cs.st-andrews.ac.uk",
     PostalAddress := _STANDREWSCS,
     Place         := "St Andrews",
-    Institution   := "University of St Andrews")],
+    Institution   := "University of St Andrews"),
+
+  rec(
+    LastName      := "Zickgraf",
+    FirstNames    := "Fabian",
+    IsAuthor      := false,
+    IsMaintainer  := false,
+    Email         := "f.zickgraf@dashdos.com")],
 
 Status := "deposited",
 

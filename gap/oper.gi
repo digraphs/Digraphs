@@ -241,7 +241,7 @@ function(D, src, ran)
   pos := Position(D!.OutNeighbours[src], ran);
   if pos <> fail then
     Remove(D!.OutNeighbours[src], pos);
-    Remove(DigraphEdgeLabels(D)[src], pos);
+    RemoveDigraphEdgeLabel(D, src, pos);
   fi;
   return D;
 end);
@@ -2005,42 +2005,75 @@ end);
 InstallMethod(VerticesReachableFrom, "for a digraph and a vertex",
 [IsDigraph, IsPosInt],
 function(D, root)
-  local N, index, current, succ, visited, prev, n, i, parent,
-  have_visited_root;
+  local N;
   N := DigraphNrVertices(D);
+
   if 0 = root or root > N then
     ErrorNoReturn("the 2nd argument (root) is not a vertex of the 1st ",
                   "argument (a digraph)");
   fi;
-  index := ListWithIdenticalEntries(N, 0);
-  have_visited_root := false;
-  index[root] := 1;
-  current := root;
-  succ := OutNeighbours(D);
-  visited := [];
-  parent := [];
-  parent[root] := fail;
-  repeat
-    prev := current;
-    for i in [index[current] .. Length(succ[current])] do
-      n := succ[current][i];
-      if n = root and not have_visited_root then
-         Add(visited, root);
-         have_visited_root := true;
-      elif index[n] = 0 then
-        Add(visited, n);
-          parent[n] := current;
-          index[current] := i + 1;
-          current := n;
-          index[current] := 1;
-          break;
+
+  return VerticesReachableFrom(D, [root]);
+end);
+
+InstallMethod(VerticesReachableFrom, "for a digraph and a list of vertices",
+[IsDigraph, IsList],
+function(D, roots)
+  local N, index, visited, queue_tail, queue,
+  root, element, neighbour, graph_out_neighbors, node_neighbours;
+
+  N := DigraphNrVertices(D);
+
+  for root in roots do
+    if not IsPosInt(N) or 0 = root or root > N then
+      ErrorNoReturn("an element of the 2nd argument ",
+                    "(roots) is not a vertex of the 1st ",
+                    "argument (a digraph)");
+    fi;
+  od;
+
+  visited := BlistList([1 .. N], []);
+
+  graph_out_neighbors := OutNeighbors(D);
+  queue := EmptyPlist(N);
+  Append(queue, roots);
+
+  queue_tail := Length(roots);
+
+  index := 1;
+  while IsBound(queue[index]) do
+    element := queue[index];
+    node_neighbours := graph_out_neighbors[element];
+    for neighbour in node_neighbours do
+      if not visited[neighbour] then;
+        visited[neighbour] := true;
+        queue_tail := queue_tail + 1;
+        queue[queue_tail] := neighbour;
       fi;
     od;
-    if prev = current then
-      current := parent[current];
-    fi;
-  until current = fail;
-  return visited;
+    index := index + 1;
+  od;
+
+  return ListBlist([1 .. N], visited);
+end);
+
+InstallMethod(IsOrderIdeal, "for a digraph and a list of vertices",
+[IsDigraph, IsList],
+# Check if digraph represents a partial order
+function(D, roots)
+  local reachable_vertices, vertex_in_subset, N;
+  if not IsPartialOrderDigraph(D) then
+    ErrorNoReturn(
+      "the 1st argument (a digraph) must be a partial order digraph");
+  fi;
+
+  N := DigraphNrVertices(D);
+  vertex_in_subset := BlistList([1 .. N], roots);
+  reachable_vertices := VerticesReachableFrom(D, roots);
+
+  return Length(reachable_vertices) = Length(roots)
+    and ForAll(reachable_vertices, x -> vertex_in_subset[x]);
+
 end);
 
 InstallMethod(DominatorTree, "for a digraph and a vertex",
@@ -2181,6 +2214,140 @@ function(D, root)
     fi;
   od;
   return result;
+end);
+
+# Computes the fundamental cycle basis of a symmetric digraph
+# First, notice that the cycle space is composed of orthogonal subspaces
+# corresponding to the cycle spaces of the connected components.
+# e.g. if G has G1, G2 and G3 connected
+# components with B1, B2 and B3 cycle basis matrix respectively, then the
+# resulting cycle basis matrix of G is
+# [[ B1,  0,  0],
+#  [  0, B2,  0],
+#  [  0,  0, B3]]
+# up to some permutation on the order of the edges.
+# As a result, we can compute the fundamental cycle basis of each connected
+# component and then combine them.
+
+# For each connected component, a spanning tree is computed rooted at 1. Then,
+# there is one to one correspondence between the edges not in the spanning tree
+# and the fundamental cycles basis.
+# (See : https://en.wikipedia.org/wiki/Cycle_basis#Fundamental_cycles)
+# The set of edges that form the base cycle is computed by finding the path
+# from the root to the each sides of the edge and then adding the edge to the
+# path. Then, it is converted to a binary vector where the i-th entry is 1 if
+# the i-th edge in the 'EdgesList' is in the cycle and 0 otherwise.
+# Related paper : https://dl.acm.org/doi/pdf/10.1145/363219.363232
+InstallMethod(DigraphCycleBasis, "for a digraph",
+[IsDigraph],
+function(G)
+  local OutNbr, InNbr, n, partialSum, m, visited, unusedEdges, i, c, s, stack,
+    z, u, v, p, B;
+
+  # Check for loops
+  if DigraphHasLoops(G) then
+    ErrorNoReturn("the 1st argument (a digraph) must not have any loops");
+  fi;
+
+  G := MaximalAntiSymmetricSubdigraph(G);
+  OutNbr := OutNeighbors(G);
+  InNbr := InNeighbors(G);
+  Unbind(G);
+
+  n := Length(OutNbr);
+
+  # Quick early return for too few vertices
+  if n < 3 then
+    return [OutNbr, []];
+  fi;
+  # Find the partial sum of each row of OutNbr
+  partialSum := [0];
+  for i in [1 .. n - 1] do
+    Add(partialSum, partialSum[i] + Length(OutNbr[i]));
+  od;
+  m := partialSum[n] + Length(OutNbr[n]);
+  # Quick early return for too few edges
+  if m < 3 then
+    return [OutNbr, []];
+  fi;
+
+  # Traverse the graph, depth first search
+  s := 1;
+  visited := BlistList([1 .. n], []);
+  unusedEdges := [];
+  while s <> fail do
+    visited[s] := [0, s];
+    stack := [s];
+    while not IsEmpty(stack) do
+      u := Remove(stack);
+      for p in [1 .. Length(OutNbr[u])] do
+        v := OutNbr[u][p];
+        i := partialSum[u] + p;
+        if visited[v] = false then
+          visited[v] := [i, u];
+          Add(stack, v);
+        elif v in stack then
+          Add(unusedEdges, [u, i, visited[v][1], visited[v][2]]);
+        fi;
+      od;
+      for v in InNbr[u] do
+        p := Position(OutNbr[v], u);
+        i := partialSum[v] + p;
+        if visited[v] = false then
+          visited[v] := [i, u];
+          Add(stack, v);
+        elif v in stack then
+          Add(unusedEdges, [u, i, visited[v][1], visited[v][2]]);
+        fi;
+      od;
+    od;
+    s := Position(visited, false, s);
+  od;
+
+  c := Length(unusedEdges);
+
+  # Warning for large matrix
+  # The warning is printed roughly when the result matrix will take up
+  # more than 8GB of RAM.
+  if (10 ^ 11) / 2 < m * c then
+    Info(InfoWarning, 1, StringFormatted(
+    "The resulting matrix is going to be large of size {} \x {} ",
+    m, c));
+  fi;
+
+  # Create the matrix B
+  # The algorithm so far is O(m). However, the creation of the matrix B is
+  # O(m * c) ~= O(m^2) which is the most expensive part of the function.
+  # Hence, a nice thing to do would be to create an object that would
+  # lazy compute the matrix B on demand.
+  # For implementation of such an object, it would need to know :
+  # - m : The number of edges
+  # - unusedEdges : The list of unused edges to be converted to a basis vector
+  # - visited : The result of the depth first search above
+
+  # TODO : In the case the Digraph package requires GAP 4.12 or over,
+  # remove the following if statement.
+  if CompareVersionNumbers(GAPInfo.Version, "4.12") then
+    B := List([1 .. c], i -> NewZeroVector(IsGF2VectorRep, GF(2), m));
+  else
+    z := List([1 .. m], i -> Zero(GF(2)));
+    B := List([1 .. c], i -> Vector(GF(2), z));
+  fi;
+
+  for i in [1 .. c] do
+    u := unusedEdges[i][1];
+    v := unusedEdges[i][4];
+
+    while u <> v do
+      B[i][visited[u][1]] := Z(2);
+      u := visited[u][2];
+    od;
+
+    B[i][unusedEdges[i][2]] := Z(2);
+    B[i][unusedEdges[i][3]] := Z(2);
+  od;
+
+  return [OutNbr, B];
 end);
 
 #############################################################################
