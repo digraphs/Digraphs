@@ -333,7 +333,7 @@ gap> edgecolors[4][1] := "lightblue";;
 gap> edgecolors[4][2] := "pink";;
 gap> edgecolors[4][3] := "purple";;
 gap> out1 := GraphvizDotEdgeColoredDigraph(D, edgecolors);;
-gap> AsString(out1){[1..300]};
+gap> AsString(out1){[1 .. 300]};
 "digraph hgn {\n\tnode [shape=\"circle\"] \n\t1\n\t2\n\t3\n\t4\n\t1 -> 2 [colo\
 r=lightblue]\n\t1 -> 3 [color=pink]\n\t1 -> 4 [color=purple]\n\t2 -> 1 [color=\
 lightblue]\n\t2 -> 3 [color=pink]\n\t2 -> 4 [color=purple]\n\t3 -> 1 [color=li\
