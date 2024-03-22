@@ -14,8 +14,10 @@ DeclareOperation("GraphvizDotVertexColoredDigraph", [IsDigraph, IsList]);
 DeclareOperation("GraphvizDotEdgeColoredDigraph", [IsDigraph, IsList]);
 DeclareOperation("GraphvizDotVertexLabelledDigraph", [IsDigraph]);
 DeclareAttribute("GraphvizDotSymmetricDigraph", IsDigraph);
-DeclareOperation("GraphvizDotSymmetricColoredDigraph", [IsDigraph, IsList, IsList]);
-DeclareOperation("GraphvizDotSymmetricVertexColoredDigraph", [IsDigraph, IsList]);
+DeclareOperation("GraphvizDotSymmetricColoredDigraph",
+                 [IsDigraph, IsList, IsList]);
+DeclareOperation("GraphvizDotSymmetricVertexColoredDigraph",
+                 [IsDigraph, IsList]);
 DeclareOperation("GraphvizDotSymmetricEdgeColoredDigraph", [IsDigraph, IsList]);
 DeclareAttribute("GraphvizDotPartialOrderDigraph", IsDigraph);
 DeclareAttribute("GraphvizDotPreorderDigraph", IsDigraph);
