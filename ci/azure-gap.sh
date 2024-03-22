@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
 
+docker -v
+
 if [ "$GAP_VERSION" == "master" ]; then
   CONTAINER_NAME="gapsystem/gap-docker-master"
 else
