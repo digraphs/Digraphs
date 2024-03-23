@@ -5,10 +5,6 @@
 #include <execinfo.h>
 extern "C" {
 #include "bliss_C.h"
-#include <assert.h>
-#include <execinfo.h>
-#include <stdio.h>
-#include <stdlib.h>
 }
 
 /*
@@ -66,9 +62,9 @@ void bliss_digraphs_write_dimacs(BlissGraph *graph, FILE *fp)
 
 void bliss_digraphs_clear(BlissGraph *graph)
 {
-  assert(graph);
-  assert(graph->g);
-  graph->g->clear();
+  if(graph && graph->g){
+    graph->g->clear();
+  }
 }
 
   extern "C"
