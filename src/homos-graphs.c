@@ -11,6 +11,7 @@
 #include "homos-graphs.h"
 
 // C headers
+#include <assert.h>
 #include <stdlib.h>  // for free, malloc, NULL
 
 // GAP headers
@@ -132,6 +133,8 @@ static void init_bliss_graph_from_digraph(Digraph const* const  digraph,
   DIGRAPHS_ASSERT(digraph != NULL);
   DIGRAPHS_ASSERT(colors != NULL);
   DIGRAPHS_ASSERT(bg);
+
+  assert(bg);
   // bliss_digraphs_clear(bg);
   uint16_t       out_color = 0;
   uint16_t const n         = digraph->nr_vertices;
@@ -141,7 +144,9 @@ static void init_bliss_graph_from_digraph(Digraph const* const  digraph,
   }
   uint16_t const in_color = out_color + 1;
   for (uint16_t i = 0; i < n; i++) {
+    assert(bg);
     bliss_digraphs_change_color(bg, i + n, out_color);
+    assert(bg);
     bliss_digraphs_change_color(bg, i + 2 * n, in_color);
     bliss_digraphs_add_edge(bg, i, i + n);
     bliss_digraphs_add_edge(bg, i + 2 * n, i);
