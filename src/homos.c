@@ -26,7 +26,6 @@
 
 #include "homos.h"
 // C headers
-#include <assert.h>
 #include <limits.h>   // for CHAR_BIT
 #include <setjmp.h>   // for longjmp, setjmp, jmp_buf
 #include <stdbool.h>  // for true, false, bool
@@ -1859,7 +1858,6 @@ static bool init_data_from_args(Obj digraph1_obj,
       get_automorphism_group_from_gap(digraph2_obj, STAB_GENS[0]);
     } else if (is_undirected) {
 #ifdef DIGRAPHS_WITH_INCLUDED_BLISS
-      assert(BLISS_GRAPH[PERM_DEGREE]);
       automorphisms_graph(
           GRAPH2, colors, STAB_GENS[0], BLISS_GRAPH[PERM_DEGREE]);
 #else
