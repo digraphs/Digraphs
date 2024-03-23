@@ -11,7 +11,6 @@
 #include "homos-graphs.h"
 
 // C headers
-#include <assert.h>
 #include <stdlib.h>  // for free, malloc, NULL
 
 // GAP headers
