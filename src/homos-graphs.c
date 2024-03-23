@@ -134,20 +134,16 @@ static void init_bliss_graph_from_digraph(Digraph const* const  digraph,
   DIGRAPHS_ASSERT(colors != NULL);
   DIGRAPHS_ASSERT(bg);
 
-  assert(bg);
   // bliss_digraphs_clear(bg);
   uint16_t       out_color = 0;
   uint16_t const n         = digraph->nr_vertices;
   for (uint16_t i = 0; i < n; i++) {
     out_color = (colors[i] >= out_color ? colors[i] + 1 : out_color);
-    assert(bg);
     bliss_digraphs_change_color(bg, i, colors[i]);
   }
   uint16_t const in_color = out_color + 1;
   for (uint16_t i = 0; i < n; i++) {
-    assert(bg);
     bliss_digraphs_change_color(bg, i + n, out_color);
-    assert(bg);
     bliss_digraphs_change_color(bg, i + 2 * n, in_color);
     bliss_digraphs_add_edge(bg, i, i + n);
     bliss_digraphs_add_edge(bg, i + 2 * n, i);
@@ -200,11 +196,9 @@ static void init_bliss_graph_from_graph(Graph const* const    graph,
   DIGRAPHS_ASSERT(graph != NULL);
   DIGRAPHS_ASSERT(colors != NULL);
   DIGRAPHS_ASSERT(bg);
-  assert(bg);
   // bliss_digraphs_clear(bg);
   uint16_t const n = graph->nr_vertices;
   for (uint16_t i = 0; i < n; i++) {
-    assert(bg);
     bliss_digraphs_change_color(bg, i, colors[i]);
   }
   for (uint16_t i = 0; i < n; i++) {
@@ -291,7 +285,6 @@ void automorphisms_graph(Graph const* const    graph,
   DIGRAPHS_ASSERT(bg != NULL);
   clear_perm_coll(out);
   out->degree = PERM_DEGREE;
-  assert(bg);
   init_bliss_graph_from_graph(graph, colors, bg);
   bliss_digraphs_find_automorphisms(bg, bliss_hook, out, 0);
 }
