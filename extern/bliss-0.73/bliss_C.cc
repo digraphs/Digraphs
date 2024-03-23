@@ -2,8 +2,13 @@
 #include <stdio.h>
 #include <assert.h>
 #include "graph.hh"
+#include <execinfo.h>
 extern "C" {
 #include "bliss_C.h"
+#include <assert.h>
+#include <execinfo.h>
+#include <stdio.h>
+#include <stdlib.h>
 }
 
 /*
@@ -59,12 +64,35 @@ void bliss_digraphs_write_dimacs(BlissGraph *graph, FILE *fp)
   graph->g->write_dimacs(fp);
 }
 
-extern "C"
+extern "C" {
+void print_stack_trace(void) {
+    void *array[10];
+    size_t size;
+    char **strings;
+
+    // Get void*'s for all entries on the stack
+    size = backtrace(array, 10);
+
+    // Print out all the frames to stderr
+    fprintf(stderr, "Error: printing stack trace:\n");
+    strings = backtrace_symbols(array, size);
+    for (size_t i = 0; i < size; i++) {
+        fprintf(stderr, "%s\n", strings[i]);
+    }
+
+  free(strings);
+}
+
 void bliss_digraphs_clear(BlissGraph *graph)
 {
+  if(!graph){
+    print_stack_trace();
+    fprintf(stderr, "ERROR\n");
+  }
   assert(graph);
   assert(graph->g);
   graph->g->clear();
+}
 }
 
   extern "C"
