@@ -140,6 +140,7 @@ static void init_bliss_graph_from_digraph(Digraph const* const  digraph,
   uint16_t const n         = digraph->nr_vertices;
   for (uint16_t i = 0; i < n; i++) {
     out_color = (colors[i] >= out_color ? colors[i] + 1 : out_color);
+    assert(bg);
     bliss_digraphs_change_color(bg, i, colors[i]);
   }
   uint16_t const in_color = out_color + 1;
@@ -202,6 +203,7 @@ static void init_bliss_graph_from_graph(Graph const* const    graph,
   // bliss_digraphs_clear(bg);
   uint16_t const n = graph->nr_vertices;
   for (uint16_t i = 0; i < n; i++) {
+    assert(bg);
     bliss_digraphs_change_color(bg, i, colors[i]);
   }
   for (uint16_t i = 0; i < n; i++) {
