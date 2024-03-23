@@ -1800,7 +1800,7 @@ static Obj FuncDIGRAPH_AUTOMORPHISMS(Obj self,
   CHANGED_BAG(autos);
 
   DIGRAPHS_ASSERT(graph);
-  if(graph){
+  if (graph) {
     bliss_digraphs_release(graph);
   }
   if (LEN_PLIST(ELM_PLIST(autos, 1)) != 0) {
@@ -1953,7 +1953,7 @@ static Obj FuncMULTIDIGRAPH_AUTOMORPHISMS(Obj self, Obj digraph, Obj colours) {
   }
 
   DIGRAPHS_ASSERT(graph);
-  if(graph){
+  if (graph) {
     bliss_digraphs_release(graph);
   }
 
@@ -2014,7 +2014,7 @@ static Obj FuncDIGRAPH_CANONICAL_LABELLING(Obj self, Obj digraph, Obj colours) {
   }
 
   DIGRAPHS_ASSERT(graph);
-  if(graph){
+  if (graph) {
     bliss_digraphs_release(graph);
   }
 
@@ -2060,7 +2060,7 @@ FuncMULTIDIGRAPH_CANONICAL_LABELLING(Obj self, Obj digraph, Obj colours) {
   }
 
   DIGRAPHS_ASSERT(graph);
-  if(graph){
+  if (graph) {
     bliss_digraphs_release(graph);
   }
 

@@ -305,7 +305,7 @@ static void free_homos_data() {
   free_graph(GRAPH2);
   free_bit_array(IMAGE_RESTRICT);
   free_bit_array(ORB_LOOKUP);
-  for(uint16_t i = 0; i < HOMOS_STRUCTURE_SIZE * 3; i++){
+  for (uint16_t i = 0; i < HOMOS_STRUCTURE_SIZE * 3; i++) {
     bliss_digraphs_release(BLISS_GRAPH[i]);
   }
   for (uint16_t i = 0; i < HOMOS_STRUCTURE_SIZE; i++) {
@@ -1673,8 +1673,8 @@ static bool init_data_from_args(Obj digraph1_obj,
     ORDER         = (uint16_t*) calloc(HOMOS_STRUCTURE_SIZE, sizeof(uint16_t));
     STAB_GENS = (PermColl**) calloc(HOMOS_STRUCTURE_SIZE, sizeof(PermColl*));
 
-    for(uint16_t i = 0; i < HOMOS_STRUCTURE_SIZE * 3; i++){
-      BLISS_GRAPH[i]      = bliss_digraphs_new(i);
+    for (uint16_t i = 0; i < HOMOS_STRUCTURE_SIZE * 3; i++) {
+      BLISS_GRAPH[i] = bliss_digraphs_new(i);
     }
 
     for (uint16_t i = 0; i < HOMOS_STRUCTURE_SIZE; i++) {
