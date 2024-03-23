@@ -60,6 +60,7 @@ void bliss_digraphs_write_dimacs(BlissGraph *graph, FILE *fp)
   graph->g->write_dimacs(fp);
 }
 
+extern "C"
 void bliss_digraphs_clear(BlissGraph *graph)
 {
   if(graph && graph->g){
