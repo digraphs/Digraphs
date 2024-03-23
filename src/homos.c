@@ -179,7 +179,7 @@ static Digraph* DIGRAPH2;
 static Graph* GRAPH1;  // Graphs to hold incoming GAP symmetric digraphs
 static Graph* GRAPH2;
 
-static BlissGraph** BLISS_GRAPH = NULL;
+static BlissGraph* BLISS_GRAPH[3 * 512];
 
 static uint16_t* MAP           = NULL;  // partial image list
 static uint16_t* COLORS2       = NULL;  // colors of range (di)graph
@@ -312,7 +312,7 @@ static void free_homos_data() {
     free_bit_array(MAP_UNDEFINED[i]);
     free_perm_coll(STAB_GENS[i]);
   }
-  free(BLISS_GRAPH);
+  // free(BLISS_GRAPH);
   free(REPS);
   free(BIT_ARRAY_BUFFER);
   free(MAP_UNDEFINED);
@@ -1661,8 +1661,8 @@ static bool init_data_from_args(Obj digraph1_obj,
         (BitArray**) calloc(HOMOS_STRUCTURE_SIZE, sizeof(BitArray*));
     MAP_UNDEFINED =
         (BitArray**) calloc(HOMOS_STRUCTURE_SIZE, sizeof(BitArray*));
-    BLISS_GRAPH =
-        (BlissGraph**) calloc(3 * HOMOS_STRUCTURE_SIZE, sizeof(BlissGraph*));
+    // BLISS_GRAPH =
+    //     (BlissGraph**) calloc(3 * HOMOS_STRUCTURE_SIZE, sizeof(BlissGraph*));
     MAP           = (uint16_t*) calloc(HOMOS_STRUCTURE_SIZE, sizeof(uint16_t));
     COLORS2       = (uint16_t*) calloc(HOMOS_STRUCTURE_SIZE, sizeof(uint16_t));
     INVERSE_ORDER = (uint16_t*) calloc(HOMOS_STRUCTURE_SIZE, sizeof(uint16_t));
