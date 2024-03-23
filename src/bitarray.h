@@ -16,7 +16,6 @@
 #include <stdbool.h>  // for bool
 #include <stddef.h>   // for size_t
 #include <stdint.h>   // for uint16_t
-#include <stdio.h> //TODO: REMOVE
 // GAP headers
 #include "compiled.h"  // for COUNT_TRUES_BLOCKS, Obj, . . .
 

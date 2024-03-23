@@ -19,7 +19,6 @@
 // Digraphs headers
 #include "digraphs-debug.h"  // for DIGRAPHS_ASSERT
 
-#include <stdio.h> //TODO: REMOVE
 BitArray* new_bit_array(uint16_t const nr_bits) {
   BitArray* bit_array  = malloc(sizeof(BitArray));
   bit_array->nr_bits   = nr_bits;
