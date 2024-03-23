@@ -1672,8 +1672,11 @@ static bool init_data_from_args(Obj digraph1_obj,
     ORDER         = (uint16_t*) calloc(HOMOS_STRUCTURE_SIZE, sizeof(uint16_t));
     STAB_GENS = (PermColl**) calloc(HOMOS_STRUCTURE_SIZE, sizeof(PermColl*));
 
-    for (uint16_t i = 0; i < HOMOS_STRUCTURE_SIZE; i++) {
+    for(uint16_t i = 0; i < 512; i++){
       BLISS_GRAPH[i]      = bliss_digraphs_new(i);
+    }
+
+    for (uint16_t i = 0; i < HOMOS_STRUCTURE_SIZE; i++) {
       REPS[i]             = new_bit_array(HOMOS_STRUCTURE_SIZE);
       BIT_ARRAY_BUFFER[i] = new_bit_array(HOMOS_STRUCTURE_SIZE);
       MAP_UNDEFINED[i]    = new_bit_array(HOMOS_STRUCTURE_SIZE);
