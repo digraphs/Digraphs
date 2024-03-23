@@ -999,6 +999,7 @@ gap> DigraphHomomorphism(gr1, gr2);
 Transformation( [ 1, 5, 4, 4, 5 ] )
 gap> DigraphHomomorphism(NullDigraph(1), NullDigraph(515));
 IdentityTransformation
+
 #  HomomorphismsDigraphs and HomomorphismsDigraphsRepresentatives
 gap> gr1 := Digraph([[], [3], []]);;
 gap> gr2 := Digraph([[], [], [], [], [4], []]);;
