@@ -71,9 +71,6 @@ void bliss_digraphs_clear(BlissGraph *graph)
   extern "C"
 void bliss_digraphs_change_color(BlissGraph* graph, const unsigned int vertex, const unsigned int color)
 {
-  if(!graph){
-    exit(5999);
-  }
   assert(graph);
   assert(graph->g);
   graph->g->change_color(vertex, color);
