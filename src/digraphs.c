@@ -1799,10 +1799,7 @@ static Obj FuncDIGRAPH_AUTOMORPHISMS(Obj self,
   SET_ELM_PLIST(autos, 2, p);
   CHANGED_BAG(autos);
 
-  DIGRAPHS_ASSERT(graph);
-  if (graph) {
-    bliss_digraphs_release(graph);
-  }
+  bliss_digraphs_release(graph);
   if (LEN_PLIST(ELM_PLIST(autos, 1)) != 0) {
     SortDensePlist(ELM_PLIST(autos, 1));
     RemoveDupsDensePlist(ELM_PLIST(autos, 1));

@@ -19,7 +19,13 @@
 // Digraphs headers
 #include "digraphs-debug.h"  // for DIGRAPHS_ASSERT
 
+size_t* nr_blocks_lookup = NULL;
+size_t* quotient_lookup = NULL;
+size_t* remainder_lookup = NULL;
+Block* mask_lookup = NULL;
+
 BitArray* new_bit_array(uint16_t const nr_bits) {
+  initialize_bitarray_lookups();
   BitArray* bit_array  = malloc(sizeof(BitArray));
   bit_array->nr_bits   = nr_bits;
   bit_array->nr_blocks = ((nr_bits % NUMBER_BITS_PER_BLOCK) == 0

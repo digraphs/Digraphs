@@ -73,6 +73,7 @@ uint16_t HOMOS_STRUCTURE_SIZE = 0;
 #ifndef UNDEFINED
 uint16_t UNDEFINED = 65535;
 #endif
+
 // The next line can be used instead of the first line of STORE_MIN to
 // randomise which vertex of minimum degree is used next, but I didn't find any
 // cases where this made things faster.
@@ -101,7 +102,7 @@ uint16_t UNDEFINED = 65535;
 // The following macro is bitmap_decode_ctz_callpack from https://git.io/fho4p
 #if SYS_IS_64_BIT && defined(DIGRAPHS_HAVE___BUILTIN_CTZLL)
 #define FOR_SET_BITS(__bit_array, __nr_bits, __variable)     \
-  for (size_t k = 0; k < NR_BLOCKS_LOOKUP[__nr_bits]; ++k) { \
+  for (size_t k = 0; k < get_number_of_blocks(__nr_bits); ++k) { \
     Block block = __bit_array->blocks[k];                    \
     while (block != 0) {                                     \
       uint64_t t = block & -block;                           \
