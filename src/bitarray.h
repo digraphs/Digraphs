@@ -16,7 +16,7 @@
 #include <stdbool.h>  // for bool
 #include <stddef.h>   // for size_t
 #include <stdint.h>   // for uint16_t
-#include <stdlib.h> // for calloc
+#include <stdlib.h>   // for calloc
 // GAP headers
 #include "compiled.h"  // for COUNT_TRUES_BLOCKS, Obj, . . .
 
@@ -31,71 +31,71 @@ typedef UInt Block;
 #endif
 
 extern size_t lookup_size;
-static bool lookups_initialised = false;
+static bool   lookups_initialised = false;
 
 #if SYS_IS_64_BIT
-  #define SYSTEM_BIT_COUNT 64
+#define SYSTEM_BIT_COUNT 64
 #else
-  #define SYSTEM_BIT_COUNT 32
+#define SYSTEM_BIT_COUNT 32
 #endif
 
 extern size_t* nr_blocks_lookup;
 extern size_t* quotient_lookup;
 extern size_t* remainder_lookup;
-extern Block* mask_lookup;
+extern Block*  mask_lookup;
 
-#include <stdio.h> // Include the standard I/O header for file operations
+#include <stdio.h>  // Include the standard I/O header for file operations
 
-static size_t calculate_quotient(size_t N){
-    return (size_t) N / SYSTEM_BIT_COUNT;
+static size_t calculate_quotient(size_t N) {
+  return (size_t) N / SYSTEM_BIT_COUNT;
 }
 
-static size_t calculate_number_of_blocks(size_t N){
-    return (N + SYSTEM_BIT_COUNT - 1) / SYSTEM_BIT_COUNT;
+static size_t calculate_number_of_blocks(size_t N) {
+  return (N + SYSTEM_BIT_COUNT - 1) / SYSTEM_BIT_COUNT;
 }
 
-static size_t calculate_remainder(size_t N){
-    return (size_t) N % SYSTEM_BIT_COUNT;
+static size_t calculate_remainder(size_t N) {
+  return (size_t) N % SYSTEM_BIT_COUNT;
 }
 
-static Block calculate_mask(size_t N){
-    return (Block) 1 << N;
+static Block calculate_mask(size_t N) {
+  return (Block) 1 << N;
 }
 
 static void allocateNrBlocksLookup(uint16_t lookup_size) {
-    nr_blocks_lookup = (size_t*)calloc(lookup_size, sizeof(size_t));
-    
-    for(uint16_t i = 0; i < lookup_size; i++){
-      nr_blocks_lookup[i] = calculate_number_of_blocks(i);
-    }
+  nr_blocks_lookup = (size_t*) calloc(lookup_size, sizeof(size_t));
+
+  for (uint16_t i = 0; i < lookup_size; i++) {
+    nr_blocks_lookup[i] = calculate_number_of_blocks(i);
+  }
 }
 
 static void allocateQuotientLookup(uint16_t lookup_size) {
-    quotient_lookup = (size_t*)calloc(lookup_size, sizeof(size_t));
-    
-    for(uint16_t i = 0; i < lookup_size; i++){
-      quotient_lookup[i] = calculate_quotient(i);
-    }
+  quotient_lookup = (size_t*) calloc(lookup_size, sizeof(size_t));
+
+  for (uint16_t i = 0; i < lookup_size; i++) {
+    quotient_lookup[i] = calculate_quotient(i);
+  }
 }
 
 static void allocateRemainderLookup(uint16_t lookup_size) {
-    remainder_lookup = (size_t*)calloc(lookup_size, sizeof(size_t));
-    
-    for(uint16_t i = 0; i < lookup_size; i++){
-      remainder_lookup[i] = calculate_remainder(i);
-    }
+  remainder_lookup = (size_t*) calloc(lookup_size, sizeof(size_t));
+
+  for (uint16_t i = 0; i < lookup_size; i++) {
+    remainder_lookup[i] = calculate_remainder(i);
+  }
 }
 
 static void allocateMaskLookup(uint16_t lookup_size) {
-    mask_lookup = (Block*)calloc(lookup_size, sizeof(Block));
-    
-    for(uint16_t i = 0; i < lookup_size; i++){
-      mask_lookup[i] = calculate_mask(i);
-    }
+  mask_lookup = (Block*) calloc(lookup_size, sizeof(Block));
+
+  for (uint16_t i = 0; i < lookup_size; i++) {
+    mask_lookup[i] = calculate_mask(i);
+  }
 }
 
 static void initialize_bitarray_lookups() {
-  if(!lookups_initialised){
+  if (!lookups_initialised) {
     allocateNrBlocksLookup(513);
     allocateQuotientLookup(513);
     allocateRemainderLookup(513);
