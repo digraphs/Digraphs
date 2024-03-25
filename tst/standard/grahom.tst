@@ -1006,8 +1006,7 @@ true
 gap> DigraphHomomorphism(NullDigraph(1), NullDigraph(23));
 IdentityTransformation
 gap> DIGRAPHS_SET_BITARRAY_LOOKUP_SIZE(NullDigraph(1));                                                                                             
-Error, the 1st argument <lookup_size> must be an integer , not component objec\
-t,
+Error, the 1st argument <lookup_size> must be an integer.
 
 #  HomomorphismsDigraphs and HomomorphismsDigraphsRepresentatives
 gap> gr1 := Digraph([[], [3], []]);;
