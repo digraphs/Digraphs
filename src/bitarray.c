@@ -11,7 +11,7 @@
 #include "bitarray.h"
 
 // C headers
-#include <stdlib.h>  // for free, calloc, malloc
+#include <stdlib.h>  // for free, safe_calloc, malloc
 
 // GAP headers
 #include "gap-includes.h"  // for Obj, ELM_LIST, ISB_LIST, Fail
@@ -28,7 +28,7 @@ BitArray* new_bit_array(uint16_t const nr_bits) {
                               : nr_bits / NUMBER_BITS_PER_BLOCK + 1);
   // The previous line is not tested since all the bit arrays we use are
   // currently of length MAXVERTS = 512.
-  bit_array->blocks = calloc(bit_array->nr_blocks, NUMBER_BITS_PER_BLOCK);
+  bit_array->blocks = safe_calloc(bit_array->nr_blocks, NUMBER_BITS_PER_BLOCK);
   return bit_array;
 }
 
