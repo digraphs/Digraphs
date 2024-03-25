@@ -315,7 +315,7 @@ static void free_homos_data() {
     free_bit_array(MAP_UNDEFINED[i]);
     free_perm_coll(STAB_GENS[i]);
   }
-  // free(BLISS_GRAPH);
+  free(BLISS_GRAPH);
   free(REPS);
   free(BIT_ARRAY_BUFFER);
   free(MAP_UNDEFINED);
