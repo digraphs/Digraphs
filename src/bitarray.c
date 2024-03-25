@@ -30,6 +30,7 @@ uint16_t lookup_size      = 513;
 Obj FuncSET_BITARRAY_LOOKUP_SIZE(Obj self, Obj lookup_size_obj) {
   if (!IS_INTOBJ(lookup_size_obj)) {
     ErrorQuit("the 1st argument <lookup_size> must be an integer.",
+              0L,
               0L);
   }
 
