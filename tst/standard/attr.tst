@@ -2965,7 +2965,7 @@ gap> DigraphAbsorptionExpectedSteps(gr)[2];
 19
 
 # Test Digraphs above the max size
-gap> DigraphHomomorphism(NullDigraph(65555),NullDigraph(1));
+gap> DigraphHomomorphism(NullDigraph(65555), NullDigraph(1));
 Error, the 1st argument <digraph1> must have at most 65534 vertices, found 655\
 55,
 
