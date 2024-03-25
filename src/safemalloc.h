@@ -18,4 +18,5 @@
 void* safe_malloc(size_t size);
 void* safe_calloc(size_t nitems, size_t size);
 
-#endif
+#endif  // DIGRAPHS_SRC_SAFEMALLOC_H_
+
