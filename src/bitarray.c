@@ -38,6 +38,7 @@ Obj FuncSET_BITARRAY_LOOKUP_SIZE(Obj self, Obj lookup_size_obj) {
   lookup_size = (uint16_t) INT_INTOBJ(lookup_size_obj);
 
   free_bitarray_lookups();
+  initialize_bitarray_lookups();
   return True;
 }
 
