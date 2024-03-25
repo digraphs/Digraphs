@@ -25,6 +25,25 @@ size_t* remainder_lookup = NULL;
 Block*  mask_lookup      = NULL;
 uint16_t lookup_size = 513;
 
+// Allow users to specify bitarray lookup size
+Obj FuncSetBitArrayLookupSize(Obj self, Obj args) {
+  if (LEN_PLIST(args) != 1) {
+    ErrorQuit(
+        "there must be 1 argument, found %d,", LEN_PLIST(args), 0L);
+  }
+
+  Obj lookup_size_obj    = ELM_PLIST(args, 1);
+
+  if (!IS_INTOBJ(lookup_size_obj)) {
+    ErrorQuit("the 1st argument <lookup_size> must be an integer "
+              ", not %s,",
+              (Int) TNAM_OBJ(lookup_size_obj),
+              0L);
+  }
+
+  lookup_size = INT_INTOBJ(lookup_size_obj);
+}
+
 BitArray* new_bit_array(uint16_t const nr_bits) {
   initialize_bitarray_lookups();
   BitArray* bit_array  = malloc(sizeof(BitArray));

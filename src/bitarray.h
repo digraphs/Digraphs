@@ -110,23 +110,7 @@ static void initialize_bitarray_lookups() {
 }
 
 // Allow users to set the bit array calculation lookup size
-Obj FuncSetBitArrayLookupSize(Obj self, Obj args) {
-  if (LEN_PLIST(args) != 1) {
-    ErrorQuit(
-        "there must be 1 argument, found %d,", LEN_PLIST(args), 0L);
-  }
-
-  Obj lookup_size_obj    = ELM_PLIST(args, 1);
-
-  if (!IS_INTOBJ(lookup_size_obj)) {
-    ErrorQuit("the 1st argument <lookup_size> must be an integer "
-              ", not %s,",
-              (Int) TNAM_OBJ(lookup_size_obj),
-              0L);
-  }
-
-  lookup_size = INT_INTOBJ(lookup_size_obj);
-}
+Obj FuncSetBitArrayLookupSize(Obj self, Obj args);
 
 static size_t get_number_of_blocks(size_t N) {
   if (N < lookup_size) {
