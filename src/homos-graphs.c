@@ -131,7 +131,6 @@ static void init_bliss_graph_from_digraph(Digraph const* const  digraph,
                                           BlissGraph*           bg) {
   DIGRAPHS_ASSERT(digraph != NULL);
   DIGRAPHS_ASSERT(colors != NULL);
-  DIGRAPHS_ASSERT(bg);
 
   bliss_digraphs_clear(bg);
   uint16_t       out_color = 0;
@@ -194,7 +193,6 @@ static void init_bliss_graph_from_graph(Graph const* const    graph,
                                         BlissGraph*           bg) {
   DIGRAPHS_ASSERT(graph != NULL);
   DIGRAPHS_ASSERT(colors != NULL);
-  DIGRAPHS_ASSERT(bg);
   bliss_digraphs_clear(bg);
   uint16_t const n = graph->nr_vertices;
   for (uint16_t i = 0; i < n; i++) {
@@ -269,7 +267,6 @@ void automorphisms_digraph(Digraph const* const  digraph,
   out->degree    = PERM_DEGREE;
   BlissGraph* bg = new_bliss_graph_from_digraph(digraph, colors);
   bliss_digraphs_find_automorphisms(bg, bliss_hook, out, 0);
-  DIGRAPHS_ASSERT(bg);
   bliss_digraphs_release(bg);
 }
 #endif
