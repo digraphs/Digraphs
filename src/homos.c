@@ -1954,8 +1954,9 @@ Obj FuncHomomorphismDigraphsFinder(Obj self, Obj args) {
               (Int) TNAM_OBJ(digraph1_obj),
               0L);
   } else if (DigraphNrVertices(digraph1_obj) > MACHINE_MAXVERTS) {
-    ErrorQuit("the 1st argument <digraph1> must have at most 512 vertices, "
+    ErrorQuit("the 1st argument <digraph1> must have at most %d vertices, "
               "found %d,",
+              MACHINE_MAXVERTS,
               DigraphNrVertices(digraph1_obj),
               0L);
   }
@@ -1964,8 +1965,9 @@ Obj FuncHomomorphismDigraphsFinder(Obj self, Obj args) {
               (Int) TNAM_OBJ(digraph2_obj),
               0L);
   } else if (DigraphNrVertices(digraph2_obj) > MACHINE_MAXVERTS) {
-    ErrorQuit("the 2nd argument <digraph2> must have at most 512 vertices, "
+    ErrorQuit("the 2nd argument <digraph2> must have at most %d vertices, "
               "found %d,",
+              MACHINE_MAXVERTS,
               DigraphNrVertices(digraph2_obj),
               0L);
   }
