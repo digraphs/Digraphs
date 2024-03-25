@@ -26,10 +26,6 @@ typedef UInt Block;
 
 #define NUMBER_BITS_PER_BLOCK (sizeof(Block) * CHAR_BIT)
 
-#ifndef LOOKUP_SIZE
-#define LOOKUP_SIZE 512
-#endif
-
 static bool   lookups_initialised = false;
 
 #if SYS_IS_64_BIT
@@ -133,7 +129,7 @@ Obj FuncSetBitArrayLookupSize(Obj self, Obj args) {
 }
 
 static size_t get_number_of_blocks(size_t N) {
-  if (N < LOOKUP_SIZE) {
+  if (N < lookup_size) {
     return nr_blocks_lookup[N];
   } else {
     return calculate_number_of_blocks(N);
@@ -141,7 +137,7 @@ static size_t get_number_of_blocks(size_t N) {
 }
 
 static size_t get_remainder(size_t number) {
-  if (number < 512) {
+  if (number < lookup_size) {
     return remainder_lookup[number];
   } else {
     return calculate_remainder(number);
@@ -149,7 +145,7 @@ static size_t get_remainder(size_t number) {
 }
 
 static size_t get_quotient(size_t number) {
-  if (number < 512) {
+  if (number < lookup_size) {
     return quotient_lookup[number];
   } else {
     return calculate_quotient(number);
