@@ -1949,10 +1949,7 @@ static Obj FuncMULTIDIGRAPH_AUTOMORPHISMS(Obj self, Obj digraph, Obj colours) {
     }
   }
 
-  DIGRAPHS_ASSERT(graph);
-  if (graph) {
-    bliss_digraphs_release(graph);
-  }
+  bliss_digraphs_release(graph);
 
   // put the canonical labeling (as a list of two perms) into autos[2]
   out = NEW_PLIST(T_PLIST, 2);
@@ -2009,11 +2006,7 @@ static Obj FuncDIGRAPH_CANONICAL_LABELLING(Obj self, Obj digraph, Obj colours) {
   for (i = 0; i < n; i++) {
     ptr[i] = canon[i];
   }
-
-  DIGRAPHS_ASSERT(graph);
-  if (graph) {
-    bliss_digraphs_release(graph);
-  }
+  bliss_digraphs_release(graph);
 
   return p;
 }
@@ -2056,10 +2049,7 @@ FuncMULTIDIGRAPH_CANONICAL_LABELLING(Obj self, Obj digraph, Obj colours) {
     }
   }
 
-  DIGRAPHS_ASSERT(graph);
-  if (graph) {
-    bliss_digraphs_release(graph);
-  }
+  bliss_digraphs_release(graph);
 
   out = NEW_PLIST(T_PLIST, 2);
   SET_ELM_PLIST(out, 1, p);
