@@ -12,7 +12,7 @@
 
 // C headers
 #include <stdbool.h>  // for true and false
-#include <stdlib.h>  // for free, calloc, malloc
+#include <stdlib.h>   // for free, calloc, malloc
 
 // GAP headers
 #include "compiled.h"  // for Obj, ELM_LIST, ISB_LIST, Fail

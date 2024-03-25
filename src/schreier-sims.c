@@ -67,6 +67,27 @@ void init_ss(SchreierSims* ss, uint16_t degree) {
   ss->degree    = degree;
 }
 
+void free_schreier_sims(SchreierSims* ss) {
+  free(ss->tmp_perm);
+  for (uint16_t i = 0; i < HOMOS_STRUCTURE_SIZE; ++i) {
+    free_perm_coll(ss->strong_gens[i]);
+  }
+  free(ss->strong_gens);
+
+  for (size_t i = 0; i < HOMOS_STRUCTURE_SIZE * HOMOS_STRUCTURE_SIZE; ++i) {
+    free(ss->transversal[i]);
+    free(ss->inversal[i]);
+  }
+  free(ss->transversal);
+  free(ss->inversal);
+
+  free(ss->base);
+  free(ss->orbits);
+  free(ss->size_orbits);
+  free(ss->orb_lookup);
+  free(ss);
+}
+
 static inline void
 add_strong_gen_ss(SchreierSims* ss, uint16_t const pos, Perm const p) {
   DIGRAPHS_ASSERT(pos < ss->degree);

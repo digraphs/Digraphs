@@ -320,9 +320,9 @@ static void free_homos_data() {
   free(BIT_ARRAY_BUFFER);
   free(MAP_UNDEFINED);
   free(STAB_GENS);
-  free(VALS);
-  free(CONDITIONS);
-  free(SCHREIER_SIMS);
+  free_bit_array(VALS);
+  free_conditions(CONDITIONS);
+  free_schreier_sims(SCHREIER_SIMS);
   is_initialized = false;
 }
 
