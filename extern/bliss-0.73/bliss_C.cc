@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include <assert.h>
 #include "graph.hh"
-#include <execinfo.h>
 extern "C" {
 #include "bliss_C.h"
 }
@@ -63,9 +62,9 @@ void bliss_digraphs_write_dimacs(BlissGraph *graph, FILE *fp)
 extern "C"
 void bliss_digraphs_clear(BlissGraph *graph)
 {
-  if(graph && graph->g){
-    graph->g->clear();
-  }
+  assert(graph);
+  assert(graph->g);
+  graph->g->clear();
 }
 
   extern "C"
