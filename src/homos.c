@@ -1646,7 +1646,9 @@ static bool init_data_from_args(Obj digraph1_obj,
     free_homos_data();
     is_initialized = true;
 
-    HOMOS_STRUCTURE_SIZE = calculated_max_verts;
+    // Rather arbitrary, but we multiply by 1.2 to avoid
+    // n = 1,2,3,4,5... causing constant reallocation
+    HOMOS_STRUCTURE_SIZE = calculated_max_verts + calculated_max_verts / 5;
     // srand(time(0));
 #ifdef DIGRAPHS_ENABLE_STATS
     STATS = malloc(sizeof(HomoStats));
