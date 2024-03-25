@@ -26,7 +26,7 @@ typedef UInt Block;
 
 #define NUMBER_BITS_PER_BLOCK (sizeof(Block) * CHAR_BIT)
 
-static bool   lookups_initialised = false;
+static bool lookups_initialised = false;
 
 #if SYS_IS_64_BIT
 #define SYSTEM_BIT_COUNT 64
@@ -34,10 +34,10 @@ static bool   lookups_initialised = false;
 #define SYSTEM_BIT_COUNT 32
 #endif
 
-extern size_t* nr_blocks_lookup;
-extern size_t* quotient_lookup;
-extern size_t* remainder_lookup;
-extern Block*  mask_lookup;
+extern size_t*  nr_blocks_lookup;
+extern size_t*  quotient_lookup;
+extern size_t*  remainder_lookup;
+extern Block*   mask_lookup;
 extern uint16_t lookup_size;
 
 #include <stdio.h>  // Include the standard I/O header for file operations
@@ -90,7 +90,7 @@ static void allocateMaskLookup(uint16_t lookup_size) {
   }
 }
 
-static void free_bitarray_lookups(){
+static void free_bitarray_lookups() {
   free(mask_lookup);
   free(remainder_lookup);
   free(quotient_lookup);

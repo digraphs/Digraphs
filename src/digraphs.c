@@ -12,8 +12,8 @@
 **
 *******************************************************************************/
 
-#include "bitarray.h"
 #include "digraphs.h"
+#include "bitarray.h"
 #include "digraphs-config.h"
 
 #include <stdbool.h>  // for false, true, bool

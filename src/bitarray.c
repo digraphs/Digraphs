@@ -21,11 +21,11 @@
 
 #include <stdbool.h>  // for true and false
 
-size_t* nr_blocks_lookup = NULL;
-size_t* quotient_lookup  = NULL;
-size_t* remainder_lookup = NULL;
-Block*  mask_lookup      = NULL;
-uint16_t lookup_size = 513;
+size_t*  nr_blocks_lookup = NULL;
+size_t*  quotient_lookup  = NULL;
+size_t*  remainder_lookup = NULL;
+Block*   mask_lookup      = NULL;
+uint16_t lookup_size      = 513;
 
 // Allow users to specify bitarray lookup size
 Obj FuncSET_BITARRAY_LOOKUP_SIZE(Obj self, Obj lookup_size_obj) {

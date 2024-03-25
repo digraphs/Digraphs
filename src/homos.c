@@ -101,15 +101,15 @@ uint16_t UNDEFINED = 65535;
 
 // The following macro is bitmap_decode_ctz_callpack from https://git.io/fho4p
 #if SYS_IS_64_BIT && defined(DIGRAPHS_HAVE___BUILTIN_CTZLL)
-#define FOR_SET_BITS(__bit_array, __nr_bits, __variable)     \
+#define FOR_SET_BITS(__bit_array, __nr_bits, __variable)         \
   for (size_t k = 0; k < get_number_of_blocks(__nr_bits); ++k) { \
-    Block block = __bit_array->blocks[k];                    \
-    while (block != 0) {                                     \
-      uint64_t t = block & -block;                           \
-      int      r = __builtin_ctzll(block);                   \
-      __variable = k * 64 + r;                               \
-      if (__variable >= __nr_bits) {                         \
-        break;                                               \
+    Block block = __bit_array->blocks[k];                        \
+    while (block != 0) {                                         \
+      uint64_t t = block & -block;                               \
+      int      r = __builtin_ctzll(block);                       \
+      __variable = k * 64 + r;                                   \
+      if (__variable >= __nr_bits) {                             \
+        break;                                                   \
       }
 
 #define END_FOR_SET_BITS \
@@ -1957,8 +1957,7 @@ Obj FuncHomomorphismDigraphsFinder(Obj self, Obj args) {
     ErrorQuit("the 1st argument <digraph1> must have at most %d vertices, "
               "found %d,",
               MACHINE_MAXVERTS,
-              DigraphNrVertices(digraph1_obj)
-    );
+              DigraphNrVertices(digraph1_obj));
   }
   if (CALL_1ARGS(IsDigraph, digraph2_obj) != True) {
     ErrorQuit("the 2nd argument <digraph2> must be a digraph, not %s,",
@@ -1968,8 +1967,7 @@ Obj FuncHomomorphismDigraphsFinder(Obj self, Obj args) {
     ErrorQuit("the 2nd argument <digraph2> must have at most %d vertices, "
               "found %d,",
               MACHINE_MAXVERTS,
-              DigraphNrVertices(digraph2_obj)
-    );
+              DigraphNrVertices(digraph2_obj));
   }
   if (hook_obj == Fail) {
     if (!IS_LIST(user_param_obj) || !IS_MUTABLE_OBJ(user_param_obj)) {
