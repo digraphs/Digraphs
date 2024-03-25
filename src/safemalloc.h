@@ -10,7 +10,7 @@
 ********************************************************************************/
 
 #ifndef DIGRAPHS_SRC_SAFEMALLOC_H_
-#define DIGRAPHS_SRC_BITARRAY_H_
+#define DIGRAPHS_SRC_SAFEMALLOC_H_
 
 #include <stdlib.h>
 #include "digraphs-debug.h"
