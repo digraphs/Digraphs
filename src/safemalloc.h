@@ -1,3 +1,14 @@
+/********************************************************************************
+**
+*A  safemalloc.h              Safer memory allocation
+**
+**
+**  Copyright (C) 2024 - Daniel Pointon, J. D. Mitchell
+**
+**  This file is free software, see the digraphs/LICENSE.
+**
+********************************************************************************/
+
 #include <stdlib.h>
 #include "digraphs-debug.h"
 
