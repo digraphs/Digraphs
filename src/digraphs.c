@@ -12,6 +12,7 @@
 **
 *******************************************************************************/
 
+#include "bitarray.h"
 #include "digraphs.h"
 #include "digraphs-config.h"
 
@@ -2313,6 +2314,11 @@ static StructGVarFunc GVarFuncs[] = {
      FuncSUBGRAPH_HOMEOMORPHIC_TO_K4,
      "src/planar.c:FuncSUBGRAPH_HOMEOMORPHIC_TO_K4"},
 
+    {"DIGRAPHS_SET_BITARRAY_LOOKUP_SIZE",
+     1,
+     "cache_size",
+     FuncSetBitArrayLookupSize,
+     "src/bitarray.h:FuncSetBitArrayLookupSize"},
     {0, 0, 0, 0, 0} /* Finish with an empty entry */
 };
 

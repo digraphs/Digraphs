@@ -23,6 +23,7 @@ size_t* nr_blocks_lookup = NULL;
 size_t* quotient_lookup  = NULL;
 size_t* remainder_lookup = NULL;
 Block*  mask_lookup      = NULL;
+uint16_t lookup_size = 513;
 
 BitArray* new_bit_array(uint16_t const nr_bits) {
   initialize_bitarray_lookups();

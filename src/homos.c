@@ -1957,8 +1957,8 @@ Obj FuncHomomorphismDigraphsFinder(Obj self, Obj args) {
     ErrorQuit("the 1st argument <digraph1> must have at most %d vertices, "
               "found %d,",
               MACHINE_MAXVERTS,
-              DigraphNrVertices(digraph1_obj),
-              0L);
+              DigraphNrVertices(digraph1_obj)
+    );
   }
   if (CALL_1ARGS(IsDigraph, digraph2_obj) != True) {
     ErrorQuit("the 2nd argument <digraph2> must be a digraph, not %s,",
@@ -1968,8 +1968,8 @@ Obj FuncHomomorphismDigraphsFinder(Obj self, Obj args) {
     ErrorQuit("the 2nd argument <digraph2> must have at most %d vertices, "
               "found %d,",
               MACHINE_MAXVERTS,
-              DigraphNrVertices(digraph2_obj),
-              0L);
+              DigraphNrVertices(digraph2_obj)
+    );
   }
   if (hook_obj == Fail) {
     if (!IS_LIST(user_param_obj) || !IS_MUTABLE_OBJ(user_param_obj)) {
