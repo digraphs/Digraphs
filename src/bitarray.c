@@ -19,6 +19,8 @@
 // Digraphs headers
 #include "digraphs-debug.h"  // for DIGRAPHS_ASSERT
 
+#include <stdbool.h>  // for true and false
+
 size_t* nr_blocks_lookup = NULL;
 size_t* quotient_lookup  = NULL;
 size_t* remainder_lookup = NULL;
@@ -26,14 +28,7 @@ Block*  mask_lookup      = NULL;
 uint16_t lookup_size = 513;
 
 // Allow users to specify bitarray lookup size
-Obj FuncSetBitArrayLookupSize(Obj self, Obj args) {
-  if (LEN_PLIST(args) != 1) {
-    ErrorQuit(
-        "there must be 1 argument, found %d,", LEN_PLIST(args), 0L);
-  }
-
-  Obj lookup_size_obj    = ELM_PLIST(args, 1);
-
+Obj FuncSET_BITARRAY_LOOKUP_SIZE(Obj self, Obj lookup_size_obj) {
   if (!IS_INTOBJ(lookup_size_obj)) {
     ErrorQuit("the 1st argument <lookup_size> must be an integer "
               ", not %s,",
@@ -41,7 +36,9 @@ Obj FuncSetBitArrayLookupSize(Obj self, Obj args) {
               0L);
   }
 
-  lookup_size = INT_INTOBJ(lookup_size_obj);
+  lookup_size = (uint16_t) INT_INTOBJ(lookup_size_obj);
+
+  return True;
 }
 
 BitArray* new_bit_array(uint16_t const nr_bits) {

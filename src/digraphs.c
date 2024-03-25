@@ -2316,9 +2316,9 @@ static StructGVarFunc GVarFuncs[] = {
 
     {"DIGRAPHS_SET_BITARRAY_LOOKUP_SIZE",
      1,
-     "cache_size",
-     FuncSetBitArrayLookupSize,
-     "src/bitarray.h:FuncSetBitArrayLookupSize"},
+     "lookup_size",
+     FuncSET_BITARRAY_LOOKUP_SIZE,
+     "src/bitarray.c:FuncSET_BITARRAY_LOOKUP_SIZE"},
     {0, 0, 0, 0, 0} /* Finish with an empty entry */
 };
 

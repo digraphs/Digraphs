@@ -110,7 +110,7 @@ static void initialize_bitarray_lookups() {
 }
 
 // Allow users to set the bit array calculation lookup size
-Obj FuncSetBitArrayLookupSize(Obj self, Obj args);
+Obj FuncSET_BITARRAY_LOOKUP_SIZE(Obj self, Obj args);
 
 static size_t get_number_of_blocks(size_t N) {
   if (N < lookup_size) {
