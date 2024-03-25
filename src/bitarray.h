@@ -129,7 +129,7 @@ static size_t get_quotient(size_t number) {
   }
 }
 
-static const Block get_mask(size_t N) {#
+static const Block get_mask(size_t N) {
   DIGRAPHS_ASSERT(N < NUMBER_BITS_PER_BLOCK);
   return mask_lookup[N];
 }
