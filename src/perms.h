@@ -24,6 +24,8 @@
 // GAP headers
 #include "compiled.h"
 
+// Maximum number of vertices that can be stored in 2^16 bits,
+// with 2 bits reserved.
 #define MACHINE_MAXVERTS 65534
 
 // smallest positive integer that doesn't fit into a small integer object
