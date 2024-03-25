@@ -11,6 +11,7 @@
 #include "bitarray.h"
 
 // C headers
+#include <stdbool.h>  // for true and false
 #include <stdlib.h>  // for free, calloc, malloc
 
 // GAP headers
@@ -18,8 +19,6 @@
 
 // Digraphs headers
 #include "digraphs-debug.h"  // for DIGRAPHS_ASSERT
-
-#include <stdbool.h>  // for true and false
 
 size_t*  nr_blocks_lookup = NULL;
 size_t*  quotient_lookup  = NULL;
