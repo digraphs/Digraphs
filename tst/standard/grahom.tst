@@ -999,6 +999,11 @@ gap> DigraphHomomorphism(gr1, gr2);
 Transformation( [ 1, 5, 4, 4, 5 ] )
 gap> DigraphHomomorphism(NullDigraph(1), NullDigraph(515));
 IdentityTransformation
+# Test bitarray behaviour outside of lookup table
+gap> DIGRAPHS_SET_BITARRAY_LOOKUP_SIZE(20);
+true
+gap> DigraphHomomorphism(NullDigraph(1), NullDigraph(23));
+IdentityTransformation
 
 #  HomomorphismsDigraphs and HomomorphismsDigraphsRepresentatives
 gap> gr1 := Digraph([[], [3], []]);;
