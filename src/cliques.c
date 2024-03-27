@@ -219,8 +219,8 @@ static bool init_data_from_args(Obj         digraph_obj,
                                 Obj         max_obj,
                                 Obj*        group,
                                 CliqueData* data) {
-  if (DigraphNrVertices(digraph_obj) + 1 > CLIQUES_STRUCTURE_SIZE
-      || !is_initialized) {
+  if (!is_initialized
+      || DigraphNrVertices(digraph_obj) + 1 > CLIQUES_STRUCTURE_SIZE) {
     free_cliques_data(data);
     is_initialized         = true;
     CLIQUES_STRUCTURE_SIZE = DigraphNrVertices(digraph_obj) + 1;
