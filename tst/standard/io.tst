@@ -933,17 +933,25 @@ Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `WriteDreadnautGraph' on 2 arguments
 gap> WriteDreadnautGraph(".", RandomDigraph(2));
 Error, cannot open the file given as the 1st argument <name>,
-gap> filename := "tmp.dre";;
+gap> filename := Concatenation(DIGRAPHS_Dir(), "tst/out/temp.dre");;
 gap> D := CompleteDigraph(3);;
 gap> WriteDreadnautGraph(filename, CompleteDigraph(3));
-gap> Exec("rm -f tmp.dre");
 
 # ReadDreadnautGraph
-gap> filename := "tmp.dre";;
-gap> D = CompleteDigraph(3);;
-gap> WriteDreadnautGraph(filename, D);
 gap> ReadDreadnautGraph(filename) = D;
 true
+gap> ReadDreadnautGraph("fakedir.dre");
+Error, cannot open the file given as the 1st argument <name>,
+gap> filename := Concatenation(DIGRAPHS_Dir(), "tst/out/bad.dre");;
+gap> ReadDreadnautGraph(filename);
+#I  Illegal edges have been removed
+<immutable digraph with 3 vertices, 1 edge>
+gap> filename := Concatenation(DIGRAPHS_Dir(), "tst/out/space.dre");;
+gap> ReadDreadnautGraph(filename);
+yes
+gap> filename := Concatenation(DIGRAPHS_Dir(), "tst/out/good.dre");;
+gap> ReadDreadnautGraph(filename);
+<immutable digraph with 5 vertices, 6 edges>
 gap> Exec("rm -f tmp.dre");
 
 #  DIGRAPHS_UnbindVariables

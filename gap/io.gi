@@ -1393,84 +1393,93 @@ BindGlobal("DIGRAPHS_ParseDreadnautConfig",
 function(config)
     local nValue, dExists, dollarValue, tempStr, Pos, getValue;
 
-
-    config := ReplacedString(config, " ", ""); # Remove spaces
-    config := ReplacedString(config, "\n", ""); # Remove newlines
-    config := ReplacedString(config, "\r", ""); # Remove carriage returns
-    config := ReplacedString(config, "\t", ""); # Remove tabs
+    config := ReplacedString(config, " ", ""); 
+    config := ReplacedString(config, "\n", ""); 
+    config := ReplacedString(config, "\r", ""); 
+    config := ReplacedString(config, "\t", ""); 
     config := ReplacedString(config, "=", ""); 
 
     getValue := function(config, key)
     local Pos, tempStr;
+    if PositionSublist(config, key) <> fail then
       Pos := PositionSublist(config, key) + 1;
       tempStr := "";
 
       while IsInt(Int(config{[Pos]})) do
-        Concatenation(tempStr, config{[Pos]});
+        tempStr := Concatenation(tempStr, config{[Pos]});
         Pos := Pos + 1;
         if Pos > Length(config) then
           break;
         fi;
       od;
       return Int(tempStr);
+    else
+      if key = "$" then
+        return 0;
+      else
+        ErrorNoReturn("The number of vertices has not been defined in the dreadnaut file. Check your file and ensure n is declared.");
+      fi;
+    fi;
     end;
 
-    dExists := PositionSublist(config, "d"); 
+    dExists := PositionSublist(config, "d") <> fail; 
     dollarValue := getValue(config, "$");
     nValue := getValue(config, "n");
 
-    return rec(dollarPart := dollarValue, nValue := nValue, dExists := dExists);
+    return rec(dollarValue := dollarValue, nValue := nValue, dExists := dExists);
 end);
 
-BindGlobal("DIGRAPHS_ParseDreadnautGraph", 
+
+BindGlobal("DIGRAPHS_ParseDreadnautGraph",
 function(graphData, r)
-    local lines, digraph, edgeList, line, parts, vertex, connectedTo, adjacencyPart, flag, i, j;
+    local lines, digraph, edgeList, line, parts, vertex, connectedTo, adjacencyPart, flag, i, j, len, EOL;
 
     # Split the graph data into lines
     lines := SplitString(graphData, "\n");
 
     # Initialize an empty list to hold the edges
-    edgeList := [];
+    edgeList := List([1..r.nValue], x -> []);
+    EOL := false;
 
-    flag := false;
-
-    # Iterate over each line to extract edges
     for i in [1..Length(lines)] do
         line := lines[i];
         if IsEmpty(line) or line = "\n" then
-            continue;  # Skip empty lines
+            continue; 
         fi;
 
         if PositionSublist(line, ".") <> fail then
             flag := true;
+            line := ReplacedString(line, ".", "");
         fi;
         
-        # Separate the vertex identifier from its adjacency list
-        # Remove spaces around ':' to consistently identify the split point
         line := ReplacedString(line, " :", ":");
         line := ReplacedString(line, ": ", ":");
         parts := SplitString(line, ":");
-      
-        # Extract the vertex number and its adjacency list
-        vertex := Int(parts[1]);
+
+        if Length(parts) = 1 then
+          continue;
+        fi;
+
+        vertex := parts[1];
+        NormalizeWhitespace(vertex);
+        vertex := Int(vertex);
         adjacencyPart := parts[2];
         
-        # Handle the adjacency list, terminating with ';'
-        adjacencyPart := ReplacedString(adjacencyPart, ";", " ");  # Replace ';' with space for uniform splitting
         NormalizeWhitespace(adjacencyPart);  # Remove extra spaces
+        adjacencyPart := ReplacedString(adjacencyPart, ".", "");  
         connectedTo := List(SplitString(adjacencyPart, " "), x -> Int(x));
-        Filtered(connectedTo, y -> IsInt(y));  # Ensure only integers are included
+        connectedTo := Filtered(connectedTo, y -> IsInt(y));  # Ensure only integers are included
+        connectedTo := List(connectedTo, x -> x - r.dollarValue + 1);  # Adjust the vertex numbering to start at 1
+        len := Length(connectedTo);
+        connectedTo := Filtered(connectedTo, x -> x<=r.nValue);  # Ensure the vertex is within the range of the number of vertices
 
-        # Add edges to the edge list
-        Add(edgeList, connectedTo);
-
-        if flag <> false then
-          for j in [1..r.nValue-i] do
-            Add(edgeList, []);
-          od;
-          break;
+        if len <> Length(connectedTo) then
+          Info(InfoWarning, 1, "Illegal edges have been removed");
         fi;
+
+        Append(edgeList[vertex], connectedTo);
     od;
+
 
     return edgeList;
 end);
@@ -1484,7 +1493,6 @@ function(name)
     ErrorNoReturn("cannot open the file given as the 1st argument <name>,");
   fi;
 
-  # Initialize variables
   config := "";
   foundG := false;
   configEndIndex := 0;
@@ -1493,9 +1501,9 @@ function(name)
   repeat
       line := IO_ReadLine(file);
       if not IsEmpty(line) then
-          config := Concatenation(config, line); # Keep newlines for clarity
+          config := Concatenation(config, line); 
           if PositionSublist(line, "g") <> fail then
-              foundG := true; # Mark that 'g' has been found
+              foundG := true; 
               configEndIndex := Length(config);
           fi;
       fi;
@@ -1504,13 +1512,13 @@ function(name)
   if not foundG then
       ErrorNoReturn("g is not defined. Check your file and ensure g is declared.");
   fi;
-  # Split the content
+
   graphData := "";
 
   repeat
       line := IO_ReadLine(file);
       if not IsEmpty(line) then
-          graphData := Concatenation(graphData, line); # Keep newlines for clarity
+          graphData := Concatenation(graphData, line); 
       fi;
   until IsEmpty(line);
 
@@ -1519,6 +1527,7 @@ function(name)
 
   if r.dollarValue <> 1 then
     Info(InfoWarning, 1, "The vertex numbering in the dreadnaut file does not start at 1, but will be read in as such.");
+  fi;
 
   if r.dExists <> fail then
     return Digraph(edgeList);
