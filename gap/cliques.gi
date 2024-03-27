@@ -10,6 +10,26 @@
 #############################################################################
 ##
 
+BindGlobal("AddOrbitToHashMap",
+function(G, set, hashmap)
+  local gens, o, im, pt, g;
+
+  gens := GeneratorsOfGroup(G);
+  o    := [set];
+  Assert(1, not set in hashmap);
+  hashmap[set] := true;
+  for pt in o do
+    for g in gens do
+      im := OnSets(pt, g);
+      if not im in hashmap then
+        hashmap[im] := true;
+        Add(o, im);
+      fi;
+    od;
+  od;
+  return o;
+end);
+
 InstallMethod(CliqueNumber, "for a digraph", [IsDigraph],
 D -> Maximum(List(DigraphMaximalCliquesReps(D), Length)));
 
@@ -474,7 +494,7 @@ DigraphMaximalCliques);
 
 InstallGlobalFunction(DigraphMaximalCliques,
 function(arg)
-  local D, include, exclude, limit, size, cliques, sub, G, out, orbits, orb, c;
+  local D, include, exclude, limit, size, cliques, sub, G, out, orbits, c;
 
   if IsEmpty(arg) then
     ErrorNoReturn("there must be at least 1 argument,");
@@ -519,16 +539,13 @@ function(arg)
       out := cliques;
     else
       # Act on the representatives to find all
-      orbits := [];
-      out := [];
+      orbits := HashMap();
       for c in cliques do
-        if not ForAny(orbits, x -> c in x) then
-          orb := Orb(G, c, OnSets);
-          Enumerate(orb);
-          Add(orbits, orb);
-          Append(out, orb);
+        if not c in orbits then
+          AddOrbitToHashMap(G, c, orbits);
         fi;
       od;
+      out := Keys(orbits);
     fi;
     if IsImmutableDigraph(D) then
       SetDigraphMaximalCliquesAttr(D, out);
@@ -673,7 +690,7 @@ function(digraph, hook, user_param, limit, include, exclude, max, size, reps)
     else
 
       # Function to find the valid cliques of an orbit given an orbit rep
-      found_orbits := [];
+      found_orbits := HashMap();
       num_found := 0;
       if hook = fail then
         hook := Add;
@@ -683,10 +700,8 @@ function(digraph, hook, user_param, limit, include, exclude, max, size, reps)
         local orbit, n, new_found, i;
 
         new_found := 0;
-        if not ForAny(found_orbits, x -> clique in x) then
-          orbit := Orb(group, clique, OnSets);
-          Enumerate(orbit);
-          Add(found_orbits, orbit);
+        if not clique in found_orbits then
+          orbit := AddOrbitToHashMap(group, clique, found_orbits);
           n := Length(orbit);
 
           if invariant_include and invariant_exclude then
@@ -860,7 +875,7 @@ function(D, hook, param, lim, inc, exc, max, size, reps, inc_var, exc_var)
     grp := AutomorphismGroup(D);
   fi;
 
-  found_orbits := [];
+  found_orbits := HashMap();
 
   # Function to find the valid cliques of an orbit given an orbit rep
   add := function(c)
@@ -871,10 +886,8 @@ function(D, hook, param, lim, inc, exc, max, size, reps, inc_var, exc_var)
       hook(param, c);
       num := num + 1;
       return;
-    elif not ForAny(found_orbits, x -> c in x) then
-      orb := Orb(grp, c, OnSets);
-      Enumerate(orb);
-      Add(found_orbits, orb);
+    elif not c in found_orbits then
+      orb := AddOrbitToHashMap(grp, c, found_orbits);
       n := Length(orb);
 
       if invariant then  # we're not just looking for orbit reps, but inc and
