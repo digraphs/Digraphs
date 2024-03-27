@@ -377,67 +377,74 @@ InstallMethod(DigraphClosure,
 [IsImmutableDigraph, IsPosInt],
 {D, k} -> MakeImmutable(DigraphClosure(DigraphMutableCopy(D), k)));
 
+DIGRAPHS_CheckContractEdgeDigraph := function(D, u, v)
+  if not IsDigraphEdge(D, u, v) then  # Check if [u, v] is an edge in digraph D
+    ErrorNoReturn("expected an edge between the 2nd and 3rd arguments ",
+                  "(vertices) ", u, " and ", v, " but found none");
+  elif IsMultiDigraph(D) then
+    ErrorNoReturn("The 1st argument (a digraph) must not satisfy ",
+                   "IsMultiDigraph");
+  elif u = v then  # edge should not be contracted if u = v
+    ErrorNoReturn("The 2nd argument <u> must not be equal to the 3rd ",
+                   "argument <v>");
+  fi;
+
+end;
+
 InstallMethod(DigraphContractEdge,
 "for a mutable digraph and two positive integers",
 [IsMutableDigraph, IsPosInt, IsPosInt],
 function(D, u, v)
   local w, neighbours, transformations_to_edge, transformations_to_old_edges,
-  old_edge, new_edge, neighbour, t, copy, vertices;
+  old_edge, new_edge, neighbour, t, vertices, edge_label;
 
-  if not IsDigraphEdge(D, u, v) then  # Check if [u, v] is an edge in digraph D
-    ErrorNoReturn("u, v is not an edge of D");
-  fi;
+  DIGRAPHS_CheckContractEdgeDigraph(D, u, v);
 
-  if IsMultiDigraph(D) then  # multi digraphs cannot have their edges contracted
-    ErrorNoReturn("Cannot contract an edge for a MultiDigraph");
-  fi;
-
-  if u = v then  # edge should not be contracted if u = v
-    ErrorNoReturn("Cannot contract an edge with the same source and range");
-  fi;
-
-  if IsDigraphEdge(D, v, u) then  # if (v, u) is an edge,
-    DigraphRemoveEdge(D, v, u);   # disallow loops, so also remove (v, u)
+  # if (v, u) is an edge, disallow loops, so remove (v, u)
+  if IsDigraphEdge(D, v, u) then
+    DigraphRemoveEdge(D, v, u);
   fi;
 
   # remove the contracted edge
   DigraphRemoveEdge(D, u, v);
 
-  copy := DigraphImmutableCopy(D);  # create a copy of the original digraph,
-                                    # with removed edges, to use as a reference
-                                    # for edge labels
+  # Find vertex neighbours of u and v to construct new incident edges of w
 
-  neighbours := [InNeighboursOfVertex(copy, u), InNeighboursOfVertex(copy, v),
-                 OutNeighboursOfVertex(copy, u), OutNeighboursOfVertex(copy, v)];
+  neighbours := [Immutable(InNeighboursOfVertex(D, u)),
+                 Immutable(InNeighboursOfVertex(D, v)),
+                 Immutable(OutNeighboursOfVertex(D, u)),
+                 Immutable(OutNeighboursOfVertex(D, v))];
+
+  # immutable reference to old edge labels to add to any
+  # new transformed incident edges
 
   DigraphAddVertex(D, [DigraphVertexLabel(D, u),
-                   DigraphVertexLabel(D, v)]);  # add vertex w
+                       DigraphVertexLabel(D, v)]);  # add vertex w
 
   vertices := DigraphVertices(D);
-  w := vertices[Length(vertices)];  # w is the new vertex identifier
+  w := Length(vertices);  # w is the new vertex identifier
 
   # Handle loops from edges u or w, with the same source / range
-  if IsDigraphEdge(D, u, u) and IsDigraphEdge(D, v, v)
-      then DigraphAddEdge(D, w, w);
-         SetDigraphEdgeLabel(D, w, w, [DigraphEdgeLabel(copy, u, u),
-         DigraphEdgeLabel(copy, v, v)]);
-  else
-    if IsDigraphEdge(D, u, u) then DigraphAddEdge(D, w, w);
-                                   SetDigraphEdgeLabel(D, w, w,
-                                   DigraphEdgeLabel(copy, u, u));
-    else
-      if IsDigraphEdge(D, v, v)
-          then DigraphAddEdge(D, w, w);
-               SetDigraphEdgeLabel(D, w, w,
-               DigraphEdgeLabel(copy, v, v));
-        fi;
-      fi;
-    fi;
+  # No relevant edges are removed from D until vertices are removed
+  # So old edge labls are taken from D
+
+  if IsDigraphEdge(D, u, u) and IsDigraphEdge(D, v, v) then
+    DigraphAddEdge(D, w, w);
+    edge_label := [DigraphEdgeLabel(D, u, u), DigraphEdgeLabel(D, w, w)];
+    SetDigraphEdgeLabel(D, w, w, edge_label);
+  elif IsDigraphEdge(D, u, u) then
+      DigraphAddEdge(D, w, w);
+      edge_label := DigraphEdgeLabel(D, u, u);
+      SetDigraphEdgeLabel(D, w, w, edge_label);
+  elif IsDigraphEdge(D, v, v) then
+      DigraphAddEdge(D, w, w);
+      edge_label := DigraphEdgeLabel(D, v, v);
+      SetDigraphEdgeLabel(D, w, w, edge_label);
+  fi;
 
   # translate edges based on neighbours
 
   # transformation functions translating neighbours to their new edge
-
   transformations_to_edge := [{x, y} -> [x, y],
                               {x, y} -> [x, y],
                               {x, y} -> [y, x],
@@ -446,27 +453,27 @@ function(D, u, v)
   # transformation functions translating neighbours
   # to their original edge in D
 
-  transformations_to_old_edges := [e -> [e, u], e -> [e, v],
-                                   e -> [u, e], e -> [v, e]];
+  transformations_to_old_edges := [e -> [e, u],
+                                   e -> [e, v],
+                                   e -> [u, e],
+                                   e -> [v, e]];
 
   # Add translated new edges, and setup edge labels
+
   for t in [1 .. Length(transformations_to_edge)] do
     for neighbour in neighbours[t] do
         new_edge := transformations_to_edge[t](neighbour, w);
-
-        # old_edge is what the new transformed edge was previously
         old_edge := transformations_to_old_edges[t](neighbour);
+        edge_label := DigraphEdgeLabel(D, old_edge[1], old_edge[2]);
         DigraphAddEdge(D, new_edge);
-        SetDigraphEdgeLabel(D, new_edge[1], new_edge[2],
-                            DigraphEdgeLabel(copy, old_edge[1],
-                                             old_edge[2]));
+        SetDigraphEdgeLabel(D, new_edge[1], new_edge[2], edge_label);
     od;
   od;
 
   DigraphRemoveVertices(D, [u, v]);  # remove the vertices of the
                                      # contracted edge (and therefore,
                                      # all its incident edges)
-
+  return D;
 end);
 
 InstallMethod(DigraphContractEdge,
@@ -474,60 +481,48 @@ InstallMethod(DigraphContractEdge,
 [IsImmutableDigraph, IsPosInt, IsPosInt],
 function(D, u, v)
   local w, neighbours, transformations_to_edge, transformations_to_old_edges,
-  existing_edges, edges_to_not_include, NewDigraph, new_edge, old_edge,
-  neighbour, t, vertices;
+  existing_edges, edges_to_not_include, new_digraph, new_edge, old_edge,
+  neighbour, t, vertices, edge_label;
 
-  if not IsDigraphEdge(D, u, v) then  # Check if [u, v] is an edge in digraph D
-    ErrorNoReturn("u, v is not an edge of D");
-  fi;
+  DIGRAPHS_CheckContractEdgeDigraph(D, u, v);
 
-  if IsMultiDigraph(D) then  # multi digraphs cannot have their edges contracted
-    ErrorNoReturn("Cannot contract an edge for a MultiDigraph");
-  fi;
-
-  if u = v then  # edge should not be contracted if u = v
-    ErrorNoReturn("Cannot contract an edge with the same source and range");
-  fi;
-
-  edges_to_not_include := [];  # Incident edges to [u, v] that will be
-                               # transformed to be incident to w
+  # Incident edges to [u, v] that will be transformed to be incident to w
+  edges_to_not_include := [];
 
   existing_edges := [];  # existing edges that should be re added
 
-  NewDigraph := DigraphByEdges([]);  # contracted edge should not be added to
-                                     # the new digraph
+  # contracted edge should not be added to the new digraph
+  new_digraph := NullDigraph(IsMutableDigraph, 0);
 
-  if IsDigraphEdge(D, v, u) then       # if (v, u) is an edge, disallow loops,
-     D := DigraphRemoveEdge(D, v, u);  # so also remove (v, u)
-      fi;
+  # if (v, u) is an edge, disallow loops, so remove (v, u)
+  if IsDigraphEdge(D, v, u) then
+     D := DigraphRemoveEdge(D, v, u);
+  fi;
 
   D := DigraphRemoveEdge(D, u, v);  # remove the edge to be contracted
 
-  NewDigraph := DigraphAddVertices(NewDigraph, DigraphVertexLabels(D));
+  DigraphAddVertices(new_digraph, DigraphVertexLabels(D));
 
   # add vertex w with combined labels from u and v
-  NewDigraph := DigraphAddVertex(NewDigraph, [DigraphVertexLabel(D, u),
-                                 DigraphVertexLabel(D, v)]);  # add vertex w
+  DigraphAddVertex(new_digraph, [DigraphVertexLabel(D, u),
+                   DigraphVertexLabel(D, v)]);  # add vertex w
 
-  vertices := DigraphVertices(NewDigraph);
-  w := vertices[Length(vertices)];  # w is the new vertex identifier
+  vertices := DigraphVertices(new_digraph);
+  w := Length(vertices);  # w is the new vertex identifier
 
   # Handle loops from edges u or w, with the same source / range
-  if IsDigraphEdge(D, u, u) and IsDigraphEdge(D, v, v)
-      then NewDigraph := DigraphAddEdge(NewDigraph, w, w);
-           SetDigraphEdgeLabel(NewDigraph, w, w, [DigraphEdgeLabel(D, u, u),
-                               DigraphEdgeLabel(D, v, v)]);
-  else
-    if IsDigraphEdge(D, u, u)
-        then NewDigraph := DigraphAddEdge(NewDigraph, w, w);
-                           SetDigraphEdgeLabel(NewDigraph, w, w,
-                                               DigraphEdgeLabel(D, u, u));
-    else
-      if IsDigraphEdge(D, v, v)
-          then NewDigraph := DigraphAddEdge(NewDigraph, w, w);
-               SetDigraphEdgeLabel(NewDigraph, w, w, DigraphEdgeLabel(D, v, v));
-      fi;
-    fi;
+
+  if IsDigraphEdge(D, u, u) and IsDigraphEdge(D, v, v) then
+    DigraphAddEdge(new_digraph, w, w);
+    SetDigraphEdgeLabel(new_digraph, w, w, [DigraphEdgeLabel(D, u, u),
+                                           DigraphEdgeLabel(D, v, v)]);
+  elif IsDigraphEdge(D, u, u) then
+    DigraphAddEdge(new_digraph, w, w);
+    SetDigraphEdgeLabel(new_digraph, w, w,
+                        DigraphEdgeLabel(D, u, u));
+  elif IsDigraphEdge(D, v, v) then
+    DigraphAddEdge(new_digraph, w, w);
+    SetDigraphEdgeLabel(new_digraph, w, w, DigraphEdgeLabel(D, v, v));
   fi;
 
   # if there were loops in D at the vertices u or w, don't include these edges,
@@ -537,17 +532,24 @@ function(D, u, v)
 
   # Find vertex neighbours of u and v to construct new incident edges of w
 
-  neighbours := [InNeighboursOfVertex(D, u), InNeighboursOfVertex(D, v),
-                 OutNeighboursOfVertex(D, u), OutNeighboursOfVertex(D, v)];
+  neighbours := [InNeighboursOfVertex(D, u),
+                 InNeighboursOfVertex(D, v),
+                 OutNeighboursOfVertex(D, u),
+                 OutNeighboursOfVertex(D, v)];
 
   # translate edges based on neighbours
 
   # transformation functions translating neighbours to their new edge
+
   transformations_to_edge := [{x, y} -> [x, y], {x, y} -> [x, y],
                               {x, y} -> [y, x], {x, y} -> [y, x]];
+
   # transformation functions translating neighbours to their original edge in D
-  transformations_to_old_edges := [e -> [e, u], e -> [e, v],
-                                   e -> [u, e], e -> [v, e]];
+
+  transformations_to_old_edges := [e -> [e, u],
+                                   e -> [e, v],
+                                   e -> [u, e],
+                                   e -> [v, e]];
 
   # remove edges that will be adjusted
 
@@ -557,50 +559,43 @@ function(D, u, v)
   od;
 
   # Find edges that should be included, but remain the same
+
   Sort(edges_to_not_include);
   Append(existing_edges, ShallowCopy(DigraphEdges(D)));
   Sort(existing_edges);
   SubtractSet(existing_edges, edges_to_not_include);
 
   # Add translated new edges, and setup edge labels
+
   for t in [1 .. Length(transformations_to_edge)] do
     for neighbour in neighbours[t] do
         new_edge := transformations_to_edge[t](neighbour, w);
 
         # old_edge is what the new transformed edge was previously
         old_edge := transformations_to_old_edges[t](neighbour);
-        NewDigraph := DigraphAddEdge(NewDigraph, new_edge);
-        SetDigraphEdgeLabel(NewDigraph, new_edge[1], new_edge[2],
-                            DigraphEdgeLabel(D, old_edge[1], old_edge[2]));
+        edge_label := DigraphEdgeLabel(D, old_edge[1], old_edge[2]);
+        new_digraph := DigraphAddEdge(new_digraph, new_edge);
+        SetDigraphEdgeLabel(new_digraph, new_edge[1], new_edge[2], edge_label);
     od;
   od;
 
   # Add the existing edges that have not changed,
   # and set their edge labels to that of the previous digraph
+
   for new_edge in existing_edges do
-    NewDigraph := DigraphAddEdge(NewDigraph, new_edge);
-    SetDigraphEdgeLabel(NewDigraph, new_edge[1], new_edge[2],
+    new_digraph := DigraphAddEdge(new_digraph, new_edge);
+    SetDigraphEdgeLabel(new_digraph, new_edge[1], new_edge[2],
                         DigraphEdgeLabel(D, new_edge[1], new_edge[2]));
   od;
 
   # remove the vertices of the contracted edge
-  return DigraphRemoveVertices(NewDigraph, [u, v]);
+  return MakeImmutable(DigraphRemoveVertices(new_digraph, [u, v]));
 
 end);
 
 InstallMethod(DigraphContractEdge,
-"for a mutable digraph and a dense list",
-[IsMutableDigraph, IsDenseList],
-function(D, edge)
-  if Length(edge) <> 2 then
-    ErrorNoReturn("the 2nd argument <edge> must be a list of length 2");
-  fi;
-  DigraphContractEdge(D, edge[1], edge[2]);
-end);
-
-InstallMethod(DigraphContractEdge,
-"for an immutable digraph and a dense list",
-[IsImmutableDigraph, IsDenseList],
+"for a digraph and a dense list",
+[IsDigraph, IsDenseList],
 function(D, edge)
   if Length(edge) <> 2 then
     ErrorNoReturn("the 2nd argument <edge> must be a list of length 2");

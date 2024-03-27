@@ -432,7 +432,7 @@ gap> DigraphEdgeLabels(D);
 # DigraphContractEdge
 gap> D := DigraphByEdges(IsMutableDigraph, [[1, 2], [2, 1]]);
 <mutable digraph with 2 vertices, 2 edges>
-gap> DigraphContractEdge(D, 2, 1);
+gap> DigraphContractEdge(D, 2, 1);;
 gap> DigraphEdges(D);
 [  ]
 gap> D := DigraphByEdges([[1, 2], [2, 1], [2, 3]]);

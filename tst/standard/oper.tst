@@ -2907,18 +2907,19 @@ Error, the 2nd argument <edge> must be a list of length 2
 # DigraphContractEdge: multi digraphs
 gap> D := Digraph([[2, 3, 3], [2], [1]]);;
 gap> DigraphContractEdge(D, 1, 3);
-Error, Cannot contract an edge for a MultiDigraph
+Error, The 1st argument (a digraph) must not satisfy IsMultiDigraph
 
 # DigraphContractEdge: Edge does not exist
 gap> D := DigraphByEdges([[1, 2], [2, 1]]);;
 gap> DigraphContractEdge(D, 1, 3);
-Error, u, v is not an edge of D
+Error, expected an edge between the 2nd and 3rd arguments (vertices) 1 and 
+3 but found none
 
 # DigraphContractEdge: Edge is a looped edge (u = v)
 gap> D := DigraphByEdges([[1, 1], [2, 1], [1, 2]]);;
 gap> DigraphVertexLabels(D);; 
 gap> C := DigraphContractEdge(D, 1, 1);
-Error, Cannot contract an edge with the same source and range
+Error, The 2nd argument <u> must not be equal to the 3rd argument <v>
 gap> DigraphHasLoops(D);
 true
 gap> DigraphEdges(D);
@@ -3070,18 +3071,19 @@ Error, the 2nd argument <edge> must be a list of length 2
 # DigraphContractEdge: MultiDigraph (mutable)
 gap> D := Digraph(IsMutableDigraph, [[2, 3, 3], [2], [1]]);;
 gap> DigraphContractEdge(D, 1, 3);
-Error, Cannot contract an edge for a MultiDigraph
+Error, The 1st argument (a digraph) must not satisfy IsMultiDigraph
 
 # DigraphContractEdge: Edge does not exist (mutable)
 gap> D := DigraphByEdges(IsMutableDigraph, [[1, 2], [2, 1]]);;
 gap> DigraphContractEdge(D, 1, 3);
-Error, u, v is not an edge of D
+Error, expected an edge between the 2nd and 3rd arguments (vertices) 1 and 
+3 but found none
 
 # DigraphContractEdge: Edge is a looped edge (u = v) (mutable)
 gap> D := DigraphByEdges(IsMutableDigraph, [[1, 1], [2, 1], [1, 2]]);;
 gap> DigraphVertexLabels(D);; 
 gap> DigraphContractEdge(D, 1, 1);
-Error, Cannot contract an edge with the same source and range
+Error, The 2nd argument <u> must not be equal to the 3rd argument <v>
 gap> DigraphHasLoops(D);
 true
 gap> DigraphEdges(D);

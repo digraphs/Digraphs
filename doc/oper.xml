@@ -1923,25 +1923,26 @@ true
 <#GAPDoc Label="DigraphContractEdge">
 <ManSection>
     <Oper Name="DigraphContractEdge" Arg="digraph, edge"
-        Label="for a digraph and an edge"/>
+        Label="for a digraph and a list of positive integers"/>
     <Oper Name="DigraphContractEdge" Arg="digraph, src, ran"
-        Label="for a digraph, source, and range"/>
+        Label="for a digraph and two positive integers"/>
   <Returns>A digraph.</Returns>
   <Description>
     If <A>edge</A> is a pair of vertices of <A>digraph</A>, or <A>src</A> and
     <A>ran</A> are vertices of <A>digraph</A>, where <A>ran</A> &lt;&gt; <A>src</A>, 
-    then this operation returns a new digraph constructed from <A>digraph</A>,
+    then then this operation merges the two vertices of the edge given into one. 
+    Edges incident to <A>src</A> and <A>ran</A> will now be incident to <C>v</C>, 
+    the new vertex, with their direction preserved. <P/>
+    
+    A new digraph constructed from <A>digraph</A> is returned,
     unless <A>digraph</A> belongs to <Ref Filt="IsMutableDigraph"/>;
-    in this case changes are made directly to <A>digraph</A>. 
-    <A>digraph</A> must not belong to <Ref Filt="IsMultiDigraph"/>. <P/>
+    in this case changes are made directly to <A>digraph</A>, which is then returned. 
+    The <A>digraph</A> must not belong to <Ref Filt="IsMultiDigraph"/>. <P/>
 
-    A new vertex <C>v</C> is added; <A>src</A> and <A>ran</A> are both 
-    removed. Any incident edges of <A>src</A> or <A>ran</A> are now 
-    incident to <C>v</C>, preserving their direction.
-    If <A>digraph</A> belongs to <C>HaveEdgeLabelsBeenAssigned</C>, edge labels are preserved. 
-    The edge label of <A>[src, ran]</A> is removed. 
+    The labels of any remaining edges will be preserved. <P/>
+
     Assigned vertex labels for <A>src</A> and <A>ran</A> are
-    combined into a list, and assigned to new vertex <C>v</C>. <P/>
+    combined into a list, and assigned to the new vertex <C>v</C>. <P/>
 
     If an edge <A>[src, src]</A> or <A>[ran, ran]</A> exists,
     a singular edge <C>[v, v]</C> is created. If edge <A>[ran, src]</A>
