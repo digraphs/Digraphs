@@ -26,6 +26,7 @@ jobs:
           - master
           - stable-4.11
           - stable-4.12
+          - stable-4.13
         pkgs-to-clone:
           - NautyTracesInterface
         ABI: ['']
