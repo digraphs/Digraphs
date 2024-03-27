@@ -661,19 +661,28 @@ end);
 
 InstallMethod(IsDistributiveLatticeDigraph, "for a digraph", [IsDigraph],
 function(D)
-  local N5, M3;
+  local M3;
+
+  if not IsLatticeDigraph(D) then
+    return false;
+  fi;
+
+  M3 := DigraphReflexiveTransitiveClosure(
+        Digraph([[2, 3, 4], [5], [5], [5], []]));
+
+  return IsModularLatticeDigraph(D) and
+       LatticeDigraphEmbedding(M3, D) = fail;
+end);
+
+InstallMethod(IsModularLatticeDigraph, "for a digraph", [IsDigraph],
+function(D)
+  local N5;
   if not IsLatticeDigraph(D) then
     return false;
   fi;
 
   N5 := DigraphReflexiveTransitiveClosure(
         Digraph([[2, 4], [3], [5], [5], []]));
-  M3 := DigraphReflexiveTransitiveClosure(
-        Digraph([[2, 3, 4], [5], [5], [5], []]));
 
-  if LatticeDigraphEmbedding(N5, D) <> fail or
-       LatticeDigraphEmbedding(M3, D) <> fail then
-    return false;
-  fi;
-  return true;
+  return LatticeDigraphEmbedding(N5, D) = fail;
 end);
