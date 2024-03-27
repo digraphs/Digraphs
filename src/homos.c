@@ -296,34 +296,35 @@ homo_hook_collect(void* user_param, uint16_t const nr, uint16_t const* map) {
 
 static bool is_initialized = false;  // did we call this method before?
 static void free_homos_data() {
-  if (!is_initialized) {
-    return;
+  if (is_initialized) {
+    free_digraph(DIGRAPH1);
+    free_digraph(DIGRAPH2);
+    free_graph(GRAPH1);
+    free_graph(GRAPH2);
+    free_bit_array(IMAGE_RESTRICT);
+    free_bit_array(ORB_LOOKUP);
+  
+    for (uint16_t i = 0; i < HOMOS_STRUCTURE_SIZE * 3; i++) {
+      bliss_digraphs_release(BLISS_GRAPH[i]);
+    }
+  
+    for (uint16_t i = 0; i < HOMOS_STRUCTURE_SIZE; i++) {
+      free_bit_array(REPS[i]);
+      free_bit_array(BIT_ARRAY_BUFFER[i]);
+      free_bit_array(MAP_UNDEFINED[i]);
+      free_perm_coll(STAB_GENS[i]);
+    }
+  
+    free(BLISS_GRAPH);
+    free(REPS);
+    free(BIT_ARRAY_BUFFER);
+    free(MAP_UNDEFINED);
+    free(STAB_GENS);
+    free_bit_array(VALS);
+    free_conditions(CONDITIONS);
+    free_schreier_sims(SCHREIER_SIMS);
+    is_initialized = false;
   }
-
-  free_digraph(DIGRAPH1);
-  free_digraph(DIGRAPH2);
-  free_graph(GRAPH1);
-  free_graph(GRAPH2);
-  free_bit_array(IMAGE_RESTRICT);
-  free_bit_array(ORB_LOOKUP);
-  for (uint16_t i = 0; i < HOMOS_STRUCTURE_SIZE * 3; i++) {
-    bliss_digraphs_release(BLISS_GRAPH[i]);
-  }
-  for (uint16_t i = 0; i < HOMOS_STRUCTURE_SIZE; i++) {
-    free_bit_array(REPS[i]);
-    free_bit_array(BIT_ARRAY_BUFFER[i]);
-    free_bit_array(MAP_UNDEFINED[i]);
-    free_perm_coll(STAB_GENS[i]);
-  }
-  free(BLISS_GRAPH);
-  free(REPS);
-  free(BIT_ARRAY_BUFFER);
-  free(MAP_UNDEFINED);
-  free(STAB_GENS);
-  free_bit_array(VALS);
-  free_conditions(CONDITIONS);
-  free_schreier_sims(SCHREIER_SIMS);
-  is_initialized = false;
 }
 
 static void get_automorphism_group_from_gap(Obj digraph_obj, PermColl* out) {
