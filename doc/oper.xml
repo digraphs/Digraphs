@@ -1959,6 +1959,7 @@ gap> D := DigraphByEdges(IsMutableDigraph, [[1, 2], [2, 3], [3, 4]]);
 <mutable digraph with 4 vertices, 3 edges>
 gap> DigraphVertexLabels(D);;  # setting vertex labels
 gap> DigraphContractEdge(D, [2, 3]);
+<mutable digraph with 3 vertices, 2 edges>
 gap> DigraphEdges(D);
 [ [ 1, 3 ], [ 3, 2 ] ]
 gap> DigraphVertexLabels(D);
