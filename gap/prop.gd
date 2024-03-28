@@ -51,6 +51,7 @@ DeclareProperty("IsJoinSemilatticeDigraph", IsDigraph);
 DeclareProperty("IsMeetSemilatticeDigraph", IsDigraph);
 DeclareProperty("IsPermutationDigraph", IsDigraph);
 DeclareProperty("IsDistributiveLatticeDigraph", IsDigraph);
+DeclareProperty("IsModularLatticeDigraph", IsDigraph);
 DeclareSynonymAttr("IsLatticeDigraph",
                    IsMeetSemilatticeDigraph and IsJoinSemilatticeDigraph);
 DeclareSynonymAttr("IsPreorderDigraph",
