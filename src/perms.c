@@ -21,17 +21,17 @@
 #include "digraphs-debug.h"  // for DIGRAPHS_ASSERT
 
 Perm new_perm(uint16_t const degree) {
-  DIGRAPHS_ASSERT(degree <= MAXVERTS);
+  DIGRAPHS_ASSERT(degree <= MACHINE_MAXVERTS);
   return malloc(degree * sizeof(uint16_t));
 }
 
 Perm new_perm_from_gap(Obj gap_perm_obj, uint16_t const degree) {
   UInt lmp = LargestMovedPointPerm(gap_perm_obj);
-  DIGRAPHS_ASSERT(lmp <= MAXVERTS);
-  if (lmp > MAXVERTS) {
+  DIGRAPHS_ASSERT(lmp <= MACHINE_MAXVERTS);
+  if (lmp > MACHINE_MAXVERTS) {
     ErrorQuit("expected permutations of degree at most %d, but got a "
               "permutation of degree %d",
-              MAXVERTS,
+              MACHINE_MAXVERTS,
               lmp);
   }
 
@@ -72,13 +72,10 @@ PermColl* new_perm_coll(uint16_t const capacity, uint16_t const degree) {
   return coll;
 }
 
-// free_perm_coll is not currently used, but kept in case it is required in the
-// future. JDM 2019
-
-// void free_perm_coll(PermColl* coll) {
-//   for (uint16_t i = 0; i < coll->size; i++) {
-//     free(coll->perms[i]);
-//   }
-//   free(coll->perms);
-//   free(coll);
-// }
+void free_perm_coll(PermColl* coll) {
+  for (uint16_t i = 0; i < coll->size; i++) {
+    free(coll->perms[i]);
+  }
+  free(coll->perms);
+  free(coll);
+}

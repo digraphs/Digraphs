@@ -128,10 +128,6 @@ gap> HomomorphismDigraphsFinder(gr1, gr1, fail, [], 1, 2, 0, [1, 2],
 > [], [[1, 2], [2]], [[1, 2]]);
 Error, the 2nd argument <partition> does not define a colouring of the vertice\
 s [1 .. 2], since it contains the vertex 2 more than once,
-gap> gr := CompleteDigraph(513);;
-gap> HomomorphismDigraphsFinder(gr, gr, fail, [], 1, fail, 0, [1 .. 513],
-> [], fail, fail);
-Error, the 1st argument <digraph1> must have at most 512 vertices, found 513,
 gap> HomomorphismDigraphsFinder(gr1, gr1, fail, [], 1, 2, 0, [1, 2],
 > [], [1, 2], [2, 1]);
 [ Transformation( [ 2, 1 ] ) ]
@@ -1001,6 +997,16 @@ fail
 gap> gr2 := Digraph([[], [], [], [], [4], []]);;
 gap> DigraphHomomorphism(gr1, gr2);
 Transformation( [ 1, 5, 4, 4, 5 ] )
+gap> DigraphHomomorphism(NullDigraph(1), NullDigraph(515));
+IdentityTransformation
+
+# Test bitarray behaviour outside of lookup table
+gap> DIGRAPHS_SET_BITARRAY_LOOKUP_SIZE(20);
+true
+gap> DigraphHomomorphism(NullDigraph(1), NullDigraph(23));
+IdentityTransformation
+gap> DIGRAPHS_SET_BITARRAY_LOOKUP_SIZE(NullDigraph(1));                                                                                             
+Error, the 1st argument <lookup_size> must be an integer.
 
 #  HomomorphismsDigraphs and HomomorphismsDigraphsRepresentatives
 gap> gr1 := Digraph([[], [3], []]);;
@@ -2140,8 +2146,6 @@ gap> HomomorphismDigraphsFinder(CycleDigraph(5),
 # More arg/error checks
 gap> HomomorphismDigraphsFinder(0);
 Error, there must be 11 or 12 arguments, found 1,
-gap> DigraphHomomorphism(NullDigraph(1), NullDigraph(513));
-Error, the 2nd argument <digraph2> must have at most 512 vertices, found 513,
 gap> HomomorphismDigraphsFinder(NullDigraph(1), NullDigraph(510), fail, [], 1,
 > false, 0, 0, 0, 0, 0);
 Error, the 6th argument <hint> must be an integer or fail, not boolean or fail\

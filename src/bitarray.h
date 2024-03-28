@@ -16,259 +16,130 @@
 #include <stdbool.h>  // for bool
 #include <stddef.h>   // for size_t
 #include <stdint.h>   // for uint16_t
-
+#include <stdlib.h>   // for calloc
 // GAP headers
 #include "compiled.h"  // for COUNT_TRUES_BLOCKS, Obj, . . .
 
 // Digraphs headers
 #include "digraphs-debug.h"  // for DIGRAPHS_ASSERT
-
 typedef UInt Block;
 
 #define NUMBER_BITS_PER_BLOCK (sizeof(Block) * CHAR_BIT)
 
-#ifndef MAXVERTS
-#define MAXVERTS 512
-#endif
+static bool lookups_initialised = false;
 
 #if SYS_IS_64_BIT
-// To avoid division and mod
-static size_t const NR_BLOCKS_LOOKUP[MAXVERTS + 1] = {
-    0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-    2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-    2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-    2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
-    3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
-    3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4,
-    4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
-    4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
-    4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
-    5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
-    5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6,
-    6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
-    6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
-    6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
-    7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
-    7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 8,
-    8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
-    8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
-    8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8};
-
-static size_t const REMAINDER[MAXVERTS + 1] = {
-    0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15, 16, 17, 18,
-    19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37,
-    38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56,
-    57, 58, 59, 60, 61, 62, 63, 0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11,
-    12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30,
-    31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49,
-    50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 0,  1,  2,  3,  4,
-    5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23,
-    24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42,
-    43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61,
-    62, 63, 0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15, 16,
-    17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35,
-    36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54,
-    55, 56, 57, 58, 59, 60, 61, 62, 63, 0,  1,  2,  3,  4,  5,  6,  7,  8,  9,
-    10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28,
-    29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47,
-    48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 0,  1,  2,
-    3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
-    22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40,
-    41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59,
-    60, 61, 62, 63, 0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14,
-    15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33,
-    34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52,
-    53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 0,  1,  2,  3,  4,  5,  6,  7,
-    8,  9,  10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26,
-    27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45,
-    46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 0};
-
-static size_t const QUOTIENT[MAXVERTS + 1] = {
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-    1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-    2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-    2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3,
-    3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
-    3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
-    3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
-    4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
-    4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5,
-    5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
-    5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
-    5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
-    6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
-    6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 7, 7,
-    7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
-    7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
-    7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 8};
-
-static const Block MASK[NUMBER_BITS_PER_BLOCK] = {0x1,
-                                                  0x2,
-                                                  0x4,
-                                                  0x8,
-                                                  0x10,
-                                                  0x20,
-                                                  0x40,
-                                                  0x80,
-                                                  0x100,
-                                                  0x200,
-                                                  0x400,
-                                                  0x800,
-                                                  0x1000,
-                                                  0x2000,
-                                                  0x4000,
-                                                  0x8000,
-                                                  0x10000,
-                                                  0x20000,
-                                                  0x40000,
-                                                  0x80000,
-                                                  0x100000,
-                                                  0x200000,
-                                                  0x400000,
-                                                  0x800000,
-                                                  0x1000000,
-                                                  0x2000000,
-                                                  0x4000000,
-                                                  0x8000000,
-                                                  0x10000000,
-                                                  0x20000000,
-                                                  0x40000000,
-                                                  0x80000000,
-                                                  0x100000000,
-                                                  0x200000000,
-                                                  0x400000000,
-                                                  0x800000000,
-                                                  0x1000000000,
-                                                  0x2000000000,
-                                                  0x4000000000,
-                                                  0x8000000000,
-                                                  0x10000000000,
-                                                  0x20000000000,
-                                                  0x40000000000,
-                                                  0x80000000000,
-                                                  0x100000000000,
-                                                  0x200000000000,
-                                                  0x400000000000,
-                                                  0x800000000000,
-                                                  0x1000000000000,
-                                                  0x2000000000000,
-                                                  0x4000000000000,
-                                                  0x8000000000000,
-                                                  0x10000000000000,
-                                                  0x20000000000000,
-                                                  0x40000000000000,
-                                                  0x80000000000000,
-                                                  0x100000000000000,
-                                                  0x200000000000000,
-                                                  0x400000000000000,
-                                                  0x800000000000000,
-                                                  0x1000000000000000,
-                                                  0x2000000000000000,
-                                                  0x4000000000000000,
-                                                  0x8000000000000000};
+#define SYSTEM_BIT_COUNT 64
 #else
-static size_t const NR_BLOCKS_LOOKUP[MAXVERTS + 1] = {
-    0,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,
-    1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  2,  2,  2,  2,  2,
-    2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,
-    2,  2,  2,  2,  2,  2,  2,  2,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,
-    3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,
-    3,  3,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,
-    4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  5,  5,  5,  5,
-    5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,
-    5,  5,  5,  5,  5,  5,  5,  5,  5,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,
-    6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,
-    6,  6,  6,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,
-    7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  8,  8,  8,
-    8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,
-    8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  9,  9,  9,  9,  9,  9,  9,  9,  9,
-    9,  9,  9,  9,  9,  9,  9,  9,  9,  9,  9,  9,  9,  9,  9,  9,  9,  9,  9,
-    9,  9,  9,  9,  10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10,
-    10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 11, 11,
-    11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11,
-    11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 12, 12, 12, 12, 12, 12, 12, 12,
-    12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12,
-    12, 12, 12, 12, 12, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13,
-    13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 14,
-    14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14,
-    14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 15, 15, 15, 15, 15, 15, 15,
-    15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15,
-    15, 15, 15, 15, 15, 15, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16,
-    16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16};
-
-static size_t const REMAINDER[MAXVERTS + 1] = {
-    0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15, 16, 17, 18,
-    19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 0,  1,  2,  3,  4,  5,
-    6,  7,  8,  9,  10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24,
-    25, 26, 27, 28, 29, 30, 31, 0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11,
-    12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30,
-    31, 0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15, 16, 17,
-    18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 0,  1,  2,  3,  4,
-    5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23,
-    24, 25, 26, 27, 28, 29, 30, 31, 0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10,
-    11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29,
-    30, 31, 0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15, 16,
-    17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 0,  1,  2,  3,
-    4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22,
-    23, 24, 25, 26, 27, 28, 29, 30, 31, 0,  1,  2,  3,  4,  5,  6,  7,  8,  9,
-    10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28,
-    29, 30, 31, 0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15,
-    16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 0,  1,  2,
-    3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
-    22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 0,  1,  2,  3,  4,  5,  6,  7,  8,
-    9,  10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27,
-    28, 29, 30, 31, 0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14,
-    15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 0,  1,
-    2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-    21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 0,  1,  2,  3,  4,  5,  6,  7,
-    8,  9,  10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26,
-    27, 28, 29, 30, 31, 0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13,
-    14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 0};
-
-static size_t const QUOTIENT[MAXVERTS + 1] = {
-    0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-    0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  1,  1,  1,  1,  1,
-    1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,
-    1,  1,  1,  1,  1,  1,  1,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,
-    2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,
-    2,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,
-    3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  4,  4,  4,  4,  4,
-    4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,
-    4,  4,  4,  4,  4,  4,  4,  4,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,
-    5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,
-    5,  5,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,
-    6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  7,  7,  7,  7,
-    7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,
-    7,  7,  7,  7,  7,  7,  7,  7,  7,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,
-    8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,
-    8,  8,  8,  9,  9,  9,  9,  9,  9,  9,  9,  9,  9,  9,  9,  9,  9,  9,  9,
-    9,  9,  9,  9,  9,  9,  9,  9,  9,  9,  9,  9,  9,  9,  9,  9,  10, 10, 10,
-    10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10,
-    10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 11, 11, 11, 11, 11, 11, 11, 11, 11,
-    11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11,
-    11, 11, 11, 11, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12,
-    12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 13, 13,
-    13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13,
-    13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 14, 14, 14, 14, 14, 14, 14, 14,
-    14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14,
-    14, 14, 14, 14, 14, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15,
-    15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 16};
-
-static const Block MASK[NUMBER_BITS_PER_BLOCK] = {
-    0x1,        0x2,       0x4,       0x8,       0x10,       0x20,
-    0x40,       0x80,      0x100,     0x200,     0x400,      0x800,
-    0x1000,     0x2000,    0x4000,    0x8000,    0x10000,    0x20000,
-    0x40000,    0x80000,   0x100000,  0x200000,  0x400000,   0x800000,
-    0x1000000,  0x2000000, 0x4000000, 0x8000000, 0x10000000, 0x20000000,
-    0x40000000, 0x80000000};
-
+#define SYSTEM_BIT_COUNT 32
 #endif
+
+extern size_t*  nr_blocks_lookup;
+extern size_t*  quotient_lookup;
+extern size_t*  remainder_lookup;
+extern Block*   mask_lookup;
+extern uint16_t lookup_size;
+
+#include <stdio.h>  // Include the standard I/O header for file operations
+
+static size_t calculate_quotient(size_t N) {
+  return (size_t) N / SYSTEM_BIT_COUNT;
+}
+
+static size_t calculate_number_of_blocks(size_t N) {
+  return (N + SYSTEM_BIT_COUNT - 1) / SYSTEM_BIT_COUNT;
+}
+
+static size_t calculate_remainder(size_t N) {
+  return (size_t) N % SYSTEM_BIT_COUNT;
+}
+
+static Block calculate_mask(size_t N) {
+  return (Block) 1 << N;
+}
+
+static void allocateNrBlocksLookup(uint16_t lookup_size) {
+  nr_blocks_lookup = (size_t*) calloc(lookup_size, sizeof(size_t));
+
+  for (uint16_t i = 0; i < lookup_size; i++) {
+    nr_blocks_lookup[i] = calculate_number_of_blocks(i);
+  }
+}
+
+static void allocateQuotientLookup(uint16_t lookup_size) {
+  quotient_lookup = (size_t*) calloc(lookup_size, sizeof(size_t));
+
+  for (uint16_t i = 0; i < lookup_size; i++) {
+    quotient_lookup[i] = calculate_quotient(i);
+  }
+}
+
+static void allocateRemainderLookup(uint16_t lookup_size) {
+  remainder_lookup = (size_t*) calloc(lookup_size, sizeof(size_t));
+
+  for (uint16_t i = 0; i < lookup_size; i++) {
+    remainder_lookup[i] = calculate_remainder(i);
+  }
+}
+
+static void allocateMaskLookup(uint16_t lookup_size) {
+  mask_lookup = (Block*) calloc(lookup_size, sizeof(Block));
+
+  for (uint16_t i = 0; i < lookup_size; i++) {
+    mask_lookup[i] = calculate_mask(i);
+  }
+}
+
+static void free_bitarray_lookups() {
+  free(mask_lookup);
+  free(remainder_lookup);
+  free(quotient_lookup);
+
+  lookups_initialised = false;
+}
+
+static void initialize_bitarray_lookups() {
+  if (!lookups_initialised) {
+    allocateNrBlocksLookup(lookup_size);
+    allocateQuotientLookup(lookup_size);
+    allocateRemainderLookup(lookup_size);
+    allocateMaskLookup(NUMBER_BITS_PER_BLOCK);
+
+    lookups_initialised = true;
+  }
+}
+
+// Allow users to set the bit array calculation lookup size
+Obj FuncSET_BITARRAY_LOOKUP_SIZE(Obj self, Obj args);
+
+static size_t get_number_of_blocks(size_t N) {
+  if (N < lookup_size) {
+    return nr_blocks_lookup[N];
+  } else {
+    return calculate_number_of_blocks(N);
+  }
+}
+
+static size_t get_remainder(size_t number) {
+  if (number < lookup_size) {
+    return remainder_lookup[number];
+  } else {
+    return calculate_remainder(number);
+  }
+}
+
+static size_t get_quotient(size_t number) {
+  if (number < lookup_size) {
+    return quotient_lookup[number];
+  } else {
+    return calculate_quotient(number);
+  }
+}
+
+static const Block get_mask(size_t N) {
+  DIGRAPHS_ASSERT(N < NUMBER_BITS_PER_BLOCK);
+  return mask_lookup[N];
+}
 
 struct bit_array_struct {
   uint16_t nr_bits;    // number of bits
@@ -292,7 +163,7 @@ static inline void init_bit_array(BitArray* const bit_array,
                                   uint16_t const  nr_bits) {
   DIGRAPHS_ASSERT(bit_array != NULL);
   DIGRAPHS_ASSERT(nr_bits <= bit_array->nr_bits);
-  uint16_t const nr_blocks = NR_BLOCKS_LOOKUP[nr_bits];
+  uint16_t const nr_blocks = get_number_of_blocks(nr_bits);
   if (val) {
     memset((void*) bit_array->blocks, ~0, (size_t) sizeof(Block) * nr_blocks);
   } else {
@@ -307,9 +178,9 @@ set_bit_array(BitArray* const bit_array, uint16_t const pos, bool const val) {
   DIGRAPHS_ASSERT(bit_array != NULL);
   DIGRAPHS_ASSERT(pos < bit_array->nr_bits);
   if (val) {
-    bit_array->blocks[QUOTIENT[pos]] |= MASK[REMAINDER[pos]];
+    bit_array->blocks[get_quotient(pos)] |= get_mask(get_remainder(pos));
   } else {
-    bit_array->blocks[QUOTIENT[pos]] &= ~MASK[REMAINDER[pos]];
+    bit_array->blocks[get_quotient(pos)] &= ~get_mask(get_remainder(pos));
   }
 }
 
@@ -319,7 +190,7 @@ static inline bool get_bit_array(BitArray const* const bit_array,
                                  uint16_t const        pos) {
   DIGRAPHS_ASSERT(bit_array != NULL);
   DIGRAPHS_ASSERT(pos < bit_array->nr_bits);
-  return bit_array->blocks[QUOTIENT[pos]] & MASK[REMAINDER[pos]];
+  return bit_array->blocks[get_quotient(pos)] & get_mask(get_remainder(pos));
 }
 
 //! Intersect the BitArray's pointed to by \p bit_array1 and \p bit_array2. The
@@ -333,7 +204,7 @@ static inline void intersect_bit_arrays(BitArray* const       bit_array1,
   DIGRAPHS_ASSERT(bit_array1->nr_blocks == bit_array2->nr_blocks);
   DIGRAPHS_ASSERT(nr_bits <= bit_array1->nr_bits);
   DIGRAPHS_ASSERT(nr_bits <= bit_array2->nr_bits);
-  uint16_t const nr_blocks = NR_BLOCKS_LOOKUP[nr_bits];
+  uint16_t const nr_blocks = get_number_of_blocks(nr_bits);
   for (uint16_t i = 0; i < nr_blocks; i++) {
     bit_array1->blocks[i] &= bit_array2->blocks[i];
   }
@@ -350,7 +221,7 @@ static inline void union_bit_arrays(BitArray* const       bit_array1,
   DIGRAPHS_ASSERT(bit_array1->nr_blocks == bit_array2->nr_blocks);
   DIGRAPHS_ASSERT(nr_bits <= bit_array1->nr_bits);
   DIGRAPHS_ASSERT(nr_bits <= bit_array2->nr_bits);
-  uint16_t const nr_blocks = NR_BLOCKS_LOOKUP[nr_bits];
+  uint16_t const nr_blocks = get_number_of_blocks(nr_bits);
   for (uint16_t i = 0; i < nr_blocks; i++) {
     bit_array1->blocks[i] |= bit_array2->blocks[i];
   }
@@ -366,7 +237,7 @@ static inline void complement_bit_arrays(BitArray* const       bit_array1,
   DIGRAPHS_ASSERT(bit_array1->nr_blocks == bit_array2->nr_blocks);
   DIGRAPHS_ASSERT(nr_bits <= bit_array1->nr_bits);
   DIGRAPHS_ASSERT(nr_bits <= bit_array2->nr_bits);
-  uint16_t const nr_blocks = NR_BLOCKS_LOOKUP[nr_bits];
+  uint16_t const nr_blocks = get_number_of_blocks(nr_bits);
   for (uint16_t i = 0; i < nr_blocks; i++) {
     bit_array1->blocks[i] &= ~bit_array2->blocks[i];
   }
@@ -382,7 +253,7 @@ static inline void copy_bit_array(BitArray* const       bit_array1,
   DIGRAPHS_ASSERT(bit_array1->nr_blocks == bit_array2->nr_blocks);
   DIGRAPHS_ASSERT(nr_bits <= bit_array1->nr_bits);
   DIGRAPHS_ASSERT(nr_bits <= bit_array2->nr_bits);
-  uint16_t const nr_blocks = NR_BLOCKS_LOOKUP[nr_bits];
+  uint16_t const nr_blocks = get_number_of_blocks(nr_bits);
   for (uint16_t i = 0; i < nr_blocks; i++) {
     bit_array1->blocks[i] = bit_array2->blocks[i];
   }
@@ -394,7 +265,7 @@ static inline uint16_t size_bit_array(BitArray const* const bit_array,
   DIGRAPHS_ASSERT(bit_array != NULL);
   DIGRAPHS_ASSERT(nr_bits <= bit_array->nr_bits);
   Block const*   blocks    = bit_array->blocks;
-  uint16_t const nr_blocks = NR_BLOCKS_LOOKUP[nr_bits];
+  uint16_t const nr_blocks = get_number_of_blocks(nr_bits);
   return COUNT_TRUES_BLOCKS(blocks, nr_blocks);
 }
 

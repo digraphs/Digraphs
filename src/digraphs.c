@@ -19,6 +19,7 @@
 #include <stdint.h>   // for uint64_t
 #include <stdlib.h>   // for NULL, free
 
+#include "bitarray.h"
 #include "cliques.h"
 #include "digraphs-debug.h"  // for DIGRAPHS_ASSERT
 #include "homos.h"           // for FuncHomomorphismDigraphsFinder
@@ -2313,6 +2314,11 @@ static StructGVarFunc GVarFuncs[] = {
      FuncSUBGRAPH_HOMEOMORPHIC_TO_K4,
      "src/planar.c:FuncSUBGRAPH_HOMEOMORPHIC_TO_K4"},
 
+    {"DIGRAPHS_SET_BITARRAY_LOOKUP_SIZE",
+     1,
+     "lookup_size",
+     FuncSET_BITARRAY_LOOKUP_SIZE,
+     "src/bitarray.c:FuncSET_BITARRAY_LOOKUP_SIZE"},
     {0, 0, 0, 0, 0} /* Finish with an empty entry */
 };
 

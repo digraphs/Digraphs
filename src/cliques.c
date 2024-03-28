@@ -22,7 +22,7 @@
 #include "conditions.h"      // for Conditions
 #include "digraphs-debug.h"  // for DIGRAPHS_ASSERT
 #include "homos-graphs.h"    // for Digraph, Graph, . . .
-#include "perms.h"           // for MAXVERTS, UNDEFINED, PermColl, Perm
+#include "perms.h"           // for UNDEFINED, PermColl, Perm
 
 ////////////////////////////////////////////////////////////////////////////////
 // Macros
@@ -59,6 +59,9 @@ extern Obj OnTuples;
 extern Obj Group;
 extern Obj ClosureGroup;
 
+#ifndef CLIQUES_STRUCTURE_SIZE
+uint16_t CLIQUES_STRUCTURE_SIZE = 0;
+#endif
 ////////////////////////////////////////////////////////////////////////////////
 // Global variables
 ////////////////////////////////////////////////////////////////////////////////
@@ -174,7 +177,7 @@ static void init_graph_from_digraph_obj(Graph* const graph, Obj digraph_obj) {
   UInt const nr      = DigraphNrVertices(digraph_obj);
   Obj        out     = FuncOutNeighbours(0L, digraph_obj);
   Obj        adj_mat = FuncADJACENCY_MATRIX(0L, digraph_obj);
-  DIGRAPHS_ASSERT(nr < MAXVERTS);
+  DIGRAPHS_ASSERT(nr < MACHINE_MAXVERTS);
   DIGRAPHS_ASSERT(IS_PLIST(adj_mat));
   DIGRAPHS_ASSERT(IS_PLIST(out));
   clear_graph(graph, nr);
@@ -194,6 +197,19 @@ static void init_graph_from_digraph_obj(Graph* const graph, Obj digraph_obj) {
   }
 }
 
+static bool is_initialized = false;
+
+static bool free_cliques_data(CliqueData* data) {
+  if (is_initialized) {
+    free_bit_array(data->clique);
+    free_conditions(data->try_);
+    free_conditions(data->ban);
+    free_conditions(data->to_try);
+    free_bit_array(data->temp_bitarray);
+    is_initialized = false;
+  }
+}
+
 // Initialise the global variables
 static bool init_data_from_args(Obj         digraph_obj,
                                 Obj         hook_obj,
@@ -203,21 +219,24 @@ static bool init_data_from_args(Obj         digraph_obj,
                                 Obj         max_obj,
                                 Obj*        group,
                                 CliqueData* data) {
-  static bool is_initialised = false;
-  if (!is_initialised) {
-    is_initialised = true;
+  if (!is_initialized
+      || DigraphNrVertices(digraph_obj) + 1 > CLIQUES_STRUCTURE_SIZE) {
+    free_cliques_data(data);
+    is_initialized         = true;
+    CLIQUES_STRUCTURE_SIZE = DigraphNrVertices(digraph_obj) + 1;
 
-    data->graph = new_graph(MAXVERTS);
+    data->graph = new_graph(CLIQUES_STRUCTURE_SIZE);
 
     // Currently Conditions are a nr1 x nr1 array of BitArrays, so both
     // values have to be set to MAXVERTS
-    data->clique = new_bit_array(MAXVERTS);
-    data->try_   = new_conditions(MAXVERTS, MAXVERTS);
-    data->ban    = new_conditions(MAXVERTS, MAXVERTS);
-    data->to_try = new_conditions(MAXVERTS, MAXVERTS);
+    data->clique = new_bit_array(CLIQUES_STRUCTURE_SIZE);
+    data->try_ = new_conditions(CLIQUES_STRUCTURE_SIZE, CLIQUES_STRUCTURE_SIZE);
+    data->ban  = new_conditions(CLIQUES_STRUCTURE_SIZE, CLIQUES_STRUCTURE_SIZE);
+    data->to_try =
+        new_conditions(CLIQUES_STRUCTURE_SIZE, CLIQUES_STRUCTURE_SIZE);
 
     data->orbit         = Fail;
-    data->temp_bitarray = new_bit_array(MAXVERTS);
+    data->temp_bitarray = new_bit_array(CLIQUES_STRUCTURE_SIZE);
   }
 
   uint16_t nr = DigraphNrVertices(digraph_obj);
@@ -477,10 +496,10 @@ Obj FuncDigraphsCliquesFinder(Obj self, Obj args) {
     ErrorQuit("the 1st argument <digraph> must be a digraph, not %s,",
               (Int) TNAM_OBJ(digraph_obj),
               0L);
-  } else if (DigraphNrVertices(digraph_obj) > MAXVERTS) {
+  } else if (DigraphNrVertices(digraph_obj) > MACHINE_MAXVERTS) {
     ErrorQuit("the 1st argument <digraph> must have at most %d vertices, "
               "found %d,",
-              MAXVERTS,
+              MACHINE_MAXVERTS,
               DigraphNrVertices(digraph_obj));
   }
   if (hook_obj == Fail) {
@@ -652,7 +671,7 @@ Obj FuncDigraphsCliquesFinder(Obj self, Obj args) {
   }
   // Check if include and exclude have empty intersection
   if (include_size != 0 && exclude_size != 0) {
-    bool lookup[MAXVERTS] = {false};
+    bool* lookup = calloc(CLIQUES_STRUCTURE_SIZE, sizeof(bool));
     for (UInt i = 1; i <= include_size; ++i) {
       lookup[INT_INTOBJ(ELM_LIST(include_obj, i)) - 1] = true;
     }
