@@ -23,6 +23,7 @@
 #include "digraphs-debug.h"  // for DIGRAPHS_ASSERT
 #include "homos.h"           // for FuncHomomorphismDigraphsFinder
 #include "planar.h"          // for FUNC_IS_PLANAR, . . .
+#include "safemalloc.h"
 
 #ifdef DIGRAPHS_WITH_INCLUDED_BLISS
 #include "bliss-0.73/bliss_C.h"  // for bliss_digraphs_release, . . .
@@ -194,7 +195,7 @@ static Obj FuncGABOW_SCC(Obj self, Obj digraph) {
 
   comps = NEW_PLIST_IMM(T_PLIST_TAB, n);
 
-  stack2 = malloc((4 * n + 2) * sizeof(UInt));
+  stack2 = safe_malloc((4 * n + 2) * sizeof(UInt));
   frames = stack2 + n + 1;
   end2   = 0;
 
@@ -302,7 +303,7 @@ static Obj FuncDIGRAPH_CONNECTED_COMPONENTS(Obj self, Obj digraph) {
     gid    = NEW_PLIST_IMM(T_PLIST_EMPTY, 0);
     gcomps = NEW_PLIST_IMM(T_PLIST_EMPTY, 0);
   } else {
-    id = malloc(n * sizeof(UInt));
+    id = safe_malloc(n * sizeof(UInt));
     for (i = 0; i < n; i++) {
       id[i] = i;
     }
@@ -318,7 +319,7 @@ static Obj FuncDIGRAPH_CONNECTED_COMPONENTS(Obj self, Obj digraph) {
     }
 
     // "Normalise" id, giving it sensible labels
-    nid     = malloc(n * sizeof(UInt));
+    nid     = safe_malloc(n * sizeof(UInt));
     nrcomps = 0;
     for (i = 0; i < n; i++) {
       f      = UF_FIND(id, i);
@@ -356,8 +357,8 @@ static Obj FuncIS_ACYCLIC_DIGRAPH(Obj self, Obj adj) {
   nr = LEN_PLIST(adj);
 
   // init the buf
-  ptr   = calloc(nr + 1, sizeof(UInt));
-  stack = malloc((2 * nr + 2) * sizeof(UInt));
+  ptr   = safe_calloc(nr + 1, sizeof(UInt));
+  stack = safe_malloc((2 * nr + 2) * sizeof(UInt));
 
   for (i = 1; i <= nr; i++) {
     nbs = ELM_PLIST(adj, i);
@@ -426,9 +427,9 @@ static Obj FuncDIGRAPH_LONGEST_DIST_VERTEX(Obj self, Obj adj, Obj start) {
     return INTOBJ_INT(0);
   }
 
-  ptr   = calloc(nr + 1, sizeof(UInt));
-  depth = calloc(nr + 1, sizeof(UInt));
-  stack = malloc((2 * nr + 2) * sizeof(UInt));
+  ptr   = safe_calloc(nr + 1, sizeof(UInt));
+  depth = safe_calloc(nr + 1, sizeof(UInt));
+  stack = safe_malloc((2 * nr + 2) * sizeof(UInt));
 
   level    = 1;
   stack[0] = i;
@@ -513,9 +514,9 @@ static Obj FuncDIGRAPH_TRANS_REDUCTION(Obj self, Obj D) {
   Obj const in_list = FuncDIGRAPH_IN_OUT_NBS(self, FuncOutNeighbours(self, D));
 
   // Create data structures needed for computation
-  UInt* ptr   = calloc(n + 1, sizeof(UInt));
-  bool* mat   = calloc(n * n, sizeof(bool));
-  UInt* stack = malloc((2 * n + 2) * sizeof(UInt));
+  UInt* ptr   = safe_calloc(n + 1, sizeof(UInt));
+  bool* mat   = safe_calloc(n * n, sizeof(bool));
+  UInt* stack = safe_malloc((2 * n + 2) * sizeof(UInt));
 
   // Start a depth-first search from each source of the digraph
   for (UInt i = 1; i <= n; i++) {
@@ -614,8 +615,8 @@ static Obj FuncDIGRAPH_PATH(Obj self, Obj adj, Obj u, Obj v) {
   nr     = LEN_PLIST(adj);
 
   // init the buf
-  ptr   = calloc(nr + 1, sizeof(UInt));
-  stack = malloc((2 * nr + 2) * sizeof(UInt));
+  ptr   = safe_calloc(nr + 1, sizeof(UInt));
+  stack = safe_malloc((2 * nr + 2) * sizeof(UInt));
 
   level    = 1;
   stack[0] = i;
@@ -683,8 +684,8 @@ Obj FuncIS_ANTISYMMETRIC_DIGRAPH(Obj self, Obj adj) {
   }
 
   // init the buf (is this correct length?)
-  ptr   = calloc(nr + 1, sizeof(UInt));
-  stack = malloc((4 * nr + 4) * sizeof(UInt));
+  ptr   = safe_calloc(nr + 1, sizeof(UInt));
+  stack = safe_malloc((4 * nr + 4) * sizeof(UInt));
 
   for (i = 1; i <= nr; i++) {
     nbs = ELM_PLIST(adj, i);
@@ -761,11 +762,11 @@ static Obj FuncIS_STRONGLY_CONNECTED_DIGRAPH(Obj self, Obj digraph) {
   }
 
   nextid = 1;
-  bag    = malloc(n * 4 * sizeof(UInt));
+  bag    = safe_malloc(n * 4 * sizeof(UInt));
   ptr1   = bag;
   ptr2   = bag + n;
   fptr   = bag + n * 2;
-  id     = calloc(n + 1, sizeof(UInt));
+  id     = safe_calloc(n + 1, sizeof(UInt));
 
   // first vertex v=1
   PLAIN_LIST(ELM_PLIST(digraph, 1));
@@ -827,8 +828,8 @@ static Obj FuncDIGRAPH_TOPO_SORT(Obj self, Obj adj) {
   }
 
   // init the buf
-  ptr   = calloc(nr + 1, sizeof(UInt));
-  stack = malloc((2 * nr + 2) * sizeof(UInt));
+  ptr   = safe_calloc(nr + 1, sizeof(UInt));
+  stack = safe_malloc((2 * nr + 2) * sizeof(UInt));
   count = 0;
 
   for (i = 1; i <= nr; i++) {
@@ -922,8 +923,8 @@ static Obj FuncDIGRAPH_SYMMETRIC_SPANNING_FOREST(Obj self, Obj adj) {
   }
 
   // init the buffer
-  ptr   = calloc(nr + 1, sizeof(UInt));
-  stack = malloc((2 * nr + 2) * sizeof(UInt));
+  ptr   = safe_calloc(nr + 1, sizeof(UInt));
+  stack = safe_malloc((2 * nr + 2) * sizeof(UInt));
 
   for (i = 1; i <= nr; i++) {
     // perform DFS only on still-undiscovered non-trivial connected components
@@ -1092,7 +1093,7 @@ static Obj FuncIS_MULTI_DIGRAPH(Obj self, Obj digraph) {
 
   adj  = FuncOutNeighbours(self, digraph);
   n    = DigraphNrVertices(digraph);
-  seen = calloc(n + 1, sizeof(UInt));
+  seen = safe_calloc(n + 1, sizeof(UInt));
 
   for (i = 1; i <= n; i++) {
     adji = ELM_PLIST(adj, i);
@@ -1165,7 +1166,7 @@ static Obj FLOYD_WARSHALL(Obj digraph,
   }
 
   // Initialise the n x n matrix with val1 and val2
-  dist = malloc(n * n * sizeof(Int));
+  dist = safe_malloc(n * n * sizeof(Int));
   for (i = 0; i < n * n; i++) {
     dist[i] = val1;
   }
@@ -1188,7 +1189,7 @@ static Obj FLOYD_WARSHALL(Obj digraph,
 
   if (copy) {
     // This is the special case for IS_TRANSITIVE_DIGRAPH
-    adj = malloc(n * n * sizeof(Int));
+    adj = safe_malloc(n * n * sizeof(Int));
     for (i = 0; i < n * n; i++) {
       adj[i] = dist[i];
     }
@@ -1415,7 +1416,7 @@ static Obj FuncDIGRAPH_EQUALS(Obj self, Obj digraph1, Obj digraph2) {
   out1 = FuncOutNeighbours(self, digraph1);
   out2 = FuncOutNeighbours(self, digraph2);
 
-  buf = calloc(n1, sizeof(Int));
+  buf = safe_calloc(n1, sizeof(Int));
 
   // Compare OutNeighbours of each vertex in turn
   for (i = 1; i <= n1; i++) {
@@ -1522,7 +1523,7 @@ static Obj FuncDIGRAPH_LT(Obj self, Obj digraph1, Obj digraph2) {
   out1 = FuncOutNeighbours(self, digraph1);
   out2 = FuncOutNeighbours(self, digraph2);
 
-  buf = calloc(n1, sizeof(Int));
+  buf = safe_calloc(n1, sizeof(Int));
 
   // Compare Sorted(out1[i]) and Sorted(out2[i]) for each vertex i
   for (i = 1; i <= n1; i++) {

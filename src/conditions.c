@@ -17,16 +17,17 @@
 
 // Digraphs headers
 #include "digraphs-debug.h"  // for DIGRAPHS_ASSERT
+#include "safemalloc.h"
 
 Conditions* new_conditions(uint16_t const nr1, uint16_t const nr2) {
   DIGRAPHS_ASSERT(nr1 != 0);
   DIGRAPHS_ASSERT(nr2 != 0);
-  Conditions* conditions = malloc(sizeof(Conditions));
+  Conditions* conditions = safe_malloc(sizeof(Conditions));
 
-  conditions->bit_array = malloc(sizeof(BitArray*) * nr1 * nr1);
-  conditions->changed   = malloc(nr1 * (nr1 + 1) * sizeof(uint16_t));
-  conditions->height    = malloc(nr1 * sizeof(uint16_t));
-  conditions->sizes     = malloc(nr1 * nr1 * sizeof(uint16_t));
+  conditions->bit_array = safe_malloc(sizeof(BitArray*) * nr1 * nr1);
+  conditions->changed   = safe_malloc(nr1 * (nr1 + 1) * sizeof(uint16_t));
+  conditions->height    = safe_malloc(nr1 * sizeof(uint16_t));
+  conditions->sizes     = safe_malloc(nr1 * nr1 * sizeof(uint16_t));
   conditions->nr1       = nr1;
   conditions->nr2       = nr2;
 
