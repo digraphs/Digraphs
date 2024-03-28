@@ -1467,17 +1467,18 @@ function(graphData, r)
         
         NormalizeWhitespace(adjacencyPart);  # Remove extra spaces
         adjacencyPart := ReplacedString(adjacencyPart, ".", "");  
+        adjacencyPart := ReplacedString(adjacencyPart, ";", "");
         connectedTo := List(SplitString(adjacencyPart, " "), x -> Int(x));
         connectedTo := Filtered(connectedTo, y -> IsInt(y));  # Ensure only integers are included
         connectedTo := List(connectedTo, x -> x - r.dollarValue + 1);  # Adjust the vertex numbering to start at 1
         len := Length(connectedTo);
         connectedTo := Filtered(connectedTo, x -> x<=r.nValue);  # Ensure the vertex is within the range of the number of vertices
-
         if len <> Length(connectedTo) then
           Info(InfoWarning, 1, "Illegal edges have been removed");
         fi;
 
         Append(edgeList[vertex], connectedTo);
+        edgeList[vertex] := DuplicateFreeList(edgeList[vertex]);
     od;
 
 
