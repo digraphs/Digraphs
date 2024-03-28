@@ -944,15 +944,14 @@ gap> ReadDreadnautGraph("fakedir.dre");
 Error, cannot open the file given as the 1st argument <name>,
 gap> filename := Concatenation(DIGRAPHS_Dir(), "tst/out/bad.dre");;
 gap> ReadDreadnautGraph(filename);
-#I  Illegal edges have been removed
 <immutable digraph with 3 vertices, 1 edge>
 gap> filename := Concatenation(DIGRAPHS_Dir(), "tst/out/space.dre");;
 gap> ReadDreadnautGraph(filename);
-yes
+<immutable digraph with 5 vertices, 3 edges>
 gap> filename := Concatenation(DIGRAPHS_Dir(), "tst/out/good.dre");;
 gap> ReadDreadnautGraph(filename);
 <immutable digraph with 5 vertices, 6 edges>
-gap> Exec("rm -f tmp.dre");
+gap> Exec("rm -f temp.dre");
 
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(D);
