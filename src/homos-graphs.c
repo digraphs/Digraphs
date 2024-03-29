@@ -14,25 +14,13 @@
 #include <stdlib.h>  // for free, malloc, NULL
 
 // GAP headers
-#include "compiled.h"  // for Obj, Int
+#include "gap-includes.h"  // for Obj, Int
 
 // Digraphs headers
+#include "bliss-includes.h"   // for bliss stuff
 #include "digraphs-config.h"  // for DIGRAPHS_WITH_INCLUDED_BLISS
 #include "digraphs-debug.h"   // for DIGRAPHS_ASSERT
 #include "schreier-sims.h"    // for PERM_DEGREE
-
-// Bliss headers
-#ifdef DIGRAPHS_WITH_INCLUDED_BLISS
-#include "bliss-0.73/bliss_C.h"  // for bliss_digraphs_release, . . .
-#else
-#include "bliss/bliss_C.h"
-#define bliss_digraphs_add_edge bliss_add_edge
-#define bliss_digraphs_new bliss_new
-#define bliss_digraphs_add_vertex bliss_add_vertex
-#define bliss_digraphs_find_canonical_labeling bliss_find_canonical_labeling
-#define bliss_digraphs_release bliss_release
-#define bliss_digraphs_find_automorphisms bliss_find_automorphisms
-#endif
 
 extern Obj GeneratorsOfGroup;
 

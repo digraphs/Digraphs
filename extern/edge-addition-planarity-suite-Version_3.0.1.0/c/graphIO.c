@@ -3,6 +3,14 @@ Copyright (c) 1997-2020, John M. Boyer
 All rights reserved.
 See the LICENSE.TXT file for licensing information.
 */
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wstrict-prototypes"
+#pragma clang diagnostic ignored "-Wmissing-prototypes"
+#pragma clang diagnostic ignored "-Wdeprecated-non-prototype"
+#pragma clang diagnostic ignored "-Wincompatible-pointer-types-discards-qualifiers"
+#pragma clang diagnostic ignored "-Wformat-nonliteral"
+#endif
 
 #include <stdlib.h>
 #include <string.h>
@@ -752,3 +760,6 @@ char *_MakeLogStr5(char *format, int one, int two, int three, int four, int five
 	sprintf(LogStr, format, one, two, three, four, five);
 	return LogStr;
 }
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif

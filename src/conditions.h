@@ -17,7 +17,7 @@
 #include <string.h>   // for NULL, memcpy, size_t
 
 // GAP headers
-#include "compiled.h"  // for ALWAYS_INLINE
+#include "gap-includes.h"  // for ALWAYS_INLINE
 
 // Digraphs headers
 #include "bitarray.h"        // for BitArray, intersect_bit_arrays, size_b...

@@ -16,11 +16,12 @@
 #define DIGRAPHS_SRC_DIGRAPHS_H_
 
 // GAP headers
-#include "compiled.h"  // for Obj, Int
+#include "gap-includes.h"  // for Obj, Int
 
 Int DigraphNrVertices(Obj D);
 Obj FuncOutNeighbours(Obj self, Obj D);
 Obj FuncIS_ANTISYMMETRIC_DIGRAPH(Obj self, Obj D);
+Obj FuncADJACENCY_MATRIX(Obj self, Obj D);
 
 Int DigraphNrEdges(Obj digraph);
 Obj DigraphSource(Obj digraph);

@@ -4,6 +4,12 @@ All rights reserved.
 See the LICENSE.TXT file for licensing information.
 */
 
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wstrict-prototypes"
+#pragma clang diagnostic ignored "-Wmissing-prototypes"
+#pragma clang diagnostic ignored "-Wdeprecated-non-prototype"
+#endif
 #define GRAPHISOLATOR_C
 
 #include "graph.h"
@@ -823,3 +829,6 @@ int  _DeleteUnmarkedVerticesAndEdges(graphP theGraph)
 
      return OK;
 }
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
