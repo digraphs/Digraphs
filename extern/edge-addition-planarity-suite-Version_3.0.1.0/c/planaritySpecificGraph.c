@@ -4,6 +4,13 @@ All rights reserved.
 See the LICENSE.TXT file for licensing information.
 */
 
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wstrict-prototypes"
+#pragma clang diagnostic ignored "-Wmissing-prototypes"
+#pragma clang diagnostic ignored "-Wdeprecated-non-prototype"
+#pragma clang diagnostic ignored "-Wincompatible-pointer-types-discards-qualifiers"
+#endif
 #include "planarity.h"
 
 /****************************************************************************
@@ -174,3 +181,6 @@ void WriteAlgorithmResults(graphP theGraph, int Result, char command, platform_t
 			GetAlgorithmName(command), platform_GetDuration(start,end));
 	Message(Line);
 }
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif

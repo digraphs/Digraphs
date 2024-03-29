@@ -20,6 +20,12 @@
 #include "digraphs.h"        // for DigraphNrVertices, DigraphNrEdges, . . .
 
 // edge-addition-planarity-suite headers
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored \
+    "-Wincompatible-pointer-types-discards-qualifiers"
+#pragma clang diagnostic ignored "-Wstrict-prototypes"
+#endif
 #ifdef DIGRAPHS_WITH_INCLUDED_PLANARITY
 #include "c/graph.h"
 #include "c/graphK23Search.h"
@@ -30,6 +36,9 @@
 #include "planarity/graphK23Search.h"
 #include "planarity/graphK33Search.h"
 #include "planarity/graphK4Search.h"
+#endif
+#if defined(__clang__)
+#pragma clang diagnostic pop
 #endif
 
 // Forward declaration of the main function in this file.

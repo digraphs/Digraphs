@@ -6,6 +6,13 @@ See the LICENSE.TXT file for licensing information.
 
 #include "graph.h"
 
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wstrict-prototypes"
+#pragma clang diagnostic ignored "-Wmissing-prototypes"
+#pragma clang diagnostic ignored "-Wdeprecated-non-prototype"
+#endif
+
 /* Imported functions */
 
 extern void _ClearVisitedFlags(graphP);
@@ -194,3 +201,6 @@ isolatorContextP IC = &theGraph->IC;
 
      return OK;
 }
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif

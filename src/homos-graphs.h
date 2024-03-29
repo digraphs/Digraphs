@@ -17,19 +17,9 @@
 
 // Digraphs headers
 #include "bitarray.h"        // for BitArray
+#include "bliss-includes.h"  // for bliss stuff
 #include "digraphs-debug.h"  // for DIGRAPHS_ASSERT
 #include "perms.h"           // for PermColl
-
-#ifdef DIGRAPHS_WITH_INCLUDED_BLISS
-#include "bliss-0.73/bliss_C.h"  // for bliss_digraphs_release, . . .
-#else
-#include "bliss/bliss_C.h"
-#define bliss_digraphs_add_edge bliss_add_edge
-#define bliss_digraphs_new bliss_new
-#define bliss_digraphs_add_vertex bliss_add_vertex
-#define bliss_digraphs_find_canonical_labeling bliss_find_canonical_labeling
-#define bliss_digraphs_release bliss_release
-#endif
 
 ////////////////////////////////////////////////////////////////////////
 // Directed graphs (digraphs)

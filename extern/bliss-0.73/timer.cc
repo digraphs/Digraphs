@@ -21,6 +21,11 @@
   along with bliss.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wold-style-cast"
+#endif
+
 namespace bliss_digraphs {
 
 static const double numTicksPerSec = (double)(sysconf(_SC_CLK_TCK));
@@ -53,3 +58,6 @@ double Timer::get_duration()
 }
 
 } // namespace bliss_digraphs
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif

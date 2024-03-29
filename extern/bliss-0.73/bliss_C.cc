@@ -25,6 +25,12 @@ extern "C" {
   along with bliss.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wold-style-cast"
+#pragma clang diagnostic ignored "-Wsign-compare"
+#endif
+
 struct bliss_digraphs_graph_struct {
   bliss_digraphs::Graph* g;
 };
@@ -229,3 +235,7 @@ void bliss_digraphs_free_blissstats(BlissStats *stats)
     free(stats->group_size);
 #endif
 }
+
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif

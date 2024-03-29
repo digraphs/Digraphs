@@ -19,21 +19,11 @@
 #include <stdint.h>   // for uint64_t
 #include <stdlib.h>   // for NULL, free
 
+#include "bliss-includes.h"  // for bliss stuff
 #include "cliques.h"
 #include "digraphs-debug.h"  // for DIGRAPHS_ASSERT
 #include "homos.h"           // for FuncHomomorphismDigraphsFinder
 #include "planar.h"          // for FUNC_IS_PLANAR, . . .
-
-#ifdef DIGRAPHS_WITH_INCLUDED_BLISS
-#include "bliss-0.73/bliss_C.h"  // for bliss_digraphs_release, . . .
-#else
-#include "bliss/bliss_C.h"
-#define bliss_digraphs_add_edge bliss_add_edge
-#define bliss_digraphs_new bliss_new
-#define bliss_digraphs_add_vertex bliss_add_vertex
-#define bliss_digraphs_find_canonical_labeling bliss_find_canonical_labeling
-#define bliss_digraphs_release bliss_release
-#endif
 
 #undef PACKAGE
 #undef PACKAGE_BUGREPORT
@@ -72,7 +62,7 @@ static inline bool IsAttributeStoringRep(Obj o) {
 
 /*************************************************************************/
 
-Obj FuncDigraphNrVertices(Obj self, Obj D) {
+static Obj FuncDigraphNrVertices(Obj self, Obj D) {
   return INTOBJ_INT(DigraphNrVertices(D));
 }
 
@@ -96,7 +86,7 @@ Obj FuncOutNeighbours(Obj self, Obj D) {
   }
 }
 
-Obj FuncOutNeighboursFromSourceRange(Obj self, Obj N, Obj src, Obj ran) {
+static Obj FuncOutNeighboursFromSourceRange(Obj self, Obj N, Obj src, Obj ran) {
   DIGRAPHS_ASSERT(LEN_LIST(src) == LEN_LIST(ran));
   Int n = INT_INTOBJ(N);
   if (n == 0) {
@@ -1260,7 +1250,7 @@ static Obj FLOYD_WARSHALL(Obj digraph,
   return out;
 }
 
-void FW_FUNC_SHORTEST_DIST(Int** dist, Int i, Int j, Int k, Int n) {
+static void FW_FUNC_SHORTEST_DIST(Int** dist, Int i, Int j, Int k, Int n) {
   if ((*dist)[i * n + k] != -1 && (*dist)[k * n + j] != -1) {
     if ((*dist)[i * n + j] == -1
         || (*dist)[i * n + j] > (*dist)[i * n + k] + (*dist)[k * n + j]) {
@@ -1279,7 +1269,7 @@ static Obj FuncDIGRAPH_DIAMETER(Obj self, Obj digraph) {
       digraph, FW_FUNC_SHORTEST_DIST, -1, 1, false, true, true);
 }
 
-void FW_FUNC_TRANS_CLOSURE(Int** dist, Int i, Int j, Int k, Int n) {
+static void FW_FUNC_TRANS_CLOSURE(Int** dist, Int i, Int j, Int k, Int n) {
   if ((*dist)[i * n + k] != 0 && (*dist)[k * n + j] != 0) {
     (*dist)[i * n + j] = 1;
   }
@@ -1295,7 +1285,8 @@ static Obj FuncDIGRAPH_TRANS_CLOSURE(Obj self, Obj digraph) {
       digraph, FW_FUNC_TRANS_CLOSURE, 0, 1, false, false, false);
 }
 
-void FW_FUNC_REFLEX_TRANS_CLOSURE(Int** dist, Int i, Int j, Int k, Int n) {
+static void
+FW_FUNC_REFLEX_TRANS_CLOSURE(Int** dist, Int i, Int j, Int k, Int n) {
   if ((i == j) || ((*dist)[i * n + k] != 0 && (*dist)[k * n + j] != 0)) {
     (*dist)[i * n + j] = 1;
   }
@@ -1359,7 +1350,7 @@ static Obj FuncRANDOM_MULTI_DIGRAPH(Obj self, Obj nn, Obj mm) {
   return adj;
 }
 
-bool EqJumbledPlists(Obj l, Obj r, Int nr, Int* buf) {
+static bool EqJumbledPlists(Obj l, Obj r, Int nr, Int* buf) {
   bool eq;
   Int  j, jj;
 
@@ -1440,7 +1431,7 @@ static Obj FuncDIGRAPH_EQUALS(Obj self, Obj digraph1, Obj digraph2) {
   return True;
 }
 
-Int LTJumbledPlists(Obj l, Obj r, Int nr1, Int nr2, Int* buf, Int n) {
+static Int LTJumbledPlists(Obj l, Obj r, Int nr1, Int nr2, Int* buf, Int n) {
   bool eq;
   Int  j, jj, min;
 
@@ -1564,7 +1555,7 @@ static Obj FuncDIGRAPH_LT(Obj self, Obj digraph1, Obj digraph2) {
 
 // bliss
 
-BlissGraph* buildBlissMultiDigraph(Obj digraph) {
+static BlissGraph* buildBlissMultiDigraph(Obj digraph) {
   UInt        n, i, j, k, l, nr;
   Obj         adji, adj;
   BlissGraph* graph;
@@ -1588,7 +1579,8 @@ BlissGraph* buildBlissMultiDigraph(Obj digraph) {
 }
 
 // TODO: document mult (and everything else)
-BlissGraph* buildBlissDigraph(Obj digraph, Obj vert_colours, Obj edge_colours) {
+static BlissGraph*
+buildBlissDigraph(Obj digraph, Obj vert_colours, Obj edge_colours) {
   uint64_t    colour, mult, num_vc, num_ec, n, i, j, k, nr;
   Obj         adjj, adj;
   BlissGraph* graph;
@@ -1683,10 +1675,9 @@ BlissGraph* buildBlissDigraph(Obj digraph, Obj vert_colours, Obj edge_colours) {
     for (k = 1; k <= nr; k++) {
       uint64_t w = INT_INTOBJ(ELM_PLIST(adjj, k));
       for (i = 0; i < num_layers; i++) {
-        uint64_t colour =
-            edge_colours != Fail
-                ? INT_INTOBJ(ELM_LIST(ELM_LIST(edge_colours, j), k))
-                : 1;
+        colour = edge_colours != Fail
+                     ? INT_INTOBJ(ELM_LIST(ELM_LIST(edge_colours, j), k))
+                     : 1;
         if ((1 << i) & colour) {
           bliss_digraphs_add_edge(graph,
                                   i * mult * n + (j - 1),
@@ -1698,7 +1689,7 @@ BlissGraph* buildBlissDigraph(Obj digraph, Obj vert_colours, Obj edge_colours) {
   return graph;
 }
 
-BlissGraph* buildBlissMultiDigraphWithColours(Obj digraph, Obj colours) {
+static BlissGraph* buildBlissMultiDigraphWithColours(Obj digraph, Obj colours) {
   UInt        n, i, j, k, l, nr;
   Obj         adji, adj;
   BlissGraph* graph;
@@ -1736,9 +1727,9 @@ BlissGraph* buildBlissMultiDigraphWithColours(Obj digraph, Obj colours) {
   return graph;
 }
 
-void digraph_hook_function(void*               user_param,
-                           unsigned int        N,
-                           const unsigned int* aut) {
+static void digraph_hook_function(void*               user_param,
+                                  unsigned int        N,
+                                  const unsigned int* aut) {
   UInt4* ptr;
   Obj    p, gens;
   UInt   i, n;
@@ -1817,9 +1808,9 @@ static Obj FuncDIGRAPH_AUTOMORPHISMS(Obj self,
 }
 
 // user_param = [vertex perms, nr vertices, edge perms, nr edges]
-void multidigraph_hook_function(void*               user_param,
-                                unsigned int        N,
-                                const unsigned int* aut) {
+static void multidigraph_hook_function(void*               user_param,
+                                       unsigned int        N,
+                                       const unsigned int* aut) {
   UInt4* ptr;
   Obj    p, gens;
   UInt   i, n, m;
@@ -1857,9 +1848,9 @@ void multidigraph_hook_function(void*               user_param,
 }
 
 // user_param = [vertex perms, nr vertices, edge perms, nr edges]
-void multidigraph_colours_hook_function(void*               user_param,
-                                        unsigned int        N,
-                                        const unsigned int* aut) {
+static void multidigraph_colours_hook_function(void*               user_param,
+                                               unsigned int        N,
+                                               const unsigned int* aut) {
   UInt4* ptr;
   Obj    p, gens;
   UInt   i, n, m;
@@ -2374,11 +2365,18 @@ static StructInitInfo module = {
     .postRestore = 0};
 
 #ifndef DIGRAPHSSTATIC
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wmissing-prototypes"
+#endif
 StructInitInfo* Init__Dynamic(void) {
   return &module;
 }
-#endif
 
 StructInitInfo* Init__digraphs(void) {
   return &module;
 }
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
+#endif

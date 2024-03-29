@@ -68,7 +68,7 @@ AS_IF([ test "$enable_code_coverage" = "yes" ], [
 ])
 
 
-# Enable compiler warnings 
+# Enable compiler warnings
 
 AC_ARG_ENABLE([compile-warnings],
     [AS_HELP_STRING([--enable-compile-warnings], [enable compiler warnings])],
@@ -104,7 +104,7 @@ AX_CHECK_BLISS
 
 # Check whether to use -mpopcnt and __builtin_ctzl
 AC_ARG_WITH([intrinsics],
-            [AS_HELP_STRING([--without-intrinsics], 
+            [AS_HELP_STRING([--without-intrinsics],
                             [do not use compiler intrinsics even if available])]
            )
 

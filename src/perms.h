@@ -22,7 +22,7 @@
 #include "digraphs-debug.h"  // for DIGRAPHS_ASSERT
 
 // GAP headers
-#include "compiled.h"
+#include "gap-includes.h"
 
 #define MAXVERTS 512
 #define UNDEFINED MAXVERTS + 1

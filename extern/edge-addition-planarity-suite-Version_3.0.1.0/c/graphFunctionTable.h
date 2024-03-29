@@ -16,6 +16,13 @@ extern "C" {
        also initialize them in _InitFunctionTable() in graphUtils.c.
 */
 
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wstrict-prototypes"
+#pragma clang diagnostic ignored "-Wmissing-prototypes"
+#pragma clang diagnostic ignored "-Wdeprecated-non-prototype"
+#endif
+
 typedef struct
 {
         // These function pointers allow extension modules to overload some of
@@ -56,8 +63,13 @@ typedef struct
 
 typedef graphFunctionTable * graphFunctionTableP;
 
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
+
 #ifdef __cplusplus
 }
 #endif
 
 #endif
+

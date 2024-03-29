@@ -16,7 +16,7 @@
 #define MIN(a, b) (a < b ? a : b)
 
 // GAP headers
-#include "compiled.h"
+#include "gap-includes.h"
 
 Obj FuncHomomorphismDigraphsFinder(Obj self, Obj args);
 

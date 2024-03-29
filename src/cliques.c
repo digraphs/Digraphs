@@ -15,7 +15,7 @@
 #include <stdlib.h>   // for malloc, NULL
 
 // GAP headers
-#include "compiled.h"
+#include "gap-includes.h"
 
 // Digraphs package headers
 #include "bitarray.h"        // for BitArray
@@ -171,9 +171,8 @@ static void get_orbit_reps_bitarray(BitArray*   bit_array,
 static void init_graph_from_digraph_obj(Graph* const graph, Obj digraph_obj) {
   DIGRAPHS_ASSERT(graph != NULL);
   DIGRAPHS_ASSERT(CALL_1ARGS(IsDigraph, digraph_obj) == True);
-  UInt const nr      = DigraphNrVertices(digraph_obj);
-  Obj        out     = FuncOutNeighbours(0L, digraph_obj);
-  Obj        adj_mat = FuncADJACENCY_MATRIX(0L, digraph_obj);
+  Int const nr      = DigraphNrVertices(digraph_obj);
+  Obj       adj_mat = FuncADJACENCY_MATRIX(0L, digraph_obj);
   DIGRAPHS_ASSERT(nr < MAXVERTS);
   DIGRAPHS_ASSERT(IS_PLIST(adj_mat));
   DIGRAPHS_ASSERT(IS_PLIST(out));
@@ -578,15 +577,15 @@ Obj FuncDigraphsCliquesFinder(Obj self, Obj args) {
                 (Int) TNAM_OBJ(aut_grp_obj),
                 0L);
     }
-    Obj  gens = CALL_1ARGS(GeneratorsOfGroup, aut_grp_obj);
-    UInt lmp  = INT_INTOBJ(CALL_1ARGS(LargestMovedPointPerms, gens));
+    Obj gens = CALL_1ARGS(GeneratorsOfGroup, aut_grp_obj);
+    Int lmp  = INT_INTOBJ(CALL_1ARGS(LargestMovedPointPerms, gens));
     if (lmp > 0 && LEN_LIST(gens) >= lmp) {
       ErrorQuit("expected at most %d generators in the 9th argument "
                 "but got %d,",
                 lmp - 1,
                 LEN_LIST(gens));
     }
-    for (UInt i = 1; i <= LEN_LIST(gens); ++i) {
+    for (Int i = 1; i <= LEN_LIST(gens); ++i) {
       if (CALL_2ARGS(IsDigraphAutomorphism, digraph_obj, ELM_LIST(gens, i))
           != True) {
         ErrorQuit("expected group of automorphisms, but found a "
@@ -603,7 +602,7 @@ Obj FuncDigraphsCliquesFinder(Obj self, Obj args) {
   Obj gens = CALL_1ARGS(GeneratorsOfGroup, aut_grp_obj);
   DIGRAPHS_ASSERT(IS_LIST(gens));
   DIGRAPHS_ASSERT(LEN_LIST(gens) > 0);
-  for (UInt i = 1; i <= LEN_LIST(gens); ++i) {
+  for (Int i = 1; i <= LEN_LIST(gens); ++i) {
     if (include_obj != Fail
         && CALL_2ARGS(IsSubset,
                       include_obj,
@@ -672,7 +671,7 @@ Obj FuncDigraphsCliquesFinder(Obj self, Obj args) {
       (limit_obj == Infinity ? SMALLINTLIMIT : INT_INTOBJ(limit_obj));
   bool max = (max_obj == True ? true : false);
 
-  static CliqueData data = {};
+  static CliqueData data;
   // Initialise all the variable which will be used to carry out the recursion
   if (!init_data_from_args(digraph_obj,
                            hook_obj,
