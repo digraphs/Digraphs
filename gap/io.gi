@@ -1439,7 +1439,7 @@ function(graphData, r)
 
     # Initialize an empty list to hold the edges
     edgeList := List([1..r.nValue], x -> []);
-    EOL := fail;
+    EOL := false;
     lastVertex := fail;
 
     for i in [1..Length(lines)] do
@@ -1458,17 +1458,13 @@ function(graphData, r)
         parts := SplitString(line, ":");
 
         if Length(parts) = 1 then
-          if PositionSublist(line, ":") <> fail then
-            continue;
-          else
-            if EOL = fail then
+            if EOL = true then
               Info(InfoWarning, 1, "Ignoring line ", i, " due to formatting error.");
               continue;
             else
               vertex := lastVertex;
               adjacencyPart := parts[1];
             fi;
-          fi;
         else
           vertex := parts[1];
           NormalizeWhitespace(vertex);
@@ -1491,7 +1487,7 @@ function(graphData, r)
 
         Append(edgeList[vertex], connectedTo);
         edgeList[vertex] := DuplicateFreeList(edgeList[vertex]);
-        vertex := lastVertex;
+        lastVertex := vertex;
     od;
 
 
@@ -1543,7 +1539,7 @@ function(name)
     Info(InfoWarning, 1, "The vertex numbering in the dreadnaut file does not start at 1, but will be read in as such.");
   fi;
 
-  if r.dExists <> fail then
+  if r.dExists then
     return Digraph(edgeList);
   else
     return DigraphSymmetricClosure(Digraph(edgeList));
