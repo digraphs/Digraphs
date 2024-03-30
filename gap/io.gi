@@ -1432,14 +1432,15 @@ end);
 
 BindGlobal("DIGRAPHS_ParseDreadnautGraph",
 function(graphData, r)
-    local lines, digraph, edgeList, line, parts, vertex, connectedTo, adjacencyPart, flag, i, j, len, EOL;
+    local lines, digraph, edgeList, line, parts, vertex, connectedTo, adjacencyPart, flag, i, j, len, EOL, lastVertex;
 
     # Split the graph data into lines
     lines := SplitString(graphData, "\n");
 
     # Initialize an empty list to hold the edges
     edgeList := List([1..r.nValue], x -> []);
-    EOL := false;
+    EOL := fail;
+    lastVertex := fail;
 
     for i in [1..Length(lines)] do
         line := lines[i];
@@ -1457,16 +1458,27 @@ function(graphData, r)
         parts := SplitString(line, ":");
 
         if Length(parts) = 1 then
-          continue;
+          if PositionSublist(line, ":") <> fail then
+            continue;
+          else
+            if EOL = fail then
+              Info(InfoWarning, 1, "Ignoring line ", i, " due to formatting error.");
+              continue;
+            else
+              vertex := lastVertex;
+              adjacencyPart := parts[1];
+            fi;
+          fi;
+        else
+          vertex := parts[1];
+          NormalizeWhitespace(vertex);
+          vertex := Int(vertex);
+          adjacencyPart := parts[2];
         fi;
-
-        vertex := parts[1];
-        NormalizeWhitespace(vertex);
-        vertex := Int(vertex);
-        adjacencyPart := parts[2];
         
         NormalizeWhitespace(adjacencyPart);  # Remove extra spaces
         adjacencyPart := ReplacedString(adjacencyPart, ".", "");  
+        EOL := PositionSublist(line, ";") <> fail; #indicator to be used for next line
         adjacencyPart := ReplacedString(adjacencyPart, ";", "");
         connectedTo := List(SplitString(adjacencyPart, " "), x -> Int(x));
         connectedTo := Filtered(connectedTo, y -> IsInt(y));  # Ensure only integers are included
@@ -1479,6 +1491,7 @@ function(graphData, r)
 
         Append(edgeList[vertex], connectedTo);
         edgeList[vertex] := DuplicateFreeList(edgeList[vertex]);
+        vertex := lastVertex;
     od;
 
 
