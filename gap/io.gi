@@ -1441,6 +1441,7 @@ function(graphData, r)
     edgeList := List([1..r.nValue], x -> []);
     EOL := false;
     lastVertex := fail;
+    flag := false;
 
     for i in [1..Length(lines)] do
         line := lines[i];
@@ -1450,14 +1451,15 @@ function(graphData, r)
 
         if PositionSublist(line, ".") <> fail then
             flag := true;
-            line := ReplacedString(line, ".", "");
         fi;
         
         line := ReplacedString(line, " :", ":");
         line := ReplacedString(line, ": ", ":");
         parts := SplitString(line, ":");
 
-        if Length(parts) = 1 then
+        if Length(parts) = 0 then
+            continue;
+        elif Length(parts) = 1 then
             if EOL = true then
               Info(InfoWarning, 1, "Ignoring line ", i, " due to formatting error.");
               continue;
@@ -1488,6 +1490,10 @@ function(graphData, r)
         Append(edgeList[vertex], connectedTo);
         edgeList[vertex] := DuplicateFreeList(edgeList[vertex]);
         lastVertex := vertex;
+
+        if flag then
+          break;
+        fi;
     od;
 
 
