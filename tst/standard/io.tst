@@ -935,7 +935,7 @@ gap> WriteDreadnautGraph(".", RandomDigraph(2));
 Error, cannot open the file given as the 1st argument <name>,
 gap> filename := Concatenation(DIGRAPHS_Dir(), "tst/out/temp.dre");;
 gap> D := CompleteDigraph(3);;
-gap> WriteDreadnautGraph(filename, CompleteDigraph(3));
+gap> WriteDreadnautGraph(filename, D);
 
 # ReadDreadnautGraph
 gap> ReadDreadnautGraph(filename) = D;
@@ -954,6 +954,14 @@ gap> ReadDreadnautGraph(filename);
 gap> filename := Concatenation(DIGRAPHS_Dir(), "tst/out/overline.dre");;
 gap> ReadDreadnautGraph(filename);
 <immutable symmetric digraph with 16 vertices, 14 edges>
+gap> filename := Concatenation(DIGRAPHS_Dir(), "tst/out/temp.dre");;
+gap> D := EmptyDigraph(5);;
+gap> WriteDreadnautGraph(filename, D);;
+gap> D = ReadDreadnautGraph(filename);
+true
+gap> filename := Concatenation(DIGRAPHS_Dir(), "tst/out/repeats.dre");;
+gap> ReadDreadnautGraph(filename);
+<immutable digraph with 3 vertices, 6 edges>
 gap> Exec("rm -f temp.dre");
 
 #  DIGRAPHS_UnbindVariables

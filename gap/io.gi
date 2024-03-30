@@ -1449,8 +1449,13 @@ function(graphData, r)
             continue; 
         fi;
 
-        if PositionSublist(line, ".") <> fail then
+        if PositionSublist(line, ".") <> fail or PositionSublist(line, "q") then
             flag := true;
+        fi;
+
+        if PositionSublist(line, "$$") <> fail then
+            Info(InfoWarning, 1, "Indexing will start at 1.");
+            break;
         fi;
         
         line := ReplacedString(line, " :", ":");
