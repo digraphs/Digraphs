@@ -1440,8 +1440,8 @@ function(vertex, connectedTo, nValue, dExists)
       Info(InfoWarning, 1, "Ignoring illegal edge ", vertex, " -> ", i, ". Ensure the graph is as a diagraph in its dreadnaut formatting to include loops.");
       return false;
     fi;
-  return true;
   od;
+  return true;
 end);
 
 
