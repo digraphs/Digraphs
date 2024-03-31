@@ -1391,42 +1391,34 @@ end);
 
 BindGlobal("DIGRAPHS_ParseDreadnautConfig", 
 function(config)
-    local nValue, dExists, dollarValue, tempStr, Pos, getValue;
+    local tempStr, Pos, getValue;
 
-    config := ReplacedString(config, " ", ""); 
-    config := ReplacedString(config, "\n", ""); 
-    config := ReplacedString(config, "\r", ""); 
-    config := ReplacedString(config, "\t", ""); 
-    config := ReplacedString(config, "=", ""); 
+    RemoveCharacters(config, " \n\r\t=-+");
 
     getValue := function(config, key)
-    local Pos, tempStr;
-    if PositionSublist(config, key) <> fail then
-      Pos := PositionSublist(config, key) + 1;
-      tempStr := "";
+      local Pos, tempStr;
+      if PositionSublist(config, key) <> fail then
+        Pos := PositionSublist(config, key) + 1;
+        tempStr := "";
 
-      while IsInt(Int(config{[Pos]})) do
-        tempStr := Concatenation(tempStr, config{[Pos]});
-        Pos := Pos + 1;
-        if Pos > Length(config) then
-          break;
-        fi;
-      od;
-      return Int(tempStr);
-    else
-      if key = "$" then
-        return 0;
+        while IsInt(Int(config{[Pos]})) do
+          tempStr := Concatenation(tempStr, config{[Pos]});
+          Pos := Pos + 1;
+          if Pos > Length(config) then
+            break;
+          fi;
+        od;
+        return Int(tempStr);
       else
-        ErrorNoReturn("The number of vertices has not been defined in the dreadnaut file. Check your file and ensure n is declared.");
+        if key = "$" then
+          return 0;
+        else
+          ErrorNoReturn("The number of vertices has not been defined in the dreadnaut file. Check your file and ensure n is declared.");
+        fi;
       fi;
-    fi;
     end;
 
-    dExists := PositionSublist(config, "d") <> fail; 
-    dollarValue := getValue(config, "$");
-    nValue := getValue(config, "n");
-
-    return rec(dollarValue := dollarValue, nValue := nValue, dExists := dExists);
+    return rec(dollarValue := getValue(config, "$"), nValue := getValue(config, "n"), dExists := PositionSublist(config, "d") <> fail);
 end);
 
 BindGlobal("DIGRAPHS_LegalEdge",
@@ -1436,7 +1428,8 @@ function(vertex, connectedTo, nValue, dExists)
     if i > nValue then
       Info(InfoWarning, 1, "Ignoring illegal edge ", vertex, " -> ", vertex);
       return false;
-    elif not dExists and i = nValue then
+    fi;
+    if not dExists and i = vertex then
       Info(InfoWarning, 1, "Ignoring illegal edge ", vertex, " -> ", i, ". Ensure the graph is as a diagraph in its dreadnaut formatting to include loops.");
       return false;
     fi;
@@ -1447,7 +1440,7 @@ end);
 
 BindGlobal("DIGRAPHS_ParseDreadnautGraph",
 function(graphData, r)
-    local lines, digraph, edgeList, line, parts, vertex, connectedTo, adjacencyPart, flag, i, j, len, EOL, lastVertex;
+    local lines, edgeList, line, parts, vertex, connectedTo, adjacencyPart, breakflag, i, j, EOL, lastVertex;
 
     # Split the graph data into lines
     lines := SplitString(graphData, "\n");
@@ -1456,7 +1449,7 @@ function(graphData, r)
     edgeList := List([1..r.nValue], x -> []);
     EOL := false;
     lastVertex := fail;
-    flag := false;
+    breakflag := false;
 
     for i in [1..Length(lines)] do
         line := lines[i];
@@ -1465,9 +1458,8 @@ function(graphData, r)
         fi;
 
         if PositionSublist(line, ".") <> fail or PositionSublist(line, "q") <> fail then
-            flag := true;
-            line := ReplacedString(line, ".", "");
-            line := ReplacedString(line, "q", "");
+            breakflag := true;
+            RemoveCharacters(line, ".q");
         fi;
 
         if PositionSublist(line, "$$") <> fail then
@@ -1500,21 +1492,21 @@ function(graphData, r)
           Info(InfoWarning, 1, "Ignoring illegal vertex ", vertex);
           continue;
         fi;
-        
+
         NormalizeWhitespace(adjacencyPart);  # Remove extra spaces
         EOL := PositionSublist(line, ";") <> fail; #indicator to be used for next line
-        adjacencyPart := ReplacedString(adjacencyPart, ";", "");
+        adjacencyPart := SplitString(adjacencyPart, "!")[1];
+        RemoveCharacters(adjacencyPart, ",;");
         connectedTo := List(SplitString(adjacencyPart, " "), x -> Int(x));
         connectedTo := Filtered(connectedTo, y -> IsInt(y));  # Ensure only integers are included
         connectedTo := List(connectedTo, x -> x - r.dollarValue + 1);  # Adjust the vertex numbering to start at 1
-        len := Length(connectedTo);
         connectedTo := Filtered(connectedTo, x -> DIGRAPHS_LegalEdge(vertex, connectedTo, r.nValue, r.dExists));  
 
         Append(edgeList[vertex], connectedTo);
         edgeList[vertex] := DuplicateFreeList(edgeList[vertex]);
         lastVertex := vertex;
 
-        if flag then
+        if breakflag then
           break;
         fi;
     od;
@@ -1525,7 +1517,7 @@ end);
 
 InstallMethod(ReadDreadnautGraph, "for a digraph", [IsString],
 function(name)
-  local file, config, graphData, line, edgeList, foundG, configEndIndex, r;
+  local file, config, graphData, line, edgeList, foundG, r;
   file := IO_CompressedFile(UserHomeExpand(name), "r");
 
   if file = fail then
@@ -1534,17 +1526,13 @@ function(name)
 
   config := "";
   foundG := false;
-  configEndIndex := 0;
 
   # Read file line by line until 'g' is found
   repeat
       line := IO_ReadLine(file);
       if not IsEmpty(line) then
           config := Concatenation(config, line); 
-          if PositionSublist(line, "g") <> fail then
-              foundG := true; 
-              configEndIndex := Length(config);
-          fi;
+          foundG := PositionSublist(line, "g") <> fail;
       fi;
   until foundG or IsEmpty(line);
 
@@ -1552,7 +1540,7 @@ function(name)
       ErrorNoReturn("g is not defined. Check your file and ensure g is declared.");
   fi;
 
-  graphData := "";
+  graphData := line{[PositionSublist(line, "g") + 1..Length(line)]};
 
   repeat
       line := IO_ReadLine(file);
