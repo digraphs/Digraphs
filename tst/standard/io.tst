@@ -959,6 +959,10 @@ gap> D := EmptyDigraph(5);;
 gap> WriteDreadnautGraph(filename, D);;
 gap> D = ReadDreadnautGraph(filename);
 true
+gap> D := Digraph([ [ 3, 5, 10 ], [ 9, 8, 10 ], [ 4 ], [ 6 ], [ 7, 11 ], [ 7 ], [ 8 ],[ ], [ 11 ], [ ], [ ] ]);;
+gap> WriteDreadnautGraph(filename, D);;
+gap> D = ReadDreadnautGraph(filename);
+true
 gap> filename := Concatenation(DIGRAPHS_Dir(), "tst/out/repeats.dre");;
 gap> ReadDreadnautGraph(filename);
 <immutable digraph with 3 vertices, 6 edges>

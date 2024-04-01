@@ -1411,7 +1411,7 @@ function(config, key)
       if key = "$" then
         return 0;
       else
-        ErrorNoReturn("The number of vertices has not been defined in the dreadnaut file. Check your file and ensure n is declared.");
+        ErrorNoReturn("The number of vertices has not been defined. Check your file and ensure n is declared.");
       fi;
     fi;
 end);
@@ -1491,8 +1491,8 @@ function(graphData, r)
             RemoveCharacters(line, ".q");
         fi;
 
-        if PositionSublist(line, "$$") <> fail then
-            Info(InfoWarning, 1, "Indexing will start at 1.");
+        if PositionSublist(line, "$") <> fail then
+            Info(InfoWarning, 1, "Indexing will start at 1");
             break;
         fi;
         
@@ -1523,7 +1523,7 @@ function(graphData, r)
           vertex := vertex - r.dollarValue + 1;
 
           if vertex > r.nValue or vertex < 1 then
-            Info(InfoWarning, 1, "Ignoring illegal vertex ", vertex);
+            Info(InfoWarning, 1, "Ignoring illegal vertex ", vertex, " (original indexing)");
             continue;
           fi;
 
@@ -1547,7 +1547,6 @@ function(graphData, r)
           break;
         fi;
     od;
-
 
     return edgeList;
 end);
@@ -1677,7 +1676,7 @@ end);
 
 InstallMethod(WriteDreadnautGraph, "for a digraph", [IsString, IsDigraph],
 function(name, D)
-  local file, n, verts, nbs, labels, i, j;
+  local file, n, verts, nbs, labels, i, j, degs, filteredVerts;
 
   file := IO_CompressedFile(UserHomeExpand(name), "w");
   if file = fail then
@@ -1688,6 +1687,7 @@ function(name, D)
   n := DigraphNrVertices(D);
   verts := DigraphVertices(D);
   nbs := OutNeighbours(D);
+  degs := OutDegrees(D);
 
   if n = 0 then
     ErrorNoReturn("the 2nd argument <D> must be a non-empty digraph,");
@@ -1700,11 +1700,13 @@ function(name, D)
   IO_WriteLine(file, Concatenation("n=", String(n)));
 
   IO_WriteLine(file, "g");
-  for i in [1 .. n] do
+
+  filteredVerts := Filtered(verts, x -> degs[x] > 0);
+  for i in filteredVerts do
     labels := List(nbs[i], j -> String(j)); 
     IO_WriteLine(file, Concatenation(String(i), " : ", JoinStringsWithSeparator(labels, " "), ";"));
   od;
-  
+  IO_WriteLine(file, ".");
   IO_Close(file);
   return;
 end);
