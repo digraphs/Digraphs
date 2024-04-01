@@ -962,6 +962,9 @@ true
 gap> filename := Concatenation(DIGRAPHS_Dir(), "tst/out/repeats.dre");;
 gap> ReadDreadnautGraph(filename);
 <immutable digraph with 3 vertices, 6 edges>
+gap> filename := Concatenation(DIGRAPHS_Dir(), "tst/out/more bad.dre");;
+gap> ReadDreadnautGraph(filename);
+<immutable digraph with 5 vertices, 8 edges>
 gap> Exec("rm -f temp.dre");
 
 #  DIGRAPHS_UnbindVariables
