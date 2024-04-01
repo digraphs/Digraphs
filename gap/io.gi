@@ -1429,18 +1429,43 @@ function(vertex, x, r)
   return true;
 end);
 
-BindGlobal("DIGRAPHS_SplitOnIndices",
-function(s, indices)
-  local i, j, out;
-  out := [];
-  i := 1;
-  indices := indices{[2..Length(indices)]};
-  for j in indices do
-    Add(out, s{[i..j-3]});
-    i := j - 3 + 1;
-  od;
-  Add(out, s{[i..Length(s)]});
-  return out;
+BindGlobal("DIGRAPHS_SplitDreadnautLine",
+function(inputString)
+    local startPos, currentPos, segments, currentChar, nextChar, flag;
+
+    # Initialize variables
+    startPos := 1;
+    segments := [];
+
+    # Iterate over the string
+    for currentPos in [1..Length(inputString)-1] do
+        currentChar := inputString[currentPos];
+        nextChar := inputString[currentPos + 1];
+
+        flag := false;
+
+        if IsDigitChar(currentChar) and nextChar = ' ' and inputString[currentPos + 2] = ':' then
+          # if not flag then
+          #   flag := true;
+          #   continue;
+          # fi;
+
+          repeat
+            currentPos := currentPos - 1;
+          until currentPos <= 1 or not IsDigitChar(inputString[currentPos]);
+          if startPos < currentPos then
+            Add(segments, inputString{[startPos..currentPos-1]});
+          fi;
+          if currentPos > 1 then
+            startPos := currentPos;
+          fi;
+        fi;
+    od;
+
+    # Add the last segment
+    Add(segments, inputString{[startPos..Length(inputString)]});
+
+    return segments;
 end);
 
 BindGlobal("DIGRAPHS_ParseDreadnautGraph",
@@ -1474,9 +1499,7 @@ function(graphData, r)
         
         line := ReplacedString(line, ":", " : ");
         NormalizeWhitespace(line);
-        colonIndices := PositionsProperty(line, x -> x = ':');
-        parts := DIGRAPHS_SplitOnIndices(line, colonIndices);
-
+        parts := DIGRAPHS_SplitDreadnautLine(line);
 
         for part in parts do
           part := SplitString(part, ":");
