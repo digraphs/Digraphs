@@ -1419,11 +1419,15 @@ end);
 BindGlobal("DIGRAPHS_LegalEdge",
 function(vertex, x, r)
   if x > r.nValue then
-    Info(InfoWarning, 1, "Ignoring illegal edge ", vertex, " -> ", x);
+    Info(InfoWarning, 1, "Ignoring illegal edge ", vertex + r.dollarValue - 1, " -> ", x + r.dollarValue - 1, " (original indexing)");
     return false;
   fi;
   if not r.dExists and x = vertex then
-    Info(InfoWarning, 1, "Ignoring illegal edge ", vertex, " -> ", x, ". Ensure the graph is as a diagraph in its dreadnaut formatting to include loops.");
+    Info(InfoWarning, 1, "Ignoring illegal edge ", vertex + r.dollarValue - 1, " -> ", x + r.dollarValue - 1, " (original indexing). Ensure the graph is as a diagraph in its dreadnaut formatting to include loops.");
+    return false;
+  fi;
+  if x < 1 then
+    Info(InfoWarning, 1, "Ignoring illegal edge ", vertex + r.dollarValue - 1, " -> ", x + r.dollarValue - 1, " (original indexing)");
     return false;
   fi;
   return true;
@@ -1445,11 +1449,6 @@ function(inputString)
         flag := false;
 
         if IsDigitChar(currentChar) and nextChar = ' ' and inputString[currentPos + 2] = ':' then
-          # if not flag then
-          #   flag := true;
-          #   continue;
-          # fi;
-
           repeat
             currentPos := currentPos - 1;
           until currentPos <= 1 or not IsDigitChar(inputString[currentPos]);
@@ -1521,8 +1520,9 @@ function(graphData, r)
             adjacencyPart := part[2];
           fi;
 
+          vertex := vertex - r.dollarValue + 1;
 
-          if vertex > r.nValue or vertex < r.dollarValue then
+          if vertex > r.nValue or vertex < 1 then
             Info(InfoWarning, 1, "Ignoring illegal vertex ", vertex);
             continue;
           fi;
@@ -1540,7 +1540,7 @@ function(graphData, r)
 
           Append(edgeList[vertex], connectedTo);
           edgeList[vertex] := DuplicateFreeList(edgeList[vertex]);
-          lastVertex := vertex;
+          lastVertex := vertex + r.dollarValue - 1;
         od;
 
         if breakflag then
@@ -1588,11 +1588,12 @@ function(name)
   until IsEmpty(line);
   
   r := rec(dollarValue := DIGRAPHS_ParseDreadnautConfig(config, "$"), nValue := DIGRAPHS_ParseDreadnautConfig(config, "n"), dExists := PositionSublist(config, "d") <> fail);
-  edgeList := DIGRAPHS_ParseDreadnautGraph(graphData, r);
 
   if r.dollarValue <> 1 then
-    Info(InfoWarning, 1, "The vertex indexing in the dreadnaut file does not start at 1, but will be read in as such.");
+    Info(InfoWarning, 1, "The graph will be reindexed such that the first vertex is 1. i.e. effectively adding $=1 to the end of the file.");
   fi;
+
+  edgeList := DIGRAPHS_ParseDreadnautGraph(graphData, r);
 
   if r.dExists then
     return Digraph(edgeList);
