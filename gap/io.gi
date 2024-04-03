@@ -1509,7 +1509,7 @@ function(graphData, r)
               continue;
           elif Length(part) = 1 then
               if EOL = true then
-                Info(InfoWarning, 1, "Ignoring line ", i, " due to formatting error.");
+                Info(InfoWarning, 1, "Ignoring line ", i + r.configLength, " due to formatting error.");
                 continue;
               else
                 vertex := lastVertex;
@@ -1588,7 +1588,7 @@ function(name)
       fi;
   until IsEmpty(line);
   
-  r := rec(dollarValue := DIGRAPHS_ParseDreadnautConfig(config, "$"), nValue := DIGRAPHS_ParseDreadnautConfig(config, "n"), dExists := PositionSublist(config, "d") <> fail);
+  r := rec(dollarValue := DIGRAPHS_ParseDreadnautConfig(config, "$"), nValue := DIGRAPHS_ParseDreadnautConfig(config, "n"), dExists := PositionSublist(config, "d") <> fail, configLength := Length(SplitString(config, "\n"));
 
   if r.dollarValue <> 1 then
     Info(InfoWarning, 1, "The graph will be reindexed such that the first vertex is 1. i.e. effectively adding $=1 to the end of the file.");
