@@ -1334,6 +1334,40 @@ false]]></Example>
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="IsModularLatticeDigraph">
+<ManSection>
+  <Prop Name="IsModularLatticeDigraph" Arg="digraph"/>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
+  <Description>
+    <C>IsModularLatticeDigraph</C> returns <K>true</K> if the digraph
+    <A>digraph</A> is a <E>modular lattice digraph</E>.<P/>
+
+    A <E>modular lattice digraph</E> is a <E>lattice digraph</E>
+    (<Ref Prop="IsLatticeDigraph"/>) which is modular. That is to say,
+    the <E>lattice digraph</E> representing <M>N5</M> is not
+    embeddable as a lattice
+    (see <URL>https://en.wikipedia.org/wiki/Modular_lattice</URL> and
+    <Ref Prop="IsLatticeEmbedding"/>). 
+
+    &MUTABLE_RECOMPUTED_PROP;
+
+    <Example><![CDATA[
+gap> D := ChainDigraph(5);
+<immutable chain digraph with 5 vertices>
+gap> D := DigraphReflexiveTransitiveClosure(D);
+<immutable preorder digraph with 5 vertices, 15 edges>
+gap> IsModularLatticeDigraph(D);
+true
+gap> N5 := Digraph([[2, 3], [4], [4], []]);
+<immutable digraph with 4 vertices, 4 edges>
+gap> DigraphReflexiveTransitiveClosure(N5);
+<immutable preorder digraph with 4 vertices, 9 edges>
+gap> IsModularLatticeDigraph(N5);
+false
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
 
 <#GAPDoc Label="IsPreorderDigraph">
 <ManSection>
