@@ -1353,23 +1353,29 @@ false
 <#GAPDoc Label="VerticesReachableFrom">
 <ManSection>
   <Oper Name="VerticesReachableFrom" Arg="digraph, root"/>
+  <Oper Name="VerticesReachableFrom" Arg="digraph, list"/>
   <Returns>A list.</Returns>
   <Description>
-    This operation returns a list of the vertices  <A>v</A>, for which there exists
-    a non-trivial directed walk from vertex <A>root</A> to vertex <A>v</A> in the digraph
+    This operation returns a list of the vertices <C>v</C>, for which there
+    exists a non-trivial directed walk from the vertex <A>root</A>, or any of
+    the list of vertices <A>list</A>, to vertex <C>v</C> in the digraph
     <A>digraph</A>. See Section <Ref Subsect="Definitions" Style="Number" />
     for the definition of a non-trivial directed walk.
     <P/>
 
-    The method for <C>VerticesReachableFrom</C> has worst case complexity of <M>O(m +
-      n)</M> where <M>m</M> is the number of edges and <M>n</M> the number of
-    vertices in <A>digraph</A>.
+    The method for <C>VerticesReachableFrom</C> has worst case complexity of
+    <M>O(m + n)</M> where <M>m</M> is the number of edges and <M>n</M> the
+    number of vertices in <A>digraph</A>.
+    <P/>
+
+    This function returns an error if <A>root</A>, or any vertex in <A>list</A>,
+    is not a vertices of <A>digraph</A>.
 
 <Example><![CDATA[
 gap> D := CompleteDigraph(5);
 <immutable complete digraph with 5 vertices>
 gap> VerticesReachableFrom(D, 1);
-[ 2, 1, 3, 4, 5 ]
+[ 1, 2, 3, 4, 5 ]
 gap> VerticesReachableFrom(D, 3);
 [ 1, 2, 3, 4, 5 ]
 gap> D := EmptyDigraph(5);
@@ -1378,12 +1384,16 @@ gap> VerticesReachableFrom(D, 1);
 [  ]
 gap> VerticesReachableFrom(D, 3);
 [  ]
+gap> VerticesReachableFrom(D, [1, 2, 3, 4]);
+[  ]
+gap> VerticesReachableFrom(D, [3, 4, 5]);
+[  ]
 gap> D := CycleDigraph(4);
 <immutable cycle digraph with 4 vertices>
 gap> VerticesReachableFrom(D, 1);
-[ 2, 3, 4, 1 ]
+[ 1, 2, 3, 4 ]
 gap> VerticesReachableFrom(D, 3);
-[ 4, 1, 2, 3 ]
+[ 1, 2, 3, 4 ]
 gap> D := ChainDigraph(5);
 <immutable chain digraph with 5 vertices>
 gap> VerticesReachableFrom(D, 1);
@@ -1392,11 +1402,12 @@ gap> VerticesReachableFrom(D, 3);
 [ 4, 5 ]
 gap> VerticesReachableFrom(D, 5);
 [  ]
+gap> VerticesReachableFrom(D, [3, 4]);
+[ 4, 5 ]
 ]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
-
 
 <#GAPDoc Label="DigraphPath">
 <ManSection>
@@ -2253,6 +2264,119 @@ gap> IsDigraphPath(D, [6, 9, 16, 17], [3, 3, 2]);
 true
 gap> IsDigraphPath(D, DigraphPath(D, 6, 1));
 true
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphCycleBasis">
+<ManSection>
+  <Oper Name="DigraphCycleBasis" Arg="digraph"/>
+  <Returns>A list and a list of GF(2) vectors</Returns>
+  <Description>
+    If <A>digraph</A> is a symmetric loopless digraph with no multiple edges, then
+    <C>DigraphCycleBasis</C> calculates the <E>fundamental cycle basis</E> of
+    <A>digraph</A> and returns a list of edges and a list of a basis vectors.
+    If <A>digraph</A> contains a loop, this function will return an error. If <A>digraph</A>
+    is a multi-digraph, then multiple edges incident to the same vertices are treated as a single edge by this function.
+    See <Ref Prop="IsSymmetricDigraph"/>, <Ref Prop="DigraphHasLoops"/>, and <Ref
+    Prop="IsMultiDigraph"/>.
+    The first list returned contains the out-neighours that provide the ordering 
+    on the edges with the symmetric edges appearing only once;
+    these are the same as <E>OutNeighbours(MaximalAntiSymmetricSubdigraph(G))</E>. 
+    See <Ref Oper="MaximalAntiSymmetricSubdigraph"/> 
+    <Ref Oper="OutNeighbours"/>.
+    The second list returned contains the basis vectors of the cycle space of the
+    digraph. These vectors belongs to <M>(GF(2))^m</M> where <M>m</M> is the 
+    length of the list of edges.<P/>
+
+    A graph is <E>eulerian</E> if every vertex has an even degree. A <E>cycle
+    space</E> of a graph is a subspace of <M>(GF(2))^m</M> representing the set 
+    of all <E>eulerian</E> subgraphs without isolated vertices. 
+    An eulerian subgraph without isolated vertices can be uniquely
+    identified using the edges that is contains. Therefore, given some ordering
+    on the edges of the graph, a subgraph can be represented by a vector in
+    <M>(GF(2))^m</M> where the <M>i</M>-th entry is <M>1</M> if the <M>i</M>-th edge
+    is in the subgraph and <M>0</M> otherwise. In this function, the ordering of the
+    edges is returned as the first list which corresponds to 
+    <C>OutNeighbours(MaximalAntiSymmetricSubdigraph(G))</C>. 
+    See <Ref Oper="MaximalAntiSymmetricSubdigraph"/> 
+    and <Ref Oper="OutNeighbours"/>.
+    The first basis vector for the complete digraph with 4 vertices shown below 
+    represents the edges <C>[1, 2]</C>, <C>[1, 3]</C> and <C>[2, 3]</C> i.e. cycle subgraph
+    between the vertices <C>1</C>, <C>2</C> and <C>3</C>
+
+    The cycle space is closed under the symmetric difference of the edges of 
+    the graph. This nicely corresponds to the addition of vectors in 
+    <M>(GF(2))^m</M> which makes the vector space formulation of the cycle
+    space very natural.<P/>
+    
+    A <E>cycle basis</E> is a basis of the cycle space. 
+    A <E>fundamental cycle basis</E> is a special 
+    kind of basis of the cycle space where there is a specific spanning tree 
+    (forest, when the graph is disconnected) of the graph and each basis 
+    corresponds to the unique cycle created by adding an edge outside the 
+    spanning tree of the graph to the spanning tree. In this function, the 
+    spanning forest is rooted in the vertex with the smallest label for each 
+    connected component of the graph. <P/>
+    
+    The fundamental cycle basis is unique up to reordering of the basis vectors.  
+    The number of basis vectors in the fundamental cycle basis is 
+    <M>m - n + c</M>, where <M>m</M> is the number
+    of edges, <M>n</M> is the number of vertices, and <M>c</M> is the number of
+    connected components.  See <Ref Oper="DigraphConnectedComponents"/>.<P/>
+
+    This function performs a depth first traversal of the input digraph with complexity <M>O(m + n)</M> and
+    the complexity of the computation of the basis is <M>O(m^2)</M> where <M>m</M>
+    is the number of edges in the input digraph.
+    
+
+    <Example><![CDATA[
+gap> D := CycleGraph(4);
+<immutable symmetric digraph with 4 vertices, 8 edges>
+gap> res := DigraphCycleBasis(D);
+[ [ [ 2, 4 ], [ 3 ], [ 4 ], [  ] ], [ <a GF2 vector of length 4> ] ]
+gap> List(res[2][1]);
+[ Z(2)^0, Z(2)^0, Z(2)^0, Z(2)^0 ]
+gap> D := CompleteDigraph(4);                                     
+<immutable complete digraph with 4 vertices>
+gap> res := DigraphCycleBasis(D);
+[ [ [ 2, 3, 4 ], [ 3, 4 ], [ 4 ], [  ] ], 
+  [ <a GF2 vector of length 6>, <a GF2 vector of length 6>, 
+      <a GF2 vector of length 6> ] ]
+gap> List(res[2][1]);            
+[ Z(2)^0, 0*Z(2), Z(2)^0, 0*Z(2), Z(2)^0, 0*Z(2) ]
+gap> List(res[2][2]);
+[ 0*Z(2), Z(2)^0, Z(2)^0, 0*Z(2), 0*Z(2), Z(2)^0 ]
+gap> List(res[2][3]);
+[ Z(2)^0, Z(2)^0, 0*Z(2), Z(2)^0, 0*Z(2), 0*Z(2) ]
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="IsOrderIdeal">
+<ManSection>
+  <Oper Name="IsOrderIdeal" Arg="D, subset" Label="for a digraph and list"/>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
+  <Description>
+    This function returns <K>true</K> if the specified subset is "downwards" closed, i.e. contains every vertex less than the given vertices in the order defined by <A>D</A>. 
+    The function can only be used on digraphs satisfying <Ref Prop="IsPartialOrderDigraph"/> and will throw an error if passed a digraph that is not a partial order digraph.
+
+    <Example><![CDATA[
+gap> D1 := Digraph([[1, 3], [2, 3], [3]]);
+<immutable digraph with 3 vertices, 5 edges>
+<immutable digraph with 3 vertices, 5 edges>
+gap> IsOrderIdeal(D, [1, 2, 3]);
+true
+gap> D2 := DigraphDisjointUnion(D, D);
+<immutable digraph with 6 vertices, 10 edges>
+gap> IsOrderIdeal(D2, [1, 2, 3]);
+true
+gap> IsOrderIdeal(D2, [4, 5, 6]);
+true
+gap> IsOrderIdeal(D2, [1, 5, 6]);
+false
 ]]></Example>
   </Description>
 </ManSection>

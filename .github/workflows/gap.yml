@@ -26,16 +26,16 @@ jobs:
           - master
           - stable-4.11
           - stable-4.12
+          - stable-4.13
         pkgs-to-clone:
           - NautyTracesInterface
         ABI: ['']
 
         include:
           - gap-branch: stable-4.10
-            pkgs-to-clone: datastructures
             os: ubuntu
           - gap-branch: master
-            pkgs-to-clone: "datastructures NautyTracesInterface"
+            pkgs-to-clone: "NautyTracesInterface"
             os: macos
           - gap-branch: master
             os: ubuntu
@@ -61,6 +61,16 @@ jobs:
         run: |
           curl --retry 5 -L -O "https://digraphs.github.io/Digraphs/${{ env.DIGRAPHS_LIB }}.tar.gz"
           tar xf "${{ env.DIGRAPHS_LIB }}.tar.gz"
+      - name: "Clone datastructures v0.3.0"
+        run: |
+          if [ ! -d $HOME/gap/pkg/datastructures ]; then
+            cd $HOME/gap/pkg/
+            git clone https://github.com/gap-packages/datastructures.git datastructures
+            cd datastructures
+            git checkout v0.3.0
+            ./configure
+            make
+          fi
       - name: "Run DigraphsTestInstall"
         uses: gap-actions/run-pkg-tests@v2
         with:
