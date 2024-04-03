@@ -10,9 +10,7 @@
 
 // C headers
 #include <stdbool.h>  // for true, false, bool
-#include <stddef.h>   // for NULL
 #include <stdint.h>   // for uint16_t, uint64_t
-#include <stdlib.h>   // for malloc, NULL
 
 // GAP headers
 #include "gap-includes.h"

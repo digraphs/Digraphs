@@ -15,18 +15,19 @@
 #include "schreier-sims.h"
 
 // C headers
-#include "stdlib.h"  // for NULL
+#include "stddef.h"  // for size_t
 #include "string.h"  // for memset
 
 // Digraphs package headers
 #include "digraphs-debug.h"  // for DIGRAPHS_ASSERT
+#include "safemalloc.h"      // for safe_malloc
 
 uint16_t PERM_DEGREE = 0;
 
 // Schreier-Sims set up
 
 SchreierSims* new_schreier_sims(void) {
-  SchreierSims* ss = malloc(sizeof(SchreierSims));
+  SchreierSims* ss = safe_malloc(sizeof(SchreierSims));
   ss->tmp_perm     = new_perm(MAXVERTS);
   for (uint16_t i = 0; i < MAXVERTS; ++i) {
     ss->strong_gens[i] = new_perm_coll(MAXVERTS, MAXVERTS);

@@ -14,15 +14,14 @@
 
 #include "perms.h"
 
-// C headers
-#include <stdlib.h>  // for malloc, . . .
-
 // Digraphs package headers
 #include "digraphs-debug.h"  // for DIGRAPHS_ASSERT
+#include "gap-includes.h"    // for ErrorQuit, ADDR_PERM2, ..
+#include "safemalloc.h"      // for safe_malloc
 
 Perm new_perm(uint16_t const degree) {
   DIGRAPHS_ASSERT(degree <= MAXVERTS);
-  return malloc(degree * sizeof(uint16_t));
+  return safe_malloc(degree * sizeof(uint16_t));
 }
 
 Perm new_perm_from_gap(Obj gap_perm_obj, uint16_t const degree) {
@@ -61,8 +60,8 @@ Perm new_perm_from_gap(Obj gap_perm_obj, uint16_t const degree) {
 }
 
 PermColl* new_perm_coll(uint16_t const capacity, uint16_t const degree) {
-  PermColl* coll = malloc(sizeof(PermColl));
-  coll->perms    = malloc(capacity * sizeof(Perm));
+  PermColl* coll = safe_malloc(sizeof(PermColl));
+  coll->perms    = safe_malloc(capacity * sizeof(Perm));
   for (uint16_t i = 0; i < capacity; ++i) {
     coll->perms[i] = new_perm(degree);
   }

@@ -16,6 +16,7 @@
 #include <stdbool.h>  // for bool
 #include <stddef.h>   // for size_t
 #include <stdint.h>   // for uint16_t
+#include <string.h>   // for memset
 
 // GAP headers
 #include "gap-includes.h"  // for COUNT_TRUES_BLOCKS, Obj, . . .

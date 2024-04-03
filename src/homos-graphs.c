@@ -17,18 +17,18 @@
 #include "gap-includes.h"  // for Obj, Int
 
 // Digraphs headers
-#include "bliss-includes.h"   // for bliss stuff
 #include "digraphs-config.h"  // for DIGRAPHS_WITH_INCLUDED_BLISS
 #include "digraphs-debug.h"   // for DIGRAPHS_ASSERT
+#include "safemalloc.h"       // for safe_malloc
 #include "schreier-sims.h"    // for PERM_DEGREE
 
 extern Obj GeneratorsOfGroup;
 
 Digraph* new_digraph(uint16_t const nr_verts) {
   DIGRAPHS_ASSERT(nr_verts <= MAXVERTS);
-  Digraph* digraph        = malloc(sizeof(Digraph));
-  digraph->in_neighbours  = malloc(nr_verts * sizeof(BitArray));
-  digraph->out_neighbours = malloc(nr_verts * sizeof(BitArray));
+  Digraph* digraph        = safe_malloc(sizeof(Digraph));
+  digraph->in_neighbours  = safe_malloc(nr_verts * sizeof(BitArray));
+  digraph->out_neighbours = safe_malloc(nr_verts * sizeof(BitArray));
   for (uint16_t i = 0; i < nr_verts; i++) {
     digraph->in_neighbours[i]  = new_bit_array(nr_verts);
     digraph->out_neighbours[i] = new_bit_array(nr_verts);
@@ -39,8 +39,8 @@ Digraph* new_digraph(uint16_t const nr_verts) {
 
 Graph* new_graph(uint16_t const nr_verts) {
   DIGRAPHS_ASSERT(nr_verts <= MAXVERTS);
-  Graph* graph      = malloc(sizeof(Graph));
-  graph->neighbours = malloc(nr_verts * sizeof(BitArray));
+  Graph* graph      = safe_malloc(sizeof(Graph));
+  graph->neighbours = safe_malloc(nr_verts * sizeof(BitArray));
   for (uint16_t i = 0; i < nr_verts; i++) {
     graph->neighbours[i] = new_bit_array(nr_verts);
   }
