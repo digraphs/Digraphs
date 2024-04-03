@@ -16,10 +16,11 @@
 #include <stdint.h>   // for uint16_t
 
 // Digraphs headers
-#include "bitarray.h"        // for BitArray
-#include "bliss-includes.h"  // for bliss stuff
-#include "digraphs-debug.h"  // for DIGRAPHS_ASSERT
-#include "perms.h"           // for PermColl
+#include "bitarray.h"         // for BitArray
+#include "bliss-includes.h"   // for bliss stuff
+#include "digraphs-config.h"  // for DIGRAPHS_WITH_INCLUDED_BLISS
+#include "digraphs-debug.h"   // for DIGRAPHS_ASSERT
+#include "perms.h"            // for PermColl
 
 ////////////////////////////////////////////////////////////////////////
 // Directed graphs (digraphs)

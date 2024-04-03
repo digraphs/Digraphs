@@ -10,9 +10,6 @@
 
 #include "bitarray.h"
 
-// C headers
-#include <stdlib.h>  // for free, safe_calloc, malloc
-
 // GAP headers
 #include "gap-includes.h"  // for Obj, ELM_LIST, ISB_LIST, Fail
 

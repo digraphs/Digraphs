@@ -14,12 +14,10 @@
 
 #include "perms.h"
 
-// C headers
-#include <stdlib.h>  // for malloc, . . .
-
 // Digraphs package headers
 #include "digraphs-debug.h"  // for DIGRAPHS_ASSERT
-#include "safemalloc.h"
+#include "gap-includes.h"    // for ErrorQuit, ADDR_PERM2, ..
+#include "safemalloc.h"      // for safe_malloc
 
 Perm new_perm(uint16_t const degree) {
   DIGRAPHS_ASSERT(degree <= MAXVERTS);

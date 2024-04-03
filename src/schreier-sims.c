@@ -15,12 +15,12 @@
 #include "schreier-sims.h"
 
 // C headers
-#include "stdlib.h"  // for NULL
+#include "stddef.h"  // for size_t
 #include "string.h"  // for memset
 
 // Digraphs package headers
 #include "digraphs-debug.h"  // for DIGRAPHS_ASSERT
-#include "safemalloc.h"
+#include "safemalloc.h"      // for safe_malloc
 
 uint16_t PERM_DEGREE = 0;
 

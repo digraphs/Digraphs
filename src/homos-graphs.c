@@ -17,11 +17,10 @@
 #include "gap-includes.h"  // for Obj, Int
 
 // Digraphs headers
-#include "bliss-includes.h"   // for bliss stuff
 #include "digraphs-config.h"  // for DIGRAPHS_WITH_INCLUDED_BLISS
 #include "digraphs-debug.h"   // for DIGRAPHS_ASSERT
+#include "safemalloc.h"       // for safe_malloc
 #include "schreier-sims.h"    // for PERM_DEGREE
-#include "safemalloc.h"
 
 extern Obj GeneratorsOfGroup;
 

@@ -16,8 +16,10 @@
 #include <stdbool.h>  // for true and false
 
 // Digraphs package headers
-#include "digraphs-debug.h"  // for DIGRAPHS_ASSERT
-#include "digraphs.h"        // for DigraphNrVertices, DigraphNrEdges, . . .
+#include "digraphs-config.h"  // for DIGRAPHS_WITH_INCLUDED_PLANARITY
+#include "digraphs-debug.h"   // for DIGRAPHS_ASSERT
+#include "digraphs.h"         // for DigraphNrVertices, DigraphNrEdges, . . .
+#include "gap-includes.h"     // for Fail, False, True
 
 // edge-addition-planarity-suite headers
 #if defined(__clang__)

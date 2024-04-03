@@ -13,18 +13,19 @@
 *******************************************************************************/
 
 #include "digraphs.h"
-#include "digraphs-config.h"
 
 #include <stdbool.h>  // for false, true, bool
 #include <stdint.h>   // for uint64_t
 #include <stdlib.h>   // for NULL, free
+#include <string.h>   // for memcpy
 
-#include "bliss-includes.h"  // for bliss stuff
-#include "cliques.h"
-#include "digraphs-debug.h"  // for DIGRAPHS_ASSERT
-#include "homos.h"           // for FuncHomomorphismDigraphsFinder
-#include "planar.h"          // for FUNC_IS_PLANAR, . . .
-#include "safemalloc.h"
+#include "bliss-includes.h"   // for bliss stuff
+#include "cliques.h"          // for FuncDigraphsCliquesFinder
+#include "digraphs-config.h"  // for DIGRAPHS_WITH_INCLUDED_BLISS
+#include "digraphs-debug.h"   // for DIGRAPHS_ASSERT
+#include "homos.h"            // for FuncHomomorphismDigraphsFinder
+#include "planar.h"           // for FUNC_IS_PLANAR, . . .
+#include "safemalloc.h"       // for safe_malloc
 
 #undef PACKAGE
 #undef PACKAGE_BUGREPORT

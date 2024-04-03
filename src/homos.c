@@ -33,7 +33,9 @@
 #include <stddef.h>   // for NULL
 #include <stdint.h>   // for uint16_t, uint64_t
 #include <stdlib.h>   // for malloc, NULL
-#include <time.h>     // for time
+#ifdef DIGRAPHS_ENABLE_STATS
+#include <time.h>  // for time
+#endif
 
 // GAP headers
 #include "gap-includes.h"
@@ -46,8 +48,8 @@
 #include "digraphs-debug.h"   // for DIGRAPHS_ASSERT
 #include "homos-graphs.h"     // for Digraph, Graph, . . .
 #include "perms.h"            // for MAXVERTS, UNDEFINED, PermColl, Perm
-#include "schreier-sims.h"    // for PermColl, . . .
 #include "safemalloc.h"
+#include "schreier-sims.h"  // for PermColl, . . .
 
 ////////////////////////////////////////////////////////////////////////////////
 // 1. Macros
