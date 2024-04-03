@@ -12,11 +12,9 @@
 #ifndef DIGRAPHS_SRC_SAFEMALLOC_H_
 #define DIGRAPHS_SRC_SAFEMALLOC_H_
 
-#include <stdlib.h>
-#include "digraphs-debug.h"
+#include <stdlib.h>  // for size_t
 
 void* safe_malloc(size_t size);
 void* safe_calloc(size_t nitems, size_t size);
 
 #endif  // DIGRAPHS_SRC_SAFEMALLOC_H_
-
