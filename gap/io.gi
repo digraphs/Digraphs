@@ -1391,12 +1391,14 @@ end);
 
 BindGlobal("DIGRAPHS_ParseDreadnautConfig", 
 function(config, key)
-    local Pos, tempStr;
+    local L, Pos, tempStr;
 
     RemoveCharacters(config, " \n\r\t=-+");
 
-    if PositionSublist(config, key) <> fail then
-      Pos := PositionSublist(config, key) + 1;
+    L := PositionsProperty(config, x -> x = key[1]);
+
+    if L <> [] then
+      Pos := L[Length(L)] + 1;
       tempStr := "";
 
       while IsInt(Int(config{[Pos]})) do
