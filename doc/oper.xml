@@ -1352,8 +1352,8 @@ false
 
 <#GAPDoc Label="VerticesReachableFrom">
 <ManSection>
-  <Oper Name="VerticesReachableFrom" Arg="digraph, root"/>
-  <Oper Name="VerticesReachableFrom" Arg="digraph, list"/>
+  <Oper Name="VerticesReachableFrom" Arg="digraph, root" Label="for a digraph and vertex"/>
+  <Oper Name="VerticesReachableFrom" Arg="digraph, list" Label="for a digraph and a list of vertices"/>
   <Returns>A list.</Returns>
   <Description>
     This operation returns a list of the vertices <C>v</C>, for which there
