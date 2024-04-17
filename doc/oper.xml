@@ -1920,6 +1920,55 @@ true
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="DigraphContractEdge">
+<ManSection>
+    <Oper Name="DigraphContractEdge" Arg="digraph, edge"
+        Label="for a digraph and a list of positive integers"/>
+    <Oper Name="DigraphContractEdge" Arg="digraph, src, ran"
+        Label="for a digraph and two positive integers"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>edge</A> is a pair of vertices of <A>digraph</A>, or <A>src</A> and
+    <A>ran</A> are vertices of <A>digraph</A>, where <A>ran</A> &lt;&gt; <A>src</A>, 
+    then then this operation merges the two vertices of the edge given into one. 
+    Edges incident to <A>src</A> and <A>ran</A> will now be incident to <C>v</C>, 
+    the new vertex, with their direction preserved. <P/>
+    
+    A new digraph constructed from <A>digraph</A> is returned,
+    unless <A>digraph</A> belongs to <Ref Filt="IsMutableDigraph"/>;
+    in this case changes are made directly to <A>digraph</A>, which is then returned. 
+    The <A>digraph</A> must not belong to <Ref Filt="IsMultiDigraph"/>. <P/>
+
+    The labels of any remaining edges will be preserved. <P/>
+
+    Assigned vertex labels for <A>src</A> and <A>ran</A> are
+    combined into a list, and assigned to the new vertex <C>v</C>. <P/>
+
+    If an edge <A>[src, src]</A> or <A>[ran, ran]</A> exists,
+    a singular edge <C>[v, v]</C> is created. If edge <A>[ran, src]</A>
+    exists, this is also removed. <P/>
+
+    <Example><![CDATA[
+gap> D := DigraphByEdges([[1, 2], [2, 1]]);
+<immutable digraph with 2 vertices, 2 edges>
+gap> D2 := DigraphContractEdge(D, 1, 2);
+<immutable empty digraph with 1 vertex>
+gap> DigraphEdges(D2);
+[  ]
+gap> D := DigraphByEdges(IsMutableDigraph, [[1, 2], [2, 3], [3, 4]]);
+<mutable digraph with 4 vertices, 3 edges>
+gap> DigraphVertexLabels(D);;  # setting vertex labels
+gap> DigraphContractEdge(D, [2, 3]);
+<mutable digraph with 3 vertices, 2 edges>
+gap> DigraphEdges(D);
+[ [ 1, 3 ], [ 3, 2 ] ]
+gap> DigraphVertexLabels(D);
+[ 1, 4, [ 2, 3 ] ]
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="IsMatching">
 <ManSection>
   <Oper Name="IsMatching" Arg="digraph, list"/>
