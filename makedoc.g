@@ -12,14 +12,17 @@ if not IsDirectoryPath("gap")
         "when reading makedoc.g\n");
   FORCE_QUIT_GAP(1);
 fi;
-if IsBoundGlobal("DIGRAPHS_DocXMLFiles") then
-  MakeReadWriteGlobal("DIGRAPHS_DocXMLFiles");
-  UnbindGlobal("DIGRAPHS_DocXMLFiles");
-fi;
-if IsBoundGlobal("DIGRAPHS_MakeDoc") then
-  MakeReadWriteGlobal("DIGRAPHS_MakeDoc");
-  UnbindGlobal("DIGRAPHS_MakeDoc");
-fi;
+
+for global in ["DIGRAPHS_DocXMLFiles",
+               "DIGRAPHS_MakeDoc",
+               "DIGRAPHS_CustomCSSFile"] do
+  if IsBoundGlobal(global) then
+    MakeReadWriteGlobal(global);
+    UnbindGlobal(global);
+  fi;
+od;
+Unbind(global);
+
 Read("gap/doc.g");
 DIGRAPHS_MakeDoc(DirectoryCurrent());
 FORCE_QUIT_GAP();

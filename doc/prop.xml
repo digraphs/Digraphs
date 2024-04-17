@@ -1318,14 +1318,11 @@ true
     <Alt Only="HTML">
         <![CDATA[
         <figure>
-            <center>
-                <img height="200" src="m3.png"/>
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                <img height="200" src="n5.png"/>
-                <figcaption><p>The lattices <e>M3</e> and <e>N5</e>.</p></figcaption>
-            </center>
+            <img height="200" src="m3.png"/>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <img height="200" src="n5.png"/>
+            <figcaption>The lattices <e>M3</e> and <e>N5</e>.</figcaption>
         </figure>
-        <br/>
         ]]>
     </Alt>
     &MUTABLE_RECOMPUTED_PROP;
@@ -1365,13 +1362,9 @@ false]]></Example>
     <Alt Only="HTML">
         <![CDATA[
         <figure>
-            <center>
-                <img height="200" src="n5.png"/>
-
-                <figcaption><p>The lattice <e>N5</e>.</p></figcaption>
-            </center>
+            <img height="200" src="n5.png"/>
+            <figcaption>The lattice <e>N5</e>.</figcaption>
         </figure>
-        <br/>
         ]]>
     </Alt>
 
