@@ -31,9 +31,11 @@ BindGlobal("DIGRAPHS_DocXMLFiles",
             "utils.xml",
             "weights.xml"]);
 
+BindGlobal("DIGRAPHS_CustomCSSFile", "doc/digraphs.css");
+
 BindGlobal("DIGRAPHS_MakeDoc",
 function(pkgdir)
-  local PKG, temp, version, args;
+  local PKG, temp, version, args, docdir, main_css, custom_css;
 
   PKG := "Digraphs";
 
@@ -58,6 +60,15 @@ function(pkgdir)
   LoadPackage("GAPDoc");
   SetGapDocLaTeXOptions("utf8");
   CallFuncList(MakeGAPDocDoc, args);
-  CopyHTMLStyleFiles(Filename(pkgdir, "doc"));
+
+  # HTML styling
+  docdir := Filename(pkgdir, "doc");
+  CopyHTMLStyleFiles(docdir);
+  main_css := Filename(Directory(docdir), "manual.css");
+  custom_css := Filename(pkgdir, DIGRAPHS_CustomCSSFile);
+  if IsReadableFile(custom_css) and IsWritableFile(main_css) then
+    AppendTo(main_css, StringFile(custom_css));
+  fi;
+
   GAPDocManualLabFromSixFile(PKG, Filename(pkgdir, "doc/manual.six"));
 end);
