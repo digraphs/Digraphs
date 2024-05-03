@@ -2859,7 +2859,7 @@ gap> res := DigraphCycleBasis(D);
   [ <a GF2 vector of length 10>, <a GF2 vector of length 10>, 
       <a GF2 vector of length 10>, <a GF2 vector of length 10>, 
       <a GF2 vector of length 10>, <a GF2 vector of length 10> ] ]
-gap> List(res[2], x -> List(x));
+gap> List(res[2], List);
 [ [ Z(2)^0, 0*Z(2), 0*Z(2), Z(2)^0, 0*Z(2), 0*Z(2), Z(2)^0, 0*Z(2), 0*Z(2), 
       0*Z(2) ], 
   [ 0*Z(2), Z(2)^0, 0*Z(2), Z(2)^0, 0*Z(2), 0*Z(2), 0*Z(2), 0*Z(2), Z(2)^0, 
@@ -2883,7 +2883,7 @@ gap> res := DigraphCycleBasis(D);
 [ [ [ 6 ], [ 1, 3, 6 ], [  ], [ 5, 6 ], [ 2, 3, 6 ], [  ] ], 
   [ <a GF2 vector of length 9>, <a GF2 vector of length 9>, 
       <a GF2 vector of length 9>, <a GF2 vector of length 9> ] ]
-gap> List(res[2], x -> List(x));
+gap> List(res[2], List);
 [ [ Z(2)^0, Z(2)^0, 0*Z(2), Z(2)^0, 0*Z(2), 0*Z(2), 0*Z(2), 0*Z(2), 0*Z(2) ], 
   [ 0*Z(2), 0*Z(2), Z(2)^0, 0*Z(2), 0*Z(2), 0*Z(2), Z(2)^0, Z(2)^0, 0*Z(2) ], 
   [ Z(2)^0, Z(2)^0, 0*Z(2), 0*Z(2), 0*Z(2), 0*Z(2), Z(2)^0, 0*Z(2), Z(2)^0 ], 
@@ -2893,7 +2893,7 @@ gap> D := DigraphDisjointUnion(CycleGraph(3), CycleGraph(4));
 gap> res := DigraphCycleBasis(D);
 [ [ [ 2, 3 ], [ 3 ], [  ], [ 5, 7 ], [ 6 ], [ 7 ], [  ] ], 
   [ <a GF2 vector of length 7>, <a GF2 vector of length 7> ] ]
-gap> List(res[2], x -> List(x));
+gap> List(res[2], List);
 [ [ Z(2)^0, Z(2)^0, Z(2)^0, 0*Z(2), 0*Z(2), 0*Z(2), 0*Z(2) ], 
   [ 0*Z(2), 0*Z(2), 0*Z(2), Z(2)^0, Z(2)^0, Z(2)^0, Z(2)^0 ] ]
 
