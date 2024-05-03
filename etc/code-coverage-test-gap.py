@@ -71,7 +71,7 @@ _GAP_COMMANDS = [rf"Test(\"{f}\");;" for f in _ARGS.tstfiles]
 _GAP_COMMANDS.extend(
     [
         "UncoverageLineByLine();;",
-        rf"LoadPackage(\"profiling\", false);;",
+        r"LoadPackage(\"profiling\", false);;",
         rf"filesdir := \"{getcwd()}{_PROFILE_DIR}\";;",
         rf"outdir := \"{_DIR}\";;",
         rf"x := ReadLineByLineProfile(\"{_DIR}/profile.gz\");;",

@@ -1,0 +1,60 @@
+<!DOCTYPE Book SYSTEM "gapdoc.dtd"
+   [ <!ENTITY Digraphs "<Package>Digraphs</Package>">
+     <!ENTITY Grape "<Alt Not='Text'><URL
+   Text='Grape'>https://gap-packages.github.io/grape</URL></Alt><Alt
+   Only='Text'><Package>Grape</Package></Alt>">
+     <!ENTITY graphviz "<Alt Not='Text'><URL
+   Text='Graphviz'>https://digraphs.github.io/graphviz</URL></Alt><Alt
+   Only='Text'><Package>Graphviz</Package></Alt>">
+     <!ENTITY bliss "<Alt Not='Text'><URL
+   Text='bliss'>http://www.tcs.tkk.fi/Software/bliss/</URL></Alt><Alt
+   Only='Text'><Package>bliss</Package></Alt>">
+     <!ENTITY edge-addition-planarity-suite "<Alt Not='Text'><URL
+         Text='edge-addition-planarity-suite'>https://github.com/graph-algorithms/edge-addition-planarity-suite</URL></Alt><Alt
+       Only='Text'><Package>edge-addition-planarity-suite</Package></Alt>">
+     <!ENTITY nauty "<Alt Not='Text'><URL
+   Text='nauty'>https://pallini.di.uniroma1.it/</URL></Alt><Alt
+   Only='Text'><Package>nauty</Package></Alt>">
+     <!ENTITY NautyTracesInterface "<Alt Not='Text'><URL
+   Text='NautyTracesInterface'>https://github.com/gap-packages/NautyTracesInterface</URL></Alt><Alt
+   Only='Text'><Package>NautyTracesInterface</Package></Alt>">
+     <!ENTITY IO "<Alt Not='Text'><URL Text='IO'>
+     https://gap-packages.github.io/io/
+</URL></Alt><Alt Only='Text'><Package>IO</Package></Alt>">
+     <!ENTITY Orb "<Alt Not='Text'><URL Text='Orb'>
+     https://gap-packages.github.io/orb/</URL>
+     </Alt><Alt Only='Text'><Package>Orb</Package></Alt>">
+     <!ENTITY datastructures "<Alt Not='Text'><URL
+       Text='datastructures'>https://github.com/gap-packages/datastructures</URL></Alt><Alt
+   Only='Text'><Package>datastructures</Package></Alt>">
+     <!ENTITY STANDARD_FILT_TEXT "If the optional first argument <A>filt</A> is present, then this should specify the category or representation the digraph being created will belong to. For example, if <A>filt</A> is <Ref Filt='IsMutableDigraph'/>, then the digraph being created will be mutable, if <A>filt</A> is <Ref Filt='IsImmutableDigraph'/>, then the digraph will be immutable.  If the optional first argument <A>filt</A> is not present, then <Ref Filt='IsImmutableDigraph'/> is used by default.<P/>">
+     <!ENTITY MUTABLE_RECOMPUTED_PROP "If the argument <A>digraph</A> is mutable, then the return value of this property is recomputed every time it is called.<P/>">
+     <!ENTITY MUTABLE_RECOMPUTED_ATTR "If the argument <A>digraph</A> is mutable, then the return value of this attribute is recomputed every time it is called.<P/>">
+     <!ENTITY CHESSBOARD_LABELS "The chosen correspondence between vertices and chess squares is given by <Ref Oper='DigraphVertexLabels'/>.  In more detail, the vertices of the digraph are labelled by elements of the Cartesian product <C>[1..<A>m</A>] x [1..<A>n</A>]</C>, where the first entry indexes the column (file) of the square in the chessboard, and the second entry indexes the row (rank) of the square.  (Note that the files are traditionally indexed by the lowercase letters of the alphabet).  The vertices are sorted in ascending order, first by row (second component) and then column (first component).<P/>">
+     <!ENTITY CHESSBOARD_DEFN "An <A>m</A> by <A>n</A> chessboard is a grid of <A>m</A> columns (‘files’) and <A>n</A> rows (‘ranks’) that intersect in squares. Orthogonally adjacent squares are alternately colored light and dark, with the square in the first rank and file being dark.<P/>">
+     <#Include Label="PKGVERSIONDATA">
+   ]>
+
+<Book Name="digraphs">
+<#Include SYSTEM="z-title.xml">
+
+<TableOfContents/>
+
+<Body>
+  <#Include SYSTEM="z-chap0.xml"> <!-- intro -->
+  <#Include SYSTEM="z-chap1.xml"> <!-- installing -->
+  <#Include SYSTEM="z-chap2.xml"> <!-- creating -->
+  <#Include SYSTEM="z-chap3.xml"> <!-- operators/hashes -->
+  <#Include SYSTEM="z-chap4.xml"> <!-- attributes, operations -->
+  <#Include SYSTEM="z-chap5.xml"> <!-- properties -->
+  <#Include SYSTEM="z-chap6.xml"> <!-- homomorphisms -->
+  <#Include SYSTEM="z-chap8.xml"> <!-- cliques -->
+  <#Include SYSTEM="z-chap9.xml"> <!-- visualising, io -->
+</Body>
+
+<#Include SYSTEM="z-appA.xml">  <!-- Grape to Digraphs command map -->
+
+<Bibliography Databases="digraphs" />
+<TheIndex/>
+
+</Book>
