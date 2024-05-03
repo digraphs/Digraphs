@@ -1635,7 +1635,7 @@ end);
 InstallMethod(RandomDigraphCons,
 "for IsStronglyConnectedDigraph, a positive integer, and a float",
 [IsStronglyConnectedDigraph, IsPosInt, IsFloat],
-function(filt, n, p)
+function(_, n, p)
   local d, adjMatrix, stronglyConnectedComponents,
   scc_a, scc_b, i, random_u, random_v;
 
