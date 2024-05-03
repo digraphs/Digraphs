@@ -1,11 +1,22 @@
 <Chapter Label="Visualising and IO"><Heading>Visualising and IO</Heading>
 
   <Section><Heading>Visualising a digraph</Heading>
-    <#Include Label="Splash">
+    <#Include Label="GraphvizDigraph">
     <#Include Label="DotDigraph">
-    <#Include Label="DotSymmetricDigraph">
+
+    <#Include Label="GraphvizColoredDigraph">
+    <#Include Label="DotColoredDigraph">
+
+    <#Include Label="GraphvizVertexLabelledDigraph">
+    <#Include Label="DotVertexLabelledDigraph">
+
+    <#Include Label="GraphvizPartialOrderDigraph">
     <#Include Label="DotPartialOrderDigraph">
+
+    <#Include Label="GraphvizPreorderDigraph">
     <#Include Label="DotPreorderDigraph">
+
+    <#Include Label="GraphvizHighlightedDigraph">
     <#Include Label="DotHighlightedDigraph">
   </Section>
 

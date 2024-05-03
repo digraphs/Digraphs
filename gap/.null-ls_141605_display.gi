@@ -14,11 +14,157 @@
 # * for edge colored non-digraphs, should ensure that the edge colors are
 # symmetric, i.e. the same colors for x -> y and y -> x
 
+<<<<<<< HEAD
+BindGlobal("DIGRAPHS_ValidRGBValue",
+function(str)
+  local l, chars, x, i;
+  l := Length(str);
+  x := 0;
+  chars := "0123456789ABCDEFabcdef";
+  if l = 7 then
+    if str[1] = '#' then
+      for i in [2 .. l] do
+        if str[i] in chars then
+            x := x + 1;
+        fi;
+      od;
+    fi;
+  fi;
+  return x = (l - 1);
+end);
+
+BindGlobal("DIGRAPHS_GraphvizColorsList", fail);
+
+BindGlobal("DIGRAPHS_GraphvizColors",
+function()
+  local f;
+  if DIGRAPHS_GraphvizColorsList = fail then
+    f := IO_File(Concatenation(DIGRAPHS_Dir(), "/data/colors.p"));
+    MakeReadWriteGlobal("DIGRAPHS_GraphvizColorsList");
+    DIGRAPHS_GraphvizColorsList := IO_Unpickle(f);
+    MakeReadOnlyGlobal("DIGRAPHS_GraphvizColorsList");
+    IO_Close(f);
+  fi;
+  return DIGRAPHS_GraphvizColorsList;
+end);
+
+BindGlobal("DIGRAPHS_ValidVertColors",
+function(D, verts)
+  local v, sum, colors, col;
+  v := DigraphVertices(D);
+  sum := 0;
+  if Length(verts) <> Length(v) then
+    ErrorNoReturn("the number of vertex colors must be the same as the number",
+    " of vertices, expected ", Length(v), " but found ", Length(verts), "");
+  fi;
+  colors := DIGRAPHS_GraphvizColors();
+  if Length(verts) = Length(v) then
+    for col in verts do
+      if not IsString(col) then
+        ErrorNoReturn("expected a string");
+      elif DIGRAPHS_ValidRGBValue(col) = false and
+          (col in colors) = false then
+        ErrorNoReturn("expected RGB Value or valid color name as defined",
+        " by GraphViz 2.44.1 X11 Color Scheme",
+        " http://graphviz.org/doc/info/colors.html");
+      else
+        sum := sum + 1;
+      fi;
+    od;
+    if sum = Length(verts) then
+      return true;
+    fi;
+  fi;
+end);
+
+BindGlobal("DIGRAPHS_ValidEdgeColors",
+function(D, edge)
+  local out, l, counter, sum, colors, v, col;
+  out := OutNeighbours(D);
+  l := Length(edge);
+  counter := 0;
+  sum := 0;
+  colors := DIGRAPHS_GraphvizColors();
+  if Length(edge) <> Length(out) then
+    ErrorNoReturn("the list of edge colors needs to have the",
+    " same shape as the out-neighbours of the digraph");
+  else
+    for v in [1 .. l] do
+      sum := 0;
+      if Length(out[v]) <> Length(edge[v]) then
+        ErrorNoReturn("the list of edge colors needs to have the",
+        " same shape as the out-neighbours of the digraph");
+      else
+        for col in edge[v] do
+          if not IsString(col) then
+            ErrorNoReturn("expected a string");
+          elif DIGRAPHS_ValidRGBValue(col) = false and
+              (col in colors) = false then
+            ErrorNoReturn("expected RGB Value or valid color name as defined",
+            " by GraphViz 2.44.1 X11 Color Scheme",
+            " http://graphviz.org/doc/info/colors.html");
+          else
+            sum := sum + 1;
+          fi;
+        od;
+        if sum = Length(edge[v]) then
+          counter := counter + 1;
+        fi;
+      fi;
+    od;
+    if counter = Length(edge) then
+      return true;
+    fi;
+  fi;
+end);
+
+InstallMethod(DotDigraph, "for a digraph by out-neighbours",
+[IsDigraphByOutNeighboursRep],
+D -> DIGRAPHS_DotDigraph(D, [], []));
+
+InstallMethod(DotColoredDigraph,
+"for a digraph by out-neighbours and two lists",
+[IsDigraphByOutNeighboursRep, IsList, IsList],
+function(D, vert, edge)
+  local vert_func, edge_func;
+  if DIGRAPHS_ValidVertColors(D, vert)
+      and DIGRAPHS_ValidEdgeColors(D, edge) then
+    vert_func := i -> StringFormatted("[color={}, style=filled]", vert[i]);
+    edge_func := {i, j} -> StringFormatted("[color={}]", edge[i][j]);
+    return DIGRAPHS_DotDigraph(D, [vert_func], [edge_func]);
+  fi;
+end);
+
+InstallMethod(DotVertexColoredDigraph,
+"for a digraph by out-neighbours and a list",
+[IsDigraphByOutNeighboursRep, IsList],
+function(D, vert)
+  local func;
+  if DIGRAPHS_ValidVertColors(D, vert) then
+    func := i -> StringFormatted("[color={}, style=filled]", vert[i]);
+    return DIGRAPHS_DotDigraph(D, [func], []);
+  fi;
+end);
+
+InstallMethod(DotEdgeColoredDigraph,
+"for a digraph by out-neighbours and a list",
+[IsDigraphByOutNeighboursRep, IsList],
+function(D, edge)
+  local func;
+  if DIGRAPHS_ValidEdgeColors(D, edge) then
+    func := {i, j} -> StringFormatted("[color={}]", edge[i][j]);
+    return DIGRAPHS_DotDigraph(D, [], [func]);
+  fi;
+end);
+
+InstallMethod(DotVertexLabelledDigraph, "for a digraph by out-neighbours",
+=======
 #############################################################################
 # Graphs and digraphs
 #############################################################################
 
 InstallOtherMethod(GraphvizDigraph, "for a digraph by out-neighbours",
+>>>>>>> 51b65dbf (Checkout files from mpan322/main)
 [IsDigraphByOutNeighboursRep],
 function(D)
   local gv, x, y;
@@ -37,10 +183,25 @@ end);
 
 InstallOtherMethod(GraphvizGraph, "for a digraph by out-neighbours",
 [IsDigraphByOutNeighboursRep],
+<<<<<<< HEAD
+D -> DIGRAPHS_DotSymmetricDigraph(D, [], []));
+
+InstallMethod(DotSymmetricColoredDigraph,
+"for a digraph by out-neighbours and two lists",
+[IsDigraphByOutNeighboursRep, IsList, IsList],
+function(D, vert, edge)
+  local vert_func, edge_func;
+  if DIGRAPHS_ValidVertColors(D, vert)
+      and DIGRAPHS_ValidEdgeColors(D, edge) then
+    vert_func := i -> StringFormatted("[color={}, style=filled]", vert[i]);
+    edge_func := {i, j} -> StringFormatted("[color={}]", edge[i][j]);
+    return DIGRAPHS_DotSymmetricDigraph(D, [vert_func], [edge_func]);
+=======
 function(D)
   local gv, x, y;
   if not IsSymmetricDigraph(D) then
     ErrorNoReturn("the argument (a digraph) must be symmetric");
+>>>>>>> 51b65dbf (Checkout files from mpan322/main)
   fi;
   gv := GraphvizGraph("hgn");
   GraphvizSetAttr(gv, "node [shape=circle]");
@@ -161,6 +322,12 @@ InstallMethod(GraphvizColoredDigraph,
                             GraphvizEdgeColoredDigraph(D, e_colors),
                             n_colors));
 
+<<<<<<< HEAD
+  BindGlobal("Splash",
+  function(arg...)
+    local str, opt, path, dir, tdir, file, viewer, type, inn, filetype, out,
+          engine;
+=======
 InstallMethod(GraphvizColoredGraph,
 "for a digraph, list, and list",
 [IsDigraph, IsList, IsList],
@@ -168,6 +335,7 @@ InstallMethod(GraphvizColoredGraph,
 {D, n_colors, e_colors} -> GraphvizSetNodeColors(
                             GraphvizEdgeColoredGraph(D, e_colors),
                             n_colors));
+>>>>>>> 51b65dbf (Checkout files from mpan322/main)
 
 #############################################################################
 # Vertex labelled graphs and digraphs
