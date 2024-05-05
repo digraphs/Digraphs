@@ -1425,7 +1425,7 @@ function(vertex, x, r)
     return false;
   fi;
   if not r.dExists and x = vertex then
-    Error("Illegal edge ", vertex + r.dollarValue - 1, " -> ", x + r.dollarValue - 1, " (original indexing). Ensure the graph is as a diagraph in its dreadnaut formatting to include loops.");
+    Error("Illegal edge ", vertex + r.dollarValue - 1, " -> ", x + r.dollarValue - 1, " (original indexing). Ensure 'd' is declared to include loops.");
     return false;
   fi;
   if x < 1 then
@@ -1439,10 +1439,9 @@ BindGlobal("DIGRAPHS_SplitDreadnautLines",
 function(inputString)
     local startPos, currentPos, segments, currentChar, nextChar;
 
-    # Initialize variables
     startPos := 1;
     segments := [];
-    # inputString := ReplacedString(inputString, "\n", " \n ");
+
     # Iterate over the string
     for currentPos in [1..Length(inputString)-1] do
         currentChar := inputString[currentPos];
@@ -1455,7 +1454,6 @@ function(inputString)
         fi;
 
         if currentChar = '$' and nextChar = '$' then
-          # Add(segments, inputString{[startPos..currentPos+1]});
           Info(InfoWarning, 1, "Vertex indexing will start at 1");
           if ForAll(inputString{[currentPos + 2..Length(inputString)]}, c -> c = ' ' or c = '\n') then;
             break;
@@ -1470,8 +1468,8 @@ function(inputString)
           return segments;
         fi;
 
-        if IsDigitChar(currentChar) and nextChar = ' ' and inputString[currentPos + 2] = ':' then
-          repeat
+        if IsDigitChar(currentChar) and nextChar = ' ' and inputString[currentPos + 2] = ':' then #in the case of a new vertex
+          repeat #backtrack to find the start of the vertex
             currentPos := currentPos - 1;
           until currentPos <= 1 or not IsDigitChar(inputString[currentPos]);
           if startPos < currentPos then
@@ -1483,21 +1481,16 @@ function(inputString)
         fi;
     od;
 
-    # Add the last segment
     Add(segments, inputString{[startPos..Length(inputString)]});
-
     return segments;
 end);
 
 BindGlobal("DIGRAPHS_ParseDreadnautGraph",
 function(graphData, r)
-    local lines, edgeList, line, part, parts, subparts, vertex, connectedTo, adjacencyPart, breakflag, i, j, lastVertex, colonIndices, newlineCounter;
-
-    # lines := ReplacedString(graphData, "\n", " ");
+    local edgeList, part, parts, subparts, vertex, connectedTo, adjacencyPart, breakflag, newlineCounter;
 
     # Initialize an empty list to hold the edges
     edgeList := List([1..r.nValue], x -> []);
-    lastVertex := fail;
     breakflag := false;
     newlineCounter := 1;
 
@@ -1512,16 +1505,6 @@ function(graphData, r)
           breakflag := true;
           RemoveCharacters(part, ".q");
       fi;
-
-      # if PositionSublist(part, "$$") <> fail then
-      #   if part <> parts[Length(parts)] then
-      #     Info(InfoWarning, 1, "Ignoring illegal characters on line ");
-      #     part := part{[1..PositionSublist(part, "$") - 1]};
-      #   else
-      #     Info(InfoWarning, 1, "Indexing will start at 1");
-      #     break;
-      #   fi;
-      # fi;
 
       if part = "" or part = ' ' or part = " " then
         continue;
@@ -1560,14 +1543,11 @@ function(graphData, r)
 
       Append(edgeList[vertex], connectedTo);
       edgeList[vertex] := DuplicateFreeList(edgeList[vertex]);
-      lastVertex := vertex + r.dollarValue - 1;
 
       if breakflag then
         break;
       fi;
     od;
-
-
 
     return edgeList;
 end);
@@ -1607,7 +1587,7 @@ function(name)
       fi;
   until IsEmpty(line);
   
-  r := rec(dollarValue := DIGRAPHS_ParseDreadnautConfig(config, "$"), nValue := DIGRAPHS_ParseDreadnautConfig(config, "n"), dExists := PositionSublist(config, "d") <> fail, configLength := Length(SplitString(config, "\n")));
+  r := rec(dollarValue := DIGRAPHS_ParseDreadnautConfig(config, "$"), nValue := DIGRAPHS_ParseDreadnautConfig(config, "n"), dExists := PositionSublist(config, "d") <> fail);
 
   if r.dollarValue <> 1 then
     Info(InfoWarning, 1, "the graph will be reindexed such that the indexing starts at 1. i.e. effectively adding $=1 to the end of the file.");
