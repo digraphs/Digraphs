@@ -1413,7 +1413,7 @@ function(config, key)
       if key = "$" then
         return 0;
       else
-        ErrorNoReturn("The number of vertices has not been defined. Check your file and ensure n is declared.");
+        ErrorNoReturn("the number of vertices has not been declared");
       fi;
     fi;
 end);
@@ -1421,34 +1421,54 @@ end);
 BindGlobal("DIGRAPHS_LegalEdge",
 function(vertex, x, r)
   if x > r.nValue then
-    Info(InfoWarning, 1, "Ignoring illegal edge ", vertex + r.dollarValue - 1, " -> ", x + r.dollarValue - 1, " (original indexing)");
+    Error("Illegal edge ", vertex + r.dollarValue - 1, " -> ", x + r.dollarValue - 1, " (original indexing)");
     return false;
   fi;
   if not r.dExists and x = vertex then
-    Info(InfoWarning, 1, "Ignoring illegal edge ", vertex + r.dollarValue - 1, " -> ", x + r.dollarValue - 1, " (original indexing). Ensure the graph is as a diagraph in its dreadnaut formatting to include loops.");
+    Error("Illegal edge ", vertex + r.dollarValue - 1, " -> ", x + r.dollarValue - 1, " (original indexing). Ensure the graph is as a diagraph in its dreadnaut formatting to include loops.");
     return false;
   fi;
   if x < 1 then
-    Info(InfoWarning, 1, "Ignoring illegal edge ", vertex + r.dollarValue - 1, " -> ", x + r.dollarValue - 1, " (original indexing)");
+    Error("Illegal edge ", vertex + r.dollarValue - 1, " -> ", x + r.dollarValue - 1, " (original indexing)");
     return false;
   fi;
   return true;
 end);
 
-BindGlobal("DIGRAPHS_SplitDreadnautLine",
+BindGlobal("DIGRAPHS_SplitDreadnautLines",
 function(inputString)
-    local startPos, currentPos, segments, currentChar, nextChar, flag;
+    local startPos, currentPos, segments, currentChar, nextChar;
 
     # Initialize variables
     startPos := 1;
     segments := [];
-
+    # inputString := ReplacedString(inputString, "\n", " \n ");
     # Iterate over the string
     for currentPos in [1..Length(inputString)-1] do
         currentChar := inputString[currentPos];
         nextChar := inputString[currentPos + 1];
 
-        flag := false;
+        if currentChar = ';' then
+          Add(segments, inputString{[startPos..currentPos]});
+          startPos := currentPos + 1;
+          continue;
+        fi;
+
+        if currentChar = '$' and nextChar = '$' then
+          # Add(segments, inputString{[startPos..currentPos+1]});
+          Info(InfoWarning, 1, "Vertex indexing will start at 1");
+          if ForAll(inputString{[currentPos + 2..Length(inputString)]}, c -> c = ' ' or c = '\n') then;
+            break;
+          else
+            ErrorNoReturn("Syntax error: unexpected characters after \"$$\"");
+          fi;
+        fi;
+
+        if currentChar in "erRjstTvfFiIO" then
+          Error("Operation (", currentChar, ") not supported.");
+          Add(segments, inputString{[startPos..currentPos-1]});
+          return segments;
+        fi;
 
         if IsDigitChar(currentChar) and nextChar = ' ' and inputString[currentPos + 2] = ':' then
           repeat
@@ -1471,84 +1491,83 @@ end);
 
 BindGlobal("DIGRAPHS_ParseDreadnautGraph",
 function(graphData, r)
-    local lines, edgeList, line, parts, vertex, connectedTo, adjacencyPart, breakflag, i, j, EOL, lastVertex, part, colonIndices;
+    local lines, edgeList, line, part, parts, subparts, vertex, connectedTo, adjacencyPart, breakflag, i, j, lastVertex, colonIndices, newlineCounter;
 
-    # Split the graph data into lines
-    lines := SplitString(graphData, "\n");
+    # lines := ReplacedString(graphData, "\n", " ");
 
     # Initialize an empty list to hold the edges
     edgeList := List([1..r.nValue], x -> []);
-    EOL := false;
     lastVertex := fail;
     breakflag := false;
+    newlineCounter := 1;
 
-    for i in [1..Length(lines)] do
-        line := lines[i];
-        if IsEmpty(line) or line = "\n" then
-            continue; 
-        fi;
+    graphData := ReplacedString(graphData, ":", " : ");
+    graphData := ReplacedString(graphData, ";", " ; ");
+    NormalizeWhitespace(graphData);
+    parts := DIGRAPHS_SplitDreadnautLines(graphData);
 
-        if PositionSublist(line, ".") <> fail or PositionSublist(line, "q") <> fail then
-            breakflag := true;
-            RemoveCharacters(line, ".q");
-        fi;
+    for part in parts do
 
-        if PositionSublist(line, "$") <> fail then
-            Info(InfoWarning, 1, "Indexing will start at 1");
-            break;
-        fi;
-        
-        line := ReplacedString(line, ":", " : ");
-        NormalizeWhitespace(line);
-        parts := DIGRAPHS_SplitDreadnautLine(line);
+      if PositionSublist(part, ".") <> fail or PositionSublist(part, "q") <> fail then
+          breakflag := true;
+          RemoveCharacters(part, ".q");
+      fi;
 
-        for part in parts do
-          part := SplitString(part, ":");
+      # if PositionSublist(part, "$$") <> fail then
+      #   if part <> parts[Length(parts)] then
+      #     Info(InfoWarning, 1, "Ignoring illegal characters on line ");
+      #     part := part{[1..PositionSublist(part, "$") - 1]};
+      #   else
+      #     Info(InfoWarning, 1, "Indexing will start at 1");
+      #     break;
+      #   fi;
+      # fi;
 
-          if Length(part) = 0 then
-              continue;
-          elif Length(part) = 1 then
-              if EOL = true then
-                Info(InfoWarning, 1, "Ignoring line ", i + r.configLength, " due to formatting error.");
-                continue;
-              else
-                vertex := lastVertex;
-                adjacencyPart := part[1];
-              fi;
-          else
-            vertex := part[1];
-            RemoveCharacters(vertex, " ");
-            vertex := Int(vertex);
-            adjacencyPart := part[2];
-          fi;
+      if part = "" or part = ' ' or part = " " then
+        continue;
+      fi;
 
-          vertex := vertex - r.dollarValue + 1;
+      subparts := SplitString(part, ":");
 
-          if vertex > r.nValue or vertex < 1 then
-            Info(InfoWarning, 1, "Ignoring illegal vertex ", vertex, " (original indexing)");
+      if Length(subparts) = 0 then
+        continue;
+      elif Length(subparts) = 1 then
+        Info(InfoWarning, 1, "Ignoring line", part,  "due to formatting error."); ### HOW TO FIND I?
             continue;
-          fi;
+      else
+        vertex := subparts[1];
+        RemoveCharacters(vertex, " ");
+        vertex := Int(vertex);
+        adjacencyPart := subparts[2];
+      fi;
 
-          NormalizeWhitespace(adjacencyPart);  # Remove extra spaces
-          EOL := PositionSublist(adjacencyPart, ";") <> fail; #indicator to be used for next line
-          adjacencyPart := SplitString(adjacencyPart, "!")[1];
-          RemoveCharacters(adjacencyPart, ",;");
-          connectedTo := List(SplitString(adjacencyPart, " "), x -> Int(x));
-          connectedTo := Filtered(connectedTo, y -> IsInt(y));  # Ensure only integers are included
-          connectedTo := List(connectedTo, x -> x - r.dollarValue + 1);  # Adjust the vertex numbering to start at 1
+      vertex := vertex - r.dollarValue + 1;
 
-          connectedTo := Filtered(connectedTo, x -> DIGRAPHS_LegalEdge(vertex, x, r));  
+      if vertex > r.nValue or vertex < 1 then
+        Error("Illegal vertex ", vertex, " (original indexing)");
+        continue;
+      fi;
+
+      NormalizeWhitespace(adjacencyPart);  # Remove extra spaces
+      adjacencyPart := SplitString(adjacencyPart, "!")[1];
+      RemoveCharacters(adjacencyPart, ",;");
+      connectedTo := List(SplitString(adjacencyPart, " "), x -> Int(x));
+      connectedTo := Filtered(connectedTo, y -> IsInt(y));  # Ensure only integers are included
+      connectedTo := List(connectedTo, x -> x - r.dollarValue + 1);  # Adjust the vertex numbering to start at 1
+
+      connectedTo := Filtered(connectedTo, x -> DIGRAPHS_LegalEdge(vertex, x, r));  
 
 
-          Append(edgeList[vertex], connectedTo);
-          edgeList[vertex] := DuplicateFreeList(edgeList[vertex]);
-          lastVertex := vertex + r.dollarValue - 1;
-        od;
+      Append(edgeList[vertex], connectedTo);
+      edgeList[vertex] := DuplicateFreeList(edgeList[vertex]);
+      lastVertex := vertex + r.dollarValue - 1;
 
-        if breakflag then
-          break;
-        fi;
+      if breakflag then
+        break;
+      fi;
     od;
+
+
 
     return edgeList;
 end);
@@ -1575,7 +1594,7 @@ function(name)
   until foundG or IsEmpty(line);
 
   if not foundG then
-      ErrorNoReturn("g is not defined. Check your file and ensure g is declared.");
+      ErrorNoReturn("g not declared");
   fi;
 
   config := SplitString(config, "g")[1];
@@ -1588,10 +1607,10 @@ function(name)
       fi;
   until IsEmpty(line);
   
-  r := rec(dollarValue := DIGRAPHS_ParseDreadnautConfig(config, "$"), nValue := DIGRAPHS_ParseDreadnautConfig(config, "n"), dExists := PositionSublist(config, "d") <> fail, configLength := Length(SplitString(config, "\n"));
+  r := rec(dollarValue := DIGRAPHS_ParseDreadnautConfig(config, "$"), nValue := DIGRAPHS_ParseDreadnautConfig(config, "n"), dExists := PositionSublist(config, "d") <> fail, configLength := Length(SplitString(config, "\n")));
 
   if r.dollarValue <> 1 then
-    Info(InfoWarning, 1, "The graph will be reindexed such that the first vertex is 1. i.e. effectively adding $=1 to the end of the file.");
+    Info(InfoWarning, 1, "the graph will be reindexed such that the indexing starts at 1. i.e. effectively adding $=1 to the end of the file.");
   fi;
 
   edgeList := DIGRAPHS_ParseDreadnautGraph(graphData, r);
