@@ -1401,7 +1401,7 @@ function(config, key)
       Pos := L[Length(L)] + 1;
       tempStr := "";
 
-      while IsInt(Int(config{[Pos]})) do
+      while Int(config{[Pos]}) <> fail do
         tempStr := Concatenation(tempStr, config{[Pos]});
         Pos := Pos + 1;
         if Pos > Length(config) then
@@ -1420,16 +1420,12 @@ end);
 
 BindGlobal("DIGRAPHS_LegalDreadnautEdge",
 function(vertex, x, r)
-  if x > r.nValue then
+  if x > r.nValue or x < 1 then
     Error("Illegal edge ", vertex + r.dollarValue - 1, " -> ", x + r.dollarValue - 1, " (original indexing)");
     return false;
   fi;
   if not r.dExists and x = vertex then
     Error("Illegal edge ", vertex + r.dollarValue - 1, " -> ", x + r.dollarValue - 1, " (original indexing). Ensure 'd' is declared to include loops.");
-    return false;
-  fi;
-  if x < 1 then
-    Error("Illegal edge ", vertex + r.dollarValue - 1, " -> ", x + r.dollarValue - 1, " (original indexing)");
     return false;
   fi;
   return true;
@@ -1512,8 +1508,8 @@ function(graphData, r)
     edgeList := List([1..r.nValue], x -> []);
     breakflag := false;
 
-    graphData := ReplacedString(graphData, ":", " : ");
-    graphData := ReplacedString(graphData, ";", " ; ");
+    # graphData := ReplacedString(graphData, ":", " : ");
+    # graphData := ReplacedString(graphData, ";", " ; ");
     NormalizeWhitespace(graphData); #losing newlines here
     parts := DIGRAPHS_SplitDreadnautLines(graphData);
 
