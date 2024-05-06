@@ -1496,7 +1496,7 @@ function(graphData, r)
 
     graphData := ReplacedString(graphData, ":", " : ");
     graphData := ReplacedString(graphData, ";", " ; ");
-    NormalizeWhitespace(graphData);
+    NormalizeWhitespace(graphData); #losing newlines here
     parts := DIGRAPHS_SplitDreadnautLines(graphData);
 
     for part in parts do
@@ -1515,8 +1515,8 @@ function(graphData, r)
       if Length(subparts) = 0 then
         continue;
       elif Length(subparts) = 1 then
-        Info(InfoWarning, 1, "Ignoring line", part,  "due to formatting error."); ### HOW TO FIND I?
-            continue;
+        Error("Formatting error", part); ### HOW TO FIND I?
+        continue;
       else
         vertex := subparts[1];
         RemoveCharacters(vertex, " ");
@@ -1535,9 +1535,13 @@ function(graphData, r)
       adjacencyPart := SplitString(adjacencyPart, "!")[1];
       RemoveCharacters(adjacencyPart, ",;");
       connectedTo := List(SplitString(adjacencyPart, " "), x -> Int(x));
+
+      if fail in connectedTo then
+        Error("Formatting error (", part, ")");
+      fi;
+
       connectedTo := Filtered(connectedTo, y -> IsInt(y));  # Ensure only integers are included
       connectedTo := List(connectedTo, x -> x - r.dollarValue + 1);  # Adjust the vertex numbering to start at 1
-
       connectedTo := Filtered(connectedTo, x -> DIGRAPHS_LegalEdge(vertex, x, r));  
 
 
@@ -1568,7 +1572,7 @@ function(name)
   repeat
       line := IO_ReadLine(file);
       if not IsEmpty(line) then
-          config := Concatenation(config, line); 
+          config := Concatenation(config, line);
           foundG := PositionSublist(line, "g") <> fail;
       fi;
   until foundG or IsEmpty(line);
