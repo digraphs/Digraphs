@@ -1418,7 +1418,7 @@ function(config, key)
     fi;
 end);
 
-BindGlobal("DIGRAPHS_LegalEdge",
+BindGlobal("DIGRAPHS_LegalDreadnautEdge",
 function(vertex, x, r)
   if x > r.nValue then
     Error("Illegal edge ", vertex + r.dollarValue - 1, " -> ", x + r.dollarValue - 1, " (original indexing)");
@@ -1456,7 +1456,8 @@ function(inputString)
         if currentChar = '$' and nextChar = '$' then
           Info(InfoWarning, 1, "Vertex indexing will start at 1");
           if ForAll(inputString{[currentPos + 2..Length(inputString)]}, c -> c = ' ' or c = '\n') then;
-            break;
+            Add(segments, inputString{[startPos..currentPos - 1]});
+            return segments;
           else
             ErrorNoReturn("Syntax error: unexpected characters after \"$$\"");
           fi;
@@ -1468,8 +1469,26 @@ function(inputString)
           return segments;
         fi;
 
-        if IsDigitChar(currentChar) and nextChar = ' ' and inputString[currentPos + 2] = ':' then #in the case of a new vertex
+        # if IsDigitChar(currentChar) and nextChar = ' ' and inputString[currentPos + 2] = ':' then #in the case of a new vertex
+        #   repeat #backtrack to find the start of the vertex
+        #     currentPos := currentPos - 1;
+        #   until currentPos <= 1 or not IsDigitChar(inputString[currentPos]);
+        #   if startPos < currentPos then
+        #     Add(segments, inputString{[startPos..currentPos-1]});
+        #   fi;
+        #   if currentPos > 1 then
+        #     startPos := currentPos;
+        #   fi;
+        # fi;
+
+        if currentChar = ':' then
           repeat #backtrack to find the start of the vertex
+            currentPos := currentPos - 1;
+            if inputString[currentPos] <> ' ' and not IsDigitChar(inputString[currentPos]) then
+              ErrorNoReturn("Syntax error: unexpected character (", inputString[currentPos],") before \":\""); #catches 1: 3\n : 4
+            fi;
+          until currentPos <= 1 or IsDigitChar(inputString[currentPos]);
+          repeat
             currentPos := currentPos - 1;
           until currentPos <= 1 or not IsDigitChar(inputString[currentPos]);
           if startPos < currentPos then
@@ -1487,12 +1506,11 @@ end);
 
 BindGlobal("DIGRAPHS_ParseDreadnautGraph",
 function(graphData, r)
-    local edgeList, part, parts, subparts, vertex, connectedTo, adjacencyPart, breakflag, newlineCounter;
+    local edgeList, part, parts, subparts, vertex, connectedTo, adjacencyPart, breakflag;
 
     # Initialize an empty list to hold the edges
     edgeList := List([1..r.nValue], x -> []);
     breakflag := false;
-    newlineCounter := 1;
 
     graphData := ReplacedString(graphData, ":", " : ");
     graphData := ReplacedString(graphData, ";", " ; ");
@@ -1512,11 +1530,11 @@ function(graphData, r)
 
       subparts := SplitString(part, ":");
 
-      if Length(subparts) = 0 then
+      if Length(subparts) = 0 or Length(subparts) = 1 then
         continue;
-      elif Length(subparts) = 1 then
-        Error("Formatting error", part); ### HOW TO FIND I?
-        continue;
+      # elif Length(subparts) = 1 then
+        # Error("Formatting error", part); ### HOW TO FIND I?
+        # continue;
       else
         vertex := subparts[1];
         RemoveCharacters(vertex, " ");
@@ -1542,7 +1560,7 @@ function(graphData, r)
 
       connectedTo := Filtered(connectedTo, y -> IsInt(y));  # Ensure only integers are included
       connectedTo := List(connectedTo, x -> x - r.dollarValue + 1);  # Adjust the vertex numbering to start at 1
-      connectedTo := Filtered(connectedTo, x -> DIGRAPHS_LegalEdge(vertex, x, r));  
+      connectedTo := Filtered(connectedTo, x -> DIGRAPHS_LegalDreadnautEdge(vertex, x, r));  
 
 
       Append(edgeList[vertex], connectedTo);
