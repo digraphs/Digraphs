@@ -1,4 +1,4 @@
-name: "os"
+name: "OS"
 on:
   workflow_dispatch:
   pull_request:
