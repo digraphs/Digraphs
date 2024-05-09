@@ -1,99 +1,101 @@
 name: "Ubuntu"
 on:
-    workflow_dispatch:
-    pull_request:
-    push:
-        branches:
-        - main
-        - stable-*.*
-    schedule:
-        # Every day at 3:30 AM UTC
-        - cron: '30 3 * * *'
+  workflow_dispatch:
+  pull_request:
+  push:
+    branches:
+      - main
+      - stable-*.*
+  schedule:
+    # Every day at 3:30 AM UTC
+    - cron: "30 3 * * *"
 
 env:
-    DIGRAPHS_LIB: digraphs-lib-0.6
-    VALGRIND: valgrind --trace-children=yes --leak-check=full --error-exitcode=1
-
+  DIGRAPHS_LIB: digraphs-lib-0.6
+  VALGRIND: valgrind --trace-children=yes --leak-check=full --error-exitcode=1
 
 jobs:
-    test-unix:
-        name: "Ubuntu / GAP ${{ matrix.gap-branch }} / ${{ matrix.only-needed && 'only-needed' || 'needed+suggested' }}"
-        runs-on: ubuntu-latest
-        strategy:
-            fail-fast: false
-            matrix:
-                gap-branch:
-                    - master
-                    - stable-4.10
-                    - stable-4.11
-                    - stable-4.12
-                    - stable-4.13
-                only-needed:
-                    - true
-                    - false 
-                include:
-                    - only-needed: true
-                      pkgs-to-clone: ''
-                      pkgs-to-build: 'io orb datastructures'
-                    - only-needed: false  
-                      pkgs-to-clone: NautyTracesInterface
-                      pkgs-to-build: io orb grape NautyTracesInterface datastructures
-                    - gap-branch: stable-4.10
-                      pkgs-to-clone: ''
+  test-unix:
+    name: "Ubuntu / GAP ${{ matrix.gap-branch }} / ${{ matrix.only-needed && 'only-needed' || 'needed+suggested' }}"
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        gap-branch:
+          - master
+          - stable-4.10
+          - stable-4.11
+          - stable-4.12
+          - stable-4.13
+        only-needed:
+          - true
+          - false
+        include:
+          - only-needed: true
+            pkgs-to-clone: ""
+            pkgs-to-build: io orb datastructures
+          - only-needed: false
+            pkgs-to-clone: NautyTracesInterface
+            pkgs-to-build: io orb datastructures grape NautyTracesInterface
+            # NautyTracesInterface requires GAP >= 4.11
+          - gap-branch: stable-4.10
+            only-needed: false
+            pkgs-to-clone: ""
+            pkgs-to-build: io orb grape datastructures
 
-        steps:
-            - uses: actions/checkout@v4
-            - name: "Install GAP and clone/compile necessary packages"
-              uses: gap-actions/setup-gap@v2
-              with:
-                GAP_PKGS_TO_CLONE: "${{ matrix.pkgs-to-clone }}"
-                GAP_PKGS_TO_BUILD: "${{ matrix.pkgs-to-build }}"
-                GAPBRANCH: ${{ matrix.gap-branch }}
-            - name: "Build Digraphs"
-              uses: gap-actions/build-pkg@v1
-            - name: "Install digraphs-lib"
-              run: |
-                curl --retry 5 -L -O "https://digraphs.github.io/Digraphs/${{ env.DIGRAPHS_LIB }}.tar.gz"
-                tar xf "${{ env.DIGRAPHS_LIB }}.tar.gz"
-            - name: "Clone datastructures v0.3.0"
-              if: ${{ matrix.gap-branch == 'stable-4.10' }}
-              run: |
-                rm -rf $HOME/gap/pkg/datastructures
-                cd $HOME/gap/pkg/
-                git clone https://github.com/gap-packages/datastructures.git datastructures
-                cd datastructures
-                git checkout v0.3.0
-                ./configure
-                make
-            - name: "Run DigraphsTestInstall"
-              uses: gap-actions/run-pkg-tests@v2
-              with:
-                NO_COVERAGE: true
-                GAP_TESTFILE: "tst/github_actions/install.g"
-                only-needed: ${{ matrix.only-needed }}
-            - name: "Run DigraphsTestStandard"
-              uses: gap-actions/run-pkg-tests@v2
-              with:
-                NO_COVERAGE: true
-                GAP_TESTFILE: "tst/github_actions/standard.g"
-                only-needed: ${{ matrix.only-needed }}
-            - name: "Run DigraphsTestManualExamples"
-              uses: gap-actions/run-pkg-tests@v2
-              with:
-                NO_COVERAGE: true
-                GAP_TESTFILE: "tst/github_actions/examples.g"
-                only-needed: ${{ matrix.only-needed }}
-            - name: "Run DigraphsTestExtreme"
-              uses: gap-actions/run-pkg-tests@v2
-              with:
-                NO_COVERAGE: true
-                GAP_TESTFILE: "tst/github_actions/extreme.g"
-                only-needed: ${{ matrix.only-needed }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: "Install GAP and clone/compile necessary packages"
+        uses: gap-actions/setup-gap@v2
+        with:
+          GAP_PKGS_TO_CLONE: "${{ matrix.pkgs-to-clone }}"
+          GAP_PKGS_TO_BUILD: "${{ matrix.pkgs-to-build }}"
+          GAPBRANCH: ${{ matrix.gap-branch }}
+      - name: "Build Digraphs"
+        uses: gap-actions/build-pkg@v1
+      - name: "Install digraphs-lib"
+        run: |
+          curl --retry 5 -L -O "https://digraphs.github.io/Digraphs/${{ env.DIGRAPHS_LIB }}.tar.gz"
+          tar xf "${{ env.DIGRAPHS_LIB }}.tar.gz"
+      - name: "Clone datastructures v0.3.0"
+        if: ${{ matrix.gap-branch == 'stable-4.10' }}
+        run: |
+          rm -rf $HOME/gap/pkg/datastructures
+          cd $HOME/gap/pkg/
+          git clone https://github.com/gap-packages/datastructures.git datastructures
+          cd datastructures
+          git checkout v0.3.0
+          ./configure
+          make
+      - name: "Run DigraphsTestInstall"
+        uses: gap-actions/run-pkg-tests@v2
+        with:
+          NO_COVERAGE: true
+          GAP_TESTFILE: "tst/github_actions/install.g"
+          only-needed: ${{ matrix.only-needed }}
+      - name: "Run DigraphsTestStandard"
+        uses: gap-actions/run-pkg-tests@v2
+        with:
+          NO_COVERAGE: true
+          GAP_TESTFILE: "tst/github_actions/standard.g"
+          only-needed: ${{ matrix.only-needed }}
+      - name: "Run DigraphsTestManualExamples"
+        uses: gap-actions/run-pkg-tests@v2
+        with:
+          NO_COVERAGE: true
+          GAP_TESTFILE: "tst/github_actions/examples.g"
+          only-needed: ${{ matrix.only-needed }}
+      - name: "Run DigraphsTestExtreme"
+        uses: gap-actions/run-pkg-tests@v2
+        with:
+          NO_COVERAGE: true
+          GAP_TESTFILE: "tst/github_actions/extreme.g"
+          only-needed: ${{ matrix.only-needed }}
 
-    test-valgrind:
-      name: "Ubuntu / GAP stable-4.13 / valgrind"
-      runs-on: "ubuntu-latest"
-      steps:
+  test-valgrind:
+    name: "Ubuntu / GAP stable-4.13 / valgrind"
+    runs-on: "ubuntu-latest"
+    steps:
       - uses: actions/checkout@v4
       - name: "Install Valgrind"
         run: sudo apt-get install valgrind
@@ -110,14 +112,13 @@ jobs:
         # TODO: Replace below with gap-actions/run-pkg-tests@v2 if the functionality gets added
         uses: ./.github/actions/test_with_valgrind
         with:
+          NO_COVERAGE: true
           GAP_TESTFILE: "tst/github_actions/install.g"
-          NO_COVERAGE: 'true'
           pre-gap: ${{ env.VALGRIND }}
       - name: "Run DigraphsTestStandard"
         # TODO: Replace below with gap-actions/run-pkg-tests@v2 if the functionality gets added
         uses: ./.github/actions/test_with_valgrind
         with:
+          NO_COVERAGE: true
           GAP_TESTFILE: "tst/github_actions/standard.g"
-          NO_COVERAGE: 'true'
           pre-gap: ${{ env.VALGRIND }}
-                
