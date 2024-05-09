@@ -12,8 +12,20 @@ on:
 
 jobs:
   with-external-planarity-bliss:
-    name: "--with-external-planarity --with-external-bliss"
+    name: "${{ matrix.bliss }} ${{ matrix.planarity }}"
     runs-on: "ubuntu-latest"
+    strategy:
+      fail-fast: false
+      matrix:
+        planarity:
+          - "--with-external-planarity"
+          - ""
+        bliss:
+          - "--with-external-bliss"
+          - ""
+        exclude:
+          - planarity: ""
+            bliss: ""
     defaults:
       run:
         shell: bash -l {0}
@@ -24,9 +36,7 @@ jobs:
         with:
           environment-name: digraphs
           cache-environment: true
-          create-args: >-
-            planarity
-            bliss
+          create-args: ${{ matrix.bliss && 'bliss' || '' }} ${{ matrix.planarity && 'planarity' || ''}}
       - name: "Set environment variables . . ."
         run: |
           echo "PKG_CONFIG_PATH=$MAMBA_ROOT_PREFIX/envs/digraphs/lib/pkgconfig:$MAMBA_ROOT_PREFIX/envs/digraphs/share/pkgconfig" >> $GITHUB_ENV
@@ -42,7 +52,7 @@ jobs:
       - name: "Build Digraphs"
         uses: gap-actions/build-pkg@v1
         with:
-          CONFIGFLAGS: --with-external-planarity --with-external-bliss
+          CONFIGFLAGS: ${{ matrix.bliss }} ${{ matrix.planarity }}
       - name: "Run Digraphs package's tst/teststandard.g"
         uses: gap-actions/run-pkg-tests@v2
         with:
