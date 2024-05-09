@@ -1,0 +1,88 @@
+name: "config-options"
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    branches:
+      - main
+      - stable-*.*
+  schedule:
+    # Every day at 3:30 AM UTC
+    - cron: "30 3 * * *"
+
+jobs:
+  with-external-planarity-bliss:
+    name: "--with-external-planarity --with-external-bliss"
+    runs-on: "ubuntu-latest"
+    defaults:
+      run:
+        shell: bash -l {0}
+    steps:
+      - uses: actions/checkout@v4
+      - name: "Install micromamba environment from environment.yml . . ."
+        uses: mamba-org/setup-micromamba@v1
+        with:
+          environment-name: digraphs
+          cache-environment: true
+          create-args: >-
+            planarity
+            bliss
+      - name: "Set environment variables . . ."
+        run: |
+          echo "PKG_CONFIG_PATH=$MAMBA_ROOT_PREFIX/envs/digraphs/lib/pkgconfig:$MAMBA_ROOT_PREFIX/envs/digraphs/share/pkgconfig" >> $GITHUB_ENV
+          echo "LD_LIBRARY_PATH=$MAMBA_ROOT_PREFIX/envs/digraphs/lib" >> $GITHUB_ENV
+          echo "CFLAGS=-I$MAMBA_ROOT_PREFIX/envs/digraphs/include" >> $GITHUB_ENV
+          echo "LDFLAGS=-L$MAMBA_ROOT_PREFIX/envs/digraphs/lib" >> $GITHUB_ENV
+      - name: "Install GAP and clone/compile necessary packages"
+        uses: gap-actions/setup-gap@v2
+        with:
+          # TODO: Should this have NautyTracesInterface included? Or is that the point of this test?
+          GAP_PKGS_TO_BUILD: "io orb profiling grape datastructures"
+          GAPBRANCH: stable-4.13
+      - name: "Build Digraphs"
+        uses: gap-actions/build-pkg@v1
+        with:
+          CONFIGFLAGS: --with-external-planarity --with-external-bliss
+      - name: "Run Digraphs package's tst/teststandard.g"
+        uses: gap-actions/run-pkg-tests@v2
+        with:
+          NO_COVERAGE: true
+
+  all-options:
+    name: ${{ matrix.cov }} ${{ matrix.debug }} ${{ matrix.warnings }} ${{ matrix.without-intrinsics }}
+    runs-on: "ubuntu-latest"
+    strategy:
+      fail-fast: false
+      matrix:
+        cov:
+          - "--enable-code-coverage"
+          - ""
+        warnings:
+          - "--enable-compile-warnings"
+          - ""
+        debug:
+          - "--enable-debug"
+          - ""
+        without-intrinsics:
+          - "--without-intrinsics"
+          - ""
+        exclude:
+          - cov: ""
+            warnings: ""
+            debug: ""
+            without-intrinsics: ""
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: "Install GAP and clone/compile necessary packages"
+        uses: gap-actions/setup-gap@v2
+        with:
+          GAP_PKGS_TO_CLONE: "NautyTracesInterface"
+          GAP_PKGS_TO_BUILD: "io orb profiling grape datastructures NautyTracesInterface"
+          GAPBRANCH: stable-4.13
+      - name: "Build Digraphs"
+        uses: gap-actions/build-pkg@v1
+        with:
+          CONFIGFLAGS: ${{ matrix.cov }} ${{ matrix.debug }} ${{ matrix.warnings }} ${{ matrix.without-intrinsics }}
+      - name: "Run Digraphs package's tst/teststandard.g"
+        uses: gap-actions/run-pkg-tests@v2
