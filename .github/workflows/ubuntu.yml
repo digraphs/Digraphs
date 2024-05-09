@@ -38,6 +38,8 @@ jobs:
                     - only-needed: false  
                       pkgs-to-clone: NautyTracesInterface
                       pkgs-to-build: io orb grape NautyTracesInterface datastructures
+                    - gap-branch: stable-4.10
+                      pkgs-to-clone: ''
 
         steps:
             - uses: actions/checkout@v4
