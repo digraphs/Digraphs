@@ -26,18 +26,24 @@ jobs:
                     - stable-4.11
                     - stable-4.12
                     - stable-4.13
-                pkgs-to-clone:
-                    - NautyTracesInterface
                 only-needed:
                     - true
-                    - false
+                    - false 
+                include:
+                    - only-needed: true
+                      pkgs-to-clone: ''
+                      pkgs-to-build: 'io orb datastructures'
+                    - only-needed: false  
+                      pkgs-to-clone: NautyTracesInterface
+                      pkgs-to-build: io orb grape NautyTracesInterface datastructures
+
         steps:
             - uses: actions/checkout@v4
             - name: "Install GAP and clone/compile necessary packages"
               uses: gap-actions/setup-gap@v2
               with:
                 GAP_PKGS_TO_CLONE: "${{ matrix.pkgs-to-clone }}"
-                GAP_PKGS_TO_BUILD: "io orb profiling grape NautyTracesInterface datastructures"
+                GAP_PKGS_TO_BUILD: "${{ matrix.pkgs-to-build }}"
                 GAPBRANCH: ${{ matrix.gap-branch }}
             - name: "Build Digraphs"
               uses: gap-actions/build-pkg@v1
