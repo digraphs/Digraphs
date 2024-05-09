@@ -62,15 +62,15 @@ jobs:
           curl --retry 5 -L -O "https://digraphs.github.io/Digraphs/${{ env.DIGRAPHS_LIB }}.tar.gz"
           tar xf "${{ env.DIGRAPHS_LIB }}.tar.gz"
       - name: "Clone datastructures v0.3.0"
+        if: ${{ matrix.gap-branch == 'stable-4.10' }}
         run: |
-          if [ ! -d $HOME/gap/pkg/datastructures ]; then
+            rm -rf $HOME/gap/pkg/datastructures
             cd $HOME/gap/pkg/
             git clone https://github.com/gap-packages/datastructures.git datastructures
             cd datastructures
             git checkout v0.3.0
             ./configure
             make
-          fi
       - name: "Run DigraphsTestInstall"
         uses: gap-actions/run-pkg-tests@v2
         with:
