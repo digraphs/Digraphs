@@ -13,6 +13,7 @@ on:
 env:
   DIGRAPHS_LIB: digraphs-lib-0.6
   VALGRIND: valgrind --trace-children=yes --leak-check=full --error-exitcode=1
+  NO_COVERAGE: true
 
 jobs:
   test-unix:
