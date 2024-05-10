@@ -50,9 +50,8 @@ jobs:
       - name: "Install GAP and clone/compile necessary packages"
         uses: gap-actions/setup-gap@v2
         with:
-          # TODO: Should this have NautyTracesInterface included? Or is that the point of this test?
-          GAP_PKGS_TO_CLONE: "digraphs/graphviz"
-          GAP_PKGS_TO_BUILD: "io orb profiling grape datastructures"
+          GAP_PKGS_TO_CLONE: "NautyTracesInterface digraphs/graphviz"
+          GAP_PKGS_TO_BUILD: "io orb datastructures grape NautyTracesInterface"
           GAPBRANCH: stable-4.13
       - name: "Build Digraphs"
         uses: gap-actions/build-pkg@v1
@@ -91,7 +90,7 @@ jobs:
         uses: gap-actions/setup-gap@v2
         with:
           GAP_PKGS_TO_CLONE: "NautyTracesInterface digraphs/graphviz"
-          GAP_PKGS_TO_BUILD: "io orb profiling grape datastructures NautyTracesInterface"
+          GAP_PKGS_TO_BUILD: "io orb datastructures grape NautyTracesInterface"
           GAPBRANCH: stable-4.13
       - name: "Build Digraphs"
         uses: gap-actions/build-pkg@v1

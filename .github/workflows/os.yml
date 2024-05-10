@@ -84,8 +84,8 @@ jobs:
       - uses: gap-actions/setup-cygwin@v1
       - uses: gap-actions/setup-gap@cygwin-v2
         with:
-          GAP_PKGS_TO_CLONE: "digraphs/graphviz"
-          GAP_PKGS_TO_BUILD: "io orb grape datastructures"
+          GAP_PKGS_TO_CLONE: "NautyTracesInterface digraphs/graphviz"
+          GAP_PKGS_TO_BUILD: "io orb datastructures grape NautyTracesInterface"
       - uses: gap-actions/build-pkg@cygwin-v1
       - name: "Install digraphs-lib"
         run: |
