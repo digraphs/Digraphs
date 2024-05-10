@@ -173,7 +173,7 @@ static void init_graph_from_digraph_obj(Graph* const graph, Obj digraph_obj) {
   Obj       adj_mat = FuncADJACENCY_MATRIX(0L, digraph_obj);
   DIGRAPHS_ASSERT(nr < MAXVERTS);
   DIGRAPHS_ASSERT(IS_PLIST(adj_mat));
-  DIGRAPHS_ASSERT(IS_PLIST(out));
+  DIGRAPHS_ASSERT(IS_PLIST(FuncOutNeighbours(0L, digraph_obj)));
   clear_graph(graph, nr);
 
   // Only include symmetric edges
