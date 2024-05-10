@@ -87,8 +87,7 @@ AS_IF([test "x$enable_compile_warnings" != "xno"],
 AS_IF([test "x$enable_compile_warnings" != "xno"],
   [ax_enable_compile_warnings=yes
    AX_COMPILER_FLAGS_CFLAGS([WARNING_CFLAGS], [], [ dnl
-       -pedantic dnl
-       -Wold-style-cast])
+       -pedantic dnl])
    AC_SUBST([WARNING_CFLAGS])])
 
 # Check for system planarity suite

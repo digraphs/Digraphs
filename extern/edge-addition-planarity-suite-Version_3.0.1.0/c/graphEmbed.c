@@ -13,6 +13,11 @@ See the LICENSE.TXT file for licensing information.
 #pragma clang diagnostic ignored "-Wstrict-prototypes"
 #pragma clang diagnostic ignored "-Wmissing-prototypes"
 #pragma clang diagnostic ignored "-Wdeprecated-non-prototype"
+#elif defined(__GNUC__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wstrict-prototypes"
+#pragma GCC diagnostic ignored "-Wmissing-prototypes"
+
 #endif
 
 /* Imported functions */
@@ -1369,4 +1374,6 @@ int  e_u, e_v, e_ulink, e_vlink;
 
 #if defined(__clang__)
 #pragma clang diagnostic pop
+#elif defined(__GNUC__)
+#pragma GCC diagnostic pop
 #endif

@@ -2370,6 +2370,9 @@ static StructInitInfo module = {
 #if defined(__clang__)
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wmissing-prototypes"
+#elif defined(__GNUC__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wmissing-prototypes"
 #endif
 StructInitInfo* Init__Dynamic(void) {
   return &module;
@@ -2380,5 +2383,7 @@ StructInitInfo* Init__digraphs(void) {
 }
 #if defined(__clang__)
 #pragma clang diagnostic pop
+#elif defined(__GNUC__)
+#pragma GCC diagnostic pop
 #endif
 #endif
