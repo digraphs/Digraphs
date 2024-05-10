@@ -1,4 +1,4 @@
-name: "config-options"
+name: "Config-options"
 on:
   workflow_dispatch:
   pull_request:
