@@ -9,8 +9,8 @@ on:
   schedule:
     # Every day at 3:30 AM UTC
     - cron: "30 3 * * *"
-  env:
-    NO_COVERAGE: true
+env:
+  NO_COVERAGE: true
 
 jobs:
   with-external-planarity-bliss:
@@ -33,6 +33,8 @@ jobs:
         shell: bash -l {0}
     steps:
       - uses: actions/checkout@v4
+      - name: Output g++ version
+        run: g++ --version
       - name: "Install micromamba environment from environment.yml . . ."
         uses: mamba-org/setup-micromamba@v1
         with:
@@ -82,6 +84,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - name: Output g++ version
+        run: g++ --version
       - name: "Install GAP and clone/compile necessary packages"
         uses: gap-actions/setup-gap@v2
         with:

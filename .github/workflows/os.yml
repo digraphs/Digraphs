@@ -33,6 +33,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - name: Output g++ version
+        run: g++ --version
       - name: "Install dependencies"
         if: ${{ runner.os == 'macOS' }}
         run: brew install automake
