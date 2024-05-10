@@ -1140,7 +1140,8 @@ static Obj FLOYD_WARSHALL(Obj digraph,
                           bool copy,
                           bool diameter,
                           bool shortest) {
-  Int n, i, j, k, *dist, *adj;
+  Int n, i, j, k, *dist;
+  Int* adj = NULL;
   Obj next, out, outi, val;
 
   n = DigraphNrVertices(digraph);
@@ -1204,9 +1205,7 @@ static Obj FLOYD_WARSHALL(Obj digraph,
           maximum = dist[i * n + j];
         } else if (dist[i * n + j] == -1) {
           free(dist);
-          if (copy) {
-            free(adj);
-          }
+          free(adj);
           return Fail;
         }
       }
