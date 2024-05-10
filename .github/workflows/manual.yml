@@ -1,4 +1,4 @@
-name: "Manual"
+name: Manual
 on:
   workflow_dispatch:
   pull_request:
@@ -8,15 +8,15 @@ on:
       - stable-*.*
   schedule:
     # Every day at 3:20 AM UTC
-    - cron: '20 3 * * *'
+    - cron: "20 3 * * *"
 
 jobs:
   manual:
-    name: "compile and upload manual"
+    name: compile and upload manual
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: "Install TeX Live"
+      - name: Install TeX Live . . .
         run: |
           packages=(
             texlive-latex-base
@@ -30,14 +30,14 @@ jobs:
           sudo apt-get install "${packages[@]}"
       - uses: gap-actions/setup-gap@v2
         env:
-          GAP_BOOTSTRAP: "minimal"
+          GAP_BOOTSTRAP: minimal
         with:
-          GAP_PKGS_TO_BUILD: ''
+          GAP_PKGS_TO_BUILD: ""
       - uses: gap-actions/build-pkg-docs@v1
-      - name: "Upload compiled manuals"
+      - name: Upload compiled manuals . . .
         uses: actions/upload-artifact@v4
         with:
-          name: "Digraphs manual"
+          name: Digraphs manual
           retention-days: 7
           path: |
             doc/manual.pdf

@@ -1,4 +1,4 @@
-name: "Ubuntu"
+name: Ubuntu
 on:
   workflow_dispatch:
   pull_request:
@@ -8,7 +8,7 @@ on:
       - stable-*.*
   schedule:
     # Every day at 3:30 AM UTC
-    - cron: "30 3 * * *"
+    - cron: 30 3 * * *
 
 env:
   DIGRAPHS_LIB: digraphs-lib-0.6
@@ -16,7 +16,7 @@ env:
 
 jobs:
   test-unix:
-    name: "Ubuntu / GAP ${{ matrix.gap-branch }} / ${{ matrix.only-needed && 'only-needed' || 'needed+suggested' }}"
+    name: Ubuntu / GAP ${{ matrix.gap-branch }} / ${{ matrix.only-needed && 'only-needed' || 'needed+suggested' }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -31,7 +31,7 @@ jobs:
           - false
         include:
           - only-needed: true
-            pkgs-to-clone: "digraphs/graphviz"
+            pkgs-to-clone: digraphs/graphviz
             pkgs-to-build: io orb datastructures
           - only-needed: false
             pkgs-to-clone: NautyTracesInterface digraphs/graphviz
@@ -39,41 +39,41 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - name: Output g++ version
+      - name: Output g++ version . . .
         run: g++ --version
-      - name: "Install GAP and clone/compile necessary packages"
+      - name: Install GAP and clone/compile necessary packages . . .
         uses: gap-actions/setup-gap@v2
         with:
-          GAP_PKGS_TO_CLONE: "${{ matrix.pkgs-to-clone }}"
-          GAP_PKGS_TO_BUILD: "${{ matrix.pkgs-to-build }}"
+          GAP_PKGS_TO_CLONE: ${{ matrix.pkgs-to-clone }}
+          GAP_PKGS_TO_BUILD: ${{ matrix.pkgs-to-build }}
           GAPBRANCH: ${{ matrix.gap-branch }}
-      - name: "Build Digraphs"
+      - name: Build Digraphs . . .
         uses: gap-actions/build-pkg@v1
-      - name: "Install digraphs-lib"
+      - name: Install digraphs-lib . . .
         run: |
           curl --retry 5 -L -O "https://digraphs.github.io/Digraphs/${{ env.DIGRAPHS_LIB }}.tar.gz"
           tar xf "${{ env.DIGRAPHS_LIB }}.tar.gz"
-      - name: "Run DigraphsTestInstall"
+      - name: Run DigraphsTestInstall . . .
         uses: gap-actions/run-pkg-tests@v2
         with:
           NO_COVERAGE: true
-          GAP_TESTFILE: "tst/github_actions/install.g"
+          GAP_TESTFILE: tst/github_actions/install.g
           only-needed: ${{ matrix.only-needed }}
-      - name: "Run DigraphsTestStandard"
+      - name: Run DigraphsTestStandard . . .
         uses: gap-actions/run-pkg-tests@v2
         with:
           NO_COVERAGE: true
-          GAP_TESTFILE: "tst/github_actions/standard.g"
+          GAP_TESTFILE: tst/github_actions/standard.g
           only-needed: ${{ matrix.only-needed }}
-      - name: "Run DigraphsTestManualExamples"
+      - name: Run DigraphsTestManualExamples . . .
         uses: gap-actions/run-pkg-tests@v2
         with:
           NO_COVERAGE: true
-          GAP_TESTFILE: "tst/github_actions/examples.g"
+          GAP_TESTFILE: tst/github_actions/examples.g
           only-needed: ${{ matrix.only-needed }}
-      - name: "Run DigraphsTestExtreme"
+      - name: Run DigraphsTestExtreme . . .
         uses: gap-actions/run-pkg-tests@v2
         with:
           NO_COVERAGE: true
-          GAP_TESTFILE: "tst/github_actions/extreme.g"
+          GAP_TESTFILE: tst/github_actions/extreme.g
           only-needed: ${{ matrix.only-needed }}

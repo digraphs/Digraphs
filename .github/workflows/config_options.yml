@@ -1,4 +1,4 @@
-name: "Config-options"
+name: Config-options
 on:
   workflow_dispatch:
   pull_request:
@@ -8,22 +8,22 @@ on:
       - stable-*.*
   schedule:
     # Every day at 3:30 AM UTC
-    - cron: "30 3 * * *"
+    - cron: 30 3 * * *
 env:
   NO_COVERAGE: true
 
 jobs:
   with-external-planarity-bliss:
-    name: "${{ matrix.bliss }} ${{ matrix.planarity }}"
-    runs-on: "ubuntu-latest"
+    name: ${{ matrix.bliss }} ${{ matrix.planarity }}
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
         planarity:
-          - "--with-external-planarity"
+          - --with-external-planarity
           - ""
         bliss:
-          - "--with-external-bliss"
+          - --with-external-bliss
           - ""
         exclude:
           - planarity: ""
@@ -33,38 +33,38 @@ jobs:
         shell: bash -l {0}
     steps:
       - uses: actions/checkout@v4
-      - name: Output g++ version
+      - name: Output g++ version . . .
         run: g++ --version
-      - name: "Install micromamba environment from environment.yml . . ."
+      - name: Install micromamba environment from environment.yml . . .
         uses: mamba-org/setup-micromamba@v1
         with:
           environment-name: digraphs
           cache-environment: true
           create-args: ${{ matrix.bliss && 'bliss' || '' }} ${{ matrix.planarity && 'planarity' || ''}}
-      - name: "Set environment variables . . ."
+      - name: Set environment variables . . .
         run: |
           echo "PKG_CONFIG_PATH=$MAMBA_ROOT_PREFIX/envs/digraphs/lib/pkgconfig:$MAMBA_ROOT_PREFIX/envs/digraphs/share/pkgconfig" >> $GITHUB_ENV
           echo "LD_LIBRARY_PATH=$MAMBA_ROOT_PREFIX/envs/digraphs/lib" >> $GITHUB_ENV
           echo "CFLAGS=-I$MAMBA_ROOT_PREFIX/envs/digraphs/include" >> $GITHUB_ENV
           echo "LDFLAGS=-L$MAMBA_ROOT_PREFIX/envs/digraphs/lib" >> $GITHUB_ENV
-      - name: "Install GAP and clone/compile necessary packages"
+      - name: Install GAP and clone/compile necessary packages . . .
         uses: gap-actions/setup-gap@v2
         with:
-          GAP_PKGS_TO_CLONE: "NautyTracesInterface digraphs/graphviz"
-          GAP_PKGS_TO_BUILD: "io orb datastructures grape NautyTracesInterface"
+          GAP_PKGS_TO_CLONE: NautyTracesInterface digraphs/graphviz
+          GAP_PKGS_TO_BUILD: io orb datastructures grape NautyTracesInterface
           GAPBRANCH: stable-4.13
-      - name: "Build Digraphs"
+      - name: Build Digraphs . . .
         uses: gap-actions/build-pkg@v1
         with:
           CONFIGFLAGS: ${{ matrix.bliss }} ${{ matrix.planarity }}
-      - name: "Run Digraphs package's tst/teststandard.g"
+      - name: Run Digraphs package's tst/teststandard.g . . .
         uses: gap-actions/run-pkg-tests@v2
         with:
           NO_COVERAGE: true
 
   all-options:
     name: ${{ matrix.debug }} ${{ matrix.warnings }} ${{ matrix.without-intrinsics }}
-    runs-on: "ubuntu-latest"
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
@@ -84,17 +84,17 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - name: Output g++ version
+      - name: Output g++ version . . .
         run: g++ --version
-      - name: "Install GAP and clone/compile necessary packages"
+      - name: Install GAP and clone/compile necessary packages . . .
         uses: gap-actions/setup-gap@v2
         with:
-          GAP_PKGS_TO_CLONE: "NautyTracesInterface digraphs/graphviz"
-          GAP_PKGS_TO_BUILD: "io orb datastructures grape NautyTracesInterface"
+          GAP_PKGS_TO_CLONE: NautyTracesInterface digraphs/graphviz
+          GAP_PKGS_TO_BUILD: io orb datastructures grape NautyTracesInterface
           GAPBRANCH: stable-4.13
-      - name: "Build Digraphs"
+      - name: Build Digraphs . . .
         uses: gap-actions/build-pkg@v1
         with:
           CONFIGFLAGS: ${{ matrix.debug }} ${{ matrix.without-intrinsics }} ${{ matrix.warnings && '--enable-compile-warnings WARNING_CXXFLAGS="-Werror" WARNING_CFLAGS="-Werror"' || '' }}
-      - name: "Run Digraphs package's tst/teststandard.g"
+      - name: Run Digraphs package's tst/teststandard.g . . .
         uses: gap-actions/run-pkg-tests@v2

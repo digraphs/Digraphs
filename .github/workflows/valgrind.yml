@@ -1,4 +1,4 @@
-name: "Valgrind"
+name: Valgrind
 on:
   workflow_dispatch:
   release:
@@ -10,34 +10,34 @@ env:
 
 jobs:
   test-valgrind:
-    name: "Ubuntu / GAP stable-4.13 / valgrind"
-    runs-on: "ubuntu-latest"
+    name: Ubuntu / GAP stable-4.13 / valgrind
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Output g++ version
+      - name: Output g++ version . . .
         run: g++ --version
-      - name: "Install Valgrind"
+      - name: Install Valgrind . . .
         run: sudo apt-get install valgrind
-      - name: "Install GAP and clone/compile necessary packages"
+      - name: Install GAP and clone/compile necessary packages . . .
         uses: gap-actions/setup-gap@v2
         with:
-          GAP_PKGS_TO_CLONE: "NautyTracesInterface digraphs/graphviz"
-          GAP_PKGS_TO_BUILD: "io orb datastructures grape NautyTracesInterface"
-          GAPBRANCH: "stable-4.13"
-          CONFIGFLAGS: "--enable-valgrind"
-      - name: "Build Digraphs"
+          GAP_PKGS_TO_CLONE: NautyTracesInterface digraphs/graphviz
+          GAP_PKGS_TO_BUILD: io orb datastructures grape NautyTracesInterface
+          GAPBRANCH: stable-4.13
+          CONFIGFLAGS: --enable-valgrind
+      - name: Build Digraphs . . .
         uses: gap-actions/build-pkg@v1
-      - name: "Run DigraphsTestInstall"
+      - name: Run DigraphsTestInstall . . .
         # TODO: Replace below with gap-actions/run-pkg-tests@v2 if the functionality gets added
         uses: ./.github/actions/test_with_valgrind
         with:
           NO_COVERAGE: true
-          GAP_TESTFILE: "tst/github_actions/install.g"
+          GAP_TESTFILE: tst/github_actions/install.g
           pre-gap: ${{ env.VALGRIND }}
-      - name: "Run DigraphsTestStandard"
+      - name: Run DigraphsTestStandard . . .
         # TODO: Replace below with gap-actions/run-pkg-tests@v2 if the functionality gets added
         uses: ./.github/actions/test_with_valgrind
         with:
           NO_COVERAGE: true
-          GAP_TESTFILE: "tst/github_actions/standard.g"
+          GAP_TESTFILE: tst/github_actions/standard.g
           pre-gap: ${{ env.VALGRIND }}
