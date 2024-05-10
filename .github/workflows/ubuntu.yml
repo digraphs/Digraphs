@@ -23,7 +23,6 @@ jobs:
       matrix:
         gap-branch:
           - master
-          - stable-4.10
           - stable-4.11
           - stable-4.12
           - stable-4.13
@@ -37,11 +36,6 @@ jobs:
           - only-needed: false
             pkgs-to-clone: NautyTracesInterface digraphs/graphviz
             pkgs-to-build: io orb datastructures grape NautyTracesInterface
-            # NautyTracesInterface requires GAP >= 4.11
-          - gap-branch: stable-4.10
-            only-needed: false
-            pkgs-to-clone: "digraphs/graphviz"
-            pkgs-to-build: io orb grape datastructures
 
     steps:
       - uses: actions/checkout@v4
@@ -59,16 +53,6 @@ jobs:
         run: |
           curl --retry 5 -L -O "https://digraphs.github.io/Digraphs/${{ env.DIGRAPHS_LIB }}.tar.gz"
           tar xf "${{ env.DIGRAPHS_LIB }}.tar.gz"
-      - name: "Clone datastructures v0.3.0"
-        if: ${{ matrix.gap-branch == 'stable-4.10' }}
-        run: |
-          rm -rf $HOME/gap/pkg/datastructures
-          cd $HOME/gap/pkg/
-          git clone https://github.com/gap-packages/datastructures.git datastructures
-          cd datastructures
-          git checkout v0.3.0
-          ./configure
-          make
       - name: "Run DigraphsTestInstall"
         uses: gap-actions/run-pkg-tests@v2
         with:
