@@ -95,6 +95,6 @@ jobs:
       - name: "Build Digraphs"
         uses: gap-actions/build-pkg@v1
         with:
-          CONFIGFLAGS: ${{ matrix.debug }} ${{ matrix.warnings }} ${{ matrix.without-intrinsics }}
+          CONFIGFLAGS: ${{ matrix.debug }} ${{ matrix.without-intrinsics }} ${{ matrix.warnings && '--enable-compile-warnings WARNING_CXXFLAGS="-Werror" WARNING_CFLAGS="-Werror"' || '' }}
       - name: "Run Digraphs package's tst/teststandard.g"
         uses: gap-actions/run-pkg-tests@v2
