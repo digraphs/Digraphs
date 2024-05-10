@@ -149,6 +149,8 @@ Obj boyers_planarity_check(Obj digraph, int flags, bool krtwsk) {
     case EMBEDFLAGS_SEARCHFORK4:
       gp_AttachK4Search(theGraph);
       break;
+    default:
+      break;
   }
   if (gp_InitGraph(theGraph, V) != OK) {
     gp_Free(&theGraph);
