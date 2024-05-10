@@ -59,14 +59,11 @@ jobs:
           NO_COVERAGE: true
 
   all-options:
-    name: ${{ matrix.cov }} ${{ matrix.debug }} ${{ matrix.warnings }} ${{ matrix.without-intrinsics }}
+    name: ${{ matrix.debug }} ${{ matrix.warnings }} ${{ matrix.without-intrinsics }}
     runs-on: "ubuntu-latest"
     strategy:
       fail-fast: false
       matrix:
-        cov:
-          - "--enable-code-coverage"
-          - ""
         warnings:
           - "--enable-compile-warnings"
           - ""
@@ -77,8 +74,7 @@ jobs:
           - "--without-intrinsics"
           - ""
         exclude:
-          - cov: ""
-            warnings: ""
+          - warnings: ""
             debug: ""
             without-intrinsics: ""
 
@@ -93,6 +89,6 @@ jobs:
       - name: "Build Digraphs"
         uses: gap-actions/build-pkg@v1
         with:
-          CONFIGFLAGS: ${{ matrix.cov }} ${{ matrix.debug }} ${{ matrix.warnings }} ${{ matrix.without-intrinsics }}
+          CONFIGFLAGS: ${{ matrix.debug }} ${{ matrix.warnings }} ${{ matrix.without-intrinsics }}
       - name: "Run Digraphs package's tst/teststandard.g"
         uses: gap-actions/run-pkg-tests@v2
