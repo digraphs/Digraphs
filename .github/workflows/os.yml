@@ -24,11 +24,11 @@ jobs:
         include:
           - os: ubuntu
             ABI: 32
-            pkgs-to-clone: ""
+            pkgs-to-clone: "digraphs/graphviz"
             pkgs-to-build: "io orb datastructures grape"
           - os: macos
             ABI: ""
-            pkgs-to-clone: "NautyTracesInterface"
+            pkgs-to-clone: "NautyTracesInterface digraphs/graphviz"
             pkgs-to-build: "io orb datastructures grape NautyTracesInterface"
 
     steps:
@@ -41,7 +41,7 @@ jobs:
       - name: "Install GAP and clone/compile necessary packages"
         uses: gap-actions/setup-gap@v2
         with:
-          GAP_PKGS_TO_CLONE: ${{ matrix.pkgs-to-clone }}
+          GAP_PKGS_TO_CLONE: "${{ matrix.pkgs-to-clone }}"
           GAP_PKGS_TO_BUILD: ${{ matrix.pkgs-to-build }}
           GAPBRANCH: master
           ABI: ${{ matrix.ABI }}
@@ -84,6 +84,7 @@ jobs:
       - uses: gap-actions/setup-cygwin@v1
       - uses: gap-actions/setup-gap@cygwin-v2
         with:
+          GAP_PKGS_TO_CLONE: "digraphs/graphviz"
           GAP_PKGS_TO_BUILD: "io orb grape datastructures"
       - uses: gap-actions/build-pkg@cygwin-v1
       - name: "Install digraphs-lib"

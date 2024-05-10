@@ -21,7 +21,7 @@ jobs:
       - name: "Install GAP and clone/compile necessary packages"
         uses: gap-actions/setup-gap@v2
         with:
-          GAP_PKGS_TO_CLONE: "NautyTracesInterface"
+          GAP_PKGS_TO_CLONE: "NautyTracesInterface digraphs/graphviz"
           GAP_PKGS_TO_BUILD: "io orb datastructures grape NautyTracesInterface"
           GAPBRANCH: "stable-4.13"
           CONFIGFLAGS: "--enable-valgrind"
