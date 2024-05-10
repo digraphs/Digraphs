@@ -16,7 +16,7 @@ env:
 
 jobs:
   test-unix:
-    name: "${{ matrix.os }}${{ matrix.ABI }} / GAP master"
+    name: "${{ matrix.os }}${{ matrix.ABI }} / GAP stable-4.13"
     runs-on: "${{ matrix.os }}-latest"
     strategy:
       fail-fast: false
@@ -43,7 +43,7 @@ jobs:
         with:
           GAP_PKGS_TO_CLONE: "${{ matrix.pkgs-to-clone }}"
           GAP_PKGS_TO_BUILD: ${{ matrix.pkgs-to-build }}
-          GAPBRANCH: master
+          GAPBRANCH: stable-4.13
           ABI: ${{ matrix.ABI }}
       - name: "Build Digraphs"
         uses: gap-actions/build-pkg@v1
@@ -75,7 +75,7 @@ jobs:
           GAP_TESTFILE: "tst/github_actions/extreme.g"
 
   test-cygwin:
-    name: "cygwin / GAP master"
+    name: "cygwin / GAP stable-4.13"
     runs-on: windows-latest
     env:
       CHERE_INVOKING: 1
@@ -86,6 +86,7 @@ jobs:
         with:
           GAP_PKGS_TO_CLONE: "NautyTracesInterface digraphs/graphviz"
           GAP_PKGS_TO_BUILD: "io orb datastructures grape NautyTracesInterface"
+          GAPBRANCH: stable-4.13
       - uses: gap-actions/build-pkg@cygwin-v1
       - name: "Install digraphs-lib"
         run: |
