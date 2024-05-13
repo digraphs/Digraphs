@@ -13,7 +13,6 @@ See the LICENSE.TXT file for licensing information.
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wstrict-prototypes"
 #pragma GCC diagnostic ignored "-Wmissing-prototypes"
-
 #endif
 #include "graph.h"
 

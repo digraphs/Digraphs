@@ -20,8 +20,6 @@ See the LICENSE.TXT file for licensing information.
 #include "graphDrawPlanar.private.h"
 #include "graphDrawPlanar.h"
 
-
-
 extern void _ClearVertexVisitedFlags(graphP theGraph, int);
 
 extern void _CollectDrawingData(DrawPlanarContext *context, int RootVertex, int W, int WPrevLink);

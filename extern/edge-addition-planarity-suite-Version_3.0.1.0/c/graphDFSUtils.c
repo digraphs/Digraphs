@@ -35,7 +35,6 @@ extern void _ClearVertexVisitedFlags(graphP theGraph, int);
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wstrict-prototypes"
 #pragma GCC diagnostic ignored "-Wmissing-prototypes"
-
 #endif
 
 int  gp_CreateDFSTree(graphP theGraph)

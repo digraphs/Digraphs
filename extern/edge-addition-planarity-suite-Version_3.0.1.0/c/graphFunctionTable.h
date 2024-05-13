@@ -25,7 +25,6 @@ extern "C" {
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wstrict-prototypes"
 #pragma GCC diagnostic ignored "-Wmissing-prototypes"
-
 #endif
 
 typedef struct

@@ -10,7 +10,6 @@
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wstrict-prototypes"
 #pragma GCC diagnostic ignored "-Wmissing-prototypes"
-
 #endif
 /*
 Copyright (c) 1997-2020, John M. Boyer
