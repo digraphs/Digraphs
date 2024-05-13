@@ -138,7 +138,7 @@ for PKG in "${PKGS[@]}"; do
 
   # This can be removed when there is no GAPDoc special case for GAP 4.10.2
   if [ "$PKG" == "GAPDoc" ]; then
-    URL="http://www.math.rwth-aachen.de/~Frank.Luebeck/GAPDoc/GAPDoc-$VERSION.tar.gz"
+    URL="https://github.com/frankluebeck/GAPDoc/archive/refs/tags/relv$VERSION.tar.gz"
   else
     URL="https://github.com/gap-packages/$PKG/releases/download/v$VERSION/$PKG-$VERSION.tar.gz"
   fi
