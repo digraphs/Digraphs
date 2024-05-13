@@ -27,6 +27,10 @@
 #pragma clang diagnostic ignored \
     "-Wincompatible-pointer-types-discards-qualifiers"
 #pragma clang diagnostic ignored "-Wstrict-prototypes"
+#elif defined(__GNUC__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wstrict-prototypes"
+#pragma GCC diagnostic ignored "-Wswitch-default"
 #endif
 #ifdef DIGRAPHS_WITH_INCLUDED_PLANARITY
 #include "c/graph.h"
@@ -41,6 +45,8 @@
 #endif
 #if defined(__clang__)
 #pragma clang diagnostic pop
+#elif defined(__GNUC__)
+#pragma GCC diagnostic pop
 #endif
 
 // Forward declaration of the main function in this file.
@@ -142,6 +148,8 @@ Obj boyers_planarity_check(Obj digraph, int flags, bool krtwsk) {
       break;
     case EMBEDFLAGS_SEARCHFORK4:
       gp_AttachK4Search(theGraph);
+      break;
+    default:
       break;
   }
   if (gp_InitGraph(theGraph, V) != OK) {

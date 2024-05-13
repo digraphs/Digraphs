@@ -9,14 +9,16 @@ See the LICENSE.TXT file for licensing information.
 #pragma clang diagnostic ignored "-Wstrict-prototypes"
 #pragma clang diagnostic ignored "-Wmissing-prototypes"
 #pragma clang diagnostic ignored "-Wdeprecated-non-prototype"
+#elif defined(__GNUC__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wstrict-prototypes"
+#pragma GCC diagnostic ignored "-Wmissing-prototypes"
 #endif
 
 #include <stdlib.h>
 
 #include "graphDrawPlanar.private.h"
 #include "graphDrawPlanar.h"
-
-
 
 extern void _ClearVertexVisitedFlags(graphP theGraph, int);
 
@@ -689,4 +691,6 @@ int  _DrawPlanar_WritePostprocess(graphP theGraph, void **pExtraData, long *pExt
 }
 #if defined(__clang__)
 #pragma clang diagnostic pop
+#elif defined(__GNUC__)
+#pragma GCC diagnostic pop
 #endif
