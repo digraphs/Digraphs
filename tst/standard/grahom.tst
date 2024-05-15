@@ -87,8 +87,8 @@ gap> HomomorphismDigraphsFinder(CompleteDigraph(2),
 >                               1,       # limit
 >                               2,       # hint      (rank 2)
 >                               1,       # injective (yes)
->                               [1, 2],  # only values 1 and 2 in the image 
->                               [1],     # 1 -> 1 
+>                               [1, 2],  # only values 1 and 2 in the image
+>                               [1],     # 1 -> 1
 >                               fail,    # no colours
 >                               fail);   # no colours
 [ IdentityTransformation ]
@@ -128,10 +128,6 @@ gap> HomomorphismDigraphsFinder(gr1, gr1, fail, [], 1, 2, 0, [1, 2],
 > [], [[1, 2], [2]], [[1, 2]]);
 Error, the 2nd argument <partition> does not define a colouring of the vertice\
 s [1 .. 2], since it contains the vertex 2 more than once,
-gap> gr := CompleteDigraph(513);;
-gap> HomomorphismDigraphsFinder(gr, gr, fail, [], 1, fail, 0, [1 .. 513],
-> [], fail, fail);
-Error, the 1st argument <digraph1> must have at most 512 vertices, found 513,
 gap> HomomorphismDigraphsFinder(gr1, gr1, fail, [], 1, 2, 0, [1, 2],
 > [], [1, 2], [2, 1]);
 [ Transformation( [ 2, 1 ] ) ]
@@ -939,7 +935,7 @@ gap> HomomorphismDigraphsFinder(NullDigraph(4), CompleteDigraph(4),
 > Group((2, 3)));
 [  ]
 gap> HomomorphismDigraphsFinder(NullDigraph(4), CompleteDigraph(4),
-> fail, [], infinity, fail, 0, [1 .. 4], [], fail, fail, 
+> fail, [], infinity, fail, 0, [1 .. 4], [], fail, fail,
 > Group((1, 2), (2, 3)));
 [ IdentityTransformation, Transformation( [ 1, 2, 3, 1 ] ), 
   Transformation( [ 1, 2, 3, 2 ] ), Transformation( [ 1, 2, 3, 3 ] ), 
@@ -989,7 +985,7 @@ gap> HomomorphismDigraphsFinder(NullDigraph(4), CompleteDigraph(4),
   Transformation( [ 1, 1, 2, 2 ] ), Transformation( [ 1, 1, 1, 2 ] ), 
   Transformation( [ 1, 1, 1, 1 ] ) ]
 gap> HomomorphismDigraphsFinder(CompleteDigraph(3), CompleteDigraph(3),
-> fail, [], infinity, fail, 1, [1 .. 3], [], fail, fail, 
+> fail, [], infinity, fail, 1, [1 .. 3], [], fail, fail,
 > Group((1, 2, 3)));
 [ IdentityTransformation, Transformation( [ 1, 3, 2 ] ) ]
 
@@ -1129,7 +1125,7 @@ gap> gr := DigraphFromDigraph6String(Concatenation(
 > "+U^{?A?BrwAHv_CNu@SMwHQm`GpyGbUYLAbfGTO?Enool[WrI",
 > "HBSatQlC[TIC{iSBlo_VrO@u[_Eyk?]YS?"));
 <immutable digraph with 22 vertices, 198 edges>
-gap> t := HomomorphismDigraphsFinder(gr, gr, fail, [], 1, fail, 0, 
+gap> t := HomomorphismDigraphsFinder(gr, gr, fail, [], 1, fail, 0,
 > [2, 6, 7, 11, 12, 13, 14, 15, 19, 20, 21], [], fail, fail)[1];
 Transformation( [ 2, 13, 20, 19, 21, 19, 14, 13, 15, 14, 20, 6, 15, 21, 11,
   12, 6, 7, 7, 12, 2, 11 ] )
@@ -1320,10 +1316,10 @@ true
 
 # HomomorphismDigraphsFinder - non-symmetric digraph with colours
 gap> D := Digraph([[2, 3], [], []]);;
-gap> HomomorphismDigraphsFinder(D, 
->                               D, 
->                               fail,        # hook  
->                               [],          # user_param 
+gap> HomomorphismDigraphsFinder(D,
+>                               D,
+>                               fail,        # hook
+>                               [],          # user_param
 >                               1,           # limit
 >                               3,           # hint
 >                               0,           # injective
@@ -1335,10 +1331,10 @@ gap> HomomorphismDigraphsFinder(D,
 
 # HomomorphismDigraphsFinder - partial map defined
 gap> D := Digraph([[2, 3], [], []]);;
-gap> HomomorphismDigraphsFinder(D, 
->                               D, 
->                               fail,        # hook  
->                               [],          # user_param 
+gap> HomomorphismDigraphsFinder(D,
+>                               D,
+>                               fail,        # hook
+>                               [],          # user_param
 >                               1,           # limit
 >                               3,           # hint
 >                               0,           # injective
@@ -1348,10 +1344,10 @@ gap> HomomorphismDigraphsFinder(D,
 >                               fail);       # colours2
 [ Transformation( [ 1, 3, 2 ] ) ]
 gap> D := Digraph([[2, 3], [], []]);;
-gap> HomomorphismDigraphsFinder(D, 
->                               D, 
->                               fail,        # hook  
->                               [],          # user_param 
+gap> HomomorphismDigraphsFinder(D,
+>                               D,
+>                               fail,        # hook
+>                               [],          # user_param
 >                               1,           # limit
 >                               1,           # hint
 >                               0,           # injective
@@ -1361,10 +1357,10 @@ gap> HomomorphismDigraphsFinder(D,
 >                               fail);       # colours2
 [  ]
 gap> D := Digraph([[2, 3], [], []]);;
-gap> HomomorphismDigraphsFinder(D, 
->                               D, 
->                               fail,        # hook  
->                               [],          # user_param 
+gap> HomomorphismDigraphsFinder(D,
+>                               D,
+>                               fail,        # hook
+>                               [],          # user_param
 >                               1,           # limit
 >                               2,           # hint
 >                               0,           # injective
@@ -1374,10 +1370,10 @@ gap> HomomorphismDigraphsFinder(D,
 >                               fail);       # colours2
 [ Transformation( [ 1, 3, 3 ] ) ]
 gap> D := Digraph([[2, 3], [], []]);;
-gap> HomomorphismDigraphsFinder(D, 
->                               D, 
->                               fail,        # hook  
->                               [],          # user_param 
+gap> HomomorphismDigraphsFinder(D,
+>                               D,
+>                               fail,        # hook
+>                               [],          # user_param
 >                               1,           # limit
 >                               3,           # hint
 >                               0,           # injective
@@ -1387,10 +1383,10 @@ gap> HomomorphismDigraphsFinder(D,
 >                               fail);       # colours2
 [ Transformation( [ 1, 3, 2 ] ) ]
 gap> D := Digraph([[2, 3], [], []]);;
-gap> HomomorphismDigraphsFinder(D, 
->                               D, 
->                               fail,        # hook  
->                               [],          # user_param 
+gap> HomomorphismDigraphsFinder(D,
+>                               D,
+>                               fail,        # hook
+>                               [],          # user_param
 >                               1,           # limit
 >                               fail,        # hint
 >                               0,           # injective
@@ -1402,10 +1398,10 @@ gap> HomomorphismDigraphsFinder(D,
 
 # Test monomorphisms for digraphs
 gap> D := Digraph([[2, 3], [], []]);;
-gap> HomomorphismDigraphsFinder(D, 
->                               D, 
->                               fail,        # hook  
->                               [],          # user_param 
+gap> HomomorphismDigraphsFinder(D,
+>                               D,
+>                               fail,        # hook
+>                               [],          # user_param
 >                               1,           # limit
 >                               fail,        # hint
 >                               1,           # injective
@@ -1414,10 +1410,10 @@ gap> HomomorphismDigraphsFinder(D,
 >                               fail,        # colours1
 >                               fail);       # colours2
 [ Transformation( [ 1, 3, 2 ] ) ]
-gap> HomomorphismDigraphsFinder(D, 
->                               D, 
->                               fail,        # hook  
->                               [],          # user_param 
+gap> HomomorphismDigraphsFinder(D,
+>                               D,
+>                               fail,        # hook
+>                               [],          # user_param
 >                               1,           # limit
 >                               fail,        # hint
 >                               1,           # injective
@@ -1427,10 +1423,10 @@ gap> HomomorphismDigraphsFinder(D,
 >                               fail);       # colours2
 [  ]
 gap> D := Digraph([[2, 3], [2], [3]]);;
-gap> HomomorphismDigraphsFinder(D, 
->                               D, 
->                               fail,        # hook  
->                               [],          # user_param 
+gap> HomomorphismDigraphsFinder(D,
+>                               D,
+>                               fail,        # hook
+>                               [],          # user_param
 >                               1,           # limit
 >                               fail,        # hint
 >                               1,           # injective
@@ -1440,10 +1436,10 @@ gap> HomomorphismDigraphsFinder(D,
 >                               fail);       # colours2
 [ Transformation( [ 1, 3, 2 ] ) ]
 gap> D := Digraph([[2, 3], [2], [3]]);;
-gap> HomomorphismDigraphsFinder(D, 
->                               D, 
->                               fail,        # hook  
->                               [],          # user_param 
+gap> HomomorphismDigraphsFinder(D,
+>                               D,
+>                               fail,        # hook
+>                               [],          # user_param
 >                               1,           # limit
 >                               fail,        # hint
 >                               1,           # injective
@@ -1453,10 +1449,10 @@ gap> HomomorphismDigraphsFinder(D,
 >                               fail);       # colours2
 [ Transformation( [ 1, 3, 2 ] ) ]
 gap> D := Digraph([[2, 3], [], []]);;
-gap> HomomorphismDigraphsFinder(D, 
->                               D, 
->                               fail,        # hook  
->                               [],          # user_param 
+gap> HomomorphismDigraphsFinder(D,
+>                               D,
+>                               fail,        # hook
+>                               [],          # user_param
 >                               1,           # limit
 >                               fail,        # hint
 >                               1,           # injective
@@ -1465,10 +1461,10 @@ gap> HomomorphismDigraphsFinder(D,
 >                               [1, 2, 3],   # colours1
 >                               [1, 3, 2]);  # colours2
 [ Transformation( [ 1, 3, 2 ] ) ]
-gap> HomomorphismDigraphsFinder(D, 
->                               D, 
->                               fail,        # hook  
->                               [],          # user_param 
+gap> HomomorphismDigraphsFinder(D,
+>                               D,
+>                               fail,        # hook
+>                               [],          # user_param
 >                               1,           # limit
 >                               fail,        # hint
 >                               1,           # injective
@@ -1477,10 +1473,10 @@ gap> HomomorphismDigraphsFinder(D,
 >                               [1, 2, 3],   # colours1
 >                               [1, 3, 2]);  # colours2
 [ Transformation( [ 1, 3, 2 ] ) ]
-gap> HomomorphismDigraphsFinder(D, 
->                               D, 
->                               fail,        # hook  
->                               [],          # user_param 
+gap> HomomorphismDigraphsFinder(D,
+>                               D,
+>                               fail,        # hook
+>                               [],          # user_param
 >                               1,           # limit
 >                               fail,        # hint
 >                               2,           # injective
@@ -1489,10 +1485,10 @@ gap> HomomorphismDigraphsFinder(D,
 >                               fail,        # colours1
 >                               fail);       # colours2
 [ Transformation( [ 1, 3, 2 ] ) ]
-gap> HomomorphismDigraphsFinder(D, 
->                               D, 
->                               fail,        # hook  
->                               [],          # user_param 
+gap> HomomorphismDigraphsFinder(D,
+>                               D,
+>                               fail,        # hook
+>                               [],          # user_param
 >                               1,           # limit
 >                               fail,        # hint
 >                               2,           # injective
@@ -1504,10 +1500,10 @@ gap> HomomorphismDigraphsFinder(D,
 
 # Test embeddings for digraphs
 gap> D := Digraph([[2, 3], [2], [3]]);;
-gap> HomomorphismDigraphsFinder(D, 
->                               D, 
->                               fail,        # hook  
->                               [],          # user_param 
+gap> HomomorphismDigraphsFinder(D,
+>                               D,
+>                               fail,        # hook
+>                               [],          # user_param
 >                               1,           # limit
 >                               fail,        # hint
 >                               2,           # injective
@@ -1517,10 +1513,10 @@ gap> HomomorphismDigraphsFinder(D,
 >                               fail);       # colours2
 [ Transformation( [ 1, 3, 2 ] ) ]
 gap> D := Digraph([[2, 3], [2], [3]]);;
-gap> HomomorphismDigraphsFinder(D, 
->                               D, 
->                               fail,        # hook  
->                               [],          # user_param 
+gap> HomomorphismDigraphsFinder(D,
+>                               D,
+>                               fail,        # hook
+>                               [],          # user_param
 >                               1,           # limit
 >                               fail,        # hint
 >                               2,           # injective
@@ -1530,10 +1526,10 @@ gap> HomomorphismDigraphsFinder(D,
 >                               fail);       # colours2
 [ Transformation( [ 1, 3, 2 ] ) ]
 gap> D := Digraph([[2, 3], [], []]);;
-gap> HomomorphismDigraphsFinder(D, 
->                               D, 
->                               fail,        # hook  
->                               [],          # user_param 
+gap> HomomorphismDigraphsFinder(D,
+>                               D,
+>                               fail,        # hook
+>                               [],          # user_param
 >                               1,           # limit
 >                               fail,        # hint
 >                               2,           # injective
@@ -1542,10 +1538,10 @@ gap> HomomorphismDigraphsFinder(D,
 >                               [1, 2, 3],   # colours1
 >                               [1, 3, 2]);  # colours2
 [ Transformation( [ 1, 3, 2 ] ) ]
-gap> HomomorphismDigraphsFinder(D, 
->                               D, 
->                               fail,        # hook  
->                               [],          # user_param 
+gap> HomomorphismDigraphsFinder(D,
+>                               D,
+>                               fail,        # hook
+>                               [],          # user_param
 >                               1,           # limit
 >                               fail,        # hint
 >                               2,           # injective
@@ -1554,10 +1550,10 @@ gap> HomomorphismDigraphsFinder(D,
 >                               [1, 2, 3],   # colours1
 >                               [1, 3, 2]);  # colours2
 [ Transformation( [ 1, 3, 2 ] ) ]
-gap> HomomorphismDigraphsFinder(D, 
->                               D, 
->                               fail,        # hook  
->                               [],          # user_param 
+gap> HomomorphismDigraphsFinder(D,
+>                               D,
+>                               fail,        # hook
+>                               [],          # user_param
 >                               1,           # limit
 >                               fail,        # hint
 >                               2,           # injective
@@ -1587,20 +1583,20 @@ Transformation( [ 65, 66, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17,
 gap> D := DigraphFromDigraph6String(Concatenation(
 > "+U^{?A?BrwAHv_CNu@SMwHQm`GpyGbUYLAbfGTO?Enool[WrI",
 > "HBSatQlC[TIC{iSBlo_VrO@u[_Eyk?]YS?"));;
-gap> HomomorphismDigraphsFinder(D, D, fail, [], 1, fail, 1, 
+gap> HomomorphismDigraphsFinder(D, D, fail, [], 1, fail, 1,
 > [2, 6, 7, 11, 12, 13, 14, 15, 19, 20, 21], [], fail, fail);
 [  ]
 gap> D := Digraph([[2], []]);;
-gap> HomomorphismDigraphsFinder(D, D, fail, [], 1, fail, 1, 
+gap> HomomorphismDigraphsFinder(D, D, fail, [], 1, fail, 1,
 > [1], [], fail, fail);
 [  ]
 
 # Test monomorphisms for graphs
 gap> D := Digraph([[2, 3], [1], [1]]);;
-gap> HomomorphismDigraphsFinder(D, 
->                               D, 
->                               fail,        # hook  
->                               [],          # user_param 
+gap> HomomorphismDigraphsFinder(D,
+>                               D,
+>                               fail,        # hook
+>                               [],          # user_param
 >                               1,           # limit
 >                               fail,        # hint
 >                               1,           # injective
@@ -1610,10 +1606,10 @@ gap> HomomorphismDigraphsFinder(D,
 >                               fail);       # colours2
 [ Transformation( [ 1, 3, 2 ] ) ]
 gap> D := Digraph([[2, 3], [1], [1]]);;
-gap> HomomorphismDigraphsFinder(D, 
->                               D, 
->                               fail,        # hook  
->                               [],          # user_param 
+gap> HomomorphismDigraphsFinder(D,
+>                               D,
+>                               fail,        # hook
+>                               [],          # user_param
 >                               1,           # limit
 >                               fail,        # hint
 >                               0,           # injective
@@ -1622,10 +1618,10 @@ gap> HomomorphismDigraphsFinder(D,
 >                               fail,        # colours1
 >                               fail);       # colours2
 [ Transformation( [ 1, 3, 2 ] ) ]
-gap> HomomorphismDigraphsFinder(D, 
->                               D, 
->                               fail,        # hook  
->                               [],          # user_param 
+gap> HomomorphismDigraphsFinder(D,
+>                               D,
+>                               fail,        # hook
+>                               [],          # user_param
 >                               1,           # limit
 >                               fail,        # hint
 >                               1,           # injective
@@ -1635,10 +1631,10 @@ gap> HomomorphismDigraphsFinder(D,
 >                               fail);       # colours2
 [  ]
 gap> D := Digraph([[2, 3], [1, 2], [1, 3]]);;
-gap> HomomorphismDigraphsFinder(D, 
->                               D, 
->                               fail,        # hook  
->                               [],          # user_param 
+gap> HomomorphismDigraphsFinder(D,
+>                               D,
+>                               fail,        # hook
+>                               [],          # user_param
 >                               1,           # limit
 >                               fail,        # hint
 >                               1,           # injective
@@ -1648,10 +1644,10 @@ gap> HomomorphismDigraphsFinder(D,
 >                               fail);       # colours2
 [ Transformation( [ 1, 3, 2 ] ) ]
 gap> D := Digraph([[2, 3], [1, 2], [1, 3]]);;
-gap> HomomorphismDigraphsFinder(D, 
->                               D, 
->                               fail,        # hook  
->                               [],          # user_param 
+gap> HomomorphismDigraphsFinder(D,
+>                               D,
+>                               fail,        # hook
+>                               [],          # user_param
 >                               1,           # limit
 >                               fail,        # hint
 >                               1,           # injective
@@ -1661,10 +1657,10 @@ gap> HomomorphismDigraphsFinder(D,
 >                               fail);       # colours2
 [ Transformation( [ 1, 3, 2 ] ) ]
 gap> D := Digraph([[2, 3], [1], [1]]);;
-gap> HomomorphismDigraphsFinder(D, 
->                               D, 
->                               fail,        # hook  
->                               [],          # user_param 
+gap> HomomorphismDigraphsFinder(D,
+>                               D,
+>                               fail,        # hook
+>                               [],          # user_param
 >                               1,           # limit
 >                               fail,        # hint
 >                               1,           # injective
@@ -1673,10 +1669,10 @@ gap> HomomorphismDigraphsFinder(D,
 >                               [1, 2, 3],   # colours1
 >                               [1, 3, 2]);  # colours2
 [ Transformation( [ 1, 3, 2 ] ) ]
-gap> HomomorphismDigraphsFinder(D, 
->                               D, 
->                               fail,        # hook  
->                               [],          # user_param 
+gap> HomomorphismDigraphsFinder(D,
+>                               D,
+>                               fail,        # hook
+>                               [],          # user_param
 >                               1,           # limit
 >                               fail,        # hint
 >                               1,           # injective
@@ -1685,10 +1681,10 @@ gap> HomomorphismDigraphsFinder(D,
 >                               [1, 2, 3],   # colours1
 >                               [1, 3, 2]);  # colours2
 [ Transformation( [ 1, 3, 2 ] ) ]
-gap> HomomorphismDigraphsFinder(D, 
->                               D, 
->                               fail,        # hook  
->                               [],          # user_param 
+gap> HomomorphismDigraphsFinder(D,
+>                               D,
+>                               fail,        # hook
+>                               [],          # user_param
 >                               1,           # limit
 >                               fail,        # hint
 >                               2,           # injective
@@ -1697,10 +1693,10 @@ gap> HomomorphismDigraphsFinder(D,
 >                               fail,        # colours1
 >                               fail);       # colours2
 [ Transformation( [ 1, 3, 2 ] ) ]
-gap> HomomorphismDigraphsFinder(D, 
->                               D, 
->                               fail,        # hook  
->                               [],          # user_param 
+gap> HomomorphismDigraphsFinder(D,
+>                               D,
+>                               fail,        # hook
+>                               [],          # user_param
 >                               1,           # limit
 >                               fail,        # hint
 >                               2,           # injective
@@ -1715,10 +1711,10 @@ gap> EmbeddingsDigraphsRepresentatives(NullDigraph(2), D);
   Transformation( [ 2, 4, 3, 4 ] ), Transformation( [ 4, 1, 3, 4 ] ), 
   Transformation( [ 4, 2, 3, 4 ] ), Transformation( [ 4, 5, 3, 4, 5 ] ) ]
 gap> D := Digraph([[2, 3], [1, 2], [1, 3]]);;
-gap> HomomorphismDigraphsFinder(D, 
->                               D, 
->                               fail,        # hook  
->                               [],          # user_param 
+gap> HomomorphismDigraphsFinder(D,
+>                               D,
+>                               fail,        # hook
+>                               [],          # user_param
 >                               1,           # limit
 >                               fail,        # hint
 >                               1,           # injective
@@ -1728,10 +1724,10 @@ gap> HomomorphismDigraphsFinder(D,
 >                               fail);       # colours2
 [ Transformation( [ 1, 3, 2 ] ) ]
 gap> D := Digraph([[2, 3], [1, 2], [1, 3]]);;
-gap> HomomorphismDigraphsFinder(D, 
->                               D, 
->                               fail,        # hook  
->                               [],          # user_param 
+gap> HomomorphismDigraphsFinder(D,
+>                               D,
+>                               fail,        # hook
+>                               [],          # user_param
 >                               1,           # limit
 >                               fail,        # hint
 >                               2,           # injective
@@ -1741,10 +1737,10 @@ gap> HomomorphismDigraphsFinder(D,
 >                               fail);       # colours2
 [ Transformation( [ 1, 3, 2 ] ) ]
 gap> D := Digraph([[2, 3], [1], [1]]);;
-gap> HomomorphismDigraphsFinder(D, 
->                               D, 
->                               fail,        # hook  
->                               [],          # user_param 
+gap> HomomorphismDigraphsFinder(D,
+>                               D,
+>                               fail,        # hook
+>                               [],          # user_param
 >                               1,           # limit
 >                               fail,        # hint
 >                               2,           # injective
@@ -1753,10 +1749,10 @@ gap> HomomorphismDigraphsFinder(D,
 >                               [1, 2, 3],   # colours1
 >                               [1, 3, 2]);  # colours2
 [ Transformation( [ 1, 3, 2 ] ) ]
-gap> HomomorphismDigraphsFinder(D, 
->                               D, 
->                               fail,        # hook  
->                               [],          # user_param 
+gap> HomomorphismDigraphsFinder(D,
+>                               D,
+>                               fail,        # hook
+>                               [],          # user_param
 >                               1,           # limit
 >                               fail,        # hint
 >                               2,           # injective
@@ -1765,10 +1761,10 @@ gap> HomomorphismDigraphsFinder(D,
 >                               [1, 2, 3],   # colours1
 >                               [1, 3, 2]);  # colours2
 [ Transformation( [ 1, 3, 2 ] ) ]
-gap> HomomorphismDigraphsFinder(D, 
->                               D, 
->                               fail,        # hook  
->                               [],          # user_param 
+gap> HomomorphismDigraphsFinder(D,
+>                               D,
+>                               fail,        # hook
+>                               [],          # user_param
 >                               1,           # limit
 >                               fail,        # hint
 >                               2,           # injective
@@ -1777,10 +1773,10 @@ gap> HomomorphismDigraphsFinder(D,
 >                               fail,        # colours1
 >                               fail);       # colours2
 [ Transformation( [ 1, 3, 2 ] ) ]
-gap> HomomorphismDigraphsFinder(D, 
->                               D, 
->                               fail,        # hook  
->                               [],          # user_param 
+gap> HomomorphismDigraphsFinder(D,
+>                               D,
+>                               fail,        # hook
+>                               [],          # user_param
 >                               1,           # limit
 >                               fail,        # hint
 >                               2,           # injective
@@ -1789,10 +1785,10 @@ gap> HomomorphismDigraphsFinder(D,
 >                               fail,        # colours1
 >                               fail);       # colours2
 [  ]
-gap> HomomorphismDigraphsFinder(D, 
->                               D, 
->                               fail,        # hook  
->                               [],          # user_param 
+gap> HomomorphismDigraphsFinder(D,
+>                               D,
+>                               fail,        # hook
+>                               [],          # user_param
 >                               1,           # limit
 >                               fail,        # hint
 >                               2,           # injective
@@ -1811,7 +1807,7 @@ gap> EmbeddingsDigraphsRepresentatives(CompleteDigraph(2), D);
 gap> MonomorphismsDigraphsRepresentatives(CompleteDigraph(2), D);
 [ IdentityTransformation, Transformation( [ 2, 1 ] ) ]
 gap> D := Digraph([[3], [8], [9], [11], [2, 7, 8, 18], [18, 20],
->                  [1], [], [], [], [4, 8, 16], [13, 19], [], [4], [15], 
+>                  [1], [], [], [], [4, 8, 16], [13, 19], [], [4], [15],
 >                  [1, 4, 6, 8], [], [7, 12], [], [8]]);;
 gap> EmbeddingsDigraphsRepresentatives(CompleteDigraph(2), D);
 [ Transformation( [ 4, 11, 3, 4, 5, 6, 7, 8, 9, 10, 11 ] ), 
@@ -1829,10 +1825,10 @@ gap> EmbeddingsDigraphs(CompleteDigraph(2), D);
   Transformation( [ 11, 4, 3, 4, 5, 6, 7, 8, 9, 17, 11, 12, 19, 14, 15, 16,
       10, 18, 13 ] ) ]
 gap> D := DigraphAddAllLoops(Digraph([[2, 3], [1], [1], [], [5]]));;
-gap> HomomorphismDigraphsFinder(D, 
->                               D, 
->                               fail,      # hook  
->                               [],        # user_param 
+gap> HomomorphismDigraphsFinder(D,
+>                               D,
+>                               fail,      # hook
+>                               [],        # user_param
 >                               1,         # limit
 >                               fail,      # hint
 >                               2,         # injective
@@ -1843,7 +1839,7 @@ gap> HomomorphismDigraphsFinder(D,
 [  ]
 
 # Another test from PJC
-gap> parts := Filtered(PartitionsSet([1 .. 9], 3), 
+gap> parts := Filtered(PartitionsSet([1 .. 9], 3),
 >                      x -> ForAll(x, y -> Length(y) = 3));;
 gap> D := Digraph(parts, {x, y} -> ForAll(x, z -> not z in y));
 <immutable digraph with 280 vertices, 70560 edges>
@@ -1854,11 +1850,11 @@ gap> tt := HomomorphismDigraphsFinder(CompleteDigraph(26),
 >                                     fail,       # hook
 >                                     [],         # user_param
 >                                     1,          # max_results
->                                     fail,         
->                                     0,          
->                                     [1 .. 280], 
->                                     OnTuples([2 .. 25], t),         
->                                     fail,       
+>                                     fail,
+>                                     0,
+>                                     [1 .. 280],
+>                                     OnTuples([2 .. 25], t),
+>                                     fail,
 >                                     fail)[1];
 <transformation on 273 pts with rank 250>
 gap> OnTuples([2 .. 25], t) = OnTuples([2 .. 25], tt);
@@ -1876,7 +1872,7 @@ gap> found;
 
 # GAP hook function with no trivial return value
 gap> found := 0;;
-gap> hook := function(fnd, t) found := found + 1; 
+gap> hook := function(fnd, t) found := found + 1;
 >  if found = 12 then return true; fi; end;;
 gap> D := DigraphSymmetricClosure(Digraph([[2, 3], [], [], [5], [], []]));;
 gap> HomomorphismDigraphsFinder(D, D, hook, true, infinity, fail, 0,
@@ -1895,11 +1891,11 @@ gap> t := HomomorphismDigraphsFinder(DigraphSymmetricClosure(CycleDigraph(5)),
 >                                    fail,       # hook
 >                                    [],         # user_param
 >                                    1,          # max_results
->                                    fail,         
->                                    0,          
->                                    [1 .. 8], 
->                                    ListTransformation(t, 5),         
->                                    fail,       
+>                                    fail,
+>                                    0,
+>                                    [1 .. 8],
+>                                    ListTransformation(t, 5),
+>                                    fail,
 >                                    fail)[1];
 Transformation( [ 1, 2, 3, 1, 2 ] )
 gap> t := DigraphMonomorphism(DigraphSymmetricClosure(CycleDigraph(5)), D);
@@ -1909,11 +1905,11 @@ gap> t := HomomorphismDigraphsFinder(DigraphSymmetricClosure(CycleDigraph(5)),
 >                                    fail,       # hook
 >                                    [],         # user_param
 >                                    1,          # max_results
->                                    fail,         
->                                    1,          
->                                    [1 .. 8], 
->                                    ListTransformation(t, 5),         
->                                    fail,       
+>                                    fail,
+>                                    1,
+>                                    [1 .. 8],
+>                                    ListTransformation(t, 5),
+>                                    fail,
 >                                    fail);
 [ Transformation( [ 4, 5, 6, 7, 8, 6, 7, 8 ] ) ]
 gap> t := DigraphEmbedding(DigraphSymmetricClosure(CycleDigraph(5)), D);
@@ -1923,11 +1919,11 @@ gap> HomomorphismDigraphsFinder(DigraphSymmetricClosure(CycleDigraph(5)),
 >                               fail,       # hook
 >                               [],         # user_param
 >                               1,          # max_results
->                               fail,         
->                               2,          
->                               [1 .. 8], 
->                               ListTransformation(t, 5),         
->                               fail,       
+>                               fail,
+>                               2,
+>                               [1 .. 8],
+>                               ListTransformation(t, 5),
+>                               fail,
 >                               fail);
 [ Transformation( [ 4, 5, 6, 7, 8, 6, 7, 8 ] ) ]
 gap> t := HomomorphismDigraphsFinder(DigraphSymmetricClosure(CycleDigraph(5)),
@@ -1935,11 +1931,11 @@ gap> t := HomomorphismDigraphsFinder(DigraphSymmetricClosure(CycleDigraph(5)),
 >                                    fail,       # hook
 >                                    [],         # user_param
 >                                    1,          # max_results
->                                    fail,         
->                                    2,          
->                                    [1 .. 8], 
->                                    ListTransformation(t, 6),         
->                                    fail,       
+>                                    fail,
+>                                    2,
+>                                    [1 .. 8],
+>                                    ListTransformation(t, 6),
+>                                    fail,
 >                                    fail);
 Error, the 9th argument <partial_map> is too long, must be at most 5, found 6,
 gap> t := HomomorphismDigraphsFinder(DigraphSymmetricClosure(CycleDigraph(5)),
@@ -1947,11 +1943,11 @@ gap> t := HomomorphismDigraphsFinder(DigraphSymmetricClosure(CycleDigraph(5)),
 >                                    fail,       # hook
 >                                    [],         # user_param
 >                                    1,          # max_results
->                                    fail,         
->                                    0,          
->                                    [1 .. 8], 
->                                    [1, 1, 1, 1],         
->                                    fail,       
+>                                    fail,
+>                                    0,
+>                                    [1 .. 8],
+>                                    [1, 1, 1, 1],
+>                                    fail,
 >                                    fail);
 [  ]
 gap> t := HomomorphismDigraphsFinder(DigraphSymmetricClosure(CycleDigraph(5)),
@@ -1959,11 +1955,11 @@ gap> t := HomomorphismDigraphsFinder(DigraphSymmetricClosure(CycleDigraph(5)),
 >                                    fail,       # hook
 >                                    [],         # user_param
 >                                    1,          # max_results
->                                    fail,         
->                                    1,          
->                                    [1 .. 8], 
->                                    [1, 2, 3, 4],         
->                                    fail,       
+>                                    fail,
+>                                    1,
+>                                    [1 .. 8],
+>                                    [1, 2, 3, 4],
+>                                    fail,
 >                                    fail);
 [  ]
 gap> t := HomomorphismDigraphsFinder(DigraphSymmetricClosure(CycleDigraph(5)),
@@ -1971,11 +1967,11 @@ gap> t := HomomorphismDigraphsFinder(DigraphSymmetricClosure(CycleDigraph(5)),
 >                                    fail,       # hook
 >                                    [],         # user_param
 >                                    2,          # max_results
->                                    fail,         
->                                    1,          
->                                    [1 .. 8], 
->                                    [1, 1, 1, 1],         
->                                    fail,       
+>                                    fail,
+>                                    1,
+>                                    [1 .. 8],
+>                                    [1, 1, 1, 1],
+>                                    fail,
 >                                    fail);
 [  ]
 gap> t := HomomorphismDigraphsFinder(DigraphSymmetricClosure(CycleDigraph(5)),
@@ -1983,11 +1979,11 @@ gap> t := HomomorphismDigraphsFinder(DigraphSymmetricClosure(CycleDigraph(5)),
 >                                    fail,       # hook
 >                                    [],         # user_param
 >                                    1,          # max_results
->                                    2,         
->                                    0,          
->                                    [1 .. 8], 
->                                    [4, 5, 6, 7],         
->                                    fail,       
+>                                    2,
+>                                    0,
+>                                    [1 .. 8],
+>                                    [4, 5, 6, 7],
+>                                    fail,
 >                                    fail);
 [  ]
 
@@ -2000,11 +1996,11 @@ gap> t := HomomorphismDigraphsFinder(CycleDigraph(5),
 >                                    fail,       # hook
 >                                    [],         # user_param
 >                                    1,          # max_results
->                                    fail,         
->                                    0,          
->                                    [1 .. 8], 
->                                    ListTransformation(t, 5),         
->                                    fail,       
+>                                    fail,
+>                                    0,
+>                                    [1 .. 8],
+>                                    ListTransformation(t, 5),
+>                                    fail,
 >                                    fail)[1];
 Transformation( [ 4, 5, 6, 7, 8, 6, 7, 8 ] )
 gap> t := DigraphMonomorphism(CycleDigraph(5), D);
@@ -2014,11 +2010,11 @@ gap> t := HomomorphismDigraphsFinder(CycleDigraph(5),
 >                                    fail,       # hook
 >                                    [],         # user_param
 >                                    1,          # max_results
->                                    fail,         
->                                    1,          
->                                    [1 .. 8], 
->                                    ListTransformation(t, 5),         
->                                    fail,       
+>                                    fail,
+>                                    1,
+>                                    [1 .. 8],
+>                                    ListTransformation(t, 5),
+>                                    fail,
 >                                    fail);
 [ Transformation( [ 4, 5, 6, 7, 8, 6, 7, 8 ] ) ]
 gap> t := DigraphEmbedding(CycleDigraph(5), D);
@@ -2028,11 +2024,11 @@ gap> HomomorphismDigraphsFinder(CycleDigraph(5),
 >                               fail,       # hook
 >                               [],         # user_param
 >                               1,          # max_results
->                               fail,         
->                               2,          
->                               [1 .. 8], 
->                               ListTransformation(t, 5),         
->                               fail,       
+>                               fail,
+>                               2,
+>                               [1 .. 8],
+>                               ListTransformation(t, 5),
+>                               fail,
 >                               fail);
 [ Transformation( [ 4, 5, 6, 7, 8, 6, 7, 8 ] ) ]
 gap> HomomorphismDigraphsFinder(CycleDigraph(5),
@@ -2040,11 +2036,11 @@ gap> HomomorphismDigraphsFinder(CycleDigraph(5),
 >                               fail,       # hook
 >                               [],         # user_param
 >                               1,          # max_results
->                               fail,         
->                               2,          
->                               [1 .. 8], 
->                               ListTransformation(t, 6),         
->                               fail,       
+>                               fail,
+>                               2,
+>                               [1 .. 8],
+>                               ListTransformation(t, 6),
+>                               fail,
 >                               fail);
 Error, the 9th argument <partial_map> is too long, must be at most 5, found 6,
 gap> D := DigraphDisjointUnion(CycleDigraph(3), CycleDigraph(5));;
@@ -2055,11 +2051,11 @@ gap> HomomorphismDigraphsFinder(CycleDigraph(5),
 >                               fail,       # hook
 >                               [],         # user_param
 >                               1,          # max_results
->                               fail,         
->                               2,          
->                               [1 .. 8], 
->                               ListTransformation(t, 6),         
->                               fail,       
+>                               fail,
+>                               2,
+>                               [1 .. 8],
+>                               ListTransformation(t, 6),
+>                               fail,
 >                               fail);
 Error, the 9th argument <partial_map> is too long, must be at most 5, found 6,
 gap> HomomorphismDigraphsFinder(CycleDigraph(5),
@@ -2067,11 +2063,11 @@ gap> HomomorphismDigraphsFinder(CycleDigraph(5),
 >                               fail,       # hook
 >                               [],         # user_param
 >                               1,          # max_results
->                               fail,         
->                               0,          
->                               [1 .. 8], 
->                               [1, 1, 1, 1],         
->                               fail,       
+>                               fail,
+>                               0,
+>                               [1 .. 8],
+>                               [1, 1, 1, 1],
+>                               fail,
 >                               fail);
 [  ]
 gap> HomomorphismDigraphsFinder(CycleDigraph(5),
@@ -2079,11 +2075,11 @@ gap> HomomorphismDigraphsFinder(CycleDigraph(5),
 >                               fail,       # hook
 >                               [],         # user_param
 >                               1,          # max_results
->                               fail,         
->                               1,          
->                               [1 .. 8], 
->                               [1, 1, 1, 1],         
->                               fail,       
+>                               fail,
+>                               1,
+>                               [1 .. 8],
+>                               [1, 1, 1, 1],
+>                               fail,
 >                               fail);
 [  ]
 gap> HomomorphismDigraphsFinder(CycleDigraph(5),
@@ -2091,11 +2087,11 @@ gap> HomomorphismDigraphsFinder(CycleDigraph(5),
 >                               fail,       # hook
 >                               [],         # user_param
 >                               1,          # max_results
->                               fail,         
->                               2,          
->                               [1 .. 8], 
->                               [1, 1, 1, 1],         
->                               fail,       
+>                               fail,
+>                               2,
+>                               [1 .. 8],
+>                               [1, 1, 1, 1],
+>                               fail,
 >                               fail);
 [  ]
 gap> HomomorphismDigraphsFinder(CycleDigraph(5),
@@ -2103,11 +2099,11 @@ gap> HomomorphismDigraphsFinder(CycleDigraph(5),
 >                               fail,       # hook
 >                               [],         # user_param
 >                               1,          # max_results
->                               2,         
->                               0,          
->                               [1 .. 8], 
->                               [4, 5, 6, 7],         
->                               fail,       
+>                               2,
+>                               0,
+>                               [1 .. 8],
+>                               [4, 5, 6, 7],
+>                               fail,
 >                               fail);
 [  ]
 gap> HomomorphismDigraphsFinder(CycleDigraph(5),
@@ -2115,11 +2111,11 @@ gap> HomomorphismDigraphsFinder(CycleDigraph(5),
 >                               fail,       # hook
 >                               [],         # user_param
 >                               1,          # max_results
->                               2,         
->                               0,          
->                               [1 .. 8], 
->                               [4, 5, 6, 7],         
->                               fail,       
+>                               2,
+>                               0,
+>                               [1 .. 8],
+>                               [4, 5, 6, 7],
+>                               fail,
 >                               fail,
 >                               [1, 3, 4, 5, 2]);
 [  ]
@@ -2128,11 +2124,11 @@ gap> HomomorphismDigraphsFinder(CycleDigraph(5),
 >                               fail,       # hook
 >                               [],         # user_param
 >                               1,          # max_results
->                               fail,         
->                               0,          
->                               [1 .. 8], 
->                               [4, 5, 6, 7],         
->                               fail,       
+>                               fail,
+>                               0,
+>                               [1 .. 8],
+>                               [4, 5, 6, 7],
+>                               fail,
 >                               fail,
 >                               [1, 3, 4, 5, 2]);
 [ Transformation( [ 4, 5, 6, 7, 8, 6, 7, 8 ] ) ]
@@ -2141,7 +2137,7 @@ gap> HomomorphismDigraphsFinder(CycleDigraph(5),
 gap> HomomorphismDigraphsFinder(0);
 Error, there must be 11 or 12 arguments, found 1,
 gap> DigraphHomomorphism(NullDigraph(1), NullDigraph(513));
-Error, the 2nd argument <digraph2> must have at most 512 vertices, found 513,
+IdentityTransformation
 gap> HomomorphismDigraphsFinder(NullDigraph(1), NullDigraph(510), fail, [], 1,
 > false, 0, 0, 0, 0, 0);
 Error, the 6th argument <hint> must be an integer or fail, not boolean or fail\
@@ -2207,7 +2203,7 @@ gap> HomomorphismDigraphsFinder(NullDigraph(3), NullDigraph(510), fail, [], 1,
 Error, expected group of automorphisms, but found a non-automorphism in positi\
 on 1 of the group generators,
 gap> HomomorphismDigraphsFinder(NullDigraph(3), NullDigraph(510), fail, [], 1,
-> fail, true, [1, 2, 3], [1], fail, fail, 
+> fail, true, [1, 2, 3], [1], fail, fail,
 > Group((1, 2), MappingPermListList([1 .. 1000], [5 .. 1004])));
 Error, expected group of automorphisms, but found a non-automorphism in positi\
 on 2 of the group generators,
@@ -2284,7 +2280,7 @@ gap> IsDigraphHomomorphism(gr1, gr2, Transformation([1, 2]), [1, 1], [1, 2]);
 false
 gap> gr1 := Digraph([[], []]);
 <immutable empty digraph with 2 vertices>
-gap> gr1 := ChainDigraph(3);   
+gap> gr1 := ChainDigraph(3);
 <immutable chain digraph with 3 vertices>
 gap> gr2 := ChainDigraph(6);
 <immutable chain digraph with 6 vertices>
@@ -2292,7 +2288,7 @@ gap> IsDigraphHomomorphism(gr1, gr2, Transformation([1, 2, 3]),
 > [1 .. 3], [1 .. 6]);
 true
 gap> IsDigraphHomomorphism(gr1, gr2, Transformation([1, 2, 3]),
-> [1 .. 3], [1, 1, 2, 3, 4, 5]);   
+> [1 .. 3], [1, 1, 2, 3, 4, 5]);
 false
 gap> IsDigraphHomomorphism(gr1, gr2, Transformation([1, 2, 3]),
 > [2, 2, 1], [2, 2, 1, 3, 4, 5]);
@@ -2304,17 +2300,17 @@ gap> IsDigraphAutomorphism(gr1, Transformation([3, 2, 1]), [1, 2, 3]);
 false
 gap> gr1 := CycleDigraph(6);
 <immutable cycle digraph with 6 vertices>
-gap> x := (1, 2, 3, 4, 5, 6);                                                
+gap> x := (1, 2, 3, 4, 5, 6);
 (1,2,3,4,5,6)
 gap> t := AsTransformation(x);
 Transformation( [ 2, 3, 4, 5, 6, 1 ] )
 gap> IsDigraphAutomorphism(gr1, x, [1 .. 6]);
 false
-gap> IsDigraphAutomorphism(gr1, x, [1, 1, 2, 2, 3, 3]); 
+gap> IsDigraphAutomorphism(gr1, x, [1, 1, 2, 2, 3, 3]);
 false
 gap> IsDigraphAutomorphism(gr1, x, [1, 1, 1, 1, 1, 1]);
 true
-gap> IsDigraphAutomorphism(gr1, x, [1, 1, 2, 2, 3, 3]); 
+gap> IsDigraphAutomorphism(gr1, x, [1, 1, 2, 2, 3, 3]);
 false
 gap> IsDigraphAutomorphism(gr1, x ^ 2, [1, 1, 2, 2, 3, 3]);
 false
@@ -2326,7 +2322,7 @@ gap> IsDigraphAutomorphism(gr1, x ^ 3, [1, 2, 2, 3, 4, 4]);
 false
 gap> IsDigraphAutomorphism(gr1, x ^ 3, [1, 1, 1, 1, 1, 1]);
 true
-gap> IsDigraphAutomorphism(gr1, t, [1 .. 6]);            
+gap> IsDigraphAutomorphism(gr1, t, [1 .. 6]);
 false
 gap> IsDigraphAutomorphism(gr1, t, [1, 1, 2, 2, 3, 3]);
 false
@@ -2346,7 +2342,7 @@ gap> ForAll(AutomorphismGroup(gr1),
 true
 
 # IsDigraphEndomorphism, for vertex-coloured digraphs
-gap> gr1 := DigraphTransitiveClosure(CompleteDigraph(2));   
+gap> gr1 := DigraphTransitiveClosure(CompleteDigraph(2));
 <immutable transitive digraph with 2 vertices, 4 edges>
 gap> IsDigraphEndomorphism(gr1, (1, 2), [1, 2]);
 false
@@ -2356,12 +2352,12 @@ gap> IsDigraphEndomorphism(gr1, Transformation([1, 1]), [1, 2]);
 false
 gap> IsDigraphEndomorphism(gr1, Transformation([1, 1]), [1, 1]);
 true
-gap> ForAll(GeneratorsOfEndomorphismMonoid(gr1),           
+gap> ForAll(GeneratorsOfEndomorphismMonoid(gr1),
 >           x -> IsDigraphEndomorphism(gr1, x, [1, 1]));
 true
 gap> gr2 := Digraph([[3, 4], [1, 3], [4], [1, 2, 3, 5], [2]]);
 <immutable digraph with 5 vertices, 10 edges>
-gap> ForAll(GeneratorsOfEndomorphismMonoid(gr2),             
+gap> ForAll(GeneratorsOfEndomorphismMonoid(gr2),
 >           x -> IsDigraphEndomorphism(gr2, x, [1, 1, 1, 1, 1]));
 true
 gap> gr1 := DigraphFromDigraph6String("&D~~~~_");

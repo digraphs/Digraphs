@@ -20,7 +20,7 @@
 #include <string.h>   // for memcpy
 
 #include "bliss-includes.h"   // for bliss stuff
-#include "cliques.h"          // for FuncDigraphsCliquesFinder
+#include "cliques.h"          // for FuncDIGRAPHS_FREE_CLIQUES_DATA
 #include "digraphs-config.h"  // for DIGRAPHS_WITH_INCLUDED_BLISS
 #include "digraphs-debug.h"   // for DIGRAPHS_ASSERT
 #include "homos.h"            // for FuncHomomorphismDigraphsFinder
@@ -1115,66 +1115,78 @@ static Obj FuncIS_MULTI_DIGRAPH(Obj self, Obj digraph) {
  *       - 3 integers i, j, k
  *       - An integer n (the number of vertices of digraph)
  *      and modifies the matrix dist according to the values of i, j, k.
- *   3. Int nonEdgeVal s.t initially dist[i][j] = nonEdgeVal if [ i, j ] isn't
- *      an edge.
- *   4. Int edgeVal s.t initially dist[i][j] = edgeVal if [ i, j ] is an edge.
- *   5. bool keepCopy:
- *      - If true, FLOYD_WARSHALL stores a copy of the initialised dist, which
- *        can later be used by the post function
- *   6. bool zeroSelfDist:
+ *   3. Int val1 s.t initially dist[i][j] = val1 if [ i, j ] isn't an edge.
+ *   4. Int val2 s.t initially dist[i][j] = val2 if [ i, j ] is an edge.
+ *   5. bool copy:
+ *      - If true, FLOYD_WARSHALL stores the initialised dist, and
+ *        compares it with dist after it has gone through the 3 for-loops,
+ *        and returns true iff it is unchanged.
+ *      - If false, proceeds as usual Floyd-Warshall algorithm and returns
+ *        a GAP object matrix as the result.
+ *   6. bool diameter: // TODO wouldn't it be better to just take a
+ *                        "post-processing" function. JDM
+ *      - If true, FLOYD_WARSHALL goes through dist after the 3 for-loops,
+ *        returns -1 if dist contains the value -1, else it returns the
+ *        maximum value of dist
+ *      - If false, proceeds as usual
+ *   7. bool shortest:
  *      - If true, for each vertex i, dist[i][i] is initially set to 0
  *      - If false, this step is skipped
- *   7. A special function which takes 3 arguments:
- *      - The matrix dist
- *      - The matrix distCopy, which is a copy of dist from before func was run,
- *        and is only set if keepCopy is true
- *      - An integer n (the number of vertices of digraph)
- *      and returns the object that will be the output of this function.
  */
-static Obj FLOYD_WARSHALL(Obj digraph,
+static Obj FLOYD_WARSHALL(Obj  digraph,
                           void (*func)(Int** dist, Int i, Int j, Int k, Int n),
-                          Int  nonEdgeVal,
-                          Int  edgeVal,
-                          bool keepCopy,
-                          bool zeroSelfDist,
-                          Obj (*post)(Int** dist, Int** distCopy, Int n)) {
-  Int n, i, j, k, *dist;
-  Int* distCopy = NULL;
-  Obj out, neighbours, neighboursi;
+                          Int  val1,
+                          Int  val2,
+                          bool copy,
+                          bool diameter,
+                          bool shortest) {
+  Int  n, i, j, k, *dist;
+  Int* adj = NULL;
+  Obj  next, out, outi, val;
 
   n = DigraphNrVertices(digraph);
 
-  // Initialise the n x n matrix with nonEdgeVal and edgeVal
+  // Special case for 0-vertex graph
+  if (n == 0) {
+    if (diameter) {
+      return Fail;
+    }
+    if (copy) {
+      return True;
+    }
+    return NEW_PLIST_IMM(T_PLIST_EMPTY, 0);
+  }
+
+  // Initialise the n x n matrix with val1 and val2
   dist = safe_malloc(n * n * sizeof(Int));
   for (i = 0; i < n * n; i++) {
-    dist[i] = nonEdgeVal;
+    dist[i] = val1;
   }
-  neighbours = FuncOutNeighbours(0L, digraph);
+  out = FuncOutNeighbours(0L, digraph);
   for (i = 1; i <= n; i++) {
-    neighboursi = ELM_PLIST(neighbours, i);
-    PLAIN_LIST(neighboursi);
-    for (j = 1; j <= LEN_PLIST(neighboursi); j++) {
-      k       = (i - 1) * n + INT_INTOBJ(ELM_PLIST(neighboursi, j)) - 1;
-      dist[k] = edgeVal;
+    outi = ELM_PLIST(out, i);
+    PLAIN_LIST(outi);
+    for (j = 1; j <= LEN_PLIST(outi); j++) {
+      k       = (i - 1) * n + INT_INTOBJ(ELM_PLIST(outi, j)) - 1;
+      dist[k] = val2;
     }
   }
 
-  if (zeroSelfDist) {
+  if (shortest) {
     // This is the special case for DIGRAPH_SHORTEST_DIST
     for (i = 0; i < n; i++) {
       dist[i * n + i] = 0;
     }
   }
 
-  if (keepCopy) {
+  if (copy) {
     // This is the special case for IS_TRANSITIVE_DIGRAPH
-    distCopy = safe_malloc(n * n * sizeof(Int));
+    adj = safe_malloc(n * n * sizeof(Int));
     for (i = 0; i < n * n; i++) {
-      distCopy[i] = dist[i];
+      adj[i] = dist[i];
     }
   }
 
-  // Main loop
   for (k = 0; k < n; k++) {
     for (i = 0; i < n; i++) {
       for (j = 0; j < n; j++) {
@@ -1183,14 +1195,59 @@ static Obj FLOYD_WARSHALL(Obj digraph,
     }
   }
 
-  // Apply post-processing function
-  out = post(&dist, &distCopy, n);
-
-  free(dist);
-  if (keepCopy) {
-    free(distCopy);
+  // the following is a horrible hack
+  if (diameter) {
+    // This is the special case for DIGRAPH_DIAMETER
+    Int maximum = -1;
+    for (i = 0; i < n; i++) {
+      for (j = 0; j < n; j++) {
+        if (dist[i * n + j] > maximum) {
+          maximum = dist[i * n + j];
+        } else if (dist[i * n + j] == -1) {
+          free(dist);
+          free(adj);
+          return Fail;
+        }
+      }
+    }
+    free(dist);
+    return INTOBJ_INT(maximum);
   }
 
+  if (copy) {
+    // This is the special case for IS_TRANSITIVE_DIGRAPH
+    for (i = 0; i < n * n; i++) {
+      if (adj[i] != dist[i]) {
+        free(dist);
+        free(adj);
+        return False;
+      }
+    }
+    free(dist);
+    free(adj);
+    return True;
+  }
+
+  // Create GAP matrix to return
+  out = NEW_PLIST(T_PLIST_TAB, n);
+  SET_LEN_PLIST(out, n);
+
+  for (i = 1; i <= n; i++) {
+    next = NEW_PLIST(T_PLIST_CYC, n);
+    SET_LEN_PLIST(next, n);
+    for (j = 1; j <= n; j++) {
+      val = INTOBJ_INT(dist[(i - 1) * n + (j - 1)]);
+      if (val == INTOBJ_INT(-1)) {
+        val = Fail;
+      }
+      SET_ELM_PLIST(next, j, val);
+    }
+    SET_ELM_PLIST(out, i, next);
+    CHANGED_BAG(out);
+  }
+  SET_FILT_LIST(out, FN_IS_RECT);
+
+  free(dist);
   return out;
 }
 
@@ -1203,65 +1260,14 @@ static void FW_FUNC_SHORTEST_DIST(Int** dist, Int i, Int j, Int k, Int n) {
   }
 }
 
-static Obj FW_POST_DISTANCES(Int** dist, Int** distCopy, Int n) {
-  // Main Floyd-Warshall use case: return GAP matrix of distances
-  Obj next, out, val;
-  Int i, j;
-
-  // Special case for 0-vertex graph
-  if (n == 0) {
-    return NEW_PLIST_IMM(T_PLIST_EMPTY, 0);
-  }
-
-  out = NEW_PLIST(T_PLIST_TAB, n);
-  SET_LEN_PLIST(out, n);
-
-  for (i = 1; i <= n; i++) {
-    next = NEW_PLIST(T_PLIST_CYC, n);
-    SET_LEN_PLIST(next, n);
-    for (j = 1; j <= n; j++) {
-      val = INTOBJ_INT((*dist)[(i - 1) * n + (j - 1)]);
-      if (val == INTOBJ_INT(-1)) {
-        val = Fail;
-      }
-      SET_ELM_PLIST(next, j, val);
-    }
-    SET_ELM_PLIST(out, i, next);
-    CHANGED_BAG(out);
-  }
-  SET_FILT_LIST(out, FN_IS_RECT);
-  return out;
-}
-
 static Obj FuncDIGRAPH_SHORTEST_DIST(Obj self, Obj digraph) {
   return FLOYD_WARSHALL(
-      digraph, FW_FUNC_SHORTEST_DIST, -1, 1, false, true, FW_POST_DISTANCES);
-}
-
-static Obj FW_POST_DIAMETER(Int** dist, Int** distCopy, Int n) {
-  // Return the diameter of the digraph
-  Int i, j;
-  Int maximum = -1;
-
-  if (n == 0) {
-    return Fail;
-  }
-
-  for (i = 0; i < n; i++) {
-    for (j = 0; j < n; j++) {
-      if ((*dist)[i * n + j] > maximum) {
-        maximum = (*dist)[i * n + j];
-      } else if ((*dist)[i * n + j] == -1) {
-        return Fail;
-      }
-    }
-  }
-  return INTOBJ_INT(maximum);
+      digraph, FW_FUNC_SHORTEST_DIST, -1, 1, false, false, true);
 }
 
 static Obj FuncDIGRAPH_DIAMETER(Obj self, Obj digraph) {
   return FLOYD_WARSHALL(
-      digraph, FW_FUNC_SHORTEST_DIST, -1, 1, false, true, FW_POST_DIAMETER);
+      digraph, FW_FUNC_SHORTEST_DIST, -1, 1, false, true, true);
 }
 
 static void FW_FUNC_TRANS_CLOSURE(Int** dist, Int i, Int j, Int k, Int n) {
@@ -1270,26 +1276,14 @@ static void FW_FUNC_TRANS_CLOSURE(Int** dist, Int i, Int j, Int k, Int n) {
   }
 }
 
-static Obj FW_POST_HAS_CHANGED(Int** dist, Int** distCopy, Int n) {
-  // Determines whether dist and distCopy are the same
-  // Used for IS_TRANSITIVE_DIGRAPH
-  Int i;
-  for (i = 0; i < n * n; i++) {
-    if ((*distCopy)[i] != (*dist)[i]) {
-      return False;
-    }
-  }
-  return True;
-}
-
 static Obj FuncIS_TRANSITIVE_DIGRAPH(Obj self, Obj digraph) {
   return FLOYD_WARSHALL(
-      digraph, FW_FUNC_TRANS_CLOSURE, 0, 1, true, false, FW_POST_HAS_CHANGED);
+      digraph, FW_FUNC_TRANS_CLOSURE, 0, 1, true, false, false);
 }
 
 static Obj FuncDIGRAPH_TRANS_CLOSURE(Obj self, Obj digraph) {
   return FLOYD_WARSHALL(
-      digraph, FW_FUNC_TRANS_CLOSURE, 0, 1, false, false, FW_POST_DISTANCES);
+      digraph, FW_FUNC_TRANS_CLOSURE, 0, 1, false, false, false);
 }
 
 static void
@@ -1301,8 +1295,7 @@ FW_FUNC_REFLEX_TRANS_CLOSURE(Int** dist, Int i, Int j, Int k, Int n) {
 
 static Obj FuncDIGRAPH_REFLEX_TRANS_CLOSURE(Obj self, Obj digraph) {
   return FLOYD_WARSHALL(
-      digraph, FW_FUNC_REFLEX_TRANS_CLOSURE,
-      0, 1, false, false, FW_POST_DISTANCES);
+      digraph, FW_FUNC_REFLEX_TRANS_CLOSURE, 0, 1, false, false, false);
 }
 
 static Obj FuncRANDOM_DIGRAPH(Obj self, Obj nn, Obj limm) {
@@ -2312,6 +2305,17 @@ static StructGVarFunc GVarFuncs[] = {
      FuncSUBGRAPH_HOMEOMORPHIC_TO_K4,
      "src/planar.c:FuncSUBGRAPH_HOMEOMORPHIC_TO_K4"},
 
+    {"DIGRAPHS_FREE_HOMOS_DATA",
+     0,
+     "",
+     FuncDIGRAPHS_FREE_HOMOS_DATA,
+     "src/homos.c:FuncDIGRAPHS_FREE_HOMOS_DATA"},
+
+    {"DIGRAPHS_FREE_CLIQUES_DATA",
+     0,
+     "",
+     FuncDIGRAPHS_FREE_CLIQUES_DATA,
+     "src/cliques.c:FuncDIGRAPHS_FREE_CLIQUES_DATA"},
     {0, 0, 0, 0, 0} /* Finish with an empty entry */
 };
 

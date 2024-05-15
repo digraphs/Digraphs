@@ -25,9 +25,7 @@
 // 1. Try other bit hacks for iterating through set bits
 
 #include "homos.h"
-
 // C headers
-#include <limits.h>   // for CHAR_BIT
 #include <setjmp.h>   // for longjmp, setjmp, jmp_buf
 #include <stdbool.h>  // for true, false, bool
 #include <stddef.h>   // for NULL
@@ -46,10 +44,11 @@
 #include "conditions.h"       // for Conditions
 #include "digraphs-config.h"  // for DIGRAPHS_HAVE___BUILTIN_CTZLL
 #include "digraphs-debug.h"   // for DIGRAPHS_ASSERT
+#include "globals.h"          // for UNDEFINED...
 #include "homos-graphs.h"     // for Digraph, Graph, . . .
-#include "perms.h"            // for MAXVERTS, UNDEFINED, PermColl, Perm
-#include "safemalloc.h"
-#include "schreier-sims.h"  // for PermColl, . . .
+#include "perms.h"            // for UNDEFINED, PermColl, Perm
+#include "safemalloc.h"       // for safe_mallov
+#include "schreier-sims.h"    // for PermColl, . . .
 
 ////////////////////////////////////////////////////////////////////////////////
 // 1. Macros
@@ -58,7 +57,12 @@
 #define MAX(a, b) (a < b ? b : a)
 #define MIN(a, b) (a < b ? a : b)
 
-#define NUMBER_BITS_PER_BLOCK (sizeof(Block) * CHAR_BIT)
+#ifndef HOMOS_STRUCTURE_SIZE
+uint16_t HOMOS_STRUCTURE_SIZE = 0;
+#endif
+#ifndef UNDEFINED
+uint16_t UNDEFINED = 65535;
+#endif
 
 // The next line can be used instead of the first line of STORE_MIN to
 // randomise which vertex of minimum degree is used next, but I didn't find any
@@ -88,7 +92,7 @@
 // The following macro is bitmap_decode_ctz_callpack from https://git.io/fho4p
 #if SYS_IS_64_BIT && defined(DIGRAPHS_HAVE___BUILTIN_CTZLL)
 #define FOR_SET_BITS(__bit_array, __nr_bits, __variable)     \
-  for (size_t k = 0; k < NR_BLOCKS_LOOKUP[__nr_bits]; ++k) { \
+  for (size_t k = 0; k < number_of_blocks(__nr_bits); ++k) { \
     Block block = __bit_array->blocks[k];                    \
     while (block != 0) {                                     \
       uint64_t t = block & -block;                           \
@@ -138,7 +142,7 @@ extern Obj LargestMovedPointPerms;
 
 static Obj GAP_FUNC;  // Variable to hold a GAP level hook function
 
-static Obj (*HOOK)(void*,  // HOOK function applied to every homo found
+static Obj   (*HOOK)(void*,  // HOOK function applied to every homo found
                    const uint16_t,
                    const uint16_t*);
 static void* USER_PARAM;  // a USER_PARAM for the hook
@@ -150,11 +154,11 @@ static bool ORDERED;  // true if the vertices of the domain/source digraph
                       // should be considered in a different order than they are
                       // given, false otherwise.
 
-static BitArray* BIT_ARRAY_BUFFER[MAXVERTS];  // A buffer
-static BitArray* IMAGE_RESTRICT;              // Values in MAP must be in this
-static BitArray* MAP_UNDEFINED[MAXVERTS];     // Undefined positions in MAP
-static BitArray* ORB_LOOKUP;                  // points in orbit
-static BitArray* VALS;                        // Values in MAP already
+static BitArray** BIT_ARRAY_BUFFER = NULL;  // A buffer
+static BitArray*  IMAGE_RESTRICT;           // Values in MAP must be in this
+static BitArray** MAP_UNDEFINED = NULL;     // UNDEFINED positions in MAP
+static BitArray*  ORB_LOOKUP;               // points in orbit
+static BitArray*  VALS;                     // Values in MAP already
 
 static BitArray** REPS;  // orbit reps organised by depth
 
@@ -166,18 +170,18 @@ static Digraph* DIGRAPH2;
 static Graph* GRAPH1;  // Graphs to hold incoming GAP symmetric digraphs
 static Graph* GRAPH2;
 
-static BlissGraph* BLISS_GRAPH[3 * MAXVERTS];
+static BlissGraph** BLISS_GRAPH = NULL;
 
-static uint16_t MAP[MAXVERTS];            // partial image list
-static uint16_t COLORS2[MAXVERTS];        // colors of range (di)graph
-static uint16_t INVERSE_ORDER[MAXVERTS];  // external -> internal
-static uint16_t MAP_BUFFER[MAXVERTS];     // For converting from internal ->
-                                          // external and back when calling the
-                                          // hook functions.
-static uint16_t ORB[MAXVERTS];    // Array for containing nodes in an orbit.
-static uint16_t ORDER[MAXVERTS];  // internal -> external
+static uint16_t* MAP           = NULL;  // partial image list
+static uint16_t* COLORS2       = NULL;  // colors of range (di)graph
+static uint16_t* INVERSE_ORDER = NULL;  // external -> internal
+static uint16_t* MAP_BUFFER    = NULL;  // For converting from internal ->
+                                        // external and back when calling the
+                                        // hook functions.
+static uint16_t* ORB   = NULL;  // Array for containing nodes in an orbit.
+static uint16_t* ORDER = NULL;  // internal -> external
 
-static PermColl*     STAB_GENS[MAXVERTS];  // stabiliser generators
+static PermColl**    STAB_GENS = NULL;  // stabiliser generators
 static SchreierSims* SCHREIER_SIMS;
 
 #ifdef DIGRAPHS_ENABLE_STATS
@@ -279,6 +283,47 @@ homo_hook_collect(void* user_param, uint16_t const nr, uint16_t const* map) {
 //   }
 //   printf(" }>");
 // }
+
+bool homos_data_initialized = false;  // did we call this method before?
+Obj  FuncDIGRAPHS_FREE_HOMOS_DATA(Obj self) {
+  if (homos_data_initialized) {
+    free_digraph(DIGRAPH1);
+    free_digraph(DIGRAPH2);
+    free_graph(GRAPH1);
+    free_graph(GRAPH2);
+    free_bit_array(IMAGE_RESTRICT);
+    free_bit_array(ORB_LOOKUP);
+    free(MAP);
+    free(COLORS2);
+    free(INVERSE_ORDER);
+    free(MAP_BUFFER);
+    free(ORB);
+    free(ORDER);
+
+    for (uint16_t i = 0; i < HOMOS_STRUCTURE_SIZE * 3; i++) {
+      bliss_digraphs_release(BLISS_GRAPH[i]);
+    }
+
+    for (uint16_t i = 0; i < HOMOS_STRUCTURE_SIZE; i++) {
+      free_bit_array(REPS[i]);
+      free_bit_array(BIT_ARRAY_BUFFER[i]);
+      free_bit_array(MAP_UNDEFINED[i]);
+      free_perm_coll(STAB_GENS[i]);
+    }
+
+    free(BLISS_GRAPH);
+    free(REPS);
+    free(BIT_ARRAY_BUFFER);
+    free(MAP_UNDEFINED);
+    free(STAB_GENS);
+    free_bit_array(VALS);
+    free_conditions(CONDITIONS);
+    free_schreier_sims(SCHREIER_SIMS);
+    homos_data_initialized = false;
+  }
+
+  return 0L;
+}
 
 static void get_automorphism_group_from_gap(Obj digraph_obj, PermColl* out) {
   DIGRAPHS_ASSERT(CALL_1ARGS(IsDigraph, digraph_obj) == True);
@@ -1594,32 +1639,59 @@ static bool init_data_from_args(Obj digraph1_obj,
                                 Obj colors2_obj,
                                 Obj order_obj,
                                 Obj aut_grp_obj) {
-  static bool is_initialized = false;  // did we call this method before?
-  if (!is_initialized) {
+  uint16_t calculated_max_verts =
+      MAX(DigraphNrVertices(digraph1_obj), DigraphNrVertices(digraph2_obj));
+  if (!homos_data_initialized
+      || (calculated_max_verts > HOMOS_STRUCTURE_SIZE)) {
+    FuncDIGRAPHS_FREE_HOMOS_DATA(0L);
+    homos_data_initialized = true;
+
+    // Rather arbitrary, but we multiply by 1.2 to avoid
+    // n = 1,2,3,4,5... causing constant reallocation
+    HOMOS_STRUCTURE_SIZE = calculated_max_verts + calculated_max_verts / 5;
     // srand(time(0));
-    is_initialized = true;
 #ifdef DIGRAPHS_ENABLE_STATS
     STATS = safe_malloc(sizeof(HomoStats));
 #endif
+    DIGRAPH1 = new_digraph(HOMOS_STRUCTURE_SIZE);
+    DIGRAPH2 = new_digraph(HOMOS_STRUCTURE_SIZE);
 
-    DIGRAPH1 = new_digraph(MAXVERTS);
-    DIGRAPH2 = new_digraph(MAXVERTS);
+    GRAPH1 = new_graph(HOMOS_STRUCTURE_SIZE);
+    GRAPH2 = new_graph(HOMOS_STRUCTURE_SIZE);
 
-    GRAPH1 = new_graph(MAXVERTS);
-    GRAPH2 = new_graph(MAXVERTS);
+    IMAGE_RESTRICT = new_bit_array(HOMOS_STRUCTURE_SIZE);
+    ORB_LOOKUP     = new_bit_array(HOMOS_STRUCTURE_SIZE);
+    REPS           = safe_malloc(HOMOS_STRUCTURE_SIZE * sizeof(BitArray*));
+    BIT_ARRAY_BUFFER =
+        (BitArray**) safe_calloc(HOMOS_STRUCTURE_SIZE, sizeof(BitArray*));
+    MAP_UNDEFINED =
+        (BitArray**) safe_calloc(HOMOS_STRUCTURE_SIZE, sizeof(BitArray*));
+    BLISS_GRAPH = (BlissGraph**) safe_calloc(3 * HOMOS_STRUCTURE_SIZE,
+                                             sizeof(BlissGraph*));
+    MAP     = (uint16_t*) safe_calloc(HOMOS_STRUCTURE_SIZE, sizeof(uint16_t));
+    COLORS2 = (uint16_t*) safe_calloc(HOMOS_STRUCTURE_SIZE, sizeof(uint16_t));
+    INVERSE_ORDER =
+        (uint16_t*) safe_calloc(HOMOS_STRUCTURE_SIZE, sizeof(uint16_t));
+    MAP_BUFFER =
+        (uint16_t*) safe_calloc(HOMOS_STRUCTURE_SIZE, sizeof(uint16_t));
+    ORB   = (uint16_t*) safe_calloc(HOMOS_STRUCTURE_SIZE, sizeof(uint16_t));
+    ORDER = (uint16_t*) safe_calloc(HOMOS_STRUCTURE_SIZE, sizeof(uint16_t));
+    STAB_GENS =
+        (PermColl**) safe_calloc(HOMOS_STRUCTURE_SIZE, sizeof(PermColl*));
 
-    IMAGE_RESTRICT = new_bit_array(MAXVERTS);
-    ORB_LOOKUP     = new_bit_array(MAXVERTS);
-    REPS           = safe_malloc(MAXVERTS * sizeof(BitArray*));
-    for (uint16_t i = 0; i < MAXVERTS; i++) {
-      BLISS_GRAPH[i]      = bliss_digraphs_new(i);
-      REPS[i]             = new_bit_array(MAXVERTS);
-      BIT_ARRAY_BUFFER[i] = new_bit_array(MAXVERTS);
-      MAP_UNDEFINED[i]    = new_bit_array(MAXVERTS);
-      STAB_GENS[i]        = new_perm_coll(MAXVERTS, MAXVERTS);
+    for (uint16_t i = 0; i < HOMOS_STRUCTURE_SIZE * 3; i++) {
+      BLISS_GRAPH[i] = bliss_digraphs_new(i);
     }
-    VALS          = new_bit_array(MAXVERTS);
-    CONDITIONS    = new_conditions(MAXVERTS, MAXVERTS);
+
+    for (uint16_t i = 0; i < HOMOS_STRUCTURE_SIZE; i++) {
+      REPS[i]             = new_bit_array(HOMOS_STRUCTURE_SIZE);
+      BIT_ARRAY_BUFFER[i] = new_bit_array(HOMOS_STRUCTURE_SIZE);
+      MAP_UNDEFINED[i]    = new_bit_array(HOMOS_STRUCTURE_SIZE);
+      STAB_GENS[i] = new_perm_coll(HOMOS_STRUCTURE_SIZE, HOMOS_STRUCTURE_SIZE);
+    }
+    VALS       = new_bit_array(HOMOS_STRUCTURE_SIZE);
+    CONDITIONS = new_conditions(HOMOS_STRUCTURE_SIZE, HOMOS_STRUCTURE_SIZE);
+
     SCHREIER_SIMS = new_schreier_sims();
   }
 #ifdef DIGRAPHS_ENABLE_STATS
@@ -1888,20 +1960,20 @@ Obj FuncHomomorphismDigraphsFinder(Obj self, Obj args) {
               (Int) TNAM_OBJ(digraph1_obj),
               0L);
   } else if (DigraphNrVertices(digraph1_obj) > MAXVERTS) {
-    ErrorQuit("the 1st argument <digraph1> must have at most 512 vertices, "
+    ErrorQuit("the 1st argument <digraph1> must have at most %d vertices, "
               "found %d,",
-              DigraphNrVertices(digraph1_obj),
-              0L);
+              MAXVERTS,
+              DigraphNrVertices(digraph1_obj));
   }
   if (CALL_1ARGS(IsDigraph, digraph2_obj) != True) {
     ErrorQuit("the 2nd argument <digraph2> must be a digraph, not %s,",
               (Int) TNAM_OBJ(digraph2_obj),
               0L);
   } else if (DigraphNrVertices(digraph2_obj) > MAXVERTS) {
-    ErrorQuit("the 2nd argument <digraph2> must have at most 512 vertices, "
+    ErrorQuit("the 2nd argument <digraph2> must have at most %d vertices, "
               "found %d,",
-              DigraphNrVertices(digraph2_obj),
-              0L);
+              MAXVERTS,
+              DigraphNrVertices(digraph2_obj));
   }
   if (hook_obj == Fail) {
     if (!IS_LIST(user_param_obj) || !IS_MUTABLE_OBJ(user_param_obj)) {

@@ -20,7 +20,8 @@
 #include "conditions.h"      // for Conditions
 #include "digraphs-debug.h"  // for DIGRAPHS_ASSERT
 #include "homos-graphs.h"    // for Digraph, Graph, . . .
-#include "perms.h"           // for MAXVERTS, UNDEFINED, PermColl, Perm
+#include "perms.h"           // for UNDEFINED, PermColl, Perm
+#include "safemalloc.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 // Macros
@@ -58,10 +59,10 @@ extern Obj Group;
 extern Obj ClosureGroup;
 
 ////////////////////////////////////////////////////////////////////////////////
-// Global variables
+// CliquesData
 ////////////////////////////////////////////////////////////////////////////////
 
-struct clique_data {
+struct cliques_data {
   void* user_param;    // A USER_PARAM for the hook
   Obj   gap_func;      // Variable to hold a GAP level hook function
   UInt (*hook)(void*,  // HOOK function applied to every homo found
@@ -79,9 +80,57 @@ struct clique_data {
 
   BitArray* temp_bitarray;
   Obj       orbit;
+  size_t    capacity;
 };
 
-typedef struct clique_data CliqueData;
+typedef struct cliques_data CliquesData;
+
+static void free_cliques_data(CliquesData* data) {
+  DIGRAPHS_ASSERT(data != NULL);
+  if (data->capacity > 0) {
+    free_graph(data->graph);
+    free_bit_array(data->clique);
+    free_conditions(data->try_);
+    free_conditions(data->ban);
+    free_conditions(data->to_try);
+    free_bit_array(data->temp_bitarray);
+    data->capacity = 0;
+  }
+}
+
+static void init_cliques_data(CliquesData* data, size_t capacity) {
+  DIGRAPHS_ASSERT(capacity > 0);
+  DIGRAPHS_ASSERT(data != NULL);
+
+  free_cliques_data(data);
+  data->capacity = capacity;
+  data->graph    = new_graph(capacity);
+
+  // Currently Conditions are a nr1 x nr1 array of BitArrays, so both
+  // values have to be set to MAXVERTS
+  data->clique = new_bit_array(capacity);
+  data->try_   = new_conditions(capacity, capacity);
+  data->ban    = new_conditions(capacity, capacity);
+  data->to_try = new_conditions(capacity, capacity);
+
+  data->orbit         = Fail;
+  data->temp_bitarray = new_bit_array(capacity);
+}
+
+static CliquesData* global_cliques_data(void) {
+  static CliquesData data;
+  static bool        first_call = true;
+  if (first_call) {
+    data.capacity = 0;
+    first_call    = false;
+  }
+  return &data;
+}
+
+Obj FuncDIGRAPHS_FREE_CLIQUES_DATA(Obj self) {
+  free_cliques_data(global_cliques_data());
+  return 0L;
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 // Hook functions
@@ -139,9 +188,9 @@ static UInt clique_hook_gap(void*           user_param,
 
 // Update a BitArray to only include one vertex per orbit with respect to
 // the group <group>
-static void get_orbit_reps_bitarray(BitArray*   bit_array,
-                                    Obj const   group,
-                                    CliqueData* data) {
+static void get_orbit_reps_bitarray(BitArray*    bit_array,
+                                    Obj const    group,
+                                    CliquesData* data) {
   if (group == Fail) {
     return;
   }
@@ -192,29 +241,17 @@ static void init_graph_from_digraph_obj(Graph* const graph, Obj digraph_obj) {
 }
 
 // Initialise the global variables
-static bool init_data_from_args(Obj         digraph_obj,
-                                Obj         hook_obj,
-                                Obj         user_param_obj,
-                                Obj         include_obj,
-                                Obj         exclude_obj,
-                                Obj         max_obj,
-                                Obj*        group,
-                                CliqueData* data) {
-  static bool is_initialised = false;
-  if (!is_initialised) {
-    is_initialised = true;
-
-    data->graph = new_graph(MAXVERTS);
-
-    // Currently Conditions are a nr1 x nr1 array of BitArrays, so both
-    // values have to be set to MAXVERTS
-    data->clique = new_bit_array(MAXVERTS);
-    data->try_   = new_conditions(MAXVERTS, MAXVERTS);
-    data->ban    = new_conditions(MAXVERTS, MAXVERTS);
-    data->to_try = new_conditions(MAXVERTS, MAXVERTS);
-
-    data->orbit         = Fail;
-    data->temp_bitarray = new_bit_array(MAXVERTS);
+static bool init_data_from_args(Obj          digraph_obj,
+                                Obj          hook_obj,
+                                Obj          user_param_obj,
+                                Obj          include_obj,
+                                Obj          exclude_obj,
+                                Obj          max_obj,
+                                Obj*         group,
+                                CliquesData* data) {
+  if (data->capacity == 0
+      || (size_t) DigraphNrVertices(digraph_obj) + 1 > data->capacity) {
+    init_cliques_data(data, DigraphNrVertices(digraph_obj) + 1);
   }
 
   uint16_t nr = DigraphNrVertices(digraph_obj);
@@ -299,14 +336,14 @@ static bool init_data_from_args(Obj         digraph_obj,
 // Main functions
 ////////////////////////////////////////////////////////////////////////////////
 
-static int BronKerbosch(uint16_t    depth,
-                        uint16_t    rep_depth,
-                        uint64_t    limit,
-                        uint64_t*   nr_found,
-                        bool        max,
-                        uint16_t    size,
-                        Obj         group,
-                        CliqueData* data) {
+static int BronKerbosch(uint16_t     depth,
+                        uint16_t     rep_depth,
+                        uint64_t     limit,
+                        uint64_t*    nr_found,
+                        bool         max,
+                        uint16_t     size,
+                        Obj          group,
+                        CliquesData* data) {
   uint16_t  nr   = data->graph->nr_vertices;
   BitArray* try_ = get_conditions(data->try_, 0);
   BitArray* ban  = get_conditions(data->ban, 0);
@@ -465,6 +502,7 @@ Obj FuncDigraphsCliquesFinder(Obj self, Obj args) {
   Obj max_obj        = ELM_PLIST(args, 7);
   Obj size_obj       = ELM_PLIST(args, 8);
   Obj aut_grp_obj    = Fail;
+
   if (LEN_PLIST(args) == 9) {
     aut_grp_obj = ELM_PLIST(args, 9);
   }
@@ -606,7 +644,7 @@ Obj FuncDigraphsCliquesFinder(Obj self, Obj args) {
                       include_obj,
                       CALL_2ARGS(OnTuples, include_obj, ELM_LIST(gens, i)))
                != True) {
-      ErrorQuit("the 5th argument <include> must be invaraint under <aut_grp>, "
+      ErrorQuit("the 5th argument <include> must be invariant under <aut_grp>, "
                 "or the full automorphism if <aut_grp> is not given,",
                 0L,
                 0L);
@@ -616,7 +654,7 @@ Obj FuncDigraphsCliquesFinder(Obj self, Obj args) {
                       exclude_obj,
                       CALL_2ARGS(OnTuples, exclude_obj, ELM_LIST(gens, i)))
                != True) {
-      ErrorQuit("the 6th argument <exclude> must be invaraint under <aut_grp>, "
+      ErrorQuit("the 6th argument <exclude> must be invariant under <aut_grp>, "
                 "or the full automorphism if <aut_grp> is not given,",
                 0L,
                 0L);
@@ -649,15 +687,18 @@ Obj FuncDigraphsCliquesFinder(Obj self, Obj args) {
   }
   // Check if include and exclude have empty intersection
   if (include_size != 0 && exclude_size != 0) {
-    bool lookup[MAXVERTS] = {false};
+    bool* lookup =
+        safe_calloc(DigraphNrVertices(digraph_obj) + 1, sizeof(bool));
     for (UInt i = 1; i <= include_size; ++i) {
       lookup[INT_INTOBJ(ELM_LIST(include_obj, i)) - 1] = true;
     }
     for (UInt i = 1; i <= exclude_size; ++i) {
       if (lookup[INT_INTOBJ(ELM_LIST(exclude_obj, i)) - 1]) {
+        free(lookup);
         return user_param_obj;
       }
     }
+    free(lookup);
   }
   // Check if the set we are trying to extend is a clique
   if (include_obj != Fail
@@ -669,7 +710,8 @@ Obj FuncDigraphsCliquesFinder(Obj self, Obj args) {
       (limit_obj == Infinity ? SMALLINTLIMIT : INT_INTOBJ(limit_obj));
   bool max = (max_obj == True ? true : false);
 
-  static CliqueData data;
+  CliquesData* data = global_cliques_data();
+
   // Initialise all the variable which will be used to carry out the recursion
   if (!init_data_from_args(digraph_obj,
                            hook_obj,
@@ -678,12 +720,12 @@ Obj FuncDigraphsCliquesFinder(Obj self, Obj args) {
                            exclude_obj,
                            max_obj,
                            &aut_grp_obj,
-                           &data)) {
+                           data)) {
     return user_param_obj;
   }
   // The clique we are trying to extend is already big enough
   if (size != 0 && include_size == size) {
-    data.hook(data.user_param, data.clique, nr, data.gap_func);
+    data->hook(data->user_param, data->clique, nr, data->gap_func);
     return user_param_obj;
   }
 
@@ -695,7 +737,7 @@ Obj FuncDigraphsCliquesFinder(Obj self, Obj args) {
                max,
                (size == 0 ? size : size - include_size),
                aut_grp_obj,
-               &data);
+               data);
 
   return user_param_obj;
 }

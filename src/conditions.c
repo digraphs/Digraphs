@@ -28,10 +28,12 @@ Conditions* new_conditions(uint16_t const nr1, uint16_t const nr2) {
   conditions->changed   = safe_malloc(nr1 * (nr1 + 1) * sizeof(uint16_t));
   conditions->height    = safe_malloc(nr1 * sizeof(uint16_t));
   conditions->sizes     = safe_malloc(nr1 * nr1 * sizeof(uint16_t));
-  conditions->nr1       = nr1;
-  conditions->nr2       = nr2;
+  conditions->size      = (uint64_t) nr1 * nr1;
 
-  for (uint64_t i = 0; i < ((uint64_t) nr1 * nr1); i++) {
+  conditions->nr1 = nr1;
+  conditions->nr2 = nr2;
+
+  for (uint64_t i = 0; i < conditions->size; i++) {
     conditions->bit_array[i] = new_bit_array(nr2);
   }
 
@@ -45,18 +47,14 @@ Conditions* new_conditions(uint16_t const nr1, uint16_t const nr2) {
   return conditions;
 }
 
-// free_conditions is not currently used, but kept in case it is required in
-// the future. JDM 2019
-
-// void free_conditions(Conditions* const conditions) {
-//   DIGRAPHS_ASSERT(conditions != NULL);
-//   for (uint64_t i = 0; i < ((uint64_t) conditions->nr1 * conditions->nr1);
-//        i++) {
-//     free_bit_array(conditions->bit_array[i]);
-//   }
-//   free(conditions->bit_array);
-//   free(conditions->changed);
-//   free(conditions->height);
-//   free(conditions->sizes);
-//   free(conditions);
-// }
+void free_conditions(Conditions* const conditions) {
+  DIGRAPHS_ASSERT(conditions != NULL);
+  for (uint64_t i = 0; i < conditions->size; i++) {
+    free_bit_array(conditions->bit_array[i]);
+  }
+  free(conditions->bit_array);
+  free(conditions->changed);
+  free(conditions->height);
+  free(conditions->sizes);
+  free(conditions);
+}

@@ -29,11 +29,13 @@ Digraph* new_digraph(uint16_t const nr_verts) {
   Digraph* digraph        = safe_malloc(sizeof(Digraph));
   digraph->in_neighbours  = safe_malloc(nr_verts * sizeof(BitArray));
   digraph->out_neighbours = safe_malloc(nr_verts * sizeof(BitArray));
+
   for (uint16_t i = 0; i < nr_verts; i++) {
     digraph->in_neighbours[i]  = new_bit_array(nr_verts);
     digraph->out_neighbours[i] = new_bit_array(nr_verts);
   }
   digraph->nr_vertices = nr_verts;
+  digraph->capacity    = nr_verts;
   return digraph;
 }
 
@@ -41,44 +43,50 @@ Graph* new_graph(uint16_t const nr_verts) {
   DIGRAPHS_ASSERT(nr_verts <= MAXVERTS);
   Graph* graph      = safe_malloc(sizeof(Graph));
   graph->neighbours = safe_malloc(nr_verts * sizeof(BitArray));
+
   for (uint16_t i = 0; i < nr_verts; i++) {
     graph->neighbours[i] = new_bit_array(nr_verts);
   }
   graph->nr_vertices = nr_verts;
+  graph->capacity    = nr_verts;
+
   return graph;
 }
 
 // free_digraph is not currently used, but kept in case it is required in
 // the future. JDM 2019
 
-// void free_digraph(Digraph* const digraph) {
-//   DIGRAPHS_ASSERT(digraph != NULL);
-//   uint16_t const nr = digraph->nr_vertices;
-//   for (uint16_t i = 0; i < nr; i++) {
-//     free_bit_array(digraph->in_neighbours[i]);
-//     free_bit_array(digraph->out_neighbours[i]);
-//   }
-//   free(digraph->in_neighbours);
-//   free(digraph->out_neighbours);
-//   free(digraph);
-// }
+void free_digraph(Digraph* const digraph) {
+  DIGRAPHS_ASSERT(digraph != NULL);
+
+  uint16_t const nr = digraph->capacity;
+
+  for (uint16_t i = 0; i < nr; i++) {
+    free_bit_array(digraph->in_neighbours[i]);
+    free_bit_array(digraph->out_neighbours[i]);
+  }
+  free(digraph->in_neighbours);
+  free(digraph->out_neighbours);
+  free(digraph);
+}
 
 // free_graph is not currently used, but kept in case it is required in
 // the future. JDM 2019
 
-// void free_graph(Graph* const graph) {
-//   DIGRAPHS_ASSERT(graph != NULL);
-//   uint16_t const nr = graph->nr_vertices;
-//   for (uint16_t i = 0; i < nr; i++) {
-//     free_bit_array(graph->neighbours[i]);
-//   }
-//   free(graph->neighbours);
-//   free(graph);
-// }
+void free_graph(Graph* const graph) {
+  DIGRAPHS_ASSERT(graph != NULL);
+  uint16_t const nr = graph->capacity;
+  for (uint16_t i = 0; i < nr; i++) {
+    free_bit_array(graph->neighbours[i]);
+  }
+  free(graph->neighbours);
+  free(graph);
+}
 
 void clear_digraph(Digraph* const digraph, uint16_t const nr_verts) {
   DIGRAPHS_ASSERT(digraph != NULL);
   DIGRAPHS_ASSERT(nr_verts <= MAXVERTS);
+  DIGRAPHS_ASSERT(nr_verts <= digraph->capacity);
   for (uint16_t i = 0; i < nr_verts; i++) {
     init_bit_array(digraph->in_neighbours[i], false, nr_verts);
     init_bit_array(digraph->out_neighbours[i], false, nr_verts);
@@ -89,6 +97,8 @@ void clear_digraph(Digraph* const digraph, uint16_t const nr_verts) {
 void clear_graph(Graph* const graph, uint16_t const nr_verts) {
   DIGRAPHS_ASSERT(graph != NULL);
   DIGRAPHS_ASSERT(nr_verts <= MAXVERTS);
+  DIGRAPHS_ASSERT(nr_verts <= graph->capacity);
+
   for (uint16_t i = 0; i < nr_verts; i++) {
     init_bit_array(graph->neighbours[i], false, nr_verts);
   }
@@ -119,6 +129,7 @@ static void init_bliss_graph_from_digraph(Digraph const* const  digraph,
                                           BlissGraph*           bg) {
   DIGRAPHS_ASSERT(digraph != NULL);
   DIGRAPHS_ASSERT(colors != NULL);
+
   bliss_digraphs_clear(bg);
   uint16_t       out_color = 0;
   uint16_t const n         = digraph->nr_vertices;
