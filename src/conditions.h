@@ -63,6 +63,7 @@ struct conditions_struct {
   uint16_t*  sizes;
   uint16_t   nr1;
   uint16_t   nr2;
+  uint64_t   size;
 };
 
 typedef struct conditions_struct Conditions;

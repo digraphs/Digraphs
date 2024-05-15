@@ -30,6 +30,10 @@ InstallGlobalFunction(DIGRAPHS_StopTest,
 function()
   SetInfoLevel(InfoWarning, DIGRAPHS_TestRec.InfoLevelInfoWarning);
   SetInfoLevel(InfoDigraphs, DIGRAPHS_TestRec.InfoLevelInfoDigraphs);
+
+  # Wipe internal structures for homos and cliques
+  DIGRAPHS_FREE_HOMOS_DATA();
+  DIGRAPHS_FREE_CLIQUES_DATA();
   return;
 end);
 

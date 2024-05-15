@@ -2432,4 +2432,39 @@ false
 ]]></Example>
   </Description>
 </ManSection>
+
+<#GAPDoc Label="DIGRAPHS_FREE_HOMOS_DATA">
+  <Oper Name="DIGRAPHS_FREE_HOMOS_DATA"/>
+  <Returns> This function does not return a value. </Returns>
+  <Description>
+  Releases the memory used by the internal data structures for homomorphism
+  finding. This will not have any noticeable impact on your &GAP; session, but
+  will reduce memory usage of &Digraphs;. After <C>DIGRAPHS_FREE_HOMOS_DATA</C>
+  is called, any subsequent calls to <Ref Func="HomomorphismDigraphsFinder"/>
+  will have to reallocate memory for the internal data structures used by the
+  homomorphism finding code in the kernel extension, and, depending on the
+  amount of memory required, there might be a one-off time penalty for doing
+  this.
+  </Description>
+  <Example><![CDATA[
+  gap> DIGRAPHS_FREE_HOMOS_DATA();
+  ]]></Example>
+<#/GAPDoc>
+
+<#GAPDoc Label="DIGRAPHS_FREE_CLIQUES_DATA">
+  <Oper Name="DIGRAPHS_FREE_CLIQUES_DATA"/>
+  <Returns> This function does not return a value. </Returns>
+  <Description>
+  Releases the memory used by the internal data structures for clique
+  finding. This will not have any noticeable impact on your &GAP; session, but
+  will reduce memory usage of &Digraphs;. After <C>DIGRAPHS_FREE_CLIQUES_DATA</C>
+  is called, any subsequent calls to <Ref Func="DigraphsCliquesFinder"/>
+  will have to reallocate memory for the internal data structures used by the
+  clique finding code in the kernel extension, and, depending on the
+  amount of memory required, there might be a one-off time penalty for doing
+  this.
+  </Description>
+  <Example><![CDATA[
+  gap> DIGRAPHS_FREE_CLIQUES_DATA();
+  ]]></Example>
 <#/GAPDoc>

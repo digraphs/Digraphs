@@ -545,7 +545,7 @@ Error, there must be 8 or 9 arguments, found 1,
 gap> DigraphsCliquesFinder(1, 2, 3, 4, 5, 6, 7, 8);
 Error, the 1st argument <digraph> must be a digraph, not integer,
 gap> DigraphsCliquesFinder(NullDigraph(513), 2, 3, 4, 5, 6, 7, 8);
-Error, the 1st argument <digraph> must have at most 512 vertices, found 513,
+Error, the 2nd argument <hook> must be a function with 2 arguments,
 gap> DigraphsCliquesFinder(NullDigraph(1), fail, 3, 4, 5, 6, 7, 8);
 Error, the 2nd argument <hook> is fail and so the 3th argument must be a mutab\
 le list, not integer,
@@ -596,10 +596,10 @@ gap> DigraphsCliquesFinder(NullDigraph(2), fail, [], 4, [], [], true, fail, Symm
 Error, expected group of automorphisms, but found a non-automorphism in positi\
 on 1 of the group generators,
 gap> DigraphsCliquesFinder(NullDigraph(2), fail, [], 4, [1], [], true, fail);
-Error, the 5th argument <include> must be invaraint under <aut_grp>, or the fu\
+Error, the 5th argument <include> must be invariant under <aut_grp>, or the fu\
 ll automorphism if <aut_grp> is not given,
 gap> DigraphsCliquesFinder(NullDigraph(2), fail, [], 4, [], [1], true, fail);
-Error, the 6th argument <exclude> must be invaraint under <aut_grp>, or the fu\
+Error, the 6th argument <exclude> must be invariant under <aut_grp>, or the fu\
 ll automorphism if <aut_grp> is not given,
 gap> DigraphsCliquesFinder(
 > CompleteDigraph(2), fail, [], 4, [1, 2], [], true, fail);
