@@ -1369,6 +1369,12 @@ InstallMethod(RandomDigraphCons, "for IsConnectedDigraph and an integer",
 {_, n}
 -> RandomDigraphCons(IsConnectedDigraph, n, Float(Random([0 .. n])) / n));
 
+InstallMethod(RandomDigraphCons,
+"for IsStronglyConnectedDigraph, an integer, and a rational",
+[IsStronglyConnectedDigraph, IsInt],
+{_, n} ->
+RandomDigraphCons(IsStronglyConnectedDigraph, n, Float(Random([0 .. n])) / n));
+
 InstallMethod(RandomDigraphCons, "for IsAcyclicDigraph and an integer",
 [IsAcyclicDigraph, IsInt],
 {_, n}
@@ -1403,6 +1409,11 @@ InstallMethod(RandomDigraphCons,
 "for IsConnectedDigraph, an integer, and a rational",
 [IsConnectedDigraph, IsInt, IsRat],
 {_, n, p} -> RandomDigraphCons(IsConnectedDigraph, n, Float(p)));
+
+InstallMethod(RandomDigraphCons,
+"for IsStronglyConnectedDigraph, an integer, and a rational",
+[IsStronglyConnectedDigraph, IsInt, IsRat],
+{filt, n, p} -> RandomDigraphCons(IsStronglyConnectedDigraph, n, Float(p)));
 
 InstallMethod(RandomDigraphCons,
 "for IsStronglyConnectedDigraph, an integer, and a rational",
