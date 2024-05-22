@@ -27,6 +27,7 @@
   <Section><Heading>Edge Weights</Heading>
     <#Include Label="EdgeWeights">
     <#Include Label="EdgeWeightedDigraph">
+    <#Include Label="DigraphEdgeWeightedMinimumSpanningTree">
   </Section>
 
   <Section><Heading>Orders</Heading>

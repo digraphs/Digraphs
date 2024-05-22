@@ -70,3 +70,28 @@ gap> EdgeWeights(g);
     </Description>
     </ManSection>
 <#/GAPDoc>
+
+<#GAPDoc Label="DigraphEdgeWeightedMinimumSpanningTree">
+    <ManSection>
+    <Attr Name="DigraphEdgeWeightedMinimumSpanningTree" Arg="digraph"/>
+    <Returns>A record.</Returns>
+    <Description>
+        This function returns the record with 2 components <C>total</C> and <C>mst</C>. 
+        The first component <C>total</C> represents the sum of the edge weights of the digraph that is returns. 
+        The second component <C>mst</C> is the edge weighted digraph representation of the mst.
+        <P/>
+
+        This algorithm only works on connected undirected graphs. If it is given a disconnected digraph, it will error. 
+        The function will internally convert <A>digraph</A> representation to an undirected representation.
+
+        See <Ref Attr="EdgeWeights" Func="EdgeWeightedDigraph"/>.
+    <Example><![CDATA[
+gap> g := EdgeWeightedDigraph([[2], [1], [1, 2]],
+>                             [[12], [5], [6, 9]]);
+<immutable digraph with 3 vertices, 4 edges>
+gap> DigraphEdgeWeightedMinimumSpanningTree(g);
+rec( mst := <immutable digraph with 3 vertices, 2 edges>, total := 11 
+ )]]></Example>
+    </Description>
+    </ManSection>
+<#/GAPDoc>
