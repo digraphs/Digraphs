@@ -1451,7 +1451,7 @@ function(inputString)
 
         if currentChar = '$' and nextChar = '$' then
           Info(InfoWarning, 1, "Vertex indexing will start at 1");
-          if ForAll(inputString{[currentPos + 2..Length(inputString)]}, c -> c = ' ' or c = '\n') then;
+          if ForAll(inputString{[currentPos + 2..Length(inputString)]}, c -> c = ' ' or c = '\n') then; #what if currentpos+2>length?
             Add(segments, inputString{[startPos..currentPos - 1]});
             return segments;
           else
@@ -1459,11 +1459,33 @@ function(inputString)
           fi;
         fi;
 
-        if currentChar in "erRjstTvfFiIO" then
-          Error("Operation (", currentChar, ") not supported.");
+        if currentChar in "erRjstTvFiIO" then
+          Info(InfoWarning, 1, "Operation (", currentChar, ") not supported.");
           Add(segments, inputString{[startPos..currentPos-1]});
           return segments;
         fi;
+
+        if currentChar = 'f' then
+          Add(segments, inputString{[startPos..currentPos-1]});
+          repeat
+            currentPos := currentPos + 1;
+          until Int(inputString{[currentPos]}) <> fail;
+          startPos := currentPos;
+          repeat
+            currentPos := currentPos + 1;
+          until currentPos > Length(inputString) or inputString[currentPos] = ']';
+          if currentPos > Length(inputString) then
+            ErrorNoReturn("Syntax error: missing ']' in declaration of partition");
+          else
+            if ForAll(inputString{[currentPos + 1..Length(inputString)]}, c -> c = ' ' or c = '\n' or c = '$') then;
+              Add(segments, Concatenation("f",inputString{[startPos..currentPos - 1]}));
+              startPos := currentPos + 1;
+            else
+              ErrorNoReturn("Syntax error: unexpected characters after \"]\"");
+            fi;
+          fi;
+        fi;
+
 
         # if IsDigitChar(currentChar) and nextChar = ' ' and inputString[currentPos + 2] = ':' then #in the case of a new vertex
         #   repeat #backtrack to find the start of the vertex
@@ -1502,7 +1524,7 @@ end);
 
 BindGlobal("DIGRAPHS_ParseDreadnautGraph",
 function(graphData, r)
-    local edgeList, part, parts, subparts, vertex, connectedTo, adjacencyPart, breakflag;
+    local edgeList, part, parts, subparts, vertex, connectedTo, adjacencyPart, breakflag, pparts, partition, i, j, num;
 
     # Initialize an empty list to hold the edges
     edgeList := List([1..r.nValue], x -> []);
@@ -1524,13 +1546,51 @@ function(graphData, r)
         continue;
       fi;
 
+      if part[1] = 'f' then
+        breakflag := true;
+
+        if Length(part) = 1 then #empty partition
+          continue;
+        fi;
+
+        pparts := SplitString(part{[2..Length(part)]}, "|");
+        partition := List([1..r.nValue], x -> -1);
+        pparts[Length(pparts)] := Concatenation(pparts[Length(pparts)], " ");
+        for i in [1..Length(pparts)] do
+          num := "";
+          for j in pparts[i] do
+              if IsDigitChar(j) then
+                num := Concatenation(num, [j]);
+
+              elif j <> ' ' and j <> '\n' then
+                ErrorNoReturn("Illegal character ", j, " in partition");
+
+              else
+              if num <> "" then
+                num := Int(num) - r.dollarValue + 1;
+                if num > r.nValue or num < 1 then
+                  ErrorNoReturn("Illegal part ", num, " in partition");
+                else
+                  partition[num] := i;
+                fi;
+                num := "";
+              fi;
+            fi;
+          od;
+        od;
+
+        if -1 in partition then
+          ErrorNoReturn("Partition is incomplete. The following vertices ", PositionsProperty(partition, x -> x = -1), " do not feature in any part.");
+        else
+          r.partition := partition;
+        fi;
+      fi;
+
       subparts := SplitString(part, ":");
 
       if Length(subparts) = 0 or Length(subparts) = 1 then
         continue;
-      # elif Length(subparts) = 1 then
-        # Error("Formatting error", part); ### HOW TO FIND I?
-        # continue;
+
       else
         vertex := subparts[1];
         RemoveCharacters(vertex, " ");
@@ -1572,7 +1632,7 @@ end);
 
 InstallMethod(ReadDreadnautGraph, "for a digraph", [IsString],
 function(name)
-  local file, config, graphData, line, edgeList, foundG, r;
+  local file, config, graphData, line, edgeList, foundG, r, D;
   file := IO_CompressedFile(UserHomeExpand(name), "r");
 
   if file = fail then
@@ -1605,7 +1665,7 @@ function(name)
       fi;
   until IsEmpty(line);
   
-  r := rec(dollarValue := DIGRAPHS_ParseDreadnautConfig(config, "$"), nValue := DIGRAPHS_ParseDreadnautConfig(config, "n"), dExists := PositionSublist(config, "d") <> fail);
+  r := rec(dollarValue := DIGRAPHS_ParseDreadnautConfig(config, "$"), nValue := DIGRAPHS_ParseDreadnautConfig(config, "n"), dExists := PositionSublist(config, "d") <> fail, partition := fail);
 
   if r.dollarValue <> 1 then
     Info(InfoWarning, 1, "the graph will be reindexed such that the indexing starts at 1. i.e. effectively adding $=1 to the end of the file.");
@@ -1614,9 +1674,17 @@ function(name)
   edgeList := DIGRAPHS_ParseDreadnautGraph(graphData, r);
 
   if r.dExists then
-    return Digraph(edgeList);
+    D := Digraph(edgeList);
+    if r.partition <> fail then
+      SetDigraphVertexLabels(D, r.partition);
+    fi;
+    return D;
   else
-    return DigraphSymmetricClosure(Digraph(edgeList));
+    D := DigraphSymmetricClosure(Digraph(edgeList));
+    if r.partition <> fail then
+      SetDigraphVertexLabels(D, r.partition);
+    fi;
+    return D;
   fi;
 end);
 
