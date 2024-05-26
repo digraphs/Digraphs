@@ -1391,9 +1391,17 @@ end);
 
 BindGlobal("DIGRAPHS_ParseDreadnautConfig",
 function(config, key)
-    local L, Pos, tempStr;
-
+    local L, Pos, tempStr, tempConfig;
+    
     RemoveCharacters(config, " \n\r\t=-+");
+
+    tempConfig := ShallowCopy(config);
+    RemoveCharacters(tempConfig, "Ag$ntd1234567890");
+
+    if tempConfig <> "" then
+      ErrorNoReturn("the format of the file given as the 2nd argument <name> ",
+                    "cannot be determined,");
+    fi;
 
     L := PositionsProperty(config, x -> x = key[1]);
 

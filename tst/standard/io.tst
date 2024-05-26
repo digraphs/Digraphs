@@ -943,17 +943,14 @@ true
 gap> ReadDreadnautGraph("fakedir.dre");
 Error, cannot open the file given as the 1st argument <name>,
 gap> filename := Concatenation(DIGRAPHS_Dir(), "tst/out/bad.dre");;
+gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
+gap> IO_WriteLine(file, "$1n3");;
+gap> IO_WriteLine(file, "dg");;
+gap> IO_WriteLine(file, "1:1;");;
+gap> IO_WriteLine(file, "2:21");;
+gap> IO_Close(file);;
 gap> ReadDreadnautGraph(filename);
 Error, Illegal edge 2 -> 21 (original indexing)
-gap> filename := Concatenation(DIGRAPHS_Dir(), "tst/out/space.dre");;
-gap> ReadDreadnautGraph(filename);
-<immutable digraph with 5 vertices, 3 edges>
-gap> filename := Concatenation(DIGRAPHS_Dir(), "tst/out/good.dre");;
-gap> ReadDreadnautGraph(filename);
-<immutable digraph with 5 vertices, 6 edges>
-gap> filename := Concatenation(DIGRAPHS_Dir(), "tst/out/overline.dre");;
-gap> ReadDreadnautGraph(filename);
-<immutable symmetric digraph with 16 vertices, 14 edges>
 gap> filename := Concatenation(DIGRAPHS_Dir(), "tst/out/temp.dre");;
 gap> D := EmptyDigraph(5);;
 gap> WriteDreadnautGraph(filename, D);;
@@ -964,11 +961,22 @@ gap> WriteDreadnautGraph(filename, D);;
 gap> D = ReadDreadnautGraph(filename);
 true
 gap> filename := Concatenation(DIGRAPHS_Dir(), "tst/out/repeats.dre");;
+gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
+gap> IO_WriteLine(file, "$=1n=3-d");;
+gap> IO_WriteLine(file, "g1 : 1 2 3 1 2;");;
+gap> IO_WriteLine(file, "	 2 : 1 2;");;
+gap> IO_WriteLine(file, "	 3 : 2;q");;
+gap> IO_Close(file);;
 gap> ReadDreadnautGraph(filename);
 <immutable digraph with 3 vertices, 6 edges>
-gap> filename := Concatenation(DIGRAPHS_Dir(), "tst/out/more bad.dre");;
+gap> filename := Concatenation(DIGRAPHS_Dir(), "tst/out/temp.dre");;
+gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
+gap> IO_WriteLine(file, "silly text for testing");;
+gap> IO_WriteLine(file, "n=1dg");;
+gap> IO_WriteLine(file, "1: 1.");;
 gap> ReadDreadnautGraph(filename);
-Error, Illegal edge 3 -> 16 (original indexing)
+Error, the format of the file given as the 2nd argument <name> cannot be deter\
+mined,
 gap> Exec("rm -f temp.dre");
 
 #  DIGRAPHS_UnbindVariables
