@@ -1409,6 +1409,7 @@ function(config, key)
         fi;
       od;
       return Int(tempStr);
+
     else
       if key = "$" then
         return 0;
@@ -1451,7 +1452,7 @@ function(inputString)
 
         if currentChar = '$' and nextChar = '$' then
           Info(InfoWarning, 1, "Vertex indexing will start at 1");
-          if ForAll(inputString{[currentPos + 2..Length(inputString)]}, c -> c = ' ' or c = '\n') then; #what if currentpos+2>length?
+          if ForAll(inputString{[currentPos + 2..Length(inputString)]}, c -> c = ' ' or c = '\n') then; 
             Add(segments, inputString{[startPos..currentPos - 1]});
             return segments;
           else
@@ -1465,7 +1466,7 @@ function(inputString)
           return segments;
         fi;
 
-        if currentChar = 'f' then
+        if currentChar = 'f' then #partition
           Add(segments, inputString{[startPos..currentPos-1]});
           repeat
             currentPos := currentPos + 1;
@@ -1485,19 +1486,6 @@ function(inputString)
             fi;
           fi;
         fi;
-
-
-        # if IsDigitChar(currentChar) and nextChar = ' ' and inputString[currentPos + 2] = ':' then #in the case of a new vertex
-        #   repeat #backtrack to find the start of the vertex
-        #     currentPos := currentPos - 1;
-        #   until currentPos <= 1 or not IsDigitChar(inputString[currentPos]);
-        #   if startPos < currentPos then
-        #     Add(segments, inputString{[startPos..currentPos-1]});
-        #   fi;
-        #   if currentPos > 1 then
-        #     startPos := currentPos;
-        #   fi;
-        # fi;
 
         if currentChar = ':' then
           repeat #backtrack to find the start of the vertex
@@ -1526,17 +1514,13 @@ BindGlobal("DIGRAPHS_ParseDreadnautGraph",
 function(graphData, r)
     local edgeList, part, parts, subparts, vertex, connectedTo, adjacencyPart, breakflag, pparts, partition, i, j, num;
 
-    # Initialize an empty list to hold the edges
     edgeList := List([1..r.nValue], x -> []);
     breakflag := false;
 
-    # graphData := ReplacedString(graphData, ":", " : ");
-    # graphData := ReplacedString(graphData, ";", " ; ");
     NormalizeWhitespace(graphData); #losing newlines here
     parts := DIGRAPHS_SplitDreadnautLines(graphData);
 
     for part in parts do
-
       if PositionSublist(part, ".") <> fail or PositionSublist(part, "q") <> fail then
           breakflag := true;
           RemoveCharacters(part, ".q");
