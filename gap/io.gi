@@ -1428,8 +1428,8 @@ function(vertex, x, r)
   fi;
   if not r.dExists and x = vertex then
     Error("Illegal edge ", vertex + r.dollarValue - 1, " -> ",
-          x + r.dollarValue - 1, " (original indexing). 
-          Ensure 'd' is declared to include loops.");
+          x + r.dollarValue - 1, " (original indexing). ",
+          "Ensure 'd' is declared to include loops.");
     return false;
   fi;
   return true;
@@ -1600,13 +1600,13 @@ function(graphData, r)
       NormalizeWhitespace(adjacencyPart);  # Remove extra spaces
       adjacencyPart := SplitString(adjacencyPart, "!")[1];
       RemoveCharacters(adjacencyPart, ",;");
-      connectedTo := List(SplitString(adjacencyPart, " "), Int(x));
+      connectedTo := List(SplitString(adjacencyPart, " "), Int);
 
       if fail in connectedTo then
         Error("Formatting error (", part, ")");
       fi;
 
-      connectedTo := Filtered(connectedTo, IsInt(y)); 
+      connectedTo := Filtered(connectedTo, IsInt); 
       connectedTo := List(connectedTo, x -> x - r.dollarValue + 1);
       connectedTo := Filtered(connectedTo,
                               x -> DIGRAPHS_LegalDreadnautEdge(vertex, x, r)); 
@@ -1664,8 +1664,8 @@ function(name)
 
   if r.dollarValue <> 1 then
     Info(InfoWarning, 1,
-         "the graph will be reindexed such that the indexing starts
-          at 1. i.e. effectively adding $=1 to the end of the file.");
+         "the graph will be reindexed such that the indexing starts",
+          " at 1. i.e. effectively adding $=1 to the end of the file.");
   fi;
 
   edgeList := DIGRAPHS_ParseDreadnautGraph(graphData, r);
@@ -1757,7 +1757,7 @@ end);
 
 InstallMethod(WriteDreadnautGraph, "for a digraph", [IsString, IsDigraph],
 function(name, D)
-  local file, n, verts, nbs, labels, i, j, degs, filteredVerts;
+  local file, n, verts, nbs, labels, i, degs, filteredVerts;
 
   file := IO_CompressedFile(UserHomeExpand(name), "w");
   if file = fail then
@@ -1780,7 +1780,7 @@ function(name, D)
 
   filteredVerts := Filtered(verts, x -> degs[x] > 0);
   for i in filteredVerts do
-    labels := List(nbs[i], String(j)); 
+    labels := List(nbs[i], String); 
     IO_WriteLine(file, Concatenation(String(i), " : ",
                  JoinStringsWithSeparator(labels, " "), ";"));
   od;
