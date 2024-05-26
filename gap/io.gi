@@ -1389,7 +1389,7 @@ function(str)
   return ConvertToImmutableDigraphNC(out);
 end);
 
-BindGlobal("DIGRAPHS_ParseDreadnautConfig", 
+BindGlobal("DIGRAPHS_ParseDreadnautConfig",
 function(config, key)
     local L, Pos, tempStr;
 
@@ -1443,7 +1443,7 @@ function(inputString)
     segments := [];
 
     # Iterate over the string
-    for currentPos in [1 .. Length(inputString)-1] do
+    for currentPos in [1 .. Length(inputString) - 1] do
         currentChar := inputString[currentPos];
         nextChar := inputString[currentPos + 1];
 
@@ -1478,12 +1478,17 @@ function(inputString)
           startPos := currentPos;
           repeat
             currentPos := currentPos + 1;
-          until currentPos > Length(inputString) or inputString[currentPos] = ']';
+          until currentPos > Length(inputString)
+                or inputString[currentPos] = ']';
           if currentPos > Length(inputString) then
-            ErrorNoReturn("Syntax error: missing ']' in declaration of partition");
+            ErrorNoReturn("Syntax error: missing ']'",
+                          " in declaration of partition");
           else
-            if ForAll(inputString{[currentPos + 1 .. Length(inputString)]}, c -> c = ' ' or c = '\n' or c = '$') then;
-              Add(segments, Concatenation("f",inputString{[startPos .. currentPos - 1]}));
+            if ForAll(inputString{[currentPos + 1 .. Length(inputString)]},
+                      c -> c = ' ' or c = '\n' or c = '$') then
+              Add(segments,
+                  Concatenation("f",
+                                inputString{[startPos .. currentPos - 1]}));
               startPos := currentPos + 1;
             else
               ErrorNoReturn("Syntax error: unexpected characters after \"]\"");
@@ -1492,10 +1497,13 @@ function(inputString)
         fi;
 
         if currentChar = ':' then
-          repeat #backtrack to find the start of the vertex
+          repeat  # backtrack to find the start of the vertex
             currentPos := currentPos - 1;
-            if inputString[currentPos] <> ' ' and not IsDigitChar(inputString[currentPos]) then
-              ErrorNoReturn("Syntax error: unexpected character (", inputString[currentPos],") before \":\""); #catches 1: 3\n : 4
+            if inputString[currentPos] <> ' ' and 
+               not IsDigitChar(inputString[currentPos]) then
+              ErrorNoReturn("Syntax error: unexpected character (",
+                            inputString[currentPos],
+                            ") before \":\""); 
             fi;
           until currentPos <= 1 or IsDigitChar(inputString[currentPos]);
           repeat
@@ -1526,7 +1534,7 @@ function(graphData, r)
     parts := DIGRAPHS_SplitDreadnautLines(graphData);
 
     for part in parts do
-      if PositionSublist(part, ".") <> fail or 
+      if PositionSublist(part, ".") <> fail or
          PositionSublist(part, "q") <> fail then
           breakflag := true;
           RemoveCharacters(part, ".q");
@@ -1606,10 +1614,10 @@ function(graphData, r)
         Error("Formatting error (", part, ")");
       fi;
 
-      connectedTo := Filtered(connectedTo, IsInt); 
+      connectedTo := Filtered(connectedTo, IsInt);
       connectedTo := List(connectedTo, x -> x - r.dollarValue + 1);
       connectedTo := Filtered(connectedTo,
-                              x -> DIGRAPHS_LegalDreadnautEdge(vertex, x, r)); 
+                              x -> DIGRAPHS_LegalDreadnautEdge(vertex, x, r));
 
       Append(edgeList[vertex], connectedTo);
       edgeList[vertex] := DuplicateFreeList(edgeList[vertex]);
@@ -1780,7 +1788,7 @@ function(name, D)
 
   filteredVerts := Filtered(verts, x -> degs[x] > 0);
   for i in filteredVerts do
-    labels := List(nbs[i], String); 
+    labels := List(nbs[i], String);
     IO_WriteLine(file, Concatenation(String(i), " : ",
                  JoinStringsWithSeparator(labels, " "), ";"));
   od;
