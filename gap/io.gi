@@ -1460,7 +1460,7 @@ function(inputString)
           fi;
         fi;
 
-        if currentChar in "erRjstTvFiIO" then
+        if currentChar in "erRjstTvFiIOlw+campyGS*kKVu?&Px@bz#oMh<>" then
           Info(InfoWarning, 1, "Operation (", currentChar, ") not supported.");
           Add(segments, inputString{[startPos..currentPos-1]});
           return segments;
