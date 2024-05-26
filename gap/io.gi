@@ -1392,7 +1392,7 @@ end);
 BindGlobal("DIGRAPHS_ParseDreadnautConfig",
 function(config, key)
     local L, Pos, tempStr, tempConfig;
-    
+
     RemoveCharacters(config, " \n\r\t=-+");
 
     tempConfig := ShallowCopy(config);
@@ -1507,11 +1507,11 @@ function(inputString)
         if currentChar = ':' then
           repeat  # backtrack to find the start of the vertex
             currentPos := currentPos - 1;
-            if inputString[currentPos] <> ' ' and 
+            if inputString[currentPos] <> ' ' and
                not IsDigitChar(inputString[currentPos]) then
               ErrorNoReturn("Syntax error: unexpected character (",
                             inputString[currentPos],
-                            ") before \":\""); 
+                            ") before \":\"");
             fi;
           until currentPos <= 1 or IsDigitChar(inputString[currentPos]);
           repeat
@@ -1585,7 +1585,7 @@ function(graphData, r)
           od;
         od;
 
-        if -1 in partition then
+        if - 1 in partition then
           ErrorNoReturn("Partition is incomplete. The following vertices ",
                          PositionsProperty(partition, x -> x = -1),
                          " do not feature in any part.");
