@@ -1590,7 +1590,9 @@ function(graphData, r)
               if num <> "" then
                 num := Int(num) - r.dollarValue + 1;
                 if num > r.nValue or num < 1 then
-                  ErrorNoReturn("illegal part ", num + r.dollarValue - 1, " in partition");
+                  ErrorNoReturn("illegal part ",
+                                num + r.dollarValue - 1,
+                                " in partition");
                 else
                   partition[num] := i;
                 fi;
