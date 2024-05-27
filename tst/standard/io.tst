@@ -974,6 +974,7 @@ gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "silly text for testing");;
 gap> IO_WriteLine(file, "n=1dg");;
 gap> IO_WriteLine(file, "1: 1.");;
+gap> IO_Close(file);;
 gap> ReadDreadnautGraph(filename);
 Error, the format of the file given as the 2nd argument <name> cannot be deter\
 mined,
