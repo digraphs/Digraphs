@@ -1773,7 +1773,8 @@ end);
 
 InstallMethod(WriteDreadnautGraph, "for a digraph", [IsString, IsDigraph],
 function(name, D)
-  local file, n, verts, nbs, labels, i, degs, filteredVerts;
+  local file, n, verts, nbs, labels, i, degs, filteredVerts,
+        out, positions, joinedPositions;
 
   file := IO_CompressedFile(UserHomeExpand(name), "w");
   if file = fail then
@@ -1800,8 +1801,22 @@ function(name, D)
     IO_WriteLine(file, Concatenation(String(i), " : ",
                  JoinStringsWithSeparator(labels, " "), ";"));
   od;
-
   IO_WriteLine(file, ".");
+
+  if DigraphVertexLabels(D) <> [1 .. n] then
+    labels := DuplicateFreeList(DigraphVertexLabels(D));
+    out := "f = [";
+
+    for i in labels do
+      positions := PositionsProperty(labels, x -> x = i);
+      joinedPositions := JoinStringsWithSeparator(positions, " ");
+      out := Concatenation(out, joinedPositions);
+      out := Concatenation(out, " ]");
+    od;
+
+    IO_WriteLine(file, out);
+  fi;
+
   IO_Close(file);
   return;
 end);
