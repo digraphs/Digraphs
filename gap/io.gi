@@ -1614,7 +1614,6 @@ function(graphData, r)
       fi;
 
       NormalizeWhitespace(adjacencyPart);  # Remove extra spaces
-      adjacencyPart := SplitString(adjacencyPart, "!")[1];
       RemoveCharacters(adjacencyPart, ",;");
       connectedTo := List(SplitString(adjacencyPart, " "), Int);
 
@@ -1640,7 +1639,7 @@ end);
 
 InstallMethod(ReadDreadnautGraph, "for a digraph", [IsString],
 function(name)
-  local file, config, graphData, line, edgeList, foundG, r, D;
+  local file, config, graphData, line, edgeList, foundG, r, D, exclamPosition;
   file := IO_CompressedFile(UserHomeExpand(name), "r");
 
   if file = fail then
@@ -1654,6 +1653,12 @@ function(name)
   repeat
       line := IO_ReadLine(file);
       if not IsEmpty(line) then
+          exclamPosition := PositionSublist(line, "!");
+          if exclamPosition <> fail and exclamPosition > 1 then
+              line := line{[1 .. exclamPosition - 1]};
+          elif exclamPosition = 1 then
+              continue;
+          fi;
           config := Concatenation(config, line);
           foundG := PositionSublist(line, "g") <> fail;
       fi;
@@ -1669,6 +1674,12 @@ function(name)
   repeat
       line := IO_ReadLine(file);
       if not IsEmpty(line) then
+          exclamPosition := PositionSublist(line, "!");
+          if exclamPosition <> fail and exclamPosition > 1 then
+              line := line{[1 .. exclamPosition - 1]};
+          elif exclamPosition = 1 then
+              continue;
+          fi;
           graphData := Concatenation(graphData, line);
       fi;
   until IsEmpty(line);
