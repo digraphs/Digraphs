@@ -1466,6 +1466,7 @@ function(inputString)
           if ForAll(inputString{[currentPos + 2 .. Length(inputString)]},
                      c -> not c in ".:") then
             Add(segments, inputString{[startPos .. currentPos - 1]});
+            Add(segments, "$$");
             startPos := currentPos + 2;
             continue;
             # return segments;
@@ -1536,18 +1537,18 @@ end);
 BindGlobal("DIGRAPHS_ParseDreadnautGraph",
 function(graphData, r)
     local edgeList, part, parts, subparts, vertex, connectedTo,
-          adjacencyPart, breakflag, pparts, partition, i, j, num;
+          adjacencyPart, pparts, partition, i, j, num, iter;
 
     edgeList := List([1 .. r.nValue], x -> []);
-    breakflag := false;
-
     NormalizeWhitespace(graphData);
     parts := DIGRAPHS_SplitDreadnautLines(graphData);
+    iter := 0;
 
     for part in parts do
+      iter := iter + 1;
+
       if PositionSublist(part, ".") <> fail or
          PositionSublist(part, "q") <> fail then
-          breakflag := true;
           RemoveCharacters(part, ".q");
       fi;
 
@@ -1555,9 +1556,20 @@ function(graphData, r)
         continue;
       fi;
 
-      if part[1] = 'f' then
-        breakflag := true;
+      if '$' in part then
+        if not ForAll(part{[iter + 1 .. Length(part)]}, c -> not c in ".:") then
+          ErrorNoReturn("Syntax error: unexpected characters after \"$\"");
+        fi;
+        if part = "$$" then
+          r.dollarValue := 0;
+          continue;
+        else
+          r.dollarValue := DIGRAPHS_ParseDreadnautConfig(part, "$");
+          continue;
+        fi;
+      fi;
 
+      if part[1] = 'f' then
         if Length(part) = 1 then  # empty partition
           continue;
         fi;
@@ -1572,13 +1584,13 @@ function(graphData, r)
                 num := Concatenation(num, [j]);
 
               elif j <> ' ' and j <> '\n' then
-                ErrorNoReturn("Illegal character ", j, " in partition");
+                ErrorNoReturn("illegal character ", j, " in partition");
 
               else
               if num <> "" then
                 num := Int(num) - r.dollarValue + 1;
                 if num > r.nValue or num < 1 then
-                  ErrorNoReturn("Illegal part ", num, " in partition");
+                  ErrorNoReturn("illegal part ", num + r.dollarValue - 1, " in partition");
                 else
                   partition[num] := i;
                 fi;
@@ -1589,7 +1601,7 @@ function(graphData, r)
         od;
 
         if - 1 in partition then
-          ErrorNoReturn("Partition is incomplete. The following vertices ",
+          ErrorNoReturn("partition is incomplete. The following vertices ",
                          PositionsProperty(partition, x -> x = -1),
                          " do not feature in any part.");
         else
@@ -1612,7 +1624,7 @@ function(graphData, r)
       vertex := vertex - r.dollarValue + 1;
 
       if vertex > r.nValue or vertex < 1 then
-        Error("Illegal vertex ", vertex, " (original indexing)");
+        Error("illegal vertex ", vertex, " (original indexing)");
         continue;
       fi;
 
@@ -1631,10 +1643,6 @@ function(graphData, r)
 
       Append(edgeList[vertex], connectedTo);
       edgeList[vertex] := DuplicateFreeList(edgeList[vertex]);
-
-      if breakflag then
-        break;
-      fi;
     od;
 
     return edgeList;
@@ -1668,7 +1676,7 @@ function(name)
   until foundG or IsEmpty(line);
 
   if not foundG then
-      ErrorNoReturn("g not declared");
+      ErrorNoReturn("'g' not declared");
   fi;
 
   config := SplitString(config, "g")[1];
@@ -1694,7 +1702,7 @@ function(name)
 
   if r.dollarValue <> 1 then
     Info(InfoWarning, 1,
-         "the graph will be reindexed such that the indexing starts",
+         "The graph will be reindexed such that the indexing starts",
           " at 1. i.e. effectively adding $=1 to the end of the file.");
   fi;
 
@@ -1790,7 +1798,7 @@ end);
 InstallMethod(WriteDreadnautGraph, "for a digraph", [IsString, IsDigraph],
 function(name, D)
   local file, n, verts, nbs, labels, i, degs, filteredVerts,
-        out, positions, joinedPositions;
+        out, positions, joinedPositions, dflabels;
 
   file := IO_CompressedFile(UserHomeExpand(name), "w");
   if file = fail then
@@ -1801,6 +1809,7 @@ function(name, D)
   verts := DigraphVertices(D);
   nbs := OutNeighbours(D);
   degs := OutDegrees(D);
+  labels := DigraphVertexLabels(D);
 
   if n = 0 then
     ErrorNoReturn("the 2nd argument <D> must be a non-empty digraph,");
@@ -1819,17 +1828,20 @@ function(name, D)
   od;
   IO_WriteLine(file, ".");
 
-  if DigraphVertexLabels(D) <> [1 .. n] then
-    labels := DuplicateFreeList(DigraphVertexLabels(D));
-    if ForAll(labels, IsInt) then
+  if labels <> [1 .. n] then
+    dflabels := DuplicateFreeList(labels);
+    if ForAll(dflabels, IsInt) then
       out := "f = [";
 
-      for i in labels do
+      for i in dflabels do
         positions := PositionsProperty(labels, x -> x = i);
         joinedPositions := JoinStringsWithSeparator(positions, " ");
         out := Concatenation(out, joinedPositions);
-        out := Concatenation(out, " ]");
+        if i <> dflabels[Length(dflabels)] then
+          out := Concatenation(out, " | ");
+        fi;
       od;
+      out := Concatenation(out, " ]");
 
       IO_WriteLine(file, out);
     else
