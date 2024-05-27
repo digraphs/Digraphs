@@ -1495,7 +1495,8 @@ function(inputString)
                           " in declaration of partition");
           else
             if ForAll(inputString{[currentPos + 1 .. Length(inputString)]},
-                      c -> c in "$ \nferRjstTvFiIOlw+campyGS*kKVu?&Px@bz#oMh<>") then
+                      c -> c in
+                      "$ \nferRjstTvFiIOlw+campyGS*kKVu?&Px@bz#oMh<>") then
               Add(segments,
                   Concatenation("f",
                                 inputString{[startPos .. currentPos - 1]}));
