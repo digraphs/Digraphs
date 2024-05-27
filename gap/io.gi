@@ -1464,9 +1464,11 @@ function(inputString)
         if currentChar = '$' and nextChar = '$' then
           Info(InfoWarning, 1, "Vertex indexing will start at 1");
           if ForAll(inputString{[currentPos + 2 .. Length(inputString)]},
-                     c -> c = ' ' or c = '\n') then
+                     c -> not c in ".:") then
             Add(segments, inputString{[startPos .. currentPos - 1]});
-            return segments;
+            startPos := currentPos + 2;
+            continue;
+            # return segments;
           else
             ErrorNoReturn("Syntax error: unexpected characters after \"$$\"");
           fi;
@@ -1493,7 +1495,7 @@ function(inputString)
                           " in declaration of partition");
           else
             if ForAll(inputString{[currentPos + 1 .. Length(inputString)]},
-                      c -> c = ' ' or c = '\n' or c = '$') then
+                      c -> c in "$ \nferRjstTvFiIOlw+campyGS*kKVu?&Px@bz#oMh<>") then
               Add(segments,
                   Concatenation("f",
                                 inputString{[startPos .. currentPos - 1]}));
