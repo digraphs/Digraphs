@@ -1693,6 +1693,8 @@ function(name)
     fi;
     return D;
   else
+    Info(InfoWarning, 1,
+         "The graph is undirected and so will be symmetrised.");
     D := DigraphSymmetricClosure(Digraph(edgeList));
     if r.partition <> fail then
       SetDigraphVertexLabels(D, r.partition);
@@ -1805,16 +1807,24 @@ function(name, D)
 
   if DigraphVertexLabels(D) <> [1 .. n] then
     labels := DuplicateFreeList(DigraphVertexLabels(D));
-    out := "f = [";
+    if ForAll(labels, IsInt) then
+      out := "f = [";
 
-    for i in labels do
-      positions := PositionsProperty(labels, x -> x = i);
-      joinedPositions := JoinStringsWithSeparator(positions, " ");
-      out := Concatenation(out, joinedPositions);
-      out := Concatenation(out, " ]");
-    od;
+      for i in labels do
+        positions := PositionsProperty(labels, x -> x = i);
+        joinedPositions := JoinStringsWithSeparator(positions, " ");
+        out := Concatenation(out, joinedPositions);
+        out := Concatenation(out, " ]");
+      od;
 
-    IO_WriteLine(file, out);
+      IO_WriteLine(file, out);
+    else
+      Info(InfoDigraphs, 1,
+          "Only integer vertex labels are supported by the dreadnaut format.");
+      Info(InfoDigraphs, 1,
+          "The vertex labels of the 2nd argument <a digraph>",
+          " will not be saved.");
+    fi;
   fi;
 
   IO_Close(file);
