@@ -411,10 +411,16 @@ gap> String(D);
 "DigraphFromDigraph6String(\"&CECG\")"
 gap> String(CycleDigraph(4));
 "CycleDigraph(4)"
+
+# Edge-weighted digraphs
 gap> d := EdgeWeightedDigraph([[2], [1]], [[5], [10]]);
 <immutable digraph with 2 vertices, 2 edges>
 gap> EdgeWeights(d);
 [ [ 5 ], [ 10 ] ]
+gap> EdgeWeightedDigraphTotalWeight(d);
+15
+gap> EdgeWeightedDigraphMinimumSpanningTree(d);
+<immutable digraph with 2 vertices, 1 edge>
 
 # Issue 617: bug in DigraphRemoveEdge, wasn't removing edge labels
 gap> D := DigraphByEdges(IsMutableDigraph, [[1, 2], [2, 3], [3, 4], [4, 1], [1, 1]]);;

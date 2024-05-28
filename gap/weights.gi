@@ -67,7 +67,7 @@ function(digraph, weights)
   return digraph;
 end);
 
-InstallMethod(IsNegativeEdgeWeightedDigraph, "for an edge weighted digraph",
+InstallMethod(IsNegativeEdgeWeightedDigraph, "for a digraph with edge weights",
 [IsDigraph and HasEdgeWeights],
 function(digraph)
   local weights, u, w;
@@ -84,6 +84,11 @@ function(digraph)
   return false;
 end);
 
+InstallMethod(EdgeWeightedDigraphTotalWeight,
+"for a digraph with edge weights",
+[IsDigraph and HasEdgeWeights],
+D -> Sum(EdgeWeights(D), Sum));
+
 #############################################################################
 # 2. Copies of edge weights
 #############################################################################
@@ -91,3 +96,79 @@ end);
 InstallMethod(EdgeWeightsMutableCopy, "for a digraph with edge weights",
 [IsDigraph and HasEdgeWeights],
 D -> List(EdgeWeights(D), ShallowCopy));
+
+#############################################################################
+# 3. Minimum Spanning Trees
+#############################################################################
+
+InstallMethod(EdgeWeightedDigraphMinimumSpanningTree,
+"for a digraph with edge weights",
+[IsDigraph and HasEdgeWeights],
+function(digraph)
+    local weights, numberOfVertices, edgeList, u, outNeighbours, idx, v, w, mst,
+          mstWeights, partition, i, nrEdges, total, node, x, y, out;
+
+    # check graph is connected
+    if not IsConnectedDigraph(digraph) then
+        ErrorNoReturn("the argument <digraph> must be a connected digraph,");
+    fi;
+
+    weights := EdgeWeights(digraph);
+
+    # create a list of edges containing u-v
+    # w: the weight of the edge
+    # u: the start vertex
+    # v: the finishing vertex of that edge
+    numberOfVertices := DigraphNrVertices(digraph);
+    edgeList := [];
+    for u in DigraphVertices(digraph) do
+        outNeighbours := OutNeighboursOfVertex(digraph, u);
+        for idx in [1 .. Size(outNeighbours)] do
+            v := outNeighbours[idx];  # the out neighbour
+            w := weights[u][idx];     # the weight to the out neighbour
+            Add(edgeList, [w, u, v]);
+        od;
+    od;
+
+    # sort edge weights by their weight
+    StableSortBy(edgeList, x -> x[1]);
+
+    mst        := EmptyPlist(numberOfVertices);
+    mstWeights := EmptyPlist(numberOfVertices);
+
+    partition := PartitionDS(IsPartitionDS, numberOfVertices);
+
+    for v in [1 .. numberOfVertices] do
+        Add(mst, []);
+        Add(mstWeights, []);
+    od;
+
+    i := 1;
+    nrEdges := 0;
+    total := 0;
+    while nrEdges < numberOfVertices - 1 do
+        node := edgeList[i];
+
+        w := node[1];
+        u := node[2];
+        v := node[3];
+
+        i := i + 1;
+
+        x := Representative(partition, u);
+        y := Representative(partition, v);
+
+        # if cycle doesn't exist
+        if x <> y then
+            Add(mst[u], v);
+            Add(mstWeights[u], w);
+            nrEdges := nrEdges + 1;
+            total := total + w;
+            Unite(partition, x, y);
+        fi;
+    od;
+
+    out := EdgeWeightedDigraph(mst, mstWeights);
+    SetEdgeWeightedDigraphTotalWeight(out, total);
+    return out;
+end);
