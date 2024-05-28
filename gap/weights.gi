@@ -101,35 +101,12 @@ D -> List(EdgeWeights(D), ShallowCopy));
 # 3. Minimum Spanning Trees
 #############################################################################
 
-DIGRAPHS_Find := function(parent, i)
-    while i <> parent[i] do
-        i := parent[i];
-    od;
-    return i;
-end;
-
-DIGRAPHS_Union := function(parent, rank, x, y)
-    local xroot, yroot;
-
-    xroot := DIGRAPHS_Find(parent, x);
-    yroot := DIGRAPHS_Find(parent, y);
-
-    if rank[xroot] < rank[yroot] then
-        parent[xroot] := yroot;
-    elif rank[xroot] > rank[yroot] then
-        parent[yroot] := xroot;
-    else
-        parent[yroot] := xroot;
-        rank[xroot]   := rank[xroot] + 1;
-    fi;
-end;
-
 InstallMethod(EdgeWeightedDigraphMinimumSpanningTree,
 "for a digraph with edge weights",
 [IsDigraph and HasEdgeWeights],
 function(digraph)
     local weights, numberOfVertices, edgeList, u, outNeighbours, idx, v, w, mst,
-          mstWeights, parent, rank, i, nrEdges, total, node, x, y, out;
+          mstWeights, partition, i, nrEdges, total, node, x, y, out;
 
     # check graph is connected
     if not IsConnectedDigraph(digraph) then
@@ -159,12 +136,9 @@ function(digraph)
     mst        := EmptyPlist(numberOfVertices);
     mstWeights := EmptyPlist(numberOfVertices);
 
-    parent := EmptyPlist(numberOfVertices);
-    rank   := EmptyPlist(numberOfVertices);
+    partition := PartitionDS(IsPartitionDS, numberOfVertices);
 
     for v in [1 .. numberOfVertices] do
-        Add(parent, v);
-        Add(rank, 1);
         Add(mst, []);
         Add(mstWeights, []);
     od;
@@ -181,8 +155,8 @@ function(digraph)
 
         i := i + 1;
 
-        x := DIGRAPHS_Find(parent, u);
-        y := DIGRAPHS_Find(parent, v);
+        x := Representative(partition, u);
+        y := Representative(partition, v);
 
         # if cycle doesn't exist
         if x <> y then
@@ -190,7 +164,7 @@ function(digraph)
             Add(mstWeights[u], w);
             nrEdges := nrEdges + 1;
             total := total + w;
-            DIGRAPHS_Union(parent, rank, x, y);
+            Unite(partition, x, y);
         fi;
     od;
 
