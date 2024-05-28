@@ -1469,7 +1469,6 @@ function(inputString)
             Add(segments, "$$");
             startPos := currentPos + 2;
             continue;
-            # return segments;
           else
             ErrorNoReturn("Syntax error: unexpected characters after \"$$\"");
           fi;
@@ -1478,7 +1477,6 @@ function(inputString)
         if currentChar in "erRjstTvFiIOlw+campyGS*kKVu?&Px@bz#oMh<>" then
           Info(InfoWarning, 1, "Operation (", currentChar, ") not supported.");
           Add(segments, inputString{[startPos .. currentPos - 1]});
-          return segments;
         fi;
 
         if currentChar = 'f' then  # partition
@@ -1530,26 +1528,41 @@ function(inputString)
         fi;
     od;
 
-    Add(segments, inputString{[startPos .. Length(inputString)]});
+    if ForAny(inputString{[startPos .. Length(inputString)]},
+              c -> c in "erRjstTvFiIOlw+campyGS*kKVu?&Px@bz#oMh<>") then
+      Info(InfoWarning, 1, "Ignoring unsupported operation.");
+    else
+      Add(segments, inputString{[startPos .. Length(inputString)]});
+    fi;
     return segments;
 end);
 
 BindGlobal("DIGRAPHS_ParseDreadnautGraph",
 function(graphData, r)
     local edgeList, part, parts, subparts, vertex, connectedTo,
-          adjacencyPart, pparts, partition, i, j, num, iter;
+          adjacencyPart, pparts, partition, i, j, num, iter,
+          breakflag;
 
     edgeList := List([1 .. r.nValue], x -> []);
     NormalizeWhitespace(graphData);
     parts := DIGRAPHS_SplitDreadnautLines(graphData);
     iter := 0;
+    breakflag := false;
 
     for part in parts do
       iter := iter + 1;
 
-      if PositionSublist(part, ".") <> fail or
-         PositionSublist(part, "q") <> fail then
-          RemoveCharacters(part, ".q");
+      if PositionSublist(part, ".") <> fail then
+          RemoveCharacters(part, ".");
+          if ForAny(parts{[iter + 1 .. Length(parts)]},
+                     c -> ':' in c) then
+            ErrorNoReturn("Syntax error: unexpected characters after \".\"");
+          fi;
+      fi;
+
+      if PositionSublist(part, "q") <> fail then
+        breakflag := true;
+        RemoveCharacters(part, "q");
       fi;
 
       if part = "" or part = ' ' or part = " " then
@@ -1645,6 +1658,10 @@ function(graphData, r)
 
       Append(edgeList[vertex], connectedTo);
       edgeList[vertex] := DuplicateFreeList(edgeList[vertex]);
+
+      if breakflag = true then
+        break;
+      fi;
     od;
 
     return edgeList;
