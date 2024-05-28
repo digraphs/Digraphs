@@ -1391,7 +1391,7 @@ end);
 
 BindGlobal("DIGRAPHS_ParseDreadnautConfig",
 function(config, key)
-    local L, Pos, tempStr, tempConfig;
+    local Pos, tempStr, tempConfig;
 
     RemoveCharacters(config, " \n\r\t=-+");
 
@@ -1403,11 +1403,16 @@ function(config, key)
                     "cannot be determined,");
     fi;
 
-    L := PositionsProperty(config, x -> x = key[1]);
+    Pos := PositionProperty(config, x -> x = key[1]);
 
-    if L <> [] then
-      Pos := L[Length(L)] + 1;
+    if Pos <> fail then
       tempStr := "";
+      Pos := Pos + 1;
+
+      if Pos > Length(config) then
+        ErrorNoReturn("the format of the file given as the 2nd argument <name> ",
+                      "cannot be determined,");
+      fi;
 
       while Int(config{[Pos]}) <> fail do
         tempStr := Concatenation(tempStr, config{[Pos]});
@@ -1416,6 +1421,10 @@ function(config, key)
           break;
         fi;
       od;
+      if tempStr = "" then
+        ErrorNoReturn("the format of the file given as the 2nd argument <name> ",
+                      "cannot be determined,");
+      fi;
       return Int(tempStr);
 
     else
@@ -1463,20 +1472,24 @@ function(inputString)
 
         if currentChar = '$' and nextChar = '$' then
           Info(InfoWarning, 1, "Vertex indexing will start at 1");
-          if ForAll(inputString{[currentPos + 2 .. Length(inputString)]},
-                     c -> not c in ".:") then
+          if ForAny(inputString{[currentPos + 2 .. Length(inputString)]},
+                     c -> c in ".:") or
+                     inputString{
+                      [currentPos + 2 .. Minimum([currentPos + 2,
+                                                Length(inputString)])]} = "$"
+          then
+            ErrorNoReturn("Syntax error: unexpected characters after \"$$\"");
+          else
             Add(segments, inputString{[startPos .. currentPos - 1]});
             Add(segments, "$$");
             startPos := currentPos + 2;
             continue;
-          else
-            ErrorNoReturn("Syntax error: unexpected characters after \"$$\"");
           fi;
+
         fi;
 
-        if currentChar in "erRjstTvFiIOlw+campyGS*kKVu?&Px@bz#oMh<>" then
+        if currentChar in "erRjstTvFiIOlw+campyGS*kKVu?&Px@bz#oMh<>q" then
           Info(InfoWarning, 1, "Operation (", currentChar, ") not supported.");
-          Add(segments, inputString{[startPos .. currentPos - 1]});
         fi;
 
         if currentChar = 'f' then  # partition
@@ -1495,7 +1508,7 @@ function(inputString)
           else
             if ForAll(inputString{[currentPos + 1 .. Length(inputString)]},
                       c -> c in
-                      "$ \nferRjstTvFiIOlw+campyGS*kKVu?&Px@bz#oMh<>") then
+                      "$ \nferRjstTvFiIOlw+campyGS*kKVu?&Px@bz#oMh<>q") then
               Add(segments,
                   Concatenation("f",
                                 inputString{[startPos .. currentPos - 1]}));
@@ -1529,7 +1542,7 @@ function(inputString)
     od;
 
     if ForAny(inputString{[startPos .. Length(inputString)]},
-              c -> c in "erRjstTvFiIOlw+campyGS*kKVu?&Px@bz#oMh<>") then
+              c -> c in "erRjstTvFiIOlw+campyGS*kKVu?&Px@bz#oMh<>q") then
       Info(InfoWarning, 1, "Ignoring unsupported operation.");
     else
       Add(segments, inputString{[startPos .. Length(inputString)]});
@@ -1541,28 +1554,27 @@ BindGlobal("DIGRAPHS_ParseDreadnautGraph",
 function(graphData, r)
     local edgeList, part, parts, subparts, vertex, connectedTo,
           adjacencyPart, pparts, partition, i, j, num, iter,
-          breakflag;
+          pos;
 
     edgeList := List([1 .. r.nValue], x -> []);
     NormalizeWhitespace(graphData);
     parts := DIGRAPHS_SplitDreadnautLines(graphData);
     iter := 0;
-    breakflag := false;
 
     for part in parts do
       iter := iter + 1;
 
-      if PositionSublist(part, ".") <> fail then
+      pos := PositionSublist(part, ".");
+
+      if pos <> fail then
+          part := Concatenation(part{[1 .. pos - 1]},
+                                Filtered(part{[pos .. Length(part)]},
+                                        x -> not IsDigitChar(x)));
           RemoveCharacters(part, ".");
           if ForAny(parts{[iter + 1 .. Length(parts)]},
                      c -> ':' in c) then
             ErrorNoReturn("Syntax error: unexpected characters after \".\"");
           fi;
-      fi;
-
-      if PositionSublist(part, "q") <> fail then
-        breakflag := true;
-        RemoveCharacters(part, "q");
       fi;
 
       if part = "" or part = ' ' or part = " " then
@@ -1573,12 +1585,13 @@ function(graphData, r)
         if not ForAll(part{[iter + 1 .. Length(part)]}, c -> not c in ".:") then
           ErrorNoReturn("Syntax error: unexpected characters after \"$\"");
         fi;
+
         if part = "$$" then
           r.dollarValue := 0;
-          continue;
+          # continue;
         else
           r.dollarValue := DIGRAPHS_ParseDreadnautConfig(part, "$");
-          continue;
+          # continue;
         fi;
       fi;
 
@@ -1658,10 +1671,6 @@ function(graphData, r)
 
       Append(edgeList[vertex], connectedTo);
       edgeList[vertex] := DuplicateFreeList(edgeList[vertex]);
-
-      if breakflag = true then
-        break;
-      fi;
     od;
 
     return edgeList;
