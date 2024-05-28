@@ -78,6 +78,8 @@ gap> EdgeWeights(g);
     <Description>
         If <A>digraph</A> is a digraph with edge weights, then this attribute
         returns the sum of the weights of its edges.<P/>
+
+        &MUTABLE_RECOMPUTED_ATTR;
       
         See <Ref Attr="EdgeWeights"/>.
     <Example><![CDATA[
@@ -103,6 +105,8 @@ gap> EdgeWeightedDigraphTotalWeight(D);
         vertices but a subset of its edges that form an undirected tree.  It is
         <E>minimum</E> if it has the smallest possible total weight for a
         spanning tree of that digraph.<P/>
+
+        &MUTABLE_RECOMPUTED_ATTR;
 
         See <Ref Attr="EdgeWeights"/>,
         <Ref Attr="EdgeWeightedDigraphTotalWeight"/> and
