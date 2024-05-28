@@ -67,7 +67,7 @@ function(digraph, weights)
   return digraph;
 end);
 
-InstallMethod(IsNegativeEdgeWeightedDigraph, "for an edge weighted digraph",
+InstallMethod(IsNegativeEdgeWeightedDigraph, "for a digraph with edge weights",
 [IsDigraph and HasEdgeWeights],
 function(digraph)
   local weights, u, w;
@@ -84,6 +84,11 @@ function(digraph)
   return false;
 end);
 
+InstallMethod(EdgeWeightedDigraphTotalWeight,
+"for a digraph with edge weights",
+[IsDigraph and HasEdgeWeights],
+D -> Sum(EdgeWeights(D), Sum));
+
 #############################################################################
 # 2. Copies of edge weights
 #############################################################################
@@ -97,12 +102,10 @@ D -> List(EdgeWeights(D), ShallowCopy));
 #############################################################################
 
 DIGRAPHS_Find := function(parent, i)
-    if parent[i] = i then
-        return i;
-    fi;
-
-    parent[i] := DIGRAPHS_Find(parent, parent[i]);
-    return parent[i];
+    while i <> parent[i] do
+        i := parent[i];
+    od;
+    return i;
 end;
 
 DIGRAPHS_Union := function(parent, rank, x, y)
@@ -121,17 +124,16 @@ DIGRAPHS_Union := function(parent, rank, x, y)
     fi;
 end;
 
-InstallMethod(DigraphEdgeWeightedMinimumSpanningTree,
-"for an edge weighted digraph",
+InstallMethod(EdgeWeightedDigraphMinimumSpanningTree,
+"for a digraph with edge weights",
 [IsDigraph and HasEdgeWeights],
 function(digraph)
-    local weights, numberOfVertices, edgeList, u,
-    outNeigbours, idx, v, w, mst, mstWeights, i, e,
-    parent, rank, total, node, x, y;
+    local weights, numberOfVertices, edgeList, u, outNeighbours, idx, v, w, mst,
+          mstWeights, parent, rank, i, nrEdges, total, node, x, y, out;
 
     # check graph is connected
     if not IsConnectedDigraph(digraph) then
-        ErrorNoReturn("digraph must be connected,");
+        ErrorNoReturn("the argument <digraph> must be a connected digraph,");
     fi;
 
     weights := EdgeWeights(digraph);
@@ -141,29 +143,24 @@ function(digraph)
     # u: the start vertex
     # v: the finishing vertex of that edge
     numberOfVertices := DigraphNrVertices(digraph);
-
     edgeList := [];
     for u in DigraphVertices(digraph) do
-        outNeigbours := OutNeighbors(digraph)[u];
-        for idx in [1 .. Size(outNeigbours)] do
-            v := outNeigbours[idx];  # the out neighbour
-            w := weights[u][idx];    # the weight to the out neighbour
-
+        outNeighbours := OutNeighboursOfVertex(digraph, u);
+        for idx in [1 .. Size(outNeighbours)] do
+            v := outNeighbours[idx];  # the out neighbour
+            w := weights[u][idx];     # the weight to the out neighbour
             Add(edgeList, [w, u, v]);
         od;
     od;
 
-    mst        := [];
-    mstWeights := [];
-
-    i := 1;
-    e := 1;
-
     # sort edge weights by their weight
     StableSortBy(edgeList, x -> x[1]);
 
-    parent := [];
-    rank   := [];
+    mst        := EmptyPlist(numberOfVertices);
+    mstWeights := EmptyPlist(numberOfVertices);
+
+    parent := EmptyPlist(numberOfVertices);
+    rank   := EmptyPlist(numberOfVertices);
 
     for v in [1 .. numberOfVertices] do
         Add(parent, v);
@@ -172,8 +169,10 @@ function(digraph)
         Add(mstWeights, []);
     od;
 
+    i := 1;
+    nrEdges := 0;
     total := 0;
-    while e < (numberOfVertices) do
+    while nrEdges < numberOfVertices - 1 do
         node := edgeList[i];
 
         w := node[1];
@@ -187,15 +186,15 @@ function(digraph)
 
         # if cycle doesn't exist
         if x <> y then
-            e     := e + 1;
-            total := total + w;
-
             Add(mst[u], v);
             Add(mstWeights[u], w);
-
+            nrEdges := nrEdges + 1;
+            total := total + w;
             DIGRAPHS_Union(parent, rank, x, y);
         fi;
     od;
 
-    return rec(total := total, mst := EdgeWeightedDigraph(mst, mstWeights));
+    out := EdgeWeightedDigraph(mst, mstWeights);
+    SetEdgeWeightedDigraphTotalWeight(out, total);
+    return out;
 end);

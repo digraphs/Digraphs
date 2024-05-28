@@ -71,27 +71,50 @@ gap> EdgeWeights(g);
     </ManSection>
 <#/GAPDoc>
 
-<#GAPDoc Label="DigraphEdgeWeightedMinimumSpanningTree">
+<#GAPDoc Label="EdgeWeightedDigraphTotalWeight">
     <ManSection>
-    <Attr Name="DigraphEdgeWeightedMinimumSpanningTree" Arg="digraph"/>
-    <Returns>A record.</Returns>
+    <Attr Name="EdgeWeightedDigraphTotalWeight" Arg="digraph"/>
+    <Returns>An integer, float or rational.</Returns>
     <Description>
-        This function returns the record with 2 components <C>total</C> and <C>mst</C>. 
-        The first component <C>total</C> represents the sum of the edge weights of the digraph that is returns. 
-        The second component <C>mst</C> is the edge weighted digraph representation of the mst.
-        <P/>
-
-        This algorithm only works on connected undirected graphs. If it is given a disconnected digraph, it will error. 
-        The function will internally convert <A>digraph</A> representation to an undirected representation.
-
-        See <Ref Attr="EdgeWeights" Func="EdgeWeightedDigraph"/>.
+        If <A>digraph</A> is a digraph with edge weights, then this attribute
+        returns the sum of the weights of its edges.<P/>
+      
+        See <Ref Attr="EdgeWeights"/>.
     <Example><![CDATA[
-gap> g := EdgeWeightedDigraph([[2], [1], [1, 2]],
+gap> D := EdgeWeightedDigraph([[2], [1], [1, 2]],
 >                             [[12], [5], [6, 9]]);
 <immutable digraph with 3 vertices, 4 edges>
-gap> DigraphEdgeWeightedMinimumSpanningTree(g);
-rec( mst := <immutable digraph with 3 vertices, 2 edges>, total := 11 
- )]]></Example>
+gap> EdgeWeightedDigraphTotalWeight(D);
+32]]></Example>
+    </Description>
+    </ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="EdgeWeightedDigraphMinimumSpanningTree">
+    <ManSection>
+    <Attr Name="EdgeWeightedDigraphMinimumSpanningTree" Arg="digraph"/>
+    <Returns>A digraph.</Returns>
+    <Description>
+        If <A>digraph</A> is a connected digraph with edge weights, then this
+        attribute returns a digraph which is a minimum spanning tree of
+        <A>digraph</A>.<P/>
+      
+        A <E>spanning tree</E> of a digraph is a subdigraph with the same
+        vertices but a subset of its edges that form an undirected tree.  It is
+        <E>minimum</E> if it has the smallest possible total weight for a
+        spanning tree of that digraph.<P/>
+
+        See <Ref Attr="EdgeWeights"/>,
+        <Ref Attr="EdgeWeightedDigraphTotalWeight"/> and
+        <Ref Prop="IsConnectedDigraph"/>.
+    <Example><![CDATA[
+gap> D := EdgeWeightedDigraph([[2], [1], [1, 2]],
+>                             [[12], [5], [6, 9]]);
+<immutable digraph with 3 vertices, 4 edges>
+gap> T := EdgeWeightedDigraphMinimumSpanningTree(D);
+<immutable digraph with 3 vertices, 2 edges>
+gap> EdgeWeights(T);
+[ [  ], [ 5 ], [ 6 ] ]]]></Example>
     </Description>
     </ManSection>
 <#/GAPDoc>

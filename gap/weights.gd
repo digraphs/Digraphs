@@ -12,10 +12,11 @@
 DeclareAttribute("EdgeWeights", IsDigraph);
 DeclareGlobalFunction("EdgeWeightedDigraph");
 DeclareProperty("IsNegativeEdgeWeightedDigraph", IsDigraph and HasEdgeWeights);
+DeclareAttribute("EdgeWeightedDigraphTotalWeight", IsDigraph and HasEdgeWeights);
 
 # 2. Edge Weight Copies
 DeclareOperation("EdgeWeightsMutableCopy", [IsDigraph and HasEdgeWeights]);
 
 # 3. Minimum Spanning Trees
-DeclareAttribute("DigraphEdgeWeightedMinimumSpanningTree",
+DeclareAttribute("EdgeWeightedDigraphMinimumSpanningTree",
                  IsDigraph and HasEdgeWeights);
