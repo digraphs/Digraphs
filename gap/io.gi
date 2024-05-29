@@ -1389,6 +1389,14 @@ function(str)
   return ConvertToImmutableDigraphNC(out);
 end);
 
+# BindGlobal("DIGRAPHS_FindDreadnautLine",
+# function(original, line)
+#   local start;
+#   start := PositionSublist(original, line);
+#   return Length(PositionsProperty(original{[1 .. start + Length(line)]},
+#                                   x -> x = '\n')) + 1;
+# end);
+
 BindGlobal("DIGRAPHS_ParseDreadnautConfig",
 function(config, key)
     local Pos, tempStr, tempConfig;
@@ -1398,7 +1406,7 @@ function(config, key)
     tempConfig := ShallowCopy(config);
     RemoveCharacters(tempConfig, "Ag$ntd1234567890");
 
-    if tempConfig <> "" then
+    if tempConfig <> "" and key <> "f" then
       ErrorNoReturn("the format of the file given as the 1st argument <name> ",
                     "cannot be determined as it contains unexpected ",
                     "characters: ",
@@ -1462,8 +1470,9 @@ function(vertex, x, r)
 end);
 
 BindGlobal("DIGRAPHS_SplitDreadnautLines",
-function(inputString)
-    local startPos, currentPos, segments, currentChar, nextChar;
+function(inputString, r)
+    local startPos, currentPos, segments, currentChar, nextChar, index,
+          partition;
 
     startPos := 1;
     segments := [];
@@ -1506,37 +1515,58 @@ function(inputString)
 
         if currentChar = 'f' then  # partition
           Add(segments, inputString{[startPos .. currentPos - 1]});
-          repeat
-            currentPos := currentPos + 1;
-          until Int(inputString{[currentPos]}) <> fail;
-          startPos := currentPos;
-          repeat
-            currentPos := currentPos + 1;
-          until currentPos > Length(inputString)
-                or inputString[currentPos] = ']';
-          if currentPos > Length(inputString) then
-            ErrorNoReturn("Syntax error: missing ']'",
-                          " in declaration of partition");
+          if PositionSublist(
+            inputString{[currentPos + 1 .. Length(inputString)]},
+            "[") = fail then
+              index := DIGRAPHS_ParseDreadnautConfig(inputString{[currentPos ..
+                                                        Length(inputString)]},
+                                            "f");
+              partition := [1 .. r.nValue];
+              Remove(partition, index);
+
+              Add(segments, Concatenation(
+                            Concatenation(
+                            Concatenation("f", String(index)),
+                            " | "), JoinStringsWithSeparator(partition, " ")));
+
+              startPos := PositionSublist(
+                          inputString{[currentPos + 1 .. Length(inputString)]},
+                          String(index)) + currentPos + 1;
+
           else
-            if ForAll(inputString{[currentPos + 1 .. Length(inputString)]},
-                      c -> c in
-                      Concatenation("$ \nferRjstTvFiIOlw+campyGS*kKVu?&Px@b",
-                                    "z#oMh<>q0123456789")) then
-              Add(segments,
-                  Concatenation("f",
-                                inputString{[startPos .. currentPos - 1]}));
-              startPos := currentPos + 1;
+            repeat
+              currentPos := currentPos + 1;
+            until Int(inputString{[currentPos]}) <> fail;
+            startPos := currentPos;
+            repeat
+              currentPos := currentPos + 1;
+            until currentPos > Length(inputString)
+                  or inputString[currentPos] = ']';
+            if currentPos > Length(inputString) then
+              ErrorNoReturn("Syntax error: missing ']'",
+                            " in declaration of partition");
             else
-              ErrorNoReturn(
-                          "Syntax error: unexpected characters after \"]\" (",
-                          JoinStringsWithSeparator(
-                          Filtered(
+              if ForAll(inputString{[currentPos + 1 .. Length(inputString)]},
+                        c -> c in
+                        Concatenation("$ \nferRjstTvFiIOlw+campyGS*kKVu?&Px@b",
+                                      "z#oMh<>q0123456789")) then
+                Add(segments,
+                    Concatenation("f",
+                                  inputString{[startPos .. currentPos - 1]}));
+                startPos := currentPos + 1;
+              else
+                ErrorNoReturn(
+                      "Syntax error: unexpected characters after \"]\" (",
+                      JoinStringsWithSeparator(
+                        Filtered(
                           inputString{[currentPos + 1 .. Length(inputString)]},
                           c -> not c in
-                          Concatenation("$ \nferRjstTvFiIOlw+campyGS*kKVu?&Px@b",
-                                    "z#oMh<>q0123456789"),
-                          ","),
-                          "), "));
+                          Concatenation(
+                            "$ \nferRjstTvFiIOlw+campyGS*kKVu?&Px@b",
+                            "z#oMh<>q0123456789"),
+                            ","),
+                        "), "));
+              fi;
             fi;
           fi;
         fi;
@@ -1580,7 +1610,7 @@ function(graphData, r)
 
     edgeList := List([1 .. r.nValue], x -> []);
     NormalizeWhitespace(graphData);
-    parts := DIGRAPHS_SplitDreadnautLines(graphData);
+    parts := DIGRAPHS_SplitDreadnautLines(graphData, r);
     iter := 0;
 
     for part in parts do
@@ -1622,8 +1652,8 @@ function(graphData, r)
       if part[1] = 'f' then
         if Length(part) = 1 then  # empty partition
           continue;
-        elif not '[' in part then
-          DIGRAPHS_ParseDreadnautConfig(part, "f");
+        # elif not '[' in part then
+        #   DIGRAPHS_ParseDreadnautConfig(part, "f");
         fi;
 
         pparts := SplitString(part{[2 .. Length(part)]}, "|");
