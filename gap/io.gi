@@ -1399,10 +1399,11 @@ function(config, key)
     RemoveCharacters(tempConfig, "Ag$ntd1234567890");
 
     if tempConfig <> "" then
-      ErrorNoReturn("the format of the file given as the 2nd argument <name> ",
+      ErrorNoReturn("the format of the file given as the 1st argument <name> ",
                     "cannot be determined as it contains unexpected ",
                     "characters: ",
-                    tempConfig);
+                    JoinStringsWithSeparator(tempConfig, ","),
+                    ",");
     fi;
 
     Pos := PositionProperty(config, x -> x = key[1]);
@@ -1486,7 +1487,8 @@ function(inputString)
                       [currentPos + 2 .. Minimum([currentPos + 2,
                                                 Length(inputString)])]} = "$"
           then
-            ErrorNoReturn("Syntax error: unexpected characters after \"$$\"");
+            ErrorNoReturn("Syntax error: unexpected characters",
+                          " (including ':' or '.') after \"$$\"");
           else
             Add(segments, inputString{[startPos .. currentPos - 1]});
             Add(segments, "$$");
@@ -1593,7 +1595,8 @@ function(graphData, r)
           RemoveCharacters(part, ".");
           if ForAny(parts{[iter + 1 .. Length(parts)]},
                      c -> ':' in c) then
-            ErrorNoReturn("Syntax error: unexpected characters after \".\"",
+            ErrorNoReturn("Syntax error: unexpected characters (including ':'",
+                          ")after \".\"",
                           "(note that edges cannot be declared after \".\")");
           fi;
       fi;
@@ -1604,8 +1607,9 @@ function(graphData, r)
 
       if '$' in part then
         if ForAny(part{[iter + 1 .. Length(part)]}, c -> c in ".:") then
-          ErrorNoReturn("Syntax error: unexpected characters after \"$\"",
-                        "(note that edges cannot be declared after \"$\")");
+            ErrorNoReturn("Syntax error: unexpected characters (including ':'",
+                          "or '.')after \".\"",
+                          "(note that edges cannot be declared after \".\")");
         fi;
 
         if part = "$$" then
@@ -1704,8 +1708,9 @@ function(name)
   file := IO_CompressedFile(UserHomeExpand(name), "r");
 
   if file = fail then
-    ErrorNoReturn("cannot open the file given as the 1st argument <name>,",
-                 name);
+    ErrorNoReturn("cannot open the file given as the 1st argument <name>, \"",
+                 name,
+                 "\",");
   fi;
 
   config := "";
@@ -1853,7 +1858,9 @@ function(name, D)
 
   file := IO_CompressedFile(UserHomeExpand(name), "w");
   if file = fail then
-    ErrorNoReturn("cannot open the file given as the 1st argument <name>,");
+    ErrorNoReturn("cannot open the file given as the 1st argument <name>, \"",
+                  name,
+                  "\",");
   fi;
 
   n := DigraphNrVertices(D);

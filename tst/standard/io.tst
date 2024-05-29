@@ -927,12 +927,13 @@ gap> ReadDigraphs(filename, IO_Unpickle);
 gap> gr := EmptyDigraph(0);;
 gap> filename := "does/not/exist.dre";;
 gap> WriteDreadnautGraph(filename, gr);
-Error, cannot open the file given as the 1st argument <name>,
+Error, cannot open the file given as the 1st argument <name>, "does/not/exist.\
+dre",
 gap> WriteDreadnautGraph(filename, 0); 
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `WriteDreadnautGraph' on 2 arguments
 gap> WriteDreadnautGraph(".", RandomDigraph(2));
-Error, cannot open the file given as the 1st argument <name>,
+Error, cannot open the file given as the 1st argument <name>, ".",
 gap> filename := Concatenation(DIGRAPHS_Dir(), "tst/out/temp.dre");;
 gap> D := CompleteDigraph(3);;
 gap> WriteDreadnautGraph(filename, D);
@@ -941,7 +942,7 @@ gap> WriteDreadnautGraph(filename, D);
 gap> ReadDreadnautGraph(filename) = D;
 true
 gap> ReadDreadnautGraph("fakedir.dre");
-Error, cannot open the file given as the 1st argument <name>,
+Error, cannot open the file given as the 1st argument <name>, "fakedir.dre",
 gap> filename := Concatenation(DIGRAPHS_Dir(), "tst/out/bad.dre");;
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "$1n3");;
@@ -950,7 +951,7 @@ gap> IO_WriteLine(file, "1:1;");;
 gap> IO_WriteLine(file, "2:21");;
 gap> IO_Close(file);;
 gap> ReadDreadnautGraph(filename);
-Error, Illegal edge 2 -> 21 (original indexing)
+<immutable digraph with 3 vertices, 1 edge>
 gap> filename := Concatenation(DIGRAPHS_Dir(), "tst/out/temp.dre");;
 gap> D := EmptyDigraph(5);;
 gap> WriteDreadnautGraph(filename, D);;
@@ -976,9 +977,9 @@ gap> IO_WriteLine(file, "n=1dg");;
 gap> IO_WriteLine(file, "1: 1.");;
 gap> IO_Close(file);;
 gap> ReadDreadnautGraph(filename);
-Error, the format of the file given as the 2nd argument <name> cannot be deter\
-mined,
-gap> Exec("rm -f temp.dre");
+Error, the format of the file given as the 1st argument <name> cannot be deter\
+mined as it contains unexpected characters: 's','i','l','l','y','e','x','f','o\
+','r','e','s','i',
 
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(D);
