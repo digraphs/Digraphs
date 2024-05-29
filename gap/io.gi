@@ -1400,7 +1400,9 @@ function(config, key)
 
     if tempConfig <> "" then
       ErrorNoReturn("the format of the file given as the 2nd argument <name> ",
-                    "cannot be determined,");
+                    "cannot be determined as it contains unexpected ",
+                    "characters: ",
+                    tempConfig);
     fi;
 
     Pos := PositionProperty(config, x -> x = key[1]);
@@ -1408,11 +1410,6 @@ function(config, key)
     if Pos <> fail then
       tempStr := "";
       Pos := Pos + 1;
-
-      if Pos > Length(config) then
-        ErrorNoReturn("the format of the file given as the 2nd argument <name> ",
-                      "cannot be determined,");
-      fi;
 
       while Int(config{[Pos]}) <> fail do
         tempStr := Concatenation(tempStr, config{[Pos]});
@@ -1422,8 +1419,15 @@ function(config, key)
         fi;
       od;
       if tempStr = "" then
-        ErrorNoReturn("the format of the file given as the 2nd argument <name> ",
-                      "cannot be determined,");
+        if key <> "f" then
+          ErrorNoReturn("the format of the file given as the 2nd ",
+                        "argument <name> cannot be determined. ", key,
+                        " is not followed by a value");
+        else
+          ErrorNoReturn("the partition cannot be determined.",
+                        " 'f' is neither followed",
+                        " by a single value nor by a list of values");
+        fi;
       fi;
       return Int(tempStr);
 
@@ -1431,7 +1435,9 @@ function(config, key)
       if key = "$" then
         return 0;
       else
-        ErrorNoReturn("the number of vertices has not been declared");
+        ErrorNoReturn("the number of vertices has not been declared. ",
+                      "Ensure that ",
+                      "n=# is included before the declaration of 'g', ");
       fi;
     fi;
 end);
@@ -1439,14 +1445,16 @@ end);
 BindGlobal("DIGRAPHS_LegalDreadnautEdge",
 function(vertex, x, r)
   if x > r.nValue or x < 1 then
-    Error("Illegal edge ", vertex + r.dollarValue - 1, " -> ",
-          x + r.dollarValue - 1, " (original indexing)");
+    Info(InfoWarning, 1, "Ignoring illegal edge ",
+         vertex + r.dollarValue - 1, " -> ",
+         x + r.dollarValue - 1, " (original indexing)");
     return false;
   fi;
   if not r.dExists and x = vertex then
-    Error("Illegal edge ", vertex + r.dollarValue - 1, " -> ",
-          x + r.dollarValue - 1, " (original indexing). ",
-          "Ensure 'd' is declared to include loops.");
+    Info(InfoWarning, 1, "Ignoring illegal edge ",
+       vertex + r.dollarValue - 1, " -> ",
+       x + r.dollarValue - 1, " (original indexing). ",
+       "Ensure 'd' is declared to include loops.");
     return false;
   fi;
   return true;
@@ -1489,7 +1497,9 @@ function(inputString)
         fi;
 
         if currentChar in "erRjstTvFiIOlw+campyGS*kKVu?&Px@bz#oMh<>q" then
-          Info(InfoWarning, 1, "Operation (", currentChar, ") not supported.");
+          Info(InfoWarning, 1, "while parsing dreadnaut file config,",
+                               " found operation ",
+                               currentChar, " which is not supported.");
         fi;
 
         if currentChar = 'f' then  # partition
@@ -1508,13 +1518,23 @@ function(inputString)
           else
             if ForAll(inputString{[currentPos + 1 .. Length(inputString)]},
                       c -> c in
-                      "$ \nferRjstTvFiIOlw+campyGS*kKVu?&Px@bz#oMh<>q") then
+                      Concatenation("$ \nferRjstTvFiIOlw+campyGS*kKVu?&Px@b",
+                                    "z#oMh<>q0123456789")) then
               Add(segments,
                   Concatenation("f",
                                 inputString{[startPos .. currentPos - 1]}));
               startPos := currentPos + 1;
             else
-              ErrorNoReturn("Syntax error: unexpected characters after \"]\"");
+              ErrorNoReturn(
+                          "Syntax error: unexpected characters after \"]\" (",
+                          JoinStringsWithSeparator(
+                          Filtered(
+                          inputString{[currentPos + 1 .. Length(inputString)]},
+                          c -> not c in
+                          Concatenation("$ \nferRjstTvFiIOlw+campyGS*kKVu?&Px@b",
+                                    "z#oMh<>q0123456789"),
+                          ","),
+                          "), "));
             fi;
           fi;
         fi;
@@ -1573,7 +1593,8 @@ function(graphData, r)
           RemoveCharacters(part, ".");
           if ForAny(parts{[iter + 1 .. Length(parts)]},
                      c -> ':' in c) then
-            ErrorNoReturn("Syntax error: unexpected characters after \".\"");
+            ErrorNoReturn("Syntax error: unexpected characters after \".\"",
+                          "(note that edges cannot be declared after \".\")");
           fi;
       fi;
 
@@ -1582,22 +1603,23 @@ function(graphData, r)
       fi;
 
       if '$' in part then
-        if not ForAll(part{[iter + 1 .. Length(part)]}, c -> not c in ".:") then
-          ErrorNoReturn("Syntax error: unexpected characters after \"$\"");
+        if ForAny(part{[iter + 1 .. Length(part)]}, c -> c in ".:") then
+          ErrorNoReturn("Syntax error: unexpected characters after \"$\"",
+                        "(note that edges cannot be declared after \"$\")");
         fi;
 
         if part = "$$" then
           r.dollarValue := 0;
-          # continue;
         else
           r.dollarValue := DIGRAPHS_ParseDreadnautConfig(part, "$");
-          # continue;
         fi;
       fi;
 
       if part[1] = 'f' then
         if Length(part) = 1 then  # empty partition
           continue;
+        elif not '[' in part then
+          DIGRAPHS_ParseDreadnautConfig(part, "f");
         fi;
 
         pparts := SplitString(part{[2 .. Length(part)]}, "|");
@@ -1652,7 +1674,8 @@ function(graphData, r)
       vertex := vertex - r.dollarValue + 1;
 
       if vertex > r.nValue or vertex < 1 then
-        Error("illegal vertex ", vertex, " (original indexing)");
+        Info(InfoWarning, 1, "Ignoring illegal vertex ", vertex,
+                             " (original indexing)");
         continue;
       fi;
 
@@ -1661,10 +1684,9 @@ function(graphData, r)
       connectedTo := List(SplitString(adjacencyPart, " "), Int);
 
       if fail in connectedTo then
-        Error("Formatting error (", part, ")");
+        ErrorNoReturn("Formatting error (", part, ")");
       fi;
 
-      connectedTo := Filtered(connectedTo, IsInt);
       connectedTo := List(connectedTo, x -> x - r.dollarValue + 1);
       connectedTo := Filtered(connectedTo,
                               x -> DIGRAPHS_LegalDreadnautEdge(vertex, x, r));
@@ -1682,7 +1704,8 @@ function(name)
   file := IO_CompressedFile(UserHomeExpand(name), "r");
 
   if file = fail then
-    ErrorNoReturn("cannot open the file given as the 1st argument <name>,");
+    ErrorNoReturn("cannot open the file given as the 1st argument <name>,",
+                 name);
   fi;
 
   config := "";
