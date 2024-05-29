@@ -1888,7 +1888,7 @@ fail
     the <E><A>k</A>-closure of <A>digraph</A></E> is defined to be the unique
     smallest symmetric loopless digraph <C>C</C> with no multiple edges on the
     vertices of <A>digraph</A> that contains all the edges of <A>digraph</A>
-    and satsifies the property that the sum of the degrees of every two
+    and satisfies the property that the sum of the degrees of every two
     non-adjacenct vertices in <C>C</C> is less than <A>k</A>. See <Ref
     Prop="IsSymmetricDigraph"/>, <Ref Prop="DigraphHasLoops"/>, <Ref
     Prop="IsMultiDigraph"/>, and <Ref Oper="OutDegreeOfVertex"/>. <P/>
