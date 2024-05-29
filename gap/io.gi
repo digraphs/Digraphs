@@ -1389,13 +1389,13 @@ function(str)
   return ConvertToImmutableDigraphNC(out);
 end);
 
-# BindGlobal("DIGRAPHS_FindDreadnautLine",
-# function(original, line)
-#   local start;
-#   start := PositionSublist(original, line);
-#   return Length(PositionsProperty(original{[1 .. start + Length(line)]},
-#                                   x -> x = '\n')) + 1;
-# end);
+BindGlobal("DIGRAPHS_FindDreadnautLine",
+function(original, line)
+  local start;
+  start := PositionSublist(original, line);
+  return Length(PositionsProperty(original{[1 .. start + Length(line)]},
+                                  x -> x = '\n')) + 1;
+end);
 
 BindGlobal("DIGRAPHS_ParseDreadnautConfig",
 function(config, key)
@@ -1470,7 +1470,7 @@ function(vertex, x, r)
 end);
 
 BindGlobal("DIGRAPHS_SplitDreadnautLines",
-function(inputString, r)
+function(inputString)
     local startPos, currentPos, segments, currentChar, nextChar, index,
           partition;
 
@@ -1610,7 +1610,7 @@ function(graphData, r)
 
     edgeList := List([1 .. r.nValue], x -> []);
     NormalizeWhitespace(graphData);
-    parts := DIGRAPHS_SplitDreadnautLines(graphData, r);
+    parts := DIGRAPHS_SplitDreadnautLines(graphData);
     iter := 0;
 
     for part in parts do
