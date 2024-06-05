@@ -176,52 +176,21 @@ DigraphIndependentSets);
 
 InstallGlobalFunction(DigraphIndependentSets,
 function(arg)
-  local D, include, exclude, limit, size;
-
+  local D, out;
   if IsEmpty(arg) then
     ErrorNoReturn("at least 1 argument is required,");
   elif not IsDigraph(arg[1]) then
     ErrorNoReturn("the 1st argument must be a digraph,");
+  elif not IsBound(arg[2])
+      and HasDigraphIndependentSetsAttr(arg[1]) then
+    return DigraphIndependentSetsAttr(arg[1]);
   fi;
   D      := arg[1];
   arg[1] := DigraphMutableCopyIfMutable(arg[1]);
   arg[1] := DigraphDual(DigraphRemoveAllMultipleEdges(arg[1]));
-
-  if IsBound(arg[2]) then
-    include := arg[2];
-  else
-    include := [];
-  fi;
-
-  if IsBound(arg[3]) then
-    exclude := arg[3];
-  else
-    exclude := [];
-  fi;
-
-  if IsBound(arg[4]) then
-    limit := arg[4];
-  else
-    limit := infinity;
-  fi;
-
-  if IsBound(arg[5]) then
-    size := arg[5];
-  else
-    size := fail;
-  fi;
-
-  # use cached value is not special case due to exclusion / size / etc.
-  if IsList(include) and IsEmpty(include) and IsList(exclude)
-      and IsEmpty(exclude) and limit = infinity and size = fail
-      and HasDigraphIndependentSetsAttr(D) then
-    return DigraphIndependentSetsAttr(D);
-  fi;
-
-  out := CallFuncList(DigraphCliques, arg);
-  # Store the result if appropriate (not special case due to params)
-  if IsEmpty(include) and IsEmpty(exclude) and limit = infinity and size = fail
-      and IsImmutableDigraph(D) then
+  out    := CallFuncList(DigraphCliques, arg);
+  # Store the result if appropriate
+  if not IsBound(arg[2]) and IsImmutableDigraph(D) then
     SetDigraphIndependentSetsAttr(D, out);
   fi;
   return out;
