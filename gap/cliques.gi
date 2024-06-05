@@ -171,16 +171,60 @@ end);
 
 # Independent sets
 
+InstallMethod(DigraphIndependentSetsAttr, "for a digraph", [IsDigraph],
+DigraphIndependentSets);
+
 InstallGlobalFunction(DigraphIndependentSets,
 function(arg)
+  local D, include, exclude, limit, size;
+
   if IsEmpty(arg) then
     ErrorNoReturn("at least 1 argument is required,");
   elif not IsDigraph(arg[1]) then
     ErrorNoReturn("the 1st argument must be a digraph,");
   fi;
+  D      := arg[1];
   arg[1] := DigraphMutableCopyIfMutable(arg[1]);
   arg[1] := DigraphDual(DigraphRemoveAllMultipleEdges(arg[1]));
-  return CallFuncList(DigraphCliques, arg);
+
+  if IsBound(arg[2]) then
+    include := arg[2];
+  else
+    include := [];
+  fi;
+
+  if IsBound(arg[3]) then
+    exclude := arg[3];
+  else
+    exclude := [];
+  fi;
+
+  if IsBound(arg[4]) then
+    limit := arg[4];
+  else
+    limit := infinity;
+  fi;
+
+  if IsBound(arg[5]) then
+    size := arg[5];
+  else
+    size := fail;
+  fi;
+
+  # use cached value is not special case due to exclusion / size / etc.
+  if IsList(include) and IsEmpty(include) and IsList(exclude)
+      and IsEmpty(exclude) and limit = infinity and size = fail
+      and HasDigraphIndependentSetsAttr(D) then
+    return DigraphIndependentSetsAttr(D);
+  fi;
+
+  out := CallFuncList(DigraphCliques, arg);
+  # Store the result if appropriate (not special case due to params)
+  if IsEmpty(include) and IsEmpty(exclude) and limit = infinity and size = fail
+      and IsImmutableDigraph(D) then
+    SetDigraphIndependentSetsAttr(D, out);
+  fi;
+  return out;
 end);
 
 # Maximal independent sets orbit representatives
@@ -395,6 +439,9 @@ end);
 
 # Cliques
 
+InstallMethod(DigraphCliquesAttr, "for a digraph", [IsDigraph],
+DigraphCliques);
+
 InstallGlobalFunction(DigraphCliques,
 function(arg)
   local D, include, exclude, limit, size;
@@ -429,8 +476,20 @@ function(arg)
     size := fail;
   fi;
 
-  return CliquesFinder
-          (D, fail, [], limit, include, exclude, false, size, false);
+  # use cached value is not special case due to exclusion / size / etc.
+  if IsList(include) and IsEmpty(include) and IsList(exclude)
+      and IsEmpty(exclude) and limit = infinity and size = fail
+      and HasDigraphCliquesAttr(D) then
+    return DigraphCliquesAttr(D);
+  fi;
+
+  out := CliquesFinder(D, fail, [], limit, include, exclude, false, size, false);
+  # Store the result if appropriate (not special case due to params)
+  if IsEmpty(include) and IsEmpty(exclude) and limit = infinity and size = fail
+      and IsImmutableDigraph(D) then
+    SetDigraphCliquesAttr(D, out);
+  fi;
+  return out;
 end);
 
 # Maximal cliques orbit representatives
