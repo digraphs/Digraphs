@@ -122,3 +122,116 @@ gap> EdgeWeights(T);
     </Description>
     </ManSection>
 <#/GAPDoc>
+
+<#GAPDoc Label="EdgeWeightedDigraphShortestPaths">
+<ManSection>
+  <Attr Name="EdgeWeightedDigraphShortestPaths" Label="for a digraph" Arg="digraph"/>
+  <Oper Name="EdgeWeightedDigraphShortestPaths" Label="for a digraph and a pos int" Arg="digraph, source"/>
+  <Returns>A record.</Returns>
+  <Description>
+    If <A>digraph</A> is an edge-weighted digraph, this attribute returns a
+    record describing the paths of lowest total weight (the <E>shortest
+    paths</E>) connecting each pair of vertices.  If the optional argument
+    <A>source</A> is specified and is a vertex of <A>digraph</A>, then the
+    output will only contain information on paths originating from that
+    vertex. <P/>
+
+    In the two-argument form, the value returned is a record containing three
+    components: <C>distances</C>, <C>parents</C> and <C>edges</C>.  Each of
+    these is a list of integers with one entry for each vertex in the
+    digraph. <P/>
+    <List>
+      <Item>
+        <C>distances[v]</C> is the total weight of the shortest path from
+        <A>source</A> to <C>v</C>.
+      </Item>
+      <Item>
+        <C>parents[v]</C> is the final vertex before <C>v</C> on the shortest
+        path from <A>source</A> to <C>v</C>.
+      </Item>
+      <Item>
+        <C>edges[v]</C> is the index of the edge of lowest weight going from
+        <C>parents[v]</C> to <C>v</C>.
+      </Item>
+    </List>
+    Using both these components together, you can find the shortest edge
+    weighted path to all other vertices from a starting vertex. <P/>
+
+    If no path exists from <A>source</A> to <C>v</C>, then <C>parents[v]</C> and
+    <C>edges[v]</C> will both be <K>fail</K>.  The distance from <A>source</A>
+    to itself is considered to be 0, and so both <C>parents[<A>source</A>]</C> and
+    <C>edges[<A>source</A>]</C> are <K>fail</K>. <P/>
+
+    In the one-argument form, the value returned is also a record containing
+    components <C>distances</C>, <C>parents</C> and <C>edges</C>, but each of
+    these will instead be a list of lists in which the <C>i</C>th entry is the
+    list that corresponds to paths starting at <C>i</C>.  In other words, the
+    following equalities apply.
+    <List>
+      <Item>
+        <C>EdgeWeightedDigraphShortestPaths(<A>digraph</A>).distances[<A>source</A>]
+        = EdgeWeightedDigraphShortestPaths(<A>digraph</A>, <A>source</A>).distances</C>
+      </Item>
+      <Item>
+        <C>EdgeWeightedDigraphShortestPaths(<A>digraph</A>).parents[<A>source</A>]
+        = EdgeWeightedDigraphShortestPaths(<A>digraph</A>, <A>source</A>).parents</C>
+      </Item>
+      <Item>
+        <C>EdgeWeightedDigraphShortestPaths(<A>digraph</A>).edges[<A>source</A>]
+        = EdgeWeightedDigraphShortestPaths(<A>digraph</A>, <A>source</A>).edges</C>
+      </Item>
+    </List>
+
+    Edge weights can have negative values, but this operation will fail with an
+    error if a negative-weighted cycle exists. <P/>
+
+    For a simple way of finding the shortest path between two specific vertices,
+    see <Ref Oper="EdgeWeightedDigraphShortestPath"/>. See also the non-weighted
+    operation <Ref Oper="DigraphShortestPath"/>. <P/>
+
+    <Example><![CDATA[
+gap> g := EdgeWeightedDigraph([[2, 3], [4], [4], []], [[5, 1], [6], [11], []]);
+<immutable digraph with 4 vertices, 4 edges>
+gap> EdgeWeightedDigraphShortestPath(g, 1);
+rec( distances := [ 0, 5, 1, 11 ], edges := [ fail, 1, 2, 1 ],
+  parents := [ fail, 1, 1, 2 ] )
+gap> g := EdgeWeightedDigraph([[2], [3], [1]], [[-1], [-2], [-3]]);
+<immutable digraph with 3 vertices, 3 edges>
+gap> EdgeWeightedDigraphShortestPath(g, 1);
+Error, negative cycle exists,
+gap> g := EdgeWeightedDigraph([[2], [3], [1]], [[1], [2], [3]]);
+<immutable digraph with 3 vertices, 3 edges>
+gap> EdgeWeightedDigraphShortestPaths(g);
+rec( distances := [ [ 0, 1, 3 ], [ 5, 0, 2 ], [ 3, 4, 0 ] ],
+  edges := [ [ fail, 1, 1 ], [ 1, fail, 1 ], [ 1, 1, fail ] ],
+  parents := [ [ fail, 1, 1 ], [ 2, fail, 2 ], [ 3, 3, fail ] ] )]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="EdgeWeightedDigraphShortestPath">
+<ManSection>
+  <Oper Name="EdgeWeightedDigraphShortestPath" Arg="digraph, source, dest"/>
+  <Returns>A pair of lists, or <K>fail</K>.</Returns>
+  <Description>
+    If <A>digraph</A> is an edge-weighted digraph with vertices <A>source</A>
+    and <A>dest</A>, this operation returns a directed path from <A>source</A>
+    to <A>dest</A> with the smallest possible total weight.  The output is a
+    pair of lists <C>[v, a]</C> of the form described in <Ref
+    Oper="DigraphPath"/>.<P/>
+
+    If <M><A>source</A> = <A>dest</A></M> or no path exists, then <K>fail</K> is
+    returned.<P/>
+
+    See <Ref Attr="EdgeWeightedDigraphShortestPaths" Label="for a digraph"/>.
+    See also the non-weighted operation <Ref Oper="DigraphShortestPath"/>. <P/>
+    <Example><![CDATA[
+gap> D := EdgeWeightedDigraph([[2, 3], [4], [4], []], [[5, 1], [6], [11], []]);
+<immutable digraph with 4 vertices, 4 edges>
+gap> EdgeWeightedDigraphShortestPath(D, 1, 4);
+[ [ 1, 2, 4 ], [ 1, 1 ] ]
+gap> EdgeWeightedDigraphShortestPath(D, 3, 2);
+fail]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
