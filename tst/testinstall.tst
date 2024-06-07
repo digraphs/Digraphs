@@ -421,6 +421,16 @@ gap> EdgeWeightedDigraphTotalWeight(d);
 15
 gap> EdgeWeightedDigraphMinimumSpanningTree(d);
 <immutable digraph with 2 vertices, 1 edge>
+gap> d := EdgeWeightedDigraph([[2], [1, 2]], [[5], [5, 5]]);
+<immutable digraph with 2 vertices, 3 edges>
+gap> EdgeWeightedDigraphShortestPaths(d, 1);
+rec( distances := [ 0, 5 ], edges := [ fail, 1 ], parents := [ fail, 1 ] )
+gap> EdgeWeightedDigraphShortestPaths(d);
+rec( distances := [ [ 0, 5 ], [ 5, 0 ] ], 
+  edges := [ [ fail, 1 ], [ 1, fail ] ], 
+  parents := [ [ fail, 1 ], [ 2, fail ] ] )
+gap> EdgeWeightedDigraphShortestPath(d, 1, 2);
+[ [ 1, 2 ], [ 1 ] ]
 
 # Issue 617: bug in DigraphRemoveEdge, wasn't removing edge labels
 gap> D := DigraphByEdges(IsMutableDigraph, [[1, 2], [2, 3], [3, 4], [4, 1], [1, 1]]);;
