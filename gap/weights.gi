@@ -313,7 +313,7 @@ function(digraph)
   digraph := EdgeWeightedDigraph(mutableOuts, mutableWeights);
   bellman := DIGRAPHS_Edge_Weighted_Bellman_Ford(digraph, new);
   bellmanDistances := bellman.distances;
-  
+
   # new copy of neighbours and weights
   mutableOuts := OutNeighborsMutableCopy(digraph);
   mutableWeights := EdgeWeightsMutableCopy(digraph);
@@ -453,8 +453,8 @@ end);
 InstallGlobalFunction(DIGRAPHS_Edge_Weighted_Dijkstra,
 function(digraph, source)
   local weights, vertices, nrVertices, adj, u, outNeighbours, idx, v, w,
-        distances, parents, edges, vertex, visited, queue, node, currDist,
-        neighbour, edgeInfo, distance, i;
+        distances, parents, edges, visited, queue, node, currDist, neighbour,
+        edgeInfo, distance, i;
 
   weights    := EdgeWeights(digraph);
   vertices   := DigraphVertices(digraph);
@@ -544,13 +544,13 @@ end);
 
 InstallGlobalFunction(DIGRAPHS_Edge_Weighted_Bellman_Ford,
 function(digraph, source)
-  local edgeList, weights, vertices, nrVertices, distances, u, outNeighbours, idx, v, w,
-        vertex, edge, parents, edges, d, i, flag, _;
+  local edgeList, weights, vertices, nrVertices, distances, u, outNeighbours,
+        idx, v, w, edge, parents, edges, i, flag, _;
 
   weights    := EdgeWeights(digraph);
   vertices   := DigraphVertices(digraph);
   nrVertices := Size(vertices);
-  
+
   edgeList := [];
   for u in DigraphVertices(digraph) do
     outNeighbours := OutNeighbours(digraph)[u];
@@ -579,7 +579,7 @@ function(digraph, source)
       idx := edge[4];
 
       if distances[u] <> infinity
-         and Float(distances[u]) + Float(w) < Float(distances[v]) then
+          and Float(distances[u]) + Float(w) < Float(distances[v]) then
         distances[v] := distances[u] + w;
 
         parents[v] := u;
