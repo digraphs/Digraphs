@@ -138,8 +138,8 @@ gap> EdgeWeights(T);
 
     In the two-argument form, the value returned is a record containing three
     components: <C>distances</C>, <C>parents</C> and <C>edges</C>.  Each of
-    these is a list of integers with one entry for each vertex in the
-    digraph. <P/>
+    these is a list of integers with one entry for each vertex <C>v</C> as
+    follows: <P/>
     <List>
       <Item>
         <C>distances[v]</C> is the total weight of the shortest path from
@@ -154,36 +154,20 @@ gap> EdgeWeights(T);
         <C>parents[v]</C> to <C>v</C>.
       </Item>
     </List>
-    Using both these components together, you can find the shortest edge
+    Using these three components together, you can find the shortest edge
     weighted path to all other vertices from a starting vertex. <P/>
 
     If no path exists from <A>source</A> to <C>v</C>, then <C>parents[v]</C> and
     <C>edges[v]</C> will both be <K>fail</K>.  The distance from <A>source</A>
     to itself is considered to be 0, and so both <C>parents[<A>source</A>]</C> and
-    <C>edges[<A>source</A>]</C> are <K>fail</K>. <P/>
+    <C>edges[<A>source</A>]</C> are <K>fail</K>.
+    Edge weights can have negative values, but this operation will fail with an
+    error if a negative-weighted cycle exists. <P/>
 
     In the one-argument form, the value returned is also a record containing
     components <C>distances</C>, <C>parents</C> and <C>edges</C>, but each of
     these will instead be a list of lists in which the <C>i</C>th entry is the
-    list that corresponds to paths starting at <C>i</C>.  In other words, the
-    following equalities apply.
-    <List>
-      <Item>
-        <C>EdgeWeightedDigraphShortestPaths(<A>digraph</A>).distances[<A>source</A>]
-        = EdgeWeightedDigraphShortestPaths(<A>digraph</A>, <A>source</A>).distances</C>
-      </Item>
-      <Item>
-        <C>EdgeWeightedDigraphShortestPaths(<A>digraph</A>).parents[<A>source</A>]
-        = EdgeWeightedDigraphShortestPaths(<A>digraph</A>, <A>source</A>).parents</C>
-      </Item>
-      <Item>
-        <C>EdgeWeightedDigraphShortestPaths(<A>digraph</A>).edges[<A>source</A>]
-        = EdgeWeightedDigraphShortestPaths(<A>digraph</A>, <A>source</A>).edges</C>
-      </Item>
-    </List>
-
-    Edge weights can have negative values, but this operation will fail with an
-    error if a negative-weighted cycle exists. <P/>
+    list that corresponds to paths starting at <C>i</C>. <P/>
 
     For a simple way of finding the shortest path between two specific vertices,
     see <Ref Oper="EdgeWeightedDigraphShortestPath"/>. See also the non-weighted
