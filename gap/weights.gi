@@ -460,7 +460,7 @@ function(digraph, source)
   vertices   := DigraphVertices(digraph);
   nrVertices := Size(vertices);
 
-  # Create an adjacancy map for the shortest edges: index and weight
+  # Create an adjacency map for the shortest edges: index and weight
   adj := HashMap();
   for u in vertices do
     adj[u] := HashMap();
