@@ -174,20 +174,17 @@ gap> EdgeWeights(T);
     operation <Ref Oper="DigraphShortestPath"/>. <P/>
 
     <Example><![CDATA[
-gap> g := EdgeWeightedDigraph([[2, 3], [4], [4], []], [[5, 1], [6], [11], []]);
+gap> D := EdgeWeightedDigraph([[2, 3], [4], [4], []],
+>                             [[5, 1], [6], [11], []]);
 <immutable digraph with 4 vertices, 4 edges>
-gap> EdgeWeightedDigraphShortestPath(g, 1);
-rec( distances := [ 0, 5, 1, 11 ], edges := [ fail, 1, 2, 1 ],
+gap> EdgeWeightedDigraphShortestPaths(D, 1);
+rec( distances := [ 0, 5, 1, 11 ], edges := [ fail, 1, 2, 1 ], 
   parents := [ fail, 1, 1, 2 ] )
-gap> g := EdgeWeightedDigraph([[2], [3], [1]], [[-1], [-2], [-3]]);
+gap> D := EdgeWeightedDigraph([[2], [3], [1]], [[1], [2], [3]]);
 <immutable digraph with 3 vertices, 3 edges>
-gap> EdgeWeightedDigraphShortestPath(g, 1);
-Error, negative cycle exists,
-gap> g := EdgeWeightedDigraph([[2], [3], [1]], [[1], [2], [3]]);
-<immutable digraph with 3 vertices, 3 edges>
-gap> EdgeWeightedDigraphShortestPaths(g);
-rec( distances := [ [ 0, 1, 3 ], [ 5, 0, 2 ], [ 3, 4, 0 ] ],
-  edges := [ [ fail, 1, 1 ], [ 1, fail, 1 ], [ 1, 1, fail ] ],
+gap> EdgeWeightedDigraphShortestPaths(D);
+rec( distances := [ [ 0, 1, 3 ], [ 5, 0, 2 ], [ 3, 4, 0 ] ], 
+  edges := [ [ fail, 1, 1 ], [ 1, fail, 1 ], [ 1, 1, fail ] ], 
   parents := [ [ fail, 1, 1 ], [ 2, fail, 2 ], [ 3, 3, fail ] ] )]]></Example>
   </Description>
 </ManSection>
@@ -210,7 +207,8 @@ rec( distances := [ [ 0, 1, 3 ], [ 5, 0, 2 ], [ 3, 4, 0 ] ],
     See <Ref Attr="EdgeWeightedDigraphShortestPaths" Label="for a digraph"/>.
     See also the non-weighted operation <Ref Oper="DigraphShortestPath"/>. <P/>
     <Example><![CDATA[
-gap> D := EdgeWeightedDigraph([[2, 3], [4], [4], []], [[5, 1], [6], [11], []]);
+gap> D := EdgeWeightedDigraph([[2, 3], [4], [4], []],
+>                             [[5, 1], [6], [11], []]);
 <immutable digraph with 4 vertices, 4 edges>
 gap> EdgeWeightedDigraphShortestPath(D, 1, 4);
 [ [ 1, 2, 4 ], [ 1, 1 ] ]
