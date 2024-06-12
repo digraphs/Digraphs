@@ -245,6 +245,11 @@ Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `EdgeWeightedDigraphShortestPaths' on 2 \
 arguments
 
+# Shortest path: same vertex
+gap> d := EdgeWeightedDigraph([[2], [3], [1]], [[-3], [-5], [-7]]);;
+gap> EdgeWeightedDigraphShortestPath(d, 2, 2);
+fail
+
 # Shortest paths: Johnson
 gap> d := EdgeWeightedDigraph([[2], [3], [], [], []], [[3], [5], [], [], []]);
 <immutable digraph with 5 vertices, 2 edges>
@@ -261,6 +266,9 @@ rec( distances := [ [ 0, 3, 8, fail, fail ], [ fail, 0, 5, fail, fail ],
   parents := [ [ fail, 1, 2, fail, fail ], [ fail, fail, 2, fail, fail ], 
       [ fail, fail, fail, fail, fail ], [ fail, fail, fail, fail, fail ], 
       [ fail, fail, fail, fail, fail ] ] )
+gap> EdgeWeightedDigraphShortestPaths(d, 6);
+Error, the 2nd argument <source> must be a vertex of the digraph <digraph> tha\
+t is the 1st argument,
 gap> EdgeWeightedDigraphShortestPath(d, 1, 3);
 [ [ 1, 2, 3 ], [ 1, 1 ] ]
 
