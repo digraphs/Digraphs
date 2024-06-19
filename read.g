@@ -41,3 +41,4 @@ ReadPackage("digraphs", "gap/cliques.gi");
 ReadPackage("digraphs", "gap/planar.gi");
 ReadPackage("digraphs", "gap/examples.gi");
 ReadPackage("digraphs", "gap/weights.gi");
+ReadPackage("digraphs", "gap/deprecated.gi");

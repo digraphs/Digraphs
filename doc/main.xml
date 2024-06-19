@@ -3,10 +3,13 @@
      <!ENTITY Grape "<Alt Not='Text'><URL
    Text='Grape'>https://gap-packages.github.io/grape</URL></Alt><Alt
    Only='Text'><Package>Grape</Package></Alt>">
+     <!ENTITY graphviz "<Alt Not='Text'><URL
+   Text='Graphviz'>https://digraphs.github.io/graphviz</URL></Alt><Alt
+   Only='Text'><Package>Graphviz</Package></Alt>">
      <!ENTITY bliss "<Alt Not='Text'><URL
    Text='bliss'>http://www.tcs.tkk.fi/Software/bliss/</URL></Alt><Alt
    Only='Text'><Package>bliss</Package></Alt>">
-     <!ENTITY edge-addition-planarity-suite "<Alt Not='Text'><URL 
+     <!ENTITY edge-addition-planarity-suite "<Alt Not='Text'><URL
          Text='edge-addition-planarity-suite'>https://github.com/graph-algorithms/edge-addition-planarity-suite</URL></Alt><Alt
        Only='Text'><Package>edge-addition-planarity-suite</Package></Alt>">
      <!ENTITY nauty "<Alt Not='Text'><URL
