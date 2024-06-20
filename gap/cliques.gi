@@ -171,16 +171,29 @@ end);
 
 # Independent sets
 
+InstallMethod(DigraphIndependentSetsAttr, "for a digraph", [IsDigraph],
+DigraphIndependentSets);
+
 InstallGlobalFunction(DigraphIndependentSets,
 function(arg)
+  local D, out;
   if IsEmpty(arg) then
     ErrorNoReturn("at least 1 argument is required,");
   elif not IsDigraph(arg[1]) then
     ErrorNoReturn("the 1st argument must be a digraph,");
+  elif not IsBound(arg[2])
+      and HasDigraphIndependentSetsAttr(arg[1]) then
+    return DigraphIndependentSetsAttr(arg[1]);
   fi;
+  D      := arg[1];
   arg[1] := DigraphMutableCopyIfMutable(arg[1]);
   arg[1] := DigraphDual(DigraphRemoveAllMultipleEdges(arg[1]));
-  return CallFuncList(DigraphCliques, arg);
+  out    := CallFuncList(DigraphCliques, arg);
+  # Store the result if appropriate
+  if not IsBound(arg[2]) and IsImmutableDigraph(D) then
+    SetDigraphIndependentSetsAttr(D, out);
+  fi;
+  return out;
 end);
 
 # Maximal independent sets orbit representatives
@@ -395,9 +408,12 @@ end);
 
 # Cliques
 
+InstallMethod(DigraphCliquesAttr, "for a digraph", [IsDigraph],
+DigraphCliques);
+
 InstallGlobalFunction(DigraphCliques,
 function(arg)
-  local D, include, exclude, limit, size;
+  local D, include, exclude, limit, size, out;
 
   if IsEmpty(arg) then
     ErrorNoReturn("there must be at least 1 argument,");
@@ -429,8 +445,20 @@ function(arg)
     size := fail;
   fi;
 
-  return CliquesFinder
-          (D, fail, [], limit, include, exclude, false, size, false);
+  # use cached value is not special case due to exclusion / size / etc.
+  if IsList(include) and IsEmpty(include) and IsList(exclude)
+      and IsEmpty(exclude) and limit = infinity and size = fail
+      and HasDigraphCliquesAttr(D) then
+    return DigraphCliquesAttr(D);
+  fi;
+
+  out := CliquesFinder(D, fail, [], limit, include, exclude, false, size, false);
+  # Store the result if appropriate (not special case due to params)
+  if IsEmpty(include) and IsEmpty(exclude) and limit = infinity and size = fail
+      and IsImmutableDigraph(D) then
+    SetDigraphCliquesAttr(D, out);
+  fi;
+  return out;
 end);
 
 # Maximal cliques orbit representatives
