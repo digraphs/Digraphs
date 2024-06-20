@@ -3,6 +3,12 @@ on:
   workflow_dispatch:
   release:
     types: [created]
+  push:
+    paths:
+      - src/*.[hc]
+  pull_request:
+    paths:
+      - src/*.[hc]
 
 env:
   VALGRIND: valgrind --trace-children=yes --leak-check=full --error-exitcode=1
