@@ -1301,18 +1301,18 @@ true
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
     <C>IsDistributiveLatticeDigraph</C> returns <K>true</K> if the digraph
-    <A>digraph</A> is a <E>distributive lattice digraph</E>.<P/>
+    <A>digraph</A> is a distributive lattice digraph.<P/>
 
-    A <E>distributive lattice digraph</E> is a <E>lattice digraph</E>
-    (<Ref Prop="IsLatticeDigraph"/>) which is distributive. That is to say,
-    the functions <Ref Oper="PartialOrderDigraphMeetOfVertices"/> and
-    <Ref Oper="PartialOrderDigraphJoinOfVertices"/> distribute over each other.<P/>
+    A <E>distributive lattice digraph</E> is a lattice digraph (<Ref
+    Prop="IsLatticeDigraph"/>) which is distributive. That is to say, the
+    functions <Ref Oper="PartialOrderDigraphMeetOfVertices"/> and <Ref
+    Oper="PartialOrderDigraphJoinOfVertices"/> distribute over each other.<P/>
 
-    Equivalently, a <E>distributive lattice digraph</E> is a lattice digraph
-    in which the <E>lattice digraphs</E> representing <M>M3</M> and <M>N5</M> are
-    not embeddable as lattices
+    Equivalently, a distributive lattice digraph is a lattice digraph in which
+    the <E>lattice digraphs</E> representing <M>M3</M> and <M>N5</M> are not
+    embeddable as lattices
     (see <URL>https://en.wikipedia.org/wiki/Distributive_lattice</URL> and
-    <Ref Oper="IsLatticeEmbedding"
+    <Ref Prop="IsLatticeEmbedding"
     Label="for digraphs and a permutation or transformation"/>).<P/>
 
     <Alt Only="HTML">
@@ -1350,13 +1350,13 @@ false]]></Example>
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
     <C>IsModularLatticeDigraph</C> returns <K>true</K> if the digraph
-    <A>digraph</A> is a <E>modular lattice digraph</E>.<P/>
+    <A>digraph</A> is a modular lattice digraph.<P/>
 
     A <E>modular lattice digraph</E> is a lattice digraph (<Ref
-    Prop="IsLatticeDigraph"/>) which is modular. That is to say, the <E>lattice
-    digraph</E> representing <M>N5</M> is not embeddable as a lattice
-    (see <URL>https://en.wikipedia.org/wiki/Modular_lattice</URL> and
-    <Ref Oper="IsLatticeEmbedding"
+    Prop="IsLatticeDigraph"/>) which is modular. That is to say, the lattice
+    digraph representing <M>N5</M> is not embeddable as a lattice (see
+    <URL>https://en.wikipedia.org/wiki/Modular_lattice</URL> and <Ref
+    Prop="IsLatticeEmbedding"
     Label="for digraphs and a permutation or transformation"/>).<P/>
 
     <Alt Only="HTML">
