@@ -2409,8 +2409,11 @@ gap> List(res[2][3]);
   <Oper Name="IsOrderIdeal" Arg="D, subset" Label="for a digraph and list"/>
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
-    This function returns <K>true</K> if the specified subset is "downwards" closed, i.e. contains every vertex less than the given vertices in the order defined by <A>D</A>. 
-    The function can only be used on digraphs satisfying <Ref Prop="IsPartialOrderDigraph"/> and will throw an error if passed a digraph that is not a partial order digraph.
+    This function returns <K>true</K> if the specified subset is "downwards"
+    closed, i.e. contains every vertex less than the given vertices in the
+    order defined by <A>D</A>. The function can only be used on digraphs
+    satisfying <Ref Prop="IsPartialOrderDigraph"/> and will throw an error if
+    passed a digraph that is not a partial order digraph.
 
     <Example><![CDATA[
 gap> D1 := Digraph([[1, 3], [2, 3], [3]]);
