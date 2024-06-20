@@ -16,7 +16,7 @@ env:
 
 jobs:
   test-unix:
-    name: Ubuntu / GAP ${{ matrix.gap-branch }} / ${{ matrix.only-needed && 'only-needed' || 'needed+suggested' }}
+    name: GAP ${{ matrix.gap-branch }} / ${{ matrix.only-needed && 'only-needed' || 'needed+suggested' }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
