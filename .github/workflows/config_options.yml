@@ -12,6 +12,10 @@ on:
 env:
   NO_COVERAGE: true
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   with-external-planarity-bliss:
     name: ${{ matrix.bliss }} ${{ matrix.planarity }}

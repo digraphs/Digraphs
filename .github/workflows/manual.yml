@@ -10,6 +10,10 @@ on:
     # Every day at 3:20 AM UTC
     - cron: "20 3 * * *"
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   manual:
     name: compile and upload manual

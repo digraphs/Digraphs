@@ -14,6 +14,10 @@ env:
   DIGRAPHS_LIB: digraphs-lib-0.6
   NO_COVERAGE: true
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   test-unix:
     name: GAP ${{ matrix.gap-branch }} / ${{ matrix.only-needed && 'only-needed' || 'needed+suggested' }}
