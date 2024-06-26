@@ -35,14 +35,14 @@ jobs:
         uses: gap-actions/build-pkg@v1
       - name: Run DigraphsTestInstall . . .
         # TODO: Replace below with gap-actions/run-pkg-tests@v2 if the functionality gets added
-        uses: ./.github/actions/test_with_valgrind
+        uses: ./.github/actions/run-pkg-tests
         with:
           NO_COVERAGE: true
           GAP_TESTFILE: tst/github_actions/install.g
           pre-gap: ${{ env.VALGRIND }}
       - name: Run DigraphsTestStandard . . .
         # TODO: Replace below with gap-actions/run-pkg-tests@v2 if the functionality gets added
-        uses: ./.github/actions/test_with_valgrind
+        uses: ./.github/actions/run-pkg-tests
         with:
           NO_COVERAGE: true
           GAP_TESTFILE: tst/github_actions/standard.g
