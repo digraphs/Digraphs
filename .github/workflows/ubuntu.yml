@@ -54,25 +54,29 @@ jobs:
           curl --retry 5 -L -O "https://digraphs.github.io/Digraphs/${{ env.DIGRAPHS_LIB }}.tar.gz"
           tar xf "${{ env.DIGRAPHS_LIB }}.tar.gz"
       - name: Run DigraphsTestInstall . . .
-        uses: gap-actions/run-pkg-tests@v2
+        # TODO: Replace below with gap-actions/run-pkg-tests@v2 if the functionality gets added
+        uses: ./.github/actions/test_with_valgrind
         with:
           NO_COVERAGE: true
           GAP_TESTFILE: tst/github_actions/install.g
           only-needed: ${{ matrix.only-needed }}
       - name: Run DigraphsTestStandard . . .
-        uses: gap-actions/run-pkg-tests@v2
+        # TODO: Replace below with gap-actions/run-pkg-tests@v2 if the functionality gets added
+        uses: ./.github/actions/test_with_valgrind
         with:
           NO_COVERAGE: true
           GAP_TESTFILE: tst/github_actions/standard.g
           only-needed: ${{ matrix.only-needed }}
       - name: Run DigraphsTestManualExamples . . .
-        uses: gap-actions/run-pkg-tests@v2
+        # TODO: Replace below with gap-actions/run-pkg-tests@v2 if the functionality gets added
+        uses: ./.github/actions/test_with_valgrind
         with:
           NO_COVERAGE: true
           GAP_TESTFILE: tst/github_actions/examples.g
           only-needed: ${{ matrix.only-needed }}
       - name: Run DigraphsTestExtreme . . .
-        uses: gap-actions/run-pkg-tests@v2
+        # TODO: Replace below with gap-actions/run-pkg-tests@v2 if the functionality gets added
+        uses: ./.github/actions/test_with_valgrind
         with:
           NO_COVERAGE: true
           GAP_TESTFILE: tst/github_actions/extreme.g
