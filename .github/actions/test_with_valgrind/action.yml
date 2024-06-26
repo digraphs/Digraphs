@@ -68,11 +68,20 @@ runs:
         # Load the package with debug info
         SetInfoLevel(InfoPackageLoading, PACKAGE_DEBUG);
         SetPackagePath(info.PackageName, "/tmp/gaproot/pkg/$(basename $PWD)");
+        output := "";
+        output_stream := OutputTextString(output, true);
+        SetPrintFormattingStatus(output_stream, false);
+        OutputLogTo(output_stream);
         if ${{ inputs.only-needed }} = true then
            LoadPackage(info.PackageName : OnlyNeeded);
         else
            LoadPackage(info.PackageName);
         fi;
+        OutputLogTo();
+        CloseStream(output_stream);
+        if PositionSublist(output, "warning") <> fail then
+            Error("Warnings were found when loading the package");
+        fi; 
         SetInfoLevel(InfoPackageLoading, PACKAGE_ERROR);
         Print("Now running tests from ", GAP_TESTFILE, "\n");
         if EndsWith(GAP_TESTFILE, ".tst") then
