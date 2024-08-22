@@ -64,19 +64,29 @@ for f in _ARGS.tstfiles:
 _DIR = tempfile.mkdtemp()
 print(f"{_INFO_PREFIX}Using temporary directory: {_DIR}\033[0m")
 
-_COMMANDS = 'echo "'
-_COMMANDS += "".join(rf"Test(\"{f}\");;\n" for f in _ARGS.tstfiles)
-_COMMANDS += rf"""UncoverageLineByLine();;
-LoadPackage(\"profiling\", false);;
-filesdir := \"{getcwd()}{_PROFILE_DIR}\";;\n"""
-
-_COMMANDS += rf"outdir := \"{_DIR}\";;\n"
-_COMMANDS += rf"x := ReadLineByLineProfile(\"{_DIR}/profile.gz\");;\n"
-_COMMANDS += 'OutputAnnotatedCodeCoverageFiles(x, filesdir, outdir);"'
+# Raw strings are used to correctly escape quotes " for input in another
+# process, i.e. we explicitly need the string to contain \" instead of just "
+# for each quote.
+_GAP_COMMANDS = [rf"Test(\"{f}\");;" for f in _ARGS.tstfiles]
+_GAP_COMMANDS.extend(
+    [
+        "UncoverageLineByLine();;",
+        rf"LoadPackage(\"profiling\", false);;",
+        rf"filesdir := \"{getcwd()}{_PROFILE_DIR}\";;",
+        rf"outdir := \"{_DIR}\";;",
+        rf"x := ReadLineByLineProfile(\"{_DIR}/profile.gz\");;",
+        "OutputAnnotatedCodeCoverageFiles(x, filesdir, outdir);",
+    ]
+)
 
 _RUN_GAP = f"{_ARGS.gap_root}/gap -A -m 1g -T --cover {_DIR}/profile.gz"
 
-with subprocess.Popen(_COMMANDS, stdout=subprocess.PIPE, shell=True) as pro1:
+# Commands are stored in a list and then joined with "\n" since including
+# newlines directly in raw strings cause issues when piping into GAP on some
+# platforms.
+with subprocess.Popen(
+    'echo "' + "\n".join(_GAP_COMMANDS) + '"', stdout=subprocess.PIPE, shell=True
+) as pro1:
     try:
         with subprocess.Popen(_RUN_GAP, stdin=pro1.stdout, shell=True) as pro2:
             pro2.wait()
