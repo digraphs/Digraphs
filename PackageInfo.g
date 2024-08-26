@@ -399,13 +399,24 @@ Dependencies := rec(
 
 AvailabilityTest := function()
   local digraphs_so;
-  digraphs_so := Filename(DirectoriesPackagePrograms("digraphs"),
-                          "digraphs.so");
-  if (not "digraphs" in SHOW_STAT()) and digraphs_so = fail then
-     LogPackageLoadingMessage(PACKAGE_WARNING,
+
+  if CompareVersionNumbers(GAPInfo.Version, "4.12") then
+    if not IsKernelExtensionAvailable("digraphs") then
+      LogPackageLoadingMessage(PACKAGE_WARNING,
                               ["the kernel module is not compiled, ",
                                "the package cannot be loaded."]);
-    return fail;
+      return fail;
+    fi;
+  else
+    # TODO this clause can be removed once Digraphs requires GAP>=4.12.1
+    digraphs_so := Filename(DirectoriesPackagePrograms("digraphs"),
+                            "digraphs.so");
+    if (not "digraphs" in SHOW_STAT()) and digraphs_so = fail then
+       LogPackageLoadingMessage(PACKAGE_WARNING,
+                                ["the kernel module is not compiled, ",
+                                 "the package cannot be loaded."]);
+      return fail;
+    fi;
   fi;
   return true;
 end,
