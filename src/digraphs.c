@@ -1133,7 +1133,7 @@ static Obj FuncIS_MULTI_DIGRAPH(Obj self, Obj digraph) {
  *      - If true, for each vertex i, dist[i][i] is initially set to 0
  *      - If false, this step is skipped
  */
-static Obj FLOYD_WARSHALL(Obj  digraph,
+static Obj FLOYD_WARSHALL(Obj digraph,
                           void (*func)(Int** dist, Int i, Int j, Int k, Int n),
                           Int  val1,
                           Int  val2,
@@ -1382,6 +1382,80 @@ static bool EqJumbledPlists(Obj l, Obj r, Int nr, Int* buf) {
     }
   }
   return true;
+}
+
+//-----------------------------------------------------------------------------
+// MurmurHash3 was written by Austin Appleby, and is placed in the public
+// domain. The author hereby disclaims copyright to this source code.
+
+/* Minor modifications to get it to compile in C rather than C++ and
+integrate with GAP  SL*/
+
+/* Digraphs takes parts of this source from GAP */
+
+#define BIG_CONSTANT(x) (x##LLU)
+
+#ifndef SYS_IS_64_BIT
+
+static inline uint32_t fmix4(uint32_t h) {
+  h ^= h >> 16;
+  h *= 0x85ebca6b;
+  h ^= h >> 13;
+  h *= 0xc2b2ae35;
+  h ^= h >> 16;
+
+  return h;
+}
+
+#else
+
+static inline uint64_t fmix8(uint64_t k) {
+  k ^= k >> 33;
+  k *= BIG_CONSTANT(0xff51afd7ed558ccd);
+  k ^= k >> 33;
+  k *= BIG_CONSTANT(0xc4ceb9fe1a85ec53);
+  k ^= k >> 33;
+
+  return k;
+}
+
+#endif
+
+static Obj FuncDIGRAPH_HASH(Obj self, Obj digraph) {
+  UInt n, i;
+  Obj  out, a, res;
+  Int  nr, j;
+
+  n   = DigraphNrVertices(digraph);
+  out = FuncOutNeighbours(self, digraph);
+
+#ifndef SYS_IS_64_BIT
+  uint32_t* buf;
+  buf = safe_calloc(n, sizeof(uint32_t));
+#else
+  uint64_t* buf;
+  buf = safe_calloc(n, sizeof(uint64_t));
+#endif
+
+  for (i = 1; i <= n; i++) {
+    a = ELM_PLIST(out, i);
+    PLAIN_LIST(a);
+    nr = LEN_PLIST(a);
+    for (j = 1; j <= nr; j++) {
+#ifndef SYS_IS_64_BIT
+      buf[i - 1] += fmix4((uint32_t) INT_INTOBJ(ELM_PLIST(a, j)));
+#else
+      buf[i - 1] += fmix8((uint64_t) INT_INTOBJ(ELM_PLIST(a, j)));
+#endif
+    }
+  }
+#ifndef SYS_IS_64_BIT
+  res = INTOBJ_INT(HASHKEY_MEM_NC(buf, (UInt4) n, n * sizeof(uint64_t)));
+#else
+  res = INTOBJ_INT(HASHKEY_MEM_NC(buf, (UInt4) n, n * sizeof(uint32_t)));
+#endif
+  free(buf);
+  return res;
 }
 
 static Obj FuncDIGRAPH_EQUALS(Obj self, Obj digraph1, Obj digraph2) {
@@ -2198,6 +2272,12 @@ static StructGVarFunc GVarFuncs[] = {
      "nn, mm",
      FuncRANDOM_MULTI_DIGRAPH,
      "src/digraphs.c:FuncRANDOM_MULTI_DIGRAPH"},
+
+    {"DIGRAPH_HASH",
+     1,
+     "digraph",
+     FuncDIGRAPH_HASH,
+     "src/digraphs.c:FuncDIGRAPH_HASH"},
 
     {"DIGRAPH_EQUALS",
      2,

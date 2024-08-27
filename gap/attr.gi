@@ -750,6 +750,13 @@ function(D)
   return out;
 end);
 
+InstallMethod(DigraphHash, "for a digraph", [IsDigraph], DIGRAPH_HASH);
+
+InstallMethod(SparseIntKey, "for an object and digraph",
+[IsObject, IsDigraph],
+{coll, D} -> DigraphHash
+);
+
 # attributes for digraphs . . .
 
 InstallMethod(AsGraph, "for a digraph", [IsDigraph], Graph);
