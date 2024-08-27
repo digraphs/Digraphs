@@ -2554,7 +2554,7 @@ fail
   <Attr Name="DigraphHash" Arg="digraph"/>
   <Returns>The hash of a digraph.</Returns>
   <Description>
-    This function returns a hash <A>digraph</A>. <P/>
+    This function returns a hash of <A>digraph</A>. <P/>
 
     Note that the underlying hashing function is system dependent, and so the
     value of this attribute is not guaranteed to be the same on different systems.
