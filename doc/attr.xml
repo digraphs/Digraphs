@@ -100,8 +100,8 @@ gap> gr := DigraphFromDiSparse6String(".DaXbOe?EAM@G~");
 <immutable multidigraph with 5 vertices, 16 edges>
 gap> edges := ShallowCopy(DigraphEdges(gr));; Sort(edges);
 gap> edges;
-[ [ 1, 1 ], [ 1, 3 ], [ 1, 3 ], [ 1, 4 ], [ 1, 5 ], [ 2, 1 ],
-  [ 2, 2 ], [ 2, 3 ], [ 2, 5 ], [ 3, 2 ], [ 3, 4 ], [ 3, 5 ],
+[ [ 1, 1 ], [ 1, 3 ], [ 1, 3 ], [ 1, 4 ], [ 1, 5 ], [ 2, 1 ], 
+  [ 2, 2 ], [ 2, 3 ], [ 2, 5 ], [ 3, 2 ], [ 3, 4 ], [ 3, 5 ], 
   [ 4, 2 ], [ 4, 4 ], [ 4, 5 ], [ 5, 1 ] ]
 gap> D := CycleDigraph(IsMutableDigraph, 3);
 <mutable digraph with 3 vertices, 3 edges>
@@ -171,7 +171,7 @@ gap> DigraphNrLoops(D);
     <C>DigraphRange</C> and <C>DigraphSource</C> return the range and source of
     the digraph <A>digraph</A>. More precisely, position <C>i</C> in
     <C>DigraphSource(<A>digraph</A>)</C> and
-    <C>DigraphRange(<A>digraph</A>)</C> give, respectively, the source and
+    <C>DigraphRange(<A>digraph</A>)</C> give, respectively, the source and 
     range of the <C>i</C>th edge of <A>digraph</A>.
 
     <Example><![CDATA[
@@ -183,8 +183,8 @@ gap> DigraphSource(gr);
 gap> DigraphRange(gr);
 [ 2, 1, 3, 5, 1, 3, 4, 2, 3, 2, 1, 2, 3, 4 ]
 gap> DigraphEdges(gr);
-[ [ 1, 2 ], [ 1, 1 ], [ 1, 3 ], [ 1, 5 ], [ 2, 1 ], [ 2, 3 ],
-  [ 2, 4 ], [ 3, 2 ], [ 3, 3 ], [ 4, 2 ], [ 5, 1 ], [ 5, 2 ],
+[ [ 1, 2 ], [ 1, 1 ], [ 1, 3 ], [ 1, 5 ], [ 2, 1 ], [ 2, 3 ], 
+  [ 2, 4 ], [ 3, 2 ], [ 3, 3 ], [ 4, 2 ], [ 5, 1 ], [ 5, 2 ], 
   [ 5, 3 ], [ 5, 4 ] ]
 gap> D := CycleDigraph(IsMutableDigraph, 3);
 <mutable digraph with 3 vertices, 3 edges>
@@ -678,7 +678,7 @@ gap> DigraphNrStronglyConnectedComponents(gr);
 gap> D := DigraphDisjointUnion(CycleDigraph(4), CycleDigraph(5));
 <immutable digraph with 9 vertices, 9 edges>
 gap> DigraphStronglyConnectedComponents(D);
-rec( comps := [ [ 1, 2, 3, 4 ], [ 5, 6, 7, 8, 9 ] ],
+rec( comps := [ [ 1, 2, 3, 4 ], [ 5, 6, 7, 8, 9 ] ], 
   id := [ 1, 1, 1, 1, 2, 2, 2, 2, 2 ] )
 gap> DigraphNrStronglyConnectedComponents(D);
 2
@@ -1070,7 +1070,7 @@ gap> DigraphUndirectedGirth(D);
   <Returns>A list of vertices.</Returns>
   <Description>
     A connected digraph is <E>biconnected</E> if it is still connected (in the
-    sense of <Ref Prop="IsConnectedDigraph"/>) when any vertex is removed.
+    sense of <Ref Prop="IsConnectedDigraph"/>) when any vertex is removed. 
     If the digraph <A>digraph</A> is not biconnected but is connected, then any
     vertex <C>v</C> of <A>digraph</A> whose removal makes the resulting digraph
     disconnected is called an <E>articulation point</E>.<P/>
@@ -1084,7 +1084,7 @@ gap> DigraphUndirectedGirth(D);
     The method used in this operation has complexity <M>O(m+n)</M> where
     <M>m</M> is the number of edges and <M>n</M> is the number of vertices in
     the digraph.<P/>
-
+      
     If <A>D</A> has a bridge (see <Ref Attr="Bridges"/>), then a node incident
     to the bridge is an articulation point if and only if it has degree at
     least <M>2</M>.  It follows that if <A>D</A> has a bridge and at least
@@ -1093,7 +1093,7 @@ gap> DigraphUndirectedGirth(D);
     with articulation points, but no bridges.
     <P/>
 
-    See also <Ref Prop="IsBiconnectedDigraph"/> and
+    See also <Ref Prop="IsBiconnectedDigraph"/> and 
     <Ref Prop="IsBridgelessDigraph"/>.
 <Example><![CDATA[
 gap> ArticulationPoints(CycleDigraph(5));
@@ -1126,7 +1126,7 @@ gap> ArticulationPoints(D);
     <E>absorbed</E> the random walk, and we can calculate the probability of
     each SCC absorbing a walk starting at a given vertex.
     <P/>
-
+    
     <C>DigraphAbsorptionProbabilities</C> returns an <M>m \times n</M> matrix
     <C>mat</C>, where <M>m</M> is the number of vertices in <C>digraph</C> and
     <M>n</M> is the number of strongly connected components.  Each entry
@@ -1164,7 +1164,7 @@ gap> DigraphAbsorptionProbabilities(gr);
     because the SCC has no out-edges leading to other SCCs.  When this happens,
     we say the walk has been <E>absorbed</E>.
     <P/>
-
+    
     <C>DigraphAbsorptionExpectedSteps</C> returns a list <C>L</C> with length
     equal to the number of vertices of <A>digraph</A>, where <C>L[v]</C>
     is the expected number of steps a random walk starting at vertex <C>v</C>
@@ -1196,13 +1196,13 @@ gap> DigraphAbsorptionExpectedSteps(gr);
     that for every edge <C>[u, v]</C> of <A>D</A> either <C>[u, v]</C> or
     <C>[v, u]</C> is an edge of <C>C</C> but not both.  Robbin's Theorem states
     that a digraph admits a strong orientation if and only if it is
-    bridgeless (see <Ref Prop="IsBridgelessDigraph"/>).
+    bridgeless (see <Ref Prop="IsBridgelessDigraph"/>). 
     <P/>
 
-    This operation returns a strong orientation of the digraph <A>D</A> if
+    This operation returns a strong orientation of the digraph <A>D</A> if 
     <A>D</A> is symmetric and <A>D</A> admits a strong orientation. If <A>D</A>
     is symmetric but does not admit a strong orientation, then <K>fail</K> is
-    returned. If <A>D</A> is not symmetric, then an error is given.
+    returned. If <A>D</A> is not symmetric, then an error is given. 
     <P/>
 
     If <A>D</A> is immutable, <C>StrongOrientation(<A>D</A>)</C> returns an
@@ -1213,7 +1213,7 @@ gap> DigraphAbsorptionExpectedSteps(gr);
     <M>m</M> is the number of edges and <M>n</M> is the number of vertices in
     the digraph.
 <Example><![CDATA[
-gap> StrongOrientation(DigraphSymmetricClosure(CycleDigraph(5)))
+gap> StrongOrientation(DigraphSymmetricClosure(CycleDigraph(5))) 
 > = CycleDigraph(5);
 true
 gap> D := DigraphSymmetricClosure(Digraph(
@@ -1224,7 +1224,7 @@ gap> StrongOrientation(D);
 fail
 gap> StrongOrientation(NullDigraph(0));
 <immutable empty digraph with 0 vertices>
-gap> StrongOrientation(DigraphDisjointUnion(CompleteDigraph(3),
+gap> StrongOrientation(DigraphDisjointUnion(CompleteDigraph(3), 
 >                                           CompleteDigraph(3)));
 fail
 ]]></Example>
@@ -1261,7 +1261,7 @@ fail
     hold, there are digraphs with articulation points, but no bridges.
     <P/>
 
-    See also <Ref Prop="IsBiconnectedDigraph"/> and
+    See also <Ref Prop="IsBiconnectedDigraph"/> and 
     <Ref Prop="IsBridgelessDigraph"/>.
 <Example><![CDATA[
 gap> D := Digraph([[2, 5], [1, 3, 4, 5], [2, 4], [2, 3], [1, 2]]);
@@ -1508,9 +1508,9 @@ gap> DigraphLoops(D);
     the use of value options. The permitted algorithms and values to
     pass as options are:
     <List>
-      <Item><C>lawler</C> - Lawler's Algorithm
+      <Item><C>lawler</C> - Lawler's Algorithm 
       <Cite Key="Law1976"/></Item>
-      <Item><C>byskov</C> - Byskov's Algorithm
+      <Item><C>byskov</C> - Byskov's Algorithm 
       <Cite Key="Bys2002"/></Item>
     </List>
 
@@ -1589,7 +1589,7 @@ gap> DigraphBicomponents(D);
       of <A>D</A> induced by this list is isomorphic to the core of <A>D</A>.<P/>
 
     The <E>core</E> of a digraph <C>D</C> is the minimal subdigraph <A>C</A> of
-    <C>D</C> which is a homomorphic image of <C>D</C>. The core of a digraph
+    <C>D</C> which is a homomorphic image of <C>D</C>. The core of a digraph 
     is unique up to isomorphism.
       <Example><![CDATA[
 gap> D := DigraphSymmetricClosure(CycleDigraph(8));
@@ -1648,10 +1648,10 @@ x_1^3-1
     Returns the number of spanning trees of the symmetric digraph
     <A>digraph</A>.
     <C>NrSpanningTrees</C> will return an error if <A>digraph</A> is not a
-    symmetric digraph. <P/>
+    symmetric digraph. <P/> 
 
     See <Ref Prop="IsSymmetricDigraph"/> and
-    <Ref Oper="IsUndirectedSpanningTree" /> for more information.
+    <Ref Oper="IsUndirectedSpanningTree" /> for more information. 
 
     <Example><![CDATA[
 gap> D := CompleteDigraph(5);
@@ -1687,8 +1687,8 @@ gap> NrSpanningTrees(D);
 gap> D := Digraph([[1, 2], [3], []]);
 <immutable digraph with 3 vertices, 3 edges>
 gap> G := AsGraph(D);
-rec( adjacencies := [ [ 1, 2 ], [ 3 ], [  ] ], group := Group(()),
-  isGraph := true, names := [ 1 .. 3 ], order := 3,
+rec( adjacencies := [ [ 1, 2 ], [ 3 ], [  ] ], group := Group(()), 
+  isGraph := true, names := [ 1 .. 3 ], order := 3, 
   representatives := [ 1, 2, 3 ], schreierVector := [ -1, -2, -3 ] )
 ]]></Example>
   </Description>
@@ -1901,7 +1901,7 @@ gap> D := EmptyDigraph(13);
 gap> D := DigraphAddAllLoops(D);
 <immutable reflexive digraph with 13 vertices, 13 edges>
 gap> OutNeighbours(D);
-[ [ 1 ], [ 2 ], [ 3 ], [ 4 ], [ 5 ], [ 6 ], [ 7 ], [ 8 ], [ 9 ],
+[ [ 1 ], [ 2 ], [ 3 ], [ 4 ], [ 5 ], [ 6 ], [ 7 ], [ 8 ], [ 9 ], 
   [ 10 ], [ 11 ], [ 12 ], [ 13 ] ]
 gap> D := Digraph([[1, 2, 3], [1, 3], [1]]);
 <immutable digraph with 3 vertices, 6 edges>
@@ -1958,11 +1958,11 @@ gap> D;
     If <A>digraph</A> is a digraph, then this attribute gives the minimal
     symmetric digraph which has the same vertices and contains all the edges of
     <A>digraph</A>.<P/>
-
-    A digraph is <E>symmetric</E> if its adjacency matrix
+    
+    A digraph is <E>symmetric</E> if its adjacency matrix 
     <Ref Attr="AdjacencyMatrix"/> is symmetric. For a digraph with multiple
     edges this means that there are the same number of edges from a vertex
-    <C>u</C> to a vertex <C>v</C> as there are from <C>v</C> to <C>u</C>;
+    <C>u</C> to a vertex <C>v</C> as there are from <C>v</C> to <C>u</C>; 
     see <Ref Prop="IsSymmetricDigraph"/>.<P/>
 
     If <A>digraph</A> is immutable, then a new immutable digraph is returned.
@@ -2011,7 +2011,7 @@ gap> D;
 
     The digraph returned by <C>MaximalSymmetricSubdigraphWithoutLoops</C> is
     the same, except that loops are removed.<P/>
-
+    
     If <A>digraph</A> is immutable, then a new immutable digraph is returned.
     Otherwise, the mutable digraph <A>digraph</A> is changed in-place into such
     a digraph described above.<P/>
@@ -2054,7 +2054,7 @@ gap> D;
     and discarding any edge <C>[i,j]</C> of <A>digraph</A> where <C>i > j</C>
     and the reverse edge <C>[j,i]</C> is an edge of <A>digraph</A>.
     In other words, for every
-    symmetric pair of edges <C>[i,j]</C> and <C>[j,i]</C> in <A>digraph</A>, where
+    symmetric pair of edges <C>[i,j]</C> and <C>[j,i]</C> in <A>digraph</A>, where 
     <C>i</C> and <C>j</C> are distinct, it discards the edge
     <M>[\max(i,j),\min(i,j)]</M>.
     <P/>
@@ -2123,17 +2123,17 @@ gap> D := DigraphFromDiSparse6String(".H`eOWR`Ul^");
 gap> IsReflexiveDigraph(D) or IsTransitiveDigraph(D);
 false
 gap> OutNeighbours(D);
-[ [ 4, 6 ], [ 1, 3 ], [  ], [ 5 ], [  ], [ 7, 8, 9 ], [  ], [  ],
+[ [ 4, 6 ], [ 1, 3 ], [  ], [ 5 ], [  ], [ 7, 8, 9 ], [  ], [  ], 
   [  ] ]
 gap> T := DigraphTransitiveClosure(D);
 <immutable transitive digraph with 9 vertices, 18 edges>
 gap> OutNeighbours(T);
-[ [ 4, 6, 5, 7, 8, 9 ], [ 1, 3, 4, 5, 6, 7, 8, 9 ], [  ], [ 5 ],
+[ [ 4, 6, 5, 7, 8, 9 ], [ 1, 3, 4, 5, 6, 7, 8, 9 ], [  ], [ 5 ], 
   [  ], [ 7, 8, 9 ], [  ], [  ], [  ] ]
 gap> RT := DigraphReflexiveTransitiveClosure(D);
 <immutable preorder digraph with 9 vertices, 27 edges>
 gap> OutNeighbours(RT);
-[ [ 4, 6, 5, 7, 8, 9, 1 ], [ 1, 3, 4, 5, 6, 7, 8, 9, 2 ], [ 3 ],
+[ [ 4, 6, 5, 7, 8, 9, 1 ], [ 1, 3, 4, 5, 6, 7, 8, 9, 2 ], [ 3 ], 
   [ 5, 4 ], [ 5 ], [ 7, 8, 9, 6 ], [ 7 ], [ 8 ], [ 9 ] ]
 gap> D := CycleDigraph(IsMutableDigraph, 3);
 <mutable digraph with 3 vertices, 3 edges>
@@ -2284,7 +2284,7 @@ gap> D;
   <Description>
     If <A>digraph</A> is a symmetric digraph, then
     <C>DigraphMycielskian</C> returns the Mycielskian of <A>digraph</A>.<P/>
-
+    
     The Mycielskian of a symmetric digraph is a larger symmetric digraph
     constructed from it, which has a larger chromatic number. For further
     information, see <URL>https://en.wikipedia.org/wiki/Mycielskian</URL>.<P/>
@@ -2322,7 +2322,7 @@ gap> D;
   <Attr Name="DigraphCartesianProductProjections" Arg="digraph"/>
   <Returns>A list of transformations.</Returns>
   <Description>
-    If <A>digraph</A> is a Cartesian product digraph,
+    If <A>digraph</A> is a Cartesian product digraph, 
     <C>digraph = DigraphCartesianProduct(gr_1, gr_2, ... )</C>, then
     <C>DigraphCartesianProductProjections</C> returns a list <C>proj</C>
     such that <C>proj[i]</C> is the projection onto the <C>i</C>-th
@@ -2330,18 +2330,18 @@ gap> D;
     <P/>
 
     A projection is an idempotent endomorphism of <A>digraph</A>. If
-    <C>gr1, gr2, ...</C> are all loopless digraphs, then the induced
-    subdigraph of <A>digraph</A> on the image of <C>proj[i]</C> is
+    <C>gr1, gr2, ...</C> are all loopless digraphs, then the induced 
+    subdigraph of <A>digraph</A> on the image of <C>proj[i]</C> is 
     isomorphic to <C>gr_i</C>.
     <P/>
 
-    Currently this attribute is only set upon creating an immutable
-    digraph via <C>DigraphCartesianProduct</C> and there is no way
+    Currently this attribute is only set upon creating an immutable 
+    digraph via <C>DigraphCartesianProduct</C> and there is no way 
     of calculating it for other digraphs.
     <P/>
 
     For more information see
-    <Ref Func="DigraphCartesianProduct" Label="for a list of digraphs"/>
+    <Ref Func="DigraphCartesianProduct" Label="for a list of digraphs"/> 
 
     <Example><![CDATA[
 gap> D := DigraphCartesianProduct(ChainDigraph(3), CycleDigraph(4),
@@ -2367,7 +2367,7 @@ true
   <Attr Name="DigraphDirectProductProjections" Arg="digraph"/>
   <Returns>A list of transformations.</Returns>
   <Description>
-    If <A>digraph</A> is a direct product digraph,
+    If <A>digraph</A> is a direct product digraph, 
     <C>digraph = DigraphDirectProduct(gr_1, gr_2, ... )</C>, then
     <C>DigraphDirectProductProjections</C> returns a list <C>proj</C>
     such that <C>proj[i]</C> is the projection onto the <C>i</C>-th
@@ -2375,17 +2375,17 @@ true
     <P/>
 
     A projection is an idempotent endomorphism of <A>digraph</A>. If
-    <C>gr1, gr2, ...</C> are all loopless digraphs, then the image
+    <C>gr1, gr2, ...</C> are all loopless digraphs, then the image 
     of <A>digraph</A> under <C>proj[i]</C> is isomorphic to <C>gr_i</C>.
     <P/>
 
     Currently this attribute is only set upon creating an immutable
-    digraph via <C>DigraphDirectProduct</C> and there is no way of
+    digraph via <C>DigraphDirectProduct</C> and there is no way of 
     calculating it for other digraphs.
     <P/>
 
     For more information, see
-    <Ref Func="DigraphDirectProduct" Label="for a list of digraphs"/>
+    <Ref Func="DigraphDirectProduct" Label="for a list of digraphs"/> 
 
     <Example><![CDATA[
 gap> D := DigraphDirectProduct(ChainDigraph(3), CycleDigraph(4),
@@ -2399,7 +2399,7 @@ true
 gap> RankOfTransformation(proj[3]);
 2
 gap> P := DigraphRemoveAllMultipleEdges(
-> ReducedDigraph(OnDigraphs(D, proj[2])));;
+> ReducedDigraph(OnDigraphs(D, proj[2])));; 
 gap> IsIsomorphicDigraph(CycleDigraph(4), P);
 true
 ]]></Example>
@@ -2415,7 +2415,7 @@ true
     This function returns a maximal matching of the digraph <A>digraph</A>.
     <P/>
 
-    For the definition of a maximal matching, see <Ref Oper="IsMaximalMatching"/>.
+    For the definition of a maximal matching, see <Ref Oper="IsMaximalMatching"/>. 
 
     <Example><![CDATA[
 gap> D := DigraphFromDiSparse6String(".IeAoXCJU@|SHAe?d");
@@ -2443,9 +2443,9 @@ true
     <P/>
 
     For the definition of a maximum matching, see <Ref Oper="IsMaximumMatching"/>.
-    If <A>digraph</A> is bipartite (see <Ref Oper="IsBipartiteDigraph"/>), then
-    the algorithm used has complexity <C>O(m*sqrt(n))</C>. Otherwise for general
-    graphs the complexity is <C>O(m*n*log(n))</C>. Here <C>n</C> is the number of vertices
+    If <A>digraph</A> is bipartite (see <Ref Oper="IsBipartiteDigraph"/>), then 
+    the algorithm used has complexity <C>O(m*sqrt(n))</C>. Otherwise for general 
+    graphs the complexity is <C>O(m*n*log(n))</C>. Here <C>n</C> is the number of vertices 
     and <C>m</C> is the number of edges.
 
     <Example><![CDATA[
@@ -2455,7 +2455,7 @@ gap> M := DigraphMaximumMatching(D);; IsMaximalMatching(D, M);
 true
 gap> Length(M);
 5
-gap> D := Digraph([[5, 6, 7, 8], [6, 7, 8], [7, 8], [8],
+gap> D := Digraph([[5, 6, 7, 8], [6, 7, 8], [7, 8], [8], 
 >                  [], [], [], []]);;
 gap> M := DigraphMaximumMatching(D);
 [ [ 1, 5 ], [ 2, 6 ], [ 3, 7 ], [ 4, 8 ] ]
@@ -2479,7 +2479,7 @@ gap> Length(M);
   <Description>
     <C>NonUpperSemimodularPair</C> returns a pair of vertices in the digraph
     <A>D</A> that witnesses the fact that <A>D</A> does not represent an upper
-    semimodular lattice, if such a pair exists. <P/>
+    semimodular lattice, if such a pair exists. <P/> 
 
     If the digraph <A>D</A> does not satisfy <Ref
     Prop="IsLatticeDigraph"/>, then an error is given. Otherwise if the
@@ -2493,7 +2493,7 @@ gap> Length(M);
 
     See <Ref Prop="IsUpperSemimodularDigraph"/> and <Ref
     Prop="IsLowerSemimodularDigraph"/> for the definition of upper
-    semimodularity of a lattice.
+    semimodularity of a lattice. 
 
     <Example><![CDATA[
 gap> D := DigraphFromDigraph6String(
@@ -2551,14 +2551,13 @@ fail
 
 <#GAPDoc Label="DigraphHash">
 <ManSection>
-  <Oper Name="DigraphHash" Arg="D"/>
+  <Attr Name="DigraphHash" Arg="digraph"/>
   <Returns>The hash of a digraph.</Returns>
   <Description>
-    This function returns the hash of the input digraph <A>D</A>. <P/>
+    This function returns a hash <A>digraph</A>. <P/>
 
     Note that the underlying hashing function is system dependent, and so the
-    value of this attribute is not guaranteed to be the same when running
-    across different systems.
+    value of this attribute is not guaranteed to be the same on different systems.
   </Description>
 </ManSection>
 <#/GAPDoc>

@@ -38,7 +38,7 @@
     <#Include Label="DegreeMatrix">
     <#Include Label="LaplacianMatrix">
   </Section>
-
+  
   <Section><Heading>Orders</Heading>
     <#Include Label="PartialOrderDigraphMeetOfVertices">
     <#Include Label="NonUpperSemimodularPair">
