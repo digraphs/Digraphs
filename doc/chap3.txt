@@ -1614,7 +1614,49 @@
     [4X[28X<mutable digraph with 2 vertices, 2 edges>[128X[104X
   [4X[32X[104X
   
-  [1X3.3-27 DigraphReverseEdges[101X
+  [1X3.3-27 DigraphContractEdge[101X
+  
+  [33X[1;0Y[29X[2XDigraphContractEdge[102X( [3Xdigraph[103X, [3Xedge[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XDigraphContractEdge[102X( [3Xdigraph[103X, [3Xsrc[103X, [3Xran[103X ) [32X operation[133X
+  [6XReturns:[106X  [33X[0;10YA digraph.[133X
+  
+  [33X[0;0YIf  [3Xedge[103X  is  a  pair of vertices of [3Xdigraph[103X, or [3Xsrc[103X and [3Xran[103X are vertices of
+  [3Xdigraph[103X,  where [3Xran[103X <> [3Xsrc[103X, then then this operation merges the two vertices
+  of  the  edge  given  into  one.  Edges  incident to [3Xsrc[103X and [3Xran[103X will now be
+  incident to [10Xv[110X, the new vertex, with their direction preserved.[133X
+  
+  [33X[0;0YA  new  digraph constructed from [3Xdigraph[103X is returned, unless [3Xdigraph[103X belongs
+  to  [2XIsMutableDigraph[102X  ([14X3.1-2[114X);  in  this  case  changes are made directly to
+  [3Xdigraph[103X,   which   is   then  returned.  The  [3Xdigraph[103X  must  not  belong  to
+  [2XIsMultiDigraph[102X ([14X6.2-11[114X).[133X
+  
+  [33X[0;0YThe labels of any remaining edges will be preserved.[133X
+  
+  [33X[0;0YAssigned  vertex  labels  for  [3Xsrc[103X  and  [3Xran[103X  are  combined into a list, and
+  assigned to the new vertex [10Xv[110X.[133X
+  
+  [33X[0;0YIf  an  edge  [3X[src,  src][103X  or  [3X[ran,  ran][103X exists, a singular edge [10X[v, v][110X is
+  created. If edge [3X[ran, src][103X exists, this is also removed.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27XD := DigraphByEdges([[1, 2], [2, 1]]);[127X[104X
+    [4X[28X<immutable digraph with 2 vertices, 2 edges>[128X[104X
+    [4X[25Xgap>[125X [27XD2 := DigraphContractEdge(D, 1, 2);[127X[104X
+    [4X[28X<immutable empty digraph with 1 vertex>[128X[104X
+    [4X[25Xgap>[125X [27XDigraphEdges(D2);[127X[104X
+    [4X[28X[  ][128X[104X
+    [4X[25Xgap>[125X [27XD := DigraphByEdges(IsMutableDigraph, [[1, 2], [2, 3], [3, 4]]);[127X[104X
+    [4X[28X<mutable digraph with 4 vertices, 3 edges>[128X[104X
+    [4X[25Xgap>[125X [27XDigraphVertexLabels(D);;  # setting vertex labels[127X[104X
+    [4X[25Xgap>[125X [27XDigraphContractEdge(D, [2, 3]);[127X[104X
+    [4X[28X<mutable digraph with 3 vertices, 2 edges>[128X[104X
+    [4X[25Xgap>[125X [27XDigraphEdges(D);[127X[104X
+    [4X[28X[ [ 1, 3 ], [ 3, 2 ] ][128X[104X
+    [4X[25Xgap>[125X [27XDigraphVertexLabels(D);[127X[104X
+    [4X[28X[ 1, 4, [ 2, 3 ] ][128X[104X
+  [4X[32X[104X
+  
+  [1X3.3-28 DigraphReverseEdges[101X
   
   [33X[1;0Y[29X[2XDigraphReverseEdges[102X( [3Xdigraph[103X, [3Xedges[103X ) [32X operation[133X
   [33X[1;0Y[29X[2XDigraphReverseEdge[102X( [3Xdigraph[103X, [3Xedge[103X ) [32X operation[133X
@@ -1656,7 +1698,7 @@
     [4X[28Xtrue[128X[104X
   [4X[32X[104X
   
-  [1X3.3-28 DigraphDisjointUnion[101X
+  [1X3.3-29 DigraphDisjointUnion[101X
   
   [33X[1;0Y[29X[2XDigraphDisjointUnion[102X( [3XD1[103X, [3XD2[103X, [3X...[103X ) [32X function[133X
   [33X[1;0Y[29X[2XDigraphDisjointUnion[102X( [3Xlist[103X ) [32X function[133X
@@ -1700,7 +1742,7 @@
     [4X[28X[ [ 2 ], [ 3 ], [ 1 ], [ 5, 6 ], [ 4, 6 ], [ 4, 5 ] ][128X[104X
   [4X[32X[104X
   
-  [1X3.3-29 DigraphEdgeUnion[101X
+  [1X3.3-30 DigraphEdgeUnion[101X
   
   [33X[1;0Y[29X[2XDigraphEdgeUnion[102X( [3XD1[103X, [3XD2[103X, [3X...[103X ) [32X function[133X
   [33X[1;0Y[29X[2XDigraphEdgeUnion[102X( [3Xlist[103X ) [32X function[133X
@@ -1743,7 +1785,7 @@
     [4X[28Xtrue[128X[104X
   [4X[32X[104X
   
-  [1X3.3-30 DigraphJoin[101X
+  [1X3.3-31 DigraphJoin[101X
   
   [33X[1;0Y[29X[2XDigraphJoin[102X( [3XD1[103X, [3XD2[103X, [3X...[103X ) [32X function[133X
   [33X[1;0Y[29X[2XDigraphJoin[102X( [3Xlist[103X ) [32X function[133X
@@ -1754,7 +1796,7 @@
   then [10XDigraphJoin[110X returns the join of the digraphs contained in the list.[133X
   
   [33X[0;0YThe  join  of a collection of digraphs [3XD1[103X, [3XD2[103X, [10X...[110X is formed by first taking
-  the  [2XDigraphDisjointUnion[102X ([14X3.3-28[114X) of the collection. In the disjoint union,
+  the  [2XDigraphDisjointUnion[102X ([14X3.3-29[114X) of the collection. In the disjoint union,
   if  [22Xi ≠ j[122X then there are no edges between vertices corresponding to digraphs
   [3XD[103X[10X[i][110X  and  [3XD[103X[10X[j][110X in the collection; the join is created by including all such
   edges.[133X
@@ -1779,7 +1821,7 @@
     [4X[28X<immutable digraph with 6 vertices, 27 edges>[128X[104X
   [4X[32X[104X
   
-  [1X3.3-31 DigraphCartesianProduct[101X
+  [1X3.3-32 DigraphCartesianProduct[101X
   
   [33X[1;0Y[29X[2XDigraphCartesianProduct[102X( [3Xgr1[103X, [3Xgr2[103X, [3X...[103X ) [32X function[133X
   [33X[1;0Y[29X[2XDigraphCartesianProduct[102X( [3Xlist[103X ) [32X function[133X
@@ -1802,7 +1844,7 @@
   has vertex set [10X[1 .. DigraphNrVertices(G)*DigraphNrVertices(H)][110X instead, and
   the   exact   method   of  encoding  pairs  of  vertices  into  integers  is
   implementation  specific.  The original vertex pair can be somewhat regained
-  by   using   [2XDigraphCartesianProductProjections[102X   ([14X3.3-38[114X).   In   addition,
+  by   using   [2XDigraphCartesianProductProjections[102X   ([14X3.3-39[114X).   In   addition,
   [2XDigraphVertexLabels[102X  ([14X5.1-10[114X)  are  preserved:  if  vertex  pair  [10X[u,u'][110X was
   encoded as [10Xi[110X then the vertex label of [10Xi[110X will be the pair of vertex labels of
   [10Xu[110X   and   [10Xu'[110X   i.e.   [10XDigraphVertexLabel(D,i)   =  [DigraphVertexLabel(G,u),
@@ -1825,7 +1867,7 @@
     [4X[28Xtrue[128X[104X
   [4X[32X[104X
   
-  [1X3.3-32 DigraphDirectProduct[101X
+  [1X3.3-33 DigraphDirectProduct[101X
   
   [33X[1;0Y[29X[2XDigraphDirectProduct[102X( [3Xgr1[103X, [3Xgr2[103X, [3X...[103X ) [32X function[133X
   [33X[1;0Y[29X[2XDigraphDirectProduct[102X( [3Xlist[103X ) [32X function[133X
@@ -1847,7 +1889,7 @@
   vertex set [10X[1 .. DigraphNrVertices(G)*DigraphNrVertices(H)][110X instead, and the
   exact  method  of encoding pairs of vertices into integers is implementation
   specific.  The  original  vertex  pair  can  be  somewhat  regained by using
-  [2XDigraphDirectProductProjections[102X  ([14X3.3-39[114X).  In  addition [2XDigraphVertexLabels[102X
+  [2XDigraphDirectProductProjections[102X  ([14X3.3-40[114X).  In  addition [2XDigraphVertexLabels[102X
   ([14X5.1-10[114X)  are  preserved:  if  vertex  pair [10X[u,u'][110X was encoded as [10Xi[110X then the
   vertex  label  of  [10Xi[110X  will  be  the  pair  of vertex labels of [10Xu[110X and [10Xu'[110X i.e.
   [10XDigraphVertexLabel(D,i)              =             [DigraphVertexLabel(G,u),
@@ -1870,7 +1912,7 @@
     [4X[28Xtrue[128X[104X
   [4X[32X[104X
   
-  [1X3.3-33 ConormalProduct[101X
+  [1X3.3-34 ConormalProduct[101X
   
   [33X[1;0Y[29X[2XConormalProduct[102X( [3XD1[103X, [3XD2[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
@@ -1894,7 +1936,7 @@
     [4X[28X<immutable empty digraph with 0 vertices>[128X[104X
   [4X[32X[104X
   
-  [1X3.3-34 HomomorphicProduct[101X
+  [1X3.3-35 HomomorphicProduct[101X
   
   [33X[1;0Y[29X[2XHomomorphicProduct[102X( [3XD1[103X, [3XD2[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
@@ -1922,7 +1964,7 @@
     [4X[28X<immutable digraph with 20 vertices, 180 edges>[128X[104X
   [4X[32X[104X
   
-  [1X3.3-35 LexicographicProduct[101X
+  [1X3.3-36 LexicographicProduct[101X
   
   [33X[1;0Y[29X[2XLexicographicProduct[102X( [3XD1[103X, [3XD2[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
@@ -1950,7 +1992,7 @@
     [4X[28X<immutable empty digraph with 0 vertices>[128X[104X
   [4X[32X[104X
   
-  [1X3.3-36 ModularProduct[101X
+  [1X3.3-37 ModularProduct[101X
   
   [33X[1;0Y[29X[2XModularProduct[102X( [3XD1[103X, [3XD2[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
@@ -1983,7 +2025,7 @@
     [4X[28X<immutable empty digraph with 0 vertices>[128X[104X
   [4X[32X[104X
   
-  [1X3.3-37 StrongProduct[101X
+  [1X3.3-38 StrongProduct[101X
   
   [33X[1;0Y[29X[2XStrongProduct[102X( [3XD1[103X, [3XD2[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
@@ -2019,7 +2061,7 @@
     [4X[28X<immutable digraph with 12 vertices, 58 edges>[128X[104X
   [4X[32X[104X
   
-  [1X3.3-38 DigraphCartesianProductProjections[101X
+  [1X3.3-39 DigraphCartesianProductProjections[101X
   
   [33X[1;0Y[29X[2XDigraphCartesianProductProjections[102X( [3Xdigraph[103X ) [32X attribute[133X
   [6XReturns:[106X  [33X[0;10YA list of transformations.[133X
@@ -2037,7 +2079,7 @@
   [10XDigraphCartesianProduct[110X  and  there  is  no  way of calculating it for other
   digraphs.[133X
   
-  [33X[0;0YFor more information see [2XDigraphCartesianProduct[102X ([14X3.3-31[114X)[133X
+  [33X[0;0YFor more information see [2XDigraphCartesianProduct[102X ([14X3.3-32[114X)[133X
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27XD := DigraphCartesianProduct(ChainDigraph(3), CycleDigraph(4),[127X[104X
@@ -2055,7 +2097,7 @@
     [4X[28Xtrue[128X[104X
   [4X[32X[104X
   
-  [1X3.3-39 DigraphDirectProductProjections[101X
+  [1X3.3-40 DigraphDirectProductProjections[101X
   
   [33X[1;0Y[29X[2XDigraphDirectProductProjections[102X( [3Xdigraph[103X ) [32X attribute[133X
   [6XReturns:[106X  [33X[0;10YA list of transformations.[133X
@@ -2072,7 +2114,7 @@
   [10XDigraphDirectProduct[110X  and  there  is  no  way  of  calculating  it for other
   digraphs.[133X
   
-  [33X[0;0YFor more information, see [2XDigraphDirectProduct[102X ([14X3.3-32[114X)[133X
+  [33X[0;0YFor more information, see [2XDigraphDirectProduct[102X ([14X3.3-33[114X)[133X
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27XD := DigraphDirectProduct(ChainDigraph(3), CycleDigraph(4),[127X[104X
@@ -2091,7 +2133,7 @@
     [4X[28Xtrue[128X[104X
   [4X[32X[104X
   
-  [1X3.3-40 LineDigraph[101X
+  [1X3.3-41 LineDigraph[101X
   
   [33X[1;0Y[29X[2XLineDigraph[102X( [3Xdigraph[103X ) [32X operation[133X
   [33X[1;0Y[29X[2XEdgeDigraph[102X( [3Xdigraph[103X ) [32X operation[133X
@@ -2112,7 +2154,7 @@
     [4X[28X<immutable digraph with 2 vertices, 1 edge>[128X[104X
   [4X[32X[104X
   
-  [1X3.3-41 LineUndirectedDigraph[101X
+  [1X3.3-42 LineUndirectedDigraph[101X
   
   [33X[1;0Y[29X[2XLineUndirectedDigraph[102X( [3Xdigraph[103X ) [32X operation[133X
   [33X[1;0Y[29X[2XEdgeUndirectedDigraph[102X( [3Xdigraph[103X ) [32X operation[133X
@@ -2133,7 +2175,7 @@
     [4X[28X<immutable digraph with 2 vertices, 2 edges>[128X[104X
   [4X[32X[104X
   
-  [1X3.3-42 DoubleDigraph[101X
+  [1X3.3-43 DoubleDigraph[101X
   
   [33X[1;0Y[29X[2XDoubleDigraph[102X( [3Xdigraph[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
@@ -2155,7 +2197,7 @@
     [4X[28X<immutable digraph with 6 vertices, 12 edges>[128X[104X
   [4X[32X[104X
   
-  [1X3.3-43 BipartiteDoubleDigraph[101X
+  [1X3.3-44 BipartiteDoubleDigraph[101X
   
   [33X[1;0Y[29X[2XBipartiteDoubleDigraph[102X( [3Xdigraph[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
@@ -2178,7 +2220,7 @@
     [4X[28X<immutable digraph with 6 vertices, 6 edges>[128X[104X
   [4X[32X[104X
   
-  [1X3.3-44 DigraphAddAllLoops[101X
+  [1X3.3-45 DigraphAddAllLoops[101X
   
   [33X[1;0Y[29X[2XDigraphAddAllLoops[102X( [3Xdigraph[103X ) [32X operation[133X
   [33X[1;0Y[29X[2XDigraphAddAllLoopsAttr[102X( [3Xdigraph[103X ) [32X attribute[133X
@@ -2214,7 +2256,7 @@
     [4X[28X<mutable digraph with 3 vertices, 6 edges>[128X[104X
   [4X[32X[104X
   
-  [1X3.3-45 DistanceDigraph[101X
+  [1X3.3-46 DistanceDigraph[101X
   
   [33X[1;0Y[29X[2XDistanceDigraph[102X( [3Xdigraph[103X, [3Xi[103X ) [32X operation[133X
   [33X[1;0Y[29X[2XDistanceDigraph[102X( [3Xdigraph[103X, [3Xlist[103X ) [32X operation[133X
@@ -2240,7 +2282,7 @@
     [4X[28X<immutable digraph with 30 vertices, 270 edges>[128X[104X
   [4X[32X[104X
   
-  [1X3.3-46 DigraphClosure[101X
+  [1X3.3-47 DigraphClosure[101X
   
   [33X[1;0Y[29X[2XDigraphClosure[102X( [3Xdigraph[103X, [3Xk[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
@@ -2248,7 +2290,7 @@
   [33X[0;0YGiven  a  symmetric  loopless  digraph  with  no multiple edges [3Xdigraph[103X, the
   [13X[3Xk[103X-closure of [3Xdigraph[103X[113X is defined to be the unique smallest symmetric loopless
   digraph  [10XC[110X  with  no multiple edges on the vertices of [3Xdigraph[103X that contains
-  all  the  edges  of  [3Xdigraph[103X  and satsifies the property that the sum of the
+  all  the  edges  of  [3Xdigraph[103X  and satisfies the property that the sum of the
   degrees  of  every  two  non-adjacenct  vertices  in  [10XC[110X  is less than [3Xk[103X. See
   [2XIsSymmetricDigraph[102X   ([14X6.2-14[114X),   [2XDigraphHasLoops[102X   ([14X6.2-1[114X),   [2XIsMultiDigraph[102X
   ([14X6.2-11[114X), and [2XOutDegreeOfVertex[102X ([14X5.2-10[114X).[133X
@@ -2266,7 +2308,7 @@
     [4X[28Xtrue[128X[104X
   [4X[32X[104X
   
-  [1X3.3-47 DigraphMycielskian[101X
+  [1X3.3-48 DigraphMycielskian[101X
   
   [33X[1;0Y[29X[2XDigraphMycielskian[102X( [3Xdigraph[103X ) [32X operation[133X
   [33X[1;0Y[29X[2XDigraphMycielskianAttr[102X( [3Xdigraph[103X ) [32X attribute[133X
@@ -2679,7 +2721,7 @@
   more     details     on     the     book     graph     please    refer    to
   [7Xhttps://mathworld.wolfram.com/BookGraph.html[107X.[133X
   
-  [33X[0;0YSee   [2XDigraphCartesianProduct[102X   ([14X3.3-31[114X),   [2XCompleteDigraph[102X   ([14X3.5-11[114X),  and
+  [33X[0;0YSee   [2XDigraphCartesianProduct[102X   ([14X3.3-32[114X),   [2XCompleteDigraph[102X   ([14X3.5-11[114X),  and
   [2XStarGraph[102X ([14X3.5-43[114X).[133X
   
   [33X[0;0YIf the optional first argument [3Xfilt[103X is present, then this should specify the
@@ -2714,7 +2756,7 @@
   graph  (as  the  "pages"). For more details on the stacked book graph please
   refer to [7Xhttps://mathworld.wolfram.com/StackedBookGraph.html[107X.[133X
   
-  [33X[0;0YSee   [2XDigraphCartesianProduct[102X  ([14X3.3-31[114X),  [2XDigraphSymmetricClosure[102X  ([14X3.3-12[114X),
+  [33X[0;0YSee   [2XDigraphCartesianProduct[102X  ([14X3.3-32[114X),  [2XDigraphSymmetricClosure[102X  ([14X3.3-12[114X),
   [2XChainDigraph[102X ([14X3.5-9[114X), and [2XStarGraph[102X ([14X3.5-43[114X).[133X
   
   [33X[0;0YIf the optional first argument [3Xfilt[103X is present, then this should specify the
@@ -3244,7 +3286,7 @@
   
   [33X[0;0YSee   Wikipedia   ([7Xhttps://en.wikipedia.org/wiki/King's_graph[107X)  for  further
   information.   See   also   [2XSquareGridGraph[102X   ([14X3.5-41[114X),  [2XTriangularGridGraph[102X
-  ([14X3.5-42[114X), and [2XStrongProduct[102X ([14X3.3-37[114X).[133X
+  ([14X3.5-42[114X), and [2XStrongProduct[102X ([14X3.3-38[114X).[133X
   
   [33X[0;0YIf the optional first argument [3Xfilt[103X is present, then this should specify the
   category  or  representation  the  digraph being created will belong to. For
@@ -3743,7 +3785,7 @@
   reached through a series of such moves, with all of the small moves being in
   the same direction.[133X
   
-  [33X[0;0YNote that the [2XQueensGraph[102X is the [2XDigraphEdgeUnion[102X ([14X3.3-29[114X) of the [2XRooksGraph[102X
+  [33X[0;0YNote that the [2XQueensGraph[102X is the [2XDigraphEdgeUnion[102X ([14X3.3-30[114X) of the [2XRooksGraph[102X
   ([14X3.5-40[114X) and the [2XBishopsGraph[102X ([14X3.5-5[114X) of the same dimensions.[133X
   
   [33X[0;0YThe  chosen  correspondence  between  vertices and chess squares is given by
@@ -3807,8 +3849,8 @@
   then column (first component).[133X
   
   [33X[0;0YSee   Wikipedia   ([7Xhttps://en.wikipedia.org/wiki/Rook's_graph[107X)  for  further
-  information.  See  also  [2XDigraphCartesianProduct[102X  ([14X3.3-31[114X)  and  [2XLineDigraph[102X
-  ([14X3.3-40[114X).[133X
+  information.  See  also  [2XDigraphCartesianProduct[102X  ([14X3.3-32[114X)  and  [2XLineDigraph[102X
+  ([14X3.3-41[114X).[133X
   
   [33X[0;0YIf the optional first argument [3Xfilt[103X is present, then this should specify the
   category  or  representation  the  digraph being created will belong to. For
@@ -3836,7 +3878,7 @@
   graph of dimension [3Xn[103X by [3Xk[103X.[133X
   
   [33X[0;0YA  [13Xsquare  grid  graph[113X  of  dimension  [3Xn[103X by [3Xk[103X is the [2XDigraphCartesianProduct[102X
-  ([14X3.3-31[114X)  of  the  symmetric  closures  of  the  chain digraphs with [3Xn[103X and [3Xk[103X
+  ([14X3.3-32[114X)  of  the  symmetric  closures  of  the  chain digraphs with [3Xn[103X and [3Xk[103X
   vertices; see [2XDigraphSymmetricClosure[102X ([14X3.3-12[114X) and [2XChainDigraph[102X ([14X3.5-9[114X).[133X
   
   [33X[0;0YIn  particular,  the [10X[3Xn[103X[10X * [3Xk[103X[10X[110X vertices can be arranged into an [3Xn[103X by [3Xk[103X grid such
@@ -3939,7 +3981,7 @@
   on        the        tadpole        graph        please       refer       to
   [7Xhttps://en.wikipedia.org/wiki/Tadpole_graph[107X.[133X
   
-  [33X[0;0YSee   [2XDigraphSymmetricClosure[102X   ([14X3.3-12[114X),   [2XDigraphDisjointUnion[102X   ([14X3.3-28[114X),
+  [33X[0;0YSee   [2XDigraphSymmetricClosure[102X   ([14X3.3-12[114X),   [2XDigraphDisjointUnion[102X   ([14X3.3-29[114X),
   [2XCycleDigraph[102X ([14X3.5-14[114X), and [2XChainDigraph[102X ([14X3.5-9[114X).[133X
   
   [33X[0;0YIf the optional first argument [3Xfilt[103X is present, then this should specify the

@@ -9,14 +9,14 @@
 ##
 
 ##  <#GAPDoc Label="PKGVERSIONDATA">
-##  <!ENTITY VERSION                  "1.7.1">
+##  <!ENTITY VERSION                  "1.8.0">
 ##  <!ENTITY GAPVERS                  "4.10.0">
 ##  <!ENTITY GRAPEVERS                "4.8.1">
 ##  <!ENTITY IOVERS                   "4.5.1">
 ##  <!ENTITY ORBVERS                  "4.8.2">
 ##  <!ENTITY DATASTRUCTURESVERS       "0.2.5">
 ##  <!ENTITY NAUTYTRACESINTERFACEVERS "0.2">
-##  <!ENTITY ARCHIVENAME    "digraphs-1.7.1">
+##  <!ENTITY ARCHIVENAME    "digraphs-1.8.0">
 ##  <!ENTITY COPYRIGHTYEARS "2014-24">
 ##  <#/GAPDoc>
 
@@ -28,8 +28,8 @@ _STANDREWSCS := Concatenation(["Jack Cole Building, North Haugh, ",
 SetPackageInfo(rec(
 PackageName := "Digraphs",
 Subtitle := "Graphs, digraphs, and multidigraphs in GAP",
-Version := "1.7.1",
-Date := "19/02/2024",  # dd/mm/yyyy format
+Version := "1.8.0",
+Date := "27/08/2024",  # dd/mm/yyyy format
 License := "GPL-3.0-or-later",
 ArchiveFormats := ".tar.gz",
 
@@ -127,10 +127,10 @@ Persons := [
 
   rec(
     LastName      := "Edwards",
-    FirstNames    := "Joe",
+    FirstNames    := "Joseph",
     IsAuthor      := false,
     IsMaintainer  := false,
-    Email         := "je53@st-andrews.ac.uk",
+    Email         := "jde1@st-andrews.ac.uk",
     PostalAddress := _STANDREWSMATHS,
     Place         := "St Andrews",
     Institution   := "University of St Andrews",
@@ -219,6 +219,12 @@ Persons := [
     Place         := "St Andrews",
     Institution   := "University of St Andrews"),
 
+  rec(LastName     := "Kwon",
+      FirstNames   := "Hyeokjun",
+      IsAuthor     := false,
+      IsMaintainer := false,
+      Email        := "hk78@st-andrews.ac.uk"),
+
   rec(
     LastName      := "Lee",
     FirstNames    := "Andrea",
@@ -228,6 +234,13 @@ Persons := [
     Email         := "ahwl1@st-andrews.ac.uk",
     Place         := "St Andrews",
     Institution   := "University of St Andrews"),
+
+  rec(
+    LastName     := "McIver",
+    FirstNames   := "Saffron",
+    IsAuthor     := false,
+    IsMaintainer := false,
+    Email        := "sm544@st-andrews.ac.uk"),
 
   rec(
     LastName      := "Mitchell",
@@ -249,12 +262,26 @@ Persons := [
     WWWHome       := "https://michael.orlitzky.com/"),
 
   rec(
+    LastName      := "Pancer",
+    FirstNames    := "Matthew",
+    IsAuthor      := false,
+    IsMaintainer  := false,
+    Email         := "mp322@st-andrews.ac.uk"),
+
+  rec(
     LastName      := "Pfeiffer",
     FirstNames    := "Markus",
     IsAuthor      := false,
     IsMaintainer  := false,
     Email         := "markus.pfeiffer@morphism.de",
     WWWHome       := "https://www.morphism.de/~markusp/"),
+
+  rec(
+    LastName      := "Pointon",
+    FirstNames    := "Daniel",
+    IsAuthor      := false,
+    IsMaintainer  := false,
+    Email         := "dp211@st-andrews.ac.uk"),
 
   rec(
     LastName      := "Racine",
@@ -399,13 +426,24 @@ Dependencies := rec(
 
 AvailabilityTest := function()
   local digraphs_so;
-  digraphs_so := Filename(DirectoriesPackagePrograms("digraphs"),
-                          "digraphs.so");
-  if (not "digraphs" in SHOW_STAT()) and digraphs_so = fail then
-     LogPackageLoadingMessage(PACKAGE_WARNING,
+
+  if CompareVersionNumbers(GAPInfo.Version, "4.12") then
+    if not IsKernelExtensionAvailable("digraphs") then
+      LogPackageLoadingMessage(PACKAGE_WARNING,
                               ["the kernel module is not compiled, ",
                                "the package cannot be loaded."]);
-    return fail;
+      return fail;
+    fi;
+  else
+    # TODO this clause can be removed once Digraphs requires GAP>=4.12.1
+    digraphs_so := Filename(DirectoriesPackagePrograms("digraphs"),
+                            "digraphs.so");
+    if (not "digraphs" in SHOW_STAT()) and digraphs_so = fail then
+       LogPackageLoadingMessage(PACKAGE_WARNING,
+                                ["the kernel module is not compiled, ",
+                                 "the package cannot be loaded."]);
+      return fail;
+    fi;
   fi;
   return true;
 end,

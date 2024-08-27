@@ -56,6 +56,8 @@
 <div class="ContSSBlock">
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6_mj.html#X8639092D8689333D">6.3-1 EdgeWeights</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6_mj.html#X7E14055A84A52A07">6.3-2 EdgeWeightedDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6_mj.html#X810B2DD7794AFBE8">6.3-3 EdgeWeightedDigraphTotalWeight</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6_mj.html#X7E5060AB7FB4F31C">6.3-4 EdgeWeightedDigraphMinimumSpanningTree</a></span>
 </div></div>
 <div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap6_mj.html#X86424F167BD4F629">6.4 <span class="Heading">Orders</span></a>
 </span>
@@ -66,6 +68,7 @@
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6_mj.html#X84F4711F7FA36848">6.4-4 DigraphMeetTable</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6_mj.html#X7DEDCD177E5AE824">6.4-5 IsUpperSemimodularDigraph</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6_mj.html#X7B566B4A86E18F45">6.4-6 IsDistributiveLatticeDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6_mj.html#X80659D5784790B52">6.4-7 IsModularLatticeDigraph</a></span>
 </div></div>
 <div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap6_mj.html#X7AAF896982EC22FA">6.5 <span class="Heading">Regularity</span></a>
 </span>
@@ -479,7 +482,7 @@ false
 false
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsMultiDigraph(D);</span>
 true
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">D := DigraphMutableCopy(D); </span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">D := DigraphMutableCopy(D);</span>
 &lt;mutable multidigraph with 3 vertices, 7 edges&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsMultiDigraph(D);</span>
 true</pre></div>
@@ -699,6 +702,52 @@ Error, List Assignment: &lt;list&gt; must be a mutable list
 [ [ 5 ], [ 15 ] ]
 </pre></div>
 
+<p><a id="X810B2DD7794AFBE8" name="X810B2DD7794AFBE8"></a></p>
+
+<h5>6.3-3 EdgeWeightedDigraphTotalWeight</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; EdgeWeightedDigraphTotalWeight</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
+<p>Returns: An integer, float or rational.</p>
+
+<p>If <var class="Arg">digraph</var> is a digraph with edge weights, then this attribute returns the sum of the weights of its edges.</p>
+
+<p>If the argument <var class="Arg">digraph</var> is mutable, then the return value of this attribute is recomputed every time it is called.</p>
+
+<p>See <code class="func">EdgeWeights</code> (<a href="chap6_mj.html#X8639092D8689333D"><span class="RefLink">6.3-1</span></a>).</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">D := EdgeWeightedDigraph([[2], [1], [1, 2]],</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">                            [[12], [5], [6, 9]]);</span>
+&lt;immutable digraph with 3 vertices, 4 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">EdgeWeightedDigraphTotalWeight(D);</span>
+32</pre></div>
+
+<p><a id="X7E5060AB7FB4F31C" name="X7E5060AB7FB4F31C"></a></p>
+
+<h5>6.3-4 EdgeWeightedDigraphMinimumSpanningTree</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; EdgeWeightedDigraphMinimumSpanningTree</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
+<p>Returns: A digraph.</p>
+
+<p>If <var class="Arg">digraph</var> is a connected digraph with edge weights, then this attribute returns a digraph which is a minimum spanning tree of <var class="Arg">digraph</var>.</p>
+
+<p>A <em>spanning tree</em> of a digraph is a subdigraph with the same vertices but a subset of its edges that form an undirected tree. It is <em>minimum</em> if it has the smallest possible total weight for a spanning tree of that digraph.</p>
+
+<p>If the argument <var class="Arg">digraph</var> is mutable, then the return value of this attribute is recomputed every time it is called.</p>
+
+<p>See <code class="func">EdgeWeights</code> (<a href="chap6_mj.html#X8639092D8689333D"><span class="RefLink">6.3-1</span></a>), <code class="func">EdgeWeightedDigraphTotalWeight</code> (<a href="chap6_mj.html#X810B2DD7794AFBE8"><span class="RefLink">6.3-3</span></a>) and <code class="func">IsConnectedDigraph</code> (<a href="chap6_mj.html#X83C08C0B7EC1A91F"><span class="RefLink">6.6-3</span></a>).</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">D := EdgeWeightedDigraph([[2], [1], [1, 2]],</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">                            [[12], [5], [6, 9]]);</span>
+&lt;immutable digraph with 3 vertices, 4 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">T := EdgeWeightedDigraphMinimumSpanningTree(D);</span>
+&lt;immutable digraph with 3 vertices, 2 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">EdgeWeights(T);</span>
+[ [  ], [ 5 ], [ 6 ] ]</pre></div>
+
 <p><a id="X86424F167BD4F629" name="X86424F167BD4F629"></a></p>
 
 <h4>6.4 <span class="Heading">Orders</span></h4>
@@ -867,13 +916,13 @@ false</pre></div>
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsDistributiveLatticeDigraph</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;property&nbsp;)</td></tr></table></div>
 <p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
 
-<p><code class="code">IsDistributiveLatticeDigraph</code> returns <code class="keyw">true</code> if the digraph <var class="Arg">digraph</var> is a <em>distributive lattice digraph</em>.</p>
+<p><code class="code">IsDistributiveLatticeDigraph</code> returns <code class="keyw">true</code> if the digraph <var class="Arg">digraph</var> is a distributive lattice digraph.</p>
 
-<p>A <em>distributive lattice digraph</em> is a <em>lattice digraph</em> (<code class="func">IsLatticeDigraph</code> (<a href="chap6_mj.html#X78D3E17B7F737516"><span class="RefLink">6.4-3</span></a>)) which is distributive. That is to say, the functions <code class="func">PartialOrderDigraphMeetOfVertices</code> (<a href="chap5_mj.html#X7DDB33B686B3A2C6"><span class="RefLink">5.3-1</span></a>) and <code class="func">PartialOrderDigraphJoinOfVertices</code> (<a href="chap5_mj.html#X7DDB33B686B3A2C6"><span class="RefLink">5.3-1</span></a>) distribute over each other.</p>
+<p>A <em>distributive lattice digraph</em> is a lattice digraph (<code class="func">IsLatticeDigraph</code> (<a href="chap6_mj.html#X78D3E17B7F737516"><span class="RefLink">6.4-3</span></a>)) which is distributive. That is to say, the functions <code class="func">PartialOrderDigraphMeetOfVertices</code> (<a href="chap5_mj.html#X7DDB33B686B3A2C6"><span class="RefLink">5.3-1</span></a>) and <code class="func">PartialOrderDigraphJoinOfVertices</code> (<a href="chap5_mj.html#X7DDB33B686B3A2C6"><span class="RefLink">5.3-1</span></a>) distribute over each other.</p>
 
-<p>Equivalently, a <em>distributive lattice digraph</em> is a <em>lattice digraph</em> in which the <em>lattice digraphs</em> representing <span class="SimpleMath">\(M3\)</span> and <span class="SimpleMath">\(N5\)</span> are not embeddable as lattices (see <span class="URL"><a href="https://en.wikipedia.org/wiki/Distributive_lattice">https://en.wikipedia.org/wiki/Distributive_lattice</a></span> and <code class="func">IsLatticeEmbedding</code> (<a href="chap7_mj.html#X7E183D4979D324EF"><span class="RefLink">7.3-20</span></a>)).</p>
+<p>Equivalently, a distributive lattice digraph is a lattice digraph in which the <em>lattice digraphs</em> representing <span class="SimpleMath">\(M3\)</span> and <span class="SimpleMath">\(N5\)</span> are not embeddable as lattices (see <span class="URL"><a href="https://en.wikipedia.org/wiki/Distributive_lattice">https://en.wikipedia.org/wiki/Distributive_lattice</a></span> and <code class="func">IsLatticeEmbedding</code> (<a href="chap7_mj.html#X7E183D4979D324EF"><span class="RefLink">7.3-20</span></a>)).</p>
 
-<p>If the argument <var class="Arg">digraph</var> is mutable, then the return value of this property is recomputed every time it is called.</p>
+<p><figure> <img height="200" src="m3.png"/> &nbsp;&nbsp;&nbsp;&nbsp; <img height="200" src="n5.png"/> <figcaption>The lattices <e>M3</e> and <e>N5</e>.</figcaption> </figure> If the argument <var class="Arg">digraph</var> is mutable, then the return value of this property is recomputed every time it is called.</p>
 
 
 <div class="example"><pre>
@@ -889,6 +938,35 @@ true
 &lt;immutable preorder digraph with 5 vertices, 13 edges&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsDistributiveLatticeDigraph(N5);</span>
 false</pre></div>
+
+<p><a id="X80659D5784790B52" name="X80659D5784790B52"></a></p>
+
+<h5>6.4-7 IsModularLatticeDigraph</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsModularLatticeDigraph</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;property&nbsp;)</td></tr></table></div>
+<p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
+
+<p><code class="code">IsModularLatticeDigraph</code> returns <code class="keyw">true</code> if the digraph <var class="Arg">digraph</var> is a modular lattice digraph.</p>
+
+<p>A <em>modular lattice digraph</em> is a lattice digraph (<code class="func">IsLatticeDigraph</code> (<a href="chap6_mj.html#X78D3E17B7F737516"><span class="RefLink">6.4-3</span></a>)) which is modular. That is to say, the lattice digraph representing <span class="SimpleMath">\(N5\)</span> is not embeddable as a lattice (see <span class="URL"><a href="https://en.wikipedia.org/wiki/Modular_lattice">https://en.wikipedia.org/wiki/Modular_lattice</a></span> and <code class="func">IsLatticeEmbedding</code> (<a href="chap7_mj.html#X7E183D4979D324EF"><span class="RefLink">7.3-20</span></a>)).</p>
+
+<p><figure> <img height="200" src="n5.png"/> <figcaption>The lattice <e>N5</e>.</figcaption> </figure> If the argument <var class="Arg">digraph</var> is mutable, then the return value of this property is recomputed every time it is called.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">D := ChainDigraph(5);</span>
+&lt;immutable chain digraph with 5 vertices&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">D := DigraphReflexiveTransitiveClosure(D);</span>
+&lt;immutable preorder digraph with 5 vertices, 15 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsModularLatticeDigraph(D);</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">N5 := Digraph([[2, 3], [4], [4], []]);</span>
+&lt;immutable digraph with 4 vertices, 4 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphReflexiveTransitiveClosure(N5);</span>
+&lt;immutable preorder digraph with 4 vertices, 9 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsModularLatticeDigraph(N5);</span>
+false
+</pre></div>
 
 <p><a id="X7AAF896982EC22FA" name="X7AAF896982EC22FA"></a></p>
 
@@ -1275,7 +1353,7 @@ true
 
 <p>An <em>undirected tree</em> is a symmetric digraph without loops, in which for any pair of distinct vertices <code class="code">u</code> and <code class="code">v</code>, there is exactly one directed path from <code class="code">u</code> to <code class="code">v</code>. See <code class="func">IsSymmetricDigraph</code> (<a href="chap6_mj.html#X81B3EA7887219860"><span class="RefLink">6.2-14</span></a>) and <code class="func">DigraphHasLoops</code> (<a href="chap6_mj.html#X7D92935C7D535187"><span class="RefLink">6.2-1</span></a>), and see Section <a href="chap1_mj.html#X84541F61810C741D"><span class="RefLink">1.1-1</span></a> for the definition of directed path. This definition implies that an undirected tree has no multiple edges.</p>
 
-<p>An <em>undirected forest</em> is a digraph, each of whose connected components is an undirected tree. In other words, an undirected forest is isomorphic to a disjoint union of undirected trees. See <code class="func">DigraphConnectedComponents</code> (<a href="chap5_mj.html#X842FAD6A7B835977"><span class="RefLink">5.4-9</span></a>) and <code class="func">DigraphDisjointUnion</code> (<a href="chap3_mj.html#X814F1DFC83DB273F"><span class="RefLink">3.3-28</span></a>). In particular, every undirected tree is an undirected forest.</p>
+<p>An <em>undirected forest</em> is a digraph, each of whose connected components is an undirected tree. In other words, an undirected forest is isomorphic to a disjoint union of undirected trees. See <code class="func">DigraphConnectedComponents</code> (<a href="chap5_mj.html#X842FAD6A7B835977"><span class="RefLink">5.4-9</span></a>) and <code class="func">DigraphDisjointUnion</code> (<a href="chap3_mj.html#X814F1DFC83DB273F"><span class="RefLink">3.3-29</span></a>). In particular, every undirected tree is an undirected forest.</p>
 
 <p>Please note that the digraph with zero vertices is considered to be neither an undirected tree nor an undirected forest.</p>
 

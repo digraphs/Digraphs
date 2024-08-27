@@ -362,8 +362,8 @@
     [4X[28Xtrue[128X[104X
     [4X[25Xgap>[125X [27XG := AutomorphismGroup(D);[127X[104X
     [4X[28XGroup([ (5,6), (1,2), (1,5)(2,6)(3,4) ])[128X[104X
-    [4X[25Xgap>[125X [27XDigraphMaximalCliques(D);[127X[104X
-    [4X[28X[ [ 1, 2, 3 ], [ 4, 5, 6 ], [ 3, 4 ] ][128X[104X
+    [4X[25Xgap>[125X [27XAsSet(DigraphMaximalCliques(D));[127X[104X
+    [4X[28X[ [ 1, 2, 3 ], [ 3, 4 ], [ 4, 5, 6 ] ][128X[104X
     [4X[25Xgap>[125X [27XDigraphMaximalCliquesReps(D);[127X[104X
     [4X[28X[ [ 1, 2, 3 ], [ 3, 4 ] ][128X[104X
     [4X[25Xgap>[125X [27XOrbit(G, [1, 2, 3], OnSets);[127X[104X
@@ -383,8 +383,8 @@
     [4X[28Xtrue[128X[104X
     [4X[25Xgap>[125X [27XG := AutomorphismGroup(D);[127X[104X
     [4X[28XGroup([ (5,6), (1,2), (1,5)(2,6)(3,4) ])[128X[104X
-    [4X[25Xgap>[125X [27XDigraphMaximalCliques(D);[127X[104X
-    [4X[28X[ [ 1, 2, 3 ], [ 4, 5, 6 ], [ 3, 4 ] ][128X[104X
+    [4X[25Xgap>[125X [27XAsSet(DigraphMaximalCliques(D));[127X[104X
+    [4X[28X[ [ 1, 2, 3 ], [ 3, 4 ], [ 4, 5, 6 ] ][128X[104X
   [4X[32X[104X
   
   [1X8.1-5 CliqueNumber[101X

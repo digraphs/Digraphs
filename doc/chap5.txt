@@ -1910,21 +1910,25 @@
   [1X5.4-21 VerticesReachableFrom[101X
   
   [33X[1;0Y[29X[2XVerticesReachableFrom[102X( [3Xdigraph[103X, [3Xroot[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XVerticesReachableFrom[102X( [3Xdigraph[103X, [3Xlist[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA list.[133X
   
-  [33X[0;0YThis  operation  returns  a list of the vertices [3Xv[103X, for which there exists a
-  non-trivial  directed  walk  from  vertex  [3Xroot[103X  to  vertex [3Xv[103X in the digraph
-  [3Xdigraph[103X.  See  Section  [14X1.1-1[114X  for  the definition of a non-trivial directed
-  walk.[133X
+  [33X[0;0YThis  operation  returns  a list of the vertices [10Xv[110X, for which there exists a
+  non-trivial  directed  walk  from  the  vertex  [3Xroot[103X,  or any of the list of
+  vertices [3Xlist[103X, to vertex [10Xv[110X in the digraph [3Xdigraph[103X. See Section [14X1.1-1[114X for the
+  definition of a non-trivial directed walk.[133X
   
   [33X[0;0YThe  method  for [10XVerticesReachableFrom[110X has worst case complexity of [22XO(m + n)[122X
   where [22Xm[122X is the number of edges and [22Xn[122X the number of vertices in [3Xdigraph[103X.[133X
+  
+  [33X[0;0YThis  function  returns  an  error  if [3Xroot[103X, or any vertex in [3Xlist[103X, is not a
+  vertices of [3Xdigraph[103X.[133X
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27XD := CompleteDigraph(5);[127X[104X
     [4X[28X<immutable complete digraph with 5 vertices>[128X[104X
     [4X[25Xgap>[125X [27XVerticesReachableFrom(D, 1);[127X[104X
-    [4X[28X[ 2, 1, 3, 4, 5 ][128X[104X
+    [4X[28X[ 1, 2, 3, 4, 5 ][128X[104X
     [4X[25Xgap>[125X [27XVerticesReachableFrom(D, 3);[127X[104X
     [4X[28X[ 1, 2, 3, 4, 5 ][128X[104X
     [4X[25Xgap>[125X [27XD := EmptyDigraph(5);[127X[104X
@@ -1933,12 +1937,16 @@
     [4X[28X[  ][128X[104X
     [4X[25Xgap>[125X [27XVerticesReachableFrom(D, 3);[127X[104X
     [4X[28X[  ][128X[104X
+    [4X[25Xgap>[125X [27XVerticesReachableFrom(D, [1, 2, 3, 4]);[127X[104X
+    [4X[28X[  ][128X[104X
+    [4X[25Xgap>[125X [27XVerticesReachableFrom(D, [3, 4, 5]);[127X[104X
+    [4X[28X[  ][128X[104X
     [4X[25Xgap>[125X [27XD := CycleDigraph(4);[127X[104X
     [4X[28X<immutable cycle digraph with 4 vertices>[128X[104X
     [4X[25Xgap>[125X [27XVerticesReachableFrom(D, 1);[127X[104X
-    [4X[28X[ 2, 3, 4, 1 ][128X[104X
+    [4X[28X[ 1, 2, 3, 4 ][128X[104X
     [4X[25Xgap>[125X [27XVerticesReachableFrom(D, 3);[127X[104X
-    [4X[28X[ 4, 1, 2, 3 ][128X[104X
+    [4X[28X[ 1, 2, 3, 4 ][128X[104X
     [4X[25Xgap>[125X [27XD := ChainDigraph(5);[127X[104X
     [4X[28X<immutable chain digraph with 5 vertices>[128X[104X
     [4X[25Xgap>[125X [27XVerticesReachableFrom(D, 1);[127X[104X
@@ -1947,6 +1955,8 @@
     [4X[28X[ 4, 5 ][128X[104X
     [4X[25Xgap>[125X [27XVerticesReachableFrom(D, 5);[127X[104X
     [4X[28X[  ][128X[104X
+    [4X[25Xgap>[125X [27XVerticesReachableFrom(D, [3, 4]);[127X[104X
+    [4X[28X[ 4, 5 ][128X[104X
   [4X[32X[104X
   
   [1X5.4-22 DigraphPath[101X
@@ -2465,6 +2475,81 @@
     [4X[28X[ [ 0, 1, 1 ], [ -1, 1, 1 ] ][128X[104X
     [4X[25Xgap>[125X [27XDigraphDijkstra(D, 1, 2);[127X[104X
     [4X[28X[ [ 0, 1, 1 ], [ -1, 1, 1 ] ][128X[104X
+  [4X[32X[104X
+  
+  [1X5.4-38 DigraphCycleBasis[101X
+  
+  [33X[1;0Y[29X[2XDigraphCycleBasis[102X( [3Xdigraph[103X ) [32X operation[133X
+  [6XReturns:[106X  [33X[0;10YA list and a list of GF(2) vectors[133X
+  
+  [33X[0;0YIf  [3Xdigraph[103X  is  a  symmetric  loopless digraph with no multiple edges, then
+  [10XDigraphCycleBasis[110X  calculates  the  [13Xfundamental  cycle  basis[113X of [3Xdigraph[103X and
+  returns a list of edges and a list of a basis vectors. If [3Xdigraph[103X contains a
+  loop,  this  function  will  return an error. If [3Xdigraph[103X is a multi-digraph,
+  then  multiple  edges  incident to the same vertices are treated as a single
+  edge  by  this  function.  See  [2XIsSymmetricDigraph[102X ([14X6.2-14[114X), [2XDigraphHasLoops[102X
+  ([14X6.2-1[114X),  and  [2XIsMultiDigraph[102X ([14X6.2-11[114X). The first list returned contains the
+  out-neighours  that  provide  the  ordering  on the edges with the symmetric
+  edges     appearing     only     once;     these    are    the    same    as
+  [13XOutNeighbours(MaximalAntiSymmetricSubdigraph(G))[113X.                        See
+  [2XMaximalAntiSymmetricSubdigraph[102X  ([14X3.3-6[114X)  [2XOutNeighbours[102X  ([14X5.2-6[114X).  The second
+  list  returned contains the basis vectors of the cycle space of the digraph.
+  These  vectors  belongs  to  [22X(GF(2))^m[122X  where [22Xm[122X is the length of the list of
+  edges.[133X
+  
+  [33X[0;0YA  graph  is [13Xeulerian[113X if every vertex has an even degree. A [13Xcycle space[113X of a
+  graph  is  a  subspace  of  [22X(GF(2))^m[122X  representing  the set of all [13Xeulerian[113X
+  subgraphs  without  isolated vertices. An eulerian subgraph without isolated
+  vertices  can  be  uniquely  identified  using  the  edges that is contains.
+  Therefore,  given some ordering on the edges of the graph, a subgraph can be
+  represented  by  a vector in [22X(GF(2))^m[122X where the [22Xi[122X-th entry is [22X1[122X if the [22Xi[122X-th
+  edge  is  in the subgraph and [22X0[122X otherwise. In this function, the ordering of
+  the   edges   is   returned   as   the   first  list  which  corresponds  to
+  [10XOutNeighbours(MaximalAntiSymmetricSubdigraph(G))[110X.                        See
+  [2XMaximalAntiSymmetricSubdigraph[102X  ([14X3.3-6[114X) and [2XOutNeighbours[102X ([14X5.2-6[114X). The first
+  basis vector for the complete digraph with 4 vertices shown below represents
+  the edges [10X[1, 2][110X, [10X[1, 3][110X and [10X[2, 3][110X i.e. cycle subgraph between the vertices
+  [10X1[110X,  [10X2[110X  and [10X3[110X The cycle space is closed under the symmetric difference of the
+  edges  of  the  graph. This nicely corresponds to the addition of vectors in
+  [22X(GF(2))^m[122X  which  makes the vector space formulation of the cycle space very
+  natural.[133X
+  
+  [33X[0;0YA  [13Xcycle basis[113X is a basis of the cycle space. A [13Xfundamental cycle basis[113X is a
+  special  kind of basis of the cycle space where there is a specific spanning
+  tree  (forest,  when  the graph is disconnected) of the graph and each basis
+  corresponds  to  the  unique  cycle  created  by  adding an edge outside the
+  spanning  tree  of  the  graph  to  the spanning tree. In this function, the
+  spanning  forest  is  rooted  in the vertex with the smallest label for each
+  connected component of the graph.[133X
+  
+  [33X[0;0YThe fundamental cycle basis is unique up to reordering of the basis vectors.
+  The  number  of  basis  vectors in the fundamental cycle basis is [22Xm - n + c[122X,
+  where  [22Xm[122X  is  the number of edges, [22Xn[122X is the number of vertices, and [22Xc[122X is the
+  number of connected components. See [2XDigraphConnectedComponents[102X ([14X5.4-9[114X).[133X
+  
+  [33X[0;0YThis  function  performs  a  depth first traversal of the input digraph with
+  complexity  [22XO(m  +  n)[122X and the complexity of the computation of the basis is
+  [22XO(m^2)[122X where [22Xm[122X is the number of edges in the input digraph.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27XD := CycleGraph(4);[127X[104X
+    [4X[28X<immutable symmetric digraph with 4 vertices, 8 edges>[128X[104X
+    [4X[25Xgap>[125X [27Xres := DigraphCycleBasis(D);[127X[104X
+    [4X[28X[ [ [ 2, 4 ], [ 3 ], [ 4 ], [  ] ], [ <a GF2 vector of length 4> ] ][128X[104X
+    [4X[25Xgap>[125X [27XList(res[2][1]);[127X[104X
+    [4X[28X[ Z(2)^0, Z(2)^0, Z(2)^0, Z(2)^0 ][128X[104X
+    [4X[25Xgap>[125X [27XD := CompleteDigraph(4);                                     [127X[104X
+    [4X[28X<immutable complete digraph with 4 vertices>[128X[104X
+    [4X[25Xgap>[125X [27Xres := DigraphCycleBasis(D);[127X[104X
+    [4X[28X[ [ [ 2, 3, 4 ], [ 3, 4 ], [ 4 ], [  ] ], [128X[104X
+    [4X[28X  [ <a GF2 vector of length 6>, <a GF2 vector of length 6>, [128X[104X
+    [4X[28X      <a GF2 vector of length 6> ] ][128X[104X
+    [4X[25Xgap>[125X [27XList(res[2][1]);            [127X[104X
+    [4X[28X[ Z(2)^0, 0*Z(2), Z(2)^0, 0*Z(2), Z(2)^0, 0*Z(2) ][128X[104X
+    [4X[25Xgap>[125X [27XList(res[2][2]);[127X[104X
+    [4X[28X[ 0*Z(2), Z(2)^0, Z(2)^0, 0*Z(2), 0*Z(2), Z(2)^0 ][128X[104X
+    [4X[25Xgap>[125X [27XList(res[2][3]);[127X[104X
+    [4X[28X[ Z(2)^0, Z(2)^0, 0*Z(2), Z(2)^0, 0*Z(2), 0*Z(2) ][128X[104X
   [4X[32X[104X
   
   

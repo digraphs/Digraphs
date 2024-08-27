@@ -381,7 +381,7 @@
     [4X[28Xfalse[128X[104X
     [4X[25Xgap>[125X [27XIsMultiDigraph(D);[127X[104X
     [4X[28Xtrue[128X[104X
-    [4X[25Xgap>[125X [27XD := DigraphMutableCopy(D); [127X[104X
+    [4X[25Xgap>[125X [27XD := DigraphMutableCopy(D);[127X[104X
     [4X[28X<mutable multidigraph with 3 vertices, 7 edges>[128X[104X
     [4X[25Xgap>[125X [27XIsMultiDigraph(D);[127X[104X
     [4X[28Xtrue[128X[104X
@@ -611,6 +611,55 @@
     [4X[28X[ [ 5 ], [ 15 ] ][128X[104X
   [4X[32X[104X
   
+  [1X6.3-3 EdgeWeightedDigraphTotalWeight[101X
+  
+  [33X[1;0Y[29X[2XEdgeWeightedDigraphTotalWeight[102X( [3Xdigraph[103X ) [32X attribute[133X
+  [6XReturns:[106X  [33X[0;10YAn integer, float or rational.[133X
+  
+  [33X[0;0YIf  [3Xdigraph[103X  is a digraph with edge weights, then this attribute returns the
+  sum of the weights of its edges.[133X
+  
+  [33X[0;0YIf  the argument [3Xdigraph[103X is mutable, then the return value of this attribute
+  is recomputed every time it is called.[133X
+  
+  [33X[0;0YSee [2XEdgeWeights[102X ([14X6.3-1[114X).[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27XD := EdgeWeightedDigraph([[2], [1], [1, 2]],[127X[104X
+    [4X[25X>[125X [27X                            [[12], [5], [6, 9]]);[127X[104X
+    [4X[28X<immutable digraph with 3 vertices, 4 edges>[128X[104X
+    [4X[25Xgap>[125X [27XEdgeWeightedDigraphTotalWeight(D);[127X[104X
+    [4X[28X32[128X[104X
+  [4X[32X[104X
+  
+  [1X6.3-4 EdgeWeightedDigraphMinimumSpanningTree[101X
+  
+  [33X[1;0Y[29X[2XEdgeWeightedDigraphMinimumSpanningTree[102X( [3Xdigraph[103X ) [32X attribute[133X
+  [6XReturns:[106X  [33X[0;10YA digraph.[133X
+  
+  [33X[0;0YIf  [3Xdigraph[103X  is  a  connected digraph with edge weights, then this attribute
+  returns a digraph which is a minimum spanning tree of [3Xdigraph[103X.[133X
+  
+  [33X[0;0YA  [13Xspanning  tree[113X  of a digraph is a subdigraph with the same vertices but a
+  subset  of  its  edges that form an undirected tree. It is [13Xminimum[113X if it has
+  the smallest possible total weight for a spanning tree of that digraph.[133X
+  
+  [33X[0;0YIf  the argument [3Xdigraph[103X is mutable, then the return value of this attribute
+  is recomputed every time it is called.[133X
+  
+  [33X[0;0YSee   [2XEdgeWeights[102X   ([14X6.3-1[114X),   [2XEdgeWeightedDigraphTotalWeight[102X   ([14X6.3-3[114X)  and
+  [2XIsConnectedDigraph[102X ([14X6.6-3[114X).[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27XD := EdgeWeightedDigraph([[2], [1], [1, 2]],[127X[104X
+    [4X[25X>[125X [27X                            [[12], [5], [6, 9]]);[127X[104X
+    [4X[28X<immutable digraph with 3 vertices, 4 edges>[128X[104X
+    [4X[25Xgap>[125X [27XT := EdgeWeightedDigraphMinimumSpanningTree(D);[127X[104X
+    [4X[28X<immutable digraph with 3 vertices, 2 edges>[128X[104X
+    [4X[25Xgap>[125X [27XEdgeWeights(T);[127X[104X
+    [4X[28X[ [  ], [ 5 ], [ 6 ] ][128X[104X
+  [4X[32X[104X
+  
   
   [1X6.4 [33X[0;0YOrders[133X[101X
   
@@ -797,14 +846,14 @@
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
   
   [33X[0;0Y[10XIsDistributiveLatticeDigraph[110X  returns  [9Xtrue[109X  if  the  digraph  [3Xdigraph[103X  is a
-  [13Xdistributive lattice digraph[113X.[133X
+  distributive lattice digraph.[133X
   
-  [33X[0;0YA  [13Xdistributive  lattice  digraph[113X  is  a  [13Xlattice  digraph[113X ([2XIsLatticeDigraph[102X
+  [33X[0;0YA  [13Xdistributive  lattice  digraph[113X  is  a  lattice  digraph ([2XIsLatticeDigraph[102X
   ([14X6.4-3[114X))   which   is   distributive.   That   is   to  say,  the  functions
   [2XPartialOrderDigraphMeetOfVertices[102X                 ([14X5.3-1[114X)                and
   [2XPartialOrderDigraphJoinOfVertices[102X ([14X5.3-1[114X) distribute over each other.[133X
   
-  [33X[0;0YEquivalently,  a  [13Xdistributive lattice digraph[113X is a [13Xlattice digraph[113X in which
+  [33X[0;0YEquivalently,  a  distributive lattice digraph is a lattice digraph in which
   the  [13Xlattice  digraphs[113X representing [22XM3[122X and [22XN5[122X are not embeddable as lattices
   (see          [7Xhttps://en.wikipedia.org/wiki/Distributive_lattice[107X         and
   [2XIsLatticeEmbedding[102X ([14X7.3-20[114X)).[133X
@@ -824,6 +873,37 @@
     [4X[25Xgap>[125X [27XN5 := DigraphReflexiveTransitiveClosure(N5);[127X[104X
     [4X[28X<immutable preorder digraph with 5 vertices, 13 edges>[128X[104X
     [4X[25Xgap>[125X [27XIsDistributiveLatticeDigraph(N5);[127X[104X
+    [4X[28Xfalse[128X[104X
+  [4X[32X[104X
+  
+  [1X6.4-7 IsModularLatticeDigraph[101X
+  
+  [33X[1;0Y[29X[2XIsModularLatticeDigraph[102X( [3Xdigraph[103X ) [32X property[133X
+  [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
+  
+  [33X[0;0Y[10XIsModularLatticeDigraph[110X  returns  [9Xtrue[109X  if  the digraph [3Xdigraph[103X is a modular
+  lattice digraph.[133X
+  
+  [33X[0;0YA  [13Xmodular  lattice  digraph[113X is a lattice digraph ([2XIsLatticeDigraph[102X ([14X6.4-3[114X))
+  which is modular. That is to say, the lattice digraph representing [22XN5[122X is not
+  embeddable  as  a lattice (see [7Xhttps://en.wikipedia.org/wiki/Modular_lattice[107X
+  and [2XIsLatticeEmbedding[102X ([14X7.3-20[114X)).[133X
+  
+  [33X[0;0YIf  the  argument [3Xdigraph[103X is mutable, then the return value of this property
+  is recomputed every time it is called.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27XD := ChainDigraph(5);[127X[104X
+    [4X[28X<immutable chain digraph with 5 vertices>[128X[104X
+    [4X[25Xgap>[125X [27XD := DigraphReflexiveTransitiveClosure(D);[127X[104X
+    [4X[28X<immutable preorder digraph with 5 vertices, 15 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsModularLatticeDigraph(D);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XN5 := Digraph([[2, 3], [4], [4], []]);[127X[104X
+    [4X[28X<immutable digraph with 4 vertices, 4 edges>[128X[104X
+    [4X[25Xgap>[125X [27XDigraphReflexiveTransitiveClosure(N5);[127X[104X
+    [4X[28X<immutable preorder digraph with 4 vertices, 9 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsModularLatticeDigraph(N5);[127X[104X
     [4X[28Xfalse[128X[104X
   [4X[32X[104X
   
@@ -1255,7 +1335,7 @@
   [33X[0;0YAn  [13Xundirected forest[113X is a digraph, each of whose connected components is an
   undirected  tree.  In  other  words, an undirected forest is isomorphic to a
   disjoint  union  of undirected trees. See [2XDigraphConnectedComponents[102X ([14X5.4-9[114X)
-  and  [2XDigraphDisjointUnion[102X  ([14X3.3-28[114X). In particular, every undirected tree is
+  and  [2XDigraphDisjointUnion[102X  ([14X3.3-29[114X). In particular, every undirected tree is
   an undirected forest.[133X
   
   [33X[0;0YPlease  note that the digraph with zero vertices is considered to be neither

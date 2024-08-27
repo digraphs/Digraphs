@@ -93,7 +93,7 @@
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X864A31A8809F61C2">5.4-18 DigraphFloydWarshall</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X7FBAB09E7C0BE5CF">5.4-19 IsReachable</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X7ECD22877AEA89CC">5.4-20 IsDigraphPath</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X7CAE81D97B43DDF3">5.4-21 VerticesReachableFrom</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X7F255A2A84CB868C">5.4-21 VerticesReachableFrom</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X8039170B82A32257">5.4-22 DigraphPath</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X80E9D645843973A6">5.4-23 DigraphShortestPath</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X7C45396C808308C4">5.4-24 DigraphRandomWalk</a></span>
@@ -110,6 +110,7 @@
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X863FDFC4839A3B82">5.4-35 HamiltonianPath</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X82F30D5681466BC6">5.4-36 NrSpanningTrees</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X79352A8286D1D8F6">5.4-37 DigraphDijkstra</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5.html#X794CD6037D4CF58C">5.4-38 DigraphCycleBasis</a></span>
 </div></div>
 <div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap5.html#X82F900777D677F55">5.5 <span class="Heading">Cayley graphs of groups</span></a>
 </span>
@@ -1935,23 +1936,26 @@ true
 true
 </pre></div>
 
-<p><a id="X7CAE81D97B43DDF3" name="X7CAE81D97B43DDF3"></a></p>
+<p><a id="X7F255A2A84CB868C" name="X7F255A2A84CB868C"></a></p>
 
 <h5>5.4-21 VerticesReachableFrom</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; VerticesReachableFrom</code>( <var class="Arg">digraph</var>, <var class="Arg">root</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; VerticesReachableFrom</code>( <var class="Arg">digraph</var>, <var class="Arg">list</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: A list.</p>
 
-<p>This operation returns a list of the vertices <var class="Arg">v</var>, for which there exists a non-trivial directed walk from vertex <var class="Arg">root</var> to vertex <var class="Arg">v</var> in the digraph <var class="Arg">digraph</var>. See Section <a href="chap1.html#X84541F61810C741D"><span class="RefLink">1.1-1</span></a> for the definition of a non-trivial directed walk.</p>
+<p>This operation returns a list of the vertices <code class="code">v</code>, for which there exists a non-trivial directed walk from the vertex <var class="Arg">root</var>, or any of the list of vertices <var class="Arg">list</var>, to vertex <code class="code">v</code> in the digraph <var class="Arg">digraph</var>. See Section <a href="chap1.html#X84541F61810C741D"><span class="RefLink">1.1-1</span></a> for the definition of a non-trivial directed walk.</p>
 
 <p>The method for <code class="code">VerticesReachableFrom</code> has worst case complexity of <span class="SimpleMath">O(m + n)</span> where <span class="SimpleMath">m</span> is the number of edges and <span class="SimpleMath">n</span> the number of vertices in <var class="Arg">digraph</var>.</p>
+
+<p>This function returns an error if <var class="Arg">root</var>, or any vertex in <var class="Arg">list</var>, is not a vertices of <var class="Arg">digraph</var>.</p>
 
 
 <div class="example"><pre>
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">D := CompleteDigraph(5);</span>
 &lt;immutable complete digraph with 5 vertices&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">VerticesReachableFrom(D, 1);</span>
-[ 2, 1, 3, 4, 5 ]
+[ 1, 2, 3, 4, 5 ]
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">VerticesReachableFrom(D, 3);</span>
 [ 1, 2, 3, 4, 5 ]
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">D := EmptyDigraph(5);</span>
@@ -1960,12 +1964,16 @@ true
 [  ]
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">VerticesReachableFrom(D, 3);</span>
 [  ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">VerticesReachableFrom(D, [1, 2, 3, 4]);</span>
+[  ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">VerticesReachableFrom(D, [3, 4, 5]);</span>
+[  ]
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">D := CycleDigraph(4);</span>
 &lt;immutable cycle digraph with 4 vertices&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">VerticesReachableFrom(D, 1);</span>
-[ 2, 3, 4, 1 ]
+[ 1, 2, 3, 4 ]
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">VerticesReachableFrom(D, 3);</span>
-[ 4, 1, 2, 3 ]
+[ 1, 2, 3, 4 ]
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">D := ChainDigraph(5);</span>
 &lt;immutable chain digraph with 5 vertices&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">VerticesReachableFrom(D, 1);</span>
@@ -1974,6 +1982,8 @@ true
 [ 4, 5 ]
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">VerticesReachableFrom(D, 5);</span>
 [  ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">VerticesReachableFrom(D, [3, 4]);</span>
+[ 4, 5 ]
 </pre></div>
 
 <p><a id="X8039170B82A32257" name="X8039170B82A32257"></a></p>
@@ -2437,6 +2447,45 @@ fail
 [ [ 0, 1, 1 ], [ -1, 1, 1 ] ]
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphDijkstra(D, 1, 2);</span>
 [ [ 0, 1, 1 ], [ -1, 1, 1 ] ]
+</pre></div>
+
+<p><a id="X794CD6037D4CF58C" name="X794CD6037D4CF58C"></a></p>
+
+<h5>5.4-38 DigraphCycleBasis</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphCycleBasis</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
+<p>Returns: A list and a list of GF(2) vectors</p>
+
+<p>If <var class="Arg">digraph</var> is a symmetric loopless digraph with no multiple edges, then <code class="code">DigraphCycleBasis</code> calculates the <em>fundamental cycle basis</em> of <var class="Arg">digraph</var> and returns a list of edges and a list of a basis vectors. If <var class="Arg">digraph</var> contains a loop, this function will return an error. If <var class="Arg">digraph</var> is a multi-digraph, then multiple edges incident to the same vertices are treated as a single edge by this function. See <code class="func">IsSymmetricDigraph</code> (<a href="chap6.html#X81B3EA7887219860"><span class="RefLink">6.2-14</span></a>), <code class="func">DigraphHasLoops</code> (<a href="chap6.html#X7D92935C7D535187"><span class="RefLink">6.2-1</span></a>), and <code class="func">IsMultiDigraph</code> (<a href="chap6.html#X7BB84CFC7E8B2B26"><span class="RefLink">6.2-11</span></a>). The first list returned contains the out-neighours that provide the ordering on the edges with the symmetric edges appearing only once; these are the same as <em>OutNeighbours(MaximalAntiSymmetricSubdigraph(G))</em>. See <code class="func">MaximalAntiSymmetricSubdigraph</code> (<a href="chap3.html#X79BA6A66846D5A95"><span class="RefLink">3.3-6</span></a>) <code class="func">OutNeighbours</code> (<a href="chap5.html#X7E9880767AE68E00"><span class="RefLink">5.2-6</span></a>). The second list returned contains the basis vectors of the cycle space of the digraph. These vectors belongs to <span class="SimpleMath">(GF(2))^m</span> where <span class="SimpleMath">m</span> is the length of the list of edges.</p>
+
+<p>A graph is <em>eulerian</em> if every vertex has an even degree. A <em>cycle space</em> of a graph is a subspace of <span class="SimpleMath">(GF(2))^m</span> representing the set of all <em>eulerian</em> subgraphs without isolated vertices. An eulerian subgraph without isolated vertices can be uniquely identified using the edges that is contains. Therefore, given some ordering on the edges of the graph, a subgraph can be represented by a vector in <span class="SimpleMath">(GF(2))^m</span> where the <span class="SimpleMath">i</span>-th entry is <span class="SimpleMath">1</span> if the <span class="SimpleMath">i</span>-th edge is in the subgraph and <span class="SimpleMath">0</span> otherwise. In this function, the ordering of the edges is returned as the first list which corresponds to <code class="code">OutNeighbours(MaximalAntiSymmetricSubdigraph(G))</code>. See <code class="func">MaximalAntiSymmetricSubdigraph</code> (<a href="chap3.html#X79BA6A66846D5A95"><span class="RefLink">3.3-6</span></a>) and <code class="func">OutNeighbours</code> (<a href="chap5.html#X7E9880767AE68E00"><span class="RefLink">5.2-6</span></a>). The first basis vector for the complete digraph with 4 vertices shown below represents the edges <code class="code">[1, 2]</code>, <code class="code">[1, 3]</code> and <code class="code">[2, 3]</code> i.e. cycle subgraph between the vertices <code class="code">1</code>, <code class="code">2</code> and <code class="code">3</code> The cycle space is closed under the symmetric difference of the edges of the graph. This nicely corresponds to the addition of vectors in <span class="SimpleMath">(GF(2))^m</span> which makes the vector space formulation of the cycle space very natural.</p>
+
+<p>A <em>cycle basis</em> is a basis of the cycle space. A <em>fundamental cycle basis</em> is a special kind of basis of the cycle space where there is a specific spanning tree (forest, when the graph is disconnected) of the graph and each basis corresponds to the unique cycle created by adding an edge outside the spanning tree of the graph to the spanning tree. In this function, the spanning forest is rooted in the vertex with the smallest label for each connected component of the graph.</p>
+
+<p>The fundamental cycle basis is unique up to reordering of the basis vectors. The number of basis vectors in the fundamental cycle basis is <span class="SimpleMath">m - n + c</span>, where <span class="SimpleMath">m</span> is the number of edges, <span class="SimpleMath">n</span> is the number of vertices, and <span class="SimpleMath">c</span> is the number of connected components. See <code class="func">DigraphConnectedComponents</code> (<a href="chap5.html#X842FAD6A7B835977"><span class="RefLink">5.4-9</span></a>).</p>
+
+<p>This function performs a depth first traversal of the input digraph with complexity <span class="SimpleMath">O(m + n)</span> and the complexity of the computation of the basis is <span class="SimpleMath">O(m^2)</span> where <span class="SimpleMath">m</span> is the number of edges in the input digraph.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">D := CycleGraph(4);</span>
+&lt;immutable symmetric digraph with 4 vertices, 8 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">res := DigraphCycleBasis(D);</span>
+[ [ [ 2, 4 ], [ 3 ], [ 4 ], [  ] ], [ &lt;a GF2 vector of length 4&gt; ] ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">List(res[2][1]);</span>
+[ Z(2)^0, Z(2)^0, Z(2)^0, Z(2)^0 ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">D := CompleteDigraph(4);                                     </span>
+&lt;immutable complete digraph with 4 vertices&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">res := DigraphCycleBasis(D);</span>
+[ [ [ 2, 3, 4 ], [ 3, 4 ], [ 4 ], [  ] ], 
+  [ &lt;a GF2 vector of length 6&gt;, &lt;a GF2 vector of length 6&gt;, 
+      &lt;a GF2 vector of length 6&gt; ] ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">List(res[2][1]);            </span>
+[ Z(2)^0, 0*Z(2), Z(2)^0, 0*Z(2), Z(2)^0, 0*Z(2) ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">List(res[2][2]);</span>
+[ 0*Z(2), Z(2)^0, Z(2)^0, 0*Z(2), 0*Z(2), Z(2)^0 ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">List(res[2][3]);</span>
+[ Z(2)^0, Z(2)^0, 0*Z(2), Z(2)^0, 0*Z(2), 0*Z(2) ]
 </pre></div>
 
 <p><a id="X82F900777D677F55" name="X82F900777D677F55"></a></p>

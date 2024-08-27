@@ -548,7 +548,7 @@
   recomputed every time this function is called.[133X
   
   [33X[0;0YNote  that  certain  other  constructor  operations  such  as  [2XCayleyDigraph[102X
-  ([14X3.1-12[114X),  [2XBipartiteDoubleDigraph[102X  ([14X3.3-43[114X), and [2XDoubleDigraph[102X ([14X3.3-42[114X), may
+  ([14X3.1-12[114X),  [2XBipartiteDoubleDigraph[102X  ([14X3.3-44[114X), and [2XDoubleDigraph[102X ([14X3.3-43[114X), may
   not  require  a  group  as  one  of  the  arguments,  but  use  the standard
   constructor  method  using a group, and hence set the [10XDigraphGroup[110X attribute
   for the resulting digraph.[133X

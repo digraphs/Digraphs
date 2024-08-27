@@ -1,6 +1,6 @@
 name: Digraphs
-version: 1.7.1
-date: 2024-02-19
+version: 1.8.0
+date: 2024-08-27
 description: |
     Graphs, digraphs, and multidigraphs in GAP
 
@@ -37,7 +37,7 @@ contributors:
       url: mailto:ac323@st-andrews.ac.uk
     - name: Tom Conti-Leslie
       url: https://tomcontileslie.com
-    - name: Joe Edwards
+    - name: Joseph Edwards
       url: https://github.com/Joseph-Edwards
     - name: Luke Elliott
       url: mailto:le27@st-andrews.ac.uk
@@ -55,12 +55,20 @@ contributors:
       url: https://caj.host.cs.st-andrews.ac.uk
     - name: Olexandr Konovalov
       url: https://olexandr-konovalov.github.io/
+    - name: Hyeokjun Kwon
+      url: mailto:hk78@st-andrews.ac.uk
     - name: Andrea Lee
       url: mailto:ahwl1@st-andrews.ac.uk
+    - name: Saffron McIver
+      url: mailto:sm544@st-andrews.ac.uk
     - name: Michael Orlitzky
       url: https://michael.orlitzky.com/
+    - name: Matthew Pancer
+      url: mailto:mp322@st-andrews.ac.uk
     - name: Markus Pfeiffer
       url: https://www.morphism.de/~markusp/
+    - name: Daniel Pointon
+      url: mailto:dp211@st-andrews.ac.uk
     - name: Lea Racine
       url: mailto:lr217@st-andrews.ac.uk
     - name: Christopher Russell
@@ -100,8 +108,10 @@ suggested-pkgs:
       url: "http://www.math.rwth-aachen.de/~Frank.Luebeck/GAPDoc"
     - name: "grape"
       version: ">=4.8.1"
+      url: "https://gap-packages.github.io/grape"
     - name: "nautytracesinterface"
       version: ">=0.2"
+      url: "https://gap-packages.github.io/NautyTracesInterface/"
 
 www: https://digraphs.github.io/Digraphs
 readme: README.md
@@ -109,7 +119,7 @@ packageinfo: https://digraphs.github.io/Digraphs/PackageInfo.g
 
 downloads:
     - name: .tar.gz
-      url: https://github.com/digraphs/Digraphs/releases/download/v1.7.1/digraphs-1.7.1.tar.gz
+      url: https://github.com/digraphs/Digraphs/releases/download/v1.8.0/digraphs-1.8.0.tar.gz
 
 abstract: |
     The <b>Digraphs</b> package is a <b>GAP</b> package for digraphs and multidigraphs.

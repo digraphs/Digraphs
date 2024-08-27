@@ -3,7 +3,7 @@
                                     [1X[5XDigraphs[105X[101X
   
   
-                                 Version 1.7.1
+                                 Version 1.8.0
   
   
                                   Jan De Beule
@@ -162,27 +162,28 @@
       3.3-24 DigraphRemoveEdges
       3.3-25 DigraphRemoveLoops
       3.3-26 DigraphRemoveAllMultipleEdges
-      3.3-27 DigraphReverseEdges
-      3.3-28 DigraphDisjointUnion
-      3.3-29 DigraphEdgeUnion
-      3.3-30 DigraphJoin
-      3.3-31 DigraphCartesianProduct
-      3.3-32 DigraphDirectProduct
-      3.3-33 ConormalProduct
-      3.3-34 HomomorphicProduct
-      3.3-35 LexicographicProduct
-      3.3-36 ModularProduct
-      3.3-37 StrongProduct
-      3.3-38 DigraphCartesianProductProjections
-      3.3-39 DigraphDirectProductProjections
-      3.3-40 LineDigraph
-      3.3-41 LineUndirectedDigraph
-      3.3-42 DoubleDigraph
-      3.3-43 BipartiteDoubleDigraph
-      3.3-44 DigraphAddAllLoops
-      3.3-45 DistanceDigraph
-      3.3-46 DigraphClosure
-      3.3-47 DigraphMycielskian
+      3.3-27 DigraphContractEdge
+      3.3-28 DigraphReverseEdges
+      3.3-29 DigraphDisjointUnion
+      3.3-30 DigraphEdgeUnion
+      3.3-31 DigraphJoin
+      3.3-32 DigraphCartesianProduct
+      3.3-33 DigraphDirectProduct
+      3.3-34 ConormalProduct
+      3.3-35 HomomorphicProduct
+      3.3-36 LexicographicProduct
+      3.3-37 ModularProduct
+      3.3-38 StrongProduct
+      3.3-39 DigraphCartesianProductProjections
+      3.3-40 DigraphDirectProductProjections
+      3.3-41 LineDigraph
+      3.3-42 LineUndirectedDigraph
+      3.3-43 DoubleDigraph
+      3.3-44 BipartiteDoubleDigraph
+      3.3-45 DigraphAddAllLoops
+      3.3-46 DistanceDigraph
+      3.3-47 DigraphClosure
+      3.3-48 DigraphMycielskian
     3.4 [33X[0;0YRandom digraphs[133X
       3.4-1 RandomDigraph
       3.4-2 RandomMultiDigraph
@@ -319,6 +320,7 @@
       5.4-35 HamiltonianPath
       5.4-36 NrSpanningTrees
       5.4-37 DigraphDijkstra
+      5.4-38 DigraphCycleBasis
     5.5 [33X[0;0YCayley graphs of groups[133X
       5.5-1 GroupOfCayleyDigraph
       5.5-2 GeneratorsOfCayleyDigraph
@@ -355,6 +357,8 @@
     6.3 [33X[0;0YEdge Weights[133X
       6.3-1 EdgeWeights
       6.3-2 EdgeWeightedDigraph
+      6.3-3 EdgeWeightedDigraphTotalWeight
+      6.3-4 EdgeWeightedDigraphMinimumSpanningTree
     6.4 [33X[0;0YOrders[133X
       6.4-1 IsPreorderDigraph
       6.4-2 IsPartialOrderDigraph
@@ -362,6 +366,7 @@
       6.4-4 DigraphMeetTable
       6.4-5 IsUpperSemimodularDigraph
       6.4-6 IsDistributiveLatticeDigraph
+      6.4-7 IsModularLatticeDigraph
     6.5 [33X[0;0YRegularity[133X
       6.5-1 IsInRegularDigraph
       6.5-2 IsOutRegularDigraph
