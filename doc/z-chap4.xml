@@ -38,7 +38,7 @@
     <#Include Label="DegreeMatrix">
     <#Include Label="LaplacianMatrix">
   </Section>
-  
+
   <Section><Heading>Orders</Heading>
     <#Include Label="PartialOrderDigraphMeetOfVertices">
     <#Include Label="NonUpperSemimodularPair">
@@ -101,6 +101,10 @@
     <#Include Label="PlanarEmbedding">
     <#Include Label="OuterPlanarEmbedding">
     <#Include Label="SubdigraphHomeomorphicToK">
+  </Section>
+
+  <Section><Heading>Hashing</Heading>
+    <#Include Label="DigraphHash">
   </Section>
 
 </Chapter>
