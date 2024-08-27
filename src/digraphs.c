@@ -1450,9 +1450,9 @@ static Obj FuncDIGRAPH_HASH(Obj self, Obj digraph) {
     }
   }
 #ifndef SYS_IS_64_BIT
-  res = INTOBJ_INT(HASHKEY_MEM_NC(buf, (UInt4) n, n * sizeof(uint64_t)));
-#else
   res = INTOBJ_INT(HASHKEY_MEM_NC(buf, (UInt4) n, n * sizeof(uint32_t)));
+#else
+  res = INTOBJ_INT(HASHKEY_MEM_NC(buf, (UInt4) n, n * sizeof(uint64_t)));
 #endif
   free(buf);
   return res;
