@@ -1374,6 +1374,44 @@ gap> DigraphLongestSimpleCircuit(D);
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="DigraphAllChordlessCycles">
+<ManSection>
+  <Attr Name="DigraphAllChordlessCycles" Arg="digraph"/>
+  <Returns>A list of lists of vertices.</Returns>
+  <Description>
+    If <A>digraph</A> is a digraph, then <C>DigraphAllChordlessCycles</C> 
+    returns a list of the <E>chordless cycles</E> in <A>digraph</A>. <P/>
+
+    A chordless cycle <M>C</M> is a simple circuit (see Section <Ref Subsect="Definitions" Style="Number" /> ) 
+    where each pair of vertices in <M>C</M> are not connected by an edge not in <M>C</M>. <P/>
+
+    For a digraph without multiple edges, a simple circuit is uniquely
+    determined by its subsequence of vertices. However this is not the case for
+    a multidigraph.  The attribute <C>DigraphAllSimpleCircuits</C> ignores
+    multiple edges, and identifies a simple circuit using only its subsequence
+    of vertices. See Section <Ref Subsect="DigraphAllSimpleCircuits" Style="Number" /> for more details.<P/>
+
+    This method uses the algorithms described in <Cite Key="US14"/>.<P/>
+    <Example><![CDATA[
+gap> D := ChainDigraph(10);;
+gap> DigraphAllChordlessCycles(D);
+[  ]
+gap> D := Digraph([[1, 1]]);
+<immutable multidigraph with 1 vertex, 2 edges>
+gap> DigraphAllChordlessCycles(D);
+[ ]
+gap> D := CycleDigraph(3);;
+gap> DigraphAllChordlessCycles(D);
+[ [ 1, 2, 3 ] ]
+gap> D := CompleteDigraph(4);
+<immutable complete digraph with 4 vertices>
+gap> DigraphAllChordlessCycles(D);
+[ [ 2, 1, 3 ], [ 2, 1, 4 ], [ 3, 1, 4 ], [ 3, 2, 4 ] ]
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="HamiltonianPath">
 <ManSection>
   <Attr Name="HamiltonianPath" Arg="digraph"/>
