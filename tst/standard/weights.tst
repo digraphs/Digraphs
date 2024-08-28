@@ -272,6 +272,12 @@ t is the 1st argument,
 gap> EdgeWeightedDigraphShortestPath(d, 1, 3);
 [ [ 1, 2, 3 ], [ 1, 1 ] ]
 
+# K Shortest Paths
+gap> d := EdgeWeightedDigraph([[2], [3], [4], []], [[1], [1], [1], []]);
+gap> shortest_path := EdgeWeightedDigraphShortestPath(d, 1, 4);
+[ [ 1, 2, 3, 4 ], [ 1, 1, 1 ] ]
+gap> iter := DIGRAPHS_ShortestPathsIterator(d, 1, 4); 
+
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(d);
 gap> Unbind(tree);

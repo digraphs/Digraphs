@@ -616,3 +616,75 @@ function(digraph, source)
 
   return rec(distances := distances, parents := parents, edges := edges);
 end);
+
+#############################################################################
+# 4. Shortest Paths Iterator
+#############################################################################
+#
+# returns an iterator that generates the (possibly empty) sequence of paths
+# between source and dest
+#
+# the iterator needs to store
+#  - found paths
+#  - candidates
+#  -
+#  rec( found_paths := [],
+InstallGlobalFunction(DIGRAPHS_ShortestPathsIterator,
+function(digraph, source, dest)
+  local currentIterator, findNextPath;
+
+  currentIterator := rec(
+    candidates := BinaryHeap(),
+    foundPaths := [
+      EdgeWeightedDigraphShortestPath(digraph, source, dest)
+    ]);
+
+  findNextPath := function(iter)
+    local currentShortestPath, currentShortestPathLength, spurNode, rootPath,
+          rootPathNode, modifiedGraph, foundPaths, i, p, spurPath, totalPath,
+          nextPath;
+
+    currentShortestPath := Last(iter.foundPaths);
+    currentShortestPathLength := Length(currentShortestPath[1]);
+    foundPaths := iter.foundPaths;
+
+    for i in [1 .. currentShortestPathLength] do
+      modifiedGraph := fail;
+
+      spurNode := currentShortestPath[1][i];
+      rootPath := [
+        currentShortestPath[1]{[1..i]},
+        currentShortestPath[2]{[1..i-1]}
+      ];
+
+      for p in foundPaths do
+        if rootPath = p[1]{[1..i]} then
+          # remove p[2][i] from Graph;
+        fi;
+      od;
+
+      for rootPathNode in rootPath[1] do
+        if rootPathNode <> spurNode then
+          # remove rootPathNode from Graph;
+        fi;
+      od;
+
+      spurPath := EdgeWeightedDigraphShortestPath(modifiedGraph, spurNode, dest);
+      totalPath := [ Concatenation(rootPath[1], spurPath[1]),
+                     Concatenation(rootPath[2], spurPath[2]) ];
+
+      Push(iter.candidatePaths, totalPath);
+    od;
+
+    if IsEmpty(iter.candidatePaths) then
+      return fail;
+    fi;
+
+    nextPath := Pop(iter.candidatePaths);
+    Push(iter.foundPaths, nextPath);
+
+    return nextPath;
+  end;
+
+  return findNextPath(currentIterator);
+end);

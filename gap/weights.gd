@@ -33,3 +33,4 @@ DeclareGlobalFunction("DIGRAPHS_Edge_Weighted_Johnson");
 DeclareGlobalFunction("DIGRAPHS_Edge_Weighted_FloydWarshall");
 DeclareGlobalFunction("DIGRAPHS_Edge_Weighted_Bellman_Ford");
 DeclareGlobalFunction("DIGRAPHS_Edge_Weighted_Dijkstra");
+DeclareGlobalFunction("DIGRAPHS_ShortestPathsIterator");
