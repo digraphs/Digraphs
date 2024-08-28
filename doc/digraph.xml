@@ -192,7 +192,7 @@
 
       <Mark>for a Grape package graph</Mark>
       <Item>
-        if <A>obj</A> is a &Grape; package graph (i.e. a record for which the
+        if <A>obj</A> is a &GRAPE; package graph (i.e. a record for which the
         function <C>IsGraph</C> returns <K>true</K>), then this function returns
         a digraph isomorphic to <A>obj</A>.
       </Item>
