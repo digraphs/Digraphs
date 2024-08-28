@@ -1396,7 +1396,6 @@ integrate with GAP  SL*/
 #define BIG_CONSTANT(x) (x##LLU)
 
 static inline UInt fmix(UInt h) {
-
 #ifndef SYS_IS_64_BIT
   h ^= h >> 16;
   h *= 0x85ebca6b;
@@ -1419,6 +1418,7 @@ static Obj FuncDIGRAPH_HASH(Obj self, Obj digraph) {
   Obj  out, a;
   Int  nr, j;
 
+  h   = 0;
   n   = DigraphNrVertices(digraph);
   out = FuncOutNeighbours(self, digraph);
 
