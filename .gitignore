@@ -58,3 +58,4 @@ missing
 src/pkgconfig.h.in
 tags
 tst/out/
+_*.xml

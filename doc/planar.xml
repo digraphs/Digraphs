@@ -29,7 +29,7 @@
     <P/>
 
     This method uses the reference implementation in
-    &edge-addition-planarity-suite; by John Boyer of the algorithms described
+    &EDGE_PLANARITY_SUITE; by John Boyer of the algorithms described
     in <Cite Key="BM06"/>.
 
     <Example><![CDATA[
@@ -75,7 +75,7 @@ false
     See also <Ref Prop="IsPlanarDigraph"/>.
 
     This method uses the reference implementation in
-    &edge-addition-planarity-suite; by John Boyer of the algorithms described
+    &EDGE_PLANARITY_SUITE; by John Boyer of the algorithms described
     in <Cite Key="BM06"/>.
 
 <Example><![CDATA[
@@ -129,7 +129,7 @@ true
     <P/>
     
     This method uses the reference implementation in
-    &edge-addition-planarity-suite; by John Boyer of the algorithms described
+    &EDGE_PLANARITY_SUITE; by John Boyer of the algorithms described
     in <Cite Key="BM06"/>.
 
 <Example><![CDATA[
@@ -193,7 +193,7 @@ gap> KuratowskiPlanarSubdigraph(D);
     <P/>
 
     This method uses the reference implementation in
-    &edge-addition-planarity-suite; by John Boyer of the algorithms described
+    &EDGE_PLANARITY_SUITE; by John Boyer of the algorithms described
     in <Cite Key="BM06"/>.
 
 <Example><![CDATA[
@@ -252,7 +252,7 @@ gap> KuratowskiOuterPlanarSubdigraph(D);
     <P/>
 
     This method uses the reference implementation in
-    &edge-addition-planarity-suite; by John Boyer of the algorithms described
+    &EDGE_PLANARITY_SUITE; by John Boyer of the algorithms described
     in <Cite Key="BM06"/>.
 
 <Example><![CDATA[
@@ -305,7 +305,7 @@ fail
     <P/>
 
     This method uses the reference implementation in
-    &edge-addition-planarity-suite; by John Boyer of the algorithms described
+    &EDGE_PLANARITY_SUITE; by John Boyer of the algorithms described
     in <Cite Key="BM06"/>.
 
 <Example><![CDATA[
@@ -361,7 +361,7 @@ gap> OuterPlanarEmbedding(CompleteBipartiteDigraph(2, 2));
       Prop="IsOuterPlanarDigraph"/> for more details.<P/>
 
     This method uses the reference implementation in
-    &edge-addition-planarity-suite; by John Boyer of the algorithms described
+    &EDGE_PLANARITY_SUITE; by John Boyer of the algorithms described
     in <Cite Key="BM06"/>.
 
 <Example><![CDATA[

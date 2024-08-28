@@ -11,12 +11,12 @@
 <#GAPDoc Label="Graph">
 <ManSection>
   <Oper Name="Graph" Arg="digraph"/>
-  <Returns>A &Grape; package graph.</Returns>
+  <Returns>A &GRAPE; package graph.</Returns>
   <Description>
     If <A>digraph</A> is a mutable or immutable digraph without multiple edges, then this operation
-    returns a &Grape; package graph that is isomorphic to <A>digraph</A>. <P/>
+    returns a &GRAPE; package graph that is isomorphic to <A>digraph</A>. <P/>
 
-    If <A>digraph</A> is a multidigraph, then since &Grape; does not support
+    If <A>digraph</A> is a multidigraph, then since &GRAPE; does not support
     multiple edges, the multiple edges will be reduced to a single edge in the
     result. In order words, for a multidigraph this operation will return the
     same as <C>Graph(DigraphRemoveAllMultipleEdges(</C><A>digraph</A><C>))</C>.

@@ -14,11 +14,11 @@
   <Func Name="DigraphsUseBliss" Arg=""/>
   <Returns>Nothing.</Returns>
   <Description>
-    These functions can be used to specify whether &nauty; or &bliss; should be
+    These functions can be used to specify whether &NAUTY; or &BLISS; should be
     used by default by &Digraphs;. If &NautyTracesInterface; is not available,
     then these functions do nothing. Otherwise, by calling
     <C>DigraphsUseNauty</C> subsequent computations will default to using
-    &nauty; rather than &bliss;, where possible.
+    &NAUTY; rather than &BLISS;, where possible.
     <P/>
 
     You can call these functions at any point in a &GAP; session, as many
@@ -33,7 +33,7 @@
       Label="for digraphs and homogeneous lists"/> are also valid.<P/>
 
     It is also possible to compute the automorphism group of a specific digraph
-    using both &nauty; and &bliss; using <Ref Attr="NautyAutomorphismGroup"/>
+    using both &NAUTY; and &BLISS; using <Ref Attr="NautyAutomorphismGroup"/>
     and <Ref Attr="BlissAutomorphismGroup" Label="for a digraph"/>, respectively.
   </Description>
 </ManSection>
@@ -49,7 +49,7 @@
   <Returns>A permutation group.</Returns>
   <Description>
     If <A>digraph</A> is a digraph, then this attribute contains the group of
-    automorphisms of <A>digraph</A> as calculated using &bliss; by Tommi Junttila
+    automorphisms of <A>digraph</A> as calculated using &BLISS; by Tommi Junttila
     and Petteri Kaski. <P/>
 
     The attribute <Ref Attr="AutomorphismGroup" Label="for a digraph"/> and
@@ -60,7 +60,7 @@
     their generating sets may differ. <P/>
     The attribute <Ref Attr="AutomorphismGroup" 
       Label="for a digraph, homogeneous list, and list"/> returns the value of
-    <C>BlissAutomorphismGroup</C> as it is not implemented for &nauty; The 
+    <C>BlissAutomorphismGroup</C> as it is not implemented for &NAUTY; The 
     requirements for the optional arguments <A>vertex_colours</A> and 
     <A>edge_colours</A> are documented in <Ref Attr="AutomorphismGroup" 
       Label="for a digraph, homogeneous list, and list"/>.
@@ -86,7 +86,7 @@ gap> Size(G);
   <Returns>A permutation group.</Returns>
   <Description>
     If <A>digraph</A> is a digraph, then this attribute contains the group of
-    automorphisms of <A>digraph</A> as calculated using &nauty; by
+    automorphisms of <A>digraph</A> as calculated using &NAUTY; by
     Brendan Mckay and Adolfo Piperno via &NautyTracesInterface;.
 
     <!-- FIXME be more explicit about what the second arg is -->
@@ -133,8 +133,8 @@ Group([ (3,4)(6,7)(8,9), (2,3)(5,6)(9,10), (2,5)(3,6)(4,7),
       Label="for a domain and a positive integer" BookName="ref"/> on the
     returned group.<P/>
 
-    By default, the automorphism group is found using &bliss; by Tommi Junttila
-    and Petteri Kaski. If &NautyTracesInterface; is available, then &nauty; by
+    By default, the automorphism group is found using &BLISS; by Tommi Junttila
+    and Petteri Kaski. If &NautyTracesInterface; is available, then &NAUTY; by
     Brendan Mckay and Adolfo Piperno can be used instead; see
     <Ref Attr="BlissAutomorphismGroup" Label="for a digraph"/>, 
     <Ref Attr="NautyAutomorphismGroup"/>, <Ref Func="DigraphsUseBliss"/>,
@@ -206,8 +206,8 @@ true]]></Example>
       Label="for a domain and a positive integer" BookName="ref"/> on the
     returned group.<P/>
 
-    By default, the automorphism group is found using &bliss; by Tommi Junttila
-    and Petteri Kaski. If &NautyTracesInterface; is available, then &nauty; by
+    By default, the automorphism group is found using &BLISS; by Tommi Junttila
+    and Petteri Kaski. If &NautyTracesInterface; is available, then &NAUTY; by
     Brendan Mckay and Adolfo Piperno can be used instead; see
     <Ref Attr="BlissAutomorphismGroup"
       Label="for a digraph and homogeneous list"/>,
@@ -294,8 +294,8 @@ true]]></Example>
       Label="for a domain and a positive integer" BookName="ref"/> on the
     returned group.<P/>
 
-    By default, the automorphism group is found using &bliss; by Tommi Junttila
-    and Petteri Kaski. If &NautyTracesInterface; is available, then &nauty; by
+    By default, the automorphism group is found using &BLISS; by Tommi Junttila
+    and Petteri Kaski. If &NautyTracesInterface; is available, then &NAUTY; by
     Brendan Mckay and Adolfo Piperno can be used instead; see
      <Ref Attr="BlissAutomorphismGroup"
        Label="for a digraph, homogeneous list, and list"/>,
@@ -349,10 +349,10 @@ true
     for more information about isomorphisms of digraphs. <P/>
 
     <C>BlissCanonicalLabelling</C> returns a canonical labelling of the digraph
-    <A>digraph</A> found using &bliss; by Tommi Junttila and Petteri Kaski.
+    <A>digraph</A> found using &BLISS; by Tommi Junttila and Petteri Kaski.
     <C>NautyCanonicalLabelling</C> returns a canonical labelling of the digraph
-    <A>digraph</A> found using &nauty; by Brendan McKay and Adolfo Piperno.
-    Note that the canonical labellings returned by &bliss; and &nauty; are not
+    <A>digraph</A> found using &NAUTY; by Brendan McKay and Adolfo Piperno.
+    Note that the canonical labellings returned by &BLISS; and &NAUTY; are not
     usually the same (and may depend of the version used).<P/>
 
     <C>BlissCanonicalLabelling</C> can only be computed if <A>digraph</A> has
@@ -424,11 +424,11 @@ true]]></Example>
 
     If <A>digraph</A> and <A>colours</A> together form a coloured digraph,
     <C>BlissCanonicalLabelling</C> returns a canonical labelling of the digraph
-    <A>digraph</A> found using &bliss; by Tommi Junttila and Petteri Kaski.
+    <A>digraph</A> found using &BLISS; by Tommi Junttila and Petteri Kaski.
     Similarly, <C>NautyCanonicalLabelling</C> returns a canonical labelling of
-    the digraph <A>digraph</A> found using &nauty; by Brendan McKay and Adolfo
-    Piperno.  Note that the canonical labellings returned by &bliss; and
-    &nauty; are not usually the same (and may depend of the version used).<P/>
+    the digraph <A>digraph</A> found using &NAUTY; by Brendan McKay and Adolfo
+    Piperno.  Note that the canonical labellings returned by &BLISS; and
+    &NAUTY; are not usually the same (and may depend of the version used).<P/>
 
     <C>BlissCanonicalLabelling</C> can only be computed if <A>digraph</A> has
     no multiple edges; see <Ref Prop="IsMultiDigraph" />. The canonical
@@ -487,8 +487,8 @@ gap> List(DigraphVertices(digraph), i -> colours[i / p]);
     about isomorphisms of digraphs. <P/>
 
     By default, an isomorphism is found using the canonical labellings of the
-    digraphs obtained from &bliss; by Tommi Junttila
-    and Petteri Kaski. If &NautyTracesInterface; is available, then &nauty; by
+    digraphs obtained from &BLISS; by Tommi Junttila
+    and Petteri Kaski. If &NautyTracesInterface; is available, then &NAUTY; by
     Brendan Mckay and Adolfo Piperno can be used instead; see
     <Ref Func="DigraphsUseBliss"/>, and <Ref Func="DigraphsUseNauty"/>.
 
@@ -547,8 +547,8 @@ true]]></Example>
       /> for more information about isomorphisms of coloured digraphs. <P/>
 
     By default, an isomorphism is found using the canonical labellings of the
-    digraphs obtained from &bliss; by Tommi Junttila
-    and Petteri Kaski. If &NautyTracesInterface; is available, then &nauty; by
+    digraphs obtained from &BLISS; by Tommi Junttila
+    and Petteri Kaski. If &NautyTracesInterface; is available, then &NAUTY; by
     Brendan Mckay and Adolfo Piperno can be used instead; see
     <Ref Func="DigraphsUseBliss"/>, and <Ref Func="DigraphsUseNauty"/>.
 
@@ -598,8 +598,8 @@ false]]></Example>
     <C>OnDigraphs(<A>digraph1</A>, p) = digraph2</C>.
 
     By default, an isomorphism is found using the canonical labellings of the
-    digraphs obtained from &bliss; by Tommi Junttila
-    and Petteri Kaski. If &NautyTracesInterface; is available, then &nauty; by
+    digraphs obtained from &BLISS; by Tommi Junttila
+    and Petteri Kaski. If &NautyTracesInterface; is available, then &NAUTY; by
     Brendan Mckay and Adolfo Piperno can be used instead; see
     <Ref Func="DigraphsUseBliss"/>, and <Ref Func="DigraphsUseNauty"/>.
 
@@ -666,8 +666,8 @@ true
     <K>fail</K>. <P/>
 
     By default, an isomorphism is found using the canonical labellings of the
-    digraphs obtained from &bliss; by Tommi Junttila
-    and Petteri Kaski. If &NautyTracesInterface; is available, then &nauty; by
+    digraphs obtained from &BLISS; by Tommi Junttila
+    and Petteri Kaski. If &NautyTracesInterface; is available, then &NAUTY; by
     Brendan Mckay and Adolfo Piperno can be used instead; see
     <Ref Func="DigraphsUseBliss"/>, and <Ref Func="DigraphsUseNauty"/>.
 
