@@ -1395,7 +1395,7 @@ InstallMethod(DigraphAllSimpleCircuits, "for a digraph by out-neighbours",
 [IsDigraphByOutNeighboursRep],
 function(D)
   local UNBLOCK, CIRCUIT, out, stack, endofstack, C, scc, n, blocked, B,
-  c_comp, comp, s, loops, i;
+  c_comp, comp, s, loops, i, d_labels, c_labels;
 
   if IsEmptyDigraph(D) then
     return [];
@@ -1455,9 +1455,15 @@ function(D)
   # Reduce the D, remove loops, and store the correct vertex labels
   C := DigraphRemoveLoops(ReducedDigraph(DigraphMutableCopyIfMutable(D)));
   MakeImmutable(C);
-  if DigraphVertexLabels(D) <> DigraphVertices(D) then
-    SetDigraphVertexLabels(C, Filtered(DigraphVertices(D),
-                                       x -> OutDegrees(D) <> 0));
+  if HaveVertexLabelsBeenAssigned(D)
+      and DigraphVertexLabels(D) <> DigraphVertices(D) then
+    # We require the labels of the digraph <C> to be the original nodes in <D>
+    # (this is used in CIRCUIT above). If <D> has other vertex labels, then
+    # these are copied into <C> by the functions above, and aren't then
+    # necessarily the original nodes in <D>.
+    d_labels := DigraphVertexLabels(D);
+    c_labels := List(DigraphVertexLabels(C), x -> Position(d_labels, x));
+    SetDigraphVertexLabels(C, c_labels);
   fi;
 
   # Strongly connected components of the reduced graph
