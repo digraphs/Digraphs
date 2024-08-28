@@ -64,7 +64,7 @@ static inline bool IsAttributeStoringRep(Obj o) {
 
 /*************************************************************************/
 
-static Obj FuncDigraphNrVertices(Obj self, Obj D) {
+static Obj FuncDIGRAPH_NR_VERTICES(Obj self, Obj D) {
   return INTOBJ_INT(DigraphNrVertices(D));
 }
 
@@ -88,7 +88,10 @@ Obj FuncOutNeighbours(Obj self, Obj D) {
   }
 }
 
-static Obj FuncOutNeighboursFromSourceRange(Obj self, Obj N, Obj src, Obj ran) {
+static Obj FuncDIGRAPH_OUT_NEIGHBOURS_FROM_SOURCE_RANGE(Obj self,
+                                                        Obj N,
+                                                        Obj src,
+                                                        Obj ran) {
   DIGRAPHS_ASSERT(LEN_LIST(src) == LEN_LIST(ran));
   Int n = INT_INTOBJ(N);
   if (n == 0) {
@@ -2059,263 +2062,56 @@ FuncMULTIDIGRAPH_CANONICAL_LABELLING(Obj self, Obj digraph, Obj colours) {
  */
 
 static StructGVarFunc GVarFuncs[] = {
-    {"DIGRAPH_NREDGES",
-     1,
-     "digraph",
-     FuncDIGRAPH_NREDGES,
-     "src/digraphs.c:DIGRAPH_NREDGES"},
-
-    {"GABOW_SCC", 1, "adj", FuncGABOW_SCC, "src/digraphs.c:GABOW_SCC"},
-
-    {"DIGRAPH_CONNECTED_COMPONENTS",
-     1,
-     "digraph",
-     FuncDIGRAPH_CONNECTED_COMPONENTS,
-     "src/digraphs.c:DIGRAPH_CONNECTED_COMPONENTS"},
-
-    {"IS_ACYCLIC_DIGRAPH",
-     1,
-     "adj",
-     FuncIS_ACYCLIC_DIGRAPH,
-     "src/digraphs.c:FuncIS_ACYCLIC_DIGRAPH"},
-
-    {"DIGRAPH_LONGEST_DIST_VERTEX",
-     2,
-     "adj, start",
-     FuncDIGRAPH_LONGEST_DIST_VERTEX,
-     "src/digraphs.c:FuncDIGRAPH_LONGEST_DIST_VERTEX"},
-
-    {"DIGRAPH_TRANS_REDUCTION",
-     1,
-     "list",
-     FuncDIGRAPH_TRANS_REDUCTION,
-     "src/digraphs.c:FuncDIGRAPH_TRANS_REDUCTION"},
-
-    {"IS_ANTISYMMETRIC_DIGRAPH",
-     1,
-     "adj",
-     FuncIS_ANTISYMMETRIC_DIGRAPH,
-     "src/digraphs.c:FuncIS_ANTISYMMETRIC_DIGRAPH"},
-
-    {"IS_STRONGLY_CONNECTED_DIGRAPH",
-     1,
-     "adj",
-     FuncIS_STRONGLY_CONNECTED_DIGRAPH,
-     "src/digraphs.c:FuncIS_STRONGLY_CONNECTED_DIGRAPH"},
-
-    {"DIGRAPH_TOPO_SORT",
-     1,
-     "adj",
-     FuncDIGRAPH_TOPO_SORT,
-     "src/digraphs.c:FuncDIGRAPH_TOPO_SORT"},
-
-    {"DIGRAPH_SYMMETRIC_SPANNING_FOREST",
-     1,
-     "adj",
-     FuncDIGRAPH_SYMMETRIC_SPANNING_FOREST,
-     "src/digraphs.c:FuncDIGRAPH_SYMMETRIC_SPANNING_FOREST"},
-
-    {"DIGRAPH_SOURCE_RANGE",
-     1,
-     "digraph",
-     FuncDIGRAPH_SOURCE_RANGE,
-     "src/digraphs.c:FuncDIGRAPH_SOURCE_RANGE"},
-
-    {"OutNeighbours",
-     1,
-     "D",
-     FuncOutNeighbours,
-     "src/digraphs.c:FuncOutNeighbours"},
-
-    {"DIGRAPH_OUT_NEIGHBOURS_FROM_SOURCE_RANGE",
-     3,
-     "N, source, range",
-     FuncOutNeighboursFromSourceRange,
-     "src/digraphs.c:FuncOutNeighboursFromSourceRange"},
-
-    {"DIGRAPH_NR_VERTICES",
-     1,
-     "D",
-     FuncDigraphNrVertices,
-     "src/digraphs.c:FuncDigraphNrVertices"},
-
-    {"DIGRAPH_IN_OUT_NBS",
-     1,
-     "adj",
-     FuncDIGRAPH_IN_OUT_NBS,
-     "src/digraphs.c:FuncDIGRAPH_IN_OUT_NBS"},
-
-    {"ADJACENCY_MATRIX",
-     1,
-     "digraph",
-     FuncADJACENCY_MATRIX,
-     "src/digraphs.c:FuncADJACENCY_MATRIX"},
-
-    {"IS_MULTI_DIGRAPH",
-     1,
-     "digraph",
-     FuncIS_MULTI_DIGRAPH,
-     "src/digraphs.c:FuncIS_MULTI_DIGRAPH"},
-
-    {"DIGRAPH_SHORTEST_DIST",
-     1,
-     "digraph",
-     FuncDIGRAPH_SHORTEST_DIST,
-     "src/digraphs.c:FuncDIGRAPH_SHORTEST_DIST"},
-
-    {"DIGRAPH_DIAMETER",
-     1,
-     "digraph",
-     FuncDIGRAPH_DIAMETER,
-     "src/digraphs.c:FuncDIGRAPH_DIAMETER"},
-
-    {"IS_TRANSITIVE_DIGRAPH",
-     1,
-     "digraph",
-     FuncIS_TRANSITIVE_DIGRAPH,
-     "src/digraphs.c:FuncIS_TRANSITIVE_DIGRAPH"},
-
-    {"DIGRAPH_TRANS_CLOSURE",
-     1,
-     "digraph",
-     FuncDIGRAPH_TRANS_CLOSURE,
-     "src/digraphs.c:FuncDIGRAPH_TRANS_CLOSURE"},
-
-    {"DIGRAPH_REFLEX_TRANS_CLOSURE",
-     1,
-     "digraph",
-     FuncDIGRAPH_REFLEX_TRANS_CLOSURE,
-     "src/digraphs.c:FuncDIGRAPH_REFLEX_TRANS_CLOSURE"},
-
-    {"RANDOM_DIGRAPH",
-     2,
-     "nn, limm",
-     FuncRANDOM_DIGRAPH,
-     "src/digraphs.c:FuncRANDOM_DIGRAPH"},
-
-    {"RANDOM_MULTI_DIGRAPH",
-     2,
-     "nn, mm",
-     FuncRANDOM_MULTI_DIGRAPH,
-     "src/digraphs.c:FuncRANDOM_MULTI_DIGRAPH"},
-
-    {"DIGRAPH_EQUALS",
-     2,
-     "digraph1, digraph2",
-     FuncDIGRAPH_EQUALS,
-     "src/digraphs.c:FuncDIGRAPH_EQUALS"},
-
-    {"DIGRAPH_LT",
-     2,
-     "digraph1, digraph2",
-     FuncDIGRAPH_LT,
-     "src/digraphs.c:FuncDIGRAPH_LT"},
-
-    {"DIGRAPH_PATH",
-     3,
-     "digraph, u, v",
-     FuncDIGRAPH_PATH,
-     "src/digraphs.c:FuncDIGRAPH_PATH"},
-
-    {"DIGRAPH_AUTOMORPHISMS",
-     3,
-     "digraph, vert_colours, edge_colours",
-     FuncDIGRAPH_AUTOMORPHISMS,
-     "src/digraphs.c:FuncDIGRAPH_AUTOMORPHISMS"},
-
-    {"MULTIDIGRAPH_AUTOMORPHISMS",
-     2,
-     "digraph, colours",
-     FuncMULTIDIGRAPH_AUTOMORPHISMS,
-     "src/digraphs.c:FuncMULTIDIGRAPH_AUTOMORPHISMS"},
-
-    {"DIGRAPH_CANONICAL_LABELLING",
-     2,
-     "digraph, colours",
-     FuncDIGRAPH_CANONICAL_LABELLING,
-     "src/digraphs.c:FuncDIGRAPH_CANONICAL_LABELLING"},
-
-    {"MULTIDIGRAPH_CANONICAL_LABELLING",
-     2,
-     "digraph, colours",
-     FuncMULTIDIGRAPH_CANONICAL_LABELLING,
-     "src/digraphs.c:FuncMULTIDIGRAPH_CANONICAL_LABELLING"},
-
-    {"HomomorphismDigraphsFinder",
-     -1,
-     "digraph1, digraph2, hook, user_param, max_results, hint, "
-     "injective, image, partial_map, colors1, colors2",
-     FuncHomomorphismDigraphsFinder,
-     "src/homos.c:FuncHomomorphismDigraphsFinder"},
-
-    {"DigraphsCliquesFinder",
-     -1,
-     "digraph, hook, user_param, limit, include, "
-     "exclude, max, size",
-     FuncDigraphsCliquesFinder,
-     "src/cliques.c:FuncDigraphsCliquesFinder"},
-
-    {"IS_PLANAR", 1, "digraph", FuncIS_PLANAR, "src/planar.c:FuncIS_PLANAR"},
-
-    {"PLANAR_EMBEDDING",
-     1,
-     "digraph",
-     FuncPLANAR_EMBEDDING,
-     "src/planar.c:FuncPLANAR_EMBEDDING"},
-
-    {"KURATOWSKI_PLANAR_SUBGRAPH",
-     1,
-     "digraph",
-     FuncKURATOWSKI_PLANAR_SUBGRAPH,
-     "src/planar.c:FuncKURATOWSKI_PLANAR_SUBGRAPH"},
-
-    {"IS_OUTER_PLANAR",
-     1,
-     "digraph",
-     FuncIS_OUTER_PLANAR,
-     "src/planar.c:FuncIS_OUTER_PLANAR"},
-
-    {"OUTER_PLANAR_EMBEDDING",
-     1,
-     "digraph",
-     FuncOUTER_PLANAR_EMBEDDING,
-     "src/planar.c:FuncOUTER_PLANAR_EMBEDDING"},
-
-    {"KURATOWSKI_OUTER_PLANAR_SUBGRAPH",
-     1,
-     "digraph",
-     FuncKURATOWSKI_OUTER_PLANAR_SUBGRAPH,
-     "src/planar.c:FuncKURATOWSKI_OUTER_PLANAR_SUBGRAPH"},
-
-    {"SUBGRAPH_HOMEOMORPHIC_TO_K23",
-     1,
-     "digraph",
-     FuncSUBGRAPH_HOMEOMORPHIC_TO_K23,
-     "src/planar.c:FuncSUBGRAPH_HOMEOMORPHIC_TO_K23"},
-
-    {"SUBGRAPH_HOMEOMORPHIC_TO_K33",
-     1,
-     "digraph",
-     FuncSUBGRAPH_HOMEOMORPHIC_TO_K33,
-     "src/planar.c:FuncSUBGRAPH_HOMEOMORPHIC_TO_K33"},
-
-    {"SUBGRAPH_HOMEOMORPHIC_TO_K4",
-     1,
-     "digraph",
-     FuncSUBGRAPH_HOMEOMORPHIC_TO_K4,
-     "src/planar.c:FuncSUBGRAPH_HOMEOMORPHIC_TO_K4"},
-
-    {"DIGRAPHS_FREE_HOMOS_DATA",
-     0,
-     "",
-     FuncDIGRAPHS_FREE_HOMOS_DATA,
-     "src/homos.c:FuncDIGRAPHS_FREE_HOMOS_DATA"},
-
-    {"DIGRAPHS_FREE_CLIQUES_DATA",
-     0,
-     "",
-     FuncDIGRAPHS_FREE_CLIQUES_DATA,
-     "src/cliques.c:FuncDIGRAPHS_FREE_CLIQUES_DATA"},
+    GVAR_FUNC(DIGRAPH_NREDGES, 1, "digraph"),
+    GVAR_FUNC(GABOW_SCC, 1, "adj"),
+    GVAR_FUNC(DIGRAPH_CONNECTED_COMPONENTS, 1, "digraph"),
+    GVAR_FUNC(IS_ACYCLIC_DIGRAPH, 1, "adj"),
+    GVAR_FUNC(DIGRAPH_LONGEST_DIST_VERTEX, 2, "adj, start"),
+    GVAR_FUNC(DIGRAPH_TRANS_REDUCTION, 1, "list"),
+    GVAR_FUNC(IS_ANTISYMMETRIC_DIGRAPH, 1, "adj"),
+    GVAR_FUNC(IS_STRONGLY_CONNECTED_DIGRAPH, 1, "adj"),
+    GVAR_FUNC(DIGRAPH_TOPO_SORT, 1, "adj"),
+    GVAR_FUNC(DIGRAPH_SYMMETRIC_SPANNING_FOREST, 1, "adj"),
+    GVAR_FUNC(DIGRAPH_SOURCE_RANGE, 1, "digraph"),
+    GVAR_FUNC(OutNeighbours, 1, "D"),
+    GVAR_FUNC(DIGRAPH_OUT_NEIGHBOURS_FROM_SOURCE_RANGE, 3, "N, source, range"),
+    GVAR_FUNC(DIGRAPH_NR_VERTICES, 1, "D"),
+    GVAR_FUNC(DIGRAPH_IN_OUT_NBS, 1, "adj"),
+    GVAR_FUNC(ADJACENCY_MATRIX, 1, "digraph"),
+    GVAR_FUNC(IS_MULTI_DIGRAPH, 1, "digraph"),
+    GVAR_FUNC(DIGRAPH_SHORTEST_DIST, 1, "digraph"),
+    GVAR_FUNC(DIGRAPH_DIAMETER, 1, "digraph"),
+    GVAR_FUNC(IS_TRANSITIVE_DIGRAPH, 1, "digraph"),
+    GVAR_FUNC(DIGRAPH_TRANS_CLOSURE, 1, "digraph"),
+    GVAR_FUNC(DIGRAPH_REFLEX_TRANS_CLOSURE, 1, "digraph"),
+    GVAR_FUNC(RANDOM_DIGRAPH, 2, "nn, limm"),
+    GVAR_FUNC(RANDOM_MULTI_DIGRAPH, 2, "nn, mm"),
+    GVAR_FUNC(DIGRAPH_EQUALS, 2, "digraph1, digraph2"),
+    GVAR_FUNC(DIGRAPH_LT, 2, "digraph1, digraph2"),
+    GVAR_FUNC(DIGRAPH_PATH, 3, "digraph, u, v"),
+    GVAR_FUNC(DIGRAPH_AUTOMORPHISMS, 3, "digraph, vert_colours, edge_colours"),
+    GVAR_FUNC(MULTIDIGRAPH_AUTOMORPHISMS, 2, "digraph, colours"),
+    GVAR_FUNC(DIGRAPH_CANONICAL_LABELLING, 2, "digraph, colours"),
+    GVAR_FUNC(MULTIDIGRAPH_CANONICAL_LABELLING, 2, "digraph, colours"),
+    GVAR_FUNC(HomomorphismDigraphsFinder,
+              -1,
+              "digraph1, digraph2, hook, user_param, max_results, hint, "
+              "injective, image, partial_map, colors1, colors2"),
+    GVAR_FUNC(DigraphsCliquesFinder,
+              -1,
+              "digraph, hook, user_param, limit, "
+              "include, exclude, max, size"),
+    GVAR_FUNC(IS_PLANAR, 1, "digraph"),
+    GVAR_FUNC(PLANAR_EMBEDDING, 1, "digraph"),
+    GVAR_FUNC(KURATOWSKI_PLANAR_SUBGRAPH, 1, "digraph"),
+    GVAR_FUNC(IS_OUTER_PLANAR, 1, "digraph"),
+    GVAR_FUNC(OUTER_PLANAR_EMBEDDING, 1, "digraph"),
+    GVAR_FUNC(KURATOWSKI_OUTER_PLANAR_SUBGRAPH, 1, "digraph"),
+    GVAR_FUNC(SUBGRAPH_HOMEOMORPHIC_TO_K23, 1, "digraph"),
+    GVAR_FUNC(SUBGRAPH_HOMEOMORPHIC_TO_K33, 1, "digraph"),
+    GVAR_FUNC(SUBGRAPH_HOMEOMORPHIC_TO_K4, 1, "digraph"),
+    GVAR_FUNC(DIGRAPHS_FREE_HOMOS_DATA, 0, ""),
+    GVAR_FUNC(DIGRAPHS_FREE_CLIQUES_DATA, 0, ""),
     {0, 0, 0, 0, 0} /* Finish with an empty entry */
 };
 
