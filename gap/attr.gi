@@ -1509,7 +1509,7 @@ function(D)
   Triplets, CCExtension, digraph, temp, T, C, blocked, triple;
 
     if IsEmptyDigraph(D) then
-    	return [];
+        return [];
     fi;
 
     BlockNeighbours := function(digraph, v, blocked)
@@ -1607,7 +1607,8 @@ function(D)
         return [C, blocked];
     end;
 
-    digraph := DigraphSymmetricClosure(DigraphRemoveLoops(DigraphRemoveAllMultipleEdges(D)));
+    digraph := DigraphSymmetricClosure(DigraphRemoveLoops(
+                                  DigraphRemoveAllMultipleEdges(D)));
 
     SetDigraphVertexLabels(digraph, DegreeLabeling(digraph));
     temp := Triplets(digraph);

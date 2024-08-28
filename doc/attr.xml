@@ -1382,8 +1382,9 @@ gap> DigraphLongestSimpleCircuit(D);
     If <A>digraph</A> is a digraph, then <C>DigraphAllChordlessCycles</C> 
     returns a list of the <E>chordless cycles</E> in <A>digraph</A>. <P/>
 
-    A chordless cycle <M>C</M> is a simple circuit (see Section <Ref Subsect="Definitions" Style="Number" /> ) 
-    where each pair of vertices in <M>C</M> are not connected by an edge not in <M>C</M>. <P/>
+    A chordless cycle <M>C</M> is a undirected simple circuit (see Section <Ref Subsect="Definitions" Style="Number" /> ) 
+    where each pair of vertices in <M>C</M> are not connected by an edge not in <M>C</M>. 
+    Here, cycles of length two are ignored.<P/>
 
     For a digraph without multiple edges, a simple circuit is uniquely
     determined by its subsequence of vertices. However this is not the case for
