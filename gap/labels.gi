@@ -46,6 +46,9 @@ function(D, v)
                 "is not a vertex of the digraph <D> that is the 1st argument");
 end);
 
+InstallMethod(HaveVertexLabelsBeenAssigned, "for a digraph", [IsDigraph],
+D -> IsBound(D!.vertexlabels));
+
 InstallMethod(RemoveDigraphVertexLabel, "for a digraph and positive integer",
 [IsDigraph, IsPosInt],
 function(D, v)

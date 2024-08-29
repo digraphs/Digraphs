@@ -142,7 +142,7 @@ extern Obj LargestMovedPointPerms;
 
 static Obj GAP_FUNC;  // Variable to hold a GAP level hook function
 
-static Obj   (*HOOK)(void*,  // HOOK function applied to every homo found
+static Obj (*HOOK)(void*,  // HOOK function applied to every homo found
                    const uint16_t,
                    const uint16_t*);
 static void* USER_PARAM;  // a USER_PARAM for the hook
@@ -1642,14 +1642,20 @@ static bool init_data_from_args(Obj digraph1_obj,
   uint16_t calculated_max_verts =
       MAX(DigraphNrVertices(digraph1_obj), DigraphNrVertices(digraph2_obj));
   if (!homos_data_initialized
-      || (calculated_max_verts > HOMOS_STRUCTURE_SIZE)) {
+      || (calculated_max_verts >= HOMOS_STRUCTURE_SIZE)) {
     FuncDIGRAPHS_FREE_HOMOS_DATA(0L);
     homos_data_initialized = true;
 
     // Rather arbitrary, but we multiply by 1.2 to avoid
     // n = 1,2,3,4,5... causing constant reallocation
-    HOMOS_STRUCTURE_SIZE = calculated_max_verts + calculated_max_verts / 5;
-    // srand(time(0));
+    HOMOS_STRUCTURE_SIZE =
+        (calculated_max_verts + calculated_max_verts / 5) + 1;
+    // The previous line includes "+ 1" because below we do:
+    // "BLISS_GRAPH[3 * PERM_DEGREE]" but we only allocate bliss graphs in
+    // BLISS_GRAPH up to but not including 3 * HOMOS_STRUCTURE_SIZE. So if
+    // PERM_DEGREE = (# nodes in digraph2) = HOMOS_STRUCTURE_SIZE (the
+    // first equality always holds, the second if  # nodes in digraph2 >
+    // # nodes in digraph1), then this is out of bounds.
 #ifdef DIGRAPHS_ENABLE_STATS
     STATS = safe_malloc(sizeof(HomoStats));
 #endif
