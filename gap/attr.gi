@@ -750,11 +750,21 @@ function(D)
   return out;
 end);
 
+# Hash related attributes
+
 InstallMethod(DigraphHash, "for a digraph", [IsDigraph], DIGRAPH_HASH);
 
+# To make built in Orbit function use DigraphHash
 InstallMethod(SparseIntKey, "for an object and digraph",
 [IsObject, IsDigraph],
 {coll, D} -> DigraphHash
+);
+
+# To make orb package use DigraphHash
+InstallMethod(ChooseHashFunction, "for a digraph and positive integer",
+[IsDigraph, IsInt],
+{D, hashlen} -> rec(func := {x, data} -> 1 + (DigraphHash(x) mod data[1]),
+                    data := [hashlen])
 );
 
 # attributes for digraphs . . .
