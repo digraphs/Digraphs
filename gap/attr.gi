@@ -763,6 +763,7 @@ InstallMethod(SparseIntKey, "for an object and digraph",
 # To make orb package use DigraphHash
 InstallMethod(ChooseHashFunction, "for a digraph and positive integer",
 [IsDigraph, IsInt],
+2,
 {D, hashlen} -> rec(func := {x, data} -> 1 + (DigraphHash(x) mod data[1]),
                     data := [hashlen])
 );
