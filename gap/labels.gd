@@ -13,6 +13,7 @@
 #  Get vertex labels
 DeclareOperation("DigraphVertexLabel", [IsDigraph, IsPosInt]);
 DeclareOperation("DigraphVertexLabels", [IsDigraph]);
+DeclareOperation("HaveVertexLabelsBeenAssigned", [IsDigraph]);
 
 #  Set vertex labels
 DeclareOperation("SetDigraphVertexLabel", [IsDigraph, IsPosInt, IsObject]);
