@@ -1579,7 +1579,7 @@ function(D)
     end;
 
     digraph := DigraphSymmetricClosure(DigraphRemoveLoops(
-                                  DigraphRemoveAllMultipleEdges(D)));
+        DigraphRemoveAllMultipleEdges(DigraphMutableCopyIfMutable(D))));
 
     SetDigraphVertexLabels(digraph,
                  Reversed(DigraphDegeneracyOrdering(digraph)));
