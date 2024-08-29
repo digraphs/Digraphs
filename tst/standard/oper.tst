@@ -211,6 +211,10 @@ gap> OnMultiDigraphs(gr1, [(1, 3), (1, 7)]);
 Error, the 2nd entry of the 2nd argument <perms> must permute the edges of the\
  digraph <D> that is the 1st argument,
 
+#  DomainForAction
+gap> DomainForAction(RandomDigraph(10), SymmetricGroup(10), OnDigraphs);
+true
+
 #  InNeighboursOfVertex and InDegreeOfVertex
 gap> gr := DigraphFromDiSparse6String(".IgBGLQ?Apkc");
 <immutable multidigraph with 10 vertices, 6 edges>
