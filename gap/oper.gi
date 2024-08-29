@@ -1087,6 +1087,16 @@ function(D, perms)
   return OnDigraphs(D, perms[1]);
 end);
 
+# DomainForAction returns `true` instead of a proper domain here as a stopgap
+# measure to ensure that the Orbit method of GAP uses a SparseHashTable instead
+# of a DictionaryByPosition.
+# As SparseIntKey for digraphs does not depend on the domain, and always
+# returns DigraphHash, the actual returned value of DomainForAction does not
+# matter as long as it returns something other than `fail`.
+InstallMethod(DomainForAction, "for a digraph, list or collection and function",
+[IsDigraph, IsListOrCollection, IsFunction],
+ReturnTrue);
+
 #############################################################################
 # 5. Substructures and quotients
 #############################################################################
