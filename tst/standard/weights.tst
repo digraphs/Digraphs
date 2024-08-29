@@ -274,6 +274,7 @@ gap> EdgeWeightedDigraphShortestPath(d, 1, 3);
 
 # K Shortest Paths
 gap> d := EdgeWeightedDigraph([[2], [3], [4], []], [[1], [1], [1], []]);
+<immutable digraph with 4 vertices, 3 edges>
 gap> shortest_path := EdgeWeightedDigraphShortestPath(d, 1, 4);
 [ [ 1, 2, 3, 4 ], [ 1, 1, 1 ] ]
 gap> iter := DIGRAPHS_ShortestPathsIterator(d, 1, 4); 

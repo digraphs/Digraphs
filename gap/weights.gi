@@ -622,69 +622,124 @@ end);
 #############################################################################
 #
 # returns an iterator that generates the (possibly empty) sequence of paths
-# between source and dest
+# between source and dest by increasing weight.
 #
 # the iterator needs to store
 #  - found paths
 #  - candidates
-#  -
+#  - reference to the digraph
 #  rec( found_paths := [],
-InstallGlobalFunction(DIGRAPHS_ShortestPathsIterator,
-function(digraph, source, dest)
-  local currentIterator, findNextPath;
 
-  currentIterator := rec(
-    candidates := BinaryHeap(),
-    foundPaths := [
-      EdgeWeightedDigraphShortestPath(digraph, source, dest)
-    ]);
+DIGRAPHS_SPI := function(digraph, source, dest)
+  local iter;
 
-  findNextPath := function(iter)
-    local currentShortestPath, currentShortestPathLength, spurNode, rootPath,
-          rootPathNode, modifiedGraph, foundPaths, i, p, spurPath, totalPath,
-          nextPath;
+  iter := rec(
+    NextIterator := function(iter)
+      local shortestPath;
 
-    currentShortestPath := Last(iter.foundPaths);
-    currentShortestPathLength := Length(currentShortestPath[1]);
-    foundPaths := iter.foundPaths;
+      if IsEmpty(iter!.foundPaths) then
+        shortestPath := EdgeWeightedDigraphShortestPath(iter!.digraph, iter!.source, iter!.dest);
+        Add(iter!.foundPaths, shortestPath);
+      else
 
-    for i in [1 .. currentShortestPathLength] do
-      modifiedGraph := fail;
+      fi;
+    end,
+    IsDoneIterator := function(iter)
+      return IsEmpty(iter!.candidatePaths);
+    end,
+    ShallowCopy := function(iter)
+      # TODO
+      return iter;
+    end,
+    PrintObj := function(iter)
+      Print("<iterator of shortst paths between vertices>");
+    end,
 
-      spurNode := currentShortestPath[1][i];
-      rootPath := [
-        currentShortestPath[1]{[1..i]},
-        currentShortestPath[2]{[1..i-1]}
-      ];
+    foundPaths := [],
+    candidatePaths := BinaryHeap(),
+    digraph := digraph,
+    source := source,
+    dest := dest
+  );
+  return IteratorByFunctions(iter);
+end;
 
-      for p in foundPaths do
-        if rootPath = p[1]{[1..i]} then
-          # remove p[2][i] from Graph;
-        fi;
-      od;
+# FIXME: find out how often paths are used as objects in
+#        their own right.
+DIGRAPHS_ConcatenatePaths := function(a, b)
+  local a_length;
 
-      for rootPathNode in rootPath[1] do
-        if rootPathNode <> spurNode then
-          # remove rootPathNode from Graph;
-        fi;
-      od;
+  a_length := Length(a);
 
-      spurPath := EdgeWeightedDigraphShortestPath(modifiedGraph, spurNode, dest);
-      totalPath := [ Concatenation(rootPath[1], spurPath[1]),
-                     Concatenation(rootPath[2], spurPath[2]) ];
+  if a[1][a_length] <> b[1][1] then
+    ErrorNoReturn("concatenatePaths: last vertex on `a` is not equal to first vertex of `b`");
+  fi;
 
-      Push(iter.candidatePaths, totalPath);
+  if a_length = 0 then
+    return StructuralCopy(b);
+  else
+    return [ Concatenation(a[1]{[1..a_length-1]}, b[1]),
+             Concatenation(b[2], b[2]) ];
+  fi;
+end;
+
+DIGRAPHS_ModifyGraph := function(digraph, root, foundPaths)
+    mutableWeights := EdgeWeightsMutableCopy(digraph);
+    for p in foundPaths do
+      if rootPath = p[1]{[1..i]} then
+        mutableWeights[p[2][i]] := infinity;
+      fi;
     od;
 
-    if IsEmpty(iter.candidatePaths) then
-      return fail;
+    rootNodes := currentShortestPath[1]{[1..i-1]};
+
+    o := OutNeighbours(digraph);
+    for i in [1..Length(o)] do
+      for j in [1..Length(o[i])] do
+        if o[i][j] in rootNodes then
+          mutableWeights[i][j] := infinity;
+        fi;
+      od;
+    od;
+    return EdgeWeightedDigraph(digraph, mutableWeights);
+end;
+
+DIGRAPHS_NextShortestPath := function(iter)
+  local currentShortestPath, currentShortestPathLength, spurNode, rootPath,
+        rootPathNode, modifiedGraph, foundPaths, i, p, spurPath, totalPath,
+        nextPath, mutableWeights, mutableOuts, rootNodes, j, o;
+
+  currentShortestPath := Last(iter.foundPaths);
+  currentShortestPathLength := Length(currentShortestPath[1]);
+  foundPaths := iter.foundPaths;
+
+  for i in [1 .. currentShortestPathLength] do
+    spurNode := currentShortestPath[1][i];
+    rootPath := [
+      currentShortestPath[1]{[1..i]},
+      currentShortestPath[2]{[1..i-1]}
+    ];
+
+    modifiedGraph := DIGRAPHS_ModifyGraph(digraph, rootPath, iter.foundPaths);
+    spurPath := EdgeWeightedDigraphShortestPath(modifiedGraph, spurNode, dest);
+
+    if spurPath <> fail then
+      totalPath := DIGRAPHS_ConcatenatePaths(rootPath, spurPath);
+      Push(iter.candidatePaths, totalPath);
     fi;
+  od;
 
-    nextPath := Pop(iter.candidatePaths);
-    Push(iter.foundPaths, nextPath);
+  if IsEmpty(iter.candidatePaths) then
+    return fail;
+  fi;
 
-    return nextPath;
-  end;
+  nextPath := Pop(iter.candidatePaths);
+  Add(iter.foundPaths, nextPath);
 
-  return findNextPath(currentIterator);
+  return nextPath;
+end;
+
+InstallGlobalFunction(DIGRAPHS_ShortestPathsIterator,
+function(digraph, source, dest)
+  ErrorNoReturn("Not implemented yet");
 end);
