@@ -1505,7 +1505,7 @@ end);
 InstallMethod(DigraphAllChordlessCycles, "for a digraph",
 [IsDigraph],
 function(D)
-  local BlockNeighbours, UnblockNeighbours, DegreeLabeling,
+  local BlockNeighbours, UnblockNeighbours,
   Triplets, CCExtension, digraph, temp, T, C, blocked, triple;
 
     if IsEmptyDigraph(D) then
@@ -1528,35 +1528,6 @@ function(D)
             fi;
         od;
         return blocked;
-    end;
-
-    # Computes the degree labeling
-    DegreeLabeling := function(digraph)
-        local degree, color, labeling, v, u, i, minDegree, x;
-
-        degree := List(DigraphVertices(digraph), i -> 0);
-        color := List(DigraphVertices(digraph), ReturnFalse);
-        labeling := List(DigraphVertices(digraph), i -> 0);
-        degree := List(DigraphVertices(digraph), i ->
-                            OutDegreeOfVertex(digraph, i));
-
-        for i in [1 .. DigraphNrVertices(digraph)] do
-            minDegree := DigraphNrVertices(digraph);
-            for x in DigraphVertices(digraph) do
-                if color[x] = false and degree[x] < minDegree then
-                    v := x;
-                    minDegree := degree[x];
-                fi;
-            od;
-            labeling[v] := i;
-            color[v] := true;
-            for u in OutNeighboursOfVertex(digraph, v) do
-                if color[u] = false then
-                    degree[u] := degree[u] - 1;
-                fi;
-            od;
-        od;
-        return labeling;
     end;
 
     # Computes all possible triplets
@@ -1610,7 +1581,8 @@ function(D)
     digraph := DigraphSymmetricClosure(DigraphRemoveLoops(
                                   DigraphRemoveAllMultipleEdges(D)));
 
-    SetDigraphVertexLabels(digraph, DegreeLabeling(digraph));
+    SetDigraphVertexLabels(digraph,
+                 Reversed(DigraphDegeneracyOrdering(digraph)));
     temp := Triplets(digraph);
     T := temp[1];
     C := temp[2];

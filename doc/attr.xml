@@ -1388,7 +1388,7 @@ gap> DigraphLongestSimpleCircuit(D);
 
     For a digraph without multiple edges, a simple circuit is uniquely
     determined by its subsequence of vertices. However this is not the case for
-    a multidigraph.  The attribute <C>DigraphAllSimpleCircuits</C> ignores
+    a multidigraph.  The attribute <C>DigraphAllChordlessCycles</C> ignores
     multiple edges, and identifies a simple circuit using only its subsequence
     of vertices. See Section <Ref Subsect="DigraphAllSimpleCircuits" Style="Number" /> for more details.<P/>
 
