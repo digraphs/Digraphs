@@ -58,6 +58,7 @@ DeclareAttribute("DigraphAbsorptionExpectedSteps", IsDigraph);
 
 DeclareAttribute("DigraphAllSimpleCircuits", IsDigraph);
 DeclareAttribute("DigraphLongestSimpleCircuit", IsDigraph);
+DeclareAttribute("DigraphAllChordlessCycles", IsDigraph);
 DeclareAttribute("HamiltonianPath", IsDigraph);
 DeclareAttribute("DigraphPeriod", IsDigraph);
 DeclareAttribute("DigraphLoops", IsDigraph);

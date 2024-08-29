@@ -948,6 +948,25 @@ gap> gr := Digraph([[3, 6, 7], [3, 6, 8], [1, 2, 3, 6, 7, 8],
 gap> Length(DigraphAllSimpleCircuits(gr));
 259
 
+# DigraphAllChordlessCycles
+gap> gr := Digraph([]);;
+gap> DigraphAllChordlessCycles(gr);
+[  ]
+gap> gr := ChainDigraph(4);;
+gap> DigraphAllChordlessCycles(gr);
+[  ]
+gap> D := CycleDigraph(3);;
+gap> DigraphAllChordlessCycles(D);
+[ [ 2, 1, 3 ] ]
+gap> D := CompleteDigraph(4);;
+gap> DigraphAllChordlessCycles(D);
+[ [ 2, 1, 3 ], [ 2, 1, 4 ], [ 3, 1, 4 ], [ 3, 2, 4 ] ]
+gap> D := Digraph([[2, 4, 5], [3, 6], [4, 7], [8], [6, 8], [7], [8], []]);;
+gap> DigraphAllChordlessCycles(D);
+[ [ 6, 5, 8, 7 ], [ 3, 4, 8, 5, 6, 2 ], [ 3, 4, 8, 7 ], [ 1, 4, 8, 5 ], 
+  [ 1, 4, 8, 7, 6, 2 ], [ 1, 4, 3, 2 ], [ 1, 4, 3, 7, 6, 5 ], [ 3, 2, 6, 7 ], 
+  [ 2, 1, 5, 6 ], [ 2, 1, 5, 8, 7, 3 ] ]
+
 #  DigraphLongestSimpleCircuit
 gap> gr := Digraph([]);;
 gap> DigraphLongestSimpleCircuit(gr);
