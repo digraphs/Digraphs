@@ -25,6 +25,10 @@ _STANDREWSMATHS := Concatenation(["Mathematical Institute, North Haugh, ",
 _STANDREWSCS := Concatenation(["Jack Cole Building, North Haugh, ",
                                "St Andrews, Fife, KY16 9SX, Scotland"]);
 
+if not CompareVersionNumbers(GAPInfo.Version, "4.12") then
+  IsKernelExtensionAvailable := fail;
+fi;
+
 SetPackageInfo(rec(
 PackageName := "Digraphs",
 Subtitle := "Graphs, digraphs, and multidigraphs in GAP",
@@ -444,6 +448,8 @@ AvailabilityTest := function()
                                  "the package cannot be loaded."]);
       return fail;
     fi;
+    # Stop GAP from erroring that IsKernelExtensionAvailable is not a bound
+    # global in the next line.
   fi;
   return true;
 end,
@@ -452,3 +458,7 @@ Autoload := false,
 TestFile := "tst/teststandard.g",
 Keywords := []
 ));
+
+if not CompareVersionNumbers(GAPInfo.Version, "4.12") then
+  Unbind(IsKernelExtensionAvailable);
+fi;
