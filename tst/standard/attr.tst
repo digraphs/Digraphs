@@ -2825,6 +2825,12 @@ gap> D := Digraph([[2, 3], [3, 5], [1, 2, 4], [2, 3], [3]]);
 <immutable digraph with 5 vertices, 10 edges>
 gap> VertexConnectivity(D);
 2
+gap> D := DigraphFromGraph6String("NoCQ@?EAS_C`QA?c_Kg");;
+gap> VertexConnectivity(D);
+3
+gap> D := DigraphFromGraph6String("HoStIv{");;
+gap> VertexConnectivity(D);
+4
 
 # Semimodular lattices
 gap> D := DigraphFromDigraph6String("&C[o?");
