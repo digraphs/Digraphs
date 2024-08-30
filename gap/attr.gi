@@ -1528,22 +1528,22 @@ end);
 
 # Compute all undirected simple circuits by filtering the output
 # of DigraphAllSimpleCircuits
-InstallMethod(DigraphAllUndirectedSimpleCircuits, "for a digraph",
-                     [IsDigraph], function(D)
-    local digraph, cycles, keep, cycle, cycleRev;
-    digraph := DigraphSymmetricClosure(
-        DigraphRemoveAllMultipleEdges(DigraphMutableCopyIfMutable(D)));
-    cycles := Filtered(DigraphAllSimpleCircuits(digraph),
-        c -> Length(c) > 2 or Length(c) = 1);
-    keep := HashSet();
-    for cycle in cycles do
-        cycleRev := [cycle[1]];
-        Append(cycleRev, Reversed(cycle{[2 .. Length(cycle)]}));
-        if (not cycle in keep and not cycleRev in keep) or Length(cycle) = 1 then
-              AddSet(keep, cycle);
-        fi;
-    od;
-    return Set(keep);
+InstallMethod(DigraphAllUndirectedSimpleCircuits, "for a digraph", [IsDigraph],
+function(D)
+  local digraph, cycles, keep, cycle, cycleRev;
+  digraph := DigraphSymmetricClosure(
+      DigraphRemoveAllMultipleEdges(DigraphMutableCopyIfMutable(D)));
+  cycles := Filtered(DigraphAllSimpleCircuits(digraph),
+    c -> Length(c) > 2 or Length(c) = 1);
+  keep := HashSet();
+  for cycle in cycles do
+    cycleRev := [cycle[1]];
+    Append(cycleRev, Reversed(cycle{[2 .. Length(cycle)]}));
+    if (not cycle in keep and not cycleRev in keep) or Length(cycle) = 1 then
+      AddSet(keep, cycle);
+    fi;
+  od;
+  return Set(keep);
 end);
 
 # Compute all chordless cycles for a given symmetric digraph
