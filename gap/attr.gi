@@ -1526,6 +1526,26 @@ function(D)
   return Concatenation(loops, out);
 end);
 
+# Compute all undirected simple ciruits by filtering the output
+# of DigraphAllSimpleCircuits
+InstallMethod(DigraphAllUndirectedSimpleCircuits, "for a digraph",
+                     [IsDigraph], function(D)
+    local digraph, cycles, remove, cycle, cycleRev;
+    digraph := DigraphSymmetricClosure(
+        DigraphRemoveAllMultipleEdges(DigraphMutableCopyIfMutable(D)));
+    cycles := Filtered(DigraphAllSimpleCircuits(digraph),
+        c -> Length(c) > 2 or Length(c) = 1);
+    remove := [];
+    for cycle in cycles do
+        if not cycle in remove and Length(cycle) <> 1 then
+            cycleRev := [cycle[1]];
+            Append(cycleRev, Reversed(cycle{[2 .. Length(cycle)]}));
+            Add(remove, cycleRev);
+        fi;
+    od;
+    return Difference(cycles, remove);
+end);
+
 # Compute all chordless cycles for a given symmetric digraph
 # Algorithm based on https://arxiv.org/pdf/1404.7610
 InstallMethod(DigraphAllChordlessCycles, "for a digraph",

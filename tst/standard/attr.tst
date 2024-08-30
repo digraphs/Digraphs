@@ -948,6 +948,37 @@ gap> gr := Digraph([[3, 6, 7], [3, 6, 8], [1, 2, 3, 6, 7, 8],
 gap> Length(DigraphAllSimpleCircuits(gr));
 259
 
+#  DigraphAllUndirectedSimpleCircuits
+gap> gr := Digraph([]);;
+gap> DigraphAllUndirectedSimpleCircuits(gr);
+[  ]
+gap> gr := ChainDigraph(4);;
+gap> DigraphAllUndirectedSimpleCircuits(gr);
+[  ]
+gap> gr := CompleteDigraph(2);;
+gap> DigraphAllUndirectedSimpleCircuits(gr);
+[  ]
+gap> gr := CompleteDigraph(3);;
+gap> DigraphAllUndirectedSimpleCircuits(gr);
+[ [ 1, 2, 3 ] ]
+gap> gr := Digraph([[], [3], [2, 4], [5, 4], [4]]);
+<immutable digraph with 5 vertices, 6 edges>
+gap> DigraphAllUndirectedSimpleCircuits(gr);
+[ [ 4 ] ]
+gap> gr := Digraph([[1, 2], [2, 1]]);
+<immutable digraph with 2 vertices, 4 edges>
+gap> DigraphAllUndirectedSimpleCircuits(gr);
+[ [ 1 ], [ 2 ] ]
+gap> gr := Digraph([[4], [1, 3], [1, 2], [2, 3]]);;
+gap> DigraphAllUndirectedSimpleCircuits(gr);
+[ [ 1, 2, 3 ], [ 1, 2, 3, 4 ], [ 1, 2, 4 ], [ 1, 2, 4, 3 ], [ 1, 3, 2, 4 ], 
+  [ 1, 3, 4 ], [ 2, 3, 4 ] ]
+gap> gr := Digraph([[3, 6, 7], [3, 6, 8], [1, 2, 3, 6, 7, 8],
+> [2, 3, 4, 8], [2, 3, 4, 5, 6, 7], [1, 3, 4, 5, 7], [2, 3, 6, 8],
+> [1, 2, 3, 8]]);;
+gap> Length(DigraphAllUndirectedSimpleCircuits(gr));
+1330
+
 # DigraphAllChordlessCycles
 gap> gr := Digraph([]);;
 gap> DigraphAllChordlessCycles(gr);
