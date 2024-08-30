@@ -1,11 +1,12 @@
-.ipynb_checkpoints
+*.DS_Store
+*.Plo
+*.Tpo
 *.a
 *.aux
 *.bbl
 *.blg
 *.brf
 *.digraphs
-*.DS_Store
 *.dylib
 *.g6
 *.gcda
@@ -23,7 +24,6 @@
 *.o
 *.out
 *.pdf
-*.Plo
 *.pnr
 *.pyc
 *.six
@@ -35,11 +35,12 @@
 *.tex
 *.toc
 *.top
-*.Tpo
 *.tui
 *.txt
+.ipynb_checkpoints
 /doc/*.css
 /doc/*.js
+Makefile
 aclocal.m4
 autom4te.*
 bin/
@@ -50,9 +51,9 @@ coverage
 depcomp
 digraphs-config.h
 digraphs-lib
+doc/_*.xml
 gen/
 gh-pages/
-Makefile
 manual.lab
 missing
 src/pkgconfig.h.in
