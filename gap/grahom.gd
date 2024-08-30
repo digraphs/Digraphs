@@ -21,6 +21,11 @@ DeclareOperation("MonomorphismsDigraphs", [IsDigraph, IsDigraph]);
 DeclareOperation("MonomorphismsDigraphsRepresentatives",
                  [IsDigraph, IsDigraph]);
 
+DeclareOperation("SubdigraphsMonomorphismsRepresentatives",
+                 [IsDigraph, IsDigraph]);
+DeclareOperation("SubdigraphsMonomorphisms",
+                 [IsDigraph, IsDigraph]);
+
 DeclareOperation("DigraphEpimorphism", [IsDigraph, IsDigraph]);
 DeclareOperation("EpimorphismsDigraphs", [IsDigraph, IsDigraph]);
 DeclareOperation("EpimorphismsDigraphsRepresentatives", [IsDigraph, IsDigraph]);

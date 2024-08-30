@@ -10,26 +10,6 @@
 #############################################################################
 ##
 
-BindGlobal("AddOrbitToHashMap",
-function(G, set, hashmap)
-  local gens, o, im, pt, g;
-
-  gens := GeneratorsOfGroup(G);
-  o    := [set];
-  Assert(1, not set in hashmap);
-  hashmap[set] := true;
-  for pt in o do
-    for g in gens do
-      im := OnSets(pt, g);
-      if not im in hashmap then
-        hashmap[im] := true;
-        Add(o, im);
-      fi;
-    od;
-  od;
-  return o;
-end);
-
 InstallMethod(CliqueNumber, "for a digraph", [IsDigraph],
 D -> Maximum(List(DigraphMaximalCliquesReps(D), Length)));
 
@@ -570,7 +550,7 @@ function(arg...)
       orbits := HashMap();
       for c in cliques do
         if not c in orbits then
-          AddOrbitToHashMap(G, c, orbits);
+          DIGRAPHS_AddOrbitToHashMap(G, c, orbits);
         fi;
       od;
       out := Keys(orbits);
@@ -729,7 +709,7 @@ function(digraph, hook, user_param, limit, include, exclude, max, size, reps)
 
         new_found := 0;
         if not clique in found_orbits then
-          orbit := AddOrbitToHashMap(group, clique, found_orbits);
+          orbit := DIGRAPHS_AddOrbitToHashMap(group, clique, found_orbits);
           n := Length(orbit);
 
           if invariant_include and invariant_exclude then
@@ -915,7 +895,7 @@ function(D, hook, param, lim, inc, exc, max, size, reps, inc_var, exc_var)
       num := num + 1;
       return;
     elif not c in found_orbits then
-      orb := AddOrbitToHashMap(grp, c, found_orbits);
+      orb := DIGRAPHS_AddOrbitToHashMap(grp, c, found_orbits);
       n := Length(orb);
 
       if invariant then  # we're not just looking for orbit reps, but inc and

@@ -330,6 +330,79 @@ function(D1, D2)
   return Union(List(aut, x -> hom * x));
 end);
 
+InstallMethod(SubdigraphsMonomorphismsRepresentatives,
+"for a digraph and a digraph", [IsDigraph, IsDigraph],
+function(H, G)
+  local GV, HN, map, reps, result, set, rep;
+
+  GV := DigraphVertices(G);
+  HN := DigraphNrVertices(H);
+
+  map := HashMap();
+  reps := [];
+
+  for set in Combinations(GV, HN) do
+    if not set in map then
+      Add(reps, set);
+      DIGRAPHS_AddOrbitToHashMap(AutomorphismGroup(G), set, map);
+    fi;
+  od;
+
+  result := [];
+  for rep in reps do
+    map :=
+    HomomorphismDigraphsFinder(H,                   # domain
+                               G,                   # range
+                               fail,                # hook
+                               [],                  # user_param
+                               1,                   # max_results
+                               HN,                  # hint (i.e. rank)
+                               true,                # injective
+                               rep,                 # image
+                               [],                  # partial_map
+                               fail,                # colors1
+                               fail,                # colors2
+                               DigraphWelshPowellOrder(H));
+    if Length(map) <> 0 then
+      Add(result, map[1]);
+    fi;
+  od;
+  return result;
+end);
+
+InstallMethod(SubdigraphsMonomorphisms, "for a digraph and a digraph",
+[IsDigraph, IsDigraph],
+function(H, G)
+  local ApplyHomomorphismNC, reps, AG, result, sub, o, x, rep, i;
+
+  ApplyHomomorphismNC := function(D1, D2, t)
+    local old, new, v, im;
+    old := OutNeighbours(D1);
+    new := List([1 .. DigraphNrVertices(D2)], x -> []);
+    for v in DigraphVertices(D1) do
+      im := v ^ t;
+      if not IsBound(new[im]) then
+        new[im] := [];
+      fi;
+      Append(new[im], OnTuples(old[v], t));
+    od;
+    return DigraphNC(new);
+  end;
+
+  reps := SubdigraphsMonomorphismsRepresentatives(H, G);
+  AG := AutomorphismGroup(G);
+  result := [];
+  for rep in reps do
+    sub := ApplyHomomorphismNC(H, G, rep);
+    o   := Enumerate(Orb(AG, sub, OnDigraphs, rec(schreier := true)));
+    for i in [1 .. Length(o)] do
+      x := EvaluateWord(GeneratorsOfGroup(AG), TraceSchreierTreeForward(o, i));
+      Add(result, rep * x);
+    od;
+  od;
+  return result;
+end);
+
 ################################################################################
 # SURJECTIVE HOMOMORPHISMS
 
