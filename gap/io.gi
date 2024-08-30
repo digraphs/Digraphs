@@ -168,7 +168,7 @@ end;
 ################################################################################
 
 InstallGlobalFunction(IteratorFromDigraphFile,
-function(arg)
+function(arg...)
   local filename, decoder, file, record;
 
   if Length(arg) = 1 then
@@ -314,7 +314,7 @@ function(filename)
 end);
 
 InstallGlobalFunction(DigraphFile,
-function(arg)
+function(arg...)
   local coder, mode, name, file;
 
   # defaults
@@ -374,7 +374,7 @@ function(arg)
 end);
 
 InstallGlobalFunction(ReadDigraphs,
-function(arg)
+function(arg...)
   local nr, decoder, name, file, i, next, out;
 
   # defaults
@@ -455,7 +455,7 @@ function(arg)
 end);
 
 InstallGlobalFunction(WriteDigraphs,
-function(arg)
+function(arg...)
   local name, digraphs, encoder, mode, splitname, compext, g6sum, s6sum, v, e,
         dg6sum, ds6sum, file, D, i;
 

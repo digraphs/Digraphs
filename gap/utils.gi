@@ -135,7 +135,7 @@ function()
 end);
 
 InstallGlobalFunction(DigraphsTestStandard,
-function(arg)
+function(arg...)
   local opts, dir;
   if Length(arg) = 1 and IsRecord(arg[1]) then
     opts := ShallowCopy(arg[1]);
@@ -164,7 +164,7 @@ function(arg)
 end);
 
 InstallGlobalFunction(DigraphsTestExtreme,
-function(arg)
+function(arg...)
   local file, opts, dir;
   file := Filename(DirectoriesPackageLibrary("digraphs", "digraphs-lib"),
                    "extreme.d6.gz");
@@ -212,7 +212,7 @@ function()
 end);
 
 InstallGlobalFunction(DigraphsTestManualExamples,
-function(arg)
+function(arg...)
   local exlists, indices, omit, oldscr, passed, pad, total, l, sp, bad, s,
   start_time, test, end_time, elapsed, pex, str, j, ex, i;
 
@@ -587,7 +587,7 @@ function(blist)
 end);
 
 InstallGlobalFunction(DError,
-function(arg)
+function(arg...)
   local msg;
   if not (IsString(arg[1]) or IsList(arg[1])) then
     Error("expected a string or a list as the 1st argument");

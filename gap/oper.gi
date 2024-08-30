@@ -608,7 +608,7 @@ end);
 #############################################################################
 
 InstallGlobalFunction(DIGRAPHS_CombinationOperProcessArgs,
-function(arg)
+function(arg...)
   local copy, i;
   arg := ShallowCopy(arg[1]);
   if IsMutableDigraph(arg[1]) then
@@ -633,7 +633,7 @@ function(arg)
 end);
 
 InstallGlobalFunction(DigraphDisjointUnion,
-function(arg)
+function(arg...)
   local D, offset, n, i, j;
 
   # Allow the possibility of supplying arguments in a list.
@@ -668,7 +668,7 @@ function(arg)
 end);
 
 InstallGlobalFunction(DigraphJoin,
-function(arg)
+function(arg...)
   local D, tot, offset, n, list, i, v;
   # Allow the possibility of supplying arguments in a list.
   if Length(arg) = 1 and IsList(arg[1]) then
@@ -708,7 +708,7 @@ function(arg)
 end);
 
 InstallGlobalFunction(DigraphEdgeUnion,
-function(arg)
+function(arg...)
   local D, n, i, v;
 
   # Allow the possibility of supplying arguments in a list.
@@ -748,7 +748,7 @@ function(arg)
 end);
 
 InstallGlobalFunction(DigraphCartesianProduct,
-function(arg)
+function(arg...)
   local D, n, i, j, proj, m, labs;
 
   # Allow the possibility of supplying arguments in a list.
@@ -794,7 +794,7 @@ function(arg)
 end);
 
 InstallGlobalFunction(DigraphDirectProduct,
-function(arg)
+function(arg...)
   local D, n, i, j, proj, m, labs;
 
   # Allow the possibility of supplying arguments in a list.

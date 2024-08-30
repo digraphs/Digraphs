@@ -11,7 +11,7 @@
 ##
 
 InstallGlobalFunction(GeneratorsOfEndomorphismMonoid,
-function(arg)
+function(arg...)
   local D, limit, colours, G, gens, limit_arg, out;
   if IsEmpty(arg) then
     ErrorNoReturn("at least 1 argument expected, found 0,");

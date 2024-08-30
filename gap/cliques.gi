@@ -126,7 +126,7 @@ end);
 ################################################################################
 
 InstallGlobalFunction(DigraphMaximalIndependentSet,
-function(arg)
+function(arg...)
   if IsEmpty(arg) then
     ErrorNoReturn("at least 1 argument is required,");
   elif not IsDigraph(arg[1]) then
@@ -141,7 +141,7 @@ function(arg)
 end);
 
 InstallGlobalFunction(DigraphIndependentSet,
-function(arg)
+function(arg...)
   if IsEmpty(arg) then
     ErrorNoReturn("at least 1 argument is required,");
   elif not IsDigraph(arg[1]) then
@@ -158,7 +158,7 @@ end);
 # Independent sets orbit representatives
 
 InstallGlobalFunction(DigraphIndependentSetsReps,
-function(arg)
+function(arg...)
   if IsEmpty(arg) then
     ErrorNoReturn("at least 1 argument is required,");
   elif not IsDigraph(arg[1]) then
@@ -175,7 +175,7 @@ InstallMethod(DigraphIndependentSetsAttr, "for a digraph", [IsDigraph],
 DigraphIndependentSets);
 
 InstallGlobalFunction(DigraphIndependentSets,
-function(arg)
+function(arg...)
   local D, out;
   if IsEmpty(arg) then
     ErrorNoReturn("at least 1 argument is required,");
@@ -202,7 +202,7 @@ InstallMethod(DigraphMaximalIndependentSetsRepsAttr, "for a digraph",
 [IsDigraph], DigraphMaximalIndependentSetsReps);
 
 InstallGlobalFunction(DigraphMaximalIndependentSetsReps,
-function(arg)
+function(arg...)
   local out, D;
   if IsEmpty(arg) then
     ErrorNoReturn("at least 1 argument is required,");
@@ -229,7 +229,7 @@ InstallMethod(DigraphMaximalIndependentSetsAttr, "for a digraph", [IsDigraph],
 DigraphMaximalIndependentSets);
 
 InstallGlobalFunction(DigraphMaximalIndependentSets,
-function(arg)
+function(arg...)
   local D, out;
   if IsEmpty(arg) then
     ErrorNoReturn("at least 1 argument is required,");
@@ -254,7 +254,7 @@ end);
 # Cliques
 
 InstallGlobalFunction(DigraphMaximalClique,
-function(arg)
+function(arg...)
   if IsEmpty(arg) then
     ErrorNoReturn("at least 1 argument is required,");
   fi;
@@ -263,7 +263,7 @@ function(arg)
 end);
 
 InstallGlobalFunction(DigraphClique,
-function(arg)
+function(arg...)
   if IsEmpty(arg) then
     ErrorNoReturn("at least 1 argument is required,");
   fi;
@@ -272,7 +272,7 @@ function(arg)
 end);
 
 InstallGlobalFunction(DIGRAPHS_Clique,
-function(arg)
+function(arg...)
   local maximal, D, include, exclude, size, out, try, include_copy, v;
 
   maximal := arg[1];
@@ -369,7 +369,7 @@ end);
 # Cliques orbit representatives
 
 InstallGlobalFunction(DigraphCliquesReps,
-function(arg)
+function(arg...)
   local D, include, exclude, limit, size;
 
   if IsEmpty(arg) then
@@ -412,7 +412,7 @@ InstallMethod(DigraphCliquesAttr, "for a digraph", [IsDigraph],
 DigraphCliques);
 
 InstallGlobalFunction(DigraphCliques,
-function(arg)
+function(arg...)
   local D, include, exclude, limit, size, out;
 
   if IsEmpty(arg) then
@@ -467,7 +467,7 @@ InstallMethod(DigraphMaximalCliquesRepsAttr, "for a digraph", [IsDigraph],
 DigraphMaximalCliquesReps);
 
 InstallGlobalFunction(DigraphMaximalCliquesReps,
-function(arg)
+function(arg...)
   local D, include, exclude, limit, size, out;
 
   if IsEmpty(arg) then
@@ -521,7 +521,7 @@ InstallMethod(DigraphMaximalCliquesAttr, "for a digraph", [IsDigraph],
 DigraphMaximalCliques);
 
 InstallGlobalFunction(DigraphMaximalCliques,
-function(arg)
+function(arg...)
   local D, include, exclude, limit, size, cliques, sub, G, out, orbits, c;
 
   if IsEmpty(arg) then
@@ -1041,7 +1041,7 @@ function(D, hook, param, lim, inc, exc, max, size, reps, inc_var, exc_var)
       to_try := ListBlist(vtx, try);
     fi;
 
-    if not G = fail then
+    if G <> fail then
       to_try := List(Orbits(G, to_try), x -> x[1]);
     fi;
 
