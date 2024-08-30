@@ -32,69 +32,83 @@
 
 InstallMethod(PlanarEmbedding, "for a digraph", [IsDigraph],
 function(D)
-  if IsEmptyDigraph(D) or DigraphNrVertices(D) < 3 then
-    return [];
-  elif HasIsPlanarDigraph(D) and not IsPlanarDigraph(D) then
+  local C;
+  C := DigraphMutableCopy(D);
+  DigraphRemoveAllMultipleEdges(C);
+  if IsEmptyDigraph(C) or DigraphNrVertices(C) < 3 then
+    return OutNeighbors(C);
+  elif HasIsPlanarDigraph(C) and not IsPlanarDigraph(C) then
     return fail;
   fi;
-  D := MaximalAntiSymmetricSubdigraph(DigraphMutableCopyIfMutable(D));
-  return PLANAR_EMBEDDING(D);
+  return PLANAR_EMBEDDING(C);
 end);
 
 InstallMethod(OuterPlanarEmbedding, "for a digraph", [IsDigraph],
 function(D)
-  if IsEmptyDigraph(D) or DigraphNrVertices(D) < 3 then
-    return [];
-  elif HasIsOuterPlanarDigraph(D) and not IsOuterPlanarDigraph(D) then
+  local C;
+  C := DigraphMutableCopy(D);
+  DigraphRemoveAllMultipleEdges(C);
+  if IsEmptyDigraph(C) or DigraphNrVertices(C) < 3 then
+    return OutNeighbors(C);
+  elif HasIsOuterPlanarDigraph(C) and not IsOuterPlanarDigraph(C) then
     return fail;
   fi;
-  D := MaximalAntiSymmetricSubdigraph(DigraphMutableCopyIfMutable(D));
-  return OUTER_PLANAR_EMBEDDING(D);
+  return OUTER_PLANAR_EMBEDDING(C);
 end);
 
 InstallMethod(KuratowskiPlanarSubdigraph, "for a digraph", [IsDigraph],
 function(D)
-  if IsPlanarDigraph(D) then
+  local C;
+  C := DigraphMutableCopy(D);
+  DigraphRemoveAllMultipleEdges(C);
+  if IsPlanarDigraph(C) then
     return fail;
   fi;
-  D := MaximalAntiSymmetricSubdigraph(DigraphMutableCopyIfMutable(D));
-  return KURATOWSKI_PLANAR_SUBGRAPH(D);
+  return KURATOWSKI_PLANAR_SUBGRAPH(C);
 end);
 
 InstallMethod(KuratowskiOuterPlanarSubdigraph, "for a digraph", [IsDigraph],
 function(D)
-  if IsOuterPlanarDigraph(D) then
+  local C;
+  C := DigraphMutableCopy(D);
+  DigraphRemoveAllMultipleEdges(C);
+  if IsOuterPlanarDigraph(C) then
     return fail;
   fi;
-  D := MaximalAntiSymmetricSubdigraph(DigraphMutableCopyIfMutable(D));
-  return KURATOWSKI_OUTER_PLANAR_SUBGRAPH(D);
+  return KURATOWSKI_OUTER_PLANAR_SUBGRAPH(C);
 end);
 
 InstallMethod(SubdigraphHomeomorphicToK23, "for a digraph", [IsDigraph],
 function(D)
-  if IsOuterPlanarDigraph(D) then
+  local C;
+  C := DigraphMutableCopy(D);
+  DigraphRemoveAllMultipleEdges(C);
+  if IsOuterPlanarDigraph(C) then
     return fail;
   fi;
-  D := MaximalAntiSymmetricSubdigraph(DigraphMutableCopyIfMutable(D));
-  return SUBGRAPH_HOMEOMORPHIC_TO_K23(D);
+  return SUBGRAPH_HOMEOMORPHIC_TO_K23(C);
 end);
 
 InstallMethod(SubdigraphHomeomorphicToK4, "for a digraph", [IsDigraph],
 function(D)
-  if IsOuterPlanarDigraph(D) then
+  local C;
+  C := DigraphMutableCopy(D);
+  DigraphRemoveAllMultipleEdges(C);
+  if IsOuterPlanarDigraph(C) then
     return fail;
   fi;
-  D := MaximalAntiSymmetricSubdigraph(DigraphMutableCopyIfMutable(D));
   return SUBGRAPH_HOMEOMORPHIC_TO_K4(D);
 end);
 
 InstallMethod(SubdigraphHomeomorphicToK33, "for a digraph", [IsDigraph],
 function(D)
-  if IsPlanarDigraph(D) then
+  local C;
+  C := DigraphMutableCopy(D);
+  DigraphRemoveAllMultipleEdges(C);
+  if IsPlanarDigraph(C) then
     return fail;
   fi;
-  D := MaximalAntiSymmetricSubdigraph(DigraphMutableCopyIfMutable(D));
-  return SUBGRAPH_HOMEOMORPHIC_TO_K33(D);
+  return SUBGRAPH_HOMEOMORPHIC_TO_K33(C);
 end);
 
 ########################################################################

@@ -113,14 +113,19 @@ Obj boyers_planarity_check(Obj digraph, int flags, bool krtwsk) {
               0L);
   }
   Obj const out = FuncOutNeighbours(0L, digraph);
-  if (FuncIS_ANTISYMMETRIC_DIGRAPH(0L, out) != True) {
-    ErrorQuit("Digraphs: boyers_planarity_check (C): the 1st argument must be "
-              "an antisymmetric digraph",
-              0L,
-              0L);
+  Int       V   = DigraphNrVertices(digraph);
+  Int       E   = 0;
+  for (Int v = 1; v <= LEN_LIST(out); ++v) {
+    Obj const out_v = ELM_LIST(out, v);
+    for (Int w = 1; w <= LEN_LIST(out_v); ++w) {
+      Int u = INT_INTOBJ(ELM_LIST(out_v, w));
+      if (v < u
+          || CALL_3ARGS(IsDigraphEdge, digraph, INTOBJ_INT(u), INTOBJ_INT(v))
+                 == False) {
+        ++E;
+      }
+    }
   }
-  Int V = DigraphNrVertices(digraph);
-  Int E = DigraphNrEdges(digraph);
   if (V > INT_MAX) {
     // Cannot currently test this, it might always be true, depending on the
     // definition of Int.
@@ -139,19 +144,7 @@ Obj boyers_planarity_check(Obj digraph, int flags, bool krtwsk) {
   }
 
   graphP theGraph = gp_New();
-  switch (flags) {
-    case EMBEDFLAGS_SEARCHFORK33:
-      gp_AttachK33Search(theGraph);
-      break;
-    case EMBEDFLAGS_SEARCHFORK23:
-      gp_AttachK23Search(theGraph);
-      break;
-    case EMBEDFLAGS_SEARCHFORK4:
-      gp_AttachK4Search(theGraph);
-      break;
-    default:
-      break;
-  }
+
   if (gp_InitGraph(theGraph, V) != OK) {
     gp_Free(&theGraph);
     ErrorQuit("Digraphs: boyers_planarity_check (C): invalid number of nodes!",
@@ -166,6 +159,20 @@ Obj boyers_planarity_check(Obj digraph, int flags, bool krtwsk) {
     return 0L;
   }
 
+  switch (flags) {
+    case EMBEDFLAGS_SEARCHFORK33:
+      gp_AttachK33Search(theGraph);
+      break;
+    case EMBEDFLAGS_SEARCHFORK23:
+      gp_AttachK23Search(theGraph);
+      break;
+    case EMBEDFLAGS_SEARCHFORK4:
+      gp_AttachK4Search(theGraph);
+      break;
+    default:
+      break;
+  }
+
   int status;
 
   for (Int v = 1; v <= LEN_LIST(out); ++v) {
@@ -174,8 +181,10 @@ Obj boyers_planarity_check(Obj digraph, int flags, bool krtwsk) {
     Obj const out_v = ELM_LIST(out, v);
     for (Int w = 1; w <= LEN_LIST(out_v); ++w) {
       DIGRAPHS_ASSERT(gp_VertexInRange(theGraph, w));
-      int u = INT_INTOBJ(ELM_LIST(out_v, w));
-      if (v != u) {
+      Int u = INT_INTOBJ(ELM_LIST(out_v, w));
+      if (v < u
+          || CALL_3ARGS(IsDigraphEdge, digraph, INTOBJ_INT(u), INTOBJ_INT(v))
+                 == False) {
         status = gp_AddEdge(theGraph, v, 0, u, 0);
         if (status != OK) {
           // Cannot currently test this, i.e. it shouldn't happen (and
