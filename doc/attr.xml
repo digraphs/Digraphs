@@ -1374,6 +1374,46 @@ gap> DigraphLongestSimpleCircuit(D);
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="DigraphAllUndirectedSimpleCircuits">
+<ManSection>
+  <Attr Name="DigraphAllUndirectedSimpleCircuits" Arg="digraph"/>
+  <Returns>A list of lists of vertices.</Returns>
+  <Description>
+    If <A>digraph</A> is a digraph, then <C>DigraphAllUndirectedSimpleCircuits</C>
+    returns a list of the <E> undirected simple circuits</E> in <A>digraph</A>. <P/>
+
+    See Section <Ref Subsect="Definitions" Style="Number" /> for the definition
+    of a simple circuit, and related notions. Note that a loop is a simple
+    circuit. A simple circuit is undirected if the orientation of the edges
+    in the circuit does not matter.<P/>
+
+    The attribute <C>DigraphAllUndirectedSimpleCircuitss</C> ignores
+    multiple edges, and identifies a undirected simple circuit using only its subsequence
+    of vertices.
+    See Section <Ref Subsect="DigraphAllSimpleCircuits" Style="Number" /> for more details
+    on simple circuits.<P/>
+
+    <Example><![CDATA[
+gap> D := ChainDigraph(10);;
+gap> DigraphAllUndirectedSimpleCircuits(D);
+[  ]
+gap> D := Digraph([[1, 1]]);
+<immutable multidigraph with 1 vertex, 2 edges>
+gap> DigraphAllUndirectedSimpleCircuits(D);
+[ [ 1 ] ]
+gap> D := CycleDigraph(IsMutableDigraph, 3);
+<mutable digraph with 3 vertices, 3 edges>
+gap> DigraphAllUndirectedSimpleCircuits(D);
+[ [ 1, 2, 3 ] ]
+gap> D := DigraphSymmetricClosure(CycleDigraph(IsMutableDigraph, 3));
+<mutable digraph with 3 vertices, 6 edges>
+gap> DigraphAllUndirectedSimpleCircuits(D);
+[ [ 1, 2, 3 ] ]
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="DigraphAllChordlessCycles">
 <ManSection>
   <Attr Name="DigraphAllChordlessCycles" Arg="digraph"/>

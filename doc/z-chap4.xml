@@ -76,6 +76,7 @@
     <#Include Label="IteratorOfPaths">
     <#Include Label="DigraphAllSimpleCircuits">
     <#Include Label="DigraphLongestSimpleCircuit">
+    <#Include Label="DigraphAllUndirectedSimpleCircuits">
     <#Include Label="DigraphAllChordlessCycles">
     <#Include Label="DigraphLayers">
     <#Include Label="DigraphDegeneracy">
