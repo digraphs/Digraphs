@@ -1221,7 +1221,7 @@ function(filt, digraph, gps, homs)
   local red, n, hom_table, reps, rep, top, doms, starts, degs, max, gens, img,
   start, deg, x, queue, j, k, g, y, hom, edge, i, gen;
 
-  if not filt = IsPartialPermSemigroup then
+  if filt <> IsPartialPermSemigroup then
     TryNextMethod();
   elif not IsJoinSemilatticeDigraph(digraph) then
     if IsMeetSemilatticeDigraph(digraph) then
@@ -1335,7 +1335,7 @@ function(filt, digraph, gps, homs)
         # agrees with the composition we are currently considering.
         if IsBound(img[start]) then
           y := PermList(img{[start .. start + deg - 1]} - start + 1);
-          if not x = y then
+          if x <> y then
             ErrorNoReturn("the homomorphisms given must form a commutative",
                           " diagram,");
           fi;

@@ -296,7 +296,7 @@ InstallMethod(BlissAutomorphismGroup,
 "for a digraph, fail, and edge colouring",
 [IsDigraph, IsBool, IsList],
 function(digraph, vert_colours, edge_colours)
-  if not vert_colours = fail then
+  if vert_colours <> fail then
     TryNextMethod();
   fi;
   return BLISS_DATA(digraph, vert_colours, edge_colours)[1];

@@ -52,11 +52,7 @@ function(str)
       od;
     fi;
   fi;
-  if x = (l - 1) then
-    return true;
-  else
-    return false;
-  fi;
+  return x = (l - 1);
 end);
 
 BindGlobal("DIGRAPHS_GraphvizColorsList", fail);
@@ -266,7 +262,7 @@ if not IsBound(Splash) then  # This function is written by A. Egri-Nagy
              ["xpdf", "xdg-open", "open", "evince", "okular", "gv"]);
 
   BindGlobal("Splash",
-  function(arg)
+  function(arg...)
     local str, opt, path, dir, tdir, file, viewer, type, inn, filetype, out,
           engine;
 
