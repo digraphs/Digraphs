@@ -262,7 +262,8 @@ function(arg...)
       s := InputTextString(ex[1]);
 
       start_time := IO_gettimeofday();
-      test := Test(s, rec(ignoreComments := false,
+      test := Test(s, rec(compareFunction := "uptowhitespace",
+                          ignoreComments := false,
                           width := 72,
                           EQ := EQ,
                           reportDiff := Ignore,
