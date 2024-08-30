@@ -1526,7 +1526,7 @@ function(D)
   return Concatenation(loops, out);
 end);
 
-# Compute all undirected simple ciruits by filtering the output
+# Compute all undirected simple circuits by filtering the output
 # of DigraphAllSimpleCircuits
 InstallMethod(DigraphAllUndirectedSimpleCircuits, "for a digraph",
                      [IsDigraph], function(D)
