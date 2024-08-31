@@ -112,14 +112,15 @@ true
   <Attr Name="KuratowskiPlanarSubdigraph" Arg="digraph"/>
   <Returns>A list or <K>fail</K>.</Returns>
   <Description>
-    <C>KuratowskiPlanarSubdigraph</C> returns the immutable list of
-    lists of out-neighbours of a (not necessarily induced) subdigraph of the
-    digraph <A>digraph</A> that witnesses the fact that <A>digraph</A> is not
-    planar, or <K>fail</K> if <A>digraph</A> is planar.  In other words,
-    <C>KuratowskiPlanarSubdigraph</C> returns the out-neighbours of a
-    subdigraph of <A>digraph</A> that is homeomorphic to the complete graph
-    with <C>5</C> vertices, or to the complete bipartite graph with vertex sets
-    of sizes <C>3</C> and <C>3</C>. <P/>
+    <C>KuratowskiPlanarSubdigraph</C> returns the immutable list of lists of
+    out-neighbours of an induced subdigraph (excluding multiple edges and loops)
+    of the digraph <A>digraph</A> that witnesses the fact that <A>digraph</A> is
+    not planar, or <K>fail</K> if <A>digraph</A> is planar.  In other words,
+    <C>KuratowskiPlanarSubdigraph</C> returns the out-neighbours of a subdigraph
+    of <A>digraph</A> that is homeomorphic to the complete graph with <C>5</C>
+    vertices, or to the complete bipartite graph with vertex sets of sizes
+    <C>3</C> and <C>3</C>.
+    <P/>
     
     The directions and multiplicities of any edges in <A>digraph</A> are
     ignored when considering whether or not <A>digraph</A> is planar. <P/>
@@ -173,17 +174,18 @@ gap> KuratowskiPlanarSubdigraph(D);
   <Returns>A list or <K>fail</K>.</Returns>
   <Description>
     <C>KuratowskiOuterPlanarSubdigraph</C> returns the immutable list of
-    immutable lists of out-neighbours of a (not necessarily induced)
-    subdigraph of the digraph <A>digraph</A> that witnesses the fact
-    that <A>digraph</A> is not outer planar, or <K>fail</K> if
-    <A>digraph</A> is outer planar.  In other words,
+    immutable lists of out-neighbours of an induced subdigraph (excluding
+    multiple edges and loops) of the digraph <A>digraph</A> that witnesses the
+    fact that <A>digraph</A> is not outer planar, or <K>fail</K> if
+    <A>digraph</A> is outer planar. In other words,
     <C>KuratowskiOuterPlanarSubdigraph</C> returns the out-neighbours of a
-    subdigraph of <A>digraph</A> that is homeomorphic to the complete graph
-    with <C>4</C> vertices, or to the complete bipartite graph with vertex sets
-    of sizes <C>2</C> and <C>3</C>. <P/>
+    subdigraph of <A>digraph</A> that is homeomorphic to the complete graph with
+    <C>4</C> vertices, or to the complete bipartite graph with vertex sets of
+    sizes <C>2</C> and <C>3</C>.
+    <P/>
     
-    The directions and multiplicities of any edges in <A>digraph</A> are
-    ignored when considering whether or not <A>digraph</A> is outer planar. 
+    The directions and multiplicities of any edges in <A>digraph</A> are ignored
+    when considering whether or not <A>digraph</A> is outer planar. 
     <P/>
 
     See also 
@@ -237,14 +239,14 @@ gap> KuratowskiOuterPlanarSubdigraph(D);
   <Attr Name="PlanarEmbedding" Arg="digraph"/>
   <Returns>A list or <K>fail</K>.</Returns>
   <Description>
-    If <A>digraph</A> is a planar digraph, then 
-    <C>PlanarEmbedding</C> returns the immutable list of lists of
-    out-neighbours of a subdigraph of <A>digraph</A> such that each vertex's
-    neighbours are given in clockwise order. If <A>digraph</A> is not planar,
-    then <K>fail</K> is returned. <P/>
+    If <A>digraph</A> is a planar digraph, then <C>PlanarEmbedding</C> returns
+    the immutable list of lists of out-neighbours of <A>digraph</A> (excluding
+    multiple edges and loops) such that each vertex's neighbours are given in
+    clockwise order. If <A>digraph</A> is not planar, then <K>fail</K> is
+    returned. <P/>
     
-    The directions and multiplicities of any edges in <A>digraph</A> are
-    ignored by <C>PlanarEmbedding</C>.
+    The directions and multiplicities of any edges in <A>digraph</A> are ignored
+    by <C>PlanarEmbedding</C>.
     <P/>
 
     See also 
@@ -292,10 +294,10 @@ fail
   <Returns>A list or <K>fail</K>.</Returns>
   <Description>
     If <A>digraph</A> is an outer planar digraph, then
-    <C>OuterPlanarEmbedding</C> returns the immutable list of lists
-    of out-neighbours of a subdigraph of <A>digraph</A> such that each
-    vertex's neighbours are given in clockwise order. If <A>digraph</A> is not
-    outer planar, then <K>fail</K> is returned. <P/>
+    <C>OuterPlanarEmbedding</C> returns the immutable list of lists of
+    out-neighbours of <A>digraph</A> (excluding multiple edges and loops) such
+    that each vertex's neighbours are given in clockwise order. If
+    <A>digraph</A> is not outer planar, then <K>fail</K> is returned. <P/>
     
     The directions and multiplicities of any edges in <A>digraph</A> are
     ignored by <C>OuterPlanarEmbedding</C>.
