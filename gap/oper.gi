@@ -843,7 +843,7 @@ InstallMethod(ModularProduct, "for a digraph and digraph",
 function(D1, D2)
   local edge_function;
 
-  edge_function := function(u, v, m, n, map)  # gaplint: disable=W000
+  edge_function := function(u, v, m, n, map)  # gaplint: disable=W046
     # neither m nor n is used, but can't replace them both with _
     local w, x, connections;
     connections := [];
@@ -872,7 +872,7 @@ InstallMethod(StrongProduct, "for a digraph and digraph",
 function(D1, D2)
   local edge_function;
 
-  edge_function := function(u, v, m, n, map)  # gaplint: disable=W000
+  edge_function := function(u, v, m, n, map)  # gaplint: disable=W046
     # neither m nor n is used, but can't replace them both with _
     local w, x, connections;
       connections := [];
