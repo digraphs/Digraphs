@@ -35,6 +35,7 @@ function(D)
   local C;
   C := DigraphMutableCopy(D);
   DigraphRemoveAllMultipleEdges(C);
+  DigraphRemoveLoops(C);
   if IsEmptyDigraph(C) or DigraphNrVertices(C) < 3 then
     return OutNeighbors(C);
   elif HasIsPlanarDigraph(C) and not IsPlanarDigraph(C) then
@@ -48,6 +49,7 @@ function(D)
   local C;
   C := DigraphMutableCopy(D);
   DigraphRemoveAllMultipleEdges(C);
+  DigraphRemoveLoops(C);
   if IsEmptyDigraph(C) or DigraphNrVertices(C) < 3 then
     return OutNeighbors(C);
   elif HasIsOuterPlanarDigraph(C) and not IsOuterPlanarDigraph(C) then
@@ -61,6 +63,7 @@ function(D)
   local C;
   C := DigraphMutableCopy(D);
   DigraphRemoveAllMultipleEdges(C);
+  DigraphRemoveLoops(C);
   if IsPlanarDigraph(C) then
     return fail;
   fi;
@@ -72,6 +75,7 @@ function(D)
   local C;
   C := DigraphMutableCopy(D);
   DigraphRemoveAllMultipleEdges(C);
+  DigraphRemoveLoops(C);
   if IsOuterPlanarDigraph(C) then
     return fail;
   fi;
@@ -83,6 +87,7 @@ function(D)
   local C;
   C := DigraphMutableCopy(D);
   DigraphRemoveAllMultipleEdges(C);
+  DigraphRemoveLoops(C);
   if IsOuterPlanarDigraph(C) then
     return fail;
   fi;
@@ -94,6 +99,7 @@ function(D)
   local C;
   C := DigraphMutableCopy(D);
   DigraphRemoveAllMultipleEdges(C);
+  DigraphRemoveLoops(C);
   if IsOuterPlanarDigraph(C) then
     return fail;
   fi;
@@ -105,6 +111,7 @@ function(D)
   local C;
   C := DigraphMutableCopy(D);
   DigraphRemoveAllMultipleEdges(C);
+  DigraphRemoveLoops(C);
   if IsPlanarDigraph(C) then
     return fail;
   fi;
