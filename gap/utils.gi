@@ -13,6 +13,26 @@
 # Internal stuff
 #############################################################################
 
+BindGlobal("DIGRAPHS_DocXMLFiles",
+           ["../PackageInfo.g",
+            "attr.xml",
+            "cliques.xml",
+            "constructors.xml",
+            "digraph.xml",
+            "display.xml",
+            "examples.xml",
+            "grahom.xml",
+            "grape.xml",
+            "io.xml",
+            "isomorph.xml",
+            "labels.xml",
+            "oper.xml",
+            "orbits.xml",
+            "planar.xml",
+            "prop.xml",
+            "utils.xml",
+            "weights.xml"]);
+
 BindGlobal("DIGRAPHS_TestRec", rec());
 MakeReadWriteGlobal("DIGRAPHS_TestRec");
 
@@ -102,6 +122,11 @@ end);
 
 InstallGlobalFunction(DIGRAPHS_ManualExamples,
 function()
+  if Filename(DirectoriesPackageLibrary("digraphs", "doc"),
+              "main.xml") = fail then
+    # The file main.xml only exists if AutoDoc has been run.
+    DigraphsMakeDoc();
+  fi;
   return ExtractExamples(DirectoriesPackageLibrary("digraphs", "doc"),
                          "main.xml", DIGRAPHS_DocXMLFiles, "Single");
 end);
@@ -207,8 +232,9 @@ end);
 
 InstallGlobalFunction(DigraphsMakeDoc,
 function()
-  # Compile the documentation of the currently-loaded version of Digraphs
-  DIGRAPHS_MakeDoc(DirectoriesPackageLibrary("Digraphs", ""));
+  local fname;
+  fname := Filename(DirectoriesPackageLibrary("digraphs", ""), "makedoc.g");
+  Read(fname);
 end);
 
 InstallGlobalFunction(DigraphsTestManualExamples,

@@ -36,10 +36,10 @@ jobs:
         include:
           - only-needed: true
             pkgs-to-clone: digraphs/graphviz
-            pkgs-to-build: io orb datastructures
+            pkgs-to-build: io orb datastructures autodoc
           - only-needed: false
             pkgs-to-clone: NautyTracesInterface digraphs/graphviz
-            pkgs-to-build: io orb datastructures grape NautyTracesInterface
+            pkgs-to-build: io orb datastructures grape NautyTracesInterface autodoc
 
     steps:
       - uses: actions/checkout@v4

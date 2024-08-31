@@ -1754,7 +1754,7 @@ gap> NrSpanningTrees(D);
 <#GAPDoc Label="AsGraph">
 <ManSection>
   <Attr Name="AsGraph" Arg="digraph"/>
-  <Returns>A &Grape; package graph.</Returns>
+  <Returns>A &GRAPE; package graph.</Returns>
   <Description>
     If <A>digraph</A> is a digraph, then this method returns the same as
     <Ref Oper="Graph"/>, except that if <A>digraph</A> is immutable, then the

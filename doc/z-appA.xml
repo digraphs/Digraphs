@@ -2,8 +2,8 @@
   <Heading>
     Grape to Digraphs Command Map
   </Heading>
-  Below is a table of &Grape; commands with the &Digraphs; counterparts.
-  The sections in this chapter correspond to the chapters in the &Grape;
+  Below is a table of &GRAPE; commands with the &Digraphs; counterparts.
+  The sections in this chapter correspond to the chapters in the &GRAPE;
   manual.
 
   <Section>
@@ -21,7 +21,7 @@
       <HorLine/>
       <Row>
         <Item>
-          &Grape; command
+          &GRAPE; command
         </Item>
         <Item>
           &Digraphs; command
@@ -43,7 +43,7 @@
         </Item>
         <Item>
           <Alt Only="HTML">
-          Used with the arguments of <C>Graph</C> in &Grape;, <Ref
+          Used with the arguments of <C>Graph</C> in &GRAPE;, <Ref
             Oper="Digraph"/> will return an equivalent digraph. <P/>
           </Alt>
         </Item>
@@ -60,7 +60,7 @@
         <Item>
           <Alt Only="HTML">
           The operation <Ref Oper="EdgeOrbitsDigraph"/> behaves the same as
-          <C>EdgeOrbitsDigraph</C> in &Grape;.
+          <C>EdgeOrbitsDigraph</C> in &GRAPE;.
           </Alt>
         </Item>
       </Row>
@@ -79,11 +79,11 @@
         </Item>
         <Item>
           <Alt Only="HTML">
-            Note that, unlike in &Grape;, the arguments of  <Ref
+            Note that, unlike in &GRAPE;, the arguments of  <Ref
               Oper="NullDigraph"/> and <Ref Oper="EmptyDigraph"/> are just
             non-negative integers. Since digraphs in &Digraphs; are immutable,
             there is no reason (although it is possible) to create a null digraph
-            and then add edges, as you might be used to doing in &Grape;.
+            and then add edges, as you might be used to doing in &GRAPE;.
           </Alt>
         </Item>
       </Row>
@@ -98,7 +98,7 @@
         </Item>
         <Item>
           <Alt Only="HTML">
-            Note that, unlike in &Grape;, the argument to <Ref
+            Note that, unlike in &GRAPE;, the argument to <Ref
               Oper="CompleteDigraph"/> is simply a non-negative integer
             indicating the number of vertices. By default a complete digraph in
             &Digraphs; does not have any loops. If you want a complete digraph
@@ -118,7 +118,7 @@
         </Item>
         <Item>
           <Alt Only="HTML">
-            The &Grape; function <C>JohnsonGraph</C> is equivalent to
+            The &GRAPE; function <C>JohnsonGraph</C> is equivalent to
             <Ref Oper="JohnsonDigraph"/>.
           </Alt>
         </Item>
@@ -135,7 +135,7 @@
         <Item>
           <Alt Only="HTML">
             The operation <Ref Oper="CayleyDigraph"/> behaves the same as
-            <C>CayleyGraph</C> in &Grape;.
+            <C>CayleyGraph</C> in &GRAPE;.
           </Alt>
         </Item>
       </Row>
@@ -150,7 +150,7 @@
         </Item>
         <Item>
           <Alt Only="HTML">
-            Note that, unlike in &Grape;, digraphs in &Digraphs; are immutable,
+            Note that, unlike in &GRAPE;, digraphs in &Digraphs; are immutable,
             and this operation returns a new digraph, i.e. it does not modify the
             digraph given as an argument.
           </Alt>
@@ -167,7 +167,7 @@
         </Item>
         <Item>
           <Alt Only="HTML">
-            Note that, unlike in &Grape;, digraphs in &Digraphs; are immutable,
+            Note that, unlike in &GRAPE;, digraphs in &Digraphs; are immutable,
             and this operation returns a new digraph, i.e. it does not modify the
             digraph given as an argument.
           </Alt>
@@ -214,7 +214,7 @@
 
       <Row>
         <Item>
-          &Grape; command
+          &GRAPE; command
         </Item>
         <Item>
           &Digraphs; command
@@ -253,7 +253,7 @@
         <Item>
           <Alt Only="HTML">
             The operation <Ref Attr="DigraphNrVertices"/> behaves the same as
-            <C>OrderGraph</C> in &Grape;.
+            <C>OrderGraph</C> in &GRAPE;.
           </Alt>
         </Item>
       </Row>
@@ -286,7 +286,7 @@
         </Item>
         <Item>
           <Alt Only="HTML">
-            Unlike <C>VertexName</C> in &Grape;, the return value of
+            Unlike <C>VertexName</C> in &GRAPE;, the return value of
             <Ref Oper="DigraphVertexLabel"/> is mutable.
           </Alt>
         </Item>
@@ -302,7 +302,7 @@
         </Item>
         <Item>
           <Alt Only="HTML">
-            Unlike <C>VertexNames</C> in &Grape;, the return value of
+            Unlike <C>VertexNames</C> in &GRAPE;, the return value of
             <Ref Oper="DigraphVertexLabels"/> is mutable.
           </Alt>
         </Item>
@@ -321,7 +321,7 @@
             The vertices of a digraph in &Digraphs; is always the range <C>[1
               .. n]</C> where <C>n</C> is the number of vertices of the
             digraph.  The operation <Ref Attr="DigraphVertices"/> behaves the
-            same as <C>Vertices</C> in &Grape;.
+            same as <C>Vertices</C> in &GRAPE;.
           </Alt>
         </Item>
       </Row>
@@ -340,7 +340,7 @@
         <Item>
           <Alt Only="HTML">
             The operation <Ref Oper="OutDegreeOfVertex"/> behaves the same as
-            <C>VertexDegree</C> in &Grape;.
+            <C>VertexDegree</C> in &GRAPE;.
           </Alt>
         </Item>
       </Row>
@@ -364,7 +364,7 @@
         <Item>
           <Alt Only="HTML">
             The operation <Ref Attr="OutDegreeSet"/> behaves the same as
-            <C>VertexDegrees</C> in &Grape;.
+            <C>VertexDegrees</C> in &GRAPE;.
           </Alt>
         </Item>
       </Row>
@@ -380,7 +380,7 @@
         <Item>
           <Alt Only="HTML">
             The operation <Ref Prop="DigraphHasLoops"/> behaves the same as
-            <C>IsLoopy</C> in &Grape;.
+            <C>IsLoopy</C> in &GRAPE;.
           </Alt>
         </Item>
       </Row>
@@ -401,7 +401,7 @@
         </Item>
         <Item>
           <Alt Only="HTML">
-            The &Grape; function <C>IsSimpleGraph</C> is equivalent to
+            The &GRAPE; function <C>IsSimpleGraph</C> is equivalent to
             <Ref Prop="IsSymmetricDigraph"/>
             and not  <Ref Prop="DigraphHasLoops"/>.
           </Alt>
@@ -422,7 +422,7 @@
         <Item>
           <Alt Only="HTML">
             The operation <Ref Oper="OutNeighboursOfVertex"/> behaves the same
-            as <C>Adjacency</C> in &Grape;.
+            as <C>Adjacency</C> in &GRAPE;.
           </Alt>
         </Item>
       </Row>
@@ -442,7 +442,7 @@
             can be a digraph and an edge, or a digraph and two vertices. In the
             first form the operation
             <Ref Oper="IsDigraphEdge" Label="for digraph and list"/>
-            behaves the same as <C>IsEdge</C> in &Grape;.
+            behaves the same as <C>IsEdge</C> in &GRAPE;.
           </Alt>
         </Item>
       </Row>
@@ -458,7 +458,7 @@
         <Item>
           <Alt Only="HTML">
             The attribute <Ref Attr="DigraphEdges"/> behaves the same
-            as <C>DirectedEdges</C> in &Grape;.
+            as <C>DirectedEdges</C> in &GRAPE;.
           </Alt>
         </Item>
       </Row>
@@ -492,7 +492,7 @@
           <Alt Only="HTML">
             The operation <Ref Oper="DigraphShortestDistance"
             Label="for a digraph and two vertices"/> behaves the same as
-            <C>Distance</C> in &Grape;.
+            <C>Distance</C> in &GRAPE;.
           </Alt>
         </Item>
       </Row>
@@ -508,7 +508,7 @@
         <Item>
           <Alt Only="HTML">
             The attribute <Ref Attr="DigraphDiameter"/> behaves the same
-            as <C>Diameter</C> in &Grape;.
+            as <C>Diameter</C> in &GRAPE;.
           </Alt>
         </Item>
       </Row>
@@ -524,9 +524,9 @@
         <Item>
           <Alt Only="HTML">
             The attribute <Ref Attr="DigraphUndirectedGirth"/> behaves the same
-            as <C>Girth</C> in &Grape; except that in the case that the
+            as <C>Girth</C> in &GRAPE; except that in the case that the
             argument is a forest, <K>infinity</K> is returned by &Digraphs;
-            whereas <C>-1</C> is returned by &Grape;.
+            whereas <C>-1</C> is returned by &GRAPE;.
           </Alt>
         </Item>
       </Row>
@@ -542,7 +542,7 @@
         <Item>
           <Alt Only="HTML">
             The attribute <Ref Prop="IsStronglyConnectedDigraph"/> behaves the
-            same as <C>IsConnectedGraph</C> in &Grape;.
+            same as <C>IsConnectedGraph</C> in &GRAPE;.
           </Alt>
         </Item>
       </Row>
@@ -560,7 +560,7 @@
         </Item>
         <Item>
           <Alt Only="HTML">
-            The &Grape; function <C>IsBipartite</C> is equivalent to
+            The &GRAPE; function <C>IsBipartite</C> is equivalent to
             <Ref Prop="IsBipartiteDigraph"/> and <Ref
               Prop="IsSymmetricDigraph"/>.
           </Alt>
@@ -580,7 +580,7 @@
         </Item>
         <Item>
           <Alt Only="HTML">
-            The &Grape; function <C>IsNullGraph</C> is equivalent to
+            The &GRAPE; function <C>IsNullGraph</C> is equivalent to
             <Ref Prop="IsEmptyDigraph"/> and its synonym <Ref
               Prop="IsNullDigraph"/>.
           </Alt>
@@ -597,7 +597,7 @@
         </Item>
         <Item>
           <Alt Only="HTML">
-            The &Grape; function <C>IsCompleteGraph</C> is roughly
+            The &GRAPE; function <C>IsCompleteGraph</C> is roughly
             equivalent to
             <Ref Prop="IsCompleteDigraph"/> except that in &Digraphs;
             a complete digraph has <E>no loops</E>.
@@ -626,7 +626,7 @@
 
       <Row>
         <Item>
-          &Grape; command
+          &GRAPE; command
         </Item>
         <Item>
           &Digraphs; command
@@ -654,7 +654,7 @@
         </Item>
         <Item>
           <Alt Only="HTML">
-            The &Grape; function <C>IsRegularGraph</C> is
+            The &GRAPE; function <C>IsRegularGraph</C> is
             equivalent to <Ref Prop="IsOutRegularDigraph"/>.
           </Alt>
         </Item>
@@ -670,7 +670,7 @@
         </Item>
         <Item>
          <Alt Only="HTML">
-            The &Grape; function <C>LocalParameters</C> has no equivalent
+            The &GRAPE; function <C>LocalParameters</C> has no equivalent
             function in &Digraphs;, although this might change in the future.
           </Alt>
         </Item>
@@ -686,7 +686,7 @@
         </Item>
         <Item>
          <Alt Only="HTML">
-            The &Grape; function <C>GlobalParameters</C> has no equivalent
+            The &GRAPE; function <C>GlobalParameters</C> has no equivalent
             function in &Digraphs;, although this might change in the future.
           </Alt>
         </Item>
@@ -702,7 +702,7 @@
         </Item>
         <Item>
           <Alt Only="HTML">
-            The &Grape; function <C>IsDistanceRegular</C> is
+            The &GRAPE; function <C>IsDistanceRegular</C> is
             equivalent to <Ref Prop="IsDistanceRegularDigraph"/>.
           </Alt>
         </Item>
@@ -718,7 +718,7 @@
         </Item>
         <Item>
          <Alt Only="HTML">
-            The &Grape; function <C>CollapsedAdjacencyMat</C> has no equivalent
+            The &GRAPE; function <C>CollapsedAdjacencyMat</C> has no equivalent
             function in &Digraphs;, although this might change in the future.
           </Alt>
         </Item>
@@ -734,7 +734,7 @@
         </Item>
         <Item>
          <Alt Only="HTML">
-            The &Grape; function <C>OrbitalGraphColadjMats</C> has no equivalent
+            The &GRAPE; function <C>OrbitalGraphColadjMats</C> has no equivalent
             function in &Digraphs;, although this might change in the future.
           </Alt>
         </Item>
@@ -750,7 +750,7 @@
         </Item>
         <Item>
          <Alt Only="HTML">
-            The &Grape; function <C>VertexTransitiveDRGs</C> has no equivalent
+            The &GRAPE; function <C>VertexTransitiveDRGs</C> has no equivalent
             function in &Digraphs;, although this might change in the future.
           </Alt>
         </Item>
@@ -777,7 +777,7 @@
 
       <Row>
         <Item>
-          &Grape; command
+          &GRAPE; command
         </Item>
         <Item>
           &Digraphs; command
@@ -800,10 +800,10 @@
         <Item>
           <Alt Only="HTML">
             When applied to a simple di/graph and a vertex,
-            <C>ConnectedComponent</C> in &Grape; is equivalent to
+            <C>ConnectedComponent</C> in &GRAPE; is equivalent to
             <Ref Oper="DigraphConnectedComponent"/>.
             <Ref Oper="DigraphConnectedComponent"/> can also be applied to
-            non-simple graphs (in the language of &Grape;).
+            non-simple graphs (in the language of &GRAPE;).
           </Alt>
         </Item>
       </Row>
@@ -819,10 +819,10 @@
         <Item>
           <Alt Only="HTML">
             When applied to a simple di/graph,
-            <C>ConnectedComponents</C> in &Grape; is equivalent to
+            <C>ConnectedComponents</C> in &GRAPE; is equivalent to
             <Ref Attr="DigraphConnectedComponents"/>.
             <Ref Attr="DigraphConnectedComponents"/> can also be applied to
-            non-simple graphs (in the language of &Grape;).
+            non-simple graphs (in the language of &GRAPE;).
           </Alt>
         </Item>
       </Row>
@@ -838,11 +838,11 @@
         <Item>
           <Alt Only="HTML">
             When applied to a simple bipartite di/graph,
-            <C>Bicomponents</C> in &Grape; is equivalent to
+            <C>Bicomponents</C> in &GRAPE; is equivalent to
             <Ref Attr="DigraphBicomponents"/>.
             The definition of <Ref Prop="IsBipartiteDigraph"/> does not require
-            its argument to be simple (in the language of &Grape;), i.e. the
-            bipartite graphs in &Grape; are a proper subset of the bipartite
+            its argument to be simple (in the language of &GRAPE;), i.e. the
+            bipartite graphs in &GRAPE; are a proper subset of the bipartite
             digraphs in &Digraphs;.
           </Alt>
         </Item>
@@ -859,7 +859,7 @@
         </Item>
         <Item>
           <Alt Only="HTML">
-            <C>DistanceSet</C> in &Grape; is equivalent to
+            <C>DistanceSet</C> in &GRAPE; is equivalent to
             <Ref Oper="DigraphDistanceSet"
               Label="for a digraph, a pos int, and an int"/> in &Digraphs;.
           </Alt>
@@ -876,7 +876,7 @@
         </Item>
         <Item>
           <Alt Only="HTML">
-            <C>Layers</C> in &Grape; is equivalent to
+            <C>Layers</C> in &GRAPE; is equivalent to
             <Ref Oper="DigraphLayers"/> in &Digraphs;.
           </Alt>
         </Item>
@@ -892,7 +892,7 @@
         </Item>
         <Item>
           <Alt Only="HTML">
-            <C>IndependentSet</C> in &Grape; is equivalent to
+            <C>IndependentSet</C> in &GRAPE; is equivalent to
             <Ref Func="DigraphIndependentSet"/> in &Digraphs;.
           </Alt>
         </Item>
@@ -919,7 +919,7 @@
 
       <Row>
         <Item>
-          &Grape; command
+          &GRAPE; command
         </Item>
         <Item>
           &Digraphs; command
@@ -974,7 +974,7 @@
         </Item>
         <Item>
           <Alt Only="HTML">
-            <C>DistanceGraph</C> in &Grape; is equivalent to
+            <C>DistanceGraph</C> in &GRAPE; is equivalent to
             <Ref Oper="DistanceDigraph" Label="for digraph and list"/> in
             &Digraphs;.
           </Alt>
@@ -992,7 +992,7 @@
         <Item>
           <Alt Only="HTML">
             <Ref Oper="DigraphDual"/> in &Digraphs; is equivalent to
-            <C>ComplementGraph</C> in &Grape; with the optional argument
+            <C>ComplementGraph</C> in &GRAPE; with the optional argument
             <A>comploops</A> set to <K>true</K> (loops/nonloops are
             complemented).
           </Alt>
@@ -1025,7 +1025,7 @@
         </Item>
         <Item>
           <Alt Only="HTML">
-            <C>EdgeGraph</C> in &Grape; is equivalent to
+            <C>EdgeGraph</C> in &GRAPE; is equivalent to
             <Ref Oper="EdgeUndirectedDigraph"/> in &Digraphs;.
           </Alt>
         </Item>
@@ -1057,7 +1057,7 @@
         </Item>
         <Item>
           <Alt Only="HTML">
-            <C>UnderlyingGraph</C> in &Grape; is equivalent to
+            <C>UnderlyingGraph</C> in &GRAPE; is equivalent to
             <Ref Oper="DigraphSymmetricClosure"/> in &Digraphs;.
           </Alt>
         </Item>
@@ -1077,7 +1077,7 @@
             <C>p</C> of the vertices of the digraph, rather than a set of
             generating pairs.  Hence, the equivalence might not be
             group-invariant.  Also note that in &Digraphs; multiple edges may be
-            created, whereas in &Grape; they are effectively combined into a
+            created, whereas in &GRAPE; they are effectively combined into a
             single edge.
           </Alt>
         </Item>
@@ -1093,7 +1093,7 @@
         </Item>
         <Item>
           <Alt Only="HTML">
-            <C>BipartiteDouble</C> in &Grape; is equivalent to
+            <C>BipartiteDouble</C> in &GRAPE; is equivalent to
             <Ref Oper="BipartiteDoubleDigraph"/> in &Digraphs;.
           </Alt>
         </Item>
@@ -1186,7 +1186,7 @@
 
       <Row>
         <Item>
-          &Grape; command
+          &GRAPE; command
         </Item>
         <Item>
           &Digraphs; command
@@ -1208,7 +1208,7 @@
         </Item>
         <Item>
           <Alt Only="HTML">
-            <C>VertexColouring</C> in &Grape; is equivalent to <Ref
+            <C>VertexColouring</C> in &GRAPE; is equivalent to <Ref
             Attr="DigraphGreedyColouring" Label="for a digraph"/> in &Digraphs;,
             except it returns a transformation rather than a list of vertex
             colors.
@@ -1226,7 +1226,7 @@
         </Item>
         <Item>
           <Alt Only="HTML">
-            The functionality of <C>CompleteSubgraphs</C> in &Grape; is provided
+            The functionality of <C>CompleteSubgraphs</C> in &GRAPE; is provided
             by <Ref Func="DigraphCliques"/> and <Ref Func="DigraphMaximalCliques"/>
             in &Digraphs;.
           </Alt>
@@ -1244,7 +1244,7 @@
         <Item>
           <Alt Only="HTML">
             Much of the functionality of <C>CompleteSubgraphsOfGivenSize</C> in
-            &Grape; is provided by <Ref Func="DigraphCliques"/> and <Ref
+            &GRAPE; is provided by <Ref Func="DigraphCliques"/> and <Ref
               Func="DigraphMaximalCliques"/> in &Digraphs;, except that the
             functionality relating to vertex weights and partial colourings is
             not implemented.
@@ -1272,7 +1272,7 @@
 
       <Row>
         <Item>
-          &Grape; command
+          &GRAPE; command
         </Item>
         <Item>
           &Digraphs; command
@@ -1294,7 +1294,7 @@
         </Item>
         <Item>
           <Alt Only="HTML">
-            <C>AutGroupGraph</C> in &Grape; is equivalent to
+            <C>AutGroupGraph</C> in &GRAPE; is equivalent to
             <Ref Attr="AutomorphismGroup" Label="for a digraph"/> in &Digraphs;.
           </Alt>
         </Item>
@@ -1310,7 +1310,7 @@
         </Item>
         <Item>
           <Alt Only="HTML">
-            <C>GraphIsomorphism</C> in &Grape; is equivalent to <Ref
+            <C>GraphIsomorphism</C> in &GRAPE; is equivalent to <Ref
             Oper="IsomorphismDigraphs" Label="for digraphs"/> in &Digraphs;.
             Note however that <C>GraphIsomorphism</C>'s optional argument
             <A>firstunbindcanon</A> is not applicable, since the canonical
@@ -1329,7 +1329,7 @@
         </Item>
         <Item>
           <Alt Only="HTML">
-            <C>IsIsomorphicGraph</C> in &Grape; is equivalent to <Ref
+            <C>IsIsomorphicGraph</C> in &GRAPE; is equivalent to <Ref
             Oper="IsIsomorphicDigraph" Label="for digraphs"/> in &Digraphs;.
             Note however that <C>IsIsomorphicGraph</C>'s optional argument
             <A>firstunbindcanon</A> is not applicable, since the canonical
