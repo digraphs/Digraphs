@@ -53,6 +53,7 @@ depcomp
 digraphs-config.h
 digraphs-lib
 doc/_*.xml
+doc/main.xml
 gen/
 gh-pages/
 main.xml

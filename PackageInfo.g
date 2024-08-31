@@ -38,8 +38,8 @@ fi;
 SetPackageInfo(rec(
 PackageName := "Digraphs",
 Subtitle := "Graphs, digraphs, and multidigraphs in GAP",
-Version := "1.8.0",
-Date := "27/08/2024",  # dd/mm/yyyy format
+Version := "1.9.0",
+Date := "06/09/2024",  # dd/mm/yyyy format
 License := "GPL-3.0-or-later",
 ArchiveFormats := ".tar.gz",
 
@@ -383,6 +383,18 @@ Persons := [
     PostalAddress := _STANDREWSMATHS,
     Place         := "St Andrews",
     Institution   := "University of St Andrews"),
+
+  rec(
+    LastName      := "Weiss",
+    FirstNames    := "Meike",
+    IsAuthor      := true,
+    IsMaintainer  := false,
+    Email         := "weiss@art.rwth-aachen.de",
+    WWWHome       := "https://bit.ly/4e6pUeP",
+    PostalAddress := Concatenation("Chair of Algebra and Representation ",
+                     "Theory, Pontdriesch 10-16, 52062 Aachen"),
+    Place         := "Aachen",
+    Institution   := "RWTH-Aachen University"),
 
   rec(
     LastName      := "Whyte",
