@@ -4,6 +4,42 @@ Wilf A. Wilson, Michael Young et al.
 
 Licensing information can be found in the `LICENSE` file.
 
+## Version 1.9.0 (released 02/09/2024)
+
+* Update my web-address by @markuspf in
+https://github.com/digraphs/Digraphs/pull/674
+* Fix off by one error by @james-d-mitchell in
+https://github.com/digraphs/Digraphs/pull/677
+* Resolve issue #676 by @james-d-mitchell in
+https://github.com/digraphs/Digraphs/pull/678
+* Add hash function for digraphs by @reiniscirpons in
+https://github.com/digraphs/Digraphs/pull/675
+* kernel: use GAP's GVAR_FUNC macro by @fingolfin in
+https://github.com/digraphs/Digraphs/pull/682
+* Add DigraphAllChordlessCycles by @MeikeWeiss in
+https://github.com/digraphs/Digraphs/pull/679
+* Add DomainForAction mock for actions on digraphs by @reiniscirpons in
+https://github.com/digraphs/Digraphs/pull/686
+* doc: start using autodoc by @james-d-mitchell in
+https://github.com/digraphs/Digraphs/pull/684
+* Make Orb use digraph hashes by @reiniscirpons in
+https://github.com/digraphs/Digraphs/pull/687
+* Fix startup bug by @james-d-mitchell in
+https://github.com/digraphs/Digraphs/pull/688
+* Add `SubdigraphsMonomorphisms` by @james-d-mitchell in
+https://github.com/digraphs/Digraphs/pull/690
+* Added method AllUndirectedSimpleCircuits by @MeikeWeiss in
+https://github.com/digraphs/Digraphs/pull/689
+* Update for recent gaplint by @james-d-mitchell in
+https://github.com/digraphs/Digraphs/pull/693
+
+## New Contributors
+* @MeikeWeiss made their first contribution in
+https://github.com/digraphs/Digraphs/pull/679
+
+**Full Changelog**:
+https://github.com/digraphs/Digraphs/compare/v1.8.0...v1.9.0
+
 ## Version 1.8.0 (released 27/08/2024)
 
 This release contains several improvements and bug fixes:

@@ -41,6 +41,7 @@
 /doc/*.css
 /doc/*.js
 Makefile
+_*.xml
 aclocal.m4
 autom4te.*
 bin/
@@ -52,6 +53,7 @@ depcomp
 digraphs-config.h
 digraphs-lib
 doc/_*.xml
+doc/main.xml
 gen/
 gh-pages/
 manual.lab
@@ -59,4 +61,3 @@ missing
 src/pkgconfig.h.in
 tags
 tst/out/
-_*.xml
