@@ -33,13 +33,14 @@
 InstallMethod(PlanarEmbedding, "for a digraph", [IsDigraph],
 function(D)
   local C;
+  if HasIsPlanarDigraph(D) and not IsPlanarDigraph(D) then
+    return fail;
+  fi;
   C := DigraphMutableCopy(D);
   DigraphRemoveAllMultipleEdges(C);
   DigraphRemoveLoops(C);
   if IsEmptyDigraph(C) or DigraphNrVertices(C) < 3 then
     return OutNeighbors(C);
-  elif HasIsPlanarDigraph(C) and not IsPlanarDigraph(C) then
-    return fail;
   fi;
   return PLANAR_EMBEDDING(C);
 end);
@@ -47,13 +48,14 @@ end);
 InstallMethod(OuterPlanarEmbedding, "for a digraph", [IsDigraph],
 function(D)
   local C;
+  if HasIsPlanarDigraph(D) and not IsPlanarDigraph(D) then
+    return fail;
+  fi;
   C := DigraphMutableCopy(D);
   DigraphRemoveAllMultipleEdges(C);
   DigraphRemoveLoops(C);
   if IsEmptyDigraph(C) or DigraphNrVertices(C) < 3 then
     return OutNeighbors(C);
-  elif HasIsOuterPlanarDigraph(C) and not IsOuterPlanarDigraph(C) then
-    return fail;
   fi;
   return OUTER_PLANAR_EMBEDDING(C);
 end);
