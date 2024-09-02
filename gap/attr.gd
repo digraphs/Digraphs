@@ -14,6 +14,7 @@ DeclareAttribute("DigraphVertices", IsDigraph);
 DeclareAttribute("DigraphNrVertices", IsDigraph);
 DeclareAttribute("DigraphEdges", IsDigraph);
 DeclareAttribute("DigraphNrEdges", IsDigraph);
+DeclareAttribute("DigraphNrAdjacencies", IsDigraph);
 DeclareAttribute("DigraphNrLoops", IsDigraph);
 DeclareAttribute("DigraphHash", IsDigraph);
 
