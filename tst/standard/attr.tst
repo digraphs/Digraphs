@@ -998,6 +998,12 @@ gap> DigraphAllChordlessCycles(D);
   [ 1, 4, 8, 7, 6, 2 ], [ 1, 4, 3, 2 ], [ 1, 4, 3, 7, 6, 5 ], [ 3, 2, 6, 7 ], 
   [ 2, 1, 5, 6 ], [ 2, 1, 5, 8, 7, 3 ] ]
 
+#  Issue #676
+gap> D := Digraph([[], [3], []]);;
+gap> SetDigraphVertexLabels(D, ["one", "two", "three"]);
+gap> DigraphAllSimpleCircuits(D);
+[  ]
+
 #  DigraphLongestSimpleCircuit
 gap> gr := Digraph([]);;
 gap> DigraphLongestSimpleCircuit(gr);
