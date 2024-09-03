@@ -702,11 +702,7 @@ function(D)
 end);
 
 InstallMethod(DigraphNrAdjacencies, "for a digraph", [IsDigraphByOutNeighboursRep],
-function(D)
-  local m;
-  m := DIGRAPH_NRADJACENCIES(D);
-  return m;
-end);
+DIGRAPH_NRADJACENCIES);
 
 InstallMethod(DigraphNrLoops,
 "for a digraph by out-neighbours",
