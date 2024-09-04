@@ -575,9 +575,15 @@ gap> D := HanoiGraph(1);
 <immutable Hamiltonian connected symmetric digraph with 3 vertices, 6 edges>
 gap> IsIsomorphicDigraph(D, CycleGraph(3));
 true
-gap> HanoiGraph(4);
+gap> gr := HanoiGraph(4);
 <immutable Hamiltonian connected symmetric digraph with 81 vertices, 240 edges\
 >
+gap> IsPlanarDigraph(gr);
+true
+gap> IsHamiltonianDigraph(gr);
+true
+gap> IsPlanarDigraph(DigraphMutableCopy(gr));
+true
 gap> HanoiGraph(0);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `HanoiGraph' on 1 arguments
