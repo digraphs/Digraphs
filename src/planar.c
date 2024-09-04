@@ -112,6 +112,9 @@ Obj boyers_planarity_check(Obj digraph, int flags, bool krtwsk) {
               (Int) TNAM_OBJ(digraph),
               0L);
   }
+  if (CALL_1ARGS(IsMultiDigraph, digraph) == True) {
+    ErrorQuit("expected a digraph without multiple edges!", 0L, 0L);
+  }
   Obj const out = FuncOutNeighbours(0L, digraph);
   Int       V   = DigraphNrVertices(digraph);
   Int       E   = 0;
