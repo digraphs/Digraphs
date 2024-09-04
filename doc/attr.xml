@@ -143,7 +143,7 @@ gap> DigraphNrEdges(D);
   <Attr Name="DigraphNrAdjacencies" Arg="digraph" />
   <Returns>An integer.</Returns>
   <Description> Returns the number of pairs of adjacent vertices of the digraph <A>digraph</A>. This
-    function is agnostic to the direction of an edge, so if <A>digraph</A> constains both the edges <M>(a,
+    function is agnostic to the direction of an edge, so if <A>digraph</A> contains both the edges <M>(a,
     b)</M> and <M>(b, a)</M>, this only counts as one adjacency. The following equality holds for
     any digraph <C>D</C> with no multiple edges: <C>DigraphNrAdjacencies(D) * 2 - DigraphNrLoops(D)
     = DigraphNrEdges(DigraphSymmetricClosure(D))</C>
