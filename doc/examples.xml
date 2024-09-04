@@ -1083,7 +1083,7 @@ true]]></Example>
     <E>Hanoi graph</E>. The Hanoi graph's vertices represent the possible states
      of the 'Tower of Hanoi' puzzle on three 'towers', while its edges represent
      possible moves. The Hanoi graph has <C>3^<A>n</A></C> vertices, and
-     <C>Binomial(3, 3) * (3^<A>n</A> - 1) / 2</C> undirected edges.<P/>
+     <C>3 * (3^<A>n</A> - 1) / 2</C> undirected edges.<P/>
 
     The Hanoi graph is Hamiltonian. The graph superficially resembles the
     Sierpinski triangle. The graph is also a 'penny graph' - a graph whose

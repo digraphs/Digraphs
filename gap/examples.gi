@@ -1251,22 +1251,29 @@ InstallMethod(HalvedCubeGraph, "for a function and an integer",
 InstallMethod(HanoiGraphCons, "for IsMutableDigraph and an integer",
 [IsMutableDigraph, IsPosInt],
 function(_, n)
-  local D, nrVert, prevNrVert, exp, i;
+  local e, D, nrVert, prevNrVert, anchor1, anchor2, anchor3, i;
   D := Digraph(IsMutableDigraph, []);
   nrVert := 3 ^ n;
   DigraphAddVertices(D, nrVert);
-  DigraphAddEdges(D, [[1, 2], [2, 3], [3, 1]]);
+  e := [[1, 2], [2, 3], [3, 1]];
+  # Anchors correspond to the top, bottom left and bottom right node of the
+  # current graph.
+  anchor1 := 1;
+  anchor2 := 2;
+  anchor3 := 3;
   prevNrVert := 1;
-  exp := 1;
+  # Starting from the triangle graph G := C_3, itteratively triplicate G, and
+  # connect each copy using their anchors.
   for i in [2 .. n] do
     prevNrVert := prevNrVert * 3;
-    DigraphAddEdges(D, Concatenation(DigraphEdges(D) + prevNrVert,
-                                    DigraphEdges(D) + (2 * prevNrVert)));
-    DigraphAddEdge(D, prevNrVert / 2 + (1 / 2), prevNrVert + 1);
-    DigraphAddEdge(D, prevNrVert, 2 * prevNrVert + 1);
-    DigraphAddEdge(D, 2 * prevNrVert, prevNrVert * 3 - exp);
-    exp := exp * 2;
+    Append(e, Concatenation(e + prevNrVert, e + (2 * prevNrVert)));
+    Add(e, [anchor2, anchor1 + prevNrVert]);
+    Add(e, [anchor3, anchor1 + (2 * prevNrVert)]);
+    Add(e, [anchor3 + prevNrVert, anchor2 + (2 * prevNrVert)]);
+    anchor2 := anchor2 + prevNrVert;
+    anchor3 := anchor3 + (2 * prevNrVert);
   od;
+  DigraphAddEdges(D, e);
 
   return DigraphSymmetricClosure(D);
 end);
