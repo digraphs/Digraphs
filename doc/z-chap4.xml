@@ -5,6 +5,7 @@
     <#Include Label="DigraphEdges">
     <#Include Label="DigraphNrEdges">
     <#Include Label="DigraphNrAdjacencies">
+    <#Include Label="DigraphNrAdjacenciesWithoutLoops">
     <#Include Label="DigraphNrLoops">
     <#Include Label="DigraphSinks">
     <#Include Label="DigraphSources">

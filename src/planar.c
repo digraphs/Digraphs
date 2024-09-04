@@ -98,6 +98,28 @@ Obj FuncSUBGRAPH_HOMEOMORPHIC_TO_K4(Obj self, Obj digraph) {
 
 // The implementation of the main functions in this file.
 
+Obj trivial_planarity_output(Int V, bool krtwsk) {
+  Obj res;
+  if (krtwsk) {
+    Obj subgraph = NEW_PLIST_IMM(T_PLIST, V);
+    SET_LEN_PLIST(subgraph, V);
+    for (int i = 1; i <= V; ++i) {
+      Obj list = NEW_PLIST_IMM(T_PLIST, 0);
+      SET_LEN_PLIST(list, 0);
+      SET_ELM_PLIST(subgraph, i, list);
+      CHANGED_BAG(subgraph);
+    }
+    res = NEW_PLIST_IMM(T_PLIST, 2);
+    SET_LEN_PLIST(res, 2);
+    SET_ELM_PLIST(res, 1, True);
+    SET_ELM_PLIST(res, 2, subgraph);
+    CHANGED_BAG(res);
+  } else {
+    res = True;
+  }
+  return res;
+}
+
 // This function only accepts digraphs without multiple edges
 
 Obj boyers_planarity_check(Obj digraph, int flags, bool krtwsk) {
@@ -115,19 +137,15 @@ Obj boyers_planarity_check(Obj digraph, int flags, bool krtwsk) {
   if (CALL_1ARGS(IsMultiDigraph, digraph) == True) {
     ErrorQuit("expected a digraph without multiple edges!", 0L, 0L);
   }
-  Obj const out = FuncOutNeighbours(0L, digraph);
-  Int       V   = DigraphNrVertices(digraph);
-  Int       E   = 0;
-  for (Int v = 1; v <= LEN_LIST(out); ++v) {
-    Obj const out_v = ELM_LIST(out, v);
-    for (Int w = 1; w <= LEN_LIST(out_v); ++w) {
-      Int u = INT_INTOBJ(ELM_LIST(out_v, w));
-      if (v < u
-          || CALL_3ARGS(IsDigraphEdge, digraph, INTOBJ_INT(u), INTOBJ_INT(v))
-                 == False) {
-        ++E;
-      }
-    }
+
+  Int V = DigraphNrVertices(digraph);
+  if (V == 0) {
+    return trivial_planarity_output(0, krtwsk);
+  }
+
+  Int E = DigraphNrAdjacenciesWithoutLoops(digraph);
+  if (E == 0) {
+    return trivial_planarity_output(V, krtwsk);
   }
   if (V > INT_MAX) {
     // Cannot currently test this, it might always be true, depending on the
@@ -150,10 +168,16 @@ Obj boyers_planarity_check(Obj digraph, int flags, bool krtwsk) {
 
   if (gp_InitGraph(theGraph, V) != OK) {
     gp_Free(&theGraph);
-    return Fail;
+    ErrorQuit("Digraphs: boyers_planarity_check (C): invalid number of nodes!",
+              0L,
+              0L);
+    return 0L;
   } else if (gp_EnsureArcCapacity(theGraph, 2 * E) != OK) {
     gp_Free(&theGraph);
-    return Fail;
+    ErrorQuit("Digraphs: boyers_planarity_check (C): invalid number of edges!",
+              0L,
+              0L);
+    return 0L;
   }
 
   switch (flags) {
@@ -170,8 +194,10 @@ Obj boyers_planarity_check(Obj digraph, int flags, bool krtwsk) {
       break;
   }
 
-  int status;
+  int       status;
+  Obj const out = FuncOutNeighbours(0L, digraph);
 
+  // Construct the antisymmetric digraph with no loops
   for (Int v = 1; v <= LEN_LIST(out); ++v) {
     DIGRAPHS_ASSERT(gp_VertexInRange(theGraph, v));
     gp_SetVertexIndex(theGraph, v, v);
@@ -196,6 +222,7 @@ Obj boyers_planarity_check(Obj digraph, int flags, bool krtwsk) {
       }
     }
   }
+
   status = gp_Embed(theGraph, flags);
   if (status == NOTOK) {
     // Cannot currently test this, i.e. it shouldn't happen (and
@@ -203,6 +230,8 @@ Obj boyers_planarity_check(Obj digraph, int flags, bool krtwsk) {
     gp_Free(&theGraph);
     ErrorQuit("Digraphs: boyers_planarity_check (C): status is not ok", 0L, 0L);
   }
+
+  // Construct the return value
   Obj res;
   if (krtwsk) {
     // Kuratowski subgraph isolator

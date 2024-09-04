@@ -25,6 +25,7 @@ Obj FuncADJACENCY_MATRIX(Obj self, Obj D);
 
 Int DigraphNrEdges(Obj digraph);
 Int DigraphNrAdjacencies(Obj digraph);
+Int DigraphNrAdjacenciesWithoutLoops(Obj digraph);
 Obj DigraphSource(Obj digraph);
 Obj DigraphRange(Obj digraph);
 

@@ -166,6 +166,34 @@ static Obj FuncDIGRAPH_NRADJACENCIES(Obj self, Obj D) {
   return INTOBJ_INT(DigraphNrAdjacencies(D));
 }
 
+Int DigraphNrAdjacenciesWithoutLoops(Obj D) {
+  Int nr = 0;
+  if (IsbPRec(D, RNamName("DigraphNrAdjacenciesWithoutLoops"))) {
+    return INT_INTOBJ(ElmPRec(D, RNamName("DigraphNrAdjacenciesWithoutLoops")));
+  } else {
+    Obj const out = FuncOutNeighbours(0L, D);
+    for (Int v = 1; v <= LEN_LIST(out); ++v) {
+      Obj const out_v = ELM_LIST(out, v);
+      for (Int w = 1; w <= LEN_LIST(out_v); ++w) {
+        Int u = INT_INTOBJ(ELM_LIST(out_v, w));
+        if (v < u
+            || CALL_3ARGS(IsDigraphEdge, D, INTOBJ_INT(u), INTOBJ_INT(v))
+                   == False) {
+          ++nr;
+        }
+      }
+    }
+  }
+  if (IsAttributeStoringRep(D)) {
+    AssPRec(D, RNamName("DigraphNrAdjacenciesWithoutLoops"), INTOBJ_INT(nr));
+  }
+  return nr;
+}
+
+static Obj FuncDIGRAPH_NRADJACENCIESWITHOUTLOOPS(Obj self, Obj D) {
+  return INTOBJ_INT(DigraphNrAdjacenciesWithoutLoops(D));
+}
+
 /****************************************************************************
 **
 *F  FuncGABOW_SCC
@@ -2142,6 +2170,7 @@ FuncMULTIDIGRAPH_CANONICAL_LABELLING(Obj self, Obj digraph, Obj colours) {
 static StructGVarFunc GVarFuncs[] = {
     GVAR_FUNC(DIGRAPH_NREDGES, 1, "digraph"),
     GVAR_FUNC(DIGRAPH_NRADJACENCIES, 1, "digraph"),
+    GVAR_FUNC(DIGRAPH_NRADJACENCIESWITHOUTLOOPS, 1, "digraph"),
     GVAR_FUNC(GABOW_SCC, 1, "adj"),
     GVAR_FUNC(DIGRAPH_CONNECTED_COMPONENTS, 1, "digraph"),
     GVAR_FUNC(IS_ACYCLIC_DIGRAPH, 1, "adj"),

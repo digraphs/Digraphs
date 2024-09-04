@@ -30,23 +30,21 @@
 # 1. Attributes
 ########################################################################
 
-HasTrivialRotaionSystem :=
+BindGlobal("DIGRAPHS_HasTrivialRotationSystem",
 function(D)
   if IsMultiDigraph(D) then
     ErrorNoReturn("expected a digraph with no multiple edges");
-  fi;
-  if HasIsPlanarDigraph(D) and not IsPlanarDigraph(D) then
+  elif HasIsPlanarDigraph(D) and not IsPlanarDigraph(D) then
     return false;
-  fi;
-  if DigraphNrVertices(D) < 3 then
+  elif DigraphNrVertices(D) < 3 then
     return true;
   fi;
-  return DigraphNrAdjacencies(D) = DigraphNrLoops(D);
-end;
+  return DigraphNrAdjacenciesWithoutLoops(D) = 0;
+end);
 
 InstallMethod(PlanarEmbedding, "for a digraph", [IsDigraph],
 function(D)
-  if HasTrivialRotaionSystem(D) then;
+  if DIGRAPHS_HasTrivialRotationSystem(D) then;
     return OutNeighbors(D);
   fi;
   return PLANAR_EMBEDDING(D);
@@ -54,7 +52,7 @@ end);
 
 InstallMethod(OuterPlanarEmbedding, "for a digraph", [IsDigraph],
 function(D)
-  if HasTrivialRotaionSystem(D) then;
+  if DIGRAPHS_HasTrivialRotationSystem(D) then;
     return OutNeighbors(D);
   fi;
   return OUTER_PLANAR_EMBEDDING(D);
@@ -81,12 +79,12 @@ SUBGRAPH_HOMEOMORPHIC_TO_K33);
 
 InstallMethod(IsPlanarDigraph, "for a digraph", [IsDigraph],
 function(D)
-  local v, n_antisymmetric_edges;
+  local v, e;
   v := DigraphNrVertices(D);
-  n_antisymmetric_edges := DigraphNrAdjacencies(D) - DigraphNrLoops(D);
-  if v < 5 or n_antisymmetric_edges < 9 then
+  e := DigraphNrAdjacenciesWithoutLoops(D);
+  if v < 5 or e < 9 then
     return true;
-  elif (IsConnectedDigraph(D) and n_antisymmetric_edges > 3 * v - 6)
+  elif (IsConnectedDigraph(D) and e > 3 * v - 6)
       or (HasChromaticNumber(D) and ChromaticNumber(D) > 4) then
     return false;
   fi;
@@ -95,14 +93,13 @@ end);
 
 InstallMethod(IsOuterPlanarDigraph, "for a digraph", [IsDigraph],
 function(D)
-  local v, n_antisymmetric_edges;
+  local v, e;
   if HasIsPlanarDigraph(D) and not IsPlanarDigraph(D) then
     return false;
   fi;
   v := DigraphNrVertices(D);
-  n_antisymmetric_edges := DigraphNrAdjacencies(D) - DigraphNrLoops(D);
-
-  if v < 4 or n_antisymmetric_edges < 6 then
+  e := DigraphNrAdjacenciesWithoutLoops(D);
+  if v < 4 or e < 6 then
     return true;
   elif HasChromaticNumber(D) and ChromaticNumber(D) > 3 then
     # Outer planar graphs are 3-colourable
