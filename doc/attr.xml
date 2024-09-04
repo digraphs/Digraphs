@@ -165,14 +165,14 @@ true
   <Returns>An integer.</Returns>
   <Description> Returns the number of sets <M>\{u, v\}</M> of vertices of the digraph <A>digraph</A>, such that
     <M>u \neq v</M> and either <M>(u, v)</M> or <M>(v, u)</M> is an edge. The following equality holds for
-    any digraph <C>D</C> with no multiple edges: <C>DigraphNrAdjacencies(D) * 2 + DigraphNrLoops(D)
+    any digraph <C>D</C> with no multiple edges: <C>DigraphNrAdjacenciesWithoutLoops(D) * 2 + DigraphNrLoops(D)
     = DigraphNrEdges(DigraphSymmetricClosure(D))</C>.
     <Example><![CDATA[
 gap> gr := Digraph([
 > [1, 3, 4, 5], [1, 2, 3, 5], [2, 4, 5], [2, 4, 5], [1]]);;
-gap> DigraphNrAdjacencies(gr);
+gap> DigraphNrAdjacenciesWithoutLoops(gr);
 10
-gap> DigraphNrAdjacencies(gr) * 2 + DigraphNrLoops(gr) =
+gap> DigraphNrAdjacenciesWithoutLoops(gr) * 2 + DigraphNrLoops(gr) =
 > DigraphNrEdges(DigraphSymmetricClosure(gr));
 true
 ]]></Example>
