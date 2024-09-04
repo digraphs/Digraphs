@@ -192,6 +192,12 @@ gap> AdjacencyMatrix(Digraph(rec(DigraphNrVertices := 0,
 >                                DigraphRange      := [])));
 [  ]
 
+#  DigraphNrAdjacencies
+gap> G := RandomDigraph(50);;
+gap> DigraphNrAdjacencies(G) * 2 - DigraphNrLoops(G) = 
+> DigraphNrEdges(DigraphSymmetricClosure(G));
+true
+
 #  DigraphTopologicalSort
 gap> r := rec(DigraphNrVertices := 20000,
 >             DigraphSource     := [],

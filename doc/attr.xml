@@ -138,6 +138,28 @@ gap> DigraphNrEdges(D);
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="DigraphNrAdjacencies">
+<ManSection>
+  <Attr Name="DigraphNrAdjacencies" Arg="digraph" />
+  <Returns>An integer.</Returns>
+  <Description> Returns the number of pairs of adjacent vertices of the digraph <A>digraph</A>. This
+    function is agnostic to the direction of an edge, so if <A>digraph</A> constains both the edges <M>(a,
+    b)</M> and <M>(b, a)</M>, this only counts as one adjacency. The following equality holds for
+    any digraph <C>D</C> with no multiple edges: <C>DigraphNrAdjacencies(D) * 2 - DigraphNrLoops(D)
+    = DigraphNrEdges(DigraphSymmetricClosure(D))</C>
+    <Example><![CDATA[
+gap> gr := Digraph([
+> [1, 3, 4, 5], [1, 2, 3, 5], [2, 4, 5], [2, 4, 5], [1]]);;
+gap> DigraphNrAdjacencies(gr);
+13
+gap> DigraphNrAdjacencies(gr) * 2 - DigraphNrLoops(gr) =
+> DigraphNrEdges(DigraphSymmetricClosure(gr));
+true
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="DigraphNrLoops">
 <ManSection>
   <Attr Name="DigraphNrLoops" Arg="digraph"/>

@@ -148,7 +148,7 @@ Int DigraphNrAdjacencies(Obj D) {
       Obj const out_v = ELM_LIST(out, v);
       for (Int w = 1; w <= LEN_LIST(out_v); ++w) {
         Int u = INT_INTOBJ(ELM_LIST(out_v, w));
-        if (v < u
+        if (v <= u
             || CALL_3ARGS(IsDigraphEdge, D, INTOBJ_INT(u), INTOBJ_INT(v))
                    == False) {
           ++nr;

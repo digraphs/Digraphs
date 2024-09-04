@@ -235,9 +235,9 @@ gap> IS_PLANAR(2);
 Error, Digraphs: boyers_planarity_check (C): the 1st argument must be a digrap\
 h, not integer
 gap> IS_PLANAR(NullDigraph(0));
-Error, Digraphs: boyers_planarity_check (C): invalid number of nodes!
+fail
 gap> IS_PLANAR(NullDigraph(70000));
-Error, Digraphs: boyers_planarity_check (C): invalid number of edges!
+fail
 gap> IsPlanarDigraph(NullDigraph(70000));
 true
 gap> IS_PLANAR(CompleteDigraph(2));

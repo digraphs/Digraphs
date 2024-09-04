@@ -147,16 +147,10 @@ Obj boyers_planarity_check(Obj digraph, int flags, bool krtwsk) {
 
   if (gp_InitGraph(theGraph, V) != OK) {
     gp_Free(&theGraph);
-    ErrorQuit("Digraphs: boyers_planarity_check (C): invalid number of nodes!",
-              0L,
-              0L);
-    return 0L;
+    return Fail;
   } else if (gp_EnsureArcCapacity(theGraph, 2 * E) != OK) {
     gp_Free(&theGraph);
-    ErrorQuit("Digraphs: boyers_planarity_check (C): invalid number of edges!",
-              0L,
-              0L);
-    return 0L;
+    return Fail;
   }
 
   switch (flags) {
