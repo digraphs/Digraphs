@@ -50,6 +50,9 @@
 #endif
 
 // Forward declaration of the main function in this file.
+Obj trivial_planarity_output(Int V, bool krtwsk);
+
+// Forward declaration of the main function in this file.
 Obj boyers_planarity_check(Obj digraph, int flags, bool krtwsk);
 
 // GAP level functions

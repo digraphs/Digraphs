@@ -82,6 +82,9 @@ function(D)
   local v, e;
   v := DigraphNrVertices(D);
   e := DigraphNrAdjacenciesWithoutLoops(D);
+  if HasIsPlanarDigraph(D) then
+    return IsPlanarDigraph(D);
+  fi;
   if v < 5 or e < 9 then
     return true;
   elif (IsConnectedDigraph(D) and e > 3 * v - 6)
