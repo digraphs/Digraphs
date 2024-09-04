@@ -1262,7 +1262,7 @@ function(_, n)
   anchor2 := 2;
   anchor3 := 3;
   prevNrVert := 1;
-  # Starting from the triangle graph G := C_3, itteratively triplicate G, and
+  # Starting from the triangle graph G := C_3, iteratively triplicate G, and
   # connect each copy using their anchors.
   for i in [2 .. n] do
     prevNrVert := prevNrVert * 3;
