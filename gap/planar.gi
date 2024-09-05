@@ -30,72 +30,48 @@
 # 1. Attributes
 ########################################################################
 
+BindGlobal("DIGRAPHS_HasTrivialRotationSystem",
+function(D)
+  if IsMultiDigraph(D) then
+    ErrorNoReturn("expected a digraph with no multiple edges");
+  elif HasIsPlanarDigraph(D) and not IsPlanarDigraph(D) then
+    return false;
+  elif DigraphNrVertices(D) < 3 then
+    return true;
+  fi;
+  return DigraphNrAdjacenciesWithoutLoops(D) = 0;
+end);
+
 InstallMethod(PlanarEmbedding, "for a digraph", [IsDigraph],
 function(D)
-  if IsEmptyDigraph(D) or DigraphNrVertices(D) < 3 then
-    return [];
-  elif HasIsPlanarDigraph(D) and not IsPlanarDigraph(D) then
-    return fail;
+  if DIGRAPHS_HasTrivialRotationSystem(D) then;
+    return OutNeighbors(D);
   fi;
-  D := MaximalAntiSymmetricSubdigraph(DigraphMutableCopyIfMutable(D));
   return PLANAR_EMBEDDING(D);
 end);
 
 InstallMethod(OuterPlanarEmbedding, "for a digraph", [IsDigraph],
 function(D)
-  if IsEmptyDigraph(D) or DigraphNrVertices(D) < 3 then
-    return [];
-  elif HasIsOuterPlanarDigraph(D) and not IsOuterPlanarDigraph(D) then
-    return fail;
+  if DIGRAPHS_HasTrivialRotationSystem(D) then;
+    return OutNeighbors(D);
   fi;
-  D := MaximalAntiSymmetricSubdigraph(DigraphMutableCopyIfMutable(D));
   return OUTER_PLANAR_EMBEDDING(D);
 end);
 
 InstallMethod(KuratowskiPlanarSubdigraph, "for a digraph", [IsDigraph],
-function(D)
-  if IsPlanarDigraph(D) then
-    return fail;
-  fi;
-  D := MaximalAntiSymmetricSubdigraph(DigraphMutableCopyIfMutable(D));
-  return KURATOWSKI_PLANAR_SUBGRAPH(D);
-end);
+KURATOWSKI_PLANAR_SUBGRAPH);
 
 InstallMethod(KuratowskiOuterPlanarSubdigraph, "for a digraph", [IsDigraph],
-function(D)
-  if IsOuterPlanarDigraph(D) then
-    return fail;
-  fi;
-  D := MaximalAntiSymmetricSubdigraph(DigraphMutableCopyIfMutable(D));
-  return KURATOWSKI_OUTER_PLANAR_SUBGRAPH(D);
-end);
+KURATOWSKI_OUTER_PLANAR_SUBGRAPH);
 
 InstallMethod(SubdigraphHomeomorphicToK23, "for a digraph", [IsDigraph],
-function(D)
-  if IsOuterPlanarDigraph(D) then
-    return fail;
-  fi;
-  D := MaximalAntiSymmetricSubdigraph(DigraphMutableCopyIfMutable(D));
-  return SUBGRAPH_HOMEOMORPHIC_TO_K23(D);
-end);
+SUBGRAPH_HOMEOMORPHIC_TO_K23);
 
 InstallMethod(SubdigraphHomeomorphicToK4, "for a digraph", [IsDigraph],
-function(D)
-  if IsOuterPlanarDigraph(D) then
-    return fail;
-  fi;
-  D := MaximalAntiSymmetricSubdigraph(DigraphMutableCopyIfMutable(D));
-  return SUBGRAPH_HOMEOMORPHIC_TO_K4(D);
-end);
+SUBGRAPH_HOMEOMORPHIC_TO_K4);
 
 InstallMethod(SubdigraphHomeomorphicToK33, "for a digraph", [IsDigraph],
-function(D)
-  if IsPlanarDigraph(D) then
-    return fail;
-  fi;
-  D := MaximalAntiSymmetricSubdigraph(DigraphMutableCopyIfMutable(D));
-  return SUBGRAPH_HOMEOMORPHIC_TO_K33(D);
-end);
+SUBGRAPH_HOMEOMORPHIC_TO_K33);
 
 ########################################################################
 # 2. Properties
@@ -103,33 +79,34 @@ end);
 
 InstallMethod(IsPlanarDigraph, "for a digraph", [IsDigraph],
 function(D)
-  local C, v, e;
-  C := MaximalAntiSymmetricSubdigraph(DigraphMutableCopyIfMutable(D));
+  local v, e;
   v := DigraphNrVertices(D);
-  e := DigraphNrEdges(C);
+  e := DigraphNrAdjacenciesWithoutLoops(D);
+  if HasIsPlanarDigraph(D) then
+    return IsPlanarDigraph(D);
+  fi;
   if v < 5 or e < 9 then
     return true;
   elif (IsConnectedDigraph(D) and e > 3 * v - 6)
       or (HasChromaticNumber(D) and ChromaticNumber(D) > 4) then
     return false;
   fi;
-  return IS_PLANAR(C);
+  return IS_PLANAR(D);
 end);
 
 InstallMethod(IsOuterPlanarDigraph, "for a digraph", [IsDigraph],
 function(D)
-  local C, v, e;
+  local v, e;
   if HasIsPlanarDigraph(D) and not IsPlanarDigraph(D) then
     return false;
   fi;
   v := DigraphNrVertices(D);
-  e := DigraphNrEdges(D);
+  e := DigraphNrAdjacenciesWithoutLoops(D);
   if v < 4 or e < 6 then
     return true;
   elif HasChromaticNumber(D) and ChromaticNumber(D) > 3 then
     # Outer planar graphs are 3-colourable
     return false;
   fi;
-  C := DigraphMutableCopyIfMutable(D);
-  return IS_OUTER_PLANAR(MaximalAntiSymmetricSubdigraph(C));
+  return IS_OUTER_PLANAR(D);
 end);

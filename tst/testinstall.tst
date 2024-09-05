@@ -246,9 +246,13 @@ gap> gr := DigraphRemoveEdge(gr, [1, 2]);;
 gap> gr := DigraphRemoveEdges(gr, [[1, 2], [2, 1]]);;
 gap> DigraphNrEdges(gr);
 40
+gap> DigraphNrAdjacencies(gr);
+20
 gap> gr2 := DigraphClosure(gr, 7);;
 gap> DigraphNrEdges(gr2);
 42
+gap> DigraphNrAdjacencies(gr2);
+21
 
 #  Fix seg fault cause by wrong handling of no edges in
 # FuncDIGRAPH_SOURCE_RANGE

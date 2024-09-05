@@ -138,6 +138,48 @@ gap> DigraphNrEdges(D);
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="DigraphNrAdjacencies">
+<ManSection>
+  <Attr Name="DigraphNrAdjacencies" Arg="digraph" />
+  <Returns>An integer.</Returns>
+  <Description> Returns the number of sets <M>\{u, v\}</M> of vertices of the digraph <A>digraph</A>, such that
+    either <M>(u, v)</M> or <M>(v, u)</M> is an edge. The following equality holds for
+    any digraph <C>D</C> with no multiple edges: <C>DigraphNrAdjacencies(D) * 2 - DigraphNrLoops(D)
+    = DigraphNrEdges(DigraphSymmetricClosure(D))</C>.
+    <Example><![CDATA[
+gap> gr := Digraph([
+> [1, 3, 4, 5], [1, 2, 3, 5], [2, 4, 5], [2, 4, 5], [1]]);;
+gap> DigraphNrAdjacencies(gr);
+13
+gap> DigraphNrAdjacencies(gr) * 2 - DigraphNrLoops(gr) =
+> DigraphNrEdges(DigraphSymmetricClosure(gr));
+true
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphNrAdjacenciesWithoutLoops">
+<ManSection>
+  <Attr Name="DigraphNrAdjacenciesWithoutLoops" Arg="digraph" />
+  <Returns>An integer.</Returns>
+  <Description> Returns the number of sets <M>\{u, v\}</M> of vertices of the digraph <A>digraph</A>, such that
+    <M>u \neq v</M> and either <M>(u, v)</M> or <M>(v, u)</M> is an edge. The following equality holds for
+    any digraph <C>D</C> with no multiple edges: <C>DigraphNrAdjacenciesWithoutLoops(D) * 2 + DigraphNrLoops(D)
+    = DigraphNrEdges(DigraphSymmetricClosure(D))</C>.
+    <Example><![CDATA[
+gap> gr := Digraph([
+> [1, 3, 4, 5], [1, 2, 3, 5], [2, 4, 5], [2, 4, 5], [1]]);;
+gap> DigraphNrAdjacenciesWithoutLoops(gr);
+10
+gap> DigraphNrAdjacenciesWithoutLoops(gr) * 2 + DigraphNrLoops(gr) =
+> DigraphNrEdges(DigraphSymmetricClosure(gr));
+true
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="DigraphNrLoops">
 <ManSection>
   <Attr Name="DigraphNrLoops" Arg="digraph"/>

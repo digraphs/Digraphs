@@ -249,6 +249,8 @@ gap> DigraphNrVertices(D);
 8
 gap> DigraphNrEdges(D);
 26
+gap> DigraphNrAdjacencies(D);
+13
 gap> DigraphUndirectedGirth(D);
 3
 gap> LollipopGraph(IsMutableDigraph, 5, 3);
