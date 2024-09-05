@@ -79,6 +79,7 @@ gap> HomomorphismDigraphsFinder(gr1, gr2, fail, [], 1, 1, 1, [],
 Error, the 9th argument <partial_map> is too long, must be at most 2, found 4,
 gap> HomomorphismDigraphsFinder(gr1, gr2, fail, [], 1, 1, 1, [1], [1],
 > fail, fail);
+#I  WARNING you are trying to find homomorphisms by specifying a subset of the vertices of the target digraph. This might lead to unexpected results! If this happens, try passing Group(()) as the last argument. Please see the documentation of HomomorphismDigraphsFinder for details.
 [  ]
 gap> HomomorphismDigraphsFinder(CompleteDigraph(2),
 >                               CompleteDigraph(3),
@@ -91,24 +92,30 @@ gap> HomomorphismDigraphsFinder(CompleteDigraph(2),
 >                               [1],     # 1 -> 1
 >                               fail,    # no colours
 >                               fail);   # no colours
+#I  WARNING you are trying to find homomorphisms by specifying a subset of the vertices of the target digraph. This might lead to unexpected results! If this happens, try passing Group(()) as the last argument. Please see the documentation of HomomorphismDigraphsFinder for details.
 [ IdentityTransformation ]
 gap> HomomorphismDigraphsFinder(gr1, gr2, fail, [], 1, 3, 0, [1, 2], [1],
 > fail, fail);
+#I  WARNING you are trying to find homomorphisms by specifying a subset of the vertices of the target digraph. This might lead to unexpected results! If this happens, try passing Group(()) as the last argument. Please see the documentation of HomomorphismDigraphsFinder for details.
 [  ]
 gap> HomomorphismDigraphsFinder(gr2, gr1, fail, [], 1, 3, 0, [1, 2], [1],
 > fail, fail);
 [  ]
 gap> HomomorphismDigraphsFinder(gr1, gr2, fail, [], 1, 1, 0, [], [], fail,
 > fail);
+#I  WARNING you are trying to find homomorphisms by specifying a subset of the vertices of the target digraph. This might lead to unexpected results! If this happens, try passing Group(()) as the last argument. Please see the documentation of HomomorphismDigraphsFinder for details.
 [  ]
 gap> HomomorphismDigraphsFinder(gr1, gr2, fail, [], 1, 1, 0, [1, 2], [],
 > fail, fail);
+#I  WARNING you are trying to find homomorphisms by specifying a subset of the vertices of the target digraph. This might lead to unexpected results! If this happens, try passing Group(()) as the last argument. Please see the documentation of HomomorphismDigraphsFinder for details.
 [  ]
 gap> HomomorphismDigraphsFinder(gr1, gr2, fail, [], 1, 1, 0, [1, 2], [],
 > fail, fail);
+#I  WARNING you are trying to find homomorphisms by specifying a subset of the vertices of the target digraph. This might lead to unexpected results! If this happens, try passing Group(()) as the last argument. Please see the documentation of HomomorphismDigraphsFinder for details.
 [  ]
 gap> HomomorphismDigraphsFinder(gr1, gr2, fail, [], 1, 2, 0, [1], [], fail,
 > fail);
+#I  WARNING you are trying to find homomorphisms by specifying a subset of the vertices of the target digraph. This might lead to unexpected results! If this happens, try passing Group(()) as the last argument. Please see the documentation of HomomorphismDigraphsFinder for details.
 [  ]
 gap> HomomorphismDigraphsFinder(gr1, gr1, fail, [], 1, 2, 0, [1, 2], [],
 > fail, fail);
@@ -708,6 +715,7 @@ gap> gr := Digraph([[2, 3], [], [], [5], [], []]);
 <immutable digraph with 6 vertices, 3 edges>
 gap> HomomorphismDigraphsFinder(gr, gr, fail, [], infinity, fail, 0,
 > [1 .. 5], [], fail, fail);
+#I  WARNING you are trying to find homomorphisms by specifying a subset of the vertices of the target digraph. This might lead to unexpected results! If this happens, try passing Group(()) as the last argument. Please see the documentation of HomomorphismDigraphsFinder for details.
 [ Transformation( [ 1, 2, 3, 4, 5, 1 ] ), 
   Transformation( [ 1, 2, 3, 4, 5, 2 ] ), 
   Transformation( [ 1, 2, 3, 4, 5, 3 ] ), 
@@ -1129,6 +1137,7 @@ gap> gr := DigraphFromDigraph6String(Concatenation(
 <immutable digraph with 22 vertices, 198 edges>
 gap> t := HomomorphismDigraphsFinder(gr, gr, fail, [], 1, fail, 0,
 > [2, 6, 7, 11, 12, 13, 14, 15, 19, 20, 21], [], fail, fail)[1];
+#I  WARNING you are trying to find homomorphisms by specifying a subset of the vertices of the target digraph. This might lead to unexpected results! If this happens, try passing Group(()) as the last argument. Please see the documentation of HomomorphismDigraphsFinder for details.
 Transformation( [ 2, 13, 20, 19, 21, 19, 14, 13, 15, 14, 20, 6, 15, 21, 11,
   12, 6, 7, 7, 12, 2, 11 ] )
 gap> ForAll(DigraphEdges(gr), e -> IsDigraphEdge(gr, e[1] ^ t, e[2] ^ t));
@@ -1569,6 +1578,7 @@ gap> HomomorphismDigraphsFinder(D,
 >                               [],          # map
 >                               [1, 2, 3],   # colours1
 >                               [1, 3, 2]);  # colours2
+#I  WARNING you are trying to find homomorphisms by specifying a subset of the vertices of the target digraph. This might lead to unexpected results! If this happens, try passing Group(()) as the last argument. Please see the documentation of HomomorphismDigraphsFinder for details.
 [  ]
 gap> EmbeddingsDigraphsRepresentatives(NullDigraph(2),
 >                                      Digraph([[2, 3], [], []]));
@@ -1593,10 +1603,12 @@ gap> D := DigraphFromDigraph6String(Concatenation(
 > "HBSatQlC[TIC{iSBlo_VrO@u[_Eyk?]YS?"));;
 gap> HomomorphismDigraphsFinder(D, D, fail, [], 1, fail, 1,
 > [2, 6, 7, 11, 12, 13, 14, 15, 19, 20, 21], [], fail, fail);
+#I  WARNING you are trying to find homomorphisms by specifying a subset of the vertices of the target digraph. This might lead to unexpected results! If this happens, try passing Group(()) as the last argument. Please see the documentation of HomomorphismDigraphsFinder for details.
 [  ]
 gap> D := Digraph([[2], []]);;
 gap> HomomorphismDigraphsFinder(D, D, fail, [], 1, fail, 1,
 > [1], [], fail, fail);
+#I  WARNING you are trying to find homomorphisms by specifying a subset of the vertices of the target digraph. This might lead to unexpected results! If this happens, try passing Group(()) as the last argument. Please see the documentation of HomomorphismDigraphsFinder for details.
 [  ]
 
 # Test monomorphisms for graphs
@@ -1804,6 +1816,7 @@ gap> HomomorphismDigraphsFinder(D,
 >                               [, 3],       # map
 >                               fail,        # colours1
 >                               fail);       # colours2
+#I  WARNING you are trying to find homomorphisms by specifying a subset of the vertices of the target digraph. This might lead to unexpected results! If this happens, try passing Group(()) as the last argument. Please see the documentation of HomomorphismDigraphsFinder for details.
 [  ]
 gap> D := DigraphAddAllLoops(Digraph([[2, 3], [1], [1], [], [5]]));;
 gap> EmbeddingsDigraphsRepresentatives(NullDigraph(2), D);
@@ -2790,6 +2803,7 @@ on 1 of the group generators,
 gap> HomomorphismDigraphsFinder(NullDigraph(3), NullDigraph(510), fail, [], 1,
 > fail, true, [1, 2, 3], [1], fail, fail,
 > Group((511, 512)));
+#I  WARNING you are trying to find homomorphisms by specifying a subset of the vertices of the target digraph. This might lead to unexpected results! If this happens, try passing Group(()) as the last argument. Please see the documentation of HomomorphismDigraphsFinder for details.
 [ IdentityTransformation ]
 
 # Issue 697
@@ -2815,6 +2829,7 @@ gap> HomomorphismDigraphsFinder(H,
 > [],                     # partial_map
 > fail,                   # colors1
 > fail);
+#I  WARNING you are trying to find homomorphisms by specifying a subset of the vertices of the target digraph. This might lead to unexpected results! If this happens, try passing Group(()) as the last argument. Please see the documentation of HomomorphismDigraphsFinder for details.
 [  ]
 
 # With partial map, no hint
@@ -2829,6 +2844,7 @@ gap> HomomorphismDigraphsFinder(H,
 > [8],                     # partial_map
 > fail,                   # colors1
 > fail);
+#I  WARNING you are trying to find homomorphisms by specifying a subset of the vertices of the target digraph. This might lead to unexpected results! If this happens, try passing Group(()) as the last argument. Please see the documentation of HomomorphismDigraphsFinder for details.
 [ Transformation( [ 8, 1, 5, 7, 3, 4, 6, 8 ] ) ]
 
 # With group, no hint
@@ -2859,6 +2875,7 @@ gap> HomomorphismDigraphsFinder(H,
 > [8],                    # partial_map
 > fail,                   # colors1
 > fail);
+#I  WARNING you are trying to find homomorphisms by specifying a subset of the vertices of the target digraph. This might lead to unexpected results! If this happens, try passing Group(()) as the last argument. Please see the documentation of HomomorphismDigraphsFinder for details.
 [ Transformation( [ 8, 1, 5, 7, 3, 4, 6, 8 ] ) ]
 
 # With group, with hint

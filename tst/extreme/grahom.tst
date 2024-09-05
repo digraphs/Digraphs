@@ -29,8 +29,10 @@ gap> Size(Semigroup(gens));
 105120
 gap> HomomorphismDigraphsFinder(gr, gr, fail, [], infinity, fail, 0,
 > [1, 14, 28, 39, 42], [], fail, fail);;
+#I  WARNING you are trying to find homomorphisms by specifying a subset of the vertices of the target digraph. This might lead to unexpected results! If this happens, try passing Group(()) as the last argument. Please see the documentation of HomomorphismDigraphsFinder for details.
 gap> str := HomomorphismDigraphsFinder(gr, gr, fail, [], infinity, fail, 0,
 > [1, 14, 28, 39, 42], [], fail, fail);;
+#I  WARNING you are trying to find homomorphisms by specifying a subset of the vertices of the target digraph. This might lead to unexpected results! If this happens, try passing Group(()) as the last argument. Please see the documentation of HomomorphismDigraphsFinder for details.
 gap> Length(str);
 192
 
@@ -424,12 +426,14 @@ gap> HomomorphismDigraphsFinder(gr1, gr2, fail, [], 1, 25, 0, [1 .. 40],
       37, 38 ] ) ]
 gap> t := HomomorphismDigraphsFinder(gr1, gr2, fail, [], 1, 23, 0,
 > [4 .. 37], [], fail, fail, DigraphWelshPowellOrder(gr1))[1];
+#I  WARNING you are trying to find homomorphisms by specifying a subset of the vertices of the target digraph. This might lead to unexpected results! If this happens, try passing Group(()) as the last argument. Please see the documentation of HomomorphismDigraphsFinder for details.
 Transformation( [ 15, 11, 4, 7, 4, 9, 6, 17, 11, 31, 10, 7, 25, 9, 26, 22, 29,
  8, 21, 27, 25, 25, 30, 19, 18, 13, 16, 8, 5, 32, 31, 32 ] )
 gap> ForAll(DigraphEdges(gr1), e -> IsDigraphEdge(gr2, [e[1] ^ t, e[2] ^ t]));
 true
 gap> t := HomomorphismDigraphsFinder(gr1, gr2, fail, [], 1, 23, 0,
 > [6 .. 37], [], fail, fail, DigraphWelshPowellOrder(gr1))[1];
+#I  WARNING you are trying to find homomorphisms by specifying a subset of the vertices of the target digraph. This might lead to unexpected results! If this happens, try passing Group(()) as the last argument. Please see the documentation of HomomorphismDigraphsFinder for details.
 Transformation( [ 13, 20, 6, 30, 25, 24, 6, 23, 17, 30, 14, 9, 29, 11, 19, 28,
  13, 34, 32, 7, 9, 10, 18, 15, 12, 21, 7, 11, 37, 19, 31, 32, 33, 34, 35, 36,
   37 ] )

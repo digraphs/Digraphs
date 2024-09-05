@@ -95,7 +95,20 @@
         This argument should be a subset of the vertices of the graph <A>D2</A>.
         <C>HomomorphismDigraphsFinder</C> only finds homomorphisms from
         <A>D1</A> to the subgraph of <A>D2</A> induced by the vertices
-        <A>image</A>.
+        <A>image</A>.<P/>
+
+        The returned homomorphisms (if any) are still "up to the action" of the
+        group specified by <A>aut_grp</A> (which is the entire automorphism
+        group by default). This might generate unexpected results. For example,
+        if <A>D1</A> has automorphism group where one orbit consists of, say,
+        <C>1</C> and <C>2</C>, then <C>HomomorphismDigraphsFinder</C> will only
+        attempt to find homomorphisms mapping <C>1</C> to <C>1</C>, and if
+        there are no such homomorphisms with image set equal to <A>image</A>,
+        then no homomorphisms will be returned (even if there is a homomorphism
+        from <A>D1</A> to <A>D2</A> mapping <C>1</C> to <C>2</C>). To ensure that
+        that <B>all</B> homomorphisms with image set equal to <A>image</A> are
+        considered it is necessary for the last argument <A>aut_grp</A> to be
+        the trivial permutation group.
       </Item>
 
       <Mark><A>partial_map</A></Mark>
@@ -133,6 +146,7 @@
         idea for this to be the <Ref Attr="DigraphWelshPowellOrder"/>, i.e.
         vertices ordered from highest to lowest degree.
       </Item>
+      <Mark><A>aut_grp</A></Mark>
       <Item>
         The optional argument <A>aut_grp</A> should be a subgroup of the
         automorphism group of <A>D2</A>. This function returns unique
@@ -149,6 +163,10 @@ gap> D := DigraphSymmetricClosure(D);
 <immutable symmetric digraph with 10 vertices, 18 edges>
 gap> HomomorphismDigraphsFinder(D, D, fail, [], infinity, 2, 0,
 > [3, 4], [], fail, fail);
+#I  WARNING you are trying to find homomorphisms by specifying a subset
+of the vertices of the target digraph. This might lead to unexpected
+results! If this happens, try passing Group(()) as the last argument.
+Please see the documentation of HomomorphismDigraphsFinder for details.
 [ Transformation( [ 3, 4, 3, 4, 3, 4, 3, 4, 3, 4 ] ),
   Transformation( [ 4, 3, 4, 3, 4, 3, 4, 3, 4, 3 ] ) ]
 gap> D2 := CompleteDigraph(6);;

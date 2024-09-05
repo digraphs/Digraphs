@@ -25,15 +25,13 @@
 // 1. Try other bit hacks for iterating through set bits
 
 #include "homos.h"
+
 // C headers
 #include <setjmp.h>   // for longjmp, setjmp, jmp_buf
 #include <stdbool.h>  // for true, false, bool
 #include <stddef.h>   // for NULL
 #include <stdint.h>   // for uint16_t, uint64_t
 #include <stdlib.h>   // for malloc, NULL
-#ifdef DIGRAPHS_ENABLE_STATS
-#include <time.h>  // for time
-#endif
 
 // GAP headers
 #include "gap-includes.h"
@@ -49,6 +47,12 @@
 #include "perms.h"            // for UNDEFINED, PermColl, Perm
 #include "safemalloc.h"       // for safe_mallov
 #include "schreier-sims.h"    // for PermColl, . . .
+
+#ifdef DIGRAPHS_ENABLE_STATS
+// This include has to come after digraphs-config.h since that's where
+// DIGRAPHS_ENABLE_STATS is defined
+#include <time.h>  // for time
+#endif
 
 ////////////////////////////////////////////////////////////////////////////////
 // 1. Macros
@@ -135,6 +139,7 @@ extern Obj AutomorphismGroup;
 extern Obj IsPermGroup;
 extern Obj IsDigraphAutomorphism;
 extern Obj LargestMovedPointPerms;
+extern Obj InfoWarning;
 
 ////////////////////////////////////////////////////////////////////////////////
 // 3. Global variables
@@ -147,7 +152,6 @@ static Obj (*HOOK)(void*,  // HOOK function applied to every homo found
                    const uint16_t*);
 static void* USER_PARAM;  // a USER_PARAM for the hook
 
-// Values in MAP are restricted to those positions in IMAGE_RESTRICT
 static jmp_buf OUTOFHERE;  // so we can jump out of the deepest
 
 static bool ORDERED;  // true if the vertices of the domain/source digraph
@@ -680,6 +684,7 @@ static void find_graph_homos(uint16_t        depth,
     }
   }
   DIGRAPHS_ASSERT(get_bit_array(MAP_UNDEFINED[depth], next));
+  DIGRAPHS_ASSERT(next < GRAPH1->nr_vertices);
 
   if (rank < hint) {
     copy_bit_array(
@@ -2183,6 +2188,30 @@ Obj FuncHomomorphismDigraphsFinder(Obj self, Obj args) {
                     0L);
         }
       }
+    }
+  }
+
+  if (image_obj != Fail
+      && LEN_LIST(image_obj) != DigraphNrVertices(digraph2_obj)) {
+    bool warn = false;
+    if (aut_grp_obj == Fail) {
+      warn = true;
+    } else {
+      Obj gens = CALL_1ARGS(GeneratorsOfGroup, aut_grp_obj);
+      Int lmp  = INT_INTOBJ(CALL_1ARGS(LargestMovedPointPerms, gens));
+      warn     = lmp > 0;
+    }
+    if (warn) {
+      Obj msg = MakeImmString(
+          "WARNING you are trying to find homomorphisms by specifying a "
+          "subset of the vertices of the target digraph. This might lead "
+          "to unexpect results! If this happens, try passing Group(()) as the "
+          "last argument. Please see the documentation of "
+          "HomomorphismDigraphsFinder for details.");
+      Obj info_args = NEW_PLIST(T_PLIST, 1);
+      SET_ELM_PLIST(info_args, 1, msg);
+      SET_LEN_PLIST(info_args, 1);
+      InfoDoPrint(InfoWarning, INTOBJ_INT(0), info_args);
     }
   }
 

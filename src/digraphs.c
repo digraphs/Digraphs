@@ -57,6 +57,7 @@ Obj IsSubset;
 Obj OnTuples;
 Obj Group;
 Obj ClosureGroup;
+Obj InfoWarning;
 
 static inline bool IsAttributeStoringRep(Obj o) {
   return (CALL_1ARGS(IsAttributeStoringRepObj, o) == True ? true : false);
@@ -2195,6 +2196,7 @@ static Int InitKernel(StructInitInfo* module) {
   ImportGVarFromLibrary("OnTuples", &OnTuples);
   ImportGVarFromLibrary("Group", &Group);
   ImportGVarFromLibrary("ClosureGroup", &ClosureGroup);
+  ImportGVarFromLibrary("InfoWarning", &InfoWarning);
   /* return success                                                      */
   return 0;
 }

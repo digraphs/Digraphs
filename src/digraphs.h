@@ -33,5 +33,6 @@ extern Obj GeneratorsOfGroup;
 extern Obj IsDigraph;
 extern Obj IsMultiDigraph;
 extern Obj IsDigraphEdge;
+extern Obj InfoWarning;
 
 #endif  // DIGRAPHS_SRC_DIGRAPHS_H_

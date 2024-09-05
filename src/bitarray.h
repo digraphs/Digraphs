@@ -195,4 +195,5 @@ void set_bit_array_from_gap_int(BitArray* const bit_array, Obj o);
 //! plain or dense).
 void set_bit_array_from_gap_list(BitArray* const bit_array, Obj list_obj);
 
+// void print_bit_array(BitArray const* const bit_array);
 #endif  //  DIGRAPHS_SRC_BITARRAY_H_
