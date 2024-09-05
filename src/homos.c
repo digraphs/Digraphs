@@ -2205,8 +2205,8 @@ Obj FuncHomomorphismDigraphsFinder(Obj self, Obj args) {
       Obj msg = MakeImmString(
           "WARNING you are trying to find homomorphisms by specifying a "
           "subset of the vertices of the target digraph. This might lead "
-          "to unexpect results! If this happens, try passing Group(()) as the "
-          "last argument. Please see the documentation of "
+          "to unexpected results! If this happens, try passing Group(()) as "
+          "the last argument. Please see the documentation of "
           "HomomorphismDigraphsFinder for details.");
       Obj info_args = NEW_PLIST(T_PLIST, 1);
       SET_ELM_PLIST(info_args, 1, msg);
