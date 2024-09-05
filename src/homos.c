@@ -1748,6 +1748,7 @@ static bool init_data_from_args(Obj digraph1_obj,
   set_bit_array_from_gap_list(IMAGE_RESTRICT, image_obj);
   if (INT_INTOBJ(injective_obj) > 0
       && size_bit_array(IMAGE_RESTRICT, nr1) < nr1) {
+    // TODO shouldn't the first nr1 be nr2?
     // homomorphisms should be injective (by injective_obj) but are not since
     // the image is too restricted.
     return false;
