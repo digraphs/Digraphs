@@ -1048,6 +1048,8 @@ gap> monos := MonomorphismsDigraphs(gr1, gr2);
   Transformation( [ 2, 3, 3 ] ), Transformation( [ 2, 5, 3, 4, 5 ] ), 
   Transformation( [ 3, 2, 3 ] ), Transformation( [ 4, 2, 3, 4 ] ), 
   Transformation( [ 4, 5, 3, 4, 5 ] ), Transformation( [ 5, 1, 3, 4, 5 ] ) ]
+gap> ForAll(monos, x -> IsDigraphMonomorphism(gr1, gr2, x));
+true
 gap> monos = MonomorphismsDigraphsRepresentatives(gr1, gr2);
 true
 gap> monos = HomomorphismsDigraphsRepresentatives(gr1, gr2);
@@ -1067,8 +1069,8 @@ gap> gr2 := CompleteDigraph(3);;
 gap> EpimorphismsDigraphs(gr1, gr2);
 [  ]
 gap> gr1 := DigraphFromDigraph6String("&I@??HO???????A????");;
-gap> DigraphEpimorphism(gr1, gr2);
-Transformation( [ 2, 1, 1, 2, 1, 3, 1, 2, 1, 1 ] )
+gap> IsDigraphEpimorphism(gr1, gr2, DigraphEpimorphism(gr1, gr2));
+true
 gap> epis := EpimorphismsDigraphsRepresentatives(gr1, gr2);;
 gap> Length(epis);
 972
@@ -1162,8 +1164,10 @@ gap> ForAll(GeneratorsOfEndomorphismMonoid(gr),
 >           x -> IsDigraphEndomorphism(gr, x));
 true
 gap> x := Transformation([2, 1, 3, 3]);;
+gap> ForAll(DigraphEdges(gr), e -> IsDigraphEdge(gr, e[1] ^ x, e[2] ^ x));
+true
 gap> IsDigraphEndomorphism(gr, x);
-false
+true
 gap> x := Transformation([3, 1, 3, 3]);;
 gap> IsDigraphEndomorphism(gr, x);
 false
@@ -1171,8 +1175,12 @@ gap> IsDigraphEndomorphism(gr, ());
 true
 gap> IsDigraphEndomorphism(gr, (1, 2));
 true
-gap> IsDigraphEndomorphism(gr, (1, 2)(3, 4));
-false
+gap> x := (1, 2)(3, 4);
+(1,2)(3,4)
+gap> IsDigraphEndomorphism(gr, x);
+true
+gap> ForAll(DigraphEdges(gr), e -> IsDigraphEdge(gr, e[1] ^ x, e[2] ^ x));
+true
 gap> IsDigraphEndomorphism(gr, (1, 2, 3, 4));
 false
 gap> IsDigraphHomomorphism(NullDigraph(1),
@@ -1845,6 +1853,8 @@ gap> D := Digraph(parts, {x, y} -> ForAll(x, z -> not z in y));
 <immutable digraph with 280 vertices, 70560 edges>
 gap> t := DigraphHomomorphism(CompleteDigraph(25), D);
 <transformation on 273 pts with rank 251>
+gap> IsDigraphHomomorphism(CompleteDigraph(25), D, t);
+true
 gap> tt := HomomorphismDigraphsFinder(CompleteDigraph(26),
 >                                     D,
 >                                     fail,       # hook
@@ -1853,12 +1863,11 @@ gap> tt := HomomorphismDigraphsFinder(CompleteDigraph(26),
 >                                     fail,
 >                                     0,
 >                                     [1 .. 280],
->                                     OnTuples([2 .. 25], t),
+>                                     [12, 23, 32, 44, 52, 1, 77, 85, 96, 103, 114,
+> 125, 136, 145, 157, 170, 262, 204, 215, 233, 246, 255, 193, 273],
 >                                     fail,
 >                                     fail)[1];
 <transformation on 273 pts with rank 250>
-gap> OnTuples([2 .. 25], t) = OnTuples([2 .. 25], tt);
-false
 
 # GAP hook function
 gap> found := 0;;
@@ -2135,7 +2144,7 @@ gap> HomomorphismDigraphsFinder(CycleDigraph(5),
 
 # More arg/error checks
 gap> HomomorphismDigraphsFinder(0);
-Error, there must be 11 or 12 arguments, found 1,
+Error, there must be 11, 12, or 13 arguments, found 1,
 gap> DigraphHomomorphism(NullDigraph(1), NullDigraph(513));
 IdentityTransformation
 gap> HomomorphismDigraphsFinder(NullDigraph(1), NullDigraph(510), fail, [], 1,
@@ -2758,6 +2767,115 @@ gap> D := DigraphFromGraph6String("O^vMMF@oM?w@o@o?w?N?@");
 <immutable symmetric digraph with 16 vertices, 84 edges>
 gap> Length(SubdigraphsMonomorphisms(CompleteMultipartiteDigraph([2, 7]), D));
 3432
+
+#
+gap> H := DigraphFromGraph6String("F~CWw");
+<immutable symmetric digraph with 7 vertices, 24 edges>
+gap> G := DigraphFromGraph6String("G@p}|{");
+<immutable symmetric digraph with 8 vertices, 36 edges>
+gap> ForAll(MonomorphismsDigraphs(H, G), x -> IsDigraphMonomorphism(H, G, x));
+true
+gap> H := NullDigraph(3);
+<immutable empty digraph with 3 vertices>
+gap> G := NullDigraph(510);
+<immutable empty digraph with 510 vertices>
+gap> p := MappingPermListList([1 .. 1000], [5 .. 1004]);;
+gap> IsDigraphAutomorphism(G, p);
+false
+gap> HomomorphismDigraphsFinder(NullDigraph(3), NullDigraph(510), fail, [], 1,
+> fail, true, [1, 2, 3], [1], fail, fail,
+> Group(MappingPermListList([1 .. 1000], [5 .. 1004])));
+Error, expected group of automorphisms, but found a non-automorphism in positi\
+on 1 of the group generators,
+gap> HomomorphismDigraphsFinder(NullDigraph(3), NullDigraph(510), fail, [], 1,
+> fail, true, [1, 2, 3], [1], fail, fail,
+> Group((511, 512)));
+[ IdentityTransformation ]
+
+# Issue 697
+gap> H := DigraphFromGraph6String("F~CWw");
+<immutable symmetric digraph with 7 vertices, 24 edges>
+gap> G := DigraphFromGraph6String("G@p}|{");
+<immutable symmetric digraph with 8 vertices, 36 edges>
+gap> p := PermList(DigraphWelshPowellOrder(H)) ^ -1;
+(1,2,3,4)
+gap> H := OnDigraphs(H, p);
+<immutable digraph with 7 vertices, 24 edges>
+gap> # Reorder H to remove the ordering from the equation
+
+# no partial map, no group
+gap> HomomorphismDigraphsFinder(H,
+> G,                      # range
+> fail,                   # hook
+> [],                     # user_param
+> 1,                      # max_results
+> 7,                      # hint (i.e. rank)
+> true,                   # injective
+> [1, 3, 4, 5, 6, 7, 8],  # image
+> [],                     # partial_map
+> fail,                   # colors1
+> fail);
+[  ]
+
+# With partial map, no hint
+gap> HomomorphismDigraphsFinder(H,
+> G,                      # range
+> fail,                   # hook
+> [],                     # user_param
+> 1,                      # max_results
+> fail,                   # hint (i.e. rank)
+> true,                   # injective
+> [1, 3, 4, 5, 6, 7, 8],  # image
+> [8],                     # partial_map
+> fail,                   # colors1
+> fail);
+[ Transformation( [ 8, 1, 5, 7, 3, 4, 6, 8 ] ) ]
+
+# With group, no hint
+gap> HomomorphismDigraphsFinder(H,
+> G,                      # range
+> fail,                   # hook
+> [],                     # user_param
+> 1,                      # max_results
+> fail,                   # hint (i.e. rank)
+> true,                   # injective
+> [1, 3, 4, 5, 6, 7, 8],
+> [],                     # partial_map
+> fail,                   # colors1
+> fail,
+> [1 .. 7],
+> Group(()));
+[ Transformation( [ 8, 1, 5, 7, 3, 4, 6, 8 ] ) ]
+
+# With partial map, with hint
+gap> HomomorphismDigraphsFinder(H,
+> G,                      # range
+> fail,                   # hook
+> [],                     # user_param
+> 1,                      # max_results
+> 7,                      # hint (i.e. rank)
+> true,                   # injective
+> [1, 3, 4, 5, 6, 7, 8],  # image
+> [8],                    # partial_map
+> fail,                   # colors1
+> fail);
+[ Transformation( [ 8, 1, 5, 7, 3, 4, 6, 8 ] ) ]
+
+# With group, with hint
+gap> HomomorphismDigraphsFinder(H,
+> G,                      # range
+> fail,                   # hook
+> [],                     # user_param
+> 1,                      # max_results
+> 7,                      # hint (i.e. rank)
+> true,                   # injective
+> [1, 3, 4, 5, 6, 7, 8],
+> [],                     # partial_map
+> fail,                   # colors1
+> fail,
+> DigraphWelshPowellOrder(H),
+> Group(()));
+[ Transformation( [ 8, 1, 5, 7, 3, 4, 6, 8 ] ) ]
 
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(D);
