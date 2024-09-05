@@ -814,7 +814,7 @@ true
 gap> IsDigraphAutomorphism(src, (2, 3), [2, 2, 1]);
 false
 gap> IsDigraphAutomorphism(src, (2, 3)(4, 5));
-false
+true
 gap> IsDigraphAutomorphism(src, (1, 4));
 false
 gap> IsDigraphAutomorphism(src, ());

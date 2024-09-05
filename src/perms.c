@@ -25,34 +25,29 @@ Perm new_perm(uint16_t const degree) {
 }
 
 Perm new_perm_from_gap(Obj gap_perm_obj, uint16_t const degree) {
-  UInt lmp = LargestMovedPointPerm(gap_perm_obj);
-  DIGRAPHS_ASSERT(lmp <= MAXVERTS);
-  if (lmp > MAXVERTS) {
-    ErrorQuit("expected permutations of degree at most %d, but got a "
-              "permutation of degree %d",
-              MAXVERTS,
-              lmp);
-  }
-
-  DIGRAPHS_ASSERT(lmp <= degree);
-
   Perm p = new_perm(degree > 0 ? degree : 1);
+
+  size_t copy_up_to = degree;
+  size_t lmp        = LargestMovedPointPerm(gap_perm_obj);
+  if (degree > lmp) {
+    copy_up_to = lmp;
+  }
 
   if (IS_PERM2(gap_perm_obj)) {
     UInt2* gap_perm_ptr = ADDR_PERM2(gap_perm_obj);
-    for (UInt i = 0; i < lmp; ++i) {
+    for (UInt i = 0; i < copy_up_to; ++i) {
       p[i] = gap_perm_ptr[i];
     }
-    for (UInt i = lmp; i < degree; ++i) {
+    for (UInt i = copy_up_to; i < degree; ++i) {
       p[i] = i;
     }
   } else {
     DIGRAPHS_ASSERT(IS_PERM4(gap_perm_obj));
     UInt4* gap_perm_ptr = ADDR_PERM4(gap_perm_obj);
-    for (UInt i = 0; i < lmp; ++i) {
+    for (UInt i = 0; i < copy_up_to; ++i) {
       p[i] = gap_perm_ptr[i];
     }
-    for (UInt i = lmp; i < degree; ++i) {
+    for (UInt i = copy_up_to; i < degree; ++i) {
       p[i] = i;
     }
   }

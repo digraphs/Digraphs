@@ -648,14 +648,27 @@ gap> EmbeddingsDigraphs(D1, D2);
     A permutation or transformation <A>x</A> is a <E>homomorphism</E> from a
     digraph <A>src</A> to a digraph <A>ran</A> if the following hold:
     <List>
-      <Item>
-        <C>[u ^ <A>x</A>, v ^ <A>x</A>]</C> is an edge of
-        <A>ran</A> whenever <C>[u, v]</C> is an
-        edge of <A>src</A>; and </Item>
-      <Item>
-        <A>x</A> fixes every <C>i</C> which is not a vertex of <A>src</A>.
-      </Item>
+    <Item>
+    <C>[u ^ <A>x</A>, v ^
+    <A>x</A>]</C> is an edge of <A>ran</A> whenever <C>[u, v]</C> is an edge of
+    <A>src</A>; and
+    </Item>
+    <Item>
+    <A>x</A> maps the vertices of <A>src</A> to a subset of the vertices of
+    <A>ran</A>, i.e. <C>IsSubset(DigraphVertices(<A>ran</A>),
+    OnSets(DigraphVertices(<A>src</A>), <A>x</A>))</C> is <K>true</K>.
+    </Item>
     </List>
+
+    Note that if <C>i</C> is any integer greater than
+    <C>DigraphNrVertice(<A>src</A>)</C>, then the action of <A>x</A> on
+    <C>i</C> is ignored by this function. One consequence of this is that
+    distinct transformations or permutations might represent the same
+    homomorphism. For example, if <A>src</A> and <A>ran</A> are
+    <C>CycleDigraph(2)</C>, then both the permutations <C>(1, 2)</C> and <C>(1,
+    2)(3, 4)</C> represent the same automorphism of <A>src</A>.
+    <P/>
+
     See also <Ref Func="GeneratorsOfEndomorphismMonoid"/>.<P/>
 
 

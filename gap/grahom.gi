@@ -576,7 +576,7 @@ function(src, ran, x)
   if IsMultiDigraph(src) or IsMultiDigraph(ran) then
     ErrorNoReturn("the 1st and 2nd arguments <src> and <ran> must be digraphs",
                   " with no multiple edges,");
-  elif LargestMovedPoint(x) > DigraphNrVertices(src) then
+  elif not IsSubset(DigraphVertices(ran), OnSets(DigraphVertices(src), x)) then
     return false;
   fi;
   for i in DigraphVertices(src) do
