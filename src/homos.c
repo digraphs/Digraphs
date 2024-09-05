@@ -1931,9 +1931,10 @@ static bool init_data_from_args(Obj digraph1_obj,
 //                      group will be used.
 
 Obj FuncHomomorphismDigraphsFinder(Obj self, Obj args) {
-  if (LEN_PLIST(args) != 11 && LEN_PLIST(args) != 12 && LEN_PLIST(args) != 13) {
-    ErrorQuit(
-        "there must be 11 or 12 arguments, found %d,", LEN_PLIST(args), 0L);
+  if (LEN_PLIST(args) < 11 || LEN_PLIST(args) > 13) {
+    ErrorQuit("there must be 11, 12, or 13 arguments, found %d,",
+              LEN_PLIST(args),
+              0L);
   }
   Obj digraph1_obj    = ELM_PLIST(args, 1);
   Obj digraph2_obj    = ELM_PLIST(args, 2);
