@@ -33,7 +33,7 @@
 ////////////////////////////////////////////////////////////////////////
 
 bool     LOOKUPS_INITIALISED = false;
-size_t*  NR_BLOCKS_LOOKUP   = NULL;
+size_t*  NR_BLOCKS_LOOKUP    = NULL;
 size_t*  QUOTIENT_LOOKUP     = NULL;
 size_t*  REMAINDER_LOOKUP    = NULL;
 Block*   MASK_LOOKUP         = NULL;
@@ -113,7 +113,7 @@ BitArray* new_bit_array(uint16_t const nr_bits) {
   bit_array->nr_bits = nr_bits;
   bit_array->nr_blocks =
       ((nr_bits % NR_BITS_PER_BLOCK) == 0 ? nr_bits / NR_BITS_PER_BLOCK
-                                           : nr_bits / NR_BITS_PER_BLOCK + 1);
+                                          : nr_bits / NR_BITS_PER_BLOCK + 1);
   bit_array->blocks = safe_calloc(bit_array->nr_blocks, NR_BITS_PER_BLOCK);
 
   return bit_array;
@@ -141,6 +141,7 @@ void set_bit_array_from_gap_list(BitArray* const bit_array, Obj list_obj) {
     return;
   }
   init_bit_array(bit_array, false, bit_array->nr_bits);
+  // TODO assert that bit_array->nr_bits > LEN_LIST(list_obj)?
   for (int i = 1; i <= LEN_LIST(list_obj); i++) {
     if (ISB_LIST(list_obj, i)) {
       set_bit_array_from_gap_int(bit_array, ELM_LIST(list_obj, i));
