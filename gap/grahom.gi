@@ -362,7 +362,8 @@ function(H, G)
                                [],                  # partial_map
                                fail,                # colors1
                                fail,                # colors2
-                               DigraphWelshPowellOrder(H));
+                               DigraphWelshPowellOrder(H),
+                               Group(()));
     if Length(map) <> 0 then
       Add(result, map[1]);
     fi;
