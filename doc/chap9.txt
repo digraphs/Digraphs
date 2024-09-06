@@ -109,7 +109,7 @@
   the appropriate size, or has holes then the function will return an error.[133X
   
   [33X[0;0Y[10XDotVertexLabelledDigraph[110X  differs from [10XDotDigraph[110X only in that the values in
-  [2XDigraphVertexLabels[102X  ([14X5.1-10[114X) are used to label the vertices in the produced
+  [2XDigraphVertexLabels[102X  ([14X5.1-12[114X) are used to label the vertices in the produced
   picture rather than the numbers [10X1[110X to the number of vertices of the digraph.[133X
   
   [33X[0;0YThe  output  is  in  [10Xdot[110X format (also known as [10XGraphViz[110X) format. For details
@@ -1021,7 +1021,7 @@
   [6XReturns:[106X  [33X[0;10YA digraph.[133X
   
   [33X[0;0YThis  function  takes  a  string  [3Xstr[103X,  decodes  it,  and  then  returns the
-  topologically  sorted  digraph [see [2XDigraphTopologicalSort[102X ([14X5.1-8[114X)] which it
+  topologically  sorted digraph [see [2XDigraphTopologicalSort[102X ([14X5.1-10[114X)] which it
   defines, according to the following rules.[133X
   
   [33X[0;0YThe characters of the string [3Xstr[103X represent the entries in the upper triangle
@@ -1146,7 +1146,7 @@
   from   a   file   in   DIMACS   format,   as   appropriate.   The  operation
   [10XWriteDIMACSDigraph[110X  records  the  vertices  and edges of [3Xdigraph[103X. The vertex
   labels  of  [3Xdigraph[103X  will  be  recorded  only  if  they  are  integers.  See
-  [2XIsSymmetricDigraph[102X ([14X6.2-14[114X) and [2XDigraphVertexLabels[102X ([14X5.1-10[114X).[133X
+  [2XIsSymmetricDigraph[102X ([14X6.2-14[114X) and [2XDigraphVertexLabels[102X ([14X5.1-12[114X).[133X
   
   [33X[0;0YThe  first  argument  [3Xfilename[103X  should be the name of the file which will be
   written  to or read from. A file can contain one symmetric digraph in DIMACS
@@ -1195,4 +1195,6 @@
     [4X[25Xgap>[125X [27XReadDIMACSDigraph(filename);[127X[104X
     [4X[28X<immutable digraph with 4 vertices, 8 edges>[128X[104X
   [4X[32X[104X
+  
+  [33X[0;0Y [133X
   

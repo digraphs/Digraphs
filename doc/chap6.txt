@@ -133,7 +133,7 @@
   is not. A digraph is bipartite if and only if the vertices of [3Xdigraph[103X can be
   partitioned  into  two  non-empty sets such that the source and range of any
   edge  of  [3Xdigraph[103X lie in distinct sets. Equivalently, a digraph is bipartite
-  if and only if it is 2-colorable; see [2XDigraphGreedyColouring[102X ([14X7.3-15[114X).[133X
+  if and only if it is 2-colorable; see [2XDigraphGreedyColouring[102X ([14X7.3-16[114X).[133X
   
   [33X[0;0YSee also [2XDigraphBicomponents[102X ([14X5.4-13[114X).[133X
   
@@ -524,8 +524,8 @@
   number  of  edges.  For general digraphs, the methods used for this property
   use  a  version of the Floyd-Warshall algorithm, and have complexity [22XO(n^3)[122X.
   However     for     digraphs     which     are     topologically    sortable
-  [[2XDigraphTopologicalSort[102X ([14X5.1-8[114X)], then methods with complexity [22XO(m + n + m ⋅
-  n)[122X will be used when appropriate.[133X
+  [[2XDigraphTopologicalSort[102X  ([14X5.1-10[114X)], then methods with complexity [22XO(m + n + m
+  ⋅ n)[122X will be used when appropriate.[133X
   
   [33X[0;0YIf  the  argument [3Xdigraph[103X is mutable, then the return value of this property
   is recomputed every time it is called.[133X
@@ -856,7 +856,7 @@
   [33X[0;0YEquivalently,  a  distributive lattice digraph is a lattice digraph in which
   the  [13Xlattice  digraphs[113X representing [22XM3[122X and [22XN5[122X are not embeddable as lattices
   (see          [7Xhttps://en.wikipedia.org/wiki/Distributive_lattice[107X         and
-  [2XIsLatticeEmbedding[102X ([14X7.3-20[114X)).[133X
+  [2XIsLatticeEmbedding[102X ([14X7.3-21[114X)).[133X
   
   [33X[0;0YIf  the  argument [3Xdigraph[103X is mutable, then the return value of this property
   is recomputed every time it is called.[133X
@@ -887,7 +887,7 @@
   [33X[0;0YA  [13Xmodular  lattice  digraph[113X is a lattice digraph ([2XIsLatticeDigraph[102X ([14X6.4-3[114X))
   which is modular. That is to say, the lattice digraph representing [22XN5[122X is not
   embeddable  as  a lattice (see [7Xhttps://en.wikipedia.org/wiki/Modular_lattice[107X
-  and [2XIsLatticeEmbedding[102X ([14X7.3-20[114X)).[133X
+  and [2XIsLatticeEmbedding[102X ([14X7.3-21[114X)).[133X
   
   [33X[0;0YIf  the  argument [3Xdigraph[103X is mutable, then the return value of this property
   is recomputed every time it is called.[133X
@@ -1292,7 +1292,7 @@
   two  vertices  share an out-neighbour. Note that the empty digraph with zero
   vertices is not considered to be a directed tree, because it has no source.[133X
   
-  [33X[0;0YSee also [2XDigraphSources[102X ([14X5.1-7[114X).[133X
+  [33X[0;0YSee also [2XDigraphSources[102X ([14X5.1-9[114X).[133X
   
   [33X[0;0YIf  the  argument [3Xdigraph[103X is mutable, then the return value of this property
   is recomputed every time it is called.[133X

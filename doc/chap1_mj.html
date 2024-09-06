@@ -8,7 +8,7 @@
 <script type="text/javascript"
   src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
 </script>
-<title>GAP (digraphs) - Chapter 1: 
+<title>GAP (Digraphs) - Chapter 1: 
     The Digraphs package
   </title>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
@@ -45,7 +45,7 @@
 
 <h4>1.1 <span class="Heading">Introduction</span></h4>
 
-<p>This is the manual for version 1.8.0 of the <strong class="pkg">Digraphs</strong> package. This package was developed at the University of St Andrews by:</p>
+<p>This is the manual for version 1.9.0 of the <strong class="pkg">Digraphs</strong> package. This package was developed at the University of St Andrews by:</p>
 
 
 <ul>
@@ -120,9 +120,9 @@
 </ul>
 <p>The <strong class="pkg">Digraphs</strong> package contains a variety of methods for efficiently creating and storing mutable and immutable digraphs and computing information about them. Full explanations of all the functions contained in the package are provided below.</p>
 
-<p>If the <span class="URL"><a href="https://gap-packages.github.io/grape">Grape</a></span> package is available, it will be loaded automatically. Digraphs created with the <strong class="pkg">Digraphs</strong> package can be converted to <span class="URL"><a href="https://gap-packages.github.io/grape">Grape</a></span> graphs with <code class="func">Graph</code> (<a href="chap3_mj.html#X7B335342839E5146"><span class="RefLink">3.2-3</span></a>), and conversely <span class="URL"><a href="https://gap-packages.github.io/grape">Grape</a></span> graphs can be converted to <strong class="pkg">Digraphs</strong> objects with <code class="func">Digraph</code> (<a href="chap3_mj.html#X834843057CE86655"><span class="RefLink">3.1-7</span></a>). <span class="URL"><a href="https://gap-packages.github.io/grape">Grape</a></span> is not required for <strong class="pkg">Digraphs</strong> to run.</p>
+<p>If the <span class="URL"><a href="https://gap-packages.github.io/grape">GRAPE</a></span> package is available, it will be loaded automatically. Digraphs created with the <strong class="pkg">Digraphs</strong> package can be converted to <span class="URL"><a href="https://gap-packages.github.io/grape">GRAPE</a></span> graphs with <code class="func">Graph</code> (<a href="chap3_mj.html#X7B335342839E5146"><span class="RefLink">3.2-3</span></a>), and conversely <span class="URL"><a href="https://gap-packages.github.io/grape">GRAPE</a></span> graphs can be converted to <strong class="pkg">Digraphs</strong> objects with <code class="func">Digraph</code> (<a href="chap3_mj.html#X834843057CE86655"><span class="RefLink">3.1-7</span></a>). <span class="URL"><a href="https://gap-packages.github.io/grape">GRAPE</a></span> is not required for <strong class="pkg">Digraphs</strong> to run.</p>
 
-<p>The <span class="URL"><a href="http://www.tcs.tkk.fi/Software/bliss/">bliss</a></span> tool <a href="chapBib_mj.html#biBJK07">[JK07]</a> is included in this package. It is an open-source tool for computing automorphism groups and canonical forms of graphs, written by Tommi Junttila and Petteri Kaski. Several of the methods in the <strong class="pkg">Digraphs</strong> package rely on <span class="URL"><a href="http://www.tcs.tkk.fi/Software/bliss/">bliss</a></span>. If the <span class="URL"><a href="https://github.com/gap-packages/NautyTracesInterface">NautyTracesInterface</a></span> package for GAP is available then it is also possible to use <span class="URL"><a href="https://pallini.di.uniroma1.it/">nauty</a></span> <a href="chapBib_mj.html#biBMP14">[MP14]</a> for computing automorphism groups and canonical forms in <strong class="pkg">Digraphs</strong>. See Section <a href="chap7_mj.html#X7E48B9F87A0F22D4"><span class="RefLink">7.2</span></a> for more details.</p>
+<p>The <span class="URL"><a href="http://www.tcs.tkk.fi/Software/bliss/">bliss</a></span> tool <a href="chapBib_mj.html#biBJK07">[JK07]</a> is included in this package. It is an open-source tool for computing automorphism groups and canonical forms of graphs, written by Tommi Junttila and Petteri Kaski. Several of the methods in the <strong class="pkg">Digraphs</strong> package rely on <span class="URL"><a href="http://www.tcs.tkk.fi/Software/bliss/">bliss</a></span> . If the <span class="URL"><a href="https://github.com/gap-packages/NautyTracesInterface">NautyTracesInterface</a></span> package for GAP is available then it is also possible to use <span class="URL"><a href="https://pallini.di.uniroma1.it">nauty</a></span> <a href="chapBib_mj.html#biBMP14">[MP14]</a> for computing automorphism groups and canonical forms in <strong class="pkg">Digraphs</strong>. See Section <a href="chap7_mj.html#X7E48B9F87A0F22D4"><span class="RefLink">7.2</span></a> for more details.</p>
 
 <p>The <span class="URL"><a href="https://github.com/graph-algorithms/edge-addition-planarity-suite">edge-addition-planarity-suite</a></span> is also included in <strong class="pkg">Digraphs</strong>; see <a href="chapBib_mj.html#biBBM04">[BM04]</a>, <a href="chapBib_mj.html#biBB06">[Boy06]</a>, <a href="chapBib_mj.html#biBBM06">[BM06]</a>, and <a href="chapBib_mj.html#biBB12">[Boy12]</a> . The <span class="URL"><a href="https://github.com/graph-algorithms/edge-addition-planarity-suite">edge-addition-planarity-suite</a></span> is an open-source implementation of the edge addition planar graph embedding algorithm and related algorithms by John M. Boyer. See Section <a href="chap6_mj.html#X7E2305528492DDC0"><span class="RefLink">6.7</span></a> for more details.</p>
 

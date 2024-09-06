@@ -17,7 +17,7 @@
   [30X    [33X[0;6Yensure  that  the  [5XIO[105X package version 4.5.1 or higher is available. [5XIO[105X
         must be compiled before [5XDigraphs[105X can be loaded.[133X
   
-  [30X    [33X[0;6Yensure  that the [5XOrb[105X package version 4.8.2 or higher is available. [5XOrb[105X
+  [30X    [33X[0;6Yensure  that the [5Xorb[105X package version 4.8.2 or higher is available. [5Xorb[105X
         has  better  performance  when  compiled,  but although compilation is
         recommended,  it  is  not  required  to be compiled for [5XDigraphs[105X to be
         loaded.[133X
@@ -25,10 +25,10 @@
   [30X    [33X[0;6Yensure  that  the  [5Xdatastructures[105X  package  version 0.2.5 or higher is
         available.[133X
   
-  [30X    [33X[0;6Y[12XThis step is optional:[112X certain functions in [5XDigraphs[105X require the [5XGrape[105X
+  [30X    [33X[0;6Y[12XThis step is optional:[112X certain functions in [5XDigraphs[105X require the [5XGRAPE[105X
         package  to  be  available; see Section [14X2.2-1[114X for full details. To use
-        these  functions  make  sure  that  the [5XGrape[105X package version 4.8.1 or
-        higher  is  available. If [5XGrape[105X is not available, then [5XDigraphs[105X can be
+        these  functions  make  sure  that  the [5XGRAPE[105X package version 4.8.1 or
+        higher  is  available. If [5XGRAPE[105X is not available, then [5XDigraphs[105X can be
         used  as  normal  with  the  exception  that  the  functions listed in
         Subsection [14X2.2-1[114X will not work.[133X
   
@@ -39,18 +39,18 @@
         not  available, then [5XDigraphs[105X can be used as normal with the exception
         that functions whose names contain [21XNauty[121X will not work.[133X
   
-  [30X    [33X[0;6Ydownload  the  package archive [11Xdigraphs-1.8.0.tar.gz[111X from the Digraphs
-        package webpage ([7Xhttps://digraphs.github.io/Digraphs/[107X).[133X
+  [30X    [33X[0;6Ydownload  the  package  archive  [11Xdigraphs-1.9.0.tar.gz.tar.gz[111X from the
+        Digraphs package webpage ([7Xhttps://digraphs.github.io/Digraphs/[107X).[133X
   
   [30X    [33X[0;6Yunzip  and  untar  the  file,  this  should  create a directory called
-        [11Xdigraphs-1.8.0[111X.[133X
+        [11Xdigraphs-1.9.0.tar.gz[111X.[133X
   
   [30X    [33X[0;6Ylocate  the  [11Xpkg[111X  directory  of your [5XGAP[105X directory, which contains the
-        directories [11Xlib[111X, [11Xdoc[111X and so on. Move the directory [11Xdigraphs-1.8.0[111X into
-        the [11Xpkg[111X directory.[133X
+        directories    [11Xlib[111X,    [11Xdoc[111X    and    so   on.   Move   the   directory
+        [11Xdigraphs-1.9.0.tar.gz[111X into the [11Xpkg[111X directory.[133X
   
   [30X    [33X[0;6Yit   is   necessary  to  compile  the  [5XDigraphs[105X  package.  Inside  the
-        [11Xpkg/digraphs-1.8.0[111X directory, type[133X
+        [11Xpkg/digraphs-1.9.0.tar.gz[111X directory, type[133X
   
   [4X      [32X[104X
           [4X./configure[104X
@@ -98,16 +98,16 @@
   
   [1X2.2-1 [33X[0;0YThe Grape package[133X[101X
   
-  [33X[0;0YThe  [5XGrape[105X  package  must  be  available  for the following operations to be
+  [33X[0;0YThe  [5XGRAPE[105X  package  must  be  available  for the following operations to be
   available:[133X
   
   [30X    [33X[0;6Y[2XGraph[102X ([14X3.2-3[114X) with a digraph argument[133X
   
   [30X    [33X[0;6Y[2XAsGraph[102X ([14X3.2-4[114X) with a digraph argument[133X
   
-  [30X    [33X[0;6Y[2XDigraph[102X ([14X3.1-7[114X) with a [5XGrape[105X graph argument[133X
+  [30X    [33X[0;6Y[2XDigraph[102X ([14X3.1-7[114X) with a [5XGRAPE[105X graph argument[133X
   
-  [33X[0;0YIf  [5XGrape[105X  is  not  available,  then [5XDigraphs[105X can be used as normal with the
+  [33X[0;0YIf  [5XGRAPE[105X  is  not  available,  then [5XDigraphs[105X can be used as normal with the
   exception that the functions above will not work.[133X
   
   
@@ -119,8 +119,8 @@
   
   [33X[0;0YIt is not possible to use the [5XDigraphs[105X package without compiling it.[133X
   
-  [33X[0;0YTo  compile  the  kernel  component inside the [11Xpkg/digraphs-1.8.0[111X directory,
-  type[133X
+  [33X[0;0YTo   compile  the  kernel  component  inside  the  [11Xpkg/digraphs-1.9.0.tar.gz[111X
+  directory, type[133X
   
   [4X[32X[104X
     [4X[104X

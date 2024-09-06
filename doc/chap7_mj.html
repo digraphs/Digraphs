@@ -8,7 +8,7 @@
 <script type="text/javascript"
   src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
 </script>
-<title>GAP (digraphs) - Chapter 7: Homomorphisms</title>
+<title>GAP (Digraphs) - Chapter 7: Homomorphisms</title>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 <meta name="generator" content="GAPDoc2HTML" />
 <link rel="stylesheet" type="text/css" href="manual.css" />
@@ -73,15 +73,16 @@
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X82EBDF137EEDC5FD">7.3-9 EmbeddingsDigraphs</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X80FE9FCB79718A61">7.3-10 IsDigraphHomomorphism</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X7D6B5A0887903810">7.3-11 IsDigraphEmbedding</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X7F80709A80CBFA98">7.3-12 DigraphsRespectsColouring</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X7E93B268823F6478">7.3-13 GeneratorsOfEndomorphismMonoid</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X86D0A74B83D6B9A7">7.3-14 DigraphColouring</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X7AB7200D831013C1">7.3-15 DigraphGreedyColouring</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X7F9CB3B27B9590DB">7.3-16 DigraphWelshPowellOrder</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X807D49358529A37C">7.3-17 ChromaticNumber</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X863487EF7D64EF56">7.3-18 DigraphCore</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X7EEA340C81FCA52D">7.3-19 LatticeDigraphEmbedding</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X7E183D4979D324EF">7.3-20 IsLatticeHomomorphism</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X87E60FB17BC444EF">7.3-12 SubdigraphsMonomorphisms</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X7F80709A80CBFA98">7.3-13 DigraphsRespectsColouring</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X7E93B268823F6478">7.3-14 GeneratorsOfEndomorphismMonoid</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X86D0A74B83D6B9A7">7.3-15 DigraphColouring</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X7AB7200D831013C1">7.3-16 DigraphGreedyColouring</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X7F9CB3B27B9590DB">7.3-17 DigraphWelshPowellOrder</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X807D49358529A37C">7.3-18 ChromaticNumber</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X863487EF7D64EF56">7.3-19 DigraphCore</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X7EEA340C81FCA52D">7.3-20 LatticeDigraphEmbedding</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X7E183D4979D324EF">7.3-21 IsLatticeHomomorphism</a></span>
 </div></div>
 </div>
 
@@ -103,7 +104,7 @@
 
 <p>If the second argument is a <em>transformation</em> <var class="Arg">trans</var> of the vertices of <var class="Arg">digraph</var>, then this operation returns a digraph constructed by transforming the source and range of each edge according to <var class="Arg">trans</var>. Thus a vertex which does not appear in the image of <var class="Arg">trans</var> will be isolated in the returned digraph, and the returned digraph may contain multiple edges, even if <var class="Arg">digraph</var> does not. If <var class="Arg">trans</var> is mathematically a permutation, then the result coincides with <code class="code">OnDigraphs(<var class="Arg">digraph</var>, AsPermutation(<var class="Arg">trans</var>))</code>.</p>
 
-<p>The <code class="func">DigraphVertexLabels</code> (<a href="chap5_mj.html#X7E51F2FE87140B32"><span class="RefLink">5.1-10</span></a>) of <var class="Arg">digraph</var> will not be retained in the returned digraph.</p>
+<p>The <code class="func">DigraphVertexLabels</code> (<a href="chap5_mj.html#X7E51F2FE87140B32"><span class="RefLink">5.1-12</span></a>) of <var class="Arg">digraph</var> will not be retained in the returned digraph.</p>
 
 <p>If <var class="Arg">digraph</var> belongs to <code class="func">IsMutableDigraph</code> (<a href="chap3_mj.html#X7D7EDF83820ED6F5"><span class="RefLink">3.1-2</span></a>), then relabelling of the vertices is performed directly on <var class="Arg">digraph</var>. If <var class="Arg">digraph</var> belongs to <code class="func">IsImmutableDigraph</code> (<a href="chap3_mj.html#X7CAFAA89804F80BD"><span class="RefLink">3.1-3</span></a>), an immutable copy of <var class="Arg">digraph</var> with the vertices relabelled is returned.</p>
 
@@ -194,7 +195,7 @@ true</pre></div>
 
 <h4>7.2 <span class="Heading">Isomorphisms and canonical labellings</span></h4>
 
-<p>From version 0.11.0 of <strong class="pkg">Digraphs</strong> it is possible to use either <span class="URL"><a href="http://www.tcs.tkk.fi/Software/bliss/">bliss</a></span> or <span class="URL"><a href="https://pallini.di.uniroma1.it/">nauty</a></span> (via <span class="URL"><a href="https://github.com/gap-packages/NautyTracesInterface">NautyTracesInterface</a></span>) to calculate canonical labellings and automorphism groups of digraphs; see <a href="chapBib_mj.html#biBJK07">[JK07]</a> and <a href="chapBib_mj.html#biBMP14">[MP14]</a> for more details about <span class="URL"><a href="http://www.tcs.tkk.fi/Software/bliss/">bliss</a></span> and <span class="URL"><a href="https://pallini.di.uniroma1.it/">nauty</a></span>, respectively.</p>
+<p>From version 0.11.0 of <strong class="pkg">Digraphs</strong> it is possible to use either <span class="URL"><a href="http://www.tcs.tkk.fi/Software/bliss/">bliss</a></span> or <span class="URL"><a href="https://pallini.di.uniroma1.it">nauty</a></span> (via <span class="URL"><a href="https://github.com/gap-packages/NautyTracesInterface">NautyTracesInterface</a></span> ) to calculate canonical labellings and automorphism groups of digraphs; see <a href="chapBib_mj.html#biBJK07">[JK07]</a> and <a href="chapBib_mj.html#biBMP14">[MP14]</a> for more details about <span class="URL"><a href="http://www.tcs.tkk.fi/Software/bliss/">bliss</a></span> and <span class="URL"><a href="https://pallini.di.uniroma1.it">nauty</a></span> , respectively.</p>
 
 <p><a id="X83E593F3855B122E" name="X83E593F3855B122E"></a></p>
 
@@ -204,11 +205,11 @@ true</pre></div>
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphsUseBliss</code>(  )</td><td class="tdright">(&nbsp;function&nbsp;)</td></tr></table></div>
 <p>Returns: Nothing.</p>
 
-<p>These functions can be used to specify whether <span class="URL"><a href="https://pallini.di.uniroma1.it/">nauty</a></span> or <span class="URL"><a href="http://www.tcs.tkk.fi/Software/bliss/">bliss</a></span> should be used by default by <strong class="pkg">Digraphs</strong>. If <span class="URL"><a href="https://github.com/gap-packages/NautyTracesInterface">NautyTracesInterface</a></span> is not available, then these functions do nothing. Otherwise, by calling <code class="code">DigraphsUseNauty</code> subsequent computations will default to using <span class="URL"><a href="https://pallini.di.uniroma1.it/">nauty</a></span> rather than <span class="URL"><a href="http://www.tcs.tkk.fi/Software/bliss/">bliss</a></span>, where possible.</p>
+<p>These functions can be used to specify whether <span class="URL"><a href="https://pallini.di.uniroma1.it">nauty</a></span> or <span class="URL"><a href="http://www.tcs.tkk.fi/Software/bliss/">bliss</a></span> should be used by default by <strong class="pkg">Digraphs</strong>. If <span class="URL"><a href="https://github.com/gap-packages/NautyTracesInterface">NautyTracesInterface</a></span> is not available, then these functions do nothing. Otherwise, by calling <code class="code">DigraphsUseNauty</code> subsequent computations will default to using <span class="URL"><a href="https://pallini.di.uniroma1.it">nauty</a></span> rather than <span class="URL"><a href="http://www.tcs.tkk.fi/Software/bliss/">bliss</a></span> , where possible.</p>
 
 <p>You can call these functions at any point in a <strong class="pkg">GAP</strong> session, as many times as you like, it is guaranteed that existing digraphs remain valid, and that comparison of existing digraphs and newly created digraphs via <code class="func">IsIsomorphicDigraph</code> (<a href="chap7_mj.html#X7B4F24B283C9EE28"><span class="RefLink">7.2-15</span></a>), <code class="func">IsIsomorphicDigraph</code> (<a href="chap7_mj.html#X7D4A1FA8868DA930"><span class="RefLink">7.2-16</span></a>), <code class="func">IsomorphismDigraphs</code> (<a href="chap7_mj.html#X8219FE6C839D9457"><span class="RefLink">7.2-17</span></a>), and <code class="func">IsomorphismDigraphs</code> (<a href="chap7_mj.html#X7ED93C0F86D9D34F"><span class="RefLink">7.2-18</span></a>) are also valid.</p>
 
-<p>It is also possible to compute the automorphism group of a specific digraph using both <span class="URL"><a href="https://pallini.di.uniroma1.it/">nauty</a></span> and <span class="URL"><a href="http://www.tcs.tkk.fi/Software/bliss/">bliss</a></span> using <code class="func">NautyAutomorphismGroup</code> (<a href="chap7_mj.html#X857758B18144C0CD"><span class="RefLink">7.2-4</span></a>) and <code class="func">BlissAutomorphismGroup</code> (<a href="chap7_mj.html#X7E7B0D88865A89F6"><span class="RefLink">7.2-3</span></a>), respectively.</p>
+<p>It is also possible to compute the automorphism group of a specific digraph using both <span class="URL"><a href="https://pallini.di.uniroma1.it">nauty</a></span> and <span class="URL"><a href="http://www.tcs.tkk.fi/Software/bliss/">bliss</a></span> using <code class="func">NautyAutomorphismGroup</code> (<a href="chap7_mj.html#X857758B18144C0CD"><span class="RefLink">7.2-4</span></a>) and <code class="func">BlissAutomorphismGroup</code> (<a href="chap7_mj.html#X7E7B0D88865A89F6"><span class="RefLink">7.2-3</span></a>), respectively.</p>
 
 <p><a id="X858C32127A190175" name="X858C32127A190175"></a></p>
 
@@ -223,7 +224,7 @@ true</pre></div>
 
 <p>If <var class="Arg">digraph</var> is a multidigraph then the automorphism group is returned as the direct product of a group of permutations on the set of vertices of <var class="Arg">digraph</var> with a group of permutations on the set of edges of <var class="Arg">digraph</var>. These groups can be accessed using <code class="func">Projection</code> (<a href="https://www.gap-system.org/Manuals/doc/ref/chap32_mj.html#X8769E8DA80BC96C1"><span class="RefLink">Reference: Projection for a domain and a positive integer</span></a>) on the returned group.</p>
 
-<p>By default, the automorphism group is found using <span class="URL"><a href="http://www.tcs.tkk.fi/Software/bliss/">bliss</a></span> by Tommi Junttila and Petteri Kaski. If <span class="URL"><a href="https://github.com/gap-packages/NautyTracesInterface">NautyTracesInterface</a></span> is available, then <span class="URL"><a href="https://pallini.di.uniroma1.it/">nauty</a></span> by Brendan Mckay and Adolfo Piperno can be used instead; see <code class="func">BlissAutomorphismGroup</code> (<a href="chap7_mj.html#X7E7B0D88865A89F6"><span class="RefLink">7.2-3</span></a>), <code class="func">NautyAutomorphismGroup</code> (<a href="chap7_mj.html#X857758B18144C0CD"><span class="RefLink">7.2-4</span></a>), <code class="func">DigraphsUseBliss</code> (<a href="chap7_mj.html#X83E593F3855B122E"><span class="RefLink">7.2-1</span></a>), and <code class="func">DigraphsUseNauty</code> (<a href="chap7_mj.html#X83E593F3855B122E"><span class="RefLink">7.2-1</span></a>).</p>
+<p>By default, the automorphism group is found using <span class="URL"><a href="http://www.tcs.tkk.fi/Software/bliss/">bliss</a></span> by Tommi Junttila and Petteri Kaski. If <span class="URL"><a href="https://github.com/gap-packages/NautyTracesInterface">NautyTracesInterface</a></span> is available, then <span class="URL"><a href="https://pallini.di.uniroma1.it">nauty</a></span> by Brendan Mckay and Adolfo Piperno can be used instead; see <code class="func">BlissAutomorphismGroup</code> (<a href="chap7_mj.html#X7E7B0D88865A89F6"><span class="RefLink">7.2-3</span></a>), <code class="func">NautyAutomorphismGroup</code> (<a href="chap7_mj.html#X857758B18144C0CD"><span class="RefLink">7.2-4</span></a>), <code class="func">DigraphsUseBliss</code> (<a href="chap7_mj.html#X83E593F3855B122E"><span class="RefLink">7.2-1</span></a>), and <code class="func">DigraphsUseNauty</code> (<a href="chap7_mj.html#X83E593F3855B122E"><span class="RefLink">7.2-1</span></a>).</p>
 
 <p>If the argument <var class="Arg">digraph</var> is mutable, then the return value of this attribute is recomputed every time it is called.</p>
 
@@ -253,7 +254,7 @@ true</pre></div>
 
 <p>The attribute <code class="func">AutomorphismGroup</code> (<a href="chap7_mj.html#X858C32127A190175"><span class="RefLink">7.2-2</span></a>) and operation <code class="func">AutomorphismGroup</code> (<a href="chap7_mj.html#X877732B1783C391B"><span class="RefLink">7.2-5</span></a>) returns the value of either <code class="code">BlissAutomorphismGroup</code> or <code class="func">NautyAutomorphismGroup</code> (<a href="chap7_mj.html#X857758B18144C0CD"><span class="RefLink">7.2-4</span></a>). These groups are, of course, equal but their generating sets may differ.</p>
 
-<p>The attribute <code class="func">AutomorphismGroup</code> (<a href="chap7_mj.html#X7DA2C4FE837FFE01"><span class="RefLink">7.2-6</span></a>) returns the value of <code class="code">BlissAutomorphismGroup</code> as it is not implemented for <span class="URL"><a href="https://pallini.di.uniroma1.it/">nauty</a></span> The requirements for the optional arguments <var class="Arg">vertex_colours</var> and <var class="Arg">edge_colours</var> are documented in <code class="func">AutomorphismGroup</code> (<a href="chap7_mj.html#X7DA2C4FE837FFE01"><span class="RefLink">7.2-6</span></a>). See also <code class="func">DigraphsUseBliss</code> (<a href="chap7_mj.html#X83E593F3855B122E"><span class="RefLink">7.2-1</span></a>), and <code class="func">DigraphsUseNauty</code> (<a href="chap7_mj.html#X83E593F3855B122E"><span class="RefLink">7.2-1</span></a>).</p>
+<p>The attribute <code class="func">AutomorphismGroup</code> (<a href="chap7_mj.html#X7DA2C4FE837FFE01"><span class="RefLink">7.2-6</span></a>) returns the value of <code class="code">BlissAutomorphismGroup</code> as it is not implemented for <span class="URL"><a href="https://pallini.di.uniroma1.it">nauty</a></span> The requirements for the optional arguments <var class="Arg">vertex_colours</var> and <var class="Arg">edge_colours</var> are documented in <code class="func">AutomorphismGroup</code> (<a href="chap7_mj.html#X7DA2C4FE837FFE01"><span class="RefLink">7.2-6</span></a>). See also <code class="func">DigraphsUseBliss</code> (<a href="chap7_mj.html#X83E593F3855B122E"><span class="RefLink">7.2-1</span></a>), and <code class="func">DigraphsUseNauty</code> (<a href="chap7_mj.html#X83E593F3855B122E"><span class="RefLink">7.2-1</span></a>).</p>
 
 <p>If the argument <var class="Arg">digraph</var> is mutable, then the return value of this attribute is recomputed every time it is called.</p>
 
@@ -272,7 +273,7 @@ true
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; NautyAutomorphismGroup</code>( <var class="Arg">digraph</var>[, <var class="Arg">vert_colours</var>] )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
 <p>Returns: A permutation group.</p>
 
-<p>If <var class="Arg">digraph</var> is a digraph, then this attribute contains the group of automorphisms of <var class="Arg">digraph</var> as calculated using <span class="URL"><a href="https://pallini.di.uniroma1.it/">nauty</a></span> by Brendan Mckay and Adolfo Piperno via <span class="URL"><a href="https://github.com/gap-packages/NautyTracesInterface">NautyTracesInterface</a></span>. The attribute <code class="func">AutomorphismGroup</code> (<a href="chap7_mj.html#X858C32127A190175"><span class="RefLink">7.2-2</span></a>) and operation <code class="func">AutomorphismGroup</code> (<a href="chap7_mj.html#X877732B1783C391B"><span class="RefLink">7.2-5</span></a>) returns the value of either <code class="code">NautyAutomorphismGroup</code> or <code class="func">BlissAutomorphismGroup</code> (<a href="chap7_mj.html#X7E7B0D88865A89F6"><span class="RefLink">7.2-3</span></a>). These groups are, of course, equal but their generating sets may differ.</p>
+<p>If <var class="Arg">digraph</var> is a digraph, then this attribute contains the group of automorphisms of <var class="Arg">digraph</var> as calculated using <span class="URL"><a href="https://pallini.di.uniroma1.it">nauty</a></span> by Brendan Mckay and Adolfo Piperno via <span class="URL"><a href="https://github.com/gap-packages/NautyTracesInterface">NautyTracesInterface</a></span> . The attribute <code class="func">AutomorphismGroup</code> (<a href="chap7_mj.html#X858C32127A190175"><span class="RefLink">7.2-2</span></a>) and operation <code class="func">AutomorphismGroup</code> (<a href="chap7_mj.html#X877732B1783C391B"><span class="RefLink">7.2-5</span></a>) returns the value of either <code class="code">NautyAutomorphismGroup</code> or <code class="func">BlissAutomorphismGroup</code> (<a href="chap7_mj.html#X7E7B0D88865A89F6"><span class="RefLink">7.2-3</span></a>). These groups are, of course, equal but their generating sets may differ.</p>
 
 <p>See also <code class="func">DigraphsUseBliss</code> (<a href="chap7_mj.html#X83E593F3855B122E"><span class="RefLink">7.2-1</span></a>), and <code class="func">DigraphsUseNauty</code> (<a href="chap7_mj.html#X83E593F3855B122E"><span class="RefLink">7.2-1</span></a>).</p>
 
@@ -308,7 +309,7 @@ Group([ (3,4)(6,7)(8,9), (2,3)(5,6)(9,10), (2,5)(3,6)(4,7),
 
 <p>If <var class="Arg">digraph</var> is a multidigraph then the automorphism group is returned as the direct product of a group of permutations on the set of vertices of <var class="Arg">digraph</var> with a group of permutations on the set of edges of <var class="Arg">digraph</var>. These groups can be accessed using <code class="func">Projection</code> (<a href="https://www.gap-system.org/Manuals/doc/ref/chap32_mj.html#X8769E8DA80BC96C1"><span class="RefLink">Reference: Projection for a domain and a positive integer</span></a>) on the returned group.</p>
 
-<p>By default, the automorphism group is found using <span class="URL"><a href="http://www.tcs.tkk.fi/Software/bliss/">bliss</a></span> by Tommi Junttila and Petteri Kaski. If <span class="URL"><a href="https://github.com/gap-packages/NautyTracesInterface">NautyTracesInterface</a></span> is available, then <span class="URL"><a href="https://pallini.di.uniroma1.it/">nauty</a></span> by Brendan Mckay and Adolfo Piperno can be used instead; see <code class="func">BlissAutomorphismGroup</code> (<a href="chap7_mj.html#X7E7B0D88865A89F6"><span class="RefLink">7.2-3</span></a>), <code class="func">NautyAutomorphismGroup</code> (<a href="chap7_mj.html#X857758B18144C0CD"><span class="RefLink">7.2-4</span></a>), <code class="func">DigraphsUseBliss</code> (<a href="chap7_mj.html#X83E593F3855B122E"><span class="RefLink">7.2-1</span></a>), and <code class="func">DigraphsUseNauty</code> (<a href="chap7_mj.html#X83E593F3855B122E"><span class="RefLink">7.2-1</span></a>).</p>
+<p>By default, the automorphism group is found using <span class="URL"><a href="http://www.tcs.tkk.fi/Software/bliss/">bliss</a></span> by Tommi Junttila and Petteri Kaski. If <span class="URL"><a href="https://github.com/gap-packages/NautyTracesInterface">NautyTracesInterface</a></span> is available, then <span class="URL"><a href="https://pallini.di.uniroma1.it">nauty</a></span> by Brendan Mckay and Adolfo Piperno can be used instead; see <code class="func">BlissAutomorphismGroup</code> (<a href="chap7_mj.html#X7E7B0D88865A89F6"><span class="RefLink">7.2-3</span></a>), <code class="func">NautyAutomorphismGroup</code> (<a href="chap7_mj.html#X857758B18144C0CD"><span class="RefLink">7.2-4</span></a>), <code class="func">DigraphsUseBliss</code> (<a href="chap7_mj.html#X83E593F3855B122E"><span class="RefLink">7.2-1</span></a>), and <code class="func">DigraphsUseNauty</code> (<a href="chap7_mj.html#X83E593F3855B122E"><span class="RefLink">7.2-1</span></a>).</p>
 
 
 <div class="example"><pre>
@@ -354,7 +355,7 @@ true</pre></div>
 
 <p>If <var class="Arg">digraph</var> is a multidigraph then the automorphism group is returned as the direct product of a group of permutations on the set of vertices of <var class="Arg">digraph</var> with a group of permutations on the set of edges of <var class="Arg">digraph</var>. These groups can be accessed using <code class="func">Projection</code> (<a href="https://www.gap-system.org/Manuals/doc/ref/chap32_mj.html#X8769E8DA80BC96C1"><span class="RefLink">Reference: Projection for a domain and a positive integer</span></a>) on the returned group.</p>
 
-<p>By default, the automorphism group is found using <span class="URL"><a href="http://www.tcs.tkk.fi/Software/bliss/">bliss</a></span> by Tommi Junttila and Petteri Kaski. If <span class="URL"><a href="https://github.com/gap-packages/NautyTracesInterface">NautyTracesInterface</a></span> is available, then <span class="URL"><a href="https://pallini.di.uniroma1.it/">nauty</a></span> by Brendan Mckay and Adolfo Piperno can be used instead; see <code class="func">BlissAutomorphismGroup</code> (<a href="chap7_mj.html#X7E7B0D88865A89F6"><span class="RefLink">7.2-3</span></a>), <code class="func">NautyAutomorphismGroup</code> (<a href="chap7_mj.html#X857758B18144C0CD"><span class="RefLink">7.2-4</span></a>), <code class="func">DigraphsUseBliss</code> (<a href="chap7_mj.html#X83E593F3855B122E"><span class="RefLink">7.2-1</span></a>), and <code class="func">DigraphsUseNauty</code> (<a href="chap7_mj.html#X83E593F3855B122E"><span class="RefLink">7.2-1</span></a>).</p>
+<p>By default, the automorphism group is found using <span class="URL"><a href="http://www.tcs.tkk.fi/Software/bliss/">bliss</a></span> by Tommi Junttila and Petteri Kaski. If <span class="URL"><a href="https://github.com/gap-packages/NautyTracesInterface">NautyTracesInterface</a></span> is available, then <span class="URL"><a href="https://pallini.di.uniroma1.it">nauty</a></span> by Brendan Mckay and Adolfo Piperno can be used instead; see <code class="func">BlissAutomorphismGroup</code> (<a href="chap7_mj.html#X7E7B0D88865A89F6"><span class="RefLink">7.2-3</span></a>), <code class="func">NautyAutomorphismGroup</code> (<a href="chap7_mj.html#X857758B18144C0CD"><span class="RefLink">7.2-4</span></a>), <code class="func">DigraphsUseBliss</code> (<a href="chap7_mj.html#X83E593F3855B122E"><span class="RefLink">7.2-1</span></a>), and <code class="func">DigraphsUseNauty</code> (<a href="chap7_mj.html#X83E593F3855B122E"><span class="RefLink">7.2-1</span></a>).</p>
 
 
 <div class="example"><pre>
@@ -396,7 +397,7 @@ true
 </ul>
 <p>A <em>canonical labelling</em> of a digraph <span class="SimpleMath">\(G\)</span> (under <span class="SimpleMath">\(\rho\)</span>) is an isomorphism of <span class="SimpleMath">\(G\)</span> onto its <em>canonical representative</em>, <span class="SimpleMath">\(\rho(G)\)</span>. See <code class="func">IsomorphismDigraphs</code> (<a href="chap7_mj.html#X8219FE6C839D9457"><span class="RefLink">7.2-17</span></a>) for more information about isomorphisms of digraphs.</p>
 
-<p><code class="code">BlissCanonicalLabelling</code> returns a canonical labelling of the digraph <var class="Arg">digraph</var> found using <span class="URL"><a href="http://www.tcs.tkk.fi/Software/bliss/">bliss</a></span> by Tommi Junttila and Petteri Kaski. <code class="code">NautyCanonicalLabelling</code> returns a canonical labelling of the digraph <var class="Arg">digraph</var> found using <span class="URL"><a href="https://pallini.di.uniroma1.it/">nauty</a></span> by Brendan McKay and Adolfo Piperno. Note that the canonical labellings returned by <span class="URL"><a href="http://www.tcs.tkk.fi/Software/bliss/">bliss</a></span> and <span class="URL"><a href="https://pallini.di.uniroma1.it/">nauty</a></span> are not usually the same (and may depend of the version used).</p>
+<p><code class="code">BlissCanonicalLabelling</code> returns a canonical labelling of the digraph <var class="Arg">digraph</var> found using <span class="URL"><a href="http://www.tcs.tkk.fi/Software/bliss/">bliss</a></span> by Tommi Junttila and Petteri Kaski. <code class="code">NautyCanonicalLabelling</code> returns a canonical labelling of the digraph <var class="Arg">digraph</var> found using <span class="URL"><a href="https://pallini.di.uniroma1.it">nauty</a></span> by Brendan McKay and Adolfo Piperno. Note that the canonical labellings returned by <span class="URL"><a href="http://www.tcs.tkk.fi/Software/bliss/">bliss</a></span> and <span class="URL"><a href="https://pallini.di.uniroma1.it">nauty</a></span> are not usually the same (and may depend of the version used).</p>
 
 <p><code class="code">BlissCanonicalLabelling</code> can only be computed if <var class="Arg">digraph</var> has no multiple edges; see <code class="func">IsMultiDigraph</code> (<a href="chap6_mj.html#X7BB84CFC7E8B2B26"><span class="RefLink">6.2-11</span></a>).</p>
 
@@ -447,7 +448,7 @@ true</pre></div>
 
 </li>
 </ul>
-<p>If <var class="Arg">digraph</var> and <var class="Arg">colours</var> together form a coloured digraph, <code class="code">BlissCanonicalLabelling</code> returns a canonical labelling of the digraph <var class="Arg">digraph</var> found using <span class="URL"><a href="http://www.tcs.tkk.fi/Software/bliss/">bliss</a></span> by Tommi Junttila and Petteri Kaski. Similarly, <code class="code">NautyCanonicalLabelling</code> returns a canonical labelling of the digraph <var class="Arg">digraph</var> found using <span class="URL"><a href="https://pallini.di.uniroma1.it/">nauty</a></span> by Brendan McKay and Adolfo Piperno. Note that the canonical labellings returned by <span class="URL"><a href="http://www.tcs.tkk.fi/Software/bliss/">bliss</a></span> and <span class="URL"><a href="https://pallini.di.uniroma1.it/">nauty</a></span> are not usually the same (and may depend of the version used).</p>
+<p>If <var class="Arg">digraph</var> and <var class="Arg">colours</var> together form a coloured digraph, <code class="code">BlissCanonicalLabelling</code> returns a canonical labelling of the digraph <var class="Arg">digraph</var> found using <span class="URL"><a href="http://www.tcs.tkk.fi/Software/bliss/">bliss</a></span> by Tommi Junttila and Petteri Kaski. Similarly, <code class="code">NautyCanonicalLabelling</code> returns a canonical labelling of the digraph <var class="Arg">digraph</var> found using <span class="URL"><a href="https://pallini.di.uniroma1.it">nauty</a></span> by Brendan McKay and Adolfo Piperno. Note that the canonical labellings returned by <span class="URL"><a href="http://www.tcs.tkk.fi/Software/bliss/">bliss</a></span> and <span class="URL"><a href="https://pallini.di.uniroma1.it">nauty</a></span> are not usually the same (and may depend of the version used).</p>
 
 <p><code class="code">BlissCanonicalLabelling</code> can only be computed if <var class="Arg">digraph</var> has no multiple edges; see <code class="func">IsMultiDigraph</code> (<a href="chap6_mj.html#X7BB84CFC7E8B2B26"><span class="RefLink">6.2-11</span></a>). The canonical labelling of <var class="Arg">digraph</var> is given as a permutation of its vertices. The canonical representative of <var class="Arg">digraph</var> can be created from <var class="Arg">digraph</var> and its canonical labelling <code class="code">p</code> by using the operation <code class="func">OnDigraphs</code> (<a href="chap7_mj.html#X808972017C486F1F"><span class="RefLink">7.1-1</span></a>):</p>
 
@@ -708,7 +709,7 @@ Group(())
 
 <p>This operation returns <code class="keyw">true</code> if there exists an isomorphism from the digraph <var class="Arg">digraph1</var> to the digraph <var class="Arg">digraph2</var>. See <code class="func">IsomorphismDigraphs</code> (<a href="chap7_mj.html#X8219FE6C839D9457"><span class="RefLink">7.2-17</span></a>) for more information about isomorphisms of digraphs.</p>
 
-<p>By default, an isomorphism is found using the canonical labellings of the digraphs obtained from <span class="URL"><a href="http://www.tcs.tkk.fi/Software/bliss/">bliss</a></span> by Tommi Junttila and Petteri Kaski. If <span class="URL"><a href="https://github.com/gap-packages/NautyTracesInterface">NautyTracesInterface</a></span> is available, then <span class="URL"><a href="https://pallini.di.uniroma1.it/">nauty</a></span> by Brendan Mckay and Adolfo Piperno can be used instead; see <code class="func">DigraphsUseBliss</code> (<a href="chap7_mj.html#X83E593F3855B122E"><span class="RefLink">7.2-1</span></a>), and <code class="func">DigraphsUseNauty</code> (<a href="chap7_mj.html#X83E593F3855B122E"><span class="RefLink">7.2-1</span></a>).</p>
+<p>By default, an isomorphism is found using the canonical labellings of the digraphs obtained from <span class="URL"><a href="http://www.tcs.tkk.fi/Software/bliss/">bliss</a></span> by Tommi Junttila and Petteri Kaski. If <span class="URL"><a href="https://github.com/gap-packages/NautyTracesInterface">NautyTracesInterface</a></span> is available, then <span class="URL"><a href="https://pallini.di.uniroma1.it">nauty</a></span> by Brendan Mckay and Adolfo Piperno can be used instead; see <code class="func">DigraphsUseBliss</code> (<a href="chap7_mj.html#X83E593F3855B122E"><span class="RefLink">7.2-1</span></a>), and <code class="func">DigraphsUseNauty</code> (<a href="chap7_mj.html#X83E593F3855B122E"><span class="RefLink">7.2-1</span></a>).</p>
 
 
 <div class="example"><pre>
@@ -749,7 +750,7 @@ true</pre></div>
 </ul>
 <p>If <var class="Arg">digraph1</var> and <var class="Arg">digraph2</var> are digraphs without multiple edges, and <var class="Arg">colours1</var> and <var class="Arg">colours2</var> are colourings of <var class="Arg">digraph1</var> and <var class="Arg">digraph2</var>, respectively, then this operation returns <code class="keyw">true</code> if there exists an isomorphism between these two coloured digraphs. See <code class="func">IsomorphismDigraphs</code> (<a href="chap7_mj.html#X7ED93C0F86D9D34F"><span class="RefLink">7.2-18</span></a>) for more information about isomorphisms of coloured digraphs.</p>
 
-<p>By default, an isomorphism is found using the canonical labellings of the digraphs obtained from <span class="URL"><a href="http://www.tcs.tkk.fi/Software/bliss/">bliss</a></span> by Tommi Junttila and Petteri Kaski. If <span class="URL"><a href="https://github.com/gap-packages/NautyTracesInterface">NautyTracesInterface</a></span> is available, then <span class="URL"><a href="https://pallini.di.uniroma1.it/">nauty</a></span> by Brendan Mckay and Adolfo Piperno can be used instead; see <code class="func">DigraphsUseBliss</code> (<a href="chap7_mj.html#X83E593F3855B122E"><span class="RefLink">7.2-1</span></a>), and <code class="func">DigraphsUseNauty</code> (<a href="chap7_mj.html#X83E593F3855B122E"><span class="RefLink">7.2-1</span></a>).</p>
+<p>By default, an isomorphism is found using the canonical labellings of the digraphs obtained from <span class="URL"><a href="http://www.tcs.tkk.fi/Software/bliss/">bliss</a></span> by Tommi Junttila and Petteri Kaski. If <span class="URL"><a href="https://github.com/gap-packages/NautyTracesInterface">NautyTracesInterface</a></span> is available, then <span class="URL"><a href="https://pallini.di.uniroma1.it">nauty</a></span> by Brendan Mckay and Adolfo Piperno can be used instead; see <code class="func">DigraphsUseBliss</code> (<a href="chap7_mj.html#X83E593F3855B122E"><span class="RefLink">7.2-1</span></a>), and <code class="func">DigraphsUseNauty</code> (<a href="chap7_mj.html#X83E593F3855B122E"><span class="RefLink">7.2-1</span></a>).</p>
 
 
 <div class="example"><pre>
@@ -785,7 +786,7 @@ false</pre></div>
 
 <p>If there exists such an isomorphism, then this operation returns one. The form of this isomorphism is a permutation <code class="code">p</code> of the vertices of <var class="Arg">digraph1</var> such that</p>
 
-<p><code class="code">OnDigraphs(<var class="Arg">digraph1</var>, p) = digraph2</code>. By default, an isomorphism is found using the canonical labellings of the digraphs obtained from <span class="URL"><a href="http://www.tcs.tkk.fi/Software/bliss/">bliss</a></span> by Tommi Junttila and Petteri Kaski. If <span class="URL"><a href="https://github.com/gap-packages/NautyTracesInterface">NautyTracesInterface</a></span> is available, then <span class="URL"><a href="https://pallini.di.uniroma1.it/">nauty</a></span> by Brendan Mckay and Adolfo Piperno can be used instead; see <code class="func">DigraphsUseBliss</code> (<a href="chap7_mj.html#X83E593F3855B122E"><span class="RefLink">7.2-1</span></a>), and <code class="func">DigraphsUseNauty</code> (<a href="chap7_mj.html#X83E593F3855B122E"><span class="RefLink">7.2-1</span></a>).</p>
+<p><code class="code">OnDigraphs(<var class="Arg">digraph1</var>, p) = digraph2</code>. By default, an isomorphism is found using the canonical labellings of the digraphs obtained from <span class="URL"><a href="http://www.tcs.tkk.fi/Software/bliss/">bliss</a></span> by Tommi Junttila and Petteri Kaski. If <span class="URL"><a href="https://github.com/gap-packages/NautyTracesInterface">NautyTracesInterface</a></span> is available, then <span class="URL"><a href="https://pallini.di.uniroma1.it">nauty</a></span> by Brendan Mckay and Adolfo Piperno can be used instead; see <code class="func">DigraphsUseBliss</code> (<a href="chap7_mj.html#X83E593F3855B122E"><span class="RefLink">7.2-1</span></a>), and <code class="func">DigraphsUseNauty</code> (<a href="chap7_mj.html#X83E593F3855B122E"><span class="RefLink">7.2-1</span></a>).</p>
 
 
 <div class="example"><pre>
@@ -827,7 +828,7 @@ true
 
 <p>This operation returns such an isomorphism if one exists, else it returns <code class="keyw">fail</code>.</p>
 
-<p>By default, an isomorphism is found using the canonical labellings of the digraphs obtained from <span class="URL"><a href="http://www.tcs.tkk.fi/Software/bliss/">bliss</a></span> by Tommi Junttila and Petteri Kaski. If <span class="URL"><a href="https://github.com/gap-packages/NautyTracesInterface">NautyTracesInterface</a></span> is available, then <span class="URL"><a href="https://pallini.di.uniroma1.it/">nauty</a></span> by Brendan Mckay and Adolfo Piperno can be used instead; see <code class="func">DigraphsUseBliss</code> (<a href="chap7_mj.html#X83E593F3855B122E"><span class="RefLink">7.2-1</span></a>), and <code class="func">DigraphsUseNauty</code> (<a href="chap7_mj.html#X83E593F3855B122E"><span class="RefLink">7.2-1</span></a>).</p>
+<p>By default, an isomorphism is found using the canonical labellings of the digraphs obtained from <span class="URL"><a href="http://www.tcs.tkk.fi/Software/bliss/">bliss</a></span> by Tommi Junttila and Petteri Kaski. If <span class="URL"><a href="https://github.com/gap-packages/NautyTracesInterface">NautyTracesInterface</a></span> is available, then <span class="URL"><a href="https://pallini.di.uniroma1.it">nauty</a></span> by Brendan Mckay and Adolfo Piperno can be used instead; see <code class="func">DigraphsUseBliss</code> (<a href="chap7_mj.html#X83E593F3855B122E"><span class="RefLink">7.2-1</span></a>), and <code class="func">DigraphsUseNauty</code> (<a href="chap7_mj.html#X83E593F3855B122E"><span class="RefLink">7.2-1</span></a>).</p>
 
 
 <div class="example"><pre>
@@ -953,7 +954,7 @@ true
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsDigraphAutomorphism(src, (2, 3), [2, 2, 1]);</span>
 false
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsDigraphAutomorphism(src, (2, 3)(4, 5));</span>
-false
+true
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsDigraphAutomorphism(src, (1, 4));</span>
 false
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsDigraphAutomorphism(src, ());</span>
@@ -1018,14 +1019,14 @@ true
 
 <div class="example"><pre>
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">MaximalCommonSubdigraph(PetersenGraph(), CompleteDigraph(10));</span>
-[ &lt;immutable digraph with 2 vertices, 2 edges&gt;, 
+[ &lt;immutable digraph with 2 vertices, 2 edges&gt;,
   IdentityTransformation, IdentityTransformation ]
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">MaximalCommonSubdigraph(PetersenGraph(),</span>
 <span class="GAPprompt">&gt;</span> <span class="GAPinput">DigraphSymmetricClosure(CycleDigraph(5)));</span>
-[ &lt;immutable digraph with 5 vertices, 10 edges&gt;, 
+[ &lt;immutable digraph with 5 vertices, 10 edges&gt;,
   IdentityTransformation, IdentityTransformation ]
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">MaximalCommonSubdigraph(NullDigraph(0), CompleteDigraph(10));</span>
-[ &lt;immutable empty digraph with 0 vertices&gt;, IdentityTransformation, 
+[ &lt;immutable empty digraph with 0 vertices&gt;, IdentityTransformation,
   IdentityTransformation ]
 </pre></div>
 
@@ -1041,16 +1042,16 @@ true
 
 <div class="example"><pre>
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">MinimalCommonSuperdigraph(PetersenGraph(), CompleteDigraph(10));</span>
-[ &lt;immutable digraph with 18 vertices, 118 edges&gt;, 
-  IdentityTransformation, 
+[ &lt;immutable digraph with 18 vertices, 118 edges&gt;,
+  IdentityTransformation,
   Transformation( [ 1, 2, 11, 12, 13, 14, 15, 16, 17, 18, 11, 12, 13,
       14, 15, 16, 17, 18 ] ) ]
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">MinimalCommonSuperdigraph(PetersenGraph(),</span>
 <span class="GAPprompt">&gt;</span> <span class="GAPinput">DigraphSymmetricClosure(CycleDigraph(5)));</span>
-[ &lt;immutable digraph with 10 vertices, 30 edges&gt;, 
+[ &lt;immutable digraph with 10 vertices, 30 edges&gt;,
   IdentityTransformation, IdentityTransformation ]
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">MinimalCommonSuperdigraph(NullDigraph(0), CompleteDigraph(10));</span>
-[ &lt;immutable digraph with 10 vertices, 90 edges&gt;, 
+[ &lt;immutable digraph with 10 vertices, 90 edges&gt;,
   IdentityTransformation, IdentityTransformation ]
 </pre></div>
 
@@ -1108,6 +1109,8 @@ true
 <dt><strong class="Mark"><var class="Arg">image</var></strong></dt>
 <dd><p>This argument should be a subset of the vertices of the graph <var class="Arg">D2</var>. <code class="code">HomomorphismDigraphsFinder</code> only finds homomorphisms from <var class="Arg">D1</var> to the subgraph of <var class="Arg">D2</var> induced by the vertices <var class="Arg">image</var>.</p>
 
+<p>The returned homomorphisms (if any) are still "up to the action" of the group specified by <var class="Arg">aut_grp</var> (which is the entire automorphism group by default). This might generate unexpected results. For example, if <var class="Arg">D1</var> has automorphism group where one orbit consists of, say, <code class="code">1</code> and <code class="code">2</code>, then <code class="code">HomomorphismDigraphsFinder</code> will only attempt to find homomorphisms mapping <code class="code">1</code> to <code class="code">1</code>, and if there are no such homomorphisms with image set equal to <var class="Arg">image</var>, then no homomorphisms will be returned (even if there is a homomorphism from <var class="Arg">D1</var> to <var class="Arg">D2</var> mapping <code class="code">1</code> to <code class="code">2</code>). To ensure that that <strong class="button">all</strong> homomorphisms with image set equal to <var class="Arg">image</var> are considered it is necessary for the last argument <var class="Arg">aut_grp</var> to be the trivial permutation group.</p>
+
 </dd>
 <dt><strong class="Mark"><var class="Arg">partial_map</var></strong></dt>
 <dd><p>This argument should be a partial map from <var class="Arg">D1</var> to <var class="Arg">D2</var>, that is, a (not necessarily dense) list of vertices of the digraph <var class="Arg">D2</var> of length no greater than the number vertices in the digraph <var class="Arg">D1</var>. <code class="code">HomomorphismDigraphsFinder</code> only finds homomorphisms extending <var class="Arg">partial_map</var> (if any).</p>
@@ -1122,9 +1125,10 @@ true
 
 </dd>
 <dt><strong class="Mark"><var class="Arg">order</var></strong></dt>
-<dd><p>The optional argument <var class="Arg">order</var> specifies the order the vertices in <var class="Arg">D1</var> appear in the search for homomorphisms. The value of this parameter can have a large impact on the runtime of the function. It seems in many cases to be a good idea for this to be the <code class="func">DigraphWelshPowellOrder</code> (<a href="chap7_mj.html#X7F9CB3B27B9590DB"><span class="RefLink">7.3-16</span></a>), i.e. vertices ordered from highest to lowest degree.</p>
+<dd><p>The optional argument <var class="Arg">order</var> specifies the order the vertices in <var class="Arg">D1</var> appear in the search for homomorphisms. The value of this parameter can have a large impact on the runtime of the function. It seems in many cases to be a good idea for this to be the <code class="func">DigraphWelshPowellOrder</code> (<a href="chap7_mj.html#X7F9CB3B27B9590DB"><span class="RefLink">7.3-17</span></a>), i.e. vertices ordered from highest to lowest degree.</p>
 
 </dd>
+<dt><strong class="Mark"><var class="Arg">aut_grp</var></strong></dt>
 <dd><p>The optional argument <var class="Arg">aut_grp</var> should be a subgroup of the automorphism group of <var class="Arg">D2</var>. This function returns unique representatives of the homomorphisms found up to right multiplication by <var class="Arg">aut_grp</var>. If this argument is not specific, it defaults to the full automorphism group of <var class="Arg">D2</var>, which may be costly to calculate.</p>
 
 </dd>
@@ -1137,7 +1141,11 @@ true
 &lt;immutable symmetric digraph with 10 vertices, 18 edges&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">HomomorphismDigraphsFinder(D, D, fail, [], infinity, 2, 0,</span>
 <span class="GAPprompt">&gt;</span> <span class="GAPinput">[3, 4], [], fail, fail);</span>
-[ Transformation( [ 3, 4, 3, 4, 3, 4, 3, 4, 3, 4 ] ), 
+#I  WARNING you are trying to find homomorphisms by specifying a subset
+of the vertices of the target digraph. This might lead to unexpected
+results! If this happens, try passing Group(()) as the last argument.
+Please see the documentation of HomomorphismDigraphsFinder for details.
+[ Transformation( [ 3, 4, 3, 4, 3, 4, 3, 4, 3, 4 ] ),
   Transformation( [ 4, 3, 4, 3, 4, 3, 4, 3, 4, 3 ] ) ]
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">D2 := CompleteDigraph(6);;</span>
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">HomomorphismDigraphsFinder(D, D2, fail, [], 1, fail, 0,</span>
@@ -1148,20 +1156,20 @@ true
 <span class="GAPprompt">&gt;</span> <span class="GAPinput">end;;</span>
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">HomomorphismDigraphsFinder(D, D2, func, [Transformation([2, 2])],</span>
 <span class="GAPprompt">&gt;</span> <span class="GAPinput">3, fail, 0, [1 .. 6], [1, 2, 1], fail, fail);</span>
-[ Transformation( [ 2, 2 ] ), 
-  Transformation( [ 2, 2, 2, 3, 4, 5, 6, 2, 2, 2 ] ), 
-  Transformation( [ 2, 2, 2, 3, 4, 5, 6, 2, 2, 3 ] ), 
+[ Transformation( [ 2, 2 ] ),
+  Transformation( [ 2, 2, 2, 3, 4, 5, 6, 2, 2, 2 ] ),
+  Transformation( [ 2, 2, 2, 3, 4, 5, 6, 2, 2, 3 ] ),
   Transformation( [ 2, 2, 2, 3, 4, 5, 6, 2, 2, 4 ] ) ]
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">HomomorphismDigraphsFinder(NullDigraph(2), NullDigraph(3), fail,</span>
 <span class="GAPprompt">&gt;</span> <span class="GAPinput">[], infinity, fail, 1, [1, 2, 3], fail, fail, fail, fail,</span>
 <span class="GAPprompt">&gt;</span> <span class="GAPinput">Group(()));</span>
-[ IdentityTransformation, Transformation( [ 1, 3, 3 ] ), 
-  Transformation( [ 2, 1 ] ), Transformation( [ 2, 3, 3 ] ), 
+[ IdentityTransformation, Transformation( [ 1, 3, 3 ] ),
+  Transformation( [ 2, 1 ] ), Transformation( [ 2, 3, 3 ] ),
   Transformation( [ 3, 1, 3 ] ), Transformation( [ 3, 2, 3 ] ) ]
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">HomomorphismDigraphsFinder(NullDigraph(2), NullDigraph(3), fail,</span>
 <span class="GAPprompt">&gt;</span> <span class="GAPinput">[], infinity, fail, 1, [1, 2, 3], fail, fail, fail, fail,</span>
 <span class="GAPprompt">&gt;</span> <span class="GAPinput">Group((1, 2)));</span>
-[ IdentityTransformation, Transformation( [ 1, 3, 3 ] ), 
+[ IdentityTransformation, Transformation( [ 1, 3, 3 ] ),
   Transformation( [ 3, 1, 3 ] ) ]</pre></div>
 
 <p><a id="X85E9B019877AD7FE" name="X85E9B019877AD7FE"></a></p>
@@ -1206,9 +1214,9 @@ true
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr2 := Digraph([[3, 5], [2], [3, 1], [], [4]]);</span>
 &lt;immutable digraph with 5 vertices, 6 edges&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">HomomorphismsDigraphs(gr1, gr2);</span>
-[ Transformation( [ 1, 3, 1 ] ), Transformation( [ 1, 3, 3 ] ), 
-  Transformation( [ 1, 5, 4, 4, 5 ] ), Transformation( [ 2, 2, 2 ] ), 
-  Transformation( [ 3, 1, 3 ] ), Transformation( [ 3, 1, 5, 4, 5 ] ), 
+[ Transformation( [ 1, 3, 1 ] ), Transformation( [ 1, 3, 3 ] ),
+  Transformation( [ 1, 5, 4, 4, 5 ] ), Transformation( [ 2, 2, 2 ] ),
+  Transformation( [ 3, 1, 3 ] ), Transformation( [ 3, 1, 5, 4, 5 ] ),
   Transformation( [ 3, 3, 1 ] ), Transformation( [ 3, 3, 3 ] ) ]
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">HomomorphismsDigraphsRepresentatives(gr1, CompleteDigraph(3));</span>
 [ Transformation( [ 2, 1 ] ), Transformation( [ 2, 1, 2 ] ) ]
@@ -1250,7 +1258,7 @@ Transformation( [ 3, 1, 5, 4, 5 ] )
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr2 := Digraph([[3, 5], [2], [3, 1], [], [4]]);</span>
 &lt;immutable digraph with 5 vertices, 6 edges&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">MonomorphismsDigraphs(gr1, gr2);</span>
-[ Transformation( [ 1, 5, 4, 4, 5 ] ), 
+[ Transformation( [ 1, 5, 4, 4, 5 ] ),
   Transformation( [ 3, 1, 5, 4, 5 ] ) ]
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">MonomorphismsDigraphsRepresentatives(gr1, CompleteDigraph(3));</span>
 [ Transformation( [ 2, 1 ] ) ]
@@ -1294,17 +1302,17 @@ Transformation( [ 3, 1, 2, 3 ] )
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr2 := DigraphSymmetricClosure(CycleDigraph(3));</span>
 &lt;immutable symmetric digraph with 3 vertices, 6 edges&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">EpimorphismsDigraphsRepresentatives(gr1, gr2);</span>
-[ Transformation( [ 3, 1, 2, 1 ] ), Transformation( [ 3, 1, 2, 3 ] ), 
+[ Transformation( [ 3, 1, 2, 1 ] ), Transformation( [ 3, 1, 2, 3 ] ),
   Transformation( [ 2, 1, 2, 3 ] ) ]
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">EpimorphismsDigraphs(gr1, gr2);</span>
-[ Transformation( [ 1, 2, 1, 3 ] ), Transformation( [ 1, 2, 3, 1 ] ), 
-  Transformation( [ 1, 2, 3, 2 ] ), Transformation( [ 1, 3, 1, 2 ] ), 
-  Transformation( [ 1, 3, 2, 1 ] ), Transformation( [ 1, 3, 2, 3 ] ), 
-  Transformation( [ 2, 1, 2, 3 ] ), Transformation( [ 2, 1, 3, 1 ] ), 
-  Transformation( [ 2, 1, 3, 2 ] ), Transformation( [ 2, 3, 1, 2 ] ), 
-  Transformation( [ 2, 3, 1, 3 ] ), Transformation( [ 2, 3, 2, 1 ] ), 
-  Transformation( [ 3, 1, 2, 1 ] ), Transformation( [ 3, 1, 2, 3 ] ), 
-  Transformation( [ 3, 1, 3, 2 ] ), Transformation( [ 3, 2, 1, 2 ] ), 
+[ Transformation( [ 1, 2, 1, 3 ] ), Transformation( [ 1, 2, 3, 1 ] ),
+  Transformation( [ 1, 2, 3, 2 ] ), Transformation( [ 1, 3, 1, 2 ] ),
+  Transformation( [ 1, 3, 2, 1 ] ), Transformation( [ 1, 3, 2, 3 ] ),
+  Transformation( [ 2, 1, 2, 3 ] ), Transformation( [ 2, 1, 3, 1 ] ),
+  Transformation( [ 2, 1, 3, 2 ] ), Transformation( [ 2, 3, 1, 2 ] ),
+  Transformation( [ 2, 3, 1, 3 ] ), Transformation( [ 2, 3, 2, 1 ] ),
+  Transformation( [ 3, 1, 2, 1 ] ), Transformation( [ 3, 1, 2, 3 ] ),
+  Transformation( [ 3, 1, 3, 2 ] ), Transformation( [ 3, 2, 1, 2 ] ),
   Transformation( [ 3, 2, 1, 3 ] ), Transformation( [ 3, 2, 3, 1 ] ) ]
 </pre></div>
 
@@ -1352,14 +1360,14 @@ Transformation( [ 2, 4, 3, 4 ] )
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">EmbeddingsDigraphsRepresentatives(D1, D2);</span>
 [ Transformation( [ 1, 3, 3 ] ), Transformation( [ 1, 4, 3, 4 ] ) ]
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">EmbeddingsDigraphs(D1, D2);</span>
-[ Transformation( [ 1, 3, 3 ] ), Transformation( [ 1, 4, 3, 4 ] ), 
-  Transformation( [ 2, 4, 4, 5, 1 ] ), 
-  Transformation( [ 2, 5, 4, 5, 1 ] ), 
-  Transformation( [ 3, 1, 5, 1, 2 ] ), 
-  Transformation( [ 3, 5, 5, 1, 2 ] ), 
-  Transformation( [ 4, 1, 1, 2, 3 ] ), 
-  Transformation( [ 4, 2, 1, 2, 3 ] ), 
-  Transformation( [ 5, 2, 2, 3, 4 ] ), 
+[ Transformation( [ 1, 3, 3 ] ), Transformation( [ 1, 4, 3, 4 ] ),
+  Transformation( [ 2, 4, 4, 5, 1 ] ),
+  Transformation( [ 2, 5, 4, 5, 1 ] ),
+  Transformation( [ 3, 1, 5, 1, 2 ] ),
+  Transformation( [ 3, 5, 5, 1, 2 ] ),
+  Transformation( [ 4, 1, 1, 2, 3 ] ),
+  Transformation( [ 4, 2, 1, 2, 3 ] ),
+  Transformation( [ 5, 2, 2, 3, 4 ] ),
   Transformation( [ 5, 3, 2, 3, 4 ] ) ]
 </pre></div>
 
@@ -1392,11 +1400,13 @@ Transformation( [ 2, 4, 3, 4 ] )
 <li><p><code class="code">[u ^ <var class="Arg">x</var>, v ^ <var class="Arg">x</var>]</code> is an edge of <var class="Arg">ran</var> whenever <code class="code">[u, v]</code> is an edge of <var class="Arg">src</var>; and</p>
 
 </li>
-<li><p><var class="Arg">x</var> fixes every <code class="code">i</code> which is not a vertex of <var class="Arg">src</var>.</p>
+<li><p><var class="Arg">x</var> maps the vertices of <var class="Arg">src</var> to a subset of the vertices of <var class="Arg">ran</var>, i.e. <code class="code">IsSubset(DigraphVertices(<var class="Arg">ran</var>), OnSets(DigraphVertices(<var class="Arg">src</var>), <var class="Arg">x</var>))</code> is <code class="keyw">true</code>.</p>
 
 </li>
 </ul>
-<p>See also <code class="func">GeneratorsOfEndomorphismMonoid</code> (<a href="chap7_mj.html#X7E93B268823F6478"><span class="RefLink">7.3-13</span></a>).</p>
+<p>Note that if <code class="code">i</code> is any integer greater than <code class="code">DigraphNrVertice(<var class="Arg">src</var>)</code>, then the action of <var class="Arg">x</var> on <code class="code">i</code> is ignored by this function. One consequence of this is that distinct transformations or permutations might represent the same homomorphism. For example, if <var class="Arg">src</var> and <var class="Arg">ran</var> are <code class="code">CycleDigraph(2)</code>, then both the permutations <code class="code">(1, 2)</code> and <code class="code">(1, 2)(3, 4)</code> represent the same automorphism of <var class="Arg">src</var>.</p>
+
+<p>See also <code class="func">GeneratorsOfEndomorphismMonoid</code> (<a href="chap7_mj.html#X7E93B268823F6478"><span class="RefLink">7.3-14</span></a>).</p>
 
 <p>If <var class="Arg">col1</var> and <var class="Arg">col2</var>, or <var class="Arg">col</var>, are given, then they must represent vertex colourings; see <code class="func">AutomorphismGroup</code> (<a href="chap7_mj.html#X877732B1783C391B"><span class="RefLink">7.2-5</span></a>) for details of the permissible values for these argument. The homomorphism must then also have the property:</p>
 
@@ -1409,7 +1419,7 @@ Transformation( [ 2, 4, 3, 4 ] )
 
 </li>
 </ul>
-<p>See also <code class="func">DigraphsRespectsColouring</code> (<a href="chap7_mj.html#X7F80709A80CBFA98"><span class="RefLink">7.3-12</span></a>).</p>
+<p>See also <code class="func">DigraphsRespectsColouring</code> (<a href="chap7_mj.html#X7F80709A80CBFA98"><span class="RefLink">7.3-13</span></a>).</p>
 
 
 <div class="example"><pre>
@@ -1479,9 +1489,30 @@ true
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsDigraphEmbedding(src, ran, IdentityTransformation);</span>
 false</pre></div>
 
+<p><a id="X87E60FB17BC444EF" name="X87E60FB17BC444EF"></a></p>
+
+<h5>7.3-12 SubdigraphsMonomorphisms</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; SubdigraphsMonomorphisms</code>( <var class="Arg">digraph1</var>, <var class="Arg">digraph2</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; SubdigraphsMonomorphismsRepresentatives</code>( <var class="Arg">digraph1</var>, <var class="Arg">digraph2</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
+<p>Returns: A list of transformations.</p>
+
+<p>These operations behave the same as <code class="func">HomomorphismsDigraphs</code> (<a href="chap7_mj.html#X8653EDA183E06D05"><span class="RefLink">7.3-3</span></a>) and <code class="func">HomomorphismsDigraphsRepresentatives</code> (<a href="chap7_mj.html#X8653EDA183E06D05"><span class="RefLink">7.3-3</span></a>), except they only return <em>injective</em> homomorphisms with the following property: the (not necessarily induced) subdigraphs defined by the images of these monomorphisms are all of the subdigraphs of <var class="Arg">digraph2</var> that are isomorphic to <var class="Arg">digraph1</var>. Note that the subdigraphs of the previous sentence are those obtained by applying the corresponding monomorphism to the vertices and the edges of <var class="Arg">digraph1</var>, and are therefore possibly strictly contained in the induced subdigraph on the same vertex set.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">SubdigraphsMonomorphisms(CompleteBipartiteDigraph(2, 2),</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">CompleteDigraph(4));</span>
+[ Transformation( [ 1, 3, 2 ] ), Transformation( [ 2, 3, 1 ] ),
+  Transformation( [ 3, 4, 2, 1 ] ) ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">SubdigraphsMonomorphismsRepresentatives(</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">CompleteBipartiteDigraph(2, 2), CompleteDigraph(4));</span>
+[ Transformation( [ 1, 3, 2 ] ) ]
+</pre></div>
+
 <p><a id="X7F80709A80CBFA98" name="X7F80709A80CBFA98"></a></p>
 
-<h5>7.3-12 DigraphsRespectsColouring</h5>
+<h5>7.3-13 DigraphsRespectsColouring</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphsRespectsColouring</code>( <var class="Arg">src</var>, <var class="Arg">ran</var>, <var class="Arg">x</var>, <var class="Arg">col1</var>, <var class="Arg">col2</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
@@ -1502,7 +1533,7 @@ false
 
 <p><a id="X7E93B268823F6478" name="X7E93B268823F6478"></a></p>
 
-<h5>7.3-13 GeneratorsOfEndomorphismMonoid</h5>
+<h5>7.3-14 GeneratorsOfEndomorphismMonoid</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; GeneratorsOfEndomorphismMonoid</code>( <var class="Arg">digraph</var>[, <var class="Arg">colors</var>][, <var class="Arg">limit</var>] )</td><td class="tdright">(&nbsp;function&nbsp;)</td></tr></table></div>
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; GeneratorsOfEndomorphismMonoidAttr</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
@@ -1527,16 +1558,16 @@ false
 <div class="example"><pre>
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := Digraph(List([1 .. 3], x -&gt; [1 .. 3]));;</span>
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">GeneratorsOfEndomorphismMonoid(gr);</span>
-[ Transformation( [ 1, 3, 2 ] ), Transformation( [ 2, 1 ] ), 
-  IdentityTransformation, Transformation( [ 1, 2, 1 ] ), 
-  Transformation( [ 1, 2, 2 ] ), Transformation( [ 1, 1, 2 ] ), 
+[ Transformation( [ 1, 3, 2 ] ), Transformation( [ 2, 1 ] ),
+  IdentityTransformation, Transformation( [ 1, 2, 1 ] ),
+  Transformation( [ 1, 2, 2 ] ), Transformation( [ 1, 1, 2 ] ),
   Transformation( [ 1, 1, 1 ] ) ]
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">GeneratorsOfEndomorphismMonoid(gr, 3);</span>
-[ Transformation( [ 1, 3, 2 ] ), Transformation( [ 2, 1 ] ), 
+[ Transformation( [ 1, 3, 2 ] ), Transformation( [ 2, 1 ] ),
   IdentityTransformation ]
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := CompleteDigraph(3);;</span>
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">GeneratorsOfEndomorphismMonoid(gr);</span>
-[ Transformation( [ 2, 3, 1 ] ), Transformation( [ 2, 1 ] ), 
+[ Transformation( [ 2, 3, 1 ] ), Transformation( [ 2, 1 ] ),
   IdentityTransformation ]
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">GeneratorsOfEndomorphismMonoid(gr, [1, 2, 2]);</span>
 [ Transformation( [ 1, 3, 2 ] ), IdentityTransformation ]
@@ -1546,7 +1577,7 @@ false
 
 <p><a id="X86D0A74B83D6B9A7" name="X86D0A74B83D6B9A7"></a></p>
 
-<h5>7.3-14 DigraphColouring</h5>
+<h5>7.3-15 DigraphColouring</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphColouring</code>( <var class="Arg">digraph</var>, <var class="Arg">n</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: A transformation, or <code class="keyw">fail</code>.</p>
@@ -1555,7 +1586,7 @@ false
 
 <p>If <var class="Arg">digraph</var> is a digraph and <var class="Arg">n</var> is a non-negative integer, then <code class="code">DigraphColouring(<var class="Arg">digraph</var>, <var class="Arg">n</var>)</code> returns an epimorphism from <var class="Arg">digraph</var> onto the complete digraph with <var class="Arg">n</var> vertices if one exists, else it returns <code class="keyw">fail</code>.</p>
 
-<p>See also <code class="func">DigraphGreedyColouring</code> (<a href="chap7_mj.html#X7AB7200D831013C1"><span class="RefLink">7.3-15</span></a>) and</p>
+<p>See also <code class="func">DigraphGreedyColouring</code> (<a href="chap7_mj.html#X7AB7200D831013C1"><span class="RefLink">7.3-16</span></a>) and</p>
 
 <p>Note that a digraph with at least two vertices has a 2-colouring if and only if it is bipartite, see <code class="func">IsBipartiteDigraph</code> (<a href="chap6_mj.html#X860CFB0C8665F356"><span class="RefLink">6.2-3</span></a>).</p>
 
@@ -1568,7 +1599,7 @@ fail
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">D := ChainDigraph(10);;</span>
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">t := DigraphColouring(D, 2);</span>
 Transformation( [ 1, 2, 1, 2, 1, 2, 1, 2, 1, 2 ] )
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsDigraphColouring(D, t); </span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsDigraphColouring(D, t);</span>
 true
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphGreedyColouring(D);</span>
 Transformation( [ 2, 1, 2, 1, 2, 1, 2, 1, 2, 1 ] )
@@ -1576,7 +1607,7 @@ Transformation( [ 2, 1, 2, 1, 2, 1, 2, 1, 2, 1 ] )
 
 <p><a id="X7AB7200D831013C1" name="X7AB7200D831013C1"></a></p>
 
-<h5>7.3-15 DigraphGreedyColouring</h5>
+<h5>7.3-16 DigraphGreedyColouring</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphGreedyColouring</code>( <var class="Arg">digraph</var>, <var class="Arg">order</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphGreedyColouring</code>( <var class="Arg">digraph</var>, <var class="Arg">func</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
@@ -1589,9 +1620,9 @@ Transformation( [ 2, 1, 2, 1, 2, 1, 2, 1, 2, 1 ] )
 
 <p>If <var class="Arg">digraph</var> is a digraph and <var class="Arg">func</var> is a function whose argument is a digraph, and that returns a dense list <var class="Arg">order</var>, then <code class="code">DigraphGreedyColouring(<var class="Arg">digraph</var>, <var class="Arg">func</var>)</code> returns <code class="code">DigraphGreedyColouring(<var class="Arg">digraph</var>, <var class="Arg">func</var>(<var class="Arg">digraph</var>))</code>.</p>
 
-<p>If the optional second argument (either a list or a function), is not specified, then <code class="func">DigraphWelshPowellOrder</code> (<a href="chap7_mj.html#X7F9CB3B27B9590DB"><span class="RefLink">7.3-16</span></a>) is used by default.</p>
+<p>If the optional second argument (either a list or a function), is not specified, then <code class="func">DigraphWelshPowellOrder</code> (<a href="chap7_mj.html#X7F9CB3B27B9590DB"><span class="RefLink">7.3-17</span></a>) is used by default.</p>
 
-<p>See also <code class="func">DigraphColouring</code> (<a href="chap7_mj.html#X86D0A74B83D6B9A7"><span class="RefLink">7.3-14</span></a>).</p>
+<p>See also <code class="func">DigraphColouring</code> (<a href="chap7_mj.html#X86D0A74B83D6B9A7"><span class="RefLink">7.3-15</span></a>).</p>
 
 
 <div class="example"><pre>
@@ -1603,7 +1634,7 @@ Transformation( [ 1, 2, 1, 2, 1, 2, 1, 2, 1, 2 ] )
 
 <p><a id="X7F9CB3B27B9590DB" name="X7F9CB3B27B9590DB"></a></p>
 
-<h5>7.3-16 DigraphWelshPowellOrder</h5>
+<h5>7.3-17 DigraphWelshPowellOrder</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphWelshPowellOrder</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
 <p>Returns: A list of the vertices.</p>
@@ -1612,22 +1643,22 @@ Transformation( [ 1, 2, 1, 2, 1, 2, 1, 2, 1, 2 ] )
 
 
 <div class="example"><pre>
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphWelshPowellOrder(Digraph([[4], [9], [9], [], </span>
-<span class="GAPprompt">&gt;</span> <span class="GAPinput">                                    [4, 6, 9], [1], [], [], </span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphWelshPowellOrder(Digraph([[4], [9], [9], [],</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">                                    [4, 6, 9], [1], [], [],</span>
 <span class="GAPprompt">&gt;</span> <span class="GAPinput">                                    [4, 5], [4, 5]]));</span>
 [ 5, 9, 4, 1, 6, 10, 2, 3, 7, 8 ]
 </pre></div>
 
 <p><a id="X807D49358529A37C" name="X807D49358529A37C"></a></p>
 
-<h5>7.3-17 ChromaticNumber</h5>
+<h5>7.3-18 ChromaticNumber</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; ChromaticNumber</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
 <p>Returns: A non-negative integer.</p>
 
 <p>A <em>proper colouring</em> of a digraph is a labelling of its vertices in such a way that adjacent vertices have different labels. Equivalently, a proper digraph colouring can be defined to be a <code class="func">DigraphEpimorphism</code> (<a href="chap7_mj.html#X7CB5AD9F861684FD"><span class="RefLink">7.3-6</span></a>) from a digraph onto a complete digraph.</p>
 
-<p>If <var class="Arg">digraph</var> is a digraph without loops (see <code class="func">DigraphHasLoops</code> (<a href="chap6_mj.html#X7D92935C7D535187"><span class="RefLink">6.2-1</span></a>), then <code class="code">ChromaticNumber</code> returns the least non-negative integer <code class="code">n</code> such that there is a proper colouring of <var class="Arg">digraph</var> with <code class="code">n</code> colours. In other words, for a digraph with at least one vertex, <code class="code">ChromaticNumber</code> returns the least number <code class="code">n</code> such that <code class="code">DigraphColouring(<var class="Arg">digraph</var>, n)</code> does not return <code class="keyw">fail</code>. See <code class="func">DigraphColouring</code> (<a href="chap7_mj.html#X86D0A74B83D6B9A7"><span class="RefLink">7.3-14</span></a>).</p>
+<p>If <var class="Arg">digraph</var> is a digraph without loops (see <code class="func">DigraphHasLoops</code> (<a href="chap6_mj.html#X7D92935C7D535187"><span class="RefLink">6.2-1</span></a>), then <code class="code">ChromaticNumber</code> returns the least non-negative integer <code class="code">n</code> such that there is a proper colouring of <var class="Arg">digraph</var> with <code class="code">n</code> colours. In other words, for a digraph with at least one vertex, <code class="code">ChromaticNumber</code> returns the least number <code class="code">n</code> such that <code class="code">DigraphColouring(<var class="Arg">digraph</var>, n)</code> does not return <code class="keyw">fail</code>. See <code class="func">DigraphColouring</code> (<a href="chap7_mj.html#X86D0A74B83D6B9A7"><span class="RefLink">7.3-15</span></a>).</p>
 
 <p>It is possible to select the algorithm to compute the chromatic number via the use of value options. The permitted algorithms and values to pass as options are:</p>
 
@@ -1664,7 +1695,7 @@ Transformation( [ 1, 2, 1, 2, 1, 2, 1, 2, 1, 2 ] )
 
 <p><a id="X863487EF7D64EF56" name="X863487EF7D64EF56"></a></p>
 
-<h5>7.3-18 DigraphCore</h5>
+<h5>7.3-19 DigraphCore</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphCore</code>( <var class="Arg">D</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
 <p>Returns: A list of positive integers.</p>
@@ -1691,7 +1722,7 @@ Transformation( [ 1, 2, 1, 2, 1, 2, 1, 2, 1, 2 ] )
 
 <p><a id="X7EEA340C81FCA52D" name="X7EEA340C81FCA52D"></a></p>
 
-<h5>7.3-19 LatticeDigraphEmbedding</h5>
+<h5>7.3-20 LatticeDigraphEmbedding</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; LatticeDigraphEmbedding</code>( <var class="Arg">L1</var>, <var class="Arg">L2</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: A transformation, or <code class="keyw">fail</code>.</p>
@@ -1716,7 +1747,7 @@ fail
 
 <p><a id="X7E183D4979D324EF" name="X7E183D4979D324EF"></a></p>
 
-<h5>7.3-20 IsLatticeHomomorphism</h5>
+<h5>7.3-21 IsLatticeHomomorphism</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsLatticeHomomorphism</code>( <var class="Arg">L1</var>, <var class="Arg">L2</var>, <var class="Arg">map</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsLatticeEpimorphism</code>( <var class="Arg">L1</var>, <var class="Arg">L2</var>, <var class="Arg">map</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>

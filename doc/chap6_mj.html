@@ -8,7 +8,7 @@
 <script type="text/javascript"
   src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
 </script>
-<title>GAP (digraphs) - Chapter 6: Properties of digraphs</title>
+<title>GAP (Digraphs) - Chapter 6: Properties of digraphs</title>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 <meta name="generator" content="GAPDoc2HTML" />
 <link rel="stylesheet" type="text/css" href="manual.css" />
@@ -242,7 +242,7 @@ true
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsBipartiteDigraph</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;property&nbsp;)</td></tr></table></div>
 <p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
 
-<p>This property is <code class="keyw">true</code> if the digraph <var class="Arg">digraph</var> is bipartite, and <code class="keyw">false</code> if it is not. A digraph is bipartite if and only if the vertices of <var class="Arg">digraph</var> can be partitioned into two non-empty sets such that the source and range of any edge of <var class="Arg">digraph</var> lie in distinct sets. Equivalently, a digraph is bipartite if and only if it is 2-colorable; see <code class="func">DigraphGreedyColouring</code> (<a href="chap7_mj.html#X7AB7200D831013C1"><span class="RefLink">7.3-15</span></a>).</p>
+<p>This property is <code class="keyw">true</code> if the digraph <var class="Arg">digraph</var> is bipartite, and <code class="keyw">false</code> if it is not. A digraph is bipartite if and only if the vertices of <var class="Arg">digraph</var> can be partitioned into two non-empty sets such that the source and range of any edge of <var class="Arg">digraph</var> lie in distinct sets. Equivalently, a digraph is bipartite if and only if it is 2-colorable; see <code class="func">DigraphGreedyColouring</code> (<a href="chap7_mj.html#X7AB7200D831013C1"><span class="RefLink">7.3-16</span></a>).</p>
 
 <p>See also <code class="func">DigraphBicomponents</code> (<a href="chap5_mj.html#X7F1B5A2782F598B1"><span class="RefLink">5.4-13</span></a>).</p>
 
@@ -617,7 +617,7 @@ false
 
 <p>This property is <code class="keyw">true</code> if the digraph <var class="Arg">digraph</var> is transitive, and <code class="keyw">false</code> if it is not. A digraph is <em>transitive</em> if whenever <code class="code">[ i, j ]</code> and <code class="code">[ j, k ]</code> are edges of the digraph, then <code class="code">[ i, k ]</code> is also an edge of the digraph.</p>
 
-<p>Let <span class="SimpleMath">\(n\)</span> be the number of vertices of an arbitrary digraph, and let <span class="SimpleMath">\(m\)</span> be the number of edges. For general digraphs, the methods used for this property use a version of the Floyd-Warshall algorithm, and have complexity <span class="SimpleMath">\(O(n^3)\)</span>. However for digraphs which are topologically sortable [<code class="func">DigraphTopologicalSort</code> (<a href="chap5_mj.html#X785C30378064CF47"><span class="RefLink">5.1-8</span></a>)], then methods with complexity <span class="SimpleMath">\(O(m + n + m \cdot n)\)</span> will be used when appropriate.</p>
+<p>Let <span class="SimpleMath">\(n\)</span> be the number of vertices of an arbitrary digraph, and let <span class="SimpleMath">\(m\)</span> be the number of edges. For general digraphs, the methods used for this property use a version of the Floyd-Warshall algorithm, and have complexity <span class="SimpleMath">\(O(n^3)\)</span>. However for digraphs which are topologically sortable [<code class="func">DigraphTopologicalSort</code> (<a href="chap5_mj.html#X785C30378064CF47"><span class="RefLink">5.1-10</span></a>)], then methods with complexity <span class="SimpleMath">\(O(m + n + m \cdot n)\)</span> will be used when appropriate.</p>
 
 <p>If the argument <var class="Arg">digraph</var> is mutable, then the return value of this property is recomputed every time it is called.</p>
 
@@ -920,7 +920,7 @@ false</pre></div>
 
 <p>A <em>distributive lattice digraph</em> is a lattice digraph (<code class="func">IsLatticeDigraph</code> (<a href="chap6_mj.html#X78D3E17B7F737516"><span class="RefLink">6.4-3</span></a>)) which is distributive. That is to say, the functions <code class="func">PartialOrderDigraphMeetOfVertices</code> (<a href="chap5_mj.html#X7DDB33B686B3A2C6"><span class="RefLink">5.3-1</span></a>) and <code class="func">PartialOrderDigraphJoinOfVertices</code> (<a href="chap5_mj.html#X7DDB33B686B3A2C6"><span class="RefLink">5.3-1</span></a>) distribute over each other.</p>
 
-<p>Equivalently, a distributive lattice digraph is a lattice digraph in which the <em>lattice digraphs</em> representing <span class="SimpleMath">\(M3\)</span> and <span class="SimpleMath">\(N5\)</span> are not embeddable as lattices (see <span class="URL"><a href="https://en.wikipedia.org/wiki/Distributive_lattice">https://en.wikipedia.org/wiki/Distributive_lattice</a></span> and <code class="func">IsLatticeEmbedding</code> (<a href="chap7_mj.html#X7E183D4979D324EF"><span class="RefLink">7.3-20</span></a>)).</p>
+<p>Equivalently, a distributive lattice digraph is a lattice digraph in which the <em>lattice digraphs</em> representing <span class="SimpleMath">\(M3\)</span> and <span class="SimpleMath">\(N5\)</span> are not embeddable as lattices (see <span class="URL"><a href="https://en.wikipedia.org/wiki/Distributive_lattice">https://en.wikipedia.org/wiki/Distributive_lattice</a></span> and <code class="func">IsLatticeEmbedding</code> (<a href="chap7_mj.html#X7E183D4979D324EF"><span class="RefLink">7.3-21</span></a>)).</p>
 
 <p><figure> <img height="200" src="m3.png"/> &nbsp;&nbsp;&nbsp;&nbsp; <img height="200" src="n5.png"/> <figcaption>The lattices <e>M3</e> and <e>N5</e>.</figcaption> </figure> If the argument <var class="Arg">digraph</var> is mutable, then the return value of this property is recomputed every time it is called.</p>
 
@@ -948,7 +948,7 @@ false</pre></div>
 
 <p><code class="code">IsModularLatticeDigraph</code> returns <code class="keyw">true</code> if the digraph <var class="Arg">digraph</var> is a modular lattice digraph.</p>
 
-<p>A <em>modular lattice digraph</em> is a lattice digraph (<code class="func">IsLatticeDigraph</code> (<a href="chap6_mj.html#X78D3E17B7F737516"><span class="RefLink">6.4-3</span></a>)) which is modular. That is to say, the lattice digraph representing <span class="SimpleMath">\(N5\)</span> is not embeddable as a lattice (see <span class="URL"><a href="https://en.wikipedia.org/wiki/Modular_lattice">https://en.wikipedia.org/wiki/Modular_lattice</a></span> and <code class="func">IsLatticeEmbedding</code> (<a href="chap7_mj.html#X7E183D4979D324EF"><span class="RefLink">7.3-20</span></a>)).</p>
+<p>A <em>modular lattice digraph</em> is a lattice digraph (<code class="func">IsLatticeDigraph</code> (<a href="chap6_mj.html#X78D3E17B7F737516"><span class="RefLink">6.4-3</span></a>)) which is modular. That is to say, the lattice digraph representing <span class="SimpleMath">\(N5\)</span> is not embeddable as a lattice (see <span class="URL"><a href="https://en.wikipedia.org/wiki/Modular_lattice">https://en.wikipedia.org/wiki/Modular_lattice</a></span> and <code class="func">IsLatticeEmbedding</code> (<a href="chap7_mj.html#X7E183D4979D324EF"><span class="RefLink">7.3-21</span></a>)).</p>
 
 <p><figure> <img height="200" src="n5.png"/> <figcaption>The lattice <e>N5</e>.</figcaption> </figure> If the argument <var class="Arg">digraph</var> is mutable, then the return value of this property is recomputed every time it is called.</p>
 
@@ -1317,7 +1317,7 @@ true</pre></div>
 
 <p>A <em>directed tree</em> is an acyclic digraph with precisely 1 source, such that no two vertices share an out-neighbour. Note that the empty digraph with zero vertices is not considered to be a directed tree, because it has no source.</p>
 
-<p>See also <code class="func">DigraphSources</code> (<a href="chap5_mj.html#X7F5C6268839BE98C"><span class="RefLink">5.1-7</span></a>).</p>
+<p>See also <code class="func">DigraphSources</code> (<a href="chap5_mj.html#X7F5C6268839BE98C"><span class="RefLink">5.1-9</span></a>).</p>
 
 <p>If the argument <var class="Arg">digraph</var> is mutable, then the return value of this property is recomputed every time it is called.</p>
 

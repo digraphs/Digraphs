@@ -1,6 +1,6 @@
 name: Digraphs
-version: 1.8.0
-date: 2024-08-27
+version: 1.9.0
+date: 2024-09-06
 description: |
     Graphs, digraphs, and multidigraphs in GAP
 
@@ -15,14 +15,6 @@ authors:
       url: https://wilf.me
     - name: Michael Young
       url: https://mct25.host.cs.st-andrews.ac.uk
-
-maintainers:
-    - name: James Mitchell
-      url: https://jdbm.me
-    - name: Wilf A. Wilson
-      url: https://wilf.me
-
-contributors:
     - name: Marina Anagnostopoulou-Merkouri
       url: mailto:mam49@st-andrews.ac.uk
     - name: Finn Buck
@@ -39,8 +31,8 @@ contributors:
       url: https://tomcontileslie.com
     - name: Joseph Edwards
       url: https://github.com/Joseph-Edwards
-    - name: Luke Elliott
-      url: mailto:le27@st-andrews.ac.uk
+    - name: Luna Elliott
+      url: mailto:TODO
     - name: Isuru Fernando
       url: mailto:isuruf@gmail.com
     - name: Ewan Gilligan
@@ -66,7 +58,7 @@ contributors:
     - name: Matthew Pancer
       url: mailto:mp322@st-andrews.ac.uk
     - name: Markus Pfeiffer
-      url: https://www.morphism.de/~markusp/
+      url: https://markusp.morphism.de/
     - name: Daniel Pointon
       url: mailto:dp211@st-andrews.ac.uk
     - name: Lea Racine
@@ -84,10 +76,20 @@ contributors:
       url: mailto:bspiers972@outlook.com
     - name: Maria Tsalakou
       url: https://mariatsalakou.github.io/
+    - name: Meike Weiss
+      url: https://bit.ly/4e6pUeP
     - name: Murray Whyte
       url: mailto:mw231@st-andrews.ac.uk
     - name: Fabian Zickgraf
       url: mailto:f.zickgraf@dashdos.com
+
+maintainers:
+    - name: James Mitchell
+      url: https://jdbm.me
+    - name: Wilf A. Wilson
+      url: https://wilf.me
+    - name: Michael Young
+      url: https://mct25.host.cs.st-andrews.ac.uk
 
 GAP: ">=4.10.0"
 
@@ -112,6 +114,9 @@ suggested-pkgs:
     - name: "nautytracesinterface"
       version: ">=0.2"
       url: "https://gap-packages.github.io/NautyTracesInterface/"
+    - name: "AutoDoc"
+      version: ">=2020.08.11"
+      url: "https://gap-packages.github.io/AutoDoc"
 
 www: https://digraphs.github.io/Digraphs
 readme: README.md
@@ -119,10 +124,11 @@ packageinfo: https://digraphs.github.io/Digraphs/PackageInfo.g
 
 downloads:
     - name: .tar.gz
-      url: https://github.com/digraphs/Digraphs/releases/download/v1.8.0/digraphs-1.8.0.tar.gz
+      url: https://github.com/digraphs/Digraphs/releases/download/v1.9.0/digraphs-1.9.0.tar.gz
 
 abstract: |
-    The <b>Digraphs</b> package is a <b>GAP</b> package for digraphs and multidigraphs.
+    The &Digraphs; package is a &GAP; package containing
+              methods for graphs, digraphs, and multidigraphs.
 
 status: deposited
 doc-html: doc/chap0_mj.html

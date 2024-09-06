@@ -1,22 +1,26 @@
   
   
-                                    [1X[5XDigraphs[105X[101X
+                                   [1X Digraphs [101X
   
   
-                                 Version 1.8.0
+                  [1X Graphs, digraphs, and multidigraphs in [5XGAP[105X [101X
+  
+  
+                                     1.9.0
+  
+  
+                                6 September 2024
   
   
                                   Jan De Beule
   
-                                 Julius Jonušas
+                                 Julius Jonusas
   
-                               James D. Mitchell
-  
-                                 Maria Tsalakou
+                                 James Mitchell
   
                                  Wilf A. Wilson
   
-                                Michael C. Young
+                                 Michael Young
   
                         Marina Anagnostopoulou-Merkouri
   
@@ -24,50 +28,237 @@
   
                                  Stuart Burrell
   
+                                Graham Campbell
+  
+                                Raiyan Chowdhury
+  
                                  Reinis Cirpons
+  
+                                 Ashley Clayton
   
                                 Tom Conti-Leslie
   
-                                  Luke Elliott
+                                 Joseph Edwards
+  
+                                  Luna Elliott
+  
+                                 Isuru Fernando
   
                                  Ewan Gilligan
+  
+                               Sebastian Gutsche
+  
+                                Samantha Harper
   
                                     Max Horn
   
                              Christopher Jefferson
   
+                               Olexandr Konovalov
+  
+                                 Hyeokjun Kwon
+  
+                                   Andrea Lee
+  
+                                 Saffron McIver
+  
+                                Michael Orlitzky
+  
+                                 Matthew Pancer
+  
                                 Markus Pfeiffer
+  
+                                 Daniel Pointon
   
                                    Lea Racine
   
                               Christopher Russell
   
+                                 Artur Schaefer
+  
+                                 Isabella Scott
+  
+                                 Kamran Sharma
+  
                                    Finn Smith
   
                                    Ben Spiers
   
-                                  Murray White
+                                 Maria Tsalakou
+  
+                                  Meike Weiss
+  
+                                  Murray Whyte
+  
+                                Fabian Zickgraf
   
   
   
   Jan De Beule
       Email:    [7Xmailto:jdebeule@cage.ugent.be[107X
-      Homepage: [7Xhttp://homepages.vub.ac.be/~jdbeule[107X
-  Julius Jonušas
-      Email:    [7Xmailto:julius.jonusas@tuwien.ac.at[107X
+      Homepage: [7Xhttp://homepages.vub.ac.be/~jdbeule/[107X
+      Address:  [33X[0;14YVrije  Universiteit Brussel, Vakgroep Wiskunde, Pleinlaan 2, B
+                - 1050 Brussels, Belgium[133X
+  
+  
+  Julius Jonusas
+      Email:    [7Xmailto:j.jonusas@gmail.com[107X
       Homepage: [7Xhttp://julius.jonusas.work[107X
-  James D. Mitchell
-      Email:    [7Xmailto:jdm3@st-and.ac.uk[107X
+  James Mitchell
+      Email:    [7Xmailto:jdm3@st-andrews.ac.uk[107X
       Homepage: [7Xhttps://jdbm.me[107X
-  Maria Tsalakou
-      Email:    [7Xmailto:mt200@st-andrews.ac.uk[107X
-      Homepage: [7Xhttps://mariatsalakou.github.io[107X
+      Address:  [33X[0;14YMathematical  Institute,  North  Haugh, St Andrews, Fife, KY16
+                9SS, Scotland[133X
+  
+  
   Wilf A. Wilson
       Email:    [7Xmailto:gap@wilf-wilson.net[107X
       Homepage: [7Xhttps://wilf.me[107X
-  Michael C. Young
+  Michael Young
       Email:    [7Xmailto:mct25@st-andrews.ac.uk[107X
       Homepage: [7Xhttps://mct25.host.cs.st-andrews.ac.uk[107X
+      Address:  [33X[0;14YJack  Cole  Building, North Haugh, St Andrews, Fife, KY16 9SX,
+                Scotland[133X
+  
+  
+  Marina Anagnostopoulou-Merkouri
+      Email:    [7Xmailto:mam49@st-andrews.ac.uk[107X
+      Address:  [33X[0;14YMathematical  Institute,  North  Haugh, St Andrews, Fife, KY16
+                9SS, Scotland[133X
+  
+  
+  Finn Buck
+      Email:    [7Xmailto:finneganlbuck@gmail.com[107X
+      Address:  [33X[0;14YMathematical  Institute,  North  Haugh, St Andrews, Fife, KY16
+                9SS, Scotland[133X
+  
+  
+  Stuart Burrell
+      Email:    [7Xmailto:stuartburrell1994@gmail.com[107X
+      Homepage: [7Xhttps://stuartburrell.github.io[107X
+  Reinis Cirpons
+      Email:    [7Xmailto:rc234@st-andrews.ac.uk[107X
+      Address:  [33X[0;14YMathematical  Institute,  North  Haugh, St Andrews, Fife, KY16
+                9SS, Scotland[133X
+  
+  
+  Ashley Clayton
+      Email:    [7Xmailto:ac323@st-andrews.ac.uk[107X
+      Address:  [33X[0;14YMathematical  Institute,  North  Haugh, St Andrews, Fife, KY16
+                9SS, Scotland[133X
+  
+  
+  Tom Conti-Leslie
+      Email:    [7Xmailto:tom.contileslie@gmail.com[107X
+      Homepage: [7Xhttps://tomcontileslie.com[107X
+  Joseph Edwards
+      Email:    [7Xmailto:jde1@st-andrews.ac.uk[107X
+      Homepage: [7Xhttps://github.com/Joseph-Edwards[107X
+      Address:  [33X[0;14YMathematical  Institute,  North  Haugh, St Andrews, Fife, KY16
+                9SS, Scotland[133X
+  
+  
+  Luna Elliott
+      Email:    [7Xmailto:TODO[107X
+      Address:  [33X[0;14YMathematical  Institute,  North  Haugh, St Andrews, Fife, KY16
+                9SS, Scotland[133X
+  
+  
+  Isuru Fernando
+      Email:    [7Xmailto:isuruf@gmail.com[107X
+  Ewan Gilligan
+      Email:    [7Xmailto:eg207@st-andrews.ac.uk[107X
+  Sebastian Gutsche
+      Email:    [7Xmailto:gutsche@momo.math.rwth-aachen.de[107X
+  Samantha Harper
+      Email:    [7Xmailto:seh25@st-andrews.ac.uk[107X
+  Max Horn
+      Email:    [7Xmailto:horn@mathematik.uni-kl.de[107X
+      Homepage: [7Xhttps://www.quendi.de/math[107X
+      Address:  [33X[0;14YFachbereich        Mathematik,        TU       Kaiserslautern,
+                Gottlieb-Daimler-Straße 48, 67663 Kaiserslautern, Germany[133X
+  
+  
+  Christopher Jefferson
+      Email:    [7Xmailto:caj21@st-andrews.ac.uk[107X
+      Homepage: [7Xhttps://caj.host.cs.st-andrews.ac.uk[107X
+      Address:  [33X[0;14YJack  Cole  Building, North Haugh, St Andrews, Fife, KY16 9SX,
+                Scotland[133X
+  
+  
+  Olexandr Konovalov
+      Email:    [7Xmailto:obk1@st-andrews.ac.uk[107X
+      Homepage: [7Xhttps://olexandr-konovalov.github.io/[107X
+      Address:  [33X[0;14YJack  Cole  Building, North Haugh, St Andrews, Fife, KY16 9SX,
+                Scotland[133X
+  
+  
+  Hyeokjun Kwon
+      Email:    [7Xmailto:hk78@st-andrews.ac.uk[107X
+  Andrea Lee
+      Email:    [7Xmailto:ahwl1@st-andrews.ac.uk[107X
+      Address:  [33X[0;14YMathematical  Institute,  North  Haugh, St Andrews, Fife, KY16
+                9SS, Scotland[133X
+  
+  
+  Saffron McIver
+      Email:    [7Xmailto:sm544@st-andrews.ac.uk[107X
+  Michael Orlitzky
+      Email:    [7Xmailto:michael@orlitzky.com[107X
+      Homepage: [7Xhttps://michael.orlitzky.com/[107X
+  Matthew Pancer
+      Email:    [7Xmailto:mp322@st-andrews.ac.uk[107X
+  Markus Pfeiffer
+      Email:    [7Xmailto:markus.pfeiffer@morphism.de[107X
+      Homepage: [7Xhttps://markusp.morphism.de/[107X
+  Daniel Pointon
+      Email:    [7Xmailto:dp211@st-andrews.ac.uk[107X
+  Lea Racine
+      Email:    [7Xmailto:lr217@st-andrews.ac.uk[107X
+      Address:  [33X[0;14YJack  Cole  Building, North Haugh, St Andrews, Fife, KY16 9SX,
+                Scotland[133X
+  
+  
+  Artur Schaefer
+      Email:    [7Xmailto:as305@st-and.ac.uk[107X
+  Isabella Scott
+      Email:    [7Xmailto:iscott@uchicago.edu[107X
+  Kamran Sharma
+      Email:    [7Xmailto:kks4@st-andrews.ac.uk[107X
+      Address:  [33X[0;14YJack  Cole  Building, North Haugh, St Andrews, Fife, KY16 9SX,
+                Scotland[133X
+  
+  
+  Finn Smith
+      Email:    [7Xmailto:fls3@st-andrews.ac.uk[107X
+      Address:  [33X[0;14YMathematical  Institute,  North  Haugh, St Andrews, Fife, KY16
+                9SS, Scotland[133X
+  
+  
+  Ben Spiers
+      Email:    [7Xmailto:bspiers972@outlook.com[107X
+  Maria Tsalakou
+      Email:    [7Xmailto:mt200@st-andrews.ac.uk[107X
+      Homepage: [7Xhttps://mariatsalakou.github.io/[107X
+      Address:  [33X[0;14YMathematical  Institute,  North  Haugh, St Andrews, Fife, KY16
+                9SS, Scotland[133X
+  
+  
+  Meike Weiss
+      Email:    [7Xmailto:weiss@art.rwth-aachen.de[107X
+      Homepage: [7Xhttps://bit.ly/4e6pUeP[107X
+      Address:  [33X[0;14YChair of Algebra and Representation Theory, Pontdriesch 10-16,
+                52062 Aachen[133X
+  
+  
+  Murray Whyte
+      Email:    [7Xmailto:mw231@st-andrews.ac.uk[107X
+      Address:  [33X[0;14YMathematical  Institute,  North  Haugh, St Andrews, Fife, KY16
+                9SS, Scotland[133X
+  
+  
+  Fabian Zickgraf
+      Email:    [7Xmailto:f.zickgraf@dashdos.com[107X
   
   -------------------------------------------------------
   [1XAbstract[101X
@@ -77,8 +268,8 @@
   
   -------------------------------------------------------
   [1XCopyright[101X
-  [33X[0;0Y©  2014-24  by  Jan  De  Beule,  Julius  Jonušas, James D. Mitchell, Wilf A.
-  Wilson, Michael Young et al.[133X
+  [33X[0;0YJan  De  Beule,  Julius  Jonušas, James D. Mitchell, Wilf A. Wilson, Michael
+  Young et al.[133X
   
   [33X[0;0Y[5XDigraphs[105X  is  free  software; you can redistribute it and/or modify it under
   the      terms      of      the      GNU      General     Public     License
@@ -97,7 +288,7 @@
   -------------------------------------------------------
   
   
-  [1XContents (digraphs)[101X
+  [1XContents (Digraphs)[101X
   
   1 [33X[0;0YThe [5XDigraphs[105X package[133X
     1.1 [33X[0;0YIntroduction[133X
@@ -248,20 +439,22 @@
       5.1-2 DigraphNrVertices
       5.1-3 DigraphEdges
       5.1-4 DigraphNrEdges
-      5.1-5 DigraphNrLoops
-      5.1-6 DigraphSinks
-      5.1-7 DigraphSources
-      5.1-8 DigraphTopologicalSort
-      5.1-9 DigraphVertexLabel
-      5.1-10 DigraphVertexLabels
-      5.1-11 DigraphEdgeLabel
-      5.1-12 DigraphEdgeLabels
-      5.1-13 DigraphInEdges
-      5.1-14 DigraphOutEdges
-      5.1-15 IsDigraphEdge
-      5.1-16 IsMatching
-      5.1-17 DigraphMaximalMatching
-      5.1-18 DigraphMaximumMatching
+      5.1-5 DigraphNrAdjacencies
+      5.1-6 DigraphNrAdjacenciesWithoutLoops
+      5.1-7 DigraphNrLoops
+      5.1-8 DigraphSinks
+      5.1-9 DigraphSources
+      5.1-10 DigraphTopologicalSort
+      5.1-11 DigraphVertexLabel
+      5.1-12 DigraphVertexLabels
+      5.1-13 DigraphEdgeLabel
+      5.1-14 DigraphEdgeLabels
+      5.1-15 DigraphInEdges
+      5.1-16 DigraphOutEdges
+      5.1-17 IsDigraphEdge
+      5.1-18 IsMatching
+      5.1-19 DigraphMaximalMatching
+      5.1-20 DigraphMaximumMatching
     5.2 [33X[0;0YNeighbours and degree[133X
       5.2-1 AdjacencyMatrix
       5.2-2 CharacteristicPolynomial
@@ -314,13 +507,15 @@
       5.4-29 IteratorOfPaths
       5.4-30 DigraphAllSimpleCircuits
       5.4-31 DigraphLongestSimpleCircuit
-      5.4-32 DigraphLayers
-      5.4-33 DigraphDegeneracy
-      5.4-34 DigraphDegeneracyOrdering
-      5.4-35 HamiltonianPath
-      5.4-36 NrSpanningTrees
-      5.4-37 DigraphDijkstra
-      5.4-38 DigraphCycleBasis
+      5.4-32 DigraphAllUndirectedSimpleCircuits
+      5.4-33 DigraphAllChordlessCycles
+      5.4-34 DigraphLayers
+      5.4-35 DigraphDegeneracy
+      5.4-36 DigraphDegeneracyOrdering
+      5.4-37 HamiltonianPath
+      5.4-38 NrSpanningTrees
+      5.4-39 DigraphDijkstra
+      5.4-40 DigraphCycleBasis
     5.5 [33X[0;0YCayley graphs of groups[133X
       5.5-1 GroupOfCayleyDigraph
       5.5-2 GeneratorsOfCayleyDigraph
@@ -333,6 +528,8 @@
       5.7-3 PlanarEmbedding
       5.7-4 OuterPlanarEmbedding
       5.7-5 SubdigraphHomeomorphicToK23
+    5.8 [33X[0;0YHashing[133X
+      5.8-1 DigraphHash
   6 [33X[0;0YProperties of digraphs[133X
     6.1 [33X[0;0YVertex properties[133X
       6.1-1 DigraphHasAVertex
@@ -433,15 +630,16 @@
       7.3-9 EmbeddingsDigraphs
       7.3-10 IsDigraphHomomorphism
       7.3-11 IsDigraphEmbedding
-      7.3-12 DigraphsRespectsColouring
-      7.3-13 GeneratorsOfEndomorphismMonoid
-      7.3-14 DigraphColouring
-      7.3-15 DigraphGreedyColouring
-      7.3-16 DigraphWelshPowellOrder
-      7.3-17 ChromaticNumber
-      7.3-18 DigraphCore
-      7.3-19 LatticeDigraphEmbedding
-      7.3-20 IsLatticeHomomorphism
+      7.3-12 SubdigraphsMonomorphisms
+      7.3-13 DigraphsRespectsColouring
+      7.3-14 GeneratorsOfEndomorphismMonoid
+      7.3-15 DigraphColouring
+      7.3-16 DigraphGreedyColouring
+      7.3-17 DigraphWelshPowellOrder
+      7.3-18 ChromaticNumber
+      7.3-19 DigraphCore
+      7.3-20 LatticeDigraphEmbedding
+      7.3-21 IsLatticeHomomorphism
   8 [33X[0;0YFinding cliques and independent sets[133X
     8.1 [33X[0;0YFinding cliques[133X
       8.1-1 IsClique

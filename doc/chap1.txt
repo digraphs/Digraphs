@@ -4,7 +4,7 @@
   
   [1X1.1 [33X[0;0YIntroduction[133X[101X
   
-  [33X[0;0YThis  is  the manual for version 1.8.0 of the [5XDigraphs[105X package. This package
+  [33X[0;0YThis  is  the manual for version 1.9.0 of the [5XDigraphs[105X package. This package
   was developed at the University of St Andrews by:[133X
   
   [30X    [33X[0;6YJan De Beule,[133X
@@ -56,10 +56,10 @@
   them.  Full  explanations  of all the functions contained in the package are
   provided below.[133X
   
-  [33X[0;0YIf the [5XGrape[105X package is available, it will be loaded automatically. Digraphs
-  created  with  the  [5XDigraphs[105X  package  can be converted to [5XGrape[105X graphs with
-  [2XGraph[102X  ([14X3.2-3[114X),  and  conversely  [5XGrape[105X  graphs can be converted to [5XDigraphs[105X
-  objects with [2XDigraph[102X ([14X3.1-7[114X). [5XGrape[105X is not required for [5XDigraphs[105X to run.[133X
+  [33X[0;0YIf the [5XGRAPE[105X package is available, it will be loaded automatically. Digraphs
+  created  with  the  [5XDigraphs[105X  package  can be converted to [5XGRAPE[105X graphs with
+  [2XGraph[102X  ([14X3.2-3[114X),  and  conversely  [5XGRAPE[105X  graphs can be converted to [5XDigraphs[105X
+  objects with [2XDigraph[102X ([14X3.1-7[114X). [5XGRAPE[105X is not required for [5XDigraphs[105X to run.[133X
   
   [33X[0;0YThe [5Xbliss[105X tool [JK07] is included in this package. It is an open-source tool
   for  computing automorphism groups and canonical forms of graphs, written by
