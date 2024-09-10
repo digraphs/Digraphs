@@ -1630,11 +1630,11 @@ function(D)
         return [C, blocked];
     end;
 
-    digraph := DigraphSymmetricClosure(DigraphRemoveLoops(
-        DigraphRemoveAllMultipleEdges(DigraphMutableCopyIfMutable(D))));
-
+    digraph := DigraphCopySameMutability(DigraphSymmetricClosure(DigraphRemoveLoops(
+        DigraphRemoveAllMultipleEdges(D))));
     SetDigraphVertexLabels(digraph,
                  Reversed(DigraphDegeneracyOrdering(digraph)));
+
     temp := Triplets(digraph);
     T := temp[1];
     C := temp[2];
