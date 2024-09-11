@@ -1630,8 +1630,10 @@ function(D)
         return [C, blocked];
     end;
 
-    digraph := DigraphCopySameMutability(DigraphSymmetricClosure(
-        DigraphRemoveLoops(DigraphRemoveAllMultipleEdges(D))));
+    digraph := DigraphMutableCopy(D);
+    DigraphSymmetricClosure(DigraphRemoveLoops(
+                 DigraphRemoveAllMultipleEdges(digraph)));
+    MakeImmutable(digraph);
     SetDigraphVertexLabels(digraph,
                  Reversed(DigraphDegeneracyOrdering(digraph)));
 
