@@ -80,6 +80,7 @@
     <#Include Label="DigraphLongestSimpleCircuit">
     <#Include Label="DigraphAllUndirectedSimpleCircuits">
     <#Include Label="DigraphAllChordlessCycles">
+    <#Include Label="FacialWalks">
     <#Include Label="DigraphLayers">
     <#Include Label="DigraphDegeneracy">
     <#Include Label="DigraphDegeneracyOrdering">
