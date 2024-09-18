@@ -106,6 +106,7 @@
     <#Include Label="PlanarEmbedding">
     <#Include Label="OuterPlanarEmbedding">
     <#Include Label="SubdigraphHomeomorphicToK">
+    <#Include Label="DualPlanarGraph">
   </Section>
 
   <Section><Heading>Hashing</Heading>

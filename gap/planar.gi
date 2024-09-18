@@ -73,6 +73,47 @@ SUBGRAPH_HOMEOMORPHIC_TO_K4);
 InstallMethod(SubdigraphHomeomorphicToK33, "for a digraph", [IsDigraph],
 SUBGRAPH_HOMEOMORPHIC_TO_K33);
 
+InstallMethod(DualPlanarGraph, "for a digraph", [IsDigraph],
+function(D)
+  local digraph, rotationSystem, facialWalks, dualEdges,
+        cycle1, cycle2, commonNodes, i;
+
+    if not IsPlanarDigraph(D) then
+        return fail;
+    fi;
+
+    digraph := DigraphSymmetricClosure(DigraphRemoveLoops(
+        DigraphRemoveAllMultipleEdges(DigraphMutableCopyIfMutable(D))));
+    rotationSystem := PlanarEmbedding(digraph);
+    facialWalks := FacialWalks(digraph, rotationSystem);
+
+    dualEdges := [];
+    for cycle1 in [1 .. Length(facialWalks) - 1] do
+        for cycle2 in [cycle1 .. Length(facialWalks)] do
+            if cycle1 = cycle2 then
+                if not IsDuplicateFree(facialWalks[cycle1]) then
+                    Add(dualEdges, [cycle1, cycle1]);
+                fi;
+            else
+                commonNodes := Intersection(facialWalks[cycle1],
+                                            facialWalks[cycle2]);
+                if Length(commonNodes) = Length(facialWalks[cycle1]) then
+                    for i in [1 .. Length(commonNodes)] do
+                        Add(dualEdges, [cycle1, cycle2]);
+                        Add(dualEdges, [cycle2, cycle1]);
+                    od;
+                else
+                    for i in [1 .. Length(commonNodes) - 1] do
+                        Add(dualEdges, [cycle1, cycle2]);
+                        Add(dualEdges, [cycle2, cycle1]);
+                    od;
+                fi;
+            fi;
+        od;
+    od;
+    return DigraphByEdges(dualEdges);
+end);
+
 ########################################################################
 # 2. Properties
 ########################################################################
