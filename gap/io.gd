@@ -55,4 +55,6 @@ DeclareOperation("DiSparse6String", [IsDigraph]);
 DeclareOperation("PlainTextString", [IsDigraph]);
 DeclareOperation("WriteDIMACSDigraph", [IsString, IsDigraph]);
 DeclareGlobalFunction("WritePlainTextDigraph");
+DeclareOperation("WriteDreadnautGraph", [IsString, IsDigraph]);
+DeclareOperation("ReadDreadnautGraph", [IsString]);
 DeclareGlobalFunction("DigraphPlainTextLineEncoder");

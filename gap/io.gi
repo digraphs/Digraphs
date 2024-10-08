@@ -1389,6 +1389,428 @@ function(str)
   return ConvertToImmutableDigraphNC(out);
 end);
 
+BindGlobal("DIGRAPHS_FindDreadnautLine",
+function(original, line)
+  local start;
+  start := PositionSublist(original, line);
+  return Length(PositionsProperty(original{[1 .. start + Length(line)]},
+                                  x -> x = '\n')) + 1;
+end);
+
+BindGlobal("DIGRAPHS_ParseDreadnautConfig",
+function(config, key)
+    local Pos, tempStr, tempConfig;
+
+    RemoveCharacters(config, " \n\r\t=-+");
+
+    tempConfig := ShallowCopy(config);
+    RemoveCharacters(tempConfig, "Ag$ntd1234567890");
+
+    if tempConfig <> "" and key <> "f" then
+      ErrorNoReturn("the format of the file given as the 1st argument <name> ",
+                    "cannot be determined as it contains unexpected ",
+                    "characters: ",
+                    JoinStringsWithSeparator(tempConfig, ","),
+                    ",");
+    fi;
+
+    Pos := PositionProperty(config, x -> x = key[1]);
+
+    if Pos <> fail then
+      tempStr := "";
+      Pos := Pos + 1;
+
+      while Int(config{[Pos]}) <> fail do
+        tempStr := Concatenation(tempStr, config{[Pos]});
+        Pos := Pos + 1;
+        if Pos > Length(config) then
+          break;
+        fi;
+      od;
+      if tempStr = "" then
+        if key <> "f" then
+          ErrorNoReturn("the format of the file given as the 2nd ",
+                        "argument <name> cannot be determined. ", key,
+                        " is not followed by a value");
+        else
+          ErrorNoReturn("the partition cannot be determined.",
+                        " 'f' is neither followed",
+                        " by a single value nor by a list of values");
+        fi;
+      fi;
+      return Int(tempStr);
+
+    else
+      if key = "$" then
+        return 0;
+      else
+        ErrorNoReturn("the number of vertices has not been declared. ",
+                      "Ensure that ",
+                      "n=# is included before the declaration of 'g', ");
+      fi;
+    fi;
+end);
+
+BindGlobal("DIGRAPHS_LegalDreadnautEdge",
+function(vertex, x, r)
+  if x > r.nValue or x < 1 then
+    Info(InfoWarning, 1, "Ignoring illegal edge ",
+         vertex + r.dollarValue - 1, " -> ",
+         x + r.dollarValue - 1, " (original indexing)");
+    return false;
+  fi;
+  if not r.dExists and x = vertex then
+    Info(InfoWarning, 1, "Ignoring illegal edge ",
+       vertex + r.dollarValue - 1, " -> ",
+       x + r.dollarValue - 1, " (original indexing). ",
+       "Ensure 'd' is declared to include loops.");
+    return false;
+  fi;
+  return true;
+end);
+
+BindGlobal("DIGRAPHS_SplitDreadnautLines",
+function(inputString)
+    local startPos, currentPos, segments, currentChar, nextChar, index,
+          partition;
+
+    startPos := 1;
+    segments := [];
+
+    # Iterate over the string
+    for currentPos in [1 .. Length(inputString) - 1] do
+        currentChar := inputString[currentPos];
+        nextChar := inputString[currentPos + 1];
+
+        if currentChar = ';' then
+          Add(segments, inputString{[startPos .. currentPos]});
+          startPos := currentPos + 1;
+          continue;
+        fi;
+
+        if currentChar = '$' and nextChar = '$' then
+          Info(InfoWarning, 1, "Vertex indexing will start at 1");
+          if ForAny(inputString{[currentPos + 2 .. Length(inputString)]},
+                     c -> c in ".:") or
+                     inputString{
+                      [currentPos + 2 .. Minimum([currentPos + 2,
+                                                Length(inputString)])]} = "$"
+          then
+            ErrorNoReturn("Syntax error: unexpected characters",
+                          " (including ':' or '.') after \"$$\"");
+          else
+            Add(segments, inputString{[startPos .. currentPos - 1]});
+            Add(segments, "$$");
+            startPos := currentPos + 2;
+            continue;
+          fi;
+
+        fi;
+
+        if currentChar in "erRjstTvFiIOlw+campyGS*kKVu?&Px@bz#oMh<>q" then
+          Info(InfoWarning, 1, "while parsing dreadnaut file config,",
+                               " found operation ",
+                               currentChar, " which is not supported.");
+        fi;
+
+        if currentChar = 'f' then  # partition
+          Add(segments, inputString{[startPos .. currentPos - 1]});
+          if PositionSublist(
+            inputString{[currentPos + 1 .. Length(inputString)]},
+            "[") = fail then
+              index := DIGRAPHS_ParseDreadnautConfig(inputString{[currentPos ..
+                                                        Length(inputString)]},
+                                            "f");
+              partition := [1 .. r.nValue];
+              Remove(partition, index);
+
+              Add(segments, Concatenation(
+                            Concatenation(
+                            Concatenation("f", String(index)),
+                            " | "), JoinStringsWithSeparator(partition, " ")));
+
+              startPos := PositionSublist(
+                          inputString{[currentPos + 1 .. Length(inputString)]},
+                          String(index)) + currentPos + 1;
+
+          else
+            repeat
+              currentPos := currentPos + 1;
+            until Int(inputString{[currentPos]}) <> fail;
+            startPos := currentPos;
+            repeat
+              currentPos := currentPos + 1;
+            until currentPos > Length(inputString)
+                  or inputString[currentPos] = ']';
+            if currentPos > Length(inputString) then
+              ErrorNoReturn("Syntax error: missing ']'",
+                            " in declaration of partition");
+            else
+              if ForAll(inputString{[currentPos + 1 .. Length(inputString)]},
+                        c -> c in
+                        Concatenation("$ \nferRjstTvFiIOlw+campyGS*kKVu?&Px@b",
+                                      "z#oMh<>q0123456789")) then
+                Add(segments,
+                    Concatenation("f",
+                                  inputString{[startPos .. currentPos - 1]}));
+                startPos := currentPos + 1;
+              else
+                ErrorNoReturn(
+                      "Syntax error: unexpected characters after \"]\" (",
+                      JoinStringsWithSeparator(
+                        Filtered(
+                          inputString{[currentPos + 1 .. Length(inputString)]},
+                          c -> not c in
+                          Concatenation(
+                            "$ \nferRjstTvFiIOlw+campyGS*kKVu?&Px@b",
+                            "z#oMh<>q0123456789"),
+                            ","),
+                        "), "));
+              fi;
+            fi;
+          fi;
+        fi;
+
+        if currentChar = ':' then
+          repeat  # backtrack to find the start of the vertex
+            currentPos := currentPos - 1;
+            if inputString[currentPos] <> ' ' and
+               not IsDigitChar(inputString[currentPos]) then
+              ErrorNoReturn("Syntax error: unexpected character (",
+                            inputString[currentPos],
+                            ") before \":\"");
+            fi;
+          until currentPos <= 1 or IsDigitChar(inputString[currentPos]);
+          repeat
+            currentPos := currentPos - 1;
+          until currentPos <= 1 or not IsDigitChar(inputString[currentPos]);
+          if startPos < currentPos then
+            Add(segments, inputString{[startPos .. currentPos - 1]});
+          fi;
+          if currentPos > 1 then
+            startPos := currentPos;
+          fi;
+        fi;
+    od;
+
+    if ForAny(inputString{[startPos .. Length(inputString)]},
+              c -> c in "erRjstTvFiIOlw+campyGS*kKVu?&Px@bz#oMh<>q") then
+      Info(InfoWarning, 1, "Ignoring unsupported operation.");
+    else
+      Add(segments, inputString{[startPos .. Length(inputString)]});
+    fi;
+    return segments;
+end);
+
+BindGlobal("DIGRAPHS_ParseDreadnautGraph",
+function(graphData, r)
+    local edgeList, part, parts, subparts, vertex, connectedTo,
+          adjacencyPart, pparts, partition, i, j, num, iter,
+          pos;
+
+    edgeList := List([1 .. r.nValue], x -> []);
+    NormalizeWhitespace(graphData);
+    parts := DIGRAPHS_SplitDreadnautLines(graphData);
+    iter := 0;
+
+    for part in parts do
+      iter := iter + 1;
+
+      pos := PositionSublist(part, ".");
+
+      if pos <> fail then
+          part := Concatenation(part{[1 .. pos - 1]},
+                                Filtered(part{[pos .. Length(part)]},
+                                        x -> not IsDigitChar(x)));
+          RemoveCharacters(part, ".");
+          if ForAny(parts{[iter + 1 .. Length(parts)]},
+                     c -> ':' in c) then
+            ErrorNoReturn("Syntax error: unexpected characters (including ':'",
+                          ")after \".\"",
+                          "(note that edges cannot be declared after \".\")");
+          fi;
+      fi;
+
+      if part = "" or part = ' ' or part = " " then
+        continue;
+      fi;
+
+      if '$' in part then
+        if ForAny(part{[iter + 1 .. Length(part)]}, c -> c in ".:") then
+            ErrorNoReturn("Syntax error: unexpected characters (including ':'",
+                          "or '.')after \".\"",
+                          "(note that edges cannot be declared after \".\")");
+        fi;
+
+        if part = "$$" then
+          r.dollarValue := 0;
+        else
+          r.dollarValue := DIGRAPHS_ParseDreadnautConfig(part, "$");
+        fi;
+      fi;
+
+      if part[1] = 'f' then
+        if Length(part) = 1 then  # empty partition
+          continue;
+        # elif not '[' in part then
+        #   DIGRAPHS_ParseDreadnautConfig(part, "f");
+        fi;
+
+        pparts := SplitString(part{[2 .. Length(part)]}, "|");
+        partition := List([1 .. r.nValue], x -> -1);
+        pparts[Length(pparts)] := Concatenation(pparts[Length(pparts)], " ");
+        for i in [1 .. Length(pparts)] do
+          num := "";
+          for j in pparts[i] do
+              if IsDigitChar(j) then
+                num := Concatenation(num, [j]);
+
+              elif j <> ' ' and j <> '\n' then
+                ErrorNoReturn("illegal character ", j, " in partition");
+
+              else
+              if num <> "" then
+                num := Int(num) - r.dollarValue + 1;
+                if num > r.nValue or num < 1 then
+                  ErrorNoReturn("illegal part ",
+                                num + r.dollarValue - 1,
+                                " in partition");
+                else
+                  partition[num] := i;
+                fi;
+                num := "";
+              fi;
+            fi;
+          od;
+        od;
+
+        if - 1 in partition then
+          ErrorNoReturn("partition is incomplete. The following vertices ",
+                         PositionsProperty(partition, x -> x = -1),
+                         " do not feature in any part.");
+        else
+          r.partition := partition;
+        fi;
+      fi;
+
+      subparts := SplitString(part, ":");
+
+      if Length(subparts) = 0 or Length(subparts) = 1 then
+        continue;
+
+      else
+        vertex := subparts[1];
+        RemoveCharacters(vertex, " ");
+        vertex := Int(vertex);
+        adjacencyPart := subparts[2];
+      fi;
+
+      vertex := vertex - r.dollarValue + 1;
+
+      if vertex > r.nValue or vertex < 1 then
+        Info(InfoWarning, 1, "Ignoring illegal vertex ", vertex,
+                             " (original indexing)");
+        continue;
+      fi;
+
+      NormalizeWhitespace(adjacencyPart);  # Remove extra spaces
+      RemoveCharacters(adjacencyPart, ",;");
+      connectedTo := List(SplitString(adjacencyPart, " "), Int);
+
+      if fail in connectedTo then
+        ErrorNoReturn("Formatting error (", part, ")");
+      fi;
+
+      connectedTo := List(connectedTo, x -> x - r.dollarValue + 1);
+      connectedTo := Filtered(connectedTo,
+                              x -> DIGRAPHS_LegalDreadnautEdge(vertex, x, r));
+
+      Append(edgeList[vertex], connectedTo);
+      edgeList[vertex] := DuplicateFreeList(edgeList[vertex]);
+    od;
+
+    return edgeList;
+end);
+
+InstallMethod(ReadDreadnautGraph, "for a digraph", [IsString],
+function(name)
+  local file, config, graphData, line, edgeList, foundG, r, D, exclamPosition;
+  file := IO_CompressedFile(UserHomeExpand(name), "r");
+
+  if file = fail then
+    ErrorNoReturn("cannot open the file given as the 1st argument <name>, \"",
+                 name,
+                 "\",");
+  fi;
+
+  config := "";
+  foundG := false;
+
+  # Read file line by line until 'g' is found
+  repeat
+      line := IO_ReadLine(file);
+      if not IsEmpty(line) then
+          exclamPosition := PositionSublist(line, "!");
+          if exclamPosition <> fail and exclamPosition > 1 then
+              line := line{[1 .. exclamPosition - 1]};
+          elif exclamPosition = 1 then
+              continue;
+          fi;
+          config := Concatenation(config, line);
+          foundG := PositionSublist(line, "g") <> fail;
+      fi;
+  until foundG or IsEmpty(line);
+
+  if not foundG then
+      ErrorNoReturn("'g' not declared");
+  fi;
+
+  config := SplitString(config, "g")[1];
+  graphData := line{[PositionSublist(line, "g") + 1 .. Length(line)]};
+
+  repeat
+      line := IO_ReadLine(file);
+      if not IsEmpty(line) then
+          exclamPosition := PositionSublist(line, "!");
+          if exclamPosition <> fail and exclamPosition > 1 then
+              line := line{[1 .. exclamPosition - 1]};
+          elif exclamPosition = 1 then
+              continue;
+          fi;
+          graphData := Concatenation(graphData, line);
+      fi;
+  until IsEmpty(line);
+
+  r := rec(dollarValue := DIGRAPHS_ParseDreadnautConfig(config, "$"),
+           nValue := DIGRAPHS_ParseDreadnautConfig(config, "n"),
+           dExists := PositionSublist(config, "d") <> fail,
+           partition := fail);
+
+  if r.dollarValue <> 1 then
+    Info(InfoWarning, 1,
+         "The graph will be reindexed such that the indexing starts",
+          " at 1. i.e. effectively adding $=1 to the end of the file.");
+  fi;
+
+  edgeList := DIGRAPHS_ParseDreadnautGraph(graphData, r);
+
+  if r.dExists then
+    D := Digraph(edgeList);
+    if r.partition <> fail then
+      SetDigraphVertexLabels(D, r.partition);
+    fi;
+    return D;
+  else
+    Info(InfoWarning, 1,
+         "The graph is undirected and so will be symmetrised.");
+    D := DigraphSymmetricClosure(Digraph(edgeList));
+    if r.partition <> fail then
+      SetDigraphVertexLabels(D, r.partition);
+    fi;
+    return D;
+  fi;
+end);
+
 ################################################################################
 # 4. Encoders
 ################################################################################
@@ -1457,6 +1879,70 @@ function(name, D)
 
   IO_Close(file);
   return IO_OK;
+end);
+
+InstallMethod(WriteDreadnautGraph, "for a digraph", [IsString, IsDigraph],
+function(name, D)
+  local file, n, verts, nbs, labels, i, degs, filteredVerts,
+        out, positions, joinedPositions, dflabels;
+
+  file := IO_CompressedFile(UserHomeExpand(name), "w");
+  if file = fail then
+    ErrorNoReturn("cannot open the file given as the 1st argument <name>, \"",
+                  name,
+                  "\",");
+  fi;
+
+  n := DigraphNrVertices(D);
+  verts := DigraphVertices(D);
+  nbs := OutNeighbours(D);
+  degs := OutDegrees(D);
+  labels := DigraphVertexLabels(D);
+
+  if n = 0 then
+    ErrorNoReturn("the 2nd argument <D> must be a non-empty digraph,");
+  fi;
+
+  IO_WriteLine(file, "d");
+  IO_WriteLine(file, "$=1");
+  IO_WriteLine(file, Concatenation("n=", String(n)));
+  IO_WriteLine(file, "g");
+
+  filteredVerts := Filtered(verts, x -> degs[x] > 0);
+  for i in filteredVerts do
+    labels := List(nbs[i], String);
+    IO_WriteLine(file, Concatenation(String(i), " : ",
+                 JoinStringsWithSeparator(labels, " "), ";"));
+  od;
+  IO_WriteLine(file, ".");
+
+  if labels <> [1 .. n] then
+    dflabels := DuplicateFreeList(labels);
+    if ForAll(dflabels, IsInt) then
+      out := "f = [";
+
+      for i in dflabels do
+        positions := PositionsProperty(labels, x -> x = i);
+        joinedPositions := JoinStringsWithSeparator(positions, " ");
+        out := Concatenation(out, joinedPositions);
+        if i <> dflabels[Length(dflabels)] then
+          out := Concatenation(out, " | ");
+        fi;
+      od;
+      out := Concatenation(out, " ]");
+
+      IO_WriteLine(file, out);
+    else
+      Info(InfoDigraphs, 1,
+          "Only integer vertex labels are supported by the dreadnaut format.");
+      Info(InfoDigraphs, 1,
+          "The vertex labels of the 2nd argument <a digraph>",
+          " will not be saved.");
+    fi;
+  fi;
+
+  IO_Close(file);
+  return;
 end);
 
 InstallGlobalFunction(DigraphPlainTextLineEncoder,
