@@ -2076,6 +2076,11 @@ function(D, roots)
 
 end);
 
+InstallMethod(IsOrderFilter, "for a digraph and a list of vertices", [IsDigraph, IsList],
+function(D, roots)
+  return IsOrderIdeal(DigraphReverse(D), roots);
+end);
+
 InstallMethod(DominatorTree, "for a digraph and a vertex",
 [IsDigraph, IsPosInt],
 function(D, root)
