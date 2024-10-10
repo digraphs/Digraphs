@@ -452,6 +452,13 @@ gap> C := DigraphContractEdge(D, 2, 1);
 gap> DigraphEdges(C);
 [ [ 2, 1 ] ]
 
+# Issue #704 SubdigraphsMonomorphisms bug
+gap> d := Digraph([[2, 3, 4, 5], [1, 3, 4], [1, 2, 4, 5], [1, 2, 3, 5], 
+> [1, 3, 4]]);;
+gap> SubdigraphsMonomorphisms(CompleteMultipartiteDigraph([2, 3]), d);
+[ Transformation( [ 1, 3, 2 ] ), Transformation( [ 2, 5, 1, 3, 4 ] ), 
+  Transformation( [ 1, 4, 2, 3 ] ), Transformation( [ 3, 4, 2, 1 ] ) ]
+
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(C);
 gap> Unbind(D);

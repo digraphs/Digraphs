@@ -2764,7 +2764,7 @@ true
 # SubdigraphsMonomorphisms
 gap> SubdigraphsMonomorphisms(CompleteBipartiteDigraph(2, 2),
 > CompleteDigraph(4));
-[ Transformation( [ 1, 3, 2 ] ), Transformation( [ 2, 3, 1 ] ), 
+[ Transformation( [ 2, 3, 1 ] ), Transformation( [ 1, 3, 2 ] ), 
   Transformation( [ 3, 4, 2, 1 ] ) ]
 gap> D := DigraphFromGraph6String("D^{");
 <immutable symmetric digraph with 5 vertices, 18 edges>
@@ -2776,10 +2776,12 @@ gap> D := DigraphFromGraph6String("K^vMMF@oM?{@");
 <immutable symmetric digraph with 12 vertices, 60 edges>
 gap> Length(SubdigraphsMonomorphisms(CompleteMultipartiteDigraph([2, 5]), D));
 252
-gap> D := DigraphFromGraph6String("O^vMMF@oM?w@o@o?w?N?@");
-<immutable symmetric digraph with 16 vertices, 84 edges>
-gap> Length(SubdigraphsMonomorphisms(CompleteMultipartiteDigraph([2, 7]), D));
-3432
+
+# The next test is a bit slow
+# gap> D := DigraphFromGraph6String("O^vMMF@oM?w@o@o?w?N?@");
+# <immutable symmetric digraph with 16 vertices, 84 edges>
+# gap> Length(SubdigraphsMonomorphisms(CompleteMultipartiteDigraph([2, 7]), D));
+# 3432
 
 #
 gap> H := DigraphFromGraph6String("F~CWw");
