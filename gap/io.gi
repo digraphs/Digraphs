@@ -1665,7 +1665,8 @@ BindGlobal("DIGRAPHS_ParseDreadnautGraph",
 function(graphData, r)
     local edgeList, part, parts, subparts, vertex, connectedTo,
           adjacencyPart, pparts, partition, i, j, num, iter,
-          pos, char, localNewlineCount, failure, temp;
+          pos, char, localNewlineCount, failure, temp, vertices,
+          components, p;
 
     edgeList := List([1 .. r.nValue], x -> []);
     RemoveCharacters(graphData, "\r\t");
@@ -1760,41 +1761,48 @@ function(graphData, r)
       elif Length(subparts) = 1 then
         if PositionSublist(" $$;", subparts[1]) <> fail then
           continue;
+        elif Length(PositionsProperty(subparts[1],
+           x -> x = '\n')) = Length(subparts[1]) then
+          localNewlineCount := localNewlineCount + Length(subparts[1]);
+          continue;
         else
           ErrorNoReturn("formatting error ('", part, "'),");
         fi;
-
       else
-        vertex := subparts[1];
-        for char in vertex do
-          if char = '\n' then
+        vertices := [];
+        components := SplitString(subparts[1], "\n");
+
+        for i in [1 .. Length(components)] do
+            for p in SplitString(components[i], " ") do
+                if p = "" then
+                    continue;
+                fi;
+                if not ForAll(p, IsDigitChar) then
+                    ErrorNoReturn("Formatting error: ", subparts[1],
+                    " on line ", localNewlineCount);
+                else
+                    Add(vertices, Int(p) - r.dollarValue + 1);
+                fi;
+            od;
+
             localNewlineCount := localNewlineCount + 1;
-          elif char = ' ' then
-            continue;
-          else
-            if not IsDigitChar(char) then
-              ErrorNoReturn("formatting error (", part, ") on line ",
-                            localNewlineCount);
-            fi;
-          fi;
         od;
-        RemoveCharacters(vertex, " \n");
-        vertex := Int(vertex);
         r.newlineCount := localNewlineCount;
         adjacencyPart := subparts[2];
       fi;
 
-      vertex := vertex - r.dollarValue + 1;
+      for vertex in vertices do
 
-      if vertex > r.nValue or vertex < 1 then
-        Info(InfoWarning, 1, "Ignoring illegal vertex ", vertex,
-                             " (original indexing)");
-        continue;
-      fi;
+        if vertex > r.nValue or vertex < 1 then
+          # shouldn't this be vertex + r.dollarValue - 1?
+          Info(InfoWarning, 1, "Ignoring illegal vertex ", vertex,
+                              " (reindexed) on line ", localNewlineCount);
+          continue;
+        fi;
 
-      # NormalizeWhitespace(adjacencyPart);  # Remove extra spaces
+      od;
+
       RemoveCharacters(adjacencyPart, ",;");
-      # connectedTo := List(SplitString(adjacencyPart, " "), Int);
       connectedTo := [];
       temp := "";
 
@@ -1820,6 +1828,9 @@ function(graphData, r)
           fi;
         fi;
       od;
+      if temp <> "" then
+        Add(connectedTo, Int(temp));
+      fi;
 
       failure := PositionProperty(connectedTo, x -> x = fail);
       if failure <> fail then
@@ -1830,12 +1841,15 @@ function(graphData, r)
       fi;
 
       connectedTo := List(connectedTo, x -> x - r.dollarValue + 1);
-      connectedTo := Filtered(connectedTo,
-                              x -> DIGRAPHS_LegalDreadnautEdge(vertex,
-                                x, r, part));
 
-      Append(edgeList[vertex], connectedTo);
-      edgeList[vertex] := DuplicateFreeList(edgeList[vertex]);
+      for vertex in vertices do
+        connectedTo := Filtered(connectedTo,
+                                x -> DIGRAPHS_LegalDreadnautEdge(vertex,
+                                  x, r, part));
+
+        Append(edgeList[vertex], connectedTo);
+        edgeList[vertex] := DuplicateFreeList(edgeList[vertex]);
+      od;
     od;
 
     return edgeList;
@@ -1894,7 +1908,6 @@ function(name)
 
   r := rec(dExists := PositionSublist(config, "d") <> fail,
            partition := fail,
-           original := IO_ReadUntilEOF(file),
            newlineCount := 1 + Length(PositionsProperty(config, x -> x = '\n')));
 
   r.dollarValue := DIGRAPHS_ParseDreadnautConfig(config, "$", r);

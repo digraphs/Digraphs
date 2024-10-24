@@ -966,7 +966,7 @@ gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "$=1n=3-d");;
 gap> IO_WriteLine(file, "g1 : 1 2 3 1 2;");;
 gap> IO_WriteLine(file, "	 2 : 1 2;");;
-gap> IO_WriteLine(file, "	 3 : 2;q");;
+gap> IO_WriteLine(file, "	 3 : 2;");;
 gap> IO_Close(file);;
 gap> ReadDreadnautGraph(filename);
 <immutable digraph with 3 vertices, 6 edges>
@@ -978,8 +978,7 @@ gap> IO_WriteLine(file, "1: 1.");;
 gap> IO_Close(file);;
 gap> ReadDreadnautGraph(filename);
 Error, the format of the file given as the 1st argument <name> cannot be deter\
-mined as it contains unexpected characters: 's','i','l','l','y','e','x','f','o\
-','r','e','s','i',
+mined as it contains an unexpected character: 's' on line 1
 
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(D);
