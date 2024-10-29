@@ -33,6 +33,10 @@
 #include <stdint.h>   // for uint16_t, uint64_t
 #include <stdlib.h>   // for malloc, NULL
 
+#ifdef DIGRAPHS_ENABLE_STATS
+#include <cstdio>  // for printf
+#endif
+
 // GAP headers
 #include "gap-includes.h"
 
