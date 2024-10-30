@@ -333,75 +333,59 @@ end);
 InstallMethod(SubdigraphsMonomorphismsRepresentatives,
 "for a digraph and a digraph", [IsDigraph, IsDigraph],
 function(H, G)
-  local GV, HN, map, reps, result, set, rep;
+  local AG, map, result, K, rep;
 
-  GV := DigraphVertices(G);
-  HN := DigraphNrVertices(H);
-
+  AG := AutomorphismGroup(G);
   map := HashMap();
-  reps := [];
-
-  for set in Combinations(GV, HN) do
-    if not set in map then
-      Add(reps, set);
-      DIGRAPHS_AddOrbitToHashMap(AutomorphismGroup(G), set, map);
-    fi;
-  od;
-
   result := [];
-  for rep in reps do
-    map :=
-    HomomorphismDigraphsFinder(H,                   # domain
-                               G,                   # range
-                               fail,                # hook
-                               [],                  # user_param
-                               1,                   # max_results
-                               HN,                  # hint (i.e. rank)
-                               true,                # injective
-                               rep,                 # image
-                               [],                  # partial_map
-                               fail,                # colors1
-                               fail,                # colors2
-                               DigraphWelshPowellOrder(H),
-                               Group(()));
-    if Length(map) <> 0 then
-      Add(result, map[1]);
+
+  for rep in MonomorphismsDigraphsRepresentatives(H, G) do
+    K := OnSetsTuples(DigraphEdges(H), rep);
+    if not K in map then
+      Add(result, rep);
+      DIGRAPHS_AddOrbitToHashMap(AG, K, OnSetsTuples, map);
     fi;
   od;
+
   return result;
 end);
 
 InstallMethod(SubdigraphsMonomorphisms, "for a digraph and a digraph",
 [IsDigraph, IsDigraph],
 function(H, G)
-  local ApplyHomomorphismNC, reps, AG, result, sub, o, x, rep, i;
+  local AddOrbitToHashMap, AG, map, K, rep;
 
-  ApplyHomomorphismNC := function(D1, D2, t)
-    local old, new, v, im;
-    old := OutNeighbours(D1);
-    new := List([1 .. DigraphNrVertices(D2)], x -> []);
-    for v in DigraphVertices(D1) do
-      im := v ^ t;
-      if not IsBound(new[im]) then
-        new[im] := [];
-      fi;
-      Append(new[im], OnTuples(old[v], t));
+  AddOrbitToHashMap := function(G, set, act, hashmap, rep)
+    local gens, o, im, pt, g;
+
+    gens := GeneratorsOfGroup(G);
+    o    := [set];
+    Assert(1, not set in hashmap);
+    hashmap[set] := rep;
+    for pt in o do
+      for g in gens do
+        im := act(pt, g);
+        if not im in hashmap then
+          hashmap[im] := hashmap[pt] * g;
+          # Assert(0, OnSetsTuples(set, hashmap[im]) = im);
+          Add(o, im);
+        fi;
+      od;
     od;
-    return DigraphNC(new);
+    return o;
   end;
 
-  reps := SubdigraphsMonomorphismsRepresentatives(H, G);
   AG := AutomorphismGroup(G);
-  result := [];
-  for rep in reps do
-    sub := ApplyHomomorphismNC(H, G, rep);
-    o   := Enumerate(Orb(AG, sub, OnDigraphs, rec(schreier := true)));
-    for i in [1 .. Length(o)] do
-      x := EvaluateWord(GeneratorsOfGroup(AG), TraceSchreierTreeForward(o, i));
-      Add(result, rep * x);
-    od;
+  map := HashMap();
+
+  for rep in MonomorphismsDigraphsRepresentatives(H, G) do
+    K := OnSetsTuples(DigraphEdges(H), rep);
+    if not K in map then
+      AddOrbitToHashMap(AG, K, OnSetsTuples, map, rep);
+    fi;
   od;
-  return result;
+
+  return Values(map);
 end);
 
 ################################################################################

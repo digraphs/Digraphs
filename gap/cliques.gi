@@ -550,7 +550,7 @@ function(arg...)
       orbits := HashMap();
       for c in cliques do
         if not c in orbits then
-          DIGRAPHS_AddOrbitToHashMap(G, c, orbits);
+          DIGRAPHS_AddOrbitToHashMap(G, c, OnSets, orbits);
         fi;
       od;
       out := Keys(orbits);
@@ -709,7 +709,8 @@ function(digraph, hook, user_param, limit, include, exclude, max, size, reps)
 
         new_found := 0;
         if not clique in found_orbits then
-          orbit := DIGRAPHS_AddOrbitToHashMap(group, clique, found_orbits);
+          orbit :=
+          DIGRAPHS_AddOrbitToHashMap(group, clique, OnSets, found_orbits);
           n := Length(orbit);
 
           if invariant_include and invariant_exclude then
@@ -895,7 +896,7 @@ function(D, hook, param, lim, inc, exc, max, size, reps, inc_var, exc_var)
       num := num + 1;
       return;
     elif not c in found_orbits then
-      orb := DIGRAPHS_AddOrbitToHashMap(grp, c, found_orbits);
+      orb := DIGRAPHS_AddOrbitToHashMap(grp, c, OnSets, found_orbits);
       n := Length(orb);
 
       if invariant then  # we're not just looking for orbit reps, but inc and
