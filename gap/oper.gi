@@ -2312,7 +2312,8 @@ function(D, roots)
 
 end);
 
-InstallMethod(IsOrderFilter, "for a digraph and a list of vertices", [IsDigraph, IsList],
+InstallMethod(IsOrderFilter, "for a digraph and a list of vertices", 
+[IsDigraph, IsList],
 function(D, roots)
   return IsOrderIdeal(DigraphReverse(D), roots);
 end);
@@ -2548,8 +2549,8 @@ function(G)
   c := Length(unusedEdges);
 
   # Warning for large matrix
-  # The warning is printed roughly when the result matrix will take up
-  # more than 8GB of RAM.
+  # The warning is printed roughly when the result matrix will
+  # take up more than 8GB of RAM.
   if (10 ^ 11) / 2 < m * c then
     Info(InfoWarning, 1, StringFormatted(
     "The resulting matrix is going to be large of size {} \x {} ",
