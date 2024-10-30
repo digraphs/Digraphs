@@ -1666,13 +1666,15 @@ function(graphData, r)
     local edgeList, part, parts, subparts, vertex, connectedTo,
           adjacencyPart, pparts, partition, i, j, num, iter,
           pos, char, localNewlineCount, failure, temp, vertices,
-          components, p;
+          components, p, runningSemi, lastVertex;
 
     edgeList := List([1 .. r.nValue], x -> []);
     RemoveCharacters(graphData, "\r\t");
     parts := DIGRAPHS_SplitDreadnautLines(graphData, r);
+    runningSemi := false;
     iter := 0;
     localNewlineCount := r.newlineCount;
+    lastVertex := 0;
 
     for part in parts do
       iter := iter + 1;
@@ -1765,6 +1767,12 @@ function(graphData, r)
            x -> x = '\n')) = Length(subparts[1]) then
           localNewlineCount := localNewlineCount + Length(subparts[1]);
           continue;
+        elif runningSemi then
+          adjacencyPart := subparts[1];
+          vertices := [lastVertex + 1];
+          if lastVertex = r.nValue - r.dollarValue + 1 then
+            ErrorNoReturn("formatting error ('", part, "'),");
+          fi;
         else
           ErrorNoReturn("formatting error ('", part, "'),");
         fi;
@@ -1801,6 +1809,10 @@ function(graphData, r)
         fi;
 
       od;
+
+      if PositionSublist(adjacencyPart, ";") <> fail then
+        runningSemi := true;
+      fi;
 
       RemoveCharacters(adjacencyPart, ",;");
       connectedTo := [];
@@ -1850,6 +1862,7 @@ function(graphData, r)
         Append(edgeList[vertex], connectedTo);
         edgeList[vertex] := DuplicateFreeList(edgeList[vertex]);
       od;
+      lastVertex := vertex;
     od;
 
     return edgeList;
@@ -1910,6 +1923,7 @@ function(name)
            partition := fail,
            newlineCount := 1 + Length(PositionsProperty(config, x -> x = '\n')));
 
+  r.configNewlineCount := r.newlineCount;
   r.dollarValue := DIGRAPHS_ParseDreadnautConfig(config, "$", r);
   r.nValue := DIGRAPHS_ParseDreadnautConfig(config, "n", r);
 
