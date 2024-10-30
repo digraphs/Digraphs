@@ -230,6 +230,26 @@ gap> D := CompleteDigraph(3);
 gap> KuratowskiOuterPlanarSubdigraph(D);
 fail
 
+# DualPlanarGraph
+gap> DualPlanarGraph(CompleteDigraph(5));
+fail
+gap> D := CycleDigraph(4);
+<immutable cycle digraph with 4 vertices>
+gap> DualPlanarGraph(D);
+<immutable multidigraph with 2 vertices, 8 edges>
+gap> D := ChainDigraph(4);
+<immutable chain digraph with 4 vertices>
+gap> DualPlanarGraph(D);
+<immutable empty digraph with 0 vertices>
+gap> D := Digraph([[2, 3, 4], [1, 3, 5], [1, 2, 4], [1, 3, 5], [2, 4, 6], [5, 7, 9], [6, 8, 10], [7, 9, 10], [6, 8, 10], [7, 8, 9]]);;
+gap> dualD := DualPlanarGraph(D);
+<immutable multidigraph with 7 vertices, 29 edges>
+gap> DigraphHasLoops(dualD);
+true
+gap> D := CompleteDigraph(3);;
+gap> DualPlanarGraph(D);
+<immutable multidigraph with 2 vertices, 6 edges>
+
 # Kernel function boyers_planarity_check, errors
 gap> IS_PLANAR(2);
 Error, Digraphs: boyers_planarity_check (C): the 1st argument must be a digrap\

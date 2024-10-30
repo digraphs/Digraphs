@@ -427,3 +427,34 @@ fail
   </Description>
 </ManSection>
 <#/GAPDoc>
+
+<#GAPDoc Label="DualPlanarGraph">
+<ManSection>
+  <Attr Name="DualPlanarGraph" Arg="digraph"/>
+  <Returns>A digraph or <K>fail</K>.</Returns>
+  <Description>
+    If <A>digraph</A> is a planar digraph, then <E>DualPlanarGraph</E> returns the the dual graph of <A>digraph</A>.
+    If <A>digraph</A> is not planar, then fail is returned.<P/>
+
+    The dual graph of a planar digraph <A>digraph</A> has a vertex for each face of <A>digraph</A> and an edge for 
+    each pair of faces that are separated by an edge from each other.
+    Vertex <A>i</A> of the dual graph corresponds to the facial walk at the <A>i</A>-th position calling 
+    <E>FacialWalks</E> of <A>digraph</A> with the rotation system returned by <E>PlanarEmbedding</E>.
+
+<Example><![CDATA[
+gap> D := CompleteDigraph(4);;
+gap> dualD := DualPlanarGraph(D);
+<immutable digraph with 4 vertices, 12 edges>
+gap> IsIsomorphicDigraph(D, dualD);
+true
+gap> cube := Digraph([[2, 4, 5], [1, 3, 6], [2, 4, 7], [1, 3, 8], 
+>                     [1, 6, 8], [2, 5, 7], [3, 6, 8], [4, 5, 7]]);
+<immutable digraph with 8 vertices, 24 edges>
+gap> oct := DualPlanarGraph(cube);;
+gap> IsIsomorphicDigraph(oct, CompleteMultipartiteDigraph([2, 2, 2]));
+true
+]]></Example>
+  </Description>
+</ManSection>
+
+<#/GAPDoc>

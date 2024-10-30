@@ -1653,6 +1653,75 @@ function(D)
     return C;
 end);
 
+# Compute for a given rotation system the facial walks
+InstallMethod(FacialWalks, "for a digraph and a list",
+[IsDigraph, IsList],
+function(D, rotationSystem)
+
+    local FacialWalk, facialWalks, remEdges, cycle;
+
+    if not IsEulerianDigraph(D) then
+        Error("The given digraph is not Eulerian.");
+    fi;
+
+    if not IsDenseList(rotationSystem) or Length(rotationSystem)
+      <> DigraphNrVertices(D) then
+        Error("The given rotation system does not fit to the given digraph.");
+    fi;
+
+    if Difference(DuplicateFreeList(Flat(rotationSystem)), DigraphVertices(D))
+      <> [] then
+        Error("The given rotation system does not fit to the given digraph.");
+    fi;
+
+    # computes a facial cycles starting with the edge 'startEdge'
+    FacialWalk := function(rotationSystem, startEdge)
+        local startVertex, preVertex, actVertex, cycle, nextVertex, pos;
+
+        startVertex := startEdge[1];
+        actVertex := startEdge[2];
+        preVertex := startVertex;
+
+        cycle := [startVertex, actVertex];
+
+        nextVertex := 0;  # just an initialization
+        while true do
+            pos := Position(rotationSystem[actVertex], preVertex);
+
+            if pos < Length(rotationSystem[actVertex]) then
+                nextVertex := rotationSystem[actVertex][pos + 1];
+            else
+                nextVertex := rotationSystem[actVertex][1];
+            fi;
+            if nextVertex <> startEdge[2] or actVertex <> startVertex then
+                Add(cycle, nextVertex);
+                Remove(remEdges, Position(remEdges, [preVertex, actVertex]));
+                preVertex := actVertex;
+                actVertex := nextVertex;
+            else
+                break;
+            fi;
+        od;
+        Remove(remEdges, Position(remEdges, [preVertex, startVertex]));
+        # Remove the last vertex, otherwise otherwise
+        # the start vertex is contained twice
+        Remove(cycle);
+        return cycle;
+    end;
+
+    D := DigraphRemoveLoops(DigraphRemoveAllMultipleEdges(
+        DigraphMutableCopyIfMutable(D)));
+
+    facialWalks := [];
+    remEdges := ShallowCopy(DigraphEdges(D));
+
+    while remEdges <> [] do
+        cycle := FacialWalk(rotationSystem, remEdges[1]);
+        Add(facialWalks, cycle);
+    od;
+    return facialWalks;
+end);
+
 # The following method 'DIGRAPHS_Bipartite' was originally written by Isabella
 # Scott and then modified by FLS.
 # It is the backend to IsBipartiteDigraph, Bicomponents, and DigraphColouring
