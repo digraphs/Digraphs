@@ -2414,14 +2414,12 @@ gap> List(res[2][3]);
     order defined by <A>D</A>. The function can only be used on digraphs
     satisfying <Ref Prop="IsPartialOrderDigraph"/> and will throw an error if
     passed a digraph that is not a partial order digraph.
-
     <Example><![CDATA[
 gap> D1 := Digraph([[1, 3], [2, 3], [3]]);
 <immutable digraph with 3 vertices, 5 edges>
-<immutable digraph with 3 vertices, 5 edges>
-gap> IsOrderIdeal(D, [1, 2, 3]);
+gap> IsOrderIdeal(D1, [1, 2, 3]);
 true
-gap> D2 := DigraphDisjointUnion(D, D);
+gap> D2 := DigraphDisjointUnion(D1, D1);
 <immutable digraph with 6 vertices, 10 edges>
 gap> IsOrderIdeal(D2, [1, 2, 3]);
 true
@@ -2432,6 +2430,29 @@ false
 ]]></Example>
   </Description>
 </ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="IsOrderFilter">
+<ManSection>
+  <Oper Name="IsOrderFilter" Arg="D, subset" Label="for a digraph and a list"/>
+  <Returns> <K>true</K> or <K>false</K>.</Returns>
+  <Description>
+  This function returns <K>true</K> if the specified subset is upwards
+    closed. A subset is upwards closed if it contains every vertex greater than the given vertices in the
+    order defined by <A>D</A>. The function can only be used on digraphs
+    satisfying <Ref Prop="IsPartialOrderDigraph"/> and will throw an error if
+    passed a digraph that is not a partial order digraph. 
+    <Example><![CDATA[gap> D1 := DigraphByEdges(
+> [[1, 2], [2, 3], [1, 3], [1, 1], [2, 2], [3, 3]]);
+<immutable digraph with 3 vertices, 6 edges>
+gap> IsOrderFilter(D1, [2, 3]);
+false
+gap> IsOrderFilter(D1, [1, 2]);
+true]]>    
+    </Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
 
 <#GAPDoc Label="DIGRAPHS_FREE_HOMOS_DATA">
   <Oper Name="DIGRAPHS_FREE_HOMOS_DATA"/>
