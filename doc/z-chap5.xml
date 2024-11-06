@@ -36,6 +36,8 @@
     <#Include Label="IsPartialOrderDigraph">
     <#Include Label="IsMeetSemilatticeDigraph">
     <#Include Label="DigraphMeetTable">
+    <#Include Label="IsOrderIdeal">
+    <#Include Label="IsOrderFilter">
     <#Include Label="IsUpperSemimodularDigraph">
     <#Include Label="IsDistributiveLatticeDigraph">
     <#Include Label="IsModularLatticeDigraph">
