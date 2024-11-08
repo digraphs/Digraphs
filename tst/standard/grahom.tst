@@ -2762,13 +2762,13 @@ gap> IsLatticeEpimorphism(D, D, (2, 3));
 true
 
 # SubdigraphsMonomorphisms
-gap> SubdigraphsMonomorphisms(CompleteBipartiteDigraph(2, 2),
-> CompleteDigraph(4));
-[ Transformation( [ 2, 3, 1 ] ), Transformation( [ 1, 3, 2 ] ), 
+gap> Set(SubdigraphsMonomorphisms(CompleteBipartiteDigraph(2, 2),
+> CompleteDigraph(4)));
+[ Transformation( [ 1, 3, 2 ] ), Transformation( [ 2, 3, 1 ] ), 
   Transformation( [ 3, 4, 2, 1 ] ) ]
 gap> D := DigraphFromGraph6String("D^{");
 <immutable symmetric digraph with 5 vertices, 18 edges>
-gap> SubdigraphsMonomorphisms(CompleteDigraph(4), D);
+gap> Set(SubdigraphsMonomorphisms(CompleteDigraph(4), D));
 [ Transformation( [ 1, 3, 4, 5, 5 ] ), Transformation( [ 2, 3, 4, 5, 5 ] ) ]
 gap> Length(SubdigraphsMonomorphisms(CompleteDigraph(4), CompleteDigraph(12)));
 495
