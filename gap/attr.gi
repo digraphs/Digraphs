@@ -1655,23 +1655,28 @@ end);
 
 # Compute for a given rotation system the facial walks
 InstallMethod(FacialWalks, "for a digraph and a list",
-[IsDigraph, IsList],
+[IsDigraph, IsDenseList],
 function(D, rotationSystem)
 
     local FacialWalk, facialWalks, remEdges, cycle;
 
     if not IsEulerianDigraph(D) then
-        Error("The given digraph is not Eulerian.");
+        Error("the 1st argument (digraph <D>) must be Eulerian, but it is not");
     fi;
 
-    if not IsDenseList(rotationSystem) or Length(rotationSystem)
-      <> DigraphNrVertices(D) then
-        Error("The given rotation system does not fit to the given digraph.");
+    if Length(rotationSystem) <> DigraphNrVertices(D) then
+        Error("the 2nd argument (list <rotationSystem>) is not a rotation ",
+              "system for the 1st argument (digraph <D>), expected a ",
+              "dense list of length ", DigraphNrVertices(D),
+              "but found dense list of length ", Length(rotationSystem));
     fi;
 
     if Difference(DuplicateFreeList(Flat(rotationSystem)), DigraphVertices(D))
-      <> [] then
-        Error("The given rotation system does not fit to the given digraph.");
+       <> [] then
+        Error("the 2nd argument (dense list <rotationSystem>) is not a rotation",
+              " system for the 1st argument (digraph <D>), expected the union",
+              " to be ", DigraphVertices(D), " but found ",
+              Union(rotationSystem));
     fi;
 
     # computes a facial cycles starting with the edge 'startEdge'
