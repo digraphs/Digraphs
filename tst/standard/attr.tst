@@ -1071,6 +1071,38 @@ gap> DigraphAllUndirectedSimpleCircuits(g);
   [ 4, 3, 9, 5, 7, 8, 6, 10 ], [ 4, 3, 9, 10 ], [ 5, 6, 8, 7 ], 
   [ 9, 5, 6, 10 ], [ 9, 5, 7, 8, 6, 10 ] ]
 
+# FacialCycles
+gap> g := Digraph([]);;
+gap> rotationSy := [];;
+gap> FacialWalks(g, rotationSy);
+[  ]
+gap> g := Digraph([[2], [1, 3], [2, 4], [3]]);;;
+gap> rotationSy := [[2], [1, 3], [2, 4], [3]];;
+gap> FacialWalks(g, rotationSy);
+[ [ 1, 2, 3, 4, 3, 2 ] ]
+gap> g := CycleDigraph(4);;
+gap> planar := PlanarEmbedding(g);
+[ [ 2 ], [ 3 ], [ 4 ], [ 1 ] ]
+gap> FacialWalks(g, planar);
+[ [ 1, 2, 3, 4 ] ]
+gap> nonPlanar := [[2, 4], [1, 3], [2, 4], [1, 3]];;
+gap> FacialWalks(g, nonPlanar);
+[ [ 1, 2, 3, 4 ] ]
+gap> g := CompleteMultipartiteDigraph([2, 2, 2]);;
+gap> rotationSystem := PlanarEmbedding(g);
+[ [ 3, 5, 4, 6 ], [ 6, 4, 5, 3 ], [ 6, 2, 5, 1 ], [ 1, 5, 2, 6 ], 
+  [ 1, 3, 2, 4 ], [ 1, 4, 2, 3 ] ]
+gap> FacialWalks(g, rotationSystem);
+[ [ 1, 3, 6 ], [ 1, 4, 5 ], [ 1, 5, 3 ], [ 1, 6, 4 ], [ 2, 3, 5 ], 
+  [ 2, 4, 6 ], [ 2, 5, 4 ], [ 2, 6, 3 ] ]
+gap> g := Digraph([[2, 3, 4], [1, 3, 5], [1, 2, 4], [1, 3, 5], [2, 4, 6], [5, 7, 9], [6, 8, 10], [7, 9, 10], [6, 8, 10], [7, 8, 9]]);;
+gap> rotationSy := PlanarEmbedding(g);
+[ [ 2, 4, 3 ], [ 3, 5, 1 ], [ 1, 4, 2 ], [ 1, 5, 3 ], [ 2, 4, 6 ], 
+  [ 5, 7, 9 ], [ 8, 10, 6 ], [ 9, 10, 7 ], [ 6, 10, 8 ], [ 7, 8, 9 ] ]
+gap> FacialWalks(g, rotationSy);
+[ [ 1, 2, 3 ], [ 1, 3, 4 ], [ 1, 4, 5, 6, 7, 8, 9, 6, 5, 2 ], [ 2, 5, 4, 3 ], 
+  [ 6, 9, 10, 7 ], [ 7, 10, 8 ], [ 8, 10, 9 ] ]
+
 #  Issue #676
 gap> D := Digraph([[], [3], []]);;
 gap> SetDigraphVertexLabels(D, ["one", "two", "three"]);
