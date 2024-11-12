@@ -1671,7 +1671,7 @@ function(D, rotationSystem)
               "but found dense list of length ", Length(rotationSystem));
     fi;
 
-    if Difference(DuplicateFreeList(Flat(rotationSystem)), DigraphVertices(D))
+    if Difference(Union(rotationSystem), DigraphVertices(D))
        <> [] then
         Error("the 2nd argument (dense list <rotationSystem>) is not a rotation",
               " system for the 1st argument (digraph <D>), expected the union",
