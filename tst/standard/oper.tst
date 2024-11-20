@@ -2844,23 +2844,23 @@ gap> IsOrderIdeal(D, [1]);
 Error, the 1st argument (a digraph) must be a partial order digraph
 
 # IsOrderFilter
-gap> D := DigraphByEdges([[1,1],[1,2],[1,3],[2,3],[3,3],[2,2],[2,4],[4,4],[1,4]]);
+gap> D := DigraphByEdges([[1, 1], [1, 2], [1, 3], [2, 3], [3, 3], [2, 2], [2, 4], [4, 4], [1, 4]]);
 <immutable digraph with 4 vertices, 9 edges>
-gap> IsOrderFilter(D,[1,2]);
+gap> IsOrderFilter(D, [1, 2]);
 true
-gap> IsOrderFilter(D,[2,3]);
+gap> IsOrderFilter(D, [2, 3]);
 false
-gap> IsOrderFilter(D,[1,4]);
+gap> IsOrderFilter(D, [1, 4]);
 false
-gap> IsOrderFilter(D,[4]);
+gap> IsOrderFilter(D, [4]);
 false
 gap> IsOrderFilter(4);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `IsOrderFilter' on 1 arguments
-gap> IsOrderFilter(D,4);
+gap> IsOrderFilter(D, 4);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `IsOrderFilter' on 2 arguments
-gap> IsOrderFilter(D,[5]);
+gap> IsOrderFilter(D, [5]);
 Error, an element of the 2nd argument (roots) is not a vertex of the 1st argum\
 ent (a digraph)
 
