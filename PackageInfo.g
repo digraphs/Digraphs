@@ -192,10 +192,9 @@ Persons := [
     FirstNames    := "Luna",
     IsAuthor      := true,
     IsMaintainer  := false,
-    Email         := "TODO",
-    PostalAddress := _STANDREWSMATHS,  # TODO update
-    Place         := "St Andrews",
-    Institution   := "University of St Andrews"),
+    Email         := "luna.elliott142857@gmail.com",
+    Institution   := "University of Manchester",
+    WWWHome       := "https://research.manchester.ac.uk/en/persons/luna-elliott"),
 
   rec(
     LastName      := "Fernando",
