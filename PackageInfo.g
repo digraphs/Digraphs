@@ -504,7 +504,7 @@ Keywords := [],
 
 AutoDoc := rec(
     TitlePage := rec(
-        Copyright := """<Par>Jan De Beule, Julius Jonu&#353;as,
+        Copyright := """<Par>Jan De Beule, Julius Jonušas,
 	  James D. Mitchell, Wilf A. Wilson, Michael Young et al.</Par>
 
           <Par><Package>Digraphs</Package> is free software;
@@ -522,8 +522,8 @@ AutoDoc := rec(
 	  <Package>Digraphs</Package>.</Par>
 
           <Par>This package's methods for computing digraph homomorphisms
-	  are based on work by Max Neunh&#246;ffer,
-	  and independently Artur Sch&#228;fer.</Par>
+	  are based on work by Max Neunhöffer,
+	  and independently Artur Schäfer.</Par>
         """)),
 
         AbstractHTML := ~.AutoDoc.TitlePage.Abstract));
