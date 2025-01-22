@@ -172,9 +172,9 @@ end);
 #############################################################################
 #
 # Three different "shortest path" problems are solved:
-# - All pairs:              DigraphShortestPaths(digraph)
-# - Single source:          DigraphShortestPaths(digraph, source)
-# - Source and destination: DigraphShortestPath (digraph, source, dest)
+# - All pairs:       EdgeWeightedDigraphShortestPaths(digraph)
+# - Single source:   EdgeWeightedDigraphShortestPaths(digraph, source)
+# - Source and dest: EdgeWeightedDigraphShortestPath (digraph, source, dest)
 #
 # The "all pairs" problem has two algorithms:
 # - Johnson: better for sparse digraphs
@@ -188,14 +188,19 @@ end);
 # The "source and destination" problem calls the "single source" problem and
 # extracts information for the given destination.
 #
-# Justification and benchmarks are in Raiyan's MSci thesis, Chapter 6.
+# Some of the algorithms handle negative weights, but none of them handles
+# negative *cycles*. Negative cycles are checked, and if there are any the
+# inner function returns fail and we call TryNextMethod.
+#
+# Justification and benchmarks are in the experimental part of Raiyan's MSci
+# thesis, https://github.com/RaiyanC/CS5199-Proj-Code
 #
 
 InstallMethod(EdgeWeightedDigraphShortestPaths,
 "for a digraph with edge weights",
 [IsDigraph and HasEdgeWeights],
 function(digraph)
-  local maxNodes, threshold, digraphVertices, nrVertices, nrEdges;
+  local maxNodes, threshold, digraphVertices, nrVertices, nrEdges, result;
 
   digraphVertices := DigraphVertices(digraph);
   nrVertices := Size(digraphVertices);
@@ -203,19 +208,24 @@ function(digraph)
 
   maxNodes := nrVertices * (nrVertices - 1);
 
-  # the boundary for performance is edge weight 0.125
-  # so if nr edges for vertices v is less
-  # than total number of edges in a connected
-  # graph we use johnson's algorithm
-  # which performs better on sparse graphs, otherwise
-  # we use floyd warshall algorithm.
-  # This information is gathered from benchmarking tests.
+  # For dense graphs we use Floyd-Warshall; for sparse graphs Johnson. The
+  # threshold for "dense", based on experiments, is n(n-1)/8 edges.
   threshold := Int(maxNodes / 8);
   if nrEdges <= threshold then
-    return DIGRAPHS_Edge_Weighted_Johnson(digraph);
+    result := DIGRAPHS_Edge_Weighted_Johnson(digraph);
   else
-    return DIGRAPHS_Edge_Weighted_FloydWarshall(digraph);
+    result := DIGRAPHS_Edge_Weighted_FloydWarshall(digraph);
   fi;
+
+  # Currently we have no method that works for digraphs with negative cycles.
+  # It may be possible if we implement a further algorithm in future.
+  if result = fail then
+    Info(InfoDigraphs, 1, "<digraph> contains a negative cycle, so there is ",
+         "currently no suitable method for EdgeWeightedDigraphShortestPaths");
+    TryNextMethod();
+  fi;
+
+  return result;
 end);
 
 InstallMethod(EdgeWeightedDigraphShortestPaths,
@@ -225,7 +235,7 @@ function(digraph, source)
   local all_paths;
   if not source in DigraphVertices(digraph) then
     ErrorNoReturn("the 2nd argument <source> must be a vertex of the ",
-                  "digraph <digraph> that is the 1st argument,");
+                  "1st argument <digraph>,");
   fi;
   # Shortest paths are known for all vertices. Extract the one we want.
   all_paths := EdgeWeightedDigraphShortestPaths(digraph);
@@ -238,13 +248,20 @@ InstallMethod(EdgeWeightedDigraphShortestPaths,
 "for a digraph with edge weights and a pos int",
 [IsDigraph and HasEdgeWeights, IsPosInt],
 function(digraph, source)
+  local result;
   if not source in DigraphVertices(digraph) then
     ErrorNoReturn("the 2nd argument <source> must be a vertex of the ",
-                  "digraph <digraph> that is the 1st argument,");
+                  "1st argument <digraph>,");
   fi;
 
   if IsNegativeEdgeWeightedDigraph(digraph) then
-    return DIGRAPHS_Edge_Weighted_Bellman_Ford(digraph, source);
+    result := DIGRAPHS_Edge_Weighted_Bellman_Ford(digraph, source);
+    if result = fail then
+      Info(InfoDigraphs, 1, "<digraph> contains a negative cycle, so there is ",
+           "currently no suitable method for EdgeWeightedDigraphShortestPaths");
+      TryNextMethod();
+    fi;
+    return result;
   else
     return DIGRAPHS_Edge_Weighted_Dijkstra(digraph, source);
   fi;
@@ -257,10 +274,10 @@ function(digraph, source, dest)
   local paths, v, a, current, edge_index;
   if not source in DigraphVertices(digraph) then
     ErrorNoReturn("the 2nd argument <source> must be a vertex of the ",
-                  "digraph <digraph> that is the 1st argument,");
+                  "1st argument <digraph>,");
   elif not dest in DigraphVertices(digraph) then
     ErrorNoReturn("the 3rd argument <dest> must be a vertex of the ",
-                  "digraph <digraph> that is the 1st argument,");
+                  "1st argument <digraph>,");
   fi;
 
   # No trivial paths
@@ -312,6 +329,10 @@ function(digraph)
   # calculate shortest paths from the new vertex (could be negative)
   digraph := EdgeWeightedDigraph(mutableOuts, mutableWeights);
   bellman := DIGRAPHS_Edge_Weighted_Bellman_Ford(digraph, new);
+  if bellman = fail then
+    # negative cycle detected: this algorithm fails
+    return fail;
+  fi;
   bellmanDistances := bellman.distances;
 
   # new copy of neighbours and weights
@@ -362,6 +383,11 @@ end);
 
 InstallGlobalFunction(DIGRAPHS_Edge_Weighted_FloydWarshall,
 function(digraph)
+  # Note: we aren't using the C function FLOYD_WARSHALL here since it is set up
+  # for a different task: it always creates a distance matrix consisting of two
+  # values (edge and non-edge) rather than multiple values; and it only stores
+  # distances, and doesn't remember info about the actual paths.  In the future
+  # we might want to refactor the C function so we can use it here.
   local weights, adjMatrix, vertices, nrVertices, u, v, edges, outs, idx,
         outNeighbours, w, i, k, distances, parents;
   weights    := EdgeWeights(digraph);
@@ -434,7 +460,8 @@ function(digraph)
   # detect negative cycles
   for i in vertices do
     if distances[i][i] < 0 then
-      ErrorNoReturn("1st arg <digraph> contains a negative-weighted cycle,");
+      # digraph contains a negative cycle: this algorithm fails
+      return fail;
     fi;
   od;
 
@@ -601,7 +628,8 @@ function(digraph, source)
 
     if distances[u] <> infinity
         and Float(distances[u]) + Float(w) < Float(distances[v]) then
-      ErrorNoReturn("1st arg <digraph> contains a negative-weighted cycle,");
+      # negative cycle detected: this algorithm fails
+      return fail;
     fi;
   od;
 

@@ -161,8 +161,8 @@ gap> EdgeWeights(T);
     <C>edges[v]</C> will both be <K>fail</K>.  The distance from <A>source</A>
     to itself is considered to be 0, and so both <C>parents[<A>source</A>]</C> and
     <C>edges[<A>source</A>]</C> are <K>fail</K>.
-    Edge weights can have negative values, but this operation will fail with an
-    error if a negative-weighted cycle exists. <P/>
+    Edge weights can have negative values, but there is currently no implemented
+    method for this operation if a negative-weighted cycle exists. <P/>
 
     In the one-argument form, the value returned is also a record containing
     components <C>distances</C>, <C>parents</C> and <C>edges</C>, but each of
@@ -203,6 +203,9 @@ rec( distances := [ [ 0, 1, 3 ], [ 5, 0, 2 ], [ 3, 4, 0 ] ],
 
     If <M><A>source</A> = <A>dest</A></M> or no path exists, then <K>fail</K> is
     returned.<P/>
+
+    If <A>digraph</A> contains a negative-weighted cycle, then there is
+    currently no applicable method for this attribute. <P/>
 
     See <Ref Attr="EdgeWeightedDigraphShortestPaths" Label="for a digraph"/>.
     See also the non-weighted operation <Ref Oper="DigraphShortestPath"/>. <P/>

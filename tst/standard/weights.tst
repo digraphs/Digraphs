@@ -186,20 +186,21 @@ rec( distances := [ 0, -4 ], edges := [ fail, 3 ], parents := [ fail, 1 ] )
 gap> d := EdgeWeightedDigraph([[2, 2, 2], [1]], [[-10, 5, -15], [7]]);
 <immutable multidigraph with 2 vertices, 4 edges>
 gap> EdgeWeightedDigraphShortestPaths(d, 1);
-Error, 1st arg <digraph> contains a negative-weighted cycle,
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 2nd choice method found for `EdgeWeightedDigraphShortestPaths' on 2 \
+arguments
 
 # Shortest paths: source not in graph
 gap> d := EdgeWeightedDigraph([[2], [1]], [[2], [7]]);
 <immutable digraph with 2 vertices, 2 edges>
 gap> EdgeWeightedDigraphShortestPaths(d, 3);
-Error, the 2nd argument <source> must be a vertex of the digraph <digraph> tha\
-t is the 1st argument,
+Error, the 2nd argument <source> must be a vertex of the 1st argument <digraph\
+>,
 gap> EdgeWeightedDigraphShortestPath(d, 3, 1);
-Error, the 2nd argument <source> must be a vertex of the digraph <digraph> tha\
-t is the 1st argument,
+Error, the 2nd argument <source> must be a vertex of the 1st argument <digraph\
+>,
 gap> EdgeWeightedDigraphShortestPath(d, 1, 3);
-Error, the 3rd argument <dest> must be a vertex of the digraph <digraph> that \
-is the 1st argument,
+Error, the 3rd argument <dest> must be a vertex of the 1st argument <digraph>,
 
 # Shortest paths: no path exists
 gap> d := EdgeWeightedDigraph([[1], [2]], [[5], [10]]);
@@ -237,7 +238,9 @@ gap> EdgeWeightedDigraphShortestPath(d, 1, 2);
 gap> d := EdgeWeightedDigraph([[2], [3], [1]], [[-3], [-5], [-7]]);
 <immutable digraph with 3 vertices, 3 edges>
 gap> EdgeWeightedDigraphShortestPaths(d);
-Error, 1st arg <digraph> contains a negative-weighted cycle,
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 2nd choice method found for `EdgeWeightedDigraphShortestPaths' on 1 \
+arguments
 
 # Shortest paths: source not in graph neg int
 gap> EdgeWeightedDigraphShortestPaths(d, -1);
@@ -267,8 +270,8 @@ rec( distances := [ [ 0, 3, 8, fail, fail ], [ fail, 0, 5, fail, fail ],
       [ fail, fail, fail, fail, fail ], [ fail, fail, fail, fail, fail ], 
       [ fail, fail, fail, fail, fail ] ] )
 gap> EdgeWeightedDigraphShortestPaths(d, 6);
-Error, the 2nd argument <source> must be a vertex of the digraph <digraph> tha\
-t is the 1st argument,
+Error, the 2nd argument <source> must be a vertex of the 1st argument <digraph\
+>,
 gap> EdgeWeightedDigraphShortestPath(d, 1, 3);
 [ [ 1, 2, 3 ], [ 1, 1 ] ]
 
