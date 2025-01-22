@@ -20,3 +20,17 @@ DeclareOperation("EdgeWeightsMutableCopy", [IsDigraph and HasEdgeWeights]);
 # 3. Minimum Spanning Trees
 DeclareAttribute("EdgeWeightedDigraphMinimumSpanningTree",
                  IsDigraph and HasEdgeWeights);
+
+# 4. Shortest Path
+DeclareAttribute("EdgeWeightedDigraphShortestPaths",
+                 IsDigraph and HasEdgeWeights);
+DeclareOperation("EdgeWeightedDigraphShortestPaths",
+                 [IsDigraph and HasEdgeWeights, IsPosInt]);
+DeclareOperation("EdgeWeightedDigraphShortestPath",
+                 [IsDigraph and HasEdgeWeights, IsPosInt, IsPosInt]);
+
+DeclareGlobalFunction("DIGRAPHS_Edge_Weighted_Johnson");
+DeclareGlobalFunction("DIGRAPHS_Edge_Weighted_FloydWarshall");
+DeclareGlobalFunction("DIGRAPHS_Edge_Weighted_Bellman_Ford");
+DeclareGlobalFunction("DIGRAPHS_Edge_Weighted_Dijkstra");
+DeclareGlobalFunction("DIGRAPHS_ShortestPathsIterator");
