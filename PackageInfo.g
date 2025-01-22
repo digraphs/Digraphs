@@ -507,16 +507,18 @@ AutoDoc := rec(
         Copyright := """Jan De Beule, Julius Jonu&#353;as, James D. Mitchell,
           Wilf A. Wilson, Michael Young et al.<P/>
 
-          &Digraphs; is free software; you can redistribute it and/or modify
+          <Package>Digraphs</Package> is free software;
+	  you can redistribute it and/or modify
           it under the terms of the <URL Text="GNU General Public License">
           https://www.fsf.org/licenses/gpl.html</URL> as published by the
           Free Software Foundation; either version 3 of the License, or (at
           your option) any later version.""",
-        Abstract := """The &Digraphs; package is a &GAP; package containing
+        Abstract := """The <Package>Digraphs</Package> package is a
+	  <Package>GAP</Package> package containing
           methods for graphs, digraphs, and multidigraphs.""",
         Acknowledgements := """
           We would like to thank Christopher Jefferson for his help in including
-          &BLISS; in &Digraphs;.
+          <Package>BLISS</Package> in <Package>Digraphs</Package>.
 
           This package's methods for computing digraph homomorphisms are based
           on work by Max Neunh&#246;ffer, and independently Artur Sch&#228;fer.
