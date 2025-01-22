@@ -194,7 +194,8 @@ Persons := [
     IsMaintainer  := false,
     Email         := "luna.elliott142857@gmail.com",
     Institution   := "University of Manchester",
-    WWWHome       := "https://research.manchester.ac.uk/en/persons/luna-elliott"),
+    WWWHome       := Concatenation("https://research.manchester.ac.uk/",
+                     "en/persons/luna-elliott")),
 
   rec(
     LastName      := "Fernando",
