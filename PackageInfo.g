@@ -527,8 +527,8 @@ AutoDoc := rec(
         """)),
 
 AbstractHTML := Concatenation(["The <b>Digraphs</b> package is a <b>GAP</b> ",
-			       "package containing methods for graphs, ",
-			       "digraphs, and multidigraphs."])));
+                               "package containing methods for graphs, ",
+                               "digraphs, and multidigraphs."])));
 
 if not CompareVersionNumbers(GAPInfo.Version, "4.12") then
   Unbind(IsKernelExtensionAvailable);
