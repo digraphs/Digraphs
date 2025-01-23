@@ -8,7 +8,6 @@
 #############################################################################
 ##
 
-
 <#GAPDoc Label="EdgeWeights">
     <ManSection>
     <Attr Name="EdgeWeights" Arg="digraph"/>
@@ -24,7 +23,7 @@
     lists, whereas the function <C>EdgeWeightsMutableCopy</C> returns a copy
     of <C>EdgeWeights</C> which is a mutable list of mutable lists.<P/>
 
-    The edge weights of a digraph cannot be computed and must be set either 
+    The edge weights of a digraph cannot be computed and must be set either
     using <C>SetEdgeWeights</C> or <Ref Func="EdgeWeightedDigraph" />.<P/>
     <Example><![CDATA[
 gap> gr := EdgeWeightedDigraph([[2], [3], [1]], [[5], [10], [15]]);
@@ -80,7 +79,7 @@ gap> EdgeWeights(g);
         returns the sum of the weights of its edges.<P/>
 
         &MUTABLE_RECOMPUTED_ATTR;
-      
+
         See <Ref Attr="EdgeWeights"/>.
     <Example><![CDATA[
 gap> D := EdgeWeightedDigraph([[2], [1], [1, 2]],
@@ -100,7 +99,7 @@ gap> EdgeWeightedDigraphTotalWeight(D);
         If <A>digraph</A> is a connected digraph with edge weights, then this
         attribute returns a digraph which is a minimum spanning tree of
         <A>digraph</A>.<P/>
-      
+
         A <E>spanning tree</E> of a digraph is a subdigraph with the same
         vertices but a subset of its edges that form an undirected tree.  It is
         <E>minimum</E> if it has the smallest possible total weight for a
