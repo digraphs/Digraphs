@@ -996,15 +996,19 @@ end);
 InstallMethod(OnDigraphs, "for a mutable digraph by out-neighbours and a perm",
 [IsMutableDigraph and IsDigraphByOutNeighboursRep, IsPerm],
 function(D, p)
-  local out;
-  if ForAll(DigraphVertices(D), i -> i ^ p = i) then
+  local out, permed;
+  if p = () then
     return D;
-  elif ForAny(DigraphVertices(D), i -> i ^ p > DigraphNrVertices(D)) then
+  fi;
+
+  out := D!.OutNeighbours;
+  permed := Permuted(out, p);
+  if Length(permed) > DigraphNrVertices(D) then
     ErrorNoReturn("the 2nd argument <p> must be a permutation that permutes ",
                   "the vertices of the digraph <D> that is the 1st argument,");
   fi;
-  out := D!.OutNeighbours;
-  out{DigraphVertices(D)} := Permuted(out, p);
+
+  out{DigraphVertices(D)} := permed;
   Apply(out, x -> OnTuples(x, p));
   ClearDigraphEdgeLabels(D);
   return D;
@@ -1013,7 +1017,7 @@ end);
 InstallMethod(OnDigraphs, "for a immutable digraph and a perm",
 [IsImmutableDigraph, IsPerm],
 function(D, p)
-  if ForAll(DigraphVertices(D), i -> i ^ p = i) then
+  if p = () then
     return D;
   fi;
   return MakeImmutable(OnDigraphs(DigraphMutableCopy(D), p));
