@@ -110,13 +110,13 @@ gap> EdgeWeightedDigraphMinimumSpanningTree(d);
 # digraph with cycle
 gap> d := EdgeWeightedDigraph([[2], [3], [1]], [[5], [10], [15]]);
 <immutable digraph with 3 vertices, 3 edges>
-gap> tree := EdgeWeightedDigraphMinimumSpanningTree(d);              
+gap> tree := EdgeWeightedDigraphMinimumSpanningTree(d);
 <immutable digraph with 3 vertices, 2 edges>
 gap> EdgeWeightedDigraphTotalWeight(tree);
 15
 
 # digraph with negative edge
-gap> d := EdgeWeightedDigraph([[2], []], [[-5], []]);  
+gap> d := EdgeWeightedDigraph([[2], []], [[-5], []]);
 <immutable digraph with 2 vertices, 1 edge>
 gap> EdgeWeightedDigraphMinimumSpanningTree(d);
 <immutable digraph with 2 vertices, 1 edge>
@@ -128,7 +128,7 @@ gap> EdgeWeightedDigraphMinimumSpanningTree(d);
 <immutable digraph with 3 vertices, 2 edges>
 
 # digraph with parallel edges
-gap> d := EdgeWeightedDigraph([[2, 2, 2], [1]], [[10, 5, 15], [7]]);  
+gap> d := EdgeWeightedDigraph([[2, 2, 2], [1]], [[10, 5, 15], [7]]);
 <immutable multidigraph with 2 vertices, 4 edges>
 gap> EdgeWeightedDigraphMinimumSpanningTree(d);
 <immutable digraph with 2 vertices, 1 edge>
