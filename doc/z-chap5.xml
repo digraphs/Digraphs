@@ -29,6 +29,8 @@
     <#Include Label="EdgeWeightedDigraph">
     <#Include Label="EdgeWeightedDigraphTotalWeight">
     <#Include Label="EdgeWeightedDigraphMinimumSpanningTree">
+    <#Include Label="EdgeWeightedDigraphShortestPaths">
+    <#Include Label="EdgeWeightedDigraphShortestPath">
   </Section>
 
   <Section><Heading>Orders</Heading>
