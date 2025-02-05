@@ -393,7 +393,7 @@ end);
 InstallMethod(DigraphReverseEdges, "for an immutable digraph and a list",
 [IsImmutableDigraph, IsList],
 function(D, E)
-  local changed, DMutable;
+  local changed, DMutable, edge;
   changed := false;
   DMutable := DigraphMutableCopy(D);
   for edge in E do
