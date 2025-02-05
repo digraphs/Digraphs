@@ -762,7 +762,7 @@ gap> DigraphVertexLabels(D);
 gap> gr := CompleteDigraph(4);
 <immutable complete digraph with 4 vertices>
 gap> gr2 := DigraphRemoveVertices(gr, []);
-<immutable digraph with 4 vertices, 12 edges>
+<immutable complete digraph with 4 vertices>
 gap> gr = gr2;
 true
 gap> gr2 := DigraphRemoveVertices(gr, [0]);
