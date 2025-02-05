@@ -512,8 +512,7 @@ AutoDoc := rec(
           https://www.fsf.org/licenses/gpl.html</URL> as published by the
           Free Software Foundation; either version 3 of the License, or (at
           your option) any later version.""",
-        Abstract := """The <strong class="pkg">Digraphs</strong> package
-	  is a <strong class="pkg">GAP</strong> package containing
+        Abstract := """The &Digraphs; package is a &GAP; package containing
           methods for graphs, digraphs, and multidigraphs.""",
         Acknowledgements := """
           We would like to thank Christopher Jefferson for his help in including
@@ -523,7 +522,9 @@ AutoDoc := rec(
           on work by Max Neunh&#246;ffer, and independently Artur Sch&#228;fer.
         """)),
 
-AbstractHTML := ~.AutoDoc.TitlePage.Abstract));
+AbstractHTML := """The <strong class="pkg">Digraphs</strong> package
+          is a <strong class="pkg">GAP</strong> package containing
+          methods for graphs, digraphs, and multidigraphs.""",));
 
 if not CompareVersionNumbers(GAPInfo.Version, "4.12") then
   Unbind(IsKernelExtensionAvailable);
