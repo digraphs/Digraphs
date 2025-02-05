@@ -118,7 +118,8 @@ end);
 InstallImmediateMethod(DigraphGroup, IsDigraph and HasAutomorphismGroup, 0,
 DIGRAPHS_DigraphGroup);
 
-InstallMethod(DigraphGroup, "for a digraph", [IsDigraph], DIGRAPHS_DigraphGroup);
+InstallMethod(DigraphGroup, "for a digraph", [IsDigraph],
+DIGRAPHS_DigraphGroup);
 
 InstallMethod(DigraphOrbits, "for a digraph",
 [IsDigraph],

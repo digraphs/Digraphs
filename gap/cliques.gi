@@ -57,7 +57,8 @@ function(D, set)
   return not ForAny(try, x -> IsEmpty(Intersection(set, nbs[x])));
 end);
 
-InstallMethod(IsClique, "for a digraph by out-neighbours and a homogeneous list",
+InstallMethod(IsClique,
+"for a digraph by out-neighbours and a homogeneous list",
 [IsDigraphByOutNeighboursRep, IsHomogeneousList],
 function(D, clique)
   local nbs, v;
@@ -432,7 +433,15 @@ function(arg...)
     return DigraphCliquesAttr(D);
   fi;
 
-  out := CliquesFinder(D, fail, [], limit, include, exclude, false, size, false);
+  out := CliquesFinder(D,
+                       fail,
+                       [],
+                       limit,
+                       include,
+                       exclude,
+                       false,
+                       size,
+                       false);
   # Store the result if appropriate (not special case due to params)
   if IsEmpty(include) and IsEmpty(exclude) and limit = infinity and size = fail
       and IsImmutableDigraph(D) then
