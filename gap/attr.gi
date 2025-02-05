@@ -372,7 +372,8 @@ function(D)
       fi;
     od;
     # Iterate over the maximal independent sets of V[S]
-    subset_mis := DIGRAPHS_MaximalIndependentSetsSubtractedSet(mis, S, infinity);
+    subset_mis :=
+      DIGRAPHS_MaximalIndependentSetsSubtractedSet(mis, S, infinity);
     # Flip the list, as we now need the actual set.
     FlipBlist(S);
     for I in subset_mis do
@@ -1673,9 +1674,9 @@ function(D, rotationSystem)
 
     if Difference(Union(rotationSystem), DigraphVertices(D))
        <> [] then
-        Error("the 2nd argument (dense list <rotationSystem>) is not a rotation",
-              " system for the 1st argument (digraph <D>), expected the union",
-              " to be ", DigraphVertices(D), " but found ",
+        Error("the 2nd argument (dense list <rotationSystem>) is not ",
+              "a rotation system for the 1st argument (digraph <D>), ",
+              "expected the union to be ", DigraphVertices(D), " but found ",
               Union(rotationSystem));
     fi;
 
@@ -2953,7 +2954,8 @@ function(D)
   # Ensure that InducedSubdigraph is given a digraph with vertex labels equal
   # to DigraphVertices(D).
   SetDigraphVertexLabels(G, DigraphVertices(G));
-  G     := InducedSubdigraph(G, Difference(DigraphVertices(G), DigraphLoops(G)));
+  G     := InducedSubdigraph(G, Difference(DigraphVertices(G),
+                                           DigraphLoops(G)));
   lab   := DigraphVertexLabels(G);
   G     := DigraphSymmetricClosure(G);
   mateG := DIGRAPHS_MaximalMatching(G);
