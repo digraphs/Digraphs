@@ -167,7 +167,8 @@ end);
 InstallMethod(DigraphRemoveVertices, "for an immutable digraph and a list",
 [IsImmutableDigraph, IsList],
 function(D, list)
-  if ForAll(list, IsPosInt) and not (ForAny(list, x -> x <= DigraphNrVertices(D))) then
+  if ForAll(list, IsPosInt) and
+      not (ForAny(list, x -> x <= DigraphNrVertices(D))) then
     return D;
   fi;
   return MakeImmutable(DigraphRemoveVertices(DigraphMutableCopy(D), list));
@@ -287,8 +288,9 @@ InstallMethod(DigraphRemoveEdge,
 function(D, edge)
   if Length(edge) <> 2 then
     ErrorNoReturn("the 2nd argument <edge> must be a list of length 2,");
+  else
+    return DigraphRemoveEdge(D, edge[1], edge[2]);
   fi;
-  return DigraphRemoveEdge(D, edge[1], edge[2]);
 end);
 
 InstallMethod(DigraphRemoveEdges, "for a digraph and a list",
@@ -362,7 +364,8 @@ function(D, u, v)
   elif u = v then
     return D;
   fi;
-  return MakeImmutable(DIGRAPHS_DigraphReverseEdgeDoOper(DigraphMutableCopy(D), u, v, pos));
+  return MakeImmutable(DIGRAPHS_DigraphReverseEdgeDoOper(
+      DigraphMutableCopy(D), u, v, pos));
 end);
 
 InstallMethod(DigraphReverseEdge, "for a mutable digraph and list",
@@ -379,8 +382,9 @@ InstallMethod(DigraphReverseEdge, "for an immutable digraph and a list",
 function(D, e)
   if Length(e) <> 2 then
     ErrorNoReturn("the 2nd argument <e> must be a list of length 2,");
+  else
+    return DigraphReverseEdge(D, e[1], e[2]);
   fi;
-  return DigraphReverseEdge(D, e[1], e[2]);
 end);
 
 InstallMethod(DigraphReverseEdges, "for a mutable digraph and a list",
@@ -398,7 +402,7 @@ function(D, E)
   DMutable := DigraphMutableCopy(D);
   for edge in E do
     DigraphReverseEdge(DMutable, edge);
-    if edge[1] <> edge[2] then # The edge could be reversed
+    if edge[1] <> edge[2] then  # The edge could be reversed
       changed := true;
     fi;
   od;
