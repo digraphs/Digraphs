@@ -71,7 +71,7 @@ function(OutputFormat)
 
   # Remove trailing whitespace chars.
   while Abstract{[Length(Abstract)]} = " " do
-    Abstract := Abstract{[1..Length(Abstract)-1]};
+    Abstract := Abstract{[1 .. Length(Abstract) - 1]};
   od;
   return Abstract;
 end);
