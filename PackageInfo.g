@@ -28,8 +28,7 @@ end);
 
 BindGlobal("_MakeAbstractFunction",
 function(OutputFormat)
-  local ValidOutputFormats, ErrorMsg, OutputType, AbstractRec, AbstractParts,
-        line, Abstract;
+  local ValidOutputFormats, ErrorMsg, OutputType, AbstractRec, line, Abstract;
 
   # Validate the specified OutputFormat.
   ValidOutputFormats := ["HTML", "XML"];
