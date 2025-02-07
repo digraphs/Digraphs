@@ -69,7 +69,7 @@ function(G, domain)
 end);
 
 InstallGlobalFunction(DIGRAPHS_AddOrbitToHashMap,
-function(G, set, hashmap)
+function(G, set, act, hashmap)
   local gens, o, im, pt, g;
 
   gens := GeneratorsOfGroup(G);
@@ -78,7 +78,7 @@ function(G, set, hashmap)
   hashmap[set] := true;
   for pt in o do
     for g in gens do
-      im := OnSets(pt, g);
+      im := act(pt, g);
       if not im in hashmap then
         hashmap[im] := true;
         Add(o, im);
@@ -118,7 +118,8 @@ end);
 InstallImmediateMethod(DigraphGroup, IsDigraph and HasAutomorphismGroup, 0,
 DIGRAPHS_DigraphGroup);
 
-InstallMethod(DigraphGroup, "for a digraph", [IsDigraph], DIGRAPHS_DigraphGroup);
+InstallMethod(DigraphGroup, "for a digraph", [IsDigraph],
+DIGRAPHS_DigraphGroup);
 
 InstallMethod(DigraphOrbits, "for a digraph",
 [IsDigraph],

@@ -230,7 +230,8 @@ end);
 
 InstallMethod(EdgeWeightedDigraphShortestPaths,
 "for a digraph with edge weights and known shortest paths and a pos int",
-[IsDigraph and HasEdgeWeights and HasEdgeWeightedDigraphShortestPaths, IsPosInt],
+[IsDigraph and HasEdgeWeights and HasEdgeWeightedDigraphShortestPaths,
+ IsPosInt],
 function(digraph, source)
   local all_paths;
   if not source in DigraphVertices(digraph) then

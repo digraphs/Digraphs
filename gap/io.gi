@@ -695,7 +695,8 @@ DigraphFromGraph6StringCons);
 InstallMethod(DigraphFromGraph6String, "for a string", [IsString],
 s -> DigraphFromGraph6String(IsImmutableDigraph, s));
 
-InstallMethod(DigraphFromDigraph6StringCons, "for IsMutableDigraph and a string",
+InstallMethod(DigraphFromDigraph6StringCons,
+"for IsMutableDigraph and a string",
 [IsMutableDigraph, IsString],
 function(filt, s)
   local legacy, list, n, start, i, range, source, pos, len, j, bpos, tabpos;

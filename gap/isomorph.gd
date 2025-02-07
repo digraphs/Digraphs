@@ -57,10 +57,14 @@ DeclareGlobalFunction("DIGRAPHS_ValidateEdgeColouring");
 DeclareGlobalFunction("DIGRAPHS_CollapseMultiColouredEdges");
 DeclareGlobalFunction("DIGRAPHS_CollapseMultipleEdges");
 
-DeclareOperation("IsDigraphAutomorphism", [IsDigraph, IsPerm]);
-DeclareOperation("IsDigraphAutomorphism", [IsDigraph, IsPerm, IsList]);
-DeclareOperation("IsDigraphAutomorphism", [IsDigraph, IsTransformation]);
-DeclareOperation("IsDigraphAutomorphism", [IsDigraph, IsTransformation, IsList]);
+DeclareOperation("IsDigraphAutomorphism",
+                 [IsDigraph, IsPerm]);
+DeclareOperation("IsDigraphAutomorphism",
+                 [IsDigraph, IsPerm, IsList]);
+DeclareOperation("IsDigraphAutomorphism",
+                 [IsDigraph, IsTransformation]);
+DeclareOperation("IsDigraphAutomorphism",
+                 [IsDigraph, IsTransformation, IsList]);
 
 DeclareOperation("IsDigraphIsomorphism", [IsDigraph, IsDigraph, IsPerm]);
 DeclareOperation("IsDigraphIsomorphism",
