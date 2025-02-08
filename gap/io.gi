@@ -1389,566 +1389,517 @@ function(str)
   return ConvertToImmutableDigraphNC(out);
 end);
 
-BindGlobal("DIGRAPHS_ParseDreadnautConfig",
-function(config, key, r)
-    local Pos, tempStr, tempConfig, test, localNewlineCount;
+BindGlobal("DIGRAPHS_GETNWC",
+function(r, Stream)
+    local char;
 
-    RemoveCharacters(config, " \r\t=-+");
+    char := Stream.GetChar(r);
+    while char <> fail and char in " ,\t" do
+        char := Stream.GetChar(r);
+    od;
 
-    tempConfig := ShallowCopy(config);
-    RemoveCharacters(tempConfig, "Ag$ntd1234567890");
-
-    test := PositionProperty(tempConfig, x -> x <> '\n');
-
-    if test <> fail and key <> "f" then
-      ErrorNoReturn("the format of the file given as the 1st argument <name> ",
-                    "cannot be determined as it contains an unexpected ",
-                    "character: ",
-                    tempConfig[test],
-                    " on line ", 1 + Length(tempConfig{[1 .. test - 1]}));
+    if char = fail then
+        return fail;
     fi;
 
-    Pos := PositionProperty(config, x -> x = key[1]);
-    localNewlineCount := Length(PositionsProperty(config{[1 .. Pos]},
-                                x -> x = '\n'));
+    return char;
+end);
 
-    if Pos <> fail then
-      tempStr := "";
-      Pos := Pos + 1;
+BindGlobal("DIGRAPHS_GETNWL",
+function(r, Stream)
+    local char;
+    char := Stream.GetChar(r);
+    while char <> fail and char in " \n\t\r" do
+        char := Stream.GetChar(r);
+    od;
 
-      while (config[Pos] = '\n') or (Int(config{[Pos]}) <> fail) do
-        tempStr := Concatenation(tempStr, config{[Pos]});
+    if char = fail then
+        return fail;
+    fi;
 
-        if key = "f" and config[Pos] = '\n' then
-          r.newlineCount := r.newlineCount + 1;
+    return char;
+end);
+
+BindGlobal("DIGRAPHS_readinteger",
+function(r, Stream)
+    local char, ans, minus;
+    char := DIGRAPHS_GETNWL(r, Stream);
+
+    if not IsDigitChar(char) and char <> '-' and char <> '+' then
+        if char <> fail then
+            Stream.UngetChar(r, char);
         fi;
+        ErrorNoReturn("Expected integer on line ", r.newline);
+    fi;
 
-        Pos := Pos + 1;
-        if Pos > Length(config) then
-          break;
-        fi;
-      od;
-      if tempStr = "" then
-        if key <> "f" then
-          ErrorNoReturn("the format of the file given as the 2nd ",
-                        "argument <name> cannot be determined. '", key,
-                        "' (line ", localNewlineCount, ")",
-                        " is not followed by a value,");
-        else
-          ErrorNoReturn("the partition cannot be determined.",
-                        " 'f' (line ", localNewlineCount, ")",
-                        " is neither followed",
-                        " by a single value nor by a list of values,");
-        fi;
-      fi;
-      RemoveCharacters(tempStr, "\n");
-      return Int(tempStr);
-
+    minus := char = '-';
+    if char = '-' or char = '+' then
+        ans := 0;
     else
-      if key = "$" then
-        return 0;
-      else
-        ErrorNoReturn("the number of vertices has not been declared. ",
-                      "Ensure that ",
-                      "n=# is included before the declaration of 'g', ");
-      fi;
+        ans := Int([char]);
     fi;
+
+    char := Stream.GetChar(r);
+
+    while IsDigitChar(char) do
+        ans := ans * 10 + Int([char]);
+        char := Stream.GetChar(r);
+    od;
+
+    if char <> fail then
+        Stream.UngetChar(r, char);
+    fi;
+
+    if minus then
+        ans := -ans;
+    fi;
+
+    return ans;
 end);
 
-BindGlobal("DIGRAPHS_LegalDreadnautEdge",
-function(vertex, x, r, part)
-  local tempPart;
+BindGlobal("DIGRAPHS_readgraph",
+function(r, Stream)
+    local c, w, v, neg;
 
-  tempPart := ShallowCopy(part);
-  RemoveCharacters(tempPart, " ");
+    v := 1;
+    neg := false;
 
-  if x > r.nValue or x < 1 then
-    Info(InfoWarning, 1, "Ignoring illegal edge ",
-          vertex + r.dollarValue - 1, " -> ",
-          x + r.dollarValue - 1, " (original indexing) on line ",
-          r.newlineCount, " (original indexing). ");
-    return false;
-  fi;
-  if not r.dExists and x = vertex then
-    Info(InfoWarning, 1, "Ignoring illegal edge ",
-        vertex + r.dollarValue - 1, " -> ",
-        x + r.dollarValue - 1, " (original indexing) on line ",
-        r.newlineCount,
-        ". Ensure 'd' is declared to include loops.");
-    return false;
-  fi;
-  return true;
-end);
+    while true do  # change to while c <> fail?
+        c := DIGRAPHS_GETNWC(r, Stream);
+        if IsDigitChar(c) then
+            Stream.UngetChar(r, c);
+            w := DIGRAPHS_readinteger(r, Stream);
+            w := w - r.labelorg + 1;  # what if i can't read an integer in?
 
-BindGlobal("DIGRAPHS_SplitDreadnautLines",
-function(inputString, r)
-    local startPos, currentPos, segments, currentChar, nextChar, index,
-          partition, char, localNewlineCount, temp;
+            if neg then
+                neg := false;
 
-    startPos := 1;
-    segments := [];
-    localNewlineCount := r.newlineCount;
-
-    # Iterate over the string
-    for currentPos in [1 .. Length(inputString) - 1] do
-        currentChar := inputString[currentPos];
-        nextChar := inputString[currentPos + 1];
-
-        if currentChar = '\n' then
-          localNewlineCount := localNewlineCount + 1;
-          continue;
-        fi;
-
-        if currentChar = ';' then
-          Add(segments, inputString{[startPos .. currentPos]});
-          startPos := currentPos + 1;
-          continue;
-        fi;
-
-        if currentChar = '$' and nextChar = '$' then
-          Info(InfoWarning, 1, "Vertex indexing will start at 1");
-          temp := PositionProperty(
-                     inputString{[currentPos + 2 .. Length(inputString)]},
-                     c -> c in ".:");
-          if temp <> fail then
-            ErrorNoReturn("Syntax error: unexpected characters",
-                          "(including '.' or ':')",
-                          " after \"$$\" (line ",
-                          localNewlineCount + Length(
-                            PositionsProperty(
-                              inputString{[currentPos + 2 .. temp]},
-                              c -> c in "\n")),
-                          ")");
-          else
-            Add(segments, inputString{[startPos .. currentPos - 1]});
-            Add(segments, "$$");
-            startPos := currentPos + 2;
-            continue;
-          fi;
-
-        fi;
-
-        if currentChar in "erRjstTvFiIOlw+campyGS*kKVu?&Px@bz#oMh<>q" then
-          ErrorNoReturn("while parsing dreadnaut file,",
-                               " found operation ",
-                               currentChar, " on line ", localNewlineCount,
-                               ", which is not supported.");
-        startPos := currentPos + 1;
-        fi;
-
-        if currentChar = 'f' then  # partition
-          Add(segments, inputString{[startPos .. currentPos - 1]});
-          if PositionSublist(
-            inputString{[currentPos + 1 .. Length(inputString)]},
-            "[") = fail then
-              if ForAll(inputString{[currentPos + 1 .. Length(inputString)]},
-              c -> c in
-              Concatenation("$ \nferRjstTvfFiIOlw+campyGS*kKVu?&Px@b=[]",
-                            "z#oMh<>q0123456789;")) then
-                index := DIGRAPHS_ParseDreadnautConfig(inputString{[currentPos ..
-                                                          Length(inputString)]},
-                                              "f", r);
-                partition := [r.dollarValue .. r.nValue + r.dollarValue - 1];
-                Remove(partition, index - r.dollarValue + 1);
-
-                Add(segments, Concatenation(
-                                Concatenation(
-                                  Concatenation("f", String(index)),
-                                  " | "),
-                                  JoinStringsWithSeparator(partition, " ")));
-
-                startPos := PositionSublist(
-                            inputString{[currentPos + 1 .. Length(inputString)]},
-                            String(index)) + currentPos + 1;
-              else
-                ErrorNoReturn("Syntax error: Partition defined on line ",
-                              localNewlineCount,
-                              " and is then followed by unexpected characters (",
-                        JoinStringsWithSeparator(
-                        Filtered(
-                          inputString{[currentPos + 1 .. Length(inputString)]},
-                          c -> not c in
-                          Concatenation(
-                            "$ \nferRjstTvfFiIOlw+campyGS*kKVu?&Px@b=[]",
-                            "z#oMh<>q0123456789;")),
-                            ","),
-                        "), ");
-              fi;
-
-          else
-            repeat
-              currentPos := currentPos + 1;
-            until Int(inputString{[currentPos]}) <> fail;
-            startPos := currentPos;
-            repeat
-              currentPos := currentPos + 1;
-            until currentPos > Length(inputString)
-                  or inputString[currentPos] = ']';
-            if currentPos > Length(inputString) then
-              ErrorNoReturn("Syntax error: missing ']'",
-                            " in declaration of partition");
+                if (w < 1) or (w > r.n) or (w = v and not r.digraph) then
+                    Info(InfoWarning, 1, "Ignoring illegal edge (",
+                        v + r.labelorg - 1, ", ", w + r.labelorg - 1, ")");
+                else
+                    RemoveSet(r.edgeList[v], w);
+                    if not r.digraph then
+                        RemoveSet(r.edgeList[w], v);
+                    fi;
+                fi;
             else
-              if ForAll(inputString{[currentPos + 1 .. Length(inputString)]},
-                        c -> c in
-                        Concatenation("$ \nferRjstTvFiIOlw+campyGS*kKVu?&Px@b",
-                                      "z#oMh<>q0123456789;f[]=")) then
-                Add(segments,
-                    Concatenation("f",
-                                  inputString{[startPos .. currentPos - 1]}));
-                startPos := currentPos + 1;
-              else
-                ErrorNoReturn(
-                      "Syntax error: partition defined on line ",
-                      localNewlineCount,
-                      " and is then followed by unexpected characters (",
-                      JoinStringsWithSeparator(
-                        Filtered(
-                          inputString{[currentPos + 1 .. Length(inputString)]},
-                          c -> not c in
-                          Concatenation(
-                            "$ \nferRjstTvFiIOlw+campyGS*kKVu?&Px@b",
-                            "z#oMh<>q0123456789;f[]=")),
-                            ","),
-                        "), ");
-              fi;
+                c := DIGRAPHS_GETNWC(r, Stream);
+                if c = ':' then
+                    if w < 1 or w > r.n then
+                        Info(InfoWarning, 1, "Ignoring illegal vertex (",
+                            v + r.labelorg - 1, ", ", w + r.labelorg - 1, ")");
+                    else
+                        v := w;
+                    fi;
+                else
+                    Stream.UngetChar(r, c);
+                    if w < 1 or w > r.n or (w = v and not r.digraph) then
+                        Info(InfoWarning, 1, "Ignoring illegal edge (",
+                            v + r.labelorg - 1, ", ", w + r.labelorg - 1, ")");
+                    else
+                        AddSet(r.edgeList[v], w);
+                        if not r.digraph then
+                            AddSet(r.edgeList[w], v);
+                        fi;
+                    fi;
+                fi;
             fi;
-          fi;
-        fi;
-
-        if currentChar = ':' then
-          repeat  # backtrack to find the start of the vertex
-            currentPos := currentPos - 1;
-            if (inputString[currentPos] in " \n") <> true and
-               not IsDigitChar(inputString[currentPos]) then
-              ErrorNoReturn("Syntax error: (line ",
-                            r.newlineCount + Length(PositionsProperty(
-                              inputString{[1 .. currentPos]},
-                              x -> x in "\n")),
-                            ") unexpected character (",
-                            inputString[currentPos],
-                            ") before \":\"");
+        elif c = ';' then
+            if v > r.n then
+                ErrorNoReturn("Vertex ", v + r.labelorg - 1,
+                            " declared on line ", r.newline,
+                            " exceeds maximum ",
+                            r.n + r.labelorg - 1);
+            else
+                neg := false;
+                v := v + 1;
             fi;
-          until currentPos <= 1 or IsDigitChar(inputString[currentPos]);
-          repeat
-            currentPos := currentPos - 1;
-          until currentPos <= 1 or (not IsDigitChar(inputString[currentPos]));
-          if startPos < currentPos then
-            Add(segments, inputString{[startPos .. currentPos - 1]});
-          fi;
-          if currentPos > 1 then
-            startPos := currentPos;
-          fi;
+        elif c in "?\n" then
+            neg := false;
+        elif c = fail then
+            return;
+        elif c = '.' then
+            return;
+        elif c = '-' then
+            neg := true;
+        elif c = '!' then
+            while c <> '\n' and c <> fail do
+                c := Stream.GetChar(r);
+            od;
+        else
+            ErrorNoReturn("Illegal character ", c, " on line ", r.newline);
         fi;
     od;
-
-    if ForAny(inputString{[startPos .. Length(inputString)]},
-              # change this to looping over i
-              c -> c in "erRjstTvFiIOlw+campyGS*kKVu?&Px@bz#oMh<>q") then
-      for char in Filtered(inputString{[startPos .. Length(inputString)]},
-              c -> c in "erRjstTvFiIOlw+campyGS*kKVu?&Px@bz#oMh<>q") do
-        temp := PositionSublist(inputString{[startPos .. Length(inputString)]},
-                                [char]);
-        Info(InfoWarning, 1, "while parsing dreadnaut file, found operation ",
-                              char,
-                              "') on line ",
-                              Length(PositionsProperty(
-                                inputString{[1 .. temp]}, x -> x in "\n")),
-                              ", which is not supported.");
-      od;
-    else
-      Add(segments, inputString{[startPos .. Length(inputString)]});
-    fi;
-    return segments;
 end);
 
-BindGlobal("DIGRAPHS_ParseDreadnautGraph",
-function(graphData, r)
-    local edgeList, part, parts, subparts, vertex, connectedTo,
-          adjacencyPart, pparts, partition, i, j, num, iter,
-          pos, char, localNewlineCount, failure, temp, vertices,
-          components, p, runningSemi, lastVertex;
+BindGlobal("DIGRAPHS_GetInt",
+function(r, Stream)
+    local ch;
 
-    edgeList := List([1 .. r.nValue], x -> []);
-    RemoveCharacters(graphData, "\r\t");
-    parts := DIGRAPHS_SplitDreadnautLines(graphData, r);
-    runningSemi := false;
-    iter := 0;
-    localNewlineCount := r.newlineCount;
-    lastVertex := 0;
+    ch := DIGRAPHS_GETNWL(r, Stream);
+    if ch <> '=' then
+        Stream.UngetChar(r, ch);
+    fi;
+    return DIGRAPHS_readinteger(r, Stream);
+end);
 
-    for part in parts do
-      iter := iter + 1;
+BindGlobal("DIGRAPHS_ParsePartition",
+function(r, minus, Stream)
+    local c, x, tempNewline, v1, v2, part;
 
-      pos := PositionSublist(part, ".");
+    part := 1;
+    if r.n = fail then
+        ErrorNoReturn("Vertex number must be declared ",
+                    "before partition on line ", r.newline);
+    fi;
+    r.partition := List([1 .. r.n], x -> 0);
 
-      if pos <> fail then
-          part := Concatenation(part{[1 .. pos - 1]},
-                                Filtered(part{[pos .. Length(part)]},
-                                        x -> not IsDigitChar(x)));
-          RemoveCharacters(part, ".");
-          if ForAny(parts{[iter + 1 .. Length(parts)]},
-                     c -> (':' in c or '.' in c)) then
-            ErrorNoReturn("Syntax error: unexpected characters (including ':'",
-                          " or '.') after \".\"",
-                          "(note that edges cannot be declared after \".\")");
-          fi;
-      fi;
+    if minus then
+        return;
+    fi;
 
-      if part = "" or part = ' ' or part = " " or part = '\n' then
-        continue;
-      fi;
+    c := DIGRAPHS_GETNWL(r, Stream);
+    if c = '=' then
+        c := DIGRAPHS_GETNWL(r, Stream);
+    fi;
 
-      if '$' in part then
-        if ForAny(part{[iter + 1 .. Length(part)]}, c -> c in ".:") then
-            ErrorNoReturn("Syntax error: unexpected characters (including ':'",
-                          "or '.') after \".\"",
-                          "(note that edges cannot be declared after vertex",
-                          " reindexing)");
-        fi;
-
-        if part = "$$" then
-          r.dollarValue := 0;
-        else
-          r.dollarValue := DIGRAPHS_ParseDreadnautConfig(part, "$", r);
-        fi;
-      fi;
-
-      if part[1] = 'f' then
-        if Length(part) = 1 then  # empty partition
-          continue;
-        fi;
-
-        pparts := SplitString(part{[2 .. Length(part)]}, "|");
-        partition := List([1 .. r.nValue], x -> -1);
-        pparts[Length(pparts)] := Concatenation(pparts[Length(pparts)], " ");
-        for i in [1 .. Length(pparts)] do
-          num := "";
-          for j in pparts[i] do
-              if IsDigitChar(j) then
-                num := Concatenation(num, [j]);
-
-              elif j <> ' ' and j <> '\n' then
-                ErrorNoReturn("illegal character ", j, " in partition");
-
-              else
-              if num <> "" then
-                num := Int(num) - r.dollarValue + 1;
-                if num > r.nValue or num < 1 then
-                  ErrorNoReturn("illegal part ",
-                                num + r.dollarValue - 1,
-                                " in partition");
-                else
-                  partition[num] := i;
+    if IsDigitChar(c) then
+        Stream.UngetChar(r, c);
+        v1 := DIGRAPHS_readinteger(r, Stream);
+        r.partition[v1] := 1;
+        return;
+    elif c <> '[' then
+        ErrorNoReturn("Partitions should be specified",
+                    " using one of the following formats:\n",
+                      "  - A single number (e.g. 'f=3')\n",
+                      "  - A list of cells (e.g. 'f=[...]')");
+    else
+        tempNewline := r.newline;
+        while c <> fail and c <> ']' do
+            c := DIGRAPHS_GETNWL(r, Stream);
+            if c = '|' then
+                part := part + 1;
+            elif c = ',' then
+                continue;
+            elif IsDigitChar(c) then
+                Stream.UngetChar(r, c);
+                v1 := DIGRAPHS_readinteger(r, Stream);
+                if v1 - r.labelorg + 1 < 1 or v1 - r.labelorg + 1 > r.n then
+                    ErrorNoReturn("Vertex ", Int([v1]),
+                    " out of range in partition specification (line ",
+                    tempNewline, ")");
                 fi;
-                num := "";
-              fi;
+
+                v2 := DIGRAPHS_GETNWL(r, Stream);
+                if v2 = ':' then
+                    v2 := DIGRAPHS_GETNWL(r, Stream);
+                    if not IsDigitChar(v2) then
+                        ErrorNoReturn("Invalid range '", v1, " : ", v2,
+                        "' in partition specification (line ",
+                        tempNewline, ")");
+                    fi;
+                    Stream.UngetChar(r, v2);
+                    v2 := DIGRAPHS_readinteger(r, Stream);
+                    if v2 < r.labelorg or v2 > r.n - r.labelorg + 1 then
+                        ErrorNoReturn("Vertex ", v2,
+                        " out of range in partition specification (line ",
+                        tempNewline, ")");
+                    fi;
+                    for x in [v1 - r.labelorg + 1 .. v2 - r.labelorg + 1] do
+                        r.partition[x] := part;
+                    od;
+                else
+                    Stream.UngetChar(r, v2);
+                    r.partition[v1 - r.labelorg + 1] := part;
+                fi;
+            else
+                if c = fail then
+                    ErrorNoReturn("Unterminated partition specification (line ",
+                    tempNewline, ")");
+                elif c = ']' then
+                    break;
+                else
+                    ErrorNoReturn("Unexpected character '", c,
+                    "' in partition specification (line ", r.newline, ")");
+                fi;
             fi;
-          od;
         od;
 
-        if - 1 in partition then
-          ErrorNoReturn("partition is incomplete. The following vertices ",
-                         PositionsProperty(partition, x -> x = -1),
-                         "(1-indexed) do not feature in any part.");
-        else
-          r.partition := partition;
+        if c = fail then
+            ErrorNoReturn("Unterminated partition specification (line ",
+            tempNewline, ")");
         fi;
-        continue;
-      fi;
-
-      subparts := SplitString(part, ":");
-
-      if Length(subparts) = 0 then
-        continue;
-      elif Length(subparts) = 1 then
-        if PositionSublist(" $$;", subparts[1]) <> fail then
-          continue;
-        elif Length(PositionsProperty(subparts[1],
-           x -> x = '\n')) = Length(subparts[1]) then
-          localNewlineCount := localNewlineCount + Length(subparts[1]);
-          continue;
-        elif runningSemi then
-          adjacencyPart := subparts[1];
-          vertices := [lastVertex + 1];
-          if lastVertex = r.nValue - r.dollarValue + 1 then
-            ErrorNoReturn("formatting error ('", part, "'),");
-          fi;
-        else
-          ErrorNoReturn("formatting error ('", part, "'),");
-        fi;
-      else
-        vertices := [];
-        components := SplitString(subparts[1], "\n");
-
-        for i in [1 .. Length(components)] do
-            for p in SplitString(components[i], " ") do
-                if p = "" then
-                    continue;
-                fi;
-                if not ForAll(p, IsDigitChar) then
-                    ErrorNoReturn("Formatting error: ", subparts[1],
-                    " on line ", localNewlineCount);
-                else
-                    Add(vertices, Int(p) - r.dollarValue + 1);
-                fi;
-            od;
-
-            localNewlineCount := localNewlineCount + 1;
-        od;
-        r.newlineCount := localNewlineCount;
-        adjacencyPart := subparts[2];
-      fi;
-
-      for vertex in vertices do
-
-        if vertex > r.nValue or vertex < 1 then
-          # shouldn't this be vertex + r.dollarValue - 1?
-          Info(InfoWarning, 1, "Ignoring illegal vertex ", vertex,
-                              " (reindexed) on line ", localNewlineCount);
-          continue;
-        fi;
-
-      od;
-
-      if PositionSublist(adjacencyPart, ";") <> fail then
-        runningSemi := true;
-      fi;
-
-      RemoveCharacters(adjacencyPart, ",;");
-      connectedTo := [];
-      temp := "";
-
-      for char in adjacencyPart do
-        if char = '\n' then
-          localNewlineCount := localNewlineCount + 1;
-          if temp <> "" then
-            Add(connectedTo, Int(temp));
-            temp := "";
-          fi;
-        elif char = ' ' then
-            if temp <> "" then
-              Add(connectedTo, Int(temp));
-              temp := "";
-            fi;
-          continue;
-        else
-          if IsDigitChar(char) then
-            temp := Concatenation(temp, [char]);
-          else
-            ErrorNoReturn("formatting error (", part, ") on line ",
-                          localNewlineCount);
-          fi;
-        fi;
-      od;
-      if temp <> "" then
-        Add(connectedTo, Int(temp));
-      fi;
-
-      failure := PositionProperty(connectedTo, x -> x = fail);
-      if failure <> fail then
-        ErrorNoReturn("Formatting error (", part, ") on line ",
-          localNewlineCount + Length(
-            PositionProperty(adjacencyPart{[1 .. failure]},
-            x -> x = '\n')));
-      fi;
-
-      connectedTo := List(connectedTo, x -> x - r.dollarValue + 1);
-
-      for vertex in vertices do
-        connectedTo := Filtered(connectedTo,
-                                x -> DIGRAPHS_LegalDreadnautEdge(vertex,
-                                  x, r, part));
-
-        Append(edgeList[vertex], connectedTo);
-        edgeList[vertex] := DuplicateFreeList(edgeList[vertex]);
-      od;
-      lastVertex := vertex;
-    od;
-
-    return edgeList;
+    fi;
+    return;
 end);
 
 InstallMethod(ReadDreadnautGraph, "for a digraph", [IsString],
-function(name)
-  local file, config, graphData, line, edgeList, foundG, r, D, exclamPosition;
-  file := IO_CompressedFile(UserHomeExpand(name), "r");
+function(filename)
+    local r, f, c, minus, backslash, temp, D, Stream;
+    r := rec(n := fail, digraph := false, labelorg := 0,
+            newline := 1, edgeList := fail, partition := fail);
+    f := UserHomeExpand(filename);
 
-  if file = fail then
-    ErrorNoReturn("cannot open the file given as the 1st argument <name>, \"",
-                 name,
-                 "\",");
-  fi;
+    Stream := rec(
+    file := fail,
+    buffer := []);
 
-  config := "";
-  foundG := false;
+    Stream.Open := function(filename)
+        Stream.file := InputTextFile(filename);
+        if Stream.file = fail then
+          ErrorNoReturn("cannot open the file given as the 1st ",
+          "argument <name>, \"", filename, "\",");
+        fi;
+        Stream.buffer := [];
+    end;
 
-  # Read file line by line until 'g' is found
-  repeat
-      line := IO_ReadLine(file);
-      if not IsEmpty(line) then
-          exclamPosition := PositionSublist(line, "!");
-          if exclamPosition <> fail and exclamPosition > 1 then
-              line := line{[1 .. exclamPosition - 1]};
-          elif exclamPosition = 1 then
-              continue;
+    Stream.GetChar := function(r)
+        local c;
+        if Length(Stream.buffer) > 0 then
+            c := Remove(Stream.buffer, 1);
+            if c = '\n' then
+                r.newline := r.newline + 1;
+            fi;
+            return c;
+        else
+            c := ReadByte(Stream.file);
+            if c = fail then
+                return fail;
+            elif c = 10 then
+                r.newline := r.newline + 1;
+            fi;
+            return CHAR_INT(c);
+        fi;
+    end;
+
+    Stream.UngetChar := function(r, c)
+        Stream.buffer := Concatenation([c], Stream.buffer);
+        if c = '\n' then
+            r.newline := r.newline - 1;
+        fi;
+    end;
+
+    Stream.Close := function()
+        CloseStream(Stream.file);
+        Stream.buffer := [];
+    end;
+
+    Stream.Open(f);
+    minus := false;
+
+    while true do
+        c := Stream.GetChar(r);
+        if c = fail then
+            break;
+        elif c in " \t\r" then
+        elif c = '-' then
+            minus := true;
+        elif c in "+,;\n" then
+            minus := false;
+        elif c = 'A' then
+          minus := false;
+          temp := Stream.GetChar(r);
+          if temp in "nNdDtT" then
+          elif temp in "sS" then
+            ErrorNoReturn("Sparse mode (line ", r.newline, ") is not supported");
+          else
+            ErrorNoReturn("Operation 'A' (line ", r.newline,
+                          ") is not recognised");
           fi;
-          config := Concatenation(config, line);
-          foundG := PositionSublist(line, "g") <> fail;
-      fi;
-  until foundG or IsEmpty(line);
-
-  if not foundG then
-      ErrorNoReturn("'g' not declared");
-  fi;
-
-  config := SplitString(config, "g")[1];
-  graphData := line{[PositionSublist(line, "g") + 1 .. Length(line)]};
-
-  repeat
-      line := IO_ReadLine(file);
-      if not IsEmpty(line) then
-          exclamPosition := PositionSublist(line, "!");
-          if exclamPosition <> fail and exclamPosition > 1 then
-              line := line{[1 .. exclamPosition - 1]};
-          elif exclamPosition = 1 then
-              continue;
+          temp := Stream.GetChar(r);
+          if temp = '+' then
+            ErrorNoReturn("Changing between modes ", "(line ", r.newline,
+                          ") is not supported");
+          else
+            Stream.UngetChar(r, temp);
           fi;
-          graphData := Concatenation(graphData, line);
-      fi;
-  until IsEmpty(line);
+        elif c in "<BR_@#jv\%sIixtTobzlamp?H" then
+            minus := false;
+            Info(InfoWarning, 1, "Operation ", c, " (line ", r.newline,
+                ") is not supported");
+        elif c in "acmpPw" then
+            Info(InfoWarning, 1, "Operation ", c, " (line ", r.newline,
+                ") is not supported");
+        elif c in "<e" then
+            ErrorNoReturn("Operation ", c, " (line ", r.newline,
+                          ") is not supported");
+        elif c = 'd' then
+            r.digraph := true;
+        elif c in ">" then
+            ErrorNoReturn("Operation '>' (line ", r.newline,
+              ") is not supported.",
+              " Please use 'WriteDreadnautGraph'.");  # maybe can do better
+        elif c = '!' then
+            while c <> '\n' and c <> fail do
+                c := Stream.GetChar(r);
+            od;
+        elif c = 'n' then
+            minus := false;
+            r.n := DIGRAPHS_GetInt(r, Stream);
+            if r.n = fail then
+                ErrorNoReturn("Error reading vertex number on line ", r.newline);
+            elif r.n <= 0 then
+                ErrorNoReturn("Vertex number ", r.n, " on line ", r.newline,
+                            " must be positive.");
+            fi;
+            r.edgeList := List([1 .. r.n], x -> []);
+        elif c = 'g' then
+            minus := false;
+            if r.n = fail then
+                ErrorNoReturn("Vertex number must be declared before graph ",
+                            "on line ", r.newline);
+            fi;
+            DIGRAPHS_readgraph(r, Stream);
+        elif c = 'r' then
+            minus := false;
+            temp := Stream.GetChar(r);
+            if temp <> '&' then
+                Stream.UngetChar(r, temp);
+            fi;
+            InfoWarning("Operation 'r' (line ", r.newline, ") is not supported");
+        elif c = 'q' then
+            if r.edgeList = fail then
+                Info(InfoWarning, 1, "'q' operation encountered before ",
+                    "declaration of graph. Nothing will be returned.");
+                return;
+            else
+                return Digraph(r.edgeList);
+            fi;
+        elif c = '\"' then
+            minus := false;
+            c := Stream.GetChar(r);
+            temp := r.newline;
+            backslash := false;
+            while c <> fail do
+                c := Stream.GetChar(r);
+                if c = '\\' then
+                    backslash := true;
+                elif backslash then
+                    backslash := false;
+                elif c = '\"' then
+                    if backslash then
+                        backslash := false;
+                    else
+                        break;
+                    fi;
+                fi;
+            od;
+            if c = fail then
+                ErrorNoReturn("Unterminated comment on line ", temp);
+            fi;
+        elif c = 'f' then
+            DIGRAPHS_ParsePartition(r, minus, Stream);
+            if minus then
+                minus := false;
+            fi;
+        elif c in "FswcyK*" then
+            Info(InfoWarning, 1, "Operation ", c, " (line ",
+                r.newline, ") is not supported");
+            minus := false;
+            DIGRAPHS_GetInt(r, Stream);
+        elif c = 'M' then
+            Info(InfoWarning, 1, "Operation 'M' (line ",
+                r.newline, ") is not supported");
+            if minus then
+                minus := false;
+            else
+                DIGRAPHS_GetInt(r, Stream);
+                temp := DIGRAPHS_GETNWL(r, Stream);
+                if temp = '/' then
+                    DIGRAPHS_readinteger(r, Stream);
+                else
+                    Stream.UngetChar(r, c);
+                fi;
+            fi;
+        elif c = 'k' then
+            Info(InfoWarning, 1, "Operation 'k' (line ",
+                r.newline, ") is not supported");
+            minus := false;
+            DIGRAPHS_readinteger(r, Stream);
+            DIGRAPHS_readinteger(r, Stream);
+        elif c in "VSG" then
+            Info(InfoWarning, 1, "Operation ", c,
+                " (line ", r.newline, ") is not supported");
+            if minus then
+                minus := false;
+            else
+                DIGRAPHS_readinteger(r, Stream);
+            fi;
+        elif c = 'd' then
+            minus := false;
+            r.digraph := true;
+        elif c in "P" then
+            Info(InfoWarning, 1, "Operation ", c, " (line ",
+                r.newline, ") is not supported");
+            if minus then
+                minus := false;
+            else
+                if Stream.GetChar(r) = 'P' then
+                    temp := r.newline;
+                    while c <> fail and c <> ';' do
+                        c := Stream.GetChar(r);
+                    od;
+                    if c = fail then
+                        ErrorNoReturn("Unterminated 'PP' operation on line ",
+                                    temp);
+                    fi;
+                fi;
+            fi;
+        elif c = '$' then
+            temp := Stream.GetChar(r);
+            if temp = '$' then
+                r.labelorg := 0;
+            else
+              Stream.UngetChar(r, temp);
+                r.labelorg := DIGRAPHS_GetInt(r, Stream);
+                if r.labelorg < 0 then
+                    ErrorNoReturn("Label origin ", r.labelorg, " on line ",
+                                r.newline, " must be non-negative.");
+                fi;
 
-  file := IO_CompressedFile(UserHomeExpand(name), "r");
+            fi;
+            Info(InfoWarning, 1, "Vertices will be 1-indexed");
+        elif c = 'r' then
+            Info(InfoWarning, 1, "Operation ", c,
+                " (line ", r.newline, ") is not supported");
+            if minus then
+                minus := false;
+            else
+                c := Stream.GetChar(r);
+                if c <> '&' then
+                    Stream.UngetChar(r, c);
+                    temp := r.newline;
+                    while c <> fail and c <> ';' do
+                        c := Stream.GetChar(r);
+                    od;
+                    if c = fail then
+                        ErrorNoReturn("Unterminated 'r' operation on line ",
+                                      temp);
+                    fi;
+                fi;
+            fi;
+        elif c = '&' then
+            minus := false;
+            Info(InfoWarning, 1, "Operation '& (line ",
+                r.newline, ") is not supported");
+        else
+            ErrorNoReturn("Illegal character ", c, " on line ", r.newline);
+        fi;
+    od;
 
-  r := rec(dExists := PositionSublist(config, "d") <> fail,
-           partition := fail,
-           newlineCount := 1 + Length(PositionsProperty(config, x -> x = '\n')));
-
-  r.configNewlineCount := r.newlineCount;
-  r.dollarValue := DIGRAPHS_ParseDreadnautConfig(config, "$", r);
-  r.nValue := DIGRAPHS_ParseDreadnautConfig(config, "n", r);
-
-  if r.dollarValue <> 1 then
-    Info(InfoWarning, 1,
-         "The graph will be reindexed such that the indexing starts",
-          " at 1. i.e. effectively adding $=1 to the end of the file.");
-  fi;
-
-  edgeList := DIGRAPHS_ParseDreadnautGraph(graphData, r);
-
-  if r.dExists then
-    D := Digraph(edgeList);
-    if r.partition <> fail then
-      SetDigraphVertexLabels(D, r.partition);
+    if r.edgeList = fail then
+        ErrorNoReturn("No graph was declared.");
     fi;
-  else
-    Info(InfoWarning, 1,
-         "The graph is undirected and so will be symmetrised.");
-    D := DigraphSymmetricClosure(Digraph(edgeList));
-    if r.partition <> fail then
-      SetDigraphVertexLabels(D, r.partition);
+    D := Digraph(r.edgeList);
+    if not r.digraph then
+        Info(InfoWarning, 1, "Graph is not directed and",
+              " so will be symmetrised.");
     fi;
-  fi;
-  return D;
+    if r.partition <> fail then
+        SetDigraphVertexLabels(D, r.partition);
+    fi;
+    return D;
 end);
 
 ################################################################################
