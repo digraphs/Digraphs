@@ -1465,8 +1465,15 @@ function(r, Stream)
 
     v := 1;
     neg := false;
+    c := ' ';
 
-    while true do  # change to while c <> fail?
+    if r.n = fail then
+      CloseStream(Stream.file);
+      ErrorNoReturn("Vertex number must be declared before graph ",
+                  "on line ", r.newline);
+    fi;
+
+    while c <> fail do
         c := DIGRAPHS_GETNWC(r, Stream);
         if IsDigitChar(c) then
             Stream.UngetChar(r, c);
@@ -1520,8 +1527,6 @@ function(r, Stream)
             fi;
         elif c in "?\n" then
             neg := false;
-        elif c = fail then
-            return;
         elif c = '.' then
             return;
         elif c = '-' then
@@ -1531,10 +1536,15 @@ function(r, Stream)
                 c := Stream.GetChar(r);
             od;
         else
+          if c = fail then
+            return;
+          else
             CloseStream(Stream.file);
             ErrorNoReturn("Illegal character ", c, " on line ", r.newline);
+          fi;
         fi;
     od;
+    return;
 end);
 
 BindGlobal("DIGRAPHS_GetInt",
@@ -1648,10 +1658,13 @@ end);
 
 InstallMethod(ReadDreadnautGraph, "for a digraph", [IsString],
 function(filename)
-    local r, f, c, minus, backslash, temp, D, Stream;
+    local r, f, c, minus, backslash, temp, D, Stream,
+          underscore, doubleUnderscore;
     r := rec(n := fail, digraph := false, labelorg := 0,
             newline := 1, edgeList := fail, partition := fail);
     f := UserHomeExpand(filename);
+    underscore := false;
+    doubleUnderscore := false;
 
     Stream := rec(
     file := fail,
@@ -1694,8 +1707,9 @@ function(filename)
 
     Stream.Open(f);
     minus := false;
+    c := ' ';
 
-    while true do
+    while c <> fail do
         c := Stream.GetChar(r);
         if c = fail then
             break;
@@ -1721,10 +1735,18 @@ function(filename)
           else
             Stream.UngetChar(r, temp);
           fi;
-        elif c in "<BR_@#jv\%IixtTobzlamp?HcpP" then
+        elif c in "BR@#jv\%IixtTobzlamp?HcpP" then
             minus := false;
             Info(InfoWarning, 1, "Operation ", c, " (line ", r.newline,
                 ") is not supported");
+        elif c = '_' then
+          temp := Stream.GetChar(r);
+          if temp = '_' then
+            doubleUnderscore := true;
+          else
+            underscore := true;
+            Stream.UngetChar(r, temp);
+          fi;
         elif c in "<e" then
             CloseStream(Stream.file);
             ErrorNoReturn("Operation ", c, " (line ", r.newline,
@@ -1755,11 +1777,6 @@ function(filename)
             r.edgeList := List([1 .. r.n], x -> []);
         elif c = 'g' then
             minus := false;
-            if r.n = fail then
-                CloseStream(Stream.file);
-                ErrorNoReturn("Vertex number must be declared before graph ",
-                            "on line ", r.newline);
-            fi;
             DIGRAPHS_readgraph(r, Stream);
         elif c = 's' then
           minus := false;
@@ -1797,7 +1814,7 @@ function(filename)
             c := Stream.GetChar(r);
             temp := r.newline;
             backslash := false;
-            while c <> fail do
+            while c <> fail and c <> '\"' do
                 c := Stream.GetChar(r);
                 if c = '\\' then
                     backslash := true;
@@ -1959,6 +1976,21 @@ function(filename)
     if r.partition <> fail then
         SetDigraphVertexLabels(D, r.partition);
     fi;
+    if doubleUnderscore then
+        if not r.digraph then
+          underscore := true;
+        else
+          D := DigraphReverse(D);
+        fi;
+    fi;
+    if underscore then
+        if DigraphHasLoops(D) then
+            D := DigraphDual(D);
+        else
+            D := DigraphRemoveLoops(DigraphDual(D));
+        fi;
+    fi;
+
     CloseStream(Stream.file);
     return D;
 end);
