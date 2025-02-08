@@ -1422,7 +1422,7 @@ end);
 
 BindGlobal("DIGRAPHS_readinteger",
 function(r, Stream)
-    local char, ans, minus;
+    local char, res, minus;
     char := DIGRAPHS_GETNWL(r, Stream);
 
     if not IsDigitChar(char) and char <> '-' and char <> '+' then
@@ -1434,15 +1434,15 @@ function(r, Stream)
 
     minus := char = '-';
     if char = '-' or char = '+' then
-        ans := 0;
+        res := 0;
     else
-        ans := Int([char]);
+        res := Int([char]);
     fi;
 
     char := Stream.GetChar(r);
 
     while IsDigitChar(char) do
-        ans := ans * 10 + Int([char]);
+        res := res * 10 + Int([char]);
         char := Stream.GetChar(r);
     od;
 
@@ -1451,10 +1451,10 @@ function(r, Stream)
     fi;
 
     if minus then
-        ans := -ans;
+        res := -res;
     fi;
 
-    return ans;
+    return res;
 end);
 
 BindGlobal("DIGRAPHS_readgraph",
