@@ -1429,6 +1429,7 @@ function(r, Stream)
         if char <> fail then
             Stream.UngetChar(r, char);
         fi;
+        CloseStream(Stream.file);
         ErrorNoReturn("Expected integer on line ", r.newline,
                     " but was not found");
     fi;
@@ -1508,6 +1509,7 @@ function(r, Stream)
             fi;
         elif c = ';' then
             if v > r.n then
+                CloseStream(Stream.file);
                 ErrorNoReturn("Vertex ", v + r.labelorg - 1,
                             " declared on line ", r.newline,
                             " exceeds maximum ",
@@ -1529,6 +1531,7 @@ function(r, Stream)
                 c := Stream.GetChar(r);
             od;
         else
+            CloseStream(Stream.file);
             ErrorNoReturn("Illegal character ", c, " on line ", r.newline);
         fi;
     od;
@@ -1551,6 +1554,7 @@ function(r, minus, Stream)
 
     part := 1;
     if r.n = fail then
+        CloseStream(Stream.file);
         ErrorNoReturn("Vertex number must be declared ",
                     "before partition on line ", r.newline);
     fi;
@@ -1571,6 +1575,7 @@ function(r, minus, Stream)
         r.partition[v1] := 1;
         return;
     elif c <> '[' then
+        CloseStream(Stream.file);
         ErrorNoReturn("Partitions should be specified",
                     " using one of the following formats:\n",
                       "  - A single number (e.g. 'f=3')\n",
@@ -1587,6 +1592,7 @@ function(r, minus, Stream)
                 Stream.UngetChar(r, c);
                 v1 := DIGRAPHS_readinteger(r, Stream);
                 if v1 - r.labelorg + 1 < 1 or v1 - r.labelorg + 1 > r.n then
+                    CloseStream(Stream.file);
                     ErrorNoReturn("Vertex ", Int([v1]),
                     " out of range in partition specification (line ",
                     tempNewline, ")");
@@ -1596,6 +1602,7 @@ function(r, minus, Stream)
                 if v2 = ':' then
                     v2 := DIGRAPHS_GETNWL(r, Stream);
                     if not IsDigitChar(v2) then
+                        CloseStream(Stream.file);
                         ErrorNoReturn("Invalid range '", v1, " : ", v2,
                         "' in partition specification (line ",
                         tempNewline, ")");
@@ -1603,6 +1610,7 @@ function(r, minus, Stream)
                     Stream.UngetChar(r, v2);
                     v2 := DIGRAPHS_readinteger(r, Stream);
                     if v2 < r.labelorg or v2 > r.n - r.labelorg + 1 then
+                        CloseStream(Stream.file);
                         ErrorNoReturn("Vertex ", v2,
                         " out of range in partition specification (line ",
                         tempNewline, ")");
@@ -1616,11 +1624,13 @@ function(r, minus, Stream)
                 fi;
             else
                 if c = fail then
+                    CloseStream(Stream.file);
                     ErrorNoReturn("Unterminated partition specification (line ",
                     tempNewline, ")");
                 elif c = ']' then
                     break;
                 else
+                    CloseStream(Stream.file);
                     ErrorNoReturn("Unexpected character '", c,
                     "' in partition specification (line ", r.newline, ")");
                 fi;
@@ -1628,6 +1638,7 @@ function(r, minus, Stream)
         od;
 
         if c = fail then
+            CloseStream(Stream.file);
             ErrorNoReturn("Unterminated partition specification (line ",
             tempNewline, ")");
         fi;
@@ -1681,11 +1692,6 @@ function(filename)
         fi;
     end;
 
-    Stream.Close := function()
-        CloseStream(Stream.file);
-        Stream.buffer := [];
-    end;
-
     Stream.Open(f);
     minus := false;
 
@@ -1703,14 +1709,17 @@ function(filename)
           temp := Stream.GetChar(r);
           if temp in "nNdDtT" then
           elif temp in "sS" then
+            CloseStream(Stream.file);
             ErrorNoReturn("Sparse mode (line ", r.newline,
                           ") is not supported");
           else
+            CloseStream(Stream.file);
             ErrorNoReturn("Operation 'A' (line ", r.newline,
                           ") is not recognised");
           fi;
           temp := Stream.GetChar(r);
           if temp = '+' then
+            CloseStream(Stream.file);
             ErrorNoReturn("Changing between modes ", "(line ", r.newline,
                           ") is not supported");
           else
@@ -1724,11 +1733,13 @@ function(filename)
             Info(InfoWarning, 1, "Operation ", c, " (line ", r.newline,
                 ") is not supported");
         elif c in "<e" then
+            CloseStream(Stream.file);
             ErrorNoReturn("Operation ", c, " (line ", r.newline,
                           ") is not supported");
         elif c = 'd' then
             r.digraph := true;
         elif c in ">" then
+            CloseStream(Stream.file);
             ErrorNoReturn("Operation '>' (line ", r.newline,
               ") is not supported.",
               " Please use 'WriteDreadnautGraph'.");  # maybe can do better
@@ -1740,9 +1751,11 @@ function(filename)
             minus := false;
             r.n := DIGRAPHS_GetInt(r, Stream);
             if r.n = fail then
+                CloseStream(Stream.file);
                 ErrorNoReturn("Error reading vertex number on line ",
                               r.newline);
             elif r.n <= 0 then
+                CloseStream(Stream.file);
                 ErrorNoReturn("Vertex number ", r.n, " on line ", r.newline,
                             " must be positive.");
             fi;
@@ -1750,6 +1763,7 @@ function(filename)
         elif c = 'g' then
             minus := false;
             if r.n = fail then
+                CloseStream(Stream.file);
                 ErrorNoReturn("Vertex number must be declared before graph ",
                             "on line ", r.newline);
             fi;
@@ -1790,6 +1804,7 @@ function(filename)
                 fi;
             od;
             if c = fail then
+                CloseStream(Stream.file);
                 ErrorNoReturn("Unterminated comment on line ", temp);
             fi;
         elif c = 'f' then
@@ -1845,6 +1860,7 @@ function(filename)
                         c := Stream.GetChar(r);
                     od;
                     if c = fail then
+                        CloseStream(Stream.file);
                         ErrorNoReturn("Unterminated 'PP' operation on line ",
                                     temp);
                     fi;
@@ -1858,6 +1874,7 @@ function(filename)
               Stream.UngetChar(r, temp);
                 r.labelorg := DIGRAPHS_GetInt(r, Stream);
                 if r.labelorg < 0 then
+                    CloseStream(Stream.file);
                     ErrorNoReturn("Label origin ", r.labelorg, " on line ",
                                 r.newline, " must be non-negative.");
                 fi;
@@ -1878,6 +1895,7 @@ function(filename)
                         c := Stream.GetChar(r);
                     od;
                     if c = fail then
+                        CloseStream(Stream.file);
                         ErrorNoReturn("Unterminated 'r' operation on line ",
                                       temp);
                     fi;
@@ -1888,11 +1906,13 @@ function(filename)
             Info(InfoWarning, 1, "Operation '& (line ",
                 r.newline, ") is not supported");
         else
+            CloseStream(Stream.file);
             ErrorNoReturn("Illegal character ", c, " on line ", r.newline);
         fi;
     od;
 
     if r.edgeList = fail then
+        CloseStream(Stream.file);
         ErrorNoReturn("No graph was declared.");
     fi;
     D := Digraph(r.edgeList);
@@ -1903,6 +1923,7 @@ function(filename)
     if r.partition <> fail then
         SetDigraphVertexLabels(D, r.partition);
     fi;
+    CloseStream(Stream.file);
     return D;
 end);
 
