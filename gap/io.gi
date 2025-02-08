@@ -1478,14 +1478,15 @@ function(r, Stream)
         if IsDigitChar(c) then
             Stream.UngetChar(r, c);
             w := DIGRAPHS_readinteger(r, Stream);
-            w := w - r.labelorg + 1;  # what if i can't read an integer in?
+            w := w - r.labelorg + 1;
 
             if neg then
                 neg := false;
 
                 if (w < 1) or (w > r.n) or (w = v and not r.digraph) then
                     Info(InfoWarning, 1, "Ignoring illegal edge (",
-                        v + r.labelorg - 1, ", ", w + r.labelorg - 1, ")");
+                        v + r.labelorg - 1, ", ", w + r.labelorg - 1,
+                        ") on line ", r.newline);
                 else
                     RemoveSet(r.edgeList[v], w);
                     if not r.digraph then
@@ -1497,7 +1498,8 @@ function(r, Stream)
                 if c = ':' then
                     if w < 1 or w > r.n then
                         Info(InfoWarning, 1, "Ignoring illegal vertex (",
-                            v + r.labelorg - 1, ", ", w + r.labelorg - 1, ")");
+                            v + r.labelorg - 1, ", ", w + r.labelorg - 1,
+                            ") on line ", r.newline);
                     else
                         v := w;
                     fi;
@@ -1505,7 +1507,8 @@ function(r, Stream)
                     Stream.UngetChar(r, c);
                     if w < 1 or w > r.n or (w = v and not r.digraph) then
                         Info(InfoWarning, 1, "Ignoring illegal edge (",
-                            v + r.labelorg - 1, ", ", w + r.labelorg - 1, ")");
+                            v + r.labelorg - 1, ", ", w + r.labelorg - 1,
+                            ") on line ", r.newline);
                     else
                         AddSet(r.edgeList[v], w);
                         if not r.digraph then
@@ -1519,7 +1522,7 @@ function(r, Stream)
                 CloseStream(Stream.file);
                 ErrorNoReturn("Vertex ", v + r.labelorg - 1,
                             " declared on line ", r.newline,
-                            " exceeds maximum ",
+                            " exceeds maximum value ",
                             r.n + r.labelorg - 1);
             else
                 neg := false;
@@ -1803,7 +1806,8 @@ function(filename)
             fi;
         elif c = 'q' then
             if r.edgeList = fail then
-                Info(InfoWarning, 1, "'q' operation encountered before ",
+                Info(InfoWarning, 1, "'q' operation encountered on line ",
+                    r.newline, " before ",
                     "declaration of graph. Nothing will be returned.");
                 return;
             else
@@ -1830,7 +1834,8 @@ function(filename)
             od;
             if c = fail then
                 CloseStream(Stream.file);
-                ErrorNoReturn("Unterminated comment on line ", temp);
+                ErrorNoReturn("Unterminated comment beginning on line ",
+                              temp);
             fi;
         elif c = 'f' then
             DIGRAPHS_ParsePartition(r, minus, Stream);
@@ -1903,8 +1908,8 @@ function(filename)
                     od;
                     if c = fail then
                         CloseStream(Stream.file);
-                        ErrorNoReturn("Unterminated 'PP' operation on line ",
-                                    temp);
+                        ErrorNoReturn("Unterminated 'PP' operation beginning ",
+                                      "on line ", temp);
                     fi;
                 else
                       Stream.UngetChar(r, c);
@@ -1942,8 +1947,8 @@ function(filename)
                     od;
                     if c = fail then
                         CloseStream(Stream.file);
-                        ErrorNoReturn("Unterminated 'r' operation on line ",
-                                      temp);
+                        ErrorNoReturn("Unterminated 'r' operation beginning",
+                                      " on line ", temp);
                     fi;
                 fi;
             fi;
