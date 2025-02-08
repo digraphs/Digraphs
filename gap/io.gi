@@ -1731,11 +1731,7 @@ function(filename)
                           ") is not recognised");
           fi;
           temp := Stream.GetChar(r);
-          if temp = '+' then
-            CloseStream(Stream.file);
-            ErrorNoReturn("Changing between modes ", "(line ", r.newline,
-                          ") is not supported");
-          else
+          if temp <> '+' then
             Stream.UngetChar(r, temp);
           fi;
         elif c in "BR@#jv\%IixtTobzlamp?HcpP" then
