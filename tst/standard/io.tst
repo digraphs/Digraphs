@@ -977,8 +977,7 @@ gap> IO_WriteLine(file, "n=1dg");;
 gap> IO_WriteLine(file, "1: 1.");;
 gap> IO_Close(file);;
 gap> ReadDreadnautGraph(filename);
-Error, the format of the file given as the 1st argument <name> cannot be deter\
-mined as it contains an unexpected character: 's' on line 1
+Error, Expected integer on line 1 but was not found
 
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(D);

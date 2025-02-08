@@ -1429,7 +1429,8 @@ function(r, Stream)
         if char <> fail then
             Stream.UngetChar(r, char);
         fi;
-        ErrorNoReturn("Expected integer on line ", r.newline);
+        ErrorNoReturn("Expected integer on line ", r.newline,
+                    " but was not found");
     fi;
 
     minus := char = '-';
