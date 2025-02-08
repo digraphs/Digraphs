@@ -1707,11 +1707,7 @@ function(filename)
         elif c = 'A' then
           minus := false;
           temp := Stream.GetChar(r);
-          if temp in "nNdDtT" then
-          elif temp in "sS" then
-            CloseStream(Stream.file);
-            ErrorNoReturn("Sparse mode (line ", r.newline,
-                          ") is not supported");
+          if temp in "nNdDtTsS" then
           else
             CloseStream(Stream.file);
             ErrorNoReturn("Operation 'A' (line ", r.newline,
