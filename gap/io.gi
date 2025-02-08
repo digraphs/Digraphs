@@ -1702,7 +1702,8 @@ function(filename)
           temp := Stream.GetChar(r);
           if temp in "nNdDtT" then
           elif temp in "sS" then
-            ErrorNoReturn("Sparse mode (line ", r.newline, ") is not supported");
+            ErrorNoReturn("Sparse mode (line ", r.newline,
+                          ") is not supported");
           else
             ErrorNoReturn("Operation 'A' (line ", r.newline,
                           ") is not recognised");
@@ -1738,7 +1739,8 @@ function(filename)
             minus := false;
             r.n := DIGRAPHS_GetInt(r, Stream);
             if r.n = fail then
-                ErrorNoReturn("Error reading vertex number on line ", r.newline);
+                ErrorNoReturn("Error reading vertex number on line ",
+                              r.newline);
             elif r.n <= 0 then
                 ErrorNoReturn("Vertex number ", r.n, " on line ", r.newline,
                             " must be positive.");
@@ -1757,7 +1759,8 @@ function(filename)
             if temp <> '&' then
                 Stream.UngetChar(r, temp);
             fi;
-            InfoWarning("Operation 'r' (line ", r.newline, ") is not supported");
+            InfoWarning("Operation 'r' (line ", r.newline,
+                        ") is not supported");
         elif c = 'q' then
             if r.edgeList = fail then
                 Info(InfoWarning, 1, "'q' operation encountered before ",
