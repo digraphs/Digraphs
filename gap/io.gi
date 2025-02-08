@@ -1725,11 +1725,8 @@ function(filename)
           else
             Stream.UngetChar(r, temp);
           fi;
-        elif c in "<BR_@#jv\%sIixtTobzlamp?H" then
+        elif c in "<BR_@#jv\%IixtTobzlamp?HcpP" then
             minus := false;
-            Info(InfoWarning, 1, "Operation ", c, " (line ", r.newline,
-                ") is not supported");
-        elif c in "acmpPw" then
             Info(InfoWarning, 1, "Operation ", c, " (line ", r.newline,
                 ") is not supported");
         elif c in "<e" then
@@ -1768,14 +1765,29 @@ function(filename)
                             "on line ", r.newline);
             fi;
             DIGRAPHS_readgraph(r, Stream);
+        elif c = 's' then
+          minus := false;
+          temp := Stream.GetChar(r);
+          if temp = 'r' then
+            Info(InfoWarning, 1, "Operation 'sr' (line ", r.newline,
+                ") is not supported");
+            DIGRAPHS_GetInt(r, Stream);
+          else
+            Stream.UngetChar(r, temp);
+            Info(InfoWarning, 1, "Operation 's' (line ", r.newline,
+                ") is not supported");
+          fi;
         elif c = 'r' then
             minus := false;
             temp := Stream.GetChar(r);
             if temp <> '&' then
-                Stream.UngetChar(r, temp);
+              Stream.UngetChar(r, temp);
+              InfoWarning("Operation 'r' (line ", r.newline,
+                          ") is not supported");
+            else
+              InfoWarning("Operation 'r&' (line ", r.newline,
+                          ") is not supported");
             fi;
-            InfoWarning("Operation 'r' (line ", r.newline,
-                        ") is not supported");
         elif c = 'q' then
             if r.edgeList = fail then
                 Info(InfoWarning, 1, "'q' operation encountered before ",
@@ -1812,11 +1824,23 @@ function(filename)
             if minus then
                 minus := false;
             fi;
-        elif c in "FswcyK*" then
+        elif c in "swcyK*" then
             Info(InfoWarning, 1, "Operation ", c, " (line ",
                 r.newline, ") is not supported");
             minus := false;
             DIGRAPHS_GetInt(r, Stream);
+        elif c = 'F' then
+          minus := false;
+          temp := Stream.GetChar(r);
+          if temp = 'F' then
+            Info(InfoWarning, 1, "Operation 'FF' (line ", r.newline,
+                ") is not supported");
+          else
+            Stream.UngetChar(r, temp);
+            Info(InfoWarning, 1, "Operation 'F' (line ", r.newline,
+                ") is not supported");
+            DIGRAPHS_GetInt(r, Stream);
+          fi;
         elif c = 'M' then
             Info(InfoWarning, 1, "Operation 'M' (line ",
                 r.newline, ") is not supported");
@@ -1837,22 +1861,27 @@ function(filename)
             minus := false;
             DIGRAPHS_readinteger(r, Stream);
             DIGRAPHS_readinteger(r, Stream);
-        elif c in "VSG" then
+        elif c in "VSGu" then
             Info(InfoWarning, 1, "Operation ", c,
                 " (line ", r.newline, ") is not supported");
             if minus then
                 minus := false;
             else
-                DIGRAPHS_readinteger(r, Stream);
+                DIGRAPHS_GetInt(r, Stream);
             fi;
+        elif c in "lw" then
+            Info(InfoWarning, 1, "Operation ", c,
+                " (line ", r.newline, ") is not supported");
+            minus := false;
+            DIGRAPHS_GetInt(r, Stream);
         elif c = 'd' then
             minus := false;
             r.digraph := true;
         elif c in "P" then
-            Info(InfoWarning, 1, "Operation ", c, " (line ",
-                r.newline, ") is not supported");
             if minus then
                 minus := false;
+                Info(InfoWarning, 1, "Operation -", c,
+                    " (line ", r.newline, ") is not supported");
             else
                 if Stream.GetChar(r) = 'P' then
                     temp := r.newline;
@@ -1864,6 +1893,10 @@ function(filename)
                         ErrorNoReturn("Unterminated 'PP' operation on line ",
                                     temp);
                     fi;
+                else
+                      Stream.UngetChar(r, c);
+                      Info(InfoWarning, 1, "Operation ", c, " (line ",
+                          r.newline, ") is not supported");
                 fi;
             fi;
         elif c = '$' then
@@ -1903,8 +1936,15 @@ function(filename)
             fi;
         elif c = '&' then
             minus := false;
-            Info(InfoWarning, 1, "Operation '& (line ",
-                r.newline, ") is not supported");
+            temp := Stream.GetChar(r);
+            if temp <> '&' then
+              Stream.UngetChar(r, temp);
+              Info(InfoWarning, 1, "Operation '& (line ",
+                  r.newline, ") is not supported");
+            else
+              Info(InfoWarning, 1, "Operation '&&' (line ",
+                  r.newline, ") is not supported");
+            fi;
         else
             CloseStream(Stream.file);
             ErrorNoReturn("Illegal character ", c, " on line ", r.newline);
