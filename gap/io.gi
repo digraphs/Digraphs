@@ -1814,7 +1814,7 @@ function(filename)
             c := Stream.GetChar(r);
             temp := r.newline;
             backslash := false;
-            while c <> fail and c <> '\"' do
+            while c <> fail do
                 c := Stream.GetChar(r);
                 if c = '\\' then
                     backslash := true;
