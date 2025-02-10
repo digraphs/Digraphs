@@ -1398,10 +1398,6 @@ function(r, Stream)
         char := Stream.GetChar(r);
     od;
 
-    if char = fail then
-        return fail;
-    fi;
-
     return char;
 end);
 
@@ -1412,10 +1408,6 @@ function(r, Stream)
     while char <> fail and char in " \n\t\r" do
         char := Stream.GetChar(r);
     od;
-
-    if char = fail then
-        return fail;
-    fi;
 
     return char;
 end);
