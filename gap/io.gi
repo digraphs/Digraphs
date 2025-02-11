@@ -1392,7 +1392,6 @@ end);
 BindGlobal("DIGRAPHS_GETNWC",
 function(r, Stream)
     local char;
-
     char := Stream.GetChar(r);
     while char <> fail and char in " ,\t" do
         char := Stream.GetChar(r);
@@ -1418,9 +1417,6 @@ function(r, Stream)
     char := DIGRAPHS_GETNWL(r, Stream);
 
     if not IsDigitChar(char) and char <> '-' and char <> '+' then
-        if char <> fail then
-            Stream.UngetChar(r, char);
-        fi;
         CloseStream(Stream.file);
         ErrorNoReturn("Expected integer on line ", r.newline,
                     " but was not found");
@@ -2095,7 +2091,7 @@ function(name, D)
 
   if labels <> [1 .. n] then
     dflabels := DuplicateFreeList(labels);
-    if ForAll(dflabels, IsInt) then
+    if IsInt(labels[1]) and IsHomogeneousList(labels) then
       out := "f = [";
 
       for i in dflabels do
