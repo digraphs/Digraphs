@@ -68,7 +68,7 @@ AS_IF([ test "$enable_code_coverage" = "yes" ], [
 ])
 
 
-# Enable compiler warnings 
+# Enable compiler warnings
 
 AC_ARG_ENABLE([compile-warnings],
     [AS_HELP_STRING([--enable-compile-warnings], [enable compiler warnings])],
@@ -87,8 +87,7 @@ AS_IF([test "x$enable_compile_warnings" != "xno"],
 AS_IF([test "x$enable_compile_warnings" != "xno"],
   [ax_enable_compile_warnings=yes
    AX_COMPILER_FLAGS_CFLAGS([WARNING_CFLAGS], [], [ dnl
-       -pedantic dnl
-       -Wold-style-cast])
+       -pedantic dnl])
    AC_SUBST([WARNING_CFLAGS])])
 
 # Check for system planarity suite
@@ -104,7 +103,7 @@ AX_CHECK_BLISS
 
 # Check whether to use -mpopcnt and __builtin_ctzl
 AC_ARG_WITH([intrinsics],
-            [AS_HELP_STRING([--without-intrinsics], 
+            [AS_HELP_STRING([--without-intrinsics],
                             [do not use compiler intrinsics even if available])]
            )
 

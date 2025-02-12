@@ -4,6 +4,8 @@
     <#Include Label="DigraphNrVertices">
     <#Include Label="DigraphEdges">
     <#Include Label="DigraphNrEdges">
+    <#Include Label="DigraphNrAdjacencies">
+    <#Include Label="DigraphNrAdjacenciesWithoutLoops">
     <#Include Label="DigraphNrLoops">
     <#Include Label="DigraphSinks">
     <#Include Label="DigraphSources">
@@ -76,6 +78,9 @@
     <#Include Label="IteratorOfPaths">
     <#Include Label="DigraphAllSimpleCircuits">
     <#Include Label="DigraphLongestSimpleCircuit">
+    <#Include Label="DigraphAllUndirectedSimpleCircuits">
+    <#Include Label="DigraphAllChordlessCycles">
+    <#Include Label="FacialWalks">
     <#Include Label="DigraphLayers">
     <#Include Label="DigraphDegeneracy">
     <#Include Label="DigraphDegeneracyOrdering">
@@ -101,6 +106,11 @@
     <#Include Label="PlanarEmbedding">
     <#Include Label="OuterPlanarEmbedding">
     <#Include Label="SubdigraphHomeomorphicToK">
+    <#Include Label="DualPlanarGraph">
+  </Section>
+
+  <Section><Heading>Hashing</Heading>
+    <#Include Label="DigraphHash">
   </Section>
 
 </Chapter>

@@ -192,6 +192,44 @@ gap> AdjacencyMatrix(Digraph(rec(DigraphNrVertices := 0,
 >                                DigraphRange      := [])));
 [  ]
 
+#  DigraphNrAdjacencies
+gap> G := Digraph([[1, 3, 4, 5, 6, 7, 10, 12, 14, 15, 16, 17, 19, 20, 21, 22, 23, 26, 28, 29, 30], 
+>  [2, 3, 4, 6, 7, 8, 11, 13, 14, 17, 18, 19, 20, 21, 22, 23, 24, 26, 27, 28, 29, 30],
+>  [1, 2, 4, 5, 6, 9, 10, 12, 14, 15, 17, 20, 22, 24, 25, 26, 27, 28, 30],
+>  [1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 13, 14, 15, 16, 18, 19, 20, 21, 22, 23, 24, 25, 26, 28, 29],
+>  [1, 4, 6, 7, 9, 10, 11, 12, 14, 15, 16, 18, 19, 20, 21, 22, 23, 24, 25, 28, 29, 30],
+>  [1, 5, 6, 7, 10, 11, 12, 13, 15, 16, 17, 18, 19, 20, 21, 22, 23, 25, 26, 28, 29, 30],
+>  [1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 13, 15, 16, 18, 19, 21, 22, 23, 25, 26, 27, 28, 30],
+>  [2, 5, 6, 8, 9, 10, 12, 13, 14, 15, 19, 20, 21, 22, 23, 24, 25, 26, 29],
+>  [1, 5, 6, 9, 12, 13, 14, 16, 18, 20, 21, 22, 23, 24, 25, 26, 29, 30],
+>  [1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 13, 15, 16, 18, 19, 20, 21, 22, 25, 28],
+>  [1, 2, 3, 5, 6, 7, 8, 9, 11, 12, 13, 14, 15, 16, 18, 19, 20, 21, 23, 24, 25, 26, 27, 28, 29],
+>  [1, 2, 5, 9, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 26, 27, 28, 29, 30],
+>  [1, 3, 4, 5, 8, 9, 10, 14, 16, 17, 18, 19, 21, 22, 23, 24, 26, 27, 28, 29, 30],
+>  [2, 3, 4, 5, 6, 7, 8, 9, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 28, 29, 30],
+>  [1, 2, 3, 4, 6, 7, 8, 10, 11, 12, 13, 14, 16, 17, 20, 22, 23, 24, 25, 26, 27, 28],
+>  [1, 3, 6, 8, 10, 11, 13, 14, 15, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28],
+>  [1, 2, 3, 6, 7, 8, 10, 11, 12, 13, 14, 16, 17, 18, 19, 20, 22, 23, 26, 27, 30],
+>  [1, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 28, 30],
+>  [1, 3, 4, 5, 6, 10, 11, 13, 14, 15, 18, 19, 20, 21, 22, 24, 25, 27, 28, 29],
+>  [1, 2, 4, 7, 8, 9, 10, 11, 18, 20, 21, 22, 23, 24, 25, 26, 28, 30],
+>  [1, 2, 3, 4, 5, 10, 11, 12, 13, 14, 18, 19, 20, 21, 22, 24, 25, 26, 28, 29, 30],
+>  [1, 3, 5, 7, 8, 9, 10, 12, 13, 14, 17, 18, 19, 21, 24, 26, 29, 30],
+>  [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 14, 16, 17, 18, 19, 20, 21, 23, 24, 25, 27, 28, 29],
+>  [1, 2, 3, 6, 8, 9, 11, 12, 14, 16, 17, 18, 20, 22, 25, 26, 27, 28, 29, 30],
+>  [1, 2, 3, 4, 5, 8, 9, 10, 11, 12, 13, 14, 15, 16, 18, 19, 20, 21, 24, 25, 27, 28, 29, 30],
+>  [1, 2, 5, 6, 7, 10, 12, 13, 14, 15, 16, 19, 20, 21, 24, 25, 26, 27, 28, 29, 30],
+>  [1, 2, 4, 5, 6, 7, 9, 10, 13, 17, 18, 20, 21, 23, 24, 25, 26, 27, 28, 29, 30],
+>  [1, 3, 4, 7, 8, 9, 11, 12, 13, 14, 16, 17, 19, 20, 21, 23, 24, 26, 27, 29],
+>  [1, 4, 5, 6, 7, 8, 10, 11, 12, 13, 15, 16, 17, 18, 20, 21, 23, 24, 25, 27, 28, 30],
+>  [1, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 18, 19, 20, 21, 22, 24, 27, 28, 29]]);;
+gap> DigraphNrAdjacencies(G) * 2 - DigraphNrLoops(G) = 
+> DigraphNrEdges(DigraphSymmetricClosure(G));
+true
+gap> DigraphNrAdjacenciesWithoutLoops(G) * 2 + DigraphNrLoops(G) = 
+> DigraphNrEdges(DigraphSymmetricClosure(G));
+true
+
 #  DigraphTopologicalSort
 gap> r := rec(DigraphNrVertices := 20000,
 >             DigraphSource     := [],
@@ -947,6 +985,129 @@ gap> gr := Digraph([[3, 6, 7], [3, 6, 8], [1, 2, 3, 6, 7, 8],
 > [1, 2, 3, 8]]);;
 gap> Length(DigraphAllSimpleCircuits(gr));
 259
+
+#  DigraphAllUndirectedSimpleCircuits
+gap> gr := Digraph([]);;
+gap> DigraphAllUndirectedSimpleCircuits(gr);
+[  ]
+gap> gr := ChainDigraph(4);;
+gap> DigraphAllUndirectedSimpleCircuits(gr);
+[  ]
+gap> gr := CompleteDigraph(2);;
+gap> DigraphAllUndirectedSimpleCircuits(gr);
+[  ]
+gap> gr := CompleteDigraph(3);;
+gap> DigraphAllUndirectedSimpleCircuits(gr);
+[ [ 1, 2, 3 ] ]
+gap> gr := Digraph([[], [3], [2, 4], [5, 4], [4]]);
+<immutable digraph with 5 vertices, 6 edges>
+gap> DigraphAllUndirectedSimpleCircuits(gr);
+[ [ 4 ] ]
+gap> gr := Digraph([[1, 2], [2, 1]]);
+<immutable digraph with 2 vertices, 4 edges>
+gap> DigraphAllUndirectedSimpleCircuits(gr);
+[ [ 1 ], [ 2 ] ]
+gap> gr := Digraph([[4], [1, 3], [1, 2], [2, 3]]);;
+gap> DigraphAllUndirectedSimpleCircuits(gr);
+[ [ 1, 2, 3 ], [ 1, 2, 3, 4 ], [ 1, 2, 4 ], [ 1, 2, 4, 3 ], [ 1, 3, 2, 4 ], 
+  [ 1, 3, 4 ], [ 2, 3, 4 ] ]
+gap> gr := Digraph([[3, 6, 7], [3, 6, 8], [1, 2, 3, 6, 7, 8],
+> [2, 3, 4, 8], [2, 3, 4, 5, 6, 7], [1, 3, 4, 5, 7], [2, 3, 6, 8],
+> [1, 2, 3, 8]]);;
+gap> Length(DigraphAllUndirectedSimpleCircuits(gr));
+1330
+
+# DigraphAllChordlessCycles
+gap> gr := Digraph([]);;
+gap> DigraphAllChordlessCycles(gr);
+[  ]
+gap> gr := ChainDigraph(4);;
+gap> DigraphAllChordlessCycles(gr);
+[  ]
+gap> D := CycleDigraph(3);;
+gap> DigraphAllChordlessCycles(D);
+[ [ 2, 1, 3 ] ]
+gap> D := CompleteDigraph(4);;
+gap> DigraphAllChordlessCycles(D);
+[ [ 2, 1, 3 ], [ 2, 1, 4 ], [ 3, 1, 4 ], [ 3, 2, 4 ] ]
+gap> D := Digraph([[2, 4, 5], [3, 6], [4, 7], [8], [6, 8], [7], [8], []]);;
+gap> DigraphAllChordlessCycles(D);
+[ [ 6, 5, 8, 7 ], [ 3, 4, 8, 5, 6, 2 ], [ 3, 4, 8, 7 ], [ 1, 4, 8, 5 ], 
+  [ 1, 4, 8, 7, 6, 2 ], [ 1, 4, 3, 2 ], [ 1, 4, 3, 7, 6, 5 ], [ 3, 2, 6, 7 ], 
+  [ 2, 1, 5, 6 ], [ 2, 1, 5, 8, 7, 3 ] ]
+
+# check that DigraphAllChordlessCycles do not change the input graph
+gap> g := Digraph([[2, 3, 7], [1, 4, 8], [1, 4, 9], [2, 3, 10], [6, 7, 9], [5, 8, 10],
+>                  [8, 5, 1], [7, 6, 2], [5, 10, 3], [6, 9, 4]]);;
+gap> DigraphAllChordlessCycles(g);
+[ [ 7, 8, 6, 5 ], [ 6, 5, 9, 10 ], [ 3, 4, 10, 6, 5, 7, 1 ], 
+  [ 3, 4, 10, 6, 8, 7, 1 ], [ 3, 4, 10, 9 ], [ 2, 4, 10, 6, 5, 7, 1 ], 
+  [ 2, 4, 10, 6, 8 ], [ 2, 4, 10, 9, 5, 7, 8 ], [ 2, 4, 10, 9, 5, 7, 1 ], 
+  [ 3, 4, 2, 1 ], [ 3, 4, 2, 8, 7, 5, 9 ], [ 3, 4, 2, 8, 6, 5, 9 ], 
+  [ 3, 1, 7, 8, 6, 10, 9 ], [ 3, 1, 7, 5, 9 ], [ 2, 1, 7, 8 ], 
+  [ 3, 1, 2, 8, 6, 5, 9 ], [ 3, 1, 2, 8, 6, 10, 9 ] ]
+gap> DigraphAllUndirectedSimpleCircuits(g);
+[ [ 1, 2, 4, 3 ], [ 1, 2, 4, 3, 9, 5, 6, 8, 7 ], [ 1, 2, 4, 3, 9, 5, 7 ], 
+  [ 1, 2, 4, 3, 9, 10, 6, 5, 7 ], [ 1, 2, 4, 3, 9, 10, 6, 8, 7 ], 
+  [ 1, 2, 4, 10, 6, 5, 7 ], [ 1, 2, 4, 10, 6, 5, 9, 3 ], 
+  [ 1, 2, 4, 10, 6, 8, 7 ], [ 1, 2, 4, 10, 6, 8, 7, 5, 9, 3 ], 
+  [ 1, 2, 4, 10, 9, 3 ], [ 1, 2, 4, 10, 9, 5, 6, 8, 7 ], 
+  [ 1, 2, 4, 10, 9, 5, 7 ], [ 1, 2, 8, 6, 5, 7 ], [ 1, 2, 8, 6, 5, 9, 3 ], 
+  [ 1, 2, 8, 6, 5, 9, 10, 4, 3 ], [ 1, 2, 8, 6, 10, 4, 3 ], 
+  [ 1, 2, 8, 6, 10, 4, 3, 9, 5, 7 ], [ 1, 2, 8, 6, 10, 9, 3 ], 
+  [ 1, 2, 8, 6, 10, 9, 5, 7 ], [ 1, 2, 8, 7 ], [ 1, 2, 8, 7, 5, 6, 10, 4, 3 ],
+  [ 1, 2, 8, 7, 5, 6, 10, 9, 3 ], [ 1, 2, 8, 7, 5, 9, 3 ], 
+  [ 1, 2, 8, 7, 5, 9, 10, 4, 3 ], [ 1, 3, 4, 2, 8, 6, 5, 7 ], 
+  [ 1, 3, 4, 2, 8, 6, 10, 9, 5, 7 ], [ 1, 3, 4, 2, 8, 7 ], 
+  [ 1, 3, 4, 10, 6, 5, 7 ], [ 1, 3, 4, 10, 6, 8, 7 ], 
+  [ 1, 3, 4, 10, 9, 5, 6, 8, 7 ], [ 1, 3, 4, 10, 9, 5, 7 ], 
+  [ 1, 3, 9, 5, 6, 8, 7 ], [ 1, 3, 9, 5, 6, 10, 4, 2, 8, 7 ], 
+  [ 1, 3, 9, 5, 7 ], [ 1, 3, 9, 10, 4, 2, 8, 6, 5, 7 ], 
+  [ 1, 3, 9, 10, 4, 2, 8, 7 ], [ 1, 3, 9, 10, 6, 5, 7 ], 
+  [ 1, 3, 9, 10, 6, 8, 7 ], [ 2, 4, 3, 9, 5, 6, 8 ], [ 2, 4, 3, 9, 5, 7, 8 ], 
+  [ 2, 4, 3, 9, 10, 6, 5, 7, 8 ], [ 2, 4, 3, 9, 10, 6, 8 ], 
+  [ 2, 4, 10, 6, 5, 7, 8 ], [ 2, 4, 10, 6, 8 ], [ 2, 4, 10, 9, 5, 6, 8 ], 
+  [ 2, 4, 10, 9, 5, 7, 8 ], [ 4, 3, 9, 5, 6, 10 ], 
+  [ 4, 3, 9, 5, 7, 8, 6, 10 ], [ 4, 3, 9, 10 ], [ 5, 6, 8, 7 ], 
+  [ 9, 5, 6, 10 ], [ 9, 5, 7, 8, 6, 10 ] ]
+
+# FacialCycles
+gap> g := Digraph([]);;
+gap> rotationSy := [];;
+gap> FacialWalks(g, rotationSy);
+[  ]
+gap> g := Digraph([[2], [1, 3], [2, 4], [3]]);;;
+gap> rotationSy := [[2], [1, 3], [2, 4], [3]];;
+gap> FacialWalks(g, rotationSy);
+[ [ 1, 2, 3, 4, 3, 2 ] ]
+gap> g := CycleDigraph(4);;
+gap> planar := PlanarEmbedding(g);
+[ [ 2 ], [ 3 ], [ 4 ], [ 1 ] ]
+gap> FacialWalks(g, planar);
+[ [ 1, 2, 3, 4 ] ]
+gap> nonPlanar := [[2, 4], [1, 3], [2, 4], [1, 3]];;
+gap> FacialWalks(g, nonPlanar);
+[ [ 1, 2, 3, 4 ] ]
+gap> g := CompleteMultipartiteDigraph([2, 2, 2]);;
+gap> rotationSystem := PlanarEmbedding(g);
+[ [ 3, 5, 4, 6 ], [ 6, 4, 5, 3 ], [ 6, 2, 5, 1 ], [ 1, 5, 2, 6 ], 
+  [ 1, 3, 2, 4 ], [ 1, 4, 2, 3 ] ]
+gap> FacialWalks(g, rotationSystem);
+[ [ 1, 3, 6 ], [ 1, 4, 5 ], [ 1, 5, 3 ], [ 1, 6, 4 ], [ 2, 3, 5 ], 
+  [ 2, 4, 6 ], [ 2, 5, 4 ], [ 2, 6, 3 ] ]
+gap> g := Digraph([[2, 3, 4], [1, 3, 5], [1, 2, 4], [1, 3, 5], [2, 4, 6], [5, 7, 9], [6, 8, 10], [7, 9, 10], [6, 8, 10], [7, 8, 9]]);;
+gap> rotationSy := PlanarEmbedding(g);
+[ [ 2, 4, 3 ], [ 3, 5, 1 ], [ 1, 4, 2 ], [ 1, 5, 3 ], [ 2, 4, 6 ], 
+  [ 5, 7, 9 ], [ 8, 10, 6 ], [ 9, 10, 7 ], [ 6, 10, 8 ], [ 7, 8, 9 ] ]
+gap> FacialWalks(g, rotationSy);
+[ [ 1, 2, 3 ], [ 1, 3, 4 ], [ 1, 4, 5, 6, 7, 8, 9, 6, 5, 2 ], [ 2, 5, 4, 3 ], 
+  [ 6, 9, 10, 7 ], [ 7, 10, 8 ], [ 8, 10, 9 ] ]
+
+#  Issue #676
+gap> D := Digraph([[], [3], []]);;
+gap> SetDigraphVertexLabels(D, ["one", "two", "three"]);
+gap> DigraphAllSimpleCircuits(D);
+[  ]
 
 #  DigraphLongestSimpleCircuit
 gap> gr := Digraph([]);;
@@ -2070,6 +2231,7 @@ gap> D := Digraph([[2, 3], [1, 3], [1, 2, 4], [1]]);
 <immutable digraph with 4 vertices, 8 edges>
 gap> DigraphCore(D);
 [ 1, 2, 3 ]
+gap> DIGRAPHS_FREE_HOMOS_DATA();;
 gap> DigraphHomomorphism(D, InducedSubdigraph(D, DigraphCore(D)));
 Transformation( [ 1, 3, 2, 3 ] )
 gap> D := CompleteDigraph(10);
@@ -2963,6 +3125,30 @@ gap> DigraphAbsorptionExpectedSteps(gr)[1];
 0
 gap> DigraphAbsorptionExpectedSteps(gr)[2];
 19
+
+# Test Digraphs above the max size
+gap> DigraphHomomorphism(NullDigraph(65555), NullDigraph(1));
+Error, the 1st argument <digraph1> must have at most 65534 vertices, found 655\
+55,
+gap> DigraphHomomorphism(NullDigraph(1), NullDigraph(65555));
+Error, the 2nd argument <digraph2> must have at most 65534 vertices, found 655\
+55,
+
+# Test Digraph hashing
+# This has a small chance to randomly fail. Sorry if it does!
+gap> D1 := RandomMultiDigraph(100);;
+gap> D2 := Digraph(List(OutNeighbours(D1), x -> Shuffle(ShallowCopy(x))));;
+gap> D1 = D2;
+true
+gap> OutNeighbours(D1) = OutNeighbours(D2);
+false
+gap> DigraphHash(D1) = DigraphHash(D2);
+true
+gap> while D1 = D2 do
+> D2 := RandomMultiDigraph(100);
+> od;;
+gap> DigraphHash(D1) = DigraphHash(D2);
+false
 
 # Unbind local variables, auto-generated by etc/tst-unbind-local-vars.py
 gap> Unbind(A);

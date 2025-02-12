@@ -295,10 +295,11 @@ gap> DigraphByEdges([["nonsense"]]);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `DigraphByEdgesCons' on 3 arguments
 gap> DigraphByEdges([["a", "b"]], 2);
-Error, the 1st argument <edges> must not contain values greater than 
-2, the 2nd argument <n>,
+Error, the 1st argument (list of edges) must be pairs of positive integers but\
+ found [ "a", "b" ] in position 1
 gap> DigraphByEdges([[1, 2, 3]], 3);
-Error, the 1st argument <edges> must be a list of pairs,
+Error, the 1st argument (list of edges) must be a list of lists of length 2, f\
+ound [ 1, 2, 3 ] (length 3 in position 1)
 gap> gr := DigraphByEdges(DigraphEdges(gr), 10);
 <immutable digraph with 10 vertices, 17 edges>
 gap> gr := DigraphByEdges([[1, 2]]);
@@ -306,14 +307,20 @@ gap> gr := DigraphByEdges([[1, 2]]);
 gap> gr := DigraphByEdges([[2, 1]]);
 <immutable digraph with 2 vertices, 1 edge>
 gap> gr := DigraphByEdges([[1, 2]], 1);
-Error, the 1st argument <edges> must not contain values greater than 
-1, the 2nd argument <n>,
+Error, the 1st argument (list of edges) must be pairs of positive integers <= 
+1 but found [ 1, 2 ] in position 1
 gap> gr := DigraphByEdges([], 3);
 <immutable empty digraph with 3 vertices>
 gap> gr := DigraphByEdges([]);
 <immutable empty digraph with 0 vertices>
 gap> gr = EmptyDigraph(0);
 true
+gap> DigraphByEdges([[1, 2], [3, 0]]);
+Error, the 1st argument (list of edges) must be pairs of positive integers but\
+ found [ 3, 0 ] in position 2
+gap> DigraphByEdges([12], 10);
+Error, the 1st argument (list of edges) must be a list of lists, but found int\
+eger in position 1
 
 #  DigraphByAdjacencyMatrix (by an integer matrix)
 
@@ -716,7 +723,7 @@ gap> for i in [1 .. Length(D)] do
 >   fi;
 > od;
 
-# The total number of nonisomorphic digraphs generated, out of 100. 
+# The total number of nonisomorphic digraphs generated, out of 100.
 # There are 53 distinct lattices on 7 points according to OEIS A006966
 gap> Length(iso);
 41
@@ -1660,7 +1667,7 @@ gap> D := NullDigraph(IsMutableDigraph, 10);
 gap> MakeImmutable(D);
 <immutable empty digraph with 10 vertices>
 
-# 
+#
 gap> D := NullDigraph(10);
 <immutable empty digraph with 10 vertices>
 gap> if DIGRAPHS_IsGrapeLoaded() then

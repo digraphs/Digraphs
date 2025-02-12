@@ -25,6 +25,7 @@ KEXT_SOURCES += src/homos-graphs.c
 KEXT_SOURCES += src/perms.c
 KEXT_SOURCES += src/planar.c
 KEXT_SOURCES += src/schreier-sims.c
+KEXT_SOURCES += src/safemalloc.c
 
 ifdef WITH_INCLUDED_BLISS
   KEXT_SOURCES += extern/bliss-0.73/defs.cc

@@ -12,8 +12,9 @@
 #define DIGRAPHS_SRC_CLIQUES_H_
 
 // GAP headers
-#include "compiled.h"
+#include "gap-includes.h"
 
+Obj FuncDIGRAPHS_FREE_CLIQUES_DATA(Obj self);
 Obj FuncDigraphsCliquesFinder(Obj self, Obj args);
 
 #endif  // DIGRAPHS_SRC_CLIQUES_H_

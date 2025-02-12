@@ -12,6 +12,7 @@ DeclareGlobalFunction("DIGRAPHS_Orbits");
 DeclareGlobalFunction("DIGRAPHS_TraceSchreierVector");
 DeclareGlobalFunction("DIGRAPHS_EvaluateWord");
 DeclareAttribute("DIGRAPHS_Stabilizers", IsDigraph, "mutable");
+DeclareGlobalFunction("DIGRAPHS_AddOrbitToHashMap");
 
 DeclareAttribute("DigraphGroup", IsDigraph);
 DeclareAttribute("DigraphOrbits", IsDigraph);

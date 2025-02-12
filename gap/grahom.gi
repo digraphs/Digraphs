@@ -11,7 +11,7 @@
 ##
 
 InstallGlobalFunction(GeneratorsOfEndomorphismMonoid,
-function(arg)
+function(arg...)
   local D, limit, colours, G, gens, limit_arg, out;
   if IsEmpty(arg) then
     ErrorNoReturn("at least 1 argument expected, found 0,");
@@ -330,6 +330,64 @@ function(D1, D2)
   return Union(List(aut, x -> hom * x));
 end);
 
+InstallMethod(SubdigraphsMonomorphismsRepresentatives,
+"for a digraph and a digraph", [IsDigraph, IsDigraph],
+function(H, G)
+  local AG, map, result, K, rep;
+
+  AG := AutomorphismGroup(G);
+  map := HashMap();
+  result := [];
+
+  for rep in MonomorphismsDigraphsRepresentatives(H, G) do
+    K := OnSetsTuples(DigraphEdges(H), rep);
+    if not K in map then
+      Add(result, rep);
+      DIGRAPHS_AddOrbitToHashMap(AG, K, OnSetsTuples, map);
+    fi;
+  od;
+
+  return result;
+end);
+
+InstallMethod(SubdigraphsMonomorphisms, "for a digraph and a digraph",
+[IsDigraph, IsDigraph],
+function(H, G)
+  local AddOrbitToHashMap, AG, map, K, rep;
+
+  AddOrbitToHashMap := function(G, set, act, hashmap, rep)
+    local gens, o, im, pt, g;
+
+    gens := GeneratorsOfGroup(G);
+    o    := [set];
+    Assert(1, not set in hashmap);
+    hashmap[set] := rep;
+    for pt in o do
+      for g in gens do
+        im := act(pt, g);
+        if not im in hashmap then
+          hashmap[im] := hashmap[pt] * g;
+          # Assert(0, OnSetsTuples(set, hashmap[im]) = im);
+          Add(o, im);
+        fi;
+      od;
+    od;
+    return o;
+  end;
+
+  AG := AutomorphismGroup(G);
+  map := HashMap();
+
+  for rep in MonomorphismsDigraphsRepresentatives(H, G) do
+    K := OnSetsTuples(DigraphEdges(H), rep);
+    if not K in map then
+      AddOrbitToHashMap(AG, K, OnSetsTuples, map, rep);
+    fi;
+  od;
+
+  return Values(map);
+end);
+
 ################################################################################
 # SURJECTIVE HOMOMORPHISMS
 
@@ -503,7 +561,7 @@ function(src, ran, x)
   if IsMultiDigraph(src) or IsMultiDigraph(ran) then
     ErrorNoReturn("the 1st and 2nd arguments <src> and <ran> must be digraphs",
                   " with no multiple edges,");
-  elif LargestMovedPoint(x) > DigraphNrVertices(src) then
+  elif not IsSubset(DigraphVertices(ran), OnSets(DigraphVertices(src), x)) then
     return false;
   fi;
   for i in DigraphVertices(src) do

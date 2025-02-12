@@ -249,6 +249,8 @@ gap> DigraphNrVertices(D);
 8
 gap> DigraphNrEdges(D);
 26
+gap> DigraphNrAdjacencies(D);
+13
 gap> DigraphUndirectedGirth(D);
 3
 gap> LollipopGraph(IsMutableDigraph, 5, 3);
@@ -575,9 +577,15 @@ gap> D := HanoiGraph(1);
 <immutable Hamiltonian connected symmetric digraph with 3 vertices, 6 edges>
 gap> IsIsomorphicDigraph(D, CycleGraph(3));
 true
-gap> HanoiGraph(4);
+gap> gr := HanoiGraph(4);
 <immutable Hamiltonian connected symmetric digraph with 81 vertices, 240 edges\
 >
+gap> IsPlanarDigraph(gr);
+true
+gap> IsHamiltonianDigraph(gr);
+true
+gap> IsPlanarDigraph(DigraphMutableCopy(gr));
+true
 gap> HanoiGraph(0);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `HanoiGraph' on 1 arguments
@@ -621,7 +629,7 @@ gap> KneserGraph(6, 3);
 <immutable edge- and vertex-transitive symmetric digraph with 20 vertices, 20 \
 edges>
 gap> KneserGraph(3, 4);
-Error, argument <n> must be greater than or equal to argument <k>,
+Error, argument <n> must be greater than or equal to argument <k>
 gap> KneserGraph(3, -1);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `KneserGraph' on 2 arguments

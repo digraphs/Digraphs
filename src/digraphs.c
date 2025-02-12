@@ -13,27 +13,19 @@
 *******************************************************************************/
 
 #include "digraphs.h"
-#include "digraphs-config.h"
 
 #include <stdbool.h>  // for false, true, bool
 #include <stdint.h>   // for uint64_t
 #include <stdlib.h>   // for NULL, free
+#include <string.h>   // for memcpy
 
-#include "cliques.h"
-#include "digraphs-debug.h"  // for DIGRAPHS_ASSERT
-#include "homos.h"           // for FuncHomomorphismDigraphsFinder
-#include "planar.h"          // for FUNC_IS_PLANAR, . . .
-
-#ifdef DIGRAPHS_WITH_INCLUDED_BLISS
-#include "bliss-0.73/bliss_C.h"  // for bliss_digraphs_release, . . .
-#else
-#include "bliss/bliss_C.h"
-#define bliss_digraphs_add_edge bliss_add_edge
-#define bliss_digraphs_new bliss_new
-#define bliss_digraphs_add_vertex bliss_add_vertex
-#define bliss_digraphs_find_canonical_labeling bliss_find_canonical_labeling
-#define bliss_digraphs_release bliss_release
-#endif
+#include "bliss-includes.h"   // for bliss stuff
+#include "cliques.h"          // for FuncDIGRAPHS_FREE_CLIQUES_DATA
+#include "digraphs-config.h"  // for DIGRAPHS_WITH_INCLUDED_BLISS
+#include "digraphs-debug.h"   // for DIGRAPHS_ASSERT
+#include "homos.h"            // for FuncHomomorphismDigraphsFinder
+#include "planar.h"           // for FUNC_IS_PLANAR, . . .
+#include "safemalloc.h"       // for safe_malloc
 
 #undef PACKAGE
 #undef PACKAGE_BUGREPORT
@@ -65,6 +57,7 @@ Obj IsSubset;
 Obj OnTuples;
 Obj Group;
 Obj ClosureGroup;
+Obj InfoWarning;
 
 static inline bool IsAttributeStoringRep(Obj o) {
   return (CALL_1ARGS(IsAttributeStoringRepObj, o) == True ? true : false);
@@ -72,7 +65,7 @@ static inline bool IsAttributeStoringRep(Obj o) {
 
 /*************************************************************************/
 
-Obj FuncDigraphNrVertices(Obj self, Obj D) {
+static Obj FuncDIGRAPH_NR_VERTICES(Obj self, Obj D) {
   return INTOBJ_INT(DigraphNrVertices(D));
 }
 
@@ -96,7 +89,10 @@ Obj FuncOutNeighbours(Obj self, Obj D) {
   }
 }
 
-Obj FuncOutNeighboursFromSourceRange(Obj self, Obj N, Obj src, Obj ran) {
+static Obj FuncDIGRAPH_OUT_NEIGHBOURS_FROM_SOURCE_RANGE(Obj self,
+                                                        Obj N,
+                                                        Obj src,
+                                                        Obj ran) {
   DIGRAPHS_ASSERT(LEN_LIST(src) == LEN_LIST(ran));
   Int n = INT_INTOBJ(N);
   if (n == 0) {
@@ -141,6 +137,62 @@ Int DigraphNrEdges(Obj D) {
 
 static Obj FuncDIGRAPH_NREDGES(Obj self, Obj D) {
   return INTOBJ_INT(DigraphNrEdges(D));
+}
+
+Int DigraphNrAdjacencies(Obj D) {
+  Int nr = 0;
+  if (IsbPRec(D, RNamName("DigraphNrAdjacencies"))) {
+    return INT_INTOBJ(ElmPRec(D, RNamName("DigraphNrAdjacencies")));
+  } else {
+    Obj const out = FuncOutNeighbours(0L, D);
+    for (Int v = 1; v <= LEN_LIST(out); ++v) {
+      Obj const out_v = ELM_LIST(out, v);
+      for (Int w = 1; w <= LEN_LIST(out_v); ++w) {
+        Int u = INT_INTOBJ(ELM_LIST(out_v, w));
+        if (v <= u
+            || CALL_3ARGS(IsDigraphEdge, D, INTOBJ_INT(u), INTOBJ_INT(v))
+                   == False) {
+          ++nr;
+        }
+      }
+    }
+  }
+  if (IsAttributeStoringRep(D)) {
+    AssPRec(D, RNamName("DigraphNrAdjacencies"), INTOBJ_INT(nr));
+  }
+  return nr;
+}
+
+static Obj FuncDIGRAPH_NRADJACENCIES(Obj self, Obj D) {
+  return INTOBJ_INT(DigraphNrAdjacencies(D));
+}
+
+Int DigraphNrAdjacenciesWithoutLoops(Obj D) {
+  Int nr = 0;
+  if (IsbPRec(D, RNamName("DigraphNrAdjacenciesWithoutLoops"))) {
+    return INT_INTOBJ(ElmPRec(D, RNamName("DigraphNrAdjacenciesWithoutLoops")));
+  } else {
+    Obj const out = FuncOutNeighbours(0L, D);
+    for (Int v = 1; v <= LEN_LIST(out); ++v) {
+      Obj const out_v = ELM_LIST(out, v);
+      for (Int w = 1; w <= LEN_LIST(out_v); ++w) {
+        Int u = INT_INTOBJ(ELM_LIST(out_v, w));
+        if (v < u
+            || CALL_3ARGS(IsDigraphEdge, D, INTOBJ_INT(u), INTOBJ_INT(v))
+                   == False) {
+          ++nr;
+        }
+      }
+    }
+  }
+  if (IsAttributeStoringRep(D)) {
+    AssPRec(D, RNamName("DigraphNrAdjacenciesWithoutLoops"), INTOBJ_INT(nr));
+  }
+  return nr;
+}
+
+static Obj FuncDIGRAPH_NRADJACENCIESWITHOUTLOOPS(Obj self, Obj D) {
+  return INTOBJ_INT(DigraphNrAdjacenciesWithoutLoops(D));
 }
 
 /****************************************************************************
@@ -194,7 +246,7 @@ static Obj FuncGABOW_SCC(Obj self, Obj digraph) {
 
   comps = NEW_PLIST_IMM(T_PLIST_TAB, n);
 
-  stack2 = malloc((4 * n + 2) * sizeof(UInt));
+  stack2 = safe_malloc((4 * n + 2) * sizeof(UInt));
   frames = stack2 + n + 1;
   end2   = 0;
 
@@ -302,7 +354,7 @@ static Obj FuncDIGRAPH_CONNECTED_COMPONENTS(Obj self, Obj digraph) {
     gid    = NEW_PLIST_IMM(T_PLIST_EMPTY, 0);
     gcomps = NEW_PLIST_IMM(T_PLIST_EMPTY, 0);
   } else {
-    id = malloc(n * sizeof(UInt));
+    id = safe_malloc(n * sizeof(UInt));
     for (i = 0; i < n; i++) {
       id[i] = i;
     }
@@ -318,7 +370,7 @@ static Obj FuncDIGRAPH_CONNECTED_COMPONENTS(Obj self, Obj digraph) {
     }
 
     // "Normalise" id, giving it sensible labels
-    nid     = malloc(n * sizeof(UInt));
+    nid     = safe_malloc(n * sizeof(UInt));
     nrcomps = 0;
     for (i = 0; i < n; i++) {
       f      = UF_FIND(id, i);
@@ -356,8 +408,8 @@ static Obj FuncIS_ACYCLIC_DIGRAPH(Obj self, Obj adj) {
   nr = LEN_PLIST(adj);
 
   // init the buf
-  ptr   = calloc(nr + 1, sizeof(UInt));
-  stack = malloc((2 * nr + 2) * sizeof(UInt));
+  ptr   = safe_calloc(nr + 1, sizeof(UInt));
+  stack = safe_malloc((2 * nr + 2) * sizeof(UInt));
 
   for (i = 1; i <= nr; i++) {
     nbs = ELM_PLIST(adj, i);
@@ -426,9 +478,9 @@ static Obj FuncDIGRAPH_LONGEST_DIST_VERTEX(Obj self, Obj adj, Obj start) {
     return INTOBJ_INT(0);
   }
 
-  ptr   = calloc(nr + 1, sizeof(UInt));
-  depth = calloc(nr + 1, sizeof(UInt));
-  stack = malloc((2 * nr + 2) * sizeof(UInt));
+  ptr   = safe_calloc(nr + 1, sizeof(UInt));
+  depth = safe_calloc(nr + 1, sizeof(UInt));
+  stack = safe_malloc((2 * nr + 2) * sizeof(UInt));
 
   level    = 1;
   stack[0] = i;
@@ -513,9 +565,9 @@ static Obj FuncDIGRAPH_TRANS_REDUCTION(Obj self, Obj D) {
   Obj const in_list = FuncDIGRAPH_IN_OUT_NBS(self, FuncOutNeighbours(self, D));
 
   // Create data structures needed for computation
-  UInt* ptr   = calloc(n + 1, sizeof(UInt));
-  bool* mat   = calloc(n * n, sizeof(bool));
-  UInt* stack = malloc((2 * n + 2) * sizeof(UInt));
+  UInt* ptr   = safe_calloc(n + 1, sizeof(UInt));
+  bool* mat   = safe_calloc(n * n, sizeof(bool));
+  UInt* stack = safe_malloc((2 * n + 2) * sizeof(UInt));
 
   // Start a depth-first search from each source of the digraph
   for (UInt i = 1; i <= n; i++) {
@@ -614,8 +666,8 @@ static Obj FuncDIGRAPH_PATH(Obj self, Obj adj, Obj u, Obj v) {
   nr     = LEN_PLIST(adj);
 
   // init the buf
-  ptr   = calloc(nr + 1, sizeof(UInt));
-  stack = malloc((2 * nr + 2) * sizeof(UInt));
+  ptr   = safe_calloc(nr + 1, sizeof(UInt));
+  stack = safe_malloc((2 * nr + 2) * sizeof(UInt));
 
   level    = 1;
   stack[0] = i;
@@ -683,8 +735,8 @@ Obj FuncIS_ANTISYMMETRIC_DIGRAPH(Obj self, Obj adj) {
   }
 
   // init the buf (is this correct length?)
-  ptr   = calloc(nr + 1, sizeof(UInt));
-  stack = malloc((4 * nr + 4) * sizeof(UInt));
+  ptr   = safe_calloc(nr + 1, sizeof(UInt));
+  stack = safe_malloc((4 * nr + 4) * sizeof(UInt));
 
   for (i = 1; i <= nr; i++) {
     nbs = ELM_PLIST(adj, i);
@@ -761,11 +813,11 @@ static Obj FuncIS_STRONGLY_CONNECTED_DIGRAPH(Obj self, Obj digraph) {
   }
 
   nextid = 1;
-  bag    = malloc(n * 4 * sizeof(UInt));
+  bag    = safe_malloc(n * 4 * sizeof(UInt));
   ptr1   = bag;
   ptr2   = bag + n;
   fptr   = bag + n * 2;
-  id     = calloc(n + 1, sizeof(UInt));
+  id     = safe_calloc(n + 1, sizeof(UInt));
 
   // first vertex v=1
   PLAIN_LIST(ELM_PLIST(digraph, 1));
@@ -827,8 +879,8 @@ static Obj FuncDIGRAPH_TOPO_SORT(Obj self, Obj adj) {
   }
 
   // init the buf
-  ptr   = calloc(nr + 1, sizeof(UInt));
-  stack = malloc((2 * nr + 2) * sizeof(UInt));
+  ptr   = safe_calloc(nr + 1, sizeof(UInt));
+  stack = safe_malloc((2 * nr + 2) * sizeof(UInt));
   count = 0;
 
   for (i = 1; i <= nr; i++) {
@@ -922,8 +974,8 @@ static Obj FuncDIGRAPH_SYMMETRIC_SPANNING_FOREST(Obj self, Obj adj) {
   }
 
   // init the buffer
-  ptr   = calloc(nr + 1, sizeof(UInt));
-  stack = malloc((2 * nr + 2) * sizeof(UInt));
+  ptr   = safe_calloc(nr + 1, sizeof(UInt));
+  stack = safe_malloc((2 * nr + 2) * sizeof(UInt));
 
   for (i = 1; i <= nr; i++) {
     // perform DFS only on still-undiscovered non-trivial connected components
@@ -1092,7 +1144,7 @@ static Obj FuncIS_MULTI_DIGRAPH(Obj self, Obj digraph) {
 
   adj  = FuncOutNeighbours(self, digraph);
   n    = DigraphNrVertices(digraph);
-  seen = calloc(n + 1, sizeof(UInt));
+  seen = safe_calloc(n + 1, sizeof(UInt));
 
   for (i = 1; i <= n; i++) {
     adji = ELM_PLIST(adj, i);
@@ -1148,8 +1200,9 @@ static Obj FLOYD_WARSHALL(Obj digraph,
                           bool copy,
                           bool diameter,
                           bool shortest) {
-  Int n, i, j, k, *dist, *adj;
-  Obj next, out, outi, val;
+  Int  n, i, j, k, *dist;
+  Int* adj = NULL;
+  Obj  next, out, outi, val;
 
   n = DigraphNrVertices(digraph);
 
@@ -1165,7 +1218,7 @@ static Obj FLOYD_WARSHALL(Obj digraph,
   }
 
   // Initialise the n x n matrix with val1 and val2
-  dist = malloc(n * n * sizeof(Int));
+  dist = safe_malloc(n * n * sizeof(Int));
   for (i = 0; i < n * n; i++) {
     dist[i] = val1;
   }
@@ -1188,7 +1241,7 @@ static Obj FLOYD_WARSHALL(Obj digraph,
 
   if (copy) {
     // This is the special case for IS_TRANSITIVE_DIGRAPH
-    adj = malloc(n * n * sizeof(Int));
+    adj = safe_malloc(n * n * sizeof(Int));
     for (i = 0; i < n * n; i++) {
       adj[i] = dist[i];
     }
@@ -1212,9 +1265,7 @@ static Obj FLOYD_WARSHALL(Obj digraph,
           maximum = dist[i * n + j];
         } else if (dist[i * n + j] == -1) {
           free(dist);
-          if (copy) {
-            free(adj);
-          }
+          free(adj);
           return Fail;
         }
       }
@@ -1260,7 +1311,7 @@ static Obj FLOYD_WARSHALL(Obj digraph,
   return out;
 }
 
-void FW_FUNC_SHORTEST_DIST(Int** dist, Int i, Int j, Int k, Int n) {
+static void FW_FUNC_SHORTEST_DIST(Int** dist, Int i, Int j, Int k, Int n) {
   if ((*dist)[i * n + k] != -1 && (*dist)[k * n + j] != -1) {
     if ((*dist)[i * n + j] == -1
         || (*dist)[i * n + j] > (*dist)[i * n + k] + (*dist)[k * n + j]) {
@@ -1279,7 +1330,7 @@ static Obj FuncDIGRAPH_DIAMETER(Obj self, Obj digraph) {
       digraph, FW_FUNC_SHORTEST_DIST, -1, 1, false, true, true);
 }
 
-void FW_FUNC_TRANS_CLOSURE(Int** dist, Int i, Int j, Int k, Int n) {
+static void FW_FUNC_TRANS_CLOSURE(Int** dist, Int i, Int j, Int k, Int n) {
   if ((*dist)[i * n + k] != 0 && (*dist)[k * n + j] != 0) {
     (*dist)[i * n + j] = 1;
   }
@@ -1295,7 +1346,8 @@ static Obj FuncDIGRAPH_TRANS_CLOSURE(Obj self, Obj digraph) {
       digraph, FW_FUNC_TRANS_CLOSURE, 0, 1, false, false, false);
 }
 
-void FW_FUNC_REFLEX_TRANS_CLOSURE(Int** dist, Int i, Int j, Int k, Int n) {
+static void
+FW_FUNC_REFLEX_TRANS_CLOSURE(Int** dist, Int i, Int j, Int k, Int n) {
   if ((i == j) || ((*dist)[i * n + k] != 0 && (*dist)[k * n + j] != 0)) {
     (*dist)[i * n + j] = 1;
   }
@@ -1359,7 +1411,7 @@ static Obj FuncRANDOM_MULTI_DIGRAPH(Obj self, Obj nn, Obj mm) {
   return adj;
 }
 
-bool EqJumbledPlists(Obj l, Obj r, Int nr, Int* buf) {
+static bool EqJumbledPlists(Obj l, Obj r, Int nr, Int* buf) {
   bool eq;
   Int  j, jj;
 
@@ -1392,6 +1444,56 @@ bool EqJumbledPlists(Obj l, Obj r, Int nr, Int* buf) {
   return true;
 }
 
+//-----------------------------------------------------------------------------
+// MurmurHash3 was written by Austin Appleby, and is placed in the public
+// domain. The author hereby disclaims copyright to this source code.
+
+/* Minor modifications to get it to compile in C rather than C++ and
+integrate with GAP  SL*/
+
+/* Digraphs takes parts of this source from GAP. */
+
+#define BIG_CONSTANT(x) (x##LLU)
+
+static inline UInt fmix(UInt h) {
+#ifndef SYS_IS_64_BIT
+  h ^= h >> 16;
+  h *= 0x85ebca6b;
+  h ^= h >> 13;
+  h *= 0xc2b2ae35;
+  h ^= h >> 16;
+#else
+  h ^= h >> 33;
+  h *= BIG_CONSTANT(0xff51afd7ed558ccd);
+  h ^= h >> 33;
+  h *= BIG_CONSTANT(0xc4ceb9fe1a85ec53);
+  h ^= h >> 33;
+#endif
+
+  return h;
+}
+
+static Obj FuncDIGRAPH_HASH(Obj self, Obj digraph) {
+  UInt n, i, h;
+  Obj  out, a;
+  Int  nr, j;
+
+  h   = 0;
+  n   = DigraphNrVertices(digraph);
+  out = FuncOutNeighbours(self, digraph);
+
+  for (i = 1; i <= n; i++) {
+    a = ELM_PLIST(out, i);
+    PLAIN_LIST(a);
+    nr = LEN_PLIST(a);
+    for (j = 1; j <= nr; j++)
+      h += fmix(INT_INTOBJ(ELM_PLIST(a, j)));
+    h = fmix(h + 0x9e3779b9);
+  }
+
+  return INTOBJ_INT(h);
+}
+
 static Obj FuncDIGRAPH_EQUALS(Obj self, Obj digraph1, Obj digraph2) {
   UInt i, n1, n2, m1, m2;
   Obj  out1, out2, a, b;
@@ -1415,7 +1517,7 @@ static Obj FuncDIGRAPH_EQUALS(Obj self, Obj digraph1, Obj digraph2) {
   out1 = FuncOutNeighbours(self, digraph1);
   out2 = FuncOutNeighbours(self, digraph2);
 
-  buf = calloc(n1, sizeof(Int));
+  buf = safe_calloc(n1, sizeof(Int));
 
   // Compare OutNeighbours of each vertex in turn
   for (i = 1; i <= n1; i++) {
@@ -1440,7 +1542,7 @@ static Obj FuncDIGRAPH_EQUALS(Obj self, Obj digraph1, Obj digraph2) {
   return True;
 }
 
-Int LTJumbledPlists(Obj l, Obj r, Int nr1, Int nr2, Int* buf, Int n) {
+static Int LTJumbledPlists(Obj l, Obj r, Int nr1, Int nr2, Int* buf, Int n) {
   bool eq;
   Int  j, jj, min;
 
@@ -1522,7 +1624,7 @@ static Obj FuncDIGRAPH_LT(Obj self, Obj digraph1, Obj digraph2) {
   out1 = FuncOutNeighbours(self, digraph1);
   out2 = FuncOutNeighbours(self, digraph2);
 
-  buf = calloc(n1, sizeof(Int));
+  buf = safe_calloc(n1, sizeof(Int));
 
   // Compare Sorted(out1[i]) and Sorted(out2[i]) for each vertex i
   for (i = 1; i <= n1; i++) {
@@ -1564,7 +1666,7 @@ static Obj FuncDIGRAPH_LT(Obj self, Obj digraph1, Obj digraph2) {
 
 // bliss
 
-BlissGraph* buildBlissMultiDigraph(Obj digraph) {
+static BlissGraph* buildBlissMultiDigraph(Obj digraph) {
   UInt        n, i, j, k, l, nr;
   Obj         adji, adj;
   BlissGraph* graph;
@@ -1588,7 +1690,8 @@ BlissGraph* buildBlissMultiDigraph(Obj digraph) {
 }
 
 // TODO: document mult (and everything else)
-BlissGraph* buildBlissDigraph(Obj digraph, Obj vert_colours, Obj edge_colours) {
+static BlissGraph*
+buildBlissDigraph(Obj digraph, Obj vert_colours, Obj edge_colours) {
   uint64_t    colour, mult, num_vc, num_ec, n, i, j, k, nr;
   Obj         adjj, adj;
   BlissGraph* graph;
@@ -1683,10 +1786,9 @@ BlissGraph* buildBlissDigraph(Obj digraph, Obj vert_colours, Obj edge_colours) {
     for (k = 1; k <= nr; k++) {
       uint64_t w = INT_INTOBJ(ELM_PLIST(adjj, k));
       for (i = 0; i < num_layers; i++) {
-        uint64_t colour =
-            edge_colours != Fail
-                ? INT_INTOBJ(ELM_LIST(ELM_LIST(edge_colours, j), k))
-                : 1;
+        colour = edge_colours != Fail
+                     ? INT_INTOBJ(ELM_LIST(ELM_LIST(edge_colours, j), k))
+                     : 1;
         if ((1 << i) & colour) {
           bliss_digraphs_add_edge(graph,
                                   i * mult * n + (j - 1),
@@ -1698,7 +1800,7 @@ BlissGraph* buildBlissDigraph(Obj digraph, Obj vert_colours, Obj edge_colours) {
   return graph;
 }
 
-BlissGraph* buildBlissMultiDigraphWithColours(Obj digraph, Obj colours) {
+static BlissGraph* buildBlissMultiDigraphWithColours(Obj digraph, Obj colours) {
   UInt        n, i, j, k, l, nr;
   Obj         adji, adj;
   BlissGraph* graph;
@@ -1736,9 +1838,9 @@ BlissGraph* buildBlissMultiDigraphWithColours(Obj digraph, Obj colours) {
   return graph;
 }
 
-void digraph_hook_function(void*               user_param,
-                           unsigned int        N,
-                           const unsigned int* aut) {
+static void digraph_hook_function(void*               user_param,
+                                  unsigned int        N,
+                                  const unsigned int* aut) {
   UInt4* ptr;
   Obj    p, gens;
   UInt   i, n;
@@ -1817,9 +1919,9 @@ static Obj FuncDIGRAPH_AUTOMORPHISMS(Obj self,
 }
 
 // user_param = [vertex perms, nr vertices, edge perms, nr edges]
-void multidigraph_hook_function(void*               user_param,
-                                unsigned int        N,
-                                const unsigned int* aut) {
+static void multidigraph_hook_function(void*               user_param,
+                                       unsigned int        N,
+                                       const unsigned int* aut) {
   UInt4* ptr;
   Obj    p, gens;
   UInt   i, n, m;
@@ -1857,9 +1959,9 @@ void multidigraph_hook_function(void*               user_param,
 }
 
 // user_param = [vertex perms, nr vertices, edge perms, nr edges]
-void multidigraph_colours_hook_function(void*               user_param,
-                                        unsigned int        N,
-                                        const unsigned int* aut) {
+static void multidigraph_colours_hook_function(void*               user_param,
+                                               unsigned int        N,
+                                               const unsigned int* aut) {
   UInt4* ptr;
   Obj    p, gens;
   UInt   i, n, m;
@@ -2067,251 +2169,59 @@ FuncMULTIDIGRAPH_CANONICAL_LABELLING(Obj self, Obj digraph, Obj colours) {
  */
 
 static StructGVarFunc GVarFuncs[] = {
-    {"DIGRAPH_NREDGES",
-     1,
-     "digraph",
-     FuncDIGRAPH_NREDGES,
-     "src/digraphs.c:DIGRAPH_NREDGES"},
-
-    {"GABOW_SCC", 1, "adj", FuncGABOW_SCC, "src/digraphs.c:GABOW_SCC"},
-
-    {"DIGRAPH_CONNECTED_COMPONENTS",
-     1,
-     "digraph",
-     FuncDIGRAPH_CONNECTED_COMPONENTS,
-     "src/digraphs.c:DIGRAPH_CONNECTED_COMPONENTS"},
-
-    {"IS_ACYCLIC_DIGRAPH",
-     1,
-     "adj",
-     FuncIS_ACYCLIC_DIGRAPH,
-     "src/digraphs.c:FuncIS_ACYCLIC_DIGRAPH"},
-
-    {"DIGRAPH_LONGEST_DIST_VERTEX",
-     2,
-     "adj, start",
-     FuncDIGRAPH_LONGEST_DIST_VERTEX,
-     "src/digraphs.c:FuncDIGRAPH_LONGEST_DIST_VERTEX"},
-
-    {"DIGRAPH_TRANS_REDUCTION",
-     1,
-     "list",
-     FuncDIGRAPH_TRANS_REDUCTION,
-     "src/digraphs.c:FuncDIGRAPH_TRANS_REDUCTION"},
-
-    {"IS_ANTISYMMETRIC_DIGRAPH",
-     1,
-     "adj",
-     FuncIS_ANTISYMMETRIC_DIGRAPH,
-     "src/digraphs.c:FuncIS_ANTISYMMETRIC_DIGRAPH"},
-
-    {"IS_STRONGLY_CONNECTED_DIGRAPH",
-     1,
-     "adj",
-     FuncIS_STRONGLY_CONNECTED_DIGRAPH,
-     "src/digraphs.c:FuncIS_STRONGLY_CONNECTED_DIGRAPH"},
-
-    {"DIGRAPH_TOPO_SORT",
-     1,
-     "adj",
-     FuncDIGRAPH_TOPO_SORT,
-     "src/digraphs.c:FuncDIGRAPH_TOPO_SORT"},
-
-    {"DIGRAPH_SYMMETRIC_SPANNING_FOREST",
-     1,
-     "adj",
-     FuncDIGRAPH_SYMMETRIC_SPANNING_FOREST,
-     "src/digraphs.c:FuncDIGRAPH_SYMMETRIC_SPANNING_FOREST"},
-
-    {"DIGRAPH_SOURCE_RANGE",
-     1,
-     "digraph",
-     FuncDIGRAPH_SOURCE_RANGE,
-     "src/digraphs.c:FuncDIGRAPH_SOURCE_RANGE"},
-
-    {"OutNeighbours",
-     1,
-     "D",
-     FuncOutNeighbours,
-     "src/digraphs.c:FuncOutNeighbours"},
-
-    {"DIGRAPH_OUT_NEIGHBOURS_FROM_SOURCE_RANGE",
-     3,
-     "N, source, range",
-     FuncOutNeighboursFromSourceRange,
-     "src/digraphs.c:FuncOutNeighboursFromSourceRange"},
-
-    {"DIGRAPH_NR_VERTICES",
-     1,
-     "D",
-     FuncDigraphNrVertices,
-     "src/digraphs.c:FuncDigraphNrVertices"},
-
-    {"DIGRAPH_IN_OUT_NBS",
-     1,
-     "adj",
-     FuncDIGRAPH_IN_OUT_NBS,
-     "src/digraphs.c:FuncDIGRAPH_IN_OUT_NBS"},
-
-    {"ADJACENCY_MATRIX",
-     1,
-     "digraph",
-     FuncADJACENCY_MATRIX,
-     "src/digraphs.c:FuncADJACENCY_MATRIX"},
-
-    {"IS_MULTI_DIGRAPH",
-     1,
-     "digraph",
-     FuncIS_MULTI_DIGRAPH,
-     "src/digraphs.c:FuncIS_MULTI_DIGRAPH"},
-
-    {"DIGRAPH_SHORTEST_DIST",
-     1,
-     "digraph",
-     FuncDIGRAPH_SHORTEST_DIST,
-     "src/digraphs.c:FuncDIGRAPH_SHORTEST_DIST"},
-
-    {"DIGRAPH_DIAMETER",
-     1,
-     "digraph",
-     FuncDIGRAPH_DIAMETER,
-     "src/digraphs.c:FuncDIGRAPH_DIAMETER"},
-
-    {"IS_TRANSITIVE_DIGRAPH",
-     1,
-     "digraph",
-     FuncIS_TRANSITIVE_DIGRAPH,
-     "src/digraphs.c:FuncIS_TRANSITIVE_DIGRAPH"},
-
-    {"DIGRAPH_TRANS_CLOSURE",
-     1,
-     "digraph",
-     FuncDIGRAPH_TRANS_CLOSURE,
-     "src/digraphs.c:FuncDIGRAPH_TRANS_CLOSURE"},
-
-    {"DIGRAPH_REFLEX_TRANS_CLOSURE",
-     1,
-     "digraph",
-     FuncDIGRAPH_REFLEX_TRANS_CLOSURE,
-     "src/digraphs.c:FuncDIGRAPH_REFLEX_TRANS_CLOSURE"},
-
-    {"RANDOM_DIGRAPH",
-     2,
-     "nn, limm",
-     FuncRANDOM_DIGRAPH,
-     "src/digraphs.c:FuncRANDOM_DIGRAPH"},
-
-    {"RANDOM_MULTI_DIGRAPH",
-     2,
-     "nn, mm",
-     FuncRANDOM_MULTI_DIGRAPH,
-     "src/digraphs.c:FuncRANDOM_MULTI_DIGRAPH"},
-
-    {"DIGRAPH_EQUALS",
-     2,
-     "digraph1, digraph2",
-     FuncDIGRAPH_EQUALS,
-     "src/digraphs.c:FuncDIGRAPH_EQUALS"},
-
-    {"DIGRAPH_LT",
-     2,
-     "digraph1, digraph2",
-     FuncDIGRAPH_LT,
-     "src/digraphs.c:FuncDIGRAPH_LT"},
-
-    {"DIGRAPH_PATH",
-     3,
-     "digraph, u, v",
-     FuncDIGRAPH_PATH,
-     "src/digraphs.c:FuncDIGRAPH_PATH"},
-
-    {"DIGRAPH_AUTOMORPHISMS",
-     3,
-     "digraph, vert_colours, edge_colours",
-     FuncDIGRAPH_AUTOMORPHISMS,
-     "src/digraphs.c:FuncDIGRAPH_AUTOMORPHISMS"},
-
-    {"MULTIDIGRAPH_AUTOMORPHISMS",
-     2,
-     "digraph, colours",
-     FuncMULTIDIGRAPH_AUTOMORPHISMS,
-     "src/digraphs.c:FuncMULTIDIGRAPH_AUTOMORPHISMS"},
-
-    {"DIGRAPH_CANONICAL_LABELLING",
-     2,
-     "digraph, colours",
-     FuncDIGRAPH_CANONICAL_LABELLING,
-     "src/digraphs.c:FuncDIGRAPH_CANONICAL_LABELLING"},
-
-    {"MULTIDIGRAPH_CANONICAL_LABELLING",
-     2,
-     "digraph, colours",
-     FuncMULTIDIGRAPH_CANONICAL_LABELLING,
-     "src/digraphs.c:FuncMULTIDIGRAPH_CANONICAL_LABELLING"},
-
-    {"HomomorphismDigraphsFinder",
-     -1,
-     "digraph1, digraph2, hook, user_param, max_results, hint, "
-     "injective, image, partial_map, colors1, colors2",
-     FuncHomomorphismDigraphsFinder,
-     "src/homos.c:FuncHomomorphismDigraphsFinder"},
-
-    {"DigraphsCliquesFinder",
-     -1,
-     "digraph, hook, user_param, limit, include, "
-     "exclude, max, size",
-     FuncDigraphsCliquesFinder,
-     "src/cliques.c:FuncDigraphsCliquesFinder"},
-
-    {"IS_PLANAR", 1, "digraph", FuncIS_PLANAR, "src/planar.c:FuncIS_PLANAR"},
-
-    {"PLANAR_EMBEDDING",
-     1,
-     "digraph",
-     FuncPLANAR_EMBEDDING,
-     "src/planar.c:FuncPLANAR_EMBEDDING"},
-
-    {"KURATOWSKI_PLANAR_SUBGRAPH",
-     1,
-     "digraph",
-     FuncKURATOWSKI_PLANAR_SUBGRAPH,
-     "src/planar.c:FuncKURATOWSKI_PLANAR_SUBGRAPH"},
-
-    {"IS_OUTER_PLANAR",
-     1,
-     "digraph",
-     FuncIS_OUTER_PLANAR,
-     "src/planar.c:FuncIS_OUTER_PLANAR"},
-
-    {"OUTER_PLANAR_EMBEDDING",
-     1,
-     "digraph",
-     FuncOUTER_PLANAR_EMBEDDING,
-     "src/planar.c:FuncOUTER_PLANAR_EMBEDDING"},
-
-    {"KURATOWSKI_OUTER_PLANAR_SUBGRAPH",
-     1,
-     "digraph",
-     FuncKURATOWSKI_OUTER_PLANAR_SUBGRAPH,
-     "src/planar.c:FuncKURATOWSKI_OUTER_PLANAR_SUBGRAPH"},
-
-    {"SUBGRAPH_HOMEOMORPHIC_TO_K23",
-     1,
-     "digraph",
-     FuncSUBGRAPH_HOMEOMORPHIC_TO_K23,
-     "src/planar.c:FuncSUBGRAPH_HOMEOMORPHIC_TO_K23"},
-
-    {"SUBGRAPH_HOMEOMORPHIC_TO_K33",
-     1,
-     "digraph",
-     FuncSUBGRAPH_HOMEOMORPHIC_TO_K33,
-     "src/planar.c:FuncSUBGRAPH_HOMEOMORPHIC_TO_K33"},
-
-    {"SUBGRAPH_HOMEOMORPHIC_TO_K4",
-     1,
-     "digraph",
-     FuncSUBGRAPH_HOMEOMORPHIC_TO_K4,
-     "src/planar.c:FuncSUBGRAPH_HOMEOMORPHIC_TO_K4"},
+    GVAR_FUNC(DIGRAPH_NREDGES, 1, "digraph"),
+    GVAR_FUNC(DIGRAPH_NRADJACENCIES, 1, "digraph"),
+    GVAR_FUNC(DIGRAPH_NRADJACENCIESWITHOUTLOOPS, 1, "digraph"),
+    GVAR_FUNC(GABOW_SCC, 1, "adj"),
+    GVAR_FUNC(DIGRAPH_CONNECTED_COMPONENTS, 1, "digraph"),
+    GVAR_FUNC(IS_ACYCLIC_DIGRAPH, 1, "adj"),
+    GVAR_FUNC(DIGRAPH_LONGEST_DIST_VERTEX, 2, "adj, start"),
+    GVAR_FUNC(DIGRAPH_TRANS_REDUCTION, 1, "list"),
+    GVAR_FUNC(IS_ANTISYMMETRIC_DIGRAPH, 1, "adj"),
+    GVAR_FUNC(IS_STRONGLY_CONNECTED_DIGRAPH, 1, "adj"),
+    GVAR_FUNC(DIGRAPH_TOPO_SORT, 1, "adj"),
+    GVAR_FUNC(DIGRAPH_SYMMETRIC_SPANNING_FOREST, 1, "adj"),
+    GVAR_FUNC(DIGRAPH_SOURCE_RANGE, 1, "digraph"),
+    GVAR_FUNC(OutNeighbours, 1, "D"),
+    GVAR_FUNC(DIGRAPH_OUT_NEIGHBOURS_FROM_SOURCE_RANGE, 3, "N, source, range"),
+    GVAR_FUNC(DIGRAPH_NR_VERTICES, 1, "D"),
+    GVAR_FUNC(DIGRAPH_IN_OUT_NBS, 1, "adj"),
+    GVAR_FUNC(ADJACENCY_MATRIX, 1, "digraph"),
+    GVAR_FUNC(IS_MULTI_DIGRAPH, 1, "digraph"),
+    GVAR_FUNC(DIGRAPH_SHORTEST_DIST, 1, "digraph"),
+    GVAR_FUNC(DIGRAPH_DIAMETER, 1, "digraph"),
+    GVAR_FUNC(IS_TRANSITIVE_DIGRAPH, 1, "digraph"),
+    GVAR_FUNC(DIGRAPH_TRANS_CLOSURE, 1, "digraph"),
+    GVAR_FUNC(DIGRAPH_REFLEX_TRANS_CLOSURE, 1, "digraph"),
+    GVAR_FUNC(RANDOM_DIGRAPH, 2, "nn, limm"),
+    GVAR_FUNC(RANDOM_MULTI_DIGRAPH, 2, "nn, mm"),
+    GVAR_FUNC(DIGRAPH_EQUALS, 2, "digraph1, digraph2"),
+    GVAR_FUNC(DIGRAPH_LT, 2, "digraph1, digraph2"),
+    GVAR_FUNC(DIGRAPH_HASH, 1, "digraph"),
+    GVAR_FUNC(DIGRAPH_PATH, 3, "digraph, u, v"),
+    GVAR_FUNC(DIGRAPH_AUTOMORPHISMS, 3, "digraph, vert_colours, edge_colours"),
+    GVAR_FUNC(MULTIDIGRAPH_AUTOMORPHISMS, 2, "digraph, colours"),
+    GVAR_FUNC(DIGRAPH_CANONICAL_LABELLING, 2, "digraph, colours"),
+    GVAR_FUNC(MULTIDIGRAPH_CANONICAL_LABELLING, 2, "digraph, colours"),
+    GVAR_FUNC(HomomorphismDigraphsFinder,
+              -1,
+              "digraph1, digraph2, hook, user_param, max_results, hint, "
+              "injective, image, partial_map, colors1, colors2"),
+    GVAR_FUNC(DigraphsCliquesFinder,
+              -1,
+              "digraph, hook, user_param, limit, "
+              "include, exclude, max, size"),
+    GVAR_FUNC(IS_PLANAR, 1, "digraph"),
+    GVAR_FUNC(PLANAR_EMBEDDING, 1, "digraph"),
+    GVAR_FUNC(KURATOWSKI_PLANAR_SUBGRAPH, 1, "digraph"),
+    GVAR_FUNC(IS_OUTER_PLANAR, 1, "digraph"),
+    GVAR_FUNC(OUTER_PLANAR_EMBEDDING, 1, "digraph"),
+    GVAR_FUNC(KURATOWSKI_OUTER_PLANAR_SUBGRAPH, 1, "digraph"),
+    GVAR_FUNC(SUBGRAPH_HOMEOMORPHIC_TO_K23, 1, "digraph"),
+    GVAR_FUNC(SUBGRAPH_HOMEOMORPHIC_TO_K33, 1, "digraph"),
+    GVAR_FUNC(SUBGRAPH_HOMEOMORPHIC_TO_K4, 1, "digraph"),
+    GVAR_FUNC(DIGRAPHS_FREE_HOMOS_DATA, 0, ""),
+    GVAR_FUNC(DIGRAPHS_FREE_CLIQUES_DATA, 0, ""),
 
     {0, 0, 0, 0, 0} /* Finish with an empty entry */
 };
@@ -2344,6 +2254,7 @@ static Int InitKernel(StructInitInfo* module) {
   ImportGVarFromLibrary("OnTuples", &OnTuples);
   ImportGVarFromLibrary("Group", &Group);
   ImportGVarFromLibrary("ClosureGroup", &ClosureGroup);
+  ImportGVarFromLibrary("InfoWarning", &InfoWarning);
   /* return success                                                      */
   return 0;
 }
@@ -2374,11 +2285,23 @@ static StructInitInfo module = {
     .postRestore = 0};
 
 #ifndef DIGRAPHSSTATIC
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wmissing-prototypes"
+#elif defined(__GNUC__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wmissing-prototypes"
+#endif
 StructInitInfo* Init__Dynamic(void) {
   return &module;
 }
-#endif
 
 StructInitInfo* Init__digraphs(void) {
   return &module;
 }
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#elif defined(__GNUC__)
+#pragma GCC diagnostic pop
+#endif
+#endif

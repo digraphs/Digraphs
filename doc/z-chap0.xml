@@ -40,25 +40,25 @@
     them.  Full explanations of all the functions contained in the package are
     provided below. <P/>
 
-  If the &Grape; package is available, it will be loaded automatically.
-  Digraphs created with the &Digraphs; package can be converted to &Grape;
-  graphs with <Ref Oper="Graph"/>, and conversely &Grape; graphs can be
-  converted to &Digraphs; objects with <Ref Oper="Digraph"/>.  &Grape; is not
+  If the &GRAPE; package is available, it will be loaded automatically.
+  Digraphs created with the &Digraphs; package can be converted to &GRAPE;
+  graphs with <Ref Oper="Graph"/>, and conversely &GRAPE; graphs can be
+  converted to &Digraphs; objects with <Ref Oper="Digraph"/>.  &GRAPE; is not
   required for &Digraphs; to run. <P/>
 
-  The &bliss; tool <Cite Key="JK07"/> is included in this package.  It
+  The &BLISS; tool <Cite Key="JK07"/> is included in this package.  It
   is an open-source tool for computing automorphism groups and canonical forms
   of graphs, written by Tommi Junttila and Petteri Kaski. Several of the methods
-  in the &Digraphs; package rely on &bliss;. If the &NautyTracesInterface;
-  package for GAP is available then it is also possible to use &nauty; <Cite
+  in the &Digraphs; package rely on &BLISS;. If the &NautyTracesInterface;
+  package for GAP is available then it is also possible to use &NAUTY; <Cite
     Key="MP14"/> for computing automorphism groups and canonical forms
   in &Digraphs;. See Section 
   <Ref Sect="Isomorphisms and canonical labellings"/> for more details.  
   <P/>
 
-  The &edge-addition-planarity-suite; is also included in &Digraphs;; see
+  The &EDGE_PLANARITY_SUITE; is also included in &Digraphs;; see
   <Cite Key="BM04"/>, <Cite Key="B06"/>, <Cite Key="BM06"/>, and <Cite
-  Key="B12"/> .  The &edge-addition-planarity-suite; is an open-source
+  Key="B12"/> .  The &EDGE_PLANARITY_SUITE; is an open-source
   implementation of the edge addition planar graph embedding algorithm and
   related algorithms by John M. Boyer. See Section <Ref Sect="Planarity"/> for
   more details.

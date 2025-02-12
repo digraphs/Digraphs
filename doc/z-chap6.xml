@@ -16,11 +16,11 @@ from} $E_a$ \emph{to} $E_b$. In this case we say that $E_a$ and $E_b$ are
 
   <Section Label="Isomorphisms and canonical labellings">
     <Heading>Isomorphisms and canonical labellings</Heading>
-    From version 0.11.0 of &Digraphs; it is possible to use either &bliss; or
-    &nauty; (via &NautyTracesInterface;) to calculate canonical labellings and
+    From version 0.11.0 of &Digraphs; it is possible to use either &BLISS; or
+    &NAUTY; (via &NautyTracesInterface;) to calculate canonical labellings and
     automorphism groups of digraphs; see <Cite Key="JK07"/> and <Cite
-      Key="MP14"/> for more details about &bliss; and &nauty;,
-    respectively. 
+      Key="MP14"/> for more details about &BLISS; and &NAUTY;,
+    respectively.
 
     <#Include Label="DigraphsUseNauty">
     <#Include Label="AutomorphismGroupDigraph">
@@ -65,6 +65,7 @@ from} $E_a$ \emph{to} $E_b$. In this case we say that $E_a$ and $E_b$ are
     <#Include Label="EmbeddingsDigraphs">
     <#Include Label="IsDigraphHomomorphism">
     <#Include Label="IsDigraphEmbedding">
+    <#Include Label="SubdigraphsMonomorphisms">
     <#Include Label="DigraphsRespectsColouring">
     <#Include Label="GeneratorsOfEndomorphismMonoid">
     <#Include Label="DigraphColouring">

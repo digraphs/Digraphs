@@ -246,9 +246,13 @@ gap> gr := DigraphRemoveEdge(gr, [1, 2]);;
 gap> gr := DigraphRemoveEdges(gr, [[1, 2], [2, 1]]);;
 gap> DigraphNrEdges(gr);
 40
+gap> DigraphNrAdjacencies(gr);
+20
 gap> gr2 := DigraphClosure(gr, 7);;
 gap> DigraphNrEdges(gr2);
 42
+gap> DigraphNrAdjacencies(gr2);
+21
 
 #  Fix seg fault cause by wrong handling of no edges in
 # FuncDIGRAPH_SOURCE_RANGE
@@ -411,10 +415,26 @@ gap> String(D);
 "DigraphFromDigraph6String(\"&CECG\")"
 gap> String(CycleDigraph(4));
 "CycleDigraph(4)"
+
+# Edge-weighted digraphs
 gap> d := EdgeWeightedDigraph([[2], [1]], [[5], [10]]);
 <immutable digraph with 2 vertices, 2 edges>
 gap> EdgeWeights(d);
 [ [ 5 ], [ 10 ] ]
+gap> EdgeWeightedDigraphTotalWeight(d);
+15
+gap> EdgeWeightedDigraphMinimumSpanningTree(d);
+<immutable digraph with 2 vertices, 1 edge>
+gap> d := EdgeWeightedDigraph([[2], [1, 2]], [[5], [5, 5]]);
+<immutable digraph with 2 vertices, 3 edges>
+gap> EdgeWeightedDigraphShortestPaths(d, 1);
+rec( distances := [ 0, 5 ], edges := [ fail, 1 ], parents := [ fail, 1 ] )
+gap> EdgeWeightedDigraphShortestPaths(d);
+rec( distances := [ [ 0, 5 ], [ 5, 0 ] ], 
+  edges := [ [ fail, 1 ], [ 1, fail ] ], 
+  parents := [ [ fail, 1 ], [ 2, fail ] ] )
+gap> EdgeWeightedDigraphShortestPath(d, 1, 2);
+[ [ 1, 2 ], [ 1 ] ]
 
 # Issue 617: bug in DigraphRemoveEdge, wasn't removing edge labels
 gap> D := DigraphByEdges(IsMutableDigraph, [[1, 2], [2, 3], [3, 4], [4, 1], [1, 1]]);;
@@ -429,7 +449,27 @@ gap> DigraphRemoveEdge(D, 1, 2);;
 gap> DigraphEdgeLabels(D);
 [ [ 1 ], [ 1 ], [ 1 ], [ 1 ] ]
 
+# DigraphContractEdge
+gap> D := DigraphByEdges(IsMutableDigraph, [[1, 2], [2, 1]]);
+<mutable digraph with 2 vertices, 2 edges>
+gap> DigraphContractEdge(D, 2, 1);;
+gap> DigraphEdges(D);
+[  ]
+gap> D := DigraphByEdges([[1, 2], [2, 1], [2, 3]]);
+<immutable digraph with 3 vertices, 3 edges>
+gap> C := DigraphContractEdge(D, 2, 1);
+<immutable digraph with 2 vertices, 1 edge>
+gap> DigraphEdges(C);
+[ [ 2, 1 ] ]
+
+# Issue #704 SubdigraphsMonomorphisms bug
+gap> d := Digraph([[2, 3, 4, 5], [1, 3, 4], [1, 2, 4, 5], [1, 2, 3, 5], 
+> [1, 3, 4]]);;
+gap> Length(SubdigraphsMonomorphisms(CompleteMultipartiteDigraph([2, 3]), d));
+4
+
 #  DIGRAPHS_UnbindVariables
+gap> Unbind(C);
 gap> Unbind(D);
 gap> Unbind(adj);
 gap> Unbind(d);

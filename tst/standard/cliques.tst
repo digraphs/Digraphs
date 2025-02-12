@@ -191,15 +191,15 @@ gap> DigraphIndependentSets(gr, [], [], 1, 1);
 gap> gr := CompleteDigraph(10);;
 gap> DigraphMaximalIndependentSetsRepsAttr(gr);
 [ [ 1 ] ]
-gap> DigraphMaximalIndependentSetsAttr(gr);
+gap> Set(DigraphMaximalIndependentSetsAttr(gr));
 [ [ 1 ], [ 2 ], [ 3 ], [ 4 ], [ 5 ], [ 6 ], [ 7 ], [ 8 ], [ 9 ], [ 10 ] ]
 
 #  DigraphMaximalIndependentSets and DigraphIndependentSets
 gap> gr := ChainDigraph(2);;
-gap> DigraphMaximalIndependentSets(gr);
+gap> Set(DigraphMaximalIndependentSets(gr));
 [ [ 1 ], [ 2 ] ]
 gap> gr := CompleteDigraph(2);;
-gap> DigraphMaximalIndependentSets(gr);
+gap> Set(DigraphMaximalIndependentSets(gr));
 [ [ 1 ], [ 2 ] ]
 gap> gr := DigraphFromDigraph6String("&FWsK?WSKC?");
 <immutable digraph with 7 vertices, 14 edges>
@@ -269,11 +269,11 @@ gap> DigraphMaximalCliquesReps();
 Error, there must be at least 1 argument,
 gap> DigraphMaximalCliquesReps(gr);
 [ [ 1 ] ]
-gap> DigraphMaximalCliquesAttr(gr);
+gap> Set(DigraphMaximalCliquesAttr(gr));
 [ [ 1 ], [ 2 ], [ 3 ], [ 4 ], [ 5 ] ]
 gap> DigraphMaximalCliques();
 Error, there must be at least 1 argument,
-gap> DigraphMaximalCliques(gr);
+gap> Set(DigraphMaximalCliques(gr));
 [ [ 1 ], [ 2 ], [ 3 ], [ 4 ], [ 5 ] ]
 gap> gr := EmptyDigraph(1);;
 gap> DigraphMaximalCliques(gr);
@@ -455,18 +455,18 @@ gap> gr := DigraphFromSparse6String(":~?@c__EC?_F");
 <immutable symmetric digraph with 100 vertices, 6 edges>
 gap> DigraphMaximalCliquesReps(gr);
 [ [ 1 ], [ 2, 3, 5 ] ]
-gap> DigraphMaximalCliques(gr);
-[ [ 1 ], [ 4 ], [ 6 ], [ 7 ], [ 8 ], [ 9 ], [ 10 ], [ 11 ], [ 12 ], [ 13 ], 
-  [ 14 ], [ 15 ], [ 16 ], [ 17 ], [ 18 ], [ 19 ], [ 20 ], [ 21 ], [ 22 ], 
-  [ 23 ], [ 24 ], [ 25 ], [ 26 ], [ 27 ], [ 28 ], [ 29 ], [ 30 ], [ 31 ], 
-  [ 32 ], [ 33 ], [ 34 ], [ 35 ], [ 36 ], [ 37 ], [ 38 ], [ 39 ], [ 40 ], 
-  [ 41 ], [ 42 ], [ 43 ], [ 44 ], [ 45 ], [ 46 ], [ 47 ], [ 48 ], [ 49 ], 
-  [ 50 ], [ 51 ], [ 52 ], [ 53 ], [ 54 ], [ 55 ], [ 56 ], [ 57 ], [ 58 ], 
-  [ 59 ], [ 60 ], [ 61 ], [ 62 ], [ 63 ], [ 64 ], [ 65 ], [ 66 ], [ 67 ], 
-  [ 68 ], [ 69 ], [ 70 ], [ 71 ], [ 72 ], [ 73 ], [ 74 ], [ 75 ], [ 76 ], 
-  [ 77 ], [ 78 ], [ 79 ], [ 80 ], [ 81 ], [ 82 ], [ 83 ], [ 84 ], [ 85 ], 
-  [ 86 ], [ 87 ], [ 88 ], [ 89 ], [ 90 ], [ 91 ], [ 92 ], [ 93 ], [ 94 ], 
-  [ 95 ], [ 96 ], [ 97 ], [ 98 ], [ 99 ], [ 100 ], [ 2, 3, 5 ] ]
+gap> Set(DigraphMaximalCliques(gr));
+[ [ 1 ], [ 2, 3, 5 ], [ 4 ], [ 6 ], [ 7 ], [ 8 ], [ 9 ], [ 10 ], [ 11 ], 
+  [ 12 ], [ 13 ], [ 14 ], [ 15 ], [ 16 ], [ 17 ], [ 18 ], [ 19 ], [ 20 ], 
+  [ 21 ], [ 22 ], [ 23 ], [ 24 ], [ 25 ], [ 26 ], [ 27 ], [ 28 ], [ 29 ], 
+  [ 30 ], [ 31 ], [ 32 ], [ 33 ], [ 34 ], [ 35 ], [ 36 ], [ 37 ], [ 38 ], 
+  [ 39 ], [ 40 ], [ 41 ], [ 42 ], [ 43 ], [ 44 ], [ 45 ], [ 46 ], [ 47 ], 
+  [ 48 ], [ 49 ], [ 50 ], [ 51 ], [ 52 ], [ 53 ], [ 54 ], [ 55 ], [ 56 ], 
+  [ 57 ], [ 58 ], [ 59 ], [ 60 ], [ 61 ], [ 62 ], [ 63 ], [ 64 ], [ 65 ], 
+  [ 66 ], [ 67 ], [ 68 ], [ 69 ], [ 70 ], [ 71 ], [ 72 ], [ 73 ], [ 74 ], 
+  [ 75 ], [ 76 ], [ 77 ], [ 78 ], [ 79 ], [ 80 ], [ 81 ], [ 82 ], [ 83 ], 
+  [ 84 ], [ 85 ], [ 86 ], [ 87 ], [ 88 ], [ 89 ], [ 90 ], [ 91 ], [ 92 ], 
+  [ 93 ], [ 94 ], [ 95 ], [ 96 ], [ 97 ], [ 98 ], [ 99 ], [ 100 ] ]
 
 # Test CliqueNumber
 gap> CliqueNumber(NullDigraph(10));
@@ -497,8 +497,7 @@ gap> cliques := DigraphMaximalCliquesReps(D);
 [ [ 1, 2, 3 ], [ 3, 4 ] ]
 gap> IsMutable(cliques) or ForAny(cliques, IsMutable);
 false
-gap> cliques := DigraphMaximalCliques(D);
-[ [ 1, 2, 3 ], [ 4, 5, 6 ], [ 3, 4 ] ]
+gap> cliques := DigraphMaximalCliques(D);;
 gap> IsMutable(cliques) or ForAny(cliques, IsMutable);
 false
 gap> cliques := DigraphMaximalCliques(D, [1]);
@@ -512,17 +511,17 @@ gap> CliquesFinder(
 [ [ 1 ] ]
 gap> gr := DigraphSymmetricClosure(ChainDigraph(513));
 <immutable symmetric digraph with 513 vertices, 1024 edges>
-gap> CliquesFinder(gr, fail, [], 4, [], [], true, fail, false); 
+gap> CliquesFinder(gr, fail, [], 4, [], [], true, fail, false);
 [ [ 1, 2 ], [ 512, 513 ], [ 2, 3 ], [ 511, 512 ] ]
-gap> CliquesFinder(gr, fail, [], 4, [1], [], true, fail, false); 
+gap> CliquesFinder(gr, fail, [], 4, [1], [], true, fail, false);
 [ [ 1, 2 ] ]
-gap> CliquesFinder(gr, fail, [], 4, [], [1], true, fail, false); 
+gap> CliquesFinder(gr, fail, [], 4, [], [1], true, fail, false);
 [ [ 512, 513 ], [ 2, 3 ], [ 511, 512 ], [ 3, 4 ] ]
 gap> CliquesFinder(gr, fail, [], 4, [1], [2], true, fail, false);
 [  ]
 gap> CliquesFinder(gr, fail, [], 4, [1], [3], true, fail, false);
 [ [ 1, 2 ] ]
-gap> CliquesFinder(gr, fail, [], 4, [1, 2], [], false, 1, false);  
+gap> CliquesFinder(gr, fail, [], 4, [1, 2], [], false, 1, false);
 [  ]
 gap> CliquesFinder(gr, fail, [], 4, [1, 513], [], false, 1, false);
 [  ]
@@ -546,7 +545,7 @@ Error, there must be 8 or 9 arguments, found 1,
 gap> DigraphsCliquesFinder(1, 2, 3, 4, 5, 6, 7, 8);
 Error, the 1st argument <digraph> must be a digraph, not integer,
 gap> DigraphsCliquesFinder(NullDigraph(513), 2, 3, 4, 5, 6, 7, 8);
-Error, the 1st argument <digraph> must have at most 512 vertices, found 513,
+Error, the 2nd argument <hook> must be a function with 2 arguments,
 gap> DigraphsCliquesFinder(NullDigraph(1), fail, 3, 4, 5, 6, 7, 8);
 Error, the 2nd argument <hook> is fail and so the 3th argument must be a mutab\
 le list, not integer,
@@ -590,17 +589,17 @@ nteger,
 gap> DigraphsCliquesFinder(NullDigraph(1), fail, [], 4, [], [], true, fail, 0);
 Error, the 9th argument <aut_grp> must be a permutation group or fail, not int\
 eger,
-gap> DigraphsCliquesFinder(NullDigraph(3), fail, [], 4, [], [], true, fail, 
+gap> DigraphsCliquesFinder(NullDigraph(3), fail, [], 4, [], [], true, fail,
 > Group((1, 2, 3), (1, 2), (1, 3)));
 Error, expected at most 2 generators in the 9th argument but got 3,
 gap> DigraphsCliquesFinder(NullDigraph(2), fail, [], 4, [], [], true, fail, SymmetricGroup(3));
 Error, expected group of automorphisms, but found a non-automorphism in positi\
 on 1 of the group generators,
 gap> DigraphsCliquesFinder(NullDigraph(2), fail, [], 4, [1], [], true, fail);
-Error, the 5th argument <include> must be invaraint under <aut_grp>, or the fu\
+Error, the 5th argument <include> must be invariant under <aut_grp>, or the fu\
 ll automorphism if <aut_grp> is not given,
 gap> DigraphsCliquesFinder(NullDigraph(2), fail, [], 4, [], [1], true, fail);
-Error, the 6th argument <exclude> must be invaraint under <aut_grp>, or the fu\
+Error, the 6th argument <exclude> must be invariant under <aut_grp>, or the fu\
 ll automorphism if <aut_grp> is not given,
 gap> DigraphsCliquesFinder(
 > CompleteDigraph(2), fail, [], 4, [1, 2], [], true, fail);

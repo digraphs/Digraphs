@@ -22,10 +22,11 @@
 #include "digraphs-debug.h"  // for DIGRAPHS_ASSERT
 
 // GAP headers
-#include "compiled.h"
+#include "gap-includes.h"
 
-#define MAXVERTS 512
-#define UNDEFINED MAXVERTS + 1
+// Maximum number of vertices that can be stored in 2^16 bits,
+// with 2 bits reserved.
+#define MAXVERTS 65534
 
 // smallest positive integer that doesn't fit into a small integer object
 #define SMALLINTLIMIT (INT_INTOBJ_MAX + 1)
