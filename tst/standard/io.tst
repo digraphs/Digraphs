@@ -936,9 +936,9 @@ gap> WriteDreadnautGraph(".", RandomDigraph(2));
 Error, cannot open the file given as the 1st argument <name>, ".",
 gap> filename := Concatenation(DIGRAPHS_Dir(), "tst/out/temp.dre");;
 gap> D := CompleteDigraph(3);;
-gap> WriteDreadnautGraph(filename, D);
+gap> WriteDreadnautGraph(filename, D);;
 gap> SetDigraphVertexLabels(D, ["a", "b", "c"]);;
-gap> WriteDreadnautGraph(filename, D);
+gap> WriteDreadnautGraph(filename, D);;
 
 # ReadDreadnautGraph
 gap> ReadDreadnautGraph(filename) = D;
@@ -1007,14 +1007,14 @@ Error, Label origin -1 on line 1 must be non-negative.
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "$=1n=5-d");;
 gap> IO_WriteLine(file, "g1 : 2;");;
-gap> IO_WriteLine(file, "-1");;
+gap> IO_WriteLine(file, "-1 -6");;
 gap> IO_Close(file);;
 gap> ReadDreadnautGraph(filename);
 <immutable empty digraph with 5 vertices>
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "$=1n=5-d");;
 gap> IO_WriteLine(file, "g1 : 1 2 3 1 2.");;
-gap> IO_WriteLine(file, "g2 : 4 5.");;
+gap> IO_WriteLine(file, "g2 : 4 5 17.");;
 gap> IO_Close(file);;
 gap> D := ReadDreadnautGraph(filename);;
 gap> DigraphEdges(D);
@@ -1052,14 +1052,138 @@ gap> DigraphVertexLabels(D);
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "$=3n=10dg");;
 gap> IO_WriteLine(file, "3:4.");;
-gap> IO_WriteLine(file, "f = [3:7|9");;
+gap> IO_WriteLine(file, "f = [3,5:7|9");;
 gap> D := ReadDreadnautGraph(filename);;
 Error, Unterminated partition specification (line 3)
 gap> IO_WriteLine(file, "]");;
 gap> IO_Close(file);;
 gap> D := ReadDreadnautGraph(filename);;
 gap> DigraphVertexLabels(D);
-[ 1, 1, 1, 1, 1, 0, 2, 0, 0, 0 ]
+[ 1, 0, 1, 1, 1, 0, 2, 0, 0, 0 ]
+gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
+gap> IO_WriteLine(file, "$=3n=10dAg");;
+gap> IO_WriteLine(file, "3:4.");;
+gap> IO_Close(file);;
+gap> D := ReadDreadnautGraph(filename);;
+Error, Operation 'A' (line 1) is not recognised
+gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
+gap> IO_WriteLine(file, "$=3n=2dAs\"this is a comment \"g");;
+gap> IO_WriteLine(file, "3:4;3._");;
+gap> IO_Close(file);;
+gap> ReadDreadnautGraph(filename);
+<immutable empty digraph with 2 vertices>
+gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
+gap> IO_WriteLine(file, "$=3n=2dg");;
+gap> IO_WriteLine(file, "3:3,4;");;
+gap> IO_WriteLine(file, "3! 2 3 4");;
+gap> IO_WriteLine(file, "._sr=2r& F=4 FF -M -f -V -P -r");;
+gap> IO_Close(file);;
+gap> DigraphEdges(ReadDreadnautGraph(filename));
+[ [ 2, 2 ] ]
+gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
+gap> IO_WriteLine(file, "$=3n=2dg");;
+gap> IO_WriteLine(file, "3:3,4.__");;
+gap> IO_Close(file);;
+gap> DigraphEdges(ReadDreadnautGraph(filename));
+[ [ 1, 1 ], [ 2, 1 ] ]
+gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
+gap> IO_WriteLine(file, "$=3n=2d");;
+gap> IO_WriteLine(file, "<\"some file.dre\"");;
+gap> IO_Close(file);;
+gap> ReadDreadnautGraph(filename);
+Error, Operation '<' (line 2) is not supported
+gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
+gap> IO_WriteLine(file, "$=1ndg");;
+gap> IO_WriteLine(file, "1 : 2 3 ");;
+gap> IO_Close(file);;
+gap> ReadDreadnautGraph(filename);
+Error, Expected integer on line 1 but was not found
+gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
+gap> IO_WriteLine(file, "$=1n2dAs! and some");;
+gap> IO_WriteLine(file, "g1 : 2 3 ! 2 3 4 5");;
+gap> IO_WriteLine(file, ".");;
+gap> IO_WriteLine(file, "f=1sr=2r&k 2 3 M 2 / 3 c l = 2 P PP 1 2 3 4; &r 1 2 3; s3 S2 &&");;
+gap> IO_Close(file);;
+gap> ReadDreadnautGraph(filename);
+<immutable digraph with 2 vertices, 1 edge>
+gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
+gap> IO_WriteLine(file, "$=1n3d\"this is an unterminated comment g");;
+gap> IO_WriteLine(file, "1 : 2 3.");;
+gap> IO_Close(file);;
+gap> ReadDreadnautGraph(filename);
+Error, Unterminated comment beginning on line 1
+gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
+gap> IO_WriteLine(file, "$=1n-3dg");;
+gap> IO_WriteLine(file, "1 : 2 3.");;
+gap> IO_Close(file);;
+gap> ReadDreadnautGraph(filename);
+Error, Vertex number -3 on line 1 must be positive.
+gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
+gap> IO_WriteLine(file, "$=1n3dg");;
+gap> IO_WriteLine(file, "1 : 2 3.");;
+gap> IO_WriteLine(file, "> \"out.dre\"");;
+gap> IO_Close(file);;
+gap> ReadDreadnautGraph(filename);
+Error, Operation '>' (line 
+3) is not supported. Please use 'WriteDreadnautGraph'.
+gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
+gap> IO_WriteLine(file, "f=2");;
+gap> IO_Close(file);;
+gap> ReadDreadnautGraph(filename);
+Error, Vertex number must be declared before partition on line 1
+gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
+gap> IO_WriteLine(file, "$=1n3dg");;
+gap> IO_WriteLine(file, "1 : 2 3.");;
+gap> IO_WriteLine(file, "fa");;
+gap> IO_Close(file);;
+gap> ReadDreadnautGraph(filename);
+Error, Partitions should be specified using one of the following formats:
+  * A single number (e.g. 'f=3')
+  * A list of cells (e.g. 'f=[...]')  * '-f'
+gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
+gap> IO_WriteLine(file, "$=1n3dg");;
+gap> IO_WriteLine(file, "1 : 2 3.");;
+gap> IO_WriteLine(file, "f2 PP 1");;
+gap> IO_Close(file);;
+gap> ReadDreadnautGraph(filename);
+Error, Unterminated 'PP' operation beginning on line 3
+gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
+gap> IO_WriteLine(file, "$=1n3dg");;
+gap> IO_WriteLine(file, "1 : 2 3.");;
+gap> IO_WriteLine(file, "f=12 r 1");;
+gap> IO_Close(file);;
+gap> ReadDreadnautGraph(filename);
+Error, Unterminated 'r' operation beginning on line 3
+gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
+gap> IO_WriteLine(file, "$=1n3dg");;
+gap> IO_WriteLine(file, "1 : 2 3.");;
+gap> IO_WriteLine(file, "f=[22]");;
+gap> IO_Close(file);;
+gap> ReadDreadnautGraph(filename);
+Error, Vertex 22 out of range in partition specification (line 3)
+gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
+gap> IO_WriteLine(file, "$=1n3dg");;
+gap> IO_WriteLine(file, "1 : 2 3.");;
+gap> IO_WriteLine(file, "f=[1:43]");;
+gap> IO_Close(file);;
+gap> ReadDreadnautGraph(filename);
+Error, Vertex 43 out of range in partition specification (line 3)
+gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
+gap> IO_WriteLine(file, "$=1n3dg");;
+gap> IO_WriteLine(file, "1 : 2 3.");;
+gap> IO_WriteLine(file, "f=[1:");;
+gap> IO_WriteLine(file, ":]");;
+gap> IO_Close(file);;
+gap> ReadDreadnautGraph(filename);
+Error, Invalid range 1 : ':' in partition specification (line 3)
+gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
+gap> IO_WriteLine(file, "$=1n3dg");;
+gap> IO_WriteLine(file, "1 : 2 3.");;
+gap> IO_WriteLine(file, "f=[1");;
+gap> IO_WriteLine(file, "f=2");;
+gap> IO_Close(file);;
+gap> ReadDreadnautGraph(filename);
+Error, Unexpected character 'f' in partition specification (line 4)
 
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(D);
