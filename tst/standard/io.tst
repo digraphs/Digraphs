@@ -937,6 +937,8 @@ Error, cannot open the file given as the 1st argument <name>, ".",
 gap> filename := Concatenation(DIGRAPHS_Dir(), "tst/out/temp.dre");;
 gap> D := CompleteDigraph(3);;
 gap> WriteDreadnautGraph(filename, D);
+gap> SetDigraphVertexLabels(D, ["a", "b", "c"]);;
+gap> WriteDreadnautGraph(filename, D);
 
 # ReadDreadnautGraph
 gap> ReadDreadnautGraph(filename) = D;
@@ -958,9 +960,13 @@ gap> WriteDreadnautGraph(filename, D);;
 gap> D = ReadDreadnautGraph(filename);
 true
 gap> D := Digraph([[3, 5, 10], [9, 8, 10], [4], [6], [7, 11], [7], [8], [], [11], [], []]);;
+gap> SetDigraphVertexLabels(D, [1, 2, 1, 1, 4, 1, 1, 3, 1, 5, 1]);;
 gap> WriteDreadnautGraph(filename, D);;
-gap> D = ReadDreadnautGraph(filename);
+gap> D2 := ReadDreadnautGraph(filename);;
+gap> D = D2;
 true
+gap> DigraphVertexLabels(D) = DigraphVertexLabels(D2);
+false
 gap> filename := Concatenation(DIGRAPHS_Dir(), "tst/out/repeats.dre");;
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "$=1n=3-d");;
@@ -978,6 +984,82 @@ gap> IO_WriteLine(file, "1: 1.");;
 gap> IO_Close(file);;
 gap> ReadDreadnautGraph(filename);
 Error, Expected integer on line 1 but was not found
+gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
+gap> IO_WriteLine(file, "$=1-dg");;
+gap> IO_WriteLine(file, "1 : 1 2 3 1 2.");;
+gap> IO_Close(file);;
+gap> ReadDreadnautGraph(filename);
+Error, Vertex number must be declared before `g' on line 1
+gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
+gap> IO_WriteLine(file, "$=2n=3d");;
+gap> IO_WriteLine(file, "g2 : 2 2 3 7 2.");;
+gap> IO_Close(file);;
+gap> D := ReadDreadnautGraph(filename);
+<immutable digraph with 3 vertices, 2 edges>
+gap> DigraphEdges(D);
+[ [ 1, 1 ], [ 1, 2 ] ]
+gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
+gap> IO_WriteLine(file, "$=-1n=3-d");;
+gap> IO_WriteLine(file, "g1 : 1 2 3 1 2.");;
+gap> IO_Close(file);;
+gap> ReadDreadnautGraph(filename);
+Error, Label origin -1 on line 1 must be non-negative.
+gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
+gap> IO_WriteLine(file, "$=1n=5-d");;
+gap> IO_WriteLine(file, "g1 : 2;");;
+gap> IO_WriteLine(file, "-1");;
+gap> IO_Close(file);;
+gap> ReadDreadnautGraph(filename);
+<immutable empty digraph with 5 vertices>
+gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
+gap> IO_WriteLine(file, "$=1n=5-d");;
+gap> IO_WriteLine(file, "g1 : 1 2 3 1 2.");;
+gap> IO_WriteLine(file, "g2 : 4 5.");;
+gap> IO_Close(file);;
+gap> D := ReadDreadnautGraph(filename);;
+gap> DigraphEdges(D);
+[ [ 2, 4 ], [ 2, 5 ], [ 4, 2 ], [ 5, 2 ] ]
+gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
+gap> IO_WriteLine(file, "$=1n=5d");;
+gap> IO_WriteLine(file, "g1 : 1 2 3 1 2.");;
+gap> IO_WriteLine(file, "7 : 4 5.");;
+gap> IO_Close(file);;
+gap> D := ReadDreadnautGraph(filename);
+Error, Illegal character '7' on line 3
+gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
+gap> IO_WriteLine(file, "$=1n=5d");;
+gap> IO_WriteLine(file, "g1 : 1 2 3");;
+gap> IO_WriteLine(file, "7 : 4 5.");;
+gap> IO_Close(file);;
+gap> D := ReadDreadnautGraph(filename);;
+gap> DigraphEdges(D);
+[ [ 1, 1 ], [ 1, 2 ], [ 1, 3 ], [ 1, 4 ], [ 1, 5 ] ]
+gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
+gap> IO_WriteLine(file, "$=1n=5dg");;
+gap> IO_WriteLine(file, "7 : 1 2 3");;
+gap> IO_Close(file);;
+gap> D := ReadDreadnautGraph(filename);;
+gap> DigraphEdges(D);
+[ [ 1, 1 ], [ 1, 2 ], [ 1, 3 ] ]
+gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
+gap> IO_WriteLine(file, "$=1n=5dg");;
+gap> IO_WriteLine(file, "1 : 1 2 3.");;
+gap> IO_WriteLine(file, "f = [1|2]");;
+gap> IO_Close(file);;
+gap> D := ReadDreadnautGraph(filename);;
+gap> DigraphVertexLabels(D);
+[ 1, 2, 0, 0, 0 ]
+gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
+gap> IO_WriteLine(file, "$=3n=10dg");;
+gap> IO_WriteLine(file, "3:4.");;
+gap> IO_WriteLine(file, "f = [3:7|9");;
+gap> D := ReadDreadnautGraph(filename);;
+Error, Unterminated partition specification (line 3)
+gap> IO_WriteLine(file, "]");;
+gap> IO_Close(file);;
+gap> D := ReadDreadnautGraph(filename);;
+gap> DigraphVertexLabels(D);
+[ 1, 1, 1, 1, 1, 0, 2, 0, 0, 0 ]
 
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(D);
