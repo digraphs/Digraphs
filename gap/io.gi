@@ -1491,7 +1491,7 @@ function(r, Stream)
                     if w < 1 or w > r.n then
                         Info(InfoWarning, 1, "Ignoring illegal vertex (",
                             v + r.labelorg - 1, ", ", w + r.labelorg - 1,
-                            ") (" , r.labelorg, "-indexed) on line ",
+                            ") (", r.labelorg, "-indexed) on line ",
                             r.newline);
                     else
                         v := w;
@@ -1501,7 +1501,7 @@ function(r, Stream)
                     if w < 1 or w > r.n or (w = v and not r.digraph) then
                         Info(InfoWarning, 1, "Ignoring illegal edge (",
                             v + r.labelorg - 1, ", ", w + r.labelorg - 1,
-                            ") (" , r.labelorg, "-indexed) on line ",
+                            ") (", r.labelorg, "-indexed) on line ",
                             r.newline);
                     else
                         AddSet(r.edgeList[v], w);
