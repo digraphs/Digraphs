@@ -1512,14 +1512,10 @@ function(r, Stream)
                 fi;
             fi;
         elif c = ';' then
+              neg := false;
+              v := v + 1;
             if v > r.n then
-                CloseStream(Stream.file);
-                ErrorNoReturn("Vertex ", v + r.labelorg - 1,
-                            " declared on line ", r.newline,
-                            " exceeds maximum value ", r.n + r.labelorg - 1);
-            else
-                neg := false;
-                v := v + 1;
+              return;
             fi;
         elif c in "?\n" then
             neg := false;
@@ -1540,7 +1536,6 @@ function(r, Stream)
           fi;
         fi;
     od;
-    return;
 end);
 
 BindGlobal("DIGRAPHS_GetInt",
@@ -1578,7 +1573,12 @@ function(r, minus, Stream)
     if IsDigitChar(c) then
         Stream.UngetChar(r, c);
         v1 := DIGRAPHS_readinteger(r, Stream);
-        r.partition[v1] := 1;
+        if v1 - r.labelorg + 1 < 1 or v1 - r.labelorg + 1 > r.n then
+          Info(InfoWarning, 1, "Ignoring illegal vertex in partition", v1,
+              " on line ", r.newline);
+        else
+          r.partition[v1] := 1;
+        fi;
         return;
     elif c <> '[' then
         CloseStream(Stream.file);
@@ -1600,7 +1600,7 @@ function(r, minus, Stream)
                 v1 := DIGRAPHS_readinteger(r, Stream);
                 if v1 - r.labelorg + 1 < 1 or v1 - r.labelorg + 1 > r.n then
                     CloseStream(Stream.file);
-                    ErrorNoReturn("Vertex ", Int([v1]),
+                    ErrorNoReturn("Vertex ", v1,
                     " out of range in partition specification (line ",
                     tempNewline, ")");
                 fi;
@@ -1610,8 +1610,8 @@ function(r, minus, Stream)
                     v2 := DIGRAPHS_GETNWL(r, Stream);
                     if not IsDigitChar(v2) then
                         CloseStream(Stream.file);
-                        ErrorNoReturn("Invalid range '", v1, " : ", v2,
-                        "' in partition specification (line ",
+                        ErrorNoReturn("Invalid range ", v1, " : ", v2,
+                        " in partition specification (line ",
                         tempNewline, ")");
                     fi;
                     Stream.UngetChar(r, v2);
@@ -1638,17 +1638,11 @@ function(r, minus, Stream)
                     break;
                 else
                     CloseStream(Stream.file);
-                    ErrorNoReturn("Unexpected character '", c,
-                    "' in partition specification (line ", r.newline, ")");
+                    ErrorNoReturn("Unexpected character ", c,
+                    " in partition specification (line ", r.newline, ")");
                 fi;
             fi;
         od;
-
-        if c = fail then
-            CloseStream(Stream.file);
-            ErrorNoReturn("Unterminated partition specification (line ",
-            tempNewline, ")");
-        fi;
     fi;
     return;
 end);
@@ -1718,8 +1712,7 @@ function(filename)
         elif c = 'A' then
           minus := false;
           temp := Stream.GetChar(r);
-          if temp in "nNdDtTsS" then
-          else
+          if (temp in "nNdDtTsS") = false then
             CloseStream(Stream.file);
             ErrorNoReturn("Operation 'A' (line ", r.newline,
                           ") is not recognised");
@@ -1728,7 +1721,7 @@ function(filename)
           if temp <> '+' then
             Stream.UngetChar(r, temp);
           fi;
-        elif c in "BR@#jv\%IixtTobzlamp?HcpP" then
+        elif c in "BR@#jv\%IixtTobzamp?Hcpc" then
             minus := false;
             Info(InfoWarning, 1, "Operation ", c, " (line ", r.newline,
                 ") is not supported");
@@ -1740,7 +1733,7 @@ function(filename)
             underscore := true;
             Stream.UngetChar(r, temp);
           fi;
-        elif c in "<e" then
+        elif c in "<eq" then
             CloseStream(Stream.file);
             ErrorNoReturn("Operation ", c, " (line ", r.newline,
                           ") is not supported");
@@ -1763,11 +1756,7 @@ function(filename)
         elif c = 'n' then
             minus := false;
             r.n := DIGRAPHS_GetInt(r, Stream);
-            if r.n = fail then
-                CloseStream(Stream.file);
-                ErrorNoReturn("Error reading vertex number on line ",
-                              r.newline);
-            elif r.n <= 0 then
+            if r.n <= 0 then
                 CloseStream(Stream.file);
                 ErrorNoReturn("Vertex number ", r.n, " on line ", r.newline,
                             " must be positive.");
@@ -1778,35 +1767,12 @@ function(filename)
         elif c = 's' then
           minus := false;
           temp := Stream.GetChar(r);
-          if temp = 'r' then
-            Info(InfoWarning, 1, "Operation 'sr' (line ", r.newline,
-                ") is not supported");
-            DIGRAPHS_GetInt(r, Stream);
-          else
+          if temp <> 'r' then
             Stream.UngetChar(r, temp);
-            Info(InfoWarning, 1, "Operation 's' (line ", r.newline,
-                ") is not supported");
           fi;
-        elif c = 'r' then
-            minus := false;
-            temp := Stream.GetChar(r);
-            if temp <> '&' then
-              Stream.UngetChar(r, temp);
-              InfoWarning("Operation 'r' (line ", r.newline,
-                          ") is not supported");
-            else
-              InfoWarning("Operation 'r&' (line ", r.newline,
-                          ") is not supported");
-            fi;
-        elif c = 'q' then
-            if r.edgeList = fail then
-                Info(InfoWarning, 1, "'q' operation encountered on line ",
-                    r.newline, " before ",
-                    "declaration of graph. Nothing will be returned.");
-                return;
-            else
-                return Digraph(r.edgeList);
-            fi;
+          Info(InfoWarning, 1, "Operation 's' or 'sr' (line ", r.newline,
+              ") is not supported");
+          DIGRAPHS_GetInt(r, Stream);
         elif c = '\"' then
             minus := false;
             c := Stream.GetChar(r);
@@ -1836,7 +1802,7 @@ function(filename)
             if minus then
                 minus := false;
             fi;
-        elif c in "swcyK*" then
+        elif c in "lwyK*" then
             Info(InfoWarning, 1, "Operation ", c, " (line ",
                 r.newline, ") is not supported");
             minus := false;
@@ -1881,14 +1847,6 @@ function(filename)
             else
                 DIGRAPHS_GetInt(r, Stream);
             fi;
-        elif c in "lw" then
-            Info(InfoWarning, 1, "Operation ", c,
-                " (line ", r.newline, ") is not supported");
-            minus := false;
-            DIGRAPHS_GetInt(r, Stream);
-        elif c = 'd' then
-            minus := false;
-            r.digraph := true;
         elif c in "P" then
             if minus then
                 minus := false;
@@ -1905,6 +1863,8 @@ function(filename)
                         ErrorNoReturn("Unterminated 'PP' operation beginning ",
                                       "on line ", temp);
                     fi;
+                    Info(InfoWarning, 1, "Operation PP (line ",
+                        r.newline, ") is not supported");
                 else
                       Stream.UngetChar(r, c);
                       Info(InfoWarning, 1, "Operation ", c, " (line ",
@@ -1913,9 +1873,7 @@ function(filename)
             fi;
         elif c = '$' then
             temp := Stream.GetChar(r);
-            if temp = '$' then
-                r.labelorg := 0;
-            else
+            if temp <> '$' then
               Stream.UngetChar(r, temp);
                 r.labelorg := DIGRAPHS_GetInt(r, Stream);
                 if r.labelorg < 0 then
@@ -1925,9 +1883,12 @@ function(filename)
                 fi;
 
             fi;
-            Info(InfoWarning, 1, "Vertices will be 1-indexed");
+            if r.labelorg <> 1 then
+                Info(InfoWarning, 1, "Vertices will be ", r.labelorg,
+                    "-indexed");
+            fi;
         elif c = 'r' then
-            Info(InfoWarning, 1, "Operation ", c,
+            Info(InfoWarning, 1, "Operation 'r' or 'r&'",
                 " (line ", r.newline, ") is not supported");
             if minus then
                 minus := false;
@@ -2094,8 +2055,13 @@ function(name, D)
   filteredVerts := Filtered(verts, x -> degs[x] > 0);
   for i in filteredVerts do
     adj := List(nbs[i], String);
-    IO_WriteLine(file, Concatenation(String(i), " : ",
-                 JoinStringsWithSeparator(adj, " "), ";"));
+    if i <> n then
+      IO_WriteLine(file, Concatenation(String(i), " : ",
+                  JoinStringsWithSeparator(adj, " "), ";"));
+    else
+      IO_WriteLine(file, Concatenation(String(i), " : ",
+                  JoinStringsWithSeparator(adj, " ")));
+    fi;
   od;
   IO_WriteLine(file, ".");
   if labels <> [1 .. n] then
@@ -2124,7 +2090,7 @@ function(name, D)
   fi;
 
   IO_Close(file);
-  return;
+  return IO_OK;
 end);
 
 InstallGlobalFunction(DigraphPlainTextLineEncoder,
