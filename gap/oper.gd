@@ -115,9 +115,9 @@ DeclareOperation("IsDigraphPath", [IsDigraph, IsList]);
 # 9. Connectivity . . .
 DeclareOperation("DigraphFloydWarshall",
                  [IsDigraph, IsFunction, IsObject, IsObject]);
-DeclareOperation("DigraphDijkstra",
+DeclareOperation("DigraphShortestPaths",
                  [IsDigraph, IsPosInt]);
-DeclareOperation("DigraphDijkstra",
+DeclareOperation("DigraphShortestPaths",
                  [IsDigraph, IsPosInt, IsPosInt]);
 
 DeclareOperation("DigraphConnectedComponent", [IsDigraph, IsPosInt]);
