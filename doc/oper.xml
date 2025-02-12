@@ -603,7 +603,7 @@ true
     <P/>
 
     Note that if <A>digraph</A> belongs to <Ref Filt="IsImmutableDigraph"/>,
-    then a new copy of <A>digraph</A> will be returned even if <A>edge</A> or 
+    then a new copy of <A>digraph</A> will not be returned if <A>edge</A> or
     <A>[src, ran]</A> does not define an edge of <A>digraph</A>.<P/>
 
     <Example><![CDATA[
@@ -615,7 +615,7 @@ gap> new := DigraphRemoveEdge(D, [25000, 2]);;
 gap> new = D;
 true
 gap> IsIdenticalObj(new, D);
-false
+true
 gap> D := DigraphMutableCopy(D);;
 gap> new := DigraphRemoveEdge(D, 2500, 2);;
 gap> IsIdenticalObj(new, D);
