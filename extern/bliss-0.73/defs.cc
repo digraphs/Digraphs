@@ -1,6 +1,6 @@
-#include <cstdlib>
-#include <cstdio>
 #include "defs.hh"
+#include <cstdio>
+#include <cstdlib>
 
 /*
   Copyright (c) 2003-2015 Tommi Junttila
@@ -21,18 +21,32 @@
   along with bliss.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wformat-nonliteral"
+#pragma clang diagnostic ignored "-Wmissing-noreturn"
+#elif defined(__GNUC__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wformat-nonliteral"
+#pragma GCC diagnostic ignored "-Wmissing-noreturn"
+#pragma GCC diagnostic ignored "-Wsuggest-attribute=format"
+#endif
 namespace bliss_digraphs {
 
-void
-fatal_error(const char* fmt, ...)
-{
-  va_list ap;
-  va_start(ap, fmt);
-  fprintf(stderr,"Bliss fatal error: ");
-  vfprintf(stderr, fmt, ap);
-  fprintf(stderr, "\nAborting!\n");
-  va_end(ap);
-  exit(1);
-}
+  void fatal_error(const char* fmt, ...) {
+    va_list ap;
+    va_start(ap, fmt);
+    fprintf(stderr, "Bliss fatal error: ");
+    vfprintf(stderr, fmt, ap);
+    fprintf(stderr, "\nAborting!\n");
+    va_end(ap);
+    exit(1);
+  }
 
-}
+}  // namespace bliss_digraphs
+
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#elif defined(__GNUC__)
+#pragma GCC diagnostic pop
+#endif

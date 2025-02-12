@@ -138,6 +138,48 @@ gap> DigraphNrEdges(D);
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="DigraphNrAdjacencies">
+<ManSection>
+  <Attr Name="DigraphNrAdjacencies" Arg="digraph" />
+  <Returns>An integer.</Returns>
+  <Description> Returns the number of sets <M>\{u, v\}</M> of vertices of the digraph <A>digraph</A>, such that
+    either <M>(u, v)</M> or <M>(v, u)</M> is an edge. The following equality holds for
+    any digraph <C>D</C> with no multiple edges: <C>DigraphNrAdjacencies(D) * 2 - DigraphNrLoops(D)
+    = DigraphNrEdges(DigraphSymmetricClosure(D))</C>.
+    <Example><![CDATA[
+gap> gr := Digraph([
+> [1, 3, 4, 5], [1, 2, 3, 5], [2, 4, 5], [2, 4, 5], [1]]);;
+gap> DigraphNrAdjacencies(gr);
+13
+gap> DigraphNrAdjacencies(gr) * 2 - DigraphNrLoops(gr) =
+> DigraphNrEdges(DigraphSymmetricClosure(gr));
+true
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphNrAdjacenciesWithoutLoops">
+<ManSection>
+  <Attr Name="DigraphNrAdjacenciesWithoutLoops" Arg="digraph" />
+  <Returns>An integer.</Returns>
+  <Description> Returns the number of sets <M>\{u, v\}</M> of vertices of the digraph <A>digraph</A>, such that
+    <M>u \neq v</M> and either <M>(u, v)</M> or <M>(v, u)</M> is an edge. The following equality holds for
+    any digraph <C>D</C> with no multiple edges: <C>DigraphNrAdjacenciesWithoutLoops(D) * 2 + DigraphNrLoops(D)
+    = DigraphNrEdges(DigraphSymmetricClosure(D))</C>.
+    <Example><![CDATA[
+gap> gr := Digraph([
+> [1, 3, 4, 5], [1, 2, 3, 5], [2, 4, 5], [2, 4, 5], [1]]);;
+gap> DigraphNrAdjacenciesWithoutLoops(gr);
+10
+gap> DigraphNrAdjacenciesWithoutLoops(gr) * 2 + DigraphNrLoops(gr) =
+> DigraphNrEdges(DigraphSymmetricClosure(gr));
+true
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="DigraphNrLoops">
 <ManSection>
   <Attr Name="DigraphNrLoops" Arg="digraph"/>
@@ -1374,6 +1416,134 @@ gap> DigraphLongestSimpleCircuit(D);
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="DigraphAllUndirectedSimpleCircuits">
+<ManSection>
+  <Attr Name="DigraphAllUndirectedSimpleCircuits" Arg="digraph"/>
+  <Returns>A list of lists of vertices.</Returns>
+  <Description>
+    If <A>digraph</A> is a digraph, then <C>DigraphAllUndirectedSimpleCircuits</C>
+    returns a list of the <E> undirected simple circuits</E> in <A>digraph</A>. <P/>
+
+    See Section <Ref Subsect="Definitions" Style="Number" /> for the definition
+    of a simple circuit, and related notions. Note that a loop is a simple
+    circuit. A simple circuit is undirected if the orientation of the edges
+    in the circuit does not matter.<P/>
+
+    The attribute <C>DigraphAllUndirectedSimpleCircuitss</C> ignores
+    multiple edges, and identifies a undirected simple circuit using only its subsequence
+    of vertices.
+    See Section <Ref Subsect="DigraphAllSimpleCircuits" Style="Number" /> for more details
+    on simple circuits.<P/>
+
+    <Example><![CDATA[
+gap> D := ChainDigraph(10);;
+gap> DigraphAllUndirectedSimpleCircuits(D);
+[  ]
+gap> D := Digraph([[1, 1]]);
+<immutable multidigraph with 1 vertex, 2 edges>
+gap> DigraphAllUndirectedSimpleCircuits(D);
+[ [ 1 ] ]
+gap> D := CycleDigraph(IsMutableDigraph, 3);
+<mutable digraph with 3 vertices, 3 edges>
+gap> DigraphAllUndirectedSimpleCircuits(D);
+[ [ 1, 2, 3 ] ]
+gap> D := DigraphSymmetricClosure(CycleDigraph(IsMutableDigraph, 3));
+<mutable digraph with 3 vertices, 6 edges>
+gap> DigraphAllUndirectedSimpleCircuits(D);
+[ [ 1, 2, 3 ] ]
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphAllChordlessCycles">
+<ManSection>
+  <Attr Name="DigraphAllChordlessCycles" Arg="digraph"/>
+  <Returns>A list of lists of vertices.</Returns>
+  <Description>
+    If <A>digraph</A> is a digraph, then <C>DigraphAllChordlessCycles</C> 
+    returns a list of the <E>chordless cycles</E> in <A>digraph</A>. <P/>
+
+    A chordless cycle <M>C</M> is a undirected simple circuit (see Section <Ref Subsect="Definitions" Style="Number" /> ) 
+    where each pair of vertices in <M>C</M> are not connected by an edge not in <M>C</M>. 
+    Here, cycles of length two are ignored.<P/>
+
+    For a digraph without multiple edges, a simple circuit is uniquely
+    determined by its subsequence of vertices. However this is not the case for
+    a multidigraph.  The attribute <C>DigraphAllChordlessCycles</C> ignores
+    multiple edges, and identifies a simple circuit using only its subsequence
+    of vertices. See Section <Ref Subsect="DigraphAllSimpleCircuits" Style="Number" /> for more details.<P/>
+
+    This method uses the algorithms described in <Cite Key="US14"/>.<P/>
+    <Example><![CDATA[
+gap> D := ChainDigraph(10);;
+gap> DigraphAllChordlessCycles(D);
+[  ]
+gap> D := Digraph([[1, 1]]);
+<immutable multidigraph with 1 vertex, 2 edges>
+gap> DigraphAllChordlessCycles(D);
+[  ]
+gap> D := CycleDigraph(3);;
+gap> DigraphAllChordlessCycles(D);
+[ [ 2, 1, 3 ] ]
+gap> D := CompleteDigraph(4);
+<immutable complete digraph with 4 vertices>
+gap> DigraphAllChordlessCycles(D);
+[ [ 2, 1, 3 ], [ 2, 1, 4 ], [ 3, 1, 4 ], [ 3, 2, 4 ] ]
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="FacialWalks">
+<ManSection>
+  <Oper Name="FacialWalks" Arg="digraph, list"/>
+  <Returns>A list of lists of vertices.</Returns>
+  <Description>
+    If <A>digraph</A> is an Eulerian digraph and <A>list</A> is a rotation system of <A>digraph</A>, 
+    then <C>FacialWalks</C> returns a list of the <E>facial walks</E> in <A>digraph</A>. <P/>
+
+    A rotation system defines for each vertex the ordering of the out-neighbours.
+    For example, the method <Ref Subsect="PlanarEmbedding" Style="Number" /> computes for a
+    planar digraph <A>D</A> the rotation system of a planar embedding of <A>D</A>.
+    The facial walks of <A>digraph</A> are closed walks and they are defined by the rotation system <A>list</A>. 
+    They describe the boundaries of the faces of the embedding of <A>digraph</A> given
+    by the rotation system <A>list</A>.
+    
+    The operation <C>FacialWalks</C> ignores
+    multiple edges and loops.<P/>
+    Here are some examples for planar embeddings:
+    <Example><![CDATA[
+gap> D1 := CycleDigraph(4);;
+gap> planar := PlanarEmbedding(D1);
+[ [ 2 ], [ 3 ], [ 4 ], [ 1 ] ]
+gap> FacialWalks(D1, planar);
+[ [ 1, 2, 3, 4 ] ]
+gap> nonPlanar := [[2, 4], [1, 3], [2, 4], [1, 3]];;
+gap> FacialWalks(D1, nonPlanar);
+[ [ 1, 2, 3, 4 ] ]
+gap> D2 := CompleteMultipartiteDigraph([2, 2, 2]);;
+gap> rotationSystem := PlanarEmbedding(D2);
+[ [ 3, 5, 4, 6 ], [ 6, 4, 5, 3 ], [ 6, 2, 5, 1 ], [ 1, 5, 2, 6 ],
+  [ 1, 3, 2, 4 ], [ 1, 4, 2, 3 ] ]
+gap> FacialWalks(D2, rotationSystem);
+[ [ 1, 3, 6 ], [ 1, 4, 5 ], [ 1, 5, 3 ], [ 1, 6, 4 ], [ 2, 3, 5 ],
+  [ 2, 4, 6 ], [ 2, 5, 4 ], [ 2, 6, 3 ] ]
+]]></Example>
+    Here is an example of a non-planar digraph with a corresponding rotation system:
+    <Example><![CDATA[
+gap> D3 := CompleteMultipartiteDigraph([3, 3]);;
+gap> rot := [[6, 5, 4], [6, 5, 4], [6, 5, 4], [1, 2, 3],
+>            [1, 2, 3], [1, 2, 3]];
+[ [ 6, 5, 4 ], [ 6, 5, 4 ], [ 6, 5, 4 ], [ 1, 2, 3 ], [ 1, 2, 3 ],
+  [ 1, 2, 3 ] ]
+gap> FacialWalks(D3, rot);
+[ [ 1, 4, 2, 6, 3, 5 ], [ 1, 5, 2, 4, 3, 6 ], [ 1, 6, 2, 5, 3, 4 ] ]
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="HamiltonianPath">
 <ManSection>
   <Attr Name="HamiltonianPath" Arg="digraph"/>
@@ -1675,7 +1845,7 @@ gap> NrSpanningTrees(D);
 <#GAPDoc Label="AsGraph">
 <ManSection>
   <Attr Name="AsGraph" Arg="digraph"/>
-  <Returns>A &Grape; package graph.</Returns>
+  <Returns>A &GRAPE; package graph.</Returns>
   <Description>
     If <A>digraph</A> is a digraph, then this method returns the same as
     <Ref Oper="Graph"/>, except that if <A>digraph</A> is immutable, then the
@@ -2545,6 +2715,19 @@ gap> D := CycleDigraph(5);
 gap> DigraphJoinTable(D);
 fail
 ]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphHash">
+<ManSection>
+  <Attr Name="DigraphHash" Arg="digraph"/>
+  <Returns>The hash of a digraph.</Returns>
+  <Description>
+    This function returns a hash of <A>digraph</A>. <P/>
+
+    Note that the underlying hashing function is system dependent, and so the
+    value of this attribute is not guaranteed to be the same on different systems.
   </Description>
 </ManSection>
 <#/GAPDoc>

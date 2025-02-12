@@ -35,7 +35,7 @@ gap> IsDuplicateFree(DigraphEdges(D));
 false
 gap> IsMultiDigraph(D);
 true
-gap> D := DigraphMutableCopy(D); 
+gap> D := DigraphMutableCopy(D);
 <mutable multidigraph with 3 vertices, 7 edges>
 gap> IsMultiDigraph(D);
 true]]></Example>
@@ -233,7 +233,7 @@ false]]></Example>
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
     A connected digraph is <E>biconnected</E> if it is still connected (in the
-    sense of <Ref Prop="IsConnectedDigraph"/>) when any vertex is removed. 
+    sense of <Ref Prop="IsConnectedDigraph"/>) when any vertex is removed.
       If <A>D</A> has at least 3 vertices, then <C>IsBiconnectedDigraph</C>
       implies <Ref Prop="IsBridgelessDigraph"/>;
     see <Ref Attr="ArticulationPoints"/> or <Ref Attr="Bridges"/> for a more
@@ -252,7 +252,7 @@ false]]></Example>
     the digraph.
     <P/>
 
-    See also <Ref Attr="Bridges"/>, <Ref Attr="ArticulationPoints"/>, and 
+    See also <Ref Attr="Bridges"/>, <Ref Attr="ArticulationPoints"/>, and
     <Ref Prop="IsBridgelessDigraph"/>.
     <P/>
 
@@ -504,7 +504,7 @@ true]]></Example>
       Oper="CycleDigraph"/>.<P/>
 
     A digraph is a <E>cycle</E> if and only if it is strongly connected and has
-    the same number of edges as vertices. 
+    the same number of edges as vertices.
     <P/>
 
     &MUTABLE_RECOMPUTED_PROP;
@@ -1301,20 +1301,30 @@ true
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
     <C>IsDistributiveLatticeDigraph</C> returns <K>true</K> if the digraph
-    <A>digraph</A> is a <E>distributive lattice digraph</E>.<P/>
+    <A>digraph</A> is a distributive lattice digraph.<P/>
 
-    A <E>distributive lattice digraph</E> is a <E>lattice digraph</E>
-    (<Ref Prop="IsLatticeDigraph"/>) which is distributive. That is to say,
-    the functions <Ref Oper="PartialOrderDigraphMeetOfVertices"/> and
-    <Ref Oper="PartialOrderDigraphJoinOfVertices"/> distribute over each other.<P/>
-    
-    Equivalently, a <E>distributive lattice digraph</E> is a <E>lattice digraph</E>
-    in which the <E>lattice digraphs</E> representing <M>M3</M> and <M>N5</M> are
-    not embeddable as lattices
+    A <E>distributive lattice digraph</E> is a lattice digraph (<Ref
+    Prop="IsLatticeDigraph"/>) which is distributive. That is to say, the
+    functions <Ref Oper="PartialOrderDigraphMeetOfVertices"/> and <Ref
+    Oper="PartialOrderDigraphJoinOfVertices"/> distribute over each other.<P/>
+
+    Equivalently, a distributive lattice digraph is a lattice digraph in which
+    the <E>lattice digraphs</E> representing <M>M3</M> and <M>N5</M> are not
+    embeddable as lattices
     (see <URL>https://en.wikipedia.org/wiki/Distributive_lattice</URL> and
-    <Ref Prop="IsLatticeEmbedding" 
+    <Ref Prop="IsLatticeEmbedding"
     Label="for digraphs and a permutation or transformation"/>).<P/>
 
+    <Alt Only="HTML">
+        <![CDATA[
+        <figure>
+            <img height="200" src="m3.png"/>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <img height="200" src="n5.png"/>
+            <figcaption>The lattices <e>M3</e> and <e>N5</e>.</figcaption>
+        </figure>
+        ]]>
+    </Alt>
     &MUTABLE_RECOMPUTED_PROP;
 
     <Example><![CDATA[
@@ -1334,6 +1344,49 @@ false]]></Example>
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="IsModularLatticeDigraph">
+<ManSection>
+  <Prop Name="IsModularLatticeDigraph" Arg="digraph"/>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
+  <Description>
+    <C>IsModularLatticeDigraph</C> returns <K>true</K> if the digraph
+    <A>digraph</A> is a modular lattice digraph.<P/>
+
+    A <E>modular lattice digraph</E> is a lattice digraph (<Ref
+    Prop="IsLatticeDigraph"/>) which is modular. That is to say, the lattice
+    digraph representing <M>N5</M> is not embeddable as a lattice (see
+    <URL>https://en.wikipedia.org/wiki/Modular_lattice</URL> and <Ref
+    Prop="IsLatticeEmbedding"
+    Label="for digraphs and a permutation or transformation"/>).<P/>
+
+    <Alt Only="HTML">
+        <![CDATA[
+        <figure>
+            <img height="200" src="n5.png"/>
+            <figcaption>The lattice <e>N5</e>.</figcaption>
+        </figure>
+        ]]>
+    </Alt>
+
+    &MUTABLE_RECOMPUTED_PROP;
+
+    <Example><![CDATA[
+gap> D := ChainDigraph(5);
+<immutable chain digraph with 5 vertices>
+gap> D := DigraphReflexiveTransitiveClosure(D);
+<immutable preorder digraph with 5 vertices, 15 edges>
+gap> IsModularLatticeDigraph(D);
+true
+gap> N5 := Digraph([[2, 3], [4], [4], []]);
+<immutable digraph with 4 vertices, 4 edges>
+gap> DigraphReflexiveTransitiveClosure(N5);
+<immutable preorder digraph with 4 vertices, 9 edges>
+gap> IsModularLatticeDigraph(N5);
+false
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
 
 <#GAPDoc Label="IsPreorderDigraph">
 <ManSection>
@@ -1434,7 +1487,7 @@ true
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
     A connected digraph is <E>bridgeless</E> if it is still connected (in the
-    sense of <Ref Prop="IsConnectedDigraph"/>) when any edge is removed. 
+    sense of <Ref Prop="IsConnectedDigraph"/>) when any edge is removed.
     If <A>digraph</A> has at least 3 vertices, then <Ref
     Prop="IsBiconnectedDigraph"/> implies <C>IsBridgelessDigraph</C>;
     see <Ref Attr="ArticulationPoints"/> or <Ref Attr="Bridges"/> for a more
@@ -1453,7 +1506,7 @@ true
     the digraph.
     <P/>
 
-    See also <Ref Attr="Bridges"/>, <Ref Attr="ArticulationPoints"/>, and 
+    See also <Ref Attr="Bridges"/>, <Ref Attr="ArticulationPoints"/>, and
     <Ref Prop="IsBiconnectedDigraph"/>. <P/>
 
     &MUTABLE_RECOMPUTED_PROP;
@@ -1510,7 +1563,7 @@ true
     of <C>a</C> and <C>b</C> covers <C>b</C>.  <E>Lower semimodularity</E> is
     defined analogously. <P/>
 
-    See also <Ref Prop="IsLatticeDigraph"/>, <Ref Oper="NonUpperSemimodularPair"/>, 
+    See also <Ref Prop="IsLatticeDigraph"/>, <Ref Oper="NonUpperSemimodularPair"/>,
     and <Ref Oper="NonLowerSemimodularPair"/>.
 
     &MUTABLE_RECOMPUTED_PROP;

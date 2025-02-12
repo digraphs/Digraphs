@@ -57,7 +57,8 @@ function(D, set)
   return not ForAny(try, x -> IsEmpty(Intersection(set, nbs[x])));
 end);
 
-InstallMethod(IsClique, "for a digraph by out-neighbours and a homogeneous list",
+InstallMethod(IsClique,
+"for a digraph by out-neighbours and a homogeneous list",
 [IsDigraphByOutNeighboursRep, IsHomogeneousList],
 function(D, clique)
   local nbs, v;
@@ -106,7 +107,7 @@ end);
 ################################################################################
 
 InstallGlobalFunction(DigraphMaximalIndependentSet,
-function(arg)
+function(arg...)
   if IsEmpty(arg) then
     ErrorNoReturn("at least 1 argument is required,");
   elif not IsDigraph(arg[1]) then
@@ -121,7 +122,7 @@ function(arg)
 end);
 
 InstallGlobalFunction(DigraphIndependentSet,
-function(arg)
+function(arg...)
   if IsEmpty(arg) then
     ErrorNoReturn("at least 1 argument is required,");
   elif not IsDigraph(arg[1]) then
@@ -138,7 +139,7 @@ end);
 # Independent sets orbit representatives
 
 InstallGlobalFunction(DigraphIndependentSetsReps,
-function(arg)
+function(arg...)
   if IsEmpty(arg) then
     ErrorNoReturn("at least 1 argument is required,");
   elif not IsDigraph(arg[1]) then
@@ -151,16 +152,29 @@ end);
 
 # Independent sets
 
+InstallMethod(DigraphIndependentSetsAttr, "for a digraph", [IsDigraph],
+DigraphIndependentSets);
+
 InstallGlobalFunction(DigraphIndependentSets,
-function(arg)
+function(arg...)
+  local D, out;
   if IsEmpty(arg) then
     ErrorNoReturn("at least 1 argument is required,");
   elif not IsDigraph(arg[1]) then
     ErrorNoReturn("the 1st argument must be a digraph,");
+  elif not IsBound(arg[2])
+      and HasDigraphIndependentSetsAttr(arg[1]) then
+    return DigraphIndependentSetsAttr(arg[1]);
   fi;
+  D      := arg[1];
   arg[1] := DigraphMutableCopyIfMutable(arg[1]);
   arg[1] := DigraphDual(DigraphRemoveAllMultipleEdges(arg[1]));
-  return CallFuncList(DigraphCliques, arg);
+  out    := CallFuncList(DigraphCliques, arg);
+  # Store the result if appropriate
+  if not IsBound(arg[2]) and IsImmutableDigraph(D) then
+    SetDigraphIndependentSetsAttr(D, out);
+  fi;
+  return out;
 end);
 
 # Maximal independent sets orbit representatives
@@ -169,7 +183,7 @@ InstallMethod(DigraphMaximalIndependentSetsRepsAttr, "for a digraph",
 [IsDigraph], DigraphMaximalIndependentSetsReps);
 
 InstallGlobalFunction(DigraphMaximalIndependentSetsReps,
-function(arg)
+function(arg...)
   local out, D;
   if IsEmpty(arg) then
     ErrorNoReturn("at least 1 argument is required,");
@@ -196,7 +210,7 @@ InstallMethod(DigraphMaximalIndependentSetsAttr, "for a digraph", [IsDigraph],
 DigraphMaximalIndependentSets);
 
 InstallGlobalFunction(DigraphMaximalIndependentSets,
-function(arg)
+function(arg...)
   local D, out;
   if IsEmpty(arg) then
     ErrorNoReturn("at least 1 argument is required,");
@@ -221,7 +235,7 @@ end);
 # Cliques
 
 InstallGlobalFunction(DigraphMaximalClique,
-function(arg)
+function(arg...)
   if IsEmpty(arg) then
     ErrorNoReturn("at least 1 argument is required,");
   fi;
@@ -230,7 +244,7 @@ function(arg)
 end);
 
 InstallGlobalFunction(DigraphClique,
-function(arg)
+function(arg...)
   if IsEmpty(arg) then
     ErrorNoReturn("at least 1 argument is required,");
   fi;
@@ -239,7 +253,7 @@ function(arg)
 end);
 
 InstallGlobalFunction(DIGRAPHS_Clique,
-function(arg)
+function(arg...)
   local maximal, D, include, exclude, size, out, try, include_copy, v;
 
   maximal := arg[1];
@@ -336,7 +350,7 @@ end);
 # Cliques orbit representatives
 
 InstallGlobalFunction(DigraphCliquesReps,
-function(arg)
+function(arg...)
   local D, include, exclude, limit, size;
 
   if IsEmpty(arg) then
@@ -375,9 +389,12 @@ end);
 
 # Cliques
 
+InstallMethod(DigraphCliquesAttr, "for a digraph", [IsDigraph],
+DigraphCliques);
+
 InstallGlobalFunction(DigraphCliques,
-function(arg)
-  local D, include, exclude, limit, size;
+function(arg...)
+  local D, include, exclude, limit, size, out;
 
   if IsEmpty(arg) then
     ErrorNoReturn("there must be at least 1 argument,");
@@ -409,8 +426,28 @@ function(arg)
     size := fail;
   fi;
 
-  return CliquesFinder
-          (D, fail, [], limit, include, exclude, false, size, false);
+  # use cached value is not special case due to exclusion / size / etc.
+  if IsList(include) and IsEmpty(include) and IsList(exclude)
+      and IsEmpty(exclude) and limit = infinity and size = fail
+      and HasDigraphCliquesAttr(D) then
+    return DigraphCliquesAttr(D);
+  fi;
+
+  out := CliquesFinder(D,
+                       fail,
+                       [],
+                       limit,
+                       include,
+                       exclude,
+                       false,
+                       size,
+                       false);
+  # Store the result if appropriate (not special case due to params)
+  if IsEmpty(include) and IsEmpty(exclude) and limit = infinity and size = fail
+      and IsImmutableDigraph(D) then
+    SetDigraphCliquesAttr(D, out);
+  fi;
+  return out;
 end);
 
 # Maximal cliques orbit representatives
@@ -419,7 +456,7 @@ InstallMethod(DigraphMaximalCliquesRepsAttr, "for a digraph", [IsDigraph],
 DigraphMaximalCliquesReps);
 
 InstallGlobalFunction(DigraphMaximalCliquesReps,
-function(arg)
+function(arg...)
   local D, include, exclude, limit, size, out;
 
   if IsEmpty(arg) then
@@ -473,8 +510,8 @@ InstallMethod(DigraphMaximalCliquesAttr, "for a digraph", [IsDigraph],
 DigraphMaximalCliques);
 
 InstallGlobalFunction(DigraphMaximalCliques,
-function(arg)
-  local D, include, exclude, limit, size, cliques, sub, G, out, orbits, orb, c;
+function(arg...)
+  local D, include, exclude, limit, size, cliques, sub, G, out, orbits, c;
 
   if IsEmpty(arg) then
     ErrorNoReturn("there must be at least 1 argument,");
@@ -519,16 +556,13 @@ function(arg)
       out := cliques;
     else
       # Act on the representatives to find all
-      orbits := [];
-      out := [];
+      orbits := HashMap();
       for c in cliques do
-        if not ForAny(orbits, x -> c in x) then
-          orb := Orb(G, c, OnSets);
-          Enumerate(orb);
-          Add(orbits, orb);
-          Append(out, orb);
+        if not c in orbits then
+          DIGRAPHS_AddOrbitToHashMap(G, c, OnSets, orbits);
         fi;
       od;
+      out := Keys(orbits);
     fi;
     if IsImmutableDigraph(D) then
       SetDigraphMaximalCliquesAttr(D, out);
@@ -673,7 +707,7 @@ function(digraph, hook, user_param, limit, include, exclude, max, size, reps)
     else
 
       # Function to find the valid cliques of an orbit given an orbit rep
-      found_orbits := [];
+      found_orbits := HashMap();
       num_found := 0;
       if hook = fail then
         hook := Add;
@@ -683,10 +717,9 @@ function(digraph, hook, user_param, limit, include, exclude, max, size, reps)
         local orbit, n, new_found, i;
 
         new_found := 0;
-        if not ForAny(found_orbits, x -> clique in x) then
-          orbit := Orb(group, clique, OnSets);
-          Enumerate(orbit);
-          Add(found_orbits, orbit);
+        if not clique in found_orbits then
+          orbit :=
+          DIGRAPHS_AddOrbitToHashMap(group, clique, OnSets, found_orbits);
           n := Length(orbit);
 
           if invariant_include and invariant_exclude then
@@ -860,7 +893,7 @@ function(D, hook, param, lim, inc, exc, max, size, reps, inc_var, exc_var)
     grp := AutomorphismGroup(D);
   fi;
 
-  found_orbits := [];
+  found_orbits := HashMap();
 
   # Function to find the valid cliques of an orbit given an orbit rep
   add := function(c)
@@ -871,10 +904,8 @@ function(D, hook, param, lim, inc, exc, max, size, reps, inc_var, exc_var)
       hook(param, c);
       num := num + 1;
       return;
-    elif not ForAny(found_orbits, x -> c in x) then
-      orb := Orb(grp, c, OnSets);
-      Enumerate(orb);
-      Add(found_orbits, orb);
+    elif not c in found_orbits then
+      orb := DIGRAPHS_AddOrbitToHashMap(grp, c, OnSets, found_orbits);
       n := Length(orb);
 
       if invariant then  # we're not just looking for orbit reps, but inc and
@@ -1000,7 +1031,7 @@ function(D, hook, param, lim, inc, exc, max, size, reps, inc_var, exc_var)
       to_try := ListBlist(vtx, try);
     fi;
 
-    if not G = fail then
+    if G <> fail then
       to_try := List(Orbits(G, to_try), x -> x[1]);
     fi;
 

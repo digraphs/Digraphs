@@ -13,6 +13,26 @@
 # Internal stuff
 #############################################################################
 
+BindGlobal("DIGRAPHS_DocXMLFiles",
+           ["../PackageInfo.g",
+            "attr.xml",
+            "cliques.xml",
+            "constructors.xml",
+            "digraph.xml",
+            "display.xml",
+            "examples.xml",
+            "grahom.xml",
+            "grape.xml",
+            "io.xml",
+            "isomorph.xml",
+            "labels.xml",
+            "oper.xml",
+            "orbits.xml",
+            "planar.xml",
+            "prop.xml",
+            "utils.xml",
+            "weights.xml"]);
+
 BindGlobal("DIGRAPHS_TestRec", rec());
 MakeReadWriteGlobal("DIGRAPHS_TestRec");
 
@@ -30,6 +50,10 @@ InstallGlobalFunction(DIGRAPHS_StopTest,
 function()
   SetInfoLevel(InfoWarning, DIGRAPHS_TestRec.InfoLevelInfoWarning);
   SetInfoLevel(InfoDigraphs, DIGRAPHS_TestRec.InfoLevelInfoDigraphs);
+
+  # Wipe internal structures for homos and cliques
+  DIGRAPHS_FREE_HOMOS_DATA();
+  DIGRAPHS_FREE_CLIQUES_DATA();
   return;
 end);
 
@@ -98,6 +122,11 @@ end);
 
 InstallGlobalFunction(DIGRAPHS_ManualExamples,
 function()
+  if Filename(DirectoriesPackageLibrary("digraphs", "doc"),
+              "main.xml") = fail then
+    # The file main.xml only exists if AutoDoc has been run.
+    DigraphsMakeDoc();
+  fi;
   return ExtractExamples(DirectoriesPackageLibrary("digraphs", "doc"),
                          "main.xml", DIGRAPHS_DocXMLFiles, "Single");
 end);
@@ -131,7 +160,7 @@ function()
 end);
 
 InstallGlobalFunction(DigraphsTestStandard,
-function(arg)
+function(arg...)
   local opts, dir;
   if Length(arg) = 1 and IsRecord(arg[1]) then
     opts := ShallowCopy(arg[1]);
@@ -160,7 +189,7 @@ function(arg)
 end);
 
 InstallGlobalFunction(DigraphsTestExtreme,
-function(arg)
+function(arg...)
   local file, opts, dir;
   file := Filename(DirectoriesPackageLibrary("digraphs", "digraphs-lib"),
                    "extreme.d6.gz");
@@ -203,12 +232,13 @@ end);
 
 InstallGlobalFunction(DigraphsMakeDoc,
 function()
-  # Compile the documentation of the currently-loaded version of Digraphs
-  DIGRAPHS_MakeDoc(DirectoriesPackageLibrary("Digraphs", ""));
+  local fname;
+  fname := Filename(DirectoriesPackageLibrary("digraphs", ""), "makedoc.g");
+  Read(fname);
 end);
 
 InstallGlobalFunction(DigraphsTestManualExamples,
-function(arg)
+function(arg...)
   local exlists, indices, omit, oldscr, passed, pad, total, l, sp, bad, s,
   start_time, test, end_time, elapsed, pex, str, j, ex, i;
 
@@ -258,7 +288,8 @@ function(arg)
       s := InputTextString(ex[1]);
 
       start_time := IO_gettimeofday();
-      test := Test(s, rec(ignoreComments := false,
+      test := Test(s, rec(compareFunction := "uptowhitespace",
+                          ignoreComments := false,
                           width := 72,
                           EQ := EQ,
                           reportDiff := Ignore,
@@ -583,7 +614,7 @@ function(blist)
 end);
 
 InstallGlobalFunction(DError,
-function(arg)
+function(arg...)
   local msg;
   if not (IsString(arg[1]) or IsList(arg[1])) then
     Error("expected a string or a list as the 1st argument");

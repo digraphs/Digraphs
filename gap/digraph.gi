@@ -851,16 +851,30 @@ InstallMethod(DigraphByEdgesCons,
 "for IsMutableDigraph, a list, and an integer",
 [IsMutableDigraph, IsList, IsInt],
 function(_, edges, n)
-  local list, edge;
+  local pos, list, edge;
   if IsEmpty(edges) then
     return NullDigraph(IsMutableDigraph, n);
   fi;
+  pos := 0;
   for edge in edges do
-    if Length(edge) <> 2 then
-      ErrorNoReturn("the 1st argument <edges> must be a list of pairs,");
-    elif ForAny(edge, x -> not (IsPosInt(x) and x <= n)) then
-      ErrorNoReturn("the 1st argument <edges> must not contain values ",
-                    "greater than ", n, ", the 2nd argument <n>,");
+    pos := pos + 1;
+    if not IsList(edge) then
+      ErrorNoReturn("the 1st argument (list of edges) must be a list of ",
+                    "lists, but found ",
+                    TNAM_OBJ(edge),
+                    " in position ",
+                    pos);
+    elif Length(edge) <> 2 then
+      ErrorNoReturn("the 1st argument (list of edges) must be a list of lists ",
+                    "of length 2, found ", edge, " (length ", Length(edge),
+                    " in position ", pos, ")");
+    elif not IsPosInt(edge[1]) or not IsPosInt(edge[2]) then
+      ErrorNoReturn("the 1st argument (list of edges) must be pairs of ",
+                    "positive integers but found ", edge, " in position ", pos);
+    elif edge[1] > n or edge[2] > n then
+      ErrorNoReturn("the 1st argument (list of edges) must be pairs of ",
+                    "positive integers <= ", n, " but found ", edge,
+                    " in position ", pos);
     fi;
   od;
   list := List([1 .. n], x -> []);
@@ -1210,7 +1224,7 @@ function(filt, digraph, gps, homs)
   local red, n, hom_table, reps, rep, top, doms, starts, degs, max, gens, img,
   start, deg, x, queue, j, k, g, y, hom, edge, i, gen;
 
-  if not filt = IsPartialPermSemigroup then
+  if filt <> IsPartialPermSemigroup then
     TryNextMethod();
   elif not IsJoinSemilatticeDigraph(digraph) then
     if IsMeetSemilatticeDigraph(digraph) then
@@ -1324,7 +1338,7 @@ function(filt, digraph, gps, homs)
         # agrees with the composition we are currently considering.
         if IsBound(img[start]) then
           y := PermList(img{[start .. start + deg - 1]} - start + 1);
-          if not x = y then
+          if x <> y then
             ErrorNoReturn("the homomorphisms given must form a commutative",
                           " diagram,");
           fi;
@@ -1635,7 +1649,7 @@ end);
 InstallMethod(RandomDigraphCons,
 "for IsStronglyConnectedDigraph, a positive integer, and a float",
 [IsStronglyConnectedDigraph, IsPosInt, IsFloat],
-function(filt, n, p)
+function(_, n, p)
   local d, adjMatrix, stronglyConnectedComponents,
   scc_a, scc_b, i, random_u, random_v;
 

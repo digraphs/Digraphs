@@ -15,31 +15,50 @@
 #include "schreier-sims.h"
 
 // C headers
-#include "stdlib.h"  // for NULL
-#include "string.h"  // for memset
+#include <stdlib.h>  // for NULL
+#include <string.h>  // for memset
 
 // Digraphs package headers
 #include "digraphs-debug.h"  // for DIGRAPHS_ASSERT
+#include "globals.h"         // for HOMOS_STRUCTURE_SIZE
+#include "safemalloc.h"      // for safe_malloc
 
 uint16_t PERM_DEGREE = 0;
 
 // Schreier-Sims set up
 
 SchreierSims* new_schreier_sims(void) {
-  SchreierSims* ss = malloc(sizeof(SchreierSims));
-  ss->tmp_perm     = new_perm(MAXVERTS);
-  for (uint16_t i = 0; i < MAXVERTS; ++i) {
-    ss->strong_gens[i] = new_perm_coll(MAXVERTS, MAXVERTS);
+  SchreierSims* ss = safe_malloc(sizeof(SchreierSims));
+  ss->tmp_perm     = new_perm(HOMOS_STRUCTURE_SIZE);
+  ss->strong_gens =
+      (PermColl**) safe_calloc(HOMOS_STRUCTURE_SIZE, sizeof(PermColl*));
+  for (uint16_t i = 0; i < HOMOS_STRUCTURE_SIZE; ++i) {
+    ss->strong_gens[i] =
+        new_perm_coll(HOMOS_STRUCTURE_SIZE, HOMOS_STRUCTURE_SIZE);
   }
-  for (size_t i = 0; i < MAXVERTS * MAXVERTS; ++i) {
-    ss->transversal[i] = new_perm(MAXVERTS);
-    ss->inversal[i]    = new_perm(MAXVERTS);
+  ss->transversal = (Perm*) safe_calloc(
+      HOMOS_STRUCTURE_SIZE * HOMOS_STRUCTURE_SIZE, sizeof(Perm));
+  ss->inversal = (Perm*) safe_calloc(
+      HOMOS_STRUCTURE_SIZE * HOMOS_STRUCTURE_SIZE, sizeof(Perm));
+
+  for (size_t i = 0; i < HOMOS_STRUCTURE_SIZE * HOMOS_STRUCTURE_SIZE; ++i) {
+    ss->transversal[i] = new_perm(HOMOS_STRUCTURE_SIZE);
+    ss->inversal[i]    = new_perm(HOMOS_STRUCTURE_SIZE);
   }
+
+  ss->base   = (uint16_t*) safe_calloc(HOMOS_STRUCTURE_SIZE, sizeof(uint16_t));
+  ss->orbits = (uint16_t*) safe_calloc(
+      HOMOS_STRUCTURE_SIZE * HOMOS_STRUCTURE_SIZE, sizeof(uint16_t));
+  ss->size_orbits =
+      (uint16_t*) safe_calloc(HOMOS_STRUCTURE_SIZE, sizeof(uint16_t));
+  ss->orb_lookup = (bool*) safe_calloc(
+      HOMOS_STRUCTURE_SIZE * HOMOS_STRUCTURE_SIZE, sizeof(bool));
+
   return ss;
 }
 
-void init_ss(SchreierSims* ss, uint16_t degree) {
-  DIGRAPHS_ASSERT(degree <= MAXVERTS);
+static void init_ss(SchreierSims* ss, uint16_t degree) {
+  DIGRAPHS_ASSERT(degree <= HOMOS_STRUCTURE_SIZE);
   for (uint16_t i = 0; i < degree; ++i) {
     clear_perm_coll(ss->strong_gens[i]);
     ss->strong_gens[i]->degree = degree;
@@ -48,6 +67,27 @@ void init_ss(SchreierSims* ss, uint16_t degree) {
   memset((void*) ss->size_orbits, 0, degree * sizeof(uint16_t));
   ss->size_base = 0;
   ss->degree    = degree;
+}
+
+void free_schreier_sims(SchreierSims* ss) {
+  free(ss->tmp_perm);
+  for (uint16_t i = 0; i < HOMOS_STRUCTURE_SIZE; ++i) {
+    free_perm_coll(ss->strong_gens[i]);
+  }
+  free(ss->strong_gens);
+
+  for (size_t i = 0; i < HOMOS_STRUCTURE_SIZE * HOMOS_STRUCTURE_SIZE; ++i) {
+    free(ss->transversal[i]);
+    free(ss->inversal[i]);
+  }
+  free(ss->transversal);
+  free(ss->inversal);
+
+  free(ss->base);
+  free(ss->orbits);
+  free(ss->size_orbits);
+  free(ss->orb_lookup);
+  free(ss);
 }
 
 static inline void
@@ -69,7 +109,7 @@ static inline Perm get_transversal_ss(SchreierSims const* const ss,
                                       uint16_t const            j) {
   DIGRAPHS_ASSERT(i < ss->degree);
   DIGRAPHS_ASSERT(j < ss->degree);
-  return ss->transversal[i * MAXVERTS + j];
+  return ss->transversal[i * HOMOS_STRUCTURE_SIZE + j];
 }
 
 static inline Perm get_inversal_ss(SchreierSims const* const ss,
@@ -77,7 +117,7 @@ static inline Perm get_inversal_ss(SchreierSims const* const ss,
                                    uint16_t const            j) {
   DIGRAPHS_ASSERT(i < ss->degree);
   DIGRAPHS_ASSERT(j < ss->degree);
-  return ss->inversal[i * MAXVERTS + j];
+  return ss->inversal[i * HOMOS_STRUCTURE_SIZE + j];
 }
 
 static inline void add_base_point_ss(SchreierSims* ss, uint16_t const pt) {

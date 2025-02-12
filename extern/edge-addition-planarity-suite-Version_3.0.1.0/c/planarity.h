@@ -1,6 +1,16 @@
 #ifndef PLANARITY_H
 #define PLANARITY_H
 
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wstrict-prototypes"
+#pragma clang diagnostic ignored "-Wmissing-prototypes"
+#pragma clang diagnostic ignored "-Wdeprecated-non-prototype"
+#elif defined(__GNUC__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wstrict-prototypes"
+#pragma GCC diagnostic ignored "-Wmissing-prototypes"
+#endif
 /*
 Copyright (c) 1997-2020, John M. Boyer
 All rights reserved.

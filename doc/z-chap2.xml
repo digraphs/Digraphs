@@ -53,6 +53,7 @@
     <#Include Label="DigraphRemoveEdges">
     <#Include Label="DigraphRemoveLoops">
     <#Include Label="DigraphRemoveAllMultipleEdges">
+    <#Include Label="DigraphContractEdge">
     <#Include Label="DigraphReverseEdges">
     <#Include Label="DigraphDisjointUnion">
     <#Include Label="DigraphEdgeUnion">

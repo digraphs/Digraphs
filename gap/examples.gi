@@ -1251,22 +1251,29 @@ InstallMethod(HalvedCubeGraph, "for a function and an integer",
 InstallMethod(HanoiGraphCons, "for IsMutableDigraph and an integer",
 [IsMutableDigraph, IsPosInt],
 function(_, n)
-  local D, nrVert, prevNrVert, exp, i;
+  local e, D, nrVert, prevNrVert, anchor1, anchor2, anchor3, i;
   D := Digraph(IsMutableDigraph, []);
   nrVert := 3 ^ n;
   DigraphAddVertices(D, nrVert);
-  DigraphAddEdges(D, [[1, 2], [2, 3], [3, 1]]);
+  e := [[1, 2], [2, 3], [3, 1]];
+  # Anchors correspond to the top, bottom left and bottom right node of the
+  # current graph.
+  anchor1 := 1;
+  anchor2 := 2;
+  anchor3 := 3;
   prevNrVert := 1;
-  exp := 1;
+  # Starting from the triangle graph G := C_3, iteratively triplicate G, and
+  # connect each copy using their anchors.
   for i in [2 .. n] do
     prevNrVert := prevNrVert * 3;
-    DigraphAddEdges(D, Concatenation(DigraphEdges(D) + prevNrVert,
-                                    DigraphEdges(D) + (2 * prevNrVert)));
-    DigraphAddEdge(D, prevNrVert / 2 + (1 / 2), prevNrVert + 1);
-    DigraphAddEdge(D, prevNrVert, 2 * prevNrVert + 1);
-    DigraphAddEdge(D, 2 * prevNrVert, prevNrVert * 3 - exp);
-    exp := exp * 2;
+    Append(e, Concatenation(e + prevNrVert, e + (2 * prevNrVert)));
+    Add(e, [anchor2, anchor1 + prevNrVert]);
+    Add(e, [anchor3, anchor1 + (2 * prevNrVert)]);
+    Add(e, [anchor3 + prevNrVert, anchor2 + (2 * prevNrVert)]);
+    anchor2 := anchor2 + prevNrVert;
+    anchor3 := anchor3 + (2 * prevNrVert);
   od;
+  DigraphAddEdges(D, e);
 
   return DigraphSymmetricClosure(D);
 end);
@@ -1415,7 +1422,7 @@ InstallMethod(KneserGraphCons, "for IsMutableDigraph and two integers",
 function(_, n, k)
   local D, vertices, i, j;
   if n < k then
-    ErrorNoReturn("argument <n> must be greater than or equal to argument <k>,");
+    ErrorNoReturn("argument <n> must be greater than or equal to argument <k>");
   fi;
   vertices := Combinations([1 .. n], k);
   D := EmptyDigraph(IsMutableDigraph, Length(vertices));
@@ -1460,7 +1467,8 @@ InstallMethod(KneserGraph, "for two integers", [IsPosInt, IsPosInt],
 InstallMethod(KneserGraph, "for a function and two integers",
 [IsFunction, IsPosInt, IsPosInt], KneserGraphCons);
 
-InstallMethod(LindgrenSousselierGraphCons, "for IsMutableDigraph and an integer",
+InstallMethod(LindgrenSousselierGraphCons,
+"for IsMutableDigraph and an integer",
 [IsMutableDigraph, IsPosInt],
 function(_, n)
   local D, central, i, threei;

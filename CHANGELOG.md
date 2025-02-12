@@ -4,6 +4,83 @@ Wilf A. Wilson, Michael Young et al.
 
 Licensing information can be found in the `LICENSE` file.
 
+## Version 1.9.0 (released 06/09/2024)
+
+## What's Changed
+* Update my web-address by @markuspf in
+https://github.com/digraphs/Digraphs/pull/674
+* Fix off by one error by @james-d-mitchell in
+https://github.com/digraphs/Digraphs/pull/677
+* Resolve issue #676 by @james-d-mitchell in
+https://github.com/digraphs/Digraphs/pull/678
+* Add hash function for digraphs by @reiniscirpons in
+https://github.com/digraphs/Digraphs/pull/675
+* kernel: use GAP's GVAR_FUNC macro by @fingolfin in
+https://github.com/digraphs/Digraphs/pull/682
+* Add DigraphAllChordlessCycles by @MeikeWeiss in
+https://github.com/digraphs/Digraphs/pull/679
+* Add DomainForAction mock for actions on digraphs by @reiniscirpons in
+https://github.com/digraphs/Digraphs/pull/686
+* doc: start using autodoc by @james-d-mitchell in
+https://github.com/digraphs/Digraphs/pull/684
+* Make Orb use digraph hashes by @reiniscirpons in
+https://github.com/digraphs/Digraphs/pull/687
+* Fix startup bug by @james-d-mitchell in
+https://github.com/digraphs/Digraphs/pull/688
+* Add comment to remove rank by @reiniscirpons in
+https://github.com/digraphs/Digraphs/pull/692
+* Lint for new version of gaplint by @james-d-mitchell in
+https://github.com/digraphs/Digraphs/pull/691
+* Add `SubdigraphsMonomorphisms` by @james-d-mitchell in
+https://github.com/digraphs/Digraphs/pull/690
+* Added method AllUndirectedSimpleCircuits by @MeikeWeiss in
+https://github.com/digraphs/Digraphs/pull/689
+* Update for recent gaplint by @james-d-mitchell in
+https://github.com/digraphs/Digraphs/pull/693
+* Add a test for issue #676 by @wilfwilson in
+https://github.com/digraphs/Digraphs/pull/695
+* Fix edge placement in HanoiGraph by @Joseph-Edwards in
+https://github.com/digraphs/Digraphs/pull/699
+* Fix planarity by @Joseph-Edwards in
+https://github.com/digraphs/Digraphs/pull/696
+* Clarify homomorphisms finder with specified image by @james-d-mitchell in
+https://github.com/digraphs/Digraphs/pull/700
+
+## New Contributors
+* @MeikeWeiss made their first contribution in https://github.com/digraphs/Digraphs/pull/679
+
+**Full Changelog**: https://github.com/digraphs/Digraphs/compare/v1.8.0...v1.9.0
+
+## Version 1.8.0 (released 27/08/2024)
+
+This release contains several improvements and bug fixes:
+
+* Update Joe's info by @Joseph-Edwards in https://github.com/digraphs/Digraphs/pull/621
+* Fix Issue #617: DigraphRemoveEdge now removes appropriate edge label by @mtorpey in https://github.com/digraphs/Digraphs/pull/619
+* Implement IsOrderIdeal by @DanielPointon in https://github.com/digraphs/Digraphs/pull/609
+* DigraphCycleBasis by @Jun2M in https://github.com/digraphs/Digraphs/pull/610
+* Fix compiler warnings by @james-d-mitchell in https://github.com/digraphs/Digraphs/pull/633
+* Add IsModularLatticeDigraph by @james-d-mitchell in https://github.com/digraphs/Digraphs/pull/629
+* Abort if malloc fails by @DanielPointon in https://github.com/digraphs/Digraphs/pull/627
+* Add DigraphContractEdge by @saffronmciver in https://github.com/digraphs/Digraphs/pull/618
+* cliques: some perf improvements by @james-d-mitchell in https://github.com/digraphs/Digraphs/pull/635
+* Add custom CSS to documentation by @mtorpey in https://github.com/digraphs/Digraphs/pull/640
+* Fix compile warnings by @Joseph-Edwards in https://github.com/digraphs/Digraphs/pull/648
+* Edge-weights #3: minimum spanning trees by @mtorpey in https://github.com/digraphs/Digraphs/pull/650
+* weights.gi: correct whitespace by @mtorpey in https://github.com/digraphs/Digraphs/pull/652
+* Refactor Floyd–Warshall C implementation by @mtorpey in https://github.com/digraphs/Digraphs/pull/657
+* Added requested clique and independent attributes - #634 by @mpan322 in https://github.com/digraphs/Digraphs/pull/655
+* Doc fixes by @james-d-mitchell in https://github.com/digraphs/Digraphs/pull/658
+* Reduce Memory Usage by @DanielPointon in https://github.com/digraphs/Digraphs/pull/626
+
+## New Contributors
+* @DanielPointon made their first contribution in https://github.com/digraphs/Digraphs/pull/609
+* @Jun2M made their first contribution in https://github.com/digraphs/Digraphs/pull/610
+* @saffronmciver made their first contribution in https://github.com/digraphs/Digraphs/pull/618
+* @mpan322 made their first contribution in https://github.com/digraphs/Digraphs/pull/655
+
+**Full Changelog**: https://github.com/digraphs/Digraphs/compare/v1.7.1...v1.8.0
+
 ## Version 1.7.1 (released 19/02/2024)
 
 This is a minor release with some changes related to forthcoming changes in

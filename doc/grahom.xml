@@ -87,7 +87,7 @@
 
         For backwards compatibility, <A>injective</A> can also be <K>false</K>
         or <K>true</K> which correspond to the values <C>0</C> and <C>1</C>
-        described in the previous paragraph, respectively. 
+        described in the previous paragraph, respectively.
       </Item>
 
       <Mark><A>image</A></Mark>
@@ -95,7 +95,20 @@
         This argument should be a subset of the vertices of the graph <A>D2</A>.
         <C>HomomorphismDigraphsFinder</C> only finds homomorphisms from
         <A>D1</A> to the subgraph of <A>D2</A> induced by the vertices
-        <A>image</A>.
+        <A>image</A>.<P/>
+
+        The returned homomorphisms (if any) are still "up to the action" of the
+        group specified by <A>aut_grp</A> (which is the entire automorphism
+        group by default). This might generate unexpected results. For example,
+        if <A>D1</A> has automorphism group where one orbit consists of, say,
+        <C>1</C> and <C>2</C>, then <C>HomomorphismDigraphsFinder</C> will only
+        attempt to find homomorphisms mapping <C>1</C> to <C>1</C>, and if
+        there are no such homomorphisms with image set equal to <A>image</A>,
+        then no homomorphisms will be returned (even if there is a homomorphism
+        from <A>D1</A> to <A>D2</A> mapping <C>1</C> to <C>2</C>). To ensure that
+        that <B>all</B> homomorphisms with image set equal to <A>image</A> are
+        considered it is necessary for the last argument <A>aut_grp</A> to be
+        the trivial permutation group.
       </Item>
 
       <Mark><A>partial_map</A></Mark>
@@ -106,33 +119,34 @@
         <A>D1</A>. <C>HomomorphismDigraphsFinder</C> only finds homomorphisms
         extending <A>partial_map</A> (if any).
       </Item>
-      
+
       <Mark><A>colors1</A></Mark>
       <Item>
         This should be a list representing possible colours of vertices in the
-        digraph <A>D1</A>; see 
-        <Ref Oper="AutomorphismGroup" 
-          Label="for a digraph and a homogeneous list"/> 
+        digraph <A>D1</A>; see
+        <Ref Oper="AutomorphismGroup"
+          Label="for a digraph and a homogeneous list"/>
         for details of the permissible values for this argument.
       </Item>
-      
+
       <Mark><A>colors2</A></Mark>
       <Item>
         This should be a list representing possible colours of vertices in the
-        digraph <A>D2</A>; see 
-        <Ref Oper="AutomorphismGroup" 
-          Label="for a digraph and a homogeneous list"/> 
+        digraph <A>D2</A>; see
+        <Ref Oper="AutomorphismGroup"
+          Label="for a digraph and a homogeneous list"/>
         for details of the permissible values for this argument.
       </Item>
       <Mark><A>order</A></Mark>
       <Item>
         The optional argument <A>order</A> specifies the order the
-        vertices in <A>D1</A> appear in the search for homomorphisms. 
+        vertices in <A>D1</A> appear in the search for homomorphisms.
         The value of this parameter can have a large impact
         on the runtime of the function. It seems in many cases to be a good
         idea for this to be the <Ref Attr="DigraphWelshPowellOrder"/>, i.e.
         vertices ordered from highest to lowest degree.
       </Item>
+      <Mark><A>aut_grp</A></Mark>
       <Item>
         The optional argument <A>aut_grp</A> should be a subgroup of the
         automorphism group of <A>D2</A>. This function returns unique
@@ -149,7 +163,11 @@ gap> D := DigraphSymmetricClosure(D);
 <immutable symmetric digraph with 10 vertices, 18 edges>
 gap> HomomorphismDigraphsFinder(D, D, fail, [], infinity, 2, 0,
 > [3, 4], [], fail, fail);
-[ Transformation( [ 3, 4, 3, 4, 3, 4, 3, 4, 3, 4 ] ), 
+#I  WARNING you are trying to find homomorphisms by specifying a subset
+of the vertices of the target digraph. This might lead to unexpected
+results! If this happens, try passing Group(()) as the last argument.
+Please see the documentation of HomomorphismDigraphsFinder for details.
+[ Transformation( [ 3, 4, 3, 4, 3, 4, 3, 4, 3, 4 ] ),
   Transformation( [ 4, 3, 4, 3, 4, 3, 4, 3, 4, 3 ] ) ]
 gap> D2 := CompleteDigraph(6);;
 gap> HomomorphismDigraphsFinder(D, D2, fail, [], 1, fail, 0,
@@ -160,20 +178,20 @@ gap> func := function(user_param, t)
 > end;;
 gap> HomomorphismDigraphsFinder(D, D2, func, [Transformation([2, 2])],
 > 3, fail, 0, [1 .. 6], [1, 2, 1], fail, fail);
-[ Transformation( [ 2, 2 ] ), 
-  Transformation( [ 2, 2, 2, 3, 4, 5, 6, 2, 2, 2 ] ), 
-  Transformation( [ 2, 2, 2, 3, 4, 5, 6, 2, 2, 3 ] ), 
+[ Transformation( [ 2, 2 ] ),
+  Transformation( [ 2, 2, 2, 3, 4, 5, 6, 2, 2, 2 ] ),
+  Transformation( [ 2, 2, 2, 3, 4, 5, 6, 2, 2, 3 ] ),
   Transformation( [ 2, 2, 2, 3, 4, 5, 6, 2, 2, 4 ] ) ]
 gap> HomomorphismDigraphsFinder(NullDigraph(2), NullDigraph(3), fail,
 > [], infinity, fail, 1, [1, 2, 3], fail, fail, fail, fail,
 > Group(()));
-[ IdentityTransformation, Transformation( [ 1, 3, 3 ] ), 
-  Transformation( [ 2, 1 ] ), Transformation( [ 2, 3, 3 ] ), 
+[ IdentityTransformation, Transformation( [ 1, 3, 3 ] ),
+  Transformation( [ 2, 1 ] ), Transformation( [ 2, 3, 3 ] ),
   Transformation( [ 3, 1, 3 ] ), Transformation( [ 3, 2, 3 ] ) ]
 gap> HomomorphismDigraphsFinder(NullDigraph(2), NullDigraph(3), fail,
 > [], infinity, fail, 1, [1, 2, 3], fail, fail, fail, fail,
 > Group((1, 2)));
-[ IdentityTransformation, Transformation( [ 1, 3, 3 ] ), 
+[ IdentityTransformation, Transformation( [ 1, 3, 3 ] ),
   Transformation( [ 3, 1, 3 ] ) ]]]></Example>
   </Description>
 </ManSection>
@@ -232,9 +250,9 @@ gap> gr1 := ChainDigraph(3);;
 gap> gr2 := Digraph([[3, 5], [2], [3, 1], [], [4]]);
 <immutable digraph with 5 vertices, 6 edges>
 gap> HomomorphismsDigraphs(gr1, gr2);
-[ Transformation( [ 1, 3, 1 ] ), Transformation( [ 1, 3, 3 ] ), 
-  Transformation( [ 1, 5, 4, 4, 5 ] ), Transformation( [ 2, 2, 2 ] ), 
-  Transformation( [ 3, 1, 3 ] ), Transformation( [ 3, 1, 5, 4, 5 ] ), 
+[ Transformation( [ 1, 3, 1 ] ), Transformation( [ 1, 3, 3 ] ),
+  Transformation( [ 1, 5, 4, 4, 5 ] ), Transformation( [ 2, 2, 2 ] ),
+  Transformation( [ 3, 1, 3 ] ), Transformation( [ 3, 1, 5, 4, 5 ] ),
   Transformation( [ 3, 3, 1 ] ), Transformation( [ 3, 3, 3 ] ) ]
 gap> HomomorphismsDigraphsRepresentatives(gr1, CompleteDigraph(3));
 [ Transformation( [ 2, 1 ] ), Transformation( [ 2, 1, 2 ] ) ]
@@ -278,10 +296,38 @@ gap> gr1 := ChainDigraph(3);;
 gap> gr2 := Digraph([[3, 5], [2], [3, 1], [], [4]]);
 <immutable digraph with 5 vertices, 6 edges>
 gap> MonomorphismsDigraphs(gr1, gr2);
-[ Transformation( [ 1, 5, 4, 4, 5 ] ), 
+[ Transformation( [ 1, 5, 4, 4, 5 ] ),
   Transformation( [ 3, 1, 5, 4, 5 ] ) ]
 gap> MonomorphismsDigraphsRepresentatives(gr1, CompleteDigraph(3));
 [ Transformation( [ 2, 1 ] ) ]
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="SubdigraphsMonomorphisms">
+<ManSection>
+  <Oper Name="SubdigraphsMonomorphisms" Arg="digraph1, digraph2"/>
+  <Oper Name="SubdigraphsMonomorphismsRepresentatives" Arg="digraph1, digraph2"/>
+  <Returns>A list of transformations.</Returns>
+  <Description>
+    These operations behave the same as <Ref Oper="HomomorphismsDigraphs"/> and
+    <Ref Oper="HomomorphismsDigraphsRepresentatives"/>, except they only return
+    <E>injective</E> homomorphisms with the following property: the (not
+    necessarily induced) subdigraphs defined by the images of these
+    monomorphisms are all of the subdigraphs of <A>digraph2</A> that are
+    isomorphic to <A>digraph1</A>. Note that the subdigraphs of the previous
+    sentence are those obtained by applying the corresponding monomorphism to
+    the vertices and the edges of <A>digraph1</A>, and are therefore possibly
+    strictly contained in the induced subdigraph on the same vertex set.
+    <Example><![CDATA[
+gap> Set(SubdigraphsMonomorphisms(CompleteBipartiteDigraph(2, 2),
+> CompleteDigraph(4)));
+[ Transformation( [ 1, 3, 2 ] ), Transformation( [ 2, 3, 1 ] ),
+  Transformation( [ 3, 4, 2, 1 ] ) ]
+gap> SubdigraphsMonomorphismsRepresentatives(
+> CompleteBipartiteDigraph(2, 2), CompleteDigraph(4));
+[ Transformation( [ 1, 3, 2 ] ) ]
 ]]></Example>
   </Description>
 </ManSection>
@@ -324,17 +370,17 @@ gap> gr1 := DigraphReverse(ChainDigraph(4));
 gap> gr2 := DigraphSymmetricClosure(CycleDigraph(3));
 <immutable symmetric digraph with 3 vertices, 6 edges>
 gap> EpimorphismsDigraphsRepresentatives(gr1, gr2);
-[ Transformation( [ 3, 1, 2, 1 ] ), Transformation( [ 3, 1, 2, 3 ] ), 
+[ Transformation( [ 3, 1, 2, 1 ] ), Transformation( [ 3, 1, 2, 3 ] ),
   Transformation( [ 2, 1, 2, 3 ] ) ]
 gap> EpimorphismsDigraphs(gr1, gr2);
-[ Transformation( [ 1, 2, 1, 3 ] ), Transformation( [ 1, 2, 3, 1 ] ), 
-  Transformation( [ 1, 2, 3, 2 ] ), Transformation( [ 1, 3, 1, 2 ] ), 
-  Transformation( [ 1, 3, 2, 1 ] ), Transformation( [ 1, 3, 2, 3 ] ), 
-  Transformation( [ 2, 1, 2, 3 ] ), Transformation( [ 2, 1, 3, 1 ] ), 
-  Transformation( [ 2, 1, 3, 2 ] ), Transformation( [ 2, 3, 1, 2 ] ), 
-  Transformation( [ 2, 3, 1, 3 ] ), Transformation( [ 2, 3, 2, 1 ] ), 
-  Transformation( [ 3, 1, 2, 1 ] ), Transformation( [ 3, 1, 2, 3 ] ), 
-  Transformation( [ 3, 1, 3, 2 ] ), Transformation( [ 3, 2, 1, 2 ] ), 
+[ Transformation( [ 1, 2, 1, 3 ] ), Transformation( [ 1, 2, 3, 1 ] ),
+  Transformation( [ 1, 2, 3, 2 ] ), Transformation( [ 1, 3, 1, 2 ] ),
+  Transformation( [ 1, 3, 2, 1 ] ), Transformation( [ 1, 3, 2, 3 ] ),
+  Transformation( [ 2, 1, 2, 3 ] ), Transformation( [ 2, 1, 3, 1 ] ),
+  Transformation( [ 2, 1, 3, 2 ] ), Transformation( [ 2, 3, 1, 2 ] ),
+  Transformation( [ 2, 3, 1, 3 ] ), Transformation( [ 2, 3, 2, 1 ] ),
+  Transformation( [ 3, 1, 2, 1 ] ), Transformation( [ 3, 1, 2, 3 ] ),
+  Transformation( [ 3, 1, 3, 2 ] ), Transformation( [ 3, 2, 1, 2 ] ),
   Transformation( [ 3, 2, 1, 3 ] ), Transformation( [ 3, 2, 3, 1 ] ) ]
 ]]></Example>
   </Description>
@@ -381,16 +427,16 @@ gap> EpimorphismsDigraphs(gr1, gr2);
     <Example><![CDATA[
 gap> gr := Digraph(List([1 .. 3], x -> [1 .. 3]));;
 gap> GeneratorsOfEndomorphismMonoid(gr);
-[ Transformation( [ 1, 3, 2 ] ), Transformation( [ 2, 1 ] ), 
-  IdentityTransformation, Transformation( [ 1, 2, 1 ] ), 
-  Transformation( [ 1, 2, 2 ] ), Transformation( [ 1, 1, 2 ] ), 
+[ Transformation( [ 1, 3, 2 ] ), Transformation( [ 2, 1 ] ),
+  IdentityTransformation, Transformation( [ 1, 2, 1 ] ),
+  Transformation( [ 1, 2, 2 ] ), Transformation( [ 1, 1, 2 ] ),
   Transformation( [ 1, 1, 1 ] ) ]
 gap> GeneratorsOfEndomorphismMonoid(gr, 3);
-[ Transformation( [ 1, 3, 2 ] ), Transformation( [ 2, 1 ] ), 
+[ Transformation( [ 1, 3, 2 ] ), Transformation( [ 2, 1 ] ),
   IdentityTransformation ]
 gap> gr := CompleteDigraph(3);;
 gap> GeneratorsOfEndomorphismMonoid(gr);
-[ Transformation( [ 2, 3, 1 ] ), Transformation( [ 2, 1 ] ), 
+[ Transformation( [ 2, 3, 1 ] ), Transformation( [ 2, 1 ] ),
   IdentityTransformation ]
 gap> GeneratorsOfEndomorphismMonoid(gr, [1, 2, 2]);
 [ Transformation( [ 1, 3, 2 ] ), IdentityTransformation ]
@@ -423,7 +469,7 @@ gap> GeneratorsOfEndomorphismMonoid(gr, [[1], [2, 3]]);
     from <A>digraph</A> onto the complete digraph with <A>n</A> vertices if one
     exists, else it returns <K>fail</K>. <P/>
 
-    See also <Ref Attr="DigraphGreedyColouring" Label="for a digraph"/> and 
+    See also <Ref Attr="DigraphGreedyColouring" Label="for a digraph"/> and
     <P/>
 
     Note that a digraph with at least two vertices has a 2-colouring if and only
@@ -437,7 +483,7 @@ fail
 gap> D := ChainDigraph(10);;
 gap> t := DigraphColouring(D, 2);
 Transformation( [ 1, 2, 1, 2, 1, 2, 1, 2, 1, 2 ] )
-gap> IsDigraphColouring(D, t); 
+gap> IsDigraphColouring(D, t);
 true
 gap> DigraphGreedyColouring(D);
 Transformation( [ 2, 1, 2, 1, 2, 1, 2, 1, 2, 1 ] )
@@ -448,42 +494,42 @@ Transformation( [ 2, 1, 2, 1, 2, 1, 2, 1, 2, 1 ] )
 
 <#GAPDoc Label="DigraphGreedyColouring">
 <ManSection>
-  <Oper Name="DigraphGreedyColouring" 
-        Arg="digraph, order" 
+  <Oper Name="DigraphGreedyColouring"
+        Arg="digraph, order"
         Label="for a digraph and vertex order"/>
-  <Oper Name="DigraphGreedyColouring" 
-        Arg="digraph, func" 
+  <Oper Name="DigraphGreedyColouring"
+        Arg="digraph, func"
         Label="for a digraph and vertex order function"/>
-  <Attr Name="DigraphGreedyColouring" 
-        Arg="digraph" 
+  <Attr Name="DigraphGreedyColouring"
+        Arg="digraph"
         Label="for a digraph"/>
   <Returns> A transformation, or <K>fail</K>.</Returns>
   <Description>
     A <E>proper colouring</E> of a digraph is a labelling of its vertices in
-    such a way that adjacent vertices have different labels. Note that a digraph 
-    with loops (<Ref Prop="DigraphHasLoops"/>) does not have any proper 
+    such a way that adjacent vertices have different labels. Note that a digraph
+    with loops (<Ref Prop="DigraphHasLoops"/>) does not have any proper
     colouring.
     <P/>
-    
-    If <A>digraph</A> is a digraph and <A>order</A> is a dense list consisting 
-    of all of the vertices of <A>digraph</A> (in any order), then  
+
+    If <A>digraph</A> is a digraph and <A>order</A> is a dense list consisting
+    of all of the vertices of <A>digraph</A> (in any order), then
     <C>DigraphGreedyColouring</C>
     uses a greedy algorithm with the specified order to obtain some proper
     colouring of <A>digraph</A>, which may not use the minimal number of
     colours. <P/>
-    
-    If <A>digraph</A> is a digraph and <A>func</A> is a function whose argument 
-    is a digraph, and that returns a dense list <A>order</A>, then 
+
+    If <A>digraph</A> is a digraph and <A>func</A> is a function whose argument
+    is a digraph, and that returns a dense list <A>order</A>, then
     <C>DigraphGreedyColouring(<A>digraph</A>, <A>func</A>)</C> returns
     <C>DigraphGreedyColouring(<A>digraph</A>, <A>func</A>(<A>digraph</A>))</C>.
     <P/>
 
-    If the optional second argument (either a list or a function), is not 
-    specified, then <Ref Attr="DigraphWelshPowellOrder"/> is used by default. 
+    If the optional second argument (either a list or a function), is not
+    specified, then <Ref Attr="DigraphWelshPowellOrder"/> is used by default.
     <P/>
-    
+
     See also
-    <Ref Oper="DigraphColouring" 
+    <Ref Oper="DigraphColouring"
          Label="for a digraph and a number of colours"/>.
     <P/>
 
@@ -502,14 +548,14 @@ Transformation( [ 1, 2, 1, 2, 1, 2, 1, 2, 1, 2 ] )
   <Attr Name="DigraphWelshPowellOrder" Arg="digraph"/>
   <Returns> A list of the vertices.</Returns>
   <Description>
-    <C>DigraphWelshPowellOrder</C> returns a list of all of the vertices of 
-    the digraph <A>digraph</A> ordered according to the sum of the number of 
-    out- and in-neighbours, from highest to lowest. 
+    <C>DigraphWelshPowellOrder</C> returns a list of all of the vertices of
+    the digraph <A>digraph</A> ordered according to the sum of the number of
+    out- and in-neighbours, from highest to lowest.
     <P/>
 
     <Example><![CDATA[
-gap> DigraphWelshPowellOrder(Digraph([[4], [9], [9], [], 
->                                     [4, 6, 9], [1], [], [], 
+gap> DigraphWelshPowellOrder(Digraph([[4], [9], [9], [],
+>                                     [4, 6, 9], [1], [], [],
 >                                     [4, 5], [4, 5]]));
 [ 5, 9, 4, 1, 6, 10, 2, 3, 7, 8 ]
 ]]></Example>
@@ -567,14 +613,14 @@ gap> D2 := CycleDigraph(5);
 gap> EmbeddingsDigraphsRepresentatives(D1, D2);
 [ Transformation( [ 1, 3, 3 ] ), Transformation( [ 1, 4, 3, 4 ] ) ]
 gap> EmbeddingsDigraphs(D1, D2);
-[ Transformation( [ 1, 3, 3 ] ), Transformation( [ 1, 4, 3, 4 ] ), 
-  Transformation( [ 2, 4, 4, 5, 1 ] ), 
-  Transformation( [ 2, 5, 4, 5, 1 ] ), 
-  Transformation( [ 3, 1, 5, 1, 2 ] ), 
-  Transformation( [ 3, 5, 5, 1, 2 ] ), 
-  Transformation( [ 4, 1, 1, 2, 3 ] ), 
-  Transformation( [ 4, 2, 1, 2, 3 ] ), 
-  Transformation( [ 5, 2, 2, 3, 4 ] ), 
+[ Transformation( [ 1, 3, 3 ] ), Transformation( [ 1, 4, 3, 4 ] ),
+  Transformation( [ 2, 4, 4, 5, 1 ] ),
+  Transformation( [ 2, 5, 4, 5, 1 ] ),
+  Transformation( [ 3, 1, 5, 1, 2 ] ),
+  Transformation( [ 3, 5, 5, 1, 2 ] ),
+  Transformation( [ 4, 1, 1, 2, 3 ] ),
+  Transformation( [ 4, 2, 1, 2, 3 ] ),
+  Transformation( [ 5, 2, 2, 3, 4 ] ),
   Transformation( [ 5, 3, 2, 3, 4 ] ) ]
 ]]></Example>
   </Description>
@@ -583,7 +629,7 @@ gap> EmbeddingsDigraphs(D1, D2);
 
 <#GAPDoc Label="IsDigraphHomomorphism">
 <ManSection>
-  <Oper Name="IsDigraphHomomorphism" Arg="src, ran, x" 
+  <Oper Name="IsDigraphHomomorphism" Arg="src, ran, x"
         Label="for digraphs and a permutation or transformation"/>
   <Oper Name="IsDigraphHomomorphism" Arg="src, ran, x, col1, col2"/>
   <Oper Name="IsDigraphEpimorphism" Arg="src, ran, x"
@@ -620,23 +666,36 @@ gap> EmbeddingsDigraphs(D1, D2);
     A permutation or transformation <A>x</A> is a <E>homomorphism</E> from a
     digraph <A>src</A> to a digraph <A>ran</A> if the following hold:
     <List>
-      <Item>
-        <C>[u ^ <A>x</A>, v ^ <A>x</A>]</C> is an edge of
-        <A>ran</A> whenever <C>[u, v]</C> is an
-        edge of <A>src</A>; and </Item>
-      <Item>
-        <A>x</A> fixes every <C>i</C> which is not a vertex of <A>src</A>.
-      </Item>
+    <Item>
+    <C>[u ^ <A>x</A>, v ^
+    <A>x</A>]</C> is an edge of <A>ran</A> whenever <C>[u, v]</C> is an edge of
+    <A>src</A>; and
+    </Item>
+    <Item>
+    <A>x</A> maps the vertices of <A>src</A> to a subset of the vertices of
+    <A>ran</A>, i.e. <C>IsSubset(DigraphVertices(<A>ran</A>),
+    OnSets(DigraphVertices(<A>src</A>), <A>x</A>))</C> is <K>true</K>.
+    </Item>
     </List>
+
+    Note that if <C>i</C> is any integer greater than
+    <C>DigraphNrVertice(<A>src</A>)</C>, then the action of <A>x</A> on
+    <C>i</C> is ignored by this function. One consequence of this is that
+    distinct transformations or permutations might represent the same
+    homomorphism. For example, if <A>src</A> and <A>ran</A> are
+    <C>CycleDigraph(2)</C>, then both the permutations <C>(1, 2)</C> and <C>(1,
+    2)(3, 4)</C> represent the same automorphism of <A>src</A>.
+    <P/>
+
     See also <Ref Func="GeneratorsOfEndomorphismMonoid"/>.<P/>
 
 
     If <A>col1</A> and <A>col2</A>, or <A>col</A>, are given, then they must
-    represent vertex colourings; see 
-    <Ref Oper="AutomorphismGroup" Label="for a digraph and a homogeneous list"/> 
+    represent vertex colourings; see
+    <Ref Oper="AutomorphismGroup" Label="for a digraph and a homogeneous list"/>
     for details of the permissible values for these argument. The
     homomorphism must then also have the property:
-  
+
     <List>
       <Item>
         <C>col[i] = col[i ^ x]</C> for all vertices <C>i</C> of <A>digraph</A>,
@@ -647,7 +706,7 @@ gap> EmbeddingsDigraphs(D1, D2);
     </List>
 
     See also <Ref Oper="DigraphsRespectsColouring"/>.
-    
+
     <Example><![CDATA[
 gap> src := Digraph([[1], [1, 2], [1, 3]]);
 <immutable digraph with 3 vertices, 5 edges>
@@ -732,13 +791,13 @@ false]]></Example>
 <#GAPDoc Label="IsDigraphColouring">
   <ManSection>
     <Oper Name="IsDigraphColouring" Arg="digraph, list"/>
-    <Oper Name="IsDigraphColouring" Arg="digraph, t" 
+    <Oper Name="IsDigraphColouring" Arg="digraph, t"
       Label="for a transformation"/>
     <Returns> <K>true</K> or <K>false</K>. </Returns>
     <Description>
-      The operation <C>IsDigraphColouring</C> verifies whether or not 
-      the list <A>list</A> describes a proper colouring of the digraph 
-      <A>digraph</A>. 
+      The operation <C>IsDigraphColouring</C> verifies whether or not
+      the list <A>list</A> describes a proper colouring of the digraph
+      <A>digraph</A>.
       <P/>
 
       A list <A>list</A> describes a <E>proper colouring</E> of a digraph
@@ -750,11 +809,11 @@ false]]></Example>
 
       A transformation <A>t</A> describes a proper colouring of a digraph
       <A>digraph</A>, if <C>ImageListOfTransformation(<A>t</A>,
-      DigraphNrVertices(<A>digraph</A>))</C> is a proper colouring of 
+      DigraphNrVertices(<A>digraph</A>))</C> is a proper colouring of
       <A>digraph</A>. <P/>
 
       See also <Ref Oper="IsDigraphHomomorphism"/>.
-      
+
       <Example><![CDATA[
 gap> D := JohnsonDigraph(5, 3);
 <immutable symmetric digraph with 10 vertices, 60 edges>
@@ -778,7 +837,7 @@ true
     <Oper Name="DigraphsRespectsColouring" Arg="src, ran, x, col1, col2"/>
     <Returns> <K>true</K> or <K>false</K>. </Returns>
     <Description>
-      The operation <C>DigraphsRespectsColouring</C> verifies whether or not 
+      The operation <C>DigraphsRespectsColouring</C> verifies whether or not
       the permutation or transformation <A>x</A> respects the vertex colourings
       <A>col1</A> and <A>col2</A> of the digraphs <A>src</A> and <A>range</A>.
       That is, <C>DigraphsRespectsColouring</C> returns <K>true</K> if and only if for
@@ -816,14 +875,14 @@ false
 
 <Example><![CDATA[
 gap> MaximalCommonSubdigraph(PetersenGraph(), CompleteDigraph(10));
-[ <immutable digraph with 2 vertices, 2 edges>, 
+[ <immutable digraph with 2 vertices, 2 edges>,
   IdentityTransformation, IdentityTransformation ]
 gap> MaximalCommonSubdigraph(PetersenGraph(),
 > DigraphSymmetricClosure(CycleDigraph(5)));
-[ <immutable digraph with 5 vertices, 10 edges>, 
+[ <immutable digraph with 5 vertices, 10 edges>,
   IdentityTransformation, IdentityTransformation ]
 gap> MaximalCommonSubdigraph(NullDigraph(0), CompleteDigraph(10));
-[ <immutable empty digraph with 0 vertices>, IdentityTransformation, 
+[ <immutable empty digraph with 0 vertices>, IdentityTransformation,
   IdentityTransformation ]
 ]]></Example>
     </Description>
@@ -840,22 +899,22 @@ gap> MaximalCommonSubdigraph(NullDigraph(0), CompleteDigraph(10));
   <C>M</C> of <A>D1</A> and <A>D2</A> with the minimum number of vertices.
   So <C>M</C> is a digraph into which both <A>D1</A> and <A>D2</A> embed and
   has the smallest number of vertices among such digraphs.
- 
-  It returns a list <C>[M, t1, t2]</C> where <C>M</C> is the minimal common 
+
+  It returns a list <C>[M, t1, t2]</C> where <C>M</C> is the minimal common
   superdigraph and <C>t1, t2</C> are transformations embedding <A>D1</A> and
   <A>D2</A> respectively into <C>M</C>.
 <Example><![CDATA[
 gap> MinimalCommonSuperdigraph(PetersenGraph(), CompleteDigraph(10));
-[ <immutable digraph with 18 vertices, 118 edges>, 
-  IdentityTransformation, 
+[ <immutable digraph with 18 vertices, 118 edges>,
+  IdentityTransformation,
   Transformation( [ 1, 2, 11, 12, 13, 14, 15, 16, 17, 18, 11, 12, 13,
       14, 15, 16, 17, 18 ] ) ]
 gap> MinimalCommonSuperdigraph(PetersenGraph(),
 > DigraphSymmetricClosure(CycleDigraph(5)));
-[ <immutable digraph with 10 vertices, 30 edges>, 
+[ <immutable digraph with 10 vertices, 30 edges>,
   IdentityTransformation, IdentityTransformation ]
 gap> MinimalCommonSuperdigraph(NullDigraph(0), CompleteDigraph(10));
-[ <immutable digraph with 10 vertices, 90 edges>, 
+[ <immutable digraph with 10 vertices, 90 edges>,
   IdentityTransformation, IdentityTransformation ]
 ]]></Example>
     </Description>
@@ -868,7 +927,7 @@ gap> MinimalCommonSuperdigraph(NullDigraph(0), CompleteDigraph(10));
   <Returns>A transformation, or <K>fail</K>.</Returns>
   <Description>
     If <A>L1</A> and <A>L2</A> are lattice digraphs (<Ref
-      Prop="IsLatticeDigraph"/> returns <K>true</K>, then 
+      Prop="IsLatticeDigraph"/> returns <K>true</K>, then
     <C>LatticeDigraphEmbedding</C> returns a single <E>injective</E> <Ref
       Oper="DigraphHomomorphism"/> between <A>L1</A> and <A>L2</A>, with
       the property that it is a <E>lattice homomorphism</E>. If no such
@@ -897,7 +956,7 @@ fail
 
 <#GAPDoc Label="IsLatticeHomomorphism">
 <ManSection>
-  <Oper Name="IsLatticeHomomorphism" Arg="L1, L2, map" 
+  <Oper Name="IsLatticeHomomorphism" Arg="L1, L2, map"
         Label="for digraphs and a permutation or transformation"/>
   <Oper Name="IsLatticeEpimorphism" Arg="L1, L2, map"
         Label="for digraphs and a permutation or transformation"/>
@@ -935,7 +994,7 @@ fail
     <C>IsLatticeEmbedding</C> returns <K>true</K> if the permutation
     or transformation <A>map</A> is an injective lattice homomorphism from
     the lattice digraph <A>L1</A> to the lattice digraph <A>L2</A>.
-    The function <C>IsLatticeMonomorphism</C> is a synonym of 
+    The function <C>IsLatticeMonomorphism</C> is a synonym of
     <C>IsLatticeEmbedding</C>.
     <P/>
 

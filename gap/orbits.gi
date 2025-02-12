@@ -68,6 +68,26 @@ function(G, domain)
   return rec(orbits := orbs, schreier := sch, lookup := lookup);
 end);
 
+InstallGlobalFunction(DIGRAPHS_AddOrbitToHashMap,
+function(G, set, act, hashmap)
+  local gens, o, im, pt, g;
+
+  gens := GeneratorsOfGroup(G);
+  o    := [set];
+  Assert(1, not set in hashmap);
+  hashmap[set] := true;
+  for pt in o do
+    for g in gens do
+      im := act(pt, g);
+      if not im in hashmap then
+        hashmap[im] := true;
+        Add(o, im);
+      fi;
+    od;
+  od;
+  return o;
+end);
+
 InstallMethod(RepresentativeOutNeighbours, "for a digraph by out-neighbours",
 [IsDigraphByOutNeighboursRep],
 function(D)
@@ -98,7 +118,8 @@ end);
 InstallImmediateMethod(DigraphGroup, IsDigraph and HasAutomorphismGroup, 0,
 DIGRAPHS_DigraphGroup);
 
-InstallMethod(DigraphGroup, "for a digraph", [IsDigraph], DIGRAPHS_DigraphGroup);
+InstallMethod(DigraphGroup, "for a digraph", [IsDigraph],
+DIGRAPHS_DigraphGroup);
 
 InstallMethod(DigraphOrbits, "for a digraph",
 [IsDigraph],
