@@ -1457,8 +1457,10 @@ function(r, Stream)
 
     if r.n = fail then
       CloseStream(Stream.file);
-      ErrorNoReturn("Vertex number must be declared before graph ",
+      ErrorNoReturn("Vertex number must be declared before `g' ",
                   "on line ", r.newline);
+    else
+      r.edgeList := List([1 .. r.n], x -> []);
     fi;
 
     while c <> fail do
@@ -1474,7 +1476,7 @@ function(r, Stream)
                 if (w < 1) or (w > r.n) or (w = v and not r.digraph) then
                     Info(InfoWarning, 1, "Ignoring illegal edge (",
                         v + r.labelorg - 1, ", ", w + r.labelorg - 1,
-                        ") on line ", r.newline);
+                        ") (", r.labelorg,"-indexed on line) ", r.newline);
                 else
                     RemoveSet(r.edgeList[v], w);
                     if not r.digraph then
@@ -1487,7 +1489,7 @@ function(r, Stream)
                     if w < 1 or w > r.n then
                         Info(InfoWarning, 1, "Ignoring illegal vertex (",
                             v + r.labelorg - 1, ", ", w + r.labelorg - 1,
-                            ") on line ", r.newline);
+                            ") (" , r.labelorg, "-indexed) on line ", r.newline);
                     else
                         v := w;
                     fi;
@@ -1496,7 +1498,7 @@ function(r, Stream)
                     if w < 1 or w > r.n or (w = v and not r.digraph) then
                         Info(InfoWarning, 1, "Ignoring illegal edge (",
                             v + r.labelorg - 1, ", ", w + r.labelorg - 1,
-                            ") on line ", r.newline);
+                            ") (" , r.labelorg, "-indexed) on line ", r.newline);
                     else
                         AddSet(r.edgeList[v], w);
                         if not r.digraph then
@@ -1579,8 +1581,9 @@ function(r, minus, Stream)
         CloseStream(Stream.file);
         ErrorNoReturn("Partitions should be specified",
                     " using one of the following formats:\n",
-                      "  - A single number (e.g. 'f=3')\n",
-                      "  - A list of cells (e.g. 'f=[...]')");
+                      "  * A single number (e.g. 'f=3')\n",
+                      "  * A list of cells (e.g. 'f=[...]')",
+                      "  * '-f'");
     else
         tempNewline := r.newline;
         while c <> fail and c <> ']' do
@@ -1739,7 +1742,12 @@ function(filename)
             ErrorNoReturn("Operation ", c, " (line ", r.newline,
                           ") is not supported");
         elif c = 'd' then
-            r.digraph := true;
+            if not minus then
+              r.digraph := true;
+            else
+              minus := false;
+              r.digraph := false;
+            fi;
         elif c in ">" then
             CloseStream(Stream.file);
             ErrorNoReturn("Operation '>' (line ", r.newline,
@@ -1761,7 +1769,6 @@ function(filename)
                 ErrorNoReturn("Vertex number ", r.n, " on line ", r.newline,
                             " must be positive.");
             fi;
-            r.edgeList := List([1 .. r.n], x -> []);
         elif c = 'g' then
             minus := false;
             DIGRAPHS_readgraph(r, Stream);
@@ -2057,7 +2064,7 @@ end);
 InstallMethod(WriteDreadnautGraph, "for a digraph", [IsString, IsDigraph],
 function(name, D)
   local file, n, verts, nbs, labels, i, degs, filteredVerts,
-        out, positions, joinedPositions, dflabels;
+        out, positions, joinedPositions, dflabels, adj;
 
   file := IO_CompressedFile(UserHomeExpand(name), "w");
   if file = fail then
@@ -2083,12 +2090,11 @@ function(name, D)
 
   filteredVerts := Filtered(verts, x -> degs[x] > 0);
   for i in filteredVerts do
-    labels := List(nbs[i], String);
+    adj := List(nbs[i], String);
     IO_WriteLine(file, Concatenation(String(i), " : ",
-                 JoinStringsWithSeparator(labels, " "), ";"));
+                 JoinStringsWithSeparator(adj, " "), ";"));
   od;
   IO_WriteLine(file, ".");
-
   if labels <> [1 .. n] then
     dflabels := DuplicateFreeList(labels);
     if IsInt(labels[1]) and IsHomogeneousList(labels) then
@@ -2106,11 +2112,11 @@ function(name, D)
 
       IO_WriteLine(file, out);
     else
-      Info(InfoDigraphs, 1,
-          "Only integer vertex labels are supported by the dreadnaut format.");
-      Info(InfoDigraphs, 1,
-          "The vertex labels of the 2nd argument <a digraph>",
-          " will not be saved.");
+      Info(InfoWarning, 1,
+           "Only integer vertex labels are supported.");
+      Info(InfoWarning, 1,
+            "The vertex labels of the 2nd argument <a digraph> will not be",
+            " saved.");
     fi;
   fi;
 
