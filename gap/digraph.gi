@@ -105,7 +105,7 @@ list -> MakeImmutable(ConvertToMutableDigraphNC(list)));
 
 InstallMethod(DigraphConsNC, "for IsMutableDigraph and a record",
 [IsMutableDigraph, IsRecord],
-function(filt, record)
+function(_, record)
   local required, out, name;
   required := ["DigraphRange", "DigraphSource", "DigraphNrVertices"];
   for name in required do
@@ -123,7 +123,7 @@ end);
 InstallMethod(DigraphConsNC,
 "for IsMutableDigraph and a dense list of out-neighbours",
 [IsMutableDigraph, IsDenseList],
-function(filt, list)
+function(_, list)
   Assert(1, not IsMutable(list));
   return ConvertToMutableDigraphNC(List(list, ShallowCopy));
 end);
@@ -131,11 +131,11 @@ end);
 InstallMethod(DigraphConsNC,
 "for IsMutableDigraph and a dense mutable list of out-neighbours",
 [IsMutableDigraph, IsDenseList and IsMutable],
-{filt, list} -> ConvertToMutableDigraphNC(StructuralCopy(list)));
+{_, list} -> ConvertToMutableDigraphNC(StructuralCopy(list)));
 
 InstallMethod(DigraphConsNC, "for IsImmutableDigraph and a record",
 [IsImmutableDigraph, IsRecord],
-function(filt, record)
+function(_, record)
   local D;
   D := MakeImmutable(DigraphConsNC(IsMutableDigraph, record));
   SetDigraphSource(D, StructuralCopy(record.DigraphSource));
@@ -145,7 +145,7 @@ end);
 
 InstallMethod(DigraphConsNC, "for IsImmutableDigraph and a dense list",
 [IsImmutableDigraph, IsDenseList],
-{filt, list} -> MakeImmutable(DigraphConsNC(IsMutableDigraph, list)));
+{_, list} -> MakeImmutable(DigraphConsNC(IsMutableDigraph, list)));
 
 InstallMethod(DigraphNC, "for a function and a dense list",
 [IsFunction, IsDenseList], DigraphConsNC);
@@ -235,7 +235,7 @@ end);
 
 InstallMethod(DigraphCons, "for IsMutableDigraph and a record",
 [IsMutableDigraph, IsRecord],
-function(filt, record)
+function(_, record)
   local D, cmp, labels, i;
 
   if IsGraph(record) then
@@ -287,9 +287,9 @@ function(filt, record)
     record.DigraphNrVertices := Length(record.DigraphVertices);
   fi;
 
-  if not ForAll(record.DigraphSource, x -> cmp(x)) then
+  if not ForAll(record.DigraphSource, cmp) then
     ErrorNoReturn("the record component 'DigraphSource' is invalid,");
-  elif not ForAll(record.DigraphRange, x -> cmp(x)) then
+  elif not ForAll(record.DigraphRange, cmp) then
     ErrorNoReturn("the record component 'DigraphRange' is invalid,");
   fi;
 
@@ -321,7 +321,7 @@ end);
 InstallMethod(DigraphCons,
 "for IsMutableDigraph and a dense list of out-neighbours",
 [IsMutableDigraph, IsDenseList],
-function(filt, list)
+function(_, list)
   local sublist, v;
   for sublist in list do
     if not IsHomogeneousList(sublist) then
@@ -341,7 +341,7 @@ end);
 
 InstallMethod(DigraphCons, "for IsMutableDigraph, a list, and function",
 [IsMutableDigraph, IsList, IsFunction],
-function(filt, list, func)
+function(_, list, func)
   local N, out, x, i, j;
   N    := Size(list);  # number of vertices
   out := List([1 .. N], x -> []);
@@ -359,7 +359,7 @@ end);
 InstallMethod(DigraphCons,
 "for IsMutableDigraph, a number of vertices, source, and range",
 [IsMutableDigraph, IsInt, IsList, IsList],
-function(filt, N, src, ran)
+function(_, N, src, ran)
   return DigraphCons(IsMutableDigraph, rec(DigraphNrVertices := N,
                                            DigraphSource     := src,
                                            DigraphRange      := ran));
@@ -368,7 +368,7 @@ end);
 InstallMethod(DigraphCons,
 "for IsMutableDigraph, a list of vertices, source, and range",
 [IsMutableDigraph, IsList, IsList, IsList],
-function(filt, domain, src, ran)
+function(_, domain, src, ran)
   local D;
   D := DigraphCons(IsMutableDigraph, rec(DigraphVertices := domain,
                                          DigraphSource   := src,
@@ -379,7 +379,7 @@ end);
 
 InstallMethod(DigraphCons, "for IsImmutableDigraph and a record",
 [IsImmutableDigraph, IsRecord],
-function(filt, record)
+function(_, record)
   local D;
   D := MakeImmutable(DigraphCons(IsMutableDigraph, record));
   if IsGraph(record) then
@@ -400,11 +400,11 @@ end);
 InstallMethod(DigraphCons,
 "for IsImmutableDigraph and a dense list of out-neighbours",
 [IsImmutableDigraph, IsDenseList],
-{filt, list} -> MakeImmutable(DigraphCons(IsMutableDigraph, list)));
+{_, list} -> MakeImmutable(DigraphCons(IsMutableDigraph, list)));
 
 InstallMethod(DigraphCons, "for IsImmutableDigraph, a list, and function",
 [IsImmutableDigraph, IsList, IsFunction],
-function(filt, list, func)
+function(_, list, func)
   local D;
   D := MakeImmutable(DigraphCons(IsMutableDigraph, list, func));
   SetDigraphAdjacencyFunction(D, {u, v} -> func(list[u], list[v]));
@@ -416,16 +416,14 @@ end);
 InstallMethod(DigraphCons,
 "for IsImmutableDigraph, a number of vertices, source, and range",
 [IsImmutableDigraph, IsInt, IsList, IsList],
-function(filt, N, src, ran)
-  return MakeImmutable(DigraphCons(IsMutableDigraph, N, src, ran));
-end);
+{_, N, src, ran}
+-> MakeImmutable(DigraphCons(IsMutableDigraph, N, src, ran)));
 
 InstallMethod(DigraphCons,
 "for IsImmutableDigraph, a list of vertices, source, and range",
 [IsImmutableDigraph, IsList, IsList, IsList],
-function(filt, domain, src, ran)
-  return MakeImmutable(DigraphCons(IsMutableDigraph, domain, src, ran));
-end);
+{_, domain, src, ran} ->
+MakeImmutable(DigraphCons(IsMutableDigraph, domain, src, ran)));
 
 InstallMethod(Digraph, "for a filter and a record", [IsFunction, IsRecord],
 DigraphCons);
@@ -701,8 +699,8 @@ InstallMethod(PrintString, "for a digraph", [IsDigraph], String);
 InstallMethod(String, "for a digraph",
 [IsDigraph],
 function(D)
-  local n, N, i, mut, streps, outnbs_rep, lengths, strings, creators_streps,
-        creators_props, props;
+  local n, N, i, mut, streps, outnbs_rep, lengths, strings,
+        out_neighbours_string, creators_streps, creators_props, props;
   if IsMutableDigraph(D) then
     mut := "IsMutableDigraph, ";
   else
@@ -724,13 +722,23 @@ function(D)
                  ReplacedString(streps[n], "\\", "\\\\"), "\"", ")"));
   od;
 
-  outnbs_rep := Concatenation("Digraph(", mut, String(OutNeighbours(D)), ")");
+  out_neighbours_string := String(OutNeighbours(D));
+  # print empty lists with two spaces for consistency
+  # see https://github.com/gap-system/gap/pull/5418
+  out_neighbours_string := ReplacedString(out_neighbours_string, "[ ]", "[  ]");
+  outnbs_rep := Concatenation("Digraph(", mut, out_neighbours_string, ")");
   Add(strings, String(outnbs_rep));
 
   N              := DigraphNrVertices(D);
-  props          := [IsCycleDigraph, IsCompleteDigraph, IsChainDigraph,
+  props          := [x -> IsCycleDigraph(x)
+                          and x = CycleDigraph(DigraphNrVertices(x)),
+                     IsCompleteDigraph,
+                     x -> IsChainDigraph(x)
+                          and x = ChainDigraph(DigraphNrVertices(x)),
                      IsEmptyDigraph];
-  creators_props := ["CycleDigraph", "CompleteDigraph", "ChainDigraph",
+  creators_props := ["CycleDigraph",
+                     "CompleteDigraph",
+                     "ChainDigraph",
                      "EmptyDigraph"];
   for i in [1 .. Length(props)] do
     if props[i](D) then
@@ -738,7 +746,7 @@ function(D)
     fi;
   od;
 
-  lengths := List(strings, x -> Length(x));
+  lengths := List(strings, Length);
   return strings[Position(lengths, Minimum(lengths))];
 end);
 
@@ -757,7 +765,7 @@ InstallMethod(\<, "for two digraphs", [IsDigraph, IsDigraph], DIGRAPH_LT);
 InstallMethod(DigraphByAdjacencyMatrixConsNC,
 "for IsMutableDigraph and a homogeneous list",
 [IsMutableDigraph, IsHomogeneousList],
-function(filt, mat)
+function(_, mat)
   local add_edge, n, list, i, j;
 
   if IsInt(mat[1][1]) then
@@ -789,7 +797,7 @@ end);
 InstallMethod(DigraphByAdjacencyMatrixCons,
 "for IsMutableDigraph and a homogeneous list",
 [IsMutableDigraph, IsHomogeneousList],
-function(filt, mat)
+function(_, mat)
   local n, i, j;
   n := Length(mat);
   if not IsRectangularTable(mat) or Length(mat[1]) <> n then
@@ -814,12 +822,12 @@ InstallMethod(DigraphByAdjacencyMatrixCons,
 InstallMethod(DigraphByAdjacencyMatrixConsNC,
 "for IsMutableDigraph and an empty list",
 [IsMutableDigraph, IsList and IsEmpty],
-{filt, dummy} -> EmptyDigraph(IsMutableDigraph, 0));
+{_, dummy} -> EmptyDigraph(IsMutableDigraph, 0));
 
 InstallMethod(DigraphByAdjacencyMatrixCons,
 "for IsImmutableDigraph and a homogeneous list",
 [IsImmutableDigraph, IsHomogeneousList],
-function(filt, mat)
+function(_, mat)
   local D;
   D := MakeImmutable(DigraphByAdjacencyMatrixCons(IsMutableDigraph, mat));
   if IsEmpty(mat) or IsInt(mat[1][1]) then
@@ -842,17 +850,31 @@ mat -> DigraphByAdjacencyMatrixCons(IsImmutableDigraph, mat));
 InstallMethod(DigraphByEdgesCons,
 "for IsMutableDigraph, a list, and an integer",
 [IsMutableDigraph, IsList, IsInt],
-function(filt, edges, n)
-  local list, edge;
+function(_, edges, n)
+  local pos, list, edge;
   if IsEmpty(edges) then
     return NullDigraph(IsMutableDigraph, n);
   fi;
+  pos := 0;
   for edge in edges do
-    if Length(edge) <> 2 then
-      ErrorNoReturn("the 1st argument <edges> must be a list of pairs,");
-    elif ForAny(edge, x -> not (IsPosInt(x) and x <= n)) then
-      ErrorNoReturn("the 1st argument <edges> must not contain values ",
-                    "greater than ", n, ", the 2nd argument <n>,");
+    pos := pos + 1;
+    if not IsList(edge) then
+      ErrorNoReturn("the 1st argument (list of edges) must be a list of ",
+                    "lists, but found ",
+                    TNAM_OBJ(edge),
+                    " in position ",
+                    pos);
+    elif Length(edge) <> 2 then
+      ErrorNoReturn("the 1st argument (list of edges) must be a list of lists ",
+                    "of length 2, found ", edge, " (length ", Length(edge),
+                    " in position ", pos, ")");
+    elif not IsPosInt(edge[1]) or not IsPosInt(edge[2]) then
+      ErrorNoReturn("the 1st argument (list of edges) must be pairs of ",
+                    "positive integers but found ", edge, " in position ", pos);
+    elif edge[1] > n or edge[2] > n then
+      ErrorNoReturn("the 1st argument (list of edges) must be pairs of ",
+                    "positive integers <= ", n, " but found ", edge,
+                    " in position ", pos);
     fi;
   od;
   list := List([1 .. n], x -> []);
@@ -864,7 +886,7 @@ end);
 
 InstallMethod(DigraphByEdgesCons, "for IsMutableDigraph and a list",
 [IsMutableDigraph, IsList],
-function(filt, edges)
+function(_, edges)
   local n;
   if IsEmpty(edges) then
     n := 0;
@@ -876,7 +898,7 @@ end);
 
 InstallMethod(DigraphByEdgesCons, "for an ImmutableDigraph and a list",
 [IsImmutableDigraph, IsList],
-function(filt, edges)
+function(_, edges)
   local D;
   D := MakeImmutable(DigraphByEdges(IsMutableDigraph, edges));
   SetDigraphEdges(D, edges);
@@ -887,7 +909,7 @@ end);
 InstallMethod(DigraphByEdgesCons,
 "for IsImmutableDigraph, a list, and an integer",
 [IsImmutableDigraph, IsList, IsInt],
-function(filt, edges, n)
+function(_, edges, n)
   local D;
   D := MakeImmutable(DigraphByEdges(IsMutableDigraph, edges, n));
   SetDigraphEdges(D, edges);
@@ -910,7 +932,7 @@ InstallMethod(DigraphByEdges, "for a function and a list",
 
 InstallMethod(DigraphByInNeighboursCons, "for IsMutableDigraph, and a list",
 [IsMutableDigraph, IsList],
-function(filt, list)
+function(_, list)
   local n, x;
   n := Length(list);  # number of vertices
   for x in list do
@@ -924,7 +946,7 @@ end);
 
 InstallMethod(DigraphByInNeighboursCons, "for IsImmutableDigraph and a list",
 [IsImmutableDigraph, IsList],
-function(filt, list)
+function(_, list)
   local D;
   D := MakeImmutable(DigraphByInNeighboursCons(IsMutableDigraph, list));
   SetInNeighbours(D, list);
@@ -933,11 +955,11 @@ end);
 
 InstallMethod(DigraphByInNeighboursConsNC, "for IsMutableDigraph and a list",
 [IsMutableDigraph, IsList],
-{filt, list} -> DigraphNC(IsMutableDigraph, DIGRAPH_IN_OUT_NBS(list)));
+{_, list} -> DigraphNC(IsMutableDigraph, DIGRAPH_IN_OUT_NBS(list)));
 
 InstallMethod(DigraphByInNeighboursConsNC, "for IsImmutableDigraph and a list",
 [IsImmutableDigraph, IsList],
-function(filt, list)
+function(_, list)
   local D;
   D := MakeImmutable(DigraphByInNeighboursConsNC(IsMutableDigraph, list));
   SetInNeighbours(D, list);
@@ -957,7 +979,7 @@ DigraphByInNeighboursCons);
 
 InstallMethod(AsDigraphCons, "for IsMutableDigraph and a binary relation",
 [IsMutableDigraph, IsBinaryRelation],
-function(filt, rel)
+function(_, rel)
   local dom, list, i;
   dom := GeneratorsOfDomain(UnderlyingDomainOfBinaryRelation(rel));
   if not IsRange(dom) or dom[1] <> 1 then
@@ -973,7 +995,7 @@ end);
 
 InstallMethod(AsDigraphCons, "for IsImmutableDigraph and a binary relation",
 [IsImmutableDigraph, IsBinaryRelation],
-function(filt, rel)
+function(_, rel)
   local D;
   D := MakeImmutable(AsDigraph(IsMutableDigraph, rel));
   SetIsMultiDigraph(D, false);
@@ -1001,7 +1023,7 @@ InstallMethod(AsDigraph, "for a function and a binary relation",
 InstallMethod(AsDigraphCons,
 "for IsMutableDigraph, a transformation, and an integer",
 [IsMutableDigraph, IsTransformation, IsInt],
-function(filt, f, n)
+function(_, f, n)
   local list, x, i;
   if n < 0 then
     ErrorNoReturn("the 2nd argument <n> should be a non-negative integer,");
@@ -1021,7 +1043,7 @@ end);
 InstallMethod(AsDigraphCons,
 "for IsImmutableDigraph, a transformation, and an integer",
 [IsImmutableDigraph, IsTransformation, IsInt],
-function(filt, f, n)
+function(_, f, n)
   local D;
   D := AsDigraph(IsMutableDigraph, f, n);
   if D <> fail then
@@ -1061,6 +1083,58 @@ InstallMethod(AsDigraph, "for a function and a perm",
 
 InstallMethod(AsDigraph, "for a perm", [IsPerm],
 p -> AsDigraph(AsTransformation(p)));
+
+InstallMethod(AsDigraphCons,
+"for IsMutableDigraph, a partial perm, and an integer",
+[IsMutableDigraph, IsPartialPerm, IsInt],
+function(_, f, n)
+  local list, x, i;
+  if n < 0 then
+    ErrorNoReturn("the 2nd argument <n> should be a non-negative integer,");
+  fi;
+
+  list := EmptyPlist(n);
+  for i in [1 .. n] do
+    x := i ^ f;
+    if x > n then
+      return fail;
+    elif x <> 0 then
+      list[i] := [x];
+    else
+      list[i] := [];
+    fi;
+  od;
+  return DigraphNC(IsMutableDigraph, list);
+end);
+
+InstallMethod(AsDigraphCons,
+"for IsImmutableDigraph, a partial perm, and an integer",
+[IsImmutableDigraph, IsPartialPerm, IsInt],
+function(_, f, n)
+  local D;
+  D := AsDigraph(IsMutableDigraph, f, n);
+  if D <> fail then
+    D := MakeImmutable(D);
+    SetIsMultiDigraph(D, false);
+  fi;
+  return D;
+end);
+
+InstallMethod(AsDigraph, "for a function, a partial perm, and an integer",
+[IsFunction, IsPartialPerm, IsInt], AsDigraphCons);
+
+InstallMethod(AsDigraph, "for a partial perm and an integer",
+[IsPartialPerm, IsInt],
+{t, n} -> AsDigraphCons(IsImmutableDigraph, t, n));
+
+InstallMethod(AsDigraph, "for a function and a partial perm",
+[IsFunction, IsPartialPerm],
+{func, t} -> AsDigraphCons(func, t, Maximum(DegreeOfPartialPerm(t),
+                                            CodegreeOfPartialPerm(t))));
+
+InstallMethod(AsDigraph, "for a partial perm", [IsPartialPerm],
+t -> AsDigraphCons(IsImmutableDigraph, t, Maximum(DegreeOfPartialPerm(t),
+                                                  CodegreeOfPartialPerm(t))));
 
 InstallMethod(AsBinaryRelation, "for a digraph", [IsDigraphByOutNeighboursRep],
 function(D)
@@ -1108,7 +1182,7 @@ function(filt, D)
   red := DigraphReflexiveTransitiveReduction(D);
   top := DigraphTopologicalSort(D);
   # im[i] will store the image of the idempotent partial perm corresponding to
-  # vertex i of the arugment <D>
+  # vertex i of the argument <D>
   im         := [];
   im[top[1]] := [];
   max        := 1;
@@ -1150,7 +1224,7 @@ function(filt, digraph, gps, homs)
   local red, n, hom_table, reps, rep, top, doms, starts, degs, max, gens, img,
   start, deg, x, queue, j, k, g, y, hom, edge, i, gen;
 
-  if not filt = IsPartialPermSemigroup then
+  if filt <> IsPartialPermSemigroup then
     TryNextMethod();
   elif not IsJoinSemilatticeDigraph(digraph) then
     if IsMeetSemilatticeDigraph(digraph) then
@@ -1162,7 +1236,7 @@ function(filt, digraph, gps, homs)
       ErrorNoReturn("the second argument must be a join semilattice ",
                     "digraph or a meet semilattice digraph,");
     fi;
-  elif not ForAll(gps, x -> IsGroup(x)) then
+  elif not ForAll(gps, IsGroup) then
     ErrorNoReturn("the third argument must be a list of groups,");
   elif not Length(gps) = DigraphNrVertices(digraph) then
     ErrorNoReturn("the third argument must have length equal to the number ",
@@ -1264,7 +1338,7 @@ function(filt, digraph, gps, homs)
         # agrees with the composition we are currently considering.
         if IsBound(img[start]) then
           y := PermList(img{[start .. start + deg - 1]} - start + 1);
-          if not x = y then
+          if x <> y then
             ErrorNoReturn("the homomorphisms given must form a commutative",
                           " diagram,");
           fi;
@@ -1286,40 +1360,400 @@ end);
 
 InstallMethod(RandomDigraphCons, "for IsMutableDigraph and an integer",
 [IsMutableDigraph, IsInt],
-function(filt, n)
-  return RandomDigraphCons(IsMutableDigraph, n, Float(Random([0 .. n])) / n);
-end);
+{_, n}
+-> RandomDigraphCons(IsMutableDigraph, n, Float(Random([0 .. n])) / n));
 
 InstallMethod(RandomDigraphCons, "for IsMutableDigraph and an integer",
 [IsImmutableDigraph, IsInt],
-function(filt, n)
-  return RandomDigraphCons(IsImmutableDigraph, n, Float(Random([0 .. n])) / n);
-end);
+{_, n}
+-> RandomDigraphCons(IsImmutableDigraph, n, Float(Random([0 .. n])) / n));
+
+InstallMethod(RandomDigraphCons, "for IsHamiltonianDigraph and an integer",
+[IsHamiltonianDigraph, IsInt],
+{_, n}
+-> RandomDigraphCons(IsHamiltonianDigraph, n, Float(Random([0 .. n])) / n));
+
+InstallMethod(RandomDigraphCons, "for IsEulerianDigraph and an integer",
+[IsEulerianDigraph, IsInt],
+{_, n}
+-> RandomDigraphCons(IsEulerianDigraph, n, Float(Random([0 .. n])) / n));
+
+InstallMethod(RandomDigraphCons, "for IsConnectedDigraph and an integer",
+[IsConnectedDigraph, IsInt],
+{_, n}
+-> RandomDigraphCons(IsConnectedDigraph, n, Float(Random([0 .. n])) / n));
+
+InstallMethod(RandomDigraphCons, "for IsAcyclicDigraph and an integer",
+[IsAcyclicDigraph, IsInt],
+{_, n}
+-> RandomDigraphCons(IsAcyclicDigraph, n, Float(Random([0 .. n])) / n));
+
+InstallMethod(RandomDigraphCons, "for IsSymmetricDigraph and an integer",
+[IsSymmetricDigraph, IsInt],
+{_, n}
+-> RandomDigraphCons(IsSymmetricDigraph, n, Float(Random([0 .. n])) / n));
 
 InstallMethod(RandomDigraphCons,
 "for IsMutableDigraph, an integer, and a rational",
 [IsMutableDigraph, IsInt, IsRat],
-{filt, n, p} -> RandomDigraphCons(IsMutableDigraph, n, Float(p)));
+{_, n, p} -> RandomDigraphCons(IsMutableDigraph, n, Float(p)));
 
 InstallMethod(RandomDigraphCons,
 "for IsImmutableDigraph, an integer, and a rational",
 [IsImmutableDigraph, IsInt, IsRat],
-{filt, n, p} -> RandomDigraphCons(IsImmutableDigraph, n, Float(p)));
+{_, n, p} -> RandomDigraphCons(IsImmutableDigraph, n, Float(p)));
+
+InstallMethod(RandomDigraphCons,
+"for IsHamiltonianDigraph, an integer, and a rational",
+[IsHamiltonianDigraph, IsInt, IsRat],
+{_, n, p} -> RandomDigraphCons(IsHamiltonianDigraph, n, Float(p)));
+
+InstallMethod(RandomDigraphCons,
+"for IsEulerianDigraph, an integer, and a rational",
+[IsEulerianDigraph, IsInt, IsRat],
+{_, n, p} -> RandomDigraphCons(IsEulerianDigraph, n, Float(p)));
+
+InstallMethod(RandomDigraphCons,
+"for IsConnectedDigraph, an integer, and a rational",
+[IsConnectedDigraph, IsInt, IsRat],
+{_, n, p} -> RandomDigraphCons(IsConnectedDigraph, n, Float(p)));
+
+InstallMethod(RandomDigraphCons,
+"for IsStronglyConnectedDigraph, an integer, and a rational",
+[IsStronglyConnectedDigraph, IsInt, IsRat],
+{filt, n, p} -> RandomDigraphCons(IsStronglyConnectedDigraph, n, Float(p)));
+
+InstallMethod(RandomDigraphCons,
+"for IsAcyclicDigraph, an integer, and a rational",
+[IsAcyclicDigraph, IsInt, IsRat],
+{_, n, p} -> RandomDigraphCons(IsAcyclicDigraph, n, Float(p)));
+
+InstallMethod(RandomDigraphCons,
+"for IsSymmetricDigraph, an integer, and a rational",
+[IsSymmetricDigraph, IsInt, IsRat],
+{_, n, p} -> RandomDigraphCons(IsSymmetricDigraph, n, Float(p)));
 
 InstallMethod(RandomDigraphCons,
 "for IsMutableDigraph, a positive integer, and a float",
 [IsMutableDigraph, IsPosInt, IsFloat],
-function(filt, n, p)
+function(_, n, p)
   if p < 0.0 or 1.0 < p then
     ErrorNoReturn("the 2nd argument <p> must be between 0 and 1,");
   fi;
   return DigraphNC(IsMutableDigraph, RANDOM_DIGRAPH(n, Int(p * 10000)));
 end);
 
+# This function takes an existing adjacency list after solely creating
+# a Hamiltonian cycle or tree, and randomly adds edges between all
+# remaining vertices in the graph.
+BindGlobal("DIGRAPHS_FillOutGraph", function(n, p, adjacencyList)
+    local vertices, probability, i, j;
+
+    vertices := [1 .. n];
+    probability := [0 .. 99];
+
+    for i in vertices do
+        for j in vertices do
+            if (not (j in adjacencyList[i])) then
+                 if Float(Random(probability) / 100) < p then
+                    Add(adjacencyList[i], j);
+                 fi;
+            fi;
+        od;
+    od;
+
+    return adjacencyList;
+end);
+
+InstallMethod(RandomDigraphCons,
+"for IsHamiltonianDigraph, a positive integer, and a float",
+[IsHamiltonianDigraph, IsPosInt, IsFloat],
+function(_, n, p)
+    local adjacencyList, vertices, i, startVertex, hamiltonianCycle, x, j;
+
+    adjacencyList := EmptyPlist(n);
+
+    vertices := [1 .. n];
+
+    for i in vertices do
+        Add(adjacencyList, []);
+    od;
+
+    # Edge Case
+    if n = 1 then
+        if Float(Random([0 .. 99]) / 100) < p then
+            Add(adjacencyList[1], 1);
+        fi;
+        return DigraphNC(adjacencyList);
+    fi;
+
+    # Starting from a random vertex, we create a Hamiltonian cycle
+    startVertex := Remove(vertices, Random(vertices));
+    hamiltonianCycle := EmptyPlist(n);
+    hamiltonianCycle[1] := startVertex;
+
+    # While there are remaining n-1 vertices to be added to the Hamiltonian
+    # cycle
+    for x in [1 .. n - 1] do
+        # Create a random edge from the last vertex in the cycle
+        # to a random vertex not in the cycle
+        i := hamiltonianCycle[x];
+        j := Remove(vertices, Random([1 .. Length(vertices)]));
+        Add(hamiltonianCycle, j);
+        Add(adjacencyList[i], j);
+    od;
+
+    Add(adjacencyList[hamiltonianCycle[n]], startVertex);
+
+    # Once we have created a Hamiltonian cycle, fill out the rest of the graph
+    # with random edges according to p
+    adjacencyList := DIGRAPHS_FillOutGraph(n, p, adjacencyList);
+
+    return DigraphNC(adjacencyList);
+end);
+
+InstallMethod(RandomDigraphCons,
+"for IsEulerianDigraph, a positive integer, and a float",
+[IsEulerianDigraph, IsPosInt, IsFloat],
+function(_, n, p)
+    local adjacencyList, vertices, probability, startVertex, circuitVertex, i,
+    continueCircuit, verticesToConsider, connectedVertices, verticesToCheck;
+
+    adjacencyList := EmptyPlist(n);
+
+    vertices := [1 .. n];
+    probability := [0 .. 99];
+
+    for i in vertices do
+        Add(adjacencyList, []);
+    od;
+
+    # Edge Case
+    if n = 1 then
+        if Float(Random(probability) / 100) < p then
+            Add(adjacencyList[1], 1);
+        fi;
+        return DigraphNC(adjacencyList);
+    fi;
+
+    # Starting from a random vertex, we create an Eulerian circuit
+    startVertex := Random(vertices);
+    circuitVertex := startVertex;
+    continueCircuit := true;
+
+    # This will keep track of the vertices left to consider when deciding
+    # whether to extend the cycle. For example, if we want to extend from the
+    # current circuitVertex, we can check - verticesToConsider[circuitVertex] -
+    # to see which vertices it hasn't previously considered.
+    verticesToConsider := EmptyPlist(n);
+    for i in vertices do
+        Add(verticesToConsider, [1 .. n]);
+    od;
+
+    # Eulerian graphs must be connected, so we store a list of connected
+    # vertices and check if a vertex isn't in the list
+    connectedVertices := [startVertex];
+
+    while continueCircuit do
+        while Length(verticesToConsider[circuitVertex]) > 0 do
+            # From the remaining vertices to check, select a random one to see
+            # if an edge will be added
+            i := Random(verticesToConsider[circuitVertex]);
+            Remove(verticesToConsider[circuitVertex],
+            Position(verticesToConsider[circuitVertex], i));
+
+            # Check that the edge doesn't already exist
+            if (not (i in adjacencyList[circuitVertex])) then
+                # First we guarantee that we get a connected graph by checking
+                # if the vertex isn't already connected
+                if (not (i in connectedVertices)) then
+                    Add(adjacencyList[circuitVertex], i);
+                    Add(connectedVertices, i);
+                    circuitVertex := i;
+                    break;
+                elif Float(Random(probability) / 100) < p then
+                    Add(adjacencyList[circuitVertex], i);
+                    circuitVertex := i;
+                    break;
+                fi;
+            fi;
+        od;
+
+        # If there are not more vertices to consider, we can end the circuit
+        if Length(verticesToConsider[circuitVertex]) = 0 then
+            continueCircuit := false;
+        fi;
+    od;
+
+    # Finish the circuit by adding an edge back to the start vertex
+    # (if it isn't already at the start vertex)
+    if circuitVertex <> startVertex then
+        # If an edge already exists between the finish vertex and the start
+        # vertex, we must find another path to the start vertex to avoid
+        # generating a multidigraph.
+        while (startVertex in adjacencyList[circuitVertex]) do
+            # Here we consider all possible edges again, including previously
+            # rejected edges, to guarantee a path back to the start
+            verticesToCheck := [1 .. n];
+            while Length(verticesToCheck) > 0 do
+                i := Remove(verticesToCheck,
+                            Random([1 .. Length(verticesToCheck)]));
+                if (not (i in adjacencyList[circuitVertex])) then
+                    Add(adjacencyList[circuitVertex], i);
+                    circuitVertex := i;
+                    break;
+                fi;
+            od;
+        od;
+        Add(adjacencyList[circuitVertex], startVertex);
+    fi;
+
+    return DigraphNC(adjacencyList);
+end);
+
+InstallMethod(RandomDigraphCons,
+"for IsConnectedDigraph, a positive integer, and a float",
+[IsConnectedDigraph, IsPosInt, IsFloat],
+function(_, n, p)
+    local adjacencyList, vertices, startVertex, tree, x, i, j;
+
+    adjacencyList := EmptyPlist(n);
+
+    vertices := [1 .. n];
+
+    for i in vertices do
+        Add(adjacencyList, []);
+    od;
+
+    # Starting from a random vertex, we first create a tree to guarantee
+    # connectivity
+    startVertex := Remove(vertices, Random(vertices));
+    tree := [startVertex];
+
+    # While there are n-1 remaining vertices to be added to the tree
+    for x in [1 .. n - 1] do
+        # Create an edge from a random vertex in the tree, to a random vertex
+        # outside of it
+        i := Random(tree);
+        j := Remove(vertices, Random([1 .. Length(vertices)]));
+        Add(tree, j);
+        Add(adjacencyList[i], j);
+    od;
+
+    # Once the tree has been created, we fill out the rest of the graph with
+    # random edges according to p
+    adjacencyList := DIGRAPHS_FillOutGraph(n, p, adjacencyList);
+    return DigraphNC(adjacencyList);
+end);
+
+InstallMethod(RandomDigraphCons,
+"for IsStronglyConnectedDigraph, a positive integer, and a float",
+[IsStronglyConnectedDigraph, IsPosInt, IsFloat],
+function(_, n, p)
+  local d, adjMatrix, stronglyConnectedComponents,
+  scc_a, scc_b, i, random_u, random_v;
+
+  d := RandomDigraph(n, p);
+
+  stronglyConnectedComponents := DigraphStronglyConnectedComponents(d);
+
+  adjMatrix := AdjacencyMatrixMutableCopy(d);
+
+  for i in [1 .. Size(stronglyConnectedComponents.comps) - 1] do
+      scc_a := stronglyConnectedComponents.comps[i];
+      scc_b := stronglyConnectedComponents.comps[i + 1];
+
+      # add a connection from u to v
+      random_u := Random(scc_a);
+      random_v := Random(scc_b);
+
+      adjMatrix[random_u][random_v] := 1;
+  od;
+
+  # connect end scc to first scc
+  scc_a := stronglyConnectedComponents.comps[
+    Size(stronglyConnectedComponents.comps)];
+  scc_b := stronglyConnectedComponents.comps[1];
+
+  # add a connection from u to v
+  random_u := Random(scc_a);
+  random_v := Random(scc_b);
+
+  adjMatrix[random_u][random_v] := 1;
+
+  return DigraphByAdjacencyMatrix(adjMatrix);
+end);
+
+InstallMethod(RandomDigraphCons,
+"for IsAcyclicDigraph, a positive integer, and a float",
+[IsAcyclicDigraph, IsPosInt, IsFloat],
+function(_, n, p)
+    local adjacencyList, vertices, probability, i, j;
+
+    adjacencyList := EmptyPlist(n);
+
+    vertices := [1 .. n];
+    probability := [0 .. 99];
+
+    for i in vertices do
+        Add(adjacencyList, []);
+    od;
+
+    # We shuffle the vertices and treat the order of the vertices as a
+    # hierarchy where all vertices to the right of a vertex in the list are
+    # potential edges. This idea is that the edges flow downwards in the
+    # hierarchy, avoiding cycles.
+    Shuffle(vertices);
+
+    # From position i in the list, we consider all vertices j to the right of i
+    for i in vertices do
+        for j in [i + 1 .. n] do
+            if Float(Random(probability) / 100) < p then
+                Add(adjacencyList[vertices[i]], vertices[j]);
+            fi;
+        od;
+    od;
+
+    return DigraphNC(adjacencyList);
+end);
+
+InstallMethod(RandomDigraphCons,
+"for IsSymmetricDigraph, a positive integer, and a float",
+[IsSymmetricDigraph, IsPosInt, IsFloat],
+function(_, n, p)
+    local adjacencyList, vertices, probability, i, j;
+
+    adjacencyList := EmptyPlist(n);
+
+    vertices := [1 .. n];
+    probability := [0 .. 99];
+
+    for i in vertices do
+        Add(adjacencyList, []);
+    od;
+
+    for i in vertices do
+        for j in [i .. n] do
+            if Float(Random(probability) / 100) < p then
+                # If it's a self-loop, only add one edge otherwise we would
+                # have a multi-edge.
+                if i = j then
+                    Add(adjacencyList[i], j);
+                else
+                    Add(adjacencyList[i], j);
+                    Add(adjacencyList[j], i);
+                fi;
+            fi;
+        od;
+    od;
+
+    return DigraphNC(adjacencyList);
+end);
+
 InstallMethod(RandomDigraphCons,
 "for IsImmutableDigraph, a positive integer, and a float",
 [IsImmutableDigraph, IsPosInt, IsFloat],
-function(filt, n, p)
+function(_, n, p)
   local D;
   D := MakeImmutable(RandomDigraphCons(IsMutableDigraph, n, p));
   SetIsMultiDigraph(D, false);
@@ -1352,7 +1786,7 @@ InstallMethod(RandomMultiDigraph, "for two pos ints", [IsPosInt, IsPosInt],
 
 InstallMethod(RandomTournamentCons, "for IsMutableDigraph and an integer",
 [IsMutableDigraph, IsInt],
-function(filt, n)
+function(_, n)
   local choice, nodes, list, v, w;
   if n < 0 then
     ErrorNoReturn("the argument <n> must be a non-negative integer,");
@@ -1376,7 +1810,7 @@ end);
 
 InstallMethod(RandomTournamentCons, "for IsImmutableDigraph and an integer",
 [IsImmutableDigraph, IsInt],
-function(filt, n)
+function(_, n)
   local D;
   D := MakeImmutable(RandomTournamentCons(IsMutableDigraph, n));
   SetIsTournament(D, true);
@@ -1396,7 +1830,7 @@ InstallMethod(RandomTournament, "for a func and an integer",
 
 InstallMethod(RandomLatticeCons, "for IsMutableDigraph and a pos int",
 [IsMutableDigraph, IsPosInt],
-function(filt, n)
+function(_, n)
   local fam, rand_blist;
 
   fam := [BlistList([1 .. n], [])];
@@ -1411,7 +1845,7 @@ end);
 
 InstallMethod(RandomLatticeCons, "for IsImmutableDigraph and a pos int",
 [IsImmutableDigraph, IsPosInt],
-function(filt, n)
+function(_, n)
   local D;
   D := MakeImmutable(RandomLatticeCons(IsMutableDigraph, n));
   SetIsLatticeDigraph(D, true);

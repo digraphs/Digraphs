@@ -9,25 +9,12 @@ dnl ##
 dnl ## Setup autoconf
 dnl ##
 AC_PREREQ([2.68])
-AC_INIT([digraphs], m4_esyscmd([tr -d '\n' < .VERSION]))
+AC_INIT([digraphs], [GAP package])
 AC_CONFIG_SRCDIR([src/digraphs.c])
-AC_CONFIG_HEADERS([src/_pkgconfig.h:cnf/pkgconfig.h.in])
+AC_CONFIG_HEADERS([gen/pkgconfig.h:src/pkgconfig.h.in])
 AC_CONFIG_MACRO_DIR([m4])
-AC_CONFIG_AUX_DIR([cnf])
 
-dnl ##
-dnl ## Get canonical host info
-dnl ##
-AC_CANONICAL_HOST
-
-dnl ##
-dnl ## Setup automake
-dnl ##
-AM_INIT_AUTOMAKE([1.11 -Wall foreign subdir-objects])
-AM_SILENT_RULES([yes])
-AM_PROG_AR
-
-AX_PREFIX_CONFIG_H([src/digraphs-config.h],[],[src/_pkgconfig.h])
+AX_PREFIX_CONFIG_H([src/digraphs-config.h],[digraphs],[gen/pkgconfig.h])
 
 AC_PREFIX_DEFAULT('${abs_top_builddir}/../../bin/')
 
@@ -39,24 +26,9 @@ AC_PROG_CXX
 AC_LANG([C++])
 
 dnl ##
-dnl ## Setup libtool (for building the GAP kernel extension)
-dnl ##
-LT_PREREQ([2.4.2])
-LT_INIT([disable-static dlopen win32-dll])
-
-dnl ##
 dnl ## Locate the GAP root dir
 dnl ##
 FIND_GAP
-
-dnl ##
-dnl ## Detect Windows resp. Cygwin
-dnl ##
-case $host_os in
-  *cygwin* ) CYGWIN=yes;;
-         * ) CYGWIN=no;;
-esac
-AM_CONDITIONAL([SYS_IS_CYGWIN], [test "$CYGWIN" = "yes"])
 
 dnl ## User setting: Debug mode (off by default)
 AC_ARG_ENABLE([debug],
@@ -66,8 +38,8 @@ AC_ARG_ENABLE([debug],
     )
 AC_MSG_CHECKING([whether to enable debug mode])
 AC_MSG_RESULT([$enable_debug])
-
-AM_CONDITIONAL([KERNEL_DEBUG], [test "x$enable_debug" = xyes])
+KERNEL_DEBUG=$enable_debug
+AC_SUBST(KERNEL_DEBUG)
 
 AC_ARG_ENABLE([stats],
     [AS_HELP_STRING([--enable-stats], [enable stats mode])],
@@ -76,12 +48,27 @@ AC_ARG_ENABLE([stats],
     )
 AC_MSG_CHECKING([whether to enable stats mode])
 AC_MSG_RESULT([$enable_stats])
+ENABLE_STATS=$enable_debug
+AC_SUBST(ENABLE_STATS)
 
-AM_CONDITIONAL([ENABLE_STATS], [test "x$enable_stats" = xyes])
+AC_ARG_ENABLE([code-coverage],
+  AS_HELP_STRING([--enable-code-coverage],
+  [Whether to enable code coverage support]),,
+  enable_code_coverage=no)
+AC_MSG_CHECKING([whether to build with code coverage support])
+AC_MSG_RESULT($enable_code_coverage)
 
-AX_CODE_COVERAGE()
+AS_IF([ test "$enable_code_coverage" = "yes" ], [
+    CODE_COVERAGE_CFLAGS="-DNDEBUG -O0 -g --coverage"
+    CODE_COVERAGE_CXXFLAGS="-DNDEBUG -O0 -g --coverage"
+    CODE_COVERAGE_LDFLAGS="--coverage"
+    AC_SUBST([CODE_COVERAGE_CFLAGS])
+    AC_SUBST([CODE_COVERAGE_CXXFLAGS])
+    AC_SUBST([CODE_COVERAGE_LDFLAGS])
+])
 
-# Enable compiler warnings 
+
+# Enable compiler warnings
 
 AC_ARG_ENABLE([compile-warnings],
     [AS_HELP_STRING([--enable-compile-warnings], [enable compiler warnings])],
@@ -100,36 +87,28 @@ AS_IF([test "x$enable_compile_warnings" != "xno"],
 AS_IF([test "x$enable_compile_warnings" != "xno"],
   [ax_enable_compile_warnings=yes
    AX_COMPILER_FLAGS_CFLAGS([WARNING_CFLAGS], [], [ dnl
-       -pedantic dnl
-       -Wold-style-cast])
+       -pedantic dnl])
    AC_SUBST([WARNING_CFLAGS])])
 
 # Check for system planarity suite
 
-AX_CHECK_PLANARITY()
-
+AX_CHECK_PLANARITY
 if test "x$with_external_planarity" = xno ; then
-  AC_CONFIG_SUBDIRS([extern/edge-addition-planarity-suite-Version_3.0.1.0])
   PLANARITY_SUITE_DIR=extern/edge-addition-planarity-suite-Version_3.0.1.0
   AC_SUBST(PLANARITY_SUITE_DIR)
 fi
 
 # Check for system bliss suite
+AX_CHECK_BLISS
 
-AX_CHECK_BLISS()
-
-# Check whether to use -march=native -mpopcnt and __builtin_ctzl
+# Check whether to use -mpopcnt and __builtin_ctzl
 AC_ARG_WITH([intrinsics],
-            [AS_HELP_STRING([--without-intrinsics], 
+            [AS_HELP_STRING([--without-intrinsics],
                             [do not use compiler intrinsics even if available])]
            )
 
-AS_IF([test "x$with_intrinsics" == "xno" ],
+AS_IF([test "x$with_intrinsics" = "xno" ],
       [AC_MSG_NOTICE([compiler intrinsics will not be used even if available])])
-
-AS_IF([test "x$with_intrinsics" != "xno"],
-      [AX_CHECK_COMPILE_FLAG(-march=native, AX_APPEND_FLAG(-march=native))
-      ])
 
 dnl compiler builtins
 AC_DEFUN([CHECK_COMPILER_BUILTIN],

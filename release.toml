@@ -1,0 +1,4 @@
+[authors]
+expired_emails = ["cr66@st-andrews.ac.uk", "GrahamCampbell@users.noreply.github.com", "47450781+RaiyanC@users.noreply.github.com"]
+author_files = ["PackageInfo.g"]
+ignore = ["convert-repo", "dependabot", "Luke"]

@@ -14,7 +14,10 @@ DeclareAttribute("DigraphVertices", IsDigraph);
 DeclareAttribute("DigraphNrVertices", IsDigraph);
 DeclareAttribute("DigraphEdges", IsDigraph);
 DeclareAttribute("DigraphNrEdges", IsDigraph);
+DeclareAttribute("DigraphNrAdjacencies", IsDigraph);
+DeclareAttribute("DigraphNrAdjacenciesWithoutLoops", IsDigraph);
 DeclareAttribute("DigraphNrLoops", IsDigraph);
+DeclareAttribute("DigraphHash", IsDigraph);
 
 DeclareAttribute("DigraphRange", IsDigraph);
 DeclareAttribute("DigraphSource", IsDigraph);
@@ -51,9 +54,15 @@ DeclareAttribute("DigraphOddGirth", IsDigraph);
 DeclareAttribute("DigraphUndirectedGirth", IsDigraph);
 DeclareAttribute("ArticulationPoints", IsDigraph);
 DeclareSynonymAttr("CutVertices", ArticulationPoints);
+DeclareAttribute("DIGRAPHS_AbsorbingMarkovChain", IsDigraph);
+DeclareAttribute("DigraphAbsorptionProbabilities", IsDigraph);
+DeclareAttribute("DigraphAbsorptionExpectedSteps", IsDigraph);
 
 DeclareAttribute("DigraphAllSimpleCircuits", IsDigraph);
 DeclareAttribute("DigraphLongestSimpleCircuit", IsDigraph);
+DeclareAttribute("DigraphAllUndirectedSimpleCircuits", IsDigraph);
+DeclareAttribute("DigraphAllChordlessCycles", IsDigraph);
+DeclareOperation("FacialWalks", [IsDigraph, IsList]);
 DeclareAttribute("HamiltonianPath", IsDigraph);
 DeclareAttribute("DigraphPeriod", IsDigraph);
 DeclareAttribute("DigraphLoops", IsDigraph);
@@ -78,8 +87,8 @@ DeclareAttributeThatReturnsDigraph("DigraphDual", IsDigraph);
 DeclareAttributeThatReturnsDigraph("ReducedDigraph", IsDigraph);
 DeclareAttributeThatReturnsDigraph("DigraphRemoveAllMultipleEdges", IsDigraph);
 
-# TODO replace all DeclareOperations below to DeclareAttributeThatReturnsDigraph,
-# and remove the *Attr versions.
+# TODO replace all DeclareOperations below to
+# DeclareAttributeThatReturnsDigraph, and remove the *Attr versions.
 
 DeclareOperation("DigraphAddAllLoops", [IsDigraph]);
 DeclareAttribute("DigraphAddAllLoopsAttr", IsDigraph);
@@ -120,3 +129,12 @@ DeclareAttribute("DigraphMaximumMatching", IsDigraph);
 
 DeclareAttribute("Bridges", IsDigraph);
 DeclareAttributeThatReturnsDigraph("StrongOrientation", IsDigraph);
+
+DeclareAttribute("NonUpperSemimodularPair", IsDigraph);
+DeclareAttribute("NonLowerSemimodularPair", IsDigraph);
+
+DeclareProperty("IsUpperSemimodularDigraph", IsDigraph);
+DeclareProperty("IsLowerSemimodularDigraph", IsDigraph);
+
+DeclareAttribute("DigraphJoinTable", IsDigraph);
+DeclareAttribute("DigraphMeetTable", IsDigraph);

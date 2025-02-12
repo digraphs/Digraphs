@@ -13,26 +13,34 @@ if not IsBound(UserHomeExpand) then
   BindGlobal("UserHomeExpand", USER_HOME_EXPAND);
 fi;
 
-# load kernel function if it is installed:
-if not IsBound(DIGRAPH_OUT_NBS) and "digraphs" in SHOW_STAT() then
-  # try static module
-  LoadStaticModule("digraphs");
-fi;
-if not IsBound(DIGRAPH_OUT_NBS) and
-    Filename(DirectoriesPackagePrograms("digraphs"), "digraphs.so") <> fail then
-  LoadDynamicModule(Filename(DirectoriesPackagePrograms("digraphs"),
-                             "digraphs.so"));
+if CompareVersionNumbers(GAPInfo.Version, "4.12") then
+  if not LoadKernelExtension("digraphs") then
+    Error("failed to load the Digraphs package kernel extension");
+  fi;
+else
+  # TODO this clause can be removed once Digraphs requires GAP>=4.12.1
+  # load kernel function if it is installed:
+  if not IsBound(DIGRAPH_OUT_NBS) and "digraphs" in SHOW_STAT() then
+    # try static module
+    LoadStaticModule("digraphs");
+  fi;
+  if not IsBound(DIGRAPH_OUT_NBS) and
+      Filename(DirectoriesPackagePrograms("digraphs"),
+               "digraphs.so") <> fail then
+    LoadDynamicModule(Filename(DirectoriesPackagePrograms("digraphs"),
+                               "digraphs.so"));
+  fi;
 fi;
 
 BindGlobal("DIGRAPHS_IsGrapeLoaded",
-           IsPackageMarkedForLoading("grape", "4.8.1"));
+           {} -> IsPackageMarkedForLoading("grape", "4.8.1"));
 
 # To avoid warnings when GRAPE is not loaded
 if not IsBound(IsGraph) then
   IsGraph := ReturnFalse;
 fi;
 if not IsBound(Vertices) then
-  Vertices := IdFunc;
+  DeclareOperation("Vertices", [IsRecord]);
 fi;
 if not IsBound(Adjacency) then
   Adjacency := IdFunc;
@@ -62,5 +70,6 @@ ReadPackage("digraphs", "gap/orbits.gd");
 ReadPackage("digraphs", "gap/cliques.gd");
 ReadPackage("digraphs", "gap/planar.gd");
 ReadPackage("digraphs", "gap/examples.gd");
+ReadPackage("digraphs", "gap/weights.gd");
 
 DeclareInfoClass("InfoDigraphs");

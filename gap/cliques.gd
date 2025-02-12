@@ -27,6 +27,7 @@ DeclareGlobalFunction("DigraphCliques");
 DeclareGlobalFunction("DigraphCliquesReps");
 DeclareGlobalFunction("DigraphMaximalCliques");
 DeclareGlobalFunction("DigraphMaximalCliquesReps");
+DeclareAttribute("DigraphCliquesAttr", IsDigraph);
 DeclareAttribute("DigraphMaximalCliquesAttr", IsDigraph);
 DeclareAttribute("DigraphMaximalCliquesRepsAttr", IsDigraph);
 
@@ -38,6 +39,7 @@ DeclareGlobalFunction("DigraphIndependentSets");
 DeclareGlobalFunction("DigraphIndependentSetsReps");
 DeclareGlobalFunction("DigraphMaximalIndependentSets");
 DeclareGlobalFunction("DigraphMaximalIndependentSetsReps");
+DeclareAttribute("DigraphIndependentSetsAttr", IsDigraph);
 DeclareAttribute("DigraphMaximalIndependentSetsAttr", IsDigraph);
 DeclareAttribute("DigraphMaximalIndependentSetsRepsAttr", IsDigraph);
 

@@ -29,7 +29,7 @@
     <P/>
 
     This method uses the reference implementation in
-    &edge-addition-planarity-suite; by John Boyer of the algorithms described
+    &EDGE_PLANARITY_SUITE; by John Boyer of the algorithms described
     in <Cite Key="BM06"/>.
 
     <Example><![CDATA[
@@ -75,7 +75,7 @@ false
     See also <Ref Prop="IsPlanarDigraph"/>.
 
     This method uses the reference implementation in
-    &edge-addition-planarity-suite; by John Boyer of the algorithms described
+    &EDGE_PLANARITY_SUITE; by John Boyer of the algorithms described
     in <Cite Key="BM06"/>.
 
 <Example><![CDATA[
@@ -112,14 +112,15 @@ true
   <Attr Name="KuratowskiPlanarSubdigraph" Arg="digraph"/>
   <Returns>A list or <K>fail</K>.</Returns>
   <Description>
-    <C>KuratowskiPlanarSubdigraph</C> returns the immutable list of
-    lists of out-neighbours of a (not necessarily induced) subdigraph of the
-    digraph <A>digraph</A> that witnesses the fact that <A>digraph</A> is not
-    planar, or <K>fail</K> if <A>digraph</A> is planar.  In other words,
-    <C>KuratowskiPlanarSubdigraph</C> returns the out-neighbours of a
-    subdigraph of <A>digraph</A> that is homeomorphic to the complete graph
-    with <C>5</C> vertices, or to the complete bipartite graph with vertex sets
-    of sizes <C>3</C> and <C>3</C>. <P/>
+    <C>KuratowskiPlanarSubdigraph</C> returns the immutable list of lists of
+    out-neighbours of an induced subdigraph (excluding multiple edges and loops)
+    of the digraph <A>digraph</A> that witnesses the fact that <A>digraph</A> is
+    not planar, or <K>fail</K> if <A>digraph</A> is planar.  In other words,
+    <C>KuratowskiPlanarSubdigraph</C> returns the out-neighbours of a subdigraph
+    of <A>digraph</A> that is homeomorphic to the complete graph with <C>5</C>
+    vertices, or to the complete bipartite graph with vertex sets of sizes
+    <C>3</C> and <C>3</C>.
+    <P/>
     
     The directions and multiplicities of any edges in <A>digraph</A> are
     ignored when considering whether or not <A>digraph</A> is planar. <P/>
@@ -129,7 +130,7 @@ true
     <P/>
     
     This method uses the reference implementation in
-    &edge-addition-planarity-suite; by John Boyer of the algorithms described
+    &EDGE_PLANARITY_SUITE; by John Boyer of the algorithms described
     in <Cite Key="BM06"/>.
 
 <Example><![CDATA[
@@ -145,8 +146,8 @@ gap> D := Digraph([[2, 4, 7, 9, 10], [1, 3, 4, 6, 9, 10], [6, 10],
 gap> IsPlanarDigraph(D);
 false
 gap> KuratowskiPlanarSubdigraph(D);
-[ [ 2, 9, 7 ], [ 3 ], [ 6 ], [ 5, 9 ], [ 6 ], [  ], [ 4 ], 
-  [ 7, 9, 3 ], [  ], [  ] ]
+[ [ 2, 9, 7 ], [ 1, 3 ], [ 6 ], [ 5, 9 ], [ 6, 4 ], [ 3, 5 ], [ 4 ], 
+  [ 7, 9, 3 ], [ 8 ], [  ] ]
 gap> D := Digraph(IsMutableDigraph, [[3, 5, 10], [8, 9, 10], [1, 4],
 > [3, 6], [1, 7, 11], [4, 7], [6, 8], [2, 7], [2, 11], [1, 2], [5, 9]]);
 <mutable digraph with 11 vertices, 25 edges>
@@ -160,8 +161,8 @@ gap> D := Digraph(IsMutableDigraph, [[2, 4, 7, 9, 10],
 gap> IsPlanarDigraph(D);
 false
 gap> KuratowskiPlanarSubdigraph(D);
-[ [ 2, 9, 7 ], [ 3 ], [ 6 ], [ 5, 9 ], [ 6 ], [  ], [ 4 ], 
-  [ 7, 9, 3 ], [  ], [  ] ]
+[ [ 2, 9, 7 ], [ 1, 3 ], [ 6 ], [ 5, 9 ], [ 6, 4 ], [ 3, 5 ], [ 4 ], 
+  [ 7, 9, 3 ], [ 8 ], [  ] ]
 ]]></Example>
   </Description>
 </ManSection>
@@ -173,17 +174,18 @@ gap> KuratowskiPlanarSubdigraph(D);
   <Returns>A list or <K>fail</K>.</Returns>
   <Description>
     <C>KuratowskiOuterPlanarSubdigraph</C> returns the immutable list of
-    immutable lists of out-neighbours of a (not necessarily induced)
-    subdigraph of the digraph <A>digraph</A> that witnesses the fact
-    that <A>digraph</A> is not outer planar, or <K>fail</K> if
-    <A>digraph</A> is outer planar.  In other words,
+    immutable lists of out-neighbours of an induced subdigraph (excluding
+    multiple edges and loops) of the digraph <A>digraph</A> that witnesses the
+    fact that <A>digraph</A> is not outer planar, or <K>fail</K> if
+    <A>digraph</A> is outer planar. In other words,
     <C>KuratowskiOuterPlanarSubdigraph</C> returns the out-neighbours of a
-    subdigraph of <A>digraph</A> that is homeomorphic to the complete graph
-    with <C>4</C> vertices, or to the complete bipartite graph with vertex sets
-    of sizes <C>2</C> and <C>3</C>. <P/>
+    subdigraph of <A>digraph</A> that is homeomorphic to the complete graph with
+    <C>4</C> vertices, or to the complete bipartite graph with vertex sets of
+    sizes <C>2</C> and <C>3</C>.
+    <P/>
     
-    The directions and multiplicities of any edges in <A>digraph</A> are
-    ignored when considering whether or not <A>digraph</A> is outer planar. 
+    The directions and multiplicities of any edges in <A>digraph</A> are ignored
+    when considering whether or not <A>digraph</A> is outer planar. 
     <P/>
 
     See also 
@@ -193,7 +195,7 @@ gap> KuratowskiPlanarSubdigraph(D);
     <P/>
 
     This method uses the reference implementation in
-    &edge-addition-planarity-suite; by John Boyer of the algorithms described
+    &EDGE_PLANARITY_SUITE; by John Boyer of the algorithms described
     in <Cite Key="BM06"/>.
 
 <Example><![CDATA[
@@ -201,8 +203,8 @@ gap> D := Digraph([[3, 5, 10], [8, 9, 10], [1, 4], [3, 6],
 > [1, 7, 11], [4, 7], [6, 8], [2, 7], [2, 11], [1, 2], [5, 9]]);
 <immutable digraph with 11 vertices, 25 edges>
 gap> KuratowskiOuterPlanarSubdigraph(D);
-[ [ 3, 5, 10 ], [ 9, 8, 10 ], [ 4 ], [ 6 ], [ 11 ], [ 7 ], [ 8 ], 
-  [  ], [ 11 ], [  ], [  ] ]
+[ [ 3, 5, 10 ], [ 9, 8, 10 ], [ 4, 1 ], [ 6, 3 ], [ 1, 11 ], 
+  [ 7, 4 ], [ 8, 6 ], [ 2, 7 ], [ 11, 2 ], [ 2, 1 ], [ 5, 9 ] ]
 gap> D := Digraph([[2, 4, 7, 9, 10], [1, 3, 4, 6, 9, 10], [6, 10], 
 > [2, 5, 8, 9], [1, 2, 3, 4, 6, 7, 9, 10], [3, 4, 5, 7, 9, 10], 
 > [3, 4, 5, 6, 9, 10], [3, 4, 5, 7, 9], [2, 3, 5, 6, 7, 8], [3, 5]]);
@@ -210,14 +212,14 @@ gap> D := Digraph([[2, 4, 7, 9, 10], [1, 3, 4, 6, 9, 10], [6, 10],
 gap> IsOuterPlanarDigraph(D);
 false
 gap> KuratowskiOuterPlanarSubdigraph(D);
-[ [  ], [  ], [  ], [ 8, 9 ], [  ], [  ], [ 9, 4 ], [ 7, 9 ], [  ], 
-  [  ] ]
+[ [  ], [  ], [  ], [ 8, 9 ], [  ], [  ], [ 9, 4 ], [ 7, 9, 4 ], 
+  [ 8, 7 ], [  ] ]
 gap> D := Digraph(IsMutableDigraph, [[3, 5, 10], [8, 9, 10], [1, 4],
 > [3, 6], [1, 7, 11], [4, 7], [6, 8], [2, 7], [2, 11], [1, 2], [5, 9]]);
 <mutable digraph with 11 vertices, 25 edges>
 gap> KuratowskiOuterPlanarSubdigraph(D);
-[ [ 3, 5, 10 ], [ 9, 8, 10 ], [ 4 ], [ 6 ], [ 11 ], [ 7 ], [ 8 ], 
-  [  ], [ 11 ], [  ], [  ] ]
+[ [ 3, 5, 10 ], [ 9, 8, 10 ], [ 4, 1 ], [ 6, 3 ], [ 1, 11 ], 
+  [ 7, 4 ], [ 8, 6 ], [ 2, 7 ], [ 11, 2 ], [ 2, 1 ], [ 5, 9 ] ]
 gap> D := Digraph(IsMutableDigraph, [[2, 4, 7, 9, 10],
 > [1, 3, 4, 6, 9, 10], [6, 10], [2, 5, 8, 9],
 > [1, 2, 3, 4, 6, 7, 9, 10], [3, 4, 5, 7, 9, 10],
@@ -226,8 +228,8 @@ gap> D := Digraph(IsMutableDigraph, [[2, 4, 7, 9, 10],
 gap> IsOuterPlanarDigraph(D);
 false
 gap> KuratowskiOuterPlanarSubdigraph(D);
-[ [  ], [  ], [  ], [ 8, 9 ], [  ], [  ], [ 9, 4 ], [ 7, 9 ], [  ], 
-  [  ] ]]]></Example>
+[ [  ], [  ], [  ], [ 8, 9 ], [  ], [  ], [ 9, 4 ], [ 7, 9, 4 ], 
+  [ 8, 7 ], [  ] ]]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
@@ -237,14 +239,14 @@ gap> KuratowskiOuterPlanarSubdigraph(D);
   <Attr Name="PlanarEmbedding" Arg="digraph"/>
   <Returns>A list or <K>fail</K>.</Returns>
   <Description>
-    If <A>digraph</A> is a planar digraph, then 
-    <C>PlanarEmbedding</C> returns the immutable list of lists of
-    out-neighbours of a subdigraph of <A>digraph</A> such that each vertex's
-    neighbours are given in clockwise order. If <A>digraph</A> is not planar,
-    then <K>fail</K> is returned. <P/>
+    If <A>digraph</A> is a planar digraph, then <C>PlanarEmbedding</C> returns
+    the immutable list of lists of out-neighbours of <A>digraph</A> (excluding
+    multiple edges and loops) such that each vertex's neighbours are given in
+    clockwise order. If <A>digraph</A> is not planar, then <K>fail</K> is
+    returned. <P/>
     
-    The directions and multiplicities of any edges in <A>digraph</A> are
-    ignored by <C>PlanarEmbedding</C>.
+    The directions and multiplicities of any edges in <A>digraph</A> are ignored
+    by <C>PlanarEmbedding</C>.
     <P/>
 
     See also 
@@ -252,7 +254,7 @@ gap> KuratowskiOuterPlanarSubdigraph(D);
     <P/>
 
     This method uses the reference implementation in
-    &edge-addition-planarity-suite; by John Boyer of the algorithms described
+    &EDGE_PLANARITY_SUITE; by John Boyer of the algorithms described
     in <Cite Key="BM06"/>.
 
 <Example><![CDATA[
@@ -260,8 +262,8 @@ gap> D := Digraph([[3, 5, 10], [8, 9, 10], [1, 4], [3, 6],
 > [1, 7, 11], [4, 7], [6, 8], [2, 7], [2, 11], [1, 2], [5, 9]]);
 <immutable digraph with 11 vertices, 25 edges>
 gap> PlanarEmbedding(D);
-[ [ 3, 10, 5 ], [ 10, 8, 9 ], [ 4 ], [ 6 ], [ 11, 7 ], [ 7 ], [ 8 ], 
-  [  ], [ 11 ], [  ], [  ] ]
+[ [ 3, 10, 5 ], [ 10, 8, 9 ], [ 4, 1 ], [ 6, 3 ], [ 1, 11, 7 ], 
+  [ 7, 4 ], [ 8, 6 ], [ 7, 2 ], [ 2, 11 ], [ 1, 2 ], [ 9, 5 ] ]
 gap> D := Digraph([[2, 4, 7, 9, 10], [1, 3, 4, 6, 9, 10], [6, 10], 
 > [2, 5, 8, 9], [1, 2, 3, 4, 6, 7, 9, 10], [3, 4, 5, 7, 9, 10], 
 > [3, 4, 5, 6, 9, 10], [3, 4, 5, 7, 9], [2, 3, 5, 6, 7, 8], [3, 5]]);
@@ -272,8 +274,8 @@ gap> D := Digraph(IsMutableDigraph, [[3, 5, 10], [8, 9, 10], [1, 4],
 > [3, 6], [1, 7, 11], [4, 7], [6, 8], [2, 7], [2, 11], [1, 2], [5, 9]]);
 <mutable digraph with 11 vertices, 25 edges>
 gap> PlanarEmbedding(D);
-[ [ 3, 10, 5 ], [ 10, 8, 9 ], [ 4 ], [ 6 ], [ 11, 7 ], [ 7 ], [ 8 ], 
-  [  ], [ 11 ], [  ], [  ] ]
+[ [ 3, 10, 5 ], [ 10, 8, 9 ], [ 4, 1 ], [ 6, 3 ], [ 1, 11, 7 ], 
+  [ 7, 4 ], [ 8, 6 ], [ 7, 2 ], [ 2, 11 ], [ 1, 2 ], [ 9, 5 ] ]
 gap> D := Digraph(IsMutableDigraph, [[2, 4, 7, 9, 10],
 > [1, 3, 4, 6, 9, 10], [6, 10], [2, 5, 8, 9],
 > [1, 2, 3, 4, 6, 7, 9, 10], [3, 4, 5, 7, 9, 10],
@@ -292,10 +294,10 @@ fail
   <Returns>A list or <K>fail</K>.</Returns>
   <Description>
     If <A>digraph</A> is an outer planar digraph, then
-    <C>OuterPlanarEmbedding</C> returns the immutable list of lists
-    of out-neighbours of a subdigraph of <A>digraph</A> such that each
-    vertex's neighbours are given in clockwise order. If <A>digraph</A> is not
-    outer planar, then <K>fail</K> is returned. <P/>
+    <C>OuterPlanarEmbedding</C> returns the immutable list of lists of
+    out-neighbours of <A>digraph</A> (excluding multiple edges and loops) such
+    that each vertex's neighbours are given in clockwise order. If
+    <A>digraph</A> is not outer planar, then <K>fail</K> is returned. <P/>
     
     The directions and multiplicities of any edges in <A>digraph</A> are
     ignored by <C>OuterPlanarEmbedding</C>.
@@ -305,7 +307,7 @@ fail
     <P/>
 
     This method uses the reference implementation in
-    &edge-addition-planarity-suite; by John Boyer of the algorithms described
+    &EDGE_PLANARITY_SUITE; by John Boyer of the algorithms described
     in <Cite Key="BM06"/>.
 
 <Example><![CDATA[
@@ -321,7 +323,7 @@ gap> D := Digraph([[2, 4, 7, 9, 10], [1, 3, 4, 6, 9, 10], [6, 10],
 gap> OuterPlanarEmbedding(D);
 fail
 gap> OuterPlanarEmbedding(CompleteBipartiteDigraph(2, 2));
-[ [ 3, 4 ], [ 4, 3 ], [  ], [  ] ]
+[ [ 3, 4 ], [ 4, 3 ], [ 2, 1 ], [ 1, 2 ] ]
 gap> D := Digraph(IsMutableDigraph, [[3, 5, 10], [8, 9, 10], [1, 4],
 > [3, 6], [1, 7, 11], [4, 7], [6, 8], [2, 7], [2, 11], [1, 2], [5, 9]]);
 <mutable digraph with 11 vertices, 25 edges>
@@ -335,7 +337,7 @@ gap> D := Digraph(IsMutableDigraph, [[2, 4, 7, 9, 10],
 gap> OuterPlanarEmbedding(D);
 fail
 gap> OuterPlanarEmbedding(CompleteBipartiteDigraph(2, 2));
-[ [ 3, 4 ], [ 4, 3 ], [  ], [  ] ]
+[ [ 3, 4 ], [ 4, 3 ], [ 2, 1 ], [ 1, 2 ] ]
 ]]></Example>
   </Description>
 </ManSection>
@@ -361,7 +363,7 @@ gap> OuterPlanarEmbedding(CompleteBipartiteDigraph(2, 2));
       Prop="IsOuterPlanarDigraph"/> for more details.<P/>
 
     This method uses the reference implementation in
-    &edge-addition-planarity-suite; by John Boyer of the algorithms described
+    &EDGE_PLANARITY_SUITE; by John Boyer of the algorithms described
     in <Cite Key="BM06"/>.
 
 <Example><![CDATA[
@@ -369,19 +371,19 @@ gap> D := Digraph([[3, 5, 10], [8, 9, 10], [1, 4], [3, 6], [1, 7, 11],
 > [4, 7], [6, 8], [2, 7], [2, 11], [1, 2], [5, 9]]);
 <immutable digraph with 11 vertices, 25 edges>
 gap> SubdigraphHomeomorphicToK4(D);
-[ [ 3, 5, 10 ], [ 9, 8, 10 ], [ 4 ], [ 6 ], [ 7, 11 ], [ 7 ], [ 8 ], 
-  [  ], [ 11 ], [  ], [  ] ]
+[ [ 3, 5, 10 ], [ 9, 8, 10 ], [ 4, 1 ], [ 6, 3 ], [ 1, 7, 11 ], 
+  [ 7, 4 ], [ 8, 6 ], [ 2, 7 ], [ 11, 2 ], [ 2, 1 ], [ 5, 9 ] ]
 gap> SubdigraphHomeomorphicToK23(D);
-[ [ 3, 5, 10 ], [ 9, 8, 10 ], [ 4 ], [ 6 ], [ 11 ], [ 7 ], [ 8 ], 
-  [  ], [ 11 ], [  ], [  ] ]
+[ [ 3, 5, 10 ], [ 9, 8, 10 ], [ 4, 1 ], [ 6, 3 ], [ 1, 11 ], 
+  [ 7, 4 ], [ 8, 6 ], [ 2, 7 ], [ 11, 2 ], [ 2, 1 ], [ 5, 9 ] ]
 gap> D := Digraph([[3, 5, 10], [8, 9, 10], [1, 4], [3, 6], [1, 11], 
 >  [4, 7], [6, 8], [2, 7], [2, 11], [1, 2], [5, 9]]);
 <immutable digraph with 11 vertices, 24 edges>
 gap> SubdigraphHomeomorphicToK4(D);
 fail
 gap> SubdigraphHomeomorphicToK23(D);
-[ [ 3, 10, 5 ], [ 10, 8, 9 ], [ 4 ], [ 6 ], [ 11 ], [ 7 ], [ 8 ], 
-  [  ], [ 11 ], [  ], [  ] ]
+[ [ 3, 10, 5 ], [ 10, 8, 9 ], [ 4, 1 ], [ 6, 3 ], [ 11, 1 ], 
+  [ 7, 4 ], [ 8, 6 ], [ 2, 7 ], [ 2, 11 ], [ 1, 2 ], [ 9, 5 ] ]
 gap> SubdigraphHomeomorphicToK33(D);
 fail
 gap> SubdigraphHomeomorphicToK23(NullDigraph(0));
@@ -389,26 +391,27 @@ fail
 gap> SubdigraphHomeomorphicToK33(CompleteDigraph(5));
 fail
 gap> SubdigraphHomeomorphicToK33(CompleteBipartiteDigraph(3, 3));
-[ [ 4, 6, 5 ], [ 4, 5, 6 ], [ 6, 5, 4 ], [  ], [  ], [  ] ]
+[ [ 4, 6, 5 ], [ 4, 5, 6 ], [ 6, 5, 4 ], [ 1, 2, 3 ], [ 3, 2, 1 ], 
+  [ 2, 3, 1 ] ]
 gap> SubdigraphHomeomorphicToK4(CompleteDigraph(3));
 fail
 gap> D := Digraph(IsMutableDigraph, [[3, 5, 10], [8, 9, 10], [1, 4],
 > [3, 6], [1, 7, 11], [4, 7], [6, 8], [2, 7], [2, 11], [1, 2], [5, 9]]);
 <mutable digraph with 11 vertices, 25 edges>
 gap> SubdigraphHomeomorphicToK4(D);
-[ [ 3, 5, 10 ], [ 9, 8, 10 ], [ 4 ], [ 6 ], [ 7, 11 ], [ 7 ], [ 8 ], 
-  [  ], [ 11 ], [  ], [  ] ]
+[ [ 3, 5, 10 ], [ 9, 8, 10 ], [ 4, 1 ], [ 6, 3 ], [ 1, 7, 11 ], 
+  [ 7, 4 ], [ 8, 6 ], [ 2, 7 ], [ 11, 2 ], [ 2, 1 ], [ 5, 9 ] ]
 gap> SubdigraphHomeomorphicToK23(D);
-[ [ 3, 5, 10 ], [ 9, 8, 10 ], [ 4 ], [ 6 ], [ 11 ], [ 7 ], [ 8 ], 
-  [  ], [ 11 ], [  ], [  ] ]
+[ [ 3, 5, 10 ], [ 9, 8, 10 ], [ 4, 1 ], [ 6, 3 ], [ 1, 11 ], 
+  [ 7, 4 ], [ 8, 6 ], [ 2, 7 ], [ 11, 2 ], [ 2, 1 ], [ 5, 9 ] ]
 gap> D := Digraph(IsMutableDigraph, [[3, 5, 10], [8, 9, 10], [1, 4],
 > [3, 6], [1, 11], [4, 7], [6, 8], [2, 7], [2, 11], [1, 2], [5, 9]]);
 <mutable digraph with 11 vertices, 24 edges>
 gap> SubdigraphHomeomorphicToK4(D);
 fail
 gap> SubdigraphHomeomorphicToK23(D);
-[ [ 3, 10, 5 ], [ 10, 8, 9 ], [ 4 ], [ 6 ], [ 11 ], [ 7 ], [ 8 ], 
-  [  ], [ 11 ], [  ], [  ] ]
+[ [ 3, 10, 5 ], [ 10, 8, 9 ], [ 4, 1 ], [ 6, 3 ], [ 11, 1 ], 
+  [ 7, 4 ], [ 8, 6 ], [ 2, 7 ], [ 2, 11 ], [ 1, 2 ], [ 9, 5 ] ]
 gap> SubdigraphHomeomorphicToK33(D);
 fail
 gap> SubdigraphHomeomorphicToK23(NullDigraph(0));
@@ -416,10 +419,42 @@ fail
 gap> SubdigraphHomeomorphicToK33(CompleteDigraph(5));
 fail
 gap> SubdigraphHomeomorphicToK33(CompleteBipartiteDigraph(3, 3));
-[ [ 4, 6, 5 ], [ 4, 5, 6 ], [ 6, 5, 4 ], [  ], [  ], [  ] ]
+[ [ 4, 6, 5 ], [ 4, 5, 6 ], [ 6, 5, 4 ], [ 1, 2, 3 ], [ 3, 2, 1 ], 
+  [ 2, 3, 1 ] ]
 gap> SubdigraphHomeomorphicToK4(CompleteDigraph(3));
 fail
 ]]></Example>
   </Description>
 </ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DualPlanarGraph">
+<ManSection>
+  <Attr Name="DualPlanarGraph" Arg="digraph"/>
+  <Returns>A digraph or <K>fail</K>.</Returns>
+  <Description>
+    If <A>digraph</A> is a planar digraph, then <E>DualPlanarGraph</E> returns the the dual graph of <A>digraph</A>.
+    If <A>digraph</A> is not planar, then fail is returned.<P/>
+
+    The dual graph of a planar digraph <A>digraph</A> has a vertex for each face of <A>digraph</A> and an edge for 
+    each pair of faces that are separated by an edge from each other.
+    Vertex <A>i</A> of the dual graph corresponds to the facial walk at the <A>i</A>-th position calling 
+    <E>FacialWalks</E> of <A>digraph</A> with the rotation system returned by <E>PlanarEmbedding</E>.
+
+<Example><![CDATA[
+gap> D := CompleteDigraph(4);;
+gap> dualD := DualPlanarGraph(D);
+<immutable digraph with 4 vertices, 12 edges>
+gap> IsIsomorphicDigraph(D, dualD);
+true
+gap> cube := Digraph([[2, 4, 5], [1, 3, 6], [2, 4, 7], [1, 3, 8], 
+>                     [1, 6, 8], [2, 5, 7], [3, 6, 8], [4, 5, 7]]);
+<immutable digraph with 8 vertices, 24 edges>
+gap> oct := DualPlanarGraph(cube);;
+gap> IsIsomorphicDigraph(oct, CompleteMultipartiteDigraph([2, 2, 2]));
+true
+]]></Example>
+  </Description>
+</ManSection>
+
 <#/GAPDoc>

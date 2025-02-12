@@ -14,46 +14,40 @@
 
 #include "perms.h"
 
-// C headers
-#include <stdlib.h>  // for malloc, . . .
-
 // Digraphs package headers
 #include "digraphs-debug.h"  // for DIGRAPHS_ASSERT
+#include "gap-includes.h"    // for ErrorQuit, ADDR_PERM2, ..
+#include "safemalloc.h"      // for safe_malloc
 
 Perm new_perm(uint16_t const degree) {
   DIGRAPHS_ASSERT(degree <= MAXVERTS);
-  return malloc(degree * sizeof(uint16_t));
+  return safe_malloc(degree * sizeof(uint16_t));
 }
 
 Perm new_perm_from_gap(Obj gap_perm_obj, uint16_t const degree) {
-  UInt lmp = LargestMovedPointPerm(gap_perm_obj);
-  DIGRAPHS_ASSERT(lmp <= MAXVERTS);
-  if (lmp > MAXVERTS) {
-    ErrorQuit("expected permutations of degree at most %d, but got a "
-              "permutation of degree %d",
-              MAXVERTS,
-              lmp);
-  }
-
-  DIGRAPHS_ASSERT(lmp <= degree);
-
   Perm p = new_perm(degree > 0 ? degree : 1);
+
+  size_t copy_up_to = degree;
+  size_t lmp        = LargestMovedPointPerm(gap_perm_obj);
+  if (degree > lmp) {
+    copy_up_to = lmp;
+  }
 
   if (IS_PERM2(gap_perm_obj)) {
     UInt2* gap_perm_ptr = ADDR_PERM2(gap_perm_obj);
-    for (UInt i = 0; i < lmp; ++i) {
+    for (UInt i = 0; i < copy_up_to; ++i) {
       p[i] = gap_perm_ptr[i];
     }
-    for (UInt i = lmp; i < degree; ++i) {
+    for (UInt i = copy_up_to; i < degree; ++i) {
       p[i] = i;
     }
   } else {
     DIGRAPHS_ASSERT(IS_PERM4(gap_perm_obj));
     UInt4* gap_perm_ptr = ADDR_PERM4(gap_perm_obj);
-    for (UInt i = 0; i < lmp; ++i) {
+    for (UInt i = 0; i < copy_up_to; ++i) {
       p[i] = gap_perm_ptr[i];
     }
-    for (UInt i = lmp; i < degree; ++i) {
+    for (UInt i = copy_up_to; i < degree; ++i) {
       p[i] = i;
     }
   }
@@ -61,8 +55,8 @@ Perm new_perm_from_gap(Obj gap_perm_obj, uint16_t const degree) {
 }
 
 PermColl* new_perm_coll(uint16_t const capacity, uint16_t const degree) {
-  PermColl* coll = malloc(sizeof(PermColl));
-  coll->perms    = malloc(capacity * sizeof(Perm));
+  PermColl* coll = safe_malloc(sizeof(PermColl));
+  coll->perms    = safe_malloc(capacity * sizeof(Perm));
   for (uint16_t i = 0; i < capacity; ++i) {
     coll->perms[i] = new_perm(degree);
   }
@@ -72,13 +66,10 @@ PermColl* new_perm_coll(uint16_t const capacity, uint16_t const degree) {
   return coll;
 }
 
-// free_perm_coll is not currently used, but kept in case it is required in the
-// future. JDM 2019
-
-// void free_perm_coll(PermColl* coll) {
-//   for (uint16_t i = 0; i < coll->size; i++) {
-//     free(coll->perms[i]);
-//   }
-//   free(coll->perms);
-//   free(coll);
-// }
+void free_perm_coll(PermColl* coll) {
+  for (uint16_t i = 0; i < coll->capacity; i++) {
+    free(coll->perms[i]);
+  }
+  free(coll->perms);
+  free(coll);
+}

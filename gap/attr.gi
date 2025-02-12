@@ -154,15 +154,11 @@ end);
 
 InstallMethod(ArticulationPoints, "for a digraph by out-neighbours",
 [IsDigraphByOutNeighboursRep],
-function(D)
-  return DIGRAPHS_ArticulationPointsBridgesStrongOrientation(D)[2];
-end);
+D -> DIGRAPHS_ArticulationPointsBridgesStrongOrientation(D)[2]);
 
 InstallMethod(Bridges, "for a digraph by out-neighbours",
 [IsDigraphByOutNeighboursRep],
-function(D)
-  return DIGRAPHS_ArticulationPointsBridgesStrongOrientation(D)[3];
-end);
+D -> DIGRAPHS_ArticulationPointsBridgesStrongOrientation(D)[3]);
 
 InstallMethodThatReturnsDigraph(StrongOrientation,
 "for a digraph by out-neighbours",
@@ -195,6 +191,153 @@ function(I, subtracted_set, size_bound)
   return induced_mis;
 end
 );
+
+InstallMethod(DIGRAPHS_AbsorbingMarkovChain,
+"for a digraph",
+[IsDigraph],
+function(D)
+  # Helper for DigraphAbsorptionProbabilities and DigraphAbsorptionExpectedSteps
+  local scc, is_sink_comp, transient_vertices, i, comp, v, sink_comps,
+        nr_transients, transient_mat, absorption_mat, neighbours, chance, w,
+        w_comp, sink_comp_index, j, fundamental_mat;
+  scc := DigraphStronglyConnectedComponents(D);
+
+  # Find the "sink components" (components from which there is no escape)
+  # We could use QuotientDigraph and DigraphSinks here, but this avoids copying.
+  is_sink_comp := ListWithIdenticalEntries(Length(scc.comps), true);
+  transient_vertices := [];
+  for i in [1 .. Length(scc.comps)] do
+    comp := scc.comps[i];
+    for v in comp do
+      if ForAny(OutNeighboursOfVertex(D, v), w -> not w in comp) then
+        is_sink_comp[i] := false;
+        Append(transient_vertices, comp);
+        break;
+      fi;
+    od;
+  od;
+  sink_comps := Positions(is_sink_comp, true);
+  nr_transients := Length(transient_vertices);
+
+  # If no transient vertices, then we can't return anything interesting.
+  if nr_transients = 0 then
+    return rec(transient_vertices := transient_vertices,
+               fundamental_mat := [],
+               sink_comps := sink_comps,
+               absorption_mat := []);
+  fi;
+
+  # transient_mat[i][j] is the chance of going
+  # from transient vertex i to transient vertex j
+  transient_mat := NullMat(nr_transients, nr_transients);
+
+  # absorption_mat[i][j] is the chance of going
+  # from transient vertex i to sink component j
+  absorption_mat := NullMat(nr_transients, Length(sink_comps));
+
+  for i in [1 .. Length(transient_vertices)] do
+    v := transient_vertices[i];
+    neighbours := OutNeighboursOfVertex(D, v);
+    chance := 1 / Length(neighbours);  # chance of following each edge
+    for w in neighbours do
+      w_comp := scc.id[w];
+      if is_sink_comp[w_comp] then
+        # w is in a sink component
+        sink_comp_index := Position(sink_comps, w_comp);
+        Assert(1, w in scc.comps[sink_comps[sink_comp_index]]);
+        absorption_mat[i][sink_comp_index] :=
+            absorption_mat[i][sink_comp_index] + chance;
+      else
+        # w is a transient vertex
+        j := Position(transient_vertices, w);
+        transient_mat[i][j] := transient_mat[i][j] + chance;
+      fi;
+    od;
+  od;
+
+  # "Fundamental matrix": mat[i][j] is the expected number of visits to each
+  # transient vertex j given a random walk starting at transient vertex i.
+  # Compute this using formula (I - Q)^-1
+  fundamental_mat := Inverse(IdentityMat(nr_transients) - transient_mat);
+
+  # Return all info needed for further computation in DigraphAbsorption* methods
+  return rec(transient_vertices := transient_vertices,
+             fundamental_mat := fundamental_mat,
+             sink_comps := sink_comps,
+             absorption_mat := absorption_mat);
+end);
+
+InstallMethod(DigraphAbsorptionProbabilities,
+"for a digraph",
+[IsDigraph],
+function(D)
+  local scc, markov, chances_of_absorption, output, sink_comps, comp_no, v,
+        transient_vertices, i, j, c;
+  # Strongly connected components are an important part of definition
+  scc := DigraphStronglyConnectedComponents(D);
+
+  # One SCC only (or none): all vertices stay in it with probability 1.
+  if Length(scc.comps) <= 1 then
+    return ListWithIdenticalEntries(DigraphNrVertices(D), [1]);
+  fi;
+
+  # Get data about absorbing Markov chain represented by this digraph
+  markov := DIGRAPHS_AbsorbingMarkovChain(D);
+
+  # Calculate chances of absorption
+  # Rows are transient vertices, columns are absorbing SCCs
+  if Length(markov.transient_vertices) = 0 then
+    chances_of_absorption := [];
+  else
+    chances_of_absorption := markov.fundamental_mat * markov.absorption_mat;
+  fi;
+
+  # Convert to output format
+  # Rows are all vertices, columns are all SCCs
+  output := NullMat(DigraphNrVertices(D), Length(scc.comps));
+
+  # Non-transient vertices stay in their own SCC with probability 1
+  sink_comps := markov.sink_comps;
+  for comp_no in sink_comps do
+    for v in scc.comps[comp_no] do
+      output[v][comp_no] := 1;
+    od;
+  od;
+
+  # Transient vertices have chances as calculated in Markov code
+  transient_vertices := markov.transient_vertices;
+  for i in [1 .. Length(transient_vertices)] do
+    v := transient_vertices[i];
+    for j in [1 .. Length(sink_comps)] do
+      c := sink_comps[j];
+      output[v][c] := chances_of_absorption[i][j];
+    od;
+  od;
+
+  return output;
+end);
+
+InstallMethod(DigraphAbsorptionExpectedSteps,
+"for a digraph",
+[IsDigraph],
+function(D)
+  local markov, N, transient_expected_steps, out, i;
+  if DigraphNrVertices(D) = 0 then
+    return [];
+  fi;
+  markov := DIGRAPHS_AbsorbingMarkovChain(D);
+  N := markov.fundamental_mat;
+  if Length(N) = 0 then  # no transient vertices
+    transient_expected_steps := [];
+  else
+    transient_expected_steps := N * ListWithIdenticalEntries(Length(N), 1);
+  fi;
+  out := ListWithIdenticalEntries(DigraphNrVertices(D), 0);
+  for i in [1 .. Length(transient_expected_steps)] do
+    out[markov.transient_vertices[i]] := transient_expected_steps[i];
+  od;
+  return out;
+end);
 
 BindGlobal("DIGRAPHS_ChromaticNumberLawler",
 function(D)
@@ -229,7 +372,8 @@ function(D)
       fi;
     od;
     # Iterate over the maximal independent sets of V[S]
-    subset_mis := DIGRAPHS_MaximalIndependentSetsSubtractedSet(mis, S, infinity);
+    subset_mis :=
+      DIGRAPHS_MaximalIndependentSetsSubtractedSet(mis, S, infinity);
     # Flip the list, as we now need the actual set.
     FlipBlist(S);
     for I in subset_mis do
@@ -302,7 +446,7 @@ function(D)
     od;
     return index;
   end;
-  # Iterate over vetex subsets
+  # Iterate over vertex subsets
   subset_iter := IteratorOfCombinations(vertices);
   # Skip the first one, which should be the empty set
   S := NextIterator(subset_iter);
@@ -345,7 +489,7 @@ function(D)
     # Undo the changes made.
     UniteBlist(vertex_blist, I);
   od;
-  # Iterate over vetex subset blists.
+  # Iterate over vertex subset blists.
   subset_iter := ListWithIdenticalEntries(n, [true, false]);
   subset_iter := IteratorOfCartesianProduct2(subset_iter);
   # Skip the first one, which should be the empty set
@@ -748,6 +892,12 @@ function(D)
   return m;
 end);
 
+InstallMethod(DigraphNrAdjacencies, "for a digraph",
+[IsDigraphByOutNeighboursRep], DIGRAPH_NRADJACENCIES);
+
+InstallMethod(DigraphNrAdjacenciesWithoutLoops, "for a digraph",
+[IsDigraphByOutNeighboursRep], DIGRAPH_NRADJACENCIESWITHOUTLOOPS);
+
 InstallMethod(DigraphNrLoops,
 "for a digraph by out-neighbours",
 [IsDigraphByOutNeighboursRep],
@@ -796,6 +946,26 @@ function(D)
   od;
   return out;
 end);
+
+# Hash related attributes
+
+InstallMethod(DigraphHash, "for a digraph", [IsDigraph], DIGRAPH_HASH);
+
+# To make built in Orbit function use DigraphHash
+InstallMethod(SparseIntKey, "for an object and digraph",
+[IsObject, IsDigraph],
+{coll, D} -> DigraphHash
+);
+
+# To make orb package use DigraphHash
+InstallMethod(ChooseHashFunction, "for a digraph and positive integer",
+[IsDigraph, IsInt],
+# TODO: (reiniscirpons) remove the rank when new semigroups version gets
+# released.
+2,
+{D, hashlen} -> rec(func := {x, data} -> 1 + (DigraphHash(x) mod data[1]),
+                    data := [hashlen])
+);
 
 # attributes for digraphs . . .
 
@@ -1442,7 +1612,7 @@ InstallMethod(DigraphAllSimpleCircuits, "for a digraph by out-neighbours",
 [IsDigraphByOutNeighboursRep],
 function(D)
   local UNBLOCK, CIRCUIT, out, stack, endofstack, C, scc, n, blocked, B,
-  c_comp, comp, s, loops, i;
+  c_comp, comp, s, loops, i, d_labels, c_labels;
 
   if IsEmptyDigraph(D) then
     return [];
@@ -1502,9 +1672,15 @@ function(D)
   # Reduce the D, remove loops, and store the correct vertex labels
   C := DigraphRemoveLoops(ReducedDigraph(DigraphMutableCopyIfMutable(D)));
   MakeImmutable(C);
-  if DigraphVertexLabels(D) <> DigraphVertices(D) then
-    SetDigraphVertexLabels(C, Filtered(DigraphVertices(D),
-                                       x -> OutDegrees(D) <> 0));
+  if HaveVertexLabelsBeenAssigned(D)
+      and DigraphVertexLabels(D) <> DigraphVertices(D) then
+    # We require the labels of the digraph <C> to be the original nodes in <D>
+    # (this is used in CIRCUIT above). If <D> has other vertex labels, then
+    # these are copied into <C> by the functions above, and aren't then
+    # necessarily the original nodes in <D>.
+    d_labels := DigraphVertexLabels(D);
+    c_labels := List(DigraphVertexLabels(C), x -> Position(d_labels, x));
+    SetDigraphVertexLabels(C, c_labels);
   fi;
 
   # Strongly connected components of the reduced graph
@@ -1545,6 +1721,201 @@ function(D)
   od;
   loops := List(DigraphLoops(D), x -> [x]);
   return Concatenation(loops, out);
+end);
+
+# Compute all undirected simple circuits by filtering the output
+# of DigraphAllSimpleCircuits
+InstallMethod(DigraphAllUndirectedSimpleCircuits, "for a digraph", [IsDigraph],
+function(D)
+  local digraph, cycles, keep, cycle, cycleRev;
+  digraph := DigraphSymmetricClosure(
+      DigraphRemoveAllMultipleEdges(DigraphMutableCopyIfMutable(D)));
+  cycles := Filtered(DigraphAllSimpleCircuits(digraph),
+    c -> Length(c) > 2 or Length(c) = 1);
+  keep := HashSet();
+  for cycle in cycles do
+    cycleRev := [cycle[1]];
+    Append(cycleRev, Reversed(cycle{[2 .. Length(cycle)]}));
+    if (not cycle in keep and not cycleRev in keep) or Length(cycle) = 1 then
+      AddSet(keep, cycle);
+    fi;
+  od;
+  return Set(keep);
+end);
+
+# Compute all chordless cycles for a given symmetric digraph
+# Algorithm based on https://arxiv.org/pdf/1404.7610
+InstallMethod(DigraphAllChordlessCycles, "for a digraph",
+[IsDigraph],
+function(D)
+  local BlockNeighbours, UnblockNeighbours,
+  Triplets, CCExtension, digraph, temp, T, C, blocked, triple;
+
+    if IsEmptyDigraph(D) then
+        return [];
+    fi;
+
+    BlockNeighbours := function(digraph, v, blocked)
+        local u;
+        for u in OutNeighboursOfVertex(digraph, v) do
+            blocked[u] := blocked[u] + 1;
+        od;
+        return blocked;
+    end;
+
+    UnblockNeighbours := function(digraph, v, blocked)
+        local u;
+        for u in OutNeighboursOfVertex(digraph, v) do
+            if blocked[u] > 0 then
+                blocked[u] := blocked[u] - 1;
+            fi;
+        od;
+        return blocked;
+    end;
+
+    # Computes all possible triplets
+    Triplets := function(digraph)
+        local T, C, u, pair, x, y, labels;
+        T := [];
+        C := [];
+        for u in DigraphVertices(digraph) do
+            for pair in Combinations(OutNeighboursOfVertex(digraph, u), 2) do
+                x := pair[1];
+                y := pair[2];
+                labels := DigraphVertexLabels(digraph);
+                if labels[u] < labels[x] and labels[x] < labels[y] then
+                    if not IsDigraphEdge(digraph, x, y) then
+                        Add(T, [x, u, y]);
+                    else
+                        Add(C, [x, u, y]);
+                    fi;
+                elif labels[u] < labels[y] and labels[y] < labels[x] then
+                    if not IsDigraphEdge(digraph, x, y) then
+                        Add(T, [y, u, x]);
+                    else
+                        Add(C, [y, u, x]);
+                    fi;
+                fi;
+            od;
+        od;
+        return [T, C];
+    end;
+
+    # Extends a given chordless path if possible
+    CCExtension := function(digraph, path, C, key, blocked)
+        local v, extendedPath, data;
+        blocked := BlockNeighbours(digraph, Last(path), blocked);
+        for v in OutNeighboursOfVertex(digraph, Last(path)) do
+            if DigraphVertexLabel(digraph, v) > key and blocked[v] = 1 then
+                extendedPath := Concatenation(path, [v]);
+                if IsDigraphEdge(digraph, v, First(path)) then
+                    Add(C, extendedPath);
+                else
+                    data := CCExtension(digraph, extendedPath, C, key, blocked);
+                    C := data[1];
+                    blocked := data[2];
+                fi;
+            fi;
+        od;
+        blocked := UnblockNeighbours(digraph, Last(path), blocked);
+        return [C, blocked];
+    end;
+
+    digraph := DigraphMutableCopy(D);
+    DigraphSymmetricClosure(DigraphRemoveLoops(
+                 DigraphRemoveAllMultipleEdges(digraph)));
+    MakeImmutable(digraph);
+    SetDigraphVertexLabels(digraph,
+                 Reversed(DigraphDegeneracyOrdering(digraph)));
+
+    temp := Triplets(digraph);
+    T := temp[1];
+    C := temp[2];
+    blocked := List(DigraphVertices(digraph), i -> 0);
+    while T <> [] do
+        triple := Remove(T);
+        blocked := BlockNeighbours(digraph, triple[2], blocked);
+        temp := CCExtension(digraph, triple, C,
+                              DigraphVertexLabel(digraph, triple[2]), blocked);
+        C := temp[1];
+        blocked := temp[2];
+        blocked := UnblockNeighbours(digraph, triple[2], blocked);
+    od;
+    return C;
+end);
+
+# Compute for a given rotation system the facial walks
+InstallMethod(FacialWalks, "for a digraph and a list",
+[IsDigraph, IsDenseList],
+function(D, rotationSystem)
+
+    local FacialWalk, facialWalks, remEdges, cycle;
+
+    if not IsEulerianDigraph(D) then
+        Error("the 1st argument (digraph <D>) must be Eulerian, but it is not");
+    fi;
+
+    if Length(rotationSystem) <> DigraphNrVertices(D) then
+        Error("the 2nd argument (list <rotationSystem>) is not a rotation ",
+              "system for the 1st argument (digraph <D>), expected a ",
+              "dense list of length ", DigraphNrVertices(D),
+              "but found dense list of length ", Length(rotationSystem));
+    fi;
+
+    if Difference(Union(rotationSystem), DigraphVertices(D))
+       <> [] then
+        Error("the 2nd argument (dense list <rotationSystem>) is not ",
+              "a rotation system for the 1st argument (digraph <D>), ",
+              "expected the union to be ", DigraphVertices(D), " but found ",
+              Union(rotationSystem));
+    fi;
+
+    # computes a facial cycles starting with the edge 'startEdge'
+    FacialWalk := function(rotationSystem, startEdge)
+        local startVertex, preVertex, actVertex, cycle, nextVertex, pos;
+
+        startVertex := startEdge[1];
+        actVertex := startEdge[2];
+        preVertex := startVertex;
+
+        cycle := [startVertex, actVertex];
+
+        nextVertex := 0;  # just an initialization
+        while true do
+            pos := Position(rotationSystem[actVertex], preVertex);
+
+            if pos < Length(rotationSystem[actVertex]) then
+                nextVertex := rotationSystem[actVertex][pos + 1];
+            else
+                nextVertex := rotationSystem[actVertex][1];
+            fi;
+            if nextVertex <> startEdge[2] or actVertex <> startVertex then
+                Add(cycle, nextVertex);
+                Remove(remEdges, Position(remEdges, [preVertex, actVertex]));
+                preVertex := actVertex;
+                actVertex := nextVertex;
+            else
+                break;
+            fi;
+        od;
+        Remove(remEdges, Position(remEdges, [preVertex, startVertex]));
+        # Remove the last vertex, otherwise otherwise
+        # the start vertex is contained twice
+        Remove(cycle);
+        return cycle;
+    end;
+
+    D := DigraphRemoveLoops(DigraphRemoveAllMultipleEdges(
+        DigraphMutableCopyIfMutable(D)));
+
+    facialWalks := [];
+    remEdges := ShallowCopy(DigraphEdges(D));
+
+    while remEdges <> [] do
+        cycle := FacialWalk(rotationSystem, remEdges[1]);
+        Add(facialWalks, cycle);
+    od;
+    return facialWalks;
 end);
 
 # The following method 'DIGRAPHS_Bipartite' was originally written by Isabella
@@ -1597,15 +1968,13 @@ end);
 
 InstallMethod(DigraphBicomponents, "for a digraph", [IsDigraph],
 function(D)
-  local b;
 
   # Attribute only applies to bipartite digraphs
   if not IsBipartiteDigraph(D) then
     return fail;
   fi;
-  b := KernelOfTransformation(DIGRAPHS_Bipartite(D)[2],
+  return KernelOfTransformation(DIGRAPHS_Bipartite(D)[2],
                               DigraphNrVertices(D));
-  return b;
 end);
 
 InstallMethod(DigraphLoops, "for a digraph by out-neighbours",
@@ -1717,9 +2086,7 @@ function(D)
     return DigraphVertices(D);
   elif not IsStronglyConnectedDigraph(D) then
     return fail;
-  fi;
-
-  if DigraphNrVertices(D) < 256 then
+  elif DigraphNrVertices(D) < 256 then
     path := DigraphMonomorphism(CycleDigraph(DigraphNrVertices(D)), D);
     if path = fail then
       return fail;
@@ -1923,7 +2290,8 @@ InstallMethodThatReturnsDigraph(ReducedDigraph,
 "for a digraph by out-neighbours",
 [IsDigraphByOutNeighboursRep],
 function(D)
-  local v, niv, old, C, i;
+  local v, niv, old, i;
+
   if IsConnectedDigraph(D) then
     return D;
   fi;
@@ -1939,8 +2307,7 @@ function(D)
       UniteBlistList(v, niv, old[i]);
     fi;
   od;
-  C := InducedSubdigraph(D, ListBlist(v, niv));
-  return C;
+  return InducedSubdigraph(D, ListBlist(v, niv));
 end);
 
 InstallMethod(DigraphRemoveAllMultipleEdges,
@@ -1981,30 +2348,24 @@ function(D)
   return D;
 end);
 
-InstallMethod(DigraphAddAllLoops, "for a digraph by out-neighbours",
-[IsDigraphByOutNeighboursRep],
+InstallMethod(DigraphAddAllLoops, "for a digraph", [IsDigraph],
 function(D)
-  local ismulti, C, list, v;
-  if HasIsReflexiveDigraph(D) and IsReflexiveDigraph(D) then
-    return D;
-  fi;
-  ismulti := IsMultiDigraph(D);
+  local C, v;
   C := DigraphMutableCopyIfImmutable(D);
-  list := C!.OutNeighbours;
-  Assert(1, IsMutable(list));
-  for v in DigraphVertices(C) do
-    if not v in list[v] then
-      Add(list[v], v);
-      if not ismulti then
-        SetDigraphEdgeLabel(C, v, v, 1);
+
+  if not (HasIsReflexiveDigraph(D) and IsReflexiveDigraph(D)) then
+    for v in DigraphVertices(C) do
+      if not IsDigraphEdge(D, v, v) then
+        DigraphAddEdge(C, v, v);
       fi;
-    fi;
-  od;
+    od;
+  fi;
+
   if IsImmutableDigraph(D) then
     MakeImmutable(C);
     SetDigraphAddAllLoopsAttr(D, C);
     SetIsReflexiveDigraph(C, true);
-    SetIsMultiDigraph(C, ismulti);
+    SetIsMultiDigraph(C, IsMultiDigraph(D));
     SetDigraphHasLoops(C, DigraphHasAVertex(C));
   fi;
   return C;
@@ -2450,35 +2811,37 @@ InstallMethod(DigraphReflexiveTransitiveReductionAttr,
 "for an immutable digraph",
 [IsImmutableDigraph], DigraphReflexiveTransitiveReduction);
 
-InstallMethod(UndirectedSpanningForest, "for a digraph by out-neighbours",
-[IsDigraphByOutNeighboursRep],
+InstallMethod(UndirectedSpanningForest,
+"for a mutable digraph by out-neighbours",
+[IsMutableDigraph and IsDigraphByOutNeighboursRep],
+function(D)
+  if DigraphHasNoVertices(D) then
+    return fail;
+  fi;
+  MaximalSymmetricSubdigraph(D);
+  D!.OutNeighbours := DIGRAPH_SYMMETRIC_SPANNING_FOREST(D!.OutNeighbours);
+  ClearDigraphEdgeLabels(D);
+  return D;
+end);
+
+InstallMethod(UndirectedSpanningForest, "for an immutable digraph",
+[IsImmutableDigraph], UndirectedSpanningForestAttr);
+
+InstallMethod(UndirectedSpanningForestAttr, "for an immutable digraph",
+[IsImmutableDigraph and IsDigraphByOutNeighboursRep],
 function(D)
   local C;
   if DigraphHasNoVertices(D) then
     return fail;
   fi;
-  C := MaximalSymmetricSubdigraph(D)!.OutNeighbours;
-  C := DIGRAPH_SYMMETRIC_SPANNING_FOREST(C);
-  if IsMutableDigraph(D) then
-    D!.OutNeighbours := C;
-    ClearDigraphEdgeLabels(D);
-    return D;
-  fi;
+  C := MaximalSymmetricSubdigraph(D);
+  C := DIGRAPH_SYMMETRIC_SPANNING_FOREST(C!.OutNeighbours);
   C := ConvertToImmutableDigraphNC(C);
-  SetUndirectedSpanningForestAttr(D, C);
   SetIsUndirectedForest(C, true);
   SetIsMultiDigraph(C, false);
   SetDigraphHasLoops(C, false);
   return C;
 end);
-
-InstallMethod(UndirectedSpanningForest,
-"for a digraph with known undirected spanning forest",
-[IsDigraph and HasUndirectedSpanningForestAttr], SUM_FLAGS,
-UndirectedSpanningForestAttr);
-
-InstallMethod(UndirectedSpanningForestAttr, "for an immutable digraph",
-[IsImmutableDigraph], UndirectedSpanningForest);
 
 InstallMethod(UndirectedSpanningTree, "for a mutable digraph",
 [IsMutableDigraph],
@@ -2781,7 +3144,8 @@ function(D)
   # Ensure that InducedSubdigraph is given a digraph with vertex labels equal
   # to DigraphVertices(D).
   SetDigraphVertexLabels(G, DigraphVertices(G));
-  G     := InducedSubdigraph(G, Difference(DigraphVertices(G), DigraphLoops(G)));
+  G     := InducedSubdigraph(G, Difference(DigraphVertices(G),
+                                           DigraphLoops(G)));
   lab   := DigraphVertexLabels(G);
   G     := DigraphSymmetricClosure(G);
   mateG := DIGRAPHS_MaximalMatching(G);
@@ -2799,3 +3163,81 @@ function(D)
   M := List(DigraphLoops(D), x -> [x, x]);
   return Union(M, DIGRAPHS_MateToMatching(D, mateD));
 end);
+
+# The following function is a transliteration from python to GAP of
+# the function find_nonsemimodular_pair
+# in sage/src/sage/combinat/posets/hasse_diagram.py
+
+BindGlobal("DIGRAPHS_NonSemimodularPair",
+function(nbs)
+  local n, covers, covers_len, a, covers_a, b, e, a_i, b_i;
+  n := Length(nbs);
+
+  for e in [1 .. n] do
+    covers := nbs[e];
+    covers_len := Length(covers);
+    if covers_len < 2 then
+        continue;
+    fi;
+    for a_i in [1 .. covers_len] do
+      a := covers[a_i];
+      covers_a := nbs[a];
+      for b_i in [1 .. a_i] do
+        b := covers[b_i];
+        if not ForAny(nbs[b], j -> j in covers_a) then
+          return [a, b];
+        fi;
+      od;
+    od;
+  od;
+
+  return fail;
+end);
+
+InstallMethod(NonUpperSemimodularPair, "for a digraph",
+[IsDigraphByOutNeighboursRep],
+function(D)
+  if not IsLatticeDigraph(D) then
+    ErrorNoReturn("the argument (a digraph) is not a lattice");
+  fi;
+  D := DigraphReflexiveTransitiveReduction(DigraphMutableCopyIfMutable(D));
+  return DIGRAPHS_NonSemimodularPair(OutNeighbours(D));
+end);
+
+InstallMethod(NonLowerSemimodularPair, "for a digraph",
+[IsDigraphByOutNeighboursRep],
+function(D)
+  if not IsLatticeDigraph(D) then
+    ErrorNoReturn("the argument (a digraph) is not a lattice");
+  fi;
+  D := DigraphReflexiveTransitiveReduction(DigraphMutableCopyIfMutable(D));
+  return DIGRAPHS_NonSemimodularPair(InNeighbours(D));
+end);
+
+InstallMethod(IsUpperSemimodularDigraph, "for a digraph",
+[IsDigraphByOutNeighboursRep],
+function(D)
+  if not IsLatticeDigraph(D) then
+    return false;
+  fi;
+  D := DigraphReflexiveTransitiveReduction(DigraphMutableCopyIfMutable(D));
+  return DIGRAPHS_NonSemimodularPair(OutNeighbours(D)) = fail;
+end);
+
+InstallMethod(IsLowerSemimodularDigraph, "for a digraph",
+[IsDigraphByOutNeighboursRep],
+function(D)
+  if not IsLatticeDigraph(D) then
+    return false;
+  fi;
+  D := DigraphReflexiveTransitiveReduction(DigraphMutableCopyIfMutable(D));
+  return DIGRAPHS_NonSemimodularPair(InNeighbours(D)) = fail;
+end);
+
+InstallMethod(DigraphJoinTable, "for a digraph",
+[IsDigraph],
+D -> DIGRAPHS_IsJoinSemilatticeAndJoinTable(D)[2]);
+
+InstallMethod(DigraphMeetTable, "for a digraph",
+[IsDigraph],
+D -> DIGRAPHS_IsMeetSemilatticeAndMeetTable(D)[2]);

@@ -25,6 +25,7 @@ DeclareAttribute("KuratowskiOuterPlanarSubdigraph", IsDigraph);
 DeclareAttribute("SubdigraphHomeomorphicToK23", IsDigraph);
 DeclareAttribute("SubdigraphHomeomorphicToK4", IsDigraph);
 DeclareAttribute("SubdigraphHomeomorphicToK33", IsDigraph);
+DeclareAttribute("DualPlanarGraph", IsDigraph);
 
 # Properties . . .
 

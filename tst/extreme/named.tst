@@ -41,14 +41,13 @@ gap> failed;
 [  ]
 
 #  DIGRAPHS_UnbindVariables
-gap> Unbind(f);
-gap> Unbind(r);
-gap> Unbind(names);
-gap> Unbind(name);
-gap> Unbind(properties);
-gap> Unbind(failed);
 gap> Unbind(D);
+gap> Unbind(failed);
+gap> Unbind(name);
+gap> Unbind(names);
 gap> Unbind(prop);
+gap> Unbind(properties);
+gap> Unbind(r);
 
 #
 gap> DIGRAPHS_StopTest();

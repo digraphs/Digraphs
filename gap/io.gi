@@ -36,8 +36,7 @@ function(string, substring)
 
   if Length(string) = 0 then
     return [];
-  fi;
-  if Length(substring) = 1 then
+  elif Length(substring) = 1 then
     return SplitString(string, substring);
   fi;
 
@@ -104,8 +103,7 @@ function(file, D)
   g := DigraphGroup(D);
   if IsTrivial(g) then
     TryNextMethod();
-  fi;
-  if IO_Write(file, "DIGG") = fail then
+  elif IO_Write(file, "DIGG") = fail then
     return IO_Error;
   fi;
   out := [GeneratorsOfGroup(g),
@@ -170,7 +168,7 @@ end;
 ################################################################################
 
 InstallGlobalFunction(IteratorFromDigraphFile,
-function(arg)
+function(arg...)
   local filename, decoder, file, record;
 
   if Length(arg) = 1 then
@@ -211,7 +209,8 @@ function(arg)
     fi;
   end;
 
-  record.ShallowCopy := function(iter)
+  # TODO store filename, decoder in iter?
+  record.ShallowCopy := function(_)
     local file;
     file := DigraphFile(UserHomeExpand(filename), decoder, "r");
     return rec(file := file, current := file!.coder(file));
@@ -315,7 +314,7 @@ function(filename)
 end);
 
 InstallGlobalFunction(DigraphFile,
-function(arg)
+function(arg...)
   local coder, mode, name, file;
 
   # defaults
@@ -375,7 +374,7 @@ function(arg)
 end);
 
 InstallGlobalFunction(ReadDigraphs,
-function(arg)
+function(arg...)
   local nr, decoder, name, file, i, next, out;
 
   # defaults
@@ -400,7 +399,7 @@ function(arg)
   fi;
 
   if not (IsString(name) or IsFile(name)) then
-    ErrorNoReturn("the 1st argument <filenname> must be a string or IO ",
+    ErrorNoReturn("the 1st argument <filename> must be a string or IO ",
                   "file object,");
   elif not (IsFunction(decoder) or decoder = fail) then
     ErrorNoReturn("the argument <decoder> must be a function or fail,");
@@ -456,7 +455,7 @@ function(arg)
 end);
 
 InstallGlobalFunction(WriteDigraphs,
-function(arg)
+function(arg...)
   local name, digraphs, encoder, mode, splitname, compext, g6sum, s6sum, v, e,
         dg6sum, ds6sum, file, D, i;
 
@@ -499,9 +498,7 @@ function(arg)
     ErrorNoReturn("the argument <encoder> must be a function or fail,");
   elif not mode in ["a", "w"] then
     ErrorNoReturn("the argument <mode> must be \"a\" or \"w\",");
-  fi;
-
-  if IsString(name) and not IsExistingFile(name) then
+  elif IsString(name) and not IsExistingFile(name) then
     mode := "w";
   fi;
 
@@ -599,7 +596,7 @@ end);
 
 InstallMethod(DigraphFromGraph6StringCons, "for IsMutableDigraph and a string",
 [IsMutableDigraph, IsString],
-function(func, s)
+function(filt, s)
   local FindCoord, list, n, start, maxedges, out, pos, nredges, i, bpos, edge,
   j;
 
@@ -676,13 +673,13 @@ function(func, s)
     od;
     pos := pos + 6;
   od;
-  return DigraphNC(IsMutableDigraph, out);
+  return DigraphNC(filt, out);
 end);
 
 InstallMethod(DigraphFromGraph6StringCons,
 "for IsImmutableDigraph and a string",
 [IsImmutableDigraph, IsString],
-function(filt, s)
+function(_, s)
   local D;
   D := MakeImmutable(DigraphFromGraph6StringCons(IsMutableDigraph, s));
   SetIsSymmetricDigraph(D, true);
@@ -698,9 +695,10 @@ DigraphFromGraph6StringCons);
 InstallMethod(DigraphFromGraph6String, "for a string", [IsString],
 s -> DigraphFromGraph6String(IsImmutableDigraph, s));
 
-InstallMethod(DigraphFromDigraph6StringCons, "for IsMutableDigraph and a string",
+InstallMethod(DigraphFromDigraph6StringCons,
+"for IsMutableDigraph and a string",
 [IsMutableDigraph, IsString],
-function(func, s)
+function(filt, s)
   local legacy, list, n, start, i, range, source, pos, len, j, bpos, tabpos;
   # NOTE: this package originally used a version of digraph6 that reads down
   # the columns of an adjacency matrix, and appends a '+' to the start.  This
@@ -779,12 +777,12 @@ function(func, s)
   od;
 
   if legacy then  # source and range are reversed
-    return DigraphNC(IsMutableDigraph,
+    return DigraphNC(filt,
                  rec(DigraphNrVertices := n,
                      DigraphSource     := range,
                      DigraphRange      := source));
   fi;
-  return DigraphNC(IsMutableDigraph,
+  return DigraphNC(filt,
                rec(DigraphNrVertices := n,
                    DigraphRange      := range,
                    DigraphSource     := source));
@@ -804,7 +802,7 @@ InstallMethod(DigraphFromDigraph6String, "for a string",
 
 InstallMethod(DigraphFromSparse6StringCons, "for IsMutableDigraph and a string",
 [IsMutableDigraph, IsString],
-function(func, s)
+function(filt, s)
   local list, n, start, blist, pos, num, bpos, k, range, source, len, v, i,
   finish, x, j;
 
@@ -912,7 +910,7 @@ function(func, s)
 
   range := range + 1;
   source := source + 1;
-  return DigraphNC(IsMutableDigraph, (rec(DigraphNrVertices := n,
+  return DigraphNC(filt, (rec(DigraphNrVertices := n,
                                       DigraphRange := range,
                                       DigraphSource := source)));
 end);
@@ -920,7 +918,7 @@ end);
 InstallMethod(DigraphFromSparse6StringCons,
 "for IsImmutableDigraph and a string",
 [IsImmutableDigraph, IsString],
-function(filt, s)
+function(_, s)
   local D;
   D := MakeImmutable(DigraphFromSparse6String(IsMutableDigraph, s));
   SetIsSymmetricDigraph(D, true);
@@ -928,8 +926,7 @@ function(filt, s)
 end);
 
 InstallMethod(DigraphFromSparse6String, "for a function and a string",
-[IsFunction, IsString],
-DigraphFromSparse6StringCons);
+[IsFunction, IsString], DigraphFromSparse6StringCons);
 
 InstallMethod(DigraphFromSparse6String, "for a string",
 [IsString],
@@ -1063,9 +1060,9 @@ function(func, s)
   od;
   range := range + 1;
   source := source + 1;
-  return DigraphNC(IsMutableDigraph, (rec(DigraphNrVertices := n,
-                                      DigraphRange      := range,
-                                      DigraphSource     := source)));
+  return DigraphNC(func, (rec(DigraphNrVertices := n,
+                              DigraphRange      := range,
+                              DigraphSource     := source)));
 end);
 
 InstallMethod(DigraphFromDiSparse6StringCons,
@@ -1106,21 +1103,19 @@ InstallMethod(DigraphFromPlainTextStringCons,
 "for IsMutableDigraph and a string", [IsMutableDigraph, IsString],
 function(filt, s)
   local f;
-  f := x -> DigraphByEdges(IsMutableDigraph, x);
+  f := x -> DigraphByEdges(filt, x);
   return DIGRAPHS_PlainTextLineDecoder(f, "  ", " ", 1)(Chomp(s));
 end);
 
 InstallMethod(DigraphFromPlainTextStringCons,
 "for IsImmutableDigraph and a string", [IsImmutableDigraph, IsString],
-{filt, s} -> MakeImmutable(DigraphFromPlainTextStringCons(IsMutableDigraph, s)));
+{_, s} -> MakeImmutable(DigraphFromPlainTextStringCons(IsMutableDigraph, s)));
 
 InstallMethod(DigraphFromPlainTextString, "for a function and a string",
-[IsFunction, IsString],
-DigraphFromPlainTextStringCons);
+[IsFunction, IsString], DigraphFromPlainTextStringCons);
 
 InstallMethod(DigraphFromPlainTextString, "for a string",
-[IsString],
-s -> DigraphFromPlainTextString(IsImmutableDigraph, s));
+[IsString], s -> DigraphFromPlainTextString(IsImmutableDigraph, s));
 
 # DIMACS format: for symmetric digraphs, one per file, can have loops and
 # multiple edges.
@@ -1258,6 +1253,7 @@ BindGlobal("DIGRAPHS_TournamentLineDecoder",
 function(func, s)
   local out, pos, n, i, j;
   pos := 0;
+  s := Chomp(s);
   n := (Sqrt(8 * Length(s) + 1) + 1) / 2;
   out := List([1 .. n], x -> []);
   for i in [1 .. n - 1] do
@@ -1613,10 +1609,20 @@ function(D)
   return List(list, i -> CharInt(i + 63));
 end);
 
+BindGlobal("DIGRAPHS_AddBinary",
+function(blist, k, nextbit, i)
+  local b;
+  for b in [1 .. k] do
+    blist[nextbit] := Int((i mod (2 ^ (k - b + 1))) / (2 ^ (k - b))) = 1;
+    nextbit := nextbit + 1;
+  od;
+  return nextbit;
+end);
+
 InstallMethod(Sparse6String, "for a digraph by out-neighbours",
 [IsDigraphByOutNeighboursRep],
 function(D)
-  local list, n, lenlist, adj, nredges, k, blist, v, nextbit, AddBinary, i, j,
+  local list, n, lenlist, adj, nredges, k, blist, v, nextbit, i, j,
         bitstopad, pos, block;
   if not IsSymmetricDigraph(D) then
     ErrorNoReturn("the argument <D> must be a symmetric digraph,");
@@ -1651,13 +1657,6 @@ function(D)
   blist := BlistList([1 .. nredges * (k + 1) / 2], []);
   v := 0;
   nextbit := 1;
-  AddBinary := function(blist, i)
-    local b;
-    for b in [1 .. k] do
-      blist[nextbit] := Int((i mod (2 ^ (k - b + 1))) / (2 ^ (k - b))) = 1;
-      nextbit := nextbit + 1;
-    od;
-  end;
   for i in [1 .. Length(adj)] do
     for j in adj[i] do
       if i < j then
@@ -1671,13 +1670,12 @@ function(D)
         v := v + 1;
       elif i > v + 2 then
         blist[nextbit] := true;
-        nextbit := nextbit + 1;
-        AddBinary(blist, i - 1);
+        nextbit := DIGRAPHS_AddBinary(blist, k, nextbit + 1, i - 1);
         v := i - 1;
         blist[nextbit] := false;
         nextbit := nextbit + 1;
       fi;
-      AddBinary(blist, j - 1);
+      nextbit := DIGRAPHS_AddBinary(blist, k, nextbit, j - 1);
     od;
   od;
 
@@ -1724,7 +1722,7 @@ InstallMethod(DiSparse6String, "for a digraph by out-neighbours",
 [IsDigraphByOutNeighboursRep],
 function(D)
   local list, n, lenlist, adj, source_i, range_i, source_d, range_d, len1,
-  len2, sort_d, perm, sort_i, k, blist, v, nextbit, AddBinary, bitstopad,
+  len2, sort_d, perm, sort_i, k, blist, v, nextbit, bitstopad,
   pos, block, i, j;
 
   list := [];
@@ -1803,13 +1801,6 @@ function(D)
   blist := [];
   v := 0;
   nextbit := 1;
-  AddBinary := function(blist, i)
-    local b;
-    for b in [1 .. k] do
-      blist[nextbit] := Int((i mod (2 ^ (k - b + 1))) / (2 ^ (k - b))) = 1;
-      nextbit := nextbit + 1;
-    od;
-  end;
   for i in [1 .. Length(source_d)] do
     if source_d[i] = v then
       blist[nextbit] := false;
@@ -1820,19 +1811,17 @@ function(D)
       v := v + 1;
     elif source_d[i] > v + 1 then  # is this check necessary
       blist[nextbit] := true;
-      nextbit := nextbit + 1;
-      AddBinary(blist, source_d[i]);
+      nextbit := DIGRAPHS_AddBinary(blist, k, nextbit + 1, source_d[i]);
       v := source_d[i];
       blist[nextbit] := false;
       nextbit := nextbit + 1;
     fi;
-    AddBinary(blist, range_d[i]);
+    nextbit := DIGRAPHS_AddBinary(blist, k, nextbit, range_d[i]);
   od;
 
   # Add a separation symbol (1 n).
   blist[nextbit] := true;
-  nextbit := nextbit + 1;
-  AddBinary(blist, n);
+  nextbit := DIGRAPHS_AddBinary(blist, k, nextbit + 1, n);
 
   # Repeat everything for increasing edges
   v := 0;
@@ -1846,13 +1835,12 @@ function(D)
       v := v + 1;
     elif range_i[i] > v + 1 then  # is this check necessary
       blist[nextbit] := true;
-      nextbit := nextbit + 1;
-      AddBinary(blist, range_i[i]);
+      nextbit := DIGRAPHS_AddBinary(blist, k, nextbit + 1, range_i[i]);
       v := range_i[i];
       blist[nextbit] := false;
       nextbit := nextbit + 1;
     fi;
-    AddBinary(blist, source_i[i]);
+    nextbit := DIGRAPHS_AddBinary(blist, k, nextbit, source_i[i]);
   od;
 
   # Add padding bits:

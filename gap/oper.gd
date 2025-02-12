@@ -35,6 +35,9 @@ DeclareOperation("DigraphReverseEdges", [IsDigraph, IsList]);
 
 DeclareOperation("DigraphClosure", [IsDigraph, IsPosInt]);
 
+DeclareOperation("DigraphContractEdge", [IsDigraph, IsPosInt, IsPosInt]);
+DeclareOperation("DigraphContractEdge", [IsDigraph, IsDenseList]);
+
 # 3. Ways of combining digraphs . . .
 DeclareGlobalFunction("DigraphDisjointUnion");
 DeclareGlobalFunction("DigraphJoin");
@@ -125,6 +128,7 @@ DeclareOperation("IteratorOfPaths", [IsList, IsPosInt, IsPosInt]);
 DeclareOperation("IteratorOfPathsNC", [IsList, IsPosInt, IsPosInt]);
 DeclareOperation("IsReachable", [IsDigraph, IsPosInt, IsPosInt]);
 DeclareOperation("DigraphLongestDistanceFromVertex", [IsDigraph, IsPosInt]);
+DeclareOperation("DigraphRandomWalk", [IsDigraph, IsPosInt, IsInt]);
 
 DeclareOperation("DigraphLayers", [IsDigraph, IsPosInt]);
 DeclareAttribute("DIGRAPHS_Layers", IsDigraph, "mutable");
@@ -136,8 +140,12 @@ DeclareOperation("DigraphShortestDistance", [IsDigraph, IsList]);
 DeclareOperation("DigraphShortestPath", [IsDigraph, IsPosInt, IsPosInt]);
 DeclareOperation("DigraphShortestPathSpanningTree", [IsDigraph, IsPosInt]);
 DeclareOperation("VerticesReachableFrom", [IsDigraph, IsPosInt]);
+DeclareOperation("VerticesReachableFrom", [IsDigraph, IsList]);
+DeclareOperation("IsOrderIdeal", [IsDigraph, IsList]);
+DeclareOperation("IsOrderFilter", [IsDigraph, IsList]);
 DeclareOperation("Dominators", [IsDigraph, IsPosInt]);
 DeclareOperation("DominatorTree", [IsDigraph, IsPosInt]);
+DeclareOperation("DigraphCycleBasis", [IsDigraph]);
 
 # 10. Operations for vertices . . .
 DeclareOperation("PartialOrderDigraphJoinOfVertices",

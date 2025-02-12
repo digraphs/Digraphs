@@ -50,6 +50,8 @@ DeclareProperty("IsTransitiveDigraph", IsDigraph);
 DeclareProperty("IsJoinSemilatticeDigraph", IsDigraph);
 DeclareProperty("IsMeetSemilatticeDigraph", IsDigraph);
 DeclareProperty("IsPermutationDigraph", IsDigraph);
+DeclareProperty("IsDistributiveLatticeDigraph", IsDigraph);
+DeclareProperty("IsModularLatticeDigraph", IsDigraph);
 DeclareSynonymAttr("IsLatticeDigraph",
                    IsMeetSemilatticeDigraph and IsJoinSemilatticeDigraph);
 DeclareSynonymAttr("IsPreorderDigraph",
@@ -67,8 +69,8 @@ DeclareSynonymAttr("IsAntiSymmetricDigraph", IsAntisymmetricDigraph);
 DeclareSynonymAttr("IsNullDigraph", IsEmptyDigraph);
 DeclareSynonymAttr("IsQuasiorderDigraph", IsPreorderDigraph);
 
-DeclareOperation("DIGRAPHS_IsMeetJoinSemilatticeDigraph",
-                 [IsHomogeneousList]);
+DeclareOperation("DIGRAPHS_IsJoinSemilatticeAndJoinTable", [IsDigraph]);
+DeclareOperation("DIGRAPHS_IsMeetSemilatticeAndMeetTable", [IsDigraph]);
 
 InstallTrueMethod(IsAcyclicDigraph, IsChainDigraph);
 InstallTrueMethod(IsAcyclicDigraph, IsDigraph and IsDirectedTree);

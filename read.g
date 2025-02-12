@@ -8,7 +8,7 @@
 #############################################################################
 ##
 
-if not DIGRAPHS_IsGrapeLoaded then
+if not DIGRAPHS_IsGrapeLoaded() then
   Add(DIGRAPHS_OmitFromTests, "Graph(");
 fi;
 
@@ -40,3 +40,4 @@ ReadPackage("digraphs", "gap/orbits.gi");
 ReadPackage("digraphs", "gap/cliques.gi");
 ReadPackage("digraphs", "gap/planar.gi");
 ReadPackage("digraphs", "gap/examples.gi");
+ReadPackage("digraphs", "gap/weights.gi");

@@ -192,7 +192,7 @@
 
       <Mark>for a Grape package graph</Mark>
       <Item>
-        if <A>obj</A> is a &Grape; package graph (i.e. a record for which the
+        if <A>obj</A> is a &GRAPE; package graph (i.e. a record for which the
         function <C>IsGraph</C> returns <K>true</K>), then this function returns
         a digraph isomorphic to <A>obj</A>.
       </Item>
@@ -421,33 +421,52 @@ gap> D := DigraphByInNeighbours(IsMutableDigraph,
 
 <#GAPDoc Label="AsDigraph">
 <ManSection>
-  <Oper Name="AsDigraph" Arg="[filt, ]f[, n]"
-    Label="for a transformation or perm"/>
+  <Oper Name="AsDigraph" Arg="[filt, ]f[, n]" Label="for a binary relation"/>
   <Returns>A digraph, or <K>fail</K>.</Returns>
   <Description>
-    If <A>f</A> is a transformation or permutation,
-    and <A>n</A> is a non-negative integer
-    such that the restriction of <A>f</A> to <C>[1..<A>n</A>]</C> defines
-    a function of <C>[1..<A>n</A>]</C>, then <C>AsDigraph</C>
-    returns the functional digraph with <A>n</A> vertices defined by
-    <A>f</A>. See <Ref Prop="IsFunctionalDigraph"/>.
+
+      If <A>f</A> is a binary relation represented as one of the following in
+        &GAP;:
+      <List>
+        <Mark>
+          a transformation
+        </Mark>
+        <Item>
+          satisfying <Ref Filt="IsTransformation" BookName="ref"/>;
+        </Item>
+        <Mark>
+          a permutation
+        </Mark>
+        <Item>
+          satisfying <Ref Filt="IsPerm" BookName="ref"/>;
+        </Item>
+        <Mark>
+          a partial perm
+        </Mark>
+        <Item>
+          satisfying <Ref Filt="IsPartialPerm" BookName="ref"/>;
+        </Item>
+        <Mark>
+          a binary relation
+        </Mark>
+        <Item>
+          satisfying <Ref Filt="IsBinaryRelation" BookName="ref"/>;
+        </Item>
+      </List>
+      and <A>n</A> is a non-negative integer, then <C>AsDigraph</C> attempts
+      to construct a digraph with <A>n</A> vertices whose edges are determined
+      by <A>f</A>.<P/>
+
+    The digraph returned by <C>AsDigraph</C> has for each vertex
+    <C>v</C> in <C>[1 .. <A>n</A>]</C>, an edge with source <C>v</C> and range
+    <C>v ^ <A>f</A></C>.  If <C>v ^ <A>f</A></C> is greater than <A>n</A> for any
+    <C>v</C>, then <K>fail</K> is returned.
     <P/>
 
-    Specifically, the digraph returned by <C>AsDigraph</C> has  <A>n</A> edges:
-    for each vertex <C>v</C> in <C>[1..<A>n</A>]</C>, there is a unique edge
-    with source <C>v</C>; this edge has range <C>v^<A>f</A></C>.
-    <P/>
-
-    If the optional second argument <A>n</A> is not supplied, then
-    the degree of the transformation <A>f</A>,
-    or the largest moved point of the permutation <A>f</A>,
-    as applicable, is used by default.  If the restriction of
-    <A>f</A> to <C>[1..<A>n</A>]</C> does not define a function of
-    <C>[1..<A>n</A>]</C>, then <C>AsDigraph(<A>f</A>, <A>n</A>)</C>
-    returns <K>fail</K>.
-    <P/>
-
-    See also <Ref Attr="AsTransformation"/>.
+    If the optional second argument <A>n</A> is not supplied, then the degree
+    of the transformation <A>f</A>, the largest moved point of the permutation
+    <A>f</A>, the maximum of the degree and the codegree of the partial perm
+    <A>f</A>, or as applicable, is used by default.  
     <P/>
 
     &STANDARD_FILT_TEXT;
@@ -733,7 +752,7 @@ gap> T := AsSemigroup(IsPartialPermSemigroup,
 gap> Size(T);
 20
 gap> D := GreensDClasses(T);;
-gap> List(D, x -> Size(x));
+gap> List(D, Size);
 [ 6, 12, 2 ]
 ]]></Example>
     </Description>
@@ -746,16 +765,39 @@ gap> List(D, x -> Size(x));
   <Returns>A digraph.</Returns>
   <Description>
     &STANDARD_FILT_TEXT;
+      
+    The other implemented filters are as follows:
+      <Ref Filt='IsConnectedDigraph'/>, <Ref Filt='IsSymmetricDigraph'/>, <Ref Filt='IsAcyclicDigraph'/>, <Ref Filt='IsEulerianDigraph'/>, <Ref Filt='IsHamiltonianDigraph'/>.<P/>
+      
+    For <Ref Filt='IsConnectedDigraph'/>, a random tree is first created independent of the value of <A>p</A>,
+      guaranteeing connectivity (with <M><A>n</A>-1</M> edges), and then edges are added between the remaining pairs
+      of vertices with probability approximately <A>p</A>.<P/>
+      
+    For <Ref Filt='IsHamiltonianDigraph'/>, a random Hamiltonian cycle is first created independent of the
+      value of <A>p</A> (with <A>n</A> edges), and then edges are added between the remaining pairs of vertices 
+      with probability approximately <A>p</A>.<P/>
+      
+    For <Ref Filt='IsEulerianDigraph'/>, a random Eulerian cycle is created where <A>p</A> influences how 
+      long the cycle will be. The cycle grows by randomly considering edges that extend the cycle, and 
+      adding an edge with probability approximately <A>p</A>. The cycle stops when we get back to the start vertex 
+      and have no more edges left to consider from it that extend the cycle further (any possible edge from the 
+      start vertex has either been added to the cycle, or rejected, leaving no more edges to consider). Thus 
+      <M><A>p</A> = 1</M> does not necessarily guarantee a complete digraph. Instead, it guarantees that all edges 
+      considered up to the point where the cycle stops, are added.<P/>
+      
+    For <Ref Filt='IsAcyclicDigraph'/> and <Ref Filt='IsSymmetricDigraph'/>, edges are added between any 
+      pairs of vertices with probability approximately <A>p</A>.<P/>
 
     If <A>n</A> is a positive integer, then this function returns a random
     digraph with <A>n</A> vertices and without multiple edges. The result
-    may or may not have loops.<P/>
+    may or may not have loops. If using <Ref Filt='IsAcyclicDigraph'/>, the resulting graph 
+      will not have any loops by definition.<P/>
 
     If the optional second argument <A>p</A> is a float with value
     <M>0 \leq </M> <A> p </A> <M> \leq 1</M>, then an edge will exist between each
     pair of vertices with probability approximately <A>p</A>.
     If <A>p</A> is not specified, then a random probability will be assumed
-    (chosen with uniform probability).
+    (chosen with uniform probability).<P/>
     <Log><![CDATA[
 gap> RandomDigraph(1000);
 <immutable digraph with 1000 vertices, 364444 edges>
@@ -763,6 +805,16 @@ gap> RandomDigraph(10000, 0.023);
 <immutable digraph with 10000 vertices, 2300438 edges>
 gap> RandomDigraph(IsMutableDigraph, 1000, 1 / 2);
 <mutable digraph with 1000 vertices, 499739 edges>
+gap> RandomDigraph(IsConnectedDigraph, 1000, 0.75);
+<immutable digraph with 1000 vertices, 750265 edges>
+gap> RandomDigraph(IsSymmetricDigraph, 1000);
+<immutable digraph with 1000 vertices, 329690 edges>
+gap> RandomDigraph(IsAcyclicDigraph, 1000, 0.25);
+<immutable digraph with 1000 vertices, 125070 edges>
+gap> RandomDigraph(IsHamiltonianDigraph, 1000, 0.5);
+<immutable digraph with 1000 vertices, 500327 edges>
+gap> RandomDigraph(IsEulerianDigraph, 1000, 0.5);
+<immutable digraph with 1000 vertices, 433869 edges>
 ]]></Log>
   </Description>
 </ManSection>

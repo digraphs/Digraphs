@@ -211,7 +211,7 @@ gap> DigraphRange(gr);
 [ 2, 3, 2 ]
 gap> gr;
 <immutable digraph with 3 vertices, 3 edges>
-gap> if DIGRAPHS_IsGrapeLoaded then
+gap> if DIGRAPHS_IsGrapeLoaded() then
 >   g := Graph(gr);
 >   if not Digraph(g) = gr then
 >     Print("fail");
@@ -295,10 +295,11 @@ gap> DigraphByEdges([["nonsense"]]);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `DigraphByEdgesCons' on 3 arguments
 gap> DigraphByEdges([["a", "b"]], 2);
-Error, the 1st argument <edges> must not contain values greater than 
-2, the 2nd argument <n>,
+Error, the 1st argument (list of edges) must be pairs of positive integers but\
+ found [ "a", "b" ] in position 1
 gap> DigraphByEdges([[1, 2, 3]], 3);
-Error, the 1st argument <edges> must be a list of pairs,
+Error, the 1st argument (list of edges) must be a list of lists of length 2, f\
+ound [ 1, 2, 3 ] (length 3 in position 1)
 gap> gr := DigraphByEdges(DigraphEdges(gr), 10);
 <immutable digraph with 10 vertices, 17 edges>
 gap> gr := DigraphByEdges([[1, 2]]);
@@ -306,14 +307,20 @@ gap> gr := DigraphByEdges([[1, 2]]);
 gap> gr := DigraphByEdges([[2, 1]]);
 <immutable digraph with 2 vertices, 1 edge>
 gap> gr := DigraphByEdges([[1, 2]], 1);
-Error, the 1st argument <edges> must not contain values greater than 
-1, the 2nd argument <n>,
+Error, the 1st argument (list of edges) must be pairs of positive integers <= 
+1 but found [ 1, 2 ] in position 1
 gap> gr := DigraphByEdges([], 3);
 <immutable empty digraph with 3 vertices>
 gap> gr := DigraphByEdges([]);
 <immutable empty digraph with 0 vertices>
 gap> gr = EmptyDigraph(0);
 true
+gap> DigraphByEdges([[1, 2], [3, 0]]);
+Error, the 1st argument (list of edges) must be pairs of positive integers but\
+ found [ 3, 0 ] in position 2
+gap> DigraphByEdges([12], 10);
+Error, the 1st argument (list of edges) must be a list of lists, but found int\
+eger in position 1
 
 #  DigraphByAdjacencyMatrix (by an integer matrix)
 
@@ -479,7 +486,8 @@ fail
 gap> f := ();;
 gap> D := AsDigraph(f);
 <immutable empty digraph with 0 vertices>
-gap> D = EmptyDigraph(0);;
+gap> D = EmptyDigraph(0);
+true
 gap> AsDigraph(f, 10);
 <immutable functional digraph with 10 vertices>
 gap> g := (1, 3, 7)(2, 6, 5, 8);;
@@ -510,6 +518,41 @@ gap> D := AsDigraph(IsMutableDigraph, h, 6);
 <mutable digraph with 6 vertices, 6 edges>
 gap> OutNeighbours(D);
 [ [ 1 ], [ 5 ], [ 2 ], [ 4 ], [ 3 ], [ 6 ] ]
+
+# AsDigraph for a partial perm
+gap> f := PartialPerm([]);;
+gap> D := AsDigraph(f);
+<immutable empty digraph with 0 vertices>
+gap> D = EmptyDigraph(0);
+true
+gap> AsDigraph(f, 10);
+<immutable empty digraph with 10 vertices>
+gap> x := AsPartialPerm((1, 3, 7)(2, 6, 5, 8));
+(1,3,7)(2,6,5,8)(4)
+gap> D := AsDigraph(x);
+<immutable digraph with 8 vertices, 8 edges>
+gap> AsDigraph(x, -1);
+Error, the 2nd argument <n> should be a non-negative integer,
+gap> AsDigraph(x, 0);
+<immutable empty digraph with 0 vertices>
+gap> D := AsDigraph(g, 10);
+<immutable functional digraph with 10 vertices>
+gap> AsDigraph(g, 7);
+fail
+gap> x := AsPartialPerm((2, 5, 3), 5);
+(1)(2,5,3)(4)
+gap> D := AsDigraph(IsMutableDigraph, x);
+<mutable digraph with 5 vertices, 5 edges>
+gap> AsDigraph(IsImmutableDigraph, x, 5);
+<immutable digraph with 5 vertices, 5 edges>
+gap> D = AsDigraph(IsImmutableDigraph, x, 5);
+true
+gap> D := AsDigraph(IsMutableDigraph, x, 6);
+<mutable digraph with 6 vertices, 5 edges>
+gap> OutNeighbours(D);
+[ [ 1 ], [ 5 ], [ 2 ], [ 4 ], [ 3 ], [  ] ]
+gap> AsDigraph(AsPartialPerm((2, 5, 3)), 2);
+fail
 
 #  RandomDigraph
 gap> IsImmutableDigraph(RandomDigraph(100, 0.2));
@@ -648,8 +691,8 @@ gap> D := [
 > "&G~sC~EocF?oC", "&F~lQG{IB?_", "&G~s[~EocF?oC", "&G~tKpCO{D?oC",
 > "&F~jrGcMB?_", "&I~|SrNCKNoR?{@OB?C", "&F~lQG{IB?_", "&F~irgcIB?_",
 > "&F~kqG{IB?_"];;
-gap> D := List(D, x -> DigraphFromDigraph6String(x));;
-gap> iso := [];; 
+gap> D := List(D, DigraphFromDigraph6String);;
+gap> iso := [];;
 gap> iso_distr := [];;
 gap> eq := [];;
 gap> eq_distr := [];;
@@ -680,7 +723,7 @@ gap> for i in [1 .. Length(D)] do
 >   fi;
 > od;
 
-# The total number of nonisomorphic digraphs generated, out of 100. 
+# The total number of nonisomorphic digraphs generated, out of 100.
 # There are 53 distinct lattices on 7 points according to OEIS A006966
 gap> Length(iso);
 41
@@ -1143,9 +1186,9 @@ gap> gr1 := EmptyDigraph(0);;
 gap> gr2 := DigraphCopy(gr1);
 <immutable empty digraph with 0 vertices>
 gap> String(gr2);
-"Digraph([ ])"
+"Digraph([  ])"
 gap> PrintString(gr2);
-"Digraph([ ])"
+"Digraph([  ])"
 gap> D := CycleDigraph(10 * 10 ^ 5);
 <immutable cycle digraph with 1000000 vertices>
 gap> D1 := DigraphCopy(D);
@@ -1312,7 +1355,7 @@ gap> list := [[1, 2], []];
 gap> D := DigraphNC(IsMutableDigraph, list);
 <mutable digraph with 2 vertices, 2 edges>
 gap> PrintString(D);
-"Digraph(IsMutableDigraph, [ [ 1, 2 ], [ ] ])"
+"Digraph(IsMutableDigraph, [ [ 1, 2 ], [  ] ])"
 gap> EvalString(String(D)) = D;
 true
 gap> DigraphByAdjacencyMatrix(IsMutableDigraph, []);
@@ -1487,7 +1530,7 @@ gap> gr;
 gap> Size(T);
 32
 gap> D := GreensDClasses(T);;
-gap> List(D, x -> Size(x));
+gap> List(D, Size);
 [ 6, 24, 2 ]
 gap> for i in [1 .. 3] do
 > for j in [1 .. 3] do
@@ -1514,7 +1557,7 @@ gap> T := AsSemigroup(IsPartialPermSemigroup, gr2, [G1, G2, G3, G4],
 > [[1, 3, hom13], [2, 3, hom23], [4, 1, hom41], [4, 2, hom42]]);;
 gap> Size(T);
 56
-gap> List(GreensDClasses(T), x -> Size(x));
+gap> List(GreensDClasses(T), Size);
 [ 6, 24, 2, 24 ]
 gap> List(GreensDClasses(T), x -> Size(x) = Size(GroupHClassOfGreensDClass(x)));
 [ true, true, true, true ]
@@ -1536,7 +1579,7 @@ gap> T := AsSemigroup(IsPartialPermSemigroup, gr4, [G1, G2, G3, G4, G5],
 > [[2, 1, hom21], [3, 1, hom31], [4, 1, hom41], [5, 2, hom52], [5, 3, hom53]]);;
 gap> Size(T);
 90
-gap> List(GreensDClasses(T), x -> Size(x));
+gap> List(GreensDClasses(T), Size);
 [ 24, 24, 6, 24, 12 ]
 gap> U := AsSemigroup(IsPartialPermSemigroup,
 > DigraphReverse(gr4),
@@ -1624,10 +1667,10 @@ gap> D := NullDigraph(IsMutableDigraph, 10);
 gap> MakeImmutable(D);
 <immutable empty digraph with 10 vertices>
 
-# 
+#
 gap> D := NullDigraph(10);
 <immutable empty digraph with 10 vertices>
-gap> if DIGRAPHS_IsGrapeLoaded then
+gap> if DIGRAPHS_IsGrapeLoaded() then
 >   D := Graph(D);
 >   if D <> rec(
 >       adjacencies := [[]],
@@ -1766,7 +1809,7 @@ gap> String(G);
 gap> D := Digraph([]);
 <immutable empty digraph with 0 vertices>
 gap> String(D);
-"Digraph([ ])"
+"Digraph([  ])"
 gap> D := CompleteDigraph(7);
 <immutable complete digraph with 7 vertices>
 gap> String(D);
@@ -1877,24 +1920,170 @@ true
 gap> OutNeighbours(OutNeighbours);
 Error, expected a digraph, not a function
 
+# Random Connected Digraph
+gap> for n in [1 .. 20] do
+>   graph := RandomDigraph(IsConnectedDigraph, n, 0);
+>   if DigraphNrEdges(graph) <> n - 1 then
+>     Print("False");
+>   fi;
+> od;
+gap> for n in [1 .. 20] do
+>   graph := RandomDigraph(IsConnectedDigraph, n, 1);
+>   if DigraphNrEdges(graph) <> (n * n) then
+>     Print("False");
+>   fi;
+> od;
+gap> for p in [1 .. 9] do
+>   graph := RandomDigraph(IsConnectedDigraph, 10, Float(p) / 10);
+>   if (not IsConnectedDigraph(graph)) or (IsMultiDigraph(graph)) then
+>     Print("False");
+>   fi;
+> od;
+gap> graph := RandomDigraph(IsConnectedDigraph, 10);;
+>   if not IsConnectedDigraph(graph) then
+>     Print("False");
+>   fi;
+
+# Random Strongly Connected Digraph
+gap> for n in [1 .. 20] do
+>   c := RandomDigraph(IsConnectedDigraph, n, 0);
+>   s := RandomDigraph(IsStronglyConnectedDigraph, n, 0);
+>   if DigraphNrEdges(c) > DigraphNrEdges(s) then
+>     Print("False");
+>   fi;
+> od;
+
+# Random Symmetric Digraph
+gap> for n in [1 .. 20] do
+>   graph := RandomDigraph(IsSymmetricDigraph, n, 0);
+>   if DigraphNrEdges(graph) <> 0 then
+>     Print("False");
+>   fi;
+> od;
+gap> for n in [1 .. 20] do
+>   graph := RandomDigraph(IsSymmetricDigraph, n, 1);
+>   if DigraphNrEdges(graph) <> (n * n) then
+>     Print("False");
+>   fi;
+> od;
+gap> for p in [1 .. 9] do
+>   graph := RandomDigraph(IsSymmetricDigraph, 10, Float(p) / 10);
+>   if (not IsSymmetricDigraph(graph)) or (IsMultiDigraph(graph)) then
+>     Print("False");
+>   fi;
+> od;
+gap> graph := RandomDigraph(IsSymmetricDigraph, 10);;
+>   if not IsSymmetricDigraph(graph) then
+>     Print("False");
+>   fi;
+
+# Random Hamiltonian Digraph
+gap> graph := RandomDigraph(IsHamiltonianDigraph, 1, 0);;
+>   if DigraphNrEdges(graph) <> 0 then
+>     Print("False");
+>   fi;
+gap> graph := RandomDigraph(IsHamiltonianDigraph, 1, 1);;
+>   if DigraphNrEdges(graph) <> 1 then
+>     Print("False");
+>   fi;
+gap> for n in [2 .. 20] do
+>   graph := RandomDigraph(IsHamiltonianDigraph, n, 0);
+>   if DigraphNrEdges(graph) <> n then
+>     Print("False");
+>   fi;
+> od;
+gap> for n in [1 .. 20] do
+>   graph := RandomDigraph(IsHamiltonianDigraph, n, 1);
+>   if DigraphNrEdges(graph) <> (n * n) then
+>     Print("False");
+>   fi;
+> od;
+gap> for p in [1 .. 9] do
+>   graph := RandomDigraph(IsHamiltonianDigraph, 10, Float(p) / 10);
+>   if (not IsHamiltonianDigraph(graph)) or (IsMultiDigraph(graph)) then
+>     Print("False");
+>   fi;
+> od;
+gap> graph := RandomDigraph(IsHamiltonianDigraph, 10);;
+>   if not IsHamiltonianDigraph(graph) then
+>     Print("False");
+>   fi;
+
+# Random Acyclic Digraph
+gap> for n in [1 .. 20] do
+>   graph := RandomDigraph(IsAcyclicDigraph, n, 0);
+>   if DigraphNrEdges(graph) <> 0 then
+>     Print("False");
+>   fi;
+> od;
+gap> for n in [1 .. 20] do
+>   graph := RandomDigraph(IsAcyclicDigraph, n, 1);
+>   if DigraphNrEdges(graph) <> (n * (n - 1)) / 2 then
+>     Print("False");
+>   fi;
+> od;
+gap> for p in [1 .. 9] do
+>   graph := RandomDigraph(IsAcyclicDigraph, 10, Float(p) / 10);
+>   if (not IsAcyclicDigraph(graph)) or (IsMultiDigraph(graph)) then
+>     Print("False");
+>   fi;
+> od;
+gap> graph := RandomDigraph(IsAcyclicDigraph, 10);;
+>   if not IsAcyclicDigraph(graph) then
+>     Print("False");
+>   fi;
+
+# Random Eulerian Digraph
+gap> graph := RandomDigraph(IsEulerianDigraph, 1, 0);;
+>   if DigraphNrEdges(graph) <> 0 then
+>     Print("False");
+>   fi;
+gap> graph := RandomDigraph(IsEulerianDigraph, 1, 1);;
+>   if DigraphNrEdges(graph) <> 1 then
+>     Print("False");
+>   fi;
+gap> for n in [2 .. 20] do
+>   graph := RandomDigraph(IsEulerianDigraph, n, 0);
+>   if DigraphNrEdges(graph) <> n then
+>     Print("False");
+>   fi;
+> od;
+gap> for p in [1 .. 9] do
+>   graph := RandomDigraph(IsEulerianDigraph, 10, Float(p) / 10);
+>   if (not IsEulerianDigraph(graph)) or (IsMultiDigraph(graph)) then
+>     Print("False");
+>   fi;
+> od;
+gap> graph := RandomDigraph(IsEulerianDigraph, 10);;
+>   if not IsEulerianDigraph(graph) then
+>     Print("False");
+>   fi;
+
 #  DIGRAPHS_UnbindVariables
+gap> Unbind(D);
+gap> Unbind(D1);
+gap> Unbind(D2);
 gap> Unbind(G);
+gap> Unbind(G1);
+gap> Unbind(G2);
+gap> Unbind(G3);
+gap> Unbind(G4);
+gap> Unbind(G5);
+gap> Unbind(S);
+gap> Unbind(T);
+gap> Unbind(U);
 gap> Unbind(adj);
 gap> Unbind(b);
-gap> Unbind(bddigraph);
-gap> Unbind(bdgroup);
 gap> Unbind(bin);
 gap> Unbind(d);
-gap> Unbind(D);
-gap> Unbind(ddigraph);
+gap> Unbind(di);
 gap> Unbind(digraph);
 gap> Unbind(divides);
 gap> Unbind(elms);
+gap> Unbind(eq);
 gap> Unbind(error);
 gap> Unbind(f);
 gap> Unbind(failed);
-gap> Unbind(failed_names);
-gap> Unbind(failed_values);
 gap> Unbind(foo);
 gap> Unbind(g);
 gap> Unbind(gr);
@@ -1903,33 +2092,48 @@ gap> Unbind(gr2);
 gap> Unbind(gr3);
 gap> Unbind(gr4);
 gap> Unbind(gr5);
-gap> Unbind(gr6);
+gap> Unbind(graph);
 gap> Unbind(graph1);
 gap> Unbind(graph2);
 gap> Unbind(grnc);
-gap> Unbind(group);
-gap> Unbind(grrt);
 gap> Unbind(h);
+gap> Unbind(hom13);
+gap> Unbind(hom21);
+gap> Unbind(hom23);
+gap> Unbind(hom31);
+gap> Unbind(hom41);
+gap> Unbind(hom42);
+gap> Unbind(hom52);
+gap> Unbind(hom53);
 gap> Unbind(i);
 gap> Unbind(im);
 gap> Unbind(inn);
+gap> Unbind(iso);
+gap> Unbind(j);
+gap> Unbind(list);
 gap> Unbind(m);
 gap> Unbind(main);
 gap> Unbind(mat);
 gap> Unbind(n);
 gap> Unbind(name);
-gap> Unbind(name2);
+gap> Unbind(names);
 gap> Unbind(new);
-gap> Unbind(out);
+gap> Unbind(p);
 gap> Unbind(prop);
-gap> Unbind(properties);
 gap> Unbind(r);
 gap> Unbind(r1);
 gap> Unbind(r2);
+gap> Unbind(record);
+gap> Unbind(rel1);
+gap> Unbind(rel2);
+gap> Unbind(rel3);
 gap> Unbind(s);
+gap> Unbind(sgn);
+gap> Unbind(temp);
 gap> Unbind(test);
 gap> Unbind(v);
 gap> Unbind(x);
+gap> Unbind(y);
 
 #
 gap> DIGRAPHS_StopTest();

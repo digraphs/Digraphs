@@ -77,9 +77,7 @@ function(imm, G, obj, act, adj)
   D := DigraphNC(imm, out);
 
   if IsImmutableDigraph(D) then
-    adj_func := function(u, v)
-      return adj(obj[u], obj[v]);
-    end;
+    adj_func := {u, v} -> adj(obj[u], obj[v]);
     SetFilterObj(D, IsDigraphWithAdjacencyFunction);
     SetDigraphAdjacencyFunction(D, adj_func);
     SetDigraphGroup(D, Range(hom));
@@ -104,7 +102,7 @@ function(G, gens)
   fi;
 
   # vertex i in the Cayley digraph corresponds to elts[i].
-  elts := AsList(G);
+  elts := AsSet(G);
   adj := {x, y} -> LeftQuotient(x, y) in gens;
 
   D := Digraph(IsImmutableDigraph, G, elts, OnLeftInverse, adj);
@@ -132,7 +130,7 @@ function(D)
          "the Grape graph will have fewer\n#I  edges than the original,");
   fi;
 
-  if not DIGRAPHS_IsGrapeLoaded then
+  if not DIGRAPHS_IsGrapeLoaded() then
     Info(InfoWarning, 1, "Grape is not loaded,");
   fi;
 
@@ -188,9 +186,7 @@ function(G, edges, n)
     ErrorNoReturn("the 3rd argument <n> must be a non-negative integer,");
   elif n = 0 then
     return EmptyDigraph(0);
-  fi;
-
-  if IsPosInt(edges[1]) then   # E consists of a single edge
+  elif IsPosInt(edges[1]) then   # E consists of a single edge
     edges := [edges];
   fi;
 

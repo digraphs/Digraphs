@@ -563,7 +563,7 @@ gap> FileString("dot/preset.dot", DotProrderDigraph(gr));
     <Oper Name="DotHighlightedDigraph" Arg="digraph, verts [, colour1, colour2]"/>
     <Returns>A string.</Returns>
     <Description>
-      <C>DotHighlightedDigraph</C> produces a graphical represenation of the
+      <C>DotHighlightedDigraph</C> produces a graphical representation of the
       digraph <A>digraph</A>, where the vertices in the list <A>verts</A>, and
       edges between them, are drawn with colour <A>colour1</A> and all other
       vertices and edges in <A>digraph</A> are drawn with colour <A>colour2</A>.

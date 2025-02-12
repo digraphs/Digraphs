@@ -20,7 +20,7 @@
 
     A <E>clique</E> of a digraph is a set of mutually adjacent vertices of the
     digraph. Loops and multiple edges are ignored for the purpose of
-    determining the clique number of a digraph. 
+    determining the clique number of a digraph.
     <Example><![CDATA[
 gap> D := CompleteDigraph(4);;
 gap> CliqueNumber(D);
@@ -285,8 +285,8 @@ gap> IsSymmetricDigraph(D);
 true
 gap> G := AutomorphismGroup(D);
 Group([ (5,6), (1,2), (1,5)(2,6)(3,4) ])
-gap> DigraphMaximalCliques(D);
-[ [ 1, 2, 3 ], [ 4, 5, 6 ], [ 3, 4 ] ]
+gap> AsSet(DigraphMaximalCliques(D));
+[ [ 1, 2, 3 ], [ 3, 4 ], [ 4, 5, 6 ] ]
 gap> DigraphMaximalCliquesReps(D);
 [ [ 1, 2, 3 ], [ 3, 4 ] ]
 gap> Orbit(G, [1, 2, 3], OnSets);
@@ -306,8 +306,8 @@ gap> IsSymmetricDigraph(D);
 true
 gap> G := AutomorphismGroup(D);
 Group([ (5,6), (1,2), (1,5)(2,6)(3,4) ])
-gap> DigraphMaximalCliques(D);
-[ [ 1, 2, 3 ], [ 4, 5, 6 ], [ 3, 4 ] ]]]></Example>
+gap> AsSet(DigraphMaximalCliques(D));
+[ [ 1, 2, 3 ], [ 3, 4 ], [ 4, 5, 6 ] ]]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>

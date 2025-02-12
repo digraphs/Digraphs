@@ -1,0 +1,9 @@
+/* digraphs.css: Digraphs-specific styles appended to manual.css by DigraphsMakeDoc */
+
+figure {
+    text-align: center;
+}
+
+figcaption {
+    margin: 1em 0;
+}

@@ -156,6 +156,10 @@ gap> gr := Digraph([[2], []]);
 <immutable digraph with 2 vertices, 1 edge>
 gap> DigraphStronglyConnectedComponents(gr);
 rec( comps := [ [ 2 ], [ 1 ] ], id := [ 2, 1 ] )
+gap> HasIsStronglyConnectedDigraph(gr);
+true
+gap> IsStronglyConnectedDigraph(gr);
+false
 gap> IsAcyclicDigraph(gr);
 true
 gap> gr := Digraph([[1, 2], []]);
@@ -168,6 +172,10 @@ gap> gr := Digraph([[2], [1]]);
 <immutable digraph with 2 vertices, 2 edges>
 gap> DigraphStronglyConnectedComponents(gr);
 rec( comps := [ [ 1, 2 ] ], id := [ 1, 1 ] )
+gap> HasIsStronglyConnectedDigraph(gr);
+true
+gap> IsStronglyConnectedDigraph(gr);
+true
 gap> IsAcyclicDigraph(gr);
 false
 gap> gr := Digraph([
@@ -561,6 +569,8 @@ gap> gr := Digraph([[2], [1]]);
 <immutable digraph with 2 vertices, 2 edges>
 gap> IsStronglyConnectedDigraph(gr);
 true
+gap> HasIsConnectedDigraph(gr);
+true
 gap> IsConnectedDigraph(gr);
 true
 gap> gr := Digraph([[2], [3], [], []]);
@@ -569,6 +579,14 @@ gap> IsConnectedDigraph(gr);
 false
 gap> gr := Digraph([[2], [3], [], [3]]);
 <immutable digraph with 4 vertices, 3 edges>
+gap> IsConnectedDigraph(gr);
+true
+gap> gr := Digraph([[2], [3], [], [3]]);
+<immutable digraph with 4 vertices, 3 edges>
+gap> DigraphConnectedComponents(gr);
+rec( comps := [ [ 1, 2, 3, 4 ] ], id := [ 1, 1, 1, 1 ] )
+gap> HasIsConnectedDigraph(gr);
+true
 gap> IsConnectedDigraph(gr);
 true
 
@@ -1208,6 +1226,58 @@ gap> IsMeetSemilatticeDigraph(gr);
 false
 gap> IsJoinSemilatticeDigraph(gr);
 false
+gap> D := DigraphReflexiveTransitiveClosure(ChainDigraph(10));
+<immutable preorder digraph with 10 vertices, 55 edges>
+gap> IsMeetSemilatticeDigraph(D);
+true
+gap> IsJoinSemilatticeDigraph(D);
+true
+gap> D := DigraphReflexiveTransitiveClosure(ChainDigraph(10));
+<immutable preorder digraph with 10 vertices, 55 edges>
+gap> IsJoinSemilatticeDigraph(D);
+true
+gap> IsMeetSemilatticeDigraph(D);
+true
+gap> D := DigraphAddVertex(D, 11);
+<immutable digraph with 11 vertices, 55 edges>
+gap> D := DigraphAddEdge(D, [11, 4]);
+<immutable digraph with 11 vertices, 56 edges>
+gap> D := DigraphReflexiveTransitiveClosure(D);
+<immutable preorder digraph with 11 vertices, 63 edges>
+gap> IsJoinSemilatticeDigraph(D);
+true
+gap> IsMeetSemilatticeDigraph(D);
+false
+gap> D := Digraph([[1], [2]]);
+<immutable digraph with 2 vertices, 2 edges>
+gap> IsJoinSemilatticeDigraph(D);
+false
+gap> D := ChainDigraph(IsMutable, 4);
+<mutable digraph with 4 vertices, 3 edges>
+gap> IsMeetSemilatticeDigraph(D);
+false
+gap> D;
+<mutable digraph with 4 vertices, 3 edges>
+gap> D := Digraph(IsMutable, [[2, 3], [4], [4], []]);
+<mutable digraph with 4 vertices, 4 edges>
+gap> DigraphReflexiveTransitiveClosure(D);
+<mutable digraph with 4 vertices, 9 edges>
+gap> IsJoinSemilatticeDigraph(D);
+true
+gap> D := Digraph([[1, 2, 2], [2]]);
+<immutable multidigraph with 2 vertices, 4 edges>
+gap> IsJoinSemilatticeDigraph(D);
+Error, the argument must not be a multidigraph,
+gap> IsMeetSemilatticeDigraph(D);
+Error, the argument must not be a multidigraph,
+gap> D := DigraphReflexiveTransitiveClosure(ChainDigraph(4));
+<immutable preorder digraph with 4 vertices, 10 edges>
+gap> AdjacencyMatrix(D);
+[ [ 1, 1, 1, 1 ], [ 0, 1, 1, 1 ], [ 0, 0, 1, 1 ], [ 0, 0, 0, 1 ] ]
+gap> IsJoinSemilatticeDigraph(D);
+true
+gap> IsMeetSemilatticeDigraph(D);
+true
 
 # Join semilattice on 9 vertices
 gap> gr := DigraphFromDiSparse6String(".HiR@AeNcC?oD?G`oAGXIoAGXAe_COqDK^F");
@@ -1226,6 +1296,66 @@ gap> IsJoinSemilatticeDigraph(gr);
 false
 gap> IsLatticeDigraph(gr);
 false
+
+# IsDistributiveLatticeDigraph
+gap> D := Digraph([[11, 10], [], [2], [2], [3], [4, 3], [6, 5], [7], [7],
+>      [8], [9, 8]]);
+<immutable digraph with 11 vertices, 14 edges>
+gap> IsDistributiveLatticeDigraph(D);
+false
+gap> D := DigraphReflexiveTransitiveClosure(D);
+<immutable preorder digraph with 11 vertices, 60 edges>
+gap> IsDistributiveLatticeDigraph(D);
+true
+gap> D := DigraphReflexiveTransitiveClosure(CycleDigraph(5));
+<immutable preorder digraph with 5 vertices, 25 edges>
+gap> IsDistributiveLatticeDigraph(D);
+false
+gap> D := Digraph([[2, 4], [3, 5], [9], [5, 6], [7], [7, 8], [9], [9], []]);
+<immutable digraph with 9 vertices, 12 edges>
+gap> D := DigraphReflexiveTransitiveClosure(D);
+<immutable preorder digraph with 9 vertices, 34 edges>
+gap> IsDistributiveLatticeDigraph(D);
+false
+gap> N5 := DigraphReflexiveTransitiveClosure(Digraph([[2, 4], [3], [5], [5], []]));
+<immutable preorder digraph with 5 vertices, 13 edges>
+gap> M5 := DigraphReflexiveTransitiveClosure(Digraph([[2, 3, 4], [5], [5], [5], []]));
+<immutable preorder digraph with 5 vertices, 12 edges>
+gap> IsDistributiveLatticeDigraph(N5) or IsDistributiveLatticeDigraph(M5);
+false
+gap> D := Digraph([[2, 4], [3, 4], [5], [5], []]);
+<immutable digraph with 5 vertices, 6 edges>
+gap> D := DigraphReflexiveTransitiveClosure(D);
+<immutable preorder digraph with 5 vertices, 14 edges>
+gap> IsDistributiveLatticeDigraph(D);
+true
+
+# IsModularLatticeDigraph
+gap>  D := Digraph([[11, 10], [], [2], [2], [3], [4, 3], [6, 5], [7], [7],
+>      [8], [9, 8]]);
+<immutable digraph with 11 vertices, 14 edges>
+gap> D := DigraphReflexiveTransitiveClosure(D);
+<immutable preorder digraph with 11 vertices, 60 edges>
+gap> IsModularLatticeDigraph(D);
+true
+gap> D := ChainDigraph(10);
+<immutable chain digraph with 10 vertices>
+gap> D := DigraphReflexiveTransitiveClosure(D);
+<immutable preorder digraph with 10 vertices, 55 edges>
+gap> IsModularLatticeDigraph(D);
+true
+gap> D := Digraph([[2, 4], [3, 5], [9], [5, 6], [7], [7, 8], [9], [9], []]);
+<immutable digraph with 9 vertices, 12 edges>
+gap> D := DigraphReflexiveTransitiveClosure(D);
+<immutable preorder digraph with 9 vertices, 34 edges>
+gap> IsModularLatticeDigraph(D);
+false
+gap> M3 := Digraph([[2, 3, 4], [5], [5], [5], []]);
+<immutable digraph with 5 vertices, 6 edges>
+gap> M3 := DigraphReflexiveTransitiveClosure(M3);
+<immutable preorder digraph with 5 vertices, 12 edges>
+gap> IsModularLatticeDigraph(M3);
+true
 
 # IsPartialOrderDigraph
 gap> gr := NullDigraph(5);
@@ -1763,10 +1893,14 @@ gap> HasIsMultiDigraph(D) and not IsMultiDigraph(D);
 true
 
 #  DIGRAPHS_UnbindVariables
+gap> Unbind(D);
+gap> Unbind(G);
+gap> Unbind(M5);
+gap> Unbind(N5);
 gap> Unbind(adj);
 gap> Unbind(circuit);
 gap> Unbind(complete100);
-gap> Unbind(G);
+gap> Unbind(g);
 gap> Unbind(g1);
 gap> Unbind(g2);
 gap> Unbind(g3);

@@ -117,7 +117,7 @@ end);
 ## Returns a list where the first position is the automorphism group, and the
 ## second is the canonical labelling.
 BindGlobal("BLISS_DATA",
-function(D, vert_colours, edge_colours, calling_function_name)
+function(D, vert_colours, edge_colours)
   if vert_colours <> fail then
     vert_colours := DIGRAPHS_ValidateVertexColouring(DigraphNrVertices(D),
                                                      vert_colours);
@@ -128,10 +128,7 @@ function(D, vert_colours, edge_colours, calling_function_name)
   return BLISS_DATA_NC(D, vert_colours, edge_colours);
 end);
 
-BindGlobal("BLISS_DATA_NO_COLORS",
-function(D)
-  return BLISS_DATA(D, fail, fail, "");
-end);
+BindGlobal("BLISS_DATA_NO_COLORS", D -> BLISS_DATA(D, fail, fail));
 
 if DIGRAPHS_NautyAvailable then
   BindGlobal("NAUTY_DATA",
@@ -181,12 +178,7 @@ end);
 
 InstallMethod(BlissCanonicalLabelling, "for a digraph and vertex coloring",
 [IsDigraph, IsHomogeneousList],
-function(D, colors)
-  return BLISS_DATA(D,
-                    colors,
-                    fail,
-                    "BlissCanonicalLabelling")[2];
-end);
+{D, colors} -> BLISS_DATA(D, colors, fail)[2]);
 
 InstallMethod(NautyCanonicalLabelling, "for a digraph",
 [IsDigraph],
@@ -292,35 +284,22 @@ function(D)
 end);
 
 InstallMethod(BlissAutomorphismGroup, "for a digraph and vertex coloring",
-[IsDigraph, IsHomogeneousList],
-function(D, colors)
-  return BLISS_DATA(D,
-                    colors,
-                    fail,
-                    "AutomorphismGroup")[1];
-end);
+[IsDigraph, IsHomogeneousList], {D, colors} -> BLISS_DATA(D, colors, fail)[1]);
 
 InstallMethod(BlissAutomorphismGroup,
 "for a digraph, vertex colouring, and edge colouring",
 [IsDigraph, IsHomogeneousList, IsList],
-function(digraph, vert_colours, edge_colours)
-  return BLISS_DATA(digraph,
-                    vert_colours,
-                    edge_colours,
-                    "AutomorphismGroup")[1];
-end);
+{digraph, vert_colours, edge_colours}
+-> BLISS_DATA(digraph, vert_colours, edge_colours)[1]);
 
 InstallMethod(BlissAutomorphismGroup,
 "for a digraph, fail, and edge colouring",
 [IsDigraph, IsBool, IsList],
 function(digraph, vert_colours, edge_colours)
-  if not vert_colours = fail then
+  if vert_colours <> fail then
     TryNextMethod();
   fi;
-  return BLISS_DATA(digraph,
-                    vert_colours,
-                    edge_colours,
-                    "AutomorphismGroup")[1];
+  return BLISS_DATA(digraph, vert_colours, edge_colours)[1];
 end);
 
 InstallMethod(NautyAutomorphismGroup, "for a digraph and vertex coloring",
@@ -410,9 +389,7 @@ function(C, D, c1, c2)
   od;
   if not ForAll(class_sizes, x -> x = 0) then
     return false;
-  fi;
-
-  if IsMultiDigraph(C) then
+  elif IsMultiDigraph(C) then
     act := OnMultiDigraphs;
   else
     act := OnDigraphs;
@@ -443,9 +420,7 @@ function(C, D)
     return [label1[1] / label2[1], label1[2] / label2[2]];
   elif C = D then
     return ();
-  fi;
-
-  if HasBlissCanonicalLabelling(C) and HasBlissCanonicalLabelling(D)
+  elif HasBlissCanonicalLabelling(C) and HasBlissCanonicalLabelling(D)
       or not ((HasNautyCanonicalLabelling(C)
                and NautyCanonicalLabelling(C) <> fail)
               or (HasNautyCanonicalLabelling(D)
@@ -491,9 +466,7 @@ function(C, D, c1, c2)
   od;
   if not ForAll(class_sizes, x -> x = 0) then
     return fail;
-  fi;
-
-  if DIGRAPHS_UsingBliss or IsMultiDigraph(C) then
+  elif DIGRAPHS_UsingBliss or IsMultiDigraph(C) then
     label1 := BlissCanonicalLabelling(C, colour1);
     label2 := BlissCanonicalLabelling(D, colour2);
   else

@@ -38,59 +38,108 @@ D -> IsConnectedDigraph(D) and IsEmpty(ArticulationPoints(D)));
 InstallMethod(IsBridgelessDigraph, "for a digraph", [IsDigraph],
 D -> IsConnectedDigraph(D) and IsEmpty(Bridges(D)));
 
-InstallMethod(DIGRAPHS_IsMeetJoinSemilatticeDigraph, "for a homogeneous list",
-[IsHomogeneousList],
-function(nbs)
-  local i, j, k, n, x, len;
+# The method below is based on Listing 11.9 of 'Free Lattices'
+# by Ralph Freese et. al.
+BindGlobal("DIGRAPHS_MeetJoinTable",
+function(D, P, U, join)
+  local ord, tab, S, N, i, x, T, l, q, z, y;
 
-  # The IsHomogenousList assumes the list <nbs> contains no or only empty lists
-  n := Length(nbs);
-  for i in [1 .. n] do
-    for j in [i + 1 .. n] do
-      if j in nbs[i] or i in nbs[j] then
-        continue;
-      fi;
-      x := Intersection(nbs[i], nbs[j]);
-      if IsEmpty(x) then
-        return false;
-      fi;
-      len := Length(x);
-      k := x[len];  # Check whether <k> is the meet of <i> and <j>
-      if Length(nbs[k]) < len then
-        return false;
-      fi;
-    od;
+  # The algorithm runs for joins where the argument <join> is true. Otherwise
+  # it is run for meets.
+
+  N   := DigraphNrVertices(D);
+  tab := List([1 .. N], x -> []);  # table of meets/joins
+
+  ord := [];
+  for i in [1 .. N] do
+    ord[P[i]] := i;
   od;
-  return true;
+
+  S := [];
+
+  for x in P do
+    tab[x, x] := x;
+    for y in S do
+      T := [];
+      for z in U[x] do
+        Add(T, tab[y, z]);
+      od;
+      T := Set(T);
+      l := Length(T);
+      if l = 0 then
+        return fail;
+      fi;
+      q := T[l];
+      for i in [1 .. l - 1] do
+        z := T[i];
+        if ord[z] > ord[q] then
+          q := z;
+        fi;
+      od;
+      for z in T do
+        if join and not IsDigraphEdge(D, q, z) then
+          return fail;
+        elif not join and not IsDigraphEdge(D, z, q) then
+          return fail;
+        fi;
+      od;
+      tab[x, y] := q;
+      tab[y, x] := q;
+    od;
+    Add(S, x);
+  od;
+  return tab;
 end);
 
-InstallMethod(IsJoinSemilatticeDigraph, "for a digraph by out-neighbours",
-[IsDigraphByOutNeighboursRep],
+InstallMethod(DIGRAPHS_IsJoinSemilatticeAndJoinTable, "for a digraph",
+[IsDigraph],
 function(D)
-  local topo;
+  local tab, copy, P, U;
   if not IsPartialOrderDigraph(D) then
-    return false;
+    return [false, fail];
+  elif IsMultiDigraph(D) then
+    ErrorNoReturn("the argument must not be a multidigraph,");
   fi;
-  topo := DigraphTopologicalSort(D);
-  D := DigraphMutableCopy(D);
-  D := OnDigraphs(D, PermList(topo) ^ -1);
-  Apply(D!.OutNeighbours, Set);
-  return DIGRAPHS_IsMeetJoinSemilatticeDigraph(D!.OutNeighbours);
+  copy   := DigraphMutableCopyIfMutable(D);
+  P      := DigraphTopologicalSort(D);
+  U      := OutNeighbours(DigraphReflexiveTransitiveReduction(copy));
+  tab    := DIGRAPHS_MeetJoinTable(D, P, U, true);
+  if IsImmutableDigraph(D) then
+    SetDigraphJoinTable(D, tab);
+  fi;
+  return [tab <> fail, tab];
 end);
+
+InstallMethod(DIGRAPHS_IsMeetSemilatticeAndMeetTable, "for a digraph",
+[IsDigraph],
+function(D)
+  local tab, copy, P, U;
+  if not IsPartialOrderDigraph(D) then
+    return [false, fail];
+  elif IsMultiDigraph(D) then
+    ErrorNoReturn("the argument must not be a multidigraph,");
+  fi;
+  copy   := DigraphMutableCopyIfMutable(D);
+  P      := Reversed(DigraphTopologicalSort(D));
+  U      := InNeighbours(DigraphReflexiveTransitiveReduction(copy));
+  tab    := DIGRAPHS_MeetJoinTable(D, P, U, false);
+  if IsImmutableDigraph(D) then
+    SetDigraphMeetTable(D, tab);
+  fi;
+  return [tab <> fail, tab];
+end);
+
+InstallMethod(IsJoinSemilatticeDigraph, "for a digraph",
+[IsDigraph],
+D -> DIGRAPHS_IsJoinSemilatticeAndJoinTable(D)[1]);
 
 InstallMethod(IsMeetSemilatticeDigraph, "for a digraph",
-[IsDigraphByOutNeighboursRep],
-function(D)
-  local topo, list;
-  if not IsPartialOrderDigraph(D) then
-    return false;
-  fi;
-  topo := Reversed(DigraphTopologicalSort(D));
-  D := OnDigraphs(DigraphMutableCopyIfMutable(D), PermList(topo) ^ -1);
-  list := InNeighboursMutableCopy(D);
-  Apply(list, Set);
-  return DIGRAPHS_IsMeetJoinSemilatticeDigraph(list);
-end);
+[IsDigraph],
+D -> DIGRAPHS_IsMeetSemilatticeAndMeetTable(D)[1]);
+
+InstallImmediateMethod(IsStronglyConnectedDigraph,
+IsDigraph and HasDigraphStronglyConnectedComponents, 0,
+D -> Length(DigraphStronglyConnectedComponents(D).comps) = 1);
 
 InstallMethod(IsStronglyConnectedDigraph, "for a digraph by out-neighbours",
 [IsDigraphByOutNeighboursRep],
@@ -162,6 +211,10 @@ function(D)
   fi;
   return true;
 end);
+
+InstallImmediateMethod(IsConnectedDigraph,
+IsDigraph and HasDigraphConnectedComponents, 0,
+D -> Length(DigraphConnectedComponents(D).comps) = 1);
 
 InstallMethod(IsConnectedDigraph, "for a digraph", [IsDigraph],
 function(D)
@@ -457,12 +510,12 @@ end);
 # A vertex z dominates a pair of vertices {x, y} if z->x and z->y
 # A pair of vertices {x, y} dominates a vertex z if x->z and y->z
 # Theorem 4.1: a strongly connected digraph with n vertices in which every pair
-# of non-adjacent dominated vertices {x,y} satifies either of:
+# of non-adjacent dominated vertices {x,y} satisfies either of:
 # 1.(full degree of x) ≥ n and (full degree of y) ≥ n - 1
 # 2.(full degree of y) ≥ n and (full degree of x) ≥ n - 1
 # Is Hamiltonian.
 # Theorem 4.2: a strongly connected digraph with n vertices in which every pair
-# of non-adjacent vertices {x,y} which is dominated or dominating satifies:
+# of non-adjacent vertices {x,y} which is dominated or dominating satisfies:
 # 1. (out degree of x) + (in degree of y) ≥ n
 # 2. (out degree of y) + (in degree of x) ≥ n
 # Is Hamiltonian.
@@ -570,7 +623,7 @@ function(D)
   # complete digraph on 2 vertices.
 
   proper_endo_found := false;
-  hook := function(unneded_argument, T)
+  hook := function(_, T)
     # the hook is required by HomomorphismDigraphsFinder to have two arguments,
     # the 1st of which is user_param, which this method doesn't need.
     if RankOfTransformation(T, [1 .. N]) < N then
@@ -604,4 +657,32 @@ function(D)
                   " edges,");
   fi;
   return IsTransitive(AutomorphismGroup(D), DigraphEdges(D), OnPairs);
+end);
+
+InstallMethod(IsDistributiveLatticeDigraph, "for a digraph", [IsDigraph],
+function(D)
+  local M3;
+
+  if not IsLatticeDigraph(D) then
+    return false;
+  fi;
+
+  M3 := DigraphReflexiveTransitiveClosure(
+        Digraph([[2, 3, 4], [5], [5], [5], []]));
+
+  return IsModularLatticeDigraph(D) and
+       LatticeDigraphEmbedding(M3, D) = fail;
+end);
+
+InstallMethod(IsModularLatticeDigraph, "for a digraph", [IsDigraph],
+function(D)
+  local N5;
+  if not IsLatticeDigraph(D) then
+    return false;
+  fi;
+
+  N5 := DigraphReflexiveTransitiveClosure(
+        Digraph([[2, 4], [3], [5], [5], []]));
+
+  return LatticeDigraphEmbedding(N5, D) = fail;
 end);

@@ -23,11 +23,11 @@ gap> OutNeighbours(gr);
 [ [ 8 ], [ 4, 5, 6, 8, 9 ], [ 2, 4, 5, 7, 10 ], [ 9 ], [ 1, 4, 6, 7, 9 ], 
   [ 2, 3, 6, 7, 10 ], [ 3, 4, 5, 8, 9 ], [ 3, 4, 9, 10 ], 
   [ 1, 2, 3, 5, 6, 9, 10 ], [ 2, 4, 5, 6, 9 ] ]
-gap> not DIGRAPHS_IsGrapeLoaded
-> or (DIGRAPHS_IsGrapeLoaded and Digraph(Graph(gr)) = gr);
+gap> not DIGRAPHS_IsGrapeLoaded()
+> or (DIGRAPHS_IsGrapeLoaded() and Digraph(Graph(gr)) = gr);
 true
-gap> not DIGRAPHS_IsGrapeLoaded
-> or (DIGRAPHS_IsGrapeLoaded and Graph(Digraph(Graph(gr))).adjacencies =
+gap> not DIGRAPHS_IsGrapeLoaded()
+> or (DIGRAPHS_IsGrapeLoaded() and Graph(Digraph(Graph(gr))).adjacencies =
 >     Graph(gr).adjacencies);
 true
 gap> adj := [
@@ -38,8 +38,8 @@ gap> adj := [
 > [1, 6, 8, 9, 11, 12, 13, 14], [2, 4, 7, 9, 10, 11, 13, 15, 16]];;
 gap> func := function(x, y) return y in adj[x]; end;
 function( x, y ) ... end
-gap> not DIGRAPHS_IsGrapeLoaded or
-> (DIGRAPHS_IsGrapeLoaded and
+gap> not DIGRAPHS_IsGrapeLoaded() or
+> (DIGRAPHS_IsGrapeLoaded() and
 >  Digraph(Graph(Group(()), [1 .. 20], OnPoints, func, true)) = Digraph(adj));
 true
 
@@ -246,9 +246,13 @@ gap> gr := DigraphRemoveEdge(gr, [1, 2]);;
 gap> gr := DigraphRemoveEdges(gr, [[1, 2], [2, 1]]);;
 gap> DigraphNrEdges(gr);
 40
+gap> DigraphNrAdjacencies(gr);
+20
 gap> gr2 := DigraphClosure(gr, 7);;
 gap> DigraphNrEdges(gr2);
 42
+gap> DigraphNrAdjacencies(gr2);
+21
 
 #  Fix seg fault cause by wrong handling of no edges in
 # FuncDIGRAPH_SOURCE_RANGE
@@ -385,20 +389,101 @@ gap> D := Digraph([[2, 2, 2, 2, 2], []]);;
 gap> GeneratorsOfEndomorphismMonoid(D);
 Error, expected a digraph without multiple edges!
 
+# Issue 517: bug in String for digraphs satisfying IsChainDigraph or
+# IsCycleDigraph but not being equal to ChainDigraph or CycleDigraph.
+gap> D := ChainDigraph(4);
+<immutable chain digraph with 4 vertices>
+gap> D := DigraphReverse(D);
+<immutable digraph with 4 vertices, 3 edges>
+gap> IsChainDigraph(D);
+true
+gap> D = ChainDigraph(4);
+false
+gap> String(D);
+"DigraphFromDigraph6String(\"&CACG\")"
+gap> String(ChainDigraph(4));
+"ChainDigraph(4)"
+gap> D := CycleDigraph(4);
+<immutable cycle digraph with 4 vertices>
+gap> D := DigraphReverse(D);
+<immutable digraph with 4 vertices, 4 edges>
+gap> IsCycleDigraph(D);
+true
+gap> D = CycleDigraph(4);
+false
+gap> String(D);
+"DigraphFromDigraph6String(\"&CECG\")"
+gap> String(CycleDigraph(4));
+"CycleDigraph(4)"
+
+# Edge-weighted digraphs
+gap> d := EdgeWeightedDigraph([[2], [1]], [[5], [10]]);
+<immutable digraph with 2 vertices, 2 edges>
+gap> EdgeWeights(d);
+[ [ 5 ], [ 10 ] ]
+gap> EdgeWeightedDigraphTotalWeight(d);
+15
+gap> EdgeWeightedDigraphMinimumSpanningTree(d);
+<immutable digraph with 2 vertices, 1 edge>
+gap> d := EdgeWeightedDigraph([[2], [1, 2]], [[5], [5, 5]]);
+<immutable digraph with 2 vertices, 3 edges>
+gap> EdgeWeightedDigraphShortestPaths(d, 1);
+rec( distances := [ 0, 5 ], edges := [ fail, 1 ], parents := [ fail, 1 ] )
+gap> EdgeWeightedDigraphShortestPaths(d);
+rec( distances := [ [ 0, 5 ], [ 5, 0 ] ], 
+  edges := [ [ fail, 1 ], [ 1, fail ] ], 
+  parents := [ [ fail, 1 ], [ 2, fail ] ] )
+gap> EdgeWeightedDigraphShortestPath(d, 1, 2);
+[ [ 1, 2 ], [ 1 ] ]
+
+# Issue 617: bug in DigraphRemoveEdge, wasn't removing edge labels
+gap> D := DigraphByEdges(IsMutableDigraph, [[1, 2], [2, 3], [3, 4], [4, 1], [1, 1]]);;
+gap> DigraphEdgeLabels(D);
+[ [ 1, 1 ], [ 1 ], [ 1 ], [ 1 ] ]
+gap> DigraphRemoveEdge(D, [1, 2]);;
+gap> DigraphEdgeLabels(D);
+[ [ 1 ], [ 1 ], [ 1 ], [ 1 ] ]
+gap> D := DigraphByEdges(IsMutableDigraph, [[1, 2], [2, 3], [3, 4], [4, 1], [1, 1]]);;
+gap> SetDigraphEdgeLabel(D, 1, 2, "test");
+gap> DigraphRemoveEdge(D, 1, 2);;
+gap> DigraphEdgeLabels(D);
+[ [ 1 ], [ 1 ], [ 1 ], [ 1 ] ]
+
+# DigraphContractEdge
+gap> D := DigraphByEdges(IsMutableDigraph, [[1, 2], [2, 1]]);
+<mutable digraph with 2 vertices, 2 edges>
+gap> DigraphContractEdge(D, 2, 1);;
+gap> DigraphEdges(D);
+[  ]
+gap> D := DigraphByEdges([[1, 2], [2, 1], [2, 3]]);
+<immutable digraph with 3 vertices, 3 edges>
+gap> C := DigraphContractEdge(D, 2, 1);
+<immutable digraph with 2 vertices, 1 edge>
+gap> DigraphEdges(C);
+[ [ 2, 1 ] ]
+
+# Issue #704 SubdigraphsMonomorphisms bug
+gap> d := Digraph([[2, 3, 4, 5], [1, 3, 4], [1, 2, 4, 5], [1, 2, 3, 5], 
+> [1, 3, 4]]);;
+gap> Length(SubdigraphsMonomorphisms(CompleteMultipartiteDigraph([2, 3]), d));
+4
+
 #  DIGRAPHS_UnbindVariables
-gap> Unbind(gr2);
-gap> Unbind(gr);
-gap> Unbind(G);
-gap> Unbind(p);
-gap> Unbind(i);
-gap> Unbind(gr1);
-gap> Unbind(topo);
-gap> Unbind(source);
-gap> Unbind(range);
-gap> Unbind(r);
-gap> Unbind(func);
+gap> Unbind(C);
+gap> Unbind(D);
 gap> Unbind(adj);
 gap> Unbind(d);
+gap> Unbind(f);
+gap> Unbind(func);
+gap> Unbind(gr);
+gap> Unbind(gr1);
+gap> Unbind(gr2);
+gap> Unbind(i);
+gap> Unbind(out);
+gap> Unbind(p);
+gap> Unbind(r);
+gap> Unbind(str);
+gap> Unbind(topo);
 
 #E#
 gap> DIGRAPHS_StopTest();

@@ -193,9 +193,8 @@ end);
 InstallMethod(DigraphAddEdge,
 "for an immutable digraph and two positive integers",
 [IsImmutableDigraph, IsPosInt, IsPosInt],
-function(D, src, ran)
-  return MakeImmutable(DigraphAddEdge(DigraphMutableCopy(D), src, ran));
-end);
+{D, src, ran}
+-> MakeImmutable(DigraphAddEdge(DigraphMutableCopy(D), src, ran)));
 
 InstallMethod(DigraphAddEdge, "for a mutable digraph and a list",
 [IsMutableDigraph, IsList],
@@ -242,7 +241,7 @@ function(D, src, ran)
   pos := Position(D!.OutNeighbours[src], ran);
   if pos <> fail then
     Remove(D!.OutNeighbours[src], pos);
-    Remove(DigraphEdgeLabels(D)[src], pos);
+    RemoveDigraphEdgeLabel(D, src, pos);
   fi;
   return D;
 end);
@@ -250,9 +249,8 @@ end);
 InstallMethod(DigraphRemoveEdge,
 "for a immutable digraph and two positive integers",
 [IsImmutableDigraph, IsPosInt, IsPosInt],
-function(D, src, ran)
-  return MakeImmutable(DigraphRemoveEdge(DigraphMutableCopy(D), src, ran));
-end);
+{D, src, ran}
+-> MakeImmutable(DigraphRemoveEdge(DigraphMutableCopy(D), src, ran)));
 
 InstallMethod(DigraphRemoveEdge, "for a mutable digraph and a list",
 [IsMutableDigraph, IsList],
@@ -379,12 +377,238 @@ InstallMethod(DigraphClosure,
 [IsImmutableDigraph, IsPosInt],
 {D, k} -> MakeImmutable(DigraphClosure(DigraphMutableCopy(D), k)));
 
+DIGRAPHS_CheckContractEdgeDigraph := function(D, u, v)
+  if not IsDigraphEdge(D, u, v) then  # Check if [u, v] is an edge in digraph D
+    ErrorNoReturn("expected an edge between the 2nd and 3rd arguments ",
+                  "(vertices) ", u, " and ", v, " but found none");
+  elif IsMultiDigraph(D) then
+    ErrorNoReturn("The 1st argument (a digraph) must not satisfy ",
+                   "IsMultiDigraph");
+  elif u = v then  # edge should not be contracted if u = v
+    ErrorNoReturn("The 2nd argument <u> must not be equal to the 3rd ",
+                   "argument <v>");
+  fi;
+
+end;
+
+InstallMethod(DigraphContractEdge,
+"for a mutable digraph and two positive integers",
+[IsMutableDigraph, IsPosInt, IsPosInt],
+function(D, u, v)
+  local w, neighbours, transformations_to_edge, transformations_to_old_edges,
+  old_edge, new_edge, neighbour, t, vertices, edge_label;
+
+  DIGRAPHS_CheckContractEdgeDigraph(D, u, v);
+
+  # if (v, u) is an edge, disallow loops, so remove (v, u)
+  if IsDigraphEdge(D, v, u) then
+    DigraphRemoveEdge(D, v, u);
+  fi;
+
+  # remove the contracted edge
+  DigraphRemoveEdge(D, u, v);
+
+  # Find vertex neighbours of u and v to construct new incident edges of w
+
+  neighbours := [Immutable(InNeighboursOfVertex(D, u)),
+                 Immutable(InNeighboursOfVertex(D, v)),
+                 Immutable(OutNeighboursOfVertex(D, u)),
+                 Immutable(OutNeighboursOfVertex(D, v))];
+
+  # immutable reference to old edge labels to add to any
+  # new transformed incident edges
+
+  DigraphAddVertex(D, [DigraphVertexLabel(D, u),
+                       DigraphVertexLabel(D, v)]);  # add vertex w
+
+  vertices := DigraphVertices(D);
+  w := Length(vertices);  # w is the new vertex identifier
+
+  # Handle loops from edges u or w, with the same source / range
+  # No relevant edges are removed from D until vertices are removed
+  # So old edge labls are taken from D
+
+  if IsDigraphEdge(D, u, u) and IsDigraphEdge(D, v, v) then
+    DigraphAddEdge(D, w, w);
+    edge_label := [DigraphEdgeLabel(D, u, u), DigraphEdgeLabel(D, w, w)];
+    SetDigraphEdgeLabel(D, w, w, edge_label);
+  elif IsDigraphEdge(D, u, u) then
+      DigraphAddEdge(D, w, w);
+      edge_label := DigraphEdgeLabel(D, u, u);
+      SetDigraphEdgeLabel(D, w, w, edge_label);
+  elif IsDigraphEdge(D, v, v) then
+      DigraphAddEdge(D, w, w);
+      edge_label := DigraphEdgeLabel(D, v, v);
+      SetDigraphEdgeLabel(D, w, w, edge_label);
+  fi;
+
+  # translate edges based on neighbours
+
+  # transformation functions translating neighbours to their new edge
+  transformations_to_edge := [{x, y} -> [x, y],
+                              {x, y} -> [x, y],
+                              {x, y} -> [y, x],
+                              {x, y} -> [y, x]];
+
+  # transformation functions translating neighbours
+  # to their original edge in D
+
+  transformations_to_old_edges := [e -> [e, u],
+                                   e -> [e, v],
+                                   e -> [u, e],
+                                   e -> [v, e]];
+
+  # Add translated new edges, and setup edge labels
+
+  for t in [1 .. Length(transformations_to_edge)] do
+    for neighbour in neighbours[t] do
+        new_edge := transformations_to_edge[t](neighbour, w);
+        old_edge := transformations_to_old_edges[t](neighbour);
+        edge_label := DigraphEdgeLabel(D, old_edge[1], old_edge[2]);
+        DigraphAddEdge(D, new_edge);
+        SetDigraphEdgeLabel(D, new_edge[1], new_edge[2], edge_label);
+    od;
+  od;
+
+  DigraphRemoveVertices(D, [u, v]);  # remove the vertices of the
+                                     # contracted edge (and therefore,
+                                     # all its incident edges)
+  return D;
+end);
+
+InstallMethod(DigraphContractEdge,
+"for an immutable digraph and two positive integers",
+[IsImmutableDigraph, IsPosInt, IsPosInt],
+function(D, u, v)
+  local w, neighbours, transformations_to_edge, transformations_to_old_edges,
+  existing_edges, edges_to_not_include, new_digraph, new_edge, old_edge,
+  neighbour, t, vertices, edge_label;
+
+  DIGRAPHS_CheckContractEdgeDigraph(D, u, v);
+
+  # Incident edges to [u, v] that will be transformed to be incident to w
+  edges_to_not_include := [];
+
+  existing_edges := [];  # existing edges that should be re added
+
+  # contracted edge should not be added to the new digraph
+  new_digraph := NullDigraph(IsMutableDigraph, 0);
+
+  # if (v, u) is an edge, disallow loops, so remove (v, u)
+  if IsDigraphEdge(D, v, u) then
+     D := DigraphRemoveEdge(D, v, u);
+  fi;
+
+  D := DigraphRemoveEdge(D, u, v);  # remove the edge to be contracted
+
+  DigraphAddVertices(new_digraph, DigraphVertexLabels(D));
+
+  # add vertex w with combined labels from u and v
+  DigraphAddVertex(new_digraph, [DigraphVertexLabel(D, u),
+                   DigraphVertexLabel(D, v)]);  # add vertex w
+
+  vertices := DigraphVertices(new_digraph);
+  w := Length(vertices);  # w is the new vertex identifier
+
+  # Handle loops from edges u or w, with the same source / range
+
+  if IsDigraphEdge(D, u, u) and IsDigraphEdge(D, v, v) then
+    DigraphAddEdge(new_digraph, w, w);
+    SetDigraphEdgeLabel(new_digraph, w, w, [DigraphEdgeLabel(D, u, u),
+                                           DigraphEdgeLabel(D, v, v)]);
+  elif IsDigraphEdge(D, u, u) then
+    DigraphAddEdge(new_digraph, w, w);
+    SetDigraphEdgeLabel(new_digraph, w, w,
+                        DigraphEdgeLabel(D, u, u));
+  elif IsDigraphEdge(D, v, v) then
+    DigraphAddEdge(new_digraph, w, w);
+    SetDigraphEdgeLabel(new_digraph, w, w, DigraphEdgeLabel(D, v, v));
+  fi;
+
+  # if there were loops in D at the vertices u or w, don't include these edges,
+  # but include a new loop at w
+
+  Append(edges_to_not_include, [[u, u], [v, v]]);
+
+  # Find vertex neighbours of u and v to construct new incident edges of w
+
+  neighbours := [InNeighboursOfVertex(D, u),
+                 InNeighboursOfVertex(D, v),
+                 OutNeighboursOfVertex(D, u),
+                 OutNeighboursOfVertex(D, v)];
+
+  # translate edges based on neighbours
+
+  # transformation functions translating neighbours to their new edge
+
+  transformations_to_edge := [{x, y} -> [x, y], {x, y} -> [x, y],
+                              {x, y} -> [y, x], {x, y} -> [y, x]];
+
+  # transformation functions translating neighbours to their original edge in D
+
+  transformations_to_old_edges := [e -> [e, u],
+                                   e -> [e, v],
+                                   e -> [u, e],
+                                   e -> [v, e]];
+
+  # remove edges that will be adjusted
+
+  for t in [1 .. Length(transformations_to_old_edges)] do
+    Append(edges_to_not_include, List(neighbours[t],
+                                      transformations_to_old_edges[t]));
+  od;
+
+  # Find edges that should be included, but remain the same
+
+  Sort(edges_to_not_include);
+  Append(existing_edges, ShallowCopy(DigraphEdges(D)));
+  Sort(existing_edges);
+  SubtractSet(existing_edges, edges_to_not_include);
+
+  # Add translated new edges, and setup edge labels
+
+  for t in [1 .. Length(transformations_to_edge)] do
+    for neighbour in neighbours[t] do
+        new_edge := transformations_to_edge[t](neighbour, w);
+
+        # old_edge is what the new transformed edge was previously
+        old_edge := transformations_to_old_edges[t](neighbour);
+        edge_label := DigraphEdgeLabel(D, old_edge[1], old_edge[2]);
+        new_digraph := DigraphAddEdge(new_digraph, new_edge);
+        SetDigraphEdgeLabel(new_digraph, new_edge[1], new_edge[2], edge_label);
+    od;
+  od;
+
+  # Add the existing edges that have not changed,
+  # and set their edge labels to that of the previous digraph
+
+  for new_edge in existing_edges do
+    new_digraph := DigraphAddEdge(new_digraph, new_edge);
+    SetDigraphEdgeLabel(new_digraph, new_edge[1], new_edge[2],
+                        DigraphEdgeLabel(D, new_edge[1], new_edge[2]));
+  od;
+
+  # remove the vertices of the contracted edge
+  return MakeImmutable(DigraphRemoveVertices(new_digraph, [u, v]));
+
+end);
+
+InstallMethod(DigraphContractEdge,
+"for a digraph and a dense list",
+[IsDigraph, IsDenseList],
+function(D, edge)
+  if Length(edge) <> 2 then
+    ErrorNoReturn("the 2nd argument <edge> must be a list of length 2");
+  fi;
+  return DigraphContractEdge(D, edge[1], edge[2]);
+end);
+
 #############################################################################
 # 3. Ways of combining digraphs
 #############################################################################
 
 InstallGlobalFunction(DIGRAPHS_CombinationOperProcessArgs,
-function(arg)
+function(arg...)
   local copy, i;
   arg := ShallowCopy(arg[1]);
   if IsMutableDigraph(arg[1]) then
@@ -409,7 +633,7 @@ function(arg)
 end);
 
 InstallGlobalFunction(DigraphDisjointUnion,
-function(arg)
+function(arg...)
   local D, offset, n, i, j;
 
   # Allow the possibility of supplying arguments in a list.
@@ -444,7 +668,7 @@ function(arg)
 end);
 
 InstallGlobalFunction(DigraphJoin,
-function(arg)
+function(arg...)
   local D, tot, offset, n, list, i, v;
   # Allow the possibility of supplying arguments in a list.
   if Length(arg) = 1 and IsList(arg[1]) then
@@ -484,7 +708,7 @@ function(arg)
 end);
 
 InstallGlobalFunction(DigraphEdgeUnion,
-function(arg)
+function(arg...)
   local D, n, i, v;
 
   # Allow the possibility of supplying arguments in a list.
@@ -524,7 +748,7 @@ function(arg)
 end);
 
 InstallGlobalFunction(DigraphCartesianProduct,
-function(arg)
+function(arg...)
   local D, n, i, j, proj, m, labs;
 
   # Allow the possibility of supplying arguments in a list.
@@ -570,7 +794,7 @@ function(arg)
 end);
 
 InstallGlobalFunction(DigraphDirectProduct,
-function(arg)
+function(arg...)
   local D, n, i, j, proj, m, labs;
 
   # Allow the possibility of supplying arguments in a list.
@@ -619,7 +843,8 @@ InstallMethod(ModularProduct, "for a digraph and digraph",
 function(D1, D2)
   local edge_function;
 
-  edge_function := function(u, v, m, n, map)
+  edge_function := function(u, v, m, n, map)  # gaplint: disable=W046
+    # neither m nor n is used, but can't replace them both with _
     local w, x, connections;
     connections := [];
     for w in OutNeighbours(D1)[u] do
@@ -647,7 +872,8 @@ InstallMethod(StrongProduct, "for a digraph and digraph",
 function(D1, D2)
   local edge_function;
 
-  edge_function := function(u, v, m, n, map)
+  edge_function := function(u, v, m, n, map)  # gaplint: disable=W046
+    # neither m nor n is used, but can't replace them both with _
     local w, x, connections;
       connections := [];
       for x in OutNeighbours(D2)[v] do
@@ -694,7 +920,7 @@ InstallMethod(HomomorphicProduct, "for a digraph and digraph",
 function(D1, D2)
   local edge_function;
 
-  edge_function := function(u, v, m, n, map)
+  edge_function := function(u, v, _, n, map)
     local w, x, connections;
       connections := [];
       for x in [1 .. n] do
@@ -716,7 +942,7 @@ InstallMethod(LexicographicProduct, "for a digraph and digraph",
 function(D1, D2)
   local edge_function;
 
-  edge_function := function(u, v, m, n, map)
+  edge_function := function(u, v, _, n, map)
     local w, x, connections;
       connections := [];
       for w in OutNeighbours(D1)[u] do
@@ -752,9 +978,7 @@ function(D1, D2, edge_function)
 
   edges := EmptyPlist(m * n);
 
-  map := function(a, b)
-    return (a - 1) * n + b;
-  end;
+  map := {a, b} -> (a - 1) * n + b;
 
   for u in [1 .. m] do
     for v in [1 .. n] do
@@ -853,9 +1077,7 @@ InstallMethod(OnMultiDigraphs, "for a digraph and perm coll",
 function(D, perms)
   if Length(perms) <> 2 then
     ErrorNoReturn("the 2nd argument <perms> must be a pair of permutations,");
-  fi;
-
-  if ForAny([1 .. DigraphNrEdges(D)],
+  elif ForAny([1 .. DigraphNrEdges(D)],
             i -> i ^ perms[2] > DigraphNrEdges(D)) then
     ErrorNoReturn("the 2nd entry of the 2nd argument <perms> must ",
                   "permute the edges of the digraph <D> that is the 1st ",
@@ -864,6 +1086,16 @@ function(D, perms)
 
   return OnDigraphs(D, perms[1]);
 end);
+
+# DomainForAction returns `true` instead of a proper domain here as a stopgap
+# measure to ensure that the Orbit method of GAP uses a SparseHashTable instead
+# of a DictionaryByPosition.
+# As SparseIntKey for digraphs does not depend on the domain, and always
+# returns DigraphHash, the actual returned value of DomainForAction does not
+# matter as long as it returns something other than `fail`.
+InstallMethod(DomainForAction, "for a digraph, list or collection and function",
+[IsDigraph, IsListOrCollection, IsFunction],
+ReturnTrue);
 
 #############################################################################
 # 5. Substructures and quotients
@@ -986,9 +1218,8 @@ end);
 InstallMethod(QuotientDigraph,
 "for an immutable digraph and a homogeneous list",
 [IsImmutableDigraph, IsHomogeneousList],
-function(D, partition)
-  return MakeImmutable(QuotientDigraph(DigraphMutableCopy(D), partition));
-end);
+{D, partition} ->
+MakeImmutable(QuotientDigraph(DigraphMutableCopy(D), partition)));
 
 #############################################################################
 # 6. In and out degrees, neighbours, and edges of vertices
@@ -1729,6 +1960,41 @@ function(D, v)
   return dist;
 end);
 
+InstallMethod(DigraphRandomWalk,
+"for a digraph, a pos int and a non-negative int",
+[IsDigraph, IsPosInt, IsInt],
+function(D, v, t)
+  local vertices, edge_indices, i, neighbours, index;
+
+  # Check input
+  if v > DigraphNrVertices(D) then
+    ErrorNoReturn("the 2nd argument <v> must be ",
+                  "a vertex of the 1st argument <D>,");
+  elif t < 0 then
+    ErrorNoReturn("the 3rd argument <t> must be a non-negative int,");
+  fi;
+
+  # Prepare output lists
+  vertices     := [v];
+  edge_indices := [];
+
+  # Iterate to desired length
+  for i in [1 .. t] do
+    neighbours := OutNeighboursOfVertex(D, v);
+    if IsEmpty(neighbours) then
+      break;  # Sink: path ends here
+    fi;
+    # Follow a random edge
+    index := Random(1, Length(neighbours));
+    v     := neighbours[index];
+    vertices[i + 1] := v;
+    edge_indices[i] := index;
+  od;
+
+  # Format matches that of DigraphPath
+  return [vertices, edge_indices];
+end);
+
 InstallMethod(DigraphLayers, "for a digraph, and a positive integer",
 [IsDigraph, IsPosInt],
 function(D, v)
@@ -1745,9 +2011,7 @@ function(D, v)
 
   if IsBound(layers[v]) then
     return layers[v];
-  fi;
-
-  if HasDigraphGroup(D) then
+  elif HasDigraphGroup(D) then
     gens  := GeneratorsOfGroup(DigraphGroup(D));
     sch   := DigraphSchreierVector(D);
     trace := DIGRAPHS_TraceSchreierVector(gens, sch, v);
@@ -1868,9 +2132,7 @@ function(D, list)
 
   if Length(list) <> 2 then
     ErrorNoReturn("the 2nd argument <list> must be a list of length 2,");
-  fi;
-
-  if list[1] > DigraphNrVertices(D) or
+  elif list[1] > DigraphNrVertices(D) or
       list[2] > DigraphNrVertices(D) then
       ErrorNoReturn("the 2nd argument <list> must consist of vertices of ",
                     "the 1st argument <D>,");
@@ -1979,43 +2241,80 @@ end);
 InstallMethod(VerticesReachableFrom, "for a digraph and a vertex",
 [IsDigraph, IsPosInt],
 function(D, root)
-  local N, index, current, succ, visited, prev, n, i, parent,
-  have_visited_root;
+  local N;
   N := DigraphNrVertices(D);
+
   if 0 = root or root > N then
     ErrorNoReturn("the 2nd argument (root) is not a vertex of the 1st ",
                   "argument (a digraph)");
   fi;
-  index := ListWithIdenticalEntries(N, 0);
-  have_visited_root := false;
-  index[root] := 1;
-  current := root;
-  succ := OutNeighbours(D);
-  visited := [];
-  parent := [];
-  parent[root] := fail;
-  repeat
-    prev := current;
-    for i in [index[current] .. Length(succ[current])] do
-      n := succ[current][i];
-      if n = root and not have_visited_root then
-         Add(visited, root);
-         have_visited_root := true;
-      elif index[n] = 0 then
-        Add(visited, n);
-          parent[n] := current;
-          index[current] := i + 1;
-          current := n;
-          index[current] := 1;
-          break;
+
+  return VerticesReachableFrom(D, [root]);
+end);
+
+InstallMethod(VerticesReachableFrom, "for a digraph and a list of vertices",
+[IsDigraph, IsList],
+function(D, roots)
+  local N, index, visited, queue_tail, queue,
+  root, element, neighbour, graph_out_neighbors, node_neighbours;
+
+  N := DigraphNrVertices(D);
+
+  for root in roots do
+    if not IsPosInt(N) or 0 = root or root > N then
+      ErrorNoReturn("an element of the 2nd argument ",
+                    "(roots) is not a vertex of the 1st ",
+                    "argument (a digraph)");
+    fi;
+  od;
+
+  visited := BlistList([1 .. N], []);
+
+  graph_out_neighbors := OutNeighbors(D);
+  queue := EmptyPlist(N);
+  Append(queue, roots);
+
+  queue_tail := Length(roots);
+
+  index := 1;
+  while IsBound(queue[index]) do
+    element := queue[index];
+    node_neighbours := graph_out_neighbors[element];
+    for neighbour in node_neighbours do
+      if not visited[neighbour] then;
+        visited[neighbour] := true;
+        queue_tail := queue_tail + 1;
+        queue[queue_tail] := neighbour;
       fi;
     od;
-    if prev = current then
-      current := parent[current];
-    fi;
-  until current = fail;
-  return visited;
+    index := index + 1;
+  od;
+
+  return ListBlist([1 .. N], visited);
 end);
+
+InstallMethod(IsOrderIdeal, "for a digraph and a list of vertices",
+[IsDigraph, IsList],
+# Check if digraph represents a partial order
+function(D, roots)
+  local reachable_vertices, vertex_in_subset, N;
+  if not IsPartialOrderDigraph(D) then
+    ErrorNoReturn(
+      "the 1st argument (a digraph) must be a partial order digraph");
+  fi;
+
+  N := DigraphNrVertices(D);
+  vertex_in_subset := BlistList([1 .. N], roots);
+  reachable_vertices := VerticesReachableFrom(D, roots);
+
+  return Length(reachable_vertices) = Length(roots)
+    and ForAll(reachable_vertices, x -> vertex_in_subset[x]);
+
+end);
+
+InstallMethod(IsOrderFilter, "for a digraph and a list of vertices",
+[IsDigraph, IsList],
+{D, roots} -> IsOrderIdeal(DigraphReverse(D), roots));
 
 InstallMethod(DominatorTree, "for a digraph and a vertex",
 [IsDigraph, IsPosInt],
@@ -2157,6 +2456,140 @@ function(D, root)
   return result;
 end);
 
+# Computes the fundamental cycle basis of a symmetric digraph
+# First, notice that the cycle space is composed of orthogonal subspaces
+# corresponding to the cycle spaces of the connected components.
+# e.g. if G has G1, G2 and G3 connected
+# components with B1, B2 and B3 cycle basis matrix respectively, then the
+# resulting cycle basis matrix of G is
+# [[ B1,  0,  0],
+#  [  0, B2,  0],
+#  [  0,  0, B3]]
+# up to some permutation on the order of the edges.
+# As a result, we can compute the fundamental cycle basis of each connected
+# component and then combine them.
+
+# For each connected component, a spanning tree is computed rooted at 1. Then,
+# there is one to one correspondence between the edges not in the spanning tree
+# and the fundamental cycles basis.
+# (See : https://en.wikipedia.org/wiki/Cycle_basis#Fundamental_cycles)
+# The set of edges that form the base cycle is computed by finding the path
+# from the root to the each sides of the edge and then adding the edge to the
+# path. Then, it is converted to a binary vector where the i-th entry is 1 if
+# the i-th edge in the 'EdgesList' is in the cycle and 0 otherwise.
+# Related paper : https://dl.acm.org/doi/pdf/10.1145/363219.363232
+InstallMethod(DigraphCycleBasis, "for a digraph",
+[IsDigraph],
+function(G)
+  local OutNbr, InNbr, n, partialSum, m, visited, unusedEdges, i, c, s, stack,
+    z, u, v, p, B;
+
+  # Check for loops
+  if DigraphHasLoops(G) then
+    ErrorNoReturn("the 1st argument (a digraph) must not have any loops");
+  fi;
+
+  G := MaximalAntiSymmetricSubdigraph(G);
+  OutNbr := OutNeighbors(G);
+  InNbr := InNeighbors(G);
+  Unbind(G);
+
+  n := Length(OutNbr);
+
+  # Quick early return for too few vertices
+  if n < 3 then
+    return [OutNbr, []];
+  fi;
+  # Find the partial sum of each row of OutNbr
+  partialSum := [0];
+  for i in [1 .. n - 1] do
+    Add(partialSum, partialSum[i] + Length(OutNbr[i]));
+  od;
+  m := partialSum[n] + Length(OutNbr[n]);
+  # Quick early return for too few edges
+  if m < 3 then
+    return [OutNbr, []];
+  fi;
+
+  # Traverse the graph, depth first search
+  s := 1;
+  visited := BlistList([1 .. n], []);
+  unusedEdges := [];
+  while s <> fail do
+    visited[s] := [0, s];
+    stack := [s];
+    while not IsEmpty(stack) do
+      u := Remove(stack);
+      for p in [1 .. Length(OutNbr[u])] do
+        v := OutNbr[u][p];
+        i := partialSum[u] + p;
+        if visited[v] = false then
+          visited[v] := [i, u];
+          Add(stack, v);
+        elif v in stack then
+          Add(unusedEdges, [u, i, visited[v][1], visited[v][2]]);
+        fi;
+      od;
+      for v in InNbr[u] do
+        p := Position(OutNbr[v], u);
+        i := partialSum[v] + p;
+        if visited[v] = false then
+          visited[v] := [i, u];
+          Add(stack, v);
+        elif v in stack then
+          Add(unusedEdges, [u, i, visited[v][1], visited[v][2]]);
+        fi;
+      od;
+    od;
+    s := Position(visited, false, s);
+  od;
+
+  c := Length(unusedEdges);
+
+  # Warning for large matrix
+  # The warning is printed roughly when the result matrix will
+  # take up more than 8GB of RAM.
+  if (10 ^ 11) / 2 < m * c then
+    Info(InfoWarning, 1, StringFormatted(
+    "The resulting matrix is going to be large of size {} \x {} ",
+    m, c));
+  fi;
+
+  # Create the matrix B
+  # The algorithm so far is O(m). However, the creation of the matrix B is
+  # O(m * c) ~= O(m^2) which is the most expensive part of the function.
+  # Hence, a nice thing to do would be to create an object that would
+  # lazy compute the matrix B on demand.
+  # For implementation of such an object, it would need to know :
+  # - m : The number of edges
+  # - unusedEdges : The list of unused edges to be converted to a basis vector
+  # - visited : The result of the depth first search above
+
+  # TODO : In the case the Digraph package requires GAP 4.12 or over,
+  # remove the following if statement.
+  if CompareVersionNumbers(GAPInfo.Version, "4.12") then
+    B := List([1 .. c], i -> NewZeroVector(IsGF2VectorRep, GF(2), m));
+  else
+    z := List([1 .. m], i -> Zero(GF(2)));
+    B := List([1 .. c], i -> Vector(GF(2), z));
+  fi;
+
+  for i in [1 .. c] do
+    u := unusedEdges[i][1];
+    v := unusedEdges[i][4];
+
+    while u <> v do
+      B[i][visited[u][1]] := Z(2);
+      u := visited[u][2];
+    od;
+
+    B[i][unusedEdges[i][2]] := Z(2);
+    B[i][unusedEdges[i][3]] := Z(2);
+  od;
+
+  return [OutNbr, B];
+end);
+
 #############################################################################
 # 10. Operations for vertices
 #############################################################################
@@ -2167,7 +2600,9 @@ InstallMethod(PartialOrderDigraphJoinOfVertices,
 function(D, i, j)
   local x, nbs, intr;
 
-  if not IsPartialOrderDigraph(D) then
+  if HasDigraphJoinTable(D) then
+    return DigraphJoinTable(D)[i, j];
+  elif not IsPartialOrderDigraph(D) then
     ErrorNoReturn("the 1st argument <D> must satisfy ",
                   "IsPartialOrderDigraph,");
   elif not i in DigraphVertices(D) then
@@ -2195,7 +2630,9 @@ InstallMethod(PartialOrderDigraphMeetOfVertices,
 function(D, i, j)
   local x, nbs, intr;
 
-  if not IsPartialOrderDigraph(D) then
+  if HasDigraphMeetTable(D) then
+    return DigraphMeetTable(D)[i, j];
+  elif not IsPartialOrderDigraph(D) then
     ErrorNoReturn("the 1st argument <D> must satisfy ",
                   "IsPartialOrderDigraph,");
   elif not i in DigraphVertices(D) then

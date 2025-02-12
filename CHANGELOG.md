@@ -1,12 +1,221 @@
 # CHANGELOG – Digraphs package for GAP
-Copyright © 2014-21 by Jan De Beule, Julius Jonušas, James D. Mitchell,
+Copyright © 2014-24 by Jan De Beule, Julius Jonušas, James D. Mitchell,
 Wilf A. Wilson, Michael Young et al.
 
 Licensing information can be found in the `LICENSE` file.
 
+## Version 1.9.0 (released 06/09/2024)
+
+## What's Changed
+* Update my web-address by @markuspf in
+https://github.com/digraphs/Digraphs/pull/674
+* Fix off by one error by @james-d-mitchell in
+https://github.com/digraphs/Digraphs/pull/677
+* Resolve issue #676 by @james-d-mitchell in
+https://github.com/digraphs/Digraphs/pull/678
+* Add hash function for digraphs by @reiniscirpons in
+https://github.com/digraphs/Digraphs/pull/675
+* kernel: use GAP's GVAR_FUNC macro by @fingolfin in
+https://github.com/digraphs/Digraphs/pull/682
+* Add DigraphAllChordlessCycles by @MeikeWeiss in
+https://github.com/digraphs/Digraphs/pull/679
+* Add DomainForAction mock for actions on digraphs by @reiniscirpons in
+https://github.com/digraphs/Digraphs/pull/686
+* doc: start using autodoc by @james-d-mitchell in
+https://github.com/digraphs/Digraphs/pull/684
+* Make Orb use digraph hashes by @reiniscirpons in
+https://github.com/digraphs/Digraphs/pull/687
+* Fix startup bug by @james-d-mitchell in
+https://github.com/digraphs/Digraphs/pull/688
+* Add comment to remove rank by @reiniscirpons in
+https://github.com/digraphs/Digraphs/pull/692
+* Lint for new version of gaplint by @james-d-mitchell in
+https://github.com/digraphs/Digraphs/pull/691
+* Add `SubdigraphsMonomorphisms` by @james-d-mitchell in
+https://github.com/digraphs/Digraphs/pull/690
+* Added method AllUndirectedSimpleCircuits by @MeikeWeiss in
+https://github.com/digraphs/Digraphs/pull/689
+* Update for recent gaplint by @james-d-mitchell in
+https://github.com/digraphs/Digraphs/pull/693
+* Add a test for issue #676 by @wilfwilson in
+https://github.com/digraphs/Digraphs/pull/695
+* Fix edge placement in HanoiGraph by @Joseph-Edwards in
+https://github.com/digraphs/Digraphs/pull/699
+* Fix planarity by @Joseph-Edwards in
+https://github.com/digraphs/Digraphs/pull/696
+* Clarify homomorphisms finder with specified image by @james-d-mitchell in
+https://github.com/digraphs/Digraphs/pull/700
+
+## New Contributors
+* @MeikeWeiss made their first contribution in https://github.com/digraphs/Digraphs/pull/679
+
+**Full Changelog**: https://github.com/digraphs/Digraphs/compare/v1.8.0...v1.9.0
+
+## Version 1.8.0 (released 27/08/2024)
+
+This release contains several improvements and bug fixes:
+
+* Update Joe's info by @Joseph-Edwards in https://github.com/digraphs/Digraphs/pull/621
+* Fix Issue #617: DigraphRemoveEdge now removes appropriate edge label by @mtorpey in https://github.com/digraphs/Digraphs/pull/619
+* Implement IsOrderIdeal by @DanielPointon in https://github.com/digraphs/Digraphs/pull/609
+* DigraphCycleBasis by @Jun2M in https://github.com/digraphs/Digraphs/pull/610
+* Fix compiler warnings by @james-d-mitchell in https://github.com/digraphs/Digraphs/pull/633
+* Add IsModularLatticeDigraph by @james-d-mitchell in https://github.com/digraphs/Digraphs/pull/629
+* Abort if malloc fails by @DanielPointon in https://github.com/digraphs/Digraphs/pull/627
+* Add DigraphContractEdge by @saffronmciver in https://github.com/digraphs/Digraphs/pull/618
+* cliques: some perf improvements by @james-d-mitchell in https://github.com/digraphs/Digraphs/pull/635
+* Add custom CSS to documentation by @mtorpey in https://github.com/digraphs/Digraphs/pull/640
+* Fix compile warnings by @Joseph-Edwards in https://github.com/digraphs/Digraphs/pull/648
+* Edge-weights #3: minimum spanning trees by @mtorpey in https://github.com/digraphs/Digraphs/pull/650
+* weights.gi: correct whitespace by @mtorpey in https://github.com/digraphs/Digraphs/pull/652
+* Refactor Floyd–Warshall C implementation by @mtorpey in https://github.com/digraphs/Digraphs/pull/657
+* Added requested clique and independent attributes - #634 by @mpan322 in https://github.com/digraphs/Digraphs/pull/655
+* Doc fixes by @james-d-mitchell in https://github.com/digraphs/Digraphs/pull/658
+* Reduce Memory Usage by @DanielPointon in https://github.com/digraphs/Digraphs/pull/626
+
+## New Contributors
+* @DanielPointon made their first contribution in https://github.com/digraphs/Digraphs/pull/609
+* @Jun2M made their first contribution in https://github.com/digraphs/Digraphs/pull/610
+* @saffronmciver made their first contribution in https://github.com/digraphs/Digraphs/pull/618
+* @mpan322 made their first contribution in https://github.com/digraphs/Digraphs/pull/655
+
+**Full Changelog**: https://github.com/digraphs/Digraphs/compare/v1.7.1...v1.8.0
+
+## Version 1.7.1 (released 19/02/2024)
+
+This is a minor release with some changes related to forthcoming changes in
+GAP. These changes were implemented by Fabian Zickgraf.
+
+## Version 1.7.0 (released 14/02/2024)
+
+This is a minor release with some new features, and some other improvements in
+code quality.
+
+## What's Changed
+* Change test that relies on xpdf not being installed by @mtorpey in
+  https://github.com/digraphs/Digraphs/pull/578
+* DigraphAbsorptionProbabilities by @mtorpey in
+  https://github.com/digraphs/Digraphs/pull/548
+* Fix test files: strings and unbinds by @mtorpey in
+  https://github.com/digraphs/Digraphs/pull/579
+* Add immediate methods for connected and strongly connected graphs by @mtorpey
+  in https://github.com/digraphs/Digraphs/pull/583
+* kernel: fix mem leaks for permutations allocated but not freed. by
+  @james-d-mitchell in https://github.com/digraphs/Digraphs/pull/589
+* Remove references to bin/gap.sh by @fingolfin in
+  https://github.com/digraphs/Digraphs/pull/597
+* Fix prototype warnings by @fingolfin in
+  https://github.com/digraphs/Digraphs/pull/598
+* Added EdgeWeightedDigraph by @RaiyanC in
+  https://github.com/digraphs/Digraphs/pull/575
+* Add AbsorptionExpectedSteps by @mtorpey in
+  https://github.com/digraphs/Digraphs/pull/585
+* Fix a typo by @fingolfin in https://github.com/digraphs/Digraphs/pull/608
+* configure.ac: fix bashism in string equality test by @orlitzky in
+  https://github.com/digraphs/Digraphs/pull/613
+
+## New Contributors
+* @RaiyanC made their first contribution in https://github.com/digraphs/Digraphs/pull/575
+* @orlitzky made their first contribution in https://github.com/digraphs/Digraphs/pull/613
+
+**Full Changelog**: https://github.com/digraphs/Digraphs/compare/v1.6.3...v1.7.0
+
+## Version 1.6.3 (released 13/09/2023)
+
+This is a minor release with some bug fixes, and other issues resolved:
+
+* There was a minor bug in the `RandomDigraph` method for `IsEulerianDigraph`,
+  resolved by @mtorpey
+* Joe Edwards and Maria Tsalakou were incorrectly listed as authors resolved
+  partially by @james-d-mitchell in https://github.com/digraphs/Digraphs/pull/576
+* Standardise the way that `UndirectedSpanningForest` works in relation to
+  mutability by @wilfwilson in https://github.com/digraphs/Digraphs/pull/582
+* Add immediate methods for connected and strongly connected digraphs by
+  @mtorpey
+* There was a minor memory leak in the kernel extension resolved by
+  @james-d-mitchell
+
+## Version 1.6.2 (released 05/04/2023)
+
+* PackageInfo.g: link to Mathjax manual by default by @fingolfin in
+  https://github.com/digraphs/Digraphs/pull/554
+* PackageInfo.g: link to Mathjax manual by default by @fingolfin in
+  https://github.com/digraphs/Digraphs/pull/558
+* ci: change master to main on azure by @james-d-mitchell in
+  https://github.com/digraphs/Digraphs/pull/567
+* Rewrite buildsystem to use Makefile.gappkg by @fingolfin in
+  https://github.com/digraphs/Digraphs/pull/566
+* Update two M4 files, correct a comment by @fingolfin in
+  https://github.com/digraphs/Digraphs/pull/568
+* Fix some typos found by codespell by @fingolfin in
+  https://github.com/digraphs/Digraphs/pull/569
+* Avoid src/ prefix for GAP headers by @fingolfin in
+  https://github.com/digraphs/Digraphs/pull/571
+* Use same URL as in my other packages by @olexandr-konovalov in
+  https://github.com/digraphs/Digraphs/pull/572
+
+## Version 1.6.1 (released 06/12/2022)
+
+This is a minor release fixing a number of minor issues:
+
+* Use `compiled.h` instead of `src/compiled.h` by @fingolfin in https://github.com/digraphs/Digraphs/pull/560
+* Fix tourn decoder by @james-d-mitchell in https://github.com/digraphs/Digraphs/pull/559
+* Change `CayleyDigraph` to use `AsSet` by @fingolfin in https://github.com/digraphs/Digraphs/pull/564
+
+## Version 1.6.0 (released 08/09/2022)
+
+This is a minor release including a number of new features:
+
+* Implement `IsPermutationDigraph` by @baydrea in
+  https://github.com/digraphs/Digraphs/pull/513
+* Add more implications (including some implications of falsity) by @wilfwilson
+  in https://github.com/digraphs/Digraphs/pull/494
+* Add `OnTuplesDigraphs` and `OnSetsDigraphs` by @wilfwilson in
+  https://github.com/digraphs/Digraphs/pull/449
+* Add checks for upper/lower semimodular lattices by @james-d-mitchell in
+  https://github.com/digraphs/Digraphs/pull/375
+* Add `AsDigraph` for partial perms by @james-d-mitchell in
+  https://github.com/digraphs/Digraphs/pull/526
+* Add `DigraphRandomWalk` by @mtorpey in
+  https://github.com/digraphs/Digraphs/pull/543
+* Add constructors for random digraphs with particular properties by
+  @KamranKSharma in https://github.com/digraphs/Digraphs/pull/531
+* Add `LatticeDigraphEmbedding` method by @MTWhyte in https://github.com/digraphs/Digraphs/pull/538
+* Add `IsDistributiveLatticeDigraph` property by @MTWhyte in https://github.com/digraphs/Digraphs/pull/528
+
+The following improvements were also made:
+
+* Make improvements to `IsMeetSemilatticeDigraph` and
+  `IsJoinSemilatticeDigraph`  by @MTWhyte in
+  https://github.com/digraphs/Digraphs/pull/556
+* Add a workaround for macOS code signing issues by @fingolfin in
+  https://github.com/digraphs/Digraphs/pull/555
+
+## Version 1.5.3 (released 20/05/2022)
+
+This is a minor release including the following changes:
+
+* digraph: fix String method for chains/cycles by @james-d-mitchell in https://github.com/digraphs/Digraphs/pull/542
+* Disable edge labels if not already set in some cases by @james-d-mitchell in https://github.com/digraphs/Digraphs/pull/540
+* build: remove the default flag -march=native by @james-d-mitchell in https://github.com/digraphs/Digraphs/pull/541
+* doc: fix typos by @james-d-mitchell in https://github.com/digraphs/Digraphs/pull/544
+
+## Version 1.5.2 (released 30/03/2022)
+
+This is a very minor release containing technical changes for maintaining compatibility with other GAP packages.
+
+## Version 1.5.1 (released 29/03/2022)
+
+This minor release contains several bugfixes and technical changes. This includes:
+
+* Bugfix: vertex labels are no longer wrongly retained when using `DigraphEdgeUnion`. This was reported by [Wilf A. Wilson][] in [Issue #496](https://github.com/digraphs/Digraphs/issues/496) and fixed by Joseph Edwards in [PR #507](https://github.com/digraphs/Digraphs/pull/507).
+* Bugfix: a segfault could be caused by calling `OutNeighbours` with an inappropriate argument. This was reported by [Wilf A. Wilson][] in [Issue #518](https://github.com/digraphs/Digraphs/issues/518) and fixed by [James D. Mitchell][] in [PR #519](https://github.com/digraphs/Digraphs/pull/519).
+* [Wilf A. Wilson][] improved the performance of `DigraphAddEdge` for digraphs without edge labels in [PR #509](https://github.com/digraphs/Digraphs/pull/509).
+* [Max Horn][] changed the declaration of the variable `Vertices` to improve compatibility with  Grape in [PR #530](https://github.com/digraphs/Digraphs/pull/530).
+
 ## Version 1.5.0 (released 27/10/2021)
 
-This is a fairly major release of the Digraphs package, containing some bugfixes and several new features. 
+This is a fairly major release of the Digraphs package, containing some bugfixes and several new features.
 
 In this version, we welcome Finn Buck, Tom Conti-Leslie, Ewan Gilligan, Lea
 Racine, and Ben Spiers as contributors to the package.
@@ -87,7 +296,7 @@ and improvements to the documentation. These include the following:
 
 ## Version 1.4.0 (released 27/01/2021)
 
-In this release there are several new features and improvements. 
+In this release there are several new features and improvements.
 
 The following improvements and bugfixes have been made:
 
@@ -100,7 +309,7 @@ The following improvements and bugfixes have been made:
   Harper.
 * a bug in `GeneratorsOfEndomorphismMonoid` that caused GAP to crash when
   called with a multidigraph was reported by [Wilf A. Wilson][] and
-  fixed by [James D. Mitchell][] 
+  fixed by [James D. Mitchell][]
 *  [Wilf A. Wilson][] made some improvements to the manual.
 * the performance of `DigraphCopy` was improved by Marina
   Anagnostopoulou-Merkouri and Sam Harper.
@@ -109,17 +318,17 @@ The main new features are:
 
 * the attribute `DigraphNrLoops` was introduced by Marina
   Anagnostopoulou-Merkouri and Sam Harper.
-* the operations 
+* the operations
   * `DotColoredDigraph`
   * `DotVertexColoredDigraph`
   * `DotEdgeColoredDigraph`
   * `DotSymmetricColoredDigraph`
-  * `DotSymmetricVertexColoredDigraph` 
-  * `DotSymmetricEdgeColoredDigraph` 
+  * `DotSymmetricVertexColoredDigraph`
+  * `DotSymmetricEdgeColoredDigraph`
   were introduced by Marina Anagnostopoulou-Merkouri and Sam Harper.
-* the operation `VerticesReachableFrom` was introduced by 
+* the operation `VerticesReachableFrom` was introduced by
   Marina Anagnostopoulou-Merkouri.
-* the operation `ModularProduct` was introduced by Luke Elliott and  
+* the operation `ModularProduct` was introduced by Luke Elliott and
   [James D. Mitchell][]
 
 ## Version 1.3.1 (released 27/11/2020)
@@ -144,7 +353,7 @@ and [Wilf A. Wilson][].
 
 This is a minor release adding some new features to Digraphs, principally
 functionality relating to computing matchings by Reinis Ciprons, and an
-implementation of Dijkstra's algorithm for shortest paths by 
+implementation of Dijkstra's algorithm for shortest paths by
 [Markus Pfeiffer][] and [Maria Tsalakou][], and methods for producing a concise
 string representation of a digraph by Murray Whyte.
 
@@ -251,8 +460,8 @@ This is a minor release that fixes several bugs:
 This is a minor release of the Digraphs package.  The main change in this
 release is the reintroduction of the three-argument version of
 `DigraphAddVertices`, which accepts a digraph, a number of vertices to add, and
-a list of labels for the new vertices.  The removal inadvertantly broke
-backwards compatbility with some third-party pre-existing code that relied on
+a list of labels for the new vertices.  The removal inadvertently broke
+backwards compatibility with some third-party pre-existing code that relied on
 this functionality in the Digraphs package (see
 [Issue #264](https://github.com/digraphs/Digraphs/issues/264)).
 

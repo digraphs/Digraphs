@@ -4,6 +4,8 @@
     <#Include Label="DigraphNrVertices">
     <#Include Label="DigraphEdges">
     <#Include Label="DigraphNrEdges">
+    <#Include Label="DigraphNrAdjacencies">
+    <#Include Label="DigraphNrAdjacenciesWithoutLoops">
     <#Include Label="DigraphNrLoops">
     <#Include Label="DigraphSinks">
     <#Include Label="DigraphSources">
@@ -35,9 +37,13 @@
     <#Include Label="InDegreeOfVertex">
     <#Include Label="InNeighboursOfVertex">
     <#Include Label="DigraphLoops">
-    <#Include Label="PartialOrderDigraphMeetOfVertices">
     <#Include Label="DegreeMatrix">
     <#Include Label="LaplacianMatrix">
+  </Section>
+  
+  <Section><Heading>Orders</Heading>
+    <#Include Label="PartialOrderDigraphMeetOfVertices">
+    <#Include Label="NonUpperSemimodularPair">
   </Section>
 
   <Section><Heading>Reachability and connectivity</Heading>
@@ -64,17 +70,24 @@
     <#Include Label="VerticesReachableFrom">
     <#Include Label="DigraphPath">
     <#Include Label="DigraphShortestPath">
+    <#Include Label="DigraphRandomWalk">
+    <#Include Label="DigraphAbsorptionProbabilities">
+    <#Include Label="DigraphAbsorptionExpectedSteps">
     <#Include Label="Dominators">
     <#Include Label="DominatorTree">
     <#Include Label="IteratorOfPaths">
     <#Include Label="DigraphAllSimpleCircuits">
     <#Include Label="DigraphLongestSimpleCircuit">
+    <#Include Label="DigraphAllUndirectedSimpleCircuits">
+    <#Include Label="DigraphAllChordlessCycles">
+    <#Include Label="FacialWalks">
     <#Include Label="DigraphLayers">
     <#Include Label="DigraphDegeneracy">
     <#Include Label="DigraphDegeneracyOrdering">
     <#Include Label="HamiltonianPath">
     <#Include Label="NrSpanningTrees">
     <#Include Label="DigraphDijkstra">
+    <#Include Label="DigraphCycleBasis">
   </Section>
 
   <Section><Heading>Cayley graphs of groups</Heading>
@@ -93,6 +106,11 @@
     <#Include Label="PlanarEmbedding">
     <#Include Label="OuterPlanarEmbedding">
     <#Include Label="SubdigraphHomeomorphicToK">
+    <#Include Label="DualPlanarGraph">
+  </Section>
+
+  <Section><Heading>Hashing</Heading>
+    <#Include Label="DigraphHash">
   </Section>
 
 </Chapter>

@@ -211,6 +211,10 @@ gap> OnMultiDigraphs(gr1, [(1, 3), (1, 7)]);
 Error, the 2nd entry of the 2nd argument <perms> must permute the edges of the\
  digraph <D> that is the 1st argument,
 
+#  DomainForAction
+gap> DomainForAction(RandomDigraph(10), SymmetricGroup(10), OnDigraphs);
+true
+
 #  InNeighboursOfVertex and InDegreeOfVertex
 gap> gr := DigraphFromDiSparse6String(".IgBGLQ?Apkc");
 <immutable multidigraph with 10 vertices, 6 edges>
@@ -980,7 +984,7 @@ gap> gr := DigraphAddEdges(gr, [[2, 3], [5, 6], [9, 10]]);
 gap> gr = ChainDigraph(14);
 true
 gap> n := 10;;
-gap> DigraphDisjointUnion(List([1 .. n], x -> EmptyDigraph(x))) =
+gap> DigraphDisjointUnion(List([1 .. n], EmptyDigraph)) =
 > EmptyDigraph(Int(n * (n + 1) / 2));
 true
 gap> D1 := CycleDigraph(3);; D2 := DigraphReverse(D1);;
@@ -1443,6 +1447,36 @@ infinity
 gap> DigraphLongestDistanceFromVertex(gr, 16);
 Error, the 2nd argument <v> must be a vertex of the 1st argument <D>,
 
+#  DigraphRandomWalk
+gap> gr := CompleteDigraph(5);
+<immutable complete digraph with 5 vertices>
+gap> path := DigraphRandomWalk(gr, 1, 100);;
+gap> Length(path[1]);
+101
+gap> ForAll(path[1], i -> i in [1 .. 5]);
+true
+gap> Length(path[2]);
+100
+gap> ForAll(path[2], i -> i in [1 .. 4]);
+true
+gap> gr := ChainDigraph(5);
+<immutable chain digraph with 5 vertices>
+gap> DigraphRandomWalk(gr, 2, 100);
+[ [ 2, 3, 4, 5 ], [ 1, 1, 1 ] ]
+gap> DigraphRandomWalk(gr, 2, 2);  
+[ [ 2, 3, 4 ], [ 1, 1 ] ]
+gap> DigraphRandomWalk(gr, 5, 100);
+[ [ 5 ], [  ] ]
+gap> gr := CompleteBipartiteDigraph(10, 8);;
+gap> DigraphRandomWalk(gr, 3, 0);           
+[ [ 3 ], [  ] ]
+gap> DigraphRandomWalk(gr, 19, 5);
+Error, the 2nd argument <v> must be a vertex of the 1st argument <D>,
+gap> DigraphRandomWalk(gr, 123, 5);
+Error, the 2nd argument <v> must be a vertex of the 1st argument <D>,
+gap> DigraphRandomWalk(gr, 3, -1); 
+Error, the 3rd argument <t> must be a non-negative int,
+
 #  DigraphLayers
 gap> gr := CompleteDigraph(4);
 <immutable complete digraph with 4 vertices>
@@ -1682,6 +1716,16 @@ gap> gr := CycleDigraph(5);
 <immutable cycle digraph with 5 vertices>
 gap> PartialOrderDigraphJoinOfVertices(gr, 1, 4);
 Error, the 1st argument <D> must satisfy IsPartialOrderDigraph,
+gap> D := DigraphReflexiveTransitiveClosure(ChainDigraph(4));
+<immutable preorder digraph with 4 vertices, 10 edges>
+gap> IsJoinSemilatticeDigraph(D);
+true
+gap> PartialOrderDigraphJoinOfVertices(D, 2, 3);
+3
+gap> IsMeetSemilatticeDigraph(D);
+true
+gap> PartialOrderDigraphMeetOfVertices(D, 2, 3);
+2
 
 #Join semilattice on 9 vertices
 gap> gr := DigraphFromDiSparse6String(".HiR@AeNcC?oD?G`oAGXIoAGXAe_COqDK^F");
@@ -1902,7 +1946,7 @@ gap> DigraphShortestPath(gr, 12, 5014);
 gap> D := CompleteDigraph(5);
 <immutable complete digraph with 5 vertices>
 gap> VerticesReachableFrom(D, 1);
-[ 2, 1, 3, 4, 5 ]
+[ 1, 2, 3, 4, 5 ]
 gap> VerticesReachableFrom(D, 3);
 [ 1, 2, 3, 4, 5 ]
 gap> D := EmptyDigraph(5);
@@ -1911,12 +1955,14 @@ gap> VerticesReachableFrom(D, 1);
 [  ]
 gap> VerticesReachableFrom(D, 3);
 [  ]
+gap> VerticesReachableFrom(D, 6);
+Error, the 2nd argument (root) is not a vertex of the 1st argument (a digraph)
 gap> D := CycleDigraph(4);
 <immutable cycle digraph with 4 vertices>
 gap> VerticesReachableFrom(D, 1);
-[ 2, 3, 4, 1 ]
+[ 1, 2, 3, 4 ]
 gap> VerticesReachableFrom(D, 3);
-[ 4, 1, 2, 3 ]
+[ 1, 2, 3, 4 ]
 gap> D := ChainDigraph(5);
 <immutable chain digraph with 5 vertices>
 gap> VerticesReachableFrom(D, 1);
@@ -1928,29 +1974,29 @@ gap> VerticesReachableFrom(D, 5);
 gap> D := Digraph([[2, 3, 5], [1, 6], [4, 6, 7], [7, 8], [4], [], [8, 6], []]);
 <immutable digraph with 8 vertices, 13 edges>
 gap> VerticesReachableFrom(D, 1);
-[ 2, 1, 6, 3, 4, 7, 8, 5 ]
+[ 1, 2, 3, 4, 5, 6, 7, 8 ]
 gap> VerticesReachableFrom(D, 2);
-[ 1, 2, 3, 4, 7, 8, 6, 5 ]
+[ 1, 2, 3, 4, 5, 6, 7, 8 ]
 gap> VerticesReachableFrom(D, 3);
-[ 4, 7, 8, 6 ]
+[ 4, 6, 7, 8 ]
 gap> VerticesReachableFrom(D, 4);
-[ 7, 8, 6 ]
+[ 6, 7, 8 ]
 gap> VerticesReachableFrom(D, 5);
-[ 4, 7, 8, 6 ]
+[ 4, 6, 7, 8 ]
 gap> VerticesReachableFrom(D, 6);
 [  ]
 gap> VerticesReachableFrom(D, 7);
-[ 8, 6 ]
+[ 6, 8 ]
 gap> VerticesReachableFrom(D, 8);
 [  ]
 gap> D := Digraph([[1, 2, 3], [4], [1, 5], [], [2]]);
 <immutable digraph with 5 vertices, 7 edges>
 gap> VerticesReachableFrom(D, 1);
-[ 1, 2, 4, 3, 5 ]
+[ 1, 2, 3, 4, 5 ]
 gap> VerticesReachableFrom(D, 2);
 [ 4 ]
 gap> VerticesReachableFrom(D, 3);
-[ 1, 2, 4, 3, 5 ]
+[ 1, 2, 3, 4, 5 ]
 gap> VerticesReachableFrom(D, 4);
 [  ]
 gap> VerticesReachableFrom(D, 5);
@@ -1958,11 +2004,11 @@ gap> VerticesReachableFrom(D, 5);
 gap> D := Digraph(IsMutableDigraph, [[1, 2, 3], [4], [1, 5], [], [2]]);
 <mutable digraph with 5 vertices, 7 edges>
 gap> VerticesReachableFrom(D, 1);
-[ 1, 2, 4, 3, 5 ]
+[ 1, 2, 3, 4, 5 ]
 gap> VerticesReachableFrom(D, 2);
 [ 4 ]
 gap> VerticesReachableFrom(D, 3);
-[ 1, 2, 4, 3, 5 ]
+[ 1, 2, 3, 4, 5 ]
 gap> VerticesReachableFrom(D, 4);
 [  ]
 gap> VerticesReachableFrom(D, 5);
@@ -2756,36 +2802,473 @@ gap> D := Digraph([
 gap> path := DigraphPath(D, 5, 5);;
 gap> IsDigraphPath(D, path);
 true
+gap> D1 := CompleteDigraph(5);
+<immutable complete digraph with 5 vertices>
+gap> D2 := CompleteDigraph(10);
+<immutable complete digraph with 10 vertices>
+gap> VerticesReachableFrom(D1, [1]);
+[ 1, 2, 3, 4, 5 ]
+gap> VerticesReachableFrom(D1, [1, 2]);
+[ 1, 2, 3, 4, 5 ]
+gap> VerticesReachableFrom(D2, [1]);
+[ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ]
+gap> VerticesReachableFrom(D2, [1, 11]);
+Error, an element of the 2nd argument (roots) is not a vertex of the 1st argum\
+ent (a digraph)
+gap> D3 := CompleteDigraph(7);
+<immutable complete digraph with 7 vertices>
+gap> D3_edges := [1 .. 7];
+[ 1 .. 7 ]
+gap> for i in D3_edges do
+>      D3 := DigraphRemoveEdge(D3, [1, i]);
+>      D3 := DigraphRemoveEdge(D3, [i, 1]);
+>    od;
+gap> VerticesReachableFrom(D3, [1]);
+[  ]
+gap> TestPartialOrderDigraph := Digraph([[1, 3], [2, 3], [3]]);
+<immutable digraph with 3 vertices, 5 edges>
+gap> IsOrderIdeal(TestPartialOrderDigraph, [1, 2, 3]);
+true
+gap> TestPartialOrderDigraph2 := Digraph([[1, 3], [2, 3], [3]]);
+<immutable digraph with 3 vertices, 5 edges>
+gap> TestUnion := DigraphDisjointUnion(TestPartialOrderDigraph, TestPartialOrderDigraph2);
+<immutable digraph with 6 vertices, 10 edges>
+gap> IsOrderIdeal(TestUnion, [1, 2, 3]);
+true
+gap> IsOrderIdeal(TestUnion, [4, 5, 6]);
+true
+gap> IsOrderIdeal(TestUnion, [1, 5, 6]);
+false
+gap> D := CycleDigraph(5);;
+gap> IsOrderIdeal(D, [1]);
+Error, the 1st argument (a digraph) must be a partial order digraph
 
-#DIGRAPHS_UnbindVariables
+# IsOrderFilter
+gap> D := DigraphByEdges([[1, 1], [1, 2], [1, 3], [2, 3], [3, 3], [2, 2], [2, 4], [4, 4], [1, 4]]);
+<immutable digraph with 4 vertices, 9 edges>
+gap> IsOrderFilter(D, [1, 2]);
+true
+gap> IsOrderFilter(D, [2, 3]);
+false
+gap> IsOrderFilter(D, [1, 4]);
+false
+gap> IsOrderFilter(D, [4]);
+false
+gap> IsOrderFilter(4);
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `IsOrderFilter' on 1 arguments
+gap> IsOrderFilter(D, 4);
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `IsOrderFilter' on 2 arguments
+gap> IsOrderFilter(D, [5]);
+Error, an element of the 2nd argument (roots) is not a vertex of the 1st argum\
+ent (a digraph)
+
+# DigraphCycleBasis
+gap> D := NullDigraph(0);
+<immutable empty digraph with 0 vertices>
+gap> DigraphCycleBasis(D);
+[ [  ], [  ] ]
+gap> D := NullDigraph(6);
+<immutable empty digraph with 6 vertices>
+gap> DigraphCycleBasis(D);
+[ [ [  ], [  ], [  ], [  ], [  ], [  ] ], [  ] ]
+gap> D := Digraph([[1]]);
+<immutable digraph with 1 vertex, 1 edge>
+gap> DigraphCycleBasis(D);
+Error, the 1st argument (a digraph) must not have any loops
+gap> D := CompleteDigraph(5);
+<immutable complete digraph with 5 vertices>
+gap> res := DigraphCycleBasis(D);
+[ [ [ 2, 3, 4, 5 ], [ 3, 4, 5 ], [ 4, 5 ], [ 5 ], [  ] ], 
+  [ <a GF2 vector of length 10>, <a GF2 vector of length 10>, 
+      <a GF2 vector of length 10>, <a GF2 vector of length 10>, 
+      <a GF2 vector of length 10>, <a GF2 vector of length 10> ] ]
+gap> List(res[2], List);
+[ [ Z(2)^0, 0*Z(2), 0*Z(2), Z(2)^0, 0*Z(2), 0*Z(2), Z(2)^0, 0*Z(2), 0*Z(2), 
+      0*Z(2) ], 
+  [ 0*Z(2), Z(2)^0, 0*Z(2), Z(2)^0, 0*Z(2), 0*Z(2), 0*Z(2), 0*Z(2), Z(2)^0, 
+      0*Z(2) ], 
+  [ 0*Z(2), 0*Z(2), Z(2)^0, Z(2)^0, 0*Z(2), 0*Z(2), 0*Z(2), 0*Z(2), 0*Z(2), 
+      Z(2)^0 ], 
+  [ Z(2)^0, 0*Z(2), Z(2)^0, 0*Z(2), 0*Z(2), Z(2)^0, 0*Z(2), 0*Z(2), 0*Z(2), 
+      0*Z(2) ], 
+  [ 0*Z(2), Z(2)^0, Z(2)^0, 0*Z(2), 0*Z(2), 0*Z(2), 0*Z(2), Z(2)^0, 0*Z(2), 
+      0*Z(2) ], 
+  [ Z(2)^0, Z(2)^0, 0*Z(2), 0*Z(2), Z(2)^0, 0*Z(2), 0*Z(2), 0*Z(2), 0*Z(2), 
+      0*Z(2) ] ]
+gap> D := DigraphSymmetricClosure(ChainDigraph(10));
+<immutable symmetric digraph with 10 vertices, 18 edges>
+gap> DigraphCycleBasis(D);
+[ [ [ 2 ], [ 3 ], [ 4 ], [ 5 ], [ 6 ], [ 7 ], [ 8 ], [ 9 ], [ 10 ], [  ] ], 
+  [  ] ]
+gap> D := Digraph([[6], [3, 1, 6], [2], [6, 5], [4, 3, 2, 6], [4, 1, 5, 2]]);
+<immutable digraph with 6 vertices, 15 edges>
+gap> res := DigraphCycleBasis(D);
+[ [ [ 6 ], [ 1, 3, 6 ], [  ], [ 5, 6 ], [ 2, 3, 6 ], [  ] ], 
+  [ <a GF2 vector of length 9>, <a GF2 vector of length 9>, 
+      <a GF2 vector of length 9>, <a GF2 vector of length 9> ] ]
+gap> List(res[2], List);
+[ [ Z(2)^0, Z(2)^0, 0*Z(2), Z(2)^0, 0*Z(2), 0*Z(2), 0*Z(2), 0*Z(2), 0*Z(2) ], 
+  [ 0*Z(2), 0*Z(2), Z(2)^0, 0*Z(2), 0*Z(2), 0*Z(2), Z(2)^0, Z(2)^0, 0*Z(2) ], 
+  [ Z(2)^0, Z(2)^0, 0*Z(2), 0*Z(2), 0*Z(2), 0*Z(2), Z(2)^0, 0*Z(2), Z(2)^0 ], 
+  [ Z(2)^0, Z(2)^0, 0*Z(2), 0*Z(2), Z(2)^0, Z(2)^0, Z(2)^0, 0*Z(2), 0*Z(2) ] ]
+gap> D := DigraphDisjointUnion(CycleGraph(3), CycleGraph(4));
+<immutable digraph with 7 vertices, 14 edges>
+gap> res := DigraphCycleBasis(D);
+[ [ [ 2, 3 ], [ 3 ], [  ], [ 5, 7 ], [ 6 ], [ 7 ], [  ] ], 
+  [ <a GF2 vector of length 7>, <a GF2 vector of length 7> ] ]
+gap> List(res[2], List);
+[ [ Z(2)^0, Z(2)^0, Z(2)^0, 0*Z(2), 0*Z(2), 0*Z(2), 0*Z(2) ], 
+  [ 0*Z(2), 0*Z(2), 0*Z(2), Z(2)^0, Z(2)^0, Z(2)^0, Z(2)^0 ] ]
+
+# DigraphContractEdge
+
+# DigraphContractEdge: wrong length list
+gap> D := Digraph([[2, 3, 3], [2], [1]]);;
+gap> DigraphContractEdge(D, [1]);
+Error, the 2nd argument <edge> must be a list of length 2
+
+# DigraphContractEdge: multi digraphs
+gap> D := Digraph([[2, 3, 3], [2], [1]]);;
+gap> DigraphContractEdge(D, 1, 3);
+Error, The 1st argument (a digraph) must not satisfy IsMultiDigraph
+
+# DigraphContractEdge: Edge does not exist
+gap> D := DigraphByEdges([[1, 2], [2, 1]]);;
+gap> DigraphContractEdge(D, 1, 3);
+Error, expected an edge between the 2nd and 3rd arguments (vertices) 1 and 
+3 but found none
+
+# DigraphContractEdge: Edge is a looped edge (u = v)
+gap> D := DigraphByEdges([[1, 1], [2, 1], [1, 2]]);;
+gap> DigraphVertexLabels(D);; 
+gap> C := DigraphContractEdge(D, 1, 1);
+Error, The 2nd argument <u> must not be equal to the 3rd argument <v>
+gap> DigraphHasLoops(D);
+true
+gap> DigraphEdges(D);
+[ [ 1, 1 ], [ 2, 1 ], [ 1, 2 ] ]
+gap> DigraphVertexLabels(D);
+[ 1, 2 ]
+
+# DigraphContractEdge: Loop contracting to an empty Digraph
+gap> D := DigraphByEdges([[1, 2], [2, 1]]);;
+gap> SetDigraphVertexLabel(D, 1, "1");;
+gap> SetDigraphVertexLabel(D, 2, "2");;
+gap> C := DigraphContractEdge(D, 2, 1);;
+gap> DigraphEdges(C);
+[  ]
+gap> DigraphVertices(C);
+[ 1 ]
+gap> DigraphVertexLabel(C, 1);
+[ "2", "1" ]
+
+# DigraphContractEdge: Double loop contracting, one edge result
+gap> D := DigraphByEdges([[1, 2], [1, 3], [2, 1]]);;
+gap> DigraphVertexLabels(D);;
+gap> C := DigraphContractEdge(D, 2, 1);;
+gap> DigraphEdges(C);
+[ [ 2, 1 ] ]
+gap> DigraphVertices(C);
+[ 1, 2 ]
+gap> DigraphVertexLabels(C);
+[ 3, [ 2, 1 ] ]
+
+# DigraphContractEdge: Loop contracting, leaving another loop remaining
+gap> D := DigraphByEdges([[1, 2], [1, 3], [3, 1], [2, 1]]);;
+gap> DigraphVertexLabels(D);;
+gap> C := DigraphContractEdge(D, 2, 1);;
+gap> DigraphEdges(C);
+[ [ 1, 2 ], [ 2, 1 ] ]
+gap> DigraphVertices(C);
+[ 1, 2 ]
+gap> DigraphVertexLabels(C);
+[ 3, [ 2, 1 ] ]
+
+# DigraphContractEdge: Test with a larger graph, vertex labels and an edge label, making sure D was not modified
+gap> D := DigraphByEdges([[2, 1], [1, 3], [3, 1], [4, 2], [4, 5], [3, 4], [5, 3]]);;
+gap> SetDigraphVertexLabels(D, ["1", "2", "3", "4", "5"]);;
+gap> SetDigraphEdgeLabel(D, 2, 1, "newlabel");
+gap> C := DigraphContractEdge(D, 3, 4);;
+gap> DigraphEdges(C);
+[ [ 1, 4 ], [ 2, 1 ], [ 3, 4 ], [ 4, 1 ], [ 4, 2 ], [ 4, 3 ] ]
+gap> DigraphVertexLabels(C);
+[ "1", "2", "5", [ "3", "4" ] ]
+gap> DigraphEdgeLabel(C, 2, 1);
+"newlabel"
+gap> DigraphEdges(D);
+[ [ 2, 1 ], [ 1, 3 ], [ 3, 1 ], [ 4, 2 ], [ 4, 5 ], [ 3, 4 ], [ 5, 3 ] ]
+gap> DigraphVertices(D);
+[ 1 .. 5 ]
+gap> DigraphVertexLabels(D);
+[ "1", "2", "3", "4", "5" ]
+
+# DigraphContractEdge: Test with a loop (u, u)
+gap> D := DigraphByEdges([[1, 2], [2, 3], [3, 4], [4, 1], [1, 1]]);;
+gap> DigraphVertexLabels(D);;
+gap> C := DigraphContractEdge(D, 1, 2);;
+gap> DigraphEdges(C);
+[ [ 1, 2 ], [ 2, 3 ], [ 3, 3 ], [ 3, 1 ] ]
+gap> DigraphVertices(C);
+[ 1 .. 3 ]
+gap> DigraphVertexLabels(C);
+[ 3, 4, [ 1, 2 ] ]
+
+# DigraphContractEdge: Test with a loop (w, w)
+gap> D := DigraphByEdges([[1, 2], [2, 3], [3, 4], [4, 1], [1, 1], [2, 1]]);;
+gap> C := DigraphContractEdge(D, 2, 1);;
+gap> DigraphEdges(C);
+[ [ 1, 2 ], [ 2, 3 ], [ 3, 3 ], [ 3, 1 ] ]
+gap> DigraphVertices(C);
+[ 1 .. 3 ]
+
+# DigraphContractEdge: Test with a loop (w, w)
+gap> D := DigraphByEdges([[1, 2], [2, 3], [3, 4], [4, 1], [1, 1], [2, 1]]);;
+gap> DigraphVertexLabels(D);;
+gap> C := DigraphContractEdge(D, 2, 1);;
+gap> DigraphEdges(C);
+[ [ 1, 2 ], [ 2, 3 ], [ 3, 3 ], [ 3, 1 ] ]
+gap> DigraphVertices(C);
+[ 1 .. 3 ]
+gap> DigraphVertexLabels(C);
+[ 3, 4, [ 2, 1 ] ]
+
+# DigraphContractEdge: Test with a single edge (u, v)
+gap> D := DigraphByEdges([[1, 2]]);;
+gap> DigraphVertexLabels(D);;
+gap> C := DigraphContractEdge(D, 1, 2);;
+gap> DigraphEdges(C);
+[  ]
+gap> DigraphVertices(C);
+[ 1 ]
+gap> DigraphVertexLabels(C);
+[ [ 1, 2 ] ]
+
+# DigraphContractEdge: Test with a single node, with one loop, and one incident edge
+gap> D := DigraphByEdges([[1, 1], [2, 1]]);;
+gap> DigraphVertexLabels(D);;
+gap> C := DigraphContractEdge(D, 2, 1);;
+gap> DigraphEdges(C);
+[ [ 1, 1 ] ]
+gap> DigraphVertices(C);
+[ 1 ]
+gap> DigraphVertexLabels(C);
+[ [ 2, 1 ] ]
+
+# DigraphContractEdge: Standard test
+gap> D := DigraphByEdges([[2, 1], [3, 1], [3, 4], [1, 4], [4, 2], [5, 2], [4, 5], [5, 5]]);;
+gap> DigraphVertexLabels(D);;
+gap> C := DigraphContractEdge(D, 2, 1);;
+gap> DigraphEdges(C);
+[ [ 1, 4 ], [ 1, 2 ], [ 2, 4 ], [ 2, 3 ], [ 3, 4 ], [ 3, 3 ], [ 4, 2 ] ]
+gap> DigraphVertices(C);
+[ 1 .. 4 ]
+gap> DigraphVertexLabels(C);
+[ 3, 4, 5, [ 2, 1 ] ]
+
+# DigraphContractEdge: Standard test (list)
+gap> D := DigraphByEdges([[2, 1], [3, 1], [3, 4], [1, 4], [4, 2], [5, 2], [4, 5], [5, 5]]);;
+gap> DigraphVertexLabels(D);;
+gap> C := DigraphContractEdge(D, [2, 1]);;
+gap> DigraphEdges(C);
+[ [ 1, 4 ], [ 1, 2 ], [ 2, 4 ], [ 2, 3 ], [ 3, 4 ], [ 3, 3 ], [ 4, 2 ] ]
+gap> DigraphVertices(C);
+[ 1 .. 4 ]
+gap> DigraphVertexLabels(C);
+[ 3, 4, 5, [ 2, 1 ] ]
+
+# DigraphContractEdge: Disconnected test
+gap> D := DigraphByEdges([[1, 2], [1, 3], [2, 1], [2, 2], [2, 3], [3, 2], [4, 4], [4, 5], [4, 6], [5, 5], [5, 4]]);;
+gap> DigraphVertexLabels(D);;
+gap> C := DigraphContractEdge(D, 4, 5);;
+gap> DigraphEdges(C);
+[ [ 1, 2 ], [ 1, 3 ], [ 2, 1 ], [ 2, 2 ], [ 2, 3 ], [ 3, 2 ], [ 5, 5 ], 
+  [ 5, 4 ] ]
+gap> DigraphVertexLabels(C);
+[ 1, 2, 3, 6, [ 4, 5 ] ]
+
+# DigraphContractEdge: wrong length list (mutable
+gap> D := Digraph(IsMutableDigraph, [[2, 3, 3], [2], [1]]);;
+gap> DigraphContractEdge(D, [1]);
+Error, the 2nd argument <edge> must be a list of length 2
+
+# DigraphContractEdge: MultiDigraph (mutable)
+gap> D := Digraph(IsMutableDigraph, [[2, 3, 3], [2], [1]]);;
+gap> DigraphContractEdge(D, 1, 3);
+Error, The 1st argument (a digraph) must not satisfy IsMultiDigraph
+
+# DigraphContractEdge: Edge does not exist (mutable)
+gap> D := DigraphByEdges(IsMutableDigraph, [[1, 2], [2, 1]]);;
+gap> DigraphContractEdge(D, 1, 3);
+Error, expected an edge between the 2nd and 3rd arguments (vertices) 1 and 
+3 but found none
+
+# DigraphContractEdge: Edge is a looped edge (u = v) (mutable)
+gap> D := DigraphByEdges(IsMutableDigraph, [[1, 1], [2, 1], [1, 2]]);;
+gap> DigraphVertexLabels(D);; 
+gap> DigraphContractEdge(D, 1, 1);
+Error, The 2nd argument <u> must not be equal to the 3rd argument <v>
+gap> DigraphHasLoops(D);
+true
+gap> DigraphEdges(D);
+[ [ 1, 1 ], [ 1, 2 ], [ 2, 1 ] ]
+gap> DigraphVertexLabels(D);
+[ 1, 2 ]
+
+# DigraphContractEdge: Loop contracting to an empty Digraph (mutable)
+gap> D := DigraphByEdges(IsMutableDigraph, [[1, 2], [2, 1]]);;
+gap> SetDigraphVertexLabel(D, 1, "1");;
+gap> SetDigraphVertexLabel(D, 2, "2");;
+gap> DigraphContractEdge(D, 2, 1);;
+gap> DigraphEdges(D);
+[  ]
+gap> DigraphVertices(D);
+[ 1 ]
+gap> DigraphVertexLabel(D, 1);
+[ "2", "1" ]
+
+# DigraphContractEdge: Double loop contracting, one edge result (mutable)
+gap> D := DigraphByEdges(IsMutableDigraph, [[1, 2], [1, 3], [2, 1]]);;
+gap> DigraphVertexLabels(D);;
+gap> DigraphContractEdge(D, 2, 1);;
+gap> DigraphEdges(D);
+[ [ 2, 1 ] ]
+gap> DigraphVertices(D);
+[ 1, 2 ]
+gap> DigraphVertexLabels(D);
+[ 3, [ 2, 1 ] ]
+
+# DigraphContractEdge: Loop contracting, leaving another loop remaining (mutable)
+gap> D := DigraphByEdges(IsMutableDigraph, [[1, 2], [1, 3], [3, 1], [2, 1]]);;
+gap> DigraphVertexLabels(D);;
+gap> DigraphContractEdge(D, 2, 1);;
+gap> DigraphEdges(D);
+[ [ 1, 2 ], [ 2, 1 ] ]
+gap> DigraphVertices(D);
+[ 1, 2 ]
+gap> DigraphVertexLabels(D);
+[ 3, [ 2, 1 ] ]
+
+# DigraphContractEdge: Test with a larger graph, vertex labels and an edge label (mutable)
+gap> D := DigraphByEdges(IsMutableDigraph, [[2, 1], [1, 3], [3, 1], [4, 2], [4, 5], [3, 4], [5, 3]]);;
+gap> SetDigraphVertexLabels(D, ["1", "2", "3", "4", "5"]);;
+gap> SetDigraphEdgeLabel(D, 2, 1, "newlabel");
+gap> DigraphContractEdge(D, 3, 4);;
+gap> DigraphEdges(D);
+[ [ 1, 4 ], [ 2, 1 ], [ 3, 4 ], [ 4, 1 ], [ 4, 2 ], [ 4, 3 ] ]
+gap> DigraphVertexLabels(D);
+[ "1", "2", "5", [ "3", "4" ] ]
+gap> DigraphEdgeLabel(D, 2, 1);
+"newlabel"
+
+# DigraphContractEdge: Test with a loop (u, u) (mutable)
+gap> D := DigraphByEdges(IsMutableDigraph, [[1, 2], [2, 3], [3, 4], [4, 1], [1, 1]]);;
+gap> DigraphVertexLabels(D);;
+gap> DigraphContractEdge(D, 1, 2);;
+gap> DigraphEdges(D);
+[ [ 1, 2 ], [ 2, 3 ], [ 3, 3 ], [ 3, 1 ] ]
+gap> DigraphVertices(D);
+[ 1 .. 3 ]
+gap> DigraphVertexLabels(D);
+[ 3, 4, [ 1, 2 ] ]
+
+# DigraphContractEdge: Test with a loop (w, w) (mutable)
+gap> D := DigraphByEdges(IsMutableDigraph, [[1, 2], [2, 3], [3, 4], [4, 1], [1, 1], [2, 1]]);;
+gap> DigraphVertexLabels(D);;
+gap> DigraphContractEdge(D, 2, 1);;
+gap> DigraphEdges(D);
+[ [ 1, 2 ], [ 2, 3 ], [ 3, 3 ], [ 3, 1 ] ]
+gap> DigraphVertices(D);
+[ 1 .. 3 ]
+gap> DigraphVertexLabels(D);
+[ 3, 4, [ 2, 1 ] ]
+
+# DigraphContractEdge: Test with a single edge (u, v) (mutable)
+gap> D := DigraphByEdges(IsMutableDigraph, [[1, 2]]);;
+gap> DigraphVertexLabels(D);;
+gap> DigraphContractEdge(D, 1, 2);;
+gap> DigraphEdges(D);
+[  ]
+gap> DigraphVertices(D);
+[ 1 ]
+gap> DigraphVertexLabels(D);
+[ [ 1, 2 ] ]
+
+# DigraphContractEdge: Test with a single node, with one loop, and one incident edge (mutable)
+gap> D := DigraphByEdges(IsMutableDigraph, [[1, 1], [2, 1]]);;
+gap> DigraphVertexLabels(D);;
+gap> DigraphContractEdge(D, 2, 1);;
+gap> DigraphEdges(D);
+[ [ 1, 1 ] ]
+gap> DigraphVertices(D);
+[ 1 ]
+gap> DigraphVertexLabels(D);
+[ [ 2, 1 ] ]
+
+# DigraphContractEdge: Standard test (mutable)
+gap> D := DigraphByEdges(IsMutableDigraph, [[2, 1], [3, 1], [3, 4], [1, 4], [4, 2], [5, 2], [4, 5], [5, 5]]);;
+gap> DigraphVertexLabels(D);;
+gap> DigraphContractEdge(D, 2, 1);;
+gap> DigraphEdges(D);
+[ [ 1, 2 ], [ 1, 4 ], [ 2, 3 ], [ 2, 4 ], [ 3, 3 ], [ 3, 4 ], [ 4, 2 ] ]
+gap> DigraphVertexLabels(D);
+[ 3, 4, 5, [ 2, 1 ] ]
+
+# DigraphContractEdge: Standard test (list, mutable)
+gap> D := DigraphByEdges(IsMutableDigraph, [[2, 1], [3, 1], [3, 4], [1, 4], [4, 2], [5, 2], [4, 5], [5, 5]]);;
+gap> DigraphVertexLabels(D);;
+gap> DigraphContractEdge(D, [2, 1]);;
+gap> DigraphEdges(D);
+[ [ 1, 2 ], [ 1, 4 ], [ 2, 3 ], [ 2, 4 ], [ 3, 3 ], [ 3, 4 ], [ 4, 2 ] ]
+gap> DigraphVertexLabels(D);
+[ 3, 4, 5, [ 2, 1 ] ]
+
+# DigraphContractEdge: Disconnected test (mutable)
+gap> D := DigraphByEdges(IsMutableDigraph, [[1, 2], [1, 3], [2, 1], [2, 2], [2, 3], [3, 2], [4, 4], [4, 5], [4, 6], [5, 5], [5, 4]]);;
+gap> DigraphVertexLabels(D);;
+gap> DigraphContractEdge(D, 4, 5);;
+gap> DigraphEdges(D);
+[ [ 1, 2 ], [ 1, 3 ], [ 2, 1 ], [ 2, 2 ], [ 2, 3 ], [ 3, 2 ], [ 5, 5 ], 
+  [ 5, 4 ] ]
+gap> DigraphVertexLabels(D);
+[ 1, 2, 3, 6, [ 4, 5 ] ]
+
+#  DIGRAPHS_UnbindVariables
+gap> Unbind(C);
+gap> Unbind(D);
+gap> Unbind(D1);
+gap> Unbind(D2);
+gap> Unbind(D3);
+gap> Unbind(D3_edges);
+gap> Unbind(DD);
+gap> Unbind(G);
+gap> Unbind(G1);
+gap> Unbind(L);
 gap> Unbind(a);
 gap> Unbind(adj);
 gap> Unbind(b);
-gap> Unbind(D1);
-gap> Unbind(D2);
-gap> Unbind(e);
+gap> Unbind(copy);
+gap> Unbind(d);
 gap> Unbind(edges);
 gap> Unbind(edges2);
-gap> Unbind(erev);
 gap> Unbind(func);
-gap> Unbind(G1);
-gap> Unbind(G2);
-gap> Unbind(G3);
-gap> Unbind(G4);
-gap> Unbind(G5);
 gap> Unbind(g);
 gap> Unbind(gr);
 gap> Unbind(gr1);
 gap> Unbind(gr2);
 gap> Unbind(gr3);
 gap> Unbind(gr4);
-gap> Unbind(gr5);
 gap> Unbind(gri);
 gap> Unbind(grrt);
 gap> Unbind(grt);
 gap> Unbind(h);
+gap> Unbind(i);
 gap> Unbind(i1);
 gap> Unbind(i2);
+gap> Unbind(in1);
+gap> Unbind(in2);
+gap> Unbind(in3);
 gap> Unbind(iter);
 gap> Unbind(j1);
 gap> Unbind(j2);
@@ -2794,7 +3277,6 @@ gap> Unbind(m1);
 gap> Unbind(m2);
 gap> Unbind(mat);
 gap> Unbind(n);
-gap> Unbind(nat);
 gap> Unbind(nbs);
 gap> Unbind(out);
 gap> Unbind(out1);
@@ -2802,23 +3284,17 @@ gap> Unbind(out2);
 gap> Unbind(out3);
 gap> Unbind(p1);
 gap> Unbind(p2);
+gap> Unbind(path);
 gap> Unbind(qr);
 gap> Unbind(r);
-gap> Unbind(range);
-gap> Unbind(rel1);
-gap> Unbind(rel2);
-gap> Unbind(rel3);
-gap> Unbind(rev);
-gap> Unbind(rgr);
+gap> Unbind(res);
 gap> Unbind(rtclosure);
-gap> Unbind(source);
-gap> Unbind(T);
 gap> Unbind(t);
 gap> Unbind(tclosure);
-gap> Unbind(temp);
-gap> Unbind(U);
 gap> Unbind(u1);
 gap> Unbind(u2);
+gap> Unbind(x);
+gap> Unbind(TestPartialOrderDigraph);
 
 #
 gap> DIGRAPHS_StopTest();

@@ -13,6 +13,26 @@
 # Internal stuff
 #############################################################################
 
+BindGlobal("DIGRAPHS_DocXMLFiles",
+           ["../PackageInfo.g",
+            "attr.xml",
+            "cliques.xml",
+            "constructors.xml",
+            "digraph.xml",
+            "display.xml",
+            "examples.xml",
+            "grahom.xml",
+            "grape.xml",
+            "io.xml",
+            "isomorph.xml",
+            "labels.xml",
+            "oper.xml",
+            "orbits.xml",
+            "planar.xml",
+            "prop.xml",
+            "utils.xml",
+            "weights.xml"]);
+
 BindGlobal("DIGRAPHS_TestRec", rec());
 MakeReadWriteGlobal("DIGRAPHS_TestRec");
 
@@ -30,15 +50,15 @@ InstallGlobalFunction(DIGRAPHS_StopTest,
 function()
   SetInfoLevel(InfoWarning, DIGRAPHS_TestRec.InfoLevelInfoWarning);
   SetInfoLevel(InfoDigraphs, DIGRAPHS_TestRec.InfoLevelInfoDigraphs);
+
+  # Wipe internal structures for homos and cliques
+  DIGRAPHS_FREE_HOMOS_DATA();
+  DIGRAPHS_FREE_CLIQUES_DATA();
   return;
 end);
 
 InstallGlobalFunction(DIGRAPHS_Test,
-function(filename)
-  return DIGRAPHS_RunTest(function()
-                            return Test(filename, rec(showProgress := false));
-                          end);
-end);
+fname -> DIGRAPHS_RunTest({} -> Test(fname, rec(showProgress := false))));
 
 # The parameter <func> should be a 0-argument function which returns true or
 # false.
@@ -102,14 +122,16 @@ end);
 
 InstallGlobalFunction(DIGRAPHS_ManualExamples,
 function()
+  if Filename(DirectoriesPackageLibrary("digraphs", "doc"),
+              "main.xml") = fail then
+    # The file main.xml only exists if AutoDoc has been run.
+    DigraphsMakeDoc();
+  fi;
   return ExtractExamples(DirectoriesPackageLibrary("digraphs", "doc"),
                          "main.xml", DIGRAPHS_DocXMLFiles, "Single");
 end);
 
-InstallGlobalFunction(DIGRAPHS_Dir,
-function()
-  return GAPInfo.PackagesLoaded.digraphs[1];
-end);
+InstallGlobalFunction(DIGRAPHS_Dir, {} -> GAPInfo.PackagesLoaded.digraphs[1]);
 
 #############################################################################
 # User facing stuff
@@ -138,7 +160,7 @@ function()
 end);
 
 InstallGlobalFunction(DigraphsTestStandard,
-function(arg)
+function(arg...)
   local opts, dir;
   if Length(arg) = 1 and IsRecord(arg[1]) then
     opts := ShallowCopy(arg[1]);
@@ -163,21 +185,19 @@ function(arg)
   fi;
 
   dir := DirectoriesPackageLibrary("digraphs", "tst/standard/");
-  return DIGRAPHS_RunTest(function()
-                            return TestDirectory(dir, opts);
-                          end);
+  return DIGRAPHS_RunTest({} -> TestDirectory(dir, opts));
 end);
 
 InstallGlobalFunction(DigraphsTestExtreme,
-function(arg)
+function(arg...)
   local file, opts, dir;
   file := Filename(DirectoriesPackageLibrary("digraphs", "digraphs-lib"),
                    "extreme.d6.gz");
   if file = fail then
     ErrorNoReturn("the file pkg/digraphs/digraphs-lib/extreme.d6.gz is ",
                   "required for these tests to run. Please install the ",
-                  "'digraphs-lib'archive from: ",
-                  "https://digraphs.github.io/Digraphs/",
+                  "'digraphs-lib' archive from ",
+                  "https://digraphs.github.io/Digraphs/ ",
                   "and try again,");
   fi;
 
@@ -207,19 +227,18 @@ function(arg)
   fi;
 
   dir := DirectoriesPackageLibrary("digraphs", "tst/extreme/");
-  return DIGRAPHS_RunTest(function()
-                            return TestDirectory(dir, opts);
-                          end);
+  return DIGRAPHS_RunTest({} -> TestDirectory(dir, opts));
 end);
 
 InstallGlobalFunction(DigraphsMakeDoc,
 function()
-  # Compile the documentation of the currently-loaded version of Digraphs
-  DIGRAPHS_MakeDoc(DirectoriesPackageLibrary("Digraphs", ""));
+  local fname;
+  fname := Filename(DirectoriesPackageLibrary("digraphs", ""), "makedoc.g");
+  Read(fname);
 end);
 
 InstallGlobalFunction(DigraphsTestManualExamples,
-function(arg)
+function(arg...)
   local exlists, indices, omit, oldscr, passed, pad, total, l, sp, bad, s,
   start_time, test, end_time, elapsed, pex, str, j, ex, i;
 
@@ -269,7 +288,8 @@ function(arg)
       s := InputTextString(ex[1]);
 
       start_time := IO_gettimeofday();
-      test := Test(s, rec(ignoreComments := false,
+      test := Test(s, rec(compareFunction := "uptowhitespace",
+                          ignoreComments := false,
                           width := 72,
                           EQ := EQ,
                           reportDiff := Ignore,
@@ -594,14 +614,13 @@ function(blist)
 end);
 
 InstallGlobalFunction(DError,
-function(arg)
+function(arg...)
   local msg;
   if not (IsString(arg[1]) or IsList(arg[1])) then
     Error("expected a string or a list as the 1st argument");
   elif IsList(arg[1]) and not ForAll(arg[1], IsString) then
     Error("expected a list of strings as the 1st argument");
-  fi;
-  if IsList(arg[1]) then
+  elif IsList(arg[1]) then
     arg[1] := Concatenation(arg[1]);
   fi;
   msg := CallFuncList(StringFormatted, arg);
