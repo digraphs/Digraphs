@@ -1477,7 +1477,8 @@ function(r, Stream)
                 if (w < 1) or (w > r.n) or (w = v and not r.digraph) then
                     Info(InfoWarning, 1, "Ignoring illegal edge (",
                         v + r.labelorg - 1, ", ", w + r.labelorg - 1,
-                        ") (", r.labelorg,"-indexed on line) ", r.newline);
+                        ") (", r.labelorg, "-indexed on line) ",
+                        r.newline);
                 else
                     RemoveSet(r.edgeList[v], w);
                     if not r.digraph then
@@ -1490,7 +1491,8 @@ function(r, Stream)
                     if w < 1 or w > r.n then
                         Info(InfoWarning, 1, "Ignoring illegal vertex (",
                             v + r.labelorg - 1, ", ", w + r.labelorg - 1,
-                            ") (" , r.labelorg, "-indexed) on line ", r.newline);
+                            ") (" , r.labelorg, "-indexed) on line ",
+                            r.newline);
                     else
                         v := w;
                     fi;
@@ -1499,7 +1501,8 @@ function(r, Stream)
                     if w < 1 or w > r.n or (w = v and not r.digraph) then
                         Info(InfoWarning, 1, "Ignoring illegal edge (",
                             v + r.labelorg - 1, ", ", w + r.labelorg - 1,
-                            ") (" , r.labelorg, "-indexed) on line ", r.newline);
+                            ") (" , r.labelorg, "-indexed) on line ",
+                            r.newline);
                     else
                         AddSet(r.edgeList[v], w);
                         if not r.digraph then
@@ -1513,8 +1516,7 @@ function(r, Stream)
                 CloseStream(Stream.file);
                 ErrorNoReturn("Vertex ", v + r.labelorg - 1,
                             " declared on line ", r.newline,
-                            " exceeds maximum value ",
-                            r.n + r.labelorg - 1);
+                            " exceeds maximum value ", r.n + r.labelorg - 1);
             else
                 neg := false;
                 v := v + 1;
