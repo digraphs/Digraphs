@@ -818,29 +818,25 @@ gap> gr := Digraph([[1, 1]]);
 gap> DigraphReverseEdges(gr, [[2, 2]]);
 Error, the 1st argument <D> must be a digraph with no multiple edges,
 gap> DigraphReverseEdges(gr, [2]);
-Error, no method found! For debugging hints type ?Recovery from NoMethodFound
-Error, no 1st choice method found for `DigraphReverseEdge' on 2 arguments
+Error, the 1st argument <D> must be a digraph with no multiple edges,
 gap> gr := CompleteDigraph(100);
 <immutable complete digraph with 100 vertices>
 gap> DigraphReverseEdges(gr, "a");
-Error, no method found! For debugging hints type ?Recovery from NoMethodFound
-Error, no 1st choice method found for `DigraphReverseEdge' on 2 arguments
+Error, the 2nd argument <E> must be a list of edges
 gap> DigraphReverseEdges(gr, Group(()));
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `DigraphReverseEdges' on 2 arguments
 gap> DigraphReverseEdges(gr, [0, 0]);
-Error, no method found! For debugging hints type ?Recovery from NoMethodFound
-Error, no 1st choice method found for `DigraphReverseEdge' on 2 arguments
+Error, the 2nd argument <E> must be a list of edges
 gap> DigraphReverseEdges(gr, [[0]]);
-Error, the 2nd argument <e> must be a list of length 2,
+Error, the 2nd argument <E> must be a list of edges
 gap> DigraphReverseEdges(gr, [[1], [1]]);
-Error, the 2nd argument <e> must be a list of length 2,
+Error, the 2nd argument <E> must be a list of edges
 gap> edges := ShallowCopy(DigraphEdges(gr));;
 gap> gr = DigraphReverseEdges(gr, edges);
 Error, the 1st argument <D> must be a digraph with no multiple edges,
 gap> gr = DigraphReverseEdges(gr, [1 .. DigraphNrEdges(gr)]);
-Error, no method found! For debugging hints type ?Recovery from NoMethodFound
-Error, no 1st choice method found for `DigraphReverseEdge' on 2 arguments
+Error, the 2nd argument <E> must be a list of edges
 gap> DigraphReverseEdge(gr, 2) = DigraphReverseEdge(gr, [1, 3]);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `DigraphReverseEdge' on 2 arguments
@@ -859,8 +855,7 @@ gap> edges2 := ShallowCopy(DigraphEdges(gr2));;
 gap> gr = DigraphReverseEdges(gr2, edges2);
 true
 gap> gr = DigraphReverseEdges(gr, [1 .. DigraphNrEdges(gr)]);
-Error, no method found! For debugging hints type ?Recovery from NoMethodFound
-Error, no 1st choice method found for `DigraphReverseEdge' on 2 arguments
+Error, the 2nd argument <E> must be a list of edges
 gap> DigraphReverseEdge(gr, 1) = DigraphReverseEdge(gr, [1, 2]);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `DigraphReverseEdge' on 2 arguments
