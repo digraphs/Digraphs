@@ -1468,10 +1468,6 @@ function(r, Stream)
         if IsDigitChar(c) then
             Stream.UngetChar(r, c);
             w := DIGRAPHS_readinteger(r, Stream);
-            if w = fail then
-                ErrorNoReturn("Expected integer on line ", r.newline,
-                            " following ", c, " but not found");
-            fi;
             w := w - r.labelorg + 1;
 
             if neg then
@@ -1576,10 +1572,7 @@ function(r, minus, Stream)
     if IsDigitChar(c) then
         Stream.UngetChar(r, c);
         v1 := DIGRAPHS_readinteger(r, Stream);
-        if v1 = fail then
-            ErrorNoReturn("Expected integer on line ", r.newline,
-                        " following ", c, " but not found");
-        elif v1 - r.labelorg + 1 < 1 or v1 - r.labelorg + 1 > r.n then
+        if v1 - r.labelorg + 1 < 1 or v1 - r.labelorg + 1 > r.n then
           Info(InfoWarning, 1, "Ignoring illegal vertex in partition", v1,
               " on line ", r.newline);
         else
@@ -1604,10 +1597,7 @@ function(r, minus, Stream)
             elif IsDigitChar(c) then
                 Stream.UngetChar(r, c);
                 v1 := DIGRAPHS_readinteger(r, Stream);
-                if v1 = fail then
-                    ErrorNoReturn("Expected integer on line ", r.newline,
-                                " following ", c, " but not found");
-                elif v1 - r.labelorg + 1 < 1 or v1 - r.labelorg + 1 > r.n then
+                if v1 - r.labelorg + 1 < 1 or v1 - r.labelorg + 1 > r.n then
                     CloseStream(Stream.file);
                     ErrorNoReturn("Vertex ", v1,
                     " out of range in partition specification (line ",
@@ -1625,10 +1615,7 @@ function(r, minus, Stream)
                     fi;
                     Stream.UngetChar(r, v2);
                     v2 := DIGRAPHS_readinteger(r, Stream);
-                    if v2 = fail then
-                        ErrorNoReturn("Expected integer on line ", r.newline,
-                        " following ", v2, " but not found");
-                    elif v2 < r.labelorg or v2 > r.n - r.labelorg + 1 then
+                    if v2 < r.labelorg or v2 > r.n - r.labelorg + 1 then
                         CloseStream(Stream.file);
                         ErrorNoReturn("Vertex ", v2,
                         " out of range in partition specification (line ",
