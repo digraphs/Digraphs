@@ -38,8 +38,8 @@ fi;
 SetPackageInfo(rec(
 PackageName := "Digraphs",
 Subtitle := "Graphs, digraphs, and multidigraphs in GAP",
-Version := "1.9.0",
-Date := "06/09/2024",  # dd/mm/yyyy format
+Version := "1.10.0",
+Date := "14/02/2025",  # dd/mm/yyyy format
 License := "GPL-3.0-or-later",
 ArchiveFormats := ".tar.gz",
 
