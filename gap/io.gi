@@ -1418,9 +1418,8 @@ function(r, Stream)
     char := DIGRAPHS_GETNWL(r, Stream);
 
     if not IsDigitChar(char) and char <> '-' and char <> '+' then
-        CloseStream(Stream.file);
-        ErrorNoReturn("Expected integer on line ", r.newline,
-                    " but was not found");
+        CloseStream(Stream.file);  # will ErrorNoReturn later
+        return fail;
     fi;
 
     minus := char = '-';
@@ -1469,6 +1468,10 @@ function(r, Stream)
         if IsDigitChar(c) then
             Stream.UngetChar(r, c);
             w := DIGRAPHS_readinteger(r, Stream);
+            if w = fail then
+                ErrorNoReturn("Expected integer on line ", r.newline,
+                            " following ", c, " but not found");
+            fi;
             w := w - r.labelorg + 1;
 
             if neg then
@@ -1573,7 +1576,10 @@ function(r, minus, Stream)
     if IsDigitChar(c) then
         Stream.UngetChar(r, c);
         v1 := DIGRAPHS_readinteger(r, Stream);
-        if v1 - r.labelorg + 1 < 1 or v1 - r.labelorg + 1 > r.n then
+        if v1 = fail then
+            ErrorNoReturn("Expected integer on line ", r.newline,
+                        " following ", c, " but not found");
+        elif v1 - r.labelorg + 1 < 1 or v1 - r.labelorg + 1 > r.n then
           Info(InfoWarning, 1, "Ignoring illegal vertex in partition", v1,
               " on line ", r.newline);
         else
@@ -1598,7 +1604,10 @@ function(r, minus, Stream)
             elif IsDigitChar(c) then
                 Stream.UngetChar(r, c);
                 v1 := DIGRAPHS_readinteger(r, Stream);
-                if v1 - r.labelorg + 1 < 1 or v1 - r.labelorg + 1 > r.n then
+                if v1 = fail then
+                    ErrorNoReturn("Expected integer on line ", r.newline,
+                                " following ", c, " but not found");
+                elif v1 - r.labelorg + 1 < 1 or v1 - r.labelorg + 1 > r.n then
                     CloseStream(Stream.file);
                     ErrorNoReturn("Vertex ", v1,
                     " out of range in partition specification (line ",
@@ -1616,7 +1625,10 @@ function(r, minus, Stream)
                     fi;
                     Stream.UngetChar(r, v2);
                     v2 := DIGRAPHS_readinteger(r, Stream);
-                    if v2 < r.labelorg or v2 > r.n - r.labelorg + 1 then
+                    if v2 = fail then
+                        ErrorNoReturn("Expected integer on line ", r.newline,
+                        " following ", v2, " but not found");
+                    elif v2 < r.labelorg or v2 > r.n - r.labelorg + 1 then
                         CloseStream(Stream.file);
                         ErrorNoReturn("Vertex ", v2,
                         " out of range in partition specification (line ",
@@ -1721,7 +1733,7 @@ function(filename)
           if temp <> '+' then
             Stream.UngetChar(r, temp);
           fi;
-        elif c in "BR@#jv\%IixtTobzamp?Hcpc" then
+        elif c in "BR@#jv\%IixtTobzamp?Hc" then
             minus := false;
             Info(InfoWarning, 1, "Operation ", c, " (line ", r.newline,
                 ") is not supported");
@@ -1756,7 +1768,10 @@ function(filename)
         elif c = 'n' then
             minus := false;
             r.n := DIGRAPHS_GetInt(r, Stream);
-            if r.n <= 0 then
+            if r.n = fail then
+              ErrorNoReturn("Expected integer on line ", r.newline,
+                          " following ", c, " but was not found");
+            elif r.n <= 0 then
                 CloseStream(Stream.file);
                 ErrorNoReturn("Vertex number ", r.n, " on line ", r.newline,
                             " must be positive.");
@@ -1772,7 +1787,10 @@ function(filename)
           fi;
           Info(InfoWarning, 1, "Operation 's' or 'sr' (line ", r.newline,
               ") is not supported");
-          DIGRAPHS_GetInt(r, Stream);
+          if DIGRAPHS_GetInt(r, Stream) = fail then
+            ErrorNoReturn("Expected integer on line ", r.newline,
+                        " following ", c, " but was not found");
+          fi;
         elif c = '\"' then
             minus := false;
             c := Stream.GetChar(r);
@@ -1806,7 +1824,10 @@ function(filename)
             Info(InfoWarning, 1, "Operation ", c, " (line ",
                 r.newline, ") is not supported");
             minus := false;
-            DIGRAPHS_GetInt(r, Stream);
+            if DIGRAPHS_GetInt(r, Stream) = fail then
+                ErrorNoReturn("Expected integer on line ", r.newline,
+                            " following ", c, " but was not found");
+            fi;
         elif c = 'F' then
           minus := false;
           temp := Stream.GetChar(r);
@@ -1817,7 +1838,10 @@ function(filename)
             Stream.UngetChar(r, temp);
             Info(InfoWarning, 1, "Operation 'F' (line ", r.newline,
                 ") is not supported");
-            DIGRAPHS_GetInt(r, Stream);
+            if DIGRAPHS_GetInt(r, Stream) = fail then
+              ErrorNoReturn("Expected integer on line ", r.newline,
+                          " following ", c, " but was not found");
+            fi;
           fi;
         elif c = 'M' then
             Info(InfoWarning, 1, "Operation 'M' (line ",
@@ -1825,10 +1849,16 @@ function(filename)
             if minus then
                 minus := false;
             else
-                DIGRAPHS_GetInt(r, Stream);
+                if DIGRAPHS_GetInt(r, Stream) = fail then
+                    ErrorNoReturn("Expected integer on line ", r.newline,
+                                " following ", c, " but was not found");
+                fi;
                 temp := DIGRAPHS_GETNWL(r, Stream);
                 if temp = '/' then
-                    DIGRAPHS_readinteger(r, Stream);
+                    if DIGRAPHS_readinteger(r, Stream) = fail then
+                        ErrorNoReturn("Expected integer on line ", r.newline,
+                                    " following 'M # /' but was not found");
+                    fi;
                 else
                     Stream.UngetChar(r, c);
                 fi;
@@ -1837,15 +1867,24 @@ function(filename)
             Info(InfoWarning, 1, "Operation 'k' (line ",
                 r.newline, ") is not supported");
             minus := false;
-            DIGRAPHS_readinteger(r, Stream);
-            DIGRAPHS_readinteger(r, Stream);
+            if DIGRAPHS_readinteger(r, Stream) = fail then
+                ErrorNoReturn("Expected integer on line ", r.newline,
+                            " following ", c, " but was not found");
+            fi;
+            if DIGRAPHS_readinteger(r, Stream) = fail then
+                ErrorNoReturn("Expected integer on line ", r.newline,
+                            " following ", c, " but was not found");
+            fi;
         elif c in "VSGu" then
             Info(InfoWarning, 1, "Operation ", c,
                 " (line ", r.newline, ") is not supported");
             if minus then
                 minus := false;
             else
-                DIGRAPHS_GetInt(r, Stream);
+                if DIGRAPHS_GetInt(r, Stream) = fail then
+                    ErrorNoReturn("Expected integer on line ", r.newline,
+                                " following ", c, " but was not found");
+                fi;
             fi;
         elif c in "P" then
             if minus then
@@ -1880,8 +1919,11 @@ function(filename)
                     CloseStream(Stream.file);
                     ErrorNoReturn("Label origin ", r.labelorg, " on line ",
                                 r.newline, " must be non-negative.");
+                elif r.labelorg = fail then
+                    CloseStream(Stream.file);
+                    ErrorNoReturn("Expected integer on line ", r.newline,
+                                " following $ but was not found");
                 fi;
-
             fi;
             if r.labelorg <> 1 then
                 Info(InfoWarning, 1, "Vertices will be ", r.labelorg,

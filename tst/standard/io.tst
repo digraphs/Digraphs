@@ -983,7 +983,7 @@ gap> IO_WriteLine(file, "n=1dg");;
 gap> IO_WriteLine(file, "1: 1.");;
 gap> IO_Close(file);;
 gap> ReadDreadnautGraph(filename);
-Error, Expected integer on line 1 but was not found
+Error, Expected integer on line 1 following 's' but was not found
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "$=1-dg");;
 gap> IO_WriteLine(file, "1 : 1 2 3 1 2.");;
@@ -1097,7 +1097,7 @@ gap> IO_WriteLine(file, "$=1ndg");;
 gap> IO_WriteLine(file, "1 : 2 3 ");;
 gap> IO_Close(file);;
 gap> ReadDreadnautGraph(filename);
-Error, Expected integer on line 1 but was not found
+Error, Expected integer on line 1 following 'n' but was not found
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "$=1n2dAs! and some");;
 gap> IO_WriteLine(file, "g1 : 2 3 ! 2 3 4 5");;
