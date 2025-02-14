@@ -1195,7 +1195,7 @@
   [33X[0;0Y[10XNonLowerSemimodularPair[110X     behaves     in     the    analogous    way    to
   [10XNonUpperSemimodularPair[110X with respect to lower semimodularity.[133X
   
-  [33X[0;0YSee  [2XIsUpperSemimodularDigraph[102X ([14X6.4-5[114X) and [2XIsLowerSemimodularDigraph[102X ([14X6.4-5[114X)
+  [33X[0;0YSee  [2XIsUpperSemimodularDigraph[102X ([14X6.4-7[114X) and [2XIsLowerSemimodularDigraph[102X ([14X6.4-7[114X)
   for the definition of upper semimodularity of a lattice.[133X
   
   [4X[32X  Example  [32X[104X
@@ -2408,7 +2408,56 @@
     [4X[28X[ [ 2, 1, 3 ], [ 2, 1, 4 ], [ 3, 1, 4 ], [ 3, 2, 4 ] ][128X[104X
   [4X[32X[104X
   
-  [1X5.4-34 DigraphLayers[101X
+  [1X5.4-34 FacialWalks[101X
+  
+  [33X[1;0Y[29X[2XFacialWalks[102X( [3Xdigraph[103X, [3Xlist[103X ) [32X operation[133X
+  [6XReturns:[106X  [33X[0;10YA list of lists of vertices.[133X
+  
+  [33X[0;0YIf  [3Xdigraph[103X is an Eulerian digraph and [3Xlist[103X is a rotation system of [3Xdigraph[103X,
+  then [10XFacialWalks[110X returns a list of the [13Xfacial walks[113X in [3Xdigraph[103X.[133X
+  
+  [33X[0;0YA   rotation   system   defines   for   each  vertex  the  ordering  of  the
+  out-neighbours.  For example, the method [14X5.7-3[114X computes for a planar digraph
+  [3XD[103X  the  rotation  system  of  a  planar  embedding of [3XD[103X. The facial walks of
+  [3Xdigraph[103X  are  closed walks and they are defined by the rotation system [3Xlist[103X.
+  They  describe the boundaries of the faces of the embedding of [3Xdigraph[103X given
+  by  the  rotation  system  [3Xlist[103X.  The operation [10XFacialWalks[110X ignores multiple
+  edges and loops.[133X
+  
+  [33X[0;0YHere are some examples for planar embeddings:[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27XD1 := CycleDigraph(4);;[127X[104X
+    [4X[25Xgap>[125X [27Xplanar := PlanarEmbedding(D1);[127X[104X
+    [4X[28X[ [ 2 ], [ 3 ], [ 4 ], [ 1 ] ][128X[104X
+    [4X[25Xgap>[125X [27XFacialWalks(D1, planar);[127X[104X
+    [4X[28X[ [ 1, 2, 3, 4 ] ][128X[104X
+    [4X[25Xgap>[125X [27XnonPlanar := [[2, 4], [1, 3], [2, 4], [1, 3]];;[127X[104X
+    [4X[25Xgap>[125X [27XFacialWalks(D1, nonPlanar);[127X[104X
+    [4X[28X[ [ 1, 2, 3, 4 ] ][128X[104X
+    [4X[25Xgap>[125X [27XD2 := CompleteMultipartiteDigraph([2, 2, 2]);;[127X[104X
+    [4X[25Xgap>[125X [27XrotationSystem := PlanarEmbedding(D2);[127X[104X
+    [4X[28X[ [ 3, 5, 4, 6 ], [ 6, 4, 5, 3 ], [ 6, 2, 5, 1 ], [ 1, 5, 2, 6 ],[128X[104X
+    [4X[28X  [ 1, 3, 2, 4 ], [ 1, 4, 2, 3 ] ][128X[104X
+    [4X[25Xgap>[125X [27XFacialWalks(D2, rotationSystem);[127X[104X
+    [4X[28X[ [ 1, 3, 6 ], [ 1, 4, 5 ], [ 1, 5, 3 ], [ 1, 6, 4 ], [ 2, 3, 5 ],[128X[104X
+    [4X[28X  [ 2, 4, 6 ], [ 2, 5, 4 ], [ 2, 6, 3 ] ][128X[104X
+  [4X[32X[104X
+  
+  [33X[0;0YHere  is  an  example  of a non-planar digraph with a corresponding rotation
+  system:[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27XD3 := CompleteMultipartiteDigraph([3, 3]);;[127X[104X
+    [4X[25Xgap>[125X [27Xrot := [[6, 5, 4], [6, 5, 4], [6, 5, 4], [1, 2, 3],[127X[104X
+    [4X[25X>[125X [27X           [1, 2, 3], [1, 2, 3]];[127X[104X
+    [4X[28X[ [ 6, 5, 4 ], [ 6, 5, 4 ], [ 6, 5, 4 ], [ 1, 2, 3 ], [ 1, 2, 3 ],[128X[104X
+    [4X[28X  [ 1, 2, 3 ] ][128X[104X
+    [4X[25Xgap>[125X [27XFacialWalks(D3, rot);[127X[104X
+    [4X[28X[ [ 1, 4, 2, 6, 3, 5 ], [ 1, 5, 2, 4, 3, 6 ], [ 1, 6, 2, 5, 3, 4 ] ][128X[104X
+  [4X[32X[104X
+  
+  [1X5.4-35 DigraphLayers[101X
   
   [33X[1;0Y[29X[2XDigraphLayers[102X( [3Xdigraph[103X, [3Xvertex[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA list.[133X
@@ -2423,7 +2472,7 @@
     [4X[28X[ [ 1 ], [ 2, 3, 4 ] ][128X[104X
   [4X[32X[104X
   
-  [1X5.4-35 DigraphDegeneracy[101X
+  [1X5.4-36 DigraphDegeneracy[101X
   
   [33X[1;0Y[29X[2XDigraphDegeneracy[102X( [3Xdigraph[103X ) [32X attribute[133X
   [6XReturns:[106X  [33X[0;10YA non-negative integer, or [9Xfail[109X.[133X
@@ -2456,13 +2505,13 @@
     [4X[28X3[128X[104X
   [4X[32X[104X
   
-  [1X5.4-36 DigraphDegeneracyOrdering[101X
+  [1X5.4-37 DigraphDegeneracyOrdering[101X
   
   [33X[1;0Y[29X[2XDigraphDegeneracyOrdering[102X( [3Xdigraph[103X ) [32X attribute[133X
   [6XReturns:[106X  [33X[0;10YA list of integers, or [9Xfail[109X.[133X
   
   [33X[0;0YIf   [3Xdigraph[103X   is  a  digraph  for  which  [10XDigraphDegeneracy([110X[3Xdigraph[103X[10X)[110X  is  a
-  non-negative  integer  [10Xk[110X  -  see  [2XDigraphDegeneracy[102X  ([14X5.4-35[114X)  -  then  this
+  non-negative  integer  [10Xk[110X  -  see  [2XDigraphDegeneracy[102X  ([14X5.4-36[114X)  -  then  this
   attribute  returns  a degeneracy ordering of the vertices of the vertices of
   [3Xdigraph[103X.[133X
   
@@ -2490,7 +2539,7 @@
     [4X[28X[ 6, 5, 4, 1, 3, 2 ][128X[104X
   [4X[32X[104X
   
-  [1X5.4-37 HamiltonianPath[101X
+  [1X5.4-38 HamiltonianPath[101X
   
   [33X[1;0Y[29X[2XHamiltonianPath[102X( [3Xdigraph[103X ) [32X attribute[133X
   [6XReturns:[106X  [33X[0;10YA list or [9Xfail[109X.[133X
@@ -2529,7 +2578,7 @@
     [4X[28Xfail[128X[104X
   [4X[32X[104X
   
-  [1X5.4-38 NrSpanningTrees[101X
+  [1X5.4-39 NrSpanningTrees[101X
   
   [33X[1;0Y[29X[2XNrSpanningTrees[102X( [3Xdigraph[103X ) [32X attribute[133X
   [6XReturns:[106X  [33X[0;10YAn integer.[133X
@@ -2556,7 +2605,7 @@
     [4X[28X1134225[128X[104X
   [4X[32X[104X
   
-  [1X5.4-39 DigraphDijkstra[101X
+  [1X5.4-40 DigraphDijkstra[101X
   
   [33X[1;0Y[29X[2XDigraphDijkstra[102X( [3Xdigraph[103X, [3Xsource[103X, [3Xtarget[103X ) [32X operation[133X
   [33X[1;0Y[29X[2XDigraphDijkstra[102X( [3Xdigraph[103X, [3Xsource[103X ) [32X operation[133X
@@ -2589,7 +2638,7 @@
     [4X[28X[ [ 0, 1, 1 ], [ -1, 1, 1 ] ][128X[104X
   [4X[32X[104X
   
-  [1X5.4-40 DigraphCycleBasis[101X
+  [1X5.4-41 DigraphCycleBasis[101X
   
   [33X[1;0Y[29X[2XDigraphCycleBasis[102X( [3Xdigraph[103X ) [32X operation[133X
   [6XReturns:[106X  [33X[0;10YA list and a list of GF(2) vectors[133X
@@ -3091,6 +3140,34 @@
     [4X[28X  [ 2, 3, 1 ] ][128X[104X
     [4X[25Xgap>[125X [27XSubdigraphHomeomorphicToK4(CompleteDigraph(3));[127X[104X
     [4X[28Xfail[128X[104X
+  [4X[32X[104X
+  
+  [1X5.7-6 DualPlanarGraph[101X
+  
+  [33X[1;0Y[29X[2XDualPlanarGraph[102X( [3Xdigraph[103X ) [32X attribute[133X
+  [6XReturns:[106X  [33X[0;10YA digraph or [9Xfail[109X.[133X
+  
+  [33X[0;0YIf  [3Xdigraph[103X  is  a planar digraph, then [13XDualPlanarGraph[113X returns the the dual
+  graph of [3Xdigraph[103X. If [3Xdigraph[103X is not planar, then fail is returned.[133X
+  
+  [33X[0;0YThe  dual  graph  of  a planar digraph [3Xdigraph[103X has a vertex for each face of
+  [3Xdigraph[103X  and  an  edge  for each pair of faces that are separated by an edge
+  from  each  other. Vertex [3Xi[103X of the dual graph corresponds to the facial walk
+  at the [3Xi[103X-th position calling [13XFacialWalks[113X of [3Xdigraph[103X with the rotation system
+  returned by [13XPlanarEmbedding[113X.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27XD := CompleteDigraph(4);;[127X[104X
+    [4X[25Xgap>[125X [27XdualD := DualPlanarGraph(D);[127X[104X
+    [4X[28X<immutable digraph with 4 vertices, 12 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsIsomorphicDigraph(D, dualD);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27Xcube := Digraph([[2, 4, 5], [1, 3, 6], [2, 4, 7], [1, 3, 8], [127X[104X
+    [4X[25X>[125X [27X                    [1, 6, 8], [2, 5, 7], [3, 6, 8], [4, 5, 7]]);[127X[104X
+    [4X[28X<immutable digraph with 8 vertices, 24 edges>[128X[104X
+    [4X[25Xgap>[125X [27Xoct := DualPlanarGraph(cube);;[127X[104X
+    [4X[25Xgap>[125X [27XIsIsomorphicDigraph(oct, CompleteMultipartiteDigraph([2, 2, 2]));[127X[104X
+    [4X[28Xtrue[128X[104X
   [4X[32X[104X
   
   

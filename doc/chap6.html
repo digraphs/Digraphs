@@ -55,6 +55,8 @@
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6.html#X7E14055A84A52A07">6.3-2 EdgeWeightedDigraph</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6.html#X810B2DD7794AFBE8">6.3-3 EdgeWeightedDigraphTotalWeight</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6.html#X7E5060AB7FB4F31C">6.3-4 EdgeWeightedDigraphMinimumSpanningTree</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6.html#X7EDB9C9A840F6A84">6.3-5 EdgeWeightedDigraphShortestPaths</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6.html#X7DAF81B779BD9165">6.3-6 EdgeWeightedDigraphShortestPath</a></span>
 </div></div>
 <div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap6.html#X86424F167BD4F629">6.4 <span class="Heading">Orders</span></a>
 </span>
@@ -63,9 +65,11 @@
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6.html#X82BAE6D37D49A145">6.4-2 IsPartialOrderDigraph</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6.html#X78D3E17B7F737516">6.4-3 IsMeetSemilatticeDigraph</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6.html#X84F4711F7FA36848">6.4-4 DigraphMeetTable</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6.html#X7DEDCD177E5AE824">6.4-5 IsUpperSemimodularDigraph</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6.html#X7B566B4A86E18F45">6.4-6 IsDistributiveLatticeDigraph</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6.html#X80659D5784790B52">6.4-7 IsModularLatticeDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6.html#X786213437E99065B">6.4-5 IsOrderIdeal</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6.html#X7A1D8F4582F8EA53">6.4-6 IsOrderFilter</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6.html#X7DEDCD177E5AE824">6.4-7 IsUpperSemimodularDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6.html#X7B566B4A86E18F45">6.4-8 IsDistributiveLatticeDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6.html#X80659D5784790B52">6.4-9 IsModularLatticeDigraph</a></span>
 </div></div>
 <div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap6.html#X7AAF896982EC22FA">6.5 <span class="Heading">Regularity</span></a>
 </span>
@@ -745,6 +749,78 @@ Error, List Assignment: &lt;list&gt; must be a mutable list
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">EdgeWeights(T);</span>
 [ [  ], [ 5 ], [ 6 ] ]</pre></div>
 
+<p><a id="X7EDB9C9A840F6A84" name="X7EDB9C9A840F6A84"></a></p>
+
+<h5>6.3-5 EdgeWeightedDigraphShortestPaths</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; EdgeWeightedDigraphShortestPaths</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; EdgeWeightedDigraphShortestPaths</code>( <var class="Arg">digraph</var>, <var class="Arg">source</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
+<p>Returns: A record.</p>
+
+<p>If <var class="Arg">digraph</var> is an edge-weighted digraph, this attribute returns a record describing the paths of lowest total weight (the <em>shortest paths</em>) connecting each pair of vertices. If the optional argument <var class="Arg">source</var> is specified and is a vertex of <var class="Arg">digraph</var>, then the output will only contain information on paths originating from that vertex.</p>
+
+<p>In the two-argument form, the value returned is a record containing three components: <code class="code">distances</code>, <code class="code">parents</code> and <code class="code">edges</code>. Each of these is a list of integers with one entry for each vertex <code class="code">v</code> as follows:</p>
+
+
+<ul>
+<li><p><code class="code">distances[v]</code> is the total weight of the shortest path from <var class="Arg">source</var> to <code class="code">v</code>.</p>
+
+</li>
+<li><p><code class="code">parents[v]</code> is the final vertex before <code class="code">v</code> on the shortest path from <var class="Arg">source</var> to <code class="code">v</code>.</p>
+
+</li>
+<li><p><code class="code">edges[v]</code> is the index of the edge of lowest weight going from <code class="code">parents[v]</code> to <code class="code">v</code>.</p>
+
+</li>
+</ul>
+<p>Using these three components together, you can find the shortest edge weighted path to all other vertices from a starting vertex.</p>
+
+<p>If no path exists from <var class="Arg">source</var> to <code class="code">v</code>, then <code class="code">parents[v]</code> and <code class="code">edges[v]</code> will both be <code class="keyw">fail</code>. The distance from <var class="Arg">source</var> to itself is considered to be 0, and so both <code class="code">parents[<var class="Arg">source</var>]</code> and <code class="code">edges[<var class="Arg">source</var>]</code> are <code class="keyw">fail</code>. Edge weights can have negative values, but there is currently no implemented method for this operation if a negative-weighted cycle exists.</p>
+
+<p>In the one-argument form, the value returned is also a record containing components <code class="code">distances</code>, <code class="code">parents</code> and <code class="code">edges</code>, but each of these will instead be a list of lists in which the <code class="code">i</code>th entry is the list that corresponds to paths starting at <code class="code">i</code>.</p>
+
+<p>For a simple way of finding the shortest path between two specific vertices, see <code class="func">EdgeWeightedDigraphShortestPath</code> (<a href="chap6.html#X7DAF81B779BD9165"><span class="RefLink">6.3-6</span></a>). See also the non-weighted operation <code class="func">DigraphShortestPath</code> (<a href="chap5.html#X80E9D645843973A6"><span class="RefLink">5.4-23</span></a>).</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">D := EdgeWeightedDigraph([[2, 3], [4], [4], []],</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">                            [[5, 1], [6], [11], []]);</span>
+&lt;immutable digraph with 4 vertices, 4 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">EdgeWeightedDigraphShortestPaths(D, 1);</span>
+rec( distances := [ 0, 5, 1, 11 ], edges := [ fail, 1, 2, 1 ], 
+  parents := [ fail, 1, 1, 2 ] )
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">D := EdgeWeightedDigraph([[2], [3], [1]], [[1], [2], [3]]);</span>
+&lt;immutable digraph with 3 vertices, 3 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">EdgeWeightedDigraphShortestPaths(D);</span>
+rec( distances := [ [ 0, 1, 3 ], [ 5, 0, 2 ], [ 3, 4, 0 ] ], 
+  edges := [ [ fail, 1, 1 ], [ 1, fail, 1 ], [ 1, 1, fail ] ], 
+  parents := [ [ fail, 1, 1 ], [ 2, fail, 2 ], [ 3, 3, fail ] ] )</pre></div>
+
+<p><a id="X7DAF81B779BD9165" name="X7DAF81B779BD9165"></a></p>
+
+<h5>6.3-6 EdgeWeightedDigraphShortestPath</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; EdgeWeightedDigraphShortestPath</code>( <var class="Arg">digraph</var>, <var class="Arg">source</var>, <var class="Arg">dest</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
+<p>Returns: A pair of lists, or <code class="keyw">fail</code>.</p>
+
+<p>If <var class="Arg">digraph</var> is an edge-weighted digraph with vertices <var class="Arg">source</var> and <var class="Arg">dest</var>, this operation returns a directed path from <var class="Arg">source</var> to <var class="Arg">dest</var> with the smallest possible total weight. The output is a pair of lists <code class="code">[v, a]</code> of the form described in <code class="func">DigraphPath</code> (<a href="chap5.html#X8039170B82A32257"><span class="RefLink">5.4-22</span></a>).</p>
+
+<p>If <span class="SimpleMath"><var class="Arg">source</var> = <var class="Arg">dest</var></span> or no path exists, then <code class="keyw">fail</code> is returned.</p>
+
+<p>If <var class="Arg">digraph</var> contains a negative-weighted cycle, then there is currently no applicable method for this attribute.</p>
+
+<p>See <code class="func">EdgeWeightedDigraphShortestPaths</code> (<a href="chap6.html#X7EDB9C9A840F6A84"><span class="RefLink">6.3-5</span></a>). See also the non-weighted operation <code class="func">DigraphShortestPath</code> (<a href="chap5.html#X80E9D645843973A6"><span class="RefLink">5.4-23</span></a>).</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">D := EdgeWeightedDigraph([[2, 3], [4], [4], []],</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">                            [[5, 1], [6], [11], []]);</span>
+&lt;immutable digraph with 4 vertices, 4 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">EdgeWeightedDigraphShortestPath(D, 1, 4);</span>
+[ [ 1, 2, 4 ], [ 1, 1 ] ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">EdgeWeightedDigraphShortestPath(D, 3, 2);</span>
+fail</pre></div>
+
 <p><a id="X86424F167BD4F629" name="X86424F167BD4F629"></a></p>
 
 <h4>6.4 <span class="Heading">Orders</span></h4>
@@ -882,9 +958,53 @@ true
 fail
 </pre></div>
 
+<p><a id="X786213437E99065B" name="X786213437E99065B"></a></p>
+
+<h5>6.4-5 IsOrderIdeal</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsOrderIdeal</code>( <var class="Arg">D</var>, <var class="Arg">subset</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
+<p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
+
+<p>This function returns <code class="keyw">true</code> if the specified subset is "downwards" closed, i.e. contains every vertex less than the given vertices in the order defined by <var class="Arg">D</var>. The function can only be used on digraphs satisfying <code class="func">IsPartialOrderDigraph</code> (<a href="chap6.html#X82BAE6D37D49A145"><span class="RefLink">6.4-2</span></a>) and will throw an error if passed a digraph that is not a partial order digraph.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">D1 := Digraph([[1, 3], [2, 3], [3]]);</span>
+&lt;immutable digraph with 3 vertices, 5 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsOrderIdeal(D1, [1, 2, 3]);</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">D2 := DigraphDisjointUnion(D1, D1);</span>
+&lt;immutable digraph with 6 vertices, 10 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsOrderIdeal(D2, [1, 2, 3]);</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsOrderIdeal(D2, [4, 5, 6]);</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsOrderIdeal(D2, [1, 5, 6]);</span>
+false
+</pre></div>
+
+<p><a id="X7A1D8F4582F8EA53" name="X7A1D8F4582F8EA53"></a></p>
+
+<h5>6.4-6 IsOrderFilter</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsOrderFilter</code>( <var class="Arg">D</var>, <var class="Arg">subset</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
+<p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
+
+<p>This function returns <code class="keyw">true</code> if the specified subset is upwards closed. A subset is upwards closed if it contains every vertex greater than the given vertices in the order defined by <var class="Arg">D</var>. The function can only be used on digraphs satisfying <code class="func">IsPartialOrderDigraph</code> (<a href="chap6.html#X82BAE6D37D49A145"><span class="RefLink">6.4-2</span></a>) and will throw an error if passed a digraph that is not a partial order digraph.</p>
+
+
+<div class="example"><pre><span class="GAPprompt">gap&gt;</span> <span class="GAPinput">D1 := DigraphByEdges(</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">[[1, 2], [2, 3], [1, 3], [1, 1], [2, 2], [3, 3]]);</span>
+&lt;immutable digraph with 3 vertices, 6 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsOrderFilter(D1, [2, 3]);</span>
+false
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsOrderFilter(D1, [1, 2]);</span>
+true    
+    </pre></div>
+
 <p><a id="X7DEDCD177E5AE824" name="X7DEDCD177E5AE824"></a></p>
 
-<h5>6.4-5 IsUpperSemimodularDigraph</h5>
+<h5>6.4-7 IsUpperSemimodularDigraph</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsUpperSemimodularDigraph</code>( <var class="Arg">D</var> )</td><td class="tdright">(&nbsp;property&nbsp;)</td></tr></table></div>
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsLowerSemimodularDigraph</code>( <var class="Arg">D</var> )</td><td class="tdright">(&nbsp;property&nbsp;)</td></tr></table></div>
@@ -908,7 +1028,7 @@ false</pre></div>
 
 <p><a id="X7B566B4A86E18F45" name="X7B566B4A86E18F45"></a></p>
 
-<h5>6.4-6 IsDistributiveLatticeDigraph</h5>
+<h5>6.4-8 IsDistributiveLatticeDigraph</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsDistributiveLatticeDigraph</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;property&nbsp;)</td></tr></table></div>
 <p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
@@ -938,7 +1058,7 @@ false</pre></div>
 
 <p><a id="X80659D5784790B52" name="X80659D5784790B52"></a></p>
 
-<h5>6.4-7 IsModularLatticeDigraph</h5>
+<h5>6.4-9 IsModularLatticeDigraph</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsModularLatticeDigraph</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;property&nbsp;)</td></tr></table></div>
 <p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
@@ -1594,7 +1714,7 @@ false
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsEdgeTransitive</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;property&nbsp;)</td></tr></table></div>
 <p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
 
-<p>If <var class="Arg">digraph</var> is a digraph without multiple edges, then <code class="code">IsEdgeTransitive</code> returns <code class="keyw">true</code> if <var class="Arg">digraph</var> is edge transitive, and <code class="keyw">false</code> otherwise. A digraph is <em>edge transitive</em> if its automorphism group acts transitively on its edges (via the action <code class="func">OnPairs</code> (<a href="https://www.gap-system.org/Manuals/doc/ref/chap41_mj.html#X80DAA1D2855B1456"><span class="RefLink">Reference: OnPairs</span></a>)).</p>
+<p>If <var class="Arg">digraph</var> is a digraph without multiple edges, then <code class="code">IsEdgeTransitive</code> returns <code class="keyw">true</code> if <var class="Arg">digraph</var> is edge transitive, and <code class="keyw">false</code> otherwise. A digraph is <em>edge transitive</em> if its automorphism group acts transitively on its edges (via the action <code class="func">OnPairs</code> (<a href="https://docs.gap-system.org/doc/ref/chap41_mj.html#X80DAA1D2855B1456"><span class="RefLink">Reference: OnPairs</span></a>)).</p>
 
 <p>If the argument <var class="Arg">digraph</var> is mutable, then the return value of this property is recomputed every time it is called.</p>
 

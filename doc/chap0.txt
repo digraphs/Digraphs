@@ -6,10 +6,10 @@
                   [1X Graphs, digraphs, and multidigraphs in [5XGAP[105X [101X
   
   
-                                     1.9.0
+                                     1.10.0
   
   
-                                6 September 2024
+                                14 February 2025
   
   
                                   Jan De Beule
@@ -46,6 +46,8 @@
   
                                  Ewan Gilligan
   
+                                 Gillis Frankie
+  
                                Sebastian Gutsche
   
                                 Samantha Harper
@@ -54,9 +56,13 @@
   
                              Christopher Jefferson
   
+                                 Malachi Johns
+  
                                Olexandr Konovalov
   
                                  Hyeokjun Kwon
+  
+                                   Aidan Lau
   
                                    Andrea Lee
   
@@ -96,7 +102,7 @@
   
   Jan De Beule
       Email:    [7Xmailto:jdebeule@cage.ugent.be[107X
-      Homepage: [7Xhttp://homepages.vub.ac.be/~jdbeule/[107X
+      Homepage: [7Xhttps://wids.research.vub.be/en/jan-de-beule[107X
       Address:  [33X[0;14YVrije  Universiteit Brussel, Vakgroep Wiskunde, Pleinlaan 2, B
                 - 1050 Brussels, Belgium[133X
   
@@ -116,7 +122,7 @@
       Homepage: [7Xhttps://wilf.me[107X
   Michael Young
       Email:    [7Xmailto:mct25@st-andrews.ac.uk[107X
-      Homepage: [7Xhttps://mct25.host.cs.st-andrews.ac.uk[107X
+      Homepage: [7Xhttps://myoung.uk/work/[107X
       Address:  [33X[0;14YJack  Cole  Building, North Haugh, St Andrews, Fife, KY16 9SX,
                 Scotland[133X
   
@@ -159,15 +165,14 @@
   
   
   Luna Elliott
-      Email:    [7Xmailto:TODO[107X
-      Address:  [33X[0;14YMathematical  Institute,  North  Haugh, St Andrews, Fife, KY16
-                9SS, Scotland[133X
-  
-  
+      Email:    [7Xmailto:luna.elliott142857@gmail.com[107X
+      Homepage: [7Xhttps://research.manchester.ac.uk/en/persons/luna-elliott[107X
   Isuru Fernando
       Email:    [7Xmailto:isuruf@gmail.com[107X
   Ewan Gilligan
       Email:    [7Xmailto:eg207@st-andrews.ac.uk[107X
+  Gillis Frankie
+      Email:    [7Xmailto:fotg1@st-andrews.ac.uk[107X
   Sebastian Gutsche
       Email:    [7Xmailto:gutsche@momo.math.rwth-aachen.de[107X
   Samantha Harper
@@ -181,11 +186,13 @@
   
   Christopher Jefferson
       Email:    [7Xmailto:caj21@st-andrews.ac.uk[107X
-      Homepage: [7Xhttps://caj.host.cs.st-andrews.ac.uk[107X
+      Homepage: [7Xhttps://heather.cafe/[107X
       Address:  [33X[0;14YJack  Cole  Building, North Haugh, St Andrews, Fife, KY16 9SX,
                 Scotland[133X
   
   
+  Malachi Johns
+      Email:    [7Xmailto:zlj1@st-andrews.ac.uk[107X
   Olexandr Konovalov
       Email:    [7Xmailto:obk1@st-andrews.ac.uk[107X
       Homepage: [7Xhttps://olexandr-konovalov.github.io/[107X
@@ -197,10 +204,6 @@
       Email:    [7Xmailto:hk78@st-andrews.ac.uk[107X
   Andrea Lee
       Email:    [7Xmailto:ahwl1@st-andrews.ac.uk[107X
-      Address:  [33X[0;14YMathematical  Institute,  North  Haugh, St Andrews, Fife, KY16
-                9SS, Scotland[133X
-  
-  
   Saffron McIver
       Email:    [7Xmailto:sm544@st-andrews.ac.uk[107X
   Michael Orlitzky
@@ -509,13 +512,14 @@
       5.4-31 DigraphLongestSimpleCircuit
       5.4-32 DigraphAllUndirectedSimpleCircuits
       5.4-33 DigraphAllChordlessCycles
-      5.4-34 DigraphLayers
-      5.4-35 DigraphDegeneracy
-      5.4-36 DigraphDegeneracyOrdering
-      5.4-37 HamiltonianPath
-      5.4-38 NrSpanningTrees
-      5.4-39 DigraphDijkstra
-      5.4-40 DigraphCycleBasis
+      5.4-34 FacialWalks
+      5.4-35 DigraphLayers
+      5.4-36 DigraphDegeneracy
+      5.4-37 DigraphDegeneracyOrdering
+      5.4-38 HamiltonianPath
+      5.4-39 NrSpanningTrees
+      5.4-40 DigraphDijkstra
+      5.4-41 DigraphCycleBasis
     5.5 [33X[0;0YCayley graphs of groups[133X
       5.5-1 GroupOfCayleyDigraph
       5.5-2 GeneratorsOfCayleyDigraph
@@ -528,6 +532,7 @@
       5.7-3 PlanarEmbedding
       5.7-4 OuterPlanarEmbedding
       5.7-5 SubdigraphHomeomorphicToK23
+      5.7-6 DualPlanarGraph
     5.8 [33X[0;0YHashing[133X
       5.8-1 DigraphHash
   6 [33X[0;0YProperties of digraphs[133X
@@ -556,14 +561,18 @@
       6.3-2 EdgeWeightedDigraph
       6.3-3 EdgeWeightedDigraphTotalWeight
       6.3-4 EdgeWeightedDigraphMinimumSpanningTree
+      6.3-5 EdgeWeightedDigraphShortestPaths
+      6.3-6 EdgeWeightedDigraphShortestPath
     6.4 [33X[0;0YOrders[133X
       6.4-1 IsPreorderDigraph
       6.4-2 IsPartialOrderDigraph
       6.4-3 IsMeetSemilatticeDigraph
       6.4-4 DigraphMeetTable
-      6.4-5 IsUpperSemimodularDigraph
-      6.4-6 IsDistributiveLatticeDigraph
-      6.4-7 IsModularLatticeDigraph
+      6.4-5 IsOrderIdeal
+      6.4-6 IsOrderFilter
+      6.4-7 IsUpperSemimodularDigraph
+      6.4-8 IsDistributiveLatticeDigraph
+      6.4-9 IsModularLatticeDigraph
     6.5 [33X[0;0YRegularity[133X
       6.5-1 IsInRegularDigraph
       6.5-2 IsOutRegularDigraph

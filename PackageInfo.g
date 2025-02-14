@@ -38,8 +38,8 @@ fi;
 SetPackageInfo(rec(
 PackageName := "Digraphs",
 Subtitle := "Graphs, digraphs, and multidigraphs in GAP",
-Version := "1.9.0",
-Date := "06/09/2024",  # dd/mm/yyyy format
+Version := "1.10.0",
+Date := "14/02/2025",  # dd/mm/yyyy format
 License := "GPL-3.0-or-later",
 ArchiveFormats := ".tar.gz",
 
@@ -58,7 +58,7 @@ Persons := [
     IsAuthor      := true,
     IsMaintainer  := false,
     Email         := "jdebeule@cage.ugent.be",
-    WWWHome       := "http://homepages.vub.ac.be/~jdbeule/",
+    WWWHome       := "https://wids.research.vub.be/en/jan-de-beule",
     PostalAddress := Concatenation([
                      "Vrije Universiteit Brussel, ",
                      " Vakgroep Wiskunde, ",
@@ -102,7 +102,7 @@ Persons := [
     IsAuthor      := true,
     IsMaintainer  := true,
     Email         := "mct25@st-andrews.ac.uk",
-    WWWHome       := "https://mct25.host.cs.st-andrews.ac.uk",
+    WWWHome       := "https://myoung.uk/work/",
     PostalAddress := _STANDREWSCS,
     Place         := "St Andrews",
     Institution   := "University of St Andrews"),
@@ -192,10 +192,10 @@ Persons := [
     FirstNames    := "Luna",
     IsAuthor      := true,
     IsMaintainer  := false,
-    Email         := "TODO",
-    PostalAddress := _STANDREWSMATHS,  # TODO update
-    Place         := "St Andrews",
-    Institution   := "University of St Andrews"),
+    Email         := "luna.elliott142857@gmail.com",
+    Institution   := "University of Manchester",
+    WWWHome       := Concatenation("https://research.manchester.ac.uk/",
+                     "en/persons/luna-elliott")),
 
   rec(
     LastName      := "Fernando",
@@ -210,6 +210,13 @@ Persons := [
     IsAuthor      := true,
     IsMaintainer  := false,
     Email         := "eg207@st-andrews.ac.uk"),
+
+  rec(
+    LastName      := "Frankie",
+    FirstNames    := "Gillis",
+    IsAuthor      := true,
+    IsMaintainer  := false,
+    Email         := "fotg1@st-andrews.ac.uk"),
 
   rec(
     LastName      := "Gutsche",
@@ -245,10 +252,17 @@ Persons := [
     IsAuthor      := true,
     IsMaintainer  := false,
     Email         := "caj21@st-andrews.ac.uk",
-    WWWHome       := "https://caj.host.cs.st-andrews.ac.uk",
+    WWWHome       := "https://heather.cafe/",
     PostalAddress := _STANDREWSCS,
     Place         := "St Andrews",
     Institution   := "University of St Andrews"),
+
+  rec(
+    LastName      := "Johns",
+    FirstNames    := "Malachi",
+    IsAuthor      := true,
+    IsMaintainer  := false,
+    Email         := "zlj1@st-andrews.ac.uk"),
 
   rec(
     LastName      := "Konovalov",
@@ -267,15 +281,17 @@ Persons := [
       IsMaintainer := false,
       Email        := "hk78@st-andrews.ac.uk"),
 
+  rec(LastName     := "Lau",
+      FirstNames   := "Aidan",
+      IsAuthor     := true,
+      IsMaintainer := false),
+
   rec(
     LastName      := "Lee",
     FirstNames    := "Andrea",
     IsAuthor      := true,
     IsMaintainer  := false,
-    PostalAddress := _STANDREWSMATHS,
-    Email         := "ahwl1@st-andrews.ac.uk",
-    Place         := "St Andrews",
-    Institution   := "University of St Andrews"),
+    Email         := "ahwl1@st-andrews.ac.uk"),
 
   rec(
     LastName     := "McIver",

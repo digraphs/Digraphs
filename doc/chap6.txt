@@ -660,6 +660,92 @@
     [4X[28X[ [  ], [ 5 ], [ 6 ] ][128X[104X
   [4X[32X[104X
   
+  [1X6.3-5 EdgeWeightedDigraphShortestPaths[101X
+  
+  [33X[1;0Y[29X[2XEdgeWeightedDigraphShortestPaths[102X( [3Xdigraph[103X ) [32X attribute[133X
+  [33X[1;0Y[29X[2XEdgeWeightedDigraphShortestPaths[102X( [3Xdigraph[103X, [3Xsource[103X ) [32X operation[133X
+  [6XReturns:[106X  [33X[0;10YA record.[133X
+  
+  [33X[0;0YIf  [3Xdigraph[103X  is  an  edge-weighted  digraph, this attribute returns a record
+  describing  the paths of lowest total weight (the [13Xshortest paths[113X) connecting
+  each pair of vertices. If the optional argument [3Xsource[103X is specified and is a
+  vertex  of  [3Xdigraph[103X,  then the output will only contain information on paths
+  originating from that vertex.[133X
+  
+  [33X[0;0YIn  the  two-argument  form, the value returned is a record containing three
+  components:  [10Xdistances[110X,  [10Xparents[110X  and  [10Xedges[110X.  Each  of  these  is a list of
+  integers with one entry for each vertex [10Xv[110X as follows:[133X
+  
+  [30X    [33X[0;6Y[10Xdistances[v][110X  is  the total weight of the shortest path from [3Xsource[103X to
+        [10Xv[110X.[133X
+  
+  [30X    [33X[0;6Y[10Xparents[v][110X  is  the  final  vertex  before [10Xv[110X on the shortest path from
+        [3Xsource[103X to [10Xv[110X.[133X
+  
+  [30X    [33X[0;6Y[10Xedges[v][110X  is  the  index  of  the  edge  of  lowest  weight going from
+        [10Xparents[v][110X to [10Xv[110X.[133X
+  
+  [33X[0;0YUsing  these  three  components  together,  you  can  find the shortest edge
+  weighted path to all other vertices from a starting vertex.[133X
+  
+  [33X[0;0YIf  no  path exists from [3Xsource[103X to [10Xv[110X, then [10Xparents[v][110X and [10Xedges[v][110X will both
+  be  [9Xfail[109X.  The  distance from [3Xsource[103X to itself is considered to be 0, and so
+  both  [10Xparents[[3Xsource[103X[10X][110X  and  [10Xedges[[3Xsource[103X[10X][110X  are  [9Xfail[109X.  Edge weights can have
+  negative  values,  but  there  is  currently  no implemented method for this
+  operation if a negative-weighted cycle exists.[133X
+  
+  [33X[0;0YIn  the  one-argument  form,  the value returned is also a record containing
+  components [10Xdistances[110X, [10Xparents[110X and [10Xedges[110X, but each of these will instead be a
+  list  of  lists in which the [10Xi[110Xth entry is the list that corresponds to paths
+  starting at [10Xi[110X.[133X
+  
+  [33X[0;0YFor a simple way of finding the shortest path between two specific vertices,
+  see  [2XEdgeWeightedDigraphShortestPath[102X  ([14X6.3-6[114X).  See  also  the  non-weighted
+  operation [2XDigraphShortestPath[102X ([14X5.4-23[114X).[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27XD := EdgeWeightedDigraph([[2, 3], [4], [4], []],[127X[104X
+    [4X[25X>[125X [27X                            [[5, 1], [6], [11], []]);[127X[104X
+    [4X[28X<immutable digraph with 4 vertices, 4 edges>[128X[104X
+    [4X[25Xgap>[125X [27XEdgeWeightedDigraphShortestPaths(D, 1);[127X[104X
+    [4X[28Xrec( distances := [ 0, 5, 1, 11 ], edges := [ fail, 1, 2, 1 ], [128X[104X
+    [4X[28X  parents := [ fail, 1, 1, 2 ] )[128X[104X
+    [4X[25Xgap>[125X [27XD := EdgeWeightedDigraph([[2], [3], [1]], [[1], [2], [3]]);[127X[104X
+    [4X[28X<immutable digraph with 3 vertices, 3 edges>[128X[104X
+    [4X[25Xgap>[125X [27XEdgeWeightedDigraphShortestPaths(D);[127X[104X
+    [4X[28Xrec( distances := [ [ 0, 1, 3 ], [ 5, 0, 2 ], [ 3, 4, 0 ] ], [128X[104X
+    [4X[28X  edges := [ [ fail, 1, 1 ], [ 1, fail, 1 ], [ 1, 1, fail ] ], [128X[104X
+    [4X[28X  parents := [ [ fail, 1, 1 ], [ 2, fail, 2 ], [ 3, 3, fail ] ] )[128X[104X
+  [4X[32X[104X
+  
+  [1X6.3-6 EdgeWeightedDigraphShortestPath[101X
+  
+  [33X[1;0Y[29X[2XEdgeWeightedDigraphShortestPath[102X( [3Xdigraph[103X, [3Xsource[103X, [3Xdest[103X ) [32X operation[133X
+  [6XReturns:[106X  [33X[0;10YA pair of lists, or [9Xfail[109X.[133X
+  
+  [33X[0;0YIf  [3Xdigraph[103X  is an edge-weighted digraph with vertices [3Xsource[103X and [3Xdest[103X, this
+  operation  returns  a  directed  path  from [3Xsource[103X to [3Xdest[103X with the smallest
+  possible  total  weight.  The  output  is a pair of lists [10X[v, a][110X of the form
+  described in [2XDigraphPath[102X ([14X5.4-22[114X).[133X
+  
+  [33X[0;0YIf [22X[3Xsource[103X = [3Xdest[103X[122X or no path exists, then [9Xfail[109X is returned.[133X
+  
+  [33X[0;0YIf  [3Xdigraph[103X  contains  a negative-weighted cycle, then there is currently no
+  applicable method for this attribute.[133X
+  
+  [33X[0;0YSee  [2XEdgeWeightedDigraphShortestPaths[102X  ([14X6.3-5[114X).  See  also  the non-weighted
+  operation [2XDigraphShortestPath[102X ([14X5.4-23[114X).[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27XD := EdgeWeightedDigraph([[2, 3], [4], [4], []],[127X[104X
+    [4X[25X>[125X [27X                            [[5, 1], [6], [11], []]);[127X[104X
+    [4X[28X<immutable digraph with 4 vertices, 4 edges>[128X[104X
+    [4X[25Xgap>[125X [27XEdgeWeightedDigraphShortestPath(D, 1, 4);[127X[104X
+    [4X[28X[ [ 1, 2, 4 ], [ 1, 1 ] ][128X[104X
+    [4X[25Xgap>[125X [27XEdgeWeightedDigraphShortestPath(D, 3, 2);[127X[104X
+    [4X[28Xfail[128X[104X
+  [4X[32X[104X
+  
   
   [1X6.4 [33X[0;0YOrders[133X[101X
   
@@ -810,7 +896,55 @@
     [4X[28Xfail[128X[104X
   [4X[32X[104X
   
-  [1X6.4-5 IsUpperSemimodularDigraph[101X
+  [1X6.4-5 IsOrderIdeal[101X
+  
+  [33X[1;0Y[29X[2XIsOrderIdeal[102X( [3XD[103X, [3Xsubset[103X ) [32X operation[133X
+  [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
+  
+  [33X[0;0YThis  function  returns  [9Xtrue[109X if the specified subset is "downwards" closed,
+  i.e. contains every vertex less than the given vertices in the order defined
+  by   [3XD[103X.   The   function   can   only   be   used   on  digraphs  satisfying
+  [2XIsPartialOrderDigraph[102X  ([14X6.4-2[114X)  and  will throw an error if passed a digraph
+  that is not a partial order digraph.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27XD1 := Digraph([[1, 3], [2, 3], [3]]);[127X[104X
+    [4X[28X<immutable digraph with 3 vertices, 5 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsOrderIdeal(D1, [1, 2, 3]);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XD2 := DigraphDisjointUnion(D1, D1);[127X[104X
+    [4X[28X<immutable digraph with 6 vertices, 10 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsOrderIdeal(D2, [1, 2, 3]);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XIsOrderIdeal(D2, [4, 5, 6]);[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XIsOrderIdeal(D2, [1, 5, 6]);[127X[104X
+    [4X[28Xfalse[128X[104X
+  [4X[32X[104X
+  
+  [1X6.4-6 IsOrderFilter[101X
+  
+  [33X[1;0Y[29X[2XIsOrderFilter[102X( [3XD[103X, [3Xsubset[103X ) [32X operation[133X
+  [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
+  
+  [33X[0;0YThis  function  returns  [9Xtrue[109X  if  the specified subset is upwards closed. A
+  subset  is upwards closed if it contains every vertex greater than the given
+  vertices  in  the  order  defined  by  [3XD[103X.  The  function can only be used on
+  digraphs satisfying [2XIsPartialOrderDigraph[102X ([14X6.4-2[114X) and will throw an error if
+  passed a digraph that is not a partial order digraph.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[25Xgap>[125X [27XD1 := DigraphByEdges([127X[104X
+    [4X[25X>[125X [27X[[1, 2], [2, 3], [1, 3], [1, 1], [2, 2], [3, 3]]);[127X[104X
+    [4X[28X<immutable digraph with 3 vertices, 6 edges>[128X[104X
+    [4X[25Xgap>[125X [27XIsOrderFilter(D1, [2, 3]);[127X[104X
+    [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27XIsOrderFilter(D1, [1, 2]);[127X[104X
+    [4X[28Xtrue    [128X[104X
+    [4X[28X    [128X[104X
+  [4X[32X[104X
+  
+  [1X6.4-7 IsUpperSemimodularDigraph[101X
   
   [33X[1;0Y[29X[2XIsUpperSemimodularDigraph[102X( [3XD[103X ) [32X property[133X
   [33X[1;0Y[29X[2XIsLowerSemimodularDigraph[102X( [3XD[103X ) [32X property[133X
@@ -840,7 +974,7 @@
     [4X[28Xfalse[128X[104X
   [4X[32X[104X
   
-  [1X6.4-6 IsDistributiveLatticeDigraph[101X
+  [1X6.4-8 IsDistributiveLatticeDigraph[101X
   
   [33X[1;0Y[29X[2XIsDistributiveLatticeDigraph[102X( [3Xdigraph[103X ) [32X property[133X
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X
@@ -876,7 +1010,7 @@
     [4X[28Xfalse[128X[104X
   [4X[32X[104X
   
-  [1X6.4-7 IsModularLatticeDigraph[101X
+  [1X6.4-9 IsModularLatticeDigraph[101X
   
   [33X[1;0Y[29X[2XIsModularLatticeDigraph[102X( [3Xdigraph[103X ) [32X property[133X
   [6XReturns:[106X  [33X[0;10Y[9Xtrue[109X or [9Xfalse[109X.[133X

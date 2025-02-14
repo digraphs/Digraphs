@@ -82,7 +82,7 @@
 <dt><strong class="Mark">directory</strong></dt>
 <dd><p>this should be a string representing the name of the directory in <code class="code">path</code> where you want <code class="code">Splash</code> to do its work. This function will create this directory if does not already exist.</p>
 
-<p>The default value of this option is <code class="code">"tmp.viz"</code> if the option <code class="code">path</code> is present, and the result of <code class="func">DirectoryTemporary</code> (<a href="https://www.gap-system.org/Manuals/doc/ref/chap9_mj.html#X8222B1A886E6195E"><span class="RefLink">Reference: DirectoryTemporary</span></a>) is used otherwise.</p>
+<p>The default value of this option is <code class="code">"tmp.viz"</code> if the option <code class="code">path</code> is present, and the result of <code class="func">DirectoryTemporary</code> (<a href="https://docs.gap-system.org/doc/ref/chap9_mj.html#X8222B1A886E6195E"><span class="RefLink">Reference: DirectoryTemporary</span></a>) is used otherwise.</p>
 
 </dd>
 <dt><strong class="Mark">filename</strong></dt>
@@ -535,11 +535,11 @@ true
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; PrintString</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: A string.</p>
 
-<p>Returns a string <code class="code">string</code> such that <code class="code">EvalString(string)</code> is equal to <var class="Arg">digraph</var>, and has the same mutability. See <code class="func">EvalString</code> (<a href="https://www.gap-system.org/Manuals/doc/ref/chap27_mj.html#X7DE4CCD285440659"><span class="RefLink">Reference: EvalString</span></a>).</p>
+<p>Returns a string <code class="code">string</code> such that <code class="code">EvalString(string)</code> is equal to <var class="Arg">digraph</var>, and has the same mutability. See <code class="func">EvalString</code> (<a href="https://docs.gap-system.org/doc/ref/chap27_mj.html#X7DE4CCD285440659"><span class="RefLink">Reference: EvalString</span></a>).</p>
 
 <p>The methods installed for <code class="code">String</code> make some attempts to ensure that <code class="code">string</code> has as short a length as possible, but there may exist shorter strings that also evaluate to <var class="Arg">digraph</var>.</p>
 
-<p>It is possible that <code class="code">string</code> may contain escaped special characters. To obtain a representation of <var class="Arg">digraph</var> that can be entered as GAP input, please use <code class="func">Print</code> (<a href="https://www.gap-system.org/Manuals/doc/ref/chap6_mj.html#X7AFA64D97A1F39A3"><span class="RefLink">Reference: Print</span></a>). Note that <code class="code">Print</code> for a digraph delegates to <code class="code">PrintString</code>, which delegates to <code class="code">String</code>.</p>
+<p>It is possible that <code class="code">string</code> may contain escaped special characters. To obtain a representation of <var class="Arg">digraph</var> that can be entered as GAP input, please use <code class="func">Print</code> (<a href="https://docs.gap-system.org/doc/ref/chap6_mj.html#X7AFA64D97A1F39A3"><span class="RefLink">Reference: Print</span></a>). Note that <code class="code">Print</code> for a digraph delegates to <code class="code">PrintString</code>, which delegates to <code class="code">String</code>.</p>
 
 
 <div class="example"><pre>
@@ -818,7 +818,7 @@ IO_OK
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IteratorFromDigraphFile</code>( <var class="Arg">filename</var>[, <var class="Arg">decoder</var>] )</td><td class="tdright">(&nbsp;function&nbsp;)</td></tr></table></div>
 <p>Returns: An iterator.</p>
 
-<p>If <var class="Arg">filename</var> is a string representing the name of a file containing encoded digraphs, then <code class="code">IteratorFromDigraphFile</code> returns an iterator for which the value of <code class="func">NextIterator</code> (<a href="https://www.gap-system.org/Manuals/doc/ref/chap30_mj.html#X879F62F77D1D1179"><span class="RefLink">Reference: NextIterator</span></a>) is the next digraph encoded in the file.</p>
+<p>If <var class="Arg">filename</var> is a string representing the name of a file containing encoded digraphs, then <code class="code">IteratorFromDigraphFile</code> returns an iterator for which the value of <code class="func">NextIterator</code> (<a href="https://docs.gap-system.org/doc/ref/chap30_mj.html#X879F62F77D1D1179"><span class="RefLink">Reference: NextIterator</span></a>) is the next digraph encoded in the file.</p>
 
 <p>If the optional argument <var class="Arg">decoder</var> is specified and is a function which decodes a string into a digraph, then <code class="code">IteratorFromDigraphFile</code> will use <var class="Arg">decoder</var> to decode the digraphs contained in <var class="Arg">filename</var>.</p>
 

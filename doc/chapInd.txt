@@ -91,12 +91,12 @@
   [2XDigraphCopySameMutability[102X 3.3-1 
   [2XDigraphCore[102X 7.3-19 
   [2XDigraphCycle[102X 3.5-14 
-  [2XDigraphCycleBasis[102X 5.4-40 
-  [2XDigraphDegeneracy[102X 5.4-35 
-  [2XDigraphDegeneracyOrdering[102X 5.4-36 
+  [2XDigraphCycleBasis[102X 5.4-41 
+  [2XDigraphDegeneracy[102X 5.4-36 
+  [2XDigraphDegeneracyOrdering[102X 5.4-37 
   [2XDigraphDiameter[102X 5.4-1 
-  [2XDigraphDijkstra[102X, for a source 5.4-39 
-      for a source and target 5.4-39 
+  [2XDigraphDijkstra[102X, for a source 5.4-40 
+      for a source and target 5.4-40 
   [2XDigraphDirectProduct[102X, for a list of digraphs 3.3-33 
       for a positive number of digraphs 3.3-33 
   [2XDigraphDirectProductProjections[102X 3.3-40 
@@ -141,7 +141,7 @@
   [2XDigraphJoin[102X, for a list of digraphs 3.3-31 
       for a positive number of digraphs 3.3-31 
   [2XDigraphJoinTable[102X 6.4-4 
-  [2XDigraphLayers[102X 5.4-34 
+  [2XDigraphLayers[102X 5.4-35 
   [2XDigraphLongestDistanceFromVertex[102X 5.4-4 
   [2XDigraphLongestSimpleCircuit[102X 5.4-31 
   [2XDigraphLoops[102X 5.2-14 
@@ -252,11 +252,15 @@
   [2XDotVertexColoredDigraph[102X 9.1-2 
   [2XDotVertexLabelledDigraph[102X 9.1-2 
   [2XDoubleDigraph[102X 3.3-43 
+  [2XDualPlanarGraph[102X 5.7-6 
   [2XEdgeDigraph[102X 3.3-41 
   [2XEdgeOrbitsDigraph[102X 3.1-10 
   [2XEdgeUndirectedDigraph[102X 3.3-42 
   [2XEdgeWeightedDigraph[102X 6.3-2 
   [2XEdgeWeightedDigraphMinimumSpanningTree[102X 6.3-4 
+  [2XEdgeWeightedDigraphShortestPath[102X 6.3-6 
+  [2XEdgeWeightedDigraphShortestPaths[102X, for a digraph 6.3-5 
+      for a digraph and a pos int 6.3-5 
   [2XEdgeWeightedDigraphTotalWeight[102X 6.3-3 
   [2XEdgeWeights[102X 6.3-1 
   [2XEdgeWeightsMutableCopy[102X 6.3-1 
@@ -265,6 +269,7 @@
   [2XEmptyDigraph[102X 3.5-16 
   [2XEpimorphismsDigraphs[102X 7.3-7 
   [2XEpimorphismsDigraphsRepresentatives[102X 7.3-7 
+  [2XFacialWalks[102X 5.4-34 
   [2XGearGraph[102X 3.5-17 
   [2XGeneralisedPetersenGraph[102X 3.5-36 
   [2XGeneratorsOfCayleyDigraph[102X 5.5-2 
@@ -276,7 +281,7 @@
   [2XGroupOfCayleyDigraph[102X 5.5-1 
   [2XHaarGraph[102X 3.5-18 
   [2XHalvedCubeGraph[102X 3.5-19 
-  [2XHamiltonianPath[102X 5.4-37 
+  [2XHamiltonianPath[102X 5.4-38 
   [2XHanoiGraph[102X 3.5-20 
   [2XHelmGraph[102X 3.5-21 
   [2XHomomorphicProduct[102X 3.3-35 
@@ -335,7 +340,7 @@
   [2XIsDigraphWithAdjacencyFunction[102X 3.1-5 
   [2XIsDirectedTree[102X 6.6-8 
   [2XIsDistanceRegularDigraph[102X 6.5-4 
-  [2XIsDistributiveLatticeDigraph[102X 6.4-6 
+  [2XIsDistributiveLatticeDigraph[102X 6.4-8 
   [2XIsEdgeTransitive[102X 6.8-2 
   [2XIsEmptyDigraph[102X 6.2-7 
   [2XIsEquivalenceDigraph[102X 6.2-8 
@@ -354,20 +359,22 @@
   [2XIsLatticeEpimorphism[102X, for digraphs and a permutation or transformation 7.3-21 
   [2XIsLatticeHomomorphism[102X, for digraphs and a permutation or transformation 7.3-21 
   [2XIsLatticeMonomorphism[102X, for digraphs and a permutation or transformation 7.3-21 
-  [2XIsLowerSemimodularDigraph[102X 6.4-5 
+  [2XIsLowerSemimodularDigraph[102X 6.4-7 
   [2XIsMatching[102X 5.1-18 
   [2XIsMaximalClique[102X 8.1-1 
   [2XIsMaximalIndependentSet[102X 8.2-1 
   [2XIsMaximalMatching[102X 5.1-18 
   [2XIsMaximumMatching[102X 5.1-18 
   [2XIsMeetSemilatticeDigraph[102X 6.4-3 
-  [2XIsModularLatticeDigraph[102X 6.4-7 
+  [2XIsModularLatticeDigraph[102X 6.4-9 
   [2XIsMultiDigraph[102X 6.2-11 
   [2XIsMutableDigraph[102X 3.1-2 
   [2XIsNonemptyDigraph[102X 6.2-12 
   [2XIsNullDigraph[102X 6.2-7 
   [2XIsomorphismDigraphs[102X, for digraphs 7.2-17 
       for digraphs and homogeneous lists 7.2-18 
+  [2XIsOrderFilter[102X, for a digraph and a list 6.4-6 
+  [2XIsOrderIdeal[102X, for a digraph and list 6.4-5 
   [2XIsOuterPlanarDigraph[102X 6.7-2 
   [2XIsOutRegularDigraph[102X 6.5-2 
   [2XIsPartialOrderDigraph[102X 6.4-2 
@@ -388,7 +395,7 @@
   [2XIsUndirectedSpanningForest[102X 4.1-2 
   [2XIsUndirectedSpanningTree[102X 4.1-2 
   [2XIsUndirectedTree[102X 6.6-9 
-  [2XIsUpperSemimodularDigraph[102X 6.4-5 
+  [2XIsUpperSemimodularDigraph[102X 6.4-7 
   [2XIsVertexTransitive[102X 6.8-3 
   [2XIteratorFromDigraphFile[102X 9.2-7 
   [2XIteratorOfPaths[102X 5.4-29 
@@ -426,7 +433,7 @@
       for a digraph and a list 7.2-8 
   [2XNonLowerSemimodularPair[102X 5.3-2 
   [2XNonUpperSemimodularPair[102X 5.3-2 
-  [2XNrSpanningTrees[102X 5.4-38 
+  [2XNrSpanningTrees[102X 5.4-39 
   [2XNullDigraph[102X 3.5-16 
   [2XOddGraph[102X 3.5-32 
   [2XOnDigraphs[102X, for a digraph and a perm 7.1-1 

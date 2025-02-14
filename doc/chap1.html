@@ -42,7 +42,7 @@
 
 <h4>1.1 <span class="Heading">Introduction</span></h4>
 
-<p>This is the manual for version 1.9.0 of the <strong class="pkg">Digraphs</strong> package. This package was developed at the University of St Andrews by:</p>
+<p>This is the manual for version 1.10.0 of the <strong class="pkg">Digraphs</strong> package. This package was developed at the University of St Andrews by:</p>
 
 
 <ul>
@@ -123,7 +123,7 @@
 
 <p>The <span class="URL"><a href="https://github.com/graph-algorithms/edge-addition-planarity-suite">edge-addition-planarity-suite</a></span> is also included in <strong class="pkg">Digraphs</strong>; see <a href="chapBib.html#biBBM04">[BM04]</a>, <a href="chapBib.html#biBB06">[Boy06]</a>, <a href="chapBib.html#biBBM06">[BM06]</a>, and <a href="chapBib.html#biBB12">[Boy12]</a> . The <span class="URL"><a href="https://github.com/graph-algorithms/edge-addition-planarity-suite">edge-addition-planarity-suite</a></span> is an open-source implementation of the edge addition planar graph embedding algorithm and related algorithms by John M. Boyer. See Section <a href="chap6.html#X7E2305528492DDC0"><span class="RefLink">6.7</span></a> for more details.</p>
 
-<p>From version 1.0.0 of this package, digraphs can be either mutable or immutable. Mutable digraphs can be changed in-place by many of the methods in the package, which avoids unnecessary copying. Immutable digraphs cannot be changed in-place, but their advantage is that the value of an attribute of an immutable digraph is only ever computed once. Mutable digraphs can be converted into immutable digraphs in-place using <code class="func">MakeImmutable</code> (<a href="https://www.gap-system.org/Manuals/doc/ref/chap12_mj.html#X80CE136D804097C7"><span class="RefLink">Reference: MakeImmutable</span></a>). One of the motivations for introducing mutable digraphs in version 1.0.0 was that in practice the authors often wanted to create a digraph and immediately modify it (removing certain edges, loops, and so on). Before version 1.0.0, this involved copying the digraph several times, with each copy being discarded almost immediately. From version 1.0.0, this unnecessary copying can be eliminated by first creating a mutable digraph, then changing it in-place, and finally converting the mutable digraph to an immutable one in-place (if desirable).</p>
+<p>From version 1.0.0 of this package, digraphs can be either mutable or immutable. Mutable digraphs can be changed in-place by many of the methods in the package, which avoids unnecessary copying. Immutable digraphs cannot be changed in-place, but their advantage is that the value of an attribute of an immutable digraph is only ever computed once. Mutable digraphs can be converted into immutable digraphs in-place using <code class="func">MakeImmutable</code> (<a href="https://docs.gap-system.org/doc/ref/chap12_mj.html#X80CE136D804097C7"><span class="RefLink">Reference: MakeImmutable</span></a>). One of the motivations for introducing mutable digraphs in version 1.0.0 was that in practice the authors often wanted to create a digraph and immediately modify it (removing certain edges, loops, and so on). Before version 1.0.0, this involved copying the digraph several times, with each copy being discarded almost immediately. From version 1.0.0, this unnecessary copying can be eliminated by first creating a mutable digraph, then changing it in-place, and finally converting the mutable digraph to an immutable one in-place (if desirable).</p>
 
 <p><a id="X84541F61810C741D" name="X84541F61810C741D"></a></p>
 

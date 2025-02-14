@@ -1608,8 +1608,8 @@
   same vertex set.[133X
   
   [4X[32X  Example  [32X[104X
-    [4X[25Xgap>[125X [27XSubdigraphsMonomorphisms(CompleteBipartiteDigraph(2, 2),[127X[104X
-    [4X[25X>[125X [27XCompleteDigraph(4));[127X[104X
+    [4X[25Xgap>[125X [27XSet(SubdigraphsMonomorphisms(CompleteBipartiteDigraph(2, 2),[127X[104X
+    [4X[25X>[125X [27XCompleteDigraph(4)));[127X[104X
     [4X[28X[ Transformation( [ 1, 3, 2 ] ), Transformation( [ 2, 3, 1 ] ),[128X[104X
     [4X[28X  Transformation( [ 3, 4, 2, 1 ] ) ][128X[104X
     [4X[25Xgap>[125X [27XSubdigraphsMonomorphismsRepresentatives([127X[104X

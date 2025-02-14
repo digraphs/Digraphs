@@ -1,12 +1,12 @@
 name: Digraphs
-version: 1.9.0
-date: 2024-09-06
+version: 1.10.0
+date: 2025-02-14
 description: |
     Graphs, digraphs, and multidigraphs in GAP
 
 authors:
     - name: Jan De Beule
-      url: http://homepages.vub.ac.be/~jdbeule/
+      url: https://wids.research.vub.be/en/jan-de-beule
     - name: Julius Jonusas
       url: http://julius.jonusas.work
     - name: James Mitchell
@@ -14,7 +14,7 @@ authors:
     - name: Wilf A. Wilson
       url: https://wilf.me
     - name: Michael Young
-      url: https://mct25.host.cs.st-andrews.ac.uk
+      url: https://myoung.uk/work/
     - name: Marina Anagnostopoulou-Merkouri
       url: mailto:mam49@st-andrews.ac.uk
     - name: Finn Buck
@@ -32,11 +32,13 @@ authors:
     - name: Joseph Edwards
       url: https://github.com/Joseph-Edwards
     - name: Luna Elliott
-      url: mailto:TODO
+      url: https://research.manchester.ac.uk/en/persons/luna-elliott
     - name: Isuru Fernando
       url: mailto:isuruf@gmail.com
     - name: Ewan Gilligan
       url: mailto:eg207@st-andrews.ac.uk
+    - name: Gillis Frankie
+      url: mailto:fotg1@st-andrews.ac.uk
     - name: Sebastian Gutsche
       url: mailto:gutsche@momo.math.rwth-aachen.de
     - name: Samantha Harper
@@ -44,11 +46,14 @@ authors:
     - name: Max Horn
       url: https://www.quendi.de/math
     - name: Christopher Jefferson
-      url: https://caj.host.cs.st-andrews.ac.uk
+      url: https://heather.cafe/
+    - name: Malachi Johns
+      url: mailto:zlj1@st-andrews.ac.uk
     - name: Olexandr Konovalov
       url: https://olexandr-konovalov.github.io/
     - name: Hyeokjun Kwon
       url: mailto:hk78@st-andrews.ac.uk
+    - name: Aidan Lau
     - name: Andrea Lee
       url: mailto:ahwl1@st-andrews.ac.uk
     - name: Saffron McIver
@@ -89,7 +94,7 @@ maintainers:
     - name: Wilf A. Wilson
       url: https://wilf.me
     - name: Michael Young
-      url: https://mct25.host.cs.st-andrews.ac.uk
+      url: https://myoung.uk/work/
 
 GAP: ">=4.10.0"
 
@@ -124,7 +129,7 @@ packageinfo: https://digraphs.github.io/Digraphs/PackageInfo.g
 
 downloads:
     - name: .tar.gz
-      url: https://github.com/digraphs/Digraphs/releases/download/v1.9.0/digraphs-1.9.0.tar.gz
+      url: https://github.com/digraphs/Digraphs/releases/download/v1.10.0/digraphs-1.10.0.tar.gz
 
 abstract: |
     The &Digraphs; package is a &GAP; package containing
