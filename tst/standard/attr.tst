@@ -1823,6 +1823,118 @@ Error, the argument <D> must be a digraph with no loops,
 gap> DIGRAPHS_UnderThreeColourable(EmptyDigraph(0));
 0
 
+#  Test ChromaticNumber Zykov
+gap> ChromaticNumber(NullDigraph(10) : zykov);
+1
+gap> ChromaticNumber(CompleteDigraph(10) : zykov);
+10
+gap> ChromaticNumber(CompleteBipartiteDigraph(5, 5) : zykov);
+2
+gap> ChromaticNumber(DigraphRemoveEdge(CompleteDigraph(10), [1, 2]) : zykov);
+10
+gap> ChromaticNumber(Digraph([[4, 8], [6, 10], [9], [2, 3, 9], [],
+> [3], [4], [6], [], [5, 7]]) : zykov);
+3
+gap> ChromaticNumber(DigraphDisjointUnion(CompleteDigraph(1),
+> Digraph([[2], [4], [1, 2], [3]])) : zykov);
+3
+gap> ChromaticNumber(DigraphDisjointUnion(CompleteDigraph(1),
+> Digraph([[2], [4], [1, 2], [3], [1, 2, 3]])) : zykov);
+4
+gap> gr := Digraph([[2, 3, 4], [3], [], []]);
+<immutable digraph with 4 vertices, 4 edges>
+gap> ChromaticNumber(gr : zykov);
+3
+gap> ChromaticNumber(EmptyDigraph(0) : zykov);
+0
+gap> gr := CompleteDigraph(4);;
+gap> gr := DigraphAddVertex(gr);;
+gap> ChromaticNumber(gr : zykov);
+4
+gap> gr := Digraph([[2, 4, 7, 3], [3, 5, 8, 1], [1, 6, 9, 2],
+> [5, 7, 1, 6], [6, 8, 2, 4], [4, 9, 3, 5], [8, 1, 4, 9], [9, 2, 5, 7],
+> [7, 3, 6, 8]]);;
+gap> ChromaticNumber(gr : zykov);
+3
+gap> gr := DigraphSymmetricClosure(ChainDigraph(5));
+<immutable symmetric digraph with 5 vertices, 8 edges>
+gap> ChromaticNumber(gr : zykov);
+2
+gap> gr := DigraphFromGraph6String("KmKk~K??G@_@");
+<immutable symmetric digraph with 12 vertices, 42 edges>
+gap> ChromaticNumber(gr : zykov);
+4
+gap> gr := CycleDigraph(7);
+<immutable cycle digraph with 7 vertices>
+gap> ChromaticNumber(gr : zykov);
+3
+gap> ChromaticNumber(gr : zykov);
+3
+gap> ChromaticNumber(gr : zykov);
+3
+gap> a := DigraphRemoveEdges(CompleteDigraph(50), [[1, 2], [2, 1]]);;
+gap> b := DigraphAddVertex(a);;
+gap> ChromaticNumber(a : zykov);
+49
+gap> ChromaticNumber(b : zykov);
+49
+
+#  Test ChromaticNumber Christofides
+gap> ChromaticNumber(NullDigraph(10) : christofides);
+1
+gap> ChromaticNumber(CompleteDigraph(10) : christofides);
+10
+gap> ChromaticNumber(CompleteBipartiteDigraph(5, 5) : christofides);
+2
+gap> ChromaticNumber(DigraphRemoveEdge(CompleteDigraph(10), [1, 2]) : christofides);
+10
+gap> ChromaticNumber(Digraph([[4, 8], [6, 10], [9], [2, 3, 9], [],
+> [3], [4], [6], [], [5, 7]]) : christofides);
+3
+gap> ChromaticNumber(DigraphDisjointUnion(CompleteDigraph(1),
+> Digraph([[2], [4], [1, 2], [3]])) : christofides);
+3
+gap> ChromaticNumber(DigraphDisjointUnion(CompleteDigraph(1),
+> Digraph([[2], [4], [1, 2], [3], [1, 2, 3]])) : christofides);
+4
+gap> gr := Digraph([[2, 3, 4], [3], [], []]);
+<immutable digraph with 4 vertices, 4 edges>
+gap> ChromaticNumber(gr : christofides);
+3
+gap> ChromaticNumber(EmptyDigraph(0) : christofides);
+0
+gap> gr := CompleteDigraph(4);;
+gap> gr := DigraphAddVertex(gr);;
+gap> ChromaticNumber(gr : christofides);
+4
+gap> gr := Digraph([[2, 4, 7, 3], [3, 5, 8, 1], [1, 6, 9, 2],
+> [5, 7, 1, 6], [6, 8, 2, 4], [4, 9, 3, 5], [8, 1, 4, 9], [9, 2, 5, 7],
+> [7, 3, 6, 8]]);;
+gap> ChromaticNumber(gr : christofides);
+3
+gap> gr := DigraphSymmetricClosure(ChainDigraph(5));
+<immutable symmetric digraph with 5 vertices, 8 edges>
+gap> ChromaticNumber(gr : christofides);
+2
+gap> gr := DigraphFromGraph6String("KmKk~K??G@_@");
+<immutable symmetric digraph with 12 vertices, 42 edges>
+gap> ChromaticNumber(gr : christofides);
+4
+gap> gr := CycleDigraph(7);
+<immutable cycle digraph with 7 vertices>
+gap> ChromaticNumber(gr : christofides);
+3
+gap> ChromaticNumber(gr : christofides);
+3
+gap> ChromaticNumber(gr : christofides);
+3
+gap> a := DigraphRemoveEdges(CompleteDigraph(50), [[1, 2], [2, 1]]);;
+gap> b := DigraphAddVertex(a);;
+gap> ChromaticNumber(a : christofides);
+49
+gap> ChromaticNumber(b : christofides);
+49
+
 #  DegreeMatrix
 gap> gr := Digraph([[2, 3, 4], [2, 5], [1, 5, 4], [1], [1, 1, 2, 4]]);;
 gap> DegreeMatrix(gr);
