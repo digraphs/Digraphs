@@ -1688,9 +1688,9 @@ gap> IsTwoEdgeTransitive(CompleteDigraph(4));
 true
 gap> IsTwoEdgeTransitive(CycleDigraph(100));
 true
-gap> IsTwoEdgeTransitive(CompleteBipartiteDigraph(11,23));
+gap> IsTwoEdgeTransitive(CompleteBipartiteDigraph(11, 23));
 false
-gap> IsTwoEdgeTransitive(DigraphByEdges([[1,2]]));
+gap> IsTwoEdgeTransitive(DigraphByEdges([[1, 2]]));
 true
 gap> IsTwoEdgeTransitive(DigraphByEdges([]));
 true
@@ -1906,22 +1906,6 @@ true
 gap> D := Digraph([[2], [1, 3, 4], [2], [2], [6], [5]]);;
 gap> SetIsUndirectedForest(D, true);
 gap> HasIsMultiDigraph(D) and not IsMultiDigraph(D);
-true
-
-# IsTwoEdgeTransitive
-gap> IsTwoEdgeTransitive(DigraphByEdges([[1,2],[2,3],[3,1]]));
-true
-gap> IsTwoEdgeTransitive(DigraphByEdges([[1,2],[2,3],[3,1],[3,4]]));
-false
-gap> IsTwoEdgeTransitive(CompleteDigraph(4));
-true
-gap> IsTwoEdgeTransitive(CycleDigraph(100));
-true
-gap> IsTwoEdgeTransitive(CompleteBipartiteDigraph(11,23));
-false
-gap> IsTwoEdgeTransitive(DigraphByEdges([[1,2]]));
-true
-gap> IsTwoEdgeTransitive(DigraphByEdges([]));
 true
 
 #  DIGRAPHS_UnbindVariables
