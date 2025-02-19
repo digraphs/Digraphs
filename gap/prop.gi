@@ -687,13 +687,14 @@ function(D)
   return LatticeDigraphEmbedding(N5, D) = fail;
 end);
 
-InstallMethod(IsTwoEdgeTransitive, "for a digraph", [IsDigraph], function(D)
+InstallMethod(IsTwoEdgeTransitive, "for a digraph", [IsDigraph],
+function(D)
   local twoEdges;
 
   twoEdges := Filtered(Cartesian(DigraphEdges(D), DigraphEdges(D)),
-   pair -> pair[1][2] = pair[2][1]);
+                       pair -> pair[1][2] = pair[2][1]);
 
   return OrbitLength(AutomorphismGroup(D), twoEdges[1], OnTuplesTuples)
-  = Length(twoEdges);
+         = Length(twoEdges);
 
 end);
