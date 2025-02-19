@@ -1412,6 +1412,17 @@ function(r, Stream)
     return char;
 end);
 
+BindGlobal("DIGRAPHS_GETNW",
+function(r, Stream)
+    local char;
+    char := Stream.GetChar(r);
+    while char <> fail and char in " \t\r" do
+        char := Stream.GetChar(r);
+    od;
+
+    return char;
+end);
+
 BindGlobal("DIGRAPHS_readinteger",
 function(r, Stream)
     local char, res, minus;
@@ -1564,9 +1575,9 @@ function(r, minus, Stream)
         return;
     fi;
 
-    c := DIGRAPHS_GETNWL(r, Stream);
+    c := DIGRAPHS_GETNW(r, Stream);
     if c = '=' then
-        c := DIGRAPHS_GETNWL(r, Stream);
+        c := DIGRAPHS_GETNW(r, Stream);
     fi;
 
     if IsDigitChar(c) then
