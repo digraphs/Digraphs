@@ -1579,3 +1579,32 @@ false]]></Example>
 </Description>
 </ManSection>
 <#/GAPDoc>
+
+<#GAPDoc Label="IsTwoEdgeTransitive">
+<ManSection>
+  <Prop Name="IsTwoEdgeTransitive" Arg="digraph"/>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
+  <Description>
+    If <A>digraph</A> is a digraph, then <C>IsTwoEdgeTransitive</C> returns
+    <K>true</K> if <A>digraph</A> is 2-edge transitive, and <K>false</K>
+    otherwise. A digraph is <E>2-edge transitive</E> if its automorphism group
+    acts transitively on its 2-edges.
+    (via the action <Ref Func="OnTuplesTuples" BookName="ref"/>).
+
+    A <E>2-edge</E> of a digraph is a pair of its edges, such that the range of the
+    first edge is equal to the source of the second edge.
+    <P/>
+
+    &MUTABLE_RECOMPUTED_PROP;
+
+    <Example><![CDATA[
+gap> IsTwoEdgeTransitive(CompleteDigraph(4));
+true
+gap> IsTwoEdgeTransitive(DigraphByEdges([[1,2],[2,3],[3,1],[3,4]]))
+false
+gap> IsTwoEdgeTransitive(CycleDigraph(5));
+true
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
