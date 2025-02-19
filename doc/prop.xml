@@ -1588,8 +1588,7 @@ false]]></Example>
     If <A>digraph</A> is a digraph, then <C>IsTwoEdgeTransitive</C> returns
     <K>true</K> if <A>digraph</A> is 2-edge transitive, and <K>false</K>
     otherwise. A digraph is <E>2-edge transitive</E> if its automorphism group
-    acts transitively on its 2-edges.
-    (via the action <Ref Func="OnTuplesTuples" BookName="ref"/>).
+    acts transitively on its 2-edges via the action <Ref Func="OnTuplesTuples" BookName="ref"/>.
 
     A <E>2-edge</E> of a digraph is a pair of its edges, such that the range of the
     first edge is equal to the source of the second edge.
