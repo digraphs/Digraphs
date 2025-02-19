@@ -1622,11 +1622,25 @@ function(r, minus, Stream)
                         tempNewline, ")");
                     fi;
                     for x in [v1 - r.labelorg + 1 .. v2 - r.labelorg + 1] do
+                      if r.partition[x] = 0 then
                         r.partition[x] := part;
+                      else
+                        Info(InfoWarning(), 1, "Vertex ", x + r.labelorg - 1,
+                           " (", r.labelorg,
+                           "-indexed is in multiple partitions (line ",
+                            tempNewline, ")");
+                      fi;
                     od;
                 else
                     Stream.UngetChar(r, v2);
-                    r.partition[v1 - r.labelorg + 1] := part;
+                    if r.partition[v1 - r.labelorg + 1] = 0 then
+                      r.partition[v1 - r.labelorg + 1] := part;
+                    else
+                      Info(InfoWarning(), 1, "Vertex ", v1,
+                          " (", r.labelorg, "-indexed) ",
+                          " is in multiple partitions (line ",
+                          tempNewline, ")");
+                    fi;
                 fi;
             else
                 if c = fail then
