@@ -1680,9 +1680,9 @@ gap> IsEdgeTransitive(Digraph([[2], [3, 3, 3], []]));
 Error, the argument <D> must be a digraph with no multiple edges,
 
 # IsTwoEdgeTransitive
-gap> IsTwoEdgeTransitive(DigraphByEdges([[1,2],[2,3],[3,1]]));
+gap> IsTwoEdgeTransitive(DigraphByEdges([[1, 2], [2, 3], [3, 1]]));
 true
-gap> IsTwoEdgeTransitive(DigraphByEdges([[1,2],[2,3],[3,1],[3,4]]));
+gap> IsTwoEdgeTransitive(DigraphByEdges([[1, 2], [2, 3], [3, 1], [3, 4]]));
 false
 gap> IsTwoEdgeTransitive(CompleteDigraph(4));
 true
