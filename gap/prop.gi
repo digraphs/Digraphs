@@ -690,7 +690,8 @@ end);
 InstallMethod(IsTwoEdgeTransitive, "for a digraph", [IsDigraph], function(D)
   local twoEdges;
 
-  twoEdges := Filtered(Cartesian(DigraphEdges(D), DigraphEdges(D)), pair -> pair[1][2] = pair[2][1]);
+  twoEdges := Filtered(Cartesian(DigraphEdges(D), DigraphEdges(D)),
+   pair -> pair[1][2] = pair[2][1]);
 
   return OrbitLength(AutomorphismGroup(D), twoEdges[1], OnTuplesTuples)
   = Length(twoEdges);
