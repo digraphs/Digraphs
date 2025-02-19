@@ -695,7 +695,10 @@ function(D)
                        pair -> pair[1][2] = pair[2][1]
                                and pair[1][1] <> pair[2][2]);
 
-  return OrbitLength(AutomorphismGroup(D), twoEdges[1], OnTuplesTuples)
+  if Length(twoEdges) = 0 then
+    return true;
+  else
+    return OrbitLength(AutomorphismGroup(D), twoEdges[1], OnTuplesTuples)
          = Length(twoEdges);
-
+  fi;
 end);
