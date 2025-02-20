@@ -1427,7 +1427,11 @@ function(r, D, ug)
       return D[r.i];
     fi;
   else  # ug = -1
-    if r.i <= Length(D) and D[r.i] = '\n' then
+    if r.i > Length(D) then
+      r.i := r.i - 1;
+      return fail;
+    fi;
+    if D[r.i] = '\n' then
       r.newline := r.newline - 1;
     fi;
     r.i := r.i - 1;
@@ -2104,15 +2108,22 @@ end);
 
 InstallMethod(WriteDreadnautGraph, "for a digraph", [IsString, IsDigraph],
 function(name, D)
-  local file, n, verts, nbs, labels, i, degs, filteredVerts,
-        out, positions, joinedPositions, dflabels, adj;
-
+  local file;
   file := IO_CompressedFile(UserHomeExpand(name), "w");
   if file = fail then
     ErrorNoReturn("cannot open the file given as the 1st argument <name>, \"",
                   name,
                   "\",");
   fi;
+  IO_WriteLine(file, DreadnautString(D));
+  IO_Close(file);
+  return IO_OK;
+end);
+
+InstallMethod(DreadnautString, "for a digraph", [IsDigraph],
+function(D)
+  local n, verts, nbs, labels, i, degs, filteredVerts, partition,
+        out, positions, joinedPositions, dflabels, adj;
 
   n := DigraphNrVertices(D);
   verts := DigraphVertices(D);
@@ -2124,39 +2135,37 @@ function(name, D)
     ErrorNoReturn("the 2nd argument <D> must be a non-empty digraph,");
   fi;
 
-  IO_WriteLine(file, "d");
-  IO_WriteLine(file, "$=1");
-  IO_WriteLine(file, Concatenation("n=", String(n)));
-  IO_WriteLine(file, "g");
+  out := Concatenation("n=", String(n));
+  out := Concatenation(out, " $=1 d g");
 
   filteredVerts := Filtered(verts, x -> degs[x] > 0);
   for i in filteredVerts do
     adj := List(nbs[i], String);
     if i <> n then
-      IO_WriteLine(file, Concatenation(String(i), " : ",
-                  JoinStringsWithSeparator(adj, " "), ";"));
+      out := Concatenation(out, "\n", String(i), " : ",
+             JoinStringsWithSeparator(adj, " "), ";");
     else
-      IO_WriteLine(file, Concatenation(String(i), " : ",
-                  JoinStringsWithSeparator(adj, " ")));
+      out := Concatenation(out, "\n", String(i), " : ",
+                  JoinStringsWithSeparator(adj, " "));
     fi;
   od;
-  IO_WriteLine(file, ".");
+  out := Concatenation(out, ".");
   if labels <> [1 .. n] then
     dflabels := DuplicateFreeList(labels);
     if IsInt(labels[1]) and IsHomogeneousList(labels) then
-      out := "f = [";
+      partition := "f = [";
 
       for i in dflabels do
         positions := PositionsProperty(labels, x -> x = i);
         joinedPositions := JoinStringsWithSeparator(positions, " ");
-        out := Concatenation(out, joinedPositions);
+        partition := Concatenation(partition, joinedPositions);
         if i <> dflabels[Length(dflabels)] then
-          out := Concatenation(out, " | ");
+          partition := Concatenation(partition, " | ");
         fi;
       od;
-      out := Concatenation(out, " ]");
+      partition := Concatenation(partition, " ]");
 
-      IO_WriteLine(file, out);
+      out := Concatenation(out, partition);
     else
       Info(InfoWarning, 1,
            "Only integer vertex labels are supported.");
@@ -2166,8 +2175,7 @@ function(name, D)
     fi;
   fi;
 
-  IO_Close(file);
-  return IO_OK;
+  return out;
 end);
 
 InstallGlobalFunction(DigraphPlainTextLineEncoder,
