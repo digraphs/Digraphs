@@ -219,6 +219,12 @@ function(arg...)
   return IteratorByFunctions(record);
 end);
 
+BindGlobal("WholeFileDecoders", HashSet(
+          ["ReadDreadnautGraph"]));
+
+InstallGlobalFunction(IsWholeFileDecoder,
+  decoder -> NameFunction(decoder) in WholeFileDecoders);
+
 # these functions wrap the various line encoders/decoders in this file so that
 # they behave like IO_Pickle.
 
@@ -232,8 +238,10 @@ end);
 
 BindGlobal("DIGRAPHS_DecoderWrapper",
 function(decoder)
-  if decoder = IO_Unpickle then
-    return IO_Unpickle;
+  if NameFunction(decoder) in WholeFileDecoders then
+    return decoder;
+  elif decoder = IO_Unpickle then
+    return decoder;
   fi;
   return
     function(file)
@@ -275,6 +283,8 @@ function(filename)
     return DigraphFromDiSparse6String;
   elif extension = "p" or extension = "pickle" then
     return IO_Unpickle;
+  elif extension = "dre" then
+    return ReadDreadnautGraph;
   fi;
 
   return fail;
@@ -422,25 +432,34 @@ function(arg...)
   decoder := file!.coder;
 
   if nr < infinity then
-    i := 0;
-    next := fail;
-    while i < nr - 1 and next <> IO_Nothing do
-      i := i + 1;
-      next := IO_ReadLine(file);
-    od;
-    if next <> IO_Nothing then
-      out := decoder(file);
+    if NameFunction(decoder) in WholeFileDecoders then
+      ErrorNoReturn(decoder, " is a whole file decoder, and so the ",
+                    "argument <n> should not be specified");
     else
-      out := IO_Nothing;
+      i := 0;
+      next := fail;
+      while i < nr - 1 and next <> IO_Nothing do
+        i := i + 1;
+        next := IO_ReadLine(file);
+      od;
+      if next <> IO_Nothing then
+        out := decoder(file);
+      else
+        out := IO_Nothing;
+      fi;
+      if IsString(arg[1]) then
+        IO_Close(file);
+      fi;
+      return out;
     fi;
-    if IsString(arg[1]) then
-      IO_Close(file);
-    fi;
-    return out;
   fi;
 
   out := [];
   next := decoder(file);
+
+  if NameFunction(decoder) in WholeFileDecoders then
+    return [next];
+  fi;
 
   while next <> IO_Nothing do
     Add(out, next);
@@ -1390,46 +1409,80 @@ function(str)
   return ConvertToImmutableDigraphNC(out);
 end);
 
+# helper function for DreadnautGraphFromString
+# gets or ungets (ug = 1 or -1 respectively)
+# the next character in the string and updates
+# the line number if necessary
+# returns the character or fail
+BindGlobal("DIGRAPHS_GetUngetChar",
+function(r, D, ug)
+  if ug = 1 then
+    r.i := r.i + 1;
+    if r.i > Length(D) then
+      return fail;
+    else
+      if D[r.i] = '\n' then
+        r.newline := r.newline + 1;
+      fi;
+      return D[r.i];
+    fi;
+  else  # ug = -1
+    if r.i <= Length(D) and D[r.i] = '\n' then
+      r.newline := r.newline - 1;
+    fi;
+    r.i := r.i - 1;
+    return D[r.i];
+  fi;
+end);
+
+# helper function for DreadnautGraphFromString
+# (returns the first character not in " ,\t")
 BindGlobal("DIGRAPHS_GETNWC",
-function(r, Stream)
+function(r, D)
     local char;
-    char := Stream.GetChar(r);
+    char := DIGRAPHS_GetUngetChar(r, D, 1);
     while char <> fail and char in " ,\t" do
-        char := Stream.GetChar(r);
+        char := DIGRAPHS_GetUngetChar(r, D, 1);
     od;
 
     return char;
 end);
 
+# helper function for DreadnautGraphFromString
+# (returns the first character not in " \n\t\r")
 BindGlobal("DIGRAPHS_GETNWL",
-function(r, Stream)
+function(r, D)
     local char;
-    char := Stream.GetChar(r);
+    char := DIGRAPHS_GetUngetChar(r, D, 1);
     while char <> fail and char in " \n\t\r" do
-        char := Stream.GetChar(r);
+        char := DIGRAPHS_GetUngetChar(r, D, 1);
     od;
 
     return char;
 end);
 
+# helper function for DreadnautGraphFromString
+# (returns the first character not in " \t\r")
+# only used briefly in DIGRAPHS_ParsePartition
 BindGlobal("DIGRAPHS_GETNW",
-function(r, Stream)
+function(r, D)
     local char;
-    char := Stream.GetChar(r);
+    char := DIGRAPHS_GetUngetChar(r, D, 1);
     while char <> fail and char in " \t\r" do
-        char := Stream.GetChar(r);
+        char := DIGRAPHS_GetUngetChar(r, D, 1);
     od;
 
     return char;
 end);
 
+#  helper function for DreadnautGraphFromString
+#  return the next full integer in the string
 BindGlobal("DIGRAPHS_readinteger",
-function(r, Stream)
+function(r, D)
     local char, res, minus;
-    char := DIGRAPHS_GETNWL(r, Stream);
+    char := DIGRAPHS_GETNWL(r, D);
 
     if not IsDigitChar(char) and char <> '-' and char <> '+' then
-        CloseStream(Stream.file);  # will ErrorNoReturn later
         return fail;
     fi;
 
@@ -1440,15 +1493,15 @@ function(r, Stream)
         res := Int([char]);
     fi;
 
-    char := Stream.GetChar(r);
+    char := DIGRAPHS_GetUngetChar(r, D, 1);
 
     while IsDigitChar(char) do
         res := res * 10 + Int([char]);
-        char := Stream.GetChar(r);
+        char := DIGRAPHS_GetUngetChar(r, D, 1);
     od;
 
     if char <> fail then
-        Stream.UngetChar(r, char);
+        DIGRAPHS_GetUngetChar(r, D, -1);
     fi;
 
     if minus then
@@ -1458,8 +1511,11 @@ function(r, Stream)
     return res;
 end);
 
+# helper function for DreadnautGraphFromString
+# reads in and stores graph adjacency data
+# returns nothing
 BindGlobal("DIGRAPHS_readgraph",
-function(r, Stream)
+function(r, D)
     local c, w, v, neg;
 
     v := 1;
@@ -1467,7 +1523,6 @@ function(r, Stream)
     c := ' ';
 
     if r.n = fail then
-      CloseStream(Stream.file);
       ErrorNoReturn("Vertex number must be declared before `g' ",
                   "on line ", r.newline);
     else
@@ -1475,10 +1530,10 @@ function(r, Stream)
     fi;
 
     while c <> fail do
-        c := DIGRAPHS_GETNWC(r, Stream);
+        c := DIGRAPHS_GETNWC(r, D);
         if IsDigitChar(c) then
-            Stream.UngetChar(r, c);
-            w := DIGRAPHS_readinteger(r, Stream);
+            DIGRAPHS_GetUngetChar(r, D, -1);
+            w := DIGRAPHS_readinteger(r, D);
             w := w - r.labelorg + 1;
 
             if neg then
@@ -1496,7 +1551,7 @@ function(r, Stream)
                     fi;
                 fi;
             else
-                c := DIGRAPHS_GETNWC(r, Stream);
+                c := DIGRAPHS_GETNWC(r, D);
                 if c = ':' then
                     if w < 1 or w > r.n then
                         Info(InfoWarning, 1, "Ignoring illegal vertex (",
@@ -1507,7 +1562,7 @@ function(r, Stream)
                         v := w;
                     fi;
                 else
-                    Stream.UngetChar(r, c);
+                    DIGRAPHS_GetUngetChar(r, D, -1);
                     if w < 1 or w > r.n or (w = v and not r.digraph) then
                         Info(InfoWarning, 1, "Ignoring illegal edge (",
                             v + r.labelorg - 1, ", ", w + r.labelorg - 1,
@@ -1535,37 +1590,41 @@ function(r, Stream)
             neg := true;
         elif c = '!' then
             while c <> '\n' and c <> fail do
-                c := Stream.GetChar(r);
+                c := DIGRAPHS_GetUngetChar(r, D, 1);
             od;
         else
           if c = fail then
             return;
           else
-            CloseStream(Stream.file);
             ErrorNoReturn("Illegal character ", c, " on line ", r.newline);
           fi;
         fi;
     od;
 end);
 
+# helper function for DreadnautGraphFromString
+# returns the next full integer from the string,
+# allowing for an optional '=' before the integer
 BindGlobal("DIGRAPHS_GetInt",
-function(r, Stream)
+function(r, D)
     local ch;
 
-    ch := DIGRAPHS_GETNWL(r, Stream);
+    ch := DIGRAPHS_GETNWL(r, D);
     if ch <> '=' then
-        Stream.UngetChar(r, ch);
+        DIGRAPHS_GetUngetChar(r, D, -1);
     fi;
-    return DIGRAPHS_readinteger(r, Stream);
+    return DIGRAPHS_readinteger(r, D);
 end);
 
+# helper function for DreadnautGraphFromString
+# parses partitions and stores them as vertex labels
+# returns nothing
 BindGlobal("DIGRAPHS_ParsePartition",
-function(r, minus, Stream)
+function(r, minus, D)
     local c, x, tempNewline, v1, v2, part;
 
     part := 1;
     if r.n = fail then
-        CloseStream(Stream.file);
         ErrorNoReturn("Vertex number must be declared ",
                     "before partition on line ", r.newline);
     fi;
@@ -1575,14 +1634,14 @@ function(r, minus, Stream)
         return;
     fi;
 
-    c := DIGRAPHS_GETNW(r, Stream);
+    c := DIGRAPHS_GETNW(r, D);
     if c = '=' then
-        c := DIGRAPHS_GETNW(r, Stream);
+        c := DIGRAPHS_GETNW(r, D);
     fi;
 
     if IsDigitChar(c) then
-        Stream.UngetChar(r, c);
-        v1 := DIGRAPHS_readinteger(r, Stream);
+        DIGRAPHS_GetUngetChar(r, D, -1);
+        v1 := DIGRAPHS_readinteger(r, D);
         if v1 - r.labelorg + 1 < 1 or v1 - r.labelorg + 1 > r.n then
           Info(InfoWarning, 1, "Ignoring illegal vertex in partition", v1,
               " on line ", r.newline);
@@ -1591,7 +1650,6 @@ function(r, minus, Stream)
         fi;
         return;
     elif c <> '[' then
-        CloseStream(Stream.file);
         ErrorNoReturn("Partitions should be specified",
                     " using one of the following formats:\n",
                       "  * A single number (e.g. 'f=3')\n",
@@ -1600,34 +1658,31 @@ function(r, minus, Stream)
     else
         tempNewline := r.newline;
         while c <> fail and c <> ']' do
-            c := DIGRAPHS_GETNWL(r, Stream);
+            c := DIGRAPHS_GETNWL(r, D);
             if c = '|' then
                 part := part + 1;
             elif c = ',' then
                 continue;
             elif IsDigitChar(c) then
-                Stream.UngetChar(r, c);
-                v1 := DIGRAPHS_readinteger(r, Stream);
+                DIGRAPHS_GetUngetChar(r, D, -1);
+                v1 := DIGRAPHS_readinteger(r, D);
                 if v1 - r.labelorg + 1 < 1 or v1 - r.labelorg + 1 > r.n then
-                    CloseStream(Stream.file);
                     ErrorNoReturn("Vertex ", v1,
                     " out of range in partition specification (line ",
                     tempNewline, ")");
                 fi;
 
-                v2 := DIGRAPHS_GETNWL(r, Stream);
+                v2 := DIGRAPHS_GETNWL(r, D);
                 if v2 = ':' then
-                    v2 := DIGRAPHS_GETNWL(r, Stream);
+                    v2 := DIGRAPHS_GETNWL(r, D);
                     if not IsDigitChar(v2) then
-                        CloseStream(Stream.file);
                         ErrorNoReturn("Invalid range ", v1, " : ", v2,
                         " in partition specification (line ",
                         tempNewline, ")");
                     fi;
-                    Stream.UngetChar(r, v2);
-                    v2 := DIGRAPHS_readinteger(r, Stream);
+                    DIGRAPHS_GetUngetChar(r, D, -1);
+                    v2 := DIGRAPHS_readinteger(r, D);
                     if v2 < r.labelorg or v2 > r.n - r.labelorg + 1 then
-                        CloseStream(Stream.file);
                         ErrorNoReturn("Vertex ", v2,
                         " out of range in partition specification (line ",
                         tempNewline, ")");
@@ -1643,7 +1698,7 @@ function(r, minus, Stream)
                       fi;
                     od;
                 else
-                    Stream.UngetChar(r, v2);
+                    DIGRAPHS_GetUngetChar(r, D, -1);
                     if r.partition[v1 - r.labelorg + 1] = 0 then
                       r.partition[v1 - r.labelorg + 1] := part;
                     else
@@ -1655,13 +1710,11 @@ function(r, minus, Stream)
                 fi;
             else
                 if c = fail then
-                    CloseStream(Stream.file);
                     ErrorNoReturn("Unterminated partition specification (line ",
                     tempNewline, ")");
                 elif c = ']' then
                     break;
                 else
-                    CloseStream(Stream.file);
                     ErrorNoReturn("Unexpected character ", c,
                     " in partition specification (line ", r.newline, ")");
                 fi;
@@ -1671,61 +1724,44 @@ function(r, minus, Stream)
     return;
 end);
 
+InstallMethod(ReadDreadnautGraph, "for a digraph", [IsFile],
+function(f)  # should check that it's closed?
+    if f = fail then
+        ErrorNoReturn("cannot open the file given as the 1st ",
+                      "argument <name>, \"", f, "\",");
+    fi;
+    return DreadnautGraphFromString(IO_ReadUntilEOF(f));
+end);
+
 InstallMethod(ReadDreadnautGraph, "for a digraph", [IsString],
 function(filename)
-    local r, f, c, minus, backslash, temp, D, Stream,
+    local f;
+    f := IO_CompressedFile(UserHomeExpand(filename), "r");
+    if f = fail then
+        ErrorNoReturn("cannot open the file given as the 1st ",
+                      "argument <name>, \"", filename, "\",");
+    fi;
+    return DreadnautGraphFromString(IO_ReadUntilEOF(f));
+end);
+
+InstallMethod(DreadnautGraphFromString, "for a digraph", [IsString],
+function(D)
+    local r, c, minus, backslash, temp, out,
           underscore, doubleUnderscore;
-    r := rec(n := fail, digraph := false, labelorg := 0,
+    r := rec(n := fail, digraph := false, labelorg := 0, i := 0,
             newline := 1, edgeList := fail, partition := fail);
-    f := UserHomeExpand(filename);
     underscore := false;
     doubleUnderscore := false;
 
-    Stream := rec(
-    file := fail,
-    buffer := []);
-
-    Stream.Open := function(filename)
-        Stream.file := InputTextFile(filename);
-        if Stream.file = fail then
-          ErrorNoReturn("cannot open the file given as the 1st ",
-          "argument <name>, \"", filename, "\",");
-        fi;
-        Stream.buffer := [];
-    end;
-
-    Stream.GetChar := function(r)
-        local c;
-        if Length(Stream.buffer) > 0 then
-            c := Remove(Stream.buffer, 1);
-            if c = '\n' then
-                r.newline := r.newline + 1;
-            fi;
-            return c;
-        else
-            c := ReadByte(Stream.file);
-            if c = fail then
-                return fail;
-            elif c = 10 then
-                r.newline := r.newline + 1;
-            fi;
-            return CHAR_INT(c);
-        fi;
-    end;
-
-    Stream.UngetChar := function(r, c)
-        Stream.buffer := Concatenation([c], Stream.buffer);
-        if c = '\n' then
-            r.newline := r.newline - 1;
-        fi;
-    end;
-
-    Stream.Open(f);
     minus := false;
     c := ' ';
 
+    if D = "" then
+        ErrorNoReturn("the argument <s> must be a non-empty string");
+    fi;
+
     while c <> fail do
-        c := Stream.GetChar(r);
+        c := DIGRAPHS_GetUngetChar(r, D, 1);
         if c = fail then
             break;
         elif c in " \t\r" then
@@ -1735,30 +1771,28 @@ function(filename)
             minus := false;
         elif c = 'A' then
           minus := false;
-          temp := Stream.GetChar(r);
+          temp := DIGRAPHS_GetUngetChar(r, D, 1);
           if (temp in "nNdDtTsS") = false then
-            CloseStream(Stream.file);
             ErrorNoReturn("Operation 'A' (line ", r.newline,
                           ") is not recognised");
           fi;
-          temp := Stream.GetChar(r);
+          temp := DIGRAPHS_GetUngetChar(r, D, 1);
           if temp <> '+' then
-            Stream.UngetChar(r, temp);
+            DIGRAPHS_GetUngetChar(r, D, -1);
           fi;
         elif c in "BR@#jv\%IixtTobzamp?Hc" then
             minus := false;
             Info(InfoWarning, 1, "Operation ", c, " (line ", r.newline,
                 ") is not supported");
         elif c = '_' then
-          temp := Stream.GetChar(r);
+          temp := DIGRAPHS_GetUngetChar(r, D, 1);
           if temp = '_' then
             doubleUnderscore := true;
           else
             underscore := true;
-            Stream.UngetChar(r, temp);
+            DIGRAPHS_GetUngetChar(r, D, -1);
           fi;
         elif c in "<eq" then
-            CloseStream(Stream.file);
             ErrorNoReturn("Operation ", c, " (line ", r.newline,
                           ") is not supported");
         elif c = 'd' then
@@ -1769,47 +1803,45 @@ function(filename)
               r.digraph := false;
             fi;
         elif c in ">" then
-            CloseStream(Stream.file);
             ErrorNoReturn("Operation '>' (line ", r.newline,
               ") is not supported.",
               " Please use 'WriteDreadnautGraph'.");  # maybe can do better
         elif c = '!' then
             while c <> '\n' and c <> fail do
-                c := Stream.GetChar(r);
+                c := DIGRAPHS_GetUngetChar(r, D, 1);
             od;
         elif c = 'n' then
             minus := false;
-            r.n := DIGRAPHS_GetInt(r, Stream);
+            r.n := DIGRAPHS_GetInt(r, D);
             if r.n = fail then
               ErrorNoReturn("Expected integer on line ", r.newline,
                           " following ", c, " but was not found");
             elif r.n <= 0 then
-                CloseStream(Stream.file);
                 ErrorNoReturn("Vertex number ", r.n, " on line ", r.newline,
                             " must be positive.");
             fi;
         elif c = 'g' then
             minus := false;
-            DIGRAPHS_readgraph(r, Stream);
+            DIGRAPHS_readgraph(r, D);
         elif c = 's' then
           minus := false;
-          temp := Stream.GetChar(r);
+          temp := DIGRAPHS_GetUngetChar(r, D, 1);
           if temp <> 'r' then
-            Stream.UngetChar(r, temp);
+            DIGRAPHS_GetUngetChar(r, D, -1);
           fi;
           Info(InfoWarning, 1, "Operation 's' or 'sr' (line ", r.newline,
               ") is not supported");
-          if DIGRAPHS_GetInt(r, Stream) = fail then
+          if DIGRAPHS_GetInt(r, D) = fail then
             ErrorNoReturn("Expected integer on line ", r.newline,
                         " following ", c, " but was not found");
           fi;
         elif c = '\"' then
             minus := false;
-            c := Stream.GetChar(r);
+            c := DIGRAPHS_GetUngetChar(r, D, 1);
             temp := r.newline;
             backslash := false;
             while c <> fail do
-                c := Stream.GetChar(r);
+                c := DIGRAPHS_GetUngetChar(r, D, 1);
                 if c = '\\' then
                     backslash := true;
                 elif backslash then
@@ -1823,12 +1855,11 @@ function(filename)
                 fi;
             od;
             if c = fail then
-                CloseStream(Stream.file);
                 ErrorNoReturn("Unterminated comment beginning on line ",
                               temp);
             fi;
         elif c = 'f' then
-            DIGRAPHS_ParsePartition(r, minus, Stream);
+            DIGRAPHS_ParsePartition(r, minus, D);
             if minus then
                 minus := false;
             fi;
@@ -1836,21 +1867,21 @@ function(filename)
             Info(InfoWarning, 1, "Operation ", c, " (line ",
                 r.newline, ") is not supported");
             minus := false;
-            if DIGRAPHS_GetInt(r, Stream) = fail then
+            if DIGRAPHS_GetInt(r, D) = fail then
                 ErrorNoReturn("Expected integer on line ", r.newline,
                             " following ", c, " but was not found");
             fi;
         elif c = 'F' then
           minus := false;
-          temp := Stream.GetChar(r);
+          temp := DIGRAPHS_GetUngetChar(r, D, 1);
           if temp = 'F' then
             Info(InfoWarning, 1, "Operation 'FF' (line ", r.newline,
                 ") is not supported");
           else
-            Stream.UngetChar(r, temp);
+            DIGRAPHS_GetUngetChar(r, D, -1);
             Info(InfoWarning, 1, "Operation 'F' (line ", r.newline,
                 ") is not supported");
-            if DIGRAPHS_GetInt(r, Stream) = fail then
+            if DIGRAPHS_GetInt(r, D) = fail then
               ErrorNoReturn("Expected integer on line ", r.newline,
                           " following ", c, " but was not found");
             fi;
@@ -1861,29 +1892,29 @@ function(filename)
             if minus then
                 minus := false;
             else
-                if DIGRAPHS_GetInt(r, Stream) = fail then
+                if DIGRAPHS_GetInt(r, D) = fail then
                     ErrorNoReturn("Expected integer on line ", r.newline,
                                 " following ", c, " but was not found");
                 fi;
-                temp := DIGRAPHS_GETNWL(r, Stream);
+                temp := DIGRAPHS_GETNWL(r, D);
                 if temp = '/' then
-                    if DIGRAPHS_readinteger(r, Stream) = fail then
+                    if DIGRAPHS_readinteger(r, D) = fail then
                         ErrorNoReturn("Expected integer on line ", r.newline,
                                     " following 'M # /' but was not found");
                     fi;
                 else
-                    Stream.UngetChar(r, c);
+                    DIGRAPHS_GetUngetChar(r, D, -1);
                 fi;
             fi;
         elif c = 'k' then
             Info(InfoWarning, 1, "Operation 'k' (line ",
                 r.newline, ") is not supported");
             minus := false;
-            if DIGRAPHS_readinteger(r, Stream) = fail then
+            if DIGRAPHS_readinteger(r, D) = fail then
                 ErrorNoReturn("Expected integer on line ", r.newline,
                             " following ", c, " but was not found");
             fi;
-            if DIGRAPHS_readinteger(r, Stream) = fail then
+            if DIGRAPHS_readinteger(r, D) = fail then
                 ErrorNoReturn("Expected integer on line ", r.newline,
                             " following ", c, " but was not found");
             fi;
@@ -1893,7 +1924,7 @@ function(filename)
             if minus then
                 minus := false;
             else
-                if DIGRAPHS_GetInt(r, Stream) = fail then
+                if DIGRAPHS_GetInt(r, D) = fail then
                     ErrorNoReturn("Expected integer on line ", r.newline,
                                 " following ", c, " but was not found");
                 fi;
@@ -1904,42 +1935,38 @@ function(filename)
                 Info(InfoWarning, 1, "Operation -", c,
                     " (line ", r.newline, ") is not supported");
             else
-                if Stream.GetChar(r) = 'P' then
+                if DIGRAPHS_GetUngetChar(r, D, 1) = 'P' then
                     temp := r.newline;
                     while c <> fail and c <> ';' do
-                        c := Stream.GetChar(r);
+                        c := DIGRAPHS_GetUngetChar(r, D, 1);
                     od;
                     if c = fail then
-                        CloseStream(Stream.file);
                         ErrorNoReturn("Unterminated 'PP' operation beginning ",
                                       "on line ", temp);
                     fi;
                     Info(InfoWarning, 1, "Operation PP (line ",
                         r.newline, ") is not supported");
                 else
-                      Stream.UngetChar(r, c);
+                      DIGRAPHS_GetUngetChar(r, D, -1);
                       Info(InfoWarning, 1, "Operation ", c, " (line ",
                           r.newline, ") is not supported");
                 fi;
             fi;
         elif c = '$' then
-            temp := Stream.GetChar(r);
+            temp := DIGRAPHS_GetUngetChar(r, D, 1);
             if temp <> '$' then
-              Stream.UngetChar(r, temp);
-                r.labelorg := DIGRAPHS_GetInt(r, Stream);
+              DIGRAPHS_GetUngetChar(r, D, -1);
+                r.labelorg := DIGRAPHS_GetInt(r, D);
                 if r.labelorg < 0 then
-                    CloseStream(Stream.file);
                     ErrorNoReturn("Label origin ", r.labelorg, " on line ",
                                 r.newline, " must be non-negative.");
                 elif r.labelorg = fail then
-                    CloseStream(Stream.file);
                     ErrorNoReturn("Expected integer on line ", r.newline,
                                 " following $ but was not found");
                 fi;
             fi;
             if r.labelorg <> 1 then
-                Info(InfoWarning, 1, "Vertices will be ", r.labelorg,
-                    "-indexed");
+                Info(InfoWarning, 1, "Vertices will be 1-indexed");
             fi;
         elif c = 'r' then
             Info(InfoWarning, 1, "Operation 'r' or 'r&'",
@@ -1947,15 +1974,14 @@ function(filename)
             if minus then
                 minus := false;
             else
-                c := Stream.GetChar(r);
+                c := DIGRAPHS_GetUngetChar(r, D, 1);
                 if c <> '&' then
-                    Stream.UngetChar(r, c);
+                    DIGRAPHS_GetUngetChar(r, D, -1);
                     temp := r.newline;
                     while c <> fail and c <> ';' do
-                        c := Stream.GetChar(r);
+                        c := DIGRAPHS_GetUngetChar(r, D, 1);
                     od;
                     if c = fail then
-                        CloseStream(Stream.file);
                         ErrorNoReturn("Unterminated 'r' operation beginning",
                                       " on line ", temp);
                     fi;
@@ -1963,9 +1989,9 @@ function(filename)
             fi;
         elif c = '&' then
             minus := false;
-            temp := Stream.GetChar(r);
+            temp := DIGRAPHS_GetUngetChar(r, D, 1);
             if temp <> '&' then
-              Stream.UngetChar(r, temp);
+              DIGRAPHS_GetUngetChar(r, D, -1);
               Info(InfoWarning, 1, "Operation '& (line ",
                   r.newline, ") is not supported");
             else
@@ -1973,40 +1999,37 @@ function(filename)
                   r.newline, ") is not supported");
             fi;
         else
-            CloseStream(Stream.file);
             ErrorNoReturn("Illegal character ", c, " on line ", r.newline);
         fi;
     od;
 
     if r.edgeList = fail then
-        CloseStream(Stream.file);
         ErrorNoReturn("No graph was declared.");
     fi;
-    D := Digraph(r.edgeList);
+    out := Digraph(r.edgeList);
     if not r.digraph then
         Info(InfoWarning, 1, "Graph is not directed and",
               " so will be symmetrised.");
     fi;
     if r.partition <> fail then
-        SetDigraphVertexLabels(D, r.partition);
+        SetDigraphVertexLabels(out, r.partition);
     fi;
     if doubleUnderscore then
         if not r.digraph then
           underscore := true;
         else
-          D := DigraphReverse(D);
+          out := DigraphReverse(out);
         fi;
     fi;
     if underscore then
-        if DigraphHasLoops(D) then
-            D := DigraphDual(D);
+        if DigraphHasLoops(out) then
+            out := DigraphDual(out);
         else
-            D := DigraphRemoveLoops(DigraphDual(D));
+            out := DigraphRemoveLoops(DigraphDual(out));
         fi;
     fi;
 
-    CloseStream(Stream.file);
-    return D;
+    return out;
 end);
 
 ################################################################################
