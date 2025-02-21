@@ -189,12 +189,13 @@ gap> gr[2] := Digraph(1000,
 <immutable digraph with 1000 vertices, 1000 edges>
 gap> gr[3] := Digraph([[1, 1, 4], [2, 3, 4], [2, 4], [2], [1, 3, 3, 5]]);
 <immutable multidigraph with 5 vertices, 13 edges>
-gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/test.ds6");;
-gap> WriteDigraphs(filename, gr, WriteDreadnautGraph, "w");
+gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/temp.dre");;
+gap> WriteDigraphs(filename, gr, "w");
 Error, the encoder WriteDreadnautGraph is a whole file encoder, and so only on\
 e digraph should be specified
-gap> WriteDigraphs(filename, gr[1], WriteDreadnautGraph, "w");
+gap> WriteDigraphs(filename, gr[1], "w");
 IO_OK
+gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/test.ds6");;
 gap> WriteDigraphs(filename, gr, "w");
 IO_OK
 gap> ReadDigraphs(filename);

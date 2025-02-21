@@ -327,8 +327,8 @@ function(filename)
     return DiSparse6String;
   elif extension = "p" or extension = "pickle" then
     return IO_Pickle;
-  elif extension = ".dre" then
-    return DreadnautString;
+  elif extension = "dre" then
+    return WriteDreadnautGraph;
   fi;
   return fail;
 end);
