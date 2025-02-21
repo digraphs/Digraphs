@@ -458,7 +458,8 @@ function(arg...)
   next := decoder(file);
 
   if NameFunction(decoder) in WholeFileDecoders then
-    return [next];
+    out := [next];
+    next := IO_Nothing;
   fi;
 
   while next <> IO_Nothing do
@@ -1545,7 +1546,8 @@ function(r, D)
 
                 if (w < 1) or (w > r.n) or (w = v and not r.digraph) then
                     Info(InfoWarning, 1, StringFormatted(
-                      "Ignoring illegal edge ({}, {}) ({}-indexed on line {}) ",
+                      Concatenation("Ignoring illegal edge ({}, {}) ",
+                      "(vertices {}-indexed, on line {}) "),
                       v + r.labelorg - 1,
                       w + r.labelorg - 1,
                       r.labelorg,
@@ -1561,7 +1563,8 @@ function(r, D)
                 if c = ':' then
                     if w < 1 or w > r.n then
                         Info(InfoWarning, 1, StringFormatted(
-                          "Ignoring illegal vertex {} ({}-indexed) on line {})",
+                          Concatenation("Ignoring illegal vertex {} ",
+                          "({}-indexed), on line {})"),
                           w + r.labelorg - 1,
                           r.labelorg,
                           r.newline));
@@ -1572,7 +1575,8 @@ function(r, D)
                     DIGRAPHS_GetUngetChar(r, D, -1);
                     if w < 1 or w > r.n or (w = v and not r.digraph) then
                     Info(InfoWarning, 1, StringFormatted(
-                      "Ignoring illegal edge ({}, {}) ({}-indexed on line {}) ",
+                      Concatenation("Ignoring illegal edge ({}, {}) ",
+                      "(vertices {}-indexed, on line {}) "),
                       v + r.labelorg - 1,
                       w + r.labelorg - 1,
                       r.labelorg,
@@ -1700,7 +1704,7 @@ function(r, minus, D)
                       if r.partition[x] = 0 then
                         r.partition[x] := part;
                       else
-                        Info(InfoWarning(), 1, "Vertex ", x + r.labelorg - 1,
+                        Info(InfoWarning, 1, "Vertex ", x + r.labelorg - 1,
                            " (", r.labelorg,
                            "-indexed is in multiple partitions (line ",
                             tempNewline, ")");
@@ -1711,7 +1715,7 @@ function(r, minus, D)
                     if r.partition[v1 - r.labelorg + 1] = 0 then
                       r.partition[v1 - r.labelorg + 1] := part;
                     else
-                      Info(InfoWarning(), 1, "Vertex ", v1,
+                      Info(InfoWarning, 1, "Vertex ", v1,
                           " (", r.labelorg, "-indexed) ",
                           " is in multiple partitions (line ",
                           tempNewline, ")");
@@ -1920,13 +1924,10 @@ function(D)
             Info(InfoWarning, 1, "Operation 'k' (line ",
                 r.newline, ") is not supported");
             minus := false;
-            if DIGRAPHS_readinteger(r, D) = fail then
-                ErrorNoReturn("Expected integer on line ", r.newline,
-                            " following ", c, " but was not found");
-            fi;
-            if DIGRAPHS_readinteger(r, D) = fail then
-                ErrorNoReturn("Expected integer on line ", r.newline,
-                            " following ", c, " but was not found");
+            if DIGRAPHS_readinteger(r, D) = fail or
+               DIGRAPHS_readinteger(r, D) = fail then
+                ErrorNoReturn("Expected two integers on line ", r.newline,
+                            " following ", c, " but at least one not found");
             fi;
         elif c in "VSGu" then
             Info(InfoWarning, 1, "Operation ", c,
