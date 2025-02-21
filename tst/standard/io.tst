@@ -1010,7 +1010,7 @@ Error, Operation 'A' (line 1) is not recognised
 gap> DigraphFromDreadnautString("$=3n=2dAs\"this is a comment \"g\n3:4;3._");
 <immutable empty digraph with 2 vertices>
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
-gap> DigraphEdges(DigraphFromDreadnautString("$=3n=2dg\n3:3,4;\n3! 2 3 4\n._sr=2r& F=4 FF -M -f -V -P -r"));
+gap> DigraphEdges(DigraphFromDreadnautString("$=3n=2dg\n3:3,4;\n3! 2 3 4\n._sr=2r& F=4 FF -M -f -V -P"));
 [ [ 2, 2 ] ]
 gap> DigraphEdges(DigraphFromDreadnautString("$=3n=2dg\n3:3,4.__"));
 [ [ 1, 1 ], [ 2, 1 ] ]
@@ -1036,7 +1036,7 @@ Error, Partitions should be specified using one of the following formats:
 gap> DigraphFromDreadnautString("$=1n3dg\n1 : 2 3.\nf2 PP 1");
 Error, Unterminated 'PP' operation beginning on line 3
 gap> DigraphFromDreadnautString("$=1n3dg\n1 : 2 3.\nf=12 r 1");
-Error, Unterminated 'r' operation beginning on line 3
+Error, Unterminated operation (either 'r' or 'R') beginning on line 3
 gap> DigraphFromDreadnautString("$=1n3dg\n1 : 2 3.\nf=[22]");
 Error, Vertex 22 out of range in partition specification (line 3)
 gap> DigraphFromDreadnautString("$=1n3dg\n1 : 2 3.\nf=[1:43]");
