@@ -190,6 +190,11 @@ gap> gr[2] := Digraph(1000,
 gap> gr[3] := Digraph([[1, 1, 4], [2, 3, 4], [2, 4], [2], [1, 3, 3, 5]]);
 <immutable multidigraph with 5 vertices, 13 edges>
 gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/test.ds6");;
+gap> WriteDigraphs(filename, gr, WriteDreadnautGraph, "w");
+Error, the encoder WriteDreadnautGraph is a whole file encoder, and so only on\
+e digraph should be specified
+gap> WriteDigraphs(filename, gr[1], WriteDreadnautGraph, "w");
+IO_OK
 gap> WriteDigraphs(filename, gr, "w");
 IO_OK
 gap> ReadDigraphs(filename);
@@ -951,11 +956,13 @@ gap> WriteDreadnautGraph(filename, D);;
 gap> SetDigraphVertexLabels(D, ["a", "b", "c"]);;
 gap> WriteDreadnautGraph(filename, D);;
 
-# ReadDreadnautGraph
+# ReadDreadnautGraph/DigraphFromDreadnautString
 gap> ReadDreadnautGraph(filename) = D;
 true
 gap> ReadDreadnautGraph("fakedir.dre");
 Error, cannot open the file given as the 1st argument <name>, "fakedir.dre",
+gap> DigraphFromDreadnautString("");
+Error, the argument <s> must be a non-empty string
 gap> DigraphFromDreadnautString("$1n3\ndg\n1:1;\n2:21");
 <immutable digraph with 3 vertices, 1 edge>
 gap> filename := Concatenation(DIGRAPHS_Dir(), "tst/out/temp.dre");;
@@ -971,6 +978,14 @@ gap> D = D2;
 true
 gap> DigraphVertexLabels(D) = DigraphVertexLabels(D2);
 false
+gap> f := IO_CompressedFile(filename, "r");;
+gap> IO_Close(f);;
+gap> ReadDreadnautGraph(f);
+Error, the 1st argument <filename> is a closed file,
+gap> f := IO_CompressedFile(filename, "w");;
+gap> ReadDreadnautGraph(f);
+Error, the mode of the 1st argument <filename> must be "r",
+gap> IO_Close(f);;
 gap> DigraphFromDreadnautString("$=1n=3-d\ng1 : 1 2 3 1 2;\n	 2 : 1 2;\n	 3 : 2;");
 <immutable digraph with 3 vertices, 6 edges>
 gap> DigraphFromDreadnautString("silly text for testing\nn=1dg\n1: 1.");
@@ -1018,8 +1033,8 @@ gap> DigraphFromDreadnautString("$=3n=2d\n<\"some file.dre\"");
 Error, Operation '<' (line 2) is not supported
 gap> DigraphFromDreadnautString("$=1ndg\n1 : 2 3 ");
 Error, Expected integer on line 1 following 'n' but was not found
-gap> DigraphFromDreadnautString("$=1n2dAs! and some\ng1 : 2 3 ! 2 3 4 5\n.\nf=1sr=2r&k 2 3 M 2/3 c l = 2 P PP O OO 1 2 3 4; &r 1 2 3; s3 S2 &&");
-<immutable digraph with 2 vertices, 1 edge>
+gap> DigraphFromDreadnautString("$=1n2As! and some\ng1 : 2 3 ! 2 3 4 5\n.\nf=1sr=2r&k 2 3 M 2/3 M 2 c l = 2 P PP 1 2 3 4; O OO &r 1 2 3; s3 S2 && __");
+<immutable empty digraph with 2 vertices>
 gap> DigraphFromDreadnautString("$=1n3d\"this is an unterminated comment g\n1 : 2 3.");
 Error, Unterminated comment beginning on line 1
 gap> DigraphFromDreadnautString("$=1n-3dg\n1 : 2 3.");
@@ -1027,6 +1042,10 @@ Error, Vertex number given as -3 (line 1), but should be positive.
 gap> DigraphFromDreadnautString("$=1n3dg\n1 : 2 3.\n> \"out.dre\"");
 Error, Operation '>' (line 
 3) is not supported. Please use 'WriteDreadnautGraph'.
+gap> DigraphFromDreadnautString("$n3dg\n1 : 2 3.\n< \"out.dre\"");
+Error, Expected integer on line 1 following $ but was not found
+gap> DigraphFromDreadnautString("$=1n3d");
+Error, No graph was declared.
 gap> DigraphFromDreadnautString("f=2");
 Error, Vertex number must be declared before partition on line 1
 gap> DigraphFromDreadnautString("$=1n3dg\n1 : 2 3.\nfa");

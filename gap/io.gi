@@ -1651,14 +1651,14 @@ end);
 # returns nothing
 BindGlobal("DIGRAPHS_ParsePartition",
 function(r, minus, D)
-    local c, x, tempNewline, v1, v2, part;
+    local c, x, tempNewline, v1, v2, part, partition;
 
     part := 1;
     if r.n = fail then
         ErrorNoReturn("Vertex number must be declared ",
                     "before partition on line ", r.newline);
     fi;
-    r.partition := List([1 .. r.n], x -> 0);
+    partition := List([1 .. r.n], x -> 0);
 
     if minus then
         return;
@@ -1676,8 +1676,9 @@ function(r, minus, D)
           Info(InfoWarning, 1, "Ignoring illegal vertex in partition", v1,
               " on line ", r.newline);
         else
-          r.partition[v1] := 1;
+          partition[v1] := 1;
         fi;
+        r.partition := partition;
         return;
     elif c <> '[' then
         ErrorNoReturn("Partitions should be specified",
@@ -1718,8 +1719,8 @@ function(r, minus, D)
                         tempNewline, ")");
                     fi;
                     for x in [v1 - r.labelorg + 1 .. v2 - r.labelorg + 1] do
-                      if r.partition[x] = 0 then
-                        r.partition[x] := part;
+                      if partition[x] = 0 then
+                        partition[x] := part;
                       else
                         Info(InfoWarning, 1, "Vertex ", x + r.labelorg - 1,
                            " (", r.labelorg,
@@ -1729,8 +1730,8 @@ function(r, minus, D)
                     od;
                 else
                     DIGRAPHS_GetUngetChar(r, D, -1);
-                    if r.partition[v1 - r.labelorg + 1] = 0 then
-                      r.partition[v1 - r.labelorg + 1] := part;
+                    if partition[v1 - r.labelorg + 1] = 0 then
+                      partition[v1 - r.labelorg + 1] := part;
                     else
                       Info(InfoWarning, 1, "Vertex ", v1,
                           " (", r.labelorg, "-indexed) ",
@@ -1751,6 +1752,7 @@ function(r, minus, D)
             fi;
         od;
     fi;
+    r.partition := partition;
     return;
 end);
 
@@ -2125,6 +2127,17 @@ function(name, D)
   fi;
   IO_WriteLine(file, DreadnautString(D));
   IO_Close(file);
+  return IO_OK;
+end);
+
+InstallMethod(WriteDreadnautGraph, "for a digraph", [IsFile, IsDigraph],
+function(f, D)
+  if f!.closed then
+    ErrorNoReturn("the 1st argument <filename> is a closed file,");
+  elif f!.wbufsize = false then
+    ErrorNoReturn("the mode of the 1st argument <filename> must be \"w\",");
+  fi;
+  IO_WriteLine(f, DreadnautString(D));
   return IO_OK;
 end);
 
