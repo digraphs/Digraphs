@@ -219,11 +219,11 @@ function(arg...)
   return IteratorByFunctions(record);
 end);
 
-BindGlobal("WholeFileDecoders", HashSet(
-          ["ReadDreadnautGraph"]));
+BindGlobal("WholeFileDecoders", HashSet());
+AddSet(WholeFileDecoders, "ReadDreadnautGraph");
 
-BindGlobal("WholeFileEncoders", HashSet(
-          ["WriteDreadnautGraph"]));
+BindGlobal("WholeFileEncoders", HashSet());
+AddSet(WholeFileEncoders, "WriteDreadnautGraph");
 
 InstallGlobalFunction(IsWholeFileDecoder,
   decoder -> NameFunction(decoder) in WholeFileDecoders);
