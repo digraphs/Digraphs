@@ -259,8 +259,8 @@ gap> DigraphGroup(gr[1]) = SymmetricGroup(30);
 true
 gap> WriteDigraphs(Concatenation(DIGRAPHS_Dir(), "/tst/out/temp.dre"), gr, "w");
 IO_OK
-gap> ReadDigraphs(Concatenation(DIGRAPHS_Dir(), "/tst/out/temp.dre.g6"));
-[ <immutable symmetric digraph with 30 vertices, 870 edges> ]
+gap> ReadDigraphs(Concatenation(DIGRAPHS_Dir(), "/tst/out/temp.dre"));
+[ <immutable digraph with 30 vertices, 870 edges> ]
 gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/test.p");;
 gap> WriteDigraphs(filename, gr, "w");
 IO_OK

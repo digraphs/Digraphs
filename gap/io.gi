@@ -2156,6 +2156,13 @@ function(D)
     ErrorNoReturn("the 2nd argument <D> must be a non-empty digraph,");
   fi;
 
+  if IsMultiDigraph(D) then
+    Info(InfoWarning, 1,
+        "Multidigraphs are not supported in this file format.",
+        " Multiple edges will be reduced to a single edge.");
+    DigraphRemoveAllMultipleEdges(D);
+  fi;
+
   out := Concatenation("n=", String(n));
   out := Concatenation(out, " $=1 d g");
 
