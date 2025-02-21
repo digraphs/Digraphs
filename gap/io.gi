@@ -222,8 +222,14 @@ end);
 BindGlobal("WholeFileDecoders", HashSet(
           ["ReadDreadnautGraph"]));
 
+BindGlobal("WholeFileEncoders", HashSet(
+          ["WriteDreadnautGraph"]));
+
 InstallGlobalFunction(IsWholeFileDecoder,
   decoder -> NameFunction(decoder) in WholeFileDecoders);
+
+InstallGlobalFunction(IsWholeFileEncoder,
+  encoder -> NameFunction(encoder) in WholeFileEncoders);
 
 # these functions wrap the various line encoders/decoders in this file so that
 # they behave like IO_Pickle.
@@ -232,6 +238,8 @@ BindGlobal("DIGRAPHS_EncoderWrapper",
 function(encoder)
   if encoder = IO_Pickle then
     return IO_Pickle;
+  elif NameFunction(encoder) in WholeFileEncoders then
+    return encoder;
   fi;
   return {file, D} -> IO_WriteLine(file, encoder(D));
 end);
@@ -319,6 +327,8 @@ function(filename)
     return DiSparse6String;
   elif extension = "p" or extension = "pickle" then
     return IO_Pickle;
+  elif extension = ".dre" then
+    return DreadnautString;
   fi;
   return fail;
 end);
@@ -599,9 +609,15 @@ function(arg...)
 
   encoder := file!.coder;
 
-  for i in [1 .. Length(digraphs)] do
-    encoder(file, digraphs[i]);
-  od;
+  if NameFunction(encoder) in WholeFileEncoders and Length(digraphs) > 1 then
+      ErrorNoReturn("the encoder ", NameFunction(encoder),
+                    " is a whole file encoder, and so only one digraph ",
+                    "should be specified");
+  else
+    for i in [1 .. Length(digraphs)] do
+        encoder(file, digraphs[i]);
+    od;
+  fi;
 
   if IsString(arg[1]) then
     IO_Close(file);
@@ -1410,7 +1426,7 @@ function(str)
   return ConvertToImmutableDigraphNC(out);
 end);
 
-# helper function for DreadnautGraphFromString
+# helper function for DigraphFromDreadnautString
 # gets or ungets (ug = 1 or -1 respectively)
 # the next character in the string and updates
 # the line number if necessary
@@ -1440,7 +1456,7 @@ function(r, D, ug)
   fi;
 end);
 
-# helper function for DreadnautGraphFromString
+# helper function for DigraphFromDreadnautString
 # (returns the first character not in " ,\t")
 BindGlobal("DIGRAPHS_GETNWC",
 function(r, D)
@@ -1453,7 +1469,7 @@ function(r, D)
     return char;
 end);
 
-# helper function for DreadnautGraphFromString
+# helper function for DigraphFromDreadnautString
 # (returns the first character not in " \n\t\r")
 BindGlobal("DIGRAPHS_GETNWL",
 function(r, D)
@@ -1466,7 +1482,7 @@ function(r, D)
     return char;
 end);
 
-# helper function for DreadnautGraphFromString
+# helper function for DigraphFromDreadnautString
 # (returns the first character not in " \t\r")
 # only used briefly in DIGRAPHS_ParsePartition
 BindGlobal("DIGRAPHS_GETNW",
@@ -1480,7 +1496,7 @@ function(r, D)
     return char;
 end);
 
-#  helper function for DreadnautGraphFromString
+#  helper function for DigraphFromDreadnautString
 #  return the next full integer in the string
 BindGlobal("DIGRAPHS_readinteger",
 function(r, D)
@@ -1516,7 +1532,7 @@ function(r, D)
     return res;
 end);
 
-# helper function for DreadnautGraphFromString
+# helper function for DigraphFromDreadnautString
 # reads in and stores graph adjacency data
 # returns nothing
 BindGlobal("DIGRAPHS_readgraph",
@@ -1615,7 +1631,7 @@ function(r, D)
     od;
 end);
 
-# helper function for DreadnautGraphFromString
+# helper function for DigraphFromDreadnautString
 # returns the next full integer from the string,
 # allowing for an optional '=' before the integer
 BindGlobal("DIGRAPHS_GetInt",
@@ -1629,7 +1645,7 @@ function(r, D)
     return DIGRAPHS_readinteger(r, D);
 end);
 
-# helper function for DreadnautGraphFromString
+# helper function for DigraphFromDreadnautString
 # parses partitions and stores them as vertex labels
 # returns nothing
 BindGlobal("DIGRAPHS_ParsePartition",
@@ -1744,7 +1760,7 @@ function(f)
     elif f!.rbufsize = false then
       ErrorNoReturn("the mode of the 1st argument <filename> must be \"r\",");
     fi;
-    return DreadnautGraphFromString(IO_ReadUntilEOF(f));
+    return DigraphFromDreadnautString(IO_ReadUntilEOF(f));
 end);
 
 InstallMethod(ReadDreadnautGraph, "for a digraph", [IsString],
@@ -1755,10 +1771,10 @@ function(filename)
         ErrorNoReturn("cannot open the file given as the 1st ",
                       "argument <name>, \"", filename, "\",");
     fi;
-    return DreadnautGraphFromString(IO_ReadUntilEOF(f));
+    return DigraphFromDreadnautString(IO_ReadUntilEOF(f));
 end);
 
-InstallMethod(DreadnautGraphFromString, "for a digraph", [IsString],
+InstallMethod(DigraphFromDreadnautString, "for a digraph", [IsString],
 function(D)
     local r, c, minus, backslash, temp, out,
           underscore, doubleUnderscore;

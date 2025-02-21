@@ -251,6 +251,10 @@ gap> ReadDigraphs(filename);
 gap> gr := [CompleteDigraph(30)];;
 gap> DigraphGroup(gr[1]) = SymmetricGroup(30);
 true
+gap> WriteDigraphs(Concatenation(DIGRAPHS_Dir(), "/tst/out/temp.dre"), gr, "w");
+IO_OK
+gap> ReadDigraphs(Concatenation(DIGRAPHS_Dir(), "/tst/out/temp.dre.g6"));
+[ <immutable symmetric digraph with 30 vertices, 870 edges> ]
 gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/test.p");;
 gap> WriteDigraphs(filename, gr, "w");
 IO_OK
@@ -952,7 +956,7 @@ gap> ReadDreadnautGraph(filename) = D;
 true
 gap> ReadDreadnautGraph("fakedir.dre");
 Error, cannot open the file given as the 1st argument <name>, "fakedir.dre",
-gap> DreadnautGraphFromString("$1n3\ndg\n1:1;\n2:21");
+gap> DigraphFromDreadnautString("$1n3\ndg\n1:1;\n2:21");
 <immutable digraph with 3 vertices, 1 edge>
 gap> filename := Concatenation(DIGRAPHS_Dir(), "tst/out/temp.dre");;
 gap> D := EmptyDigraph(5);;
@@ -967,94 +971,94 @@ gap> D = D2;
 true
 gap> DigraphVertexLabels(D) = DigraphVertexLabels(D2);
 false
-gap> DreadnautGraphFromString("$=1n=3-d\ng1 : 1 2 3 1 2;\n	 2 : 1 2;\n	 3 : 2;");
+gap> DigraphFromDreadnautString("$=1n=3-d\ng1 : 1 2 3 1 2;\n	 2 : 1 2;\n	 3 : 2;");
 <immutable digraph with 3 vertices, 6 edges>
-gap> DreadnautGraphFromString("silly text for testing\nn=1dg\n1: 1.");
+gap> DigraphFromDreadnautString("silly text for testing\nn=1dg\n1: 1.");
 Error, Expected integer on line 1 following 's' but was not found
-gap> DreadnautGraphFromString("$=1-dg\n1 : 1 2 3 1 2.");
+gap> DigraphFromDreadnautString("$=1-dg\n1 : 1 2 3 1 2.");
 Error, Vertex number must be declared before `g' on line 1
-gap> D := DreadnautGraphFromString("$=2n=3d\ng2 : 2 2 3 7 2.");
+gap> D := DigraphFromDreadnautString("$=2n=3d\ng2 : 2 2 3 7 2.");
 <immutable digraph with 3 vertices, 2 edges>
 gap> DigraphEdges(D);
 [ [ 1, 1 ], [ 1, 2 ] ]
-gap> DreadnautGraphFromString("$=-1n=3-d\ng1 : 1 2 3 1 2.");
+gap> DigraphFromDreadnautString("$=-1n=3-d\ng1 : 1 2 3 1 2.");
 Error, Label origin -1 on line 1 must be non-negative.
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
-gap> DreadnautGraphFromString("$=1n=5-d\ng1 : 2;\n-1 -6");
+gap> DigraphFromDreadnautString("$=1n=5-d\ng1 : 2;\n-1 -6");
 <immutable empty digraph with 5 vertices>
-gap> D := DreadnautGraphFromString("$=1n=5-d\ng1 : 1 2 3 1 2.\ng2 : 4 5 17.");;
+gap> D := DigraphFromDreadnautString("$=1n=5-d\ng1 : 1 2 3 1 2.\ng2 : 4 5 17.");;
 gap> DigraphEdges(D);
 [ [ 2, 4 ], [ 2, 5 ], [ 4, 2 ], [ 5, 2 ] ]
-gap> D := DreadnautGraphFromString("$=1n=5d\ng1 : 1 2 3 1 2.\n7 : 4 5.");
+gap> D := DigraphFromDreadnautString("$=1n=5d\ng1 : 1 2 3 1 2.\n7 : 4 5.");
 Error, Illegal character '7' on line 3
-gap> D := DreadnautGraphFromString("$=1n=5d\ng1 : 1 2 3\n7 : 4 5.");;
+gap> D := DigraphFromDreadnautString("$=1n=5d\ng1 : 1 2 3\n7 : 4 5.");;
 gap> DigraphEdges(D);
 [ [ 1, 1 ], [ 1, 2 ], [ 1, 3 ], [ 1, 4 ], [ 1, 5 ] ]
-gap> D := DreadnautGraphFromString("$=1n=5dg\n7 : 1 2 3");;
+gap> D := DigraphFromDreadnautString("$=1n=5dg\n7 : 1 2 3");;
 gap> DigraphEdges(D);
 [ [ 1, 1 ], [ 1, 2 ], [ 1, 3 ] ]
-gap> D := DreadnautGraphFromString("$=1n=5dg\n1 : 1 2 3.\nf = [1|2]");;
+gap> D := DigraphFromDreadnautString("$=1n=5dg\n1 : 1 2 3.\nf = [1|2]");;
 gap> DigraphVertexLabels(D);
 [ 1, 2, 0, 0, 0 ]
-gap> D := DreadnautGraphFromString("$=3n=10dg\n3:4.\nf = [3,5:7|9");;
+gap> D := DigraphFromDreadnautString("$=3n=10dg\n3:4.\nf = [3,5:7|9");;
 Error, Unterminated partition specification (line 3)
-gap> D := DreadnautGraphFromString("$=3n=10dg\n3:4.\nf = [6,3,5:7|9 9]");;
+gap> D := DigraphFromDreadnautString("$=3n=10dg\n3:4.\nf = [6,3,5:7|9 9]");;
 gap> DigraphVertexLabels(D);
 [ 1, 0, 1, 1, 1, 0, 2, 0, 0, 0 ]
-gap> D := DreadnautGraphFromString("$=3n=10dAg\n3:4.");;
+gap> D := DigraphFromDreadnautString("$=3n=10dAg\n3:4.");;
 Error, Operation 'A' (line 1) is not recognised
-gap> DreadnautGraphFromString("$=3n=2dAs\"this is a comment \"g\n3:4;3._");
+gap> DigraphFromDreadnautString("$=3n=2dAs\"this is a comment \"g\n3:4;3._");
 <immutable empty digraph with 2 vertices>
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
-gap> DigraphEdges(DreadnautGraphFromString("$=3n=2dg\n3:3,4;\n3! 2 3 4\n._sr=2r& F=4 FF -M -f -V -P -r"));
+gap> DigraphEdges(DigraphFromDreadnautString("$=3n=2dg\n3:3,4;\n3! 2 3 4\n._sr=2r& F=4 FF -M -f -V -P -r"));
 [ [ 2, 2 ] ]
-gap> DigraphEdges(DreadnautGraphFromString("$=3n=2dg\n3:3,4.__"));
+gap> DigraphEdges(DigraphFromDreadnautString("$=3n=2dg\n3:3,4.__"));
 [ [ 1, 1 ], [ 2, 1 ] ]
-gap> DreadnautGraphFromString("$=3n=2d\n<\"some file.dre\"");
+gap> DigraphFromDreadnautString("$=3n=2d\n<\"some file.dre\"");
 Error, Operation '<' (line 2) is not supported
-gap> DreadnautGraphFromString("$=1ndg\n1 : 2 3 ");
+gap> DigraphFromDreadnautString("$=1ndg\n1 : 2 3 ");
 Error, Expected integer on line 1 following 'n' but was not found
-gap> DreadnautGraphFromString("$=1n2dAs! and some\ng1 : 2 3 ! 2 3 4 5\n.\nf=1sr=2r&k 2 3 M 2 / 3 c l = 2 P PP 1 2 3 4; &r 1 2 3; s3 S2 &&");
+gap> DigraphFromDreadnautString("$=1n2dAs! and some\ng1 : 2 3 ! 2 3 4 5\n.\nf=1sr=2r&k 2 3 M 2 / 3 c l = 2 P PP 1 2 3 4; &r 1 2 3; s3 S2 &&");
 <immutable digraph with 2 vertices, 1 edge>
-gap> DreadnautGraphFromString("$=1n3d\"this is an unterminated comment g\n1 : 2 3.");
+gap> DigraphFromDreadnautString("$=1n3d\"this is an unterminated comment g\n1 : 2 3.");
 Error, Unterminated comment beginning on line 1
-gap> DreadnautGraphFromString("$=1n-3dg\n1 : 2 3.");
+gap> DigraphFromDreadnautString("$=1n-3dg\n1 : 2 3.");
 Error, Vertex number -3 on line 1 must be positive.
-gap> DreadnautGraphFromString("$=1n3dg\n1 : 2 3.\n> \"out.dre\"");
+gap> DigraphFromDreadnautString("$=1n3dg\n1 : 2 3.\n> \"out.dre\"");
 Error, Operation '>' (line 
 3) is not supported. Please use 'WriteDreadnautGraph'.
-gap> DreadnautGraphFromString("f=2");
+gap> DigraphFromDreadnautString("f=2");
 Error, Vertex number must be declared before partition on line 1
-gap> DreadnautGraphFromString("$=1n3dg\n1 : 2 3.\nfa");
+gap> DigraphFromDreadnautString("$=1n3dg\n1 : 2 3.\nfa");
 Error, Partitions should be specified using one of the following formats:
   * A single number (e.g. 'f=3')
   * A list of cells (e.g. 'f=[...]')  * '-f'
-gap> DreadnautGraphFromString("$=1n3dg\n1 : 2 3.\nf2 PP 1");
+gap> DigraphFromDreadnautString("$=1n3dg\n1 : 2 3.\nf2 PP 1");
 Error, Unterminated 'PP' operation beginning on line 3
-gap> DreadnautGraphFromString("$=1n3dg\n1 : 2 3.\nf=12 r 1");
+gap> DigraphFromDreadnautString("$=1n3dg\n1 : 2 3.\nf=12 r 1");
 Error, Unterminated 'r' operation beginning on line 3
-gap> DreadnautGraphFromString("$=1n3dg\n1 : 2 3.\nf=[22]");
+gap> DigraphFromDreadnautString("$=1n3dg\n1 : 2 3.\nf=[22]");
 Error, Vertex 22 out of range in partition specification (line 3)
-gap> DreadnautGraphFromString("$=1n3dg\n1 : 2 3.\nf=[1:43]");
+gap> DigraphFromDreadnautString("$=1n3dg\n1 : 2 3.\nf=[1:43]");
 Error, Vertex 43 out of range in partition specification (line 3)
-gap> DreadnautGraphFromString("$=1n3dg\n1 : 2 3.\nf=[1:\n:]");
+gap> DigraphFromDreadnautString("$=1n3dg\n1 : 2 3.\nf=[1:\n:]");
 Error, Invalid range 1 : ':' in partition specification (line 3)
-gap> DreadnautGraphFromString("$=1n3dg\n1 : 2 3.\nf=[1\nf=2");
+gap> DigraphFromDreadnautString("$=1n3dg\n1 : 2 3.\nf=[1\nf=2");
 Error, Unexpected character 'f' in partition specification (line 4)
-gap> DreadnautGraphFromString("$=1n3dg\n1 : 2 3.\nf=[1|2]l f M k V");
+gap> DigraphFromDreadnautString("$=1n3dg\n1 : 2 3.\nf=[1|2]l f M k V");
 Error, Expected integer on line 3 following 'l' but was not found
-gap> DreadnautGraphFromString("$=1n3dg\n1 : 2 3.\nf=[1|2]F M k V");
+gap> DigraphFromDreadnautString("$=1n3dg\n1 : 2 3.\nf=[1|2]F M k V");
 Error, Expected integer on line 3 following 'F' but was not found
-gap> DreadnautGraphFromString("$=1n3dg\n1 : 2 3.\nf=[1|2]M k V");
+gap> DigraphFromDreadnautString("$=1n3dg\n1 : 2 3.\nf=[1|2]M k V");
 Error, Expected integer on line 3 following 'M' but was not found
-gap> DreadnautGraphFromString("$=1n3dg\n1 : 2 3.\nf=[1|2]M 2/ k V");
+gap> DigraphFromDreadnautString("$=1n3dg\n1 : 2 3.\nf=[1|2]M 2/ k V");
 Error, Expected integer on line 3 following 'M # /' but was not found
-gap> DreadnautGraphFromString("$=1n3dg\n1 : 2 3.\nf=[1|2]M 2/3 k V");
+gap> DigraphFromDreadnautString("$=1n3dg\n1 : 2 3.\nf=[1|2]M 2/3 k V");
 Error, Expected two integers on line 
 3 following 'k' but at least one not found
-gap> DreadnautGraphFromString("$=1n3dg\n1 : 2 3.\nf=[1|2]V");
+gap> DigraphFromDreadnautString("$=1n3dg\n1 : 2 3.\nf=[1|2]V");
 Error, Expected integer on line 3 following 'V' but was not found
-gap> DreadnautGraphFromString("$n3dg\n1 : 2 3.\nf=[1|2]V 2");
+gap> DigraphFromDreadnautString("$n3dg\n1 : 2 3.\nf=[1|2]V 2");
 Error, Expected integer on line 1 following $ but was not found
 
 #  DIGRAPHS_UnbindVariables
