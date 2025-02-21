@@ -79,6 +79,13 @@ Error, there must be 1, 2, or 3 arguments,
 gap> badfilename := "path/to/some/madeupfile.g6.gz";;
 gap> ReadDigraphs(badfilename, 3);
 Error, cannot open the file given as the 1st argument <name>,
+gap> filename := Concatenation(DIGRAPHS_Dir(), "tst/out/temp.dre");;
+gap> WriteDreadnautGraph(filename, gr);;
+gap> ReadDigraphs(filename, 3);
+Error, <Operation "ReadDreadnautGraph"> is a whole file decoder, and so the ar\
+gument <n> should not be specified
+gap> ReadDigraphs(filename)[1] = gr;
+true
 
 #  DigraphFromSparse6String and Sparse6String
 gap> DigraphFromSparse6String(":@");
@@ -991,7 +998,7 @@ gap> DigraphVertexLabels(D);
 [ 1, 2, 0, 0, 0 ]
 gap> D := DreadnautGraphFromString("$=3n=10dg\n3:4.\nf = [3,5:7|9");;
 Error, Unterminated partition specification (line 3)
-gap> D := DreadnautGraphFromString("$=3n=10dg\n3:4.\nf = [3,5:7|9]");;
+gap> D := DreadnautGraphFromString("$=3n=10dg\n3:4.\nf = [6,3,5:7|9 9]");;
 gap> DigraphVertexLabels(D);
 [ 1, 0, 1, 1, 1, 0, 2, 0, 0, 0 ]
 gap> D := DreadnautGraphFromString("$=3n=10dAg\n3:4.");;
@@ -1034,6 +1041,21 @@ gap> DreadnautGraphFromString("$=1n3dg\n1 : 2 3.\nf=[1:\n:]");
 Error, Invalid range 1 : ':' in partition specification (line 3)
 gap> DreadnautGraphFromString("$=1n3dg\n1 : 2 3.\nf=[1\nf=2");
 Error, Unexpected character 'f' in partition specification (line 4)
+gap> DreadnautGraphFromString("$=1n3dg\n1 : 2 3.\nf=[1|2]l f M k V");
+Error, Expected integer on line 3 following 'l' but was not found
+gap> DreadnautGraphFromString("$=1n3dg\n1 : 2 3.\nf=[1|2]F M k V");
+Error, Expected integer on line 3 following 'F' but was not found
+gap> DreadnautGraphFromString("$=1n3dg\n1 : 2 3.\nf=[1|2]M k V");
+Error, Expected integer on line 3 following 'M' but was not found
+gap> DreadnautGraphFromString("$=1n3dg\n1 : 2 3.\nf=[1|2]M 2/ k V");
+Error, Expected integer on line 3 following 'M # /' but was not found
+gap> DreadnautGraphFromString("$=1n3dg\n1 : 2 3.\nf=[1|2]M 2/3 k V");
+Error, Expected two integers on line 
+3 following 'k' but at least one not found
+gap> DreadnautGraphFromString("$=1n3dg\n1 : 2 3.\nf=[1|2]V");
+Error, Expected integer on line 3 following 'V' but was not found
+gap> DreadnautGraphFromString("$n3dg\n1 : 2 3.\nf=[1|2]V 2");
+Error, Expected integer on line 1 following $ but was not found
 
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(D);
