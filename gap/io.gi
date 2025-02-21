@@ -1528,7 +1528,7 @@ function(r, D)
 
     if r.n = fail then
       ErrorNoReturn("Vertex number must be declared before `g' ",
-                  "on line ", r.newline);
+                    "on line ", r.newline);
     else
       r.edgeList := List([1 .. r.n], x -> []);
     fi;
@@ -1544,10 +1544,12 @@ function(r, D)
                 neg := false;
 
                 if (w < 1) or (w > r.n) or (w = v and not r.digraph) then
-                    Info(InfoWarning, 1, "Ignoring illegal edge (",
-                        v + r.labelorg - 1, ", ", w + r.labelorg - 1,
-                        ") (", r.labelorg, "-indexed on line) ",
-                        r.newline);
+                    Info(InfoWarning, 1, StringFormatted(
+                      "Ignoring illegal edge ({}, {}) ({}-indexed on line {}) ",
+                      v + r.labelorg - 1,
+                      w + r.labelorg - 1,
+                      r.labelorg,
+                      r.newline));
                 else
                     RemoveSet(r.edgeList[v], w);
                     if not r.digraph then
@@ -1558,20 +1560,23 @@ function(r, D)
                 c := DIGRAPHS_GETNWC(r, D);
                 if c = ':' then
                     if w < 1 or w > r.n then
-                        Info(InfoWarning, 1, "Ignoring illegal vertex (",
-                            v + r.labelorg - 1, ", ", w + r.labelorg - 1,
-                            ") (", r.labelorg, "-indexed) on line ",
-                            r.newline);
+                        Info(InfoWarning, 1, StringFormatted(
+                          "Ignoring illegal vertex {} ({}-indexed) on line {})",
+                          w + r.labelorg - 1,
+                          r.labelorg,
+                          r.newline));
                     else
                         v := w;
                     fi;
                 else
                     DIGRAPHS_GetUngetChar(r, D, -1);
                     if w < 1 or w > r.n or (w = v and not r.digraph) then
-                        Info(InfoWarning, 1, "Ignoring illegal edge (",
-                            v + r.labelorg - 1, ", ", w + r.labelorg - 1,
-                            ") (", r.labelorg, "-indexed) on line ",
-                            r.newline);
+                    Info(InfoWarning, 1, StringFormatted(
+                      "Ignoring illegal edge ({}, {}) ({}-indexed on line {}) ",
+                      v + r.labelorg - 1,
+                      w + r.labelorg - 1,
+                      r.labelorg,
+                      r.newline));
                     else
                         AddSet(r.edgeList[v], w);
                         if not r.digraph then
@@ -1729,10 +1734,11 @@ function(r, minus, D)
 end);
 
 InstallMethod(ReadDreadnautGraph, "for a digraph", [IsFile],
-function(f)  # should check that it's closed?
-    if f = fail then
-        ErrorNoReturn("cannot open the file given as the 1st ",
-                      "argument <name>, \"", f, "\",");
+function(f)
+    if f!.closed then
+      ErrorNoReturn("the 1st argument <filename> is a closed file,");
+    elif f!.rbufsize = false then
+      ErrorNoReturn("the mode of the 1st argument <filename> must be \"r\",");
     fi;
     return DreadnautGraphFromString(IO_ReadUntilEOF(f));
 end);
