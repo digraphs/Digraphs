@@ -974,7 +974,7 @@ false
 gap> DigraphFromDreadnautString("$=1n=3-d\ng1 : 1 2 3 1 2;\n	 2 : 1 2;\n	 3 : 2;");
 <immutable digraph with 3 vertices, 6 edges>
 gap> DigraphFromDreadnautString("silly text for testing\nn=1dg\n1: 1.");
-Error, Expected integer on line 1 following 's' but was not found
+Error, Operation 'e' (line 1) is not supported
 gap> DigraphFromDreadnautString("$=1-dg\n1 : 1 2 3 1 2.");
 Error, Vertex number must be declared before `g' on line 1
 gap> D := DigraphFromDreadnautString("$=2n=3d\ng2 : 2 2 3 7 2.");
@@ -1018,12 +1018,12 @@ gap> DigraphFromDreadnautString("$=3n=2d\n<\"some file.dre\"");
 Error, Operation '<' (line 2) is not supported
 gap> DigraphFromDreadnautString("$=1ndg\n1 : 2 3 ");
 Error, Expected integer on line 1 following 'n' but was not found
-gap> DigraphFromDreadnautString("$=1n2dAs! and some\ng1 : 2 3 ! 2 3 4 5\n.\nf=1sr=2r&k 2 3 M 2 / 3 c l = 2 P PP 1 2 3 4; &r 1 2 3; s3 S2 &&");
+gap> DigraphFromDreadnautString("$=1n2dAs! and some\ng1 : 2 3 ! 2 3 4 5\n.\nf=1sr=2r&k 2 3 M 2/3 c l = 2 P PP O OO 1 2 3 4; &r 1 2 3; s3 S2 &&");
 <immutable digraph with 2 vertices, 1 edge>
 gap> DigraphFromDreadnautString("$=1n3d\"this is an unterminated comment g\n1 : 2 3.");
 Error, Unterminated comment beginning on line 1
 gap> DigraphFromDreadnautString("$=1n-3dg\n1 : 2 3.");
-Error, Vertex number -3 on line 1 must be positive.
+Error, Vertex number given as -3 (line 1), but should be positive.
 gap> DigraphFromDreadnautString("$=1n3dg\n1 : 2 3.\n> \"out.dre\"");
 Error, Operation '>' (line 
 3) is not supported. Please use 'WriteDreadnautGraph'.
@@ -1045,21 +1045,6 @@ gap> DigraphFromDreadnautString("$=1n3dg\n1 : 2 3.\nf=[1:\n:]");
 Error, Invalid range 1 : ':' in partition specification (line 3)
 gap> DigraphFromDreadnautString("$=1n3dg\n1 : 2 3.\nf=[1\nf=2");
 Error, Unexpected character 'f' in partition specification (line 4)
-gap> DigraphFromDreadnautString("$=1n3dg\n1 : 2 3.\nf=[1|2]l f M k V");
-Error, Expected integer on line 3 following 'l' but was not found
-gap> DigraphFromDreadnautString("$=1n3dg\n1 : 2 3.\nf=[1|2]F M k V");
-Error, Expected integer on line 3 following 'F' but was not found
-gap> DigraphFromDreadnautString("$=1n3dg\n1 : 2 3.\nf=[1|2]M k V");
-Error, Expected integer on line 3 following 'M' but was not found
-gap> DigraphFromDreadnautString("$=1n3dg\n1 : 2 3.\nf=[1|2]M 2/ k V");
-Error, Expected integer on line 3 following 'M # /' but was not found
-gap> DigraphFromDreadnautString("$=1n3dg\n1 : 2 3.\nf=[1|2]M 2/3 k V");
-Error, Expected two integers on line 
-3 following 'k' but at least one not found
-gap> DigraphFromDreadnautString("$=1n3dg\n1 : 2 3.\nf=[1|2]V");
-Error, Expected integer on line 3 following 'V' but was not found
-gap> DigraphFromDreadnautString("$n3dg\n1 : 2 3.\nf=[1|2]V 2");
-Error, Expected integer on line 1 following $ but was not found
 
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(D);

@@ -1433,7 +1433,7 @@ end);
 # returns the character or fail
 BindGlobal("DIGRAPHS_GetUngetChar",
 function(r, D, ug)
-  if ug = 1 then
+  if ug = 1 then  # GetChar
     r.i := r.i + 1;
     if r.i > Length(D) then
       return fail;
@@ -1443,7 +1443,7 @@ function(r, D, ug)
       fi;
       return D[r.i];
     fi;
-  else  # ug = -1
+  else  # ug = -1, UngetChar
     if r.i > Length(D) then
       r.i := r.i - 1;
       return fail;
@@ -1504,6 +1504,7 @@ function(r, D)
     char := DIGRAPHS_GETNWL(r, D);
 
     if not IsDigitChar(char) and char <> '-' and char <> '+' then
+        DIGRAPHS_GetUngetChar(r, D, -1);
         return fail;
     fi;
 
@@ -1810,7 +1811,7 @@ function(D)
           if temp <> '+' then
             DIGRAPHS_GetUngetChar(r, D, -1);
           fi;
-        elif c in "BR@#jv\%IixtTobzamp?Hc" then
+        elif c in "B@#jv\%IixtTobzamp?Hc" then
             minus := false;
             Info(InfoWarning, 1, "Operation ", c, " (line ", r.newline,
                 ") is not supported");
@@ -1847,24 +1848,21 @@ function(D)
               ErrorNoReturn("Expected integer on line ", r.newline,
                           " following ", c, " but was not found");
             elif r.n <= 0 then
-                ErrorNoReturn("Vertex number ", r.n, " on line ", r.newline,
-                            " must be positive.");
+                ErrorNoReturn("Vertex number given as ", r.n, " (line ",
+                              r.newline,
+                              "), but should be positive.");
             fi;
         elif c = 'g' then
             minus := false;
             DIGRAPHS_readgraph(r, D);
         elif c = 's' then
           minus := false;
-          temp := DIGRAPHS_GetUngetChar(r, D, 1);
-          if temp <> 'r' then
+          if DIGRAPHS_GetUngetChar(r, D, 1) <> 'r' then
             DIGRAPHS_GetUngetChar(r, D, -1);
           fi;
           Info(InfoWarning, 1, "Operation 's' or 'sr' (line ", r.newline,
               ") is not supported");
-          if DIGRAPHS_GetInt(r, D) = fail then
-            ErrorNoReturn("Expected integer on line ", r.newline,
-                        " following ", c, " but was not found");
-          fi;
+          DIGRAPHS_GetInt(r, D);
         elif c = '\"' then
             minus := false;
             c := DIGRAPHS_GetUngetChar(r, D, 1);
@@ -1897,10 +1895,7 @@ function(D)
             Info(InfoWarning, 1, "Operation ", c, " (line ",
                 r.newline, ") is not supported");
             minus := false;
-            if DIGRAPHS_GetInt(r, D) = fail then
-                ErrorNoReturn("Expected integer on line ", r.newline,
-                            " following ", c, " but was not found");
-            fi;
+            DIGRAPHS_GetInt(r, D);
         elif c = 'F' then
           minus := false;
           temp := DIGRAPHS_GetUngetChar(r, D, 1);
@@ -1911,10 +1906,16 @@ function(D)
             DIGRAPHS_GetUngetChar(r, D, -1);
             Info(InfoWarning, 1, "Operation 'F' (line ", r.newline,
                 ") is not supported");
-            if DIGRAPHS_GetInt(r, D) = fail then
-              ErrorNoReturn("Expected integer on line ", r.newline,
-                          " following ", c, " but was not found");
-            fi;
+            DIGRAPHS_GetInt(r, D);
+          fi;
+        elif c = 'O' then
+          if DIGRAPHS_GetUngetChar(r, D, 1) <> 'O' then
+            DIGRAPHS_GetUngetChar(r, D, -1);
+            Info(InfoWarning, 1, "Operation 'O' (line ", r.newline,
+                ") is not supported");
+          else
+            Info(InfoWarning, 1, "Operation 'OO' (line ", r.newline,
+                ") is not supported");
           fi;
         elif c = 'M' then
             Info(InfoWarning, 1, "Operation 'M' (line ",
@@ -1922,16 +1923,9 @@ function(D)
             if minus then
                 minus := false;
             else
-                if DIGRAPHS_GetInt(r, D) = fail then
-                    ErrorNoReturn("Expected integer on line ", r.newline,
-                                " following ", c, " but was not found");
-                fi;
-                temp := DIGRAPHS_GETNWL(r, D);
-                if temp = '/' then
-                    if DIGRAPHS_readinteger(r, D) = fail then
-                        ErrorNoReturn("Expected integer on line ", r.newline,
-                                    " following 'M # /' but was not found");
-                    fi;
+                DIGRAPHS_GetInt(r, D);
+                if DIGRAPHS_GetUngetChar(r, D, 1) = '/' then
+                    DIGRAPHS_GetInt(r, D);
                 else
                     DIGRAPHS_GetUngetChar(r, D, -1);
                 fi;
@@ -1940,23 +1934,17 @@ function(D)
             Info(InfoWarning, 1, "Operation 'k' (line ",
                 r.newline, ") is not supported");
             minus := false;
-            if DIGRAPHS_readinteger(r, D) = fail or
-               DIGRAPHS_readinteger(r, D) = fail then
-                ErrorNoReturn("Expected two integers on line ", r.newline,
-                            " following ", c, " but at least one not found");
-            fi;
+            DIGRAPHS_GetInt(r, D);
+            DIGRAPHS_GetInt(r, D);
         elif c in "VSGu" then
             Info(InfoWarning, 1, "Operation ", c,
                 " (line ", r.newline, ") is not supported");
             if minus then
                 minus := false;
             else
-                if DIGRAPHS_GetInt(r, D) = fail then
-                    ErrorNoReturn("Expected integer on line ", r.newline,
-                                " following ", c, " but was not found");
-                fi;
+                DIGRAPHS_GetInt(r, D);
             fi;
-        elif c in "P" then
+        elif c = 'P' then
             if minus then
                 minus := false;
                 Info(InfoWarning, 1, "Operation -", c,
@@ -1995,23 +1983,20 @@ function(D)
             if r.labelorg <> 1 then
                 Info(InfoWarning, 1, "Vertices will be 1-indexed");
             fi;
-        elif c = 'r' then
-            Info(InfoWarning, 1, "Operation 'r' or 'r&'",
+        elif c in "rR" then
+            Info(InfoWarning, 1, "Operations ['r', 'r&', 'R']",
                 " (line ", r.newline, ") is not supported");
-            if minus then
-                minus := false;
-            else
-                c := DIGRAPHS_GetUngetChar(r, D, 1);
-                if c <> '&' then
-                    DIGRAPHS_GetUngetChar(r, D, -1);
-                    temp := r.newline;
-                    while c <> fail and c <> ';' do
-                        c := DIGRAPHS_GetUngetChar(r, D, 1);
-                    od;
-                    if c = fail then
-                        ErrorNoReturn("Unterminated 'r' operation beginning",
-                                      " on line ", temp);
-                    fi;
+            minus := false;
+            if (c = 'r' and DIGRAPHS_GetUngetChar(r, D, 1) <> '&')
+                or c = 'R' then
+                DIGRAPHS_GetUngetChar(r, D, -1);
+                temp := r.newline;
+                while c <> fail and c <> ';' do
+                    c := DIGRAPHS_GetUngetChar(r, D, 1);
+                od;
+                if c = fail then
+                    ErrorNoReturn("Unterminated operation (either 'r' or 'R')",
+                                  " beginning on line ", temp);
                 fi;
             fi;
         elif c = '&' then
