@@ -1430,7 +1430,8 @@ end);
 # gets or ungets (ug = 1 or -1 respectively)
 # the next character in the string and updates
 # the line number if necessary
-# returns the character or fail
+# returns the character or fail for getchar
+# returns nothing for ungetchar
 BindGlobal("DIGRAPHS_GetUngetChar",
 function(r, D, ug)
   if ug = 1 then  # GetChar
@@ -1446,50 +1447,23 @@ function(r, D, ug)
   else  # ug = -1, UngetChar
     if r.i > Length(D) then
       r.i := r.i - 1;
-      return fail;
+      return;
     fi;
     if D[r.i] = '\n' then
       r.newline := r.newline - 1;
     fi;
     r.i := r.i - 1;
-    return D[r.i];
+    return;
   fi;
 end);
 
 # helper function for DigraphFromDreadnautString
-# (returns the first character not in " ,\t")
-BindGlobal("DIGRAPHS_GETNWC",
-function(r, D)
+# (returns the first character not in s)
+BindGlobal("DIGRAPHS_GETNWCL",
+function(r, D, s)
     local char;
     char := DIGRAPHS_GetUngetChar(r, D, 1);
-    while char <> fail and char in " ,\t" do
-        char := DIGRAPHS_GetUngetChar(r, D, 1);
-    od;
-
-    return char;
-end);
-
-# helper function for DigraphFromDreadnautString
-# (returns the first character not in " \n\t\r")
-BindGlobal("DIGRAPHS_GETNWL",
-function(r, D)
-    local char;
-    char := DIGRAPHS_GetUngetChar(r, D, 1);
-    while char <> fail and char in " \n\t\r" do
-        char := DIGRAPHS_GetUngetChar(r, D, 1);
-    od;
-
-    return char;
-end);
-
-# helper function for DigraphFromDreadnautString
-# (returns the first character not in " \t\r")
-# only used briefly in DIGRAPHS_ParsePartition
-BindGlobal("DIGRAPHS_GETNW",
-function(r, D)
-    local char;
-    char := DIGRAPHS_GetUngetChar(r, D, 1);
-    while char <> fail and char in " \t\r" do
+    while char <> fail and char in s do
         char := DIGRAPHS_GetUngetChar(r, D, 1);
     od;
 
@@ -1501,7 +1475,7 @@ end);
 BindGlobal("DIGRAPHS_readinteger",
 function(r, D)
     local char, res, minus;
-    char := DIGRAPHS_GETNWL(r, D);
+    char := DIGRAPHS_GETNWCL(r, D, " \n\t\r");
 
     if not IsDigitChar(char) and char <> '-' and char <> '+' then
         DIGRAPHS_GetUngetChar(r, D, -1);
@@ -1552,7 +1526,7 @@ function(r, D)
     fi;
 
     while c <> fail do
-        c := DIGRAPHS_GETNWC(r, D);
+        c := DIGRAPHS_GETNWCL(r, D, " ,\t");
         if IsDigitChar(c) then
             DIGRAPHS_GetUngetChar(r, D, -1);
             w := DIGRAPHS_readinteger(r, D);
@@ -1576,7 +1550,7 @@ function(r, D)
                     fi;
                 fi;
             else
-                c := DIGRAPHS_GETNWC(r, D);
+                c := DIGRAPHS_GETNWCL(r, D, " ,\t");
                 if c = ':' then
                     if w < 1 or w > r.n then
                         Info(InfoWarning, 1, StringFormatted(
@@ -1639,7 +1613,7 @@ BindGlobal("DIGRAPHS_GetInt",
 function(r, D)
     local ch;
 
-    ch := DIGRAPHS_GETNWL(r, D);
+    ch := DIGRAPHS_GETNWCL(r, D, " \n\t\r");
     if ch <> '=' then
         DIGRAPHS_GetUngetChar(r, D, -1);
     fi;
@@ -1664,9 +1638,9 @@ function(r, minus, D)
         return;
     fi;
 
-    c := DIGRAPHS_GETNW(r, D);
+    c := DIGRAPHS_GETNWCL(r, D, " ,\t");
     if c = '=' then
-        c := DIGRAPHS_GETNW(r, D);
+        c := DIGRAPHS_GETNWCL(r, D, " ,\t");
     fi;
 
     if IsDigitChar(c) then
@@ -1689,7 +1663,7 @@ function(r, minus, D)
     else
         tempNewline := r.newline;
         while c <> fail and c <> ']' do
-            c := DIGRAPHS_GETNWL(r, D);
+            c := DIGRAPHS_GETNWCL(r, D, " \n\t\r");
             if c = '|' then
                 part := part + 1;
             elif c = ',' then
@@ -1703,9 +1677,9 @@ function(r, minus, D)
                     tempNewline, ")");
                 fi;
 
-                v2 := DIGRAPHS_GETNWL(r, D);
+                v2 := DIGRAPHS_GETNWCL(r, D, " \n\t\r");
                 if v2 = ':' then
-                    v2 := DIGRAPHS_GETNWL(r, D);
+                    v2 := DIGRAPHS_GETNWCL(r, D, " \n\t\r");
                     if not IsDigitChar(v2) then
                         ErrorNoReturn("Invalid range ", v1, " : ", v2,
                         " in partition specification (line ",
