@@ -127,6 +127,15 @@ gap> for x in iter do od;
         Digraphs are pickled using the &IO; package. This is particularly good
         when the <Ref Attr="DigraphGroup"/> is non-trivial.
       </Item>
+      <Mark>dreadnaut (.dre)</Mark>
+      <Item>
+        <E>dreadnaut</E> is a graph format designed for directed and undirected graphs.
+        It supports loops but multiple edges will be ignored.  The format consists of an
+        initial section that defines the graph's structural properties, such as the number of
+        vertices, the index origin for vertices, and whether the graph is directed. This is followed
+        by a list of edges. For more information and examples of the format see
+        <URL Text="nauty and Traces User's Guide">http://pallini.di.uniroma1.it/Guide.html</URL>.<P/>
+      </Item>
     </List>
 
     <Example><![CDATA[
@@ -323,7 +332,16 @@ gap> DigraphFromDiSparse6String(".CaWBGA?b");
       <Mark>pickled (<F>.p</F> or <F>.pickle</F>)</Mark>
       <Item>
         Digraphs are pickled using the &IO; package. This is particularly good
-        when the <Ref Attr="DigraphGroup"/> is non-trivial.
+        when the <Ref Attr="DigraphGroup"/> is non-trivial. <P/>
+      </Item>
+      <Mark>dreadnaut (.dre)</Mark>
+      <Item>
+        <E>dreadnaut</E> is a graph format designed for directed and undirected graphs.
+        It supports loops but multiple edges will be ignored.  The format consists of an
+        initial section that defines the graph's structural properties, such as the number of
+        vertices, the index origin for vertices, and whether the graph is directed. This is followed
+        by a list of edges. For more information and examples of the format see
+        <URL Text="nauty and Traces User's Guide">http://pallini.di.uniroma1.it/Guide.html</URL>. <P/>
       </Item>
     </List>
 
@@ -423,6 +441,15 @@ gap> ReadDigraphs(
       <Item>
         Digraphs are pickled using the &IO; package. This is particularly good
         when the <Ref Attr="DigraphGroup"/> is non-trivial.
+      </Item>
+      <Mark>dreadnaut (.dre)</Mark>
+      <Item>
+        <E>dreadnaut</E> is a graph format designed for directed and undirected graphs.
+        It supports loops but multiple edges will be ignored.  The format consists of an
+        initial section that defines the graph's structural properties, such as the number of
+        vertices, the index origin for vertices, and whether the graph is directed. This is followed
+        by a list of edges. For more information and examples of the format see
+        <URL Text="nauty and Traces User's Guide">http://pallini.di.uniroma1.it/Guide.html</URL>. <P/>
       </Item>
     </List>
 
@@ -767,6 +794,90 @@ gap> OutNeighbours(gr);
 [ [ 11 ], [  ], [  ], [  ], [  ], [ 3 ], [  ], [  ], [ 9 ], [  ], 
   [  ], [  ] ]
 ]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="ReadDreadnautGraph">
+<ManSection>
+  <Oper Name="ReadDreadnautGraph" Arg="f"/>
+  <Oper Name="ReadDigraphFromDreadnautString" Arg="s"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    These operations read in a single digraph in the dreadnaut format. <P/>
+    <C>ReadDreadnautGraph</C> expects the argument <A>f</A> to be either a string or an open, readable file object.
+    <List>
+      <Item>
+        If the argument <A>f</A> is a string, it is treated as a filename, and the function will open the file for reading.
+      </Item>
+      <Item>
+        If <A>f</A> is an open and readable file, the function will read directly from it.
+      </Item>
+    </List>
+    <C>ReadDigraphFromDreadnautString</C> expects the argument <A>s</A> to be a string.<P/>
+
+    The file or string should contain a single graph in dreadnaut format.<P/>
+    If the vertices are not already 1-indexed, they will be reindexed accordingly.
+    If a partition is explicitly specified, each vertex will be assigned a label corresponding to its part in the partition.
+    Should the graph be undirected, the symmetric closure of the graph will be returned.
+    See <Ref Oper="DigraphVertexLabels"/> and <Ref Prop="DigraphSymmetricClosure"/>.<P/>
+
+    A detailed description of commands and options in dreadnaut format can be found at
+    <URL Text="nauty and Traces User's Guide">http://pallini.di.uniroma1.it/Guide.html</URL>.
+
+    Of those commands, the following are supported: <C>n</C>, <C>g</C> (and all available subcommands), 
+      <C>_</C> (underscore), <C>__</C> (double underscore), <C>f</C>, <C>$=#</C>, <C>$$</C>, <C>d, -d</C>, <C>"...", !</C>
+    <Example><![CDATA[
+gap> gr := Digraph([[2], [1, 3, 4], [2, 4], [2, 3]]);
+<immutable digraph with 4 vertices, 8 edges>
+gap> filename := Concatenation(DIGRAPHS_Dir(),
+>                              "/tst/out/temp.dre");;
+gap> WriteDreadnautGraph(filename, gr);;
+gap> ReadDreadnautGraph(filename) = gr;
+true
+gap> s := WriteDreadnautString(gr);;
+gap> ReadDigraphFromDreadnautString(s) = gr;
+true]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="WriteDreadnautGraph">
+<ManSection>
+  <Oper Name="WriteDreadnautGraph" Arg="f, digraph"/>
+  <Oper Name="WriteDigraphToDreadnautString" Arg="digraph"/>
+  <Description>
+    These operations convert a single digraph <A>digraph</A> to the dreadnaut
+    format. <P/>
+    <C>WriteDreadnautGraph</C> expects the argument <A>f</A> to be either a string or an open, writable file object.
+    <List>
+      <Item>
+        If the argument <A>f</A> is a string, it is treated as a filename, and the function will open the file for writing.
+      </Item>
+      <Item>
+        If <A>f</A> is an open and writable file, the function will write directly to it.
+      </Item>
+    </List>
+    <C>WriteDigraphToDreadnautString</C> returns a string.<P/>
+
+    If <A>digraph</A> has multiple edges, then this operation returns a digraph constructed from <A>digraph</A> by removing all multiple edges. 
+    If non-default integer vertex labels are provided, they will be used to define the partition structure.
+    Should the graph be undirected, the symmetric closure of the graph will be written.
+    See <Ref Oper="DigraphVertexLabels"/> and <Ref Prop="DigraphSymmetricClosure"/>.<P/>
+
+    A detailed description of commands and options in dreadnaut format can be found at
+    <URL Text="nauty and Traces User's Guide">http://pallini.di.uniroma1.it/Guide.html</URL>.
+    <Example><![CDATA[
+gap> gr := Digraph([[2], [1, 3, 4], [2, 4], [2, 3]]);
+<immutable digraph with 4 vertices, 8 edges>
+gap> filename := Concatenation(DIGRAPHS_Dir(),
+>                              "/tst/out/temp.dre");;
+gap> WriteDreadnautGraph(filename, gr);;
+gap> ReadDreadnautGraph(filename) = gr;
+true
+gap> s := WriteDreadnautString(gr);;
+gap> ReadDigraphFromDreadnautString(s) = gr;
+true]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
