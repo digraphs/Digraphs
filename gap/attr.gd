@@ -87,8 +87,8 @@ DeclareAttributeThatReturnsDigraph("DigraphDual", IsDigraph);
 DeclareAttributeThatReturnsDigraph("ReducedDigraph", IsDigraph);
 DeclareAttributeThatReturnsDigraph("DigraphRemoveAllMultipleEdges", IsDigraph);
 
-# TODO replace all DeclareOperations below to DeclareAttributeThatReturnsDigraph,
-# and remove the *Attr versions.
+# TODO replace all DeclareOperations below to
+# DeclareAttributeThatReturnsDigraph, and remove the *Attr versions.
 
 DeclareOperation("DigraphAddAllLoops", [IsDigraph]);
 DeclareAttribute("DigraphAddAllLoopsAttr", IsDigraph);

@@ -27,4 +27,3 @@ ignore:
  - "makedoc.g"
  - "read.g"
  - "tst/"
- - "gap/doc.g"

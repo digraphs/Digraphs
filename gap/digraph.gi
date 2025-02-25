@@ -859,8 +859,11 @@ function(_, edges, n)
   for edge in edges do
     pos := pos + 1;
     if not IsList(edge) then
-      ErrorNoReturn("the 1st argument (list of edges) must be a list of lists, ",
-                    "but found ", TNAM_OBJ(edge), " in position ", pos);
+      ErrorNoReturn("the 1st argument (list of edges) must be a list of ",
+                    "lists, but found ",
+                    TNAM_OBJ(edge),
+                    " in position ",
+                    pos);
     elif Length(edge) <> 2 then
       ErrorNoReturn("the 1st argument (list of edges) must be a list of lists ",
                     "of length 2, found ", edge, " (length ", Length(edge),

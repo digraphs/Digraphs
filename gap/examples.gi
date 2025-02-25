@@ -1422,7 +1422,7 @@ InstallMethod(KneserGraphCons, "for IsMutableDigraph and two integers",
 function(_, n, k)
   local D, vertices, i, j;
   if n < k then
-    ErrorNoReturn("argument <n> must be greater than or equal to argument <k>,");
+    ErrorNoReturn("argument <n> must be greater than or equal to argument <k>");
   fi;
   vertices := Combinations([1 .. n], k);
   D := EmptyDigraph(IsMutableDigraph, Length(vertices));
@@ -1467,7 +1467,8 @@ InstallMethod(KneserGraph, "for two integers", [IsPosInt, IsPosInt],
 InstallMethod(KneserGraph, "for a function and two integers",
 [IsFunction, IsPosInt, IsPosInt], KneserGraphCons);
 
-InstallMethod(LindgrenSousselierGraphCons, "for IsMutableDigraph and an integer",
+InstallMethod(LindgrenSousselierGraphCons,
+"for IsMutableDigraph and an integer",
 [IsMutableDigraph, IsPosInt],
 function(_, n)
   local D, central, i, threei;

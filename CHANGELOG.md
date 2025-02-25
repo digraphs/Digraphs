@@ -1,8 +1,29 @@
 # CHANGELOG – Digraphs package for GAP
-Copyright © 2014-24 by Jan De Beule, Julius Jonušas, James D. Mitchell,
+Copyright © 2014-25 by Jan De Beule, Julius Jonušas, James D. Mitchell,
 Wilf A. Wilson, Michael Young et al.
 
 Licensing information can be found in the `LICENSE` file.
+
+## Version 1.10.0 (released 14/02/2025)
+
+## What's Changed
+* Added copy in `DigraphAllChordlessCycles` by @MeikeWeiss in
+https://github.com/digraphs/Digraphs/pull/702
+* Implementation of facial walks and dual graphs by @MeikeWeiss in
+https://github.com/digraphs/Digraphs/pull/713
+* Added `IsOrderFilter` by @zljlzljlz in
+https://github.com/digraphs/Digraphs/pull/707
+* Update old urls by @forktree in
+https://github.com/digraphs/Digraphs/pull/719
+* Edge weights #4: shortest path(s) by @mtorpey in
+https://github.com/digraphs/Digraphs/pull/656
+
+## New Contributors
+* @zljlzljlz made their first contribution in https://github.com/digraphs/Digraphs/pull/707
+* @forktree made their first contribution in https://github.com/digraphs/Digraphs/pull/719
+* @frankiegillis made their first contribution in https://github.com/digraphs/Digraphs/pull/729
+
+**Full Changelog**: https://github.com/digraphs/Digraphs/compare/v1.9.0...v1.10.0
 
 ## Version 1.9.0 (released 06/09/2024)
 

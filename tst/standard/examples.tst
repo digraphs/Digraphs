@@ -629,7 +629,7 @@ gap> KneserGraph(6, 3);
 <immutable edge- and vertex-transitive symmetric digraph with 20 vertices, 20 \
 edges>
 gap> KneserGraph(3, 4);
-Error, argument <n> must be greater than or equal to argument <k>,
+Error, argument <n> must be greater than or equal to argument <k>
 gap> KneserGraph(3, -1);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `KneserGraph' on 2 arguments

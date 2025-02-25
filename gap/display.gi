@@ -144,11 +144,13 @@ InstallMethod(DotDigraph, "for a digraph by out-neighbours",
 [IsDigraphByOutNeighboursRep],
 D -> DIGRAPHS_DotDigraph(D, [], []));
 
-InstallMethod(DotColoredDigraph, "for a digraph by out-neighbours and two lists",
+InstallMethod(DotColoredDigraph,
+"for a digraph by out-neighbours and two lists",
 [IsDigraphByOutNeighboursRep, IsList, IsList],
 function(D, vert, edge)
   local vert_func, edge_func;
-  if DIGRAPHS_ValidVertColors(D, vert) and DIGRAPHS_ValidEdgeColors(D, edge) then
+  if DIGRAPHS_ValidVertColors(D, vert)
+      and DIGRAPHS_ValidEdgeColors(D, edge) then
     vert_func := i -> StringFormatted("[color={}, style=filled]", vert[i]);
     edge_func := {i, j} -> StringFormatted("[color={}]", edge[i][j]);
     return DIGRAPHS_DotDigraph(D, [vert_func], [edge_func]);
@@ -226,7 +228,8 @@ InstallMethod(DotSymmetricColoredDigraph,
 [IsDigraphByOutNeighboursRep, IsList, IsList],
 function(D, vert, edge)
   local vert_func, edge_func;
-  if DIGRAPHS_ValidVertColors(D, vert) and DIGRAPHS_ValidEdgeColors(D, edge) then
+  if DIGRAPHS_ValidVertColors(D, vert)
+      and DIGRAPHS_ValidEdgeColors(D, edge) then
     vert_func := i -> StringFormatted("[color={}, style=filled]", vert[i]);
     edge_func := {i, j} -> StringFormatted("[color={}]", edge[i][j]);
     return DIGRAPHS_DotSymmetricDigraph(D, [vert_func], [edge_func]);
