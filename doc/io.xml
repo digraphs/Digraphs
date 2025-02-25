@@ -801,7 +801,7 @@ gap> OutNeighbours(gr);
 <#GAPDoc Label="ReadDreadnautGraph">
 <ManSection>
   <Oper Name="ReadDreadnautGraph" Arg="f"/>
-  <Oper Name="ReadDigraphFromDreadnautString" Arg="s"/>
+  <Oper Name="DigraphFromDreadnautString" Arg="s"/>
   <Returns>A digraph.</Returns>
   <Description>
     These operations read in a single digraph in the dreadnaut format. <P/>
@@ -814,7 +814,7 @@ gap> OutNeighbours(gr);
         If <A>f</A> is an open and readable file, the function will read directly from it.
       </Item>
     </List>
-    <C>ReadDigraphFromDreadnautString</C> expects the argument <A>s</A> to be a string.<P/>
+    <C>DigraphFromDreadnautString</C> expects the argument <A>s</A> to be a string.<P/>
 
     The file or string should contain a single graph in dreadnaut format.<P/>
     If the vertices are not already 1-indexed, they will be reindexed accordingly.
@@ -835,8 +835,8 @@ gap> filename := Concatenation(DIGRAPHS_Dir(),
 gap> WriteDreadnautGraph(filename, gr);;
 gap> ReadDreadnautGraph(filename) = gr;
 true
-gap> s := WriteDreadnautString(gr);;
-gap> ReadDigraphFromDreadnautString(s) = gr;
+gap> s := DreadnautString(gr);;
+gap> DigraphFromDreadnautString(s) = gr;
 true]]></Example>
   </Description>
 </ManSection>
@@ -845,7 +845,7 @@ true]]></Example>
 <#GAPDoc Label="WriteDreadnautGraph">
 <ManSection>
   <Oper Name="WriteDreadnautGraph" Arg="f, digraph"/>
-  <Oper Name="WriteDigraphToDreadnautString" Arg="digraph"/>
+  <Oper Name="DreadnautString" Arg="digraph"/>
   <Description>
     These operations convert a single digraph <A>digraph</A> to the dreadnaut
     format. <P/>
@@ -858,7 +858,7 @@ true]]></Example>
         If <A>f</A> is an open and writable file, the function will write directly to it.
       </Item>
     </List>
-    <C>WriteDigraphToDreadnautString</C> returns a string.<P/>
+    <C>DreadnautString</C> returns a string.<P/>
 
     If <A>digraph</A> has multiple edges, then this operation returns a digraph constructed from <A>digraph</A> by removing all multiple edges. 
     If non-default integer vertex labels are provided, they will be used to define the partition structure.
@@ -875,8 +875,8 @@ gap> filename := Concatenation(DIGRAPHS_Dir(),
 gap> WriteDreadnautGraph(filename, gr);;
 gap> ReadDreadnautGraph(filename) = gr;
 true
-gap> s := WriteDreadnautString(gr);;
-gap> ReadDigraphFromDreadnautString(s) = gr;
+gap> s := DreadnautString(gr);;
+gap> DigraphFromDreadnautString(s) = gr;
 true]]></Example>
   </Description>
 </ManSection>
