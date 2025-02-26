@@ -437,7 +437,6 @@ gap> EdgeWeightedDigraphShortestPath(d, 1, 2);
 [ [ 1, 2 ], [ 1 ] ]
 
 # IsTwoEdgeTransitive
-
 gap> IsTwoEdgeTransitive(DigraphByEdges([[1, 2], [2, 3], [3, 1]]));
 true
 
