@@ -246,9 +246,9 @@ end);
 
 BindGlobal("DIGRAPHS_DecoderWrapper",
 function(decoder)
-  if NameFunction(decoder) in WholeFileDecoders then
+  if decoder = IO_Unpickle then
     return decoder;
-  elif decoder = IO_Unpickle then
+  elif NameFunction(decoder) in WholeFileDecoders then
     return decoder;
   fi;
   return
@@ -1830,6 +1830,10 @@ function(D)
             fi;
         elif c = 'g' then
             minus := false;
+            if r.edgelist <> fail then
+                Info(InfoWarning, 1, "Multiple graphs have been declared.",
+                    " Only the last one will be read in.");
+            fi;
             DIGRAPHS_readgraph(r, D);
         elif c = 's' then
           minus := false;
