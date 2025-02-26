@@ -687,8 +687,8 @@ function(D)
   return LatticeDigraphEmbedding(N5, D) = fail;
 end);
 
-InstallMethod(IsTwoEdgeTransitive, "for a digraph without multiple edges", [IsDigraph],
-              function(D)
+InstallMethod(IsTwoEdgeTransitive, "for a digraph without multiple edges",
+              [IsDigraph], function(D)
   local twoEdges;
 
   if IsMultiDigraph(D) then
