@@ -119,6 +119,7 @@ DeclareOperation("DigraphShortestPaths",
                  [IsDigraph, IsPosInt]);
 DeclareOperation("DigraphShortestPaths",
                  [IsDigraph, IsPosInt, IsPosInt]);
+DeclareSynonym("DigraphDijkstra", DigraphShortestPaths);
 
 DeclareOperation("DigraphConnectedComponent", [IsDigraph, IsPosInt]);
 DeclareOperation("DigraphStronglyConnectedComponent", [IsDigraph, IsPosInt]);
