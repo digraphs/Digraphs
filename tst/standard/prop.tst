@@ -1694,6 +1694,8 @@ gap> IsTwoEdgeTransitive(DigraphByEdges([[1, 2]]));
 true
 gap> IsTwoEdgeTransitive(DigraphByEdges([]));
 true
+gap> IsTwoEdgeTransitive(Digraph([[2], [3, 3, 3], []]));
+Error, the argument <D> must be a digraph with no multiple edges,
 
 # DigraphHasNoVertices and DigraphHasAVertex
 gap> List([0 .. 3], i -> DigraphHasAVertex(EmptyDigraph(i)));
