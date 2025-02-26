@@ -1830,7 +1830,7 @@ function(D)
             fi;
         elif c = 'g' then
             minus := false;
-            if r.edgelist <> fail then
+            if r.edgeList <> fail then
                 Info(InfoWarning, 1, "Multiple graphs have been declared.",
                     " Only the last one will be read in.");
             fi;
