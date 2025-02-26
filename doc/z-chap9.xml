@@ -81,5 +81,6 @@
     <#Include Label="PlainTextString">
     <#Include Label="WritePlainTextDigraph">
     <#Include Label="WriteDIMACSDigraph">
+    <#Include Label="WholeFileEncoders">
   </Section>
 </Chapter>

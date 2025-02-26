@@ -881,3 +881,20 @@ true]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
+
+<#GAPDoc Label="WholeFileEncoders">
+<ManSection>
+  <Var Name="WholeFileEncoders"/>
+  <Var Name="WholeFileDecoders"/>
+  <Func Name="IsWholeFileEncoder" Arg="encoder"/>
+  <Func Name="IsWholeFileDecoder" Arg="decoder"/>
+  <Description>
+  <C>WholeFileEncoders</C> and <C>WholeFileDecoders</C> are hashsets containing functions that
+  encode and decode an entire file. That is, they expect graph formats in which graphs are declared on multiple
+  lines, such as dreadnaut. <P/>
+
+  <C>IsWholeFileEncoder</C> and <C>IsWholeFileDecoder</C> are functions that check if their arguments are
+  in the hashsets <C>WholeFileEncoders</C> and <C>WholeFileDecoders</C>, respectively. <P/>
+  </Description>
+</ManSection>
+<#/GAPDoc>
