@@ -438,7 +438,7 @@ gap> EdgeWeightedDigraphShortestPath(d, 1, 2);
 
 # IsTwoEdgeTransitive
 
-gap> IsTwoEdgeTransitive(DigraphByEdges([[1,2],[2,3],[3,1]]));
+gap> IsTwoEdgeTransitive(DigraphByEdges([[1, 2], [2, 3], [3, 1]]));
 true
 
 # Issue 617: bug in DigraphRemoveEdge, wasn't removing edge labels
