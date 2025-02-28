@@ -238,9 +238,7 @@ InstallGlobalFunction(IsWholeFileEncoder,
 
 BindGlobal("DIGRAPHS_EncoderWrapper",
 function(encoder)
-  if encoder = IO_Pickle then
-    return IO_Pickle;
-  elif NameFunction(encoder) in WholeFileEncoders then
+  if NameFunction(encoder) in WholeFileEncoders then
     return encoder;
   elif NameFunction(encoder) = "WriteDIMACSDigraph" then
     return DIMACSString;  # edge case (legacy function)
@@ -250,9 +248,7 @@ end);
 
 BindGlobal("DIGRAPHS_DecoderWrapper",
 function(decoder)
-  if decoder = IO_Unpickle then
-    return decoder;
-  elif NameFunction(decoder) in WholeFileDecoders then
+  if NameFunction(decoder) in WholeFileDecoders then
     return decoder;
   elif NameFunction(decoder) = "ReadDIMACSDigraph" then
     return DigraphFromDIMACSString;  # edge case (legacy function)
