@@ -37,9 +37,8 @@ DeclareConstructor("DigraphFromPlainTextStringCons", [IsDigraph, IsString]);
 DeclareOperation("DigraphFromPlainTextString", [IsFunction, IsString]);
 DeclareOperation("DigraphFromPlainTextString", [IsString]);
 DeclareOperation("ReadDIMACSDigraph", [IsString]);
+DeclareOperation("DigraphFromDIMACSString", [IsString]);
 DeclareOperation("TournamentLineDecoder", [IsString]);
-DeclareOperation("ReadDreadnautGraph", [IsString]);
-DeclareOperation("ReadDreadnautGraph", [IsFile]);
 DeclareOperation("DigraphFromDreadnautString", [IsString]);
 
 DeclareOperation("DigraphPlainTextLineDecoder",
@@ -59,8 +58,7 @@ DeclareOperation("Sparse6String", [IsDigraph]);
 DeclareOperation("DiSparse6String", [IsDigraph]);
 DeclareOperation("PlainTextString", [IsDigraph]);
 DeclareOperation("WriteDIMACSDigraph", [IsString, IsDigraph]);
+DeclareOperation("DIMACSString", [IsDigraph]);
 DeclareGlobalFunction("WritePlainTextDigraph");
-DeclareOperation("WriteDreadnautGraph", [IsString, IsDigraph]);
-DeclareOperation("WriteDreadnautGraph", [IsFile, IsDigraph]);
 DeclareOperation("DreadnautString", [IsDigraph]);
 DeclareGlobalFunction("DigraphPlainTextLineEncoder");

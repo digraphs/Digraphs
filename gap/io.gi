@@ -220,10 +220,12 @@ function(arg...)
 end);
 
 BindGlobal("WholeFileDecoders", HashSet());
-AddSet(WholeFileDecoders, "ReadDreadnautGraph");
+AddSet(WholeFileDecoders, "DigraphFromDreadnautString");
+AddSet(WholeFileDecoders, "DigraphFromDIMACSString");
 
 BindGlobal("WholeFileEncoders", HashSet());
-AddSet(WholeFileEncoders, "WriteDreadnautGraph");
+AddSet(WholeFileEncoders, "DreadnautString");
+AddSet(WholeFileEncoders, "DIMACSString");
 
 InstallGlobalFunction(IsWholeFileDecoder,
   decoder -> NameFunction(decoder) in WholeFileDecoders);
@@ -240,6 +242,8 @@ function(encoder)
     return IO_Pickle;
   elif NameFunction(encoder) in WholeFileEncoders then
     return encoder;
+  elif NameFunction(encoder) = "WriteDIMACSDigraph" then
+    return DIMACSString;  # edge case (legacy function)
   fi;
   return {file, D} -> IO_WriteLine(file, encoder(D));
 end);
@@ -250,6 +254,8 @@ function(decoder)
     return decoder;
   elif NameFunction(decoder) in WholeFileDecoders then
     return decoder;
+  elif NameFunction(decoder) = "ReadDIMACSDigraph" then
+    return DigraphFromDIMACSString;  # edge case (legacy function)
   fi;
   return
     function(file)
@@ -292,7 +298,9 @@ function(filename)
   elif extension = "p" or extension = "pickle" then
     return IO_Unpickle;
   elif extension = "dre" then
-    return ReadDreadnautGraph;
+    return DigraphFromDreadnautString;
+  elif extension = "dimacs" then
+    return DigraphFromDIMACSString;
   fi;
 
   return fail;
@@ -328,7 +336,9 @@ function(filename)
   elif extension = "p" or extension = "pickle" then
     return IO_Pickle;
   elif extension = "dre" then
-    return WriteDreadnautGraph;
+    return DreadnautString;
+  elif extension = "dimacs" then
+    return DIMACSString;
   fi;
   return fail;
 end);
@@ -390,6 +400,7 @@ function(arg...)
     ErrorNoReturn("cannot open the file given as the 1st argument <name>,");
   fi;
   file!.coder := coder;
+  file!.mode := mode;
   return file;
 end);
 
@@ -443,8 +454,9 @@ function(arg...)
 
   if nr < infinity then
     if NameFunction(decoder) in WholeFileDecoders then
-      ErrorNoReturn(decoder, " is a whole file decoder, and so the ",
-                    "argument <n> should not be specified");
+      Info(InfoWarning, 1, NameFunction(decoder), " is a whole file decoder ",
+           " and so only one digraph should be specified. If possible, the ",
+           "final digraph will be returned, or else an error.");
     else
       i := 0;
       next := fail;
@@ -465,11 +477,11 @@ function(arg...)
   fi;
 
   out := [];
-  next := decoder(file);
-
   if NameFunction(decoder) in WholeFileDecoders then
-    out := [next];
+    Add(out, decoder(IO_ReadUntilEOF(file)));
     next := IO_Nothing;
+  else
+    next := decoder(file);
   fi;
 
   while next <> IO_Nothing do
@@ -597,9 +609,19 @@ function(arg...)
       Info(InfoWarning, 1, "Writing to ", name);
     fi;
     file := DigraphFile(name, encoder, mode);
+    if NameFunction(file!.coder) in WholeFileEncoders and file!.mode <> "w" then
+      Info(InfoWarning, 1, NameFunction(file!.coder), " is a whole file ",
+          "encoder and so the argument <mode> is defaulting to \"w\". This ",
+          "will overwrite any current file contents. Continue (Y/N)?");
+      if not (NormalizedWhitespace(LowercaseString(ReadLine(InputTextUser())))
+              in ["y", "yes"]) then
+        return fail;
+      fi;
+      file := DigraphFile(name, encoder, "w");
+    fi;
   else
-    file := name;
-    if file!.closed then
+    file := name;         # note that if file is established through this block,
+    if file!.closed then  #  we don't know the mode so can't check for "w" later
       ErrorNoReturn("the 1st argument <filename> is closed,");
     elif file!.wbufsize = false then
       ErrorNoReturn("the mode of the 1st argument <filename> must be ",
@@ -609,10 +631,13 @@ function(arg...)
 
   encoder := file!.coder;
 
-  if NameFunction(encoder) in WholeFileEncoders and Length(digraphs) > 1 then
-      ErrorNoReturn("the encoder ", NameFunction(encoder),
-                    " is a whole file encoder, and so only one digraph ",
-                    "should be specified");
+  if NameFunction(encoder) in WholeFileEncoders then
+    if Length(digraphs) > 1 then
+      Info(InfoWarning, 1, "the encoder ", NameFunction(encoder),
+          " is a whole file encoder, and so only one digraph should be ",
+          "specified. Only the last digraph will be encoded.");
+    fi;
+    IO_Write(file, encoder(digraphs[Length(digraphs)]));
   else
     for i in [1 .. Length(digraphs)] do
         encoder(file, digraphs[i]);
@@ -1154,43 +1179,43 @@ InstallMethod(DigraphFromPlainTextString, "for a string",
 [IsString], s -> DigraphFromPlainTextString(IsImmutableDigraph, s));
 
 # DIMACS format: for symmetric digraphs, one per file, can have loops and
-# multiple edges.
+# multiple edges.,
 
-BindGlobal("DIGRAPHS_ReadDIMACSDigraph",
-function(func, name)
-  local file, malformed_file, int_from_string, next, split, first_char,
+InstallMethod(DigraphFromDIMACSString, "for a string", [IsString],
+function(s)
+  local parts, x, int_from_string, next, split, first_char,
   nr_vertices, vertices, vertex_labels, nr_edges, directed_edges,
   symmetric_edges, nbs, vertex, label, i, j, D;
 
-  file := IO_CompressedFile(UserHomeExpand(name), "r");
-  if file = fail then
-    ErrorNoReturn("cannot open the file given as the 2nd argument <name>,");
+  if s = "" then
+    ErrorNoReturn("the argument <s> must be a non-empty string");
   fi;
-
-  # Helper function for when an error is found in the file's formatting
-  malformed_file := function()
-    IO_Close(file);
-    ErrorNoReturn("the format of the file given as the 2nd argument <name> ",
-                  "cannot be determined,");
-  end;
 
   # Helper function to read a string into a non-negative integer
   int_from_string := function(string)
     local int;
     int := Int(string);
     if int = fail or int < 0 then
-      malformed_file();
+      return fail;
     fi;
     return int;
   end;
 
-  next := IO_ReadLine(file);
+  parts := SplitString(s, "\n");
+  x := 1;
+  next := parts[x];
+
   while not IsEmpty(next) do
     NormalizeWhitespace(next);
 
     # the line is entirely whitespace or a comment
     if IsEmpty(next) or next[1] = 'c' then
-      next := IO_ReadLine(file);
+      x := x + 1;
+      if x > Length(parts) then
+        next := "";
+      else
+        next := parts[x];
+      fi;
       continue;
     fi;
 
@@ -1198,7 +1223,7 @@ function(func, name)
 
     # the line doesn't have a `type'
     if Length(split[1]) <> 1 then
-      malformed_file();
+      return fail;
     fi;
 
     first_char := next[1];
@@ -1206,45 +1231,56 @@ function(func, name)
     # digraph definition line
     if first_char = 'p' then
       if IsBound(vertices) or Length(split) <> 4 or split[2] <> "edge" then
-        malformed_file();
+        return fail;
       fi;
       nr_vertices     := int_from_string(split[3]);
+      if nr_vertices = fail then
+        return fail;
+      fi;
       vertices        := [1 .. nr_vertices];
       vertex_labels   := vertices * 0 + 1;
       nr_edges        := int_from_string(split[4]);
+      if nr_edges = fail then
+        return fail;
+      fi;
       directed_edges  := 0;
       symmetric_edges := 0;
       nbs := List(vertices, x -> []);
-      next := IO_ReadLine(file);
+      x := x + 1;
+      if x > Length(parts) then
+        next := "";
+      else
+        next := parts[x];
+      fi;
       continue;
     fi;
 
     if not IsBound(vertices) then
       # the problem definition line must precede all other types
-      malformed_file();
+      return fail;
     elif first_char = 'n' then
       # type: vertex label
       if Length(split) <> 3 then
-        malformed_file();
+        return fail;
       fi;
       vertex := int_from_string(split[2]);
       if not vertex in vertices then
-        malformed_file();
+        return fail;
       fi;
       label := Int(split[3]);
       if label = fail then
-        malformed_file();
+        return fail;
       fi;
       vertex_labels[vertex] := label;
     elif first_char = 'e' then
       # type: edge
       if Length(split) <> 3 then
-        malformed_file();
+        return fail;
       fi;
       i := int_from_string(split[2]);
       j := int_from_string(split[3]);
       if not (i in vertices and j in vertices) then
-        malformed_file();
+        return fail;
       fi;
       Add(nbs[i], j);
       directed_edges := directed_edges + 1;
@@ -1259,13 +1295,18 @@ function(func, name)
            "Lines beginning with 'd', 'v', or 'x' are not supported,");
     else
       # type: unknown
-      malformed_file();
+      return fail;
     fi;
-    next := IO_ReadLine(file);
+    x := x + 1;
+    if x > Length(parts) then
+      next := "";
+    else
+      next := parts[x];
+    fi;
   od;
 
   if not IsBound(vertices) then
-    malformed_file();
+    return fail;
   fi;
 
   if not nr_edges in [directed_edges, 2 * directed_edges, symmetric_edges] then
@@ -1274,8 +1315,7 @@ function(func, name)
          "An unexpected number of edges was found,");
   fi;
 
-  IO_Close(file);
-  D := func(nbs);
+  D := ConvertToImmutableDigraphNC(nbs);
   if IsImmutableDigraph(D) then
     SetDigraphVertexLabels(D, vertex_labels);
   fi;
@@ -1283,7 +1323,22 @@ function(func, name)
 end);
 
 InstallMethod(ReadDIMACSDigraph, "for a string", [IsString],
-s -> DIGRAPHS_ReadDIMACSDigraph(ConvertToImmutableDigraphNC, s));
+function(name)
+  local file, out;
+    file := IO_CompressedFile(UserHomeExpand(name), "r");
+    if file = fail then
+      ErrorNoReturn("cannot open the file given as the 1st argument <name>,");
+    fi;
+
+    out := DigraphFromDIMACSString(IO_ReadUntilEOF(file));
+    if out = fail then
+      IO_Close(file);
+      ErrorNoReturn("the format of the file given as the 1st argument <name> ",
+                    "cannot be determined,");
+    fi;
+    IO_Close(file);
+    return out;
+end);
 
 BindGlobal("DIGRAPHS_TournamentLineDecoder",
 function(func, s)
@@ -1730,27 +1785,6 @@ function(r, minus, D)
     return;
 end);
 
-InstallMethod(ReadDreadnautGraph, "for a digraph", [IsFile],
-function(f)
-    if f!.closed then
-      ErrorNoReturn("the 1st argument <filename> is a closed file,");
-    elif f!.rbufsize = false then
-      ErrorNoReturn("the mode of the 1st argument <filename> must be \"r\",");
-    fi;
-    return DigraphFromDreadnautString(IO_ReadUntilEOF(f));
-end);
-
-InstallMethod(ReadDreadnautGraph, "for a digraph", [IsString],
-function(filename)
-    local f;
-    f := IO_CompressedFile(UserHomeExpand(filename), "r");
-    if f = fail then
-        ErrorNoReturn("cannot open the file given as the 1st ",
-                      "argument <name>, \"", filename, "\",");
-    fi;
-    return DigraphFromDreadnautString(IO_ReadUntilEOF(f));
-end);
-
 InstallMethod(DigraphFromDreadnautString, "for a digraph", [IsString],
 function(D)
     local r, c, minus, backslash, temp, out,
@@ -1812,7 +1846,7 @@ function(D)
         elif c in ">" then
             ErrorNoReturn("Operation '>' (line ", r.newline,
               ") is not supported.",
-              " Please use 'WriteDreadnautGraph'.");  # maybe can do better
+              " Please use 'WriteDigraphs'.");  # maybe can do better
         elif c = '!' then
             while c <> '\n' and c <> fail do
                 c := DIGRAPHS_GetUngetChar(r, D, 1);
@@ -2027,18 +2061,24 @@ end);
 ################################################################################
 # 4. Encoders
 ################################################################################
-
 InstallMethod(WriteDIMACSDigraph, "for a digraph", [IsString, IsDigraph],
 function(name, D)
-  local file, n, verts, nbs, nr_loops, m, labels, i, j;
-
-  if not IsSymmetricDigraph(D) then
-    ErrorNoReturn("the 2nd argument <D> must be a symmetric digraph,");
-  fi;
-
+  local file;
   file := IO_CompressedFile(UserHomeExpand(name), "w");
   if file = fail then
     ErrorNoReturn("cannot open the file given as the 1st argument <name>,");
+  fi;
+  IO_Write(file, DIMACSString(D));
+  IO_Close(file);
+  return IO_OK;
+end);
+
+InstallMethod(DIMACSString, "for a digraph", [IsDigraph],
+function(D)
+  local n, verts, nbs, nr_loops, m, labels, i, j, out;
+
+  if not IsSymmetricDigraph(D) then
+    ErrorNoReturn("the argument <D> must be a symmetric digraph,");
   fi;
 
   n := DigraphNrVertices(D);
@@ -2061,13 +2101,13 @@ function(name, D)
   m := ((DigraphNrEdges(D) - nr_loops) / 2) + nr_loops;
 
   # Problem definition
-  IO_WriteLine(file, Concatenation("p edge ", String(n), " ", String(m)));
+  out := Concatenation("p edge ", String(n), " ", String(m));
 
   # Edges
   for i in verts do
     for j in nbs[i] do
       if i <= j then
-        IO_WriteLine(file, Concatenation("e ", String(i), " ", String(j)));
+        out := Concatenation(out, "\ne ", String(i), " ", String(j));
       fi;
       # In the case that j < i, the edge will be written elsewhere in the file
     od;
@@ -2080,43 +2120,16 @@ function(name, D)
       Info(InfoDigraphs, 1,
            "Only integer vertex labels are supported by the DIMACS format.");
       Info(InfoDigraphs, 1,
-           "The vertex labels of the 2nd argument <a digraph> will not be",
+           "The vertex labels of the argument <D> will not be",
            " saved.");
     else
       for i in verts do
-        IO_WriteLine(file,
-                     Concatenation("n ", String(i), " ", String(labels[i])));
+        out := Concatenation(out, "\nn ", String(i), " ", String(labels[i]));
       od;
     fi;
   fi;
 
-  IO_Close(file);
-  return IO_OK;
-end);
-
-InstallMethod(WriteDreadnautGraph, "for a digraph", [IsString, IsDigraph],
-function(name, D)
-  local file;
-  file := IO_CompressedFile(UserHomeExpand(name), "w");
-  if file = fail then
-    ErrorNoReturn("cannot open the file given as the 1st argument <name>, \"",
-                  name,
-                  "\",");
-  fi;
-  IO_WriteLine(file, DreadnautString(D));
-  IO_Close(file);
-  return IO_OK;
-end);
-
-InstallMethod(WriteDreadnautGraph, "for a digraph", [IsFile, IsDigraph],
-function(f, D)
-  if f!.closed then
-    ErrorNoReturn("the 1st argument <filename> is a closed file,");
-  elif f!.wbufsize = false then
-    ErrorNoReturn("the mode of the 1st argument <filename> must be \"w\",");
-  fi;
-  IO_WriteLine(f, DreadnautString(D));
-  return IO_OK;
+  return out;
 end);
 
 InstallMethod(DreadnautString, "for a digraph", [IsDigraph],
@@ -2138,7 +2151,7 @@ function(D)
   labels := DigraphVertexLabels(D);
 
   if n = 0 then
-    ErrorNoReturn("the 2nd argument <D> must be a non-empty digraph,");
+    ErrorNoReturn("the argument <D> must be a non-empty digraph,");
   fi;
 
   out := Concatenation("n=", String(n));
@@ -2176,7 +2189,7 @@ function(D)
       Info(InfoWarning, 1,
            "Only integer vertex labels are supported.");
       Info(InfoWarning, 1,
-            "The vertex labels of the 2nd argument <a digraph> will not be",
+            "The vertex labels of the argument <D> will not be",
             " saved.");
     fi;
   fi;

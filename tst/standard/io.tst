@@ -80,10 +80,7 @@ gap> badfilename := "path/to/some/madeupfile.g6.gz";;
 gap> ReadDigraphs(badfilename, 3);
 Error, cannot open the file given as the 1st argument <name>,
 gap> filename := Concatenation(DIGRAPHS_Dir(), "tst/out/temp.dre");;
-gap> WriteDreadnautGraph(filename, gr);;
-gap> ReadDigraphs(filename, 3);
-Error, <Operation "ReadDreadnautGraph"> is a whole file decoder, and so the ar\
-gument <n> should not be specified
+gap> WriteDigraphs(filename, gr, "w");;
 gap> ReadDigraphs(filename)[1] = gr;
 true
 
@@ -189,12 +186,6 @@ gap> gr[2] := Digraph(1000,
 <immutable digraph with 1000 vertices, 1000 edges>
 gap> gr[3] := Digraph([[1, 1, 4], [2, 3, 4], [2, 4], [2], [1, 3, 3, 5]]);
 <immutable multidigraph with 5 vertices, 13 edges>
-gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/temp.dre");;
-gap> WriteDigraphs(filename, gr, "w");
-Error, the encoder WriteDreadnautGraph is a whole file encoder, and so only on\
-e digraph should be specified
-gap> WriteDigraphs(filename, gr[1], "w");
-IO_OK
 gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/test.ds6");;
 gap> WriteDigraphs(filename, gr, "w");
 IO_OK
@@ -684,7 +675,7 @@ gap> WriteDIMACSDigraph(gr, filename);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `WriteDIMACSDigraph' on 2 arguments
 gap> WriteDIMACSDigraph("file", ChainDigraph(2));
-Error, the 2nd argument <D> must be a symmetric digraph,
+Error, the argument <D> must be a symmetric digraph,
 gap> WriteDIMACSDigraph(filename, gr);
 Error, cannot open the file given as the 1st argument <name>,
 gap> filename := "tmp.gz";;
@@ -730,7 +721,7 @@ IO_OK
 
 #  ReadDIMACSDigraph
 gap> ReadDIMACSDigraph("does/not/exist.gz");
-Error, cannot open the file given as the 2nd argument <name>,
+Error, cannot open the file given as the 1st argument <name>,
 gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/bad.dimacs");;
 
 # Bad line type
@@ -738,7 +729,7 @@ gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "file for testing purposes");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, the format of the file given as the 2nd argument <name> cannot be deter\
+Error, the format of the file given as the 1st argument <name> cannot be deter\
 mined,
 
 # Bad vertices and edges definition
@@ -747,38 +738,38 @@ gap> IO_WriteLine(file, "c file for testing purposes");;
 gap> IO_WriteLine(file, "p edge 'a' 1");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, the format of the file given as the 2nd argument <name> cannot be deter\
+Error, the format of the file given as the 1st argument <name> cannot be deter\
 mined,
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "p edge 2 -1");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, the format of the file given as the 2nd argument <name> cannot be deter\
+Error, the format of the file given as the 1st argument <name> cannot be deter\
 mined,
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "p edge 1 1");;
 gap> IO_WriteLine(file, "p edge 1 1");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, the format of the file given as the 2nd argument <name> cannot be deter\
+Error, the format of the file given as the 1st argument <name> cannot be deter\
 mined,
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "p edge 1");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, the format of the file given as the 2nd argument <name> cannot be deter\
+Error, the format of the file given as the 1st argument <name> cannot be deter\
 mined,
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "p fail 1 1");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, the format of the file given as the 2nd argument <name> cannot be deter\
+Error, the format of the file given as the 1st argument <name> cannot be deter\
 mined,
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "c empty file");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, the format of the file given as the 2nd argument <name> cannot be deter\
+Error, the format of the file given as the 1st argument <name> cannot be deter\
 mined,
 
 # Vertices and edges undefined
@@ -786,7 +777,7 @@ gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "e 1 1");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, the format of the file given as the 2nd argument <name> cannot be deter\
+Error, the format of the file given as the 1st argument <name> cannot be deter\
 mined,
 
 # Bad node label
@@ -795,21 +786,21 @@ gap> IO_WriteLine(file, "p edge 2 1");;
 gap> IO_WriteLine(file, "n 2");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, the format of the file given as the 2nd argument <name> cannot be deter\
+Error, the format of the file given as the 1st argument <name> cannot be deter\
 mined,
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "p edge 2 1");;
 gap> IO_WriteLine(file, "n 3 1");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, the format of the file given as the 2nd argument <name> cannot be deter\
+Error, the format of the file given as the 1st argument <name> cannot be deter\
 mined,
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "p edge 2 1");;
 gap> IO_WriteLine(file, "n 2 a");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, the format of the file given as the 2nd argument <name> cannot be deter\
+Error, the format of the file given as the 1st argument <name> cannot be deter\
 mined,
 
 # Bad edge
@@ -818,28 +809,28 @@ gap> IO_WriteLine(file, "p edge 2 1");;
 gap> IO_WriteLine(file, "e 2 1 3");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, the format of the file given as the 2nd argument <name> cannot be deter\
+Error, the format of the file given as the 1st argument <name> cannot be deter\
 mined,
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "p edge 2 1");;
 gap> IO_WriteLine(file, "e 2 a");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, the format of the file given as the 2nd argument <name> cannot be deter\
+Error, the format of the file given as the 1st argument <name> cannot be deter\
 mined,
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "p edge 2 1");;
 gap> IO_WriteLine(file, "e 3 1");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, the format of the file given as the 2nd argument <name> cannot be deter\
+Error, the format of the file given as the 1st argument <name> cannot be deter\
 mined,
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "p edge 2 1");;
 gap> IO_WriteLine(file, "e 1 3");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, the format of the file given as the 2nd argument <name> cannot be deter\
+Error, the format of the file given as the 1st argument <name> cannot be deter\
 mined,
 
 # Unsupported types
@@ -851,7 +842,7 @@ gap> IO_WriteLine(file, "x");;
 gap> IO_WriteLine(file, "j");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, the format of the file given as the 2nd argument <name> cannot be deter\
+Error, the format of the file given as the 1st argument <name> cannot be deter\
 mined,
 
 # Bad number of edges
@@ -907,6 +898,18 @@ true
 gap> DigraphVertexLabels(gr);
 [ 1 .. 3 ]
 
+#  DigraphFromDIMACSString / DIMACSString
+gap> str := DIMACSString(gr);
+"p edge 3 4\ne 1 2\ne 2 3\ne 2 3\ne 3 3\nn 1 1\nn 2 2\nn 3 3"
+gap> DigraphFromDIMACSString(str) = gr;
+true
+gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/more.dimacs");;
+gap> WriteDigraphs(filename, gr, "w");;
+gap> ReadDigraphs(filename)[1] = gr;
+true
+gap> DigraphVertexLabels(gr) = [1 .. 3];
+true
+
 #  Test DIGRAPHS_ChooseFileDecoder
 gap> DIGRAPHS_ChooseFileDecoder(1);
 Error, the argument <filename> must be a string,
@@ -940,53 +943,32 @@ gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/test.p");;
 gap> ReadDigraphs(filename, IO_Unpickle);
 [ <immutable digraph with 30 vertices, 870 edges> ]
 
-# WriteDreadnautGraph
-gap> gr := EmptyDigraph(0);;
-gap> filename := "does/not/exist.dre";;
-gap> WriteDreadnautGraph(filename, gr);
-Error, cannot open the file given as the 1st argument <name>, "does/not/exist.\
-dre",
-gap> WriteDreadnautGraph(filename, 0); 
-Error, no method found! For debugging hints type ?Recovery from NoMethodFound
-Error, no 1st choice method found for `WriteDreadnautGraph' on 2 arguments
-gap> WriteDreadnautGraph(".", RandomDigraph(2));
-Error, cannot open the file given as the 1st argument <name>, ".",
+# DreadnautString
 gap> filename := Concatenation(DIGRAPHS_Dir(), "tst/out/temp.dre");;
 gap> D := CompleteDigraph(3);;
-gap> WriteDreadnautGraph(filename, D);;
 gap> SetDigraphVertexLabels(D, ["a", "b", "c"]);;
-gap> WriteDreadnautGraph(filename, D);;
+gap> WriteDigraphs(filename, D, "w");;
 
-# ReadDreadnautGraph/DigraphFromDreadnautString
-gap> ReadDreadnautGraph(filename) = D;
+# DigraphFromDreadnautString
+gap> ReadDigraphs(filename)[1] = D;
 true
-gap> ReadDreadnautGraph("fakedir.dre");
-Error, cannot open the file given as the 1st argument <name>, "fakedir.dre",
 gap> DigraphFromDreadnautString("");
 Error, the argument <s> must be a non-empty string
 gap> DigraphFromDreadnautString("$1n3\ndg\n1:1;\n2:21");
 <immutable digraph with 3 vertices, 1 edge>
 gap> filename := Concatenation(DIGRAPHS_Dir(), "tst/out/temp.dre");;
 gap> D := EmptyDigraph(5);;
-gap> WriteDreadnautGraph(filename, D);;
-gap> D = ReadDreadnautGraph(filename);
+gap> WriteDigraphs(filename, D, "w");;
+gap> D = ReadDigraphs(filename)[1];
 true
 gap> D := Digraph([[3, 5, 10], [9, 8, 10], [4], [6], [7, 11], [7], [8], [], [11], [], []]);;
 gap> SetDigraphVertexLabels(D, [1, 2, 1, 1, 4, 1, 1, 3, 1, 5, 1]);;
-gap> WriteDreadnautGraph(filename, D);;
-gap> D2 := ReadDreadnautGraph(filename);;
+gap> WriteDigraphs(filename, D, "w");;
+gap> D2 := ReadDigraphs(filename)[1];;
 gap> D = D2;
 true
 gap> DigraphVertexLabels(D) = DigraphVertexLabels(D2);
 false
-gap> f := IO_CompressedFile(filename, "r");;
-gap> IO_Close(f);;
-gap> ReadDreadnautGraph(f);
-Error, the 1st argument <filename> is a closed file,
-gap> f := IO_CompressedFile(filename, "w");;
-gap> ReadDreadnautGraph(f);
-Error, the mode of the 1st argument <filename> must be "r",
-gap> IO_Close(f);;
 gap> DigraphFromDreadnautString("$=1n=3-d\ng1 : 1 2 3 1 2;\n	 2 : 1 2;\n	 3 : 2;");
 <immutable digraph with 3 vertices, 6 edges>
 gap> DigraphFromDreadnautString("silly text for testing\nn=1dg\n1: 1.");
@@ -1025,7 +1007,6 @@ gap> D := DigraphFromDreadnautString("$=3n=10dAg\n3:4.");;
 Error, Operation 'A' (line 1) is not recognised
 gap> DigraphFromDreadnautString("$=3n=2dAs\"this is a comment \"g\n3:4;3._");
 <immutable empty digraph with 2 vertices>
-gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> DigraphEdges(DigraphFromDreadnautString("$=3n=2dg\n3:3,4;\n3! 2 3 4\n._sr=2r& F=4 FF -M -f -V -P"));
 [ [ 2, 2 ] ]
 gap> DigraphEdges(DigraphFromDreadnautString("$=3n=2dg\n3:3,4.__"));
@@ -1041,8 +1022,7 @@ Error, Unterminated comment beginning on line 1
 gap> DigraphFromDreadnautString("$=1n-3dg\n1 : 2 3.");
 Error, Vertex number given as -3 (line 1), but should be positive.
 gap> DigraphFromDreadnautString("$=1n3dg\n1 : 2 3.\n> \"out.dre\"");
-Error, Operation '>' (line 
-3) is not supported. Please use 'WriteDreadnautGraph'.
+Error, Operation '>' (line 3) is not supported. Please use 'WriteDigraphs'.
 gap> DigraphFromDreadnautString("$n3dg\n1 : 2 3.\n< \"out.dre\"");
 Error, Expected integer on line 1 following $ but was not found
 gap> DigraphFromDreadnautString("$=1n3d");
