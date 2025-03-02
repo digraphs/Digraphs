@@ -722,7 +722,7 @@ function(D)
       if IsIsomorphicDigraph(DigraphRemoveVertex(D,u),
                              DigraphRemoveVertex(D,v))
       then
-        if v not in Orbit(AutomorphismGroup(D,u)) then
+        if not v in Orbit(AutomorphismGroup(D,u)) then
           return true;
         fi;
       fi;
