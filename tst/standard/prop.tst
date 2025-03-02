@@ -1679,6 +1679,24 @@ true
 gap> IsEdgeTransitive(Digraph([[2], [3, 3, 3], []]));
 Error, the argument <D> must be a digraph with no multiple edges,
 
+# IsTwoEdgeTransitive
+gap> IsTwoEdgeTransitive(DigraphByEdges([[1, 2], [2, 3], [3, 1]]));
+true
+gap> IsTwoEdgeTransitive(DigraphByEdges([[1, 2], [2, 3], [3, 1], [3, 4]]));
+false
+gap> IsTwoEdgeTransitive(CompleteDigraph(4));
+true
+gap> IsTwoEdgeTransitive(CycleDigraph(100));
+true
+gap> IsTwoEdgeTransitive(CompleteBipartiteDigraph(11, 23));
+false
+gap> IsTwoEdgeTransitive(DigraphByEdges([[1, 2]]));
+true
+gap> IsTwoEdgeTransitive(DigraphByEdges([]));
+true
+gap> IsTwoEdgeTransitive(Digraph([[2], [3, 3, 3], []]));
+Error, the argument <D> must be a digraph with no multiple edges,
+
 # DigraphHasNoVertices and DigraphHasAVertex
 gap> List([0 .. 3], i -> DigraphHasAVertex(EmptyDigraph(i)));
 [ false, true, true, true ]
