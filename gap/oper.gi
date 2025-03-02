@@ -166,7 +166,18 @@ end);
 
 InstallMethod(DigraphRemoveVertices, "for an immutable digraph and a list",
 [IsImmutableDigraph, IsList],
-{D, list} -> MakeImmutable(DigraphRemoveVertices(DigraphMutableCopy(D), list)));
+function(D, list)
+  if not IsDuplicateFreeList(list) or not ForAll(list, IsPosInt) then
+    ErrorNoReturn("the 2nd argument <list> must be a ",
+                  "duplicate-free list of positive integers,");
+  fi;
+
+  # If all vertices to remove are not present, no changes made
+  if ForAll(list, x -> not x in DigraphVertices(D)) then
+    return D;
+  fi;
+  return MakeImmutable(DigraphRemoveVertices(DigraphMutableCopy(D), list));
+end);
 
 #############################################################################
 # 2. Adding and removing edges
@@ -223,21 +234,25 @@ InstallMethod(DigraphAddEdges, "for an immutable digraph and a list",
 [IsImmutableDigraph, IsList],
 {D, edges} -> MakeImmutable(DigraphAddEdges(DigraphMutableCopy(D), edges)));
 
+DIGRAPHS_CheckDigraphRemoveEdge := function(D, src, ran)
+  if IsMultiDigraph(D) then
+    ErrorNoReturn("the 1st argument <D> must be a digraph with no multiple ",
+                  "edges,");
+  elif not (src in DigraphVertices(D)) then
+    ErrorNoReturn("the 2nd argument <src> must be a vertex of the ",
+                  "digraph <D> that is the 1st argument,");
+  elif not (ran in DigraphVertices(D)) then
+    ErrorNoReturn("the 3rd argument <ran> must be a vertex of the ",
+                  "digraph <D> that is the 1st argument,");
+  fi;
+end;
+
 InstallMethod(DigraphRemoveEdge,
 "for a mutable digraph by out-neighbours and two positive integers",
 [IsMutableDigraph and IsDigraphByOutNeighboursRep, IsPosInt, IsPosInt],
 function(D, src, ran)
   local pos;
-  if IsMultiDigraph(D) then
-    ErrorNoReturn("the 1st argument <D> must be a digraph with no multiple ",
-                  "edges,");
-  elif not (IsPosInt(src) and src in DigraphVertices(D)) then
-    ErrorNoReturn("the 2nd argument <src> must be a vertex of the ",
-                  "digraph <D> that is the 1st argument,");
-  elif not (IsPosInt(ran) and ran in DigraphVertices(D)) then
-    ErrorNoReturn("the 3rd argument <ran> must be a vertex of the ",
-                  "digraph <D> that is the 1st argument,");
-  fi;
+  DIGRAPHS_CheckDigraphRemoveEdge(D, src, ran);
   pos := Position(D!.OutNeighbours[src], ran);
   if pos <> fail then
     Remove(D!.OutNeighbours[src], pos);
@@ -249,8 +264,19 @@ end);
 InstallMethod(DigraphRemoveEdge,
 "for a immutable digraph and two positive integers",
 [IsImmutableDigraph, IsPosInt, IsPosInt],
-{D, src, ran}
--> MakeImmutable(DigraphRemoveEdge(DigraphMutableCopy(D), src, ran)));
+function(D, src, ran)
+  local pos, DMutable;
+  DIGRAPHS_CheckDigraphRemoveEdge(D, src, ran);
+  DMutable := DigraphMutableCopy(D);
+  pos := Position(D!.OutNeighbours[src], ran);
+  if pos <> fail then
+    Remove(DMutable!.OutNeighbours[src], pos);
+    RemoveDigraphEdgeLabel(DMutable, src, pos);
+    return MakeImmutable(DMutable);
+  else
+    return D;
+  fi;
+end);
 
 InstallMethod(DigraphRemoveEdge, "for a mutable digraph and a list",
 [IsMutableDigraph, IsList],
@@ -264,7 +290,13 @@ end);
 InstallMethod(DigraphRemoveEdge,
 "for a immutable digraph and a list",
 [IsImmutableDigraph, IsList],
-{D, edge} -> MakeImmutable(DigraphRemoveEdge(DigraphMutableCopy(D), edge)));
+function(D, edge)
+  if Length(edge) <> 2 then
+    ErrorNoReturn("the 2nd argument <edge> must be a list of length 2,");
+  else
+    return DigraphRemoveEdge(D, edge[1], edge[2]);
+  fi;
+end);
 
 InstallMethod(DigraphRemoveEdges, "for a digraph and a list",
 [IsMutableDigraph, IsList],
@@ -275,7 +307,43 @@ end);
 
 InstallMethod(DigraphRemoveEdges, "for an immutable digraph and a list",
 [IsImmutableDigraph, IsList],
-{D, edges} -> MakeImmutable(DigraphRemoveEdges(DigraphMutableCopy(D), edges)));
+function(D, edges)
+   local DMutableRemoved, edge;
+
+   # If any edges would be removed by calling DigraphRemoveEdge for each edge in
+   # edges
+   if ForAny(edges, lst -> Length(lst) = 2 and (IsDigraphEdge(D, lst))) then
+     DMutableRemoved := DigraphRemoveEdges(DigraphMutableCopy(D), edges);
+     return MakeImmutable(DMutableRemoved);
+   fi;
+
+   # To retain errors that would be given, call
+   # DIGRAPHS_CheckDigraphRemoveEdge and check length
+   for edge in edges do
+     if Length(edge) <> 2 then
+       ErrorNoReturn("the 2nd argument <edges> must be a list of lists with ",
+                     "length 2");
+     fi;
+     DIGRAPHS_CheckDigraphRemoveEdge(D, edge[1], edge[2]);
+   od;
+
+   return D;  # No edge e in edges exists in D, no changes made
+end);
+
+DIGRAPHS_DigraphReverseEdgeDoOper := function(D, u, v, pos)
+  Remove(D!.OutNeighbours[u], pos);
+  Add(D!.OutNeighbours[v], u);
+  if Length(Positions(D!.OutNeighbours[v], u)) > 1 then
+    # output is a multidigraph
+    ClearDigraphEdgeLabels(D);
+  elif IsBound(D!.edgelabels)
+      and IsBound(D!.edgelabels[u])
+      and IsBound(D!.edgelabels[u][pos]) then
+    SetDigraphEdgeLabel(D, v, u, D!.edgelabels[u][pos]);
+    RemoveDigraphEdgeLabel(D, u, pos);
+  fi;
+  return D;
+end;
 
 InstallMethod(DigraphReverseEdge,
 "for a mutable digraph by out-neighbours and two positive integers",
@@ -293,24 +361,28 @@ function(D, u, v)
   elif u = v then
     return D;
   fi;
-  Remove(D!.OutNeighbours[u], pos);
-  Add(D!.OutNeighbours[v], u);
-  if Length(Positions(D!.OutNeighbours[v], u)) > 1 then
-    # output is a multidigraph
-    ClearDigraphEdgeLabels(D);
-  elif IsBound(D!.edgelabels)
-      and IsBound(D!.edgelabels[u])
-      and IsBound(D!.edgelabels[u][pos]) then
-    SetDigraphEdgeLabel(D, v, u, D!.edgelabels[u][pos]);
-    RemoveDigraphEdgeLabel(D, u, pos);
-  fi;
-  return D;
+  return DIGRAPHS_DigraphReverseEdgeDoOper(D, u, v, pos);
 end);
 
 InstallMethod(DigraphReverseEdge,
 "for an immutable digraph, positive integer, and positive integer",
 [IsImmutableDigraph, IsPosInt, IsPosInt],
-{D, u, v} -> MakeImmutable(DigraphReverseEdge(DigraphMutableCopy(D), u, v)));
+function(D, u, v)
+  local pos;
+  if IsMultiDigraph(D) then
+    ErrorNoReturn("the 1st argument <D> must be a digraph with no ",
+                  "multiple edges,");
+  fi;
+  pos := Position(D!.OutNeighbours[u], v);
+  if pos = fail then
+    ErrorNoReturn("there is no edge from ", u, " to ", v,
+                  " in the digraph <D> that is the 1st argument,");
+  elif u = v then
+    return D;
+  fi;
+  return MakeImmutable(DIGRAPHS_DigraphReverseEdgeDoOper(
+      DigraphMutableCopy(D), u, v, pos));
+end);
 
 InstallMethod(DigraphReverseEdge, "for a mutable digraph and list",
 [IsMutableDigraph, IsList],
@@ -323,7 +395,13 @@ end);
 
 InstallMethod(DigraphReverseEdge, "for an immutable digraph and a list",
 [IsImmutableDigraph, IsList],
-{D, e} -> MakeImmutable(DigraphReverseEdge(DigraphMutableCopy(D), e)));
+function(D, e)
+  if Length(e) <> 2 then
+    ErrorNoReturn("the 2nd argument <e> must be a list of length 2,");
+  else
+    return DigraphReverseEdge(D, e[1], e[2]);
+  fi;
+end);
 
 InstallMethod(DigraphReverseEdges, "for a mutable digraph and a list",
 [IsMutableDigraph, IsList],
@@ -334,7 +412,27 @@ end);
 
 InstallMethod(DigraphReverseEdges, "for an immutable digraph and a list",
 [IsImmutableDigraph, IsList],
-{D, E} -> MakeImmutable(DigraphReverseEdges(DigraphMutableCopy(D), E)));
+function(D, E)
+  local DMutable, edge;
+  if IsMultiDigraph(D) then
+    ErrorNoReturn("the 1st argument <D> must be a digraph with no ",
+                  "multiple edges,");
+  fi;
+
+  for edge in E do
+    if (not IsList(edge)) or (Length(edge) <> 2) then
+      ErrorNoReturn("the 2nd argument <E> must be a list of edges");
+    fi;
+
+    if edge[1] <> edge[2] then  # At least one edge can be reversed
+      DMutable := DigraphMutableCopy(D);
+      DigraphReverseEdges(DMutable, E);
+      return MakeImmutable(DMutable);
+    fi;
+  od;
+
+  return D;  # No edges would have been reversed
+end);
 
 InstallMethod(DigraphClosure,
 "for a mutable digraph by out-neighbours and a positive integer",
@@ -1218,8 +1316,14 @@ end);
 InstallMethod(QuotientDigraph,
 "for an immutable digraph and a homogeneous list",
 [IsImmutableDigraph, IsHomogeneousList],
-{D, partition} ->
-MakeImmutable(QuotientDigraph(DigraphMutableCopy(D), partition)));
+function(D, partition)
+  if DigraphNrVertices(D) = 0 and IsEmpty(partition) then
+    return D;
+  else
+    return MakeImmutable(QuotientDigraph(DigraphMutableCopy(D), partition));
+
+  fi;
+end);
 
 #############################################################################
 # 6. In and out degrees, neighbours, and edges of vertices
