@@ -699,7 +699,8 @@ function(D)
   fi;
 
   twoEdges := Filtered(Cartesian(DigraphEdges(D), DigraphEdges(D)),
-                       pair -> pair[1][2] = pair[2][1]
+           
+            pair -> pair[1][2] = pair[2][1]
                                and pair[1][1] <> pair[2][2]);
 
   if Length(twoEdges) = 0 then
@@ -708,4 +709,24 @@ function(D)
     return OrbitLength(AutomorphismGroup(D), twoEdges[1], OnTuplesTuples)
          = Length(twoEdges);
   fi;
+end);
+
+InstallMethod(HasPseudoSimilarVertices,
+"for a digraph without loops or multiple edges",
+[IsDigraph],
+function(D)
+  local u,v;
+  
+  for u in DigraphVertices(D) do
+    for v in DigraphVertices(D) do
+      if IsIsomorphicDigraph(DigraphRemoveVertex(D,u),
+                             DigraphRemoveVertex(D,v))
+      then
+        if v not in Orbit(AutomorphismGroup(D,u)) then
+          return true;
+        fi;
+      fi;
+    od;
+  od;
+return false;
 end);
