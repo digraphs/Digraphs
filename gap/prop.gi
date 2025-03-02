@@ -715,18 +715,18 @@ InstallMethod(HasPseudoSimilarVertices,
 "for a digraph without loops or multiple edges",
 [IsDigraph],
 function(D)
-  local u,v;
+  local u, v;
   
   for u in DigraphVertices(D) do
     for v in DigraphVertices(D) do
-      if IsIsomorphicDigraph(DigraphRemoveVertex(D,u),
-                             DigraphRemoveVertex(D,v))
+      if IsIsomorphicDigraph(DigraphRemoveVertex(D, u),
+                             DigraphRemoveVertex(D, v))
       then
-        if not v in Orbit(AutomorphismGroup(D,u)) then
+        if not v in Orbit(AutomorphismGroup(D), u) then
           return true;
         fi;
       fi;
     od;
   od;
-return false;
+  return false;
 end);
