@@ -321,7 +321,8 @@ function(D, edges)
    # DIGRAPHS_CheckDigraphRemoveEdge and check length
    for edge in edges do
      if Length(edge) <> 2 then
-       ErrorNoReturn("the 2nd argument <edge> must be a list of length 2,");
+       ErrorNoReturn("the 2nd argument <edges> must be a list of lists with ",
+                     "length 2");
      fi;
      DIGRAPHS_CheckDigraphRemoveEdge(D, edge[1], edge[2]);
    od;
