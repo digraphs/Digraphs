@@ -3299,3 +3299,78 @@ gap> Unbind(TestPartialOrderDigraph);
 #
 gap> DIGRAPHS_StopTest();
 gap> STOP_TEST("Digraphs package: standard/oper.tst", 0);
+
+# DFS
+
+# NewDFSRecord
+gap> NewDFSRecord(ChainDigraph(10));
+rec( child := -1, current := -1, 
+  graph := <immutable chain digraph with 10 vertices>, 
+  parent := [ -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 ], 
+  postorder := [ -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 ], 
+  preorder := [ -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 ], stop := false )
+gap> NewDFSRecord(CompleteDigraph(2));
+rec( child := -1, current := -1, 
+  graph := <immutable complete digraph with 2 vertices>, parent := [ -1, -1 ],
+  postorder := [ -1, -1 ], preorder := [ -1, -1 ], stop := false )
+gap> NewDFSRecord(Digraph([[1], [2], [1], [1], [2]]));
+rec( child := -1, current := -1, 
+  graph := <immutable digraph with 5 vertices, 5 edges>, 
+  parent := [ -1, -1, -1, -1, -1 ], postorder := [ -1, -1, -1, -1, -1 ], 
+  preorder := [ -1, -1, -1, -1, -1 ], stop := false )
+
+# DFSDefault
+gap> DFSDefault(rec(), []);
+gap> DFSDefault(rec(), rec());
+
+# ExecuteDFS
+gap> record := NewDFSRecord(CompleteDigraph(10));;
+gap> ExecuteDFS(record, [], 2, DFSDefault,
+>               DFSDefault, DFSDefault, DFSDefault);;
+gap> record.preorder;
+[ 2, 1, 3, 4, 5, 6, 7, 8, 9, 10 ]
+gap> record := NewDFSRecord(CompleteDigraph(15));;
+gap> data := rec(cycle_vertex := 0);;
+gap> AncestorFunc := function(record, data)
+>       record.stop := true;
+>       data.cycle_vertex := record.child;
+>    end;;
+gap> ExecuteDFS(record, data, 1, DFSDefault,
+>               DFSDefault, AncestorFunc, DFSDefault);;
+gap> record.stop;
+true
+gap> data.cycle_vertex;
+1
+gap> record.preorder;
+[ 1, 2, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 ]
+gap> record := NewDFSRecord(Digraph([[2, 3], [4], [5], [], [4]]));;
+gap> CrossFunc := function(record, data)
+>       record.stop := true;
+>       Add(data, record.child);
+>    end;;
+gap> data := [];;
+gap> ExecuteDFS(record, data, 1, DFSDefault,
+>               DFSDefault, DFSDefault, CrossFunc);;
+gap> record.stop;
+true
+gap> data;
+[ 4 ]
+gap> AncestorFunc := function(record, data)
+>      Add(data.cycle_vertex, record.child);
+>    end;;
+gap> CrossFunc := function(record, data)
+>      Add(data.cross_vertex, record.child);
+>    end;;
+gap> record := NewDFSRecord(Digraph([[2, 3, 3], [4, 4], [5, 1, 1], [], [4]]));;
+gap> data := rec(cycle_vertex := [], cross_vertex := []);;
+gap> ExecuteDFS(record, data, 1, DFSDefault,
+>               DFSDefault, AncestorFunc, CrossFunc);;
+gap> data;
+rec( cross_vertex := [ 4 ], cycle_vertex := [ 1, 1 ] )
+gap> ExecuteDFS(rec(), data, 1, DFSDefault,
+>               DFSDefault, AncestorFunc, CrossFunc);;
+Error, the 1st argument <record> must be created with NewDFSRecord,
+gap> D := ChainDigraph(1);;
+gap> ExecuteDFS(NewDFSRecord(D), [], 3, DFSDefault, DFSDefault, DFSDefault,
+> DFSDefault);
+Error, the third argument <start> must be a vertex in your graph,

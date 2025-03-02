@@ -2653,3 +2653,52 @@ function(D, i, j)
 
   return fail;
 end);
+
+#############################################################################
+# 11. DFS
+#############################################################################
+
+InstallMethod(NewDFSRecord,
+"for a digraph", [IsDigraph],
+function(graph)
+  local record;
+  record := rec();
+  record.graph := graph;
+  record.child := -1;
+  record.current := -1;
+  record.stop := false;
+  record.parent := ListWithIdenticalEntries(DigraphNrVertices(graph), -1);
+  record.preorder := ListWithIdenticalEntries(DigraphNrVertices(graph), -1);
+  record.postorder := ListWithIdenticalEntries(DigraphNrVertices(graph), -1);
+  # record.edge := [];
+  return record;
+end);
+
+InstallMethod(DFSDefault,
+"for a record and an object", [IsRecord, IsObject],
+function(record, data)
+end);
+
+# * PreOrderFunc is called with (record, data) when a vertex is popped from the
+#   stack for the first time.
+# * PostOrderFunc is called with (record, data) when all of record.child's
+#   children have been visited (i.e. when we backtrack from record.child to
+#   record.parent[record.child]).
+# * AncestorFunc is called with (record, data) when (record.current,
+#   record.child) is an edge and record.child is an ancestor of record.current.
+# * CrossFunc is called with (record, data) when (record.current, record.child)
+#   is an edge, the preorder value of record.current is greater than the
+#   preorder value of child, and record.current and child are unrelated
+#   by ancestry.
+InstallGlobalFunction(ExecuteDFS,
+function(record, data, start, PreOrderFunc, PostOrderFunc, AncestorFunc,
+         CrossFunc)
+  if not IsEqualSet(RecNames(record),
+                    ["stop", "graph", "child", "parent", "preorder",
+                     "postorder", "current"]) then # and edge?
+    ErrorNoReturn("the 1st argument <record> must be created with ",
+                  "NewDFSRecord,");
+  fi;
+  ExecuteDFS_C(record, data, start, PreOrderFunc, PostOrderFunc,
+               AncestorFunc, CrossFunc);
+end);
