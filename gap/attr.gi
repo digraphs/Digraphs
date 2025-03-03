@@ -911,45 +911,6 @@ end);
 
 # InstallMethod(DigraphTopologicalSort, "for a digraph by out-neighbours",
 # [IsDigraphByOutNeighboursRep],
-# function(D)
-#   local N, record, count, out, PostOrderFunc, AncestorFunc, i;
-
-#   N := DigraphNrVertices(D);
-#   if N = 0 then
-#     return [];
-#   fi;
-#   record := NewDFSRecord(D);
-#   count := 0;
-#   out := [];
-#   PostOrderFunc := function(record, data)
-#     count := count + 1;
-#     out[count] := record.child;
-#   end;
-#   AncestorFunc := function(record, data)
-#     if record.current <> record.child then
-#       record.stop := true;
-#     fi;
-#   end;
-#   for i in DigraphVertices(D) do
-#     if (record.preorder[i] <> -1) then
-#       continue;
-#     fi;
-#     ExecuteDFS(record,
-#                fail,
-#                i,
-#                DFSDefault,
-#                PostOrderFunc,
-#                AncestorFunc,
-#                DFSDefault);
-#     if record.stop then
-#       return fail;
-#     fi;
-#   od;
-#   return out;
-# end);
-
-# InstallMethod(DigraphTopologicalSort, "for a digraph by out-neighbours",
-# [IsDigraphByOutNeighboursRep],
 # D -> DIGRAPH_TOPO_SORT(OutNeighbours(D)));
 
 InstallMethod(DigraphStronglyConnectedComponents,

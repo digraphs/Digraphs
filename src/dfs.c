@@ -224,7 +224,6 @@ bool ExecuteDFSRec(UInt current, struct dfs_args* args) {
     return false; // Stop execution
   }
   return true; // Continue
-
 }
 
 Obj FuncExecuteDFS_C(Obj self, Obj args) {
