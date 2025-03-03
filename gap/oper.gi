@@ -2811,7 +2811,7 @@ function(graph)
   record.parent := ListWithIdenticalEntries(DigraphNrVertices(graph), -1);
   record.preorder := ListWithIdenticalEntries(DigraphNrVertices(graph), -1);
   record.postorder := ListWithIdenticalEntries(DigraphNrVertices(graph), -1);
-  # record.edge := [];
+  record.edge := HashMap();
   return record;
 end);
 
@@ -2836,7 +2836,7 @@ function(record, data, start, PreOrderFunc, PostOrderFunc, AncestorFunc,
          CrossFunc)
   if not IsEqualSet(RecNames(record),
                     ["stop", "graph", "child", "parent", "preorder",
-                     "postorder", "current"]) then
+                     "postorder", "current", "edge"]) then
     ErrorNoReturn("the 1st argument <record> must be created with ",
                   "NewDFSRecord,");
   fi;
