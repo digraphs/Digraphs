@@ -1633,13 +1633,36 @@ function(D, u, v)
   return DigraphPath(D, u, v) <> fail;
 end);
 
+# InstallMethod(DigraphPath, "for a digraph by out-neighbours and two pos ints",
+# [IsDigraphByOutNeighboursRep, IsPosInt, IsPosInt],
+# function(D, u, v)
+#   local verts;
+
+#   verts := DigraphVertices(D);
+#   if not (u in verts and v in verts) then
+#     ErrorNoReturn("the 2nd and 3rd arguments <u> and <v> must be ",
+#                   "vertices of the 1st argument <D>,");
+#   elif IsDigraphEdge(D, u, v) then
+#     return [[u, v], [Position(OutNeighboursOfVertex(D, u), v)]];
+#   elif HasIsTransitiveDigraph(D) and IsTransitiveDigraph(D) then
+#     # If it's a known transitive digraph, just check whether the edge exists
+#     return fail;
+#     # Glean information from WCC if we have it
+#   elif HasDigraphConnectedComponents(D)
+#       and DigraphConnectedComponents(D).id[u] <>
+#           DigraphConnectedComponents(D).id[v] then
+#     return fail;
+#   fi;
+#   return DIGRAPH_PATH(OutNeighbours(D), u, v);
+# end);
+
 InstallMethod(DigraphPath, "for a digraph by out-neighbours and two pos ints",
 [IsDigraphByOutNeighboursRep, IsPosInt, IsPosInt],
 function(D, u, v)
-  local verts;
+  local N, record, PreOrderFunc, AncestorFunc, nodes, edges, current;
 
-  verts := DigraphVertices(D);
-  if not (u in verts and v in verts) then
+  N := DigraphNrVertices(D);
+  if u > N or v > N then
     ErrorNoReturn("the 2nd and 3rd arguments <u> and <v> must be ",
                   "vertices of the 1st argument <D>,");
   elif IsDigraphEdge(D, u, v) then
@@ -1652,8 +1675,58 @@ function(D, u, v)
       and DigraphConnectedComponents(D).id[u] <>
           DigraphConnectedComponents(D).id[v] then
     return fail;
+  elif OutDegreeOfVertex(D, u) = 0
+      or (HasInNeighbours(D) and InDegreeOfVertex(D, v) = 0) then
+    return fail;
   fi;
-  return DIGRAPH_PATH(OutNeighbours(D), u, v);
+  record := NewDFSRecord(D);
+  if u <> v then
+    # if v is reachable from u, then u is an ancestor of v, and so at some
+    # point v will be encountered for the first time, and PreOrderFunc will be
+    # called.
+    PreOrderFunc := function(record, data)
+      if record.current = v then
+        record.stop := true;
+      fi;
+    end;
+    AncestorFunc := DFSDefault;
+  else
+    # if u is reachable from u, then u will be encountered as an ancestor of
+    # itself, but PreOrderFunc won't be called (because u has already been
+    # discovered).
+    PreOrderFunc := DFSDefault;
+    AncestorFunc := function(record, data)
+      if record.child = v then
+        record.stop := true;
+      fi;
+    end;
+  fi;
+  ExecuteDFS(record,
+             fail,
+             u,
+             PreOrderFunc,
+             DFSDefault,
+             AncestorFunc,
+             DFSDefault);
+  if not record.stop then
+    return fail;
+  fi;
+  nodes := [v];
+  edges := [];
+  current := v;
+  if u = v then
+    # Go one back from v to the last node in the tree
+    current := record.current;
+    Add(nodes, current);
+    Add(edges, Position(OutNeighboursOfVertex(D, current), u));
+  fi;
+  # Follow the path from current (which is a descendant of u) back to u
+  while current <> u do
+    Add(edges, record.edge[current]); # edge =
+    current := record.parent[current];
+    Add(nodes, current);
+  od;
+  return [Reversed(nodes), Reversed(edges)];
 end);
 
 InstallMethod(IsDigraphPath, "for a digraph and list",
@@ -1945,20 +2018,59 @@ function(D, u, v)
   return IteratorByFunctions(record);
 end);
 
+# InstallMethod(DigraphLongestDistanceFromVertex, "for a digraph and a pos int",
+# [IsDigraphByOutNeighboursRep, IsPosInt],
+# function(D, v)
+#   local dist;
+
+#   if not v in DigraphVertices(D) then
+#     ErrorNoReturn("the 2nd argument <v> must be a vertex of the 1st ",
+#                   "argument <D>,");
+#   fi;
+#   dist := DIGRAPH_LONGEST_DIST_VERTEX(OutNeighbours(D), v);
+#   if dist = -2 then
+#     return infinity;
+#   fi;
+#   return dist;
+# end);
+
 InstallMethod(DigraphLongestDistanceFromVertex, "for a digraph and a pos int",
 [IsDigraphByOutNeighboursRep, IsPosInt],
 function(D, v)
-  local dist;
+  local record, PreOrderFunc, PostOrderFunc, data, AncestorFunc;
 
   if not v in DigraphVertices(D) then
     ErrorNoReturn("the 2nd argument <v> must be a vertex of the 1st ",
                   "argument <D>,");
   fi;
-  dist := DIGRAPH_LONGEST_DIST_VERTEX(OutNeighbours(D), v);
-  if dist = -2 then
+  record := NewDFSRecord(D);
+  data := rec(depth := ListWithIdenticalEntries(DigraphNrVertices(D), 0),
+              prev := 0);
+  AncestorFunc := function(record, data)
+    record.stop := true;
+  end;
+  PostOrderFunc := function(record, data)
+    data.depth[record.current] := data.prev;
+    data.prev := data.prev + 1;
+  end;
+  PreOrderFunc := function(record, data)
+    local i, neighbours;
+    data.prev := 0;
+    neighbours := OutNeighborsOfVertex(record.graph, record.current);
+    for i in [1 .. Size(neighbours)] do
+      # need to bypass the CrossFunc
+      if record.postorder[neighbours[i]] <> -1 then
+        record.preorder[neighbours[i]] := -1;
+      fi;
+    od;
+  end;
+  ExecuteDFS(record, data, v,
+               PreOrderFunc, PostOrderFunc,
+               AncestorFunc, DFSDefault);
+  if record.stop then
     return infinity;
   fi;
-  return dist;
+  return data.depth[v];
 end);
 
 InstallMethod(DigraphRandomWalk,
@@ -2358,9 +2470,10 @@ InstallMethod(IsOrderFilter, "for a digraph and a list of vertices",
 InstallMethod(DominatorTree, "for a digraph and a vertex",
 [IsDigraph, IsPosInt],
 function(D, root)
-  local M, node_to_preorder_num, preorder_num_to_node, parent, index, next,
-  current, succ, prev, n, semi, lastlinked, label, bucket, idom,
-  compress, eval, pred, N, w, y, x, i, v;
+  local M, preorder_num_to_node, PreOrderFunc, record, parent,
+  node_to_preorder_num, semi, lastlinked, label, bucket, idom, compress, eval,
+  pred, N, w, y, x, i, v;
+
   M := DigraphNrVertices(D);
 
   if 0 = root or root > M then
@@ -2368,36 +2481,25 @@ function(D, root)
                   "argument (a digraph)");
   fi;
 
-  node_to_preorder_num := [];
-  node_to_preorder_num[root] := 1;
-  preorder_num_to_node := [root];
+  preorder_num_to_node := [];
 
-  parent := [];
+  PreOrderFunc := function(record, data)
+    Add(data, record.current);
+  end;
+
+  record := NewDFSRecord(D);
+  ExecuteDFS(record,
+             preorder_num_to_node,
+             root,
+             PreOrderFunc,
+             DFSDefault,
+             DFSDefault,
+             DFSDefault);
+
+  parent := record.parent;
   parent[root] := fail;
+  node_to_preorder_num := record.preorder;
 
-  index := ListWithIdenticalEntries(M, 1);
-
-  next := 2;
-  current := root;
-  succ := OutNeighbours(D);
-  repeat
-    prev := current;
-    for i in [index[current] .. Length(succ[current])] do
-      n := succ[current][i];
-      if not IsBound(node_to_preorder_num[n]) then
-        Add(preorder_num_to_node, n);
-        parent[n] := current;
-        index[current] := i + 1;
-        node_to_preorder_num[n] := next;
-        next := next + 1;
-        current := n;
-        break;
-      fi;
-    od;
-    if prev = current then
-      current := parent[current];
-    fi;
-  until current = fail;
   semi := [1 .. M];
   lastlinked := M + 1;
   label := [];
@@ -2443,7 +2545,7 @@ function(D, root)
     od;
     bucket[w] := [];
     for v in pred[w] do
-      if IsBound(node_to_preorder_num[v]) then
+      if node_to_preorder_num[v] <> -1 then
         x := eval(v);
         if node_to_preorder_num[semi[x]] < node_to_preorder_num[semi[w]] then
           semi[w] := semi[x];
@@ -2734,7 +2836,7 @@ function(record, data, start, PreOrderFunc, PostOrderFunc, AncestorFunc,
          CrossFunc)
   if not IsEqualSet(RecNames(record),
                     ["stop", "graph", "child", "parent", "preorder",
-                     "postorder", "current"]) then # and edge?
+                     "postorder", "current"]) then
     ErrorNoReturn("the 1st argument <record> must be created with ",
                   "NewDFSRecord,");
   fi;

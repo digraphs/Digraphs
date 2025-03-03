@@ -90,11 +90,6 @@ Obj FuncExecuteDFS_C(Obj self, Obj args) {
 
   if (ElmPRec(record, RNamStop) == True) return record;
 
-  // Tracks whether a vertex is visited, or in the stack to be visited so that
-  // it does not get added more than once for different ancestors
-  BitArray* will_visit = new_bit_array(N);
-  set_bit_array(will_visit, INT_INTOBJ(start) - 1, true);
-
   while (top > 0) {
       // visit current
       current = INT_INTOBJ(ELM_PLIST(stack, top--)); // an unvisited node
@@ -106,19 +101,20 @@ Obj FuncExecuteDFS_C(Obj self, Obj args) {
           ASS_LIST(postorder, child, INTOBJ_INT(++postorder_num));
           CHANGED_BAG(record);
           if (CallCheckStop(PostOrderFunc, RNamStop, record, data)) {
-            free_bit_array(will_visit);
             return record;
           }
           continue;
       }
+
+      if (INT_INTOBJ(ELM_PLIST(preorder, current)) != -1) continue;
+
       // otherwise, visit this node
 
       AssPRec(record, RNamCurrent, INTOBJ_INT(current));
-      CHANGED_BAG(record);
       ASS_LIST(preorder, current, INTOBJ_INT(preorder_num++));
+      CHANGED_BAG(record);
 
       if (CallCheckStop(PreorderFunc, RNamStop, record, data)) {
-        free_bit_array(will_visit);
         return record;
       }
 
@@ -130,33 +126,30 @@ Obj FuncExecuteDFS_C(Obj self, Obj args) {
       for (UInt j = LEN_LIST(succ); j >= 1; j--) {
         // Push so that the top of the stack is the first vertex in succ
         UInt v = INT_INTOBJ(ELM_LIST(succ, j));
+        bool visited = INT_INTOBJ(ELM_PLIST(preorder, v)) != -1;
         AssPRec(record, RNamChild, INTOBJ_INT(v));
         CHANGED_BAG(record);
-        if (!get_bit_array(will_visit, v - 1)) { // v is unvisited
+
+        if (!visited) { // v is unvisited
           ASS_LIST(parent, v, INTOBJ_INT(current));
           ASS_LIST(stack, ++top, INTOBJ_INT(v));
-          set_bit_array(will_visit, v - 1, true);
         }
         else { // v is either visited, or in the stack to be visited
           // If v was visited prior, but has not been backtracked on
-          bool visited = INT_INTOBJ(ELM_PLIST(preorder, v)) != -1;
-          bool backtracked = INT_INTOBJ(ELM_PLIST(postorder, v)) == -1;
-          if (visited && backtracked) {
+          bool backtracked = INT_INTOBJ(ELM_PLIST(postorder, v)) != -1;
+          if (!backtracked) { // Back edge
             if (CallCheckStop(AncestorFunc, RNamStop, record, data)) {
-              free_bit_array(will_visit);
               return record;
             }
           }
           // v has been visited and backtracked on
-          else if (visited) {
+          else {
             if (CallCheckStop(CrossFunc, RNamStop, record, data)) {
-              free_bit_array(will_visit);
               return record;
             }
           }
         }
       }
   }
-  free_bit_array(will_visit);
   return record;
 }
