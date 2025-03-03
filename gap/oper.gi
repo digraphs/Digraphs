@@ -1,4 +1,5 @@
-#############################################################################
+
+  #############################################################################
 ##
 ##  oper.gi
 ##  Copyright (C) 2014-19                                James D. Mitchell
@@ -2238,18 +2239,56 @@ function(D, v)
   return spanningtree;
 end);
 
+# InstallMethod(VerticesReachableFrom, "for a digraph and a vertex",
+# [IsDigraph, IsPosInt],
+# function(D, root)
+#   local N;
+#   N := DigraphNrVertices(D);
+
+#   if 0 = root or root > N then
+#     ErrorNoReturn("the 2nd argument (root) is not a vertex of the 1st ",
+#                   "argument (a digraph)");
+#   fi;
+
+#   return VerticesReachableFrom(D, [root]);
+# end);
+
 InstallMethod(VerticesReachableFrom, "for a digraph and a vertex",
 [IsDigraph, IsPosInt],
 function(D, root)
-  local N;
-  N := DigraphNrVertices(D);
+  local N, record, data, AncestorFunc, PreOrderFunc;
 
+  N := DigraphNrVertices(D);
   if 0 = root or root > N then
     ErrorNoReturn("the 2nd argument (root) is not a vertex of the 1st ",
                   "argument (a digraph)");
   fi;
 
-  return VerticesReachableFrom(D, [root]);
+  record := NewDFSRecord(D);
+  data := rec(result := [], root_reached := false);
+
+  PreOrderFunc := function(record, data)
+    if record.current <> root then
+      Add(data.result, record.current);
+    fi;
+  end;
+
+  AncestorFunc := function(record, data)
+    if record.child = root and not data.root_reached then
+      data.root_reached := true;
+      Add(data.result, root);
+    fi;
+  end;
+
+  ExecuteDFS(record,
+             data,
+             root,
+             PreOrderFunc,
+             DFSDefault,
+             AncestorFunc,
+             DFSDefault);
+  Sort(data.result);
+  return data.result;
 end);
 
 InstallMethod(VerticesReachableFrom, "for a digraph and a list of vertices",
