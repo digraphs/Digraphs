@@ -78,7 +78,8 @@ bool ExecuteDFSRec(UInt current, struct dfs_args* args) {
   ASS_LIST(args -> preorder, current, INTOBJ_INT((*args -> preorder_num)++));
   CHANGED_BAG(args -> record);
 
-  if (CallCheckStop(args -> PreorderFunc, args -> RNamStop, args -> record, args -> data)) {
+  if (CallCheckStop(args -> PreorderFunc, args -> RNamStop, args -> record,
+                    args -> data)) {
     return args -> record;
   }
 
@@ -91,20 +92,19 @@ bool ExecuteDFSRec(UInt current, struct dfs_args* args) {
       HASH_SET(args -> parent, INTOBJ_INT(v), INTOBJ_INT(current));
       HASH_SET(args -> edge, INTOBJ_INT(v), INTOBJ_INT(j));
       bool rec_res = ExecuteDFSRec(v, args);
-      if (!rec_res) return false; // Stop
-    }
-    else {
+      if (!rec_res) return false;  // Stop
+    } else {
       AssPRec(args -> record, args -> RNamChild, INTOBJ_INT(v));
       CHANGED_BAG(args -> record);
       bool backtracked = HASH_CONTAINS(args -> postorder, INTOBJ_INT(v));
-      if (!backtracked) { // Back edge
-        if (CallCheckStop(args -> AncestorFunc, args -> RNamStop, args -> record, args -> data)) {
+      if (!backtracked) {  // Back edge
+        if (CallCheckStop(args -> AncestorFunc, args -> RNamStop,
+                          args -> record, args -> data)) {
           return false;
         }
-      }
-      // v has been visited and backtracked on
-      else {
-        if (CallCheckStop(args -> CrossFunc, args -> RNamStop, args -> record, args -> data)) {
+      } else {  // v has been visited and backtracked on
+        if (CallCheckStop(args -> CrossFunc, args -> RNamStop, args -> record,
+                          args -> data)) {
           return false;
         }
       }
@@ -113,13 +113,16 @@ bool ExecuteDFSRec(UInt current, struct dfs_args* args) {
 
   // backtracking on current
   AssPRec(args -> record, args -> RNamChild, INTOBJ_INT(current));
-  AssPRec(args -> record, args -> RNamCurrent, HASH_GET(args -> parent, INTOBJ_INT(current)));
-  HASH_SET(args -> postorder, INTOBJ_INT(current), INTOBJ_INT(++(*args -> postorder_num)));
+  AssPRec(args -> record, args -> RNamCurrent, HASH_GET(args -> parent,
+                                                        INTOBJ_INT(current)));
+  HASH_SET(args -> postorder, INTOBJ_INT(current),
+           INTOBJ_INT(++(*args -> postorder_num)));
   CHANGED_BAG(args -> record);
-  if (CallCheckStop(args -> PostorderFunc, args -> RNamStop, args -> record, args -> data)) {
-    return false; // Stop execution
+  if (CallCheckStop(args -> PostorderFunc, args -> RNamStop, args -> record,
+                    args -> data)) {
+    return false;  // Stop execution
   }
-  return true; // Continue
+  return true;  // Continue
 }
 
 
@@ -157,7 +160,8 @@ Obj FuncExecuteDFS_C(Obj self, Obj args) {
 
   if (ElmPRec(record, RNamStop) == True) return record;
 
-  struct dfs_args* rec_args = (struct dfs_args*) safe_malloc(sizeof(struct dfs_args));
+  struct dfs_args* rec_args =
+    (struct dfs_args*) safe_malloc(sizeof(struct dfs_args));
 
   UInt preorder_num  = 1;
   UInt postorder_num = 0;
@@ -187,11 +191,10 @@ Obj FuncExecuteDFS_C(Obj self, Obj args) {
 
   free(rec_args);
   return record;
-
 }
 
 // Adapted Old Iterative Function
-Obj FuncExecuteDFSIter_C(Obj self, Obj args) { // TODO remove?
+Obj FuncExecuteDFSIter_C(Obj self, Obj args) {  // TODO remove?
   DIGRAPHS_ASSERT(LEN_PLIST(args) == 7);
   Obj record        = ELM_PLIST(args, 1);
   Obj data          = ELM_PLIST(args, 2);
@@ -219,9 +222,8 @@ Obj FuncExecuteDFSIter_C(Obj self, Obj args) { // TODO remove?
     ErrorQuit(
         "the third argument <start> must be a vertex in your graph,", 0L, 0L);
   }
-  Int top   = 0; // referencing the last element in stack
-  // Length of stack fixed, since no vertices are added to it more than once
-  Obj stack = NEW_PLIST(T_PLIST_CYC, N * 2);
+  Int top   = 0;  // referencing the last element in stack
+  Obj stack = NEW_PLIST(T_PLIST_CYC, N);
 
   AssPlist(stack, ++top, start);
 
@@ -251,7 +253,7 @@ Obj FuncExecuteDFSIter_C(Obj self, Obj args) { // TODO remove?
 
   while (top > 0) {
       // visit current
-      current = INT_INTOBJ(ELM_PLIST(stack, top--)); // an unvisited node
+      current = INT_INTOBJ(ELM_PLIST(stack, top--));  // an unvisited node
       if (current < 0) {
           Int child = current * -1;
           // backtracking on current
@@ -289,21 +291,19 @@ Obj FuncExecuteDFSIter_C(Obj self, Obj args) { // TODO remove?
         AssPRec(record, RNamChild, INTOBJ_INT(v));
         CHANGED_BAG(record);
 
-        if (!visited) { // v is unvisited
+        if (!visited) {  // v is unvisited
           HASH_SET(parent, INTOBJ_INT(v), INTOBJ_INT(current));
           HASH_SET(edge, INTOBJ_INT(v), INTOBJ_INT(j));
           ASS_LIST(stack, ++top, INTOBJ_INT(v));
-        }
-        else { // v is either visited, or in the stack to be visited
+        } else {  // v is either visited, or in the stack to be visited
           // If v was visited prior, but has not been backtracked on
-          bool backtracked = INT_INTOBJ(HASH_GET(postorder, INTOBJ_INT(v))) != -1;
-          if (!backtracked) { // Back edge
+          bool backtracked = INT_INTOBJ(HASH_GET(postorder,
+                                                 INTOBJ_INT(v))) != -1;
+          if (!backtracked) {  // Back edge
             if (CallCheckStop(AncestorFunc, RNamStop, record, data)) {
               return record;
             }
-          }
-          // v has been visited and backtracked on
-          else {
+          } else {  // v has been visited and backtracked on
             if (CallCheckStop(CrossFunc, RNamStop, record, data)) {
               return record;
             }
