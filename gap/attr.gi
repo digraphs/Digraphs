@@ -882,17 +882,17 @@ function(D)
   record := NewDFSRecord(D);
   count := 0;
   out := [];
-  PostOrderFunc := function(record, data)
+  PostOrderFunc := function(record, _)
     count := count + 1;
     out[count] := record.child;
   end;
-  AncestorFunc := function(record, data)
+  AncestorFunc := function(record, _)
     if record.current <> record.child then
       record.stop := true;
     fi;
   end;
   for i in DigraphVertices(D) do
-    if (record.preorder[i] <> -1) then
+    if (IsBound(record.preorder[i])) then
       continue;
     fi;
     ExecuteDFS(record,

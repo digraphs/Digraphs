@@ -157,3 +157,4 @@ DeclareOperation("PartialOrderDigraphMeetOfVertices",
 DeclareOperation("NewDFSRecord", [IsDigraph]);
 DeclareOperation("DFSDefault", [IsRecord, IsObject]);
 DeclareGlobalFunction("ExecuteDFS");
+DeclareGlobalFunction("ExecuteDFSIter");  # TODO remove?

@@ -1,5 +1,4 @@
-
-  #############################################################################
+#############################################################################
 ##
 ##  oper.gi
 ##  Copyright (C) 2014-19                                James D. Mitchell
@@ -1684,7 +1683,7 @@ function(D, u, v)
     # if v is reachable from u, then u is an ancestor of v, and so at some
     # point v will be encountered for the first time, and PreOrderFunc will be
     # called.
-    PreOrderFunc := function(record, data)
+    PreOrderFunc := function(record, _)
       if record.current = v then
         record.stop := true;
       fi;
@@ -1695,7 +1694,7 @@ function(D, u, v)
     # itself, but PreOrderFunc won't be called (because u has already been
     # discovered).
     PreOrderFunc := DFSDefault;
-    AncestorFunc := function(record, data)
+    AncestorFunc := function(record, _)
       if record.child = v then
         record.stop := true;
       fi;
@@ -1722,7 +1721,7 @@ function(D, u, v)
   fi;
   # Follow the path from current (which is a descendant of u) back to u
   while current <> u do
-    Add(edges, record.edge[current]); # edge =
+    Add(edges, record.edge[current]);
     current := record.parent[current];
     Add(nodes, current);
   od;
@@ -2046,7 +2045,7 @@ function(D, v)
   record := NewDFSRecord(D);
   data := rec(depth := ListWithIdenticalEntries(DigraphNrVertices(D), 0),
               prev := 0);
-  AncestorFunc := function(record, data)
+  AncestorFunc := function(record, _)
     record.stop := true;
   end;
   PostOrderFunc := function(record, data)
@@ -2059,8 +2058,8 @@ function(D, v)
     neighbours := OutNeighborsOfVertex(record.graph, record.current);
     for i in [1 .. Size(neighbours)] do
       # need to bypass the CrossFunc
-      if record.postorder[neighbours[i]] <> -1 then
-        record.preorder[neighbours[i]] := -1;
+      if IsBound(record.postorder[neighbours[i]]) then
+        Unbind(record.preorder[neighbours[i]]);
       fi;
     od;
   end;
@@ -2467,13 +2466,12 @@ InstallMethod(IsOrderFilter, "for a digraph and a list of vertices",
 [IsDigraph, IsList],
 {D, roots} -> IsOrderIdeal(DigraphReverse(D), roots));
 
-InstallMethod(DominatorTree, "for a digraph and a vertex",
+ InstallMethod(DominatorTree, "for a digraph and a vertex",
 [IsDigraph, IsPosInt],
 function(D, root)
-  local M, preorder_num_to_node, PreOrderFunc, record, parent,
-  node_to_preorder_num, semi, lastlinked, label, bucket, idom, compress, eval,
-  pred, N, w, y, x, i, v;
-
+  local M, node_to_preorder_num, preorder_num_to_node, parent, index, next,
+  current, succ, prev, n, semi, lastlinked, label, bucket, idom,
+  compress, eval, pred, N, w, y, x, i, v;
   M := DigraphNrVertices(D);
 
   if 0 = root or root > M then
@@ -2481,25 +2479,36 @@ function(D, root)
                   "argument (a digraph)");
   fi;
 
-  preorder_num_to_node := [];
+  node_to_preorder_num := [];
+  node_to_preorder_num[root] := 1;
+  preorder_num_to_node := [root];
 
-  PreOrderFunc := function(record, data)
-    Add(data, record.current);
-  end;
-
-  record := NewDFSRecord(D);
-  ExecuteDFS(record,
-             preorder_num_to_node,
-             root,
-             PreOrderFunc,
-             DFSDefault,
-             DFSDefault,
-             DFSDefault);
-
-  parent := record.parent;
+  parent := [];
   parent[root] := fail;
-  node_to_preorder_num := record.preorder;
 
+  index := ListWithIdenticalEntries(M, 1);
+
+  next := 2;
+  current := root;
+  succ := OutNeighbours(D);
+  repeat
+    prev := current;
+    for i in [index[current] .. Length(succ[current])] do
+      n := succ[current][i];
+      if not IsBound(node_to_preorder_num[n]) then
+        Add(preorder_num_to_node, n);
+        parent[n] := current;
+        index[current] := i + 1;
+        node_to_preorder_num[n] := next;
+        next := next + 1;
+        current := n;
+        break;
+      fi;
+    od;
+    if prev = current then
+      current := parent[current];
+    fi;
+  until current = fail;
   semi := [1 .. M];
   lastlinked := M + 1;
   label := [];
@@ -2545,7 +2554,7 @@ function(D, root)
     od;
     bucket[w] := [];
     for v in pred[w] do
-      if node_to_preorder_num[v] <> -1 then
+      if IsBound(node_to_preorder_num[v]) then
         x := eval(v);
         if node_to_preorder_num[semi[x]] < node_to_preorder_num[semi[w]] then
           semi[w] := semi[x];
@@ -2572,6 +2581,123 @@ function(D, root)
   idom[root] := fail;
   return rec(idom := idom, preorder := preorder_num_to_node);
 end);
+
+# TODO Fix for hashmaps
+# InstallMethod(DominatorTree, "for a digraph and a vertex",
+# [IsDigraph, IsPosInt],
+# function(D, root)
+#   local M, preorder_num_to_node, PreOrderFunc, record, parent,
+#   node_to_preorder_num, semi, lastlinked, label, bucket, idom, compress, eval,
+#   pred, N, w, y, x, i, v;
+
+#   M := DigraphNrVertices(D);
+
+#   if 0 = root or root > M then
+#     ErrorNoReturn("the 2nd argument (root) is not a vertex of the 1st ",
+#                   "argument (a digraph)");
+#   fi;
+
+#   preorder_num_to_node := [];
+
+#   PreOrderFunc := function(record, data)
+#     Add(data, record.current);
+#   end;
+
+#   record := NewDFSRecord(D);
+#   ExecuteDFS(record,
+#              preorder_num_to_node,
+#              root,
+#              PreOrderFunc,
+#              DFSDefault,
+#              DFSDefault,
+#              DFSDefault);
+
+#   parent := record.parent;
+#   Unbind(parent[root]);
+#   # parent[root] := fail;
+#   node_to_preorder_num := record.preorder;
+
+#   for i in [1..M] do
+#     if not IsBound(node_to_preorder_num[i]) then
+#       node_to_preorder_num[i] := -1;
+#     fi;
+#     if not IsBound(parent[i]) then
+#       parent[i] := -1;
+#     fi;
+#   od;
+
+#   semi := [1 .. M];
+#   lastlinked := M + 1;
+#   label := [];
+#   bucket := List([1 .. M], x -> []);
+#   idom := [];
+#   idom[root] := root;
+
+#   compress := function(v)
+#     local u;
+#     u := parent[v];
+#     if u <> fail and lastlinked <= M and node_to_preorder_num[u] >=
+#         node_to_preorder_num[lastlinked] then
+#       compress(u);
+#       if node_to_preorder_num[semi[label[u]]]
+#           < node_to_preorder_num[semi[label[v]]] then
+#         label[v] := label[u];
+#       fi;
+#       parent[v] := parent[u];
+#     fi;
+#   end;
+
+#   eval := function(v)
+#     if lastlinked <= M and node_to_preorder_num[v] >=
+#         node_to_preorder_num[lastlinked] then
+#       compress(v);
+#       return label[v];
+#     else
+#       return v;
+#     fi;
+#   end;
+
+#   pred := InNeighbours(D);
+#   N := Length(preorder_num_to_node);
+#   for i in [N, N - 1 .. 2] do
+#     w := preorder_num_to_node[i];
+#     for v in bucket[w] do
+#       y := eval(v);
+#       if node_to_preorder_num[semi[y]] < node_to_preorder_num[w] then
+#         idom[v] := y;
+#       else
+#         idom[v] := w;
+#       fi;
+#     od;
+#     bucket[w] := [];
+#     for v in pred[w] do
+#       if IsBound(node_to_preorder_num[v]) then
+#         x := eval(v);
+#         if node_to_preorder_num[semi[x]] < node_to_preorder_num[semi[w]] then
+#           semi[w] := semi[x];
+#         fi;
+#       fi;
+#     od;
+#     if parent[w] = semi[w] then
+#       idom[w] := parent[w];
+#     else
+#       Add(bucket[semi[w]], w);
+#     fi;
+#     lastlinked := w;
+#     label[w] := semi[w];
+#   od;
+#   for v in bucket[root] do
+#     idom[v] := root;
+#   od;
+#   for i in [2 .. N] do
+#     w := preorder_num_to_node[i];
+#     if idom[w] <> semi[w] then
+#       idom[w] := idom[semi[w]];
+#     fi;
+#   od;
+#   idom[root] := fail;
+#   return rec(idom := idom, preorder := preorder_num_to_node);
+# end);
 
 InstallMethod(Dominators, "for a digraph and a vertex",
 [IsDigraph, IsPosInt],
@@ -2808,16 +2934,16 @@ function(graph)
   record.child := -1;
   record.current := -1;
   record.stop := false;
-  record.parent := ListWithIdenticalEntries(DigraphNrVertices(graph), -1);
-  record.preorder := ListWithIdenticalEntries(DigraphNrVertices(graph), -1);
-  record.postorder := ListWithIdenticalEntries(DigraphNrVertices(graph), -1);
+  record.parent := HashMap();
+  record.preorder := HashMap();
+  record.postorder := HashMap();
   record.edge := HashMap();
   return record;
 end);
 
 InstallMethod(DFSDefault,
 "for a record and an object", [IsRecord, IsObject],
-function(record, data)
+function(record, data)  # gaplint: disable=W046
 end);
 
 # * PreOrderFunc is called with (record, data) when a vertex is popped from the
@@ -2841,5 +2967,18 @@ function(record, data, start, PreOrderFunc, PostOrderFunc, AncestorFunc,
                   "NewDFSRecord,");
   fi;
   ExecuteDFS_C(record, data, start, PreOrderFunc, PostOrderFunc,
+               AncestorFunc, CrossFunc);
+end);
+
+InstallGlobalFunction(ExecuteDFSIter,  # TODO remove?
+function(record, data, start, PreOrderFunc, PostOrderFunc, AncestorFunc,
+         CrossFunc)
+  if not IsEqualSet(RecNames(record),
+                    ["stop", "graph", "child", "parent", "preorder",
+                     "postorder", "current", "edge"]) then
+    ErrorNoReturn("the 1st argument <record> must be created with ",
+                  "NewDFSRecord,");
+  fi;
+  ExecuteDFSIter_C(record, data, start, PreOrderFunc, PostOrderFunc,
                AncestorFunc, CrossFunc);
 end);

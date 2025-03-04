@@ -237,9 +237,9 @@ IsStronglyConnectedDigraph, 0,
 D -> DigraphNrVertices(D) <= 1 and IsEmptyDigraph(D));
 
 InstallMethod(IsAcyclicDigraph, "for a digraph by out-neighbours",
-[IsDigraphByOutNeighboursRep],
+[IsDigraphByOutNeighboursRep],  # TODO call DFS for each component
 function(D)
-  local n, i, record, D2, PostOrderFunc, PreOrderFunc, data, edge, AncestorFunc,
+  local n, i, record, D2, AncestorFunc,
   edges;
   n := DigraphNrVertices(D);
   if n = 0 then
@@ -252,7 +252,7 @@ function(D)
   D2 := DigraphAddVertex(D2);
   edges := [];
 
-  for i in [1..n] do
+  for i in [1 .. n] do
     Add(edges, [n + 1, i]);
   od;
 
@@ -261,30 +261,14 @@ function(D)
   record := NewDFSRecord(D2);
 
   # Starts at the new vertex
-  ## data := rec(start := [], last := [], clock := 0);
 
-  # PreOrderFunc := function(record, data)
-  #   data.start[record.current] := data.clock;
-  #   data.clock := data.clock + 1;
-  # end;
-
-  # PostOrderFunc := function(record, data)
-  #   data.last[record.child] := data.clock;
-  #   data.clock := data.clock + 1;
-  # end;
-
-  AncestorFunc := function(record, data)
+  AncestorFunc := function(record, _)
     record.stop := true;
   end;
-
 
   ExecuteDFS(record, [], n + 1, DFSDefault,
                 DFSDefault, AncestorFunc, DFSDefault);
 
-  # ExecuteDFS(record, data, n + 1, PreOrderFunc,
-  #               PostOrderFunc, DFSDefault, DFSDefault);
-
-  # return not record.stop;
   return not record.stop;
 
   # for edge in DigraphEdges(D2) do

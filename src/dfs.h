@@ -17,5 +17,6 @@
 #include "gap-includes.h"  // for Obj, Int
 
 Obj FuncExecuteDFS_C(Obj self, Obj args);
+Obj FuncExecuteDFSIter_C(Obj self, Obj args); // TODO remove?
 
 #endif  // DIGRAPHS_SRC_DFS_H_
