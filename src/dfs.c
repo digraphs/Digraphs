@@ -102,7 +102,9 @@ bool ExecuteDFSRec(UInt current, struct dfs_args* args) {
                           args -> record, args -> data)) {
           return false;
         }
-      } else {  // v has been visited and backtracked on
+      } else if (INT_INTOBJ(HASH_GET(args -> preorder, INTOBJ_INT(v)))
+                < INT_INTOBJ(HASH_GET(args -> preorder, INTOBJ_INT(current)))) {
+        // v was visited before current
         if (CallCheckStop(args -> CrossFunc, args -> RNamStop, args -> record,
                           args -> data)) {
           return false;
@@ -267,7 +269,7 @@ Obj FuncExecuteDFSIter_C(Obj self, Obj args) {  // TODO remove?
           continue;
       }
 
-      if (INT_INTOBJ(HASH_GET(preorder, INTOBJ_INT(current))) != -1) continue;
+      if (HASH_CONTAINS(preorder, INTOBJ_INT(current))) continue;
 
       // otherwise, visit this node
 
@@ -287,7 +289,7 @@ Obj FuncExecuteDFSIter_C(Obj self, Obj args) {  // TODO remove?
       for (UInt j = LEN_LIST(succ); j >= 1; j--) {
         // Push so that the top of the stack is the first vertex in succ
         UInt v = INT_INTOBJ(ELM_LIST(succ, j));
-        bool visited = INT_INTOBJ(HASH_GET(preorder, INTOBJ_INT(v))) != -1;
+        bool visited = HASH_CONTAINS(preorder, INTOBJ_INT(v));
         AssPRec(record, RNamChild, INTOBJ_INT(v));
         CHANGED_BAG(record);
 
@@ -297,13 +299,14 @@ Obj FuncExecuteDFSIter_C(Obj self, Obj args) {  // TODO remove?
           ASS_LIST(stack, ++top, INTOBJ_INT(v));
         } else {  // v is either visited, or in the stack to be visited
           // If v was visited prior, but has not been backtracked on
-          bool backtracked = INT_INTOBJ(HASH_GET(postorder,
-                                                 INTOBJ_INT(v))) != -1;
+          bool backtracked = HASH_CONTAINS(postorder, INTOBJ_INT(v));
           if (!backtracked) {  // Back edge
             if (CallCheckStop(AncestorFunc, RNamStop, record, data)) {
               return record;
             }
-          } else {  // v has been visited and backtracked on
+          } else if (INT_INTOBJ(HASH_GET(preorder, INTOBJ_INT(v)))
+                 < INT_INTOBJ(HASH_GET(preorder, INTOBJ_INT(current)))) {
+            // v was visited before current
             if (CallCheckStop(CrossFunc, RNamStop, record, data)) {
               return record;
             }

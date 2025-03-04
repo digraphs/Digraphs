@@ -2044,17 +2044,20 @@ function(D, v)
   fi;
   record := NewDFSRecord(D);
   data := rec(depth := ListWithIdenticalEntries(DigraphNrVertices(D), 0),
-              prev := 0);
+              prev := -1, best := 0);
   AncestorFunc := function(record, _)
     record.stop := true;
   end;
-  PostOrderFunc := function(record, data)
-    data.depth[record.current] := data.prev;
-    data.prev := data.prev + 1;
+  PostOrderFunc := function(_, data)
+    # data.depth[record.current] := data.prev;
+    data.prev := data.prev - 1;
   end;
   PreOrderFunc := function(record, data)
     local i, neighbours;
-    data.prev := 0;
+    data.prev := data.prev + 1;
+    if data.prev > data.best then
+      data.best := data.prev;
+    fi;
     neighbours := OutNeighborsOfVertex(record.graph, record.current);
     for i in [1 .. Size(neighbours)] do
       # need to bypass the CrossFunc
@@ -2069,7 +2072,8 @@ function(D, v)
   if record.stop then
     return infinity;
   fi;
-  return data.depth[v];
+  return data.best;
+
 end);
 
 InstallMethod(DigraphRandomWalk,

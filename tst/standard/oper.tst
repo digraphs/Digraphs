@@ -1446,6 +1446,9 @@ gap> DigraphLongestDistanceFromVertex(gr, 15);
 infinity
 gap> DigraphLongestDistanceFromVertex(gr, 16);
 Error, the 2nd argument <v> must be a vertex of the 1st argument <D>,
+gap> D := Digraph([[2, 4], [3, 4], [5], [], []]);;
+gap> DigraphLongestDistanceFromVertex(D, 1);
+3
 
 #  DigraphRandomWalk
 gap> gr := CompleteDigraph(5);
@@ -3313,14 +3316,7 @@ gap> data := rec(back_edges := [], cross_edges := []);;
 gap> ExecuteDFS(record, data, 1, DFSDefault,
 >               DFSDefault, AncestorFunc, CrossFunc);;
 gap> data;
-rec( back_edges := [ [ 3, 1 ], [ 3, 1 ] ], 
-  cross_edges := [ [ 2, 4 ], [ 5, 4 ], [ 1, 3 ] ] )
-gap> record := NewDFSRecord(Digraph([[2, 3], [3], []]));;
-gap> data := rec(back_edges := [], cross_edges := []);;
-gap> ExecuteDFS(record, data, 1, DFSDefault,
->               DFSDefault, AncestorFunc, CrossFunc);;
-gap> data;
-rec( back_edges := [  ], cross_edges := [ [ 1, 3 ] ] )
+rec( back_edges := [ [ 3, 1 ], [ 3, 1 ] ], cross_edges := [ [ 5, 4 ] ] )
 gap> ExecuteDFS(rec(), data, 1, DFSDefault,
 >               DFSDefault, AncestorFunc, CrossFunc);
 Error, the 1st argument <record> must be created with NewDFSRecord,
