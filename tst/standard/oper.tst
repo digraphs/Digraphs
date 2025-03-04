@@ -3262,7 +3262,7 @@ gap> DFSDefault(rec(), rec());
 # ExecuteDFS
 gap> mapToList := function(map, len, list)  # For turning record hashmaps -> lists for
 > local i;
->     for i in [ 1..len ] do                # printing
+>     for i in [1 .. len] do                # printing
 >        if not IsBound(map[i]) then
 >          Add(list, -1);
 >        else
