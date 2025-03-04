@@ -2276,7 +2276,6 @@ static Int InitKernel(StructInitInfo* module) {
   ImportGVarFromLibrary("DS_Hash_Lookup", &DS_Hash_Lookup);
   ImportGVarFromLibrary("DS_Hash_Contains", &DS_Hash_Contains);
   ImportGVarFromLibrary("DS_Hash_Value", &DS_Hash_Value);
-Obj DS_Hash_GetValue;
   /* return success                                                      */
   return 0;
 }

@@ -84,7 +84,7 @@ bool ExecuteDFSRec(UInt current, struct dfs_args* args) {
   }
 
   Obj succ = ELM_PLIST(args -> neighbors, current);
-  for (UInt j = 1; j <= LEN_LIST(succ); j++) {
+  for (Int j = 1; j <= LEN_LIST(succ); j++) {
     UInt v = INT_INTOBJ(ELM_LIST(succ, j));
     bool visited = HASH_CONTAINS(args -> preorder, INTOBJ_INT(v));
 
@@ -286,7 +286,7 @@ Obj FuncExecuteDFSIter_C(Obj self, Obj args) {  // TODO remove?
       CHANGED_BAG(record);
 
       Obj succ = ELM_PLIST(neighbors, current);
-      for (UInt j = LEN_LIST(succ); j >= 1; j--) {
+      for (Int j = LEN_LIST(succ); j >= 1; j--) {
         // Push so that the top of the stack is the first vertex in succ
         UInt v = INT_INTOBJ(ELM_LIST(succ, j));
         bool visited = HASH_CONTAINS(preorder, INTOBJ_INT(v));
