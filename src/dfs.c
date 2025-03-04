@@ -12,7 +12,6 @@
 
 #include "dfs.h"
 
-#include <stdbool.h>  // for false, true, bool
 #include <stdint.h>   // for uint64_t
 #include <stdlib.h>   // for NULL, free
 
@@ -21,6 +20,7 @@
 #include "digraphs-debug.h"
 #include "digraphs.h"
 #include "safemalloc.h"
+
 
 // Datastructures Functions
 extern Obj DS_Hash_SetValue;
@@ -49,29 +49,6 @@ Obj HASH_GET(Obj map, Obj key) {
 bool HASH_CONTAINS(Obj map, Obj key) {
   return CALL_2ARGS(DS_Hash_Contains, map, key) == True;
 }
-
-struct dfs_args {
-  Int RNamChild;
-  Int RNamCurrent;
-  Int RNamStop;
-
-  Obj record;
-  UInt* preorder_num;
-  UInt* postorder_num;
-
-  Obj parent;
-  Obj postorder;
-  Obj preorder;
-  Obj edge;
-
-  Obj neighbors;
-
-  Obj data;
-  Obj PreorderFunc;
-  Obj PostorderFunc;
-  Obj AncestorFunc;
-  Obj CrossFunc;
-};
 
 bool ExecuteDFSRec(UInt current, struct dfs_args* args) {
   AssPRec(args -> record, args -> RNamCurrent, INTOBJ_INT(current));

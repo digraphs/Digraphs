@@ -21,6 +21,30 @@ bool CallCheckStop(Obj f, Int RNamStop, Obj record, Obj data);
 Obj HASH_GET(Obj map, Obj key);
 bool HASH_CONTAINS(Obj map, Obj key);
 
+struct dfs_args {
+  Int RNamChild;
+  Int RNamCurrent;
+  Int RNamStop;
+
+  Obj record;
+  UInt* preorder_num;
+  UInt* postorder_num;
+
+  Obj parent;
+  Obj postorder;
+  Obj preorder;
+  Obj edge;
+
+  Obj neighbors;
+
+  Obj data;
+  Obj PreorderFunc;
+  Obj PostorderFunc;
+  Obj AncestorFunc;
+  Obj CrossFunc;
+};
+
+bool ExecuteDFSRec(UInt current, struct dfs_args* args);
 Obj FuncExecuteDFS_C(Obj self, Obj args);
 Obj FuncExecuteDFSIter_C(Obj self, Obj args);  // TODO remove?
 
