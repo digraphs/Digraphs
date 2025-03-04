@@ -26,6 +26,7 @@
 #include "homos.h"            // for FuncHomomorphismDigraphsFinder
 #include "planar.h"           // for FUNC_IS_PLANAR, . . .
 #include "safemalloc.h"       // for safe_malloc
+#include "dfs.h"              // for generic DFS
 
 #undef PACKAGE
 #undef PACKAGE_BUGREPORT
@@ -58,6 +59,13 @@ Obj OnTuples;
 Obj Group;
 Obj ClosureGroup;
 Obj InfoWarning;
+
+// Added for HashMap (DFS)
+
+Obj DS_Hash_SetValue;
+Obj DS_Hash_Lookup;
+Obj DS_Hash_Contains;
+Obj DS_Hash_Value;
 
 static inline bool IsAttributeStoringRep(Obj o) {
   return (CALL_1ARGS(IsAttributeStoringRepObj, o) == True ? true : false);
@@ -2222,6 +2230,14 @@ static StructGVarFunc GVarFuncs[] = {
     GVAR_FUNC(SUBGRAPH_HOMEOMORPHIC_TO_K4, 1, "digraph"),
     GVAR_FUNC(DIGRAPHS_FREE_HOMOS_DATA, 0, ""),
     GVAR_FUNC(DIGRAPHS_FREE_CLIQUES_DATA, 0, ""),
+    GVAR_FUNC(ExecuteDFS_C,
+              -1,
+              "record, data, start, PreOrderFunc, PostOrderFunc, "
+              "AncestorFunc, CrossFunc"),
+    GVAR_FUNC(ExecuteDFSIter_C,
+              -1,
+              "record, data, start, PreOrderFunc, PostOrderFunc, "
+              "AncestorFunc, CrossFunc"),
 
     {0, 0, 0, 0, 0} /* Finish with an empty entry */
 };
@@ -2255,6 +2271,11 @@ static Int InitKernel(StructInitInfo* module) {
   ImportGVarFromLibrary("Group", &Group);
   ImportGVarFromLibrary("ClosureGroup", &ClosureGroup);
   ImportGVarFromLibrary("InfoWarning", &InfoWarning);
+  // For DFS
+  ImportGVarFromLibrary("DS_Hash_SetValue", &DS_Hash_SetValue);
+  ImportGVarFromLibrary("DS_Hash_Lookup", &DS_Hash_Lookup);
+  ImportGVarFromLibrary("DS_Hash_Contains", &DS_Hash_Contains);
+  ImportGVarFromLibrary("DS_Hash_Value", &DS_Hash_Value);
   /* return success                                                      */
   return 0;
 }

@@ -152,3 +152,9 @@ DeclareOperation("PartialOrderDigraphJoinOfVertices",
                  [IsDigraph, IsPosInt, IsPosInt]);
 DeclareOperation("PartialOrderDigraphMeetOfVertices",
                  [IsDigraph, IsPosInt, IsPosInt]);
+
+# 11. DFS
+DeclareOperation("NewDFSRecord", [IsDigraph]);
+DeclareOperation("DFSDefault", [IsRecord, IsObject]);
+DeclareGlobalFunction("ExecuteDFS");
+DeclareGlobalFunction("ExecuteDFSIter");  # TODO remove?
