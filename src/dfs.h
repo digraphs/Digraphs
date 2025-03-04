@@ -13,9 +13,9 @@
 #ifndef DIGRAPHS_SRC_DFS_H_
 #define DIGRAPHS_SRC_DFS_H_
 
+#include <stdbool.h>  // for false, true, bool
 // GAP headers
 #include "gap-includes.h"  // for Obj, Int
-#include <stdbool.h>  // for false, true, bool
 
 bool CallCheckStop(Obj f, Int RNamStop, Obj record, Obj data);
 Obj HASH_GET(Obj map, Obj key);
