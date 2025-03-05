@@ -18,8 +18,6 @@
 #include "gap-includes.h"  // for Obj, Int
 
 bool CallCheckStop(Obj f, Int RNamStop, Obj record, Obj data);
-Obj HASH_GET(Obj map, Obj key);
-bool HASH_CONTAINS(Obj map, Obj key);
 
 struct dfs_args {
   Int RNamChild;

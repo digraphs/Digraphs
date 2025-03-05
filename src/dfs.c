@@ -21,6 +21,16 @@
 #include "digraphs.h"
 #include "safemalloc.h"
 
+// Macros
+
+#define HASH_SET(map, key, val) \
+  CALL_3ARGS(DS_Hash_SetValue, map, key, val)
+
+#define HASH_GET(map, key) \
+  CALL_2ARGS(DS_Hash_Value, map, key)
+
+#define HASH_CONTAINS(map, key) \
+  CALL_2ARGS(DS_Hash_Contains, map, key) == True
 
 // Datastructures Functions
 extern Obj DS_Hash_SetValue;
@@ -38,16 +48,6 @@ bool CallCheckStop(Obj f, Int RNamStop, Obj record, Obj data) {
       return true;
     }
     return false;
-}
-
-#define HASH_SET(map, key, val) \
-  CALL_3ARGS(DS_Hash_SetValue, map, key, val) \
-
-Obj HASH_GET(Obj map, Obj key) {
-  return CALL_2ARGS(DS_Hash_Value, map, key);
-}
-bool HASH_CONTAINS(Obj map, Obj key) {
-  return CALL_2ARGS(DS_Hash_Contains, map, key) == True;
 }
 
 bool ExecuteDFSRec(UInt current, struct dfs_args* args) {
