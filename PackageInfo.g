@@ -26,6 +26,56 @@ function(re)
   fi;
 end);
 
+BindGlobal("_MakeAbstractFunction",
+function(OutputFormat)
+  local ValidOutputFormats, ErrorMsg, OutputType, AbstractRec, line, Abstract;
+
+  # Validate the specified OutputFormat.
+  ValidOutputFormats := ["HTML", "XML"];
+  if not OutputFormat in ValidOutputFormats then
+    ErrorMsg := Concatenation(["The given `OutputFormat` argument is invalid. ",
+                               "Valid options are:\n"]);
+    for OutputType in ValidOutputFormats do
+      ErrorMsg := Concatenation(ErrorMsg, "- ", OutputType, "\n");
+    od;
+    ErrorNoReturn(ErrorMsg);
+  fi;
+
+  # Define the Abstract here.
+  AbstractRec := [rec(str := "The", toReplace := false),
+                  rec(str := "Digraphs", toReplace := true),
+                  rec(str := "package is a", toReplace := false),
+                  rec(str := "GAP", toReplace := true),
+                  rec(str := "package containing methods", toReplace := false),
+                  rec(str := "for graphs, digraphs, and", toReplace := false),
+                  rec(str := "multidigraphs.", toReplace := false)];
+
+  # Build the Abstract from the processed abstract parts.
+  Abstract := "";
+  for line in AbstractRec do
+    if line.toReplace then
+      if OutputFormat = "XML" then
+        line.str := Concatenation("&", line.str, ";");
+      elif OutputFormat = "HTML" then
+        line.str := Concatenation(["<strong class=\"pkg\">",
+                                   line.str, "</strong>"]);
+      else
+        ErrorMsg := Concatenation(["Outputting to format ", OutputFormat,
+                                   " has not yet been implemented."]);
+        ErrorNoReturn(ErrorMsg);
+      fi;
+    fi;
+    line.str := Concatenation(line.str, " ");
+    Abstract := Concatenation(Abstract, line.str);
+  od;
+
+  # Remove trailing whitespace chars.
+  while Abstract{[Length(Abstract)]} = " " do
+    Abstract := Abstract{[1 .. Length(Abstract) - 1]};
+  od;
+  return Abstract;
+end);
+
 _STANDREWSMATHS := Concatenation(["Mathematical Institute, North Haugh, ",
                                   "St Andrews, Fife, KY16 9SS, Scotland"]);
 _STANDREWSCS := Concatenation(["Jack Cole Building, North Haugh, ",
@@ -528,8 +578,7 @@ AutoDoc := rec(
           https://www.fsf.org/licenses/gpl.html</URL> as published by the
           Free Software Foundation; either version 3 of the License, or (at
           your option) any later version.""",
-        Abstract := """The &Digraphs; package is a &GAP; package containing
-          methods for graphs, digraphs, and multidigraphs.""",
+        Abstract := _MakeAbstractFunction("XML"),
         Acknowledgements := """
           We would like to thank Christopher Jefferson for his help in including
           &BLISS; in &Digraphs;.
@@ -538,7 +587,7 @@ AutoDoc := rec(
           on work by Max Neunh&#246;ffer, and independently Artur Sch&#228;fer.
         """)),
 
-        AbstractHTML := ~.AutoDoc.TitlePage.Abstract));
+AbstractHTML := _MakeAbstractFunction("HTML")));
 
 if not CompareVersionNumbers(GAPInfo.Version, "4.12") then
   Unbind(IsKernelExtensionAvailable);
@@ -546,7 +595,9 @@ fi;
 
 MakeReadWriteGlobal("_RecogsFunnyWWWURLFunction");
 MakeReadWriteGlobal("_RecogsFunnyNameFormatterFunction");
+MakeReadWriteGlobal("_MakeAbstractFunction");
 Unbind(_RecogsFunnyWWWURLFunction);
 Unbind(_RecogsFunnyNameFormatterFunction);
+Unbind(_MakeAbstractFunction);
 Unbind(_STANDREWSMATHS);
 Unbind(_STANDREWSCS);
