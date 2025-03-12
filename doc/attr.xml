@@ -1682,6 +1682,10 @@ gap> DigraphLoops(D);
       <Cite Key="Law1976"/></Item>
       <Item><C>byskov</C> - Byskov's Algorithm 
       <Cite Key="Bys2002"/></Item>
+      <Item><C>zykov</C> - Zykov's Algorithm 
+      <Cite Key="Corneil1973"/></Item>
+      <Item><C>christofides</C> - Christofides's Algorithm 
+      <Cite Key="Wang1974"/></Item>
     </List>
 
     <Example><![CDATA[
