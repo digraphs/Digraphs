@@ -63,9 +63,9 @@ Obj InfoWarning;
 // Added for HashMap (DFS)
 
 Obj DS_Hash_SetValue;
-Obj DS_Hash_Lookup;
 Obj DS_Hash_Contains;
 Obj DS_Hash_Value;
+Obj DS_Hash_Reserve;
 
 static inline bool IsAttributeStoringRep(Obj o) {
   return (CALL_1ARGS(IsAttributeStoringRepObj, o) == True ? true : false);
@@ -2273,9 +2273,10 @@ static Int InitKernel(StructInitInfo* module) {
   ImportGVarFromLibrary("InfoWarning", &InfoWarning);
   // For DFS
   ImportGVarFromLibrary("DS_Hash_SetValue", &DS_Hash_SetValue);
-  ImportGVarFromLibrary("DS_Hash_Lookup", &DS_Hash_Lookup);
   ImportGVarFromLibrary("DS_Hash_Contains", &DS_Hash_Contains);
   ImportGVarFromLibrary("DS_Hash_Value", &DS_Hash_Value);
+  ImportGVarFromLibrary("DS_Hash_Reserve", &DS_Hash_Reserve);
+
   /* return success                                                      */
   return 0;
 }

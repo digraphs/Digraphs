@@ -3242,17 +3242,17 @@ gap> DigraphVertexLabels(D);
 # NewDFSRecord
 gap> NewDFSRecord(ChainDigraph(10));
 rec( child := -1, current := -1, edge := HashMap([]), 
-  graph := <immutable chain digraph with 10 vertices>, parent := HashMap([]), 
+  graph := <immutable chain digraph with 10 vertices>, parents := HashMap([]),
   postorder := HashMap([]), preorder := HashMap([]), stop := false )
 gap> NewDFSRecord(CompleteDigraph(2));
 rec( child := -1, current := -1, edge := HashMap([]), 
   graph := <immutable complete digraph with 2 vertices>, 
-  parent := HashMap([]), postorder := HashMap([]), preorder := HashMap([]), 
+  parents := HashMap([]), postorder := HashMap([]), preorder := HashMap([]), 
   stop := false )
 gap> NewDFSRecord(Digraph([[1], [2], [1], [1], [2]]));
 rec( child := -1, current := -1, edge := HashMap([]), 
   graph := <immutable digraph with 5 vertices, 5 edges>, 
-  parent := HashMap([]), postorder := HashMap([]), preorder := HashMap([]), 
+  parents := HashMap([]), postorder := HashMap([]), preorder := HashMap([]), 
   stop := false )
 
 # DFSDefault
@@ -3271,7 +3271,7 @@ gap> mapToList := function(map, len, list)  # For turning record hashmaps -> lis
 >     od;
 >    end;;
 gap> record := NewDFSRecord(CompleteDigraph(10));;
-gap> ExecuteDFS(record, [], 2, DFSDefault,
+gap> ExecuteDFS(record, NewDFSFlags(), [], 2, DFSDefault,
 >               DFSDefault, DFSDefault, DFSDefault);
 gap> preorder_list := [];;
 gap> mapToList(record.preorder, 10, preorder_list);;
@@ -3283,7 +3283,7 @@ gap> AncestorFunc := function(record, data)
 >       record.stop := true;
 >       data.cycle_vertex := record.child;
 >    end;;
-gap> ExecuteDFS(record, data, 1, DFSDefault,
+gap> ExecuteDFS(record, NewDFSFlags(), data, 1, DFSDefault,
 >               DFSDefault, AncestorFunc, DFSDefault);
 gap> record.stop;
 true
@@ -3299,7 +3299,7 @@ gap> CrossFunc := function(record, data)
 >       Add(data, record.child);
 >    end;;
 gap> data := [];;
-gap> ExecuteDFS(record, data, 1, DFSDefault,
+gap> ExecuteDFS(record, NewDFSFlags(), data, 1, DFSDefault,
 >               DFSDefault, DFSDefault, CrossFunc);
 gap> record.stop;
 true
@@ -3313,15 +3313,15 @@ gap> CrossFunc := function(record, data)
 >    end;;
 gap> record := NewDFSRecord(Digraph([[2, 3, 3], [4, 4], [5, 1, 1], [], [4]]));;
 gap> data := rec(back_edges := [], cross_edges := []);;
-gap> ExecuteDFS(record, data, 1, DFSDefault,
+gap> ExecuteDFS(record, NewDFSFlags(), data, 1, DFSDefault,
 >               DFSDefault, AncestorFunc, CrossFunc);;
 gap> data;
 rec( back_edges := [ [ 3, 1 ], [ 3, 1 ] ], cross_edges := [ [ 5, 4 ] ] )
-gap> ExecuteDFS(rec(), data, 1, DFSDefault,
+gap> ExecuteDFS(rec(), NewDFSFlags(), data, 1, DFSDefault,
 >               DFSDefault, AncestorFunc, CrossFunc);
 Error, the 1st argument <record> must be created with NewDFSRecord,
 gap> D := ChainDigraph(1);;
-gap> ExecuteDFS(NewDFSRecord(D), [], 3, DFSDefault, DFSDefault, DFSDefault,
+gap> ExecuteDFS(NewDFSRecord(D), NewDFSFlags(), [], 3, DFSDefault, DFSDefault, DFSDefault,
 > DFSDefault);
 Error, the third argument <start> must be a vertex in your graph,
 

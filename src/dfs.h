@@ -17,6 +17,8 @@
 // GAP headers
 #include "gap-includes.h"  // for Obj, Int
 
+#include "bitarray.h"
+
 bool CallCheckStop(Obj f, Int RNamStop, Obj record, Obj data);
 
 struct dfs_args {
@@ -28,7 +30,7 @@ struct dfs_args {
   UInt* preorder_num;
   UInt* postorder_num;
 
-  Obj parent;
+  Obj parents;
   Obj postorder;
   Obj preorder;
   Obj edge;
@@ -42,7 +44,7 @@ struct dfs_args {
   Obj CrossFunc;
 };
 
-bool ExecuteDFSRec(UInt current, struct dfs_args* args);
+bool ExecuteDFSRec(UInt current, UInt prev, struct dfs_args* args);
 Obj FuncExecuteDFS_C(Obj self, Obj args);
 Obj FuncExecuteDFSIter_C(Obj self, Obj args);  // TODO remove?
 

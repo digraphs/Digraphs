@@ -1658,7 +1658,7 @@ end);
 InstallMethod(DigraphPath, "for a digraph by out-neighbours and two pos ints",
 [IsDigraphByOutNeighboursRep, IsPosInt, IsPosInt],
 function(D, u, v)
-  local N, record, PreOrderFunc, AncestorFunc, nodes, edges, current;
+  local N, record, PreOrderFunc, AncestorFunc, nodes, edges, current, parents;
 
   N := DigraphNrVertices(D);
   if u > N or v > N then
@@ -1678,6 +1678,7 @@ function(D, u, v)
       or (HasInNeighbours(D) and InDegreeOfVertex(D, v) = 0) then
     return fail;
   fi;
+
   record := NewDFSRecord(D);
   if u <> v then
     # if v is reachable from u, then u is an ancestor of v, and so at some
@@ -1701,6 +1702,7 @@ function(D, u, v)
     end;
   fi;
   ExecuteDFS(record,
+             NewDFSFlags(),
              fail,
              u,
              PreOrderFunc,
@@ -1722,7 +1724,7 @@ function(D, u, v)
   # Follow the path from current (which is a descendant of u) back to u
   while current <> u do
     Add(edges, record.edge[current]);
-    current := record.parent[current];
+    current := record.parents[current];
     Add(nodes, current);
   od;
   return [Reversed(nodes), Reversed(edges)];
@@ -2066,7 +2068,7 @@ function(D, v)
       fi;
     od;
   end;
-  ExecuteDFS(record, data, v,
+  ExecuteDFS(record, NewDFSFlags(), data, v,
                PreOrderFunc, PostOrderFunc,
                AncestorFunc, DFSDefault);
   if record.stop then
@@ -2396,6 +2398,7 @@ function(D, root)
   end;
 
   ExecuteDFS(record,
+             NewDFSFlags(),
              data,
              root,
              PreOrderFunc,
@@ -2473,7 +2476,7 @@ InstallMethod(IsOrderFilter, "for a digraph and a list of vertices",
 InstallMethod(DominatorTree, "for a digraph and a vertex",
 [IsDigraph, IsPosInt],
 function(D, root)
-  local M, preorder_num_to_node, PreOrderFunc, record, parent,
+  local M, preorder_num_to_node, PreOrderFunc, record, parents,
   node_to_preorder_num, semi, lastlinked, label, bucket, idom, compress, eval,
   pred, N, w, y, x, i, v, map, key, hashGet;
 
@@ -2500,6 +2503,7 @@ function(D, root)
 
   record := NewDFSRecord(D);
   ExecuteDFS(record,
+             NewDFSFlags(),
              preorder_num_to_node,
              root,
              PreOrderFunc,
@@ -2507,10 +2511,10 @@ function(D, root)
              DFSDefault,
              DFSDefault);
 
-  parent := record.parent;
+  parents := record.parents;
   node_to_preorder_num := record.preorder;
 
-  Unbind(parent[root]);
+  Unbind(parents[root]);
 
   semi := [1 .. M];
   lastlinked := M + 1;
@@ -2521,7 +2525,7 @@ function(D, root)
 
   compress := function(v)
     local u;
-    u := hashGet(parent, v);
+    u := hashGet(parents, v);
     if u <> fail and lastlinked <= M and hashGet(node_to_preorder_num, u) >=
         hashGet(node_to_preorder_num, lastlinked) then
       compress(u);
@@ -2529,7 +2533,7 @@ function(D, root)
           < hashGet(node_to_preorder_num, semi[label[v]]) then
         label[v] := label[u];
       fi;
-      parent[v] := hashGet(parent, u);
+      parents[v] := hashGet(parents, u);
     fi;
   end;
 
@@ -2566,8 +2570,8 @@ function(D, root)
         fi;
       fi;
     od;
-    if hashGet(parent, w) = semi[w] then
-      idom[w] := hashGet(parent, w);
+    if hashGet(parents, w) = semi[w] then
+      idom[w] := hashGet(parents, w);
     else
       Add(bucket[semi[w]], w);
     fi;
@@ -2822,10 +2826,19 @@ function(graph)
   record.child := -1;
   record.current := -1;
   record.stop := false;
-  record.parent := HashMap();
+  record.parents := HashMap();
   record.preorder := HashMap();
   record.postorder := HashMap();
   record.edge := HashMap();
+  return record;
+end);
+
+InstallMethod(NewDFSFlags,
+"", [],
+function()
+  local record;
+  record := rec();
+  record.forest := false;
   return record;
 end);
 
@@ -2845,16 +2858,24 @@ end);
 #   is an edge, the preorder value of record.current is greater than the
 #   preorder value of child, and record.current and child are unrelated
 #   by ancestry.
+
 InstallGlobalFunction(ExecuteDFS,
-function(record, data, start, PreOrderFunc, PostOrderFunc, AncestorFunc,
+function(record, flags, data, start, PreOrderFunc, PostOrderFunc, AncestorFunc,
          CrossFunc)
   if not IsEqualSet(RecNames(record),
-                    ["stop", "graph", "child", "parent", "preorder",
+                    ["stop", "graph", "child", "parents", "preorder",
                      "postorder", "current", "edge"]) then
     ErrorNoReturn("the 1st argument <record> must be created with ",
                   "NewDFSRecord,");
   fi;
-  ExecuteDFS_C(record, data, start, PreOrderFunc, PostOrderFunc,
+
+  if not IsEqualSet(RecNames(flags),
+                    ["forest"]) then
+    ErrorNoReturn("the 2nd argument <flags> must be created with ",
+                  "NewDFSFlags,");
+  fi;
+
+  ExecuteDFS_C(record, flags, data, start, PreOrderFunc, PostOrderFunc,
                AncestorFunc, CrossFunc);
 end);
 
@@ -2862,11 +2883,11 @@ InstallGlobalFunction(ExecuteDFSIter,  # TODO remove?
 function(record, data, start, PreOrderFunc, PostOrderFunc, AncestorFunc,
          CrossFunc)
   if not IsEqualSet(RecNames(record),
-                    ["stop", "graph", "child", "parent", "preorder",
+                    ["stop", "graph", "child", "parents", "preorder",
                      "postorder", "current", "edge"]) then
     ErrorNoReturn("the 1st argument <record> must be created with ",
                   "NewDFSRecord,");
   fi;
-  ExecuteDFSIter_C(record, data, start, PreOrderFunc, PostOrderFunc,
+    ExecuteDFSIter_C(record, data, start, PreOrderFunc, PostOrderFunc,
                AncestorFunc, CrossFunc);
 end);

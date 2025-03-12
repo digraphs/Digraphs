@@ -21,6 +21,13 @@
 #include "digraphs.h"
 #include "safemalloc.h"
 
+// Datastructures Functions
+extern Obj DS_Hash_SetValue;
+extern Obj DS_Hash_Contains;
+extern Obj DS_Hash_Value;
+extern Obj IsBound;
+extern Obj DS_Hash_Reserve;
+
 // Macros
 
 #define HASH_SET(map, key, val) \
@@ -32,28 +39,28 @@
 #define HASH_CONTAINS(map, key) \
   CALL_2ARGS(DS_Hash_Contains, map, key) == True
 
-// Datastructures Functions
-extern Obj DS_Hash_SetValue;
-extern Obj DS_Hash_Lookup;
-extern Obj DS_Hash_Contains;
-extern Obj DS_Hash_Value;
-extern Obj IsBound;
+#define HASH_RESERVE(map, capacity) \
+  CALL_2ARGS(DS_Hash_Reserve, map, capacity)
+
+// Global Variables
 
 // Extreme examples are on the pull request #459
 
 bool CallCheckStop(Obj f, Int RNamStop, Obj record, Obj data) {
     CALL_2ARGS(f, record, data);
     if (ElmPRec(record, RNamStop) == True) {
-      CHANGED_BAG(record);
+      // CHANGED_BAG(record);
       return true;
     }
     return false;
 }
 
-bool ExecuteDFSRec(UInt current, struct dfs_args* args) {
+bool ExecuteDFSRec(UInt current, UInt prev, struct dfs_args* args) {
+  // TODO add parents field in record? with prev as parents
+
   AssPRec(args -> record, args -> RNamCurrent, INTOBJ_INT(current));
   ASS_LIST(args -> preorder, current, INTOBJ_INT((*args -> preorder_num)++));
-  CHANGED_BAG(args -> record);
+  // CHANGED_BAG(args -> record);
 
   if (CallCheckStop(args -> PreorderFunc, args -> RNamStop, args -> record,
                     args -> data)) {
@@ -66,13 +73,13 @@ bool ExecuteDFSRec(UInt current, struct dfs_args* args) {
     bool visited = HASH_CONTAINS(args -> preorder, INTOBJ_INT(v));
 
     if (!visited) {
-      HASH_SET(args -> parent, INTOBJ_INT(v), INTOBJ_INT(current));
+      HASH_SET(args -> parents, INTOBJ_INT(v), INTOBJ_INT(current));
       HASH_SET(args -> edge, INTOBJ_INT(v), INTOBJ_INT(j));
-      bool rec_res = ExecuteDFSRec(v, args);
+      bool rec_res = ExecuteDFSRec(v, current, args);
       if (!rec_res) return false;  // Stop
     } else {
       AssPRec(args -> record, args -> RNamChild, INTOBJ_INT(v));
-      CHANGED_BAG(args -> record);
+      // CHANGED_BAG(args -> record);
       bool backtracked = HASH_CONTAINS(args -> postorder, INTOBJ_INT(v));
       if (!backtracked) {  // Back edge
         if (CallCheckStop(args -> AncestorFunc, args -> RNamStop,
@@ -92,11 +99,10 @@ bool ExecuteDFSRec(UInt current, struct dfs_args* args) {
 
   // backtracking on current
   AssPRec(args -> record, args -> RNamChild, INTOBJ_INT(current));
-  AssPRec(args -> record, args -> RNamCurrent, HASH_GET(args -> parent,
-                                                        INTOBJ_INT(current)));
+  AssPRec(args -> record, args -> RNamCurrent, INTOBJ_INT(prev));
   HASH_SET(args -> postorder, INTOBJ_INT(current),
            INTOBJ_INT(++(*args -> postorder_num)));
-  CHANGED_BAG(args -> record);
+  /* CHANGED_BAG(args -> record); */
   if (CallCheckStop(args -> PostorderFunc, args -> RNamStop, args -> record,
                     args -> data)) {
     return false;  // Stop execution
@@ -106,15 +112,15 @@ bool ExecuteDFSRec(UInt current, struct dfs_args* args) {
 
 
 Obj FuncExecuteDFS_C(Obj self, Obj args) {
-  DIGRAPHS_ASSERT(LEN_PLIST(args) == 7);
+  DIGRAPHS_ASSERT(LEN_PLIST(args) == 8);
   Obj record        = ELM_PLIST(args, 1);
-  Obj data          = ELM_PLIST(args, 2);
-  Obj start         = ELM_PLIST(args, 3);
-  Obj PreorderFunc  = ELM_PLIST(args, 4);
-  Obj PostorderFunc = ELM_PLIST(args, 5);
-  Obj AncestorFunc  = ELM_PLIST(args, 6);
-  Obj CrossFunc     = ELM_PLIST(args, 7);
-
+  Obj flags         = ELM_PLIST(args, 2);
+  Obj data          = ELM_PLIST(args, 3);
+  Obj start         = ELM_PLIST(args, 4);
+  Obj PreorderFunc  = ELM_PLIST(args, 5);
+  Obj PostorderFunc = ELM_PLIST(args, 6);
+  Obj AncestorFunc  = ELM_PLIST(args, 7);
+  Obj CrossFunc     = ELM_PLIST(args, 8);
 
   DIGRAPHS_ASSERT(IS_PREC(record));
   DIGRAPHS_ASSERT(IS_INTOBJ(start));
@@ -151,10 +157,6 @@ Obj FuncExecuteDFS_C(Obj self, Obj args) {
   rec_args -> record = record;
   rec_args -> preorder_num = &preorder_num;
   rec_args -> postorder_num = &postorder_num;
-  rec_args -> parent = ElmPRec(record, RNamName("parent"));
-  rec_args -> postorder = ElmPRec(record, RNamName("postorder"));
-  rec_args -> preorder = ElmPRec(record, RNamName("preorder"));
-  rec_args -> edge = ElmPRec(record, RNamName("edge"));
   rec_args -> neighbors = FuncOutNeighbours(self, D);
   rec_args -> data = data;
   rec_args -> PreorderFunc = PreorderFunc;
@@ -162,13 +164,37 @@ Obj FuncExecuteDFS_C(Obj self, Obj args) {
   rec_args -> CrossFunc = CrossFunc;
   rec_args -> AncestorFunc = AncestorFunc;
 
-  HASH_SET(rec_args -> parent, start, start);
+
+  // if (verbose == True) {
+  rec_args -> edge = ElmPRec(record, RNamName("edge"));
+  rec_args -> parents = ElmPRec(record, RNamName("parents"));
+  HASH_SET(rec_args -> parents, start, start);
+  rec_args -> postorder = ElmPRec(record, RNamName("postorder"));
+  rec_args -> preorder = ElmPRec(record, RNamName("preorder"));
+
+  HASH_RESERVE(rec_args -> edge, INTOBJ_INT(N));
+  HASH_RESERVE(rec_args -> parents, INTOBJ_INT(N));
+  HASH_RESERVE(rec_args -> preorder, INTOBJ_INT(N));
+  HASH_RESERVE(rec_args -> postorder, INTOBJ_INT(N));
+  // }
 
   DIGRAPHS_ASSERT(IS_PLIST(rec_args -> neighbors));
   UInt current = INT_INTOBJ(start);
-  ExecuteDFSRec(current, rec_args);
+  if (ElmPRec(flags, RNamName("forest")) == True) {
+    for (int i = 1; i <= N; i++) {
+      bool visited = HASH_CONTAINS(rec_args -> preorder, INTOBJ_INT(i));
+      if (!visited) {
+        ExecuteDFSRec(i, i, rec_args);
+      }
+    }
+  } else {
+    ExecuteDFSRec(current, current, rec_args);
+  }
+
 
   free(rec_args);
+
+  CHANGED_BAG(record);
   return record;
 }
 
@@ -211,7 +237,7 @@ Obj FuncExecuteDFSIter_C(Obj self, Obj args) {  // TODO remove?
 
   Int current = 0;
 
-  Obj parent    = ElmPRec(record, RNamName("parent"));
+  Obj parents    = ElmPRec(record, RNamName("parents"));
   Obj postorder = ElmPRec(record, RNamName("postorder"));
   Obj preorder  = ElmPRec(record, RNamName("preorder"));
   Obj edge      = ElmPRec(record, RNamName("edge"));
@@ -219,7 +245,7 @@ Obj FuncExecuteDFSIter_C(Obj self, Obj args) {  // TODO remove?
   // FIXME edge needs to be off by 1, so that the first entry is bound
   // FIXME use hash maps for parent, postorder, preorder, and edge
 
-  HASH_SET(parent, start, start);
+  HASH_SET(parents, start, start);
 
   Obj neighbors = FuncOutNeighbours(self, D);
   DIGRAPHS_ASSERT(IS_PLIST(neighbors));
@@ -237,7 +263,7 @@ Obj FuncExecuteDFSIter_C(Obj self, Obj args) {  // TODO remove?
           Int child = current * -1;
           // backtracking on current
           AssPRec(record, RNamChild, INTOBJ_INT(child));
-          AssPRec(record, RNamCurrent, HASH_GET(parent, INTOBJ_INT(child)));
+          AssPRec(record, RNamCurrent, HASH_GET(parents, INTOBJ_INT(child)));
           HASH_SET(postorder, INTOBJ_INT(child), INTOBJ_INT(++postorder_num));
           CHANGED_BAG(record);
           if (CallCheckStop(PostOrderFunc, RNamStop, record, data)) {
@@ -271,7 +297,7 @@ Obj FuncExecuteDFSIter_C(Obj self, Obj args) {  // TODO remove?
         CHANGED_BAG(record);
 
         if (!visited) {  // v is unvisited
-          HASH_SET(parent, INTOBJ_INT(v), INTOBJ_INT(current));
+          HASH_SET(parents, INTOBJ_INT(v), INTOBJ_INT(current));
           HASH_SET(edge, INTOBJ_INT(v), INTOBJ_INT(j));
           ASS_LIST(stack, ++top, INTOBJ_INT(v));
         } else {  // v is either visited, or in the stack to be visited
