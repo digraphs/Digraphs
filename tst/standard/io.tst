@@ -684,6 +684,7 @@ gap> D := CompleteDigraph(3);
 gap> SetDigraphVertexLabels(D, ["a", "b", "c"]);
 gap> WriteDIMACSDigraph(filename, CompleteDigraph(3));
 IO_OK
+gap> Exec("rm -f file");
 gap> Exec("rm -f tmp.gz");
 
 # Handling loops
@@ -729,8 +730,7 @@ gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "file for testing purposes");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, the format of the file given as the 1st argument <name> cannot be deter\
-mined,
+Error, the format of the string <s> cannot be determined
 
 # Bad vertices and edges definition
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
@@ -738,47 +738,40 @@ gap> IO_WriteLine(file, "c file for testing purposes");;
 gap> IO_WriteLine(file, "p edge 'a' 1");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, the format of the file given as the 1st argument <name> cannot be deter\
-mined,
+Error, the format of the string <s> cannot be determined
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "p edge 2 -1");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, the format of the file given as the 1st argument <name> cannot be deter\
-mined,
+Error, the format of the string <s> cannot be determined
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "p edge 1 1");;
 gap> IO_WriteLine(file, "p edge 1 1");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, the format of the file given as the 1st argument <name> cannot be deter\
-mined,
+Error, the format of the string <s> cannot be determined
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "p edge 1");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, the format of the file given as the 1st argument <name> cannot be deter\
-mined,
+Error, the format of the string <s> cannot be determined
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "p fail 1 1");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, the format of the file given as the 1st argument <name> cannot be deter\
-mined,
+Error, the format of the string <s> cannot be determined
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "c empty file");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, the format of the file given as the 1st argument <name> cannot be deter\
-mined,
+Error, the format of the string <s> cannot be determined
 
 # Vertices and edges undefined
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "e 1 1");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, the format of the file given as the 1st argument <name> cannot be deter\
-mined,
+Error, the format of the string <s> cannot be determined
 
 # Bad node label
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
@@ -786,22 +779,19 @@ gap> IO_WriteLine(file, "p edge 2 1");;
 gap> IO_WriteLine(file, "n 2");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, the format of the file given as the 1st argument <name> cannot be deter\
-mined,
+Error, the format of the string <s> cannot be determined
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "p edge 2 1");;
 gap> IO_WriteLine(file, "n 3 1");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, the format of the file given as the 1st argument <name> cannot be deter\
-mined,
+Error, the format of the string <s> cannot be determined
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "p edge 2 1");;
 gap> IO_WriteLine(file, "n 2 a");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, the format of the file given as the 1st argument <name> cannot be deter\
-mined,
+Error, the format of the string <s> cannot be determined
 
 # Bad edge
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
@@ -809,29 +799,25 @@ gap> IO_WriteLine(file, "p edge 2 1");;
 gap> IO_WriteLine(file, "e 2 1 3");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, the format of the file given as the 1st argument <name> cannot be deter\
-mined,
+Error, the format of the string <s> cannot be determined
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "p edge 2 1");;
 gap> IO_WriteLine(file, "e 2 a");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, the format of the file given as the 1st argument <name> cannot be deter\
-mined,
+Error, the format of the string <s> cannot be determined
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "p edge 2 1");;
 gap> IO_WriteLine(file, "e 3 1");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, the format of the file given as the 1st argument <name> cannot be deter\
-mined,
+Error, the format of the string <s> cannot be determined
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "p edge 2 1");;
 gap> IO_WriteLine(file, "e 1 3");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, the format of the file given as the 1st argument <name> cannot be deter\
-mined,
+Error, the format of the string <s> cannot be determined
 
 # Unsupported types
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
@@ -842,8 +828,7 @@ gap> IO_WriteLine(file, "x");;
 gap> IO_WriteLine(file, "j");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, the format of the file given as the 1st argument <name> cannot be deter\
-mined,
+Error, the format of the string <s> cannot be determined
 
 # Bad number of edges
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;

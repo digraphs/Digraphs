@@ -1192,7 +1192,7 @@ function(s)
     local int;
     int := Int(string);
     if int = fail or int < 0 then
-      return fail;
+      return ErrorNoReturn("the format of the string <s> cannot be determined");
     fi;
     return int;
   end;
@@ -1219,7 +1219,7 @@ function(s)
 
     # the line doesn't have a `type'
     if Length(split[1]) <> 1 then
-      return fail;
+      return ErrorNoReturn("the format of the string <s> cannot be determined");
     fi;
 
     first_char := next[1];
@@ -1227,18 +1227,13 @@ function(s)
     # digraph definition line
     if first_char = 'p' then
       if IsBound(vertices) or Length(split) <> 4 or split[2] <> "edge" then
-        return fail;
+        return ErrorNoReturn("the format of the string <s>",
+                             " cannot be determined");
       fi;
       nr_vertices     := int_from_string(split[3]);
-      if nr_vertices = fail then
-        return fail;
-      fi;
       vertices        := [1 .. nr_vertices];
       vertex_labels   := vertices * 0 + 1;
       nr_edges        := int_from_string(split[4]);
-      if nr_edges = fail then
-        return fail;
-      fi;
       directed_edges  := 0;
       symmetric_edges := 0;
       nbs := List(vertices, x -> []);
@@ -1253,30 +1248,30 @@ function(s)
 
     if not IsBound(vertices) then
       # the problem definition line must precede all other types
-      return fail;
+      ErrorNoReturn("the format of the string <s> cannot be determined");
     elif first_char = 'n' then
       # type: vertex label
       if Length(split) <> 3 then
-        return fail;
+        ErrorNoReturn("the format of the string <s> cannot be determined");
       fi;
       vertex := int_from_string(split[2]);
       if not vertex in vertices then
-        return fail;
+        ErrorNoReturn("the format of the string <s> cannot be determined");
       fi;
       label := Int(split[3]);
       if label = fail then
-        return fail;
+        ErrorNoReturn("the format of the string <s> cannot be determined");
       fi;
       vertex_labels[vertex] := label;
     elif first_char = 'e' then
       # type: edge
       if Length(split) <> 3 then
-        return fail;
+        ErrorNoReturn("the format of the string <s> cannot be determined");
       fi;
       i := int_from_string(split[2]);
       j := int_from_string(split[3]);
       if not (i in vertices and j in vertices) then
-        return fail;
+        ErrorNoReturn("the format of the string <s> cannot be determined");
       fi;
       Add(nbs[i], j);
       directed_edges := directed_edges + 1;
@@ -1291,7 +1286,7 @@ function(s)
            "Lines beginning with 'd', 'v', or 'x' are not supported,");
     else
       # type: unknown
-      return fail;
+      ErrorNoReturn("the format of the string <s> cannot be determined");
     fi;
     x := x + 1;
     if x > Length(parts) then
@@ -1302,7 +1297,7 @@ function(s)
   od;
 
   if not IsBound(vertices) then
-    return fail;
+    ErrorNoReturn("the format of the string <s> cannot be determined");
   fi;
 
   if not nr_edges in [directed_edges, 2 * directed_edges, symmetric_edges] then
@@ -1319,22 +1314,7 @@ function(s)
 end);
 
 InstallMethod(ReadDIMACSDigraph, "for a string", [IsString],
-function(name)
-  local file, out;
-    file := IO_CompressedFile(UserHomeExpand(name), "r");
-    if file = fail then
-      ErrorNoReturn("cannot open the file given as the 1st argument <name>,");
-    fi;
-
-    out := DigraphFromDIMACSString(IO_ReadUntilEOF(file));
-    if out = fail then
-      IO_Close(file);
-      ErrorNoReturn("the format of the file given as the 1st argument <name> ",
-                    "cannot be determined,");
-    fi;
-    IO_Close(file);
-    return out;
-end);
+s -> ReadDigraphs(s, DigraphFromDIMACSString)[1]);
 
 BindGlobal("DIGRAPHS_TournamentLineDecoder",
 function(func, s)
