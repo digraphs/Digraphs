@@ -1702,7 +1702,6 @@ function(D, u, v)
     end;
   fi;
   ExecuteDFS(record,
-             NewDFSFlags(),
              fail,
              u,
              PreOrderFunc,
@@ -2068,7 +2067,7 @@ function(D, v)
       fi;
     od;
   end;
-  ExecuteDFS(record, NewDFSFlags(), data, v,
+  ExecuteDFS(record, data, v,
                PreOrderFunc, PostOrderFunc,
                AncestorFunc, DFSDefault);
   if record.stop then
@@ -2398,7 +2397,6 @@ function(D, root)
   end;
 
   ExecuteDFS(record,
-             NewDFSFlags(),
              data,
              root,
              PreOrderFunc,
@@ -2503,7 +2501,6 @@ function(D, root)
 
   record := NewDFSRecord(D);
   ExecuteDFS(record,
-             NewDFSFlags(),
              preorder_num_to_node,
              root,
              PreOrderFunc,
@@ -2830,6 +2827,7 @@ function(graph)
   record.preorder := HashMap();
   record.postorder := HashMap();
   record.edge := HashMap();
+  record.config := NewDFSFlags();
   return record;
 end);
 
@@ -2860,22 +2858,19 @@ end);
 #   by ancestry.
 
 InstallGlobalFunction(ExecuteDFS,
-function(record, flags, data, start, PreOrderFunc, PostOrderFunc, AncestorFunc,
+function(record, data, start, PreOrderFunc, PostOrderFunc, AncestorFunc,
          CrossFunc)
-  if not IsEqualSet(RecNames(record),
-                    ["stop", "graph", "child", "parents", "preorder",
-                     "postorder", "current", "edge"]) then
-    ErrorNoReturn("the 1st argument <record> must be created with ",
-                  "NewDFSRecord,");
-  fi;
+  local name;
 
-  if not IsEqualSet(RecNames(flags),
-                    ["forest"]) then
-    ErrorNoReturn("the 2nd argument <flags> must be created with ",
-                  "NewDFSFlags,");
-  fi;
+  for name in ["stop", "graph", "child", "parents", "preorder", "postorder",
+               "current", "edge"] do
+    if not IsBound(record.(name)) then
+      ErrorNoReturn("the 1st argument <record> must be created with ",
+                    "NewDFSRecord,");
+    fi;
+  od;
 
-  ExecuteDFS_C(record, flags, data, start, PreOrderFunc, PostOrderFunc,
+  ExecuteDFS_C(record, data, start, PreOrderFunc, PostOrderFunc,
                AncestorFunc, CrossFunc);
 end);
 

@@ -873,7 +873,7 @@ end);
 InstallMethod(DigraphTopologicalSort, "for a digraph by out-neighbours",
 [IsDigraphByOutNeighboursRep],
 function(D)
-  local N, record, count, out, PostOrderFunc, AncestorFunc, flags;
+  local N, record, count, out, PostOrderFunc, AncestorFunc;
 
   N := DigraphNrVertices(D);
   if N = 0 then
@@ -891,11 +891,10 @@ function(D)
       record.stop := true;
     fi;
   end;
-  flags := NewDFSFlags();
-  flags.forest := true;
+
+  record.config.forest := true;
 
   ExecuteDFS(record,
-             flags,
              fail,
              1,
              DFSDefault,

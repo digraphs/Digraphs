@@ -112,15 +112,15 @@ bool ExecuteDFSRec(UInt current, UInt prev, struct dfs_args* args) {
 
 
 Obj FuncExecuteDFS_C(Obj self, Obj args) {
-  DIGRAPHS_ASSERT(LEN_PLIST(args) == 8);
+  DIGRAPHS_ASSERT(LEN_PLIST(args) == 7);
   Obj record        = ELM_PLIST(args, 1);
-  Obj flags         = ELM_PLIST(args, 2);
-  Obj data          = ELM_PLIST(args, 3);
-  Obj start         = ELM_PLIST(args, 4);
-  Obj PreorderFunc  = ELM_PLIST(args, 5);
-  Obj PostorderFunc = ELM_PLIST(args, 6);
-  Obj AncestorFunc  = ELM_PLIST(args, 7);
-  Obj CrossFunc     = ELM_PLIST(args, 8);
+  Obj flags         = ElmPRec(record, RNamName("config"));
+  Obj data          = ELM_PLIST(args, 2);
+  Obj start         = ELM_PLIST(args, 3);
+  Obj PreorderFunc  = ELM_PLIST(args, 4);
+  Obj PostorderFunc = ELM_PLIST(args, 5);
+  Obj AncestorFunc  = ELM_PLIST(args, 6);
+  Obj CrossFunc     = ELM_PLIST(args, 7);
 
   DIGRAPHS_ASSERT(IS_PREC(record));
   DIGRAPHS_ASSERT(IS_INTOBJ(start));
