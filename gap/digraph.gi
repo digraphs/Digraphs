@@ -1361,37 +1361,37 @@ end);
 InstallMethod(RandomDigraphCons, "for IsMutableDigraph and an integer",
 [IsMutableDigraph, IsInt],
 {_, n}
--> RandomDigraphCons(IsMutableDigraph, n, Float(Random([0 .. n])) / n));
+-> RandomDigraphCons(IsMutableDigraph, n, Float(Random(0, n * (n - 1)) / (n * (n - 1)))));
 
 InstallMethod(RandomDigraphCons, "for IsMutableDigraph and an integer",
 [IsImmutableDigraph, IsInt],
 {_, n}
--> RandomDigraphCons(IsImmutableDigraph, n, Float(Random([0 .. n])) / n));
+-> RandomDigraphCons(IsImmutableDigraph, n, Float(Random(0, n * (n - 1)) / (n * (n - 1)))));
 
 InstallMethod(RandomDigraphCons, "for IsHamiltonianDigraph and an integer",
 [IsHamiltonianDigraph, IsInt],
 {_, n}
--> RandomDigraphCons(IsHamiltonianDigraph, n, Float(Random([0 .. n])) / n));
+-> RandomDigraphCons(IsHamiltonianDigraph, n, Float(Random(0, n * (n - 1)) / (n * (n - 1)))));
 
 InstallMethod(RandomDigraphCons, "for IsEulerianDigraph and an integer",
 [IsEulerianDigraph, IsInt],
 {_, n}
--> RandomDigraphCons(IsEulerianDigraph, n, Float(Random([0 .. n])) / n));
+-> RandomDigraphCons(IsEulerianDigraph, n, Float(Random(0, n * (n - 1)) / (n * (n - 1)))));
 
 InstallMethod(RandomDigraphCons, "for IsConnectedDigraph and an integer",
 [IsConnectedDigraph, IsInt],
 {_, n}
--> RandomDigraphCons(IsConnectedDigraph, n, Float(Random([0 .. n])) / n));
+-> RandomDigraphCons(IsConnectedDigraph, n, Float(Random(0, n * (n - 1)) / (n * (n - 1)))));
 
 InstallMethod(RandomDigraphCons, "for IsAcyclicDigraph and an integer",
 [IsAcyclicDigraph, IsInt],
 {_, n}
--> RandomDigraphCons(IsAcyclicDigraph, n, Float(Random([0 .. n])) / n));
+-> RandomDigraphCons(IsAcyclicDigraph, n, Float(Random(0, n * (n - 1)) / (n * (n - 1)))));
 
 InstallMethod(RandomDigraphCons, "for IsSymmetricDigraph and an integer",
 [IsSymmetricDigraph, IsInt],
 {_, n}
--> RandomDigraphCons(IsSymmetricDigraph, n, Float(Random([0 .. n])) / n));
+-> RandomDigraphCons(IsSymmetricDigraph, n, Float(Random(0, n * (n - 1)) / (n * (n - 1)))));
 
 InstallMethod(RandomDigraphCons,
 "for IsMutableDigraph, an integer, and a rational",
