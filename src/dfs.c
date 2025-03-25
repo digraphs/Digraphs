@@ -188,14 +188,6 @@ Obj FuncExecuteDFS_C(Obj self, Obj args) {
 
   // TODO handle errors with setting values in HashMaps
 
-
-  HASH_RESERVE(rec_args.edge, INTOBJ_INT(N));  // TODO reserve in chunks?
-                                               // is using a map better if
-                                               // reserving all of it at once
-  HASH_RESERVE(rec_args.parents, INTOBJ_INT(N));
-  HASH_RESERVE(rec_args.preorder, INTOBJ_INT(N));
-  HASH_RESERVE(rec_args.postorder, INTOBJ_INT(N));
-
   HASH_SET(rec_args.parents, start, start);
 
   UInt current = INT_INTOBJ(start);
