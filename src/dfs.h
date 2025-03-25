@@ -22,10 +22,6 @@
 bool CallCheckStop(Obj f, Int RNamStop, Obj record, Obj data);
 
 struct dfs_args {
-  Int RNamChild;
-  Int RNamCurrent;
-  Int RNamStop;
-
   Obj record;
   UInt* preorder_num;
   UInt* postorder_num;
@@ -42,10 +38,29 @@ struct dfs_args {
   Obj PostorderFunc;
   Obj AncestorFunc;
   Obj CrossFunc;
+
+  // Checking if visited from a bit array is faster for large digraphs than
+  // using the preorder HashMap
+  bool* visited;     // Using bool* rather than bitarray for more than
+                     // 16 bit vertex counts
+  bool* backtracked;
+
+  Int RNamChild;
+  Int RNamCurrent;
+  Int RNamStop;
+
+  bool CallPreorder;
+  bool CallPostorder;
+  bool CallAncestor;
+  bool CallCross;
 };
 
-bool ExecuteDFSRec(UInt current, UInt prev, struct dfs_args* args);
+struct dfs_rec_flags {
+  bool revisit;
+};
+
+bool ExecuteDFSRec(UInt current, UInt prev, struct dfs_args* args,
+                   struct dfs_rec_flags* flags);
 Obj FuncExecuteDFS_C(Obj self, Obj args);
-Obj FuncExecuteDFSIter_C(Obj self, Obj args);  // TODO remove?
 
 #endif  // DIGRAPHS_SRC_DFS_H_

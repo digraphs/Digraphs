@@ -254,8 +254,8 @@ function(D)
 
   for i in [1 .. n] do
     if not IsBound(record.preorder[i]) then
-      ExecuteDFS(record, [], i, DFSDefault,
-                    DFSDefault, AncestorFunc, DFSDefault);
+      ExecuteDFS(record, [], i, fail,
+                    fail, AncestorFunc, fail);
 
       if record.stop then
         return false;

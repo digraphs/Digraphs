@@ -1689,12 +1689,12 @@ function(D, u, v)
         record.stop := true;
       fi;
     end;
-    AncestorFunc := DFSDefault;
+    AncestorFunc := fail;
   else
     # if u is reachable from u, then u will be encountered as an ancestor of
     # itself, but PreOrderFunc won't be called (because u has already been
     # discovered).
-    PreOrderFunc := DFSDefault;
+    PreOrderFunc := fail;
     AncestorFunc := function(record, _)
       if record.child = v then
         record.stop := true;
@@ -1705,9 +1705,9 @@ function(D, u, v)
              fail,
              u,
              PreOrderFunc,
-             DFSDefault,
+             fail,
              AncestorFunc,
-             DFSDefault);
+             fail);
   if not record.stop then
     return fail;
   fi;
@@ -2044,32 +2044,25 @@ function(D, v)
                   "argument <D>,");
   fi;
   record := NewDFSRecord(D);
-  data := rec(depth := ListWithIdenticalEntries(DigraphNrVertices(D), 0),
-              prev := -1, best := 0);
+  data := rec(prev := -1, best := 0);
   AncestorFunc := function(record, _)
     record.stop := true;
   end;
   PostOrderFunc := function(_, data)
-    # data.depth[record.current] := data.prev;
     data.prev := data.prev - 1;
   end;
-  PreOrderFunc := function(record, data)
-    local i, neighbours;
+  PreOrderFunc := function(_, data)
     data.prev := data.prev + 1;
     if data.prev > data.best then
       data.best := data.prev;
     fi;
-    neighbours := OutNeighborsOfVertex(record.graph, record.current);
-    for i in [1 .. Size(neighbours)] do
-      # need to bypass the CrossFunc
-      if IsBound(record.postorder[neighbours[i]]) then
-        Unbind(record.preorder[neighbours[i]]);
-      fi;
-    od;
   end;
+
+  record.config.revisit := true;
+
   ExecuteDFS(record, data, v,
                PreOrderFunc, PostOrderFunc,
-               AncestorFunc, DFSDefault);
+               AncestorFunc, fail);
   if record.stop then
     return infinity;
   fi;
@@ -2400,9 +2393,9 @@ function(D, root)
              data,
              root,
              PreOrderFunc,
-             DFSDefault,
+             fail,
              AncestorFunc,
-             DFSDefault);
+             fail);
   Sort(data.result);
   return data.result;
 end);
@@ -2504,9 +2497,9 @@ function(D, root)
              preorder_num_to_node,
              root,
              PreOrderFunc,
-             DFSDefault,
-             DFSDefault,
-             DFSDefault);
+             fail,
+             fail,
+             fail);
 
   parents := record.parents;
   node_to_preorder_num := record.preorder;
@@ -2837,12 +2830,11 @@ function()
   local record;
   record := rec();
   record.forest := false;
+  record.revisit := false;  # If revisit = true, then when visiting some node,
+                            # and one of it's neighbors has been visited in
+                            # a different branch (backtracked on),
+                            # visit it again from this node
   return record;
-end);
-
-InstallMethod(DFSDefault,
-"for a record and an object", [IsRecord, IsObject],
-function(record, data)  # gaplint: disable=W046
 end);
 
 # * PreOrderFunc is called with (record, data) when a vertex is popped from the
@@ -2871,18 +2863,5 @@ function(record, data, start, PreOrderFunc, PostOrderFunc, AncestorFunc,
   od;
 
   ExecuteDFS_C(record, data, start, PreOrderFunc, PostOrderFunc,
-               AncestorFunc, CrossFunc);
-end);
-
-InstallGlobalFunction(ExecuteDFSIter,  # TODO remove?
-function(record, data, start, PreOrderFunc, PostOrderFunc, AncestorFunc,
-         CrossFunc)
-  if not IsEqualSet(RecNames(record),
-                    ["stop", "graph", "child", "parents", "preorder",
-                     "postorder", "current", "edge"]) then
-    ErrorNoReturn("the 1st argument <record> must be created with ",
-                  "NewDFSRecord,");
-  fi;
-    ExecuteDFSIter_C(record, data, start, PreOrderFunc, PostOrderFunc,
                AncestorFunc, CrossFunc);
 end);

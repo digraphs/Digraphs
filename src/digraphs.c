@@ -60,12 +60,13 @@ Obj Group;
 Obj ClosureGroup;
 Obj InfoWarning;
 
-// Added for HashMap (DFS)
+// Added for DFS
 
 Obj DS_Hash_SetValue;
 Obj DS_Hash_Contains;
 Obj DS_Hash_Value;
 Obj DS_Hash_Reserve;
+Obj DS_Hash_Delete;
 
 static inline bool IsAttributeStoringRep(Obj o) {
   return (CALL_1ARGS(IsAttributeStoringRepObj, o) == True ? true : false);
@@ -2234,10 +2235,6 @@ static StructGVarFunc GVarFuncs[] = {
               -1,
               "record, data, start, PreOrderFunc, PostOrderFunc, "
               "AncestorFunc, CrossFunc"),
-    GVAR_FUNC(ExecuteDFSIter_C,
-              -1,
-              "record, data, start, PreOrderFunc, PostOrderFunc, "
-              "AncestorFunc, CrossFunc"),
 
     {0, 0, 0, 0, 0} /* Finish with an empty entry */
 };
@@ -2276,6 +2273,7 @@ static Int InitKernel(StructInitInfo* module) {
   ImportGVarFromLibrary("DS_Hash_Contains", &DS_Hash_Contains);
   ImportGVarFromLibrary("DS_Hash_Value", &DS_Hash_Value);
   ImportGVarFromLibrary("DS_Hash_Reserve", &DS_Hash_Reserve);
+  ImportGVarFromLibrary("DS_Hash_Delete", &DS_Hash_Delete);
 
   /* return success                                                      */
   return 0;
