@@ -2820,7 +2820,7 @@ function(graph)
   record.stop := false;
   record.parents := ListWithIdenticalEntries(DigraphNrVertices(graph), -1);
   record.preorder := ListWithIdenticalEntries(DigraphNrVertices(graph), -1);
-  record.postorder:= ListWithIdenticalEntries(DigraphNrVertices(graph), -1);
+  record.postorder := ListWithIdenticalEntries(DigraphNrVertices(graph), -1);
   record.edge := ListWithIdenticalEntries(DigraphNrVertices(graph), -1);
   record.config := NewDFSFlags();
   return record;

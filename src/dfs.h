@@ -41,9 +41,9 @@ struct dfs_args {
 
   // Checking if visited from a bit array is faster for large digraphs than
   // using the preorder HashMap
-  bool* visited;     // Using bool* rather than bitarray for more than
-                     // 16 bit vertex counts
-  bool* backtracked;
+  // bool* visited;     // Using bool* rather than bitarray for more than
+                        // 16 bit vertex counts
+  // bool* backtracked;
 
   Int RNamChild;
   Int RNamCurrent;
