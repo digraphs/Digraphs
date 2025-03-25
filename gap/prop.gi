@@ -253,7 +253,7 @@ function(D)
   end;
 
   for i in [1 .. n] do
-    if not IsBound(record.preorder[i]) then
+    if record.preorder[i] = -1 then
       ExecuteDFS(record, [], i, fail,
                     fail, AncestorFunc, fail);
 

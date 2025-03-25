@@ -32,19 +32,20 @@ extern Obj DS_Hash_Delete;
 // Macros
 
 #define HASH_SET(map, key, val) \
-  CALL_3ARGS(DS_Hash_SetValue, map, key, val)
+  ASS_LIST(map, INT_INTOBJ(key), val)
+  // CALL_3ARGS(DS_Hash_SetValue, map, key, val)
 
 #define HASH_GET(map, key) \
-  CALL_2ARGS(DS_Hash_Value, map, key)
+  ELM_PLIST(map, INT_INTOBJ(key))
+  // CALL_2ARGS(DS_Hash_Value, map, key)
 
 #define HASH_CONTAINS(map, key) \
-  CALL_2ARGS(DS_Hash_Contains, map, key) == True
-
-#define HASH_RESERVE(map, capacity) \
-  CALL_2ARGS(DS_Hash_Reserve, map, capacity)
+  INT_INTOBJ(ELM_PLIST(map, INT_INTOBJ(key))) != -1
+  // CALL_2ARGS(DS_Hash_Contains, map, key) == True
 
 #define HASH_DELETE(map, key) \
-  CALL_2ARGS(DS_Hash_Delete, map, key)
+  HASH_SET(map, key, INTOBJ_INT(-1))
+  /* CALL_2ARGS(DS_Hash_Delete, map, key) */
 
 // Global Variables
 

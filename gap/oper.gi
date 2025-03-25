@@ -2472,11 +2472,12 @@ function(D, root)
   pred, N, w, y, x, i, v, map, key, hashGet;
 
   hashGet := function(map, key)
-    if not IsBound(map[key]) then
-      return -1;
-    else
-      return map[key];
-    fi;
+    return map[key];
+    # if not IsBound(map[key]) then
+    #   return -1;
+    # else
+    #   return map[key];
+    # fi;
   end;
 
   M := DigraphNrVertices(D);
@@ -2504,7 +2505,8 @@ function(D, root)
   parents := record.parents;
   node_to_preorder_num := record.preorder;
 
-  Unbind(parents[root]);
+  parents[root] := -1;
+  # Unbind(parents[root]);
 
   semi := [1 .. M];
   lastlinked := M + 1;
@@ -2816,10 +2818,10 @@ function(graph)
   record.child := -1;
   record.current := -1;
   record.stop := false;
-  record.parents := HashMap();
-  record.preorder := HashMap();
-  record.postorder := HashMap();
-  record.edge := HashMap();
+  record.parents := ListWithIdenticalEntries(DigraphNrVertices(graph), -1);
+  record.preorder := ListWithIdenticalEntries(DigraphNrVertices(graph), -1);
+  record.postorder:= ListWithIdenticalEntries(DigraphNrVertices(graph), -1);
+  record.edge := ListWithIdenticalEntries(DigraphNrVertices(graph), -1);
   record.config := NewDFSFlags();
   return record;
 end);
