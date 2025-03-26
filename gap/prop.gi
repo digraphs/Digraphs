@@ -692,7 +692,7 @@ InstallMethod(Is2EdgeTransitive,
 [IsDigraph],
 function(D)
   local v, u, w, OutNeighboursD, twoEdgeOrbit, aut, numTwoEdges, len;
-  
+
   if IsMultiDigraph(D) then
     ErrorNoReturn("the argument <D> must be a digraph with no multiple",
                   " edges,");
@@ -712,7 +712,7 @@ function(D)
                 if numTwoEdges > len then
                   return false;
                 fi;
-              else 
+              else
                 len := Order(aut) / Order(Stabilizer(aut, [u, v, w], OnTuples));
               fi;
             fi;
