@@ -1591,7 +1591,8 @@ false]]></Example>
     acts transitively on its 2-edges via the action
     <Ref Func="OnTuplesTuples" BookName="ref"/>.
 
-    A <E>2-edge</E> in a digraph is a triple (u, v, w) of vertices such that, such that (u, v) and (v, w) are both edges.
+    A <E>2-edge</E> in a digraph is a triple (u, v, w) of vertices,
+    such that (u, v) and (v, w) are both edges and u is not equal to w.
     <P/>
 
     &MUTABLE_RECOMPUTED_PROP;

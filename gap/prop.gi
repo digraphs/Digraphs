@@ -688,7 +688,7 @@ function(D)
 end);
 
 InstallMethod(Is2EdgeTransitive,
-"for a digraph without loops or multiple edges",
+"for a digraph without multiple edges",
 [IsDigraph],
 function(D)
   local v, u, w, OutNeighboursD, twoEdgeOrbit, aut, numTwoEdges, len;
@@ -696,8 +696,6 @@ function(D)
   if IsMultiDigraph(D) then
     ErrorNoReturn("the argument <D> must be a digraph with no multiple",
                   " edges,");
-  elif DigraphHasLoops(D) then
-    ErrorNoReturn("the argument <D> must be a digraph without loops,");
   fi;
 
   aut := AutomorphismGroup(D);
