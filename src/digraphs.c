@@ -1359,10 +1359,10 @@ static Obj FuncDIGRAPH_REFLEX_TRANS_CLOSURE(Obj self, Obj digraph) {
 }
 
 static Obj FuncRANDOM_DIGRAPH(Obj self, Obj nn, Obj pp) {
-  UInt n, i, j, lim;
-  Double q, p;
-  Int  len;
-  Obj  adj, adji;
+  UInt    n, i, j;
+  Double  p, q;
+  Int     len;
+  Obj     adj, adji;
 
   n   = INT_INTOBJ(nn);
   p   = VAL_MACFLOAT(pp);
