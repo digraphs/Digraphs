@@ -76,6 +76,7 @@
     <#Include Label="IsDigraphCore">
     <#Include Label="IsEdgeTransitive">
     <#Include Label="IsVertexTransitive">
+    <#Include Label="IsTwoEdgeTransitive">
   </Section>
 
   

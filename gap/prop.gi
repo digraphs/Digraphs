@@ -691,42 +691,44 @@ InstallMethod(IsTwoEdgeTransitive,
 "for a digraph without multiple edges",
 [IsDigraph],
 function(D)
-  local twoEdges;
+  local v, u, w, N, twoEdgeOrbit, aut, numTwoEdges, len;
 
-  if IsMultiDigraph(D) then
-    ErrorNoReturn("the argument <D> must be a digraph with no multiple",
-                  " edges,");
-  fi;
+  aut := AutomorphismGroup(D);
+  N := OutNeighbours(D);
 
-  twoEdges := Filtered(Cartesian(DigraphEdges(D), DigraphEdges(D)),
-           
-            pair -> pair[1][2] = pair[2][1]
-                               and pair[1][1] <> pair[2][2]);
-
-  if Length(twoEdges) = 0 then
+  if Size(aut) > 10 ^ 3 then
+    numTwoEdges := 0;
+    for u in [1 .. Length(N)] do
+      for v in N[u] do
+        for w in N[v] do
+          if u <> w then
+            numTwoEdges := numTwoEdges + 1;
+              if IsBound(len) then
+                if numTwoEdges > len then
+                  return false;
+                fi;
+              else 
+                len := Order(aut) / Order(Stabilizer(aut, [u, v, w], OnTuples));
+              fi;
+            fi;
+          od;
+        od;
+      od;
     return true;
   else
-    return OrbitLength(AutomorphismGroup(D), twoEdges[1], OnTuplesTuples)
-         = Length(twoEdges);
-  fi;
-end);
-
-InstallMethod(HasPseudoSimilarVertices,
-"for a digraph without loops or multiple edges",
-[IsDigraph],
-function(D)
-  local u, v;
-  
-  for u in DigraphVertices(D) do
-    for v in DigraphVertices(D) do
-      if IsIsomorphicDigraph(DigraphRemoveVertex(D, u),
-                             DigraphRemoveVertex(D, v))
-      then
-        if not v in Orbit(AutomorphismGroup(D), u) then
-          return true;
-        fi;
-      fi;
+    for u in [1 .. Length(N)] do
+      for v in N[u] do
+        for w in N[v] do
+          if u <> w then
+            if not IsBound(twoEdgeOrbit) then
+              twoEdgeOrbit := Orbit(AutomorphismGroup(D), [u, v, w], OnTuples);
+            elif IsBound(twoEdgeOrbit) and not [u, v, w] in twoEdgeOrbit then
+              return false;
+            fi;
+          fi;
+        od;
+      od;
     od;
-  od;
-  return false;
+    return true;
+  fi;
 end);
