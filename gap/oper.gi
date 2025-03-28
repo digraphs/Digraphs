@@ -2469,16 +2469,7 @@ InstallMethod(DominatorTree, "for a digraph and a vertex",
 function(D, root)
   local M, preorder_num_to_node, PreOrderFunc, record, parents,
   node_to_preorder_num, semi, lastlinked, label, bucket, idom, compress, eval,
-  pred, N, w, y, x, i, v, map, key, hashGet;
-
-  hashGet := function(map, key)
-    return map[key];
-    # if not IsBound(map[key]) then
-    #   return -1;
-    # else
-    #   return map[key];
-    # fi;
-  end;
+  pred, N, w, y, x, i, v;
 
   M := DigraphNrVertices(D);
 
@@ -2517,21 +2508,21 @@ function(D, root)
 
   compress := function(v)
     local u;
-    u := hashGet(parents, v);
-    if u <> fail and lastlinked <= M and hashGet(node_to_preorder_num, u) >=
-        hashGet(node_to_preorder_num, lastlinked) then
+    u := parents[v];
+    if u <> fail and lastlinked <= M and node_to_preorder_num[u] >=
+        node_to_preorder_num[lastlinked] then
       compress(u);
-      if hashGet(node_to_preorder_num, semi[label[u]])
-          < hashGet(node_to_preorder_num, semi[label[v]]) then
+      if node_to_preorder_num[semi[label[u]]]
+          < node_to_preorder_num[semi[label[v]]] then
         label[v] := label[u];
       fi;
-      parents[v] := hashGet(parents, u);
+      parents[v] := parents[u];
     fi;
   end;
 
   eval := function(v)
-    if lastlinked <= M and hashGet(node_to_preorder_num, v) >=
-        hashGet(node_to_preorder_num, lastlinked) then
+    if lastlinked <= M and node_to_preorder_num[v] >=
+        node_to_preorder_num[lastlinked] then
       compress(v);
       return label[v];
     else
@@ -2545,8 +2536,8 @@ function(D, root)
     w := preorder_num_to_node[i];
     for v in bucket[w] do
       y := eval(v);
-      if hashGet(node_to_preorder_num, semi[y]) <
-          hashGet(node_to_preorder_num, w) then
+      if node_to_preorder_num[semi[y]] <
+          node_to_preorder_num[w] then
         idom[v] := y;
       else
         idom[v] := w;
@@ -2554,16 +2545,16 @@ function(D, root)
     od;
     bucket[w] := [];
     for v in pred[w] do
-      if hashGet(node_to_preorder_num, v) <> -1 then
+      if node_to_preorder_num[v] <> -1 then
         x := eval(v);
-        if hashGet(node_to_preorder_num, semi[x]) <
-            hashGet(node_to_preorder_num, semi[w]) then
+        if node_to_preorder_num[semi[x]] <
+            node_to_preorder_num[semi[w]] then
           semi[w] := semi[x];
         fi;
       fi;
     od;
-    if hashGet(parents, w) = semi[w] then
-      idom[w] := hashGet(parents, w);
+    if parents[w] = semi[w] then
+      idom[w] := parents[w];
     else
       Add(bucket[semi[w]], w);
     fi;
