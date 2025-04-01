@@ -687,25 +687,53 @@ function(D)
   return LatticeDigraphEmbedding(N5, D) = fail;
 end);
 
-InstallMethod(IsTwoEdgeTransitive,
+InstallMethod(Is2EdgeTransitive,
 "for a digraph without multiple edges",
 [IsDigraph],
 function(D)
-  local twoEdges;
+  local v, u, w, OutNeighboursD, twoEdgeOrbit, aut, numTwoEdges, len;
 
   if IsMultiDigraph(D) then
     ErrorNoReturn("the argument <D> must be a digraph with no multiple",
                   " edges,");
   fi;
 
-  twoEdges := Filtered(Cartesian(DigraphEdges(D), DigraphEdges(D)),
-                       pair -> pair[1][2] = pair[2][1]
-                               and pair[1][1] <> pair[2][2]);
+  aut := AutomorphismGroup(D);
+  OutNeighboursD := OutNeighbours(D);
 
-  if Length(twoEdges) = 0 then
+  if Size(aut) > 10 ^ 3 then
+    numTwoEdges := 0;
+    for u in [1 .. Length(OutNeighboursD)] do
+      for v in OutNeighboursD[u] do
+        for w in OutNeighboursD[v] do
+          if u <> w then
+            numTwoEdges := numTwoEdges + 1;
+              if IsBound(len) then
+                if numTwoEdges > len then
+                  return false;
+                fi;
+              else
+                len := Order(aut) / Order(Stabilizer(aut, [u, v, w], OnTuples));
+              fi;
+            fi;
+          od;
+        od;
+      od;
     return true;
   else
-    return OrbitLength(AutomorphismGroup(D), twoEdges[1], OnTuplesTuples)
-         = Length(twoEdges);
+    for u in [1 .. Length(OutNeighboursD)] do
+      for v in OutNeighboursD[u] do
+        for w in OutNeighboursD[v] do
+          if u <> w then
+            if not IsBound(twoEdgeOrbit) then
+              twoEdgeOrbit := Orbit(AutomorphismGroup(D), [u, v, w], OnTuples);
+            elif IsBound(twoEdgeOrbit) and not [u, v, w] in twoEdgeOrbit then
+              return false;
+            fi;
+          fi;
+        od;
+      od;
+    od;
+    return true;
   fi;
 end);
