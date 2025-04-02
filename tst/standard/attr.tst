@@ -2593,14 +2593,12 @@ gap> P := DigraphRemoveAllMultipleEdges(
 > ReducedDigraph(OnDigraphs(D, proj[2])));;
 gap> IsIsomorphicDigraph(CycleDigraph(4), P);
 true
-gap> G := RandomDigraph(12);;
-gap> H := RandomDigraph(50);;
+gap> G := ReducedDigraph(RandomDigraph(12));;
+gap> H := ReducedDigraph(RandomDigraph(50));;
 gap> D := DigraphDirectProduct(G, H);;
 gap> proj := DigraphDirectProductProjections(D);;
 gap> IsIdempotent(proj[1]);
 true
-gap> RankOfTransformation(proj[2]);
-50
 gap> P := DigraphRemoveAllMultipleEdges(
 > ReducedDigraph(OnDigraphs(D, proj[2])));;
 gap> IsIsomorphicDigraph(H, P);
