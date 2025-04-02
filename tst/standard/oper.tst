@@ -1449,6 +1449,9 @@ Error, the 2nd argument <v> must be a vertex of the 1st argument <D>,
 gap> D := Digraph([[2, 4], [3, 4], [5], [], []]);;
 gap> DigraphLongestDistanceFromVertex(D, 1);
 3
+gap> D := Digraph([[2, 3], [], [2]]);;
+gap> DigraphLongestDistanceFromVertex(D, 1);
+2
 
 #  DigraphRandomWalk
 gap> gr := CompleteDigraph(5);
@@ -3320,6 +3323,16 @@ gap> D := ChainDigraph(1);;
 gap> ExecuteDFS(NewDFSRecord(D), [], 3, fail, fail, fail,
 > fail);
 Error, the third argument <start> must be a vertex in your graph,
+gap> record := NewDFSRecord(Digraph([[2, 3], [], [2]]));;
+gap> data := rec(back_edges := [], cross_edges := []);;
+gap> ExecuteDFS(record, data, 1, fail, fail, AncestorFunc,
+> CrossFunc);
+gap> record.preorder;
+[ 1, 2, 3 ]
+gap> record.postorder;
+[ 3, 1, 2 ]
+gap> data;
+rec( back_edges := [  ], cross_edges := [ [ 3, 2 ] ] )
 
 # IsDigraphPath
 gap> D := Digraph(IsMutableDigraph, Combinations([1 .. 5]), IsSubset);

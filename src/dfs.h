@@ -17,8 +17,6 @@
 // GAP headers
 #include "gap-includes.h"  // for Obj, Int
 
-#include "bitarray.h"
-
 bool CallCheckStop(Obj f, Int RNamStop, Obj record, Obj data);
 
 struct dfs_args {
@@ -39,11 +37,6 @@ struct dfs_args {
   Obj AncestorFunc;
   Obj CrossFunc;
 
-  // Checking if visited from a bit array is faster for large digraphs than
-  // using the preorder HashMap
-  bool* visited;
-  bool* backtracked;
-
   Int RNamChild;
   Int RNamCurrent;
   Int RNamStop;
@@ -54,12 +47,20 @@ struct dfs_args {
   bool CallCross;
 };
 
-struct dfs_rec_flags {
+struct dfs_config {
   bool revisit;
+  bool iter;
+  bool forest;
 };
 
-bool ExecuteDFSRec(Int current, Int prev, Int idx, struct dfs_args* args,
-                   struct dfs_rec_flags* flags);
+
+
+bool iter_loop(Obj stack, Int stack_size, struct dfs_args* args,
+               struct dfs_config* conf);
+bool ExecuteDFSRec(Int current, Int prev, Int idx, struct dfs_args* args);
+bool ExecuteDFSIter(Int start, struct dfs_args* args, struct dfs_config* conf);
 Obj FuncExecuteDFS_C(Obj self, Obj args);
+
+void parseConfig(struct dfs_config*, Obj conf_record);
 
 #endif  // DIGRAPHS_SRC_DFS_H_

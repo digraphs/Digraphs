@@ -237,9 +237,9 @@ IsStronglyConnectedDigraph, 0,
 D -> DigraphNrVertices(D) <= 1 and IsEmptyDigraph(D));
 
 InstallMethod(IsAcyclicDigraph, "for a digraph by out-neighbours",
-[IsDigraphByOutNeighboursRep],  # TODO call DFS for each component
+[IsDigraphByOutNeighboursRep],
 function(D)
-  local n, i, record, AncestorFunc;
+  local n, record, AncestorFunc;
   n := DigraphNrVertices(D);
   if n = 0 then
     return true;
@@ -252,16 +252,14 @@ function(D)
     record.stop := true;
   end;
 
-  for i in [1 .. n] do
-    if record.preorder[i] = -1 then
-      ExecuteDFS(record, [], i, fail,
-                    fail, AncestorFunc, fail);
+  record.config.forest := true;
+  ExecuteDFS(record, fail, 1, fail,
+                  fail, AncestorFunc, fail);
 
-      if record.stop then
-        return false;
-      fi;
-    fi;
-  od;
+  if record.stop then
+    return false;
+  fi;
+
   return true;
 end);
 

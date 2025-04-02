@@ -1701,6 +1701,7 @@ function(D, u, v)
       fi;
     end;
   fi;
+
   ExecuteDFS(record,
              fail,
              u,
@@ -2018,22 +2019,6 @@ function(D, u, v)
   return IteratorByFunctions(record);
 end);
 
-# InstallMethod(DigraphLongestDistanceFromVertex, "for a digraph and a pos int",
-# [IsDigraphByOutNeighboursRep, IsPosInt],
-# function(D, v)
-#   local dist;
-
-#   if not v in DigraphVertices(D) then
-#     ErrorNoReturn("the 2nd argument <v> must be a vertex of the 1st ",
-#                   "argument <D>,");
-#   fi;
-#   dist := DIGRAPH_LONGEST_DIST_VERTEX(OutNeighbours(D), v);
-#   if dist = -2 then
-#     return infinity;
-#   fi;
-#   return dist;
-# end);
-
 InstallMethod(DigraphLongestDistanceFromVertex, "for a digraph and a pos int",
 [IsDigraphByOutNeighboursRep, IsPosInt],
 function(D, v)
@@ -2051,6 +2036,7 @@ function(D, v)
   PostOrderFunc := function(_, data)
     data.prev := data.prev - 1;
   end;
+
   PreOrderFunc := function(_, data)
     data.prev := data.prev + 1;
     if data.prev > data.best then
@@ -2058,7 +2044,9 @@ function(D, v)
     fi;
   end;
 
-  record.config.revisit := true;
+  record.config.revisit := true;  # If found another edge to an already
+                                  # visited and backtracked on node,
+                                  # set to unvisited, and visit it
 
   ExecuteDFS(record, data, v,
                PreOrderFunc, PostOrderFunc,
@@ -2497,7 +2485,6 @@ function(D, root)
   node_to_preorder_num := record.preorder;
 
   parents[root] := -1;
-  # Unbind(parents[root]);
 
   semi := [1 .. M];
   lastlinked := M + 1;
@@ -2823,10 +2810,8 @@ function()
   local record;
   record := rec();
   record.forest := false;
-  record.revisit := false;  # If revisit = true, then when visiting some node,
-                            # and one of it's neighbors has been visited in
-                            # a different branch (backtracked on),
-                            # visit it again from this node
+  record.revisit := false;  # Use for revisiting nodes
+  record.iterative := false;
   return record;
 end);
 
