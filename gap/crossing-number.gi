@@ -357,7 +357,10 @@ end);
 # Compute a lower bound for the crossing number of a digraph
 InstallGlobalFunction(DigraphCrossingNumberLowerBound,
 function(D)
-    local temp,res;# Compute a lower boud for the crossing number of a digraphgument must be a digraph,");
+    local temp,res;
+
+    if not IsDigraph(D) then
+        ErrorNoReturn("Argument must be a digraph");
     fi;
 
     res := 0;
