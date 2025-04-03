@@ -483,7 +483,7 @@ InstallGlobalFunction(DIGRAPHS_CrossingNumberAlbertson,
         chromaticNumber := ChromaticNumber(D);
         # Chromatic number must be less than 16 as that is the highest complete digraph we have a known cn for
         if chromaticNumber < 15 then
-            # +1 as complete digraph crossing numebr array starts at 0
+            # +1 as complete digraph crossing number array starts at 0
             return DIGRAPHS_GetCompleteDigraphCrossingNumber(chromaticNumber)/4;
         else
             #Chromatic number too large for known crossing number
@@ -796,7 +796,7 @@ InstallMethod(CompleteMultipartiteDigraphPartitionSize, "for a complete multipar
         if neighbours[i] in typesSeen then
             AddDictionary(dictionary, neighbours[i], LookupDictionary(dictionary,neighbours[i])+1); 
         else
-            # Oherwise add the outneighbours to the seen array and add it to the dictionary
+            # Otherwise add the outneighbours to the seen array and add it to the dictionary
             Append(typesSeen, [neighbours[i]]);
             AddDictionary(dictionary,neighbours[i],1);
         fi;
@@ -805,7 +805,7 @@ InstallMethod(CompleteMultipartiteDigraphPartitionSize, "for a complete multipar
     for i in [1..Length(typesSeen)] do
         Add(componentsSize,LookupDictionary(dictionary,typesSeen[i]));
     od;
-    # Sort the array due to convential notation of CompleteMultidigraphs
+    # Sort the array due to conventional notation of CompleteMultidigraphs
     componentsSize := AsSortedList(componentsSize);
     SetCompleteMultipartiteDigraphPartitionSize(D,componentsSize);
     return componentsSize;
