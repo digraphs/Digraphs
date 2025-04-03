@@ -38,8 +38,8 @@ fi;
 SetPackageInfo(rec(
 PackageName := "Digraphs",
 Subtitle := "Graphs, digraphs, and multidigraphs in GAP",
-Version := "1.9.0",
-Date := "06/09/2024",  # dd/mm/yyyy format
+Version := "1.10.0",
+Date := "14/02/2025",  # dd/mm/yyyy format
 License := "GPL-3.0-or-later",
 ArchiveFormats := ".tar.gz",
 
@@ -212,6 +212,13 @@ Persons := [
     Email         := "eg207@st-andrews.ac.uk"),
 
   rec(
+    LastName      := "Frankie",
+    FirstNames    := "Gillis",
+    IsAuthor      := true,
+    IsMaintainer  := false,
+    Email         := "fotg1@st-andrews.ac.uk"),
+
+  rec(
     LastName      := "Gutsche",
     FirstNames    := "Sebastian",
     IsAuthor      := true,
@@ -251,6 +258,13 @@ Persons := [
     Institution   := "University of St Andrews"),
 
   rec(
+    LastName      := "Johns",
+    FirstNames    := "Malachi",
+    IsAuthor      := true,
+    IsMaintainer  := false,
+    Email         := "zlj1@st-andrews.ac.uk"),
+
+  rec(
     LastName      := "Konovalov",
     FirstNames    := "Olexandr",
     IsAuthor      := true,
@@ -267,15 +281,17 @@ Persons := [
       IsMaintainer := false,
       Email        := "hk78@st-andrews.ac.uk"),
 
+  rec(LastName     := "Lau",
+      FirstNames   := "Aidan",
+      IsAuthor     := true,
+      IsMaintainer := false),
+
   rec(
     LastName      := "Lee",
     FirstNames    := "Andrea",
     IsAuthor      := true,
     IsMaintainer  := false,
-    PostalAddress := _STANDREWSMATHS,
-    Email         := "ahwl1@st-andrews.ac.uk",
-    Place         := "St Andrews",
-    Institution   := "University of St Andrews"),
+    Email         := "ahwl1@st-andrews.ac.uk"),
 
   rec(
     LastName     := "McIver",
