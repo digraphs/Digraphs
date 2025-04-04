@@ -1446,6 +1446,12 @@ gap> DigraphLongestDistanceFromVertex(gr, 15);
 infinity
 gap> DigraphLongestDistanceFromVertex(gr, 16);
 Error, the 2nd argument <v> must be a vertex of the 1st argument <D>,
+gap> D := Digraph([[2, 4], [3, 4], [5], [], []]);;
+gap> DigraphLongestDistanceFromVertex(D, 1);
+3
+gap> D := Digraph([[2, 3], [], [2]]);;
+gap> DigraphLongestDistanceFromVertex(D, 1);
+2
 
 #  DigraphRandomWalk
 gap> gr := CompleteDigraph(5);
@@ -3233,6 +3239,139 @@ gap> DigraphEdges(D);
   [ 5, 4 ] ]
 gap> DigraphVertexLabels(D);
 [ 1, 2, 3, 6, [ 4, 5 ] ]
+
+# DFS
+
+# NewDFSRecord TODO uncomment when know what record will be
+# gap> NewDFSRecord(ChainDigraph(10));
+# rec( child := -1, current := -1, edge := HashMap([]),
+#   graph := <immutable chain digraph with 10 vertices>, parents := HashMap([]),
+#   postorder := HashMap([]), preorder := HashMap([]), stop := false )
+# gap> NewDFSRecord(CompleteDigraph(2));
+# rec( child := -1, current := -1, edge := HashMap([]),
+#   graph := <immutable complete digraph with 2 vertices>,
+#   parents := HashMap([]), postorder := HashMap([]), preorder := HashMap([]),
+#   stop := false )
+# gap> NewDFSRecord(Digraph([[1], [2], [1], [1], [2]]));
+# rec( child := -1, current := -1, edge := HashMap([]),
+#   graph := <immutable digraph with 5 vertices, 5 edges>,
+#   parents := HashMap([]), postorder := HashMap([]), preorder := HashMap([]),
+#   stop := false )
+
+# ExecuteDFS
+gap> mapToList := function(map, len, list)  # For turning record hashmaps -> lists for
+> local i;
+>     for i in [1 .. len] do                # printing
+>        if not IsBound(map[i]) then
+>          Add(list, -1);
+>        else
+>          Add(list, map[i]);
+>        fi;
+>     od;
+>    end;;
+gap> record := NewDFSRecord(CompleteDigraph(10));;
+gap> ExecuteDFS(record, [], 2, fail,
+>               fail, fail, fail);
+gap> preorder_list := [];;
+gap> mapToList(record.preorder, 10, preorder_list);;
+gap> preorder_list;
+[ 2, 1, 3, 4, 5, 6, 7, 8, 9, 10 ]
+gap> record := NewDFSRecord(CompleteDigraph(15));;
+gap> data := rec(cycle_vertex := 0);;
+gap> AncestorFunc := function(record, data)
+>       record.stop := true;
+>       data.cycle_vertex := record.child;
+>    end;;
+gap> ExecuteDFS(record, data, 1, fail,
+>               fail, AncestorFunc, fail);
+gap> record.stop;
+true
+gap> data.cycle_vertex;
+1
+gap> preorder_list := [];;
+gap> mapToList(record.preorder, 15, preorder_list);;
+gap> preorder_list;
+[ 1, 2, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 ]
+gap> record := NewDFSRecord(Digraph([[2, 3], [4], [5], [], [4]]));;
+gap> CrossFunc := function(record, data)
+>       record.stop := true;
+>       Add(data, record.child);
+>    end;;
+gap> data := [];;
+gap> ExecuteDFS(record, data, 1, fail,
+>               fail, fail, CrossFunc);
+gap> record.stop;
+true
+gap> data;
+[ 4 ]
+gap> AncestorFunc := function(record, data)
+>      Add(data.back_edges, [record.current, record.child]);
+>    end;;
+gap> CrossFunc := function(record, data)
+>      Add(data.cross_edges, [record.current, record.child]);
+>    end;;
+gap> record := NewDFSRecord(Digraph([[2, 3, 3], [4, 4], [5, 1, 1], [], [4]]));;
+gap> data := rec(back_edges := [], cross_edges := []);;
+gap> ExecuteDFS(record, data, 1, fail,
+>               fail, AncestorFunc, CrossFunc);;
+gap> data;
+rec( back_edges := [ [ 3, 1 ], [ 3, 1 ] ], cross_edges := [ [ 5, 4 ] ] )
+gap> ExecuteDFS(rec(), data, 1, fail,
+>               fail, AncestorFunc, CrossFunc);
+Error, the 1st argument <record> must be created with NewDFSRecord,
+gap> D := ChainDigraph(1);;
+gap> ExecuteDFS(NewDFSRecord(D), [], 3, fail, fail, fail,
+> fail);
+Error, the third argument <start> must be a vertex in your graph,
+gap> record := NewDFSRecord(Digraph([[2, 3], [], [2]]));;
+gap> data := rec(back_edges := [], cross_edges := []);;
+gap> ExecuteDFS(record, data, 1, fail, fail, AncestorFunc,
+> CrossFunc);
+gap> record.preorder;
+[ 1, 2, 3 ]
+gap> record.postorder;
+[ 3, 1, 2 ]
+gap> data;
+rec( back_edges := [  ], cross_edges := [ [ 3, 2 ] ] )
+
+# IsDigraphPath
+gap> D := Digraph(IsMutableDigraph, Combinations([1 .. 5]), IsSubset);
+<mutable digraph with 32 vertices, 243 edges>
+gap> DigraphReflexiveTransitiveReduction(D);
+<mutable digraph with 32 vertices, 80 edges>
+gap> MakeImmutable(D);
+<immutable digraph with 32 vertices, 80 edges>
+gap> IsDigraphPath(D, [1, 2, 3], []);
+Error, the 2nd and 3rd arguments (lists) are incompatible, expected 3rd argume\
+nt of length 2, got 0
+gap> IsDigraphPath(D, [1], []);
+true
+gap> IsDigraphPath(D, [1, 2], [5]);
+false
+gap> IsDigraphPath(D, [32, 31, 33], [1, 1]);
+false
+gap> IsDigraphPath(D, [32, 33, 31], [1, 1]);
+false
+gap> IsDigraphPath(D, [6, 9, 16, 17], [3, 3, 2]);
+true
+gap> IsDigraphPath(D, [33, 9, 16, 17], [3, 3, 2]);
+false
+gap> IsDigraphPath(D, [6, 9, 18, 1], [9, 10, 2]);
+false
+
+# IsDigraphPath
+gap> D := Digraph(IsMutableDigraph, Combinations([1 .. 5]), IsSubset);
+<mutable digraph with 32 vertices, 243 edges>
+gap> DigraphReflexiveTransitiveReduction(D);
+<mutable digraph with 32 vertices, 80 edges>
+gap> MakeImmutable(D);
+<immutable digraph with 32 vertices, 80 edges>
+gap> IsDigraphPath(D, DigraphPath(D, 6, 1));
+true
+gap> ForAll(List(IteratorOfPaths(D, 6, 1)), x -> IsDigraphPath(D, x));
+true
+gap> IsDigraphPath(D, []);
+Error, the 2nd argument (a list) must have length 2, but found length 0
 
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(C);

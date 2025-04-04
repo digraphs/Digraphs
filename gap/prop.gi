@@ -239,22 +239,28 @@ D -> DigraphNrVertices(D) <= 1 and IsEmptyDigraph(D));
 InstallMethod(IsAcyclicDigraph, "for a digraph by out-neighbours",
 [IsDigraphByOutNeighboursRep],
 function(D)
-  local n;
+  local n, record, AncestorFunc;
   n := DigraphNrVertices(D);
   if n = 0 then
     return true;
-  elif HasDigraphTopologicalSort(D) and
-      DigraphTopologicalSort(D) = fail then
-    return false;
-  elif HasDigraphHasLoops(D) and DigraphHasLoops(D) then
-    return false;
-  elif HasDigraphStronglyConnectedComponents(D) then
-    if DigraphNrStronglyConnectedComponents(D) = n then
-      return not DigraphHasLoops(D);
-    fi;
+  fi;
+
+  record := NewDFSRecord(D);
+
+  # A Digraph is acyclic if it has no back edges
+  AncestorFunc := function(record, _)
+    record.stop := true;
+  end;
+
+  record.config.forest := true;
+  ExecuteDFS(record, fail, 1, fail,
+                  fail, AncestorFunc, fail);
+
+  if record.stop then
     return false;
   fi;
-  return IS_ACYCLIC_DIGRAPH(OutNeighbours(D));
+
+  return true;
 end);
 
 # Complexity O(number of edges)
