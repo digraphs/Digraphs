@@ -997,17 +997,15 @@ InstallMethod(OnDigraphs, "for a mutable digraph by out-neighbours and a perm",
 [IsMutableDigraph and IsDigraphByOutNeighboursRep, IsPerm],
 function(D, p)
   local out, permed;
-  if p = () then
+  if SmallestMovedPoint(p) > DigraphNrVertices(D) then
     return D;
+  elif ForAny(DigraphVertices(D), i -> i ^ p > DigraphNrVertices(D)) then
+    ErrorNoReturn("the 2nd argument <p> must be a permutation that permutes ",
+                  "the vertices of the digraph <D> that is the 1st argument.");
   fi;
 
   out := D!.OutNeighbours;
   permed := Permuted(out, p);
-  if Length(permed) > DigraphNrVertices(D) then
-    ErrorNoReturn("the 2nd argument <p> must be a permutation that permutes ",
-                  "the vertices of the digraph <D> that is the 1st argument,");
-  fi;
-
   out{DigraphVertices(D)} := permed;
   Apply(out, x -> OnTuples(x, p));
   ClearDigraphEdgeLabels(D);
@@ -1017,7 +1015,7 @@ end);
 InstallMethod(OnDigraphs, "for a immutable digraph and a perm",
 [IsImmutableDigraph, IsPerm],
 function(D, p)
-  if p = () then
+  if SmallestMovedPoint(p) > DigraphNrVertices(D) then
     return D;
   fi;
   return MakeImmutable(OnDigraphs(DigraphMutableCopy(D), p));
@@ -1028,7 +1026,7 @@ InstallMethod(OnDigraphs,
 [IsMutableDigraph and IsDigraphByOutNeighboursRep, IsTransformation],
 function(D, t)
   local old, new, v;
-  if ForAll(DigraphVertices(D), i -> i ^ t = i) then
+  if SmallestMovedPoint(t) > DigraphNrVertices(D) then
     return D;
   elif ForAny(DigraphVertices(D), i -> i ^ t > DigraphNrVertices(D)) then
     ErrorNoReturn("the 2nd argument <t> must be a transformation that ",
@@ -1048,7 +1046,7 @@ end);
 InstallMethod(OnDigraphs, "for a immutable digraph and a transformation",
 [IsImmutableDigraph, IsTransformation],
 function(D, t)
-  if ForAll(DigraphVertices(D), i -> i ^ t = i) then
+  if SmallestMovedPoint(t) > DigraphNrVertices(D) then
     return D;
   fi;
   return MakeImmutable(OnDigraphs(DigraphMutableCopy(D), t));
