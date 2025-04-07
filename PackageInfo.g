@@ -538,9 +538,9 @@ AutoDoc := rec(
           on work by Max Neunh&#246;ffer, and independently Artur Sch&#228;fer.
         """)),
 
-AbstractHTML := "The <strong class="pkg">Digraphs</strong> package
+AbstractHTML := """The <strong class="pkg">Digraphs</strong> package
           is a <strong class="pkg">GAP</strong> package containing
-          methods for graphs, digraphs, and multidigraphs."));
+          methods for graphs, digraphs, and multidigraphs.""",));
 
 if not CompareVersionNumbers(GAPInfo.Version, "4.12") then
   Unbind(IsKernelExtensionAvailable);
