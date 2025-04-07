@@ -551,7 +551,8 @@ function(D)
         # Search for the first vertex not adjacent to all others
         # This is guaranteed to exist as D is not the complete graph.
         if OutDegreeOfVertex(D, x) < nr - 1 then
-          # Now search for a non-adjacent vertex, prioritising higher degree ones
+          # Now search for a non-adjacent vertex, prioritising higher degree
+          # ones
           for j in [i + 1 .. nr] do
             y := vertices[j];
             if not adjacent(x, y) then
