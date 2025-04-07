@@ -34,3 +34,7 @@ DeclareGlobalFunction("DIGRAPHS_Edge_Weighted_Johnson");
 DeclareGlobalFunction("DIGRAPHS_Edge_Weighted_FloydWarshall");
 DeclareGlobalFunction("DIGRAPHS_Edge_Weighted_Bellman_Ford");
 DeclareGlobalFunction("DIGRAPHS_Edge_Weighted_Dijkstra");
+
+# 5. Maximum Flow
+DeclareOperation("DigraphMaximumFlow",
+                 [IsDigraph and HasEdgeWeights, IsPosInt, IsPosInt]);
