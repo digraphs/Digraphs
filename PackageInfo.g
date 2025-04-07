@@ -28,21 +28,16 @@ end);
 
 BindGlobal("_MakeAbstractFunction",
 function(OutputFormat)
-  local ValidOutputFormats, ErrorMsg, OutputType, AbstractRec, AbstractParts,
-        line, Abstract;
-
-  # Validate the specified OutputFormat.
+  local ValidOutputFormats, ErrorMsg, OutputType, AbstractRec, Abstract, line;
   ValidOutputFormats := ["HTML", "XML"];
   if not OutputFormat in ValidOutputFormats then
     ErrorMsg := Concatenation(["The given `OutputFormat` argument is invalid. ",
                                "Valid options are:\n"]);
     for OutputType in ValidOutputFormats do
-      ErrorMsg := Concatenation(ErrorMsg, "- ", OutputType, "\n");
+        ErrorMsg := Concatenation(ErrorMsg, "- ", OutputType, "\n");
     od;
     ErrorNoReturn(ErrorMsg);
   fi;
-
-  # Define the Abstract here.
   AbstractRec := [rec(str := "The", toReplace := false),
                   rec(str := "Digraphs", toReplace := true),
                   rec(str := "package is a", toReplace := false),
@@ -50,30 +45,25 @@ function(OutputFormat)
                   rec(str := "package containing methods", toReplace := false),
                   rec(str := "for graphs, digraphs, and", toReplace := false),
                   rec(str := "multidigraphs.", toReplace := false)];
-
-  # Build the Abstract from the processed abstract parts.
   Abstract := "";
   for line in AbstractRec do
     if line.toReplace then
       if OutputFormat = "XML" then
         line.str := Concatenation("&", line.str, ";");
       elif OutputFormat = "HTML" then
-        line.str := Concatenation(["<strong class=\"pkg\">",
-                                   line.str, "</strong>"]);
+        line.str := Concatenation(["""<strong class="pkg">""",
+                                   line.str,
+                                   """</strong>"""]);
       else
-        ErrorMsg := Concatenation(["Outputting to format ", OutputFormat,
-                                   " has not yet been implemented."]);
-        ErrorNoReturn(ErrorMsg);
+        # Shouldn't be able to reach this state.
+        ErrorNoReturn(Concatenation(["Outputting to format ", OutputFormat,
+                                     "has not yet been implemented."]));
       fi;
     fi;
-    line.str := Concatenation(line.str, " ");
-    Abstract := Concatenation(Abstract, line.str);
+    Abstract := Concatenation(Abstract, line.str, " ");
   od;
-
-  # Remove trailing whitespace chars.
-  while Abstract{[Length(Abstract)]} = " " do
-    Abstract := Abstract{[1..Length(Abstract)-1]};
-  od;
+  # Remove final whitespace char
+  NormalizeWhitespace(Abstract);
   return Abstract;
 end);
 
