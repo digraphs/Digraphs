@@ -412,7 +412,7 @@ true]]></Example>
   <Returns>A digraph.</Returns>
   <Description>
     If <A>n</A> is a positive integer, then this operation returns
-    the <E>burnt pancake graph</E> with <M>n!</M> vertices and <M>n2^(n)n!</M>
+    the <E>burnt pancake graph</E> with <M>n!</M> vertices and <M>n2^{n}n!</M>
     directed edges. The <M>n</M>th burnt pancake graph is the Cayley graph of the
     hyperoctahedral group acting on <C>[<A>-n</A> .. -1, 1 .. <A>n</A>]</C> with respect to the
     generating set consisting of the <Q>prefix reversals</Q>, which are defined in exactly
