@@ -592,6 +592,7 @@ Transformation( [ 2, 4, 3, 4 ] )
 ]]></Example>
   </Description>
 </ManSection>
+<Index Key="subgraph isomorphism">subgraph isomorphism</Index>
 <#/GAPDoc>
 
 <#GAPDoc Label="EmbeddingsDigraphs">
@@ -786,6 +787,7 @@ gap> IsDigraphEmbedding(src, ran, IdentityTransformation);
 false]]></Example>
   </Description>
 </ManSection>
+<Index Key="subgraph isomorphism">subgraph isomorphism</Index>
 <#/GAPDoc>
 
 <#GAPDoc Label="IsDigraphColouring">
