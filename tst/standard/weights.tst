@@ -19,7 +19,7 @@ gap> DIGRAPHS_StartTest();
 # 1. Edge Weights
 #############################################################################
 
-# create edge weighted digraph
+# create edge-weighted digraph
 gap> d := EdgeWeightedDigraph([[2], []], [[5], []]);
 <immutable digraph with 2 vertices, 1 edge>
 gap> d := EdgeWeightedDigraph(Digraph([[2], []]), [[5], []]);
@@ -367,6 +367,37 @@ gap> gr := EdgeWeightedDigraph([[2], [3, 6], [4], [1, 6], [1, 3], []],
 >                              [[12], [3, 7], [10], [5, 10], [15, 4], []]);;
 gap> DigraphMaximumFlow(gr, 5, 6);
 [ [ 10 ], [ 3, 7 ], [ 7 ], [ 0, 7 ], [ 10, 4 ], [  ] ]
+
+#############################################################################
+# 6. Random edge-weighted digraphs
+#############################################################################
+
+# Random edge-weighted digraph with n
+gap> D := RandomUniqueEdgeWeightedDigraph(5);;
+gap> DigraphNrVertices(D);
+5
+gap> HasEdgeWeights(D);
+true
+
+# Random edge-weighted digraph with n, p
+gap> D := RandomUniqueEdgeWeightedDigraph(10, 1 / 2);;
+gap> DigraphNrVertices(D);
+10
+gap> HasEdgeWeights(D);
+true
+gap> SortedList(Flat(EdgeWeights(D))) = [1 .. DigraphNrEdges(D)];
+true
+
+# Random edge-weighted digraph with filt, n, p
+gap> D := RandomUniqueEdgeWeightedDigraph(IsEulerianDigraph, 5, 0.3);;
+gap> DigraphNrVertices(D);
+5
+gap> HasEdgeWeights(D);
+true
+gap> IsEulerianDigraph(D);
+true
+gap> SortedList(Flat(EdgeWeights(D))) = [1 .. DigraphNrEdges(D)];
+true
 
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(d);

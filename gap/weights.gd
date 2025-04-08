@@ -38,3 +38,12 @@ DeclareGlobalFunction("DIGRAPHS_Edge_Weighted_Dijkstra");
 # 5. Maximum Flow
 DeclareOperation("DigraphMaximumFlow",
                  [IsDigraph and HasEdgeWeights, IsPosInt, IsPosInt]);
+
+# 6. Random edge weighted digraphs
+DeclareOperation("RandomUniqueEdgeWeightedDigraph", [IsPosInt]);
+DeclareOperation("RandomUniqueEdgeWeightedDigraph", [IsPosInt, IsFloat]);
+DeclareOperation("RandomUniqueEdgeWeightedDigraph", [IsPosInt, IsRat]);
+DeclareOperation("RandomUniqueEdgeWeightedDigraph",
+                 [IsFunction, IsPosInt, IsFloat]);
+DeclareOperation("RandomUniqueEdgeWeightedDigraph",
+                 [IsFunction, IsPosInt, IsRat]);
