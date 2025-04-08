@@ -219,3 +219,55 @@ fail]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
+
+<#GAPDoc Label="DigraphMaximumFlow">
+<ManSection>
+  <Attr Name="DigraphMaximumFlow" Arg="digraph, start, destination"/>
+  <Returns>A list of lists of integers.</Returns>
+  <Description>
+    If <A>digraph</A> is an edge-weighted digraph with vertices <A>start</A> and
+    <A>destination</A>, this returns a record representing the maximum flow from
+    <A>start</A> to <A>destination</A> in the digraph. <P/>
+
+    A <E>flow</E> is a function from the weighted edges of <A>digraph</A> to the
+    positive real numbers, such that:
+    <List>
+      <Item>
+        Each edge's flow is no more than its weight;
+      </Item>
+      <Item>
+        For each vertex other than <A>start</A> and <A>destination</A>, the sum
+        of flows for all incoming edges is equal to the sum of flows for all
+        outgoing edges;
+      </Item>
+      <Item>
+        The sum of flows of edges leaving <A>start</A> is equal to the sum of
+        flows of edges entering <A>destination</A> (this sum is denoted
+        <M>M</M>).
+      </Item>
+    </List>
+    A <E>maximum flow</E> is a flow that maximises the value of <M>M</M>. <P/>
+
+    The flow is represented as a list of lists where each entry is a number
+    representing the flow on the edge in the corresponding position in
+    <C>OutNeighbours(<A>digraph</A>)</C>.
+    Note that the value <M>M</M> of the flow can be found with
+    <C>Sum(DigraphMaximumFlow(<A>digraph</A>, <A>start</A>,
+    <A>destination</A>)[<A>start</A>])</C>. <P/>
+
+    This attribute is computed by an implementation of the push–relabel maximum
+    flow algorithm, which has time complexity <M>O(v^2 e)</M> where <M>v</M> is
+    the number of vertices of the digraph, and <M>e</M> is the number of
+    edges. <P/>
+
+    See <Ref Attr="EdgeWeights" Func="EdgeWeightedDigraph"/>.
+    <Example><![CDATA[
+gap> g := EdgeWeightedDigraph([[2, 2], [3], []], [[3, 2], [1], []]);
+<immutable multidigraph with 3 vertices, 3 edges>
+gap> flow := DigraphMaximumFlow(g, 1, 3);
+[ [ 1, 0 ], [ 1 ], [  ] ]
+gap> Sum(flow[1]);
+1]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
