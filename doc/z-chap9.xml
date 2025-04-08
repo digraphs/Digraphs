@@ -58,9 +58,9 @@
       <Mark> dreadnaut </Mark>
       <Item>
         <E>dreadnaut</E> is a graph data format designed for directed and undirected graphs.
-        It supports loops but multiple edges will be ignored.  The format consists of an
+        The format supports loops but multiple edges are ignored.  The format consists of an
         initial section that defines the graph's structural properties, such as the number of
-        vertices, the index origin for vertices, and whether the graph is directed. This is followed
+        vertices, the starting value for vertices, and whether the graph is directed. This is followed
         by a list of edges. For more information and examples of the format see
         <URL Text="nauty and Traces User's Guide">http://pallini.di.uniroma1.it/Guide.html</URL>.
       </Item>

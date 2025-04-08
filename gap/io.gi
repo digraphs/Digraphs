@@ -2104,10 +2104,30 @@ function(D)
   return out;
 end);
 
-InstallMethod(DreadnautString, "for a digraph", [IsDigraph],
-function(D)
-  local n, verts, nbs, labels, i, degs, filteredVerts, partition,
-        out, positions, joinedPositions, dflabels, adj;
+InstallGlobalFunction(DreadnautString,
+function(args...)
+  local n, verts, nbs, i, degs, filteredVerts, partition, partitionString,
+        out, positions, joinedPositions, adj, D, dflabels;
+
+  if Length(args) = 1 then
+    D := args[1];
+  elif Length(args) = 2 then
+    D := args[1];
+    partition := args[2];
+  else
+    ErrorNoReturn("there must be at most 2 arguments");
+  fi;
+
+  if not IsDigraph(D) then
+    ErrorNoReturn("the first argument <D> must be a digraph");
+  elif IsBound(partition) then
+    if not IsList(partition) then
+      ErrorNoReturn("the second argument <partition> must be a list");
+    elif Length(partition) <> DigraphNrVertices(D) then
+      ErrorNoReturn("the second argument <partition> must be a list of ",
+                    "length equal to the number of vertices in <D>");
+    fi;
+  fi;
 
   if IsMultiDigraph(D) then
     Info(InfoWarning, 1,
@@ -2120,10 +2140,10 @@ function(D)
   verts := DigraphVertices(D);
   nbs := OutNeighbours(D);
   degs := OutDegrees(D);
-  labels := DigraphVertexLabels(D);
 
   if n = 0 then
-    ErrorNoReturn("the argument <D> must be a non-empty digraph,");
+    ErrorNoReturn("the argument <D> must be a digraph with at",
+                  " least one vertex");
   fi;
 
   out := Concatenation("n=", String(n));
@@ -2141,21 +2161,19 @@ function(D)
     fi;
   od;
   out := Concatenation(out, ".");
-  if labels <> [1 .. n] then
-    dflabels := DuplicateFreeList(labels);
-    partition := "f = [";
+  if IsBound(partition) then
+    dflabels := DuplicateFreeList(partition);
+    partitionString := "\nf = [";
 
     for i in dflabels do
-      positions := PositionsProperty(labels, x -> x = i);
+      positions := PositionsProperty(partition, x -> x = i);
       joinedPositions := JoinStringsWithSeparator(positions, " ");
-      partition := Concatenation(partition, joinedPositions);
+      partitionString := Concatenation(partitionString, joinedPositions);
       if i <> dflabels[Length(dflabels)] then
-        partition := Concatenation(partition, " | ");
+        partitionString := Concatenation(partitionString, " | ");
       fi;
     od;
-    partition := Concatenation(partition, "]");
-
-    out := Concatenation(out, partition);
+    out := Concatenation(out, partitionString, "]");
   fi;
 
   return out;

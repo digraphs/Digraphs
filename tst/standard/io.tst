@@ -930,9 +930,28 @@ gap> ReadDigraphs(filename, IO_Unpickle);
 
 # DreadnautString
 gap> filename := Concatenation(DIGRAPHS_Dir(), "tst/out/temp.dre");;
+gap> D := Digraph([[1, 2, 3, 2], [2, 1], [3]]);
+<immutable multidigraph with 3 vertices, 7 edges>
+gap> DreadnautString(D);
+"n=3 $=1 d g\n1 : 1 2 3;\n2 : 2 1;\n3 : 3."
+gap> DreadnautString(Digraph([]));
+Error, the argument <D> must be a digraph with at least one vertex
 gap> D := CompleteDigraph(3);;
-gap> SetDigraphVertexLabels(D, ["a", "b", "c"]);;
-gap> WriteDigraphs(filename, D, "w");;
+gap> DreadnautString(D);
+"n=3 $=1 d g\n1 : 2 3;\n2 : 1 3;\n3 : 1 2."
+gap> DreadnautString(D, [1, 1, 2]);
+"n=3 $=1 d g\n1 : 2 3;\n2 : 1 3;\n3 : 1 2.\nf = [1 2 | 3]"
+gap> DreadnautString(D, [1, 1]);
+Error, the second argument <partition> must be a list of length equal to the n\
+umber of vertices in <D>
+gap> DreadnautString(D, [1, 1, 2], "extra arg");
+Error, there must be at most 2 arguments
+gap> DreadnautString(1);
+Error, the first argument <D> must be a digraph
+gap> DreadnautString(D, 1);
+Error, the second argument <partition> must be a list
+gap> WriteDigraphs(filename, D, "w");
+IO_OK
 
 # DigraphFromDreadnautString
 gap> ReadDigraphs(filename)[1] = D;
@@ -947,13 +966,10 @@ gap> WriteDigraphs(filename, D, "w");;
 gap> D = ReadDigraphs(filename)[1];
 true
 gap> D := Digraph([[3, 5, 10], [9, 8, 10], [4], [6], [7, 11], [7], [8], [], [11], [], []]);;
-gap> SetDigraphVertexLabels(D, [1, 2, 1, 1, 4, 1, 1, 3, 1, 5, 1]);;
 gap> WriteDigraphs(filename, D, "w");;
 gap> D2 := ReadDigraphs(filename)[1];;
 gap> D = D2;
 true
-gap> DigraphVertexLabels(D) = DigraphVertexLabels(D2);
-false
 gap> DigraphFromDreadnautString("$=1n=3-d\ng1 : 1 2 3 1 2;\n	 2 : 1 2;\n	 3 : 2;");
 <immutable digraph with 3 vertices, 6 edges>
 gap> DigraphFromDreadnautString("silly text for testing\nn=1dg\n1: 1.");
