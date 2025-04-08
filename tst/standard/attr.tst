@@ -2052,7 +2052,7 @@ gap> Bridges(D);
 gap> g := HypercubeGraph(3);;
 gap> edgeCut := MinimalCyclicEdgeCut(g);
 [ [ 1, 5 ], [ 2, 6 ], [ 4, 8 ], [ 3, 7 ] ]
-gap> edgeCut := Concatenation(edgeCut, List(edgeCut, e -> Reversed));
+gap> edgeCut := Concatenation(edgeCut, List(edgeCut, Reversed));
 [ [ 1, 5 ], [ 2, 6 ], [ 4, 8 ], [ 3, 7 ], [ 5, 1 ], [ 6, 2 ], [ 8, 4 ], 
   [ 7, 3 ] ]
 gap> gNew := DigraphRemoveEdges(g, edgeCut);
