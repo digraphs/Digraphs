@@ -7,6 +7,15 @@ See the LICENSE.TXT file for licensing information.
 #include <stdlib.h>
 #include <string.h>
 
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeclaration-after-statement"
+#pragma clang diagnostic ignored "-Wincompatible-pointer-types-discards-qualifiers"
+#pragma clang diagnostic ignored "-Wmissing-prototypes"
+#elif defined(__GNUC__)
+#pragma GCC diagnostic push
+#endif
+
 #include "g6-write-iterator.h"
 #include "g6-api-utilities.h"
 
@@ -565,3 +574,8 @@ int _WriteGraphToG6StrOrFile(graphP pGraph, strOrFileP outputContainer, char **o
 
     return exitCode;
 }
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#elif defined(__GNUC__)
+#pragma GCC diagnostic pop
+#endif

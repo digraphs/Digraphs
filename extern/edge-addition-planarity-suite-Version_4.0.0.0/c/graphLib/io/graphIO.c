@@ -8,6 +8,16 @@ See the LICENSE.TXT file for licensing information.
 #include <string.h>
 #include <ctype.h>
 
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wmissing-prototypes"
+#pragma clang diagnostic ignored "-Wformat-nonliteral"
+#pragma clang diagnostic ignored "-Wincompatible-pointer-types-discards-qualifiers"
+#pragma clang diagnostic ignored "-Wdeclaration-after-statement"
+#elif defined(__GNUC__)
+#pragma GCC diagnostic push
+#endif
+
 #include "../graph.h"
 
 /* Private functions (exported to system) */
@@ -1065,3 +1075,9 @@ char *_MakeLogStr5(char *format, int one, int two, int three, int four, int five
     sprintf(LogStr, format, one, two, three, four, five);
     return LogStr;
 }
+
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#elif defined(__GNUC__)
+#pragma GCC diagnostic pop
+#endif

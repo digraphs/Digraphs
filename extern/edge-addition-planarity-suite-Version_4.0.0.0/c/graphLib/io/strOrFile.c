@@ -10,6 +10,15 @@ See the LICENSE.TXT file for licensing information.
 #include <stdbool.h>
 #include <string.h>
 
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeclaration-after-statement"
+#pragma clang diagnostic ignored "-Wmissing-prototypes"
+#elif defined(__GNUC__)
+#pragma GCC diagnostic push
+#endif
+
+
 #include "../lowLevelUtils/appconst.h"
 #include "strOrFile.h"
 
@@ -716,3 +725,9 @@ void sf_Free(strOrFileP *pStrOrFile)
         (*pStrOrFile) = NULL;
     }
 }
+
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#elif defined(__GNUC__)
+#pragma GCC diagnostic pop
+#endif
