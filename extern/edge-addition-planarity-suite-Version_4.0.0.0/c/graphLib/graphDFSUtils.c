@@ -26,6 +26,8 @@ extern void _ClearVertexVisitedFlags(graphP theGraph, int);
 
 #include "lowLevelUtils/platformTime.h"
 
+int _SortVertices(graphP theGraph);
+
 int gp_CreateDFSTree(graphP theGraph)
 {
     stackP theStack;
@@ -376,7 +378,8 @@ int gp_LowpointAndLeastAncestor(graphP theGraph)
  graphs that may be designed and stored in a DFI sorted format.
  ********************************************************************/
 
-int gp_LeastAncestor(graphP theGraph)
+#if false
+static int gp_LeastAncestor(graphP theGraph)
 {
     stackP theStack = theGraph->theStack;
     int v, u, uneighbor, e, leastAncestor;
@@ -455,3 +458,4 @@ int gp_LeastAncestor(graphP theGraph)
 
     return OK;
 }
+#endif

@@ -21,7 +21,7 @@ See the LICENSE.TXT file for licensing information.
  Returns the allocated string-or-file container, or NULL on error.
  ********************************************************************/
 
-strOrFileP sf_New(char *theStr, char *fileName, char *ioMode)
+strOrFileP sf_New(char const*theStr, char const*fileName, char const*ioMode)
 {
     strOrFileP theStrOrFile;
     int containerType = 0;

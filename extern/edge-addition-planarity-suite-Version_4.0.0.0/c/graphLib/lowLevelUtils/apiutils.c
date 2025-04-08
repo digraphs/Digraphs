@@ -33,7 +33,7 @@ void Message(char *message)
     }
 }
 
-void ErrorMessage(char *message)
+void ErrorMessage(char const*message)
 {
     if (!getQuietModeSetting())
     {
@@ -44,10 +44,11 @@ void ErrorMessage(char *message)
 
 int GetNumCharsToReprInt(int theNum, int *numCharsRequired)
 {
+    int charCount;
     if (numCharsRequired == NULL)
         return NOTOK;
-
-    int charCount = 0;
+    // mixing declarations and code is incompatible with standards before C99
+    charCount = 0;
 
     if (theNum < 0)
     {

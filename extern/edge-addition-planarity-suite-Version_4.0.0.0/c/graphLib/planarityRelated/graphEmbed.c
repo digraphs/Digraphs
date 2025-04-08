@@ -38,6 +38,11 @@ int _OrientVerticesInEmbedding(graphP theGraph);
 int _OrientVerticesInBicomp(graphP theGraph, int BicompRoot, int PreserveSigns);
 int _JoinBicomps(graphP theGraph);
 
+// Exported function prototypes
+
+int _HandleInactiveVertex(graphP theGraph, int BicompRoot, int *pW, int *pWPrevLink);
+int _OrientExternalFacePath(graphP theGraph, int u, int v, int w, int x);
+
 /********************************************************************
  gp_Embed()
 

@@ -596,7 +596,7 @@ int _ComputeEdgeRanges(DrawPlanarContext *context)
  Uses the extFace links to traverse to the next vertex on the external
  face given a current vertex and the link that points to its predecessor.
  ********************************************************************/
-int _GetNextExternalFaceVertex(graphP theGraph, int curVertex, int *pPrevLink)
+static int _GetNextExternalFaceVertex(graphP theGraph, int curVertex, int *pPrevLink)
 {
     int nextVertex = gp_GetExtFaceVertex(theGraph, curVertex, 1 ^ *pPrevLink);
 
@@ -785,7 +785,7 @@ int _BreakTie(DrawPlanarContext *context, int BicompRoot, int W, int WPrevLink)
  representation otherwise.  The string can be printed using %s,
  ********************************************************************/
 
-char *_RenderToString(graphP theEmbedding)
+static char *_RenderToString(graphP theEmbedding)
 {
     DrawPlanarContext *context = NULL;
     gp_FindExtension(theEmbedding, DRAWPLANAR_ID, (void *)&context);

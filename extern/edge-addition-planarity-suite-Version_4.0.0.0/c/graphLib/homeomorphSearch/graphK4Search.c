@@ -1018,7 +1018,7 @@ int _K4_ReducePathComponent(graphP theGraph, K4SearchContext *context, int R, in
  marked for isolation.
  ********************************************************************/
 
-int _K4_DeleteEdge(graphP theGraph, K4SearchContext *context, int e, int nextLink)
+static int _K4_DeleteEdge(graphP theGraph, K4SearchContext *context, int e, int nextLink)
 {
     _K4Search_InitEdgeRec(context, e);
     _K4Search_InitEdgeRec(context, gp_GetTwinArc(theGraph, e));

@@ -180,7 +180,7 @@ void sb_ReadSkipInteger(strBufP theStrBuf)
  small concatenations).
  Returns OK on success, NOTOK on error
  ********************************************************************/
-int sb_ConcatString(strBufP theStrBuf, char *s)
+int sb_ConcatString(strBufP theStrBuf, char const*s)
 {
     int slen = s == NULL ? 0 : strlen(s);
 

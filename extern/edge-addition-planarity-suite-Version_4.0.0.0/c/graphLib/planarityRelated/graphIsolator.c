@@ -51,6 +51,8 @@ int _GetLeastAncestorConnection(graphP theGraph, int cutVertex);
 int _MarkDFSPathsToDescendants(graphP theGraph);
 int _AddAndMarkUnembeddedEdges(graphP theGraph);
 
+int _MarkDFSPath(graphP theGraph, int ancestor, int descendant);
+
 /****************************************************************************
  gp_IsolateKuratowskiSubgraph()
  ****************************************************************************/

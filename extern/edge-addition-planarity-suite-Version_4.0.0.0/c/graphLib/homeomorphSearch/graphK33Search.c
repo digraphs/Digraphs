@@ -59,6 +59,8 @@ extern int _AddAndMarkUnembeddedEdges(graphP theGraph);
 
 extern void _K33Search_InitEdgeRec(K33SearchContext *context, int e);
 
+int _MarkStraddlingBridgePath(graphP theGraph, int u_min, int u_max, int u_d, int d);
+
 /* Private functions for K_{3,3} searching. */
 
 int _SearchForK33InBicomp(graphP theGraph, K33SearchContext *context, int v, int R);
@@ -75,7 +77,6 @@ int _FindExternalConnectionDescendantEndpoint(graphP theGraph, int ancestor,
 int _SearchForMergeBlocker(graphP theGraph, K33SearchContext *context, int v, int *pMergeBlocker);
 int _FindK33WithMergeBlocker(graphP theGraph, K33SearchContext *context, int v, int mergeBlocker);
 
-int _MarkLowestXYPath(graphP theGraph);
 int _TestForZtoWPath(graphP theGraph);
 int _TestForStraddlingBridge(graphP theGraph, K33SearchContext *context, int u_max);
 int _K33Search_DeleteUnmarkedEdgesInBicomp(graphP theGraph, K33SearchContext *context, int BicompRoot);
@@ -918,7 +919,7 @@ int _FindK33WithMergeBlocker(graphP theGraph, K33SearchContext *context, int v, 
  The function returns NOTOK on internal error, OK otherwise.
 
  Preconditions: The X-Y path is marked visited by a prior invocation of
- the meothd _MarkLowestXYPath() above.
+ the method _MarkLowestXYPath() above.
 
  So, we start a depth first search from W to find a visited vertex, except
  we prune the search to ignore vertices whose obstruction type is other than

@@ -226,6 +226,7 @@ int _beginG6ReadIteration(G6ReadIterator *pG6ReadIterator)
 
 int _processAndCheckHeader(strOrFileP g6Input)
 {
+    char const*correctG6Header,*sparse6Header,*digraph6Header;
     int exitCode = OK;
 
     if (g6Input == NULL)
@@ -234,9 +235,9 @@ int _processAndCheckHeader(strOrFileP g6Input)
         return NOTOK;
     }
 
-    char *correctG6Header = ">>graph6<<";
-    char *sparse6Header = ">>sparse6<";
-    char *digraph6Header = ">>digraph6";
+    correctG6Header = ">>graph6<<";
+    sparse6Header = ">>sparse6<";
+    digraph6Header = ">>digraph6";
 
     char headerCandidateChars[11];
     headerCandidateChars[0] = '\0';

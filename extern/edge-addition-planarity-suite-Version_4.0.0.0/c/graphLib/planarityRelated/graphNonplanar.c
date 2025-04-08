@@ -35,6 +35,7 @@ int _MarkHighestXYPath(graphP theGraph);
 int _MarkClosestXYPath(graphP theGraph, int targetVertex);
 int _MarkZtoRPath(graphP theGraph);
 int _FindFuturePertinenceBelowXYPath(graphP theGraph);
+int _MarkLowestXYPath(graphP theGraph);
 
 /****************************************************************************
  _ChooseTypeOfNonplanarityMinor()

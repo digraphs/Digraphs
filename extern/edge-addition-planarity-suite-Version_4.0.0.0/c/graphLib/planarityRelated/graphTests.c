@@ -404,7 +404,7 @@ int _CheckObstructionIntegrity(graphP theGraph, graphP origGraph)
         Return OK otherwise.
  ********************************************************************/
 
-int _getImageVertices(graphP theGraph, int *degrees, int maxDegree,
+static int _getImageVertices(graphP theGraph, int *degrees, int maxDegree,
                       int *imageVerts, int maxNumImageVerts)
 {
     int K, v, imageVertPos, degree;
@@ -458,7 +458,7 @@ int _getImageVertices(graphP theGraph, int *degrees, int maxDegree,
          TRUE  otherwise
  ********************************************************************/
 
-int _TestForCompleteGraphObstruction(graphP theGraph, int numVerts,
+static int _TestForCompleteGraphObstruction(graphP theGraph, int numVerts,
                                      int *degrees, int *imageVerts)
 {
     int v, w;
@@ -517,7 +517,7 @@ int _TestForCompleteGraphObstruction(graphP theGraph, int numVerts,
  returns TRUE if so, FALSE if not
  ********************************************************************/
 
-int _TestForK33GraphObstruction(graphP theGraph, int *degrees, int *imageVerts)
+static int _TestForK33GraphObstruction(graphP theGraph, int *degrees, int *imageVerts)
 {
     int v, K, imageVertPos, temp, success;
 
@@ -641,7 +641,7 @@ int _CheckKuratowskiSubgraphIntegrity(graphP theGraph)
  returns TRUE if so, FALSE if not
  ********************************************************************/
 
-int _TestForK23GraphObstruction(graphP theGraph, int *degrees, int *imageVerts)
+static int _TestForK23GraphObstruction(graphP theGraph, int *degrees, int *imageVerts)
 {
     int v, e, imageVertPos;
 

@@ -34,6 +34,12 @@ void _RestoreEdge(graphP theGraph, int arcPos);
 int _ContractEdge(graphP theGraph, int e);
 int _IdentifyVertices(graphP theGraph, int u, int v, int eBefore);
 int _RestoreVertex(graphP theGraph);
+int _ClearVisitedFlagsOnPath(graphP theGraph, int u, int v, int w, int x);
+int _SetVisitedFlagsOnPath(graphP theGraph, int u, int v, int w, int x);
+int _ComputeArcType(graphP theGraph, int a, int b, int edgeType);
+int _SetEdgeType(graphP theGraph, int u, int v);
+
+int debugNOTOK(void);
 
 /********************************************************************
  Private functions, except exported within library
@@ -286,7 +292,7 @@ void _InitVertices(graphP theGraph)
     memset(theGraph->extFace, NIL_CHAR, gp_VertexIndexBound(theGraph) * sizeof(extFaceLinkRec));
 
     for (v = gp_GetFirstVertex(theGraph); gp_VertexInRange(theGraph, v); v++)
-        gp_InitVertexFlags(theGraph, v);    
+        gp_InitVertexFlags(theGraph, v);
 #endif
     // N.B. This is the legacy API-based approach to initializing the vertices
     // int v;
@@ -1178,7 +1184,7 @@ int _GetRandomNumber(int NMin, int NMax)
 
  ********************************************************************/
 
-int _getUnprocessedChild(graphP theGraph, int parent)
+static int _getUnprocessedChild(graphP theGraph, int parent)
 {
     int e = gp_GetFirstArc(theGraph, parent);
     int eTwin = gp_GetTwinArc(theGraph, e);
@@ -1227,7 +1233,8 @@ int _getUnprocessedChild(graphP theGraph, int parent)
  unless the given vertex has an unprocessed child.
  ********************************************************************/
 
-int _hasUnprocessedChild(graphP theGraph, int parent)
+#if false
+static int _hasUnprocessedChild(graphP theGraph, int parent)
 {
     int e = gp_GetFirstArc(theGraph, parent);
 
@@ -1239,6 +1246,7 @@ int _hasUnprocessedChild(graphP theGraph, int parent)
 
     return 1;
 }
+#endif
 
 /********************************************************************
  gp_CreateRandomGraphEx()
@@ -1821,7 +1829,7 @@ int gp_DeleteEdge(graphP theGraph, int e, int nextLink)
  from the stack for restoration.
  ********************************************************************/
 
-void _RestoreArc(graphP theGraph, int arc)
+static void _RestoreArc(graphP theGraph, int arc)
 {
     int nextArc = gp_GetNextArc(theGraph, arc),
         prevArc = gp_GetPrevArc(theGraph, arc);
@@ -2259,7 +2267,7 @@ int _IdentifyVertices(graphP theGraph, int u, int v, int eBefore)
  Returns OK for success, NOTOK for internal failure.
  ********************************************************************/
 
-int gp_RestoreVertex(graphP theGraph)
+static int gp_RestoreVertex(graphP theGraph)
 {
     return theGraph->functions.fpRestoreVertex(theGraph);
 }
