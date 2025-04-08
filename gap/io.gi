@@ -1192,7 +1192,7 @@ function(s)
     local int;
     int := Int(string);
     if int = fail or int < 0 then
-      return ErrorNoReturn("the format of the string <s> cannot be determined");
+      ErrorNoReturn("the format of the string <s> cannot be determined");
     fi;
     return int;
   end;
@@ -1219,7 +1219,7 @@ function(s)
 
     # the line doesn't have a `type'
     if Length(split[1]) <> 1 then
-      return ErrorNoReturn("the format of the string <s> cannot be determined");
+      ErrorNoReturn("the format of the string <s> cannot be determined");
     fi;
 
     first_char := next[1];
@@ -1227,7 +1227,7 @@ function(s)
     # digraph definition line
     if first_char = 'p' then
       if IsBound(vertices) or Length(split) <> 4 or split[2] <> "edge" then
-        return ErrorNoReturn("the format of the string <s>",
+        ErrorNoReturn("the format of the string <s>",
                              " cannot be determined");
       fi;
       nr_vertices     := int_from_string(split[3]);
@@ -1492,50 +1492,50 @@ end);
 # (returns the first character not in s)
 BindGlobal("DIGRAPHS_GETNWCL",
 function(r, D, s)
-    local char;
-    char := DIGRAPHS_GetUngetChar(r, D, 1);
-    while char <> fail and char in s do
-        char := DIGRAPHS_GetUngetChar(r, D, 1);
-    od;
+  local char;
+  char := DIGRAPHS_GetUngetChar(r, D, 1);
+  while char <> fail and char in s do
+      char := DIGRAPHS_GetUngetChar(r, D, 1);
+  od;
 
-    return char;
+  return char;
 end);
 
 #  helper function for DigraphFromDreadnautString
 #  return the next full integer in the string
 BindGlobal("DIGRAPHS_readinteger",
 function(r, D)
-    local char, res, minus;
-    char := DIGRAPHS_GETNWCL(r, D, " \n\t\r");
+  local char, res, minus;
+  char := DIGRAPHS_GETNWCL(r, D, " \n\t\r");
 
-    if not IsDigitChar(char) and char <> '-' and char <> '+' then
-        DIGRAPHS_GetUngetChar(r, D, -1);
-        return fail;
-    fi;
+  if not IsDigitChar(char) and char <> '-' and char <> '+' then
+    DIGRAPHS_GetUngetChar(r, D, -1);
+    return fail;
+  fi;
 
-    minus := char = '-';
-    if char = '-' or char = '+' then
-        res := 0;
-    else
-        res := Int([char]);
-    fi;
+  minus := char = '-';
+  if char = '-' or char = '+' then
+    res := 0;
+  else
+    res := Int([char]);
+  fi;
 
+  char := DIGRAPHS_GetUngetChar(r, D, 1);
+
+  while IsDigitChar(char) do
+    res := res * 10 + Int([char]);
     char := DIGRAPHS_GetUngetChar(r, D, 1);
+  od;
 
-    while IsDigitChar(char) do
-        res := res * 10 + Int([char]);
-        char := DIGRAPHS_GetUngetChar(r, D, 1);
-    od;
+  if char <> fail then
+    DIGRAPHS_GetUngetChar(r, D, -1);
+  fi;
 
-    if char <> fail then
-        DIGRAPHS_GetUngetChar(r, D, -1);
-    fi;
+  if minus then
+    res := -res;
+  fi;
 
-    if minus then
-        res := -res;
-    fi;
-
-    return res;
+  return res;
 end);
 
 # helper function for DigraphFromDreadnautString
@@ -1543,98 +1543,98 @@ end);
 # returns nothing
 BindGlobal("DIGRAPHS_readgraph",
 function(r, D)
-    local c, w, v, neg;
+  local c, w, v, neg;
 
-    v := 1;
-    neg := false;
-    c := ' ';
+  v := 1;
+  neg := false;
+  c := ' ';
 
-    if r.n = fail then
-      ErrorNoReturn("Vertex number must be declared before `g' ",
-                    "on line ", r.newline);
-    else
-      r.edgeList := List([1 .. r.n], x -> []);
-    fi;
+  if r.n = fail then
+    ErrorNoReturn("Vertex number must be declared before `g' ",
+                  "on line ", r.newline);
+  else
+    r.edgeList := List([1 .. r.n], x -> []);
+  fi;
 
-    while c <> fail do
-        c := DIGRAPHS_GETNWCL(r, D, " ,\t");
-        if IsDigitChar(c) then
-            DIGRAPHS_GetUngetChar(r, D, -1);
-            w := DIGRAPHS_readinteger(r, D);
-            w := w - r.labelorg + 1;
+  while c <> fail do
+    c := DIGRAPHS_GETNWCL(r, D, " ,\t");
+    if IsDigitChar(c) then
+      DIGRAPHS_GetUngetChar(r, D, -1);
+      w := DIGRAPHS_readinteger(r, D);
+      w := w - r.labelorg + 1;
 
-            if neg then
-                neg := false;
+      if neg then
+        neg := false;
 
-                if (w < 1) or (w > r.n) or (w = v and not r.digraph) then
-                    Info(InfoWarning, 1, StringFormatted(
-                      Concatenation("Ignoring illegal edge ({}, {}) ",
-                      "(vertices {}-indexed, on line {}) "),
-                      v + r.labelorg - 1,
-                      w + r.labelorg - 1,
-                      r.labelorg,
-                      r.newline));
-                else
-                    RemoveSet(r.edgeList[v], w);
-                    if not r.digraph then
-                        RemoveSet(r.edgeList[w], v);
-                    fi;
-                fi;
-            else
-                c := DIGRAPHS_GETNWCL(r, D, " ,\t");
-                if c = ':' then
-                    if w < 1 or w > r.n then
-                        Info(InfoWarning, 1, StringFormatted(
-                          Concatenation("Ignoring illegal vertex {} ",
-                          "({}-indexed), on line {})"),
-                          w + r.labelorg - 1,
-                          r.labelorg,
-                          r.newline));
-                    else
-                        v := w;
-                    fi;
-                else
-                    DIGRAPHS_GetUngetChar(r, D, -1);
-                    if w < 1 or w > r.n or (w = v and not r.digraph) then
-                    Info(InfoWarning, 1, StringFormatted(
-                      Concatenation("Ignoring illegal edge ({}, {}) ",
-                      "(vertices {}-indexed, on line {}) "),
-                      v + r.labelorg - 1,
-                      w + r.labelorg - 1,
-                      r.labelorg,
-                      r.newline));
-                    else
-                        AddSet(r.edgeList[v], w);
-                        if not r.digraph then
-                            AddSet(r.edgeList[w], v);
-                        fi;
-                    fi;
-                fi;
-            fi;
-        elif c = ';' then
-              neg := false;
-              v := v + 1;
-            if v > r.n then
-              return;
-            fi;
-        elif c in "?\n" then
-            neg := false;
-        elif c = '.' then
-            return;
-        elif c = '-' then
-            neg := true;
-        elif c = '!' then
-            while c <> '\n' and c <> fail do
-                c := DIGRAPHS_GetUngetChar(r, D, 1);
-            od;
+        if (w < 1) or (w > r.n) or (w = v and not r.digraph) then
+          Info(InfoWarning, 1, StringFormatted(
+            Concatenation("Ignoring illegal edge ({}, {}) ",
+            "(vertices {}-indexed, on line {}) "),
+            v + r.labelorg - 1,
+            w + r.labelorg - 1,
+            r.labelorg,
+            r.newline));
         else
-          if c = fail then
-            return;
-          else
-            ErrorNoReturn("Illegal character ", c, " on line ", r.newline);
+          RemoveSet(r.edgeList[v], w);
+          if not r.digraph then
+            RemoveSet(r.edgeList[w], v);
           fi;
         fi;
-    od;
+      else
+        c := DIGRAPHS_GETNWCL(r, D, " ,\t");
+        if c = ':' then
+          if w < 1 or w > r.n then
+            Info(InfoWarning, 1, StringFormatted(
+              Concatenation("Ignoring illegal vertex {} ",
+              "({}-indexed), on line {})"),
+              w + r.labelorg - 1,
+              r.labelorg,
+              r.newline));
+          else
+            v := w;
+          fi;
+        else
+          DIGRAPHS_GetUngetChar(r, D, -1);
+          if w < 1 or w > r.n or (w = v and not r.digraph) then
+            Info(InfoWarning, 1, StringFormatted(
+              Concatenation("Ignoring illegal edge ({}, {}) ",
+              "(vertices {}-indexed, on line {}) "),
+              v + r.labelorg - 1,
+              w + r.labelorg - 1,
+              r.labelorg,
+              r.newline));
+          else
+            AddSet(r.edgeList[v], w);
+            if not r.digraph then
+                AddSet(r.edgeList[w], v);
+            fi;
+          fi;
+        fi;
+      fi;
+    elif c = ';' then
+      neg := false;
+      v := v + 1;
+      if v > r.n then
+        return;
+      fi;
+    elif c in "?\n" then
+      neg := false;
+    elif c = '.' then
+      return;
+    elif c = '-' then
+      neg := true;
+    elif c = '!' then
+      while c <> '\n' and c <> fail do
+        c := DIGRAPHS_GetUngetChar(r, D, 1);
+      od;
+    else
+      if c = fail then
+        return;
+      else
+        ErrorNoReturn("Illegal character ", c, " on line ", r.newline);
+      fi;
+    fi;
+  od;
 end);
 
 # helper function for DigraphFromDreadnautString
@@ -1642,13 +1642,13 @@ end);
 # allowing for an optional '=' before the integer
 BindGlobal("DIGRAPHS_GetInt",
 function(r, D)
-    local ch;
+  local ch;
 
-    ch := DIGRAPHS_GETNWCL(r, D, " \n\t\r");
-    if ch <> '=' then
-        DIGRAPHS_GetUngetChar(r, D, -1);
-    fi;
-    return DIGRAPHS_readinteger(r, D);
+  ch := DIGRAPHS_GETNWCL(r, D, " \n\t\r");
+  if ch <> '=' then
+    DIGRAPHS_GetUngetChar(r, D, -1);
+  fi;
+  return DIGRAPHS_readinteger(r, D);
 end);
 
 # helper function for DigraphFromDreadnautString
@@ -1656,382 +1656,378 @@ end);
 # returns nothing
 BindGlobal("DIGRAPHS_ParsePartition",
 function(r, minus, D)
-    local c, x, tempNewline, v1, v2, part, partition;
+  local c, x, tempNewline, v1, v2, part, partition;
 
-    part := 1;
-    if r.n = fail then
-        ErrorNoReturn("Vertex number must be declared ",
-                    "before partition on line ", r.newline);
-    fi;
-    partition := List([1 .. r.n], x -> 0);
+  part := 1;
+  if r.n = fail then
+    ErrorNoReturn("Vertex number must be declared ",
+                "before partition on line ", r.newline);
+  fi;
+  partition := List([1 .. r.n], x -> 0);
 
-    if minus then
-        return;
-    fi;
+  if minus then
+    return;
+  fi;
 
+  c := DIGRAPHS_GETNWCL(r, D, " ,\t");
+  if c = '=' then
     c := DIGRAPHS_GETNWCL(r, D, " ,\t");
-    if c = '=' then
-        c := DIGRAPHS_GETNWCL(r, D, " ,\t");
-    fi;
+  fi;
 
-    if IsDigitChar(c) then
-        DIGRAPHS_GetUngetChar(r, D, -1);
-        v1 := DIGRAPHS_readinteger(r, D);
-        if v1 - r.labelorg + 1 < 1 or v1 - r.labelorg + 1 > r.n then
-          Info(InfoWarning, 1, "Ignoring illegal vertex in partition", v1,
-              " on line ", r.newline);
-        else
-          partition[v1] := 1;
-        fi;
-        r.partition := partition;
-        return;
-    elif c <> '[' then
-        ErrorNoReturn("Partitions should be specified",
-                    " using one of the following formats:\n",
-                      "  * A single number (e.g. 'f=3')\n",
-                      "  * A list of cells (e.g. 'f=[...]')",
-                      "  * '-f'");
+  if IsDigitChar(c) then
+    DIGRAPHS_GetUngetChar(r, D, -1);
+    v1 := DIGRAPHS_readinteger(r, D);
+    if v1 - r.labelorg + 1 < 1 or v1 - r.labelorg + 1 > r.n then
+      Info(InfoWarning, 1, "Ignoring illegal vertex in partition", v1,
+          " on line ", r.newline);
     else
-        tempNewline := r.newline;
-        while c <> fail and c <> ']' do
-            c := DIGRAPHS_GETNWCL(r, D, " \n\t\r");
-            if c = '|' then
-                part := part + 1;
-            elif c = ',' then
-                continue;
-            elif IsDigitChar(c) then
-                DIGRAPHS_GetUngetChar(r, D, -1);
-                v1 := DIGRAPHS_readinteger(r, D);
-                if v1 - r.labelorg + 1 < 1 or v1 - r.labelorg + 1 > r.n then
-                    ErrorNoReturn("Vertex ", v1,
-                    " out of range in partition specification (line ",
-                    tempNewline, ")");
-                fi;
-
-                v2 := DIGRAPHS_GETNWCL(r, D, " \n\t\r");
-                if v2 = ':' then
-                    v2 := DIGRAPHS_GETNWCL(r, D, " \n\t\r");
-                    if not IsDigitChar(v2) then
-                        ErrorNoReturn("Invalid range ", v1, " : ", v2,
-                        " in partition specification (line ",
-                        tempNewline, ")");
-                    fi;
-                    DIGRAPHS_GetUngetChar(r, D, -1);
-                    v2 := DIGRAPHS_readinteger(r, D);
-                    if v2 < r.labelorg or v2 > r.n - r.labelorg + 1 then
-                        ErrorNoReturn("Vertex ", v2,
-                        " out of range in partition specification (line ",
-                        tempNewline, ")");
-                    fi;
-                    for x in [v1 - r.labelorg + 1 .. v2 - r.labelorg + 1] do
-                      if partition[x] = 0 then
-                        partition[x] := part;
-                      else
-                        Info(InfoWarning, 1, "Vertex ", x + r.labelorg - 1,
-                           " (", r.labelorg,
-                           "-indexed is in multiple partitions (line ",
-                            tempNewline, ")");
-                      fi;
-                    od;
-                else
-                    DIGRAPHS_GetUngetChar(r, D, -1);
-                    if partition[v1 - r.labelorg + 1] = 0 then
-                      partition[v1 - r.labelorg + 1] := part;
-                    else
-                      Info(InfoWarning, 1, "Vertex ", v1,
-                          " (", r.labelorg, "-indexed) ",
-                          " is in multiple partitions (line ",
-                          tempNewline, ")");
-                    fi;
-                fi;
-            else
-                if c = fail then
-                    ErrorNoReturn("Unterminated partition specification (line ",
-                    tempNewline, ")");
-                elif c = ']' then
-                    break;
-                else
-                    ErrorNoReturn("Unexpected character ", c,
-                    " in partition specification (line ", r.newline, ")");
-                fi;
-            fi;
-        od;
+      partition[v1] := 1;
     fi;
     r.partition := partition;
     return;
+  elif c <> '[' then
+    ErrorNoReturn("Partitions should be specified",
+                " as either a single number (e.g. 'f=3')",
+                  " a list of cells (e.g. 'f=[...]') or",
+                  " using '-f'");
+  else
+    tempNewline := r.newline;
+    while c <> fail and c <> ']' do
+      c := DIGRAPHS_GETNWCL(r, D, " \n\t\r");
+      if c = '|' then
+        part := part + 1;
+      elif c = ',' then
+        continue;
+      elif IsDigitChar(c) then
+        DIGRAPHS_GetUngetChar(r, D, -1);
+        v1 := DIGRAPHS_readinteger(r, D);
+        if v1 - r.labelorg + 1 < 1 or v1 - r.labelorg + 1 > r.n then
+          ErrorNoReturn("Vertex ", v1,
+          " out of range in partition specification (line ",
+          tempNewline, ")");
+        fi;
+
+        v2 := DIGRAPHS_GETNWCL(r, D, " \n\t\r");
+        if v2 = ':' then
+          v2 := DIGRAPHS_GETNWCL(r, D, " \n\t\r");
+          if not IsDigitChar(v2) then
+            ErrorNoReturn("Invalid range ", v1, " : ", v2,
+            " in partition specification (line ",
+            tempNewline, ")");
+          fi;
+          DIGRAPHS_GetUngetChar(r, D, -1);
+          v2 := DIGRAPHS_readinteger(r, D);
+          if v2 < r.labelorg or v2 > r.n - r.labelorg + 1 then
+            ErrorNoReturn("Vertex ", v2,
+            " out of range in partition specification (line ",
+            tempNewline, ")");
+          fi;
+          for x in [v1 - r.labelorg + 1 .. v2 - r.labelorg + 1] do
+            if partition[x] = 0 then
+              partition[x] := part;
+            else
+              Info(InfoWarning, 1, "Vertex ", x + r.labelorg - 1,
+                  " (", r.labelorg,
+                  "-indexed is in multiple partitions (line ",
+                  tempNewline, ")");
+            fi;
+          od;
+          else
+            DIGRAPHS_GetUngetChar(r, D, -1);
+            if partition[v1 - r.labelorg + 1] = 0 then
+              partition[v1 - r.labelorg + 1] := part;
+            else
+              Info(InfoWarning, 1, "Vertex ", v1,
+                  " (", r.labelorg, "-indexed) ",
+                  " is in multiple partitions (line ",
+                  tempNewline, ")");
+            fi;
+          fi;
+      else
+        if c = fail then
+          ErrorNoReturn("Unterminated partition specification (line ",
+          tempNewline, ")");
+        elif c = ']' then
+          break;
+        else
+          ErrorNoReturn("Unexpected character ", c,
+          " in partition specification (line ", r.newline, ")");
+        fi;
+      fi;
+    od;
+  fi;
+  r.partition := partition;
+  return;
 end);
 
 InstallMethod(DigraphFromDreadnautString, "for a digraph", [IsString],
 function(D)
-    local r, c, minus, backslash, temp, out,
-          underscore, doubleUnderscore;
-    r := rec(n := fail, digraph := false, labelorg := 0, i := 0,
-            newline := 1, edgeList := fail, partition := fail);
-    underscore := false;
-    doubleUnderscore := false;
+  local r, c, minus, backslash, temp, out, underscore, doubleUnderscore;
+  r := rec(n := fail, digraph := false, labelorg := 0, i := 0,
+          newline := 1, edgeList := fail, partition := fail);
+  underscore := false;
+  doubleUnderscore := false;
 
-    minus := false;
-    c := ' ';
+  minus := false;
+  c := ' ';
 
-    if D = "" then
-        ErrorNoReturn("the argument <s> must be a non-empty string");
-    fi;
+  if D = "" then
+    ErrorNoReturn("the argument <s> must be a non-empty string");
+  fi;
 
-    while c <> fail do
+  while c <> fail do
+    c := DIGRAPHS_GetUngetChar(r, D, 1);
+    if c = fail then
+      break;
+    elif c in " \t\r" then
+    elif c = '-' then
+      minus := true;
+    elif c in "+,;\n" then
+      minus := false;
+    elif c = 'A' then
+      minus := false;
+      temp := DIGRAPHS_GetUngetChar(r, D, 1);
+      if (temp in "nNdDtTsS") = false then
+        ErrorNoReturn("Operation 'A' (line ", r.newline,
+                      ") is not recognised");
+      fi;
+      temp := DIGRAPHS_GetUngetChar(r, D, 1);
+      if temp <> '+' then
+        DIGRAPHS_GetUngetChar(r, D, -1);
+      fi;
+    elif c in "B@#jv\%IixtTobzamp?Hc" then
+      minus := false;
+      Info(InfoWarning, 1, "Operation ", c, " (line ", r.newline,
+          ") is not supported");
+    elif c = '_' then
+      temp := DIGRAPHS_GetUngetChar(r, D, 1);
+      if temp = '_' then
+        doubleUnderscore := true;
+      else
+        underscore := true;
+        DIGRAPHS_GetUngetChar(r, D, -1);
+      fi;
+    elif c in "<eq" then
+      ErrorNoReturn("Operation ", c, " (line ", r.newline,
+                    ") is not supported");
+    elif c = 'd' then
+      if not minus then
+        r.digraph := true;
+      else
+        minus := false;
+        r.digraph := false;
+      fi;
+    elif c in ">" then
+      ErrorNoReturn("Operation '>' (line ", r.newline,
+        ") is not supported.",
+        " Please use 'WriteDigraphs'.");  # maybe can do better
+    elif c = '!' then
+      while c <> '\n' and c <> fail do
         c := DIGRAPHS_GetUngetChar(r, D, 1);
-        if c = fail then
-            break;
-        elif c in " \t\r" then
-        elif c = '-' then
-            minus := true;
-        elif c in "+,;\n" then
-            minus := false;
-        elif c = 'A' then
-          minus := false;
-          temp := DIGRAPHS_GetUngetChar(r, D, 1);
-          if (temp in "nNdDtTsS") = false then
-            ErrorNoReturn("Operation 'A' (line ", r.newline,
-                          ") is not recognised");
-          fi;
-          temp := DIGRAPHS_GetUngetChar(r, D, 1);
-          if temp <> '+' then
-            DIGRAPHS_GetUngetChar(r, D, -1);
-          fi;
-        elif c in "B@#jv\%IixtTobzamp?Hc" then
-            minus := false;
-            Info(InfoWarning, 1, "Operation ", c, " (line ", r.newline,
-                ") is not supported");
-        elif c = '_' then
-          temp := DIGRAPHS_GetUngetChar(r, D, 1);
-          if temp = '_' then
-            doubleUnderscore := true;
-          else
-            underscore := true;
-            DIGRAPHS_GetUngetChar(r, D, -1);
-          fi;
-        elif c in "<eq" then
-            ErrorNoReturn("Operation ", c, " (line ", r.newline,
-                          ") is not supported");
-        elif c = 'd' then
-            if not minus then
-              r.digraph := true;
-            else
-              minus := false;
-              r.digraph := false;
-            fi;
-        elif c in ">" then
-            ErrorNoReturn("Operation '>' (line ", r.newline,
-              ") is not supported.",
-              " Please use 'WriteDigraphs'.");  # maybe can do better
-        elif c = '!' then
-            while c <> '\n' and c <> fail do
-                c := DIGRAPHS_GetUngetChar(r, D, 1);
-            od;
-        elif c = 'n' then
-            minus := false;
-            r.n := DIGRAPHS_GetInt(r, D);
-            if r.n = fail then
-              ErrorNoReturn("Expected integer on line ", r.newline,
-                          " following ", c, " but was not found");
-            elif r.n <= 0 then
-                ErrorNoReturn("Vertex number given as ", r.n, " (line ",
-                              r.newline,
-                              "), but should be positive.");
-            fi;
-        elif c = 'g' then
-            minus := false;
-            if r.edgeList <> fail then
-                Info(InfoWarning, 1, "Multiple graphs have been declared.",
-                    " Only the last one will be read in.");
-            fi;
-            DIGRAPHS_readgraph(r, D);
-        elif c = 's' then
-          minus := false;
-          if DIGRAPHS_GetUngetChar(r, D, 1) <> 'r' then
-            DIGRAPHS_GetUngetChar(r, D, -1);
-          fi;
-          Info(InfoWarning, 1, "Operation 's' or 'sr' (line ", r.newline,
-              ") is not supported");
-          DIGRAPHS_GetInt(r, D);
+      od;
+    elif c = 'n' then
+      minus := false;
+      r.n := DIGRAPHS_GetInt(r, D);
+      if r.n = fail then
+        ErrorNoReturn("Expected integer on line ", r.newline,
+                    " following ", c, " but was not found");
+      elif r.n <= 0 then
+        ErrorNoReturn("Vertex number given as ", r.n, " (line ",
+                      r.newline,
+                      "), but should be positive.");
+      fi;
+    elif c = 'g' then
+      minus := false;
+      if r.edgeList <> fail then
+        Info(InfoWarning, 1, "Multiple graphs have been declared.",
+            " Only the last one will be read in.");
+      fi;
+      DIGRAPHS_readgraph(r, D);
+    elif c = 's' then
+      minus := false;
+      if DIGRAPHS_GetUngetChar(r, D, 1) <> 'r' then
+        DIGRAPHS_GetUngetChar(r, D, -1);
+      fi;
+      Info(InfoWarning, 1, "Operation 's' or 'sr' (line ", r.newline,
+          ") is not supported");
+      DIGRAPHS_GetInt(r, D);
+    elif c = '\"' then
+      minus := false;
+      c := DIGRAPHS_GetUngetChar(r, D, 1);
+      temp := r.newline;
+      backslash := false;
+      while c <> fail do
+        c := DIGRAPHS_GetUngetChar(r, D, 1);
+        if c = '\\' then
+          backslash := true;
+        elif backslash then
+          backslash := false;
         elif c = '\"' then
-            minus := false;
-            c := DIGRAPHS_GetUngetChar(r, D, 1);
-            temp := r.newline;
+          if backslash then
             backslash := false;
-            while c <> fail do
-                c := DIGRAPHS_GetUngetChar(r, D, 1);
-                if c = '\\' then
-                    backslash := true;
-                elif backslash then
-                    backslash := false;
-                elif c = '\"' then
-                    if backslash then
-                        backslash := false;
-                    else
-                        break;
-                    fi;
-                fi;
-            od;
-            if c = fail then
-                ErrorNoReturn("Unterminated comment beginning on line ",
-                              temp);
-            fi;
-        elif c = 'f' then
-            DIGRAPHS_ParsePartition(r, minus, D);
-            if minus then
-                minus := false;
-            fi;
-        elif c in "lwyK*" then
-            Info(InfoWarning, 1, "Operation ", c, " (line ",
-                r.newline, ") is not supported");
-            minus := false;
-            DIGRAPHS_GetInt(r, D);
-        elif c = 'F' then
+          else
+            break;
+          fi;
+        fi;
+      od;
+      if c = fail then
+        ErrorNoReturn("Unterminated comment beginning on line ",
+                      temp);
+      fi;
+    elif c = 'f' then
+      DIGRAPHS_ParsePartition(r, minus, D);
+      if minus then
           minus := false;
-          temp := DIGRAPHS_GetUngetChar(r, D, 1);
-          if temp = 'F' then
-            Info(InfoWarning, 1, "Operation 'FF' (line ", r.newline,
-                ") is not supported");
-          else
-            DIGRAPHS_GetUngetChar(r, D, -1);
-            Info(InfoWarning, 1, "Operation 'F' (line ", r.newline,
-                ") is not supported");
-            DIGRAPHS_GetInt(r, D);
-          fi;
-        elif c = 'O' then
-          if DIGRAPHS_GetUngetChar(r, D, 1) <> 'O' then
-            DIGRAPHS_GetUngetChar(r, D, -1);
-            Info(InfoWarning, 1, "Operation 'O' (line ", r.newline,
-                ") is not supported");
-          else
-            Info(InfoWarning, 1, "Operation 'OO' (line ", r.newline,
-                ") is not supported");
-          fi;
-        elif c = 'M' then
-            Info(InfoWarning, 1, "Operation 'M' (line ",
-                r.newline, ") is not supported");
-            if minus then
-                minus := false;
-            else
-                DIGRAPHS_GetInt(r, D);
-                if DIGRAPHS_GetUngetChar(r, D, 1) = '/' then
-                    DIGRAPHS_GetInt(r, D);
-                else
-                    DIGRAPHS_GetUngetChar(r, D, -1);
-                fi;
-            fi;
-        elif c = 'k' then
-            Info(InfoWarning, 1, "Operation 'k' (line ",
-                r.newline, ") is not supported");
-            minus := false;
-            DIGRAPHS_GetInt(r, D);
-            DIGRAPHS_GetInt(r, D);
-        elif c in "VSGu" then
-            Info(InfoWarning, 1, "Operation ", c,
-                " (line ", r.newline, ") is not supported");
-            if minus then
-                minus := false;
-            else
-                DIGRAPHS_GetInt(r, D);
-            fi;
-        elif c = 'P' then
-            if minus then
-                minus := false;
-                Info(InfoWarning, 1, "Operation -", c,
-                    " (line ", r.newline, ") is not supported");
-            else
-                if DIGRAPHS_GetUngetChar(r, D, 1) = 'P' then
-                    temp := r.newline;
-                    while c <> fail and c <> ';' do
-                        c := DIGRAPHS_GetUngetChar(r, D, 1);
-                    od;
-                    if c = fail then
-                        ErrorNoReturn("Unterminated 'PP' operation beginning ",
-                                      "on line ", temp);
-                    fi;
-                    Info(InfoWarning, 1, "Operation PP (line ",
-                        r.newline, ") is not supported");
-                else
-                      DIGRAPHS_GetUngetChar(r, D, -1);
-                      Info(InfoWarning, 1, "Operation ", c, " (line ",
-                          r.newline, ") is not supported");
-                fi;
-            fi;
-        elif c = '$' then
-            temp := DIGRAPHS_GetUngetChar(r, D, 1);
-            if temp <> '$' then
-              DIGRAPHS_GetUngetChar(r, D, -1);
-                r.labelorg := DIGRAPHS_GetInt(r, D);
-                if r.labelorg < 0 then
-                    ErrorNoReturn("Label origin ", r.labelorg, " on line ",
-                                r.newline, " must be non-negative.");
-                elif r.labelorg = fail then
-                    ErrorNoReturn("Expected integer on line ", r.newline,
-                                " following $ but was not found");
-                fi;
-            fi;
-            if r.labelorg <> 1 then
-                Info(InfoWarning, 1, "Vertices will be 1-indexed");
-            fi;
-        elif c in "rR" then
-            Info(InfoWarning, 1, "Operations ['r', 'r&', 'R']",
-                " (line ", r.newline, ") is not supported");
-            minus := false;
-            if (c = 'r' and DIGRAPHS_GetUngetChar(r, D, 1) <> '&')
-                or c = 'R' then
-                DIGRAPHS_GetUngetChar(r, D, -1);
-                temp := r.newline;
-                while c <> fail and c <> ';' do
-                    c := DIGRAPHS_GetUngetChar(r, D, 1);
-                od;
-                if c = fail then
-                    ErrorNoReturn("Unterminated operation (either 'r' or 'R')",
-                                  " beginning on line ", temp);
-                fi;
-            fi;
-        elif c = '&' then
-            minus := false;
-            temp := DIGRAPHS_GetUngetChar(r, D, 1);
-            if temp <> '&' then
-              DIGRAPHS_GetUngetChar(r, D, -1);
-              Info(InfoWarning, 1, "Operation '& (line ",
-                  r.newline, ") is not supported");
-            else
-              Info(InfoWarning, 1, "Operation '&&' (line ",
-                  r.newline, ") is not supported");
-            fi;
+      fi;
+    elif c in "lwyK*" then
+      Info(InfoWarning, 1, "Operation ", c, " (line ",
+          r.newline, ") is not supported");
+      minus := false;
+      DIGRAPHS_GetInt(r, D);
+    elif c = 'F' then
+      minus := false;
+      temp := DIGRAPHS_GetUngetChar(r, D, 1);
+      if temp = 'F' then
+        Info(InfoWarning, 1, "Operation 'FF' (line ", r.newline,
+            ") is not supported");
+      else
+        DIGRAPHS_GetUngetChar(r, D, -1);
+        Info(InfoWarning, 1, "Operation 'F' (line ", r.newline,
+            ") is not supported");
+        DIGRAPHS_GetInt(r, D);
+      fi;
+    elif c = 'O' then
+      if DIGRAPHS_GetUngetChar(r, D, 1) <> 'O' then
+        DIGRAPHS_GetUngetChar(r, D, -1);
+        Info(InfoWarning, 1, "Operation 'O' (line ", r.newline,
+            ") is not supported");
+      else
+        Info(InfoWarning, 1, "Operation 'OO' (line ", r.newline,
+            ") is not supported");
+      fi;
+    elif c = 'M' then
+      Info(InfoWarning, 1, "Operation 'M' (line ",
+          r.newline, ") is not supported");
+      if minus then
+        minus := false;
+      else
+        DIGRAPHS_GetInt(r, D);
+        if DIGRAPHS_GetUngetChar(r, D, 1) = '/' then
+          DIGRAPHS_GetInt(r, D);
         else
-            ErrorNoReturn("Illegal character ", c, " on line ", r.newline);
+          DIGRAPHS_GetUngetChar(r, D, -1);
         fi;
-    od;
-
-    if r.edgeList = fail then
-        ErrorNoReturn("No graph was declared.");
+      fi;
+    elif c = 'k' then
+      Info(InfoWarning, 1, "Operation 'k' (line ",
+          r.newline, ") is not supported");
+      minus := false;
+      DIGRAPHS_GetInt(r, D);
+      DIGRAPHS_GetInt(r, D);
+    elif c in "VSGu" then
+      Info(InfoWarning, 1, "Operation ", c,
+          " (line ", r.newline, ") is not supported");
+      if minus then
+        minus := false;
+      else
+        DIGRAPHS_GetInt(r, D);
+      fi;
+    elif c = 'P' then
+      if minus then
+        minus := false;
+        Info(InfoWarning, 1, "Operation -", c,
+            " (line ", r.newline, ") is not supported");
+      else
+        if DIGRAPHS_GetUngetChar(r, D, 1) = 'P' then
+          temp := r.newline;
+          while c <> fail and c <> ';' do
+            c := DIGRAPHS_GetUngetChar(r, D, 1);
+          od;
+          if c = fail then
+            ErrorNoReturn("Unterminated 'PP' operation beginning ",
+                          "on line ", temp);
+          fi;
+          Info(InfoWarning, 1, "Operation PP (line ",
+              r.newline, ") is not supported");
+        else
+          DIGRAPHS_GetUngetChar(r, D, -1);
+          Info(InfoWarning, 1, "Operation ", c, " (line ",
+              r.newline, ") is not supported");
+        fi;
+      fi;
+    elif c = '$' then
+      temp := DIGRAPHS_GetUngetChar(r, D, 1);
+      if temp <> '$' then
+        DIGRAPHS_GetUngetChar(r, D, -1);
+        r.labelorg := DIGRAPHS_GetInt(r, D);
+        if r.labelorg < 0 then
+          ErrorNoReturn("Label origin ", r.labelorg, " on line ",
+                      r.newline, " must be non-negative.");
+        elif r.labelorg = fail then
+          ErrorNoReturn("Expected integer on line ", r.newline,
+                      " following $ but was not found");
+        fi;
+      fi;
+      if r.labelorg <> 1 then
+        Info(InfoWarning, 1, "Vertices will be 1-indexed");
+      fi;
+    elif c in "rR" then
+      Info(InfoWarning, 1, "Operations ['r', 'r&', 'R']",
+          " (line ", r.newline, ") is not supported");
+      minus := false;
+      if (c = 'r' and DIGRAPHS_GetUngetChar(r, D, 1) <> '&') or c = 'R' then
+        DIGRAPHS_GetUngetChar(r, D, -1);
+        temp := r.newline;
+        while c <> fail and c <> ';' do
+          c := DIGRAPHS_GetUngetChar(r, D, 1);
+        od;
+        if c = fail then
+          ErrorNoReturn("Unterminated operation (either 'r' or 'R')",
+                        " beginning on line ", temp);
+        fi;
+      fi;
+    elif c = '&' then
+      minus := false;
+      temp := DIGRAPHS_GetUngetChar(r, D, 1);
+      if temp <> '&' then
+        DIGRAPHS_GetUngetChar(r, D, -1);
+        Info(InfoWarning, 1, "Operation '& (line ",
+            r.newline, ") is not supported");
+      else
+        Info(InfoWarning, 1, "Operation '&&' (line ",
+            r.newline, ") is not supported");
+      fi;
+    else
+      ErrorNoReturn("Illegal character ", c, " on line ", r.newline);
     fi;
-    out := Digraph(r.edgeList);
+  od;
+
+  if r.edgeList = fail then
+    ErrorNoReturn("No graph was declared.");
+  fi;
+  out := Digraph(r.edgeList);
+  if not r.digraph then
+    Info(InfoWarning, 1, "Graph is not directed and",
+          " so will be symmetrised.");
+  fi;
+  if r.partition <> fail then
+    SetDigraphVertexLabels(out, r.partition);
+  fi;
+  if doubleUnderscore then
     if not r.digraph then
-        Info(InfoWarning, 1, "Graph is not directed and",
-              " so will be symmetrised.");
+      underscore := true;
+    else
+      out := DigraphReverse(out);
     fi;
-    if r.partition <> fail then
-        SetDigraphVertexLabels(out, r.partition);
+  fi;
+  if underscore then
+    if DigraphHasLoops(out) then
+      out := DigraphDual(out);
+    else
+      out := DigraphRemoveLoops(DigraphDual(out));
     fi;
-    if doubleUnderscore then
-        if not r.digraph then
-          underscore := true;
-        else
-          out := DigraphReverse(out);
-        fi;
-    fi;
-    if underscore then
-        if DigraphHasLoops(out) then
-            out := DigraphDual(out);
-        else
-            out := DigraphRemoveLoops(DigraphDual(out));
-        fi;
-    fi;
-
-    return out;
+  fi;
+  return out;
 end);
 
 ################################################################################

@@ -130,9 +130,9 @@ gap> for x in iter do od;
       <Mark>dreadnaut (.dre)</Mark>
       <Item>
         A graph format designed for directed and undirected graphs.
-        It supports loops but multiple edges will be ignored.  The format consists of an
+        The format supports loops but multiple edges are ignored.  The format consists of an
         initial section that defines the graph's structural properties, such as the number of
-        vertices, the index origin for vertices, and whether the graph is directed. This is followed
+        vertices, the starting value for vertices, and whether the graph is directed. This is followed
         by a list of edges. For more information and examples of the format see
         <URL Text="nauty and Traces User's Guide">http://pallini.di.uniroma1.it/Guide.html</URL>.<P/>
       </Item>
@@ -341,9 +341,9 @@ gap> DigraphFromDiSparse6String(".CaWBGA?b");
       <Mark>dreadnaut (.dre)</Mark>
       <Item>
         A graph format designed for directed and undirected graphs.
-        It supports loops but multiple edges will be ignored.  The format consists of an
+        The format supports loops but multiple edges are ignored.  The format consists of an
         initial section that defines the graph's structural properties, such as the number of
-        vertices, the index origin for vertices, and whether the graph is directed. This is followed
+        vertices, the starting value for vertices, and whether the graph is directed. This is followed
         by a list of edges. For more information and examples of the format see
         <URL Text="nauty and Traces User's Guide">http://pallini.di.uniroma1.it/Guide.html</URL>. <P/>
       </Item>
@@ -453,9 +453,9 @@ gap> ReadDigraphs(
       <Mark>dreadnaut (.dre)</Mark>
       <Item>
         A graph format designed for directed and undirected graphs.
-        It supports loops but multiple edges will be ignored.  The format consists of an
+        The format supports loops but multiple edges are ignored.  The format consists of an
         initial section that defines the graph's structural properties, such as the number of
-        vertices, the index origin for vertices, and whether the graph is directed. This is followed
+        vertices, the starting value for vertices, and whether the graph is directed. This is followed
         by a list of edges. For more information and examples of the format see
         <URL Text="nauty and Traces User's Guide">http://pallini.di.uniroma1.it/Guide.html</URL>. <P/>
       </Item>
@@ -820,7 +820,7 @@ gap> OutNeighbours(gr);
     <C>DigraphFromDreadnautString</C> expects the argument <A>s</A> to be a string, containing a single graph in dreadnaut format,
     and returns a digraph.<P/>
 
-    If the vertices are not already 1-indexed, they will be reindexed accordingly.
+    If the vertices are not already 1-indexed, they will be reindexed such that they are 1-indexed.
     If a partition is explicitly specified, each vertex will be assigned a label corresponding to its part in the partition.
     Should the graph be undirected, the symmetric closure of the graph will be returned.
     See <Ref Oper="DigraphVertexLabels"/> and <Ref Prop="DigraphSymmetricClosure"/>.<P/>
@@ -854,7 +854,7 @@ true]]></Example>
   <Description>
   <C>WholeFileEncoders</C> and <C>WholeFileDecoders</C> are hashsets containing functions that
   encode and decode an entire file. These are functions designed for graph formats where graphs
-  are declared across multiple lines, such as dreadnaut <P/>
+  are declared across multiple lines, such as dreadnaut.<P/>
 
   <C>IsWholeFileEncoder</C> and <C>IsWholeFileDecoder</C> are functions that check whether a given
   argument belongs to the hashsets <C>WholeFileEncoders</C> and <C>WholeFileDecoders</C>, respectively. <P/>

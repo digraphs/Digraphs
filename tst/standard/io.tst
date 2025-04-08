@@ -1015,9 +1015,8 @@ Error, No graph was declared.
 gap> DigraphFromDreadnautString("f=2");
 Error, Vertex number must be declared before partition on line 1
 gap> DigraphFromDreadnautString("$=1n3dg\n1 : 2 3.\nfa");
-Error, Partitions should be specified using one of the following formats:
-  * A single number (e.g. 'f=3')
-  * A list of cells (e.g. 'f=[...]')  * '-f'
+Error, Partitions should be specified as either a single number (e.g. 'f=3') a\
+ list of cells (e.g. 'f=[...]') or using '-f'
 gap> DigraphFromDreadnautString("$=1n3dg\n1 : 2 3.\nf2 PP 1");
 Error, Unterminated 'PP' operation beginning on line 3
 gap> DigraphFromDreadnautString("$=1n3dg\n1 : 2 3.\nf=12 r 1");
