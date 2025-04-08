@@ -15,6 +15,9 @@ See the LICENSE.TXT file for licensing information.
 #pragma clang diagnostic ignored "-Wformat-nonliteral"
 #elif defined(__GNUC__)
 #pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeclaration-after-statement"
+#pragma GCC diagnostic ignored "-Wdiscarded-qualifiers"
+#pragma GCC diagnostic ignored "-Wformat-nonliteral"
 #endif
 
 #include "g6-read-iterator.h"
@@ -236,7 +239,7 @@ int _beginG6ReadIteration(G6ReadIterator *pG6ReadIterator)
 
 int _processAndCheckHeader(strOrFileP g6Input)
 {
-    char const*correctG6Header,*sparse6Header,*digraph6Header;
+    char const *correctG6Header, *sparse6Header, *digraph6Header;
     int exitCode = OK;
 
     if (g6Input == NULL)

@@ -16,8 +16,9 @@ See the LICENSE.TXT file for licensing information.
 #pragma clang diagnostic ignored "-Wmissing-prototypes"
 #elif defined(__GNUC__)
 #pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeclaration-after-statement"
+#pragma GCC diagnostic ignored "-Wnull-dereference"
 #endif
-
 
 #include "../lowLevelUtils/appconst.h"
 #include "strOrFile.h"
@@ -30,7 +31,7 @@ See the LICENSE.TXT file for licensing information.
  Returns the allocated string-or-file container, or NULL on error.
  ********************************************************************/
 
-strOrFileP sf_New(char const*theStr, char const*fileName, char const*ioMode)
+strOrFileP sf_New(char const *theStr, char const *fileName, char const *ioMode)
 {
     strOrFileP theStrOrFile;
     int containerType = 0;

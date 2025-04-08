@@ -16,6 +16,10 @@ See the LICENSE.TXT file for licensing information.
 #pragma clang diagnostic ignored "-Wdeclaration-after-statement"
 #elif defined(__GNUC__)
 #pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeclaration-after-statement"
+#pragma GCC diagnostic ignored "-Wmissing-prototypes"
+#pragma GCC diagnostic ignored "-Wdiscarded-qualifiers"
+#pragma GCC diagnostic ignored "-Wformat-nonliteral"
 #endif
 
 #include "../graph.h"

@@ -262,7 +262,7 @@ int gp_AddExtension(graphP theGraph,
 
 void _OverloadFunctions(graphP theGraph, graphFunctionTableP functions)
 {
-    void **graphFunctionTable = (void **)&theGraph->functions;
+    void **_graphFunctionTable = (void **)&theGraph->functions;
     void **newFunctionTable = (void **)functions;
     int numFunctions = sizeof(theGraph->functions) / sizeof(void *);
     int K;
@@ -271,8 +271,8 @@ void _OverloadFunctions(graphP theGraph, graphFunctionTableP functions)
     {
         if (newFunctionTable[K] != NULL)
         {
-            void *fp = graphFunctionTable[K];
-            graphFunctionTable[K] = newFunctionTable[K];
+            void *fp = _graphFunctionTable[K];
+            _graphFunctionTable[K] = newFunctionTable[K];
             newFunctionTable[K] = fp;
         }
     }
