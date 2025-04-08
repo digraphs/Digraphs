@@ -945,7 +945,7 @@ gap> DreadnautString(D, [1, 1]);
 Error, the second argument <partition> must be a list of length equal to the n\
 umber of vertices in <D>
 gap> DreadnautString(D, [1, 1, 2], "extra arg");
-Error, there must be at most 2 arguments
+Error, there must be 1 or 2 arguments
 gap> DreadnautString(1);
 Error, the first argument <D> must be a digraph
 gap> DreadnautString(D, 1);

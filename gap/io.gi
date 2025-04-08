@@ -2115,7 +2115,7 @@ function(args...)
     D := args[1];
     partition := args[2];
   else
-    ErrorNoReturn("there must be at most 2 arguments");
+    ErrorNoReturn("there must be 1 or 2 arguments");
   fi;
 
   if not IsDigraph(D) then
