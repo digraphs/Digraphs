@@ -1555,8 +1555,8 @@ end);
 
 # Compute all chordless cycles for a given symmetric digraph
 # Algorithm based on https://arxiv.org/pdf/1404.7610
-InstallMethod(DigraphAllChordlessCyclesOfMaximalLength, "for a digraph
-and an integer", [IsDigraph, IsInt],
+InstallMethod(DigraphAllChordlessCyclesOfMaximalLength, 
+"for a digraphand an integer", [IsDigraph, IsInt],
 function(D, maxLength)
   local BlockNeighbours, UnblockNeighbours,
   Triplets, CCExtension, digraph, temp, T, C, blocked, triple;
@@ -1825,7 +1825,7 @@ function(digraph)
 
       # We can find a cut by removing one specific edge from every path,
       # otherwise there would be another path from treev to treew.
-      # We can find these edges by iterating trough every possible combination
+      # We can find these edges by iterating through every possible combination
       # of edges and testing the graph for its connectivity.
       pathInducedSubgraph := DigraphByEdges(List(edgeSet));
       permutations := Cartesian(pathByEdges);
