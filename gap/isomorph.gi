@@ -305,7 +305,15 @@ end);
 InstallMethod(NautyAutomorphismGroup, "for a digraph and vertex coloring",
 [IsDigraph, IsHomogeneousList],
 function(D, colors)
-  if not DIGRAPHS_NautyAvailable or IsMultiDigraph(D) then
+  if IsMultiDigraph(D) then
+    Info(
+      InfoWarning,
+      1,
+      "NautyTracesInterfaces is not compatible with MultiDigraphs. Please ",
+      "consider calling either DigraphsUseBliss followed by ",
+      "AutomorphismGroup, or BlissAutomorphismGroup.");
+    return fail;
+  elif not DIGRAPHS_NautyAvailable then
     Info(InfoWarning, 1, "NautyTracesInterface is not available");
     return fail;
   fi;
