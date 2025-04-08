@@ -94,7 +94,7 @@ AS_IF([test "x$enable_compile_warnings" != "xno"],
 
 AX_CHECK_PLANARITY
 if test "x$with_external_planarity" = xno ; then
-  PLANARITY_SUITE_DIR=extern/edge-addition-planarity-suite-Version_3.0.1.0
+  PLANARITY_SUITE_DIR=extern/edge-addition-planarity-suite-Version_4.0.0.0
   AC_SUBST(PLANARITY_SUITE_DIR)
 fi
 
