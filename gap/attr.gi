@@ -1555,9 +1555,9 @@ end);
 
 # Compute all chordless cycles for a given symmetric digraph
 # Algorithm based on https://arxiv.org/pdf/1404.7610
-InstallMethod(DigraphAllChordlessCycles, "for a digraph",
-[IsDigraph],
-function(D)
+InstallMethod(DigraphAllChordlessCyclesOfMaximalLength, "for a digraph and an integer",
+[IsDigraph, IsInt],
+function(D, maxLength)
   local BlockNeighbours, UnblockNeighbours,
   Triplets, CCExtension, digraph, temp, T, C, blocked, triple;
 
@@ -1616,7 +1616,7 @@ function(D)
         local v, extendedPath, data;
         blocked := BlockNeighbours(digraph, Last(path), blocked);
         for v in OutNeighboursOfVertex(digraph, Last(path)) do
-            if DigraphVertexLabel(digraph, v) > key and blocked[v] = 1 then
+            if DigraphVertexLabel(digraph,v)>key and blocked[v]=1 and Length(path) < maxLength then
                 extendedPath := Concatenation(path, [v]);
                 if IsDigraphEdge(digraph, v, First(path)) then
                     Add(C, extendedPath);
@@ -1652,6 +1652,12 @@ function(D)
         blocked := UnblockNeighbours(digraph, triple[2], blocked);
     od;
     return C;
+end);
+
+InstallMethod(DigraphAllChordlessCycles, "for a digraph",
+[IsDigraph],
+function(D)
+    return DigraphAllChordlessCyclesOfMaximalLength(D,INTOBJ_MAX);
 end);
 
 # Compute for a given rotation system the facial walks
@@ -1726,6 +1732,170 @@ function(D, rotationSystem)
         Add(facialWalks, cycle);
     od;
     return facialWalks;
+end);
+
+# Computes the minimal cyclic edge cut of connected cubic graphs with at least 8 vertices
+# based on the paper "An Algorithm for Cyclic Edge Connectivity of Cubic Graphs"
+InstallMethod(MinimalCyclicEdgeCut, "for a digraph",[IsDigraph], function(digraph)
+    local girth, cycle, cut, cutsize, vertex, neighbour, treedepth, paths, 
+    treev, treew, minimal_cycle, v, w, FullTree, FindCut, FindPath, e;
+
+    # Compute a full tree of the given depth centered at the given vertex
+    FullTree := function(digraph, vertex, depth)
+        local result, i, lastTree, node;  
+        
+        result := Set([vertex]);
+        for i in [1..depth] do
+            lastTree := ShallowCopy(result);
+            for node in lastTree do
+                UniteSet(result, OutNeighboursOfVertex(digraph, node));      
+            od;
+        od;
+        return result;
+    end;
+
+    # Compute a maximal amount of paths between the two distinct sets of nodes treev and treew
+    # by using a variation of the Ford-Fulkerson algorithm
+    FindPath := function(digraph, treev, treew)
+      local digraphCopy, pathlist, newPathFound, node1, node2, path, i, e;
+
+      digraphCopy:= DigraphMutableCopy(digraph);
+      pathlist := [];
+      newPathFound := true;
+      while newPathFound do
+          newPathFound := false;
+          for node1 in treev do
+              for node2 in treew do
+                  path := DigraphShortestPath(digraphCopy, node1, node2);
+
+                  if path<>fail then
+                      for i in [1..(Length(path[1])-1)] do
+                          # remove edges corresponding to the current path
+                          digraphCopy := DigraphRemoveEdge(digraphCopy, [path[1][i], path[1][i+1]]);
+                          # add backward edges, if they are missing
+                          if not [path[1][i+1], path[1][i]] in DigraphEdges(digraphCopy) then
+                              digraphCopy := DigraphAddEdge(digraphCopy, [path[1][i+1], path[1][i]]);
+                          fi;
+                      od;
+                      Append(pathlist, [path[1]]);
+                      newPathFound := true;
+                      break;
+                  fi;
+              od;
+          od;
+      od;
+      return pathlist;       
+    end;
+
+    # Finds a cut that disconnects the node sets treev and treew in the given digraph
+    # by using the paths found in FindPath
+    FindCut := function(digraph, treev, treew, allPaths)
+      local pathByEdges, path, edgeList, i, cutEdges, edge, component1, component2, edgeSet, 
+      digraphCopy, permutations, nodeSet, v, pathInducedSubgraph;
+
+      # Convert the paths into the list of corresponding edges
+      pathByEdges := [];
+      for path in allPaths do    
+        edgeList := [];
+        for i in [1 .. Length(path)-1] do 
+            Append(edgeList, [[path[i], path[i+1]]]);
+        od;
+        Append(pathByEdges, [edgeList]);
+      od;
+
+      nodeSet := Set([]);
+      for path in allPaths do
+        for v in path do
+            AddSet(nodeSet, v);
+        od;
+      od;
+
+      edgeSet :=Set([]);
+      for v in DigraphVertices(digraph) do
+        for w in OutNeighboursOfVertex(digraph, v) do
+          UniteSet(edgeSet, [[v, w]]);
+          UniteSet(edgeSet, [[w, v]]);
+        od;
+      od;
+
+      # We can find a cut by removing one specific edge from every path, otherwise there would be another path
+      # from treev to treew. We can find these edges by iterating trough every possible combination of edges and 
+      # testing the graph for its connectivity. 
+      pathInducedSubgraph := DigraphByEdges(List(edgeSet));
+      permutations := Cartesian(pathByEdges);
+      for cutEdges in permutations do
+        digraphCopy:= DigraphMutableCopy(pathInducedSubgraph);
+        for edge in cutEdges do
+          digraphCopy := DigraphRemoveEdge(digraphCopy, edge[1], edge[2]);
+          digraphCopy := DigraphRemoveEdge(digraphCopy, edge[2], edge[1]);
+        od;
+        if not IsConnectedDigraph(digraphCopy) then
+          component1 := InducedSubdigraph(digraph, DigraphConnectedComponent(digraphCopy, treev[1]));
+          component2 := InducedSubdigraph(digraph, DigraphConnectedComponent(digraphCopy, treew[1]));
+          if DigraphUndirectedGirth(component1) <> infinity and DigraphUndirectedGirth(component2) <> infinity then
+            return cutEdges;
+          fi;
+        fi;
+      od;
+    end;
+
+    if not IsConnectedDigraph(digraph) or Length(DigraphVertices(digraph)) < 8 then
+      return fail;
+    fi;  
+
+    digraph := DigraphMutableCopy(digraph);
+    DigraphSymmetricClosure(DigraphRemoveLoops(
+                DigraphRemoveAllMultipleEdges(digraph)));
+    MakeImmutable(digraph);
+
+    v := DigraphVertices(digraph)[1];
+    if not IsRegularDigraph(digraph) or OutDegreeOfVertex(digraph, v)<>3 then
+      return fail;
+    fi;
+
+    girth := DigraphUndirectedGirth(digraph);
+    cycle := [];
+    cut:= [];
+
+    # A cycle of minimal length yields a starting cyclic edge cut
+    minimal_cycle := DigraphAllChordlessCyclesOfMaximalLength(digraph, girth)[1];
+    cut := [];
+    for v in minimal_cycle do
+      for w in OutNeighboursOfVertex(digraph, v) do
+        if not w in minimal_cycle then
+          Append(cut, [[v, w]]);
+        fi;
+      od;
+    od;
+
+    # Look for smaller cyclic edge cuts
+    cutsize := girth;
+    for v in DigraphVertices(digraph) do
+      for w in DigraphVertices(digraph) do
+        if w<v then  # The function is symmetric in v and w
+            continue;
+        fi;
+        treedepth := -1;
+        paths := [];
+        while 3*2^treedepth < cutsize do
+          treedepth := treedepth+1;
+          treev := FullTree(digraph, v, treedepth);
+          treew := FullTree(digraph, w, treedepth);
+          if Intersection(treev, treew) <> [] then
+            break;
+          fi;
+          paths := FindPath(digraph, treev, treew);
+          if Length(paths) < cutsize and Length(paths) < 3*2^treedepth then 
+            cut := FindCut(digraph, treev, treew, paths);
+            cutsize := Length(paths);
+          fi;
+        od;
+      od;
+    od;
+  for e in cut do
+    Sort(e);
+  od;
+  return cut; 
 end);
 
 # The following method 'DIGRAPHS_Bipartite' was originally written by Isabella

@@ -2048,6 +2048,31 @@ gap> ArticulationPoints(D);
 gap> Bridges(D);
 [ [ 2, 3 ], [ 1, 2 ] ]
 
+# MinimalCyclicEdgeCut
+gap> g := HypercubeGraph(3);;
+gap> edgeCut := MinimalCyclicEdgeCut(g);
+[ [ 1, 5 ], [ 2, 6 ], [ 4, 8 ], [ 3, 7 ] ]
+gap> edgeCut:=Concatenation(edgeCut,List(edgeCut,e->Reversed(e)));
+[ [ 1, 5 ], [ 2, 6 ], [ 4, 8 ], [ 3, 7 ], [ 5, 1 ], [ 6, 2 ], [ 8, 4 ], 
+  [ 7, 3 ] ]
+gap> gNew:=DigraphRemoveEdges(g,edgeCut);
+<immutable digraph with 8 vertices, 16 edges>
+gap> IsConnectedDigraph(gNew);
+false
+gap> MinimalCyclicEdgeCut(CompleteDigraph(4));
+fail
+gap> MinimalCyclicEdgeCut(CycleGraph(8));
+fail
+gap> g := DigraphByEdges([ [ 1, 2 ], [ 1, 3 ], [ 1, 7 ], [ 2, 4 ], [ 2, 9 ],
+>   [ 3, 5 ], [ 3, 10 ], [ 4, 6 ], [ 4, 7 ], [ 5, 6 ], [ 5, 7 ], [ 6, 13 ], [ 8, 9 ],
+>   [ 8, 10 ], [ 8, 14 ], [ 9, 11 ], [ 10, 12 ], [ 11, 13 ], [ 11, 14 ], [ 12, 13 ], [ 12, 14 ] ]);;
+gap> edgeCut := MinimalCyclicEdgeCut(g);
+[ [ 2, 9 ], [ 3, 10 ], [ 6, 13 ] ]
+gap> gNew:=DigraphRemoveEdges(g,edgeCut);
+<immutable digraph with 14 vertices, 18 edges>
+gap> IsConnectedDigraph(gNew);
+false
+
 # StrongOrientation
 gap> filename := Concatenation(DIGRAPHS_Dir(), "/data/graph5.g6.gz");;
 gap> D := ReadDigraphs(filename);;
