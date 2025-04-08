@@ -2143,27 +2143,19 @@ function(D)
   out := Concatenation(out, ".");
   if labels <> [1 .. n] then
     dflabels := DuplicateFreeList(labels);
-    if IsInt(labels[1]) and IsHomogeneousList(labels) then
-      partition := "f = [";
+    partition := "f = [";
 
-      for i in dflabels do
-        positions := PositionsProperty(labels, x -> x = i);
-        joinedPositions := JoinStringsWithSeparator(positions, " ");
-        partition := Concatenation(partition, joinedPositions);
-        if i <> dflabels[Length(dflabels)] then
-          partition := Concatenation(partition, " | ");
-        fi;
-      od;
-      partition := Concatenation(partition, " ]");
+    for i in dflabels do
+      positions := PositionsProperty(labels, x -> x = i);
+      joinedPositions := JoinStringsWithSeparator(positions, " ");
+      partition := Concatenation(partition, joinedPositions);
+      if i <> dflabels[Length(dflabels)] then
+        partition := Concatenation(partition, " | ");
+      fi;
+    od;
+    partition := Concatenation(partition, "]");
 
-      out := Concatenation(out, partition);
-    else
-      Info(InfoWarning, 1,
-           "Only integer vertex labels are supported.");
-      Info(InfoWarning, 1,
-            "The vertex labels of the argument <D> will not be",
-            " saved.");
-    fi;
+    out := Concatenation(out, partition);
   fi;
 
   return out;
