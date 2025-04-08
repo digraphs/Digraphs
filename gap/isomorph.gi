@@ -313,8 +313,7 @@ function(D, colors)
       "consider calling either DigraphsUseBliss followed by ",
       "AutomorphismGroup, or BlissAutomorphismGroup.");
     return fail;
-  fi;
-  if not DIGRAPHS_NautyAvailable then
+  elif not DIGRAPHS_NautyAvailable then
     Info(InfoWarning, 1, "NautyTracesInterface is not available");
     return fail;
   fi;
