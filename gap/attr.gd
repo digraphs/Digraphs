@@ -62,7 +62,8 @@ DeclareAttribute("DigraphAbsorptionExpectedSteps", IsDigraph);
 DeclareAttribute("DigraphAllSimpleCircuits", IsDigraph);
 DeclareAttribute("DigraphLongestSimpleCircuit", IsDigraph);
 DeclareAttribute("DigraphAllUndirectedSimpleCircuits", IsDigraph);
-DeclareOperation("DigraphAllChordlessCyclesOfMaximalLength", [IsDigraph, IsInt]);
+DeclareOperation("DigraphAllChordlessCyclesOfMaximalLength",
+    [IsDigraph, IsInt]);
 DeclareAttribute("DigraphAllChordlessCycles", IsDigraph);
 DeclareOperation("FacialWalks", [IsDigraph, IsList]);
 DeclareAttribute("HamiltonianPath", IsDigraph);
