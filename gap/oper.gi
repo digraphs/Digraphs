@@ -1031,7 +1031,6 @@ InstallMethod(OnDigraphs,
 "for a digraph and a transformation",
 [IsDigraph, IsTransformation],
 function(D, t)
-  local old, new, v;
   if ForAll(DigraphVertices(D), i -> i ^ t = i) then
     return D;
   elif ForAny(DigraphVertices(D), i -> i ^ t > DigraphNrVertices(D)) then
