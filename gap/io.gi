@@ -606,14 +606,8 @@ function(arg...)
     fi;
     file := DigraphFile(name, encoder, mode);
     if NameFunction(file!.coder) in WholeFileEncoders and file!.mode <> "w" then
-      Info(InfoWarning, 1, NameFunction(file!.coder), " is a whole file ",
-          "encoder and so the argument <mode> is defaulting to \"w\". This ",
-          "will overwrite any current file contents. Continue (Y/N)?");
-      if not (NormalizedWhitespace(LowercaseString(ReadLine(InputTextUser())))
-              in ["y", "yes"]) then
-        return fail;
-      fi;
-      file := DigraphFile(name, encoder, "w");
+      ErrorNoReturn(NameFunction(file!.coder), " is a whole file ",
+          "encoder and so the argument <mode> must be specified as \"w\".");
     fi;
   else
     file := name;
