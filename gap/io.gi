@@ -499,7 +499,8 @@ end);
 InstallGlobalFunction(WriteDigraphs,
 function(arg...)
   local name, digraphs, encoder, mode, splitname, compext, g6sum, s6sum, v, e,
-        dg6sum, ds6sum, file, D, i;
+        dg6sum, ds6sum, file, D, i, out, oldBoE, oldSNE, CloseAndCleanup,
+        SafeEncode;
 
   # defaults
   encoder := fail;
@@ -626,7 +627,29 @@ function(arg...)
     fi;
   fi;
 
+  CloseAndCleanup := function()
+    if IsString(arg[1]) then
+      IO_Close(file);
+    fi;
+    BreakOnError := oldBoE;
+    SilentNonInteractiveErrors := oldSNE;
+  end;
+
+  SafeEncode := function(enc, args)
+    local out;
+    out := CALL_WITH_CATCH(enc, args);
+    if out[1] = false then
+      CloseAndCleanup();
+      CallFuncList(enc, args);
+    fi;
+    return out[2];
+  end;
+
   encoder := file!.coder;
+  oldBoE := BreakOnError;
+  BreakOnError := false;
+  oldSNE := SilentNonInteractiveErrors;
+  SilentNonInteractiveErrors := true;
 
   if NameFunction(encoder) in WholeFileEncoders then
     if Length(digraphs) > 1 then
@@ -634,17 +657,15 @@ function(arg...)
           " is a whole file encoder, and so only one digraph should be ",
           "specified. Only the last digraph will be encoded.");
     fi;
-    IO_Write(file, encoder(digraphs[Length(digraphs)]));
+    out := SafeEncode(encoder, [digraphs[Length(digraphs)]]);
+    IO_Write(file, out);
   else
     for i in [1 .. Length(digraphs)] do
-      encoder(file, digraphs[i]);
+      SafeEncode(encoder, [file, digraphs[i]]);
     od;
   fi;
 
-  if IsString(arg[1]) then
-    IO_Close(file);
-  fi;
-
+  CloseAndCleanup();
   return IO_OK;
 end);
 
@@ -2027,16 +2048,7 @@ end);
 # 4. Encoders
 ################################################################################
 InstallMethod(WriteDIMACSDigraph, "for a digraph", [IsString, IsDigraph],
-function(name, D)
-  local file;
-  file := IO_CompressedFile(UserHomeExpand(name), "w");
-  if file = fail then
-    ErrorNoReturn("cannot open the file given as the 1st argument <name>,");
-  fi;
-  IO_Write(file, DIMACSString(D));
-  IO_Close(file);
-  return IO_OK;
-end);
+              {name, D} -> WriteDigraphs(name, D, DIMACSString, "w"));
 
 InstallMethod(DIMACSString, "for a digraph", [IsDigraph],
 function(D)
