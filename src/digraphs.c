@@ -1367,7 +1367,6 @@ static Obj FuncRANDOM_DIGRAPH(Obj self, Obj nn, Obj pp) {
   n   = INT_INTOBJ(nn);
   p   = VAL_MACFLOAT(pp);
   adj = NEW_PLIST(T_PLIST_TAB, n);
-
   SET_LEN_PLIST(adj, n);
 
   for (i = 1; i <= n; i++) {

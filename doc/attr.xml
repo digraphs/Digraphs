@@ -1168,8 +1168,8 @@ gap> ArticulationPoints(D);
     graphs with at least 8 vertices. The cyclic edge cut is returned as a 
     list of undirected edges.<P/>
 
-    If the given digraph is not cubic, connected, has less than 8 vertices or 
-    do not have a cyclic edge cut, the method returns <K>fail</K>.
+    If the given digraph is not cubic, not connected, has less than 8 vertices or 
+    does not have a cyclic edge cut, the method returns <K>fail</K>.
     Multiple edges of <A>digraph</A> are ignored by this method and note 
     that <A>digraph</A> is identified as an undirected graph. <P/>
 
@@ -1490,7 +1490,7 @@ gap> DigraphAllUndirectedSimpleCircuits(D);
 <#GAPDoc Label="DigraphAllChordlessCycles">
 <ManSection>
   <Attr Name="DigraphAllChordlessCycles" Arg="digraph"/>
-  <Attr Name="DigraphAllChordlessCyclesOfMaximalLength, maxLength" Arg="digraph"/>
+  <Attr Name="DigraphAllChordlessCyclesOfMaximalLength" Arg="digraph, maxLength"/>
   <Returns>A list of lists of vertices.</Returns>
   <Description>
     If <A>digraph</A> is a digraph, then <C>DigraphAllChordlessCycles</C> 
