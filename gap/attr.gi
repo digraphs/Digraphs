@@ -45,6 +45,7 @@ function(D)
     copy := DigraphSymmetricClosure(DigraphMutableCopy(D));
     copy := DigraphRemoveAllMultipleEdges(copy);
     MakeImmutable(copy);
+    # No forward edges or cross edges now exist
   else
     copy := D;
   fi;
@@ -53,7 +54,8 @@ function(D)
     local child, current;
     child := record.child;
     current := record.parents[child];
-    if record.preorder[child] > record.preorder[current] then
+    # record.preorder[child] > record.preorder[current] then
+    if current <> child then
       # stops the duplication of articulation_points
       if current <> 1 and data.low[child] >= record.preorder[current] then
         Add(data.articulation_points, current);
@@ -86,7 +88,7 @@ function(D)
     current := record.current;
     child := record.child;
     parent := record.parents[current];
-    # current -> child is a back edge
+    # current -> child is a back edge or cross edge
     if child <> parent and record.preorder[child] < data.low[current] then
       data.low[current] := record.preorder[child];
     fi;
@@ -2676,9 +2678,6 @@ function(D)
   ExecuteDFS(record, data, 1, PreOrderFunc, fail,
                fail, fail);
 
-  # for i in DigraphVertices(C) do
-  # od;
-
   if IsMutableDigraph(D) then
     D!.OutNeighbours := data;
     ClearDigraphEdgeLabels(D);
@@ -2692,37 +2691,11 @@ function(D)
   return C;
 end);
 
-# InstallMethod(UndirectedSpanningForest,
-# "for a mutable digraph by out-neighbours",
-# [IsMutableDigraph and IsDigraphByOutNeighboursRep],
-# function(D)
-#   if DigraphHasNoVertices(D) then
-#     return fail;
-#   fi;
-#   MaximalSymmetricSubdigraph(D);
-#   D!.OutNeighbours := DIGRAPH_SYMMETRIC_SPANNING_FOREST(D!.OutNeighbours);
-#   ClearDigraphEdgeLabels(D);
-#   return D;
-# end);
-
 InstallMethod(UndirectedSpanningForest, "for an immutable digraph",
 [IsImmutableDigraph], UndirectedSpanningForestAttr);
 
 InstallMethod(UndirectedSpanningForestAttr, "for an immutable digraph",
-[IsImmutableDigraph and IsDigraphByOutNeighboursRep],
-function(D)
-  local C;
-  if DigraphHasNoVertices(D) then
-    return fail;
-  fi;
-  C := MaximalSymmetricSubdigraph(D);
-  C := DIGRAPH_SYMMETRIC_SPANNING_FOREST(C!.OutNeighbours);
-  C := ConvertToImmutableDigraphNC(C);
-  SetIsUndirectedForest(C, true);
-  SetIsMultiDigraph(C, false);
-  SetDigraphHasLoops(C, false);
-  return C;
-end);
+[IsImmutableDigraph and IsDigraphByOutNeighboursRep], UndirectedSpanningForest);
 
 InstallMethod(UndirectedSpanningTree, "for a mutable digraph",
 [IsMutableDigraph],

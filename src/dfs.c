@@ -18,10 +18,11 @@
 #include "digraphs-config.h"
 #include "digraphs-debug.h"
 #include "digraphs.h"
+#include "stdio.h"
 
 // Macros used for both recursive and iterative
 
-#define ON_PREORDER(args, current)                                         \
+#define ON_PREORDER(current, args)                                         \
   ASS_LIST(args->preorder, current, INTOBJ_INT(++(*args->preorder_num)));  \
   AssPRec(args->record, args->RNamCurrent, INTOBJ_INT(current));           \
   CHANGED_BAG(args->record);                                               \
@@ -33,10 +34,10 @@
   CHANGED_BAG(args->record);
 
 #define ANCESTOR_CROSS(current, v, backtracked, args)                          \
-  AssPRec(args->record, args->RNamChild, INTOBJ_INT(v));                       \
-  AssPRec(args->record, args->RNamCurrent, INTOBJ_INT(current));               \
-  CHANGED_BAG(args->record);                                                   \
   if (args->CallAncestor || args->CallCross) {                                 \
+    AssPRec(args->record, args->RNamChild, INTOBJ_INT(v));                     \
+    AssPRec(args->record, args->RNamCurrent, INTOBJ_INT(current));             \
+    CHANGED_BAG(args->record);                                                 \
     if (args->CallAncestor && !backtracked) {                                  \
       if (CallCheckStop(                                                       \
               args->AncestorFunc, args->RNamStop, args->record, args->data)) { \
@@ -54,21 +55,28 @@
     CHANGED_BAG(args->record);                                                 \
   }
 
-#define ON_BACKTRACK(current, prev, args)                                   \
-  AssPRec(args->record, args->RNamChild, INTOBJ_INT(current));              \
-  AssPRec(args->record, args->RNamCurrent, INTOBJ_INT(prev));               \
-  ASS_LIST(args->postorder, current, INTOBJ_INT(++(*args->postorder_num))); \
-  CHANGED_BAG(args->record);                                                \
-  if (args->CallPostorder                                                   \
-      && CallCheckStop(                                                     \
-          args->PostorderFunc, args->RNamStop, args->record, args->data)) { \
-    return false;                                                           \
-  }                                                                         \
-  CHANGED_BAG(args->record);
+#define ON_BACKTRACK(current, parent, args)                                   \
+  if (args->dfs_conf->use_postorder) {                                        \
+    ASS_LIST(args->postorder, current, INTOBJ_INT(++(*args->postorder_num))); \
+  }                                                                           \
+  if (args->CallPostorder) {                                                  \
+    AssPRec(args->record, args->RNamChild, INTOBJ_INT(current));              \
+    AssPRec(args->record, args->RNamCurrent, INTOBJ_INT(parent));             \
+    CHANGED_BAG(args->record);                                                \
+    if (CallCheckStop(                                                        \
+            args->PostorderFunc, args->RNamStop, args->record, args->data)) { \
+      return false;                                                           \
+    }                                                                         \
+    CHANGED_BAG(args->record);                                                \
+  }
 
-#define ON_ADD_SUCC(current, succ, idx, args)         \
-  ASS_LIST(args->parents, succ, INTOBJ_INT(current)); \
-  ASS_LIST(args->edge, succ, INTOBJ_INT(idx));        \
+#define ON_ADD_SUCC(current, succ, idx, args)           \
+  if (args->dfs_conf->use_parents) {                    \
+    ASS_LIST(args->parents, succ, INTOBJ_INT(current)); \
+  }                                                     \
+  if (args->dfs_conf->use_edge) {                       \
+    ASS_LIST(args->edge, succ, INTOBJ_INT(idx));        \
+  }                                                     \
   CHANGED_BAG(args->record);
 
 #define STACK_PUSH(stack, size, val) \
@@ -77,12 +85,42 @@
 #define STACK_POP(stack, size) \
   ELM_PLIST(stack, size--)
 
-#define PREORDER_IDX 0
+#define PREORDER_IDX 0  // The index recursive DFS starts with (indicating to
+                        // visit the current node)
 
-void parseConfig(struct dfs_config* conf, Obj conf_record) {
+void parseConfig(struct dfs_args* args, Obj conf_record) {
+  struct dfs_config* conf = args -> dfs_conf;
   conf -> iter = ElmPRec(conf_record, RNamName("iterative")) == True;
   conf -> revisit = ElmPRec(conf_record, RNamName("revisit")) == True;
   conf -> forest = ElmPRec(conf_record, RNamName("forest")) == True;
+  conf -> use_postorder =
+    ElmPRec(conf_record, RNamName("use_postorder")) == True;
+  conf -> use_parents = ElmPRec(conf_record, RNamName("use_parents")) == True;
+  conf -> use_edge = ElmPRec(conf_record, RNamName("use_edge")) == True;
+
+  if (!conf -> iter && (!conf -> use_edge || !conf -> use_parents)) {
+    ErrorQuit(
+        "In a DFSRecord where the config flag iter is false, use_edge and "
+        "use_parents must be true", 0L, 0L);
+  }
+
+  if (conf -> revisit && !(conf -> iter && conf -> use_postorder)) {
+    ErrorQuit(
+        "In a DFSRecord where the config flag revisit is true, use_postorder "
+        "and iterative must also be true", 0L, 0L);
+  }
+
+  if ((args -> CallAncestor || args -> CallCross) && !conf -> use_postorder) {
+    ErrorQuit(
+        "In a DFSRecord where either an AncestorFunc or CrossFunc exists, "
+        "the config flag use_postorder must be true", 0L, 0L);
+  }
+
+  if ((args -> CallPostorder && conf -> iter) && !conf -> use_postorder) {
+    ErrorQuit(
+        "In a DFSRecord where a PostorderFunc exists, where the config flag "
+        "iter is true, the flag use_postorder must also be true", 0L, 0L);
+  }
 }
 
 // Extreme examples are on the pull request #459
@@ -95,9 +133,12 @@ bool CallCheckStop(Obj f, Int RNamStop, Obj record, Obj data) {
     return false;
 }
 
-// Iterative DFS (for revisiting vertices)
+/* Iterative DFS (used for revisiting vertices)
+   Necessary record elements: preorder
+   If CallPostorder, then parents is necessary
+*/
 
-bool ExecuteDFSIter(Int start, struct dfs_args* args, struct dfs_config* conf) {
+bool ExecuteDFSIter(Int start, struct dfs_args* args) {
     Int N = LEN_LIST(args -> neighbors);
     Obj stack = NEW_PLIST(T_PLIST_CYC, N * 2);
 
@@ -105,50 +146,53 @@ bool ExecuteDFSIter(Int start, struct dfs_args* args, struct dfs_config* conf) {
 
     AssPlist(stack, 1, INTOBJ_INT(start));
 
-    if (!iter_loop(stack, stack_size, args, conf)) return false;
+    if (!iter_loop(stack, stack_size, args)) return false;
 
-    if (conf -> forest) {
+    if (args -> dfs_conf -> forest) {
       for (Int v = 1; v <= LEN_LIST(args -> neighbors); v++) {
         bool visited = INT_INTOBJ(ELM_LIST(args -> preorder, v)) != -1;
 
         if (!visited) {
-          ASS_LIST(args -> parents, v, INTOBJ_INT(v));
+          if (args->dfs_conf->use_parents) {
+            ASS_LIST(args->parents, v, INTOBJ_INT(v));
+          }
           CHANGED_BAG(args -> record);
           AssPlist(stack, 1, INTOBJ_INT(v));
 
-          if (!iter_loop(stack, 1, args, conf)) return false;
+          if (!iter_loop(stack, 1, args)) return false;
         }
       }
     }
-
     return true;
 }
 
-bool iter_loop(Obj stack, Int stack_size, struct dfs_args* args,
-               struct dfs_config* conf) {
+bool iter_loop(Obj stack, Int stack_size, struct dfs_args* args) {
     while (stack_size > 0) {
         Int current = INT_INTOBJ(STACK_POP(stack, stack_size));
 
         if (current < 0) {
             Int bt_on = current * -1;
-            Int parent = INT_INTOBJ(ELM_LIST(args -> parents, bt_on));
+            Int parent = !args -> dfs_conf -> use_parents ? -1 :
+              INT_INTOBJ(ELM_LIST(args -> parents, bt_on));
             ON_BACKTRACK(bt_on, parent, args);
             continue;
         } else if (INT_INTOBJ(ELM_LIST(args->preorder, current)) != -1) {
           continue;
         }
 
-        ON_PREORDER(args, current);  // and push backtrack node
-        STACK_PUSH(stack, stack_size, INTOBJ_INT(current * -1));
+        ON_PREORDER(current, args);  // and push backtrack node
+        if (args -> dfs_conf -> use_postorder || args -> CallPostorder) {
+          STACK_PUSH(stack, stack_size, INTOBJ_INT(current * -1));
+        }
 
         Obj succ = ELM_PLIST(args -> neighbors, current);
 
         for (Int i = LEN_LIST(succ); i > 0; i--) {
             Int v = INT_INTOBJ(ELM_LIST(succ, i));
             bool visited = INT_INTOBJ(ELM_PLIST(args -> preorder, v)) != -1;
-            bool backtracked = INT_INTOBJ(ELM_PLIST(args -> postorder,
-                                                    v)) != -1;
-            bool revisit = (conf -> revisit && backtracked);
+            bool backtracked = !args -> dfs_conf -> use_postorder ||
+                INT_INTOBJ(ELM_PLIST(args -> postorder, v)) != -1;
+            bool revisit = (args -> dfs_conf -> revisit && backtracked);
 
             if (!visited || revisit) {
                 if (revisit) ASS_LIST(args -> preorder, v, INTOBJ_INT(-1));
@@ -162,11 +206,13 @@ bool iter_loop(Obj stack, Int stack_size, struct dfs_args* args,
     return true;
 }
 
-// Recursive DFS
+/* Recursive DFS
+ Necessary record elements: edge, preorder, parents
+*/
 
 bool ExecuteDFSRec(Int current, Int parent, Int idx, struct dfs_args* args) {
   if (idx == PREORDER_IDX) {  // visit current
-    ON_PREORDER(args, current);
+    ON_PREORDER(current, args);
     // Start recursing on successors
     return ExecuteDFSRec(current, parent, idx + 1, args);
   }
@@ -176,21 +222,22 @@ bool ExecuteDFSRec(Int current, Int parent, Int idx, struct dfs_args* args) {
   if (idx > LEN_LIST(succ)) {  // Backtrack on current (all successors explored)
       ON_BACKTRACK(current, parent, args);
 
-      Int out_neighbor = INT_INTOBJ(ELM_PLIST(args -> edge, current));
+      Int prev_idx = INT_INTOBJ(ELM_PLIST(args -> edge, current));
       Int parents_parent = INT_INTOBJ(ELM_PLIST(args -> parents, parent));
 
       if (parent == current) return true;  // At root
 
-      return ExecuteDFSRec(parent, parents_parent, out_neighbor + 1, args);
+      return ExecuteDFSRec(parent, parents_parent, prev_idx + 1, args);
   } else {
       Int v = INT_INTOBJ(ELM_LIST(succ, idx));
       bool visited = INT_INTOBJ(ELM_PLIST(args -> preorder, v)) != -1;
-      bool backtracked = INT_INTOBJ(ELM_PLIST(args -> postorder, v)) != -1;
 
       if (!visited) {
         ON_ADD_SUCC(current, v, idx, args);
         return ExecuteDFSRec(v, current, 0, args);
       } else {
+        bool backtracked = !args -> dfs_conf -> use_postorder ||
+          INT_INTOBJ(ELM_PLIST(args -> postorder, v)) != -1;
         ANCESTOR_CROSS(current, v, backtracked, args);
         return ExecuteDFSRec(current, parent, idx + 1, args);  // Skip
       }
@@ -201,7 +248,7 @@ bool ExecuteDFSRec(Int current, Int parent, Int idx, struct dfs_args* args) {
 Obj FuncExecuteDFS_C(Obj self, Obj args) {
   DIGRAPHS_ASSERT(LEN_PLIST(args) == 7);
   Obj record        = ELM_PLIST(args, 1);
-  Obj config         = ElmPRec(record, RNamName("config"));
+  Obj config        = ElmPRec(record, RNamName("config"));
   Obj data          = ELM_PLIST(args, 2);
   Obj start         = ELM_PLIST(args, 3);
   Obj PreorderFunc  = ELM_PLIST(args, 4);
@@ -226,14 +273,17 @@ Obj FuncExecuteDFS_C(Obj self, Obj args) {
         "the third argument <start> must be a vertex in your graph,", 0L, 0L);
   }
 
-  Int RNamStop    = RNamName("stop");
+  Int RNamStop = RNamName("stop");
 
   if (ElmPRec(record, RNamStop) == True) return record;
 
-  Int preorder_num  = 0;
+  Int preorder_num = 0;
   Int postorder_num = 0;
 
-  struct dfs_args rec_args = {
+  struct dfs_config dfs_conf = {0};
+
+  struct dfs_args dfs_args_ = {
+    .dfs_conf = &dfs_conf,
     .record = record,
     .preorder_num = &preorder_num,
     .postorder_num = &postorder_num,
@@ -249,26 +299,30 @@ Obj FuncExecuteDFS_C(Obj self, Obj args) {
     .CallPostorder = PostorderFunc != Fail,
     .CallAncestor = AncestorFunc != Fail, .CallCross = CrossFunc != Fail};
 
-  ASS_LIST(rec_args.parents, INT_INTOBJ(start), start);
+  parseConfig(&dfs_args_, config);
+
+  if (dfs_conf.use_parents) {
+    ASS_LIST(dfs_args_.parents, INT_INTOBJ(start), start);
+  }
 
   Int current = INT_INTOBJ(start);
 
-  struct dfs_config dfs_conf = {0};
-  parseConfig(&dfs_conf, config);
-
   if (dfs_conf.iter || dfs_conf.revisit) {
-      ExecuteDFSIter(current, &rec_args, &dfs_conf);
+      ExecuteDFSIter(current, &dfs_args_);
   } else {
-    if (ElmPRec(config, RNamName("forest")) == True) {
+    if (dfs_conf.forest) {
+      ExecuteDFSRec(current, current, PREORDER_IDX, &dfs_args_);
       for (Int i = 1; i <= N; i++) {
-        bool visited = INT_INTOBJ(ELM_PLIST(rec_args.preorder, i)) != -1;
+        bool visited = INT_INTOBJ(ELM_PLIST(dfs_args_.preorder, i)) != -1;
         if (!visited) {
-          ASS_LIST(rec_args.parents, i, INTOBJ_INT(i));
-          ExecuteDFSRec(i, i, PREORDER_IDX, &rec_args);
+          if (dfs_conf.use_parents) {
+            ASS_LIST(dfs_args_.parents, i, INTOBJ_INT(i));
+          }
+          ExecuteDFSRec(i, i, PREORDER_IDX, &dfs_args_);
         }
       }
     } else {
-      ExecuteDFSRec(current, current, PREORDER_IDX, &rec_args);
+      ExecuteDFSRec(current, current, PREORDER_IDX, &dfs_args_);
     }
   }
 

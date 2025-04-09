@@ -1342,6 +1342,11 @@ ent <D>,
 gap> DigraphPath(gr, 11, 11);
 Error, the 2nd and 3rd arguments <u> and <v> must be vertices of the 1st argum\
 ent <D>,
+gap> gr := Digraph([[1, 2], [3], [1]]);;
+gap> path := DigraphPath(gr, 1, 1);
+[ [ 1, 1 ], [ 1 ] ]
+gap> IsDigraphPath(gr, path);
+true
 
 #  IteratorOfPaths
 gap> gr := CompleteDigraph(5);;
@@ -3259,22 +3264,11 @@ gap> DigraphVertexLabels(D);
 #   stop := false )
 
 # ExecuteDFS
-gap> mapToList := function(map, len, list)  # For turning record hashmaps -> lists for
-> local i;
->     for i in [1 .. len] do                # printing
->        if not IsBound(map[i]) then
->          Add(list, -1);
->        else
->          Add(list, map[i]);
->        fi;
->     od;
->    end;;
 gap> record := NewDFSRecord(CompleteDigraph(10));;
 gap> ExecuteDFS(record, [], 2, fail,
 >               fail, fail, fail);
 gap> preorder_list := [];;
-gap> mapToList(record.preorder, 10, preorder_list);;
-gap> preorder_list;
+gap> record.preorder;
 [ 2, 1, 3, 4, 5, 6, 7, 8, 9, 10 ]
 gap> record := NewDFSRecord(CompleteDigraph(15));;
 gap> data := rec(cycle_vertex := 0);;
@@ -3288,9 +3282,7 @@ gap> record.stop;
 true
 gap> data.cycle_vertex;
 1
-gap> preorder_list := [];;
-gap> mapToList(record.preorder, 15, preorder_list);;
-gap> preorder_list;
+gap> record.preorder;
 [ 1, 2, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 ]
 gap> record := NewDFSRecord(Digraph([[2, 3], [4], [5], [], [4]]));;
 gap> CrossFunc := function(record, data)
@@ -3333,6 +3325,17 @@ gap> record.postorder;
 [ 3, 1, 2 ]
 gap> data;
 rec( back_edges := [  ], cross_edges := [ [ 3, 2 ] ] )
+gap> record := NewDFSRecord(Digraph([[2, 3], [3], []]));;
+gap> data := rec(explored_edges := []);;
+gap> PreorderFunc := function(record, data)
+>      if record.current <> record.parents[record.current] then
+>        Add(data.explored_edges, [record.parents[record.current], record.current]);
+>      fi;
+>    end;;
+gap> ExecuteDFS(record, data, 1, PreorderFunc, fail, fail,
+> fail);
+gap> data.explored_edges;
+[ [ 1, 2 ], [ 2, 3 ] ]
 
 # IsDigraphPath
 gap> D := Digraph(IsMutableDigraph, Combinations([1 .. 5]), IsSubset);
@@ -3434,6 +3437,11 @@ gap> Unbind(u1);
 gap> Unbind(u2);
 gap> Unbind(x);
 gap> Unbind(TestPartialOrderDigraph);
+gap> Unbind(PreorderFunc);
+gap> Unbind(AncestorFunc);
+gap> Unbind(CrossFunc);
+gap> Unbind(record);
+gap> Unbind(data);
 
 #
 gap> DIGRAPHS_StopTest();

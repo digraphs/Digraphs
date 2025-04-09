@@ -20,6 +20,8 @@
 bool CallCheckStop(Obj f, Int RNamStop, Obj record, Obj data);
 
 struct dfs_args {
+  struct dfs_config* dfs_conf;
+
   Obj record;
   Int* preorder_num;
   Int* postorder_num;
@@ -51,16 +53,18 @@ struct dfs_config {
   bool revisit;
   bool iter;
   bool forest;
+  bool use_postorder;
+  bool use_parents;
+  bool use_edge;
 };
 
 
 
-bool iter_loop(Obj stack, Int stack_size, struct dfs_args* args,
-               struct dfs_config* conf);
+bool iter_loop(Obj stack, Int stack_size, struct dfs_args* args);
 bool ExecuteDFSRec(Int current, Int prev, Int idx, struct dfs_args* args);
-bool ExecuteDFSIter(Int start, struct dfs_args* args, struct dfs_config* conf);
+bool ExecuteDFSIter(Int start, struct dfs_args* args);
 Obj FuncExecuteDFS_C(Obj self, Obj args);
 
-void parseConfig(struct dfs_config*, Obj conf_record);
+void parseConfig(struct dfs_args*, Obj conf_record);
 
 #endif  // DIGRAPHS_SRC_DFS_H_

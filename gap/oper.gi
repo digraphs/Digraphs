@@ -2030,9 +2030,11 @@ function(D, v)
   fi;
   record := NewDFSRecord(D);
   data := rec(prev := -1, best := 0);
+
   AncestorFunc := function(record, _)
     record.stop := true;
   end;
+
   PostOrderFunc := function(_, data)
     data.prev := data.prev - 1;
   end;
@@ -2047,6 +2049,8 @@ function(D, v)
   record.config.revisit := true;  # If found another edge to an already
                                   # visited and backtracked on node,
                                   # set to unvisited, and visit it
+
+  record.config.iterative := true;  # revisit DFS must be iterative
 
   ExecuteDFS(record, data, v,
                PreOrderFunc, PostOrderFunc,
@@ -2353,7 +2357,7 @@ end);
 InstallMethod(VerticesReachableFrom, "for a digraph and a vertex",
 [IsDigraph, IsPosInt],
 function(D, root)
-  local N, record, data, AncestorFunc, PreOrderFunc;
+  local N, record, conf, data, AncestorFunc, PreOrderFunc;
 
   N := DigraphNrVertices(D);
   if 0 = root or root > N then
@@ -2361,7 +2365,13 @@ function(D, root)
                   "argument (a digraph)");
   fi;
 
-  record := NewDFSRecord(D);
+  conf := NewDFSFlagsLightweight();
+
+  conf.use_postorder := true;
+  conf.use_edge := true;
+  conf.use_parents := true;
+
+  record := NewDFSRecordLightweight(D, conf);
   data := rec(result := [], root_reached := false);
 
   PreOrderFunc := function(record, data)
@@ -2787,32 +2797,85 @@ end);
 # 11. DFS
 #############################################################################
 
+DIGRAPHS_DFSRecNames := function()
+  return ["stop", "graph", "child", "parents", "preorder", "postorder",
+               "current", "edge"];
+  end;
+
+DIGRAPHS_DFSFlagNames := function()
+  return ["iterative", "forest", "revisit", "use_parents", "use_edge",
+                   "use_postorder"];
+  end;
+
+DIGRAPHS_DFSError := function()
+  ErrorNoReturn("the 1st argument <record> must be created with ",
+                "NewDFSRecord,");
+end;
+
 InstallMethod(NewDFSRecord,
 "for a digraph", [IsDigraph],
-function(graph)
-  local record;
+Graph -> NewDFSRecordLightweight(Graph, NewDFSFlags()));
+
+InstallMethod(NewDFSRecordLightweight,
+"for a digraph and a record", [IsDigraph, IsRecord],
+function(graph, conf)
+  local record, config_names;
+
+  config_names := DIGRAPHS_DFSFlagNames();
   record := rec();
+  if ForAny(config_names, n -> not IsBound(conf.(n))) then
+    DIGRAPHS_DFSError();
+  fi;
+
   record.graph := graph;
   record.child := -1;
   record.current := -1;
   record.stop := false;
-  record.parents := ListWithIdenticalEntries(DigraphNrVertices(graph), -1);
   record.preorder := ListWithIdenticalEntries(DigraphNrVertices(graph), -1);
-  record.postorder := ListWithIdenticalEntries(DigraphNrVertices(graph), -1);
-  record.edge := ListWithIdenticalEntries(DigraphNrVertices(graph), -1);
-  record.config := NewDFSFlags();
+  if conf.use_parents then
+    record.parents := ListWithIdenticalEntries(DigraphNrVertices(graph), -1);
+  else
+    record.parents := fail;
+  fi;
+  if conf.use_postorder then
+    record.postorder := ListWithIdenticalEntries(DigraphNrVertices(graph), -1);
+  else
+    record.postorder := fail;
+  fi;
+  if conf.use_edge then
+    record.edge := ListWithIdenticalEntries(DigraphNrVertices(graph), -1);
+  else
+    record.edge := fail;
+  fi;
+
+  record.config := conf;
   return record;
 end);
 
 InstallMethod(NewDFSFlags,
 "", [],
 function()
-  local record;
-  record := rec();
-  record.forest := false;
-  record.revisit := false;  # Use for revisiting nodes
-  record.iterative := false;
-  return record;
+  local config;
+  config := rec();
+  config.forest := false;   # Visit all vertices (all connected components)
+  config.revisit := false;  # Use for revisiting nodes (requires iterative)
+  config.iterative := false;
+  config.use_edge := true;     # Whether these record fields are necessary
+  config.use_postorder := true;
+  config.use_parents := true;
+  return config;
+end);
+
+InstallMethod(NewDFSFlagsLightweight,
+"", [],
+function()
+  local config;
+  config := NewDFSFlags();
+  config.iterative := false;
+  config.use_postorder := false;
+  config.use_parents := false;
+  config.use_edge := false;
+  return config;
 end);
 
 # * PreOrderFunc is called with (record, data) when a vertex is popped from the
@@ -2830,15 +2893,18 @@ end);
 InstallGlobalFunction(ExecuteDFS,
 function(record, data, start, PreOrderFunc, PostOrderFunc, AncestorFunc,
          CrossFunc)
-  local name;
+  local names, config_names;
 
-  for name in ["stop", "graph", "child", "parents", "preorder", "postorder",
-               "current", "edge"] do
-    if not IsBound(record.(name)) then
-      ErrorNoReturn("the 1st argument <record> must be created with ",
-                    "NewDFSRecord,");
-    fi;
-  od;
+  names := DIGRAPHS_DFSRecNames();
+  config_names := DIGRAPHS_DFSFlagNames();
+
+  if not IsBound(record.config) then
+    DIGRAPHS_DFSError();
+  elif ForAny(config_names, n -> not IsBound(record.config.(n))) then
+    DIGRAPHS_DFSError();
+  elif ForAny(names, n -> not IsBound(record.(n))) then
+    DIGRAPHS_DFSError();
+  fi;
 
   ExecuteDFS_C(record, data, start, PreOrderFunc, PostOrderFunc,
                AncestorFunc, CrossFunc);
