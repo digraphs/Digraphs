@@ -996,7 +996,7 @@ end);
 InstallMethod(OnDigraphs, "for a mutable digraph by out-neighbours and a perm",
 [IsMutableDigraph and IsDigraphByOutNeighboursRep, IsPerm],
 function(D, p)
-  local out, permed;
+  local out;
   if SmallestMovedPoint(p) > DigraphNrVertices(D) then
     return D;
   elif ForAny(DigraphVertices(D), i -> i ^ p > DigraphNrVertices(D)) then
@@ -1005,8 +1005,7 @@ function(D, p)
   fi;
 
   out := D!.OutNeighbours;
-  permed := Permuted(out, p);
-  out{DigraphVertices(D)} := permed;
+  out{DigraphVertices(D)} := Permuted(out, p);
   Apply(out, x -> OnTuples(x, p));
   ClearDigraphEdgeLabels(D);
   return D;
