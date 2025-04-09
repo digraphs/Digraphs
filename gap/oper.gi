@@ -1001,7 +1001,7 @@ function(D, p)
     return D;
   elif ForAny(DigraphVertices(D), i -> i ^ p > DigraphNrVertices(D)) then
     ErrorNoReturn("the 2nd argument <p> must be a permutation that permutes ",
-                  "the vertices of the digraph <D> that is the 1st argument.");
+                  "the vertices of the digraph <D> that is the 1st argument");
   fi;
 
   out := D!.OutNeighbours;
@@ -1031,7 +1031,7 @@ function(D, t)
   elif ForAny(DigraphVertices(D), i -> i ^ t > DigraphNrVertices(D)) then
     ErrorNoReturn("the 2nd argument <t> must be a transformation that ",
                   "maps every vertex of the digraph <D> that is the 1st ",
-                  "argument, to another vertex.");
+                  "argument, to another vertex");
   fi;
   old := D!.OutNeighbours;
   new := List(DigraphVertices(D), x -> []);
@@ -1062,7 +1062,7 @@ InstallMethod(OnSetsDigraphs,
 [IsDigraphCollection and IsHomogeneousList, IsPerm],
 function(S, p)
   if not IsSet(S) then
-    ErrorNoReturn("the first argument must be a set (a strictly sorted list),");
+    ErrorNoReturn("the first argument must be a set (a strictly sorted list)");
   fi;
   return Set(S, D -> OnDigraphs(DigraphMutableCopyIfMutable(D), p));
 end);
@@ -1083,7 +1083,7 @@ function(D, perms)
             i -> i ^ perms[2] > DigraphNrEdges(D)) then
     ErrorNoReturn("the 2nd entry of the 2nd argument <perms> must ",
                   "permute the edges of the digraph <D> that is the 1st ",
-                  "argument,");
+                  "argument");
   fi;
 
   return OnDigraphs(D, perms[1]);
