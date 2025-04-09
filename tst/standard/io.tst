@@ -12,6 +12,7 @@ gap> LoadPackage("digraphs", false);;
 
 #
 gap> DIGRAPHS_StartTest();
+gap> files := ShallowCopy(IO.OpenFiles);;
 
 #  DigraphFromGraph6String and Graph6String
 gap> DigraphFromGraph6String("?");
@@ -276,6 +277,9 @@ gap> gr = ReadDigraphs(filename);
 true
 gap> gr[3] := Digraph([[1, 2], [1, 2]]);
 <immutable digraph with 2 vertices, 4 edges>
+gap> WriteDigraphs(filename, Digraph([[2], []]), Graph6String);
+Error, the argument <D> must be a symmetric digraph with no loops or multiple \
+edges,
 gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/test.s6.bz2");;
 gap> WriteDigraphs(filename, gr, "w");
 IO_OK
@@ -889,6 +893,9 @@ gap> str := DIMACSString(gr);
 gap> DigraphFromDIMACSString(str) = gr;
 true
 gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/more.dimacs");;
+gap> WriteDigraphs(filename, gr);
+Error, DIMACSString is a whole file encoder and so the argument <mode> must be\
+ "w".
 gap> WriteDigraphs(filename, gr, "w");;
 gap> ReadDigraphs(filename)[1] = gr;
 true
@@ -1045,6 +1052,11 @@ gap> DigraphFromDreadnautString("$=1n3dg\n1 : 2 3.\nf=[1:\n:]");
 Error, Invalid range 1 : ':' in partition specification (line 3)
 gap> DigraphFromDreadnautString("$=1n3dg\n1 : 2 3.\nf=[1\nf=2");
 Error, Unexpected character 'f' in partition specification (line 4)
+gap> IO_Close(file);;
+
+# Ensure all files introduced by tests are closed
+gap> IO.OpenFiles = files;
+true
 
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(D);
@@ -1066,6 +1078,7 @@ gap> Unbind(rdgr);
 gap> Unbind(read);
 gap> Unbind(str);
 gap> Unbind(x);
+gap> Unbind(files);
 
 #
 gap> DIGRAPHS_StopTest();
