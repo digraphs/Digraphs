@@ -2836,20 +2836,18 @@ function(D)
   return C;
 end);
 
- InstallMethod(UndirectedSpanningTree, "for a mutable digraph",
- [IsMutableDigraph],
- function(D)
-    local C;
-    C := UndirectedSpanningForest(DigraphMutableCopy(D));
-   if not (DigraphHasAVertex(D)
-       and IsStronglyConnectedDigraph(D)
-       and IsConnectedDigraph(C))
-       then
-     return fail;
-   fi;
-   return C;
-   D!.OutNeighbors := OutNeighbors(C);
- end);
+InstallMethod(UndirectedSpanningTree, "for a mutable digraph",
+[IsMutableDigraph],
+function(D)
+  local C;
+  C := UndirectedSpanningForest(DigraphMutableCopy(D));
+  if not (DigraphHasAVertex(D) and IsStronglyConnectedDigraph(D)
+      and IsConnectedDigraph(C)) then
+    return fail;
+  fi;
+  D!.OutNeighbours := OutNeighbors(C);
+  return D;
+end);
 
 InstallMethod(UndirectedSpanningTree, "for an immutable digraph",
 [IsImmutableDigraph], UndirectedSpanningTreeAttr);
@@ -2867,6 +2865,7 @@ function(D)
     return fail;
   fi;
   out := UndirectedSpanningForest(D);
+  Assert(1, out <> fail);
   SetIsUndirectedTree(out, true);
   return out;
 end);
