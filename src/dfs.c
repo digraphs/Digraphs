@@ -56,7 +56,7 @@
 
 #define ON_BACKTRACK(current, parent, args)                                   \
   if (args->dfs_conf->use_postorder) {                                        \
-    ASS_LIST(args->postorder, current, INTOBJ_INT(++(*args->postorder_num))); \
+    AssPlist(args->postorder, current, INTOBJ_INT(++(*args->postorder_num))); \
     CHANGED_BAG(args->record);                                                \
   }                                                                           \
   if (args->CallPostorder) {                                                  \
@@ -72,10 +72,10 @@
 
 #define ON_ADD_SUCC(current, succ, idx, args)           \
   if (args->dfs_conf->use_parents) {                    \
-    ASS_LIST(args->parents, succ, INTOBJ_INT(current)); \
+    AssPlist(args->parents, succ, INTOBJ_INT(current)); \
   }                                                     \
   if (args->dfs_conf->use_edge) {                       \
-    ASS_LIST(args->edge, succ, INTOBJ_INT(idx));        \
+    AssPlist(args->edge, succ, INTOBJ_INT(idx));        \
   }                                                     \
   CHANGED_BAG(args->record);
 
@@ -150,11 +150,11 @@ bool ExecuteDFSIter(Int start, struct dfs_args* args) {
 
     if (args -> dfs_conf -> forest) {
       for (Int v = 1; v <= LEN_LIST(args -> neighbors); v++) {
-        bool visited = INT_INTOBJ(ELM_LIST(args -> preorder, v)) != -1;
+        bool visited = INT_INTOBJ(ELM_PLIST(args -> preorder, v)) != -1;
 
         if (!visited) {
           if (args->dfs_conf->use_parents) {
-            ASS_LIST(args->parents, v, INTOBJ_INT(v));
+            AssPlist(args->parents, v, INTOBJ_INT(v));
           }
           CHANGED_BAG(args -> record);
           AssPlist(stack, 1, INTOBJ_INT(v));
@@ -173,10 +173,10 @@ bool iter_loop(Obj stack, Int stack_size, struct dfs_args* args) {
         if (current < 0) {
             Int bt_on = current * -1;
             Int parent = !args -> dfs_conf -> use_parents ? -1 :
-              INT_INTOBJ(ELM_LIST(args -> parents, bt_on));
+              INT_INTOBJ(ELM_PLIST(args -> parents, bt_on));
             ON_BACKTRACK(bt_on, parent, args);
             continue;
-        } else if (INT_INTOBJ(ELM_LIST(args->preorder, current)) != -1) {
+        } else if (INT_INTOBJ(ELM_PLIST(args->preorder, current)) != -1) {
           continue;
         }
 
@@ -185,7 +185,7 @@ bool iter_loop(Obj stack, Int stack_size, struct dfs_args* args) {
           STACK_PUSH(stack, stack_size, INTOBJ_INT(current * -1));
         }
 
-        Obj succ = ELM_PLIST(args -> neighbors, current);
+        Obj succ = ELM_LIST(args -> neighbors, current);
 
         for (Int i = LEN_LIST(succ); i > 0; i--) {
             Int v = INT_INTOBJ(ELM_LIST(succ, i));
@@ -196,8 +196,8 @@ bool iter_loop(Obj stack, Int stack_size, struct dfs_args* args) {
 
             if (!visited || revisit) {
                 if (revisit) {
-                  ASS_LIST(args->preorder, v, INTOBJ_INT(-1));
-                  CHANGED_BAG(args -> record);
+                  AssPlist(args->preorder, v, INTOBJ_INT(-1));
+                  CHANGED_BAG(args->record);
                 }
                 ON_ADD_SUCC(current, v, i, args);
                 STACK_PUSH(stack, stack_size, INTOBJ_INT(v));
@@ -220,7 +220,7 @@ bool ExecuteDFSRec(Int current, Int parent, Int idx, struct dfs_args* args) {
     return ExecuteDFSRec(current, parent, idx + 1, args);
   }
 
-  Obj succ = ELM_PLIST(args -> neighbors, current);
+  Obj succ = ELM_LIST(args -> neighbors, current);
 
   if (idx > LEN_LIST(succ)) {  // Backtrack on current (all successors explored)
       ON_BACKTRACK(current, parent, args);
@@ -305,7 +305,7 @@ Obj FuncExecuteDFS_C(Obj self, Obj args) {
   parseConfig(&dfs_args_, config);
 
   if (dfs_conf.use_parents) {
-    ASS_LIST(dfs_args_.parents, INT_INTOBJ(start), start);
+    AssPlist(dfs_args_.parents, INT_INTOBJ(start), start);
     CHANGED_BAG(record);
   }
 
@@ -320,7 +320,7 @@ Obj FuncExecuteDFS_C(Obj self, Obj args) {
         bool visited = INT_INTOBJ(ELM_PLIST(dfs_args_.preorder, i)) != -1;
         if (!visited) {
           if (dfs_conf.use_parents) {
-            ASS_LIST(dfs_args_.parents, i, INTOBJ_INT(i));
+            AssPlist(dfs_args_.parents, i, INTOBJ_INT(i));
             CHANGED_BAG(record);
           }
           ExecuteDFSRec(i, i, PREORDER_IDX, &dfs_args_);

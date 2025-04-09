@@ -3336,6 +3336,10 @@ gap> ExecuteDFS(record, data, 1, PreorderFunc, fail, fail,
 > fail);
 gap> data.explored_edges;
 [ [ 1, 2 ], [ 2, 3 ] ]
+gap> gr := Digraph(List([1 .. 5], x -> [1 .. 5]));;
+gap> record := NewDFSRecord(gr);;
+gap> ExecuteDFS(record, data, 1, fail, fail, fail,
+> fail);
 
 # IsDigraphPath
 gap> D := Digraph(IsMutableDigraph, Combinations([1 .. 5]), IsSubset);
