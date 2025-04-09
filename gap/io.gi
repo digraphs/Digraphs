@@ -402,7 +402,7 @@ end);
 
 InstallGlobalFunction(ReadDigraphs,
 function(arg...)
-  local nr, decoder, name, file, i, next, out;
+  local nr, decoder, name, file, i, next, out, line;
 
   # defaults
   nr      := infinity;
@@ -474,8 +474,12 @@ function(arg...)
 
   out := [];
   if NameFunction(decoder) in WholeFileDecoders then
-    Add(out, decoder(IO_ReadUntilEOF(file)));
-    next := IO_Nothing;
+    line := IO_ReadUntilEOF(file);
+    if IsString(arg[1]) then
+      IO_Close(file);
+    fi;
+    Add(out, decoder(line));
+    return out;
   else
     next := decoder(file);
   fi;
@@ -606,6 +610,9 @@ function(arg...)
     fi;
     file := DigraphFile(name, encoder, mode);
     if NameFunction(file!.coder) in WholeFileEncoders and file!.mode <> "w" then
+      if IsString(arg[1]) then
+        IO_Close(file);
+      fi;
       ErrorNoReturn(NameFunction(file!.coder), " is a whole file ",
                     "encoder and so the argument <mode> must be \"w\".");
     fi;
