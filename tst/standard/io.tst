@@ -893,12 +893,12 @@ gap> str := DIMACSString(gr);
 gap> DigraphFromDIMACSString(str) = gr;
 true
 gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/more.dimacs");;
-gap> WriteDigraphs(filename, gr);
-Error, DIMACSString is a whole file encoder and so the argument <mode> must be\
- "w".
 gap> WriteDigraphs(filename, gr, "w");;
 gap> ReadDigraphs(filename)[1] = gr;
 true
+gap> WriteDigraphs(filename, gr);
+Error, DIMACSString is a whole file encoder and so the argument <mode> must be\
+ "w".
 gap> DigraphVertexLabels(gr) = [1 .. 3];
 true
 
