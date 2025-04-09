@@ -55,10 +55,26 @@
 	written separately in <E> Sparse6 </E> format with a separation symbol
 	in between.
       </Item>
+      <Mark> dreadnaut </Mark>
+      <Item>
+        <E>dreadnaut</E> is a graph data format designed for directed and undirected graphs.
+        The format supports loops but multiple edges are ignored.  The format consists of an
+        initial section that defines the graph's structural properties, such as the number of
+        vertices, the starting value for vertices, and whether the graph is directed. This is followed
+        by a list of edges. For more information and examples of the format see
+        <URL Text="nauty and Traces User's Guide">http://pallini.di.uniroma1.it/Guide.html</URL>.
+      </Item>
+      <Mark> DIMACS </Mark>
+      <Item>
+        <E>DIMACS</E> is a graph data format that can be used for symmetric digraphs.
+        For a more detailed description, see <Ref Oper="WriteDIMACSDigraph"/>
+      </Item>
     </List>
     <#Include Label="String">
     <#Include Label="DigraphFromGraph6String">
     <#Include Label="Graph6String">
+    <#Include Label="DigraphFromDreadnautString">
+    <#Include Label="DIMACSString">
     <#Include Label="DigraphFile">
     <#Include Label="ReadDigraphs">
     <#Include Label="WriteDigraphs">
@@ -70,5 +86,6 @@
     <#Include Label="PlainTextString">
     <#Include Label="WritePlainTextDigraph">
     <#Include Label="WriteDIMACSDigraph">
+    <#Include Label="WholeFileEncoders">
   </Section>
 </Chapter>

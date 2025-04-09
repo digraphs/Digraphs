@@ -79,6 +79,10 @@ Error, there must be 1, 2, or 3 arguments,
 gap> badfilename := "path/to/some/madeupfile.g6.gz";;
 gap> ReadDigraphs(badfilename, 3);
 Error, cannot open the file given as the 1st argument <name>,
+gap> filename := Concatenation(DIGRAPHS_Dir(), "tst/out/temp.dre");;
+gap> WriteDigraphs(filename, gr, "w");;
+gap> ReadDigraphs(filename)[1] = gr;
+true
 
 #  DigraphFromSparse6String and Sparse6String
 gap> DigraphFromSparse6String(":@");
@@ -244,6 +248,10 @@ gap> ReadDigraphs(filename);
 gap> gr := [CompleteDigraph(30)];;
 gap> DigraphGroup(gr[1]) = SymmetricGroup(30);
 true
+gap> WriteDigraphs(Concatenation(DIGRAPHS_Dir(), "/tst/out/temp.dre"), gr, "w");
+IO_OK
+gap> ReadDigraphs(Concatenation(DIGRAPHS_Dir(), "/tst/out/temp.dre"));
+[ <immutable digraph with 30 vertices, 870 edges> ]
 gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/test.p");;
 gap> WriteDigraphs(filename, gr, "w");
 IO_OK
@@ -667,7 +675,7 @@ gap> WriteDIMACSDigraph(gr, filename);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `WriteDIMACSDigraph' on 2 arguments
 gap> WriteDIMACSDigraph("file", ChainDigraph(2));
-Error, the 2nd argument <D> must be a symmetric digraph,
+Error, the argument <D> must be a symmetric digraph,
 gap> WriteDIMACSDigraph(filename, gr);
 Error, cannot open the file given as the 1st argument <name>,
 gap> filename := "tmp.gz";;
@@ -676,6 +684,7 @@ gap> D := CompleteDigraph(3);
 gap> SetDigraphVertexLabels(D, ["a", "b", "c"]);
 gap> WriteDIMACSDigraph(filename, CompleteDigraph(3));
 IO_OK
+gap> Exec("rm -f file");
 gap> Exec("rm -f tmp.gz");
 
 # Handling loops
@@ -713,7 +722,7 @@ IO_OK
 
 #  ReadDIMACSDigraph
 gap> ReadDIMACSDigraph("does/not/exist.gz");
-Error, cannot open the file given as the 2nd argument <name>,
+Error, cannot open the file given as the 1st argument <name>,
 gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/bad.dimacs");;
 
 # Bad line type
@@ -721,8 +730,7 @@ gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "file for testing purposes");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, the format of the file given as the 2nd argument <name> cannot be deter\
-mined,
+Error, the format of the string <s> cannot be determined
 
 # Bad vertices and edges definition
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
@@ -730,47 +738,40 @@ gap> IO_WriteLine(file, "c file for testing purposes");;
 gap> IO_WriteLine(file, "p edge 'a' 1");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, the format of the file given as the 2nd argument <name> cannot be deter\
-mined,
+Error, the format of the string <s> cannot be determined
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "p edge 2 -1");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, the format of the file given as the 2nd argument <name> cannot be deter\
-mined,
+Error, the format of the string <s> cannot be determined
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "p edge 1 1");;
 gap> IO_WriteLine(file, "p edge 1 1");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, the format of the file given as the 2nd argument <name> cannot be deter\
-mined,
+Error, the format of the string <s> cannot be determined
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "p edge 1");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, the format of the file given as the 2nd argument <name> cannot be deter\
-mined,
+Error, the format of the string <s> cannot be determined
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "p fail 1 1");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, the format of the file given as the 2nd argument <name> cannot be deter\
-mined,
+Error, the format of the string <s> cannot be determined
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "c empty file");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, the format of the file given as the 2nd argument <name> cannot be deter\
-mined,
+Error, the format of the string <s> cannot be determined
 
 # Vertices and edges undefined
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "e 1 1");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, the format of the file given as the 2nd argument <name> cannot be deter\
-mined,
+Error, the format of the string <s> cannot be determined
 
 # Bad node label
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
@@ -778,22 +779,19 @@ gap> IO_WriteLine(file, "p edge 2 1");;
 gap> IO_WriteLine(file, "n 2");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, the format of the file given as the 2nd argument <name> cannot be deter\
-mined,
+Error, the format of the string <s> cannot be determined
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "p edge 2 1");;
 gap> IO_WriteLine(file, "n 3 1");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, the format of the file given as the 2nd argument <name> cannot be deter\
-mined,
+Error, the format of the string <s> cannot be determined
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "p edge 2 1");;
 gap> IO_WriteLine(file, "n 2 a");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, the format of the file given as the 2nd argument <name> cannot be deter\
-mined,
+Error, the format of the string <s> cannot be determined
 
 # Bad edge
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
@@ -801,29 +799,25 @@ gap> IO_WriteLine(file, "p edge 2 1");;
 gap> IO_WriteLine(file, "e 2 1 3");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, the format of the file given as the 2nd argument <name> cannot be deter\
-mined,
+Error, the format of the string <s> cannot be determined
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "p edge 2 1");;
 gap> IO_WriteLine(file, "e 2 a");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, the format of the file given as the 2nd argument <name> cannot be deter\
-mined,
+Error, the format of the string <s> cannot be determined
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "p edge 2 1");;
 gap> IO_WriteLine(file, "e 3 1");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, the format of the file given as the 2nd argument <name> cannot be deter\
-mined,
+Error, the format of the string <s> cannot be determined
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
 gap> IO_WriteLine(file, "p edge 2 1");;
 gap> IO_WriteLine(file, "e 1 3");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, the format of the file given as the 2nd argument <name> cannot be deter\
-mined,
+Error, the format of the string <s> cannot be determined
 
 # Unsupported types
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
@@ -834,8 +828,7 @@ gap> IO_WriteLine(file, "x");;
 gap> IO_WriteLine(file, "j");;
 gap> IO_Close(file);;
 gap> ReadDIMACSDigraph(filename);
-Error, the format of the file given as the 2nd argument <name> cannot be deter\
-mined,
+Error, the format of the string <s> cannot be determined
 
 # Bad number of edges
 gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
@@ -890,6 +883,18 @@ true
 gap> DigraphVertexLabels(gr);
 [ 1 .. 3 ]
 
+#  DigraphFromDIMACSString / DIMACSString
+gap> str := DIMACSString(gr);
+"p edge 3 4\ne 1 2\ne 2 3\ne 2 3\ne 3 3\nn 1 1\nn 2 2\nn 3 3"
+gap> DigraphFromDIMACSString(str) = gr;
+true
+gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/more.dimacs");;
+gap> WriteDigraphs(filename, gr, "w");;
+gap> ReadDigraphs(filename)[1] = gr;
+true
+gap> DigraphVertexLabels(gr) = [1 .. 3];
+true
+
 #  Test DIGRAPHS_ChooseFileDecoder
 gap> DIGRAPHS_ChooseFileDecoder(1);
 Error, the argument <filename> must be a string,
@@ -923,8 +928,127 @@ gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/test.p");;
 gap> ReadDigraphs(filename, IO_Unpickle);
 [ <immutable digraph with 30 vertices, 870 edges> ]
 
+# DreadnautString
+gap> filename := Concatenation(DIGRAPHS_Dir(), "tst/out/temp.dre");;
+gap> D := Digraph([[1, 2, 3, 2], [2, 1], [3]]);
+<immutable multidigraph with 3 vertices, 7 edges>
+gap> DreadnautString(D);
+"n=3 $=1 d g\n1 : 1 2 3;\n2 : 2 1;\n3 : 3."
+gap> DreadnautString(Digraph([]));
+Error, the argument <D> must be a digraph with at least one vertex
+gap> D := CompleteDigraph(3);;
+gap> DreadnautString(D);
+"n=3 $=1 d g\n1 : 2 3;\n2 : 1 3;\n3 : 1 2."
+gap> DreadnautString(D, [1, 1, 2]);
+"n=3 $=1 d g\n1 : 2 3;\n2 : 1 3;\n3 : 1 2.\nf = [1 2 | 3]"
+gap> DreadnautString(D, [1, 1]);
+Error, the second argument <partition> must be a list of length equal to the n\
+umber of vertices in <D>
+gap> DreadnautString(D, [1, 1, 2], "extra arg");
+Error, there must be 1 or 2 arguments
+gap> DreadnautString(1);
+Error, the first argument <D> must be a digraph
+gap> DreadnautString(D, 1);
+Error, the second argument <partition> must be a list
+gap> WriteDigraphs(filename, D, "w");
+IO_OK
+
+# DigraphFromDreadnautString
+gap> ReadDigraphs(filename)[1] = D;
+true
+gap> DigraphFromDreadnautString("");
+Error, the argument <s> must be a non-empty string
+gap> DigraphFromDreadnautString("$1n3\ndg\n1:1;\n2:21");
+<immutable digraph with 3 vertices, 1 edge>
+gap> filename := Concatenation(DIGRAPHS_Dir(), "tst/out/temp.dre");;
+gap> D := EmptyDigraph(5);;
+gap> WriteDigraphs(filename, D, "w");;
+gap> D = ReadDigraphs(filename)[1];
+true
+gap> D := Digraph([[3, 5, 10], [9, 8, 10], [4], [6], [7, 11], [7], [8], [], [11], [], []]);;
+gap> WriteDigraphs(filename, D, "w");;
+gap> D2 := ReadDigraphs(filename)[1];;
+gap> D = D2;
+true
+gap> DigraphFromDreadnautString("$=1n=3-d\ng1 : 1 2 3 1 2;\n	 2 : 1 2;\n	 3 : 2;");
+<immutable digraph with 3 vertices, 6 edges>
+gap> DigraphFromDreadnautString("silly text for testing\nn=1dg\n1: 1.");
+Error, Operation 'e' (line 1) is not supported
+gap> DigraphFromDreadnautString("$=1-dg\n1 : 1 2 3 1 2.");
+Error, Vertex number must be declared before `g' on line 1
+gap> D := DigraphFromDreadnautString("$=2n=3d\ng2 : 2 2 3 7 2.");
+<immutable digraph with 3 vertices, 2 edges>
+gap> DigraphEdges(D);
+[ [ 1, 1 ], [ 1, 2 ] ]
+gap> DigraphFromDreadnautString("$=-1n=3-d\ng1 : 1 2 3 1 2.");
+Error, Label origin -1 on line 1 must be non-negative.
+gap> file := IO_CompressedFile(UserHomeExpand(filename), "w");;
+gap> DigraphFromDreadnautString("$=1n=5-d\ng1 : 2;\n-1 -6");
+<immutable empty digraph with 5 vertices>
+gap> D := DigraphFromDreadnautString("$=1n=5-d\ng1 : 1 2 3 1 2.\ng2 : 4 5 17.");;
+gap> DigraphEdges(D);
+[ [ 2, 4 ], [ 2, 5 ], [ 4, 2 ], [ 5, 2 ] ]
+gap> D := DigraphFromDreadnautString("$=1n=5d\ng1 : 1 2 3 1 2.\n7 : 4 5.");
+Error, Illegal character '7' on line 3
+gap> D := DigraphFromDreadnautString("$=1n=5d\ng1 : 1 2 3\n7 : 4 5.");;
+gap> DigraphEdges(D);
+[ [ 1, 1 ], [ 1, 2 ], [ 1, 3 ], [ 1, 4 ], [ 1, 5 ] ]
+gap> D := DigraphFromDreadnautString("$=1n=5dg\n7 : 1 2 3");;
+gap> DigraphEdges(D);
+[ [ 1, 1 ], [ 1, 2 ], [ 1, 3 ] ]
+gap> D := DigraphFromDreadnautString("$=1n=5dg\n1 : 1 2 3.\nf = [1|2]");;
+gap> DigraphVertexLabels(D);
+[ 1, 2, 0, 0, 0 ]
+gap> D := DigraphFromDreadnautString("$=3n=10dg\n3:4.\nf = [3,5:7|9");;
+Error, Unterminated partition specification (line 3)
+gap> D := DigraphFromDreadnautString("$=3n=10dg\n3:4.\nf = [6,3,5:7|9 9]");;
+gap> DigraphVertexLabels(D);
+[ 1, 0, 1, 1, 1, 0, 2, 0, 0, 0 ]
+gap> D := DigraphFromDreadnautString("$=3n=10dAg\n3:4.");;
+Error, Operation 'A' (line 1) is not recognised
+gap> DigraphFromDreadnautString("$=3n=2dAs\"this is a comment \"g\n3:4;3._");
+<immutable empty digraph with 2 vertices>
+gap> DigraphEdges(DigraphFromDreadnautString("$=3n=2dg\n3:3,4;\n3! 2 3 4\n._sr=2r& F=4 FF -M -f -V -P"));
+[ [ 2, 2 ] ]
+gap> DigraphEdges(DigraphFromDreadnautString("$=3n=2dg\n3:3,4.__"));
+[ [ 1, 1 ], [ 2, 1 ] ]
+gap> DigraphFromDreadnautString("$=3n=2d\n<\"some file.dre\"");
+Error, Operation '<' (line 2) is not supported
+gap> DigraphFromDreadnautString("$=1ndg\n1 : 2 3 ");
+Error, Expected integer on line 1 following 'n' but was not found
+gap> DigraphFromDreadnautString("$=1n2As! and some\ng1 : 2 3 ! 2 3 4 5\n.\nf=1sr=2r&k 2 3 M 2/3 M 2 c l = 2 P PP 1 2 3 4; O OO &r 1 2 3; s3 S2 && __");
+<immutable empty digraph with 2 vertices>
+gap> DigraphFromDreadnautString("$=1n3d\"this is an unterminated comment g\n1 : 2 3.");
+Error, Unterminated comment beginning on line 1
+gap> DigraphFromDreadnautString("$=1n-3dg\n1 : 2 3.");
+Error, Vertex number given as -3 (line 1), but should be positive.
+gap> DigraphFromDreadnautString("$=1n3dg\n1 : 2 3.\n> \"out.dre\"");
+Error, Operation '>' (line 3) is not supported. Please use 'WriteDigraphs'.
+gap> DigraphFromDreadnautString("$n3dg\n1 : 2 3.\n< \"out.dre\"");
+Error, Expected integer on line 1 following $ but was not found
+gap> DigraphFromDreadnautString("$=1n3d");
+Error, No graph was declared.
+gap> DigraphFromDreadnautString("f=2");
+Error, Vertex number must be declared before partition on line 1
+gap> DigraphFromDreadnautString("$=1n3dg\n1 : 2 3.\nfa");
+Error, Partitions should be specified as either a single number (e.g. 'f=3') a\
+ list of cells (e.g. 'f=[...]') or using '-f'
+gap> DigraphFromDreadnautString("$=1n3dg\n1 : 2 3.\nf2 PP 1");
+Error, Unterminated 'PP' operation beginning on line 3
+gap> DigraphFromDreadnautString("$=1n3dg\n1 : 2 3.\nf=12 r 1");
+Error, Unterminated operation (either 'r' or 'R') beginning on line 3
+gap> DigraphFromDreadnautString("$=1n3dg\n1 : 2 3.\nf=[22]");
+Error, Vertex 22 out of range in partition specification (line 3)
+gap> DigraphFromDreadnautString("$=1n3dg\n1 : 2 3.\nf=[1:43]");
+Error, Vertex 43 out of range in partition specification (line 3)
+gap> DigraphFromDreadnautString("$=1n3dg\n1 : 2 3.\nf=[1:\n:]");
+Error, Invalid range 1 : ':' in partition specification (line 3)
+gap> DigraphFromDreadnautString("$=1n3dg\n1 : 2 3.\nf=[1\nf=2");
+Error, Unexpected character 'f' in partition specification (line 4)
+
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(D);
+gap> Unbind(D2);
 gap> Unbind(badfilename);
 gap> Unbind(f);
 gap> Unbind(file);
