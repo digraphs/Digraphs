@@ -43,6 +43,7 @@ DeclareOperation("DigraphMaximumFlow",
 DeclareOperation("RandomUniqueEdgeWeightedDigraph", [IsPosInt]);
 DeclareOperation("RandomUniqueEdgeWeightedDigraph", [IsPosInt, IsFloat]);
 DeclareOperation("RandomUniqueEdgeWeightedDigraph", [IsPosInt, IsRat]);
+DeclareOperation("RandomUniqueEdgeWeightedDigraph", [IsFunction, IsPosInt]);
 DeclareOperation("RandomUniqueEdgeWeightedDigraph",
                  [IsFunction, IsPosInt, IsFloat]);
 DeclareOperation("RandomUniqueEdgeWeightedDigraph",
