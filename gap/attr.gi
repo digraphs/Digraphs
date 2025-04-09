@@ -112,7 +112,8 @@ function(D)
   # articulation point if and only if it has at least 2 children.
   data.nr_children := 0;
 
-  record := NewDFSRecord(copy);
+  record := NewDFSRecord(copy); 
+  record.config.iterative := true;  # TODO DFS remove
   ExecuteDFS(record,
              data,
              1,
@@ -889,6 +890,7 @@ function(D)
   end;
 
   record.config.forest := true;
+  record.config.iterative := true;  # TODO DFS remove
 
   ExecuteDFS(record,
              fail,
@@ -2678,6 +2680,7 @@ function(D)
   conf.forest := true;
 
   record := NewDFSRecordLightweight(C, conf);
+  record.config.iterative := true;  # TODO DFS remove
 
   ExecuteDFS(record, data, 1, PreOrderFunc, fail,
                fail, fail);
