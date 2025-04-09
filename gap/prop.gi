@@ -253,7 +253,6 @@ function(D)
   end;
 
   record.config.forest := true;
-  record.config.iterative := true;  # TODO DFS remove
   ExecuteDFS(record, fail, 1, fail,
                   fail, AncestorFunc, fail);
 
@@ -409,7 +408,6 @@ function(D)
       record.stop := true;
     fi;
   end;
-  record.config.iterative := true;  # TODO DFS remove
 
   ExecuteDFS(record, [], 1, fail, fail,
               AncestorFunc, fail);

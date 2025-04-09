@@ -1702,7 +1702,6 @@ function(D, u, v)
     end;
   fi;
 
-  record.config.iterative := true;  # TODO DFS remove
   ExecuteDFS(record,
              fail,
              u,
@@ -2388,7 +2387,6 @@ function(D, root)
     fi;
   end;
 
-  record.config.iterative := true;  # TODO DFS remove
   ExecuteDFS(record,
              data,
              root,
@@ -2485,7 +2483,6 @@ function(D, root)
   end;
 
   record := NewDFSRecord(D);
-  record.config.iterative := true;  # TODO DFS remove
   ExecuteDFS(record,
              preorder_num_to_node,
              root,

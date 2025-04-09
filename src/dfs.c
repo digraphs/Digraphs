@@ -57,6 +57,7 @@
 #define ON_BACKTRACK(current, parent, args)                                   \
   if (args->dfs_conf->use_postorder) {                                        \
     ASS_LIST(args->postorder, current, INTOBJ_INT(++(*args->postorder_num))); \
+    CHANGED_BAG(args->record);                                                \
   }                                                                           \
   if (args->CallPostorder) {                                                  \
     AssPRec(args->record, args->RNamChild, INTOBJ_INT(current));              \
@@ -194,7 +195,10 @@ bool iter_loop(Obj stack, Int stack_size, struct dfs_args* args) {
             bool revisit = (args -> dfs_conf -> revisit && backtracked);
 
             if (!visited || revisit) {
-                if (revisit) ASS_LIST(args -> preorder, v, INTOBJ_INT(-1));
+                if (revisit) {
+                  ASS_LIST(args->preorder, v, INTOBJ_INT(-1));
+                  CHANGED_BAG(args -> record);
+                }
                 ON_ADD_SUCC(current, v, i, args);
                 STACK_PUSH(stack, stack_size, INTOBJ_INT(v));
             } else {
@@ -302,6 +306,7 @@ Obj FuncExecuteDFS_C(Obj self, Obj args) {
 
   if (dfs_conf.use_parents) {
     ASS_LIST(dfs_args_.parents, INT_INTOBJ(start), start);
+    CHANGED_BAG(record);
   }
 
   Int current = INT_INTOBJ(start);
@@ -316,6 +321,7 @@ Obj FuncExecuteDFS_C(Obj self, Obj args) {
         if (!visited) {
           if (dfs_conf.use_parents) {
             ASS_LIST(dfs_args_.parents, i, INTOBJ_INT(i));
+            CHANGED_BAG(record);
           }
           ExecuteDFSRec(i, i, PREORDER_IDX, &dfs_args_);
         }
