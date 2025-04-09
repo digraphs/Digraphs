@@ -2658,12 +2658,11 @@ InstallMethod(DigraphReflexiveTransitiveReductionAttr,
 InstallMethod(UndirectedSpanningForest, "for a digraph by out-neighbours",
 [IsDigraphByOutNeighboursRep],
 function(D)
-  local C, record, data, PreOrderFunc;
+  local C, record, conf, data, PreOrderFunc;
   if DigraphNrVertices(D) = 0 then
     return fail;
   fi;
   C := MaximalSymmetricSubdigraph(D);
-  record := NewDFSRecord(C);
   data := List(DigraphVertices(C), x -> []);
 
   PreOrderFunc := function(record, data)
@@ -2673,7 +2672,12 @@ function(D)
     fi;
   end;
 
-  record.config.forest := true;
+  conf := NewDFSFlagsLightweight();
+  conf.use_parents := true;
+  conf.use_edge := true;
+  conf.forest := true;
+
+  record := NewDFSRecordLightweight(C, conf);
 
   ExecuteDFS(record, data, 1, PreOrderFunc, fail,
                fail, fail);

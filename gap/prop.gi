@@ -390,6 +390,7 @@ function(D)
   if DigraphNrVertices(D) <= 1 then
     return true;
   fi;
+
   record := NewDFSRecord(D);
   record.config.forest := true;
 

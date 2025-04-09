@@ -18,7 +18,6 @@
 #include "digraphs-config.h"
 #include "digraphs-debug.h"
 #include "digraphs.h"
-#include "stdio.h"
 
 // Macros used for both recursive and iterative
 
@@ -100,7 +99,7 @@ void parseConfig(struct dfs_args* args, Obj conf_record) {
 
   if (!conf -> iter && (!conf -> use_edge || !conf -> use_parents)) {
     ErrorQuit(
-        "In a DFSRecord where the config flag iter is false, use_edge and "
+        "In a DFSRecord where the config flag iterative is false, use_edge and "
         "use_parents must be true", 0L, 0L);
   }
 
