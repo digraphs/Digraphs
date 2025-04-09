@@ -607,7 +607,7 @@ function(arg...)
     file := DigraphFile(name, encoder, mode);
     if NameFunction(file!.coder) in WholeFileEncoders and file!.mode <> "w" then
       ErrorNoReturn(NameFunction(file!.coder), " is a whole file ",
-          "encoder and so the argument <mode> must be specified as \"w\".");
+                    "encoder and so the argument <mode> must be \"w\".");
     fi;
   else
     file := name;
