@@ -499,8 +499,7 @@ end);
 InstallGlobalFunction(WriteDigraphs,
 function(arg...)
   local name, digraphs, encoder, mode, splitname, compext, g6sum, s6sum, v, e,
-        dg6sum, ds6sum, file, D, i, out, oldBoE, oldSNE, CloseAndCleanup,
-        SafeEncode;
+        dg6sum, ds6sum, file, D, i, oldBoE, oldSNE, CloseAndCleanup, SafeEncode;
 
   # defaults
   encoder := fail;
@@ -657,8 +656,7 @@ function(arg...)
           " is a whole file encoder, and so only one digraph should be ",
           "specified. Only the last digraph will be encoded.");
     fi;
-    out := SafeEncode(encoder, [digraphs[Length(digraphs)]]);
-    IO_Write(file, out);
+    IO_Write(file, SafeEncode(encoder, [digraphs[Length(digraphs)]]));
   else
     for i in [1 .. Length(digraphs)] do
       SafeEncode(encoder, [file, digraphs[i]]);
