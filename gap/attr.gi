@@ -2744,10 +2744,10 @@ function(D)
   p    := Permutation(Transformation(topo), topo);
 
   C := DigraphMutableCopyIfImmutable(D);
-  OnDigraphs(C, p ^ -1);       # changes C in-place
-  DIGRAPH_TRANS_REDUCTION(C);  # changes C in-place
+  OnDigraphsNC(C, p ^ -1);       # changes C in-place
+  DIGRAPH_TRANS_REDUCTION(C);    # changes C in-place
   ClearDigraphEdgeLabels(C);
-  OnDigraphs(C, p);            # changes C in-place
+  OnDigraphsNC(C, p);            # changes C in-place
   if IsImmutableDigraph(D) then
     MakeImmutable(C);
     SetDigraphTransitiveReductionAttr(D, C);

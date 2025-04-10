@@ -214,7 +214,7 @@ function(D)
   if IsMultiDigraph(D) then
     return OnMultiDigraphs(D, BlissCanonicalLabelling(D));
   fi;
-  return OnDigraphs(D, BlissCanonicalLabelling(D));
+  return OnDigraphsNC(D, BlissCanonicalLabelling(D));
 end);
 
 InstallMethod(BlissCanonicalDigraph, "for a digraph and vertex coloring",
@@ -223,7 +223,7 @@ function(D, colors)
   if IsMultiDigraph(D) then
     return OnMultiDigraphs(D, BlissCanonicalLabelling(D, colors));
   fi;
-  return OnDigraphs(D, BlissCanonicalLabelling(D, colors));
+  return OnDigraphsNC(D, BlissCanonicalLabelling(D, colors));
 end);
 
 InstallMethodThatReturnsDigraph(NautyCanonicalDigraph, "for a digraph",
@@ -233,7 +233,7 @@ function(D)
     Info(InfoWarning, 1, "NautyTracesInterface is not available");
     return fail;
   fi;
-  return OnDigraphs(D, NautyCanonicalLabelling(D));
+  return OnDigraphsNC(D, NautyCanonicalLabelling(D));
 end);
 
 InstallMethod(NautyCanonicalDigraph, "for a digraph and vertex coloring",
@@ -243,7 +243,7 @@ function(D, colors)
     Info(InfoWarning, 1, "NautyTracesInterface is not available");
     return fail;
   fi;
-  return OnDigraphs(D, NautyCanonicalLabelling(D, colors));
+  return OnDigraphsNC(D, NautyCanonicalLabelling(D, colors));
 end);
 
 # Automorphism group
@@ -349,7 +349,7 @@ function(C, D)
   if IsMultiDigraph(C) then
     act := OnMultiDigraphs;
   else
-    act := OnDigraphs;
+    act := OnDigraphsNC;
   fi;
 
   if HasBlissCanonicalLabelling(C) and HasBlissCanonicalLabelling(D)
@@ -400,7 +400,7 @@ function(C, D, c1, c2)
   elif IsMultiDigraph(C) then
     act := OnMultiDigraphs;
   else
-    act := OnDigraphs;
+    act := OnDigraphsNC;
   fi;
 
   if DIGRAPHS_UsingBliss or IsMultiDigraph(C) then
@@ -489,7 +489,7 @@ function(C, D, c1, c2)
     return [label1[1] / label2[1], label1[2] / label2[2]];
   fi;
 
-  if OnDigraphs(C, label1) <> OnDigraphs(D, label2) then
+  if OnDigraphsNC(C, label1) <> OnDigraphsNC(D, label2) then
     return fail;
   fi;
   return label1 / label2;
