@@ -568,7 +568,8 @@ function(D)
       # into a single new vertex with the edges merged.
       # We merge y into x, keeping x.
 
-      # TODO Use DigraphContractEdge once it is implemented.
+      # We could potentially use quotient digraph here, but the increased
+      # generality might cause this to get slower.
       D_contract := DigraphMutableCopy(D);
       for v in vertices do
          # Iterate over all vertices that are not x or y
