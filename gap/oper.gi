@@ -1010,6 +1010,9 @@ InstallMethod(OnDigraphsNC,
 [IsMutableDigraph and IsDigraphByOutNeighboursRep, IsPerm],
 function(D, p)
   local out;
+  if p = () then
+    return D;
+  fi;
   out := D!.OutNeighbours;
   out{DigraphVertices(D)} := Permuted(out, p);
   Apply(out, x -> OnTuples(x, p));
@@ -1021,6 +1024,9 @@ InstallMethod(OnDigraphsNC, "for a immutable digraph and a perm",
 [IsImmutableDigraph, IsPerm],
 function(D, p)
   local out, permed;
+  if p = () then
+    return D;
+  fi;
   out := D!.OutNeighbours;
   permed := Permuted(out, p);
   Apply(permed, x -> OnTuples(x, p));
