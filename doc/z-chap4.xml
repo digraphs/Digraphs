@@ -90,7 +90,7 @@
     <#Include Label="DigraphDijkstra">
     <#Include Label="DigraphCycleBasis">
     <#Include Label="DigraphIsKing">
-    <#Include Label="Digraph2Kings">
+    <#Include Label="DigraphKings">
   </Section>
 
   <Section><Heading>Cayley graphs of groups</Heading>

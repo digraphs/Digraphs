@@ -2698,3 +2698,16 @@ function(D, i, j)
 
   return fail;
 end);
+
+InstallMethod(DigraphKings, "for a digraph and a positive integer",
+[IsDigraph, IsPosInt],
+function(D, n)
+  local v, kings;
+  kings := [];
+  for v in DigraphVertices(D) do
+    if DigraphIsKing(D, v, n) then
+      Add(kings, v);
+    fi;
+  od;
+  return kings;
+end);
