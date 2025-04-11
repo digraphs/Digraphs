@@ -499,7 +499,7 @@ end);
 InstallGlobalFunction(WriteDigraphs,
 function(arg...)
   local name, digraphs, encoder, mode, splitname, compext, g6sum, s6sum, v, e,
-        dg6sum, ds6sum, file, D, i, oldBoE, oldSNE, CloseAndCleanup, SafeEncode;
+  dg6sum, ds6sum, file, i, D, oldOnBreak, CloseAndCleanup, OnBreakWithCleanup;
 
   # defaults
   encoder := fail;
@@ -626,40 +626,31 @@ function(arg...)
     fi;
   fi;
 
+  oldOnBreak := OnBreak;
   CloseAndCleanup := function()
     if IsString(arg[1]) then
       IO_Close(file);
     fi;
-    BreakOnError := oldBoE;
-    SilentNonInteractiveErrors := oldSNE;
+    OnBreak := oldOnBreak;
   end;
 
-  SafeEncode := function(enc, args)
-    local out;
-    out := CALL_WITH_CATCH(enc, args);
-    if out[1] = false then
-      CloseAndCleanup();
-      CallFuncList(enc, args);
-    fi;
-    return out[2];
+  OnBreakWithCleanup := function()
+    CloseAndCleanup();
+    OnBreak();
   end;
+  OnBreak := OnBreakWithCleanup;
 
   encoder := file!.coder;
-  oldBoE := BreakOnError;
-  BreakOnError := false;
-  oldSNE := SilentNonInteractiveErrors;
-  SilentNonInteractiveErrors := true;
-
   if NameFunction(encoder) in WholeFileEncoders then
     if Length(digraphs) > 1 then
       Info(InfoWarning, 1, "the encoder ", NameFunction(encoder),
           " is a whole file encoder, and so only one digraph should be ",
           "specified. Only the last digraph will be encoded.");
     fi;
-    IO_Write(file, SafeEncode(encoder, [digraphs[Length(digraphs)]]));
+    IO_Write(file, encoder(digraphs[Length(digraphs)]));
   else
     for i in [1 .. Length(digraphs)] do
-      SafeEncode(encoder, [file, digraphs[i]]);
+      encoder(file, digraphs[i]);
     od;
   fi;
 
