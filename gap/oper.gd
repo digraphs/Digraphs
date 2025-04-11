@@ -118,7 +118,6 @@ DeclareOperation("IsDigraphPath", [IsDigraph, IsList]);
 DeclareOperation("DigraphIsKing", [IsDigraph, IsPosInt, IsPosInt]);
 DeclareOperation("DigraphKings", [IsDigraph, IsPosInt]);
 
-
 DeclareOperation("DigraphFloydWarshall",
                  [IsDigraph, IsFunction, IsObject, IsObject]);
 DeclareOperation("DigraphDijkstra",

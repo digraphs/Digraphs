@@ -17,8 +17,8 @@
     <A>n</A>-kings in the tournament (see <Ref Oper="DigraphIsKing"/>).<P/>
 
     If <A>D</A> is not tournament, then an error is given
-    (see <Ref Prop="IsTournament"/>). 
-      
+    (see <Ref Prop="IsTournament"/>).
+
     If the tournament contains a source, then the source is the only 2-king
     (see <Ref Attr="DigraphSources"/>). The number of 2-kings in a tournament
     without a source is at least three. A tournament cannot have exactly two
@@ -47,7 +47,7 @@ gap> DigraphKings(gr, 2);
     If <A>D</A> is a tournament and <A>v</A> is a vertex in the tournament,
     then this operation returns <K>true</K> if every other vertex of <A>D</A>
     is reachable from <A>v</A> by a path of length at most <A>k</A>. Otherwise,
-    an error is given. 
+    an error is given.
 
     If <K>true</K> is returned, then the vertex, <A>v</A>, is a <A>k</A>-king.
     <P/>
