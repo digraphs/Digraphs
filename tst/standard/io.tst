@@ -1066,9 +1066,8 @@ gap> IO_Close(file);;
 # Ensure all files introduced by tests are closed
 gap> IO.OpenFiles = files;
 true
-gap> OnBreak = Where;  # remove this line post debugging
+gap> OnBreak = oldOnBreak;
 true
-gap> OnBreak := Where;;  # remove this line post debugging
 
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(D);
