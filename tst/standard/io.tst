@@ -12,6 +12,8 @@ gap> LoadPackage("digraphs", false);;
 
 #
 gap> DIGRAPHS_StartTest();
+gap> files := ShallowCopy(IO.OpenFiles);;
+gap> oldOnBreak := OnBreak;;
 
 #  DigraphFromGraph6String and Graph6String
 gap> DigraphFromGraph6String("?");
@@ -276,6 +278,11 @@ gap> gr = ReadDigraphs(filename);
 true
 gap> gr[3] := Digraph([[1, 2], [1, 2]]);
 <immutable digraph with 2 vertices, 4 edges>
+gap> WriteDigraphs(filename, Digraph([[2], []]), Graph6String);
+Error, the argument <D> must be a symmetric digraph with no loops or multiple \
+edges,
+gap> OnBreak := oldOnBreak;;
+gap> IO_Close(IO.OpenFiles[Length(IO.OpenFiles)]);;
 gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/test.s6.bz2");;
 gap> WriteDigraphs(filename, gr, "w");
 IO_OK
@@ -676,6 +683,8 @@ Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `WriteDIMACSDigraph' on 2 arguments
 gap> WriteDIMACSDigraph("file", ChainDigraph(2));
 Error, the argument <D> must be a symmetric digraph,
+gap> OnBreak := oldOnBreak;;
+gap> IO_Close(IO.OpenFiles[Length(IO.OpenFiles)]);;
 gap> WriteDIMACSDigraph(filename, gr);
 Error, cannot open the file given as the 1st argument <name>,
 gap> filename := "tmp.gz";;
@@ -892,6 +901,9 @@ gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/more.dimacs");;
 gap> WriteDigraphs(filename, gr, "w");;
 gap> ReadDigraphs(filename)[1] = gr;
 true
+gap> WriteDigraphs(filename, gr);
+Error, DIMACSString is a whole file encoder and so the argument <mode> must be\
+ "w".
 gap> DigraphVertexLabels(gr) = [1 .. 3];
 true
 
@@ -950,6 +962,10 @@ gap> DreadnautString(1);
 Error, the first argument <D> must be a digraph
 gap> DreadnautString(D, 1);
 Error, the second argument <partition> must be a list
+gap> WriteDigraphs(filename, Digraph([]), "w");
+Error, the argument <D> must be a digraph with at least one vertex
+gap> OnBreak := oldOnBreak;;
+gap> IO_Close(IO.OpenFiles[Length(IO.OpenFiles)]);;
 gap> WriteDigraphs(filename, D, "w");
 IO_OK
 
@@ -1045,6 +1061,13 @@ gap> DigraphFromDreadnautString("$=1n3dg\n1 : 2 3.\nf=[1:\n:]");
 Error, Invalid range 1 : ':' in partition specification (line 3)
 gap> DigraphFromDreadnautString("$=1n3dg\n1 : 2 3.\nf=[1\nf=2");
 Error, Unexpected character 'f' in partition specification (line 4)
+gap> IO_Close(file);;
+
+# Ensure all files introduced by tests are closed
+gap> IO.OpenFiles = files;
+true
+gap> OnBreak = oldOnBreak;
+true
 
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(D);
@@ -1066,6 +1089,7 @@ gap> Unbind(rdgr);
 gap> Unbind(read);
 gap> Unbind(str);
 gap> Unbind(x);
+gap> Unbind(files);
 
 #
 gap> DIGRAPHS_StopTest();

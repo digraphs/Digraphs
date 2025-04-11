@@ -402,7 +402,7 @@ end);
 
 InstallGlobalFunction(ReadDigraphs,
 function(arg...)
-  local nr, decoder, name, file, i, next, out;
+  local nr, decoder, name, file, i, next, out, line;
 
   # defaults
   nr      := infinity;
@@ -474,8 +474,12 @@ function(arg...)
 
   out := [];
   if NameFunction(decoder) in WholeFileDecoders then
-    Add(out, decoder(IO_ReadUntilEOF(file)));
-    next := IO_Nothing;
+    line := IO_ReadUntilEOF(file);
+    if IsString(arg[1]) then
+      IO_Close(file);
+    fi;
+    Add(out, decoder(line));
+    return out;
   else
     next := decoder(file);
   fi;
@@ -495,7 +499,7 @@ end);
 InstallGlobalFunction(WriteDigraphs,
 function(arg...)
   local name, digraphs, encoder, mode, splitname, compext, g6sum, s6sum, v, e,
-        dg6sum, ds6sum, file, D, i;
+  dg6sum, ds6sum, file, i, D, oldOnBreak, CloseAndCleanup, OnBreakWithCleanup;
 
   # defaults
   encoder := fail;
@@ -606,6 +610,9 @@ function(arg...)
     fi;
     file := DigraphFile(name, encoder, mode);
     if NameFunction(file!.coder) in WholeFileEncoders and file!.mode <> "w" then
+      if IsString(arg[1]) then
+        IO_Close(file);
+      fi;
       ErrorNoReturn(NameFunction(file!.coder), " is a whole file ",
                     "encoder and so the argument <mode> must be \"w\".");
     fi;
@@ -619,8 +626,21 @@ function(arg...)
     fi;
   fi;
 
-  encoder := file!.coder;
+  oldOnBreak := OnBreak;
+  CloseAndCleanup := function()
+    if IsString(arg[1]) then
+      IO_Close(file);
+    fi;
+    OnBreak := oldOnBreak;
+  end;
 
+  OnBreakWithCleanup := function()
+    CloseAndCleanup();
+    OnBreak();
+  end;
+  OnBreak := OnBreakWithCleanup;
+
+  encoder := file!.coder;
   if NameFunction(encoder) in WholeFileEncoders then
     if Length(digraphs) > 1 then
       Info(InfoWarning, 1, "the encoder ", NameFunction(encoder),
@@ -634,10 +654,7 @@ function(arg...)
     od;
   fi;
 
-  if IsString(arg[1]) then
-    IO_Close(file);
-  fi;
-
+  CloseAndCleanup();
   return IO_OK;
 end);
 
@@ -2020,16 +2037,7 @@ end);
 # 4. Encoders
 ################################################################################
 InstallMethod(WriteDIMACSDigraph, "for a digraph", [IsString, IsDigraph],
-function(name, D)
-  local file;
-  file := IO_CompressedFile(UserHomeExpand(name), "w");
-  if file = fail then
-    ErrorNoReturn("cannot open the file given as the 1st argument <name>,");
-  fi;
-  IO_Write(file, DIMACSString(D));
-  IO_Close(file);
-  return IO_OK;
-end);
+              {name, D} -> WriteDigraphs(name, D, DIMACSString, "w"));
 
 InstallMethod(DIMACSString, "for a digraph", [IsDigraph],
 function(D)
