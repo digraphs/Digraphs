@@ -800,21 +800,17 @@ function(arg...)
   return EdgeWeightedDigraph(digraph, weights);
 end);
 
-BindGlobal("DIGRAPHS_RandomEdgeWeightedDigraphNoFilt",
-{arg...} -> CallFuncList(RandomUniqueEdgeWeightedDigraph,
-                         Concatenation([IsImmutableDigraph], arg)));
-
 InstallMethod(RandomUniqueEdgeWeightedDigraph,
 "for a pos int", [IsPosInt],
-DIGRAPHS_RandomEdgeWeightedDigraphNoFilt);
+n -> RandomUniqueEdgeWeightedDigraph(IsImmutableDigraph, n));
 
 InstallMethod(RandomUniqueEdgeWeightedDigraph,
 "for a pos int and a float", [IsPosInt, IsFloat],
-DIGRAPHS_RandomEdgeWeightedDigraphNoFilt);
+{n, p} -> RandomUniqueEdgeWeightedDigraph(IsImmutableDigraph, n, p));
 
 InstallMethod(RandomUniqueEdgeWeightedDigraph,
 "for a pos int and a rational", [IsPosInt, IsRat],
-DIGRAPHS_RandomEdgeWeightedDigraphNoFilt);
+{n, p} -> RandomUniqueEdgeWeightedDigraph(IsImmutableDigraph, n, p));
 
 InstallMethod(RandomUniqueEdgeWeightedDigraph,
 "for a function and a pos int", [IsFunction, IsPosInt],
