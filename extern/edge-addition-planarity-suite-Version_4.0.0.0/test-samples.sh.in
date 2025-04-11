@@ -1,0 +1,11 @@
+#!/bin/sh
+#
+# Run "planarity -test" using planarity from the build tree and the
+# samples from the source tree. 
+#
+
+samplesdir="@abs_top_srcdir@/c/samples"
+planaritydir="@abs_top_builddir@"
+
+cd "${planaritydir}"                || exit 1
+./planarity -test "${samplesdir}"   || exit 2

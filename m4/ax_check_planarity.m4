@@ -14,21 +14,21 @@ AC_DEFUN([AX_CHECK_PLANARITY], [
   AC_MSG_RESULT([$with_external_planarity])
   if test "x$with_external_planarity" = xyes ; then
         AC_LANG_PUSH([C])
-        AC_CHECK_LIB([planarity], 
-                     [gp_InitGraph], 
+        AC_CHECK_LIB([planarity],
+                     [gp_InitGraph],
                      [],
                      [AC_MSG_ERROR([no external libplanarity found])])
 
-        AC_CHECK_HEADER([planarity/graph.h], 
-                        [], 
-                        [AC_MSG_ERROR([no external planarity headers found])])
+        AC_CHECK_HEADER([planarity/graph.h],
+                        [],
+                        [AC_MSG_WARN([no external planarity headers found])])
         AC_LANG_POP()
   fi
   if test "x$with_external_planarity" = xno ; then
     WITH_INCLUDED_PLANARITY=yes
     AC_SUBST(WITH_INCLUDED_PLANARITY)
-    AC_DEFINE([WITH_INCLUDED_PLANARITY], 
-              [1], 
+    AC_DEFINE([WITH_INCLUDED_PLANARITY],
+              [1],
               [define that we should use the vendored planarity])
   fi
 ])

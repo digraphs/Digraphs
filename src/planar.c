@@ -33,15 +33,13 @@
 #pragma GCC diagnostic ignored "-Wswitch-default"
 #endif
 #ifdef DIGRAPHS_WITH_INCLUDED_PLANARITY
-#include "c/graph.h"
-#include "c/graphK23Search.h"
-#include "c/graphK33Search.h"
-#include "c/graphK4Search.h"
+#include "c/graphLib.h"
 #else
-#include "planarity/graph.h"
-#include "planarity/graphK23Search.h"
-#include "planarity/graphK33Search.h"
-#include "planarity/graphK4Search.h"
+#ifdef GP_PROJECTVERSION_MAJOR
+#include "planarity/graphLib.h"
+#else
+
+#endif
 #endif
 #if defined(__clang__)
 #pragma clang diagnostic pop
@@ -151,8 +149,8 @@ Obj boyers_planarity_check(Obj digraph, int flags, bool krtwsk) {
     return trivial_planarity_output(V, krtwsk);
   }
   if (V > INT_MAX) {
-    // Cannot currently test this, it might always be true, depending on the
-    // definition of Int.
+    // Cannot currently test this, it might always be true, depending on
+    // the definition of Int.
     ErrorQuit("Digraphs: boyers_planarity_check (C): the maximum number of "
               "nodes is %d, found %d",
               INT_MAX,
@@ -213,10 +211,12 @@ Obj boyers_planarity_check(Obj digraph, int flags, bool krtwsk) {
                  == False) {
         status = gp_AddEdge(theGraph, v, 0, u, 0);
         if (status != OK) {
-          // Cannot currently test this, i.e. it shouldn't happen (and
-          // currently there is no example where it does happen)
+          // Cannot currently test this, i.e. it shouldn't happen
+          // (and currently there is no example where it does
+          // happen)
           gp_Free(&theGraph);
-          ErrorQuit("Digraphs: boyers_planarity_check (C): internal error, "
+          ErrorQuit("Digraphs: boyers_planarity_check (C): "
+                    "internal error, "
                     "can't add edge from %d to %d",
                     (Int) v,
                     (Int) u);

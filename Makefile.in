@@ -45,28 +45,37 @@ endif
 
 
 ifdef WITH_INCLUDED_PLANARITY
-  KEXT_SOURCES += $(PLANARITY_SUITE_DIR)/c/graphDFSUtils.c
-  KEXT_SOURCES += $(PLANARITY_SUITE_DIR)/c/graphDrawPlanar.c
-  KEXT_SOURCES += $(PLANARITY_SUITE_DIR)/c/graphDrawPlanar_Extensions.c
-  KEXT_SOURCES += $(PLANARITY_SUITE_DIR)/c/graphEmbed.c
-  KEXT_SOURCES += $(PLANARITY_SUITE_DIR)/c/graphExtensions.c
-  KEXT_SOURCES += $(PLANARITY_SUITE_DIR)/c/graphIO.c
-  KEXT_SOURCES += $(PLANARITY_SUITE_DIR)/c/graphIsolator.c
-  KEXT_SOURCES += $(PLANARITY_SUITE_DIR)/c/graphK23Search.c
-  KEXT_SOURCES += $(PLANARITY_SUITE_DIR)/c/graphK23Search_Extensions.c
-  KEXT_SOURCES += $(PLANARITY_SUITE_DIR)/c/graphK33Search.c
-  KEXT_SOURCES += $(PLANARITY_SUITE_DIR)/c/graphK33Search_Extensions.c
-  KEXT_SOURCES += $(PLANARITY_SUITE_DIR)/c/graphK4Search.c
-  KEXT_SOURCES += $(PLANARITY_SUITE_DIR)/c/graphK4Search_Extensions.c
-  KEXT_SOURCES += $(PLANARITY_SUITE_DIR)/c/graphNonplanar.c
-  KEXT_SOURCES += $(PLANARITY_SUITE_DIR)/c/graphOuterplanarObstruction.c
-  KEXT_SOURCES += $(PLANARITY_SUITE_DIR)/c/graphTests.c
-  KEXT_SOURCES += $(PLANARITY_SUITE_DIR)/c/graphUtils.c
-  KEXT_SOURCES += $(PLANARITY_SUITE_DIR)/c/listcoll.c
-  KEXT_SOURCES += $(PLANARITY_SUITE_DIR)/c/planarityRandomGraphs.c
-  KEXT_SOURCES += $(PLANARITY_SUITE_DIR)/c/planaritySpecificGraph.c
-  KEXT_SOURCES += $(PLANARITY_SUITE_DIR)/c/planarityUtils.c
-  KEXT_SOURCES += $(PLANARITY_SUITE_DIR)/c/stack.c
+
+  KEXT_SOURCES += $(PLANARITY_SUITE_DIR)/c/graphLib/graphDFSUtils.c
+  KEXT_SOURCES += $(PLANARITY_SUITE_DIR)/c/graphLib/graphUtils.c
+
+  KEXT_SOURCES += $(PLANARITY_SUITE_DIR)/c/graphLib/extensionSystem/graphExtensions.c
+
+  KEXT_SOURCES += $(PLANARITY_SUITE_DIR)/c/graphLib/homeomorphSearch/graphK23Search.c
+  KEXT_SOURCES += $(PLANARITY_SUITE_DIR)/c/graphLib/homeomorphSearch/graphK23Search_Extensions.c
+  KEXT_SOURCES += $(PLANARITY_SUITE_DIR)/c/graphLib/homeomorphSearch/graphK33Search.c
+  KEXT_SOURCES += $(PLANARITY_SUITE_DIR)/c/graphLib/homeomorphSearch/graphK33Search_Extensions.c
+  KEXT_SOURCES += $(PLANARITY_SUITE_DIR)/c/graphLib/homeomorphSearch/graphK4Search.c
+  KEXT_SOURCES += $(PLANARITY_SUITE_DIR)/c/graphLib/homeomorphSearch/graphK4Search_Extensions.c
+
+  KEXT_SOURCES += $(PLANARITY_SUITE_DIR)/c/graphLib/io/g6-api-utilities.c
+  KEXT_SOURCES += $(PLANARITY_SUITE_DIR)/c/graphLib/io/g6-read-iterator.c
+  KEXT_SOURCES += $(PLANARITY_SUITE_DIR)/c/graphLib/io/g6-write-iterator.c
+  KEXT_SOURCES += $(PLANARITY_SUITE_DIR)/c/graphLib/io/graphIO.c
+  KEXT_SOURCES += $(PLANARITY_SUITE_DIR)/c/graphLib/io/strOrFile.c
+  KEXT_SOURCES += $(PLANARITY_SUITE_DIR)/c/graphLib/io/strbuf.c
+
+  KEXT_SOURCES += $(PLANARITY_SUITE_DIR)/c/graphLib/lowLevelUtils/apiutils.c
+  KEXT_SOURCES += $(PLANARITY_SUITE_DIR)/c/graphLib/lowLevelUtils/listcoll.c
+  KEXT_SOURCES += $(PLANARITY_SUITE_DIR)/c/graphLib/lowLevelUtils/stack.c
+
+  KEXT_SOURCES += $(PLANARITY_SUITE_DIR)/c/graphLib/planarityRelated/graphDrawPlanar.c
+  KEXT_SOURCES += $(PLANARITY_SUITE_DIR)/c/graphLib/planarityRelated/graphDrawPlanar_Extensions.c
+  KEXT_SOURCES += $(PLANARITY_SUITE_DIR)/c/graphLib/planarityRelated/graphEmbed.c
+  KEXT_SOURCES += $(PLANARITY_SUITE_DIR)/c/graphLib/planarityRelated/graphIsolator.c
+  KEXT_SOURCES += $(PLANARITY_SUITE_DIR)/c/graphLib/planarityRelated/graphNonplanar.c
+  KEXT_SOURCES += $(PLANARITY_SUITE_DIR)/c/graphLib/planarityRelated/graphOuterplanarObstruction.c
+  KEXT_SOURCES += $(PLANARITY_SUITE_DIR)/c/graphLib/planarityRelated/graphTests.c
 
   KEXT_CFLAGS += -I$(PLANARITY_SUITE_DIR)
 else

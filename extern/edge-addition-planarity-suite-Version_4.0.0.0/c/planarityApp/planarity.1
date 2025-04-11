@@ -1,0 +1,130 @@
+.TH planarity 1
+
+.SH NAME
+planarity - The Edge Addition Planarity Suite
+
+.SH SYNOPSIS
+
+.SS Getting help
+.B planarity -h|-help [-menu]
+
+.B planarity -i|-info
+
+.SS Menu-driven mode
+.B planarity
+
+.SS Batch modes
+
+.B planarity -s [-q] \fICOMMAND\fR \fIINPUT\fR \fIOUTPUT\fR [\fICOMPLEMENT\fR]
+
+.B planarity -r [-q] \fICOMMAND\fR \fIK\fR \fIN\fR [\fIOUTPUT\fR]
+
+.B planarity -rm [-q] \fIN\fR \fIOUTPUT\fR [\fICOMPLEMENT\fR]
+
+.B planarity -rn [-q] \fIN\fR \fIOUTPUT\fR [\fICOMPLEMENT\fR]
+
+.B planarity -x [-q] \fB-(gam)\fR \fIINPUT\fR \fIOUTPUT\fR
+
+.B planarity -t [-q] \fICOMMAND\fR \fIINPUT\fR \fIOUTPUT\fR
+
+.SH DESCRIPTION
+Invokes the Edge Addition Planarity Suite command-line tool, either in
+interactive mode or in batch mode.
+
+Without a parameter, the tool presents a menu-driven interactive
+interface.
+
+When a parameter is given, it runs in batch mode and returns 0 or 1
+for a successful result and -1 on error.
+
+.SH OPTIONS
+
+.TP
+.B -h, -help [-menu]
+Display some help, with \fB-menu\fR triggering even more detailed output.
+
+.TP
+.B -i, -info
+Display version, copyright, license, and reference articles information.
+
+.TP
+.B -q
+Quiet mode optional modifier, see below which options accept it.
+
+.TP
+.B -s [-q] \fICOMMAND\fR \fIINPUT\fR \fIOUTPUT\fR [\fICOMPLEMENT\fR]
+Run the \fICOMMAND\fR (see below) on a specific graph given in the
+\fIINPUT\fR file, with output in the primary \fIOUTPUT\fR file and
+complementary information, if any, in the secondary \fICOMPLEMENT\fR file
+(e.g. an ASCII art rendition for the planar graph drawing command). The
+return value is 0 if the specific graph is embeddable (e.g. it is
+planar or doesn't contain a homeomorphic subgraph) and 1 if it isn't
+embeddable (e.g. non planar or does contain a homeomorphic subgraph).
+
+.TP
+.B -r [-q] \fICOMMAND\fR \fIK\fR \fIN\fR [\fIOUTPUT\fR]
+Run the \fICOMMAND\fR (see below) on \fIK\fR random graphs with
+\fIN\fR vertices. Optionally, write all generated graphs to .g6 \fIOUTPUT\fR.
+
+.TP
+.B -rm [-q] \fIN\fR \fIOUTPUT\fR [\fICOMPLEMENT\fR]
+Generate a random maximal planar graph with \fIN\fR vertices, then output
+its planar embedding in the primary \fIOUTPUT\fR file and optionally the
+generated graph in the \fICOMPLEMENT\fR file.
+
+.TP
+.B -rn [-q] \fIN\fR \fIOUTPUT\fR [\fICOMPLEMENT\fR]
+Generate a random nonplanar graph (maximal planar plus one edge) with
+\fIN\fR vertices, then output a Kuratowski subgraph of the generated graph
+in the primary \fIOUTPUT\fR file and optionally the gnerated graph in
+the \fICOMPLEMENT\fR file.
+
+.TP
+.B [-q] \fB-(gam)\fR \fIINPUT\fR \fIOUTPUT\fR
+Transform single graph in \fIINPUT\fR file (any supported format) to .g6 (\fBg\fR),
+adjacency list (\fBa\fR), or adjacency matrix (\fBm\fR) format and output
+to \fIOUTPUT\fR file.
+
+.TP
+.B [-q] \fICOMMAND\fR \fIINPUT\fR \fIOUTPUT\fR
+Run the \fICOMMAND\fR (see below) on graphs in .g6 encoded \fIINPUT\fR
+file, then output summary statistics to \fIOUTPUT\fR file.
+
+.SH COMMANDS
+Determine which algorithm implementation to run:
+.TP
+.B -p
+Planar embedding and Kuratowski subgraph isolation
+.TP
+.B -d
+Planar graph drawing by visibility representation (and optional ASCII art rendition)
+.TP
+.B -o
+Outerplanar embedding and obstruction isolation
+.TP
+.B -2
+Search for subgraph homeomorphic to K_{2,3}
+.TP
+.B -3
+Search for subgraph homeomorphic to K_{3,3}
+.TP
+.B -4
+Search for subgraph homeomorphic to K_4
+
+.SH EXAMPLES
+.TP
+.B planarity -s -q -p infile.txt embedding.out [obstruction.out]
+Process infile.txt in quiet mode (-q), putting planar embedding in
+embedding.out or (optionally) a Kuratowski subgraph in obstruction.out.
+Process returns 0=planar, 1=nonplanar, -1=error
+.TP
+.B planarity -s -q -d infile.txt embedding.out [drawing.out]
+If graph in infile.txt is planar, then put embedding in embedding.out
+and (optionally) an ASCII art drawing in drawing.out.
+Process returns 0=planar, 1=nonplanar, -1=error
+
+.SH SEE ALSO
+
+The full inline help: \fBplanarity -h -menu\fR
+
+The project homepage: \fBhttps://github.com/graph-algorithms/edge-addition-planarity-suite\fR
