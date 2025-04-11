@@ -780,3 +780,46 @@ function(digraph, start, destination)
 
   return flows;
 end);
+
+#############################################################################
+# 6. Random edge weighted digraphs
+#############################################################################
+
+BindGlobal("DIGRAPHS_RandomEdgeWeightedDigraphFilt",
+function(arg...)
+  local digraph, outs, weightsSource, weights;
+  # Create random digraph
+  digraph := CallFuncList(RandomDigraphCons, arg);
+  outs := OutNeighbours(digraph);
+
+  # Unique weights are taken randomly from [1..nredges]
+  weightsSource := Shuffle([1 .. DigraphNrEdges(digraph)]);
+  weights := List(DigraphVertices(digraph),
+                  u -> List(outs[u], _ -> Remove(weightsSource)));
+
+  return EdgeWeightedDigraph(digraph, weights);
+end);
+
+InstallMethod(RandomUniqueEdgeWeightedDigraph,
+"for a pos int", [IsPosInt],
+n -> RandomUniqueEdgeWeightedDigraph(IsImmutableDigraph, n));
+
+InstallMethod(RandomUniqueEdgeWeightedDigraph,
+"for a pos int and a float", [IsPosInt, IsFloat],
+{n, p} -> RandomUniqueEdgeWeightedDigraph(IsImmutableDigraph, n, p));
+
+InstallMethod(RandomUniqueEdgeWeightedDigraph,
+"for a pos int and a rational", [IsPosInt, IsRat],
+{n, p} -> RandomUniqueEdgeWeightedDigraph(IsImmutableDigraph, n, p));
+
+InstallMethod(RandomUniqueEdgeWeightedDigraph,
+"for a function and a pos int", [IsFunction, IsPosInt],
+DIGRAPHS_RandomEdgeWeightedDigraphFilt);
+
+InstallMethod(RandomUniqueEdgeWeightedDigraph,
+"for a function, a pos int, and a float", [IsFunction, IsPosInt, IsFloat],
+DIGRAPHS_RandomEdgeWeightedDigraphFilt);
+
+InstallMethod(RandomUniqueEdgeWeightedDigraph,
+"for a function, a pos int, and a rational", [IsFunction, IsPosInt, IsRat],
+DIGRAPHS_RandomEdgeWeightedDigraphFilt);
