@@ -1156,6 +1156,37 @@ gap> ArticulationPoints(D);
 </ManSection>
 <#/GAPDoc>
 
+
+<#GAPDoc Label="MinimalCyclicEdgeCut">
+<ManSection>
+  <Attr Name="MinimalCyclicEdgeCut" Arg="digraph"/>
+  <Returns>A list of edges or <K>fail</K>.</Returns>
+  <Description>
+    A cyclic edge cut of <A>digraph</A> is a set of edges such that deleting
+    these edges results in at least two connected components having a cycle.
+    This method computes the cyclic edge cut with minimal cardinality for cubic 
+    graphs with at least 8 vertices. The cyclic edge cut is returned as a 
+    list of undirected edges.<P/>
+
+    If the given digraph is not cubic, not connected, has less than 8 vertices or 
+    does not have a cyclic edge cut, the method returns <K>fail</K>.
+    Multiple edges of <A>digraph</A> are ignored by this method and note 
+    that <A>digraph</A> is identified as an undirected graph. <P/>
+
+    The method used in this method has complexity <M>O(n^2*log^2(n)) </M> where
+    <M>n</M> is the number of vertices in the digraph.<P/>
+      
+<Example><![CDATA[
+gap> MinimalCyclicEdgeCut(HypercubeGraph(3));
+[ [ 1, 5 ], [ 2, 6 ], [ 4, 8 ], [ 3, 7 ] ]
+gap> MinimalCyclicEdgeCut(CompleteDigraph(4));
+fail
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+
 <#GAPDoc Label="DigraphAbsorptionProbabilities">
 <ManSection>
   <Attr Name="DigraphAbsorptionProbabilities" Arg="digraph"/>
@@ -1459,10 +1490,14 @@ gap> DigraphAllUndirectedSimpleCircuits(D);
 <#GAPDoc Label="DigraphAllChordlessCycles">
 <ManSection>
   <Attr Name="DigraphAllChordlessCycles" Arg="digraph"/>
+  <Attr Name="DigraphAllChordlessCyclesOfMaximalLength" Arg="digraph, maxLength"/>
   <Returns>A list of lists of vertices.</Returns>
   <Description>
     If <A>digraph</A> is a digraph, then <C>DigraphAllChordlessCycles</C> 
-    returns a list of the <E>chordless cycles</E> in <A>digraph</A>. <P/>
+    returns a list of the <E>chordless cycles</E> in <A>digraph</A>. 
+    The method <C>DigraphAllChordlessCyclesOfMaximalLength</C> returns
+    a list of all <E>chordless cycles</E> in <A>digraph</A> of length at
+    most <A>maxLength</A><P/>
 
     A chordless cycle <M>C</M> is a undirected simple circuit (see Section <Ref Subsect="Definitions" Style="Number" /> ) 
     where each pair of vertices in <M>C</M> are not connected by an edge not in <M>C</M>. 
@@ -1682,6 +1717,10 @@ gap> DigraphLoops(D);
       <Cite Key="Law1976"/></Item>
       <Item><C>byskov</C> - Byskov's Algorithm 
       <Cite Key="Bys2002"/></Item>
+      <Item><C>zykov</C> - Zykov's Algorithm 
+      <Cite Key="Corneil1973"/></Item>
+      <Item><C>christofides</C> - Christofides's Algorithm 
+      <Cite Key="Wang1974"/></Item>
     </List>
 
     <Example><![CDATA[
