@@ -4,7 +4,7 @@ InstallDeprecatedMethod := function(oldName, newName, info, filters, func)
 
   args := Length(filters);
   if args = 0 then
-    newMethod := function(args...)
+    newMethod := function()
       Warning(warningMsg);
       return func();
     end;
