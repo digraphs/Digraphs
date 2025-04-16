@@ -2396,9 +2396,10 @@ function(D, roots)
 
   N := DigraphNrVertices(D);
 
-  if (ForAny(roots, v -> v = 0 or v > N)) then
-    ErrorNoReturn("the 2nd argument (roots) contains a vertex that is not ",
-                  "a vertex of the 1st argument (a digraph)");
+  if (ForAny(roots, v -> v <= 0 or v > N)) then
+    ErrorNoReturn("an element of the 2nd argument ",
+                  "(roots) is not a vertex of the 1st ",
+                  "argument (a digraph)");
   fi;
 
   data := rec(result := BlistList([1 .. N], []));

@@ -2824,8 +2824,8 @@ gap> VerticesReachableFrom(D1, [1, 2]);
 gap> VerticesReachableFrom(D2, [1]);
 [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ]
 gap> VerticesReachableFrom(D2, [1, 11]);
-Error, the 2nd argument (roots) contains a vertex that is not a vertex of the \
-1st argument (a digraph)
+Error, an element of the 2nd argument (roots) is not a vertex of the 1st argum\
+ent (a digraph)
 gap> D3 := CompleteDigraph(7);
 <immutable complete digraph with 7 vertices>
 gap> D3_edges := [1 .. 7];
@@ -2872,8 +2872,8 @@ gap> IsOrderFilter(D, 4);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `IsOrderFilter' on 2 arguments
 gap> IsOrderFilter(D, [5]);
-Error, the 2nd argument (roots) contains a vertex that is not a vertex of the \
-1st argument (a digraph)
+Error, an element of the 2nd argument (roots) is not a vertex of the 1st argum\
+ent (a digraph)
 
 # DigraphCycleBasis
 gap> D := NullDigraph(0);
