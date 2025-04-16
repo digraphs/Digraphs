@@ -215,3 +215,11 @@ DeclareOperation("WheelGraph", [IsFunction, IsPosInt]);
 DeclareConstructor("WindmillGraphCons", [IsDigraph, IsPosInt, IsPosInt]);
 DeclareOperation("WindmillGraph", [IsPosInt, IsPosInt]);
 DeclareOperation("WindmillGraph", [IsFunction, IsPosInt, IsPosInt]);
+
+DeclareConstructor("PancakeGraphCons", [IsDigraph, IsPosInt]);
+DeclareOperation("PancakeGraph", [IsPosInt]);
+DeclareOperation("PancakeGraph", [IsFunction, IsPosInt]);
+
+DeclareConstructor("BurntPancakeGraphCons", [IsDigraph, IsPosInt]);
+DeclareOperation("BurntPancakeGraph", [IsPosInt]);
+DeclareOperation("BurntPancakeGraph", [IsFunction, IsPosInt]);

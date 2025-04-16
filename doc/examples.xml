@@ -367,6 +367,82 @@ gap> TriangularGridGraph(IsMutable, 3, 3);
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="PancakeGraph">
+<ManSection>
+  <Oper Name="PancakeGraph" Arg="[filt, ]n"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>n</A> is a positive integer, then this operation returns
+    the <E>pancake graph</E> with <M>n!</M> vertices and <M>n!(n - 1)</M>
+    directed edges. The <M>n</M>th pancake graph is the Cayley graph of the
+    symmetric group acting on <C>[1 .. <A>n</A>]</C> with respect to the
+    generating set consisting of the <Q>prefix reversals</Q>. This generating
+    set consists of the permutations <C>p2</C>, <C>p3</C>, ...,
+    <C>p<A>n</A></C> where <C>ListPerm(pi, <A>n</A>)</C> is the concatenation
+    of <C>[i, i - 1 .. 1]</C> and <C>[i + 1 .. <A>n</A>]</C>. 
+    <P/>
+    
+    If the optional first argument <A>filt</A> is not present, then <Ref
+    Filt="IsImmutableDigraph"/> is used by default.<P/>
+
+    See <URL>https://en.wikipedia.org/wiki/Pancake_graph</URL> for further
+    details. 
+
+<Example><![CDATA[
+gap> D := PancakeGraph(5);
+<immutable Hamiltonian connected symmetric digraph with 120 vertices, \
+480 edges>
+gap> DigraphUndirectedGirth(D);
+6
+gap> ChromaticNumber(D);
+3
+gap> IsHamiltonianDigraph(D);
+true
+gap> IsCayleyDigraph(D);
+true
+gap> IsVertexTransitive(D);
+true]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="BurntPancakeGraph">
+<ManSection>
+  <Oper Name="BurntPancakeGraph" Arg="[filt, ]n"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>n</A> is a positive integer, then this operation returns
+    the <E>burnt pancake graph</E> with <M>n!</M> vertices and <M>n2^{n}n!</M>
+    directed edges. The <M>n</M>th burnt pancake graph is the Cayley graph of the
+    hyperoctahedral group acting on <C>[<A>-n</A> .. -1, 1 .. <A>n</A>]</C> with respect to the
+    generating set consisting of the <Q>prefix reversals</Q>, which are defined in exactly
+    the same way as in  <Ref Oper="PancakeGraph"/>. The hyperoctahedral group consists of
+    permutations <M>p</M> acting on <C>[<A>-n</A> .. -1, 1 .. <A>n</A>]</C>, where the image
+    of every point <M>i</M> in <C>[<A>-n</A> .. -1, 1 .. <A>n</A>]</C> is equal to the
+    negative of the image of <M>-i</M> under <M>p</M>.
+    GAP only works with permutations of positive integers and so <C>BurntPancakeGraph</C> returns
+    the Cayley graph of the hyperoctahedral group acting on <C>[1 .. <A>2n</A>]</C> instead of
+    <C>[<A>-n</A> .. -1, 1 .. <A>n</A>]</C>.
+    If the optional first argument <A>filt</A> is not present, then <Ref
+    Filt="IsImmutableDigraph"/> is used by default.<P/>
+
+    See <URL>https://en.wikipedia.org/wiki/Pancake_graph</URL> for further
+    details. 
+
+<Example><![CDATA[
+gap> BurntPancakeGraph(3);
+<immutable symmetric digraph with 48 vertices, 144 edges>
+gap> BurntPancakeGraph(4);
+<immutable symmetric digraph with 384 vertices, 1536 edges>
+gap> BurntPancakeGraph(5);
+<immutable symmetric digraph with 3840 vertices, 19200 edges>
+gap> BurntPancakeGraph(IsMutableDigraph, 1);
+<mutable digraph with 1 vertex, 1 edge>
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="StarGraph">
 <ManSection>
   <Oper Name="StarGraph" Arg="[filt, ]k"/>

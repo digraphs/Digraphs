@@ -219,3 +219,90 @@ fail]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
+
+<#GAPDoc Label="DigraphMaximumFlow">
+<ManSection>
+  <Attr Name="DigraphMaximumFlow" Arg="digraph, start, destination"/>
+  <Returns>A list of lists of integers.</Returns>
+  <Description>
+    If <A>digraph</A> is an edge-weighted digraph with vertices <A>start</A> and
+    <A>destination</A>, this returns a record representing the maximum flow from
+    <A>start</A> to <A>destination</A> in the digraph. <P/>
+
+    A <E>flow</E> is a function from the weighted edges of <A>digraph</A> to the
+    positive real numbers, such that:
+    <List>
+      <Item>
+        Each edge's flow is no more than its weight;
+      </Item>
+      <Item>
+        For each vertex other than <A>start</A> and <A>destination</A>, the sum
+        of flows for all incoming edges is equal to the sum of flows for all
+        outgoing edges;
+      </Item>
+      <Item>
+        The sum of flows of edges leaving <A>start</A> is equal to the sum of
+        flows of edges entering <A>destination</A> (this sum is denoted
+        <M>M</M>).
+      </Item>
+    </List>
+    A <E>maximum flow</E> is a flow that maximises the value of <M>M</M>. <P/>
+
+    The flow is represented as a list of lists where each entry is a number
+    representing the flow on the edge in the corresponding position in
+    <C>OutNeighbours(<A>digraph</A>)</C>.
+    Note that the value <M>M</M> of the flow can be found with
+    <C>Sum(DigraphMaximumFlow(<A>digraph</A>, <A>start</A>,
+    <A>destination</A>)[<A>start</A>])</C>. <P/>
+
+    This attribute is computed by an implementation of the push–relabel maximum
+    flow algorithm, which has time complexity <M>O(v^2 e)</M> where <M>v</M> is
+    the number of vertices of the digraph, and <M>e</M> is the number of
+    edges. <P/>
+
+    See <Ref Attr="EdgeWeights" Func="EdgeWeightedDigraph"/>.
+    <Example><![CDATA[
+gap> g := EdgeWeightedDigraph([[2, 2], [3], []], [[3, 2], [1], []]);
+<immutable multidigraph with 3 vertices, 3 edges>
+gap> flow := DigraphMaximumFlow(g, 1, 3);
+[ [ 1, 0 ], [ 1 ], [  ] ]
+gap> Sum(flow[1]);
+1]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="RandomUniqueEdgeWeightedDigraph">
+<ManSection>
+  <Oper Name="RandomUniqueEdgeWeightedDigraph" Arg="[filt, ]n[, p]"/>
+  <Returns>An edge-weighted digraph.</Returns>
+  <Description>
+    This operation returns a random edge-weighted digraph.<P/>
+
+    Its behaviour is the same as that of <Ref Oper="RandomDigraph"/> but the
+    returned digraph will additionally have the <Ref Attr="EdgeWeights"/>
+    attribute populated with random unique weights from the set
+    <C>[1 .. m]</C> where <C>m</C> is the number of edges in the digraph.<P/>
+
+    &STANDARD_FILT_TEXT;
+
+    If <A>n</A> is a non-negative integer, then the returned digraph will have
+    <A>n</A> vertices.  If the optional second argument <A>p</A> is a float with
+    value <M>0 \leq </M> <A> p </A> <M> \leq 1</M>, then an edge will exist
+    between each pair of vertices with probability approximately <A>p</A>.  If
+    <A>p</A> is not specified, then a random probability will be assumed (chosen
+    with uniform probability).<P/>
+
+    For more information on the arguments and behaviour of this operation, see
+    <Ref Oper="RandomDigraph"/>.
+
+    <Log><![CDATA[
+gap> RandomUniqueEdgeWeightedDigraph(5);
+<immutable digraph with 5 vertices, 21 edges>
+gap> RandomUniqueEdgeWeightedDigraph(5, 1 / 2);
+<immutable digraph with 5 vertices, 14 edges>
+gap> RandomUniqueEdgeWeightedDigraph(IsEulerianDigraph, 5, 1 / 3);
+<immutable digraph with 5 vertices, 6 edges>]]></Log>
+  </Description>
+</ManSection>
+<#/GAPDoc>
