@@ -17,6 +17,8 @@ DeclareGlobalFunction("WriteDigraphs");
 
 DeclareGlobalFunction("DigraphFile");
 DeclareGlobalFunction("IteratorFromDigraphFile");
+DeclareGlobalFunction("IsWholeFileDecoder");
+DeclareGlobalFunction("IsWholeFileEncoder");
 
 # Decoders . . .
 DeclareConstructor("DigraphFromGraph6StringCons", [IsDigraph, IsString]);
@@ -35,7 +37,9 @@ DeclareConstructor("DigraphFromPlainTextStringCons", [IsDigraph, IsString]);
 DeclareOperation("DigraphFromPlainTextString", [IsFunction, IsString]);
 DeclareOperation("DigraphFromPlainTextString", [IsString]);
 DeclareOperation("ReadDIMACSDigraph", [IsString]);
+DeclareOperation("DigraphFromDIMACSString", [IsString]);
 DeclareOperation("TournamentLineDecoder", [IsString]);
+DeclareOperation("DigraphFromDreadnautString", [IsString]);
 
 DeclareOperation("DigraphPlainTextLineDecoder",
                  [IsString, IsString, IsInt]);
@@ -54,5 +58,7 @@ DeclareOperation("Sparse6String", [IsDigraph]);
 DeclareOperation("DiSparse6String", [IsDigraph]);
 DeclareOperation("PlainTextString", [IsDigraph]);
 DeclareOperation("WriteDIMACSDigraph", [IsString, IsDigraph]);
+DeclareOperation("DIMACSString", [IsDigraph]);
 DeclareGlobalFunction("WritePlainTextDigraph");
+DeclareGlobalFunction("DreadnautString");
 DeclareGlobalFunction("DigraphPlainTextLineEncoder");
