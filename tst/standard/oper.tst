@@ -3383,7 +3383,7 @@ gap> ExecuteDFS(record, fail, 1, fail, fail, fail,
 > fail);
 gap> ForAll(record.preorder, x -> x <> -1);
 true
-gap> ForAll([record.preorder, record.postorder], x -> IsSet(x));
+gap> ForAll([record.preorder, record.postorder], IsSet);
 true
 
 # IsDigraphPath
