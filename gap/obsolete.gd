@@ -1,6 +1,7 @@
 InstallDeprecatedMethod := function(oldName, newName, info, filters, func)
   local warningMsg, newMethod, args;
-  warningMsg := Concatenation(oldName, " is deprecated. Instead use ", newName, ".");
+  warningMsg := Concatenation(oldName, " is deprecated. Instead use ",
+                              newName, ".");
 
   args := Length(filters);
   if args = 0 then
@@ -49,7 +50,8 @@ DeclareDeprecatedSynonym := function(oldName, newName)
   local i, method;
   for i in [0 .. 6] do
     for method in MethodsOperation(newName, i) do
-      InstallDeprecatedMethod(oldName, NameFunction(newName), method.info, method.argFilt, method.func);
+      InstallDeprecatedMethod(oldName, NameFunction(newName),
+                        method.info, method.argFilt, method.func);
     od;
   od;
 end;
