@@ -28,8 +28,9 @@ DeclareAttribute("SemicompleteDigraphCrossingNumber", IsSemicompleteDigraph);
 DeclareAttribute("DigraphAllThreeCycles", IsDigraph);
 DeclareAttribute("DigraphAllTriangles", IsDigraph);
 DeclareAttribute("DigraphLargePlanarSubdigraph", IsDigraph);
-DeclareAttribute("DIGRAPHS_CompleteMultipartiteDigraphCrossingNumber", 
+DeclareAttribute("DIGRAPHS_CompleteMultipartiteDigraphCrossingNumber",
     IsCompleteMultipartiteDigraph);
-DeclareAttribute("DIGRAPHS_CompleteBipartiteDigraphCrossingNumber", 
+DeclareAttribute("DIGRAPHS_CompleteBipartiteDigraphCrossingNumber",
     IsCompleteBipartiteDigraph);
-DeclareAttribute("CompleteMultipartiteDigraphPartitionSize",IsCompleteMultipartiteDigraph);
+DeclareAttribute("CompleteMultipartiteDigraphPartitionSize",
+    IsCompleteMultipartiteDigraph);

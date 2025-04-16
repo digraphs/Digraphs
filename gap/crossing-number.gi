@@ -11,7 +11,7 @@ InstallMethod(DIGRAPHS_TournamentCrossingNumber, "for a tournament",
          150, 225, 315];
     n := DigraphNrVertices(D);
     if n < 15 then
-        SetDigraphCrossingNumber(D, KnownCrossingNumberArray[n + 1]); 
+        SetDigraphCrossingNumber(D, KnownCrossingNumberArray[n + 1]);
         return KnownCrossingNumberArray[n + 1];
     elif n >= 15 then
         return -1;
@@ -28,7 +28,7 @@ InstallGlobalFunction(DIGRAPHS_CrossingNumberInequality,
         if nrLoops > 0 then
             e := e - DigraphNrLoops(D);
         fi;
-        
+
         # If digraph is Planar crossing number is 0
         if IsPlanarDigraph(D) then
             SetDigraphCrossingNumber(D, 0);
@@ -39,7 +39,7 @@ InstallGlobalFunction(DIGRAPHS_CrossingNumberInequality,
         res := -1;
 
         if DIGRAPHS_IsK22FreeDigraph(D) and (e >= 1000 * n) then
-            temp := 1/(10 ^ 8) * (Float(e)) ^ 4 / (Float(n) ^ 3);
+            temp := 1 / (10 ^ 8) * (Float(e)) ^ 4 / (Float(n) ^ 3);
             if temp > res then
                 res := temp;
             fi;
@@ -54,7 +54,8 @@ InstallGlobalFunction(DIGRAPHS_CrossingNumberInequality,
             fi;
         # Otherwise we use a different one
         else
-            temp := ((Float(e ^ 3)) / (29 * (Float(n) ^ 2))) - (35 / 29) * Float(n);
+            temp := ((Float(e ^ 3)) / (29 * (Float(n) ^ 2))) -
+            (35 / 29) * Float(n);
             temp := DIGRAPHS_CrossingNumberRound(temp);
             if temp > res then
                 res := temp;
@@ -80,7 +81,7 @@ InstallGlobalFunction(DIGRAPHS_GetCompleteDigraphCrossingNumber,
     function(n)
     local KnownCrossingNumberArray;
     if n > 15 then
-        ErrorNoReturn("Crossing number unknown for digraph on this 
+        ErrorNoReturn("Crossing number unknown for digraph on this
             number of vertices");
     fi;
     KnownCrossingNumberArray := [0, 0, 0, 0, 0, 4, 12, 36, 72, 144,
@@ -99,14 +100,14 @@ InstallMethod(DIGRAPHS_CompleteDigraphCrossingNumber,
     fi;
     n := DigraphNrVertices(D);
     if n < 15 then
-        # 1 due to list's indexing at 1 and the complete 
+        # 1 due to list's indexing at 1 and the complete
         # graph of 0 vertices being included
-        completeDigraphCrossingNumber := 
+        completeDigraphCrossingNumber :=
             DIGRAPHS_GetCompleteDigraphCrossingNumber(n);
-        SetDigraphCrossingNumber(D, completeDigraphCrossingNumber); 
+        SetDigraphCrossingNumber(D, completeDigraphCrossingNumber);
         return completeDigraphCrossingNumber;
     elif n >= 15 then
-        ErrorNoReturn("Complete Digraph contains too many 
+        ErrorNoReturn("Complete Digraph contains too many
             vertices for known crossing number");
     fi;
 end);
@@ -114,29 +115,29 @@ end);
 # Computes if a digraph has K2,2 subgraph
 InstallGlobalFunction(DIGRAPHS_IsK22FreeDigraph,
     function(D)
-        local i,j,k,l,intersect,adjacencyMatrix,
-            vertices,neighbours,numberVertices,jCount,lCount;
+        local i, j, k, l, intersect, adjacencyMatrix,
+            vertices, neighbours, numberVertices, jCount, lCount;
         if not IsDigraph(D) then
             ErrorNoReturn("the 1st argument must be a digraph,");
         fi;
         numberVertices := DigraphNrVertices(D);
-        # If the digraph is a complete bipartite digraph with m>=2 and n>=2 
-        # then it has K2,2 as a subgraph 
-        if IsCompleteBipartiteDigraph(D) and 
+        # If the digraph is a complete bipartite digraph with m>=2 and n>=2
+        # then it has K2,2 as a subgraph
+        if IsCompleteBipartiteDigraph(D) and
             Length(DigraphBicomponents(D)[1]) > 1 and
             Length(DigraphBicomponents(D)[2]) > 1 then
             return false;
-        # If the digraph has fewer than 4 vertices then it is is 
+        # If the digraph has fewer than 4 vertices then it is is
         # trivially K2,2 free
         elif numberVertices < 4 then
             return true;
-        # If a digraph is a complete digraph or tournament it is K2,2 
+        # If a digraph is a complete digraph or tournament it is K2,2
         # free as as there are no unconnected nodes
         elif IsCompleteDigraph(D) or IsTournament(D) then
             return true;
         fi;
-        # Check if for every pair of distinct unconnected vertices (x1,x2) 
-        # (x1 <-!-> x2, x1!=x2) that their intersection contains 
+        # Check if for every pair of distinct unconnected vertices (x1,x2)
+        # (x1 <-!-> x2, x1!=x2) that their intersection contains
         # two distinct unconnected vertices. This means there is K2,2 subgraph
         # Create boolean adjacency matrix
         adjacencyMatrix := BooleanAdjacencyMatrix(D);
@@ -145,17 +146,17 @@ InstallGlobalFunction(DIGRAPHS_IsK22FreeDigraph,
         for i in vertices do
             for jCount in [i + 1 .. numberVertices] do
                 j := vertices[jCount];
-                # If there are more than 1 vertex that both i and j 
+                # If there are more than 1 vertex that both i and j
                 # connect to and i and j are not connected
                 intersect := Intersection(neighbours[i], neighbours[j]);
-                if Length(intersect) >= 2 and adjacencyMatrix[i][j] = false 
+                if Length(intersect) >= 2 and adjacencyMatrix[i][j] = false
                     and adjacencyMatrix[j][i] = false then
                     # For every pair of vertices in the intersection
                     for k in intersect do
                         for lCount in [k + 1 .. Length(intersect)] do
                             l := intersect[lCount];
                             # if k and l are unconnected
-                            if adjacencyMatrix[k][l] = false and 
+                            if adjacencyMatrix[k][l] = false and
                                 adjacencyMatrix[l][k] = false then
                                 return false;
                             fi;
@@ -184,7 +185,7 @@ function(_, n, p)
     od;
 
     for i in vertices do
-        for j in [i+1..n] do
+        for j in [i + 1 .. n] do
             # Decide if there should be a second vertex using some probability p
             # Random number < p means it should be added
             if Float(Random(probability) / 100) < p then
@@ -232,7 +233,7 @@ function(_, n)
         edgeIndex := Random(edges);
         edge1 := edgeList[edgeIndex];
         # Remove edge1 so edge2 != edge1
-        Remove(edges,edgeIndex);
+        Remove(edges, edgeIndex);
         edge2 := edgeList[Random(edges)];
 
         # Split the edges by adding a new vertex in between each
@@ -240,15 +241,15 @@ function(_, n)
         D := DigraphRemoveEdge(D, edge2);
         numberVertices := DigraphNrVertices(D);
         D := DigraphAddVertices(D, 2);
-        D := DigraphAddEdge(D,[edge1[1], numberVertices + 1]);
-        D := DigraphAddEdge(D,[numberVertices + 1,edge1[2]]);
-        D := DigraphAddEdge(D,[edge2[1], numberVertices + 2]);
-        D := DigraphAddEdge(D,[numberVertices + 2, edge2[2]]);
+        D := DigraphAddEdge(D, [edge1[1], numberVertices + 1]);
+        D := DigraphAddEdge(D, [numberVertices + 1, edge1[2]]);
+        D := DigraphAddEdge(D, [edge2[1], numberVertices + 2]);
+        D := DigraphAddEdge(D, [numberVertices + 2, edge2[2]]);
         # Determine orientation of link between new vertices
         if Random([1 .. 2]) < 2 then
-            D := DigraphAddEdge(D,[numberVertices + 1,numberVertices + 2]);
+            D := DigraphAddEdge(D, [numberVertices + 1, numberVertices + 2]);
         else
-            D := DigraphAddEdge(D, [numberVertices + 2,numberVertices + 1]);
+            D := DigraphAddEdge(D, [numberVertices + 2, numberVertices + 1]);
         fi;
     od;
 
@@ -280,7 +281,7 @@ end);
 InstallMethod(IsSemicompleteDigraph, "for a digraph", [IsDigraph],
     function(D)
         local i, j, adjacencyMatrix, numberVertices, jCount, vertices;
-        # If a digraph is complete or a tournament 
+        # If a digraph is complete or a tournament
         # it is by definition semi-complete
         if IsTournament(D) or IsCompleteDigraph(D) then
             return true;
@@ -292,17 +293,17 @@ InstallMethod(IsSemicompleteDigraph, "for a digraph", [IsDigraph],
         if IsMultiDigraph(D) then
             return false;
         fi;
-        # Check that for all vertices that do not have a 
-        # directed edge one way between 
+        # Check that for all vertices that do not have a
+        # directed edge one way between them
         vertices := DigraphVertices(D);
         adjacencyMatrix := BooleanAdjacencyMatrix(D);
         numberVertices := DigraphNrVertices(D);
         for i in vertices do
-            for jCount in [i+1..numberVertices] do
+            for jCount in [i + 1 .. numberVertices] do
                 j := vertices[jCount];
                 # If no edge exists from i -> j or j -> i
                 # for all i,j then the digraph isn't semicomplete
-                if adjacencyMatrix[i][j] = false and 
+                if adjacencyMatrix[i][j] = false and
                     adjacencyMatrix[j][i] = false then
                     return false;
                 fi;
@@ -366,7 +367,6 @@ function(D)
     return -1;
 end);
 
-
 # Compute a lower bound for the crossing number of a digraph
 InstallGlobalFunction(DigraphCrossingNumberLowerBound,
 function(D)
@@ -375,14 +375,11 @@ function(D)
     if not IsDigraph(D) then
         ErrorNoReturn("Argument must be a digraph");
     fi;
-
     res := 0;
-
     # Check if there is an exact way to compute the crossing number
     if DigraphCrossingNumber(D) <> -1 then
         return DigraphCrossingNumber(D);
     fi;
-    
     # The Albertson conjecture
     temp := DIGRAPHS_CrossingNumberAlbertson(D);
     if temp <> -1 then
@@ -434,13 +431,14 @@ function(D)
     # Guy's Theorem (Valid for all non-multi digraphs)
     if not IsMultiDigraph(D) then
         n := Float(n);
-        temp := Trunc(n/2) * Trunc((n-1)/2) * Trunc((n-2)/2) * Trunc((n-3)/2);
+        temp := Trunc(n / 2) * Trunc((n - 1) / 2) *
+        Trunc((n - 2) / 2) * Trunc((n - 3) / 2);
         if temp < res then
             res := temp;
         fi;
     else
         e := DigraphNrEdges(D);
-        temp := e^e;
+        temp := e ^ e;
         if temp < res then
             res := temp;
         fi;
@@ -449,40 +447,44 @@ function(D)
     return res;
 end);
 
-# Compute the upper and lower bound for the crossing number of a semicomplete digraph
-InstallMethod(SemicompleteDigraphCrossingNumber, "for a semicomplete digraph", [IsSemicompleteDigraph],
+# Compute the bounds for the crossing number of a semicomplete digraph
+InstallMethod(SemicompleteDigraphCrossingNumber,
+"for a semicomplete digraph", [IsSemicompleteDigraph],
     function(D)
         local n, crossingNumberCompleteDigraph, crossingNumberTournament, x;
-        
         if IsPlanarDigraph(D) then
-            SetDigraphCrossingNumber(D,0);
+            SetDigraphCrossingNumber(D, 0);
             return 0;
         fi;
 
         n := DigraphNrVertices(D);
-    
         if n < 15 then
-            # Get the crossing number of the tournament with the same number of vertices
-            crossingNumberTournament := DIGRAPHS_GetCompleteDigraphCrossingNumber(n) / 4;
-            # Get the crossing number of the complete graph with the same number of vertices
-            crossingNumberCompleteDigraph := DIGRAPHS_GetCompleteDigraphCrossingNumber(n);
+            # Get the crossing number of the tournament equal vertices
+            crossingNumberTournament :=
+            DIGRAPHS_GetCompleteDigraphCrossingNumber(n) / 4;
+            # Get the crossing number of the complete graph with equal vertices
+            crossingNumberCompleteDigraph :=
+            DIGRAPHS_GetCompleteDigraphCrossingNumber(n);
         else
-            # Get lower bound for tournament with the same number of vertices using CNI
-            crossingNumberTournament := DIGRAPHS_CrossingNumberInequality(RandomTournament(n));
-            # Get upper bound for complete digraph with the same number of vertices using Guy's Theorem
+            # Get lower bound for tournament with equal vertices using CNI
+            crossingNumberTournament :=
+            DIGRAPHS_CrossingNumberInequality(RandomTournament(n));
+            # Get upper bound for complete digraph
+            # with equal number of vertices using Guy's Theorem
             x := Float(n);
-            crossingNumberCompleteDigraph := Int(Trunc(x/2) * Trunc((x-1)/2) * Trunc((x-2)/2) * Trunc((x-3)/2));
+            crossingNumberCompleteDigraph := Int(Trunc(x / 2) *
+            Trunc((x - 1) / 2) * Trunc((x - 2) / 2) * Trunc((x - 3) / 2));
         fi;
-        # If the cn of tournament and complete digraph are equal crossing number is known
-        # The only examples I know where this is the case are for planar digraphs
+        # If the cn of tournament and complete digraph
+        # are equal crossing number is known
         if crossingNumberCompleteDigraph = crossingNumberTournament then
-            SetDigraphCrossingNumber(D,crossingNumberCompleteDigraph);
+            SetDigraphCrossingNumber(D, crossingNumberCompleteDigraph);
             return crossingNumberCompleteDigraph;
         elif crossingNumberCompleteDigraph < crossingNumberTournament then
             # This code should never run
             ErrorNoReturn("Error, lower bound higher than upper bound");
         else
-            return [crossingNumberTournament,crossingNumberCompleteDigraph];
+            return [crossingNumberTournament, crossingNumberCompleteDigraph];
         fi;
         return;
 end);
@@ -493,16 +495,17 @@ InstallGlobalFunction(DIGRAPHS_CrossingNumberAlbertson,
         local chromaticNumber;
         if not IsDigraph(D) then
             ErrorNoReturn("the 1st argument must be a digraph,");
-        fi;  
+        fi;
         chromaticNumber := ChromaticNumber(D);
-        # Chromatic number must be less than 16 as that is the highest complete digraph we have a known cn for
+        # Chromatic number must be less than 16 as that is
+        # the highest complete digraph we have a known cn for
         if chromaticNumber < 15 then
-            # +1 as complete digraph crossing number array starts at 0
-            return DIGRAPHS_GetCompleteDigraphCrossingNumber(chromaticNumber)/4;
+            return DIGRAPHS_GetCompleteDigraphCrossingNumber(chromaticNumber
+            + 1) / 4;
         else
-            #Chromatic number too large for known crossing number
+            # Chromatic number too large for known crossing number
             return -1;
-        fi; 
+        fi;
 end);
 
 InstallMethod(RandomDigraphCons, "for SemicompleteDigraph and an integer",
@@ -523,43 +526,49 @@ InstallMethod(DigraphLargePlanarSubdigraph, "for a digraph", [IsDigraph],
             ErrorNoReturn("the 1st argument must be a digraph,");
         fi;
         # Starting with E1 = Empty Set
-        E1 := [[],[]];
+        E1 := [[], []];
         # Make digraph antisymmetric
         antisymmetric := MaximalAntiSymmetricSubdigraph(D);
-        # For as long as possible find triangles T whose vertices 
-        # are in different components of G[E1] (spanning subgraph of G induced by E1)
+        # For as long as possible find triangles T whose vertices
+        # are in different components of G[E1]
         # Find all triangles in the digraph
-        triangles:= DigraphAllTriangles(antisymmetric);
+        triangles := DigraphAllTriangles(antisymmetric);
 
         # Get G[E1]
-        spanningSubdigraph := Digraph(DigraphNrVertices(D),E1[1],E1[2]);
+        spanningSubdigraph := Digraph(DigraphNrVertices(D), E1[1], E1[2]);
         for triangle in triangles do
             # Check if triangle's vertices are in different components of G[E1]
-            if (DigraphConnectedComponent(spanningSubdigraph, triangle[1]) <> DigraphConnectedComponent(spanningSubdigraph, triangle[2])) and (DigraphConnectedComponent(spanningSubdigraph, triangle[1]) <> DigraphConnectedComponent(spanningSubdigraph, triangle[3])) then
+            if (DigraphConnectedComponent(spanningSubdigraph, triangle[1]) <>
+            DigraphConnectedComponent(spanningSubdigraph, triangle[2])) and
+            (DigraphConnectedComponent(spanningSubdigraph, triangle[1]) <>
+            DigraphConnectedComponent(spanningSubdigraph, triangle[3])) then
                 # If they are add the edges of each vertex to E1
-                Add(E1[1],triangle[1]);
-                Add(E1[2],triangle[2]);
-                Add(E1[1],triangle[2]);
-                Add(E1[2],triangle[3]);
-                Add(E1[1],triangle[1]);
-                Add(E1[2],triangle[3]);
+                Add(E1[1], triangle[1]);
+                Add(E1[2], triangle[2]);
+                Add(E1[1], triangle[2]);
+                Add(E1[2], triangle[3]);
+                Add(E1[1], triangle[1]);
+                Add(E1[2], triangle[3]);
                 # Recompute G[E1]f
-                spanningSubdigraph := Digraph(DigraphNrVertices(D),E1[1],E1[2]);
+                spanningSubdigraph := Digraph(DigraphNrVertices(D),
+                E1[1], E1[2]);
 
             fi;
         od;
-        # Repeatedly find edges in G whose endpoints are are in different components of G[E2] and add e to E2
+        # Repeatedly find edges in G whose endpoints are in
+        # different components of G[E2] and add e to E2
         for edge in DigraphEdges(antisymmetric) do
-            if DigraphConnectedComponent(spanningSubdigraph, edge[1]) <> DigraphConnectedComponent(spanningSubdigraph, edge[2]) then
-                spanningSubdigraph := DigraphAddEdge(spanningSubdigraph,edge);
+            if DigraphConnectedComponent(spanningSubdigraph, edge[1]) <>
+            DigraphConnectedComponent(spanningSubdigraph, edge[2]) then
+                spanningSubdigraph := DigraphAddEdge(spanningSubdigraph, edge);
             fi;
         od;
         for edge in DigraphEdges(spanningSubdigraph) do
-            if IsDigraphEdge(D,edge[2],edge[1]) then
-                spanningSubdigraph := DigraphAddEdge(spanningSubdigraph,[edge[2],edge[1]]);
+            if IsDigraphEdge(D, edge[2], edge[1]) then
+                spanningSubdigraph := DigraphAddEdge(spanningSubdigraph,
+                [edge[2], edge[1]]);
             fi;
         od;
-        #Print(DigraphEdges(spanningSubdigraph));
         return spanningSubdigraph;
 end);
 
@@ -574,21 +583,26 @@ InstallMethod(DigraphAllThreeCycles, "for a digraph", [IsDigraph],
     adjacencyList := AdjacencyMatrix(D);
     for edge in DigraphEdges(D) do
         for vertex in DigraphVertices(D) do
-            # if u != w, v != w, u is connected to w and v is connected to w (where u,v distinct to prevent errors due to loops)
-            if edge[1] <> edge[2] and vertex <> edge[1] and vertex <> edge[2] and adjacencyList[vertex][edge[1]] = 1 and adjacencyList[edge[2]][vertex] = 1 then 
-                # Sort to prevent multiple cycles with same vertices, take the lowest first vertex
-                min := Minimum(edge[1],edge[2],vertex);
+            # if u != w, v != w,
+            # u is connected to w and v is connected to w
+            # where u,v distinct to prevent errors due to loops
+            if edge[1] <> edge[2] and vertex <> edge[1] and vertex <> edge[2]
+            and adjacencyList[vertex][edge[1]] = 1 and
+            adjacencyList[edge[2]][vertex] = 1 then
+                # Sort to prevent multiple cycles with same vertices
+                # lowest vertex first
+                min := Minimum(edge[1], edge[2], vertex);
                 if min = vertex then
-                    Add(threeCycles, [min,edge[1],edge[2]]);
+                    Add(threeCycles, [min, edge[1], edge[2]]);
                 elif min = edge[1] then
-                    Add(threeCycles, [min,edge[2],vertex]);
+                    Add(threeCycles, [min, edge[2], vertex]);
                 else
-                    Add(threeCycles, [min,vertex,edge[1]]);
+                    Add(threeCycles, [min, vertex, edge[1]]);
                 fi;
             fi;
         od;
     od;
-    SetDigraphAllThreeCycles(D,threeCycles);
+    SetDigraphAllThreeCycles(D, threeCycles);
     return Set(threeCycles);
 end);
 
@@ -603,11 +617,15 @@ InstallMethod(DigraphAllTriangles, "for a digraph", [IsDigraph],
     adjacencyList := AdjacencyMatrix(D);
     for edge in DigraphEdges(D) do
         for vertex in DigraphVertices(D) do
-            # if u != w, v != w, u is connected to w and v is connected to w (where u,v distinct to prevent errors due to loop)
-            if edge[1] <> edge[2] and vertex <> edge[1] and vertex <> edge[2] and 
-                (adjacencyList[vertex][edge[1]] = 1 or adjacencyList[edge[1]][vertex] = 1) and 
-                (adjacencyList[edge[2]][vertex] = 1 or adjacencyList[vertex][edge[2]] = 1) then
-                temp := [edge[1],edge[2],vertex];
+            # if u != w, v != w, u is connected to w and v is connected to w
+            # where u,v distinct to prevent errors due to loop
+            if edge[1] <> edge[2] and vertex <> edge[1]
+            and vertex <> edge[2] and
+                (adjacencyList[vertex][edge[1]] = 1 or
+                adjacencyList[edge[1]][vertex] = 1) and
+                (adjacencyList[edge[2]][vertex] = 1 or
+                adjacencyList[vertex][edge[2]] = 1) then
+                temp := [edge[1], edge[2], vertex];
                 # Sort to prevent multiple triangles with same vertices
                 Sort(temp);
                 Add(triangles, temp);
@@ -618,16 +636,17 @@ InstallMethod(DigraphAllTriangles, "for a digraph", [IsDigraph],
 end);
 
 # Add an artificial vertex between two given edges
-InstallMethod(DigraphAddVertexCrossingPoint, "for a digraph, list, and list", [IsDigraph, IsList, IsList],
-    function(arg)
+InstallMethod(DigraphAddVertexCrossingPoint, "for a digraph,
+    list, and list", [IsDigraph, IsList, IsList],
+    function(arg...)
     local n, D, Edge1, Edge2;
     if IsEmpty(arg) then
         ErrorNoReturn("at least 3 arguments required,");
     elif not IsDigraph(arg[1]) then
         ErrorNoReturn("the 1st argument must be a digraph,");
-    elif not IsDigraphEdge(arg[1],arg[2]) then
+    elif not IsDigraphEdge(arg[1], arg[2]) then
         ErrorNoReturn("the 2nd argument must be an edge on the digraph,");
-    elif not IsDigraphEdge(arg[1],arg[3]) then
+    elif not IsDigraphEdge(arg[1], arg[3]) then
         ErrorNoReturn("the 3rd argument must be an edge on the digraph,");
     fi;
 
@@ -639,41 +658,49 @@ InstallMethod(DigraphAddVertexCrossingPoint, "for a digraph, list, and list", [I
         ErrorNoReturn("the function is not suitable for self-loop edges");
     elif Edge1 = Edge2 then
         ErrorNoReturn("the function is not suitable for identical edges");
-    fi; 
+    fi;
 
     # Add a new artificial vertex to the graph
-    D := DigraphAddVertices(D,1);
+    D := DigraphAddVertices(D, 1);
     n := DigraphNrVertices(D);
     # Remove the existing edges
-    D := DigraphRemoveEdge(D,Edge1);
-    D := DigraphRemoveEdge(D,Edge2);
-    # Add the new edges in (between E1 source and artificial vertex, artificial vertex and E1 destination. Same for E2)
-    return DigraphAddEdges(D, [[Edge1[1],n],[n,Edge1[2]],[Edge2[1],n],[n,Edge2[2]]]);
+    D := DigraphRemoveEdge(D, Edge1);
+    D := DigraphRemoveEdge(D, Edge2);
+    # Add the new edges in (between E1 source and artificial vertex,
+    # artificial vertex and E1 destination. Same for E2)
+    return DigraphAddEdges(D, [[Edge1[1], n], [n, Edge1[2]],
+    [Edge2[1], n], [n, Edge2[2]]]);
 end);
 
 # Compute crossing number of a complete multipartite digraphs
-InstallMethod(DIGRAPHS_CompleteMultipartiteDigraphCrossingNumber, "for a multipartite digraph", [IsCompleteMultipartiteDigraph],
+InstallMethod(DIGRAPHS_CompleteMultipartiteDigraphCrossingNumber,
+"for a multipartite digraph", [IsCompleteMultipartiteDigraph],
     function(D)
     local componentsSize, crossingNumber;
     if not IsCompleteMultipartiteDigraph(D) then
-        ErrorNoReturn("method only applicable for complete multipartite digraphs");
+        ErrorNoReturn("method only applicable for
+        complete multipartite digraphs");
     fi;
     componentsSize := CompleteMultipartiteDigraphPartitionSize(D);
     if Length(componentsSize) = 3 then
-        crossingNumber := DIGRAPHS_CompleteTripartiteDigraphCrossingNumber(componentsSize);
-        SetDigraphCrossingNumber(D,crossingNumber);
+        crossingNumber :=
+        DIGRAPHS_CompleteTripartiteDigraphCrossingNumber(componentsSize);
+        SetDigraphCrossingNumber(D, crossingNumber);
         return crossingNumber;
     elif Length(componentsSize) = 4 then
-        crossingNumber := DIGRAPHS_Complete4partiteDigraphCrossingNumber(componentsSize);
-        SetDigraphCrossingNumber(D,crossingNumber);
+        crossingNumber :=
+        DIGRAPHS_Complete4partiteDigraphCrossingNumber(componentsSize);
+        SetDigraphCrossingNumber(D, crossingNumber);
         return crossingNumber;
     elif Length(componentsSize) = 5 then
-        crossingNumber := DIGRAPHS_Complete5partiteDigraphCrossingNumber(componentsSize);
-        SetDigraphCrossingNumber(D,crossingNumber);
+        crossingNumber :=
+        DIGRAPHS_Complete5partiteDigraphCrossingNumber(componentsSize);
+        SetDigraphCrossingNumber(D, crossingNumber);
         return crossingNumber;
     elif Length(componentsSize) = 6 then
-        crossingNumber := DIGRAPHS_Complete6partiteDigraphCrossingNumber(componentsSize);
-        SetDigraphCrossingNumber(D,crossingNumber);
+        crossingNumber :=
+        DIGRAPHS_Complete6partiteDigraphCrossingNumber(componentsSize);
+        SetDigraphCrossingNumber(D, crossingNumber);
         return crossingNumber;
     fi;
 end);
@@ -681,13 +708,13 @@ end);
 # Compute the crossing number of a complete 4-partite digraph
 InstallGlobalFunction(DIGRAPHS_Complete4partiteDigraphCrossingNumber,
     function(arg...)
-    local k,l,m,n;
+    local k, l, m, n;
     k := arg[1][1];
     l := arg[1][2];
     m := arg[1][3];
     n := Float(arg[1][4]);
     if k = 2 and l = 2 and m = 2 then
-        return Int(4 * (6*(Trunc(n/2) * Trunc((n-1)/2))+3*n));
+        return Int(4 * (6 * (Trunc(n / 2) * Trunc((n - 1) / 2)) + 3 * n));
     fi;
     return -1;
 end);
@@ -695,7 +722,7 @@ end);
 # Compute the crossing number of a complete 5-partite digraph
 InstallGlobalFunction(DIGRAPHS_Complete5partiteDigraphCrossingNumber,
     function(arg...)
-    local j,k,l,m,n;
+    local j, k, l, m, n;
     j := arg[1][1];
     k := arg[1][2];
     l := arg[1][3];
@@ -703,9 +730,9 @@ InstallGlobalFunction(DIGRAPHS_Complete5partiteDigraphCrossingNumber,
     n := Float(arg[1][5]);
     # Ho (2009)
     if j = 1 and k = 1 and l = 1 and m = 1 then
-        return Int(4 * (2*(Trunc(n/2) * Trunc((n-1)/2))+n));
+        return Int(4 * (2 * (Trunc(n / 2) * Trunc((n - 1) / 2)) + n));
     elif j = 1 and k = 1 and l = 1 and m = 2 then
-        return Int(4 * (4*(Trunc(n/2) * Trunc((n-1)/2))+2*n));
+        return Int(4 * (4 * (Trunc(n / 2) * Trunc((n - 1) / 2)) + 2 * n));
     fi;
     return -1;
 end);
@@ -713,7 +740,7 @@ end);
 # Compute the crossing number of a complete 6-partite digraph
 InstallGlobalFunction(DIGRAPHS_Complete6partiteDigraphCrossingNumber,
     function(arg...)
-    local i,j,k,l,m,n;
+    local i, j, k, l, m, n;
     i := arg[1][1];
     j := arg[1][2];
     k := arg[1][3];
@@ -722,7 +749,8 @@ InstallGlobalFunction(DIGRAPHS_Complete6partiteDigraphCrossingNumber,
     n := Float(arg[1][6]);
     # Lu and Huang
     if i = 1 and j = 1 and k = 1 and l = 1 and m = 1 then
-        return Int(4 * (4*(Trunc(n/2) * Trunc((n-1)/2))+2*n+1+Trunc(n/2)));
+        return Int(4 * (4 * (Trunc(n / 2) *
+        Trunc((n - 1) / 2)) + 2 * n + 1 + Trunc(n / 2)));
     fi;
     return -1;
 end);
@@ -730,7 +758,7 @@ end);
 # Compute the crossing number of a complete tripartite digraph
 InstallGlobalFunction(DIGRAPHS_CompleteTripartiteDigraphCrossingNumber,
     function(arg...)
-    local l,m,n;
+    local l, m, n;
     l := arg[1][1];
     m := arg[1][2];
     n := Float(arg[1][3]);
@@ -739,46 +767,52 @@ InstallGlobalFunction(DIGRAPHS_CompleteTripartiteDigraphCrossingNumber,
     elif l = 1 and m > 1 then
         if m = 2 then
             # Ho (2008)
-            return Int(4 * Trunc(n/2) * Trunc((n-1)/2));
+            return Int(4 * Trunc(n / 2) * Trunc((n - 1) / 2));
         elif m = 3 then
             # Asano
-            return Int(4 * (2* Trunc(n/2) * Trunc((n-1)/2) + Trunc(n/2)));
+            return Int(4 * (2 * Trunc(n / 2) *
+            Trunc((n - 1) / 2) + Trunc(n / 2)));
         elif m = 4 then
             # Huang and Zhao
-            return Int(4 * (4* Trunc(n/2) * Trunc((n-1)/2) + 2 * Trunc(n/2)));
+            return Int(4 * (4 * Trunc(n / 2) *
+            Trunc((n - 1) / 2) + 2 * Trunc(n / 2)));
         fi;
     elif l = 2 then
         if m = 2 then
             # Klesc and Schrotter
-            return Int(4 * 2 * Trunc(n/2) * Trunc((n-1)/2));
+            return Int(4 * 2 * Trunc(n / 2) * Trunc((n - 1) / 2));
         elif m = 3 then
-            # Asano 
-            return Int(4 * (4 * Trunc(n/2) * Trunc((n-1)/2) + n));
+            # Asano
+            return Int(4 * (4 * Trunc(n / 2) * Trunc((n - 1) / 2) + n));
         elif m = 4 then
             # Ho (2013)
-            return Int(4 * (6* Trunc(n/2) * Trunc((n-1)/2) + 2*n));
+            return Int(4 * (6 * Trunc(n / 2) * Trunc((n - 1) / 2) + 2 * n));
         fi;
     fi;
     return -1;
 end);
 
 # Compute the crossing number of a complete bipartite digraph
-InstallMethod(DIGRAPHS_CompleteBipartiteDigraphCrossingNumber, "for a bipartite digraph", [IsCompleteBipartiteDigraph],
+InstallMethod(DIGRAPHS_CompleteBipartiteDigraphCrossingNumber,
+"for a bipartite digraph", [IsCompleteBipartiteDigraph],
     function(D)
     local componentsSize, crossingNumber;
     if not IsCompleteBipartiteDigraph(D) then
         ErrorNoReturn("method only applicable for complete bipartite digraphs");
     fi;
     componentsSize := CompleteMultipartiteDigraphPartitionSize(D);
-    # Zarankiewicz's theorem holds with equality for all m < 7 for Km,n where m <= n
+    # Zarankiewicz's theorem holds with equality for all m < 7
+    # for Km,n where m <= n
     if componentsSize[1] < 7 then
-        crossingNumber := DIGRAPHS_ZarankiewiczTheorem(componentsSize[1],componentsSize[2]);
-        SetDigraphCrossingNumber(D,crossingNumber);
+        crossingNumber :=
+        DIGRAPHS_ZarankiewiczTheorem(componentsSize[1], componentsSize[2]);
+        SetDigraphCrossingNumber(D, crossingNumber);
         return crossingNumber;
     # Zarankiewicz's theorem is also known to hold for K7,7-10 and K8,8-10
     elif componentsSize[1] < 9 and componentsSize[2] < 11 then
-        crossingNumber := DIGRAPHS_ZarankiewiczTheorem(componentsSize[1],componentsSize[2]);
-        SetDigraphCrossingNumber(D,crossingNumber);
+        crossingNumber :=
+        DIGRAPHS_ZarankiewiczTheorem(componentsSize[1], componentsSize[2]);
+        SetDigraphCrossingNumber(D, crossingNumber);
         return crossingNumber;
     else
         return -1;
@@ -787,57 +821,66 @@ end);
 
 # Implementation of Zarankiewicz's theorem
 InstallGlobalFunction(DIGRAPHS_ZarankiewiczTheorem,
-    function(arg)
+    function(arg...)
     local m, n;
     m := Float(arg[1]);
     n := Float(arg[2]);
-    return Int(4 * Trunc(n/2) * Trunc((n-1)/2) * Trunc(m/2) * Trunc((m-1)/2));
+    return Int(4 * Trunc(n / 2) * Trunc((n - 1) / 2) *
+    Trunc(m / 2) * Trunc((m - 1) / 2));
 end);
 
 # Compute the partition sizes of a complete multipartite digraph
-InstallMethod(CompleteMultipartiteDigraphPartitionSize, "for a complete multipartite digraph", [IsCompleteMultipartiteDigraph],
+InstallMethod(CompleteMultipartiteDigraphPartitionSize,
+"for a complete multipartite digraph", [IsCompleteMultipartiteDigraph],
     function(D)
     local i, neighbours, typesSeen, dictionary, componentsSize;
     # Create a dictionary for the set of outneighbours
-    dictionary := NewDictionary(Set(OutNeighbours(D)),true);
+    dictionary := NewDictionary(Set(OutNeighbours(D)), true);
     neighbours := OutNeighbors(D);
     typesSeen := [];
     componentsSize := [];
-    for i in [1..Length(neighbours)] do
-        # If we've already seen the outneighbours for a given vertex increment the number of times we've seen it
+    for i in [1 .. Length(neighbours)] do
+        # If we've already seen the outneighbours for a given vertex
+        # increment the number of times we've seen it
         if neighbours[i] in typesSeen then
-            AddDictionary(dictionary, neighbours[i], LookupDictionary(dictionary,neighbours[i])+1); 
+            AddDictionary(dictionary, neighbours[i],
+            LookupDictionary(dictionary, neighbours[i]) + 1);
         else
-            # Otherwise add the outneighbours to the seen array and add it to the dictionary
+            # Otherwise add the outneighbours to the seen array
+            # and add it to the dictionary
             Append(typesSeen, [neighbours[i]]);
-            AddDictionary(dictionary,neighbours[i],1);
+            AddDictionary(dictionary, neighbours[i], 1);
         fi;
     od;
     # Add the number of times we have seen each neighbour set to an array
-    for i in [1..Length(typesSeen)] do
-        Add(componentsSize,LookupDictionary(dictionary,typesSeen[i]));
+    for i in [1 .. Length(typesSeen)] do
+        Add(componentsSize, LookupDictionary(dictionary, typesSeen[i]));
     od;
     # Sort the array due to conventional notation of CompleteMultidigraphs
     componentsSize := AsSortedList(componentsSize);
-    SetCompleteMultipartiteDigraphPartitionSize(D,componentsSize);
+    SetCompleteMultipartiteDigraphPartitionSize(D, componentsSize);
     return componentsSize;
 end);
 
-# Compute the crossing number of a digraph if it is isomorphic to a circulant digraph with known crossing number
+# Compute the crossing number of a digraph if
+# it is isomorphic to a circulant digraph with known crossing number
 InstallGlobalFunction(DIGRAPHS_IsomorphicToCirculantGraphCrossingNumber,
     function(D)
     local n;
     n := DigraphNrVertices(D);
-    if n >= 8 and IsIsomorphicDigraph(D, CirculantGraph(n,[1,3])) then
-        return Trunc(Float(n)/3) + (n mod 3);
-    elif n >= 8 and n mod 2 = 0 and IsIsomorphicDigraph(D, CirculantGraph(n,[1,(n/2)-1])) then
-        return n/2;
-    elif n >= 3 and IsIsomorphicDigraph(D, CirculantGraph(3*n,[1,n])) then
+    if n >= 8 and IsIsomorphicDigraph(D, CirculantGraph(n, [1, 3])) then
+        return Trunc(Float(n) / 3) + (n mod 3);
+    elif n >= 8 and n mod 2 = 0 and
+        IsIsomorphicDigraph(D, CirculantGraph(n, [1, (n / 2) - 1])) then
+        return n / 2;
+    elif n >= 3 and IsIsomorphicDigraph(D, CirculantGraph(3 * n, [1, n])) then
         return n;
-    elif n >= 3 and IsIsomorphicDigraph(D, CirculantGraph(2*n+2,[1,n])) then
-        return n+1;
-    elif n >= 3 and IsIsomorphicDigraph(D, CirculantGraph(3*n+1,[1,n])) then
-        return n + 1; 
+    elif n >= 3 and
+        IsIsomorphicDigraph(D, CirculantGraph(2 * n + 2, [1, n])) then
+        return n + 1;
+    elif n >= 3 and
+        IsIsomorphicDigraph(D, CirculantGraph(3 * n + 1, [1, n])) then
+        return n + 1;
     fi;
     return -1;
 end);
