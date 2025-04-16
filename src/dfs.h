@@ -53,6 +53,7 @@ struct dfs_config {
   bool revisit;
   bool iter;
   bool forest;
+  Obj forest_specific;
   bool use_postorder;
   bool use_parents;
   bool use_edge;

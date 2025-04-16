@@ -2824,8 +2824,8 @@ gap> VerticesReachableFrom(D1, [1, 2]);
 gap> VerticesReachableFrom(D2, [1]);
 [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ]
 gap> VerticesReachableFrom(D2, [1, 11]);
-Error, an element of the 2nd argument (roots) is not a vertex of the 1st argum\
-ent (a digraph)
+Error, the 2nd argument (roots) contains a vertex that is not a vertex of the \
+1st argument (a digraph)
 gap> D3 := CompleteDigraph(7);
 <immutable complete digraph with 7 vertices>
 gap> D3_edges := [1 .. 7];
@@ -2872,8 +2872,8 @@ gap> IsOrderFilter(D, 4);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `IsOrderFilter' on 2 arguments
 gap> IsOrderFilter(D, [5]);
-Error, an element of the 2nd argument (roots) is not a vertex of the 1st argum\
-ent (a digraph)
+Error, the 2nd argument (roots) contains a vertex that is not a vertex of the \
+1st argument (a digraph)
 
 # DigraphCycleBasis
 gap> D := NullDigraph(0);
@@ -3340,6 +3340,51 @@ gap> gr := Digraph(List([1 .. 5], x -> [1 .. 5]));;
 gap> record := NewDFSRecord(gr);;
 gap> ExecuteDFS(record, data, 1, fail, fail, fail,
 > fail);
+
+# Stopping ExecuteDFS
+gap> gr := CompleteDigraph(10000);;
+gap> record := NewDFSRecord(gr);;
+gap> data := rec(count := 0);;
+gap> PreorderFunc := function(record, data)
+>      data.count := data.count + 1;
+>      if record.current = 5000 then
+>        record.stop := true;
+>      fi; 
+>    end;;
+gap> ExecuteDFS(record, data, 1, PreorderFunc, fail, fail,
+> fail);
+gap> data.count;
+5000
+gap> record_iter := NewDFSRecord(gr);;
+gap> record_iter.config.iterative := true;;
+gap> data := rec(count := 0);;
+gap> ExecuteDFS(record_iter, data, 1, PreorderFunc, fail, fail,
+> fail);
+gap> data.count;
+5000
+gap> data := ["postorder", "preorder"];;
+gap> ForAll(data, x -> record_iter.(x) = record.(x));
+true
+gap> record := NewDFSRecord(gr);;
+gap> record.config.revisit := true;;
+gap> record.config.iterative := true;;
+gap> record.config.use_postorder := true;;
+gap> data := rec(count := 0);;
+gap> ExecuteDFS(record, data, 1, PreorderFunc, fail, fail,
+> fail);
+gap> data.count;
+5000
+
+# Forest DFS
+gap> gr := BinaryTree(5);;
+gap> record := NewDFSRecord(gr);;
+gap> record.config.forest := true;;
+gap> ExecuteDFS(record, fail, 1, fail, fail, fail,
+> fail);
+gap> ForAll(record.preorder, x -> x <> -1);
+true
+gap> ForAll([record.preorder, record.postorder], x -> IsSet(x));
+true
 
 # IsDigraphPath
 gap> D := Digraph(IsMutableDigraph, Combinations([1 .. 5]), IsSubset);
