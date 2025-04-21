@@ -816,7 +816,31 @@ gap> WindmillGraph(-1, 0);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `WindmillGraph' on 2 arguments
 
-#  DIGRAPHS_UnbindVariables
+# PancakeGraph
+gap> D := PancakeGraph(3);
+<immutable Hamiltonian connected symmetric digraph with 6 vertices, 12 edges>
+gap> ChromaticNumber(D);
+2
+gap> IsVertexTransitive(D);
+true
+gap> DigraphUndirectedGirth(D);
+6
+gap> IsHamiltonianDigraph(D);
+true
+gap> D := PancakeGraph(IsMutableDigraph, 1);
+<mutable empty digraph with 1 vertex>
+
+# BurntPancakeGraph
+gap> BurntPancakeGraph(3);
+<immutable symmetric digraph with 48 vertices, 144 edges>
+gap> BurntPancakeGraph(4);
+<immutable symmetric digraph with 384 vertices, 1536 edges>
+gap> BurntPancakeGraph(5);
+<immutable symmetric digraph with 3840 vertices, 19200 edges>
+gap> BurntPancakeGraph(IsMutableDigraph, 1);
+<mutable digraph with 1 vertex, 1 edge>
+
+# DIGRAPHS_UnbindVariables
 gap> Unbind(D);
 gap> Unbind(G8_3);
 gap> Unbind(gr);

@@ -98,7 +98,7 @@ gap> h := (1, 2, 3, 4);
 (1,2,3,4)
 gap> OnDigraphs(gr, h);
 Error, the 2nd argument <p> must be a permutation that permutes the vertices o\
-f the digraph <D> that is the 1st argument,
+f the digraph <D> that is the 1st argument
 gap> gr := Digraph([[1, 1, 1, 3, 5], [], [3, 2, 4, 5], [2, 5], [1, 2, 1]]);
 <immutable multidigraph with 5 vertices, 14 edges>
 gap> DigraphEdges(gr);
@@ -108,7 +108,7 @@ gap> p1 := (2, 4)(3, 6, 5);
 (2,4)(3,6,5)
 gap> OnDigraphs(gr, p1);
 Error, the 2nd argument <p> must be a permutation that permutes the vertices o\
-f the digraph <D> that is the 1st argument,
+f the digraph <D> that is the 1st argument
 gap> p2 := (1, 3, 4, 2);
 (1,3,4,2)
 gap> OnDigraphs(gr, p2);
@@ -125,7 +125,7 @@ gap> p1 := (1, 5, 4, 2, 3);
 (1,5,4,2,3)
 gap> OnDigraphs(gr, p1);
 Error, the 2nd argument <p> must be a permutation that permutes the vertices o\
-f the digraph <D> that is the 1st argument,
+f the digraph <D> that is the 1st argument
 gap> p2 := (1, 4)(2, 3);
 (1,4)(2,3)
 gap> OnDigraphs(gr, p2);
@@ -142,7 +142,7 @@ gap> OutNeighbours(gr);
 gap> t := Transformation([4, 2, 3, 4]);;
 gap> OnDigraphs(gr, t);
 Error, the 2nd argument <t> must be a transformation that maps every vertex of\
- the digraph <D> that is the 1st argument, to another vertex.
+ the digraph <D> that is the 1st argument, to another vertex
 gap> t := Transformation([1, 2, 1]);;
 gap> gr := OnDigraphs(gr, t);
 <immutable multidigraph with 3 vertices, 3 edges>
@@ -173,7 +173,7 @@ gap> D := [DigraphReverse(ChainDigraph(3)), ChainDigraph(3)];;
 gap> IsSet(D);
 false
 gap> OnSetsDigraphs(D, (1, 2));
-Error, the first argument must be a set (a strictly sorted list),
+Error, the first argument must be a set (a strictly sorted list)
 gap> D := Reversed(D);;
 gap> OnSetsDigraphs(D, (1, 3)) = D;
 true
@@ -209,7 +209,7 @@ gap> OnMultiDigraphs(gr1, [(1, 3)]);
 Error, the 2nd argument <perms> must be a pair of permutations,
 gap> OnMultiDigraphs(gr1, [(1, 3), (1, 7)]);
 Error, the 2nd entry of the 2nd argument <perms> must permute the edges of the\
- digraph <D> that is the 1st argument,
+ digraph <D> that is the 1st argument
 
 #  DomainForAction
 gap> DomainForAction(RandomDigraph(10), SymmetricGroup(10), OnDigraphs);
