@@ -1068,8 +1068,14 @@ function(D)
     return [];
   fi;
   record := NewDFSRecord(D);
+  record.config.iterative := true;
+  record.config.use_edge := false;
+  record.config.use_preorder := false;
+  record.config.use_postorder := false;
+  record.config.use_parents := true;
+
   count := 0;
-  out := [];
+  out := ListWithIdenticalEntries(N, -1);
   PostOrderFunc := function(record, _)
     count := count + 1;
     out[count] := record.child;

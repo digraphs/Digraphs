@@ -2870,7 +2870,7 @@ DIGRAPHS_DFSRecNames := function()
 
 DIGRAPHS_DFSFlagNames := function()
   return ["iterative", "forest", "revisit", "use_parents", "use_edge",
-                   "use_postorder", "forest_specific"];
+                   "use_postorder", "use_preorder", "forest_specific"];
   end;
 
 DIGRAPHS_DFSError := function()
@@ -2885,7 +2885,9 @@ Graph -> NewDFSRecordLightweight(Graph, NewDFSFlags()));
 InstallMethod(NewDFSRecordLightweight,
 "for a digraph and a record", [IsDigraph, IsRecord],
 function(graph, conf)
-  local record, config_names;
+  local record, config_names, N;
+
+  N := DigraphNrVertices(graph);
 
   config_names := DIGRAPHS_DFSFlagNames();
   record := rec();
@@ -2897,19 +2899,23 @@ function(graph, conf)
   record.child := -1;
   record.current := -1;
   record.stop := false;
-  record.preorder := ListWithIdenticalEntries(DigraphNrVertices(graph), -1);
+  if conf.use_preorder then
+    record.preorder := ListWithIdenticalEntries(N, -1);
+  else
+    record.preorder := fail;
+  fi;
   if conf.use_parents then
-    record.parents := ListWithIdenticalEntries(DigraphNrVertices(graph), -1);
+    record.parents := ListWithIdenticalEntries(N, -1);
   else
     record.parents := fail;
   fi;
   if conf.use_postorder then
-    record.postorder := ListWithIdenticalEntries(DigraphNrVertices(graph), -1);
+    record.postorder := ListWithIdenticalEntries(N, -1);
   else
     record.postorder := fail;
   fi;
   if conf.use_edge then
-    record.edge := ListWithIdenticalEntries(DigraphNrVertices(graph), -1);
+    record.edge := ListWithIdenticalEntries(N, -1);
   else
     record.edge := fail;
   fi;
@@ -2929,6 +2935,7 @@ function()
   config.iterative := false;
   config.use_edge := true;         # Whether these record fields are necessary
   config.use_postorder := true;
+  config.use_preorder := true;
   config.use_parents := true;
   return config;
 end);
@@ -2940,6 +2947,7 @@ function()
   config := NewDFSFlags();
   config.iterative := false;
   config.use_postorder := false;
+  config.use_preorder := false;
   config.use_parents := false;
   config.use_edge := false;
   return config;

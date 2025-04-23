@@ -16,6 +16,7 @@
 #include <stdbool.h>  // for false, true, bool
 // GAP headers
 #include "gap-includes.h"  // for Obj, Int
+#include "bitarray.h"
 
 bool CallCheckStop(Obj f, Int RNamStop, Obj record, Obj data);
 
@@ -27,8 +28,16 @@ struct dfs_args {
   Int* postorder_num;
 
   Obj parents;
-  Obj postorder;
-  Obj preorder;
+
+  union {
+    Obj postorder;
+    bool* postorder_partial;
+  };
+
+  union {
+    Obj preorder;
+    bool* preorder_partial;
+  };
   Obj edge;
 
   Obj neighbors;
@@ -54,7 +63,9 @@ struct dfs_config {
   bool iter;
   bool forest;
   Obj forest_specific;
+  bool use_preorder;
   bool use_postorder;
+  bool partial_postorder;
   bool use_parents;
   bool use_edge;
 };
