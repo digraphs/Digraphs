@@ -176,13 +176,14 @@ void parseConfig(struct dfs_args* args, Obj conf_record) {
         "use_parents must be true", 0L, 0L);
   }
 
-  if (conf -> revisit && !(conf -> iter && conf -> use_postorder)) {
+  if (conf -> revisit && !conf -> iter) {
     ErrorQuit(
         "In a DFSRecord where the config flag revisit is true, iterative "
         "must also be true", 0L, 0L);
   }
 
-  if ((args -> CallAncestor || args -> CallCross) && !conf -> use_postorder) {
+  if ((args -> CallAncestor || args -> CallCross || conf -> revisit) &&
+      !conf -> use_postorder) {
     conf -> partial_postorder = true;
   }
 

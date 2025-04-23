@@ -1688,7 +1688,8 @@ end);
 InstallMethod(DigraphPath, "for a digraph by out-neighbours and two pos ints",
 [IsDigraphByOutNeighboursRep, IsPosInt, IsPosInt],
 function(D, u, v)
-  local N, record, PreOrderFunc, AncestorFunc, nodes, edges, current, parents;
+  local N, record, PreOrderFunc, AncestorFunc, nodes, edges, current, parents,
+  flags;
 
   N := DigraphNrVertices(D);
   if u > N or v > N then
@@ -1709,7 +1710,13 @@ function(D, u, v)
     return fail;
   fi;
 
-  record := NewDFSRecord(D);
+  flags := NewDFSFlagsLightweight();
+
+  flags.use_edge := true;
+  flags.use_parents := true;
+
+  record := NewDFSRecordLightweight(D, flags);
+
   if u <> v then
     # if v is reachable from u, then u is an ancestor of v, and so at some
     # point v will be encountered for the first time, and PreOrderFunc will be
@@ -2052,13 +2059,22 @@ end);
 InstallMethod(DigraphLongestDistanceFromVertex, "for a digraph and a pos int",
 [IsDigraphByOutNeighboursRep, IsPosInt],
 function(D, v)
-  local record, PreOrderFunc, PostOrderFunc, data, AncestorFunc;
+  local record, PreOrderFunc, PostOrderFunc, data, AncestorFunc, flags;
 
   if not v in DigraphVertices(D) then
     ErrorNoReturn("the 2nd argument <v> must be a vertex of the 1st ",
                   "argument <D>,");
   fi;
-  record := NewDFSRecord(D);
+
+  flags := NewDFSFlagsLightweight();
+  flags.iterative := true;  # revisit DFS must be iterative
+  flags.use_parents := true;
+  flags.revisit := true;  # If found another edge to an already
+                         # visited and backtracked on node,
+                         # set to unvisited, and visit it
+
+  record := NewDFSRecordLightweight(D, flags);
+
   data := rec(prev := -1, best := 0);
 
   AncestorFunc := function(record, _)
@@ -2075,12 +2091,6 @@ function(D, v)
       data.best := data.prev;
     fi;
   end;
-
-  record.config.revisit := true;  # If found another edge to an already
-                                  # visited and backtracked on node,
-                                  # set to unvisited, and visit it
-
-  record.config.iterative := true;  # revisit DFS must be iterative
 
   ExecuteDFS(record, data, v,
                PreOrderFunc, PostOrderFunc,
@@ -2383,7 +2393,6 @@ function(D, root)
 
   conf := NewDFSFlagsLightweight();
 
-  conf.use_postorder := true;
   conf.use_edge := true;
   conf.use_parents := true;
 
@@ -2417,7 +2426,7 @@ end);
 InstallMethod(VerticesReachableFrom, "for a digraph and a list of vertices",
 [IsDigraph, IsList],
 function(D, roots)
-  local record, conf, N, PreOrderFunc, AncestorFunc,
+  local record, flags, N, PreOrderFunc, AncestorFunc,
   data;
 
   if (roots = []) then
@@ -2444,14 +2453,13 @@ function(D, roots)
     data.result[record.child] := true;
   end;
 
-  conf := NewDFSFlagsLightweight();
+  flags := NewDFSFlagsLightweight();
+  flags.use_edge := true;
+  flags.use_parents := true;
 
-  conf.use_postorder := true;
-  conf.use_edge := true;
-  conf.use_parents := true;
-  conf.forest_specific := roots;
+  flags.forest_specific := roots;
 
-  record := NewDFSRecordLightweight(D, conf);
+  record := NewDFSRecordLightweight(D, flags);
 
   ExecuteDFS(record,
               data,
@@ -2463,47 +2471,6 @@ function(D, roots)
 
   return ListBlist([1 .. N], data.result);
 end);
-
-# InstallMethod(VerticesReachableFrom, "for a digraph and a list of vertices",
-# [IsDigraph, IsList],
-# function(D, roots)
-#   local N, index, visited, queue_tail, queue,
-#   root, element, neighbour, graph_out_neighbors, node_neighbours;
-
-#   N := DigraphNrVertices(D);
-
-#   for root in roots do
-#     if not IsPosInt(N) or 0 = root or root > N then
-#       ErrorNoReturn("an element of the 2nd argument ",
-#                     "(roots) is not a vertex of the 1st ",
-#                     "argument (a digraph)");
-#     fi;
-#   od;
-
-#   visited := BlistList([1 .. N], []);
-
-#   graph_out_neighbors := OutNeighbors(D);
-#   queue := EmptyPlist(N);
-#   Append(queue, roots);
-
-#   queue_tail := Length(roots);
-
-#   index := 1;
-#   while IsBound(queue[index]) do
-#     element := queue[index];
-#     node_neighbours := graph_out_neighbors[element];
-#     for neighbour in node_neighbours do
-#       if not visited[neighbour] then;
-#         visited[neighbour] := true;
-#         queue_tail := queue_tail + 1;
-#         queue[queue_tail] := neighbour;
-#       fi;
-#     od;
-#     index := index + 1;
-#   od;
-
-#   return ListBlist([1 .. N], visited);
-# end);
 
 InstallMethod(IsOrderIdeal, "for a digraph and a list of vertices",
 [IsDigraph, IsList],
@@ -2533,7 +2500,7 @@ InstallMethod(DominatorTree, "for a digraph and a vertex",
 function(D, root)
   local M, preorder_num_to_node, PreOrderFunc, record, parents,
   node_to_preorder_num, semi, lastlinked, label, bucket, idom, compress, eval,
-  pred, N, w, y, x, i, v;
+  pred, N, w, y, x, i, v, flags;
 
   M := DigraphNrVertices(D);
 
@@ -2548,7 +2515,13 @@ function(D, root)
     Add(data, record.current);
   end;
 
-  record := NewDFSRecord(D);
+  flags := NewDFSFlagsLightweight();
+  flags.use_preorder := true;
+  flags.use_parents := true;
+  flags.use_edge := true;
+
+  record := NewDFSRecordLightweight(D, flags);
+
   ExecuteDFS(record,
              preorder_num_to_node,
              root,

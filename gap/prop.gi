@@ -239,13 +239,16 @@ D -> DigraphNrVertices(D) <= 1 and IsEmptyDigraph(D));
 InstallMethod(IsAcyclicDigraph, "for a digraph by out-neighbours",
 [IsDigraphByOutNeighboursRep],
 function(D)
-  local n, record, AncestorFunc;
+  local n, record, AncestorFunc, flags;
   n := DigraphNrVertices(D);
   if n = 0 then
     return true;
   fi;
 
-  record := NewDFSRecord(D);
+  flags := NewDFSFlagsLightweight();
+  flags.iterative := true;
+
+  record := NewDFSRecordLightweight(D, flags);
 
   # A Digraph is acyclic if it has no back edges
   AncestorFunc := function(record, _)
@@ -385,13 +388,16 @@ D -> DigraphPeriod(D) = 1);
 InstallMethod(IsAntisymmetricDigraph, "for a digraph by out-neighbours",
 [IsDigraphByOutNeighboursRep],
 function(D)
-  local record, AncestorFunc;
+  local record, AncestorFunc, flags;
 
   if DigraphNrVertices(D) <= 1 then
     return true;
   fi;
 
-  record := NewDFSRecord(D);
+  flags := NewDFSFlagsLightweight();
+  flags.iterative := true;
+
+  record := NewDFSRecordLightweight(D, flags);
   record.config.forest := true;
 
   AncestorFunc := function(record, _)
