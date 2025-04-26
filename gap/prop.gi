@@ -691,13 +691,13 @@ InstallMethod(Is2EdgeTransitive,
 "for a digraph without multiple edges",
 [IsDigraph],
 function(D)
-  local Aut, O, I, Centers, Count, In, Out, u, v, w;
+  local Aut, O, I, Centers, Count, In, Out, u;
   if IsMultiDigraph(D) then
     ErrorNoReturn("the argument <D> must be a digraph with no multiple",
                   " edges,");
   fi;
 
-  Aut := AutomorphismGroup(D);	
+  Aut := AutomorphismGroup(D);
   D := DigraphRemoveLoops(D);
   O := D!.OutNeighbours;
   I := InNeighbours(D);
@@ -706,6 +706,7 @@ function(D)
   for u in [1 .. Length(O)] do
     if Length(O[u]) > 0 and Length(I[u]) > 0 then
       #Centre must not be part of a lone pair
+
       if Length(O[u]) = 1 and Length(I[u]) = 1 then
         if O[u][1] = I[u][1] then
           continue;
@@ -717,27 +718,29 @@ function(D)
       fi;
       #Check that centers have the same in degree
       #and out degree
+
       if Out <> Length(O[u]) or In <> Length(I[u]) then
         return false;
       fi;
       Add(Centers, u);
     fi;
   od;
-
   #If centers in empty that D is vacuously 2-edge transitive
+
   if Length(Centers) = 0 then
     return true;
   fi;
-
   #Find the number of 2-cycles at a center
+
   Count := 0;
-  for v in O[Centers[1]] do
-    if Centers[1] in O[v] then
+  for u in O[Centers[1]] do
+    if Centers[1] in O[u] then
       Count := Count + 1;
     fi;
   od;
 
   #Find a 2-edge and check if its orbit length equals the number of 2-edges.
+
   for u in I[Centers[1]] do
     if Position(O[Centers[1]], u) = 1 then
       if Length(O[Centers[1]]) = 1 then
@@ -760,6 +763,3 @@ function(D)
     fi;
   od;
 end);
-
-  
-       
