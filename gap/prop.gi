@@ -708,7 +708,7 @@ function(D)
 
   for u in [1 .. Length(O)] do
     if Length(O[u]) > 0 and Length(I[u]) > 0 then
-      # If u has precisly one in neighbour and out neighbour,
+      # If u has precisely one in neighbour and out neighbour,
       # we must check these are not the same vertex as then there
       # would be no 2-edge centered at u.
 
@@ -750,8 +750,8 @@ function(D)
 
   # Find a 2-edge and check if its orbit length equals the number of 2-edges.
   # By this point, we know that D is likely a highly symmetric digraph,
-  # since all 2-edge centers share a common in and out degree 
-  # (This is by no means a guarantee, see Frucht's graph). From testing, 
+  # since all 2-edge centers share a common in and out degree
+  # (This is by no means a guarantee, see Frucht's graph). From testing,
   # calculating the stabilizer and using the orbit-stabilizer
   # theorem is usually must faster in this case, so we instead determine
   # the stabilizer of a 2-edge.
