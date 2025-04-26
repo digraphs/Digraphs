@@ -691,49 +691,75 @@ InstallMethod(Is2EdgeTransitive,
 "for a digraph without multiple edges",
 [IsDigraph],
 function(D)
-  local v, u, w, OutNeighboursD, twoEdgeOrbit, aut, numTwoEdges, len;
-
+  local Aut, O, I, Centers, Count, In, Out, u, v, w;
   if IsMultiDigraph(D) then
     ErrorNoReturn("the argument <D> must be a digraph with no multiple",
                   " edges,");
   fi;
 
-  aut := AutomorphismGroup(D);
-  OutNeighboursD := OutNeighbours(D);
+  Aut := AutomorphismGroup(D);	
+  D := DigraphRemoveLoops(D);
+  O := D!.OutNeighbours;
+  I := InNeighbours(D);
+  Centers := [];
 
-  if Size(aut) > 10 ^ 3 then
-    numTwoEdges := 0;
-    for u in [1 .. Length(OutNeighboursD)] do
-      for v in OutNeighboursD[u] do
-        for w in OutNeighboursD[v] do
-          if u <> w then
-            numTwoEdges := numTwoEdges + 1;
-              if IsBound(len) then
-                if numTwoEdges > len then
-                  return false;
-                fi;
-              else
-                len := Order(aut) / Order(Stabilizer(aut, [u, v, w], OnTuples));
-              fi;
-            fi;
-          od;
-        od;
-      od;
-    return true;
-  else
-    for u in [1 .. Length(OutNeighboursD)] do
-      for v in OutNeighboursD[u] do
-        for w in OutNeighboursD[v] do
-          if u <> w then
-            if not IsBound(twoEdgeOrbit) then
-              twoEdgeOrbit := Orbit(AutomorphismGroup(D), [u, v, w], OnTuples);
-            elif IsBound(twoEdgeOrbit) and not [u, v, w] in twoEdgeOrbit then
-              return false;
-            fi;
-          fi;
-        od;
-      od;
-    od;
+  for u in [1 .. Length(O)] do
+    if Length(O[u]) > 0 and Length(I[u]) > 0 then
+      #Centre must not be part of a lone pair
+      if Length(O[u]) = 1 and Length(I[u]) = 1 then
+        if O[u][1] = I[u][1] then
+          continue;
+        fi; 
+      fi;
+      if not IsBound(Out) then
+        Out := Length(O[u]);
+        In := Length(I[u]);
+      fi;
+      #Check that centers have the same in degree
+      #and out degree
+      if Out <> Length(O[u]) or In <> Length(I[u]) then
+        return false;
+      fi;
+      Add(Centers, u);
+    fi;
+  od;
+
+  #If centers in empty that D is vacuously 2-edge transitive
+  if Length(Centers) = 0 then
     return true;
   fi;
+
+  #Find the number of 2-cycles at a center
+  Count := 0;
+  for v in O[Centers[1]] do
+    if Centers[1] in O[v] then
+      Count := Count + 1;
+    fi;
+  od;
+
+  #Find a 2-edge and check if its orbit length equals the number of 2-edges.
+  for u in I[Centers[1]] do
+    if Position(O[Centers[1]], u) = 1 then
+      if Length(O[Centers[1]]) = 1 then
+        continue;
+      else
+        return (In * Out - Count) * Length(Centers) =
+               Order(Aut) / Order(Stabilizer(Aut,
+                                             [u,
+                                              Centers[1],
+                                              O[Centers[1]][2]],
+                                             OnTuples));
+      fi;
+    else
+      return (In * Out - Count) * Length(Centers) =
+             Order(Aut) / Order(Stabilizer(Aut,
+                                           [u,
+                                            Centers[1],
+                                            O[Centers[1]][1]],
+                                           OnTuples));
+    fi;
+  od;
 end);
+
+  
+       
