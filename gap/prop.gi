@@ -701,23 +701,29 @@ function(D)
   D := DigraphRemoveLoops(D);
   O := D!.OutNeighbours;
   I := InNeighbours(D);
+  # The list Centers will store all those vertices which lie at the
+  # center of a 2-edge.
+
   Centers := [];
 
   for u in [1 .. Length(O)] do
     if Length(O[u]) > 0 and Length(I[u]) > 0 then
-      #Centre must not be part of a lone pair
+      # If u has precisly one in neighbour and out neighbour,
+      # we must check these are not the same vertex as then there
+      # would be no 2-edge centered at u.
 
       if Length(O[u]) = 1 and Length(I[u]) = 1 then
         if O[u][1] = I[u][1] then
           continue;
-        fi; 
+        fi;
       fi;
       if not IsBound(Out) then
         Out := Length(O[u]);
         In := Length(I[u]);
       fi;
-      #Check that centers have the same in degree
-      #and out degree
+      # For D to be 2-edge transitive, it must be transitive
+      # on 2-edge centers, so all 2-edge centers must have the
+      # same in-degree and same out-degree.
 
       if Out <> Length(O[u]) or In <> Length(I[u]) then
         return false;
@@ -725,12 +731,15 @@ function(D)
       Add(Centers, u);
     fi;
   od;
-  #If centers in empty that D is vacuously 2-edge transitive
+  # If Centers is empty, D has no 2-edges so is vacuously 2-edge
+  # transtive.
 
   if Length(Centers) = 0 then
     return true;
   fi;
-  #Find the number of 2-cycles at a center
+  # Find the number of 2-cycles at any center. We will have to subtract
+  # these from the total number of 2-edges as 2-cycles are not classed
+  # as 2-edges.
 
   Count := 0;
   for u in O[Centers[1]] do
@@ -739,7 +748,13 @@ function(D)
     fi;
   od;
 
-  #Find a 2-edge and check if its orbit length equals the number of 2-edges.
+  # Find a 2-edge and check if its orbit length equals the number of 2-edges.
+  # By this point, we know that D is likely a highly symmetric digraph,
+  # since all 2-edge centers share a common in and out degree 
+  # (This is by no means a guarantee, see Frucht's graph). From testing, 
+  # calculating the stabilizer and using the orbit-stabilizer
+  # theorem is usually must faster in this case, so we instead determine
+  # the stabilizer of a 2-edge.
 
   for u in I[Centers[1]] do
     if Position(O[Centers[1]], u) = 1 then
