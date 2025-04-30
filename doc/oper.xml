@@ -2497,7 +2497,7 @@ true]]>
   <Returns>A record.</Returns>
   <Description>
   This record contains four lists (parents, edge, preorder and postorder) with their length
-  equal to the number of verticies in the <A>digraph</A>. Each index <C>i</C> of each list
+  equal to the number of vertices in the <A>digraph</A>. Each index <C>i</C> of each list
   corresponds to vertex <C>i</C> in <A>digraph</A>.
   These lists store the following (where <C>record</C> is returned by <C>NewDFSRecord</C>):
   <List>
@@ -2548,7 +2548,7 @@ true]]>
   <C>record</C>.config field set to <A>conf</A>.<P/>
 
   Initially, the <C>current</C> and <C>child</C> attributes will have <C>-1</C> values and the lists (<C>parents</C>,
-  <C>preorder</C>, <C>edge</C> and <C>postorder</C>) will have <C>-1</C> values at all of their indicies as no vertex has
+  <C>preorder</C>, <C>edge</C> and <C>postorder</C>) will have <C>-1</C> values at all of their indices as no vertex has
   been visited (if any of the respective <C><A>record.config</A>.use_preorder</C>
   flags are set to true, the value of this list is <K>fail</K>). The <C>stop</C> attribute will initially be <C>false</C>.
   <E>This record should be passed into the <C>ExecuteDFS</C> function.</E>
