@@ -157,7 +157,7 @@ DeclareOperation("PartialOrderDigraphMeetOfVertices",
 
 # 11. DFS
 DeclareOperation("NewDFSRecord", [IsDigraph]);
-DeclareOperation("NewDFSRecordLightweight", [IsDigraph, IsRecord]);
+DeclareOperation("NewDFSRecord", [IsDigraph, IsRecord]);
 DeclareOperation("NewDFSFlags", []);
 DeclareOperation("NewDFSFlagsLightweight", []);
 DeclareGlobalFunction("ExecuteDFS");

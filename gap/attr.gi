@@ -29,7 +29,7 @@ InstallGlobalFunction(OutNeighbors, OutNeighbours);
 BindGlobal("DIGRAPHS_ArticulationPointsBridgesStrongOrientation",
 function(D)
   local N, copy, PostOrderFunc, PreOrderFunc, AncestorCrossFunc, data, record,
-  connected, parent;
+  connected, parent, flags;
 
   N := DigraphNrVertices(D);
 
@@ -49,6 +49,11 @@ function(D)
   else
     copy := D;
   fi;
+
+  flags := NewDFSFlagsLightweight();
+  flags.use_preorder := true;
+  flags.use_edge := true;
+  flags.use_parents := true;
 
   PostOrderFunc := function(record, data)
     local child, current;
@@ -112,7 +117,7 @@ function(D)
   # articulation point if and only if it has at least 2 children.
   data.nr_children := 0;
 
-  record := NewDFSRecord(copy);
+  record := NewDFSRecord(copy, flags);
   ExecuteDFS(record,
              data,
              1,
@@ -1061,18 +1066,18 @@ end);
 InstallMethod(DigraphTopologicalSort, "for a digraph by out-neighbours",
 [IsDigraphByOutNeighboursRep],
 function(D)
-  local N, record, count, out, PostOrderFunc, AncestorFunc;
+  local N, record, count, out, PostOrderFunc, AncestorFunc, flags;
 
   N := DigraphNrVertices(D);
   if N = 0 then
     return [];
   fi;
-  record := NewDFSRecord(D);
-  record.config.iterative := true;
-  record.config.use_edge := false;
-  record.config.use_preorder := false;
-  record.config.use_postorder := false;
-  record.config.use_parents := true;
+
+  flags := NewDFSFlagsLightweight();
+  flags.use_parents := true;
+  flags.use_edge := true;
+
+  record := NewDFSRecord(D, flags);
 
   count := 0;
   out := ListWithIdenticalEntries(N, -1);
@@ -1101,10 +1106,6 @@ function(D)
 
   return out;
 end);
-
-# InstallMethod(DigraphTopologicalSort, "for a digraph by out-neighbours",
-# [IsDigraphByOutNeighboursRep],
-# D -> DIGRAPH_TOPO_SORT(OutNeighbours(D)));
 
 InstallMethod(DigraphStronglyConnectedComponents,
 "for a digraph by out-neighbours",
@@ -3055,10 +3056,10 @@ function(D)
 
   conf := NewDFSFlagsLightweight();
   conf.use_parents := true;
-  conf.use_edge := true;
+  conf.iterative := true;
   conf.forest := true;
 
-  record := NewDFSRecordLightweight(C, conf);
+  record := NewDFSRecord(C, conf);
 
   ExecuteDFS(record, data, 1, PreOrderFunc, fail,
                fail, fail);

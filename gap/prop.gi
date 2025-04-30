@@ -248,7 +248,7 @@ function(D)
   flags := NewDFSFlagsLightweight();
   flags.iterative := true;
 
-  record := NewDFSRecordLightweight(D, flags);
+  record := NewDFSRecord(D, flags);
 
   # A Digraph is acyclic if it has no back edges
   AncestorFunc := function(record, _)
@@ -397,7 +397,7 @@ function(D)
   flags := NewDFSFlagsLightweight();
   flags.iterative := true;
 
-  record := NewDFSRecordLightweight(D, flags);
+  record := NewDFSRecord(D, flags);
   record.config.forest := true;
 
   AncestorFunc := function(record, _)

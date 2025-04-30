@@ -19,7 +19,7 @@
 #include "digraphs-debug.h"
 #include "safemalloc.h"
 #include "digraphs.h"
-// #include "stdio.h"
+
 
 // Macros used for both recursive and iterative
 
@@ -70,13 +70,13 @@
       : args->postorder_partial[idx]
 
 #define ON_PREORDER(current, args)                                    \
-  SET_PREORDER(args, current);                                         \
+  SET_PREORDER(args, current);                                        \
   AssPRec(args->record, args->RNamCurrent, INTOBJ_INT(current));      \
   CHANGED_BAG(args->record);                                          \
   if (args->CallPreorder) {                                           \
     CALL_CHECK_STOP(                                                  \
         args->PreorderFunc, args->RNamStop, args->record, args->data) \
-  }
+  } \
 
 #define ANCESTOR_CROSS(current, v, backtracked, args)                          \
   if (args->CallAncestor || args->CallCross) {                                 \
@@ -96,18 +96,20 @@
     CHANGED_BAG(args->record);                                                 \
   }
 
-#define ON_BACKTRACK(current, parent, args)                                 \
-  if (args->dfs_conf->use_postorder || args->dfs_conf->partial_postorder) { \
-    SET_POSTORDER(args, current);                                           \
-    CHANGED_BAG(args->record);                                              \
-  }                                                                         \
-  if (args->CallPostorder) {                                                \
-    AssPRec(args->record, args->RNamChild, INTOBJ_INT(current));            \
-    AssPRec(args->record, args->RNamCurrent, INTOBJ_INT(parent));           \
-    CHANGED_BAG(args->record);                                              \
-    CALL_CHECK_STOP(                                                        \
-        args->PostorderFunc, args->RNamStop, args->record, args->data)      \
-    CHANGED_BAG(args->record);                                              \
+#define ON_BACKTRACK(current, parent, args)                                  \
+  if (args->dfs_conf->use_postorder || args->dfs_conf->partial_postorder) {  \
+    SET_POSTORDER(args, current);                                            \
+    CHANGED_BAG(args->record);                                               \
+  }                                                                          \
+  if (args->CallPostorder) {                                                 \
+    /* When CallPostorder is true, use_parents must be true, parent is valid \
+     */                                                                      \
+    AssPRec(args->record, args->RNamChild, INTOBJ_INT(current));             \
+    AssPRec(args->record, args->RNamCurrent, INTOBJ_INT(parent));            \
+    CHANGED_BAG(args->record);                                               \
+    CALL_CHECK_STOP(                                                         \
+        args->PostorderFunc, args->RNamStop, args->record, args->data)       \
+    CHANGED_BAG(args->record);                                               \
   }
 
 #define ON_ADD_SUCC(current, succ, idx, args)           \
@@ -187,13 +189,15 @@ void parseConfig(struct dfs_args* args, Obj conf_record) {
     conf -> partial_postorder = true;
   }
 
-  if ((args -> CallPostorder && conf -> iter) && !conf -> use_postorder) {
-    conf -> partial_postorder = true;
-    if (!conf -> use_parents) {
+  if ((args -> CallPostorder && conf -> iter) && !conf -> use_parents) {
+    // use_parents is always required for recursive (only check for iter)
     ErrorQuit(
         "In a DFSRecord where a PostorderFunc exists, where the config flag "
         "iter is true, the flag use_parents must also be true", 0L, 0L);
-    }
+  }
+
+  if ((args -> CallPostorder && conf -> iter) && !conf -> use_postorder) {
+    conf -> partial_postorder = true;
   }
 
   if (conf -> forest_specific != Fail && conf -> forest) {
@@ -212,7 +216,7 @@ void parseConfig(struct dfs_args* args, Obj conf_record) {
 // Extreme examples are on the pull request #459
 
 /* Iterative DFS (used for revisiting vertices)
-   Necessary record elements: preorder
+   Necessary record elements: none
    If CallPostorder, then parents is necessary
 
    Differences with recursive : edge and parents are updated
@@ -291,7 +295,7 @@ bool iter_loop(Obj stack, Int stack_size, struct dfs_args* args) {
 }
 
 /* Recursive DFS
- Necessary record elements: edge, preorder, parents
+ Necessary record elements: edge, parents
 */
 
 bool ExecuteDFSRec(Int current, Int parent, Int idx, struct dfs_args* args) {
@@ -386,14 +390,16 @@ Obj FuncExecuteDFS_C(Obj self, Obj args) {
 
   parseConfig(&dfs_args_, config);
 
+
+
   if (!dfs_conf.use_preorder) {
-    dfs_args_.preorder_partial = (bool*) safe_malloc((N * sizeof(bool)) + 1);
-    memset(dfs_args_.preorder_partial, false, (N * sizeof(bool)) + 1);
+    dfs_args_.preorder_partial = (bool*) safe_malloc((N + 1) * sizeof(bool));
+    memset(dfs_args_.preorder_partial, false, (N + 1) * sizeof(bool));
   }
 
   if (dfs_conf.partial_postorder) {
-    dfs_args_.postorder_partial = (bool*) safe_malloc((N * sizeof(bool)) + 1);
-    memset(dfs_args_.postorder_partial, false, (N * sizeof(bool)) + 1);
+    dfs_args_.postorder_partial = (bool*) safe_malloc((N + 1) * sizeof(bool));
+    memset(dfs_args_.postorder_partial, false, (N + 1) * sizeof(bool));
   }
 
   if (dfs_conf.use_parents) {
@@ -402,6 +408,7 @@ Obj FuncExecuteDFS_C(Obj self, Obj args) {
   }
 
   Int current = INT_INTOBJ(start);
+
 
   if (dfs_conf.iter || dfs_conf.revisit) {
       ExecuteDFSIter(current, &dfs_args_);
@@ -427,6 +434,7 @@ Obj FuncExecuteDFS_C(Obj self, Obj args) {
   }
 
 
+
   if (!dfs_conf.use_preorder) {
     free(dfs_args_.preorder_partial);
   }
@@ -434,6 +442,7 @@ Obj FuncExecuteDFS_C(Obj self, Obj args) {
   if (dfs_conf.partial_postorder) {
     free(dfs_args_.postorder_partial);
   }
+
   CHANGED_BAG(record);
   return record;
 }

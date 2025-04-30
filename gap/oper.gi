@@ -1662,29 +1662,6 @@ function(D, u, v)
   return DigraphPath(D, u, v) <> fail;
 end);
 
-# InstallMethod(DigraphPath, "for a digraph by out-neighbours and two pos ints",
-# [IsDigraphByOutNeighboursRep, IsPosInt, IsPosInt],
-# function(D, u, v)
-#   local verts;
-
-#   verts := DigraphVertices(D);
-#   if not (u in verts and v in verts) then
-#     ErrorNoReturn("the 2nd and 3rd arguments <u> and <v> must be ",
-#                   "vertices of the 1st argument <D>,");
-#   elif IsDigraphEdge(D, u, v) then
-#     return [[u, v], [Position(OutNeighboursOfVertex(D, u), v)]];
-#   elif HasIsTransitiveDigraph(D) and IsTransitiveDigraph(D) then
-#     # If it's a known transitive digraph, just check whether the edge exists
-#     return fail;
-#     # Glean information from WCC if we have it
-#   elif HasDigraphConnectedComponents(D)
-#       and DigraphConnectedComponents(D).id[u] <>
-#           DigraphConnectedComponents(D).id[v] then
-#     return fail;
-#   fi;
-#   return DIGRAPH_PATH(OutNeighbours(D), u, v);
-# end);
-
 InstallMethod(DigraphPath, "for a digraph by out-neighbours and two pos ints",
 [IsDigraphByOutNeighboursRep, IsPosInt, IsPosInt],
 function(D, u, v)
@@ -1715,7 +1692,7 @@ function(D, u, v)
   flags.use_edge := true;
   flags.use_parents := true;
 
-  record := NewDFSRecordLightweight(D, flags);
+  record := NewDFSRecord(D, flags);
 
   if u <> v then
     # if v is reachable from u, then u is an ancestor of v, and so at some
@@ -2073,7 +2050,7 @@ function(D, v)
                          # visited and backtracked on node,
                          # set to unvisited, and visit it
 
-  record := NewDFSRecordLightweight(D, flags);
+  record := NewDFSRecord(D, flags);
 
   data := rec(prev := -1, best := 0);
 
@@ -2396,7 +2373,7 @@ function(D, root)
   conf.use_edge := true;
   conf.use_parents := true;
 
-  record := NewDFSRecordLightweight(D, conf);
+  record := NewDFSRecord(D, conf);
   data := rec(result := [], root_reached := false);
 
   PreOrderFunc := function(record, data)
@@ -2459,7 +2436,7 @@ function(D, roots)
 
   flags.forest_specific := roots;
 
-  record := NewDFSRecordLightweight(D, flags);
+  record := NewDFSRecord(D, flags);
 
   ExecuteDFS(record,
               data,
@@ -2520,7 +2497,7 @@ function(D, root)
   flags.use_parents := true;
   flags.use_edge := true;
 
-  record := NewDFSRecordLightweight(D, flags);
+  record := NewDFSRecord(D, flags);
 
   ExecuteDFS(record,
              preorder_num_to_node,
@@ -2851,11 +2828,45 @@ DIGRAPHS_DFSError := function()
                 "NewDFSRecord,");
 end;
 
+DIGRAPHS_DFSFlagsBoolErr := function(flags, field)
+  if not IsBool(flags.(field)) then
+    ErrorNoReturn("the 2nd argument <conf> (a record) should have a Bool ",
+                  "value for field <conf>.", field);
+  fi;
+end;
+
+DIGRAPHS_DFS_CheckFlags := function(flags, graph)
+  # Already confirmed expected fields are bound
+  DIGRAPHS_DFSFlagsBoolErr(flags, "iterative");
+  DIGRAPHS_DFSFlagsBoolErr(flags, "forest");
+  DIGRAPHS_DFSFlagsBoolErr(flags, "revisit");
+  DIGRAPHS_DFSFlagsBoolErr(flags, "use_preorder");
+  DIGRAPHS_DFSFlagsBoolErr(flags, "use_postorder");
+  DIGRAPHS_DFSFlagsBoolErr(flags, "use_parents");
+  DIGRAPHS_DFSFlagsBoolErr(flags, "use_edge");
+
+  if (flags.forest_specific <> fail) and
+      (not (IsDenseList(flags.forest_specific) and
+           (IsEmpty(flags.forest_specific)
+             or IsPosInt(flags.forest_specific[1])))) then
+    ErrorNoReturn("the 2nd argument <conf> (a record) should have a Bool ",
+                  "value for field <conf>.");
+  fi;
+
+  if flags.forest_specific <> fail and
+      (ForAny(flags.forest_specific, n -> n < 1
+      or n > DigraphNrVertices(graph))) then
+      ErrorNoReturn("the 2nd argument <conf> (a record) has elements in ",
+                    "<conf>.forest_specific that are not vertices in the ",
+                    "second argument <graph>.");
+  fi;
+end;
+
 InstallMethod(NewDFSRecord,
 "for a digraph", [IsDigraph],
-Graph -> NewDFSRecordLightweight(Graph, NewDFSFlags()));
+Graph -> NewDFSRecord(Graph, NewDFSFlags()));
 
-InstallMethod(NewDFSRecordLightweight,
+InstallMethod(NewDFSRecord,
 "for a digraph and a record", [IsDigraph, IsRecord],
 function(graph, conf)
   local record, config_names, N;
@@ -2863,10 +2874,14 @@ function(graph, conf)
   N := DigraphNrVertices(graph);
 
   config_names := DIGRAPHS_DFSFlagNames();
+
   record := rec();
+
   if ForAny(config_names, n -> not IsBound(conf.(n))) then
     DIGRAPHS_DFSError();
   fi;
+
+  DIGRAPHS_DFS_CheckFlags(conf, graph);
 
   record.graph := graph;
   record.child := -1;
@@ -2941,16 +2956,16 @@ end);
 InstallGlobalFunction(ExecuteDFS,
 function(record, data, start, PreOrderFunc, PostOrderFunc, AncestorFunc,
          CrossFunc)
-  local names, config_names;
+  local record_names, config_names;
 
-  names := DIGRAPHS_DFSRecNames();
+  record_names := DIGRAPHS_DFSRecNames();
   config_names := DIGRAPHS_DFSFlagNames();
 
   if not IsBound(record.config) then
     DIGRAPHS_DFSError();
   elif ForAny(config_names, n -> not IsBound(record.config.(n))) then
     DIGRAPHS_DFSError();
-  elif ForAny(names, n -> not IsBound(record.(n))) then
+  elif ForAny(record_names, n -> not IsBound(record.(n))) then
     DIGRAPHS_DFSError();
   fi;
 
