@@ -78,5 +78,6 @@ bool ExecuteDFSIter(Int start, struct dfs_args* args);
 Obj FuncExecuteDFS_C(Obj self, Obj args);
 
 void parseConfig(struct dfs_args*, Obj conf_record);
+void recordCleanup(struct dfs_args* args);
 
 #endif  // DIGRAPHS_SRC_DFS_H_

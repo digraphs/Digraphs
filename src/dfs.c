@@ -130,18 +130,19 @@
 #define PREORDER_IDX 0  // The index recursive DFS starts with (indicating to
                         // visit the current node)
 
-#define RECURSE_FOREST(dfs_args_, dfs_conf, v)                       \
-  struct dfs_args* ptr     = &dfs_args_;                             \
-  bool             visited = IS_VISITED(ptr, v); \
-  if (!visited) {                                                    \
-    if (dfs_conf.use_parents) {                                      \
-      AssPlist(dfs_args_.parents, v, INTOBJ_INT(v));                 \
-      CHANGED_BAG(record);                                           \
-    }                                                                \
-    if (!ExecuteDFSRec(v, v, PREORDER_IDX, &dfs_args_)) {            \
-      CHANGED_BAG(record);                                           \
-      return record;                                                 \
-    }                                                                \
+#define RECURSE_FOREST(dfs_args_, dfs_conf, v)            \
+  struct dfs_args* ptr     = &dfs_args_;                  \
+  bool             visited = IS_VISITED(ptr, v);          \
+  if (!visited) {                                         \
+    if (dfs_conf.use_parents) {                           \
+      AssPlist(dfs_args_.parents, v, INTOBJ_INT(v));      \
+      CHANGED_BAG(record);                                \
+    }                                                     \
+    if (!ExecuteDFSRec(v, v, PREORDER_IDX, &dfs_args_)) { \
+      CHANGED_BAG(record);                                \
+      recordCleanup(&dfs_args_);                          \
+      return record;                                      \
+    }                                                     \
   }
 
 #define ITER_FOREST(args, stack, v)                                 \
@@ -157,6 +158,18 @@
     if (!iter_loop(stack, 1, args))                              \
       return false;                                              \
   }
+
+void recordCleanup(struct dfs_args* args) {
+  struct dfs_config* dfs_conf = args -> dfs_conf;
+
+  if (!dfs_conf -> use_preorder) {
+    free(args -> preorder_partial);
+  }
+
+  if (dfs_conf -> partial_postorder) {
+    free(args -> postorder_partial);
+  }
+}
 
 void parseConfig(struct dfs_args* args, Obj conf_record) {
   struct dfs_config* conf = args -> dfs_conf;
@@ -418,11 +431,11 @@ Obj FuncExecuteDFS_C(Obj self, Obj args) {
       if (ExecuteDFSRec(current, current, PREORDER_IDX, &dfs_args_)) {
         if (dfs_conf.forest) {
           for (Int i = 1; i <= N; i++) {
-            RECURSE_FOREST(dfs_args_, dfs_conf, i);
+            RECURSE_FOREST(dfs_args_, dfs_conf, i);  // Returns
           }
         } else if (dfs_conf.forest_specific != Fail) {
           for (Int i = 1; i <= LEN_PLIST(dfs_conf.forest_specific); i++) {
-            RECURSE_FOREST(dfs_args_,
+            RECURSE_FOREST(dfs_args_,  // Returns
                            dfs_conf,
                            INT_INTOBJ(ELM_PLIST(dfs_conf.forest_specific, i)));
           }
@@ -434,14 +447,7 @@ Obj FuncExecuteDFS_C(Obj self, Obj args) {
   }
 
 
-
-  if (!dfs_conf.use_preorder) {
-    free(dfs_args_.preorder_partial);
-  }
-
-  if (dfs_conf.partial_postorder) {
-    free(dfs_args_.postorder_partial);
-  }
+  recordCleanup(&dfs_args_);
 
   CHANGED_BAG(record);
   return record;
