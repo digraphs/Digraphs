@@ -3439,7 +3439,7 @@ function(G)
   if not IsDigraph(G) then
     Error("Input must be a digraph");
   elif not IsStronglyConnectedDigraph(G) then
-    Error("Input digraph is not strongly connected; property undefined");
+    return fail
   fi;
   ecc := [];
   for v in [1 .. DigraphNrVertices(G)] do
