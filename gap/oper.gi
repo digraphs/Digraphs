@@ -2680,7 +2680,7 @@ function(D, i, j)
     if intr = Set(nbs[x]) then
       return x;
     fi;
-    od;
+  od;
 
   return fail;
 end);
@@ -2741,7 +2741,7 @@ function(join_table)
 
   # Initialise adjacency list
   # Every node must be related to itself to satisfy reflexitivity
-  adj := List([1..n], x -> [x]);
+  adj := List([1 .. n], x -> [x]);
   for i in [1 .. n] do
     for j in [1 .. n] do
       if join_table[i][j] = j and i <> j then
@@ -2764,4 +2764,3 @@ function(join_table)
   fi;
 
 end);
-                                                                                                                                  
