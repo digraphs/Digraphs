@@ -3174,7 +3174,7 @@ gap> B[14, 15] = z;
 true
 
 # DigraphDistanceMetrics
-gap> DigraphRadius(Digraph([[2], [3], [1]]));
+gap> DigraphRadius(CycleDigraph(5));
 infinity
 gap> DigraphCentre(Digraph([[2], [3], [1]]));
 [ 1, 2, 3 ]
