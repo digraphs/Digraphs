@@ -21,6 +21,7 @@
 # 8.  IsSomething
 # 9.  Connectivity
 # 10. Operations for vertices
+# 11. Operations for tables
 #############################################################################
 
 #############################################################################
@@ -2679,7 +2680,88 @@ function(D, i, j)
     if intr = Set(nbs[x]) then
       return x;
     fi;
-  od;
+    od;
 
   return fail;
 end);
+
+#############################################################################
+# 11. Operations for tables
+#############################################################################
+
+InstallMethod(DigraphFromMeetTable,
+"for a meet table for a meet semilattice Digraph",
+[IsList],
+function(meet_table)
+  local n, adj, i, j, output;
+  # Input verification: must be a square matrix
+    n := Length(meet_table);
+    if not ForAll(meet_table, row -> Length(row) = n) then
+      Error("Input is not a square matrix.");
+    fi;
+
+    n := Length(meet_table);
+
+  # Initialise adjacency list
+  # Every node must be related to itself to satisfy reflexitivity
+  adj := List([1 .. n], x -> [x]);
+  for i in [1 .. n] do
+    for j in [1 .. n] do
+      # meet_table[i][j]=i for meet semilattice
+      if meet_table[i][j] = i and i <> j then
+        Add(adj[i], j);
+      fi;
+      od;
+    od;
+
+  # Create a Digraph using the adjacency list
+  output := Digraph(adj);
+
+  # Post-condition tests
+  if IsMeetSemilatticeDigraph(output) then
+    if DigraphMeetTable(output) = meet_table then
+      return output;
+    else return fail;
+    fi;
+  else return fail;
+  fi;
+end);
+
+InstallMethod(DigraphFromJoinTable,
+"for a join table for a join semilattice Digraph",
+[IsList],
+function(join_table)
+  local n, adj, i, j, output;
+
+  # Input verification: must be a square matrix
+  n := Length(join_table);
+  if not ForAll(join_table, row -> Length(row) = n) then
+    Error("Input is not a square matrix.");
+  fi;
+
+  # Initialise adjacency list
+  # Every node must be related to itself to satisfy reflexitivity
+  adj := List([1..n], x -> [x]);
+  for i in [1 .. n] do
+    for j in [1 .. n] do
+      if join_table[i][j] = j and i <> j then
+        # join_table[i][j] = j for join semilattice
+        Add(adj[i], j);
+      fi;
+    od;
+  od;
+
+  # Create a Digraph using the adjacency list
+  output := Digraph(adj);
+
+  # Post-condition tests
+  if IsJoinSemilatticeDigraph(output) then
+    if DigraphJoinTable(output) = join_table then
+      return output;
+    else return fail;
+    fi;
+  else return fail;
+  fi;
+
+end);
+                                                                                                                                  
