@@ -3234,6 +3234,20 @@ gap> DigraphEdges(D);
 gap> DigraphVertexLabels(D);
 [ 1, 2, 3, 6, [ 4, 5 ] ]
 
+# DigraphFromMeetTable
+gap> DigraphFromMeetTable([[1,1],[1,2]]);
+<immutable meet semilattice digraph with 2 vertices, 3 edges>
+gap> DigraphFromMeetTable([[1, 1, 1, 1],[1, 2, 1, 2],[1, 1, 3, 3],[1, 2, 3, 4]]);
+<immutable meet semilattice digraph with 4 vertices, 9 edges>
+gap> DigraphFromMeetTable([[1,3,2],[2,3,1],[3,3,3]]);
+fail
+
+# DigraphFromJoinTable
+gap> DigraphFromJoinTable([[1, 3, 3],[3, 2, 3],[3, 3, 3]]);
+<immutable join semilattice digraph with 3 vertices, 5 edges>
+gap> DigraphFromJoinTable([[1,3,2],[2,3,1],[3,3,3]]);
+fail
+
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(C);
 gap> Unbind(D);

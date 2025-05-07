@@ -156,5 +156,5 @@ DeclareOperation("PartialOrderDigraphMeetOfVertices",
                  [IsDigraph, IsPosInt, IsPosInt]);
 
 # 11. Operations for tables . . .
-DeclareOperation("DigraphFromMeetTable", [IsList])
-DeclareOperation("DigraphFromJoinTable", [IsList])
+DeclareOperation("DigraphFromMeetTable", [IsList]);
+DeclareOperation("DigraphFromJoinTable", [IsList]);
