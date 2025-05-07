@@ -3446,10 +3446,10 @@ function(G)
     Add(ecc, DigraphLongestDistanceFromVertex(G, v));
   od;
   return rec(
-    Radius    := Minimum(ecc),
-    DigraphCentre    := Filtered([1 .. DigraphNrVertices(G)],
+    Radius        := Minimum(ecc),
+    DigraphCentre := Filtered([1 .. DigraphNrVertices(G)],
     i -> ecc[i] = Minimum(ecc)),
-    Periphery := Filtered([1 .. DigraphNrVertices(G)],
+    Periphery     := Filtered([1 .. DigraphNrVertices(G)],
     i -> ecc[i] = Maximum(ecc)));
 end);
 
