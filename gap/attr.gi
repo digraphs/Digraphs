@@ -3435,22 +3435,21 @@ D -> DIGRAPHS_IsMeetSemilatticeAndMeetTable(D)[2]);
 InstallMethod(DigraphDistanceMetrics, "for a digraph",
 [IsDigraph],
 function(G)
-  local ecc, v;
+  local ecc, v, n;
   if not IsDigraph(G) then
     Error("Input must be a digraph");
   elif not IsStronglyConnectedDigraph(G) then
     fail; # Only defined for strongly connected digraphs
   fi;
   ecc := [];
-  for v in [1 .. DigraphNrVertices(G)] do
+  n   := DigraphNrVertices(G);
+  for v in [1 .. n] do
     Add(ecc, DigraphLongestDistanceFromVertex(G, v));
   od;
   return rec(
     Radius    := Minimum(ecc),
-    DigraphCentre    := Filtered([1 .. DigraphNrVertices(G)],
-    i -> ecc[i] = Minimum(ecc)),
-    Periphery := Filtered([1 .. DigraphNrVertices(G)],
-    i -> ecc[i] = Maximum(ecc)));
+    DigraphCentre    := Filtered([1 .. n],i -> ecc[i] = Minimum(ecc)),
+    Periphery := Filtered([1 .. n],i -> ecc[i] = Maximum(ecc)));
 end);
 
 InstallMethod(DigraphRadius, "for a digraph",
