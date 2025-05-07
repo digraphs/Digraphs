@@ -3455,7 +3455,7 @@ InstallMethod(DigraphRadius, "for a digraph",
 [IsDigraph],
 D -> DigraphDistanceMetrics(D).Radius);
 
-InstallMethod(DigraphCentre, "for a digraph"
+InstallMethod(MyDigraphCentre, "for a digraph"
 [IsDigraph],
 D -> DigraphDistanceMetrics(D).Centre);
 
