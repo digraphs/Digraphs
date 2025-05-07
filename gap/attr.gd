@@ -141,3 +141,8 @@ DeclareProperty("IsLowerSemimodularDigraph", IsDigraph);
 
 DeclareAttribute("DigraphJoinTable", IsDigraph);
 DeclareAttribute("DigraphMeetTable", IsDigraph);
+
+DeclareOperation("DigraphDistanceMetrics", IsDigraph);
+DeclareAttribute("DigraphRadius", IsDigraph);
+DeclareAttribute("DigraphCenter", IsDigraph);
+DeclareAttribute("DigraphPeriphery", IsDigraph);
