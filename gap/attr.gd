@@ -144,5 +144,5 @@ DeclareAttribute("DigraphMeetTable", IsDigraph);
 
 DeclareAttribute("DigraphDistanceMetrics", IsDigraph);
 DeclareAttribute("DigraphRadius", IsDigraph);
-DeclareAttribute("DigraphCenter", IsDigraph);
+DeclareAttribute("DigraphCentre", IsDigraph);
 DeclareAttribute("DigraphPeriphery", IsDigraph);

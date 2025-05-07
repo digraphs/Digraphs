@@ -3447,7 +3447,7 @@ function(G)
   od;
   return rec(
     Radius    := Minimum(ecc),
-    Centre    := Filtered([1 .. DigraphNrVertices(G)],
+    DigraphCentre    := Filtered([1 .. DigraphNrVertices(G)],
     i -> ecc[i] = Minimum(ecc)),
     Periphery := Filtered([1 .. DigraphNrVertices(G)],
     i -> ecc[i] = Maximum(ecc)));
@@ -3457,9 +3457,9 @@ InstallMethod(DigraphRadius, "for a digraph",
 [IsDigraph],
 D -> DigraphDistanceMetrics(D).Radius);
 
-InstallMethod(MyDigraphCentre, "for a digraph",
+InstallMethod(DigraphCentre, "for a digraph",
 [IsDigraph],
-D -> DigraphDistanceMetrics(D).Centre);
+D -> DigraphDistanceMetrics(D).DigraphCentre);
 
 InstallMethod(DigraphPeriphery, "for a digraph",
 [IsDigraph],
