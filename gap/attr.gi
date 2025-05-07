@@ -3453,12 +3453,12 @@ end);
 
 InstallMethod(DigraphRadius, "for a digraph",
 [IsDigraph],
-D -> DIGRAPHS_DigraphDistanceMetrics(D).Radius);
+D -> DigraphDistanceMetrics(D).Radius);
 
 InstallMethod(DigraphCentre, "for a digraph"
 [IsDigraph],
-D -> DIGRAPHS_DigraphDistanceMetrics(D).Centre);
+D -> DigraphDistanceMetrics(D).Centre);
 
 InstallMethod(DigraphPeriphery, "for a digraph",
 [IsDigraph],
-D -> DIGRAPHS_DigraphDistanceMetrics(D).Periphery);
+D -> DigraphDistanceMetrics(D).Periphery);
