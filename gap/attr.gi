@@ -3447,8 +3447,8 @@ function(G)
   od;
   return rec(
     Radius    := Minimum(ecc),
-    Centre    := Filtered([1 .. n], i -> ecc[i] = Minimum(ecc)),
-    Periphery := Filtered([1 .. n], i -> ecc[i] = Maximum(ecc)));
+    Centre    := Filtered([1 .. NrVertices(G)], i -> ecc[i] = Minimum(ecc)),
+    Periphery := Filtered([1 .. NrVertices(G)], i -> ecc[i] = Maximum(ecc)));
 end);
 
 InstallMethod(DigraphRadius, "for a digraph",
