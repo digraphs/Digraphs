@@ -3449,7 +3449,7 @@ function(G)
         c := Maximum(c, DigraphShortestDistance(G, u, v));
       fi;
     od;
-    Add(ecc, c));
+    Add(ecc, c);
   od;
   return rec(
     Radius        := Minimum(ecc),
