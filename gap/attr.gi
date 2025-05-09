@@ -3448,7 +3448,7 @@ function(G)
       if DigraphShortestDistance(G, u, v) > c then
         c := DigraphShortestDistance(G, u, v);
       fi;
-    Add(ecc, c));
+      Add(ecc, c));
     od;
   od;
   return rec(
