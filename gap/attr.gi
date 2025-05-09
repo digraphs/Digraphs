@@ -3445,11 +3445,11 @@ function(G)
   for u in [1 .. DigraphNrVertices(G)] do
     c := 0;
     for v in [1 .. DigraphNrVertices(G)] do
-      if DigraphShortestDistance(G, u, v) > c then
-        c := DigraphShortestDistance(G, u, v);
+      if u <> v then
+        c := Maximum(c, DigraphShortestDistance(G, u, v));
       fi;
-      Add(ecc, c));
     od;
+    Add(ecc, c));
   od;
   return rec(
     Radius        := Minimum(ecc),
