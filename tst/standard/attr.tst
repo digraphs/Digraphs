@@ -3175,7 +3175,7 @@ true
 
 # DigraphDistanceMetrics
 gap> DigraphRadius(CycleDigraph(5));
-infinity
+4
 gap> DigraphCentre(Digraph([[2], [3], [1]]));
 [ 1, 2, 3 ]
 gap> DigraphPeriphery(CycleDigraph(13));
