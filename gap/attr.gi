@@ -3443,7 +3443,7 @@ function(G)
   fi;
   ecc := [];
   for v in [1 .. DigraphNrVertices(G)] do
-    Add(ecc, DigraphLongestDistanceFromVertex(G, v));
+    Add(ecc, DigraphLongestDistanceFromVertex(DigraphRemoveLoops(G, v)));
   od;
   return rec(
     Radius        := Minimum(ecc),
