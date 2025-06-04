@@ -136,7 +136,7 @@ InstallGlobalFunction(DIGRAPHS_IsK22FreeDigraph,
         # two distinct unconnected vertices. This means there is K2,2 subgraph
         # Create boolean adjacency matrix
         adjacencyMatrix := BooleanAdjacencyMatrix(D);
-        neighbours := OutNeighbors(D);
+        neighbours := OutNeighbours(D);
         vertices := DigraphVertices(D);
         for i in vertices do
             for jCount in [i + 1 .. numberVertices] do
@@ -629,8 +629,7 @@ InstallMethod(DigraphAllTriangles, "for a digraph", [IsDigraph],
 end);
 
 # Add an artificial vertex between two given edges
-InstallMethod(DigraphAddVertexCrossingPoint, "for a digraph,
-    list, and list", [IsDigraph, IsList, IsList],
+InstallMethod(DigraphAddVertexCrossingPoint, "for a digraph, list, and list", [IsDigraph, IsList, IsList],
     function(arg...)
     local n, D, Edge1, Edge2;
     if IsEmpty(arg) then
@@ -661,13 +660,11 @@ InstallMethod(DigraphAddVertexCrossingPoint, "for a digraph,
     D := DigraphRemoveEdge(D, Edge2);
     # Add the new edges in (between E1 source and artificial vertex,
     # artificial vertex and E1 destination. Same for E2)
-    return DigraphAddEdges(D, [[Edge1[1], n], [n, Edge1[2]],
-    [Edge2[1], n], [n, Edge2[2]]]);
+    return DigraphAddEdges(D, [[Edge1[1], n], [n, Edge1[2]], [Edge2[1], n], [n, Edge2[2]]]);
 end);
 
 # Compute crossing number of a complete multipartite digraphs
-InstallMethod(DIGRAPHS_CompleteMultipartiteDigraphCrossingNumber,
-"for a multipartite digraph", [IsCompleteMultipartiteDigraph],
+InstallMethod(DIGRAPHS_CompleteMultipartiteDigraphCrossingNumber, "for a multipartite digraph", [IsCompleteMultipartiteDigraph],
     function(D)
     local componentsSize, crossingNumber;
     if not IsCompleteMultipartiteDigraph(D) then
@@ -782,8 +779,7 @@ InstallGlobalFunction(DIGRAPHS_CompleteTripartiteDigraphCrossingNumber,
 end);
 
 # Compute the crossing number of a complete bipartite digraph
-InstallMethod(DIGRAPHS_CompleteBipartiteDigraphCrossingNumber,
-"for a bipartite digraph", [IsCompleteBipartiteDigraph],
+InstallMethod(DIGRAPHS_CompleteBipartiteDigraphCrossingNumber, "for a bipartite digraph", [IsCompleteBipartiteDigraph],
     function(D)
     local componentsSize, crossingNumber;
     if not IsCompleteBipartiteDigraph(D) then
@@ -823,7 +819,7 @@ InstallMethod(CompleteMultipartiteDigraphPartitionSize, "for a complete multipar
     local i, neighbours, typesSeen, dictionary, componentsSize;
     # Create a dictionary for the set of outneighbours
     dictionary := NewDictionary(Set(OutNeighbours(D)), true);
-    neighbours := OutNeighbors(D);
+    neighbours := OutNeighbours(D);
     typesSeen := [];
     componentsSize := [];
     for i in [1 .. Length(neighbours)] do
@@ -847,6 +843,7 @@ InstallMethod(CompleteMultipartiteDigraphPartitionSize, "for a complete multipar
     SetCompleteMultipartiteDigraphPartitionSize(D, componentsSize);
     return componentsSize;
 end);
+
 
 # Compute the crossing number of a digraph if
 # it is isomorphic to a circulant digraph with known crossing number
