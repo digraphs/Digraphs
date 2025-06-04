@@ -570,7 +570,7 @@ gap> RandomDigraph("a");
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `RandomDigraph' on 1 arguments
 gap> RandomDigraph(4, 0);
-<immutable empty digraph with 4 vertices>
+<immutable digraph with 4 vertices, 16 edges>
 gap> RandomDigraph(10, 1.01);
 Error, the 2nd argument <p> must be between 0 and 1,
 gap> RandomDigraph(10, -0.01);
@@ -593,7 +593,7 @@ gap> RandomDigraph(IsImmutableDigraph, "a");
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `RandomDigraph' on 2 arguments
 gap> RandomDigraph(IsImmutableDigraph, 4, 0);
-<immutable empty digraph with 4 vertices>
+<immutable digraph with 4 vertices, 16 edges>
 gap> RandomDigraph(IsImmutableDigraph, 10, 1.01);
 Error, the 2nd argument <p> must be between 0 and 1,
 gap> RandomDigraph(IsImmutableDigraph, 10, -0.01);
@@ -616,7 +616,7 @@ gap> RandomDigraph(IsMutableDigraph, "a");
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `RandomDigraph' on 2 arguments
 gap> RandomDigraph(IsMutableDigraph, 4, 0);
-<mutable empty digraph with 4 vertices>
+<mutable digraph with 4 vertices, 16 edges>
 gap> RandomDigraph(IsMutableDigraph, 10, 1.01);
 Error, the 2nd argument <p> must be between 0 and 1,
 gap> RandomDigraph(IsMutableDigraph, 10, -0.01);
