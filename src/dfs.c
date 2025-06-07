@@ -348,7 +348,7 @@ bool ExecuteDFSRec(Int current, Int parent, Int idx, struct dfs_args* args) {
 
 
 Obj FuncExecuteDFS_C(Obj self, Obj args) {
-  DIGRAPHS_ASSERT(LEN_PLIST(args) == 8);
+  DIGRAPHS_ASSERT(LEN_PLIST(args) == 7);
   Obj record        = ELM_PLIST(args, 1);
   Obj config        = ElmPRec(record, RNamName("config"));
   Obj data          = ELM_PLIST(args, 2);
