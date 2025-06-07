@@ -3263,7 +3263,23 @@ gap> DigraphVertexLabels(D);
 #   parents := HashMap([]), postorder := HashMap([]), preorder := HashMap([]),
 #   stop := false )
 
-# ExecuteDFS
+# ExecuteDFS - Error Checking
+gap> ExecuteDFS(rec(), [], 1, fail,
+>               fail, fail, fail);
+Error, the 1st argument <record> must be created with NewDFSRecord,
+gap> D := ChainDigraph(1);;
+gap> ExecuteDFS(NewDFSRecord(D), [], 3, fail, fail, fail,
+> fail);
+Error, the third argument <start> must be a vertex in your graph,
+gap> d := BinaryTree(5);;
+gap> record := NewDFSRecord(d);;
+gap> record.config.forest_specific := [1,, 3];;
+gap> ExecuteDFS(record, [], 3, fail, fail, fail,
+> fail);
+Error, the 1st argument <record> has a value of <record>.config.forest_specifi\
+c that is not fail or a dense list,
+
+# ExecuteDFS - Correctness
 gap> record := NewDFSRecord(CompleteDigraph(10));;
 gap> ExecuteDFS(record, [], 2, fail,
 >               fail, fail, fail);
@@ -3308,13 +3324,6 @@ gap> ExecuteDFS(record, data, 1, fail,
 >               fail, AncestorFunc, CrossFunc);;
 gap> data;
 rec( back_edges := [ [ 3, 1 ], [ 3, 1 ] ], cross_edges := [ [ 5, 4 ] ] )
-gap> ExecuteDFS(rec(), data, 1, fail,
->               fail, AncestorFunc, CrossFunc);
-Error, the 1st argument <record> must be created with NewDFSRecord,
-gap> D := ChainDigraph(1);;
-gap> ExecuteDFS(NewDFSRecord(D), [], 3, fail, fail, fail,
-> fail);
-Error, the third argument <start> must be a vertex in your graph,
 gap> record := NewDFSRecord(Digraph([[2, 3], [], [2]]));;
 gap> data := rec(back_edges := [], cross_edges := []);;
 gap> ExecuteDFS(record, data, 1, fail, fail, AncestorFunc,
@@ -3375,15 +3384,35 @@ gap> ExecuteDFS(record, data, 1, PreorderFunc, fail, fail,
 gap> data.count;
 5000
 
-# Forest DFS
+# Checking results are consistent for different options - BinaryTree(5)
 gap> gr := BinaryTree(5);;
 gap> record := NewDFSRecord(gr);;
-gap> record.config.forest := true;;
-gap> ExecuteDFS(record, fail, 1, fail, fail, fail,
-> fail);
-gap> ForAll(record.preorder, x -> x <> -1);
-true
-gap> ForAll([record.preorder, record.postorder], IsSet);
+gap> configs := [];;
+gap> temp_conf := ShallowCopy(record.config);;  # forest, recursive
+gap> temp_conf.forest := true;;
+gap> Add(configs, temp_conf);;
+gap> temp_conf := ShallowCopy(record.config);;  # forest_specific, recursive
+gap> temp_conf.forest_specific := DigraphVertices(gr);;
+gap> Add(configs, temp_conf);;
+gap> temp_conf := ShallowCopy(configs[1]);;  # forest, iterative
+gap> temp_conf.iterative := true;;
+gap> Add(configs, temp_conf);;
+gap> temp_conf := ShallowCopy(configs[2]);;  # forest_specific, iterative
+gap> temp_conf.iterative := true;;
+gap> Add(configs, temp_conf);;
+gap> records := [];;
+gap> for conf in configs do
+>      record := NewDFSRecord(gr, conf);;
+>      ExecuteDFS(record, fail, 1, fail, fail, fail, fail);;
+>      Add(records, record);;
+>     od;
+gap> ForAll(records, r -> 
+> ((r.edge = records[1].edge) and
+> (r.parents = records[1].parents) and
+> (r.preorder = records[1].preorder) and
+> (r.postorder = records[1].postorder) and
+> (IsSet(r.postorder) and IsSet(r.preorder)))
+> );
 true
 
 # IsDigraphPath
@@ -3491,6 +3520,10 @@ gap> Unbind(AncestorFunc);
 gap> Unbind(CrossFunc);
 gap> Unbind(record);
 gap> Unbind(data);
+gap> Unbind(parents);
+gap> Unbind(edge);
+gap> Unbind(postorder);
+gap> Unbind(preorder);
 
 #
 gap> DIGRAPHS_StopTest();

@@ -2831,19 +2831,18 @@ end;
 DIGRAPHS_DFSFlagsBoolErr := function(flags, field)
   if not IsBool(flags.(field)) then
     ErrorNoReturn("the 2nd argument <conf> (a record) should have a Bool ",
-                  "value for field <conf>.", field);
+                  "value for field <conf>,", field);
   fi;
 end;
 
 DIGRAPHS_DFS_CheckFlags := function(flags, graph)
   # Already confirmed expected fields are bound
-  DIGRAPHS_DFSFlagsBoolErr(flags, "iterative");
-  DIGRAPHS_DFSFlagsBoolErr(flags, "forest");
-  DIGRAPHS_DFSFlagsBoolErr(flags, "revisit");
-  DIGRAPHS_DFSFlagsBoolErr(flags, "use_preorder");
-  DIGRAPHS_DFSFlagsBoolErr(flags, "use_postorder");
-  DIGRAPHS_DFSFlagsBoolErr(flags, "use_parents");
-  DIGRAPHS_DFSFlagsBoolErr(flags, "use_edge");
+  local bool_flag;
+
+  for bool_flag in ["iterative", "forest", "revisit", "use_parents", "use_edge",
+                    "use_postorder", "use_preorder"] do
+      DIGRAPHS_DFSFlagsBoolErr(flags, bool_flag);
+  od;
 
   if (flags.forest_specific <> fail) and
       (not (IsDenseList(flags.forest_specific) and
@@ -2859,6 +2858,29 @@ DIGRAPHS_DFS_CheckFlags := function(flags, graph)
       ErrorNoReturn("the 2nd argument <conf> (a record) has elements in ",
                     "<conf>.forest_specific that are not vertices in the ",
                     "second argument <graph>.");
+  fi;
+end;
+
+DIGRAPHS_ExecuteDFSCheck := function(record)
+  local record_names, config_names;
+
+  record_names := DIGRAPHS_DFSRecNames();
+  config_names := DIGRAPHS_DFSFlagNames();
+
+  if not IsBound(record.config) then
+    DIGRAPHS_DFSError();
+  elif ForAny(config_names, n -> not IsBound(record.config.(n))) then
+      DIGRAPHS_DFSError();
+  elif ForAny(record_names, n -> not IsBound(record.(n))) then
+    DIGRAPHS_DFSError();
+  elif record.config.forest_specific <> fail and
+       not IsDenseList(record.config.forest_specific) then
+      ErrorNoReturn("the 1st argument <record> has a value of",
+                    " <record>.config.forest_specific",
+                    " that is not fail or a dense list,");
+  elif ForAny(["parents", "preorder", "postorder", "edge"],
+              n -> record.(n) <> fail and not IsDenseList(record.(n))) then
+    DIGRAPHS_DFSError();
   fi;
 end;
 
@@ -2887,6 +2909,7 @@ function(graph, conf)
   record.child := -1;
   record.current := -1;
   record.stop := false;
+
   if conf.use_preorder then
     record.preorder := ListWithIdenticalEntries(N, -1);
   else
@@ -2956,19 +2979,7 @@ end);
 InstallGlobalFunction(ExecuteDFS,
 function(record, data, start, PreOrderFunc, PostOrderFunc, AncestorFunc,
          CrossFunc)
-  local record_names, config_names;
-
-  record_names := DIGRAPHS_DFSRecNames();
-  config_names := DIGRAPHS_DFSFlagNames();
-
-  if not IsBound(record.config) then
-    DIGRAPHS_DFSError();
-  elif ForAny(config_names, n -> not IsBound(record.config.(n))) then
-    DIGRAPHS_DFSError();
-  elif ForAny(record_names, n -> not IsBound(record.(n))) then
-    DIGRAPHS_DFSError();
-  fi;
-
+  DIGRAPHS_ExecuteDFSCheck(record);
   ExecuteDFS_C(record, data, start, PreOrderFunc, PostOrderFunc,
                AncestorFunc, CrossFunc);
 end);
