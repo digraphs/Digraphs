@@ -2059,48 +2059,64 @@ end);
 InstallMethod(DigraphLongestDistanceFromVertex, "for a digraph and a pos int",
 [IsDigraphByOutNeighboursRep, IsPosInt],
 function(D, v)
-  local record, PreOrderFunc, PostOrderFunc, data, AncestorFunc, flags;
+  local dist;
 
   if not v in DigraphVertices(D) then
     ErrorNoReturn("the 2nd argument <v> must be a vertex of the 1st ",
                   "argument <D>,");
   fi;
-
-  flags := NewDFSFlagsLightweight();
-  flags.iterative := true;  # revisit DFS must be iterative
-  flags.use_parents := true;
-  flags.revisit := true;  # If found another edge to an already
-                         # visited and backtracked on node,
-                         # set to unvisited, and visit it
-
-  record := NewDFSRecord(D, flags);
-
-  data := rec(prev := -1, best := 0);
-
-  AncestorFunc := function(record, _)
-    record.stop := true;
-  end;
-
-  PostOrderFunc := function(_, data)
-    data.prev := data.prev - 1;
-  end;
-
-  PreOrderFunc := function(_, data)
-    data.prev := data.prev + 1;
-    if data.prev > data.best then
-      data.best := data.prev;
-    fi;
-  end;
-
-  ExecuteDFS(record, data, v,
-               PreOrderFunc, PostOrderFunc,
-               AncestorFunc, fail);
-  if record.stop then
+  dist := DIGRAPH_LONGEST_DIST_VERTEX(OutNeighbours(D), v);
+  if dist = -2 then
     return infinity;
   fi;
-  return data.best;
-
+  return dist;
 end);
+
+# InstallMethod(DigraphLongestDistanceFromVertex, "for a digraph and a pos int",
+# [IsDigraphByOutNeighboursRep, IsPosInt],
+# function(D, v)
+#   local record, PreOrderFunc, PostOrderFunc, data, AncestorFunc, flags;
+
+#   if not v in DigraphVertices(D) then
+#     ErrorNoReturn("the 2nd argument <v> must be a vertex of the 1st ",
+#                   "argument <D>,");
+#   fi;
+
+#   flags := NewDFSFlagsLightweight();
+#   flags.iterative := true;  # revisit DFS must be iterative
+#   flags.use_parents := true;
+#   flags.revisit := true;  # If found another edge to an already
+#                          # visited and backtracked on node,
+#                          # set to unvisited, and visit it
+
+#   record := NewDFSRecord(D, flags);
+
+#   data := rec(prev := -1, best := 0);
+
+#   AncestorFunc := function(record, _)
+#     record.stop := true;
+#   end;
+
+#   PostOrderFunc := function(_, data)
+#     data.prev := data.prev - 1;
+#   end;
+
+#   PreOrderFunc := function(_, data)
+#     data.prev := data.prev + 1;
+#     if data.prev > data.best then
+#       data.best := data.prev;
+#     fi;
+#   end;
+
+#   ExecuteDFS(record, data, v,
+#                PreOrderFunc, PostOrderFunc,
+#                AncestorFunc, fail);
+#   if record.stop then
+#     return infinity;
+#   fi;
+#   return data.best;
+
+# end);
 
 InstallMethod(DigraphRandomWalk,
 "for a digraph, a pos int and a non-negative int",
