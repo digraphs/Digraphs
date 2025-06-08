@@ -2399,45 +2399,59 @@ end);
 InstallMethod(VerticesReachableFrom, "for a digraph and a vertex",
 [IsDigraph, IsPosInt],
 function(D, root)
-  local N, record, conf, data, AncestorFunc, PreOrderFunc;
-
+  local N;
   N := DigraphNrVertices(D);
+
   if 0 = root or root > N then
     ErrorNoReturn("the 2nd argument (root) is not a vertex of the 1st ",
                   "argument (a digraph)");
   fi;
 
-  conf := NewDFSFlagsLightweight();
-
-  conf.use_edge := true;
-  conf.use_parents := true;
-
-  record := NewDFSRecord(D, conf);
-  data := rec(result := [], root_reached := false);
-
-  PreOrderFunc := function(record, data)
-    if record.current <> root then
-      Add(data.result, record.current);
-    fi;
-  end;
-
-  AncestorFunc := function(record, data)
-    if record.child = root and not data.root_reached then
-      data.root_reached := true;
-      Add(data.result, root);
-    fi;
-  end;
-
-  ExecuteDFS(record,
-             data,
-             root,
-             PreOrderFunc,
-             fail,
-             AncestorFunc,
-             fail);
-  Sort(data.result);
-  return data.result;
+  return VerticesReachableFrom(D, [root]);
 end);
+
+# InstallMethod(VerticesReachableFrom, "for a digraph and a vertex",
+# [IsDigraph, IsPosInt],
+# function(D, root)
+#   local N, record, conf, data, AncestorFunc, PreOrderFunc;
+
+#   N := DigraphNrVertices(D);
+#   if 0 = root or root > N then
+#     ErrorNoReturn("the 2nd argument (root) is not a vertex of the 1st ",
+#                   "argument (a digraph)");
+#   fi;
+
+#   conf := NewDFSFlagsLightweight();
+
+#   conf.use_edge := true;
+#   conf.use_parents := true;
+
+#   record := NewDFSRecord(D, conf);
+#   data := rec(result := [], root_reached := false);
+
+#   PreOrderFunc := function(record, data)
+#     if record.current <> root then
+#       Add(data.result, record.current);
+#     fi;
+#   end;
+
+#   AncestorFunc := function(record, data)
+#     if record.child = root and not data.root_reached then
+#       data.root_reached := true;
+#       Add(data.result, root);
+#     fi;
+#   end;
+
+#   ExecuteDFS(record,
+#              data,
+#              root,
+#              PreOrderFunc,
+#              fail,
+#              AncestorFunc,
+#              fail);
+#   Sort(data.result);
+#   return data.result;
+# end);
 
 InstallMethod(VerticesReachableFrom, "for a digraph and a list of vertices",
 [IsDigraph, IsList],
