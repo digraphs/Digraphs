@@ -259,6 +259,13 @@ bool ExecuteDFSIter(Int start, struct dfs_args* args) {
     return true;
 }
 
+/*
+   Main loop for iterative DFS called by ITER_FOREST and ExecuteDFSIter.
+
+   ON_PREORDER, ON_BACKTRACK and ANCESTOR_CROSS can return from this function
+   if the record.stop attribute is set during a called PreOrderFunc, PostOrderFunc,
+   CrossFunc, or AncestorFunc.
+*/
 bool iter_loop(Obj stack, Int stack_size, struct dfs_args* args) {
     while (stack_size > 0) {
         Int current = INT_INTOBJ(STACK_POP(stack, stack_size));
@@ -308,43 +315,69 @@ bool iter_loop(Obj stack, Int stack_size, struct dfs_args* args) {
 
 /* Recursive DFS
  Necessary record elements: edge, parents
+ goto used to force tail call optimization
+
+ ON_PREORDER, ON_BACKTRACK and ANCESTOR_CROSS can return from this function
+ if the record.stop attribute is set during a called PreOrderFunc, PostOrderFunc,
+ CrossFunc, or AncestorFunc.
 */
 
 bool ExecuteDFSRec(Int current, Int parent, Int idx, struct dfs_args* args) {
+rec:
   if (idx == PREORDER_IDX) {  // visit current
     ON_PREORDER(current, args);
-    // Start recursing on successors
-    return ExecuteDFSRec(current, parent, idx + 1, args);
+
+    // Start recursing on successors of vertex <current>, with parent <parent>
+    idx += 1;
+    goto rec;
   }
 
-  Obj succ = ELM_LIST(args -> neighbors, current);
+  Obj succ = ELM_LIST(args->neighbors, current);
 
   if (idx > LEN_LIST(succ)) {  // Backtrack on current (all successors explored)
-      ON_BACKTRACK(current, parent, args);
+    ON_BACKTRACK(current, parent, args);
 
-      Int prev_idx = INT_INTOBJ(ELM_LIST(args -> edge, current));
-      Int parents_parent = INT_INTOBJ(ELM_LIST(args -> parents, parent));
+    Int prev_idx       = INT_INTOBJ(ELM_LIST(args->edge, current));
+    Int parents_parent = INT_INTOBJ(ELM_LIST(args->parents, parent));
 
-      if (parent == current) return true;  // At root
+    if (parent == current) {
+      return true;  // At root
+    }
 
-      return ExecuteDFSRec(parent, parents_parent, prev_idx + 1, args);
+    // Continue exploration of <parent>'s successors
+
+    current = parent;          // Backtrack to parent of <current> vertex
+    parent  = parents_parent;  // The parent is now the new <current> vertex's
+                               // previously assigned parent
+    idx = prev_idx + 1;        // Index is the next successor to visit
+                               // continuing previous exploration of
+                               // <current>'s successors
+    goto rec;
   } else {
-      Int v = INT_INTOBJ(ELM_LIST(succ, idx));
-      bool visited = IS_VISITED(args, v);
+    Int  v       = INT_INTOBJ(ELM_LIST(succ, idx));
+    bool visited = IS_VISITED(args, v);
 
-      if (!visited) {
-        ON_ADD_SUCC(current, v, idx, args);
-        return ExecuteDFSRec(v, current, 0, args);
-      } else {
-        bool backtracked = (args -> dfs_conf -> use_postorder
-                            || args -> dfs_conf -> partial_postorder) &&
-                            (IS_BACKTRACKED(args, v));
-        ANCESTOR_CROSS(current, v, backtracked, args);
-        return ExecuteDFSRec(current, parent, idx + 1, args);  // Skip
-      }
+    if (!visited) {
+      ON_ADD_SUCC(current, v, idx, args);
+
+      parent  = current;  // Explore successor v with parent <current>
+      current = v;
+      idx     = PREORDER_IDX;  // Initial index to indicate v is being visited
+
+      goto rec;
+
+    } else {
+      bool backtracked =
+          (args->dfs_conf->use_postorder || args->dfs_conf->partial_postorder)
+          && (IS_BACKTRACKED(args, v));
+      ANCESTOR_CROSS(current, v, backtracked, args);
+
+      idx += 1;  // Skip this sucessor of <current>
+                 // since it has already been visited
+      goto rec;
+    }
   }
 }
-
 
 Obj FuncExecuteDFS_C(Obj self, Obj args) {
   DIGRAPHS_ASSERT(LEN_PLIST(args) == 7);
