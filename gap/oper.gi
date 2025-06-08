@@ -2403,51 +2403,92 @@ end);
 InstallMethod(VerticesReachableFrom, "for a digraph and a list of vertices",
 [IsDigraph, IsList],
 function(D, roots)
-  local record, flags, N, PreOrderFunc, AncestorFunc,
-  data;
-
-  if (roots = []) then
-    return [];
-  fi;
+  local N, index, visited, queue_tail, queue,
+  root, element, neighbour, graph_out_neighbors, node_neighbours;
 
   N := DigraphNrVertices(D);
 
-  if (ForAny(roots, v -> v <= 0 or v > N)) then
-    ErrorNoReturn("an element of the 2nd argument ",
-                  "(roots) is not a vertex of the 1st ",
-                  "argument (a digraph)");
-  fi;
-
-  data := rec(result := BlistList([1 .. N], []));
-
-  PreOrderFunc := function(record, data)
-    if record.parents[record.current] <> record.current then
-      data.result[record.current] := true;
+  for root in roots do
+    if not IsPosInt(N) or 0 = root or root > N then
+      ErrorNoReturn("an element of the 2nd argument ",
+                    "(roots) is not a vertex of the 1st ",
+                    "argument (a digraph)");
     fi;
-  end;
+  od;
 
-  AncestorFunc := function(record, data)
-    data.result[record.child] := true;
-  end;
+  visited := BlistList([1 .. N], []);
 
-  flags := NewDFSFlagsLightweight();
-  flags.use_edge := true;
-  flags.use_parents := true;
+  graph_out_neighbors := OutNeighbors(D);
+  queue := EmptyPlist(N);
+  Append(queue, roots);
 
-  flags.forest_specific := roots;
+  queue_tail := Length(roots);
 
-  record := NewDFSRecord(D, flags);
+  index := 1;
+  while IsBound(queue[index]) do
+    element := queue[index];
+    node_neighbours := graph_out_neighbors[element];
+    for neighbour in node_neighbours do
+      if not visited[neighbour] then;
+        visited[neighbour] := true;
+        queue_tail := queue_tail + 1;
+        queue[queue_tail] := neighbour;
+      fi;
+    od;
+    index := index + 1;
+  od;
 
-  ExecuteDFS(record,
-              data,
-              roots[1],
-              PreOrderFunc,
-              fail,
-              AncestorFunc,
-              fail);
-
-  return ListBlist([1 .. N], data.result);
+  return ListBlist([1 .. N], visited);
 end);
+
+# InstallMethod(VerticesReachableFrom, "for a digraph and a list of vertices",
+# [IsDigraph, IsList],
+# function(D, roots)
+#   local record, flags, N, PreOrderFunc, AncestorFunc,
+#   data;
+
+#   if (roots = []) then
+#     return [];
+#   fi;
+
+#   N := DigraphNrVertices(D);
+
+#   if (ForAny(roots, v -> v <= 0 or v > N)) then
+#     ErrorNoReturn("an element of the 2nd argument ",
+#                   "(roots) is not a vertex of the 1st ",
+#                   "argument (a digraph)");
+#   fi;
+
+#   data := rec(result := BlistList([1 .. N], []));
+
+#   PreOrderFunc := function(record, data)
+#     if record.parents[record.current] <> record.current then
+#       data.result[record.current] := true;
+#     fi;
+#   end;
+
+#   AncestorFunc := function(record, data)
+#     data.result[record.child] := true;
+#   end;
+
+#   flags := NewDFSFlagsLightweight();
+#   flags.use_edge := true;
+#   flags.use_parents := true;
+
+#   flags.forest_specific := roots;
+
+#   record := NewDFSRecord(D, flags);
+
+#   ExecuteDFS(record,
+#               data,
+#               roots[1],
+#               PreOrderFunc,
+#               fail,
+#               AncestorFunc,
+#               fail);
+
+#   return ListBlist([1 .. N], data.result);
+# end);
 
 InstallMethod(IsOrderIdeal, "for a digraph and a list of vertices",
 [IsDigraph, IsList],
