@@ -12,14 +12,13 @@
 
 #include "dfs.h"
 
-#include <stdint.h>   // for uint64_t
-// #include <stdio.h>
-#include <stdlib.h>   // for NULL, free
-
-#include "digraphs-config.h"
+#include <stdint.h>      // for uint64_t
+#include <stdlib.h>      // for NULL, free
 #include "digraphs-debug.h"
-#include "safemalloc.h"
-#include "digraphs.h"
+#include "safemalloc.h"  // for safe_malloc
+
+Int DigraphNrVertices(Obj);
+Obj FuncOutNeighbours(Obj, Obj);
 
 // Macros used for both recursive and iterative
 
@@ -441,7 +440,6 @@ Obj FuncExecuteDFS_C(Obj self, Obj args) {
       ExecuteDFSRec(current, current, PREORDER_IDX, &dfs_args_);
     }
   }
-
 
   recordCleanup(&dfs_args_);
 

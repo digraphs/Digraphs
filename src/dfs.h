@@ -16,7 +16,6 @@
 #include <stdbool.h>  // for false, true, bool
 // GAP headers
 #include "gap-includes.h"  // for Obj, Int
-#include "bitarray.h"
 
 bool CallCheckStop(Obj f, Int RNamStop, Obj record, Obj data);
 
