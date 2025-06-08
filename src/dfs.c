@@ -372,7 +372,7 @@ rec:
           && (IS_BACKTRACKED(args, v));
       ANCESTOR_CROSS(current, v, backtracked, args);
 
-      idx += 1;  // Skip this sucessor of <current>
+      idx += 1;  // Skip this successor of <current>
                  // since it has already been visited
       goto rec;
     }
