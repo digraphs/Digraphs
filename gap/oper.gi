@@ -2555,10 +2555,9 @@ InstallMethod(IsOrderFilter, "for a digraph and a list of vertices",
 InstallMethod(DominatorTree, "for a digraph and a vertex",
 [IsDigraph, IsPosInt],
 function(D, root)
-  local M, preorder_num_to_node, PreOrderFunc, record, parents,
-  node_to_preorder_num, semi, lastlinked, label, bucket, idom, compress, eval,
-  pred, N, w, y, x, i, v, flags;
-
+  local M, node_to_preorder_num, preorder_num_to_node, parent, index, next,
+  current, succ, prev, n, semi, lastlinked, label, bucket, idom,
+  compress, eval, pred, N, w, y, x, i, v;
   M := DigraphNrVertices(D);
 
   if 0 = root or root > M then
@@ -2566,32 +2565,36 @@ function(D, root)
                   "argument (a digraph)");
   fi;
 
-  preorder_num_to_node := [];
+  node_to_preorder_num := [];
+  node_to_preorder_num[root] := 1;
+  preorder_num_to_node := [root];
 
-  PreOrderFunc := function(record, data)
-    Add(data, record.current);
-  end;
+  parent := [];
+  parent[root] := fail;
 
-  flags := NewDFSFlagsLightweight();
-  flags.use_preorder := true;
-  flags.use_parents := true;
-  flags.use_edge := true;
+  index := ListWithIdenticalEntries(M, 1);
 
-  record := NewDFSRecord(D, flags);
-
-  ExecuteDFS(record,
-             preorder_num_to_node,
-             root,
-             PreOrderFunc,
-             fail,
-             fail,
-             fail);
-
-  parents := record.parents;
-  node_to_preorder_num := record.preorder;
-
-  parents[root] := -1;
-
+  next := 2;
+  current := root;
+  succ := OutNeighbours(D);
+  repeat
+    prev := current;
+    for i in [index[current] .. Length(succ[current])] do
+      n := succ[current][i];
+      if not IsBound(node_to_preorder_num[n]) then
+        Add(preorder_num_to_node, n);
+        parent[n] := current;
+        index[current] := i + 1;
+        node_to_preorder_num[n] := next;
+        next := next + 1;
+        current := n;
+        break;
+      fi;
+    od;
+    if prev = current then
+      current := parent[current];
+    fi;
+  until current = fail;
   semi := [1 .. M];
   lastlinked := M + 1;
   label := [];
@@ -2601,7 +2604,7 @@ function(D, root)
 
   compress := function(v)
     local u;
-    u := parents[v];
+    u := parent[v];
     if u <> fail and lastlinked <= M and node_to_preorder_num[u] >=
         node_to_preorder_num[lastlinked] then
       compress(u);
@@ -2609,7 +2612,7 @@ function(D, root)
           < node_to_preorder_num[semi[label[v]]] then
         label[v] := label[u];
       fi;
-      parents[v] := parents[u];
+      parent[v] := parent[u];
     fi;
   end;
 
@@ -2629,8 +2632,7 @@ function(D, root)
     w := preorder_num_to_node[i];
     for v in bucket[w] do
       y := eval(v);
-      if node_to_preorder_num[semi[y]] <
-          node_to_preorder_num[w] then
+      if node_to_preorder_num[semi[y]] < node_to_preorder_num[w] then
         idom[v] := y;
       else
         idom[v] := w;
@@ -2638,16 +2640,15 @@ function(D, root)
     od;
     bucket[w] := [];
     for v in pred[w] do
-      if node_to_preorder_num[v] <> -1 then
+      if IsBound(node_to_preorder_num[v]) then
         x := eval(v);
-        if node_to_preorder_num[semi[x]] <
-            node_to_preorder_num[semi[w]] then
+        if node_to_preorder_num[semi[x]] < node_to_preorder_num[semi[w]] then
           semi[w] := semi[x];
         fi;
       fi;
     od;
-    if parents[w] = semi[w] then
-      idom[w] := parents[w];
+    if parent[w] = semi[w] then
+      idom[w] := parent[w];
     else
       Add(bucket[semi[w]], w);
     fi;
@@ -2666,6 +2667,121 @@ function(D, root)
   idom[root] := fail;
   return rec(idom := idom, preorder := preorder_num_to_node);
 end);
+
+# InstallMethod(DominatorTree, "for a digraph and a vertex",
+# [IsDigraph, IsPosInt],
+# function(D, root)
+#   local M, preorder_num_to_node, PreOrderFunc, record, parents,
+#   node_to_preorder_num, semi, lastlinked, label, bucket, idom, compress, eval,
+#   pred, N, w, y, x, i, v, flags;
+
+#   M := DigraphNrVertices(D);
+
+#   if 0 = root or root > M then
+#     ErrorNoReturn("the 2nd argument (root) is not a vertex of the 1st ",
+#                   "argument (a digraph)");
+#   fi;
+
+#   preorder_num_to_node := [];
+
+#   PreOrderFunc := function(record, data)
+#     Add(data, record.current);
+#   end;
+
+#   flags := NewDFSFlagsLightweight();
+#   flags.use_preorder := true;
+#   flags.use_parents := true;
+#   flags.use_edge := true;
+
+#   record := NewDFSRecord(D, flags);
+
+#   ExecuteDFS(record,
+#              preorder_num_to_node,
+#              root,
+#              PreOrderFunc,
+#              fail,
+#              fail,
+#              fail);
+
+#   parents := record.parents;
+#   node_to_preorder_num := record.preorder;
+
+#   parents[root] := -1;
+
+#   semi := [1 .. M];
+#   lastlinked := M + 1;
+#   label := [];
+#   bucket := List([1 .. M], x -> []);
+#   idom := [];
+#   idom[root] := root;
+
+#   compress := function(v)
+#     local u;
+#     u := parents[v];
+#     if u <> fail and lastlinked <= M and node_to_preorder_num[u] >=
+#         node_to_preorder_num[lastlinked] then
+#       compress(u);
+#       if node_to_preorder_num[semi[label[u]]]
+#           < node_to_preorder_num[semi[label[v]]] then
+#         label[v] := label[u];
+#       fi;
+#       parents[v] := parents[u];
+#     fi;
+#   end;
+
+#   eval := function(v)
+#     if lastlinked <= M and node_to_preorder_num[v] >=
+#         node_to_preorder_num[lastlinked] then
+#       compress(v);
+#       return label[v];
+#     else
+#       return v;
+#     fi;
+#   end;
+
+#   pred := InNeighbours(D);
+#   N := Length(preorder_num_to_node);
+#   for i in [N, N - 1 .. 2] do
+#     w := preorder_num_to_node[i];
+#     for v in bucket[w] do
+#       y := eval(v);
+#       if node_to_preorder_num[semi[y]] <
+#           node_to_preorder_num[w] then
+#         idom[v] := y;
+#       else
+#         idom[v] := w;
+#       fi;
+#     od;
+#     bucket[w] := [];
+#     for v in pred[w] do
+#       if node_to_preorder_num[v] <> -1 then
+#         x := eval(v);
+#         if node_to_preorder_num[semi[x]] <
+#             node_to_preorder_num[semi[w]] then
+#           semi[w] := semi[x];
+#         fi;
+#       fi;
+#     od;
+#     if parents[w] = semi[w] then
+#       idom[w] := parents[w];
+#     else
+#       Add(bucket[semi[w]], w);
+#     fi;
+#     lastlinked := w;
+#     label[w] := semi[w];
+#   od;
+#   for v in bucket[root] do
+#     idom[v] := root;
+#   od;
+#   for i in [2 .. N] do
+#     w := preorder_num_to_node[i];
+#     if idom[w] <> semi[w] then
+#       idom[w] := idom[semi[w]];
+#     fi;
+#   od;
+#   idom[root] := fail;
+#   return rec(idom := idom, preorder := preorder_num_to_node);
+# end);
 
 InstallMethod(Dominators, "for a digraph and a vertex",
 [IsDigraph, IsPosInt],
