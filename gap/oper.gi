@@ -1665,11 +1665,10 @@ end);
 InstallMethod(DigraphPath, "for a digraph by out-neighbours and two pos ints",
 [IsDigraphByOutNeighboursRep, IsPosInt, IsPosInt],
 function(D, u, v)
-  local N, record, PreOrderFunc, AncestorFunc, nodes, edges, current, parents,
-  flags;
+  local verts;
 
-  N := DigraphNrVertices(D);
-  if u > N or v > N then
+  verts := DigraphVertices(D);
+  if not (u in verts and v in verts) then
     ErrorNoReturn("the 2nd and 3rd arguments <u> and <v> must be ",
                   "vertices of the 1st argument <D>,");
   elif IsDigraphEdge(D, u, v) then
@@ -1682,67 +1681,91 @@ function(D, u, v)
       and DigraphConnectedComponents(D).id[u] <>
           DigraphConnectedComponents(D).id[v] then
     return fail;
-  elif OutDegreeOfVertex(D, u) = 0
-      or (HasInNeighbours(D) and InDegreeOfVertex(D, v) = 0) then
-    return fail;
   fi;
-
-  flags := NewDFSFlagsLightweight();
-
-  flags.use_edge := true;
-  flags.use_parents := true;
-
-  record := NewDFSRecord(D, flags);
-
-  if u <> v then
-    # if v is reachable from u, then u is an ancestor of v, and so at some
-    # point v will be encountered for the first time, and PreOrderFunc will be
-    # called.
-    PreOrderFunc := function(record, _)
-      if record.current = v then
-        record.stop := true;
-      fi;
-    end;
-    AncestorFunc := fail;
-  else
-    # if u is reachable from u, then u will be encountered as an ancestor of
-    # itself, but PreOrderFunc won't be called (because u has already been
-    # discovered).
-    PreOrderFunc := fail;
-    AncestorFunc := function(record, _)
-      if record.child = v then
-        record.stop := true;
-      fi;
-    end;
-  fi;
-
-  ExecuteDFS(record,
-             fail,
-             u,
-             PreOrderFunc,
-             fail,
-             AncestorFunc,
-             fail);
-  if not record.stop then
-    return fail;
-  fi;
-  nodes := [v];
-  edges := [];
-  current := v;
-  if u = v then
-    # Go one back from v to the last node in the tree
-    current := record.current;
-    Add(nodes, current);
-    Add(edges, Position(OutNeighboursOfVertex(D, current), u));
-  fi;
-  # Follow the path from current (which is a descendant of u) back to u
-  while current <> u do
-    Add(edges, record.edge[current]);
-    current := record.parents[current];
-    Add(nodes, current);
-  od;
-  return [Reversed(nodes), Reversed(edges)];
+  return DIGRAPH_PATH(OutNeighbours(D), u, v);
 end);
+
+# InstallMethod(DigraphPath, "for a digraph by out-neighbours and two pos ints",
+# [IsDigraphByOutNeighboursRep, IsPosInt, IsPosInt],
+# function(D, u, v)
+#   local N, record, PreOrderFunc, AncestorFunc, nodes, edges, current, parents,
+#   flags;
+
+#   N := DigraphNrVertices(D);
+#   if u > N or v > N then
+#     ErrorNoReturn("the 2nd and 3rd arguments <u> and <v> must be ",
+#                   "vertices of the 1st argument <D>,");
+#   elif IsDigraphEdge(D, u, v) then
+#     return [[u, v], [Position(OutNeighboursOfVertex(D, u), v)]];
+#   elif HasIsTransitiveDigraph(D) and IsTransitiveDigraph(D) then
+#     # If it's a known transitive digraph, just check whether the edge exists
+#     return fail;
+#     # Glean information from WCC if we have it
+#   elif HasDigraphConnectedComponents(D)
+#       and DigraphConnectedComponents(D).id[u] <>
+#           DigraphConnectedComponents(D).id[v] then
+#     return fail;
+#   elif OutDegreeOfVertex(D, u) = 0
+#       or (HasInNeighbours(D) and InDegreeOfVertex(D, v) = 0) then
+#     return fail;
+#   fi;
+
+#   flags := NewDFSFlagsLightweight();
+
+#   flags.use_edge := true;
+#   flags.use_parents := true;
+
+#   record := NewDFSRecord(D, flags);
+
+#   if u <> v then
+#     # if v is reachable from u, then u is an ancestor of v, and so at some
+#     # point v will be encountered for the first time, and PreOrderFunc will be
+#     # called.
+#     PreOrderFunc := function(record, _)
+#       if record.current = v then
+#         record.stop := true;
+#       fi;
+#     end;
+#     AncestorFunc := fail;
+#   else
+#     # if u is reachable from u, then u will be encountered as an ancestor of
+#     # itself, but PreOrderFunc won't be called (because u has already been
+#     # discovered).
+#     PreOrderFunc := fail;
+#     AncestorFunc := function(record, _)
+#       if record.child = v then
+#         record.stop := true;
+#       fi;
+#     end;
+#   fi;
+
+#   ExecuteDFS(record,
+#              fail,
+#              u,
+#              PreOrderFunc,
+#              fail,
+#              AncestorFunc,
+#              fail);
+#   if not record.stop then
+#     return fail;
+#   fi;
+#   nodes := [v];
+#   edges := [];
+#   current := v;
+#   if u = v then
+#     # Go one back from v to the last node in the tree
+#     current := record.current;
+#     Add(nodes, current);
+#     Add(edges, Position(OutNeighboursOfVertex(D, current), u));
+#   fi;
+#   # Follow the path from current (which is a descendant of u) back to u
+#   while current <> u do
+#     Add(edges, record.edge[current]);
+#     current := record.parents[current];
+#     Add(nodes, current);
+#   od;
+#   return [Reversed(nodes), Reversed(edges)];
+# end);
 
 InstallMethod(IsDigraphPath, "for a digraph and list",
 [IsDigraph, IsList],
