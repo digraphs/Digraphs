@@ -1,0 +1,22 @@
+{
+    "[python]": {
+        "editor.rulers": [
+            79,
+            99
+        ],
+        "editor.defaultFormatter": "ms-python.black-formatter",
+        "editor.formatOnSave": true
+    },
+    "editor.formatOnSave": true,
+    "editor.renderWhitespace": "all",
+    "files.autoSave": "afterDelay",
+    "python.analysis.typeCheckingMode": "basic",
+    "black-formatter.cwd": "${workspaceFolder}/TestSupport/planaritytesting",
+    "black-formatter.args": [
+        "--line-length=79",
+        "--target-version=py312"
+    ],
+    "pylint.args": [
+        "--rcfile=${workspaceFolder}/TestSupport/planaritytesting/.pylintrc"
+    ]
+}
