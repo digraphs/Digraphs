@@ -12,23 +12,32 @@ AC_DEFUN([AX_CHECK_PLANARITY], [
               [with_external_planarity=no])
   AC_MSG_CHECKING([whether to use external planarity])
   AC_MSG_RESULT([$with_external_planarity])
-  if test "x$with_external_planarity" = xyes ; then
+  AS_IF([test "x$with_external_planarity" = xyes], [
+        AC_MSG_CHECKING([for external libplanarity])
+        saved_LIBS="$LIBS"
+        LIBS="$LIBS -lplanarity"
         AC_LANG_PUSH([C])
-        AC_CHECK_LIB([planarity], 
-                     [gp_InitGraph], 
-                     [],
-                     [AC_MSG_ERROR([no external libplanarity found])])
-
-        AC_CHECK_HEADER([planarity/graph.h], 
-                        [], 
-                        [AC_MSG_ERROR([no external planarity headers found])])
+        AC_LINK_IFELSE([AC_LANG_SOURCE([
+          #include <planarity/c/graphLib/graphLib.h>
+          #if defined(GP_PROJECTVERSION_MAJOR) && GP_PROJECTVERSION_MAJOR >= 4
+          #else
+          #error too old
+          #endif
+          int main(void) { gp_InitGraph(0, 0); }
+        ])], [
+          AC_MSG_RESULT([yes])
+        ], [
+          AC_MSG_RESULT([not found or too old])
+          LIBS="$saved_LIBS"
+          with_external_planarity=no
+        ])
         AC_LANG_POP()
-  fi
-  if test "x$with_external_planarity" = xno ; then
+  ])
+  AS_IF([test "x$with_external_planarity" = xno], [
     WITH_INCLUDED_PLANARITY=yes
     AC_SUBST(WITH_INCLUDED_PLANARITY)
     AC_DEFINE([WITH_INCLUDED_PLANARITY], 
               [1], 
               [define that we should use the vendored planarity])
-  fi
+  ])
 ])
