@@ -34,14 +34,14 @@
 #endif
 #ifdef DIGRAPHS_WITH_INCLUDED_PLANARITY
 #include "c/graph.h"
-#include "c/graphK23Search.h"
-#include "c/graphK33Search.h"
-#include "c/graphK4Search.h"
+#include "c/graphLib/homeomorphSearch/graphK23Search.h"
+#include "c/graphLib/homeomorphSearch/graphK33Search.h"
+#include "c/graphLib/homeomorphSearch/graphK4Search.h"
 #else
 #include "planarity/graph.h"
-#include "planarity/graphK23Search.h"
-#include "planarity/graphK33Search.h"
-#include "planarity/graphK4Search.h"
+#include "planarity/c/graphLib/homeomorphSearch/graphK23Search.h"
+#include "planarity/c/graphLib/homeomorphSearch/graphK33Search.h"
+#include "planarity/c/graphLib/homeomorphSearch/graphK4Search.h"
 #endif
 #if defined(__clang__)
 #pragma clang diagnostic pop
