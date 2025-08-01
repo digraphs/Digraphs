@@ -14,6 +14,24 @@ gap> LoadPackage("digraphs", false);;
 #
 gap> DIGRAPHS_StartTest();
 
+#  DigraphIsKing: for a digraph, a node and a positive integer
+gap> gr := Digraph([[2], [3, 4], [1, 4], [1]]);
+<immutable digraph with 4 vertices, 6 edges>
+gap> IsTournament(gr);
+true
+gap> DigraphIsKing(gr, 2, 2);
+true
+gap> DigraphIsKing(gr, 4, 2);
+false
+gap> DigraphIsKing(gr, 4, 3);
+true
+gap> DigraphIsKing(gr, 5, 2);
+Error, the 2nd argument <v> is not a vertex of the 1st argument <D>,
+gap> gr := Digraph([[], [3, 4], [1, 4], [1]]);
+<immutable digraph with 4 vertices, 5 edges>
+gap> DigraphIsKing(gr, 2, 2);
+Error, the 1st argument <D> must be a tournament,
+
 #  DigraphRemoveLoops
 gap> gr := DigraphFromDigraph6String("&EhxPC?@");
 <immutable digraph with 6 vertices, 11 edges>

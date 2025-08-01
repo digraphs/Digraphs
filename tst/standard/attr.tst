@@ -14,6 +14,22 @@ gap> LoadPackage("digraphs", false);;
 #
 gap> DIGRAPHS_StartTest();
 
+# DigraphKings: for a digraph
+gap> gr := Digraph([[2], [3, 4], [1, 4], [1]]);
+<immutable digraph with 4 vertices, 6 edges>
+gap> DigraphKings(gr, 2);
+[ 1, 2, 3 ]
+gap> gr := Digraph([[], [3, 4], [1, 4], [1]]);
+<immutable digraph with 4 vertices, 5 edges>
+gap> DigraphKings(gr, 2);
+Error, the 1st argument <D> must be a tournament,
+gap> gr := RandomTournament(10);
+<immutable tournament with 10 vertices>
+gap> Length(DigraphKings(gr, 2)) >= 1;
+true
+gap> Length(DigraphKings(gr, 2)) <> 2;
+true
+
 #  DigraphSource and DigraphRange
 gap> nbs := [[12, 22, 17, 1, 10, 11], [23, 21, 21, 16],
 >  [15, 5, 22, 11, 12, 8, 10, 1], [21, 15, 23, 5, 23, 8, 24],
