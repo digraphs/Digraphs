@@ -43,7 +43,7 @@ jobs:
             pkgs-to-build: io orb datastructures grape NautyTracesInterface autodoc
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Output g++ version . . .
         run: g++ --version
       - name: Install GAP and clone/compile necessary packages . . .
