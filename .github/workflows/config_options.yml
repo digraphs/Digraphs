@@ -36,7 +36,7 @@ jobs:
       run:
         shell: bash -l {0}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Output g++ version . . .
         run: g++ --version
       - name: Install micromamba environment from environment.yml . . .
@@ -87,7 +87,7 @@ jobs:
             without-intrinsics: ""
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Output g++ version . . .
         run: g++ --version
       - name: Install GAP and clone/compile necessary packages . . .
