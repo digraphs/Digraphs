@@ -26,6 +26,7 @@
 #include "homos.h"            // for FuncHomomorphismDigraphsFinder
 #include "planar.h"           // for FUNC_IS_PLANAR, . . .
 #include "safemalloc.h"       // for safe_malloc
+#include "dfs.h"              // for generic DFS
 
 #undef PACKAGE
 #undef PACKAGE_BUGREPORT
@@ -2223,6 +2224,10 @@ static StructGVarFunc GVarFuncs[] = {
     GVAR_FUNC(SUBGRAPH_HOMEOMORPHIC_TO_K4, 1, "digraph"),
     GVAR_FUNC(DIGRAPHS_FREE_HOMOS_DATA, 0, ""),
     GVAR_FUNC(DIGRAPHS_FREE_CLIQUES_DATA, 0, ""),
+    GVAR_FUNC(ExecuteDFS_C,
+              -1,
+              "record, data, start, PreOrderFunc, PostOrderFunc, "
+              "AncestorFunc, CrossFunc"),
 
     {0, 0, 0, 0, 0} /* Finish with an empty entry */
 };
@@ -2256,6 +2261,7 @@ static Int InitKernel(StructInitInfo* module) {
   ImportGVarFromLibrary("Group", &Group);
   ImportGVarFromLibrary("ClosureGroup", &ClosureGroup);
   ImportGVarFromLibrary("InfoWarning", &InfoWarning);
+
   /* return success                                                      */
   return 0;
 }
