@@ -54,6 +54,7 @@ digraphs-config.h
 digraphs-lib
 doc/_*.xml
 doc/main.xml
+doc/title.xml
 gen/
 gh-pages/
 main.xml
