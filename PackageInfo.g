@@ -534,6 +534,10 @@ AutoDoc := rec(
           We would like to thank Christopher Jefferson for his help in including
           &BLISS; in &Digraphs;.
 
+          We also gratefully acknowledge the encouragement and assistance of
+          Leonard Soicher, and the inspiration of his &GRAPE; package, at many
+          points throughout the development of &Digraphs;.
+
           This package's methods for computing digraph homomorphisms are based
           on work by Max Neunh&#246;ffer, and independently Artur Sch&#228;fer.
         """)),
