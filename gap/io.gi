@@ -1237,9 +1237,8 @@ function(s)
 
     # digraph definition line
     if first_char = 'p' then
-      if IsBound(vertices) or Length(split) <> 4 or split[2] <> "edge" then
-        ErrorNoReturn("the format of the string <s>",
-                             " cannot be determined");
+      if IsBound(vertices) or Length(split) <> 4 or split[2] <> "edges" then
+        ErrorNoReturn("the format of the string <s> cannot be determined");
       fi;
       nr_vertices     := int_from_string(split[3]);
       vertices        := [1 .. nr_vertices];

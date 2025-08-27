@@ -453,9 +453,10 @@ PackageDoc := rec(
 ),
 
 Dependencies := rec(
-  GAP := ">=4.10.0",
+  GAP := ">=4.11.0",
   NeededOtherPackages := [["io", ">=4.5.1"],
                           ["orb", ">=4.8.2"],
+                          ["graphviz", ">=0.0.0"],
                           ["datastructures", ">=0.2.5"]],
   SuggestedOtherPackages := [["GAPDoc", ">=1.6.3"],
                              ["grape", ">=4.8.1"],
