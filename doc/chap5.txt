@@ -1698,15 +1698,15 @@
     [4X[28X[  ][128X[104X
     [4X[25Xgap>[125X [27XD := Digraph([[2, 7], [3, 5], [4], [2], [6], [1], []]);;[127X[104X
     [4X[25Xgap>[125X [27XArticulationPoints(D);[127X[104X
-    [4X[28X[ 2, 1 ][128X[104X
+    [4X[28X[ 1, 2 ][128X[104X
     [4X[25Xgap>[125X [27XArticulationPoints(ChainDigraph(5));[127X[104X
-    [4X[28X[ 4, 3, 2 ][128X[104X
+    [4X[28X[ 2, 3, 4 ][128X[104X
     [4X[25Xgap>[125X [27XArticulationPoints(NullDigraph(5));[127X[104X
     [4X[28X[  ][128X[104X
     [4X[25Xgap>[125X [27XD := ChainDigraph(IsMutableDigraph, 4);[127X[104X
     [4X[28X<mutable digraph with 4 vertices, 3 edges>[128X[104X
     [4X[25Xgap>[125X [27XArticulationPoints(D);[127X[104X
-    [4X[28X[ 3, 2 ][128X[104X
+    [4X[28X[ 2, 3 ][128X[104X
   [4X[32X[104X
   
   [1X5.4-15 Bridges[101X
@@ -3147,14 +3147,18 @@
   [33X[1;0Y[29X[2XDualPlanarGraph[102X( [3Xdigraph[103X ) [32X attribute[133X
   [6XReturns:[106X  [33X[0;10YA digraph or [9Xfail[109X.[133X
   
-  [33X[0;0YIf  [3Xdigraph[103X  is  a planar digraph, then [13XDualPlanarGraph[113X returns the the dual
-  graph of [3Xdigraph[103X. If [3Xdigraph[103X is not planar, then fail is returned.[133X
+  [33X[0;0YIf  [3Xdigraph[103X  is  a planar digraph, then [2XDualPlanarGraph[102X returns the the dual
+  graph of [3Xdigraph[103X. If [3Xdigraph[103X is not planar, then [9Xfail[109X is returned.[133X
   
   [33X[0;0YThe  dual  graph  of  a planar digraph [3Xdigraph[103X has a vertex for each face of
   [3Xdigraph[103X  and  an  edge  for each pair of faces that are separated by an edge
   from  each  other. Vertex [3Xi[103X of the dual graph corresponds to the facial walk
-  at the [3Xi[103X-th position calling [13XFacialWalks[113X of [3Xdigraph[103X with the rotation system
-  returned by [13XPlanarEmbedding[113X.[133X
+  at  the  [3Xi[103X-th  position  calling  [2XFacialWalks[102X  ([14X5.4-34[114X)  of [3Xdigraph[103X with the
+  rotation system returned by [2XPlanarEmbedding[102X ([14X5.7-3[114X).[133X
+  
+  [33X[0;0YNote  that  [2XPlanarEmbedding[102X ([14X5.7-3[114X), and therefore [2XDualPlanarGraph[102X, uses the
+  reference  implementation  in [5Xedge-addition-planarity-suite[105X by John Boyer of
+  the algorithms described in [BM06].[133X
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27XD := CompleteDigraph(4);;[127X[104X

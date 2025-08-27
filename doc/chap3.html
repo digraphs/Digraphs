@@ -15,7 +15,7 @@
 <body class="chap3"  onload="jscontent()">
 
 
-<div class="chlinktop"><span class="chlink1">Goto Chapter: </span><a href="chap0.html">Top</a>  <a href="chap1.html">1</a>  <a href="chap2.html">2</a>  <a href="chap3.html">3</a>  <a href="chap4.html">4</a>  <a href="chap5.html">5</a>  <a href="chap6.html">6</a>  <a href="chap7.html">7</a>  <a href="chap8.html">8</a>  <a href="chap9.html">9</a>  <a href="chapA.html">A</a>  <a href="chapBib.html">Bib</a>  <a href="chapInd.html">Ind</a>  </div>
+<div class="chlinktop"><span class="chlink1">Goto Chapter: </span><a href="chap0.html">Top</a>  <a href="chap1.html">1</a>  <a href="chap2.html">2</a>  <a href="chap3.html">3</a>  <a href="chap4.html">4</a>  <a href="chap5.html">5</a>  <a href="chap6.html">6</a>  <a href="chap7.html">7</a>  <a href="chap8.html">8</a>  <a href="chap9.html">9</a>  <a href="chapA.html">A</a>  <a href="chapB.html">B</a>  <a href="chapBib.html">Bib</a>  <a href="chapInd.html">Ind</a>  </div>
 
 <div class="chlinkprevnexttop">&nbsp;<a href="chap0.html">[Top of Book]</a>&nbsp;  <a href="chap0.html#contents">[Contents]</a>&nbsp;  &nbsp;<a href="chap2.html">[Previous Chapter]</a>&nbsp;  &nbsp;<a href="chap4.html">[Next Chapter]</a>&nbsp;  </div>
 
@@ -295,7 +295,7 @@
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">Digraph("Diamond");</span>
 &lt;immutable digraph with 4 vertices, 10 edges&gt;</pre></div>
 
-<p>The next example illustrates the uses of the fourth and fifth variants of this constructor. The resulting digraph is a strongly regular graph, and it is actually the point graph of the van Lint-Schrijver partial geometry, <a href="chapBib.html#biBvLS81">[vLS81]</a>. The algebraic description is taken from the seminal paper of Calderbank and Kantor <a href="chapBib.html#biBCK86">[CK86]</a>.</p>
+<p>The next example illustrates the uses of the fourth and fifth variants of this constructor. The resulting digraph is a strongly regular graph, and it is actually the point graph of the van Lint-Schrijver partial geometry, <a href="chapBib.html#biBvLS81">[vS81]</a>. The algebraic description is taken from the seminal paper of Calderbank and Kantor <a href="chapBib.html#biBCK86">[CK86]</a>.</p>
 
 
 <div class="example"><pre>
@@ -2419,7 +2419,7 @@ true</pre></div>
 
 <p>From <span class="URL"><a href="https://mathworld.wolfram.com/BananaTree.html">https://mathworld.wolfram.com/BananaTree.html</a></span>:</p>
 
-<p>"An <code class="code">(<var class="Arg">n</var>,<var class="Arg">k</var>)</code>-banana tree, as defined by Chen et al. (1997), is a graph obtained by connecting one leaf of each of <var class="Arg">n</var> copies of an <var class="Arg">k</var>-star graph with a single root vertex that is distinct from all the stars."</p>
+<p><q>An <code class="code">(<var class="Arg">n</var>,<var class="Arg">k</var>)</code>-banana tree, as defined by Chen et al. (1997), is a graph obtained by connecting one leaf of each of <var class="Arg">n</var> copies of an <var class="Arg">k</var>-star graph with a single root vertex that is distinct from all the stars.</q></p>
 
 <p>Specifically, in the resulting digraph, vertex <code class="code">1</code> is the 'root', and for each <code class="code">m</code> in <code class="code">[1 .. <var class="Arg">k</var>]</code>, the <code class="code">m</code>th star is on the vertices <code class="code">[((m - 1) * n) + 2 .. (m * n) + 1]</code>, with the first of these being the 'centre' of the star, and the second being the 'leaf' adjacent <code class="code">1</code>.</p>
 
@@ -3220,7 +3220,7 @@ dges&gt;
 
 <p>From <span class="URL"><a href="https://en.wikipedia.org/wiki/Petersen_graph">https://en.wikipedia.org/wiki/Petersen_graph</a></span>:</p>
 
-<p>"The Petersen graph is an undirected graph with 10 vertices and 15 edges. It is a small graph that serves as a useful example and counterexample for many problems in graph theory. The Petersen graph is named after Julius Petersen, who in 1898 constructed it to be the smallest bridgeless cubic graph with no three-edge-coloring."</p>
+<p><q>The Petersen graph is an undirected graph with 10 vertices and 15 edges. It is a small graph that serves as a useful example and counterexample for many problems in graph theory. The Petersen graph is named after Julius Petersen, who in 1898 constructed it to be the smallest bridgeless cubic graph with no three-edge-coloring.</q></p>
 
 <p>See also <code class="func">GeneralisedPetersenGraph</code> (<a href="chap3.html#X7B5441F386BD105E"><span class="RefLink">3.5-36</span></a>).</p>
 
@@ -3245,7 +3245,7 @@ dges&gt;
 
 <p>From <span class="URL"><a href="https://en.wikipedia.org/wiki/Generalized_Petersen_graph">https://en.wikipedia.org/wiki/Generalized_Petersen_graph</a></span>:</p>
 
-<p>"The generalized Petersen graphs are a family of cubic graphs formed by connecting the vertices of a regular polygon to the corresponding vertices of a star polygon. They include the Petersen graph and generalize one of the ways of constructing the Petersen graph. The generalized Petersen graph family was introduced in 1950 by H. S. M. Coxeter and was given its name in 1969 by Mark Watkins."</p>
+<p><q>The generalized Petersen graphs are a family of cubic graphs formed by connecting the vertices of a regular polygon to the corresponding vertices of a star polygon. They include the Petersen graph and generalize one of the ways of constructing the Petersen graph. The generalized Petersen graph family was introduced in 1950 by H. S. M. Coxeter and was given its name in 1969 by Mark Watkins.</q></p>
 
 <p>See also <code class="func">PetersenGraph</code> (<a href="chap3.html#X823F43217A6C375D"><span class="RefLink">3.5-35</span></a>).</p>
 
@@ -3551,9 +3551,9 @@ true</pre></div>
 <div class="chlinkprevnextbot">&nbsp;<a href="chap0.html">[Top of Book]</a>&nbsp;  <a href="chap0.html#contents">[Contents]</a>&nbsp;  &nbsp;<a href="chap2.html">[Previous Chapter]</a>&nbsp;  &nbsp;<a href="chap4.html">[Next Chapter]</a>&nbsp;  </div>
 
 
-<div class="chlinkbot"><span class="chlink1">Goto Chapter: </span><a href="chap0.html">Top</a>  <a href="chap1.html">1</a>  <a href="chap2.html">2</a>  <a href="chap3.html">3</a>  <a href="chap4.html">4</a>  <a href="chap5.html">5</a>  <a href="chap6.html">6</a>  <a href="chap7.html">7</a>  <a href="chap8.html">8</a>  <a href="chap9.html">9</a>  <a href="chapA.html">A</a>  <a href="chapBib.html">Bib</a>  <a href="chapInd.html">Ind</a>  </div>
+<div class="chlinkbot"><span class="chlink1">Goto Chapter: </span><a href="chap0.html">Top</a>  <a href="chap1.html">1</a>  <a href="chap2.html">2</a>  <a href="chap3.html">3</a>  <a href="chap4.html">4</a>  <a href="chap5.html">5</a>  <a href="chap6.html">6</a>  <a href="chap7.html">7</a>  <a href="chap8.html">8</a>  <a href="chap9.html">9</a>  <a href="chapA.html">A</a>  <a href="chapB.html">B</a>  <a href="chapBib.html">Bib</a>  <a href="chapInd.html">Ind</a>  </div>
 
 <hr />
-<p class="foot">generated by <a href="http://www.math.rwth-aachen.de/~Frank.Luebeck/GAPDoc">GAPDoc2HTML</a></p>
+<p class="foot">generated by <a href="https://www.math.rwth-aachen.de/~Frank.Luebeck/GAPDoc">GAPDoc2HTML</a></p>
 </body>
 </html>

@@ -7,8 +7,8 @@
   3 (2004), 241--273.
   
   [[20XBM06[120X] [16XBoyer, J. M. and Myrvold, W. J.[116X, [17XOn the Cutting Edge: Simplified O(n)
-  Planarity  by Edge Addition[117X, in Graph Algorithms and Applications 5, {WORLD}
-  {SCIENTIFIC} (2006), 241--273.
+  Planarity  by  Edge  Addition[117X, in Graph Algorithms and Applications 5, World
+  Scientific (2006), 241--273.
   
   [[20XBoy06[120X]  [16XBoyer, J. M.[116X ([1m[31mHealy, P. and Nikolov, N. S.[15X, Eds.), [17XA New Method for
   Efficiently  Generating  Planar  Graph  Visibility Representations[117X, in Graph
@@ -48,7 +48,7 @@
   Chordless  Cycles  and  Chordless  Paths[117X,  in  Discovery  Science,  Springer
   International Publishing (2014), 313--324.
   
-  [[20XvLS81[120X]  [16Xvan Lint, J. H. and Schrijver, A.[116X, [17XConstruction of strongly regular
+  [[20XvS81[120X]  [16Xvan  Lint, J. H. and Schrijver, A.[116X, [17XConstruction of strongly regular
   graphs,   two-weight   codes   and  partial  geometries  by  finite  fields[117X,
   [18XCombinatorica[118X, [19X1[119X, 1 (1981), 63--73.
   

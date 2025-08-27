@@ -38,8 +38,8 @@ fi;
 SetPackageInfo(rec(
 PackageName := "Digraphs",
 Subtitle := "Graphs, digraphs, and multidigraphs in GAP",
-Version := "1.10.0",
-Date := "14/02/2025",  # dd/mm/yyyy format
+Version := "1.10.1",
+Date := "27/08/2025",  # dd/mm/yyyy format
 License := "GPL-3.0-or-later",
 ArchiveFormats := ".tar.gz",
 
@@ -533,6 +533,10 @@ AutoDoc := rec(
         Acknowledgements := """
           We would like to thank Christopher Jefferson for his help in including
           &BLISS; in &Digraphs;.
+
+          We also gratefully acknowledge the encouragement and assistance of
+          Leonard Soicher, and the inspiration of his &GRAPE; package, at many
+          points throughout the development of &Digraphs;.
 
           This package's methods for computing digraph homomorphisms are based
           on work by Max Neunh&#246;ffer, and independently Artur Sch&#228;fer.

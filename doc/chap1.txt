@@ -4,7 +4,7 @@
   
   [1X1.1 [33X[0;0YIntroduction[133X[101X
   
-  [33X[0;0YThis  is the manual for version 1.10.0 of the [5XDigraphs[105X package. This package
+  [33X[0;0YThis  is the manual for version 1.10.1 of the [5XDigraphs[105X package. This package
   was developed at the University of St Andrews by:[133X
   
   [30X    [33X[0;6YJan De Beule,[133X
@@ -19,42 +19,12 @@
   
   [30X    [33X[0;6YMichael C. Young.[133X
   
-  [33X[0;0YAdditional contributions were made by:[133X
-  
-  [30X    [33X[0;6YMarina Anagnostopoulou-Merkouri,[133X
-  
-  [30X    [33X[0;6YFinn Buck,[133X
-  
-  [30X    [33X[0;6YStuart Burrell,[133X
-  
-  [30X    [33X[0;6YReinis Cirpons,[133X
-  
-  [30X    [33X[0;6YTom Conti-Leslie,[133X
-  
-  [30X    [33X[0;6YLuke Elliott,[133X
-  
-  [30X    [33X[0;6YEwan Gilligan,[133X
-  
-  [30X    [33X[0;6YMax Horn,[133X
-  
-  [30X    [33X[0;6YChristopher Jefferson,[133X
-  
-  [30X    [33X[0;6YMarkus Pfeiffer,[133X
-  
-  [30X    [33X[0;6YLea Racine,[133X
-  
-  [30X    [33X[0;6YChristopher Russell,[133X
-  
-  [30X    [33X[0;6YFinn Smith,[133X
-  
-  [30X    [33X[0;6YBen Spiers, and[133X
-  
-  [30X    [33X[0;6YMurray Whyte.[133X
-  
-  [33X[0;0YThe  [5XDigraphs[105X package contains a variety of methods for efficiently creating
-  and  storing  mutable and immutable digraphs and computing information about
-  them.  Full  explanations  of all the functions contained in the package are
-  provided below.[133X
+  [33X[0;0YAdditional contributions were made by many people, for which the authors are
+  very  grateful.  A  full  list  can be found on the title page. The [5XDigraphs[105X
+  package  contains  a variety of methods for efficiently creating and storing
+  mutable  and  immutable  digraphs and computing information about them. Full
+  explanations  of  all  the  functions  contained in the package are provided
+  below.[133X
   
   [33X[0;0YIf the [5XGRAPE[105X package is available, it will be loaded automatically. Digraphs
   created  with  the  [5XDigraphs[105X  package  can be converted to [5XGRAPE[105X graphs with

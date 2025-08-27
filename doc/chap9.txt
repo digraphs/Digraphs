@@ -1182,9 +1182,7 @@
         specified  for  a vertex, then [10XReadDIMACSDigraph[110X will assign the label
         [10X1[110X, according to the DIMACS specification.[133X
   
-  [33X[0;0YA   detailed   definition   of   the   DIMACS   format   can   be  found  at
-  [7Xhttp://mat.gsia.cmu.edu/COLOR/general/ccformat.ps[107X, in Section 2.1. Note that
-  optional descriptor lines, as described in Section 2.1, will be ignored.[133X
+  [33X[0;0YA detailed definition of the DIMACS format can be found in [14XB[114X [14XB[114X.[133X
   
   [4X[32X  Example  [32X[104X
     [4X[25Xgap>[125X [27Xgr := Digraph([[2], [1, 3, 4], [2, 4], [2, 3]]);[127X[104X

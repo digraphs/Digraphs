@@ -6,10 +6,10 @@
                   [1X Graphs, digraphs, and multidigraphs in [5XGAP[105X [101X
   
   
-                                     1.10.0
+                                     1.10.1
   
   
-                                14 February 2025
+                                 27 August 2025
   
   
                                   Jan De Beule
@@ -284,8 +284,11 @@
   -------------------------------------------------------
   [1XAcknowledgements[101X
   [33X[0;0YWe would like to thank Christopher Jefferson for his help in including [5Xbliss[105X
-  in  [5XDigraphs[105X. This package's methods for computing digraph homomorphisms are
-  based on work by Max Neunhöffer, and independently Artur Schäfer.[133X
+  in [5XDigraphs[105X. We also gratefully acknowledge the encouragement and assistance
+  of Leonard Soicher, and the inspiration of his [5XGRAPE[105X package, at many points
+  throughout the development of [5XDigraphs[105X. This package's methods for computing
+  digraph homomorphisms are based on work by Max Neunhöffer, and independently
+  Artur Schäfer.[133X
   
   
   -------------------------------------------------------
@@ -691,6 +694,13 @@
     A.5 [33X[0;0YFunctions to construct new graphs from old[133X
     A.6 [33X[0;0YVertex-Colouring and Complete Subgraphs[133X
     A.7 [33X[0;0YAutomorphism groups and isomorphism testing for graphs[133X
+  B [33X[0;0YDIMACS: Graph Format for Clique and Coloring Problems[133X
+    B.1 [33X[0;0YNote from the Digraphs authors[133X
+    B.2 [33X[0;0YPreamble[133X
+    B.3 [33X[0;0YIntroduction[133X
+    B.4 [33X[0;0YFile Formats for Graph Problems[133X
+      B.4-1 [33X[0;0YInput Files[133X
+      B.4-2 [33X[0;0YOutput Files[133X
   
   
   [32X

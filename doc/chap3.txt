@@ -178,7 +178,7 @@
   [33X[0;0YThe  next  example  illustrates the uses of the fourth and fifth variants of
   this  constructor. The resulting digraph is a strongly regular graph, and it
   is  actually  the  point  graph  of the van Lint-Schrijver partial geometry,
-  [vLS81].  The  algebraic  description  is  taken  from  the seminal paper of
+  [vS81].  The  algebraic  description  is  taken  from  the  seminal paper of
   Calderbank and Kantor [CK86].[133X
   
   [4X[32X  Example  [32X[104X

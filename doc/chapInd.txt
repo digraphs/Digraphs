@@ -200,7 +200,7 @@
   [2XDigraphReverseEdge[102X, for a digraph and an edge 3.3-28 
       for a digraph, source, and range 3.3-28 
   [2XDigraphReverseEdges[102X, for a digraph and a list of edges 3.3-28 
-  [5XDigraphs[105X package overview 1. 
+  [5XDigraphs[105X package overview 1.0 
   [2XDigraphSchreierVector[102X 7.2-13 
   [2XDigraphShortestDistance[102X, for a digraph and a list 5.4-2 
       for a digraph and two vertices 5.4-2 
@@ -301,8 +301,8 @@
   [2XInNeighboursMutableCopy[102X 5.2-7 
   [2XInNeighboursOfVertex[102X 5.2-13 
   [2XIsAcyclicDigraph[102X 6.6-1 
-  [2XIsAntisymmetricDigraph[102X 6.2-2 
   [2XIsAntiSymmetricDigraph[102X 6.2-2 
+  [2XIsAntisymmetricDigraph[102X 6.2-2 
   [2XIsAperiodicDigraph[102X 6.6-7 
   [2XIsBiconnectedDigraph[102X 6.6-4 
   [2XIsBipartiteDigraph[102X 6.2-3 
@@ -498,6 +498,7 @@
   [2XSubdigraphHomeomorphicToK4[102X 5.7-5 
   [2XSubdigraphsMonomorphisms[102X 7.3-12 
   [2XSubdigraphsMonomorphismsRepresentatives[102X 7.3-12 
+  subgraph isomorphism 7.3-8  7.3-11 
   [2XTadpoleGraph[102X 3.5-44 
   [2XTCodeDecoder[102X 9.2-11 
   [2XTournamentLineDecoder[102X 9.2-9 

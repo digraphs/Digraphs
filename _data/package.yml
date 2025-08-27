@@ -1,6 +1,6 @@
 name: Digraphs
-version: 1.10.0
-date: 2025-02-14
+version: 1.10.1
+date: 2025-08-27
 description: |
     Graphs, digraphs, and multidigraphs in GAP
 
@@ -112,7 +112,7 @@ needed-pkgs:
 suggested-pkgs:
     - name: "GAPDoc"
       version: ">=1.6.3"
-      url: "http://www.math.rwth-aachen.de/~Frank.Luebeck/GAPDoc"
+      url: "https://www.math.rwth-aachen.de/~Frank.Luebeck/GAPDoc"
     - name: "grape"
       version: ">=4.8.1"
       url: "https://gap-packages.github.io/grape"
@@ -129,7 +129,7 @@ packageinfo: https://digraphs.github.io/Digraphs/PackageInfo.g
 
 downloads:
     - name: .tar.gz
-      url: https://github.com/digraphs/Digraphs/releases/download/v1.10.0/digraphs-1.10.0.tar.gz
+      url: https://github.com/digraphs/Digraphs/releases/download/v1.10.1/digraphs-1.10.1.tar.gz
 
 abstract: |
     The &Digraphs; package is a &GAP; package containing

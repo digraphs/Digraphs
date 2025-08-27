@@ -1,0 +1,250 @@
+  
+  [1XB [33X[0;0YDIMACS: Graph Format for Clique and Coloring Problems[133X[101X
+  
+  
+  [1XB.1 [33X[0;0YNote from the Digraphs authors[133X[101X
+  
+  [33X[0;0YThe contents of this appendix were originally available in a PostScript file
+  on        the        Carnegie        Mellon        University        website
+  ([7Xhttp://mat.gsia.cmu.edu/COLOR/general/ccformat.ps[107X).   This  file  is  still
+  accessible           through           the          Wayback          Machine
+  ([7Xhttps://web.archive.org/web/20220120085844/http://mat.gsia.cmu.edu/COLOR/general/ccformat.ps[107X).
+  We  reproduce  its contents here for convenience, without adjustments beyond
+  minor re-formatting.[133X
+  
+  
+  [1XB.2 [33X[0;0YPreamble[133X[101X
+  
+  [33X[0;0Y[12XLast revision of this document: May 08, 1993.[112X[133X
+  
+  [33X[0;0Y[13X  This paper outlines a suggested graph format. If you have comments on this
+  or  other  formats  or  you  have  information you think should be included,
+  please send a note to [113X [7Xmailto:challenge@dimacs.rutgers.edu[107X.[133X
+  
+  
+  [1XB.3 [33X[0;0YIntroduction[133X[101X
+  
+  [33X[0;0YOne  purpose  of the DIMACS Challenge is to ease the effort required to test
+  and  compare  algorithms  and  heuristics  by  providing a common testbed of
+  instances  and  analysis tools. To facilitate this effort, a standard format
+  must  be  chosen for the problems addressed. This document outlines a format
+  for  graphs that is suitable for those looking at graph coloring and finding
+  cliques  in graphs. This format is a flexible format suitable for many types
+  of  graph  and  network problems. This format was also the format chosen for
+  the First Computational Challenge on network flows and matchings.[133X
+  
+  [33X[0;0YThis  document describes three problems: unweighted clique, weighted clique,
+  and graph coloring. A separate format is used for satisfiability.[133X
+  
+  
+  [1XB.4 [33X[0;0YFile Formats for Graph Problems[133X[101X
+  
+  [33X[0;0YThis  section describes a standard file format for graph inputs and outputs.
+  There  is  no  requirement  that  participants  follow these specifications;
+  however,  compatible implementations will be able to make full use of DIMACS
+  support  tools.  (Some  tools  assume  that output is appended to input in a
+  single  file.)  Participants  are welcome to develop translation programs to
+  convert   instances   to   and   from  more  convenient,  or  more  compact,
+  representations; the Unix [12Xawk[112X facility is recommended as especially suitable
+  for  this  task.  All files contain ASCII characters. Input and output files
+  contain  several  types of [13Xlines[113X, described below. A line is terminated with
+  an  end-of-line character. Fields in each line are separated by at least one
+  blank  space.  Each  line begins with a one-character designator to identify
+  the line type.[133X
+  
+  
+  [1XB.4-1 [33X[0;0YInput Files[133X[101X
+  
+  [33X[0;0YAn  input  file  contains all the information about a graph needed to define
+  either  a  clique  problem  or  a  coloring problem. Some information may be
+  included that is not relevant to one problem (for instance, node weights are
+  not needed for coloring problem) so that information may be ignored. In this
+  format,  nodes  are numbered from 1 up to [22Xn[122X. There are [22Xm[122X edges in the graph.
+  Files  are  assumed  to  be  well-formed  and  internally  consistent:  node
+  identifier values are valid, nodes are defined uniquely, exactly [22Xm[122X edges are
+  defined,  and  so  forth.  A  input checker will be made available to ensure
+  compatibility with this standard.[133X
+  
+  [8XComments[108X
+        [33X[0;6YComment  lines  give human-readable information about the file and are
+        ignored  by  programs.  Comment lines can appear anywhere in the file.
+        Each comment line begins with a lowercase character [12Xc[112X.[133X
+  
+  [4X      [32X  Example  [32X[104X
+          [4X[28Xc This is an example of a comment line.[128X[104X
+        [4X[32X[104X
+  
+  [8X Problem line [108X
+        [33X[0;6YThere is one problem line per input file. The problem line must appear
+        before  any  node  or arc descriptor lines. For network instances, the
+        problem line has the following format.[133X
+  
+  [4X      [32X  Example  [32X[104X
+          [4X[28Xp FORMAT NODES EDGES[128X[104X
+        [4X[32X[104X
+  
+        [33X[0;6YThe lowercase character [10Xp[110X signifies that this is the problem line. The
+        [10XFORMAT[110X  field  is  for  consistency  with  the previous Challenge, and
+        should  contain  the  word  [22Xedge[122X.  The [10XNODES[110X field contains an integer
+        value  specifying [22Xn[122X, the number of nodes in the graph. The [10XEDGES[110X field
+        contains  an  integer  value  specifying [22Xm[122X, the number of edges in the
+        graph.[133X
+  
+  [8XNode Descriptors[108X
+        [33X[0;6YFor  this  Challenge,  a  node  descriptor  is  required  only for the
+        weighted  clique problem. These lines will give the weight assigned to
+        a node in the clique. There is one node descriptor line for each node,
+        with  the  following format. Nodes without a descriptor will take on a
+        default value of 1.[133X
+  
+  [4X      [32X  Example  [32X[104X
+          [4X[28Xn ID VALUE[128X[104X
+        [4X[32X[104X
+  
+        [33X[0;6YThe  lowercase  character  [10Xn[110X  signifies that this is a node descriptor
+        line.  The  [10XID[110X  field  gives  a node identification number, an integer
+        between  1  and [22Xn[122X. The [10XVALUE[110X gives the objective value for having this
+        node  in  the  clique.  This value is assumed to be integer and can be
+        either positive or negative (or zero).[133X
+  
+  [8XEdge Descriptors[108X
+        [33X[0;6YThere  is  one edge descriptor line for each edge the graph, each with
+        the  following  format.  Each  edge  [22X(v,w)[122X appears exactly once in the
+        input file and is not repeated as [22X(w,v)[122X.[133X
+  
+  [4X      [32X  Example  [32X[104X
+          [4X[28Xe W  V[128X[104X
+        [4X[32X[104X
+  
+        [33X[0;6YThe  lowercase  character  [10Xe[110X signifies that this is an edge descriptor
+        line. For an edge [22X(w,v)[122X the fields [10XW[110X and [10XV[110X specify its endpoints.[133X
+  
+  [8XOptional Descriptors[108X
+        [33X[0;6YIn  addition  to  the  required  information,  there can be additional
+        pieces  of  information  about a graph. This will typically define the
+        parameters   used   to   generate   the   graph  or  otherwise  define
+        generator-specific  information. The following list may be added to as
+        interesting problem generators are decided on:[133X
+  
+        [8XGeometric Descriptors[108X
+              [33X[0;12YOne  common  method to generate or display graphs is to have the
+              nodes  be  embedded  in  some  space  and  to  have the edges be
+              included  according  to  some  function  of the distance between
+              nodes  according  to  some  metric.  The node information can be
+              defined  by  a  dimension  descriptor  and  a  vertex  embedding
+              descriptor.[133X
+  
+  [4X            [32X  Example  [32X[104X
+                [4X[28Xd DIM METRIC[128X[104X
+              [4X[32X[104X
+  
+              [33X[0;12Yis the dimension descriptor. [10XDIM[110X is an integer giving the number
+              of   dimensions   of   the  space,  while  [10XMETRIC[110X  is  a  string
+              representing  the  metric for the space. [10XMETRIC[110X is a string that
+              can  take  a  number of forms. [12XLp[112X (i.e. [12XL1[112X, [12XL2[112X, [12XL122[112X, and so on)
+              denotes  the  [22Xℓ_p[122X  norm  where  the  distance  between two nodes
+              embedded  at [22X(x_1,x_2,...,x_d)[122X and [22X(y_1,y_2,... y_d)[122X is [22X(∑_i=1^d
+              |x_i-y_i|^p  )^1/p[122X.  The  string  [12XLINF[112X is used to denote the [22Xℓ_∞[122X
+              norm.  L2S denotes the squared euclidean norm (which can be less
+              susceptible  to  computer  differences in round-off and accuracy
+              issues).[133X
+  
+  [4X            [32X  Example  [32X[104X
+                [4X[28Xv  X1  X2  X3  ... XD[128X[104X
+              [4X[32X[104X
+  
+              [33X[0;12YThe  lowercase  character  [10Xv[110X  signifies  that  this  is a vertex
+              embedding descriptor line. The fields [10XX1, X2, ..., XD[110X give the [10Xd[110X
+              coordinate  values  for  the  vertex. Note that these lines must
+              appear after the [10Xd[110X descriptor.[133X
+  
+        [8XParameter Descriptors[108X
+              [33X[0;12YThe  parameter  descriptors  are  used to give other information
+              about   how   the   graph   was   generated.   The   lines   are
+              generator-specific,  and  as  such  it is not expected that most
+              codes  will use most (or any) of them. They are included only to
+              aid  those  codes  specifically  designed  to  attack  specially
+              structured   problems.   The   general  form  of  the  parameter
+              descriptor is:[133X
+  
+  [4X            [32X  Example  [32X[104X
+                [4X[28Xx PARAM VALUE[128X[104X
+              [4X[32X[104X
+  
+              [33X[0;12YThe  lowercase  character  [10Xx[110X  signifies that this is a parameter
+              descriptor line. The [10XPARAM[110X field is a string that gives the name
+              of  the parameter, while the [10XVALUE[110X field is a numeric value that
+              gives  the  corresponding value. The following [10XPARAM[110X values have
+              been defined:[133X
+  
+      ┌───────────┬─────────────────────────────────────────────────────────────┐
+      │ [10XPARAM[110X     │ Description (Geometric Graphs)                              │ 
+      ├───────────┼─────────────────────────────────────────────────────────────┤
+      ├───────────┼─────────────────────────────────────────────────────────────┤
+      │ [10XMINLENGTH[110X │ Edge included only if length greater than or equal to [10XVALUE[110X │ 
+      ├───────────┼─────────────────────────────────────────────────────────────┤
+      │ [10XMAXLENGTH[110X │ Edge included only if length less than or equal to [10XVALUE[110X    │ 
+      └───────────┴─────────────────────────────────────────────────────────────┘
+  
+              [33X[0;12YNote  that  this information is in addition to the required edge
+              descriptors.[133X
+  
+  
+  [1XB.4-2 [33X[0;0YOutput Files[133X[101X
+  
+  [33X[0;0YEvery  algorithm or heuristic should create an output file. This output file
+  should  consist of one or more of the following lines, depending on the type
+  of algorithm and problem being solved.[133X
+  
+  [8XSolution Line[108X
+        [33X[0;6YFormat:[133X
+  
+  [4X      [32X  Example  [32X[104X
+          [4X[28Xs TYPE SOLUTION[128X[104X
+        [4X[32X[104X
+  
+        [33X[0;6YThe  lowercase character [10Xs[110X signifies that this is a solution line. The
+        [10XTYPE[110X  field  denotes  the type of solution contained in the file. This
+        should  be one of the following strings: [22Xcol[122X denotes a graph coloring,
+        [22Xclq[122X  denotes  a  maximum  weighted  clique,  and [22Xcqu[122X denotes a maximum
+        unweighted  clique  (one that has ignored the [10Xn[110X descriptor lines). The
+        [10XSOLUTION[110X  field  contains  an  integer  corresponding  to the solution
+        value. This is the clique size for unweighted clique, clique value for
+        weighted clique, or number of colors used for graph coloring.[133X
+  
+  [8XBound Line[108X
+        [33X[0;6YFormat:[133X
+  
+  [4X      [32X  Example  [32X[104X
+          [4X[28Xb BOUND[128X[104X
+        [4X[32X[104X
+  
+        [33X[0;6YThe  lowercase  character  [10Xb[110X signifies that this is a bound on the the
+        solution. The [10XBOUND[110X field contains an integer value that gives a bound
+        on  the  solution  value.  This bound is an upper bound on the maximum
+        clique  value for cliques and weighted clique and a lower bound on the
+        number of colors needed for coloring the graph.[133X
+  
+  [8XClique Line[108X
+        [33X[0;6YFormat:[133X
+  
+  [4X      [32X  Example  [32X[104X
+          [4X[28Xv V[128X[104X
+        [4X[32X[104X
+  
+        [33X[0;6YThe lowercase character [10Xv[110X signifies that this is a clique vertex line.
+        The  [10XV[110X  field  gives the node number for the node in the clique. There
+        will be one clique line for each node in the clique.[133X
+  
+  [8XLabel Line[108X
+        [33X[0;6YFormat:[133X
+  
+  [4X      [32X  Example  [32X[104X
+          [4X[28Xl V N[128X[104X
+        [4X[32X[104X
+  
+        [33X[0;6YThe  lowercase  character  [10Xl[110X  signifies  that  this  is  a label line,
+        generally  used  for graph coloring. The [10XV[110X field gives the node number
+        for  the  node in the clique while the [10XN[110X field gives the corresponding
+        label. There will be one label line for each node in the graph.[133X
+  
