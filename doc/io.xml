@@ -684,10 +684,8 @@ gap> ReadPlainTextDigraph(filename, ",", 1, ['/', '%']);
       </Item>
     </List>
 
-    A detailed definition of the DIMACS format can be found at
-    <URL>http://mat.gsia.cmu.edu/COLOR/general/ccformat.ps</URL>, in Section
-    2.1. Note that optional descriptor lines, as described in Section 2.1, will
-    be ignored.
+    A detailed definition of the DIMACS format can be found in
+    <Ref Text="Appendix" Appendix="DIMACS"/> <Ref Appendix="DIMACS"/>.
     <P/>
 
 

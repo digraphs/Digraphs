@@ -4,6 +4,15 @@ Wilf A. Wilson, Michael Young et al.
 
 Licensing information can be found in the `LICENSE` file.
 
+## Version 1.10.1 (released 27/08/2025)
+
+## What's Changed
+* Fixed an bug in `ArticulationPoints` found by @wilfwilson
+https://github.com/digraphs/Digraphs/pull/779
+* Inclusion of an appendix to the manual that describes the DIMACS format
+https://github.com/digraphs/Digraphs/pull/775
+* Various other small technical adjustments
+
 ## Version 1.10.0 (released 14/02/2025)
 
 ## What's Changed
