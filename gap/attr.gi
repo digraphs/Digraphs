@@ -83,7 +83,7 @@ function(D)
       w := nbs[v][i];
 
       if v <> 1 and low[w] >= pre[v] then
-        Add(articulation_points, v);
+        AddSet(articulation_points, v);
       fi;
       if low[w] = pre[w] then
         Add(bridges, [v, w]);
@@ -127,7 +127,10 @@ function(D)
   if counter = DigraphNrVertices(D) then
     connected := true;
     if nr_children > 1 then
-      Add(articulation_points, 1);
+      # The `AddSet` is not really needed, and could just be `Add`, since 1
+      # should not already be in articulation_points. But let's use AddSet
+      # to get the output sorted.
+      AddSet(articulation_points, 1);
     fi;
     if not IsEmpty(bridges) then
       orientation := fail;
