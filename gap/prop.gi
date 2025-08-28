@@ -487,6 +487,11 @@ InstallMethod(IsDirectedTree, "for a digraph", [IsDigraph],
 {D} -> DigraphHasAVertex(D) and IsConnectedDigraph(D)
      and (IsEmptyDigraph(D) or InDegreeSet(D) = [0, 1]));
 
+InstallMethod(IsDirectedForest, "for a digraph", [IsDigraph],
+{D} -> DigraphHasAVertex(D) and
+    (IsEmptyDigraph(D) or ForAll(DigraphConnectedComponents(D).comps,
+                                 x -> Set(InDegrees(D){x}) = [0, 1])));
+
 InstallMethod(IsEulerianDigraph, "for a digraph", [IsDigraph],
 function(D)
   local i;
