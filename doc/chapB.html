@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<title>GAP (Digraphs) - Appendix B: 
+    DIMACS: Graph Format for Clique and Coloring Problems
+  </title>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<meta name="generator" content="GAPDoc2HTML" />
+<link rel="stylesheet" type="text/css" href="manual.css" />
+<script src="manual.js" type="text/javascript"></script>
+<script type="text/javascript">overwriteStyle();</script>
+</head>
+<body class="chapB"  onload="jscontent()">
+
+
+<div class="chlinktop"><span class="chlink1">Goto Chapter: </span><a href="chap0.html">Top</a>  <a href="chap1.html">1</a>  <a href="chap2.html">2</a>  <a href="chap3.html">3</a>  <a href="chap4.html">4</a>  <a href="chap5.html">5</a>  <a href="chap6.html">6</a>  <a href="chap7.html">7</a>  <a href="chap8.html">8</a>  <a href="chap9.html">9</a>  <a href="chapA.html">A</a>  <a href="chapB.html">B</a>  <a href="chapBib.html">Bib</a>  <a href="chapInd.html">Ind</a>  </div>
+
+<div class="chlinkprevnexttop">&nbsp;<a href="chap0.html">[Top of Book]</a>&nbsp;  <a href="chap0.html#contents">[Contents]</a>&nbsp;  &nbsp;<a href="chapA.html">[Previous Chapter]</a>&nbsp;  &nbsp;<a href="chapBib.html">[Next Chapter]</a>&nbsp;  </div>
+
+<p id="mathjaxlink" class="pcenter"><a href="chapB_mj.html">[MathJax on]</a></p>
+<p><a id="X819C7A688246B572" name="X819C7A688246B572"></a></p>
+<div class="ChapSects"><a href="chapB.html#X819C7A688246B572">B <span class="Heading">
+    DIMACS: Graph Format for Clique and Coloring Problems
+  </span></a>
+<div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chapB.html#X7D4AB14683444D77">B.1 <span class="Heading">
+      Note from the Digraphs authors
+    </span></a>
+</span>
+</div>
+<div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chapB.html#X7E738C697CA72B1F">B.2 <span class="Heading">
+      Preamble
+    </span></a>
+</span>
+</div>
+<div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chapB.html#X7DFB63A97E67C0A1">B.3 <span class="Heading">
+      Introduction
+    </span></a>
+</span>
+</div>
+<div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chapB.html#X80AD820D85A4C8DA">B.4 <span class="Heading">
+      File Formats for Graph Problems
+    </span></a>
+</span>
+<div class="ContSSBlock">
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chapB.html#X792906427BCCD4D1">B.4-1 <span class="Heading">
+        Input Files
+      </span></a>
+</span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chapB.html#X7B0FD9A97D715330">B.4-2 <span class="Heading">
+        Output Files
+      </span></a>
+</span>
+</div></div>
+</div>
+
+<h3>B <span class="Heading">
+    DIMACS: Graph Format for Clique and Coloring Problems
+  </span></h3>
+
+<p><a id="X7D4AB14683444D77" name="X7D4AB14683444D77"></a></p>
+
+<h4>B.1 <span class="Heading">
+      Note from the Digraphs authors
+    </span></h4>
+
+<p>The contents of this appendix were originally available in a PostScript file <span class="URL"><a href="http://mat.gsia.cmu.edu/COLOR/general/ccformat.ps">on the Carnegie Mellon University website</a></span>. This file is still <span class="URL"><a href="https://web.archive.org/web/20220120085844/http://mat.gsia.cmu.edu/COLOR/general/ccformat.ps">accessible through the Wayback Machine</a></span>. We reproduce its contents here for convenience, without adjustments beyond minor re-formatting.</p>
+
+<p><a id="X7E738C697CA72B1F" name="X7E738C697CA72B1F"></a></p>
+
+<h4>B.2 <span class="Heading">
+      Preamble
+    </span></h4>
+
+<p><strong class="button">Last revision of this document: May 08, 1993.</strong></p>
+
+<p><em> This paper outlines a suggested graph format. If you have comments on this or other formats or you have information you think should be included, please send a note to </em> <span class="URL"><a href="mailto:challenge@dimacs.rutgers.edu">challenge@dimacs.rutgers.edu</a></span>.</p>
+
+<p><a id="X7DFB63A97E67C0A1" name="X7DFB63A97E67C0A1"></a></p>
+
+<h4>B.3 <span class="Heading">
+      Introduction
+    </span></h4>
+
+<p>One purpose of the DIMACS Challenge is to ease the effort required to test and compare algorithms and heuristics by providing a common testbed of instances and analysis tools. To facilitate this effort, a standard format must be chosen for the problems addressed. This document outlines a format for graphs that is suitable for those looking at graph coloring and finding cliques in graphs. This format is a flexible format suitable for many types of graph and network problems. This format was also the format chosen for the First Computational Challenge on network flows and matchings.</p>
+
+<p>This document describes three problems: unweighted clique, weighted clique, and graph coloring. A separate format is used for satisfiability.</p>
+
+<p><a id="X80AD820D85A4C8DA" name="X80AD820D85A4C8DA"></a></p>
+
+<h4>B.4 <span class="Heading">
+      File Formats for Graph Problems
+    </span></h4>
+
+<p>This section describes a standard file format for graph inputs and outputs. There is no requirement that participants follow these specifications; however, compatible implementations will be able to make full use of DIMACS support tools. (Some tools assume that output is appended to input in a single file.) Participants are welcome to develop translation programs to convert instances to and from more convenient, or more compact, representations; the Unix <strong class="button">awk</strong> facility is recommended as especially suitable for this task. All files contain ASCII characters. Input and output files contain several types of <em>lines</em>, described below. A line is terminated with an end-of-line character. Fields in each line are separated by at least one blank space. Each line begins with a one-character designator to identify the line type.</p>
+
+<p><a id="X792906427BCCD4D1" name="X792906427BCCD4D1"></a></p>
+
+<h5>B.4-1 <span class="Heading">
+        Input Files
+      </span></h5>
+
+<p>An input file contains all the information about a graph needed to define either a clique problem or a coloring problem. Some information may be included that is not relevant to one problem (for instance, node weights are not needed for coloring problem) so that information may be ignored. In this format, nodes are numbered from 1 up to <span class="SimpleMath">n</span>. There are <span class="SimpleMath">m</span> edges in the graph. Files are assumed to be well-formed and internally consistent: node identifier values are valid, nodes are defined uniquely, exactly <span class="SimpleMath">m</span> edges are defined, and so forth. A input checker will be made available to ensure compatibility with this standard.</p>
+
+
+<dl>
+<dt><strong class="Mark">Comments</strong></dt>
+<dd><p>Comment lines give human-readable information about the file and are ignored by programs. Comment lines can appear anywhere in the file. Each comment line begins with a lowercase character <strong class="button">c</strong>.</p>
+
+
+<div class="example"><pre>c This is an example of a comment line.</pre></div>
+
+</dd>
+<dt><strong class="Mark">
+          Problem line
+        </strong></dt>
+<dd><p>There is one problem line per input file. The problem line must appear before any node or arc descriptor lines. For network instances, the problem line has the following format.</p>
+
+
+<div class="example"><pre>p FORMAT NODES EDGES</pre></div>
+
+<p>The lowercase character <code class="code">p</code> signifies that this is the problem line. The <code class="code">FORMAT</code> field is for consistency with the previous Challenge, and should contain the word <span class="SimpleMath">edge</span>. The <code class="code">NODES</code> field contains an integer value specifying <span class="SimpleMath">n</span>, the number of nodes in the graph. The <code class="code">EDGES</code> field contains an integer value specifying <span class="SimpleMath">m</span>, the number of edges in the graph.</p>
+
+</dd>
+<dt><strong class="Mark">Node Descriptors</strong></dt>
+<dd><p>For this Challenge, a node descriptor is required only for the weighted clique problem. These lines will give the weight assigned to a node in the clique. There is one node descriptor line for each node, with the following format. Nodes without a descriptor will take on a default value of 1.</p>
+
+
+<div class="example"><pre>n ID VALUE</pre></div>
+
+<p>The lowercase character <code class="code">n</code> signifies that this is a node descriptor line. The <code class="code">ID</code> field gives a node identification number, an integer between 1 and <span class="SimpleMath">n</span>. The <code class="code">VALUE</code> gives the objective value for having this node in the clique. This value is assumed to be integer and can be either positive or negative (or zero).</p>
+
+</dd>
+<dt><strong class="Mark">Edge Descriptors</strong></dt>
+<dd><p>There is one edge descriptor line for each edge the graph, each with the following format. Each edge <span class="SimpleMath">(v,w)</span> appears exactly once in the input file and is not repeated as <span class="SimpleMath">(w,v)</span>.</p>
+
+
+<div class="example"><pre>e W  V</pre></div>
+
+<p>The lowercase character <code class="code">e</code> signifies that this is an edge descriptor line. For an edge <span class="SimpleMath">(w,v)</span> the fields <code class="code">W</code> and <code class="code">V</code> specify its endpoints.</p>
+
+</dd>
+<dt><strong class="Mark">Optional Descriptors</strong></dt>
+<dd><p>In addition to the required information, there can be additional pieces of information about a graph. This will typically define the parameters used to generate the graph or otherwise define generator-specific information. The following list may be added to as interesting problem generators are decided on:</p>
+
+
+<dl>
+<dt><strong class="Mark">Geometric Descriptors</strong></dt>
+<dd><p>One common method to generate or display graphs is to have the nodes be embedded in some space and to have the edges be included according to some function of the distance between nodes according to some metric. The node information can be defined by a dimension descriptor and a vertex embedding descriptor.</p>
+
+
+<div class="example"><pre>d DIM METRIC</pre></div>
+
+<p>is the dimension descriptor. <code class="code">DIM</code> is an integer giving the number of dimensions of the space, while <code class="code">METRIC</code> is a string representing the metric for the space. <code class="code">METRIC</code> is a string that can take a number of forms. <strong class="button">Lp</strong> (i.e. <strong class="button">L1</strong>, <strong class="button">L2</strong>, <strong class="button">L122</strong>, and so on) denotes the <span class="SimpleMath">ℓ_p</span> norm where the distance between two nodes embedded at <span class="SimpleMath">(x_1,x_2,...,x_d)</span> and <span class="SimpleMath">(y_1,y_2,... y_d)</span> is <span class="SimpleMath">(∑_i=1^d |x_i-y_i|^p )^1/p</span>. The string <strong class="button">LINF</strong> is used to denote the <span class="SimpleMath">ℓ_∞</span> norm. L2S denotes the squared euclidean norm (which can be less susceptible to computer differences in round-off and accuracy issues).</p>
+
+
+<div class="example"><pre>v  X1  X2  X3  ... XD</pre></div>
+
+<p>The lowercase character <code class="code">v</code> signifies that this is a vertex embedding descriptor line. The fields <code class="code">X1, X2, ..., XD</code> give the <code class="code">d</code> coordinate values for the vertex. Note that these lines must appear after the <code class="code">d</code> descriptor.</p>
+
+</dd>
+<dt><strong class="Mark">Parameter Descriptors</strong></dt>
+<dd><p>The parameter descriptors are used to give other information about how the graph was generated. The lines are generator-specific, and as such it is not expected that most codes will use most (or any) of them. They are included only to aid those codes specifically designed to attack specially structured problems. The general form of the parameter descriptor is:</p>
+
+
+<div class="example"><pre>x PARAM VALUE</pre></div>
+
+<p>The lowercase character <code class="code">x</code> signifies that this is a parameter descriptor line. The <code class="code">PARAM</code> field is a string that gives the name of the parameter, while the <code class="code">VALUE</code> field is a numeric value that gives the corresponding value. The following <code class="code">PARAM</code> values have been defined:</p>
+
+<div class="pcenter"><table class="GAPDocTable">
+<tr>
+<td class="tdleft"><code class="code">PARAM</code></td>
+<td class="tdleft">Description (Geometric Graphs)</td>
+</tr>
+<tr>
+<td class="tdleft"><code class="code">MINLENGTH</code></td>
+<td class="tdleft">Edge included only if length greater than or equal to <code class="code">VALUE</code></td>
+</tr>
+<tr>
+<td class="tdleft"><code class="code">MAXLENGTH</code></td>
+<td class="tdleft">Edge included only if length less than or equal to <code class="code">VALUE</code></td>
+</tr>
+</table><br />
+</div>
+
+<p>Note that this information is in addition to the required edge descriptors.</p>
+
+</dd>
+</dl>
+</dd>
+</dl>
+<p><a id="X7B0FD9A97D715330" name="X7B0FD9A97D715330"></a></p>
+
+<h5>B.4-2 <span class="Heading">
+        Output Files
+      </span></h5>
+
+<p>Every algorithm or heuristic should create an output file. This output file should consist of one or more of the following lines, depending on the type of algorithm and problem being solved.</p>
+
+
+<dl>
+<dt><strong class="Mark">Solution Line</strong></dt>
+<dd><p>Format:</p>
+
+
+<div class="example"><pre>s TYPE SOLUTION</pre></div>
+
+<p>The lowercase character <code class="code">s</code> signifies that this is a solution line. The <code class="code">TYPE</code> field denotes the type of solution contained in the file. This should be one of the following strings: <span class="SimpleMath">col</span> denotes a graph coloring, <span class="SimpleMath">clq</span> denotes a maximum weighted clique, and <span class="SimpleMath">cqu</span> denotes a maximum unweighted clique (one that has ignored the <code class="code">n</code> descriptor lines). The <code class="code">SOLUTION</code> field contains an integer corresponding to the solution value. This is the clique size for unweighted clique, clique value for weighted clique, or number of colors used for graph coloring.</p>
+
+</dd>
+<dt><strong class="Mark">Bound Line</strong></dt>
+<dd><p>Format:</p>
+
+
+<div class="example"><pre>b BOUND</pre></div>
+
+<p>The lowercase character <code class="code">b</code> signifies that this is a bound on the the solution. The <code class="code">BOUND</code> field contains an integer value that gives a bound on the solution value. This bound is an upper bound on the maximum clique value for cliques and weighted clique and a lower bound on the number of colors needed for coloring the graph.</p>
+
+</dd>
+<dt><strong class="Mark">Clique Line</strong></dt>
+<dd><p>Format:</p>
+
+
+<div class="example"><pre>v V</pre></div>
+
+<p>The lowercase character <code class="code">v</code> signifies that this is a clique vertex line. The <code class="code">V</code> field gives the node number for the node in the clique. There will be one clique line for each node in the clique.</p>
+
+</dd>
+<dt><strong class="Mark">Label Line</strong></dt>
+<dd><p>Format:</p>
+
+
+<div class="example"><pre>l V N</pre></div>
+
+<p>The lowercase character <code class="code">l</code> signifies that this is a label line, generally used for graph coloring. The <code class="code">V</code> field gives the node number for the node in the clique while the <code class="code">N</code> field gives the corresponding label. There will be one label line for each node in the graph.</p>
+
+</dd>
+</dl>
+
+<div class="chlinkprevnextbot">&nbsp;<a href="chap0.html">[Top of Book]</a>&nbsp;  <a href="chap0.html#contents">[Contents]</a>&nbsp;  &nbsp;<a href="chapA.html">[Previous Chapter]</a>&nbsp;  &nbsp;<a href="chapBib.html">[Next Chapter]</a>&nbsp;  </div>
+
+
+<div class="chlinkbot"><span class="chlink1">Goto Chapter: </span><a href="chap0.html">Top</a>  <a href="chap1.html">1</a>  <a href="chap2.html">2</a>  <a href="chap3.html">3</a>  <a href="chap4.html">4</a>  <a href="chap5.html">5</a>  <a href="chap6.html">6</a>  <a href="chap7.html">7</a>  <a href="chap8.html">8</a>  <a href="chap9.html">9</a>  <a href="chapA.html">A</a>  <a href="chapB.html">B</a>  <a href="chapBib.html">Bib</a>  <a href="chapInd.html">Ind</a>  </div>
+
+<hr />
+<p class="foot">generated by <a href="https://www.math.rwth-aachen.de/~Frank.Luebeck/GAPDoc">GAPDoc2HTML</a></p>
+</body>
+</html>
