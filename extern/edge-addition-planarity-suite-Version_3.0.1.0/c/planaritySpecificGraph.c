@@ -4,19 +4,6 @@ All rights reserved.
 See the LICENSE.TXT file for licensing information.
 */
 
-#if defined(__clang__)
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wstrict-prototypes"
-#pragma clang diagnostic ignored "-Wmissing-prototypes"
-#pragma clang diagnostic ignored "-Wdeprecated-non-prototype"
-#pragma clang diagnostic ignored "-Wincompatible-pointer-types-discards-qualifiers"
-#elif defined(__GNUC__)
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wstrict-prototypes"
-#pragma GCC diagnostic ignored "-Wmissing-prototypes"
-#pragma GCC diagnostic ignored "-Wswitch-default"
-#pragma GCC diagnostic ignored "-Wdiscarded-qualifiers"
-#endif
 #include "planarity.h"
 
 /****************************************************************************
@@ -187,8 +174,3 @@ void WriteAlgorithmResults(graphP theGraph, int Result, char command, platform_t
 			GetAlgorithmName(command), platform_GetDuration(start,end));
 	Message(Line);
 }
-#if defined(__clang__)
-#pragma clang diagnostic pop
-#elif defined(__GNUC__)
-#pragma GCC diagnostic pop
-#endif

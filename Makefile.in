@@ -68,7 +68,7 @@ ifdef WITH_INCLUDED_PLANARITY
   KEXT_SOURCES += $(PLANARITY_SUITE_DIR)/c/planarityUtils.c
   KEXT_SOURCES += $(PLANARITY_SUITE_DIR)/c/stack.c
 
-  KEXT_CFLAGS += -I$(PLANARITY_SUITE_DIR)
+  KEXT_CFLAGS += -I$(PLANARITY_SUITE_DIR) -include extern/eaps_flags.h
 else
   KEXT_LDFLAGS += -lplanarity
 endif

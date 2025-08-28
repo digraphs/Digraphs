@@ -13,13 +13,6 @@ See the LICENSE.TXT file for licensing information.
 #include "graphExtensions.h"
 #include "graphFunctionTable.h"
 
-#ifdef __GNUC__
-    #ifndef __clang__
-    #pragma GCC diagnostic push
-    #pragma GCC diagnostic ignored "-Wshadow"
-    #endif
-#endif
-
 /* Imported functions */
 
 extern void _InitFunctionTable(graphP theGraph);
@@ -551,9 +544,3 @@ void _FreeExtension(graphExtensionP extension)
     }
     free(extension);
 }
-
-#ifdef __GNUC__
-    #ifndef __clang__
-    #pragma GCC diagnostic pop
-    #endif
-#endif
