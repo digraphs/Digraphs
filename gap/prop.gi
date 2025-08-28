@@ -484,12 +484,8 @@ function(D)
 end);
 
 InstallMethod(IsDirectedTree, "for a digraph", [IsDigraph],
-function(D)
-  if IsNullDigraph(D) then
-    return DigraphNrVertices(D) = 1;
-  fi;
-  return IsConnectedDigraph(D) and InDegreeSet(D) = [0, 1];
-end);
+{D} -> DigraphHasAVertex(D) and IsConnectedDigraph(D)
+     and (IsEmptyDigraph(D) or InDegreeSet(D) = [0, 1]));
 
 InstallMethod(IsEulerianDigraph, "for a digraph", [IsDigraph],
 function(D)
