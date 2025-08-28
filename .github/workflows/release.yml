@@ -1,0 +1,32 @@
+name: Release
+
+# Trigger the workflow manually
+on:
+  workflow_dispatch:
+    inputs:
+      dry-run:
+        description: "Dry run: do not actually push the release to GitHub"
+        type: boolean
+        required: false
+        default: false
+
+permissions: write-all
+
+jobs:
+  release:
+    name: "Release the GAP package"
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v5
+      - uses: gap-actions/setup-gap@v2
+        with:
+          GAP_PKGS_TO_BUILD: json
+      - uses: gap-actions/build-pkg-docs@v1
+        with:
+          use-latex: true
+      - uses: gap-actions/release-pkg@v1
+        with:
+          dry-run: ${{ inputs.dry-run }}
+      - uses: gap-actions/update-gh-pages@v1
+        if: ${{ !inputs.dry-run }}
