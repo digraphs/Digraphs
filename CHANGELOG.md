@@ -52,8 +52,8 @@ available as options for `ChromaticNumber` in
 ## What's Changed
 * Fixed an bug in `ArticulationPoints` found by [@wilfwilson](https://github.com/wilfwilson)
 [PR #779](https://github.com/digraphs/Digraphs/pull/779).
-* Inclusion of an appendix to the manual that describes the DIMACS format.
-[PR #775](https://github.com/digraphs/Digraphs/pull/775)
+* Inclusion of an appendix to the manual that describes the DIMACS format
+[PR #775](https://github.com/digraphs/Digraphs/pull/775).
 * Various other small technical adjustments.
 
 **Full Changelog**: <https://github.com/digraphs/Digraphs/compare/v1.10.0...v1.10.1>
