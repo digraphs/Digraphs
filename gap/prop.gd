@@ -30,6 +30,7 @@ DeclareProperty("IsChainDigraph", IsDigraph);
 DeclareProperty("IsCycleDigraph", IsDigraph);
 DeclareProperty("IsDigraphCore", IsDigraph);
 DeclareProperty("IsDirectedTree", IsDigraph);
+DeclareProperty("IsDirectedForest", IsDigraph);
 DeclareProperty("IsUndirectedTree", IsDigraph);
 DeclareProperty("IsUndirectedForest", IsDigraph);
 DeclareProperty("IsEdgeTransitive", IsDigraph);
@@ -104,12 +105,17 @@ InstallTrueMethod(IsStronglyConnectedDigraph, IsDigraph and IsUndirectedTree);
 InstallTrueMethod(IsSymmetricDigraph, IsCompleteDigraph);
 InstallTrueMethod(IsSymmetricDigraph, IsDigraph and IsUndirectedForest);
 InstallTrueMethod(IsTransitiveDigraph, IsTournament and IsAcyclicDigraph);
+InstallTrueMethod(IsDirectedForest, IsDigraph and IsDirectedTree);
+InstallTrueMethod(IsDirectedTree,
+                  IsDigraph and IsDirectedForest and IsConnectedDigraph);
 InstallTrueMethod(IsUndirectedForest, IsDigraph and IsUndirectedTree);
+InstallTrueMethod(IsUndirectedTree,
+                  IsDigraph and IsUndirectedForest and IsConnectedDigraph);
 
 InstallTrueMethod(IsNonemptyDigraph, IsDigraph and DigraphHasLoops);
 InstallTrueMethod(DigraphHasLoops, IsReflexiveDigraph and DigraphHasAVertex);
 InstallTrueMethod(DigraphHasAVertex, IsDigraph and IsNonemptyDigraph);
-InstallTrueMethod(DigraphHasAVertex, IsDigraph and IsDirectedTree);
+InstallTrueMethod(DigraphHasAVertex, IsDigraph and IsDirectedForest);
 
 # Implications that something is false
 
