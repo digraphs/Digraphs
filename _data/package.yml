@@ -1,140 +1,76 @@
-name: Digraphs
-version: 1.10.1
-date: 2025-08-27
+name: GitHubPagesForGAP
+version: "0.2"
+license: "0BSD"
+date: 2017-02-04
 description: |
-    Graphs, digraphs, and multidigraphs in GAP
+    A GitHub Pages generator for GAP packages
 
 authors:
-    - name: Jan De Beule
-      url: https://wids.research.vub.be/en/jan-de-beule
-    - name: Julius Jonusas
-      url: http://julius.jonusas.work
-    - name: James Mitchell
-      url: https://jdbm.me
-    - name: Wilf A. Wilson
-      url: https://wilf.me
-    - name: Michael Young
-      url: https://myoung.uk/work/
-    - name: Marina Anagnostopoulou-Merkouri
-      url: mailto:mam49@st-andrews.ac.uk
-    - name: Finn Buck
-      url: mailto:finneganlbuck@gmail.com
-    - name: Stuart Burrell
-      url: https://stuartburrell.github.io
-    - name: Graham Campbell
-    - name: Raiyan Chowdhury
-    - name: Reinis Cirpons
-      url: mailto:rc234@st-andrews.ac.uk
-    - name: Ashley Clayton
-      url: mailto:ac323@st-andrews.ac.uk
-    - name: Tom Conti-Leslie
-      url: https://tomcontileslie.com
-    - name: Joseph Edwards
-      url: https://github.com/Joseph-Edwards
-    - name: Luna Elliott
-      url: https://research.manchester.ac.uk/en/persons/luna-elliott
-    - name: Isuru Fernando
-      url: mailto:isuruf@gmail.com
-    - name: Ewan Gilligan
-      url: mailto:eg207@st-andrews.ac.uk
-    - name: Gillis Frankie
-      url: mailto:fotg1@st-andrews.ac.uk
-    - name: Sebastian Gutsche
-      url: mailto:gutsche@momo.math.rwth-aachen.de
-    - name: Samantha Harper
-      url: mailto:seh25@st-andrews.ac.uk
     - name: Max Horn
-      url: https://www.quendi.de/math
-    - name: Christopher Jefferson
-      url: https://heather.cafe/
-    - name: Malachi Johns
-      url: mailto:zlj1@st-andrews.ac.uk
-    - name: Olexandr Konovalov
-      url: https://olexandr-konovalov.github.io/
-    - name: Hyeokjun Kwon
-      url: mailto:hk78@st-andrews.ac.uk
-    - name: Aidan Lau
-    - name: Andrea Lee
-      url: mailto:ahwl1@st-andrews.ac.uk
-    - name: Saffron McIver
-      url: mailto:sm544@st-andrews.ac.uk
-    - name: Michael Orlitzky
-      url: https://michael.orlitzky.com/
-    - name: Matthew Pancer
-      url: mailto:mp322@st-andrews.ac.uk
-    - name: Markus Pfeiffer
-      url: https://markusp.morphism.de/
-    - name: Daniel Pointon
-      url: mailto:dp211@st-andrews.ac.uk
-    - name: Lea Racine
-      url: mailto:lr217@st-andrews.ac.uk
-    - name: Christopher Russell
-    - name: Artur Schaefer
-      url: mailto:as305@st-and.ac.uk
-    - name: Isabella Scott
-      url: mailto:iscott@uchicago.edu
-    - name: Kamran Sharma
-      url: mailto:kks4@st-andrews.ac.uk
-    - name: Finn Smith
-      url: mailto:fls3@st-andrews.ac.uk
-    - name: Ben Spiers
-      url: mailto:bspiers972@outlook.com
-    - name: Maria Tsalakou
-      url: https://mariatsalakou.github.io/
-    - name: Meike Weiss
-      url: https://bit.ly/4e6pUeP
-    - name: Murray Whyte
-      url: mailto:mw231@st-andrews.ac.uk
-    - name: Fabian Zickgraf
-      url: mailto:f.zickgraf@dashdos.com
+      url: http://www.quendi.de/math
+    - name: A. U. Thor
 
 maintainers:
-    - name: James Mitchell
-      url: https://jdbm.me
-    - name: Wilf A. Wilson
-      url: https://wilf.me
-    - name: Michael Young
-      url: https://myoung.uk/work/
+    - name: Max Horn
+      url: http://www.quendi.de/math
+    - name: Jan Itor
 
-GAP: ">=4.10.0"
+GAP: ">=4.8.1"
 
 needed-pkgs:
-    - name: "io"
-      version: ">=4.5.1"
+    - name: "GAPDoc"
+      version: ">= 1.2"
+      url: "http://www.math.rwth-aachen.de/~Frank.Luebeck/GAPDoc"
+    - name: "IO"
+      version: ">= 4.1"
       url: "https://gap-packages.github.io/io"
-    - name: "orb"
-      version: ">=4.8.2"
-      url: "https://gap-packages.github.io/orb"
-    - name: "datastructures"
-      version: ">=0.2.5"
-      url: "https://gap-packages.github.io/datastructures"
 
 suggested-pkgs:
-    - name: "GAPDoc"
-      version: ">=1.6.3"
-      url: "https://www.math.rwth-aachen.de/~Frank.Luebeck/GAPDoc"
-    - name: "grape"
-      version: ">=4.8.1"
-      url: "https://gap-packages.github.io/grape"
-    - name: "nautytracesinterface"
-      version: ">=0.2"
-      url: "https://gap-packages.github.io/NautyTracesInterface/"
-    - name: "AutoDoc"
-      version: ">=2020.08.11"
-      url: "https://gap-packages.github.io/AutoDoc"
+    - name: "orb"
+      version: ">= 4.2"
+      url: "https://gap-packages.github.io/orb"
 
-www: https://digraphs.github.io/Digraphs
+www: https://gap-system.github.io/GitHubPagesForGAP/
 readme: README.md
-packageinfo: https://digraphs.github.io/Digraphs/PackageInfo.g
+packageinfo: https://gap-system.github.io/GitHubPagesForGAP/PackageInfo.g
+github: https://github.com/gap-system/GitHubPagesForGAP
 
 downloads:
     - name: .tar.gz
-      url: https://github.com/digraphs/Digraphs/releases/download/v1.10.1/digraphs-1.10.1.tar.gz
+      url: https://github.com/gap-system/GitHubPagesForGAP/releases/download/v0.2/GitHubPagesForGAP-0.2.tar.gz
+    - name: .tar.bz2
+      url: https://github.com/gap-system/GitHubPagesForGAP/releases/download/v0.2/GitHubPagesForGAP-0.2.tar.bz2
 
 abstract: |
-    The &Digraphs; package is a &GAP; package containing
-              methods for graphs, digraphs, and multidigraphs.
+    This is a pseudo package that contains no actual  <span class="pkgname">GAP</span> code. Instead, it is a template for other  GAP packages that allows to quickly setup GitHub Pages.
 
-status: deposited
-doc-html: doc/chap0_mj.html
+status: other
+doc-html: doc/chap0.html
 doc-pdf: doc/manual.pdf
+keywords: |
+    GitHub Pages, GAP.
+citeas: |
+    <p class='BibEntry'>
+    [<span class='BibKey'>HTI17</span>]   <b class='BibAuthor'>Horn, M., Thor, A. U. and Itor, J.</b>,
+     <i class='BibTitle'>GitHubPagesForGAP, A GitHub Pages generator for GAP packages,
+             Version 0.2</i>
+     (<span class='BibYear'>2017</span>)<br />
+    (<span class='BibNote'>GAP package</span>),
+    <span class='BibHowpublished'><a href="https://gap-system.github.io/GitHubPagesForGAP/">https://gap-system.github.io/GitHubPagesForGAP/</a></span>.
+    </p>
+    
+
+bibtex: |
+    @misc{ GitHubPagesForGAP0.2,
+      author =           {Horn, M. and Thor, A. U. and Itor, J.},
+      title =            {{GitHubPagesForGAP}, A GitHub Pages generator for GAP packages, {V}ersion 0.2},
+      month =            {Feb},
+      year =             {2017},
+      note =             {GAP package},
+      howpublished =     {\href                              {https://gap-system.github.io/GitHubPagesForGAP/}
+                          {\texttt{https://gap-system.github.io/}\discretionary
+                          {}{}{}\texttt{GitHubPagesForGAP/}}},
+      keywords =         {GitHub Pages; GAP},
+      printedkey =       {HTI17}
+    }
+

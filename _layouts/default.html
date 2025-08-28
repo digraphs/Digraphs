@@ -4,14 +4,18 @@
     <meta charset="utf-8">
     <title>GAP package {{ site.data.package.name }}</title>
 
+    {% if site.data.package.keywords and site.data.package.keywords.size > 0 %}
+    <meta name="keywords" content="{{site.data.package.keywords}}" />
+    {% endif %}
+
     <link rel="stylesheet" type="text/css" href="stylesheets/styles.css">
     <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css">
     <script type="text/javascript"
       src="javascripts/scale.fix.js">
     </script>
-    <script type="text/javascript"
-      src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-    </script>
+    <script type="text/javascript" src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
 
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <!--[if lt IE 9]>
@@ -19,6 +23,7 @@
     <![endif]-->
   </head>
   <body>
+    <script>new ClipboardJS('.btn');</script>
     <div class="wrapper">
       <header>
         <h1 class="header">{{ site.data.package.name }}</h1>
@@ -55,7 +60,9 @@
 
       </section>
       <footer>
-        <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
+        <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a>,
+        based on <a href="https://github.com/gap-system/GitHubPagesForGAP">GitHubPagesForGAP</a>
+        using the Dinky theme</small></p>
         <p><small><em>Last updated: {{ 'now' | date: "%Y-%m-%d %H:%M" }}</em></small></p>
       </footer>
     </div>

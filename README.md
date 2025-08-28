@@ -1,122 +1,267 @@
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4763272.svg)](https://doi.org/10.5281/zenodo.4763272)
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/digraphs/digraphs/master)
-[![Build status](https://github.com/digraphs/Digraphs/workflows/CI/badge.svg?branch=master)](https://github.com/digraphs/Digraphs/actions?query=workflow%3ACI+branch%3Amaster)
-[![Code coverage](https://codecov.io/gh/digraphs/Digraphs/branch/master/graphs/badge.svg)](https://codecov.io/gh/digraphs/Digraphs/branch/master)
+# GitHubPagesForGAP
 
-## README
+This repository can be used to quickly set up a website hosted by
+[GitHub](https://github.com/) for GAP packages using a GitHub repository.
+Specifically, this uses [GitHub pages](https://pages.github.com/)
+by adding a `gh-pages` branch to your package repository which
+contains data generated from the `PackageInfo.g` file of your package.
 
-### Digraphs package for GAP
+## Initial setup
 
-#### Copyright (C) 2014-21 by Jan De Beule, Julius Jonušas, James D. Mitchell, Wilf A. Wilson, Michael Young et al.
-## Getting Digraphs
+The easiest way to do this is to run the `setup-gh-pages` shell script
+provided in the [GitHubPagesForGAP]() from within a git clone of your
+package's GitHub repository.
 
-To get the latest version of the package, download the archive file
-`digraphs-x.x.x.tar.gz` from the [Digraphs webpage][]. Then, inside the `pkg`
-subdirectory of your GAP installation, unpack the archive
-`digraphs-x.x.x.tar.gz`, using
+In case this does not work, or if you want to really know what's going
+on, you can also follow the manual instructions described after the fold.
 
-    gunzip digraphs-x.x.x.tar.gz; tar xvf digraphs-x.x.x.tar
+------
 
-for example.  This will create a subdirectory `digraphs-x.x.x`.
+The following instructions assume you do not already have a `gh-pages`
+branch in your repository. If you do have one, you should delete it before
+following these instructions.
 
-## Issues
+1. Go into your clone of your package repository.
 
-For questions, remarks, suggestions, and issues please use the
-[issue tracker](https://github.com/digraphs/Digraphs/issues).
+2. Setup a `gh-pages` branch in a `gh-pages` subdirectory.
 
-## Installation
+   Users with a recent enough git version (recommended is >= 2.7.0)
+   can do this using a "worktree", via the following commands:
 
-It is assumed that you have a working copy of [GAP][] with version number
-4.10.0 or higher.  The most up-to-date version of GAP, and instructions on how
-to install it, can be obtained from the 
-[main GAP webpage](https://www.gap-system.org).
+   ```sh
+   # Add a new remote pointing to the GitHubPagesForGAP repository
+   git remote add -f gh-gap https://github.com/gap-system/GitHubPagesForGAP
 
-The following is a summary of the steps that should lead to a successful
-installation of Digraphs:
+   # Create a fresh gh-pages branch from the new remote
+   git branch gh-pages gh-gap/gh-pages --no-track
 
-* get the [IO](https://gap-packages.github.io/io) package version 4.5.1 or
-  higher.
-* get the [orb](https://gap-packages.github.io/orb) package version 4.8.2 or
-  higher.
-* get the [datastructures](https://gap-packages.github.io/datastructures)
-  package version 0.2.5 or higher.
-* **this step is optional:** certain methods in Digraphs require the
-  [Grape](https://gap-packages.github.io/grape/) package to be available; a
-  full list of these functions can be found in the first chapter of the manual.
-  To use these functions make sure that the Grape package version 4.8.1 or
-  higher is available.
-* **this step is optional**: get the
-  [NautyTracesInterface](https://github.com/gap-packages/NautyTracesInterface)
-  package version 0.2 or higher.
-* download the package archive `digraphs-x.x.x.tar.gz` from the
-  [Digraphs webpage][].
-* unzip and untar the file `digraphs-x.x.x.tar.gz` using, for example,
-  ```
-    gunzip digraphs-x.x.x.tar.gz; tar xvf digraphs-x.x.x.tar
-  ```
-  which should create a directory called `digraphs-x.x.x`.
-* locate the `pkg` directory of your GAP directory, which contains the
-  directories `lib`, `doc` and so on. Move the directory `digraphs-x.x.x` into
-  the `pkg` directory (if it is not there already).
-* compile the kernel module; more details are given below.
-* start GAP in the usual way.
-* type `LoadPackage("digraphs");`
+   # Create a new worktree and change into it
+   git worktree add gh-pages gh-pages
+   cd gh-pages
+   ```
 
-## Compiling the kernel module
+   Everybody else should instead do the following, with the URL
+   in the initial clone command suitably adjusted:
 
-The Digraphs package has a GAP kernel component written in C, which has to be
-compiled in order for the package to work.  This component contains certain
-low-level functions that the package requires.
+   ```sh
+   # Create a fresh clone of your repository, and change into it
+   git clone https://github.com/USERNAME/REPOSITORY gh-pages
+   cd gh-pages
 
-It is not possible to use the Digraphs package without compiling it.
+   # Add a new remote pointing to the GitHubPagesForGAP repository
+   git remote add gh-gap https://github.com/gap-system/GitHubPagesForGAP
+   git fetch gh-gap
 
-To compile the kernel component inside the `digraphs-x.x.x` directory, type
+   # Create a fresh gh-pages branch from the new remote
+   git checkout -b gh-pages gh-gap/gh-pages --no-track
+   ```
 
-    ./configure
-    make
+5. Add in copies of your `PackageInfo.g`, `README` (or `README.md`) and manual:
 
-If you installed the package in a `pkg` directory other than the standard `pkg`
-directory in your GAP installation, then you have to do two things. Firstly,
-during compilation you have to use the option `--with-gaproot=PATH` of the
-`configure` script where `PATH` is a path to the main GAP root directory (if
-not given, the default `../..` is assumed).
+   ```
+   cp -f ../PackageInfo.g ../README* .
+   cp -f ../doc/*.{css,html,js,txt} doc/
+   ```
 
-If you installed GAP on several architectures, then you must execute the
-configure/make step for each of the architectures. You can either do this
-immediately after configuring and compiling GAP itself on this architecture, or
-alternatively set the environment variable `CONFIGNAME` to the name of the
-configuration you used when compiling GAP before running `./configure`.  Note
-however that your compiler choice and flags (environment variables `CC` and
-`CFLAGS`) need to be chosen to match the setup of the original GAP compilation.
-For example, you have to specify 32-bit or 64-bit mode correctly!
+6. Now run the `update.g` GAP script. This extracts data from your
+   `PackageInfo.g` file and puts that data into `_data/package.yml`.
+   From this, the website template can populate the web pages with
+   some sensible default values.
 
-### Configuration options
+   ```
+   gap update.g
+   ```
 
-In addition to the usual autoconf generated configuration flags, the following
-flags are provided.
+7. Commit and push everything.
 
-Option                        | Meaning
------------------------------ | ------------------------------------------------
---enable-code-coverage        | enable code coverage support
---enable-compile-warnings     | enable compiler warnings
---enable-debug                | enable debug mode
---with-external-bliss         | use external `bliss`
---with-external-planarity     | use external `planarity`
---with-gaproot                | specify root of GAP installation
---without-intrinsics          | do not use compiler intrinsics even if available
+   ```
+   git add PackageInfo.g README* doc/ _data/package.yml
+   git commit -m "Setup gh-pages based on GitHubPagesForGAP"
+   git push --set-upstream origin gh-pages
+   ```
 
-Digraphs vendors the `bliss` and `planarity` libraries in the `extern` directory.
-If you wish to use your system copy of `bliss` or `planarity`, please use the
-configure options `--with-external-bliss` or `--with-external-planarity`, as
-appropriate.
+That's it. You can now see your new package website under
+https://USERNAME.github.io/REPOSITORY/ (of course after
+adjusting USERNAME and REPOSITORY suitably).
 
-If you wish to install a
-[development version of the Digraphs package](https://github.com/digraphs/Digraphs),
-then you must first run the command `./autogen.sh` before compilation. However,
-development versions of the package may be unstable, and we recommend using the
-most recently released version of the package when possible.
 
-Enjoy!
+## Using an existing gh-pages branch
 
-[Digraphs webpage]: https://digraphs.github.io/Digraphs
-[GAP]: https://www.gap-system.org
+If you previously set up [GitHubPagesForGAP]() and thus already have a `gh-pages`
+branch, you may on occasion have need to make a fresh clone of your package
+repository, and then also would like to recreate the `gh-pages` directory.
+
+The easiest way to do this is to run the `setup-gh-pages` shell script
+provided in the [GitHubPagesForGAP]() from within a git clone of your
+package's GitHub repository.
+
+In case this does not work, or if you want to really know what's going
+on, you can also follow the manual instructions described after the fold.
+
+------
+
+Users with a recent enough git version (recommended is >= 2.7)
+can do this using a "worktree", via the following commands:
+
+   ```sh
+   git branch gh-pages origin/gh-pages
+   git worktree add gh-pages gh-pages
+   ```
+
+If you are using an older version of git, you can instead use a second clone
+of your repository instead:
+
+   ```sh
+   git clone -b gh-pages https://github.com/USERNAME/REPOSITORY gh-pages
+   ```
+
+
+## Adjusting the content and layout
+
+[GitHubPagesForGAP]() tries to automatically provide good defaults for
+most packages. However, you can tweak everything about it:
+
+* To adjust the page layout, edit the files `stylesheets/styles.css`
+and `_layouts/default.html`.
+
+* To adjust the content of the front page, edit `index.md` (resp.
+  for the content of the sidebar, edit `_layouts/default.html`
+
+* You can also add additional pages, in various formats (HTML,
+Markdown, Textile, ...).
+
+For details, please consult the [Jekyll](http://jekyllrb.com/)
+manual.
+
+
+## Testing the site locally
+
+If you would like to test your site on your own machine, without
+uploading it to GitHub (where it is visible to the public), you can do
+so by installing [Jekyll](http://jekyllrb.com/), the static web site
+generator used by GitHub to power GitHub Pages.
+
+Once you have installed Jekyll as described on its homepage, you can
+test the website locally as follows:
+
+1. Go to the `gh-pages` directory we created above.
+
+2. Run jekyll (this launches a tiny web server on your machine):
+
+   ```
+   jekyll serve -w
+   ```
+
+3. Visit the URL http://localhost:4000 in a web browser.
+
+
+## Updating after you made a release
+
+Whenever you make a release of your package (and perhaps more often than
+that), you will want to update your website. The easiest way is to use
+the `release` script from the [ReleaseTools][], which performs all
+the necessary steps for you, except for the very last of actually
+publishing the package (and it can do even that for you, if you
+pass the `-p` option to it).
+
+However, you can also do it manually. The steps for doing it are quite
+similar to the above:
+
+1. Go to the `gh-pages` directory we created above.
+
+2. Add in copies of your `PackageInfo.g`, `README` (or `README.md`) and manual:
+
+   ```
+   cp -f ../PackageInfo.g ../README* .
+   cp -f ../doc/*.{css,html,js,txt} doc/
+   ```
+
+3. Now run the `update.g` GAP script.
+
+4. Commit and push the work we have just done.
+
+   ```
+   git add PackageInfo.g README* doc/ _data/package.yml
+   git commit -m "Update web pages"
+   git push
+   ```
+
+A few seconds after you have done this, your changes will be online
+under https://USERNAME.github.io/REPOSITORY/ .
+
+
+## Updating to a newer version of GitHubPagesForGAP
+
+Normally you should not have to ever do this. However, if you really want to,
+you can attempt to update to the most recent version of [GitHubPagesForGAP]() via
+the following instructions. The difficulty of such an update depends on how
+much you tweaked the site after initially cloning [GitHubPagesForGAP]().
+
+1. Go to the `gh-pages` directory we created above.
+   Make sure that there are no uncommitted changes, as they will be lost
+   when following these instructions.
+
+2. Make sure the `gh-gap` remote exists and has the correct URL. If in doubt,
+   just re-add it:
+   ```
+   git remote remove gh-gap
+   git remote add gh-gap https://github.com/gap-system/GitHubPagesForGAP
+   ```
+
+3. Attempt to merge the latest GitHubPagesForGAP.
+   ```
+   git pull gh-gap gh-pages
+   ```
+
+4. If this produced no errors and just worked, skip to the next step.
+   But it is quite likely that you will have conflicts in the file
+   `_data/package.yml`, or in your `README` or `PackageInfo.g` files.
+   These can usually be resolved by entering this:
+   ```
+   cp ../PackageInfo.g ../README* .
+   gap update.g
+   git add PackageInfo.g README* _data/package.yml
+   ```
+   If you are lucky, these were the only conflicts (check with `git status`).
+   If no merge conflicts remain, finish with this command:
+   ```
+   git commit -m "Merge gh-gap/gh-pages"
+   ```
+   If you still have merge conflicts, and don't know how to resolve them, or
+   get stuck some other way, you can abort the merge process and revert to the
+   original state by issuing this command:
+   ```
+   git merge --abort
+   ```
+
+5. You should be done now. Don't forget to push your changes if you want them
+   to become public.
+
+
+## Packages using GitHubPagesForGAP
+
+The majority of packages listed on <https://gap-packages.github.io> use
+[GitHubPagesForGAP](). If you want some specific examples, here are some:
+
+* <https://gap-packages.github.io/anupq>
+* <https://gap-packages.github.io/cvec>
+* <https://gap-packages.github.io/genss>
+* <https://gap-packages.github.io/io>
+* <https://gap-packages.github.io/NormalizInterface>
+* <https://gap-packages.github.io/nq>
+* <https://gap-packages.github.io/orb>
+* <https://gap-packages.github.io/polenta>
+* <https://gap-packages.github.io/recog>
+
+
+## Contact
+
+Please submit bug reports, suggestions for improvements and patches via
+the [issue tracker](https://github.com/gap-system/GitHubPagesForGAP/issues).
+
+You can also contact me directly via [email](max@quendi.de).
+
+Copyright (c) 2013-2025 Max Horn
+
+[GitHubPagesForGAP]: https://github.com/gap-system/GitHubPagesForGAP
+[ReleaseTools]: https://github.com/gap-system/ReleaseTools
