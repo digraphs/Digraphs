@@ -310,6 +310,13 @@ Persons := [
     Email        := "sm544@st-andrews.ac.uk"),
 
   rec(
+    LastName      := "Mohammadiyeh",
+    FirstNames    := "Seyyed Ali",
+    IsAuthor      := true,
+    IsMaintainer  := false,
+    Email         := "MaxBaseCode@Gmail.Com"),
+
+  rec(
     LastName      := "Orlitzky",
     FirstNames    := "Michael",
     IsAuthor      := true,
@@ -338,6 +345,13 @@ Persons := [
     IsAuthor      := true,
     IsMaintainer  := false,
     Email         := "dp211@st-andrews.ac.uk"),
+
+  rec(
+    LastName      := "Ragavan",
+    FirstNames    := "Pramoth",
+    IsAuthor      := true,
+    IsMaintainer  := false,
+    Email         := "107881923+pramothragavan@users.noreply.github.com"),
 
   rec(
     LastName      := "Racine",
@@ -408,6 +422,13 @@ Persons := [
     PostalAddress := _STANDREWSMATHS,
     Place         := "St Andrews",
     Institution   := "University of St Andrews"),
+
+  rec(
+    LastName      := "Vishvanath",
+    FirstNames    := "Agastyaa",
+    IsAuthor      := true,
+    IsMaintainer  := false,
+    Email         := "av215@st-andrews.ac.uk"),
 
   rec(
     LastName      := "Weiss",
