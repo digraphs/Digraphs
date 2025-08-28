@@ -249,6 +249,13 @@ Persons := [
     Institution   := "RPTU Kaiserslautern-Landau"),
 
   rec(
+    LastName      := "Jack",
+    FirstNames    := "Harry",
+    IsAuthor      := true,
+    IsMaintainer  := false,
+    Email         := "hrj4@st-andrews.ac.uk"),
+
+  rec(
     LastName      := "Jefferson",
     FirstNames    := "Christopher",
     IsAuthor      := true,
