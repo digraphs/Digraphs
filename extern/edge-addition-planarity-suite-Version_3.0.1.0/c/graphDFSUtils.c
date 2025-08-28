@@ -26,17 +26,6 @@ extern void _ClearVertexVisitedFlags(graphP theGraph, int);
 
 #include "platformTime.h"
 
-#if defined(__clang__)
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wstrict-prototypes"
-#pragma clang diagnostic ignored "-Wmissing-prototypes"
-#pragma clang diagnostic ignored "-Wdeprecated-non-prototype"
-#elif defined(__GNUC__)
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wstrict-prototypes"
-#pragma GCC diagnostic ignored "-Wmissing-prototypes"
-#endif
-
 int  gp_CreateDFSTree(graphP theGraph)
 {
 stackP theStack;
@@ -461,8 +450,3 @@ printf("LeastAncestor in %.3lf seconds.\n", platform_GetDuration(start,end));
 
 	 return OK;
 }
-#if defined(__clang__)
-#pragma clang diagnostic pop
-#elif defined(__GNUC__)
-#pragma GCC diagnostic pop
-#endif

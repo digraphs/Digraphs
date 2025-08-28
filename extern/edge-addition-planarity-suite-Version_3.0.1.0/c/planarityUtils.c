@@ -4,22 +4,6 @@ All rights reserved.
 See the LICENSE.TXT file for licensing information.
 */
 
-#if defined(__clang__)
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wstrict-prototypes"
-#pragma clang diagnostic ignored "-Wmissing-prototypes"
-#pragma clang diagnostic ignored "-Wdeprecated-non-prototype"
-#pragma clang diagnostic ignored                                             \
-    "-Wincompatible-pointer-types-discards-qualifiers"
-#elif defined(__GNUC__)
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wstrict-prototypes"
-#pragma GCC diagnostic ignored "-Wmissing-prototypes"
-#pragma GCC diagnostic ignored "-Wold-style-definition"
-#pragma GCC diagnostic ignored "-Wdiscarded-qualifiers"
-#pragma GCC diagnostic ignored "-Wswitch-default"
-#pragma GCC diagnostic ignored "-Wunused-result"
-#endif
 #include "planarity.h"
 
 /****************************************************************************
@@ -420,8 +404,3 @@ char *ConstructPrimaryOutputFilename(char *infileName, char *outfileName, char c
 
 	return theFileName;
 }
-#if defined(__clang__)
-#pragma clang diagnostic pop
-#elif defined(__GNUC__)
-#pragma GCC diagnostic pop
-#endif
