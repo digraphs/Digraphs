@@ -61,7 +61,7 @@ ReadPackage("digraphs", "gap/labels.gd");
 ReadPackage("digraphs", "gap/attr.gd");
 ReadPackage("digraphs", "gap/prop.gd");
 ReadPackage("digraphs", "gap/oper.gd");
-ReadPackage("digraphs", "gap/display.gd");
+# ReadPackage("digraphs", "gap/display.gd");
 ReadPackage("digraphs", "gap/isomorph.gd");
 ReadPackage("digraphs", "gap/utils.gd");
 ReadPackage("digraphs", "gap/io.gd");
