@@ -529,11 +529,14 @@ x -> ListNamedDigraphs(x, 2));
 
 InstallMethod(ViewString, "for a digraph", [IsDigraph],
 function(D)
-  local n, m, display_nredges, displayed_bipartite, str, x;
+  local n, m, suffix, display_nredges, display_digraph, displayed_bipartite,
+  str, x;
 
   n := DigraphNrVertices(D);
   m := DigraphNrEdges(D);
+  suffix := "";
   display_nredges := true;
+  display_digraph := true;
   displayed_bipartite := false;
 
   str := "<";
@@ -567,21 +570,42 @@ function(D)
     elif HasIsCompleteMultipartiteDigraph(D)
         and IsCompleteMultipartiteDigraph(D) then
       Append(str, "complete multipartite ");
-    elif HasIsLatticeDigraph(D) and IsLatticeDigraph(D) then
-      Append(str, "lattice ");
-    elif HasIsJoinSemilatticeDigraph(D) and IsJoinSemilatticeDigraph(D) then
-      Append(str, "join semilattice ");
-    elif HasIsMeetSemilatticeDigraph(D) and IsMeetSemilatticeDigraph(D) then
-      Append(str, "meet semilattice ");
+    elif (HasIsJoinSemilatticeDigraph(D) and IsJoinSemilatticeDigraph(D))
+        or (HasIsMeetSemilatticeDigraph(D) and IsMeetSemilatticeDigraph(D)) then
+      if HasIsPlanarDigraph(D) and IsPlanarDigraph(D) then
+        Append(str, "planar ");
+      fi;
+      if HasIsLatticeDigraph(D) and IsLatticeDigraph(D) then
+        Append(str, "lattice ");
+      elif HasIsJoinSemilatticeDigraph(D) and IsJoinSemilatticeDigraph(D) then
+        Append(str, "join semilattice ");
+      elif HasIsMeetSemilatticeDigraph(D) and IsMeetSemilatticeDigraph(D) then
+        Append(str, "meet semilattice ");
+      fi;
     elif HasIsUndirectedTree(D) and IsUndirectedTree(D) then
       Append(str, "undirected tree ");
       display_nredges := false;
+      display_digraph := false;
     elif HasIsUndirectedForest(D) and IsUndirectedForest(D) then
       Append(str, "undirected forest ");
+      display_nredges := false;
+      display_digraph := false;
+      if HasDigraphNrConnectedComponents(D) then
+        suffix := Concatenation(String(DigraphNrConnectedComponents(D)),
+                                " components");
+      fi;
     elif HasIsDirectedTree(D) and IsDirectedTree(D) then
       Append(str, "directed tree ");
       display_nredges := false;
+      display_digraph := false;
+    elif HasIsTournament(D) and IsTournament(D) then
+      Append(str, "tournament ");
+      display_nredges := false;
+      display_digraph := false;
     else
+      if HasIsPlanarDigraph(D) and IsPlanarDigraph(D) then
+        Append(str, "planar ");
+      fi;
       if HasIsEulerianDigraph(D) and IsEulerianDigraph(D) then
         Append(str, "Eulerian ");
         if HasIsHamiltonianDigraph(D) and IsHamiltonianDigraph(D) then
@@ -603,6 +627,8 @@ function(D)
             or not (HasIsStronglyConnectedDigraph(D)
                     and IsStronglyConnectedDigraph(D)))
           and not (HasIsTournament(D) and IsTournament(D))
+          and not (HasIsHamiltonianDigraph(D) and IsHamiltonianDigraph(D))
+          and not (HasIsEulerianDigraph(D) and IsEulerianDigraph(D))
           and HasIsConnectedDigraph(D) and IsConnectedDigraph(D) then
         Append(str, "connected ");
       fi;
@@ -656,20 +682,21 @@ function(D)
     Append(str, "multi");
   fi;
 
-  if not (HasIsCycleDigraph(D) and IsCycleDigraph(D))
-      and HasIsTournament(D) and IsTournament(D) and n > 1 then
-    Append(str, "tournament ");
-    display_nredges := false;
-  else
+  if display_digraph then
     Append(str, "digraph ");
   fi;
   Append(str, "with ");
 
   if displayed_bipartite then
     x := List(DigraphBicomponents(D), Length);
-    Append(str, "bicomponent sizes ");
-    Append(str, String(x[1]));
-    Append(str, " and ");
+    Append(str, "bicomponent");
+    if x[1] = x[2] then
+      Append(str, "s of size ");
+    else
+      Append(str, " sizes ");
+      Append(str, String(x[1]));
+      Append(str, " and ");
+    fi;
     Append(str, String(x[2]));
     Append(str, ">");
     return str;
@@ -689,6 +716,10 @@ function(D)
     else
       Append(str, " edges");
     fi;
+  fi;
+  if not IsEmpty(suffix) then
+    Append(str, ", ");
+    Append(str, suffix);
   fi;
   Append(str, ">");
   return str;
@@ -1361,37 +1392,37 @@ end);
 InstallMethod(RandomDigraphCons, "for IsMutableDigraph and an integer",
 [IsMutableDigraph, IsInt],
 {_, n}
--> RandomDigraphCons(IsMutableDigraph, n, Float(Random([0 .. n])) / n));
+-> RandomDigraphCons(IsMutableDigraph, n, Float(Random(0, n ^ 2) / n ^ 2)));
 
 InstallMethod(RandomDigraphCons, "for IsMutableDigraph and an integer",
 [IsImmutableDigraph, IsInt],
 {_, n}
--> RandomDigraphCons(IsImmutableDigraph, n, Float(Random([0 .. n])) / n));
+-> RandomDigraphCons(IsImmutableDigraph, n, Float(Random(0, n ^ 2) / n ^ 2)));
 
 InstallMethod(RandomDigraphCons, "for IsHamiltonianDigraph and an integer",
 [IsHamiltonianDigraph, IsInt],
 {_, n}
--> RandomDigraphCons(IsHamiltonianDigraph, n, Float(Random([0 .. n])) / n));
+-> RandomDigraphCons(IsHamiltonianDigraph, n, Float(Random(0, n ^ 2) / n ^ 2)));
 
 InstallMethod(RandomDigraphCons, "for IsEulerianDigraph and an integer",
 [IsEulerianDigraph, IsInt],
 {_, n}
--> RandomDigraphCons(IsEulerianDigraph, n, Float(Random([0 .. n])) / n));
+-> RandomDigraphCons(IsEulerianDigraph, n, Float(Random(0, n ^ 2) / n ^ 2)));
 
 InstallMethod(RandomDigraphCons, "for IsConnectedDigraph and an integer",
 [IsConnectedDigraph, IsInt],
 {_, n}
--> RandomDigraphCons(IsConnectedDigraph, n, Float(Random([0 .. n])) / n));
+-> RandomDigraphCons(IsConnectedDigraph, n, Float(Random(0, n ^ 2) / n ^ 2)));
 
 InstallMethod(RandomDigraphCons, "for IsAcyclicDigraph and an integer",
 [IsAcyclicDigraph, IsInt],
 {_, n}
--> RandomDigraphCons(IsAcyclicDigraph, n, Float(Random([0 .. n])) / n));
+-> RandomDigraphCons(IsAcyclicDigraph, n, Float(Random(0, n ^ 2) / n ^ 2)));
 
 InstallMethod(RandomDigraphCons, "for IsSymmetricDigraph and an integer",
 [IsSymmetricDigraph, IsInt],
 {_, n}
--> RandomDigraphCons(IsSymmetricDigraph, n, Float(Random([0 .. n])) / n));
+-> RandomDigraphCons(IsSymmetricDigraph, n, Float(Random(0, n ^ 2) / n ^ 2)));
 
 InstallMethod(RandomDigraphCons,
 "for IsMutableDigraph, an integer, and a rational",
@@ -1440,7 +1471,7 @@ function(_, n, p)
   if p < 0.0 or 1.0 < p then
     ErrorNoReturn("the 2nd argument <p> must be between 0 and 1,");
   fi;
-  return DigraphNC(IsMutableDigraph, RANDOM_DIGRAPH(n, Int(p * 10000)));
+  return DigraphNC(IsMutableDigraph, RANDOM_DIGRAPH(n, p));
 end);
 
 # This function takes an existing adjacency list after solely creating

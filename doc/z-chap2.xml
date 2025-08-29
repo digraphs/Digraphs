@@ -92,6 +92,8 @@
     <#Include Label="BishopsGraph">
     <#Include Label="BondyGraph">
     <#Include Label="BookGraph">
+    <#Include Label="BurntPancakeGraph">
+    <#Include Label="PancakeGraph">
     <#Include Label="StackedBookGraph">
     <#Include Label="ChainDigraph">
     <#Include Label="CirculantGraph">

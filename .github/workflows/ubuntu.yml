@@ -43,7 +43,7 @@ jobs:
             pkgs-to-build: io orb datastructures grape NautyTracesInterface autodoc
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Output g++ version . . .
         run: g++ --version
       - name: Install GAP and clone/compile necessary packages . . .
@@ -59,29 +59,25 @@ jobs:
           curl --retry 5 -L -O "https://digraphs.github.io/Digraphs/${{ env.DIGRAPHS_LIB }}.tar.gz"
           tar xf "${{ env.DIGRAPHS_LIB }}.tar.gz"
       - name: Run DigraphsTestInstall . . .
-        # TODO: Replace below with gap-actions/run-pkg-tests@v2 if the functionality gets added
-        uses: ./.github/actions/run-pkg-tests
+        uses: gap-actions/run-pkg-tests@v3
         with:
           NO_COVERAGE: true
           GAP_TESTFILE: tst/github_actions/install.g
           only-needed: ${{ matrix.only-needed }}
       - name: Run DigraphsTestStandard . . .
-        # TODO: Replace below with gap-actions/run-pkg-tests@v2 if the functionality gets added
-        uses: ./.github/actions/run-pkg-tests
+        uses: gap-actions/run-pkg-tests@v3
         with:
           NO_COVERAGE: true
           GAP_TESTFILE: tst/github_actions/standard.g
           only-needed: ${{ matrix.only-needed }}
       - name: Run DigraphsTestManualExamples . . .
-        # TODO: Replace below with gap-actions/run-pkg-tests@v2 if the functionality gets added
-        uses: ./.github/actions/run-pkg-tests
+        uses: gap-actions/run-pkg-tests@v3
         with:
           NO_COVERAGE: true
           GAP_TESTFILE: tst/github_actions/examples.g
           only-needed: ${{ matrix.only-needed }}
       - name: Run DigraphsTestExtreme . . .
-        # TODO: Replace below with gap-actions/run-pkg-tests@v2 if the functionality gets added
-        uses: ./.github/actions/run-pkg-tests
+        uses: gap-actions/run-pkg-tests@v3
         with:
           NO_COVERAGE: true
           GAP_TESTFILE: tst/github_actions/extreme.g

@@ -62,6 +62,8 @@ DeclareOperation("DIGRAPHS_GraphProduct", [IsDigraph, IsDigraph, IsFunction]);
 # 4. Actions . . .
 DeclareOperation("OnDigraphs", [IsDigraph, IsPerm]);
 DeclareOperation("OnDigraphs", [IsDigraph, IsTransformation]);
+DeclareOperation("OnDigraphsNC", [IsDigraph, IsPerm]);
+DeclareOperation("OnDigraphsNC", [IsDigraph, IsTransformation]);
 DeclareOperation("OnTuplesDigraphs", [IsDigraphCollection, IsPerm]);
 DeclareOperation("OnSetsDigraphs", [IsDigraphCollection, IsPerm]);
 DeclareOperation("OnMultiDigraphs", [IsDigraph, IsPermCollection]);
@@ -113,6 +115,9 @@ DeclareOperation("IsDigraphPath",
 DeclareOperation("IsDigraphPath", [IsDigraph, IsList]);
 
 # 9. Connectivity . . .
+DeclareOperation("DigraphIsKing", [IsDigraph, IsPosInt, IsPosInt]);
+DeclareOperation("DigraphKings", [IsDigraph, IsPosInt]);
+
 DeclareOperation("DigraphFloydWarshall",
                  [IsDigraph, IsFunction, IsObject, IsObject]);
 DeclareOperation("DigraphDijkstra",

@@ -83,7 +83,7 @@ function(D)
       w := nbs[v][i];
 
       if v <> 1 and low[w] >= pre[v] then
-        Add(articulation_points, v);
+        AddSet(articulation_points, v);
       fi;
       if low[w] = pre[w] then
         Add(bridges, [v, w]);
@@ -127,7 +127,10 @@ function(D)
   if counter = DigraphNrVertices(D) then
     connected := true;
     if nr_children > 1 then
-      Add(articulation_points, 1);
+      # The `AddSet` is not really needed, and could just be `Add`, since 1
+      # should not already be in articulation_points. But let's use AddSet
+      # to keep the output sorted.
+      AddSet(articulation_points, 1);
     fi;
     if not IsEmpty(bridges) then
       orientation := fail;
@@ -513,6 +516,194 @@ function(D)
 end
 );
 
+BindGlobal("DIGRAPHS_ChromaticNumberZykov",
+function(D)
+  local nr, ZykovReduce, chrom;
+  nr := DigraphNrVertices(D);
+  # Recursive function call
+  ZykovReduce := function(D)
+    local nr, D_contract, vertices, v, x, y, i, j, adjacent;
+    nr := DigraphNrVertices(D);
+    # Update upper bound if possible.
+    chrom := Minimum(nr, chrom);
+    # Leaf nodes are either complete graphs or cliques that have size equal to
+    # the current upper bound. The chromatic number is then the smallest clique
+    # found.
+    # Cliques finder arguments:
+    # digraph = D - The graph
+    # hook = fail - hook is not required
+    # user_param = [] - user_param is a list as hook is fail
+    # limit = 1 - We only need one clique
+    # include = exclude = [] - We check all vertices
+    # max = false - This clique need not be maximal
+    # size = chrom - We want a clique the size of our upper bound
+    # reps = true - As we only care about the existence of the clique,
+    # we can instead search for representatives which is more efficient.
+    if not IsCompleteDigraph(D) and IsEmpty(CliquesFinder(D, fail, [], 1, [],
+                                                          [], false, chrom,
+                                                          true)) then
+      # Sort vertices by degree, so that higher degree vertices are picked first
+      # Picking higher degree vertices will make it more likely a clique will
+      # form in one of the modified graphs, which will terminate the recursion.
+      vertices := DigraphWelshPowellOrder(D);
+      # Get the adjacency function
+      adjacent := DigraphAdjacencyFunction(D);
+      # Choose two non-adjacent vertices x, y
+      for i in [1 .. nr] do
+        x := vertices[i];
+        # Search for the first vertex not adjacent to all others
+        # This is guaranteed to exist as D is not the complete graph.
+        if OutDegreeOfVertex(D, x) < nr - 1 then
+          # Now search for a non-adjacent vertex, prioritising higher degree
+          # ones
+          for j in [i + 1 .. nr] do
+            y := vertices[j];
+            if not adjacent(x, y) then
+              break;
+            fi;
+          od;
+          break;
+        fi;
+      od;
+      Assert(1, x <> y, "x and y must be different");
+      # Colour the vertex contraction.
+      # A contraction of a graph effectively merges two non adjacent vertices
+      # into a single new vertex with the edges merged.
+      # We merge y into x, keeping x.
+
+      # We could potentially use quotient digraph here, but the increased
+      # generality might cause this to get slower.
+      D_contract := DigraphMutableCopy(D);
+      for v in vertices do
+         # Iterate over all vertices that are not x or y
+         if v = x or v = y then
+           continue;
+         fi;
+         # Add any edge that involves y, but not already x to avoid duplication.
+         if adjacent(v, y) and not adjacent(v, x) then
+            DigraphAddEdge(D_contract, x, v);
+            DigraphAddEdge(D_contract, v, x);
+         fi;
+      od;
+      DigraphRemoveVertex(D_contract, y);
+      ZykovReduce(D_contract);
+      # Colour the edge addition
+      # This just adds symmetric edges between x and y;
+      DigraphAddEdge(D, [x, y]);
+      DigraphAddEdge(D, [y, x]);
+      ZykovReduce(D);
+      # Undo changes to the graph
+      DigraphRemoveEdge(D, [x, y]);
+      DigraphRemoveEdge(D, [y, x]);
+    fi;
+  end;
+  # Algorithm requires an undirected graph without multiple edges.
+  D := DigraphMutableCopy(D);
+  D := DigraphRemoveAllMultipleEdges(D);
+  D := DigraphSymmetricClosure(D);
+  # Use greedy colouring as an upper bound
+  chrom := RankOfTransformation(DigraphGreedyColouring(D), nr);
+  ZykovReduce(D);
+  return chrom;
+end
+);
+
+BindGlobal("DIGRAPHS_ChromaticNumberChristofides",
+function(D)
+  local nr, I, n, T, b, unprocessed, i, v_without_t, j, u, min_occurrences,
+  cur_occurrences, chrom, colouring, stack, vertices;
+
+  nr := DigraphNrVertices(D);
+  vertices := List(DigraphVertices(D));
+  # Initialise the required variables.
+  # Calculate all maximal independent sets of D.
+  I := DigraphMaximalIndependentSets(D);
+  # Convert each MIS into a BList
+  I := List(I, i -> BlistList(vertices, i));
+  # Upper bound for chromatic number.
+  chrom := nr;
+  # Set of vertices of D not in the current subgraph at level n.
+  T := ListWithIdenticalEntries(nr, false);
+  # Current search level of the subgraph tree.
+  n := 0;
+  # The maximal independent sets of V \ T at level n.
+  b := [ListWithIdenticalEntries(nr, false)];
+  # Number of unprocessed MIS's of V \ T from level 1 to n
+  unprocessed := ListWithIdenticalEntries(nr, 0);
+  # Would be jth colour class of the chromatic colouring of G.
+  colouring := List([1 .. nr], i -> BlistList(vertices, [i]));
+  # Stores current unprocessed MIS's of V \ T at level 1 to level n
+  stack := [];
+  # Now perform the search.
+  repeat
+    # Step 2
+    if n < chrom then
+      # Step 3
+      # If V = T then we've reached a null subgraph
+      if SizeBlist(T) = nr then
+        chrom := n;
+        SubtractBlist(T, b[n + 1]);
+        for i in [1 .. chrom] do
+          colouring[i] := b[i];
+          # TODO set colouring attribute
+        od;
+      else
+        # Step 4
+        # Compute the maximal independent sets of V \ T
+        v_without_t := DIGRAPHS_MaximalIndependentSetsSubtractedSet(I, T,
+                                                                    infinity);
+        # Step 5
+        # Pick u in V \ T such that u is in the fewest maximal independent sets.
+        u := -1;
+        min_occurrences := infinity;
+        # Flip T to get V \ T
+        FlipBlist(T);
+        # Convert to list to iterate over the vertices.
+        for i in ListBlist(vertices, T) do
+          # Count how many times this vertex appears in a MIS
+          cur_occurrences := Number(v_without_t, j -> j[i]);
+          if cur_occurrences < min_occurrences then
+            min_occurrences := cur_occurrences;
+            u := i;
+          fi;
+        od;
+        # Revert changes to T
+        FlipBlist(T);
+        Assert(1, u <> -1, "Vertex must be picked");
+        # Remove maximal independent sets not containing u.
+        v_without_t := Filtered(v_without_t, x -> x[u]);
+        # Add these MISs to the stack
+        Append(stack, v_without_t);
+        # Search has moved one level deeper
+        n := n + 1;
+        unprocessed[n] := Length(v_without_t);
+      fi;
+    else
+      # if n >= g then T = T \ b[n]
+      # This exceeds the current best bound, so stop search.
+      SubtractBlist(T, b[n + 1]);
+    fi;
+    # Step 6
+    while n <> 0 do
+      # step 7
+      if unprocessed[n] = 0 then
+        n := n - 1;
+        SubtractBlist(T, b[n + 1]);
+      else
+        # Step 8
+        # take an element from the top of the stack
+        i := Remove(stack);
+        unprocessed[n] := unprocessed[n] - 1;
+        b[n + 1] := i;
+        UniteBlist(T, i);
+        break;
+      fi;
+    od;
+  until n = 0;
+  return chrom;
+end
+);
+
 InstallMethod(ChromaticNumber, "for a digraph by out-neighbours",
 [IsDigraphByOutNeighboursRep],
 function(D)
@@ -536,6 +727,10 @@ function(D)
     return DIGRAPHS_ChromaticNumberLawler(D);
   elif ValueOption("byskov") <> fail then
     return DIGRAPHS_ChromaticNumberByskov(D);
+  elif ValueOption("zykov") <> fail then
+    return DIGRAPHS_ChromaticNumberZykov(D);
+  elif ValueOption("christofides") <> fail then
+    return DIGRAPHS_ChromaticNumberChristofides(D);
   fi;
 
   # The chromatic number of <D> is at least 3 and at most nr
@@ -903,6 +1098,11 @@ DIGRAPH_CONNECTED_COMPONENTS);
 
 InstallMethod(DigraphNrConnectedComponents, "for a digraph",
 [IsDigraph],
+D -> Length(DigraphConnectedComponents(D).comps));
+
+InstallImmediateMethod(DigraphNrConnectedComponents,
+"for a digraph with known connected components",
+IsDigraph and HasDigraphConnectedComponents, 0,
 D -> Length(DigraphConnectedComponents(D).comps));
 
 InstallMethod(OutDegrees, "for a digraph by out-neighbours",
@@ -1555,9 +1755,9 @@ end);
 
 # Compute all chordless cycles for a given symmetric digraph
 # Algorithm based on https://arxiv.org/pdf/1404.7610
-InstallMethod(DigraphAllChordlessCycles, "for a digraph",
-[IsDigraph],
-function(D)
+InstallMethod(DigraphAllChordlessCyclesOfMaximalLength,
+"for a digraph and an integer", [IsDigraph, IsInt],
+function(D, maxLength)
   local BlockNeighbours, UnblockNeighbours,
   Triplets, CCExtension, digraph, temp, T, C, blocked, triple;
 
@@ -1616,7 +1816,8 @@ function(D)
         local v, extendedPath, data;
         blocked := BlockNeighbours(digraph, Last(path), blocked);
         for v in OutNeighboursOfVertex(digraph, Last(path)) do
-            if DigraphVertexLabel(digraph, v) > key and blocked[v] = 1 then
+            if DigraphVertexLabel(digraph, v) > key and blocked[v] = 1
+              and Length(path) < maxLength then
                 extendedPath := Concatenation(path, [v]);
                 if IsDigraphEdge(digraph, v, First(path)) then
                     Add(C, extendedPath);
@@ -1653,6 +1854,10 @@ function(D)
     od;
     return C;
 end);
+
+InstallMethod(DigraphAllChordlessCycles, "for a digraph",
+[IsDigraph],
+D -> DigraphAllChordlessCyclesOfMaximalLength(D, INTOBJ_MAX));
 
 # Compute for a given rotation system the facial walks
 InstallMethod(FacialWalks, "for a digraph and a list",
@@ -1726,6 +1931,180 @@ function(D, rotationSystem)
         Add(facialWalks, cycle);
     od;
     return facialWalks;
+end);
+
+# Computes the minimal cyclic edge cut of connected cubic graphs with at
+# least 8 vertices based on the paper "An Algorithm for Cyclic Edge Connectivity
+# of Cubic Graphs"
+InstallMethod(MinimalCyclicEdgeCut, "for a digraph", [IsDigraph],
+function(digraph)
+  local girth, cut, cutsize, vertex, treedepth, paths, treev, treew,
+  minimal_cycle, v, w, FullTree, FindCut, FindPath, e;
+
+  # Compute a full tree of the given depth centered at the given vertex
+  FullTree := function(digraph, vertex, depth)
+    local result, i, lastTree, node;
+    result := Set([vertex]);
+    for i in [1 .. depth] do
+      lastTree := ShallowCopy(result);
+      for node in lastTree do
+          UniteSet(result, OutNeighboursOfVertex(digraph, node));
+      od;
+    od;
+    return result;
+  end;
+
+  # Compute a maximal amount of paths between the two distinct sets of
+  # nodes treev and treew by using a variation of the Ford-Fulkerson algorithm
+  FindPath := function(digraph, treev, treew)
+    local digraphCopy, pathlist, newPathFound, node1, node2, path, i;
+
+    digraphCopy := DigraphMutableCopy(digraph);
+    pathlist := [];
+    newPathFound := true;
+    while newPathFound do
+      newPathFound := false;
+      for node1 in treev do
+        for node2 in treew do
+          path := DigraphShortestPath(digraphCopy, node1, node2);
+
+          if path <> fail then
+            for i in [1 .. (Length(path[1]) - 1)] do
+              # remove edges corresponding to the current path
+              digraphCopy := DigraphRemoveEdge(digraphCopy,
+                [path[1][i], path[1][i + 1]]);
+              # add backward edges, if they are missing
+              if not [path[1][i + 1], path[1][i]] in
+                    DigraphEdges(digraphCopy) then
+                  digraphCopy := DigraphAddEdge(digraphCopy,
+                    [path[1][i + 1], path[1][i]]);
+              fi;
+            od;
+            Append(pathlist, [path[1]]);
+            newPathFound := true;
+            break;
+          fi;
+        od;
+      od;
+    od;
+    return pathlist;
+  end;
+
+  # Finds a cut that disconnects the node sets treev and treew in
+  # the given digraph by using the paths found in FindPath
+  FindCut := function(digraph, treev, treew, allPaths)
+    local pathByEdges, path, edgeList, i, cutEdges, edge, component1,
+    component2, edgeSet, digraphCopy, permutations, nodeSet,
+    v, pathInducedSubgraph;
+
+    # Convert the paths into the list of corresponding edges
+    pathByEdges := [];
+    for path in allPaths do
+      edgeList := [];
+      for i in [1 .. Length(path) - 1] do
+          Append(edgeList, [[path[i], path[i + 1]]]);
+      od;
+      Append(pathByEdges, [edgeList]);
+    od;
+
+    nodeSet := Set([]);
+    for path in allPaths do
+      for v in path do
+        AddSet(nodeSet, v);
+      od;
+    od;
+
+    edgeSet := Set([]);
+    for v in DigraphVertices(digraph) do
+      for w in OutNeighboursOfVertex(digraph, v) do
+        UniteSet(edgeSet, [[v, w]]);
+        UniteSet(edgeSet, [[w, v]]);
+      od;
+    od;
+
+    # We can find a cut by removing one specific edge from every path,
+    # otherwise there would be another path from treev to treew.
+    # We can find these edges by iterating through every possible combination
+    # of edges and testing the graph for its connectivity.
+    pathInducedSubgraph := DigraphByEdges(List(edgeSet));
+    permutations := Cartesian(pathByEdges);
+    for cutEdges in permutations do
+      digraphCopy := DigraphMutableCopy(pathInducedSubgraph);
+      for edge in cutEdges do
+        digraphCopy := DigraphRemoveEdge(digraphCopy, edge[1], edge[2]);
+        digraphCopy := DigraphRemoveEdge(digraphCopy, edge[2], edge[1]);
+      od;
+      if not IsConnectedDigraph(digraphCopy) then
+        component1 := InducedSubdigraph(digraph,
+          DigraphConnectedComponent(digraphCopy, treev[1]));
+        component2 := InducedSubdigraph(digraph,
+          DigraphConnectedComponent(digraphCopy, treew[1]));
+        if DigraphUndirectedGirth(component1) <> infinity and
+              DigraphUndirectedGirth(component2) <> infinity then
+            return cutEdges;
+        fi;
+      fi;
+    od;
+  end;
+
+  if not IsConnectedDigraph(digraph) or
+        Length(DigraphVertices(digraph)) < 8 then
+      return fail;
+  fi;
+
+  digraph := DigraphMutableCopy(digraph);
+  DigraphSymmetricClosure(DigraphRemoveLoops(
+              DigraphRemoveAllMultipleEdges(digraph)));
+  MakeImmutable(digraph);
+
+  v := DigraphVertices(digraph)[1];
+  if not IsRegularDigraph(digraph) or OutDegreeOfVertex(digraph, v) <> 3 then
+    return fail;
+  fi;
+
+  girth := DigraphUndirectedGirth(digraph);
+  cut := [];
+
+  # A cycle of minimal length yields a starting cyclic edge cut
+  minimal_cycle :=
+    DigraphAllChordlessCyclesOfMaximalLength(digraph, girth)[1];
+  cut := [];
+  for v in minimal_cycle do
+    for w in OutNeighboursOfVertex(digraph, v) do
+      if not w in minimal_cycle then
+        Append(cut, [[v, w]]);
+      fi;
+    od;
+  od;
+
+  # Look for smaller cyclic edge cuts
+  cutsize := girth;
+  for v in DigraphVertices(digraph) do
+    for w in DigraphVertices(digraph) do
+      if w < v then  # The function is symmetric in v and w
+        continue;
+      fi;
+      treedepth := -1;
+      paths := [];
+      while 3 * 2 ^ treedepth < cutsize do
+        treedepth := treedepth + 1;
+        treev := FullTree(digraph, v, treedepth);
+        treew := FullTree(digraph, w, treedepth);
+        if Intersection(treev, treew) <> [] then
+          break;
+        fi;
+        paths := FindPath(digraph, treev, treew);
+        if Length(paths) < cutsize and Length(paths) < 3 * 2 ^ treedepth then
+          cut := FindCut(digraph, treev, treew, paths);
+          cutsize := Length(paths);
+        fi;
+      od;
+    od;
+  od;
+  for e in cut do
+    Sort(e);
+  od;
+  return cut;
 end);
 
 # The following method 'DIGRAPHS_Bipartite' was originally written by Isabella
@@ -2561,10 +2940,10 @@ function(D)
   p    := Permutation(Transformation(topo), topo);
 
   C := DigraphMutableCopyIfImmutable(D);
-  OnDigraphs(C, p ^ -1);       # changes C in-place
-  DIGRAPH_TRANS_REDUCTION(C);  # changes C in-place
+  OnDigraphsNC(C, p ^ -1);       # changes C in-place
+  DIGRAPH_TRANS_REDUCTION(C);    # changes C in-place
   ClearDigraphEdgeLabels(C);
-  OnDigraphs(C, p);            # changes C in-place
+  OnDigraphsNC(C, p);            # changes C in-place
   if IsImmutableDigraph(D) then
     MakeImmutable(C);
     SetDigraphTransitiveReductionAttr(D, C);
@@ -2656,13 +3035,17 @@ end);
 InstallMethod(UndirectedSpanningTree, "for a mutable digraph",
 [IsMutableDigraph],
 function(D)
-  if not (DigraphHasAVertex(D)
-      and IsStronglyConnectedDigraph(D)
-      and IsConnectedDigraph(UndirectedSpanningForest(DigraphMutableCopy(D))))
-      then
+  local C;
+  if DigraphHasNoVertices(D) or not IsStronglyConnectedDigraph(D) then
     return fail;
   fi;
-  return UndirectedSpanningForest(D);
+  C := UndirectedSpanningForest(DigraphMutableCopy(D));
+  Assert(1, C <> fail);
+  if DigraphNrEdges(C) <> 2 * (DigraphNrVertices(D) - 1) then
+    return fail;
+  fi;
+  D!.OutNeighbours := OutNeighbors(C);
+  return D;
 end);
 
 InstallMethod(UndirectedSpanningTree, "for an immutable digraph",
@@ -2681,6 +3064,7 @@ function(D)
     return fail;
   fi;
   out := UndirectedSpanningForest(D);
+  Assert(1, out <> fail);
   SetIsUndirectedTree(out, true);
   return out;
 end);

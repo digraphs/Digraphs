@@ -1,7 +1,7 @@
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4763272.svg)](https://doi.org/10.5281/zenodo.4763272)
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/digraphs/digraphs/master)
-[![Build status](https://github.com/digraphs/Digraphs/workflows/CI/badge.svg?branch=master)](https://github.com/digraphs/Digraphs/actions?query=workflow%3ACI+branch%3Amaster)
-[![Code coverage](https://codecov.io/gh/digraphs/Digraphs/branch/master/graphs/badge.svg)](https://codecov.io/gh/digraphs/Digraphs/branch/master)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.596465.svg)](https://doi.org/10.5281/zenodo.596465)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/digraphs/digraphs/main)
+[![Build status](https://github.com/digraphs/Digraphs/actions/workflows/ubuntu.yml/badge.svg?branch=main)](https://github.com/digraphs/Digraphs/actions?query=workflow%3Aubuntu+branch%3Amain)
+[![Code coverage](https://codecov.io/gh/digraphs/Digraphs/branch/main/graphs/badge.svg)](https://codecov.io/gh/digraphs/Digraphs/branch/main)
 
 ## README
 

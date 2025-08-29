@@ -1091,15 +1091,25 @@ end);
 # 4. Actions
 ###############################################################################
 
-InstallMethod(OnDigraphs, "for a mutable digraph by out-neighbours and a perm",
-[IsMutableDigraph and IsDigraphByOutNeighboursRep, IsPerm],
+InstallMethod(OnDigraphs, "for a digraph and a perm",
+[IsDigraph, IsPerm],
 function(D, p)
-  local out;
   if ForAll(DigraphVertices(D), i -> i ^ p = i) then
     return D;
   elif ForAny(DigraphVertices(D), i -> i ^ p > DigraphNrVertices(D)) then
     ErrorNoReturn("the 2nd argument <p> must be a permutation that permutes ",
-                  "the vertices of the digraph <D> that is the 1st argument,");
+                  "the vertices of the digraph <D> that is the 1st argument");
+  fi;
+  return OnDigraphsNC(D, p);
+end);
+
+InstallMethod(OnDigraphsNC,
+"for a mutable digraph by out-neighbours and a perm",
+[IsMutableDigraph and IsDigraphByOutNeighboursRep, IsPerm],
+function(D, p)
+  local out;
+  if p = () then
+    return D;
   fi;
   out := D!.OutNeighbours;
   out{DigraphVertices(D)} := Permuted(out, p);
@@ -1108,26 +1118,40 @@ function(D, p)
   return D;
 end);
 
-InstallMethod(OnDigraphs, "for a immutable digraph and a perm",
+InstallMethod(OnDigraphsNC, "for a immutable digraph and a perm",
 [IsImmutableDigraph, IsPerm],
 function(D, p)
-  if ForAll(DigraphVertices(D), i -> i ^ p = i) then
+  local out, permed;
+  if p = () then
     return D;
   fi;
-  return MakeImmutable(OnDigraphs(DigraphMutableCopy(D), p));
+  out := D!.OutNeighbours;
+  permed := Permuted(out, p);
+  Apply(permed, x -> OnTuples(x, p));
+  return DigraphNC(IsImmutableDigraph, permed);
 end);
 
 InstallMethod(OnDigraphs,
-"for a mutable digraph by out-neighbours and a transformation",
-[IsMutableDigraph and IsDigraphByOutNeighboursRep, IsTransformation],
+"for a digraph and a transformation",
+[IsDigraph, IsTransformation],
 function(D, t)
-  local old, new, v;
   if ForAll(DigraphVertices(D), i -> i ^ t = i) then
     return D;
   elif ForAny(DigraphVertices(D), i -> i ^ t > DigraphNrVertices(D)) then
     ErrorNoReturn("the 2nd argument <t> must be a transformation that ",
                   "maps every vertex of the digraph <D> that is the 1st ",
-                  "argument, to another vertex.");
+                  "argument, to another vertex");
+  fi;
+  return OnDigraphsNC(D, t);
+end);
+
+InstallMethod(OnDigraphsNC,
+"for a mutable digraph by out-neighbours and a transformation",
+[IsMutableDigraph and IsDigraphByOutNeighboursRep, IsTransformation],
+function(D, t)
+  local old, new, v;
+  if t = IdentityTransformation then
+    return D;
   fi;
   old := D!.OutNeighbours;
   new := List(DigraphVertices(D), x -> []);
@@ -1139,13 +1163,19 @@ function(D, t)
   return D;
 end);
 
-InstallMethod(OnDigraphs, "for a immutable digraph and a transformation",
+InstallMethod(OnDigraphsNC, "for a immutable digraph and a transformation",
 [IsImmutableDigraph, IsTransformation],
 function(D, t)
-  if ForAll(DigraphVertices(D), i -> i ^ t = i) then
+  local old, new, v;
+  if t = IdentityTransformation then
     return D;
   fi;
-  return MakeImmutable(OnDigraphs(DigraphMutableCopy(D), t));
+  old := D!.OutNeighbours;
+  new := List(DigraphVertices(D), x -> []);
+  for v in DigraphVertices(D) do
+    Append(new[v ^ t], OnTuples(old[v], t));
+  od;
+  return DigraphNC(IsImmutableDigraph, new);
 end);
 
 InstallMethod(OnTuplesDigraphs,
@@ -1158,7 +1188,7 @@ InstallMethod(OnSetsDigraphs,
 [IsDigraphCollection and IsHomogeneousList, IsPerm],
 function(S, p)
   if not IsSet(S) then
-    ErrorNoReturn("the first argument must be a set (a strictly sorted list),");
+    ErrorNoReturn("the first argument must be a set (a strictly sorted list)");
   fi;
   return Set(S, D -> OnDigraphs(DigraphMutableCopyIfMutable(D), p));
 end);
@@ -1179,7 +1209,7 @@ function(D, perms)
             i -> i ^ perms[2] > DigraphNrEdges(D)) then
     ErrorNoReturn("the 2nd entry of the 2nd argument <perms> must ",
                   "permute the edges of the digraph <D> that is the 1st ",
-                  "argument,");
+                  "argument");
   fi;
 
   return OnDigraphs(D, perms[1]);
@@ -1652,6 +1682,21 @@ end);
 #############################################################################
 # 9.  Connectivity
 #############################################################################
+
+InstallMethod(DigraphIsKing,
+"for a digraph and two positive integers",
+[IsDigraph, IsPosInt, IsPosInt],
+function(D, v, k)
+  local layers;
+  if not v in DigraphVertices(D) then
+    ErrorNoReturn("the 2nd argument <v> is not a vertex of the ",
+                  "1st argument <D>,");
+  elif not IsTournament(D) then
+    ErrorNoReturn("the 1st argument <D> must be a tournament,");
+  fi;
+  layers := DigraphLayers(D, v);
+  return ((Length(layers) <= k + 1) and (Union(layers) = DigraphVertices(D)));
+end);
 
 InstallMethod(DigraphFloydWarshall,
 "for a digraph by out-neighbours, function, object, and object",
@@ -2756,4 +2801,17 @@ function(D, i, j)
   od;
 
   return fail;
+end);
+
+InstallMethod(DigraphKings, "for a digraph and a positive integer",
+[IsDigraph, IsPosInt],
+function(D, n)
+  local v, kings;
+  kings := [];
+  for v in DigraphVertices(D) do
+    if DigraphIsKing(D, v, n) then
+      Add(kings, v);
+    fi;
+  od;
+  return kings;
 end);

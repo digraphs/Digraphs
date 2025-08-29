@@ -127,6 +127,19 @@ gap> for x in iter do od;
         Digraphs are pickled using the &IO; package. This is particularly good
         when the <Ref Attr="DigraphGroup"/> is non-trivial.
       </Item>
+      <Mark>dreadnaut (.dre)</Mark>
+      <Item>
+        A graph format designed for directed and undirected graphs.
+        The format supports loops but multiple edges are ignored.  The format consists of an
+        initial section that defines the graph's structural properties, such as the number of
+        vertices, the starting value for vertices, and whether the graph is directed. This is followed
+        by a list of edges. For more information and examples of the format see
+        <URL Text="nauty and Traces User's Guide">http://pallini.di.uniroma1.it/Guide.html</URL>.<P/>
+      </Item>
+      <Mark> DIMACS (.dimacs) </Mark>
+      <Item>
+        A graph format that can be used for symmetric digraphs. For a more detailed description, see <Ref Oper="WriteDIMACSDigraph"/>
+      </Item>
     </List>
 
     <Example><![CDATA[
@@ -323,7 +336,20 @@ gap> DigraphFromDiSparse6String(".CaWBGA?b");
       <Mark>pickled (<F>.p</F> or <F>.pickle</F>)</Mark>
       <Item>
         Digraphs are pickled using the &IO; package. This is particularly good
-        when the <Ref Attr="DigraphGroup"/> is non-trivial.
+        when the <Ref Attr="DigraphGroup"/> is non-trivial. <P/>
+      </Item>
+      <Mark>dreadnaut (.dre)</Mark>
+      <Item>
+        A graph format designed for directed and undirected graphs.
+        The format supports loops but multiple edges are ignored.  The format consists of an
+        initial section that defines the graph's structural properties, such as the number of
+        vertices, the starting value for vertices, and whether the graph is directed. This is followed
+        by a list of edges. For more information and examples of the format see
+        <URL Text="nauty and Traces User's Guide">http://pallini.di.uniroma1.it/Guide.html</URL>. <P/>
+      </Item>
+      <Mark> DIMACS (.dimacs) </Mark>
+      <Item>
+        A graph format that can be used for symmetric digraphs. For a more detailed description, see <Ref Oper="WriteDIMACSDigraph"/>
       </Item>
     </List>
 
@@ -423,6 +449,19 @@ gap> ReadDigraphs(
       <Item>
         Digraphs are pickled using the &IO; package. This is particularly good
         when the <Ref Attr="DigraphGroup"/> is non-trivial.
+      </Item>
+      <Mark>dreadnaut (.dre)</Mark>
+      <Item>
+        A graph format designed for directed and undirected graphs.
+        The format supports loops but multiple edges are ignored.  The format consists of an
+        initial section that defines the graph's structural properties, such as the number of
+        vertices, the starting value for vertices, and whether the graph is directed. This is followed
+        by a list of edges. For more information and examples of the format see
+        <URL Text="nauty and Traces User's Guide">http://pallini.di.uniroma1.it/Guide.html</URL>. <P/>
+      </Item>
+      <Mark> DIMACS (.dimacs) </Mark>
+      <Item>
+        A graph format that can be used for symmetric digraphs. For a more detailed description, see <Ref Oper="WriteDIMACSDigraph"/>
       </Item>
     </List>
 
@@ -645,10 +684,8 @@ gap> ReadPlainTextDigraph(filename, ",", 1, ['/', '%']);
       </Item>
     </List>
 
-    A detailed definition of the DIMACS format can be found at
-    <URL>http://mat.gsia.cmu.edu/COLOR/general/ccformat.ps</URL>, in Section
-    2.1. Note that optional descriptor lines, as described in Section 2.1, will
-    be ignored.
+    A detailed definition of the DIMACS format can be found in
+    <Ref Text="Appendix" Appendix="DIMACS"/> <Ref Appendix="DIMACS"/>.
     <P/>
 
 
@@ -767,6 +804,96 @@ gap> OutNeighbours(gr);
 [ [ 11 ], [  ], [  ], [  ], [  ], [ 3 ], [  ], [  ], [ 9 ], [  ], 
   [  ], [  ] ]
 ]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphFromDreadnautString">
+<ManSection>
+  <Oper Name="DigraphFromDreadnautString" Arg="s"/>
+  <Oper Name="DreadnautString" Arg="digraph[, partition]"/>
+  <Description>
+    These operations read or write a single digraph to or from a string in the dreadnaut format, as appropriate. <P/>
+
+    <C>DigraphFromDreadnautString</C> expects the argument <A>s</A> to be a string, containing a single graph in dreadnaut format,
+    and returns a digraph.<P/>
+
+    If the vertices are not already 1-indexed, their labels will be reindexed by subtracting a constant offset so that the smallest
+    label becomes 1, with the relative ordering of vertex labels being preserved.
+    If a partition is explicitly specified, each vertex will be assigned a label corresponding to its part in the partition.
+    Should the graph be undirected, the symmetric closure of the graph will be returned.
+    See <Ref Oper="DigraphVertexLabels"/> and <Ref Prop="DigraphSymmetricClosure"/>.<P/>
+
+    <C>DreadnautString</C> expects a digraph <A>digraph</A> and returns a string in dreadnaut format.
+    An optional second argument <A>partition</A> may be provided, which should be a list of length equal
+    to the number of vertices in <A>digraph</A>.
+    Each entry in the list assigns the corresponding vertex to a group, allowing you to specify a vertex partition.
+    For example, if the digraph has three vertices and <A>partition</A> is <C>["a", "b", "a"]</C>, this would
+    mean that the first and third vertices belong to the same part, and the second vertex belongs to a separate part.
+    This partition will appear in the resulting string as a line of the form <C>f = [...]</C>.<P/>
+
+    Note that <Ref Func="WriteDigraphs"/> does not support specifying a partition when writing a digraph to a file in dreadnaut format. 
+    To include a partition when writing to a file, use <C>DreadnautString</C> to generate the string, then write it to a file using standard I/O functions.
+
+    If <A>digraph</A> has multiple edges, then <C>DreadnautString</C> returns a digraph constructed from <A>digraph</A> by removing all multiple edges.<P/>
+
+    A detailed description of commands and options in dreadnaut format can be found at
+    <URL Text="nauty and Traces User's Guide">http://pallini.di.uniroma1.it/Guide.html</URL>.
+
+    Of those commands, the following are supported: <C>n</C>, <C>g</C> (and all available subcommands), 
+      <C>_</C> (underscore), <C>__</C> (double underscore), <C>f</C>, <C>$=#</C>, <C>$$</C>, <C>d, -d</C>, <C>"...", !</C>
+    <Example><![CDATA[
+gap> gr := Digraph([[2], [1, 3, 4], [2, 4], [2, 3]]);
+<immutable digraph with 4 vertices, 8 edges>
+gap> s := DreadnautString(gr);;
+gap> DigraphFromDreadnautString(s) = gr;
+true
+gap> DreadnautString(gr, ["a", "b", "b", "a"]);
+"n=4 $=1 d g\n1 : 2;\n2 : 1 3 4;\n3 : 2 4;\n4 : 2 3.\nf = [1 4 | 2 3]"]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="WholeFileEncoders">
+<ManSection>
+  <Var Name="WholeFileEncoders"/>
+  <Var Name="WholeFileDecoders"/>
+  <Func Name="IsWholeFileEncoder" Arg="encoder"/>
+  <Func Name="IsWholeFileDecoder" Arg="decoder"/>
+  <Description>
+  <C>WholeFileEncoders</C> and <C>WholeFileDecoders</C> are hashsets containing functions that
+  encode and decode an entire file. These are functions designed for graph formats where graphs
+  are declared across multiple lines, such as dreadnaut.<P/>
+
+  <C>IsWholeFileEncoder</C> and <C>IsWholeFileDecoder</C> are functions that check whether a given
+  argument belongs to the hashsets <C>WholeFileEncoders</C> and <C>WholeFileDecoders</C>, respectively. <P/>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DIMACSString">
+<ManSection>
+  <Oper Name="DIMACSString" Arg="digraph"/>
+  <Oper Name="DigraphFromDIMACSString" Arg="s"/>
+  <Returns>A string.</Returns>
+  <Description>
+    <C>DIMACSString</C> takes a single symmetric digraph <A>digraph</A>, and returns a string
+    representation of <A>digraph</A> in the DIMACS format. <P/>
+    
+    <C>DigraphFromDIMACSString</C> takes such a string and returns the single symmetric digraph which it describes. <P/>
+
+    For more information on the DIMACS format, see <Ref Oper="WriteDIMACSDigraph"/>.<P/>
+
+    These functions support file-based DIMACS encoding and decoding through <Ref Func="WriteDigraphs"/> and <Ref Func="ReadDigraphs"/>,
+    for consistency with other encoders and decoders. Alternatively, <Ref Oper="WriteDIMACSDigraph"/> and <Ref Oper="ReadDIMACSDigraph"/> may be used for direct DIMACS I/O.
+
+    <Example><![CDATA[
+gap> gr := Digraph([[2], [1, 3, 4], [2, 4], [2, 3]]);
+<immutable digraph with 4 vertices, 8 edges>
+gap> DIMACSString(gr);
+"p edge 4 4\ne 1 2\ne 2 3\ne 2 4\ne 3 4\nn 1 1\nn 2 2\nn 3 3\nn 4 4"
+gap> DigraphFromDIMACSString(last);
+<immutable digraph with 4 vertices, 8 edges>]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>

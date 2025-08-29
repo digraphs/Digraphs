@@ -38,8 +38,8 @@ fi;
 SetPackageInfo(rec(
 PackageName := "Digraphs",
 Subtitle := "Graphs, digraphs, and multidigraphs in GAP",
-Version := "1.10.0",
-Date := "14/02/2025",  # dd/mm/yyyy format
+Version := "1.11.0",
+Date := "28/08/2025",  # dd/mm/yyyy format
 License := "GPL-3.0-or-later",
 ArchiveFormats := ".tar.gz",
 
@@ -237,14 +237,23 @@ Persons := [
     FirstNames    := "Max",
     IsAuthor      := true,
     IsMaintainer  := false,
-    Email         := "horn@mathematik.uni-kl.de",
+    Email         := "mhorn@rptu.de",
     WWWHome       := "https://www.quendi.de/math",
     PostalAddress := Concatenation(
-                       "Fachbereich Mathematik, TU Kaiserslautern, ",
-                       "Gottlieb-Daimler-Straße 48, 67663 Kaiserslautern, ",
+                       "Fachbereich Mathematik, ",
+                       "RPTU Kaiserslautern-Landau, ",
+                       "Gottlieb-Daimler-Straße 48, ",
+                       "67663 Kaiserslautern, ",
                        "Germany"),
     Place         := "Kaiserslautern, Germany",
-    Institution   := "TU Kaiserslautern"),
+    Institution   := "RPTU Kaiserslautern-Landau"),
+
+  rec(
+    LastName      := "Jack",
+    FirstNames    := "Harry",
+    IsAuthor      := true,
+    IsMaintainer  := false,
+    Email         := "hrj4@st-andrews.ac.uk"),
 
   rec(
     LastName      := "Jefferson",
@@ -301,6 +310,13 @@ Persons := [
     Email        := "sm544@st-andrews.ac.uk"),
 
   rec(
+    LastName      := "Mohammadiyeh",
+    FirstNames    := "Seyyed Ali",
+    IsAuthor      := true,
+    IsMaintainer  := false,
+    Email         := "MaxBaseCode@Gmail.Com"),
+
+  rec(
     LastName      := "Orlitzky",
     FirstNames    := "Michael",
     IsAuthor      := true,
@@ -329,6 +345,13 @@ Persons := [
     IsAuthor      := true,
     IsMaintainer  := false,
     Email         := "dp211@st-andrews.ac.uk"),
+
+  rec(
+    LastName      := "Ragavan",
+    FirstNames    := "Pramoth",
+    IsAuthor      := true,
+    IsMaintainer  := false,
+    Email         := "107881923+pramothragavan@users.noreply.github.com"),
 
   rec(
     LastName      := "Racine",
@@ -399,6 +422,13 @@ Persons := [
     PostalAddress := _STANDREWSMATHS,
     Place         := "St Andrews",
     Institution   := "University of St Andrews"),
+
+  rec(
+    LastName      := "Vishvanath",
+    FirstNames    := "Agastyaa",
+    IsAuthor      := true,
+    IsMaintainer  := false,
+    Email         := "av215@st-andrews.ac.uk"),
 
   rec(
     LastName      := "Weiss",
@@ -533,6 +563,10 @@ AutoDoc := rec(
         Acknowledgements := """
           We would like to thank Christopher Jefferson for his help in including
           &BLISS; in &Digraphs;.
+
+          We also gratefully acknowledge the encouragement and assistance of
+          Leonard Soicher, and the inspiration of his &GRAPE; package, at many
+          points throughout the development of &Digraphs;.
 
           This package's methods for computing digraph homomorphisms are based
           on work by Max Neunh&#246;ffer, and independently Artur Sch&#228;fer.

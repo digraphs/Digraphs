@@ -645,3 +645,181 @@ function(digraph, source)
 
   return rec(distances := distances, parents := parents, edges := edges);
 end);
+
+#############################################################################
+# 5. Maximum Flow
+#############################################################################
+
+InstallMethod(DigraphMaximumFlow, "for an edge weighted digraph",
+[IsDigraph and HasEdgeWeights, IsPosInt, IsPosInt],
+function(digraph, start, destination)
+  local push, relabel, discharge, weights, vertices, nrVertices, outs, capacity,
+        flowMatrix, seen, height, excess, queue, u, outNeighbours, i, v, w,
+        flows, delta;
+
+  # Push flow from u to v
+  push := function(u, v)
+    local delta;
+
+    delta := Minimum(excess[u], capacity[u][v] - flowMatrix[u][v]);
+
+    flowMatrix[u][v] := flowMatrix[u][v] + delta;
+    flowMatrix[v][u] := flowMatrix[v][u] - delta;
+    excess[u]        := excess[u] - delta;
+    excess[v]        := excess[v] + delta;
+
+    if excess[v] = delta then
+      PlistDequePushBack(queue, v);
+    fi;
+  end;
+
+  # Decide height of u, which must be above any vertex it can flow to
+  relabel := function(u)
+    local d, v;
+    d := infinity;
+    for v in vertices do
+      if capacity[u][v] - flowMatrix[u][v] > 0 then
+        d := Minimum(d, height[v]);
+      fi;
+    od;
+    if d < infinity then
+      height[u] := d + 1;
+    fi;
+  end;
+
+  # Push all excess flow from u to other vertices
+  discharge := function(u)
+    local v;
+    while excess[u] > 0 do
+      if seen[u] <= nrVertices then
+        v := seen[u];
+        if capacity[u][v] - flowMatrix[u][v] > 0
+            and height[u] > height[v] then
+          push(u, v);
+        else
+          seen[u] := seen[u] + 1;
+        fi;
+      else
+        relabel(u);
+        seen[u] := 1;
+      fi;
+    od;
+  end;
+
+  # Extract important data
+  weights    := EdgeWeights(digraph);
+  vertices   := DigraphVertices(digraph);
+  nrVertices := Length(vertices);
+  outs       := OutNeighbors(digraph);
+
+  # Check input
+  if not start in vertices then
+    ErrorNoReturn("<start> must be a vertex of <digraph>,");
+  elif not destination in vertices then
+    ErrorNoReturn("<destination> must be a vertex of <digraph>,");
+  fi;
+
+  # Setup data structures
+  capacity   := EmptyPlist(nrVertices);
+  flowMatrix := EmptyPlist(nrVertices);
+  seen       := EmptyPlist(nrVertices);
+  height     := EmptyPlist(nrVertices);
+  excess     := EmptyPlist(nrVertices);
+  queue      := PlistDeque();
+  for u in vertices do
+    capacity[u]   := ListWithIdenticalEntries(nrVertices, 0);
+    flowMatrix[u] := ListWithIdenticalEntries(nrVertices, 0);
+    seen[u]       := 1;  # highest vertex to which we've pushed flow from u
+    height[u]     := 0;  # proximity to start (further is lower)
+    excess[u]     := 0;  # flow coming into u that isn't yet leaving u
+    if u <> start and u <> destination then
+      PlistDequePushBack(queue, u);
+    fi;
+  od;
+
+  # Compute total capacity from each u to v
+  for u in vertices do
+    outNeighbours := outs[u];
+    for i in [1 .. Size(outNeighbours)] do
+      v := outNeighbours[i];  # the out neighbour
+      w := weights[u][i];     # the weight to the out neighbour
+      capacity[u][v] := capacity[u][v] + w;
+    od;
+  od;
+
+  # start vertex is "top", with unlimited flow coming out
+  height[start] := nrVertices;
+  excess[start] := infinity;
+
+  # Push flow from start to the other vertices
+  for v in vertices do
+    if v <> start then
+      push(start, v);
+    fi;
+  od;
+
+  # Discharge from vertices until there are none left to do
+  while not IsEmpty(queue) do
+    u := PlistDequePopFront(queue);
+    if u <> start and u <> destination then
+      discharge(u);
+    fi;
+  od;
+
+  # Convert to output format: a list of lists with same shape as weights
+  flows := List(weights, l -> EmptyPlist(Length(l)));
+  for u in vertices do
+    for i in [1 .. Length(outs[u])] do
+      v := outs[u][i];
+      delta := Minimum(flowMatrix[u][v], weights[u][i]);
+      delta := Maximum(0, delta);
+      flowMatrix[u][v] := flowMatrix[u][v] - delta;
+      flows[u][i] := delta;
+    od;
+  od;
+
+  return flows;
+end);
+
+#############################################################################
+# 6. Random edge weighted digraphs
+#############################################################################
+
+BindGlobal("DIGRAPHS_RandomEdgeWeightedDigraphFilt",
+function(arg...)
+  local digraph, outs, weightsSource, weights;
+  # Create random digraph
+  digraph := CallFuncList(RandomDigraphCons, arg);
+  outs := OutNeighbours(digraph);
+
+  # Unique weights are taken randomly from [1..nredges]
+  weightsSource := Shuffle([1 .. DigraphNrEdges(digraph)]);
+  weights := List(DigraphVertices(digraph),
+                  u -> List(outs[u], _ -> Remove(weightsSource)));
+
+  return EdgeWeightedDigraph(digraph, weights);
+end);
+
+InstallMethod(RandomUniqueEdgeWeightedDigraph,
+"for a pos int", [IsPosInt],
+n -> RandomUniqueEdgeWeightedDigraph(IsImmutableDigraph, n));
+
+InstallMethod(RandomUniqueEdgeWeightedDigraph,
+"for a pos int and a float", [IsPosInt, IsFloat],
+{n, p} -> RandomUniqueEdgeWeightedDigraph(IsImmutableDigraph, n, p));
+
+InstallMethod(RandomUniqueEdgeWeightedDigraph,
+"for a pos int and a rational", [IsPosInt, IsRat],
+{n, p} -> RandomUniqueEdgeWeightedDigraph(IsImmutableDigraph, n, p));
+
+InstallMethod(RandomUniqueEdgeWeightedDigraph,
+"for a function and a pos int", [IsFunction, IsPosInt],
+DIGRAPHS_RandomEdgeWeightedDigraphFilt);
+
+InstallMethod(RandomUniqueEdgeWeightedDigraph,
+"for a function, a pos int, and a float", [IsFunction, IsPosInt, IsFloat],
+DIGRAPHS_RandomEdgeWeightedDigraphFilt);
+
+InstallMethod(RandomUniqueEdgeWeightedDigraph,
+"for a function, a pos int, and a rational", [IsFunction, IsPosInt, IsRat],
+DIGRAPHS_RandomEdgeWeightedDigraphFilt);
