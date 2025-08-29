@@ -58,6 +58,7 @@ Persons := [
     IsAuthor      := true,
     IsMaintainer  := false,
     Email         := "jdebeule@cage.ugent.be",
+    GithubUsername:= "jdebeule",
     WWWHome       := "https://wids.research.vub.be/en/jan-de-beule",
     PostalAddress := Concatenation([
                      "Vrije Universiteit Brussel, ",
@@ -74,6 +75,7 @@ Persons := [
     IsAuthor      := true,
     IsMaintainer  := false,
     Email         := "j.jonusas@gmail.com",
+    GithubUsername:= "jjonusas",
     WWWHome       := "http://julius.jonusas.work",
     Place         := "Brussels, Belgium"),
 
@@ -83,6 +85,7 @@ Persons := [
     IsAuthor      := true,
     IsMaintainer  := true,
     Email         := "jdm3@st-andrews.ac.uk",
+    GithubUsername:= "james-d-mitchell",
     WWWHome       := "https://jdbm.me",
     PostalAddress := _STANDREWSMATHS,
     Place         := "St Andrews",
@@ -94,6 +97,7 @@ Persons := [
     IsAuthor      := true,
     IsMaintainer  := true,
     Email         := "gap@wilf-wilson.net",
+    GithubUsername:= "wilfwilson",
     WWWHome       := "https://wilf.me"),
 
   rec(
@@ -102,6 +106,7 @@ Persons := [
     IsAuthor      := true,
     IsMaintainer  := true,
     Email         := "mct25@st-andrews.ac.uk",
+    GithubUsername:= "mtorpey",
     WWWHome       := "https://myoung.uk/work/",
     PostalAddress := _STANDREWSCS,
     Place         := "St Andrews",
@@ -114,6 +119,7 @@ Persons := [
     IsAuthor      := true,
     IsMaintainer  := false,
     Email         := "mam49@st-andrews.ac.uk",
+    GithubUsername:= "marinaanagno",
     PostalAddress := _STANDREWSMATHS,
     Place         := "St Andrews",
     Institution   := "University of St Andrews"),
@@ -124,6 +130,7 @@ Persons := [
     IsAuthor      := true,
     IsMaintainer  := false,
     Email         := "finneganlbuck@gmail.com",
+    GithubUsername:= "finnbuck",
     PostalAddress := _STANDREWSMATHS,
     Place         := "St Andrews",
     Institution   := "University of St Andrews"),
@@ -134,19 +141,22 @@ Persons := [
     IsAuthor      := true,
     IsMaintainer  := false,
     Email         := "stuartburrell1994@gmail.com",
+    GithubUsername:= "stuartburrell",
     WWWHome       := "https://stuartburrell.github.io"),
 
   rec(
     LastName      := "Campbell",
     FirstNames    := "Graham",
     IsAuthor      := true,
-    IsMaintainer  := false),
+    IsMaintainer  := false,
+    GithubUsername:= "GrahamCampbell"),
 
   rec(
     LastName      := "Chowdhury",
     FirstNames    := "Raiyan",
     IsAuthor      := true,
-    IsMaintainer  := false),
+    IsMaintainer  := false,
+    GithubUsername:= "RaiyanC"),
 
   rec(
     LastName      := "Cirpons",
@@ -154,6 +164,7 @@ Persons := [
     IsAuthor      := true,
     IsMaintainer  := false,
     Email         := "rc234@st-andrews.ac.uk",
+    GithubUsername:= "reiniscirpons",
     PostalAddress := _STANDREWSMATHS,
     Place         := "St Andrews",
     Institution   := "University of St Andrews"),
@@ -164,6 +175,7 @@ Persons := [
     IsAuthor      := true,
     IsMaintainer  := false,
     Email         := "ac323@st-andrews.ac.uk",
+    GithubUsername:= "AshleyClayton",
     PostalAddress := _STANDREWSMATHS,
     Place         := "St Andrews",
     Institution   := "University of St Andrews"),
@@ -174,6 +186,7 @@ Persons := [
     IsAuthor      := true,
     IsMaintainer  := false,
     Email         := "tom.contileslie@gmail.com",
+    GithubUsername:= "tomcontileslie",
     WWWHome       := "https://tomcontileslie.com"),
 
   rec(
@@ -182,6 +195,7 @@ Persons := [
     IsAuthor      := true,
     IsMaintainer  := false,
     Email         := "jde1@st-andrews.ac.uk",
+    GithubUsername:= "Joseph-Edwards",
     PostalAddress := _STANDREWSMATHS,
     Place         := "St Andrews",
     Institution   := "University of St Andrews",
@@ -193,6 +207,7 @@ Persons := [
     IsAuthor      := true,
     IsMaintainer  := false,
     Email         := "luna.elliott142857@gmail.com",
+    GithubUsername:= "le27",
     Institution   := "University of Manchester",
     WWWHome       := Concatenation("https://research.manchester.ac.uk/",
                      "en/persons/luna-elliott")),
@@ -202,35 +217,40 @@ Persons := [
     FirstNames    := "Isuru",
     IsAuthor      := true,
     IsMaintainer  := false,
-    Email         := "isuruf@gmail.com"),
+    Email         := "isuruf@gmail.com",
+    GithubUsername:= "isuruf"),
 
   rec(
     LastName      := "Gilligan",
     FirstNames    := "Ewan",
     IsAuthor      := true,
     IsMaintainer  := false,
-    Email         := "eg207@st-andrews.ac.uk"),
+    Email         := "eg207@st-andrews.ac.uk",
+    GithubUsername:= "EwanGilligan"),
 
   rec(
     LastName      := "Frankie",
     FirstNames    := "Gillis",
     IsAuthor      := true,
     IsMaintainer  := false,
-    Email         := "fotg1@st-andrews.ac.uk"),
+    Email         := "fotg1@st-andrews.ac.uk",
+    GithubUsername:= "frankiegillis"),
 
   rec(
     LastName      := "Gutsche",
     FirstNames    := "Sebastian",
     IsAuthor      := true,
     IsMaintainer  := false,
-    Email         := "gutsche@momo.math.rwth-aachen.de"),
+    Email         := "gutsche@momo.math.rwth-aachen.de",
+    GithubUsername:= "sebasguts"),
 
   rec(
     LastName      := "Harper",
     FirstNames    := "Samantha",
     IsAuthor      := true,
     IsMaintainer  := false,
-    Email         := "seh25@st-andrews.ac.uk"),
+    Email         := "seh25@st-andrews.ac.uk",
+    GithubUsername:= "samanthaharper"),
 
   rec(
     LastName      := "Horn",
@@ -238,6 +258,7 @@ Persons := [
     IsAuthor      := true,
     IsMaintainer  := false,
     Email         := "mhorn@rptu.de",
+    GithubUsername:= "fingolfin",
     WWWHome       := "https://www.quendi.de/math",
     PostalAddress := Concatenation(
                        "Fachbereich Mathematik, ",
@@ -253,7 +274,8 @@ Persons := [
     FirstNames    := "Harry",
     IsAuthor      := true,
     IsMaintainer  := false,
-    Email         := "hrj4@st-andrews.ac.uk"),
+    Email         := "hrj4@st-andrews.ac.uk",
+    GithubUsername:= "hrj4"),
 
   rec(
     LastName      := "Jefferson",
@@ -261,6 +283,7 @@ Persons := [
     IsAuthor      := true,
     IsMaintainer  := false,
     Email         := "caj21@st-andrews.ac.uk",
+    GithubUsername:= "ChrisJefferson",
     WWWHome       := "https://heather.cafe/",
     PostalAddress := _STANDREWSCS,
     Place         := "St Andrews",
@@ -271,7 +294,8 @@ Persons := [
     FirstNames    := "Malachi",
     IsAuthor      := true,
     IsMaintainer  := false,
-    Email         := "zlj1@st-andrews.ac.uk"),
+    Email         := "zlj1@st-andrews.ac.uk",
+    GithubUsername:= "zljlzljlz"),
 
   rec(
     LastName      := "Konovalov",
@@ -280,41 +304,49 @@ Persons := [
     IsMaintainer  := false,
     PostalAddress := _STANDREWSCS,
     Email         := "obk1@st-andrews.ac.uk",
+    GithubUsername:= "olexandr-konovalov",
     WWWHome       := "https://olexandr-konovalov.github.io/",
     Place         := "St Andrews",
     Institution   := "University of St Andrews"),
 
-  rec(LastName     := "Kwon",
-      FirstNames   := "Hyeokjun",
-      IsAuthor     := true,
-      IsMaintainer := false,
-      Email        := "hk78@st-andrews.ac.uk"),
+  rec(
+    LastName      := "Kwon",
+    FirstNames    := "Hyeokjun",
+    IsAuthor      := true,
+    IsMaintainer  := false,
+    Email         := "hk78@st-andrews.ac.uk",
+    GithubUsername:= "Jun2M"),
 
-  rec(LastName     := "Lau",
-      FirstNames   := "Aidan",
-      IsAuthor     := true,
-      IsMaintainer := false),
+  rec(
+    LastName      := "Lau",
+    FirstNames    := "Aidan",
+    IsAuthor      := true,
+    IsMaintainer  := false,
+    GithubUsername:= "forktree"),
 
   rec(
     LastName      := "Lee",
     FirstNames    := "Andrea",
     IsAuthor      := true,
     IsMaintainer  := false,
-    Email         := "ahwl1@st-andrews.ac.uk"),
+    Email         := "ahwl1@st-andrews.ac.uk",
+    GithubUsername:= "baydrea"),
 
   rec(
-    LastName     := "McIver",
-    FirstNames   := "Saffron",
-    IsAuthor     := true,
-    IsMaintainer := false,
-    Email        := "sm544@st-andrews.ac.uk"),
+    LastName      := "McIver",
+    FirstNames    := "Saffron",
+    IsAuthor      := true,
+    IsMaintainer  := false,
+    Email         := "sm544@st-andrews.ac.uk",
+    GithubUsername:= "saffronmciver"),
 
   rec(
     LastName      := "Mohammadiyeh",
     FirstNames    := "Seyyed Ali",
     IsAuthor      := true,
     IsMaintainer  := false,
-    Email         := "MaxBaseCode@Gmail.Com"),
+    Email         := "MaxBaseCode@Gmail.Com",
+    GithubUsername:= "BaseMax"),
 
   rec(
     LastName      := "Orlitzky",
@@ -322,14 +354,16 @@ Persons := [
     IsAuthor      := true,
     IsMaintainer  := false,
     Email         := "michael@orlitzky.com",
-    WWWHome       := "https://michael.orlitzky.com/"),
+    GithubUsername:= "orlitzky",
+    WWWHome       := "https://michael.orlitzky.com/",
 
   rec(
     LastName      := "Pancer",
     FirstNames    := "Matthew",
     IsAuthor      := true,
     IsMaintainer  := false,
-    Email         := "mp322@st-andrews.ac.uk"),
+    Email         := "mp322@st-andrews.ac.uk",
+    GithubUsername:= "mpan322"),
 
   rec(
     LastName      := "Pfeiffer",
@@ -337,6 +371,7 @@ Persons := [
     IsAuthor      := true,
     IsMaintainer  := false,
     Email         := "markus.pfeiffer@morphism.de",
+    GithubUsername:= "markuspf",
     WWWHome       := "https://markusp.morphism.de/"),
 
   rec(
@@ -344,14 +379,16 @@ Persons := [
     FirstNames    := "Daniel",
     IsAuthor      := true,
     IsMaintainer  := false,
-    Email         := "dp211@st-andrews.ac.uk"),
+    Email         := "dp211@st-andrews.ac.uk",
+    GithubUsername:= "DanielPointon"),
 
   rec(
     LastName      := "Ragavan",
     FirstNames    := "Pramoth",
     IsAuthor      := true,
     IsMaintainer  := false,
-    Email         := "107881923+pramothragavan@users.noreply.github.com"),
+    Email         := "107881923+pramothragavan@users.noreply.github.com",
+    GithubUsername:= "pramothragavan"),
 
   rec(
     LastName      := "Racine",
@@ -359,6 +396,7 @@ Persons := [
     IsAuthor      := true,
     IsMaintainer  := false,
     Email         := "lr217@st-andrews.ac.uk",
+    GithubUsername:= "LRacine",
     PostalAddress := _STANDREWSCS,
     Place         := "St Andrews",
     Institution   := "University of St Andrews"),
@@ -367,7 +405,8 @@ Persons := [
     LastName      := "Russell",
     FirstNames    := "Christopher",
     IsAuthor      := true,
-    IsMaintainer  := false),
+    IsMaintainer  := false,
+    GithubUsername:= "ChristopherRussell"),
 
   rec(
     LastName      := "Schaefer",
@@ -382,6 +421,7 @@ Persons := [
     IsAuthor      := true,
     IsMaintainer  := false,
     Email         := "iscott@uchicago.edu",
+    GithubUsername:= "AlanMT",
     Place         := "Chicago",
     Institution   := "University of Chicago"),
 
@@ -391,6 +431,7 @@ Persons := [
     IsAuthor      := true,
     IsMaintainer  := false,
     Email         := "kks4@st-andrews.ac.uk",
+    GithubUsername:= "KamranKSharma",
     PostalAddress := _STANDREWSCS,
     Place         := "St Andrews",
     Institution   := "University of St Andrews"),
@@ -401,6 +442,7 @@ Persons := [
     IsAuthor      := true,
     IsMaintainer  := false,
     Email         := "fls3@st-andrews.ac.uk",
+    GithubUsername:= "flsmith",
     PostalAddress := _STANDREWSMATHS,
     Place         := "St Andrews",
     Institution   := "University of St Andrews"),
@@ -410,7 +452,8 @@ Persons := [
     FirstNames    := "Ben",
     IsAuthor      := true,
     IsMaintainer  := false,
-    Email         := "bspiers972@outlook.com"),
+    Email         := "bspiers972@outlook.com",
+    GithubUsername:= "bspiers"),
 
   rec(
     LastName      := "Tsalakou",
@@ -418,6 +461,7 @@ Persons := [
     IsAuthor      := true,
     IsMaintainer  := false,
     Email         := "mt200@st-andrews.ac.uk",
+    GithubUsername:= "mariatsalakou",
     WWWHome       := "https://mariatsalakou.github.io/",
     PostalAddress := _STANDREWSMATHS,
     Place         := "St Andrews",
@@ -428,7 +472,8 @@ Persons := [
     FirstNames    := "Agastyaa",
     IsAuthor      := true,
     IsMaintainer  := false,
-    Email         := "av215@st-andrews.ac.uk"),
+    Email         := "av215@st-andrews.ac.uk",
+    GithubUsername:= "BlueRidingHood"),
 
   rec(
     LastName      := "Weiss",
@@ -436,6 +481,7 @@ Persons := [
     IsAuthor      := true,
     IsMaintainer  := false,
     Email         := "weiss@art.rwth-aachen.de",
+    GithubUsername:= "MeikeWeiss",
     WWWHome       := "https://bit.ly/4e6pUeP",
     PostalAddress := Concatenation("Chair of Algebra and Representation ",
                      "Theory, Pontdriesch 10-16, 52062 Aachen"),
@@ -448,6 +494,7 @@ Persons := [
     IsAuthor      := true,
     IsMaintainer  := false,
     Email         := "mw231@st-andrews.ac.uk",
+    GithubUsername:= "MTWhyte",
     PostalAddress := _STANDREWSMATHS,
     Place         := "St Andrews",
     Institution   := "University of St Andrews"),
@@ -457,7 +504,8 @@ Persons := [
     FirstNames    := "Fabian",
     IsAuthor      := true,
     IsMaintainer  := false,
-    Email         := "f.zickgraf@dashdos.com")],
+    Email         := "f.zickgraf@dashdos.com"),
+    GithubUsername:= "zickgraf"],
 
 Status := "deposited",
 
