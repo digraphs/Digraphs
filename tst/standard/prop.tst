@@ -1074,6 +1074,8 @@ gap> IsDirectedTree(D);
 false
 gap> IsDirectedForest(D);
 true
+gap> D;
+<immutable directed forest with 17 vertices, 2 components>
 
 #  IsUndirectedTree
 gap> g := Digraph([]);
