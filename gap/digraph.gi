@@ -582,22 +582,26 @@ function(D)
       elif HasIsMeetSemilatticeDigraph(D) and IsMeetSemilatticeDigraph(D) then
         Append(str, "meet semilattice ");
       fi;
-    elif HasIsUndirectedTree(D) and IsUndirectedTree(D) then
-      Append(str, "undirected tree ");
+    elif (HasIsUndirectedTree(D) and IsUndirectedTree(D))
+        or (HasIsDirectedTree(D) and IsDirectedTree(D)) then
+      if HasIsUndirectedTree(D) and IsUndirectedTree(D) then
+        Append(str, "un");
+      fi;
+      Append(str, "directed tree ");
       display_nredges := false;
       display_digraph := false;
-    elif HasIsUndirectedForest(D) and IsUndirectedForest(D) then
-      Append(str, "undirected forest ");
+    elif (HasIsUndirectedForest(D) and IsUndirectedForest(D))
+        or (HasIsDirectedForest(D) and IsDirectedForest(D)) then
+      if HasIsUndirectedForest(D) and IsUndirectedForest(D) then
+        Append(str, "un");
+      fi;
+      Append(str, "directed forest ");
       display_nredges := false;
       display_digraph := false;
       if HasDigraphNrConnectedComponents(D) then
         suffix := Concatenation(String(DigraphNrConnectedComponents(D)),
                                 " components");
       fi;
-    elif HasIsDirectedTree(D) and IsDirectedTree(D) then
-      Append(str, "directed tree ");
-      display_nredges := false;
-      display_digraph := false;
     elif HasIsTournament(D) and IsTournament(D) then
       Append(str, "tournament ");
       display_nredges := false;
