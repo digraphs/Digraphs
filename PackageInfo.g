@@ -413,6 +413,13 @@ Persons := [
     Email         := "bspiers972@outlook.com"),
 
   rec(
+    LastName      := "Toner",
+    FirstNames    := "Mark",
+    IsAuthor      := true,
+    IsMaintainer  := false,
+    Email         := "mark.toner@live.com"),
+
+  rec(
     LastName      := "Tsalakou",
     FirstNames    := "Maria",
     IsAuthor      := true,

@@ -1,0 +1,245 @@
+<#GAPDoc Label="DigraphCrossingNumberUpperBound">
+<ManSection>
+  <Attr Name="DigraphCrossingNumberUpperBound" Arg="digraph"/>
+  <Returns>A non-negative integer.</Returns>
+  <Description>
+    If <A>digraph</A> is a digraph, then <C>DigraphCrossingNumberUpperBound(<A>digraph</A>)</C>
+    returns the best known upper bound for the crossing number of <A>digraph</A>
+    <P/>
+
+    If <A>digraph</A> is planar it will return 0, if the digraph contains multiple parallel edges there
+    could be a lack of applicable theorems and the upper bound could become infinite. If the crossing
+    for <A>digraph</A> can be calculated this method will return that value.
+
+    <Example><![CDATA[
+gap> D := CompleteDigraph(5);;
+gap> DigraphCrossingNumberUpperBound(D);
+4
+gap> D := Digraph([[1, 2, 4, 4], [1, 3, 4], [2, 1], [1, 2]]);
+<immutable multidigraph with 4 vertices, 11 edges>
+gap> DigraphCrossingNumberUpperBound(D);
+0
+gap> D := CompleteBipartiteDigraph(5, 4);;
+gap> DigraphCrossingNumberUpperBound(D);
+32]]></Example>
+</Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphCrossingNumberLowerBound">
+<ManSection>
+  <Attr Name="DigraphCrossingNumberUpperBound" Arg="digraph"/>
+  <Returns>A non-negative integer.</Returns>
+  <Description>
+    If <A>digraph</A> is a digraph, then <C>DigraphCrossingNumberLowerBound(<A>digraph</A>)</C>
+    returns the best known lower bound for the crossing number of <A>digraph</A>
+    <P/>
+
+    If <A>digraph</A> is planar it will return 0. If the crossing
+    for <A>digraph</A> can be calculated this method will return that value.
+
+    <Example><![CDATA[
+gap> D := CompleteDigraph(6);;
+gap> DigraphCrossingNumberLowerBound(D);
+12
+gap> D := Digraph([[1, 2, 4, 4, 5], [1, 3, 4, 5], [2, 1, 5], [1, 2, 4, 5], [1, 2]]);
+<immutable multidigraph with 5 vertices, 18 edges>
+gap> DigraphCrossingNumberLowerBound(D);
+0
+gap> D := CompleteBipartiteDigraph([5, 4, 5, 6]);;
+gap> DigraphCrossingNumberLowerBound(D);
+2282]]></Example>
+</Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphAddVertexCrossingPoint">
+<ManSection>
+  <Oper Name="DigraphAddVertexCrossingPoint" Arg="digraph, edge1, edge2"/>
+  <Returns>A <C>digraph</C> </Returns>
+  <Description>
+    If <A>digraph</A> is a digraph and <A>edge1,edge2</A> are edges in the
+    digraph, then adds a new vertex to <A>digraph</A> between <A>edge1</A> 
+    and <A>edge2</A>. Changes the edges of <A>digraph</A> by removing both 
+    <A>edge1</A> and <A>edge2</A> and adding an edge from <A>edge1[1]</A> 
+    to the new vertex and from the new vertex to <A>edge1[2]</A>, 
+    likewise for <A>edge[2]</A> for four new edges total. Returns the 
+    updated digraph if successful. Fails if <A>edge1</A> = <A>edge2</A>,
+    if any of the edges are loops, or if the edges are not present in the
+    <A>digraph</A>.
+    <Example><![CDATA[
+gap> D := CycleDigraph(4);;
+gap> DigraphAddVertexCrossingPoint(D, [1, 2], [2, 3]);
+<immutable digraph with 5 vertices, 6 edges>
+gap> D := CompleteDigraph(4);;
+gap> DigraphAddVertexCrossingPoint(D, [3, 5], [4, 3]);
+<immutable digraph with 7 vertices, 32 edges>
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="IsCubicDigraph">
+<ManSection>
+  <Prop Name="IsCubicDigraph" Arg="digraph"/>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
+  <Description>
+    A <E>cubic digraph</E> is a digraph where each vertex has degree three.
+    Returns <K>true</K> if <A>digraph</A> is a cubic digraph and <K>false</K> if 
+    it is not. Will always return <K>false</K> if <A>digraph</A> has loops or
+    is a multidigraph.
+    <Example><![CDATA[
+gap> D := RandomTournament(4);
+<immutable tournament with 4 vertices>
+gap> IsCubicDigraph(D);
+true
+gap> D := Digraph([[2, 4], [3, 6], [4, 5], [], [1], [4, 5]]);
+<immutable digraph with 6 vertices, 9 edges>
+gap> IsCubicDigraph(D);
+true
+gap> D := CycleDigraph(7);
+<immutable cycle digraph with 7 vertices>
+gap> IsCubicDigraph(D);
+false
+gap> D := Digraph([[1, 1, 1]]);                   
+<immutable multidigraph with 1 vertex, 3 edges>
+gap> IsCubicDigraph(D);      
+false
+gap> D := CompleteMultipartiteDigraph([2, 3, 4, 1]);
+<immutable complete multipartite digraph with 10 vertices, 70 edges>
+gap> IsCubicDigraph(D);
+false]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="IsSemicompleteDigraph">
+<ManSection>
+  <Prop Name="IsSemicompleteDigraph" Arg="digraph"/>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
+  <Description>
+    A <E>semicomplete digraph</E> is a digraph with at least on edge between
+    every pair of vertices. Returns <K>true</K> if <A>digrah</A> is semicomplete 
+    and <K>false</K> if it is not. Will always return <K>false</K> if 
+    <A>digraph</A> has loops or is a multidigraph. Returns <K>true</K> if
+    <A>digraph</A> is a tournament or complete digraph.
+    <Example><![CDATA[
+gap> D := RandomTournament(4);
+<immutable tournament with 4 vertices>
+gap> IsSemiComplete(D);
+true
+gap> D := Digraph([[2, 4], [3, 6], [4, 5], [], [1], [4, 5]]);
+<immutable digraph with 6 vertices, 9 edges>
+gap> IsSemicompleteDigraph(D);
+false
+gap> D := CompleteDigraph(7);
+<immutable complete digraph with 7 vertices>
+gap> IsCubicDigraph(D);
+true
+gap> D := Digraph([[1, 1, 1]]);                   
+<immutable multidigraph with 1 vertex, 3 edges>
+gap> IsSemicompleteDigraph(D);      
+false
+gap> D := CompleteMultipartiteDigraph([2, 3, 4, 1]);
+<immutable complete multipartite digraph with 10 vertices, 70 edges>
+gap> IsCubicDigraph(D);
+false]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphAllThreeCycles">
+<ManSection>
+  <Attr Name="DigraphAllThreeCircuits" Arg="digraph"/>
+  <Returns>A list of lists of three positive integers</Returns>
+  <Description>
+    Returns all possible three cycles in the digraph <A>digraph</A>. <P/>
+
+    A three cycle of a digraph is a directed cycle of length 3.
+
+    The returned list is sorted in increasing order of first vertex. 
+    Looping and repeated edges are not considered for creating possible
+    three cycles. 
+    <Example><![CDATA[
+gap> D := CompleteDigraph(4);;
+gap> DigraphAllThreeCircuits(D);
+[ [ 1, 2, 3 ], [ 1, 2, 4 ], [ 1, 3, 2 ], [ 1, 3, 4 ], [ 1, 4, 2 ], 
+  [ 1, 4, 3 ], [ 2, 3, 4 ], [ 2, 4, 3 ] ]
+gap> D := Digraph([[2], [3], [1]]);;
+gap> DigraphAllThreeCircuits(D);
+[ [ 1, 2, 3 ] ]
+gap> D := Digraph([[2, 4, 5], [1, 3], [1, 5], [5], [1, 4]]);;
+gap> DigraphAllThreeCircuits(D);
+[ [ 1, 2, 3 ], [ 1, 4, 5 ] ]
+gap> D := CompleteDigraph(3);;
+gap> DigraphAllThreeCircuits(D);
+[ [ 1, 2, 3 ], [ 1, 3, 2 ] ]
+gap> D := DigraphAddAllLoops(D);;
+gap> DigraphAllThreeCircuits(D);
+[ [ 1, 2, 3 ], [ 1, 3, 2 ] ]
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+
+<#GAPDoc Label="DigraphAllTriangles">
+<ManSection>
+  <Attr Name="DigraphAllTriangles" Arg="digraph"/>
+  <Returns>A list of lists of three positive integers</Returns>
+  <Description>
+    Returns all possible triangles in the digraph <A>digraph</A>. <P/>
+
+    A triangles of a digraph is an undirected cycle of length 3.
+
+    The returned list is sorted in lexicographic order on vertices. 
+    Looping and repeated edges are not considered for creating possible
+    triangless. 
+    <Example><![CDATA[
+gap> D := CompleteDigraph(4);;
+gap> DigraphAllTriangles(D);
+[ [ 1, 2, 3 ], [ 1, 2, 4 ], [ 1, 3, 4 ], [ 2, 3, 4 ] ]
+gap> D := Digraph([[2], [3], [1]]);;
+gap> DigraphAllTriangles(D);
+[ [ 1, 2, 3 ] ]
+gap> D := Digraph([[2, 4, 5], [1, 3], [1, 5], [5], [4]]);;
+gap> DigraphAllTriangles(D);
+[ [ 1, 2, 3 ], [ 1, 3, 5 ], [ 1, 4, 5 ] ]
+gap> D := CompleteDigraph(3);;
+gap> D := DigraphAddAllLoops(D);;
+gap> DigraphAllTriangles(D);
+[ [ 1, 2, 3 ] ]
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphLargePlanarSubdigraph">
+<ManSection>
+  <Attr Name="DigraphLargePlanarSubdigraph" Arg="digraph"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+  An implementation of Algorithm A described by Calinescu et al. <Cite Key="CALINESCU1997"/>
+  which finds a large planar subgraph of a non-planar graph.
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="CompleteMultipartiteDigraphPartitionSize">
+<ManSection>
+  <Attr Name="CompleteMultipartiteDigraphPartitionSize" Arg="digraph"/>
+  <Returns>A list of positive integers.</Returns>
+  <Description>
+    Returns a list of the sizes of the partitions of a complete multipartite 
+    digraph <A>digraph</A>, the partitions are sorted in increasing order.
+    <P/>
+    <Example><![CDATA[
+gap> D := CompleteBipartiteDigraph(3, 4);;
+gap> CompleteMultipartiteDigraphPartitionSize(D);
+[ 3, 4 ]
+gap> D := CompleteMultipartiteDigraph([1, 5, 3]);  
+gap> CompleteMultipartiteDigraphPartitionSize(D);
+[ [ 1, 2, 3 ] ]]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
