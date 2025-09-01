@@ -820,7 +820,7 @@ package](https://gap-packages.github.io/orb), or newer.
 
 This release of Digraphs contains some bugfixes, along with the following new features:
 
-* The GraphViz engine used by `Splash` is now configurable, thanks to [Markus Pfeiffer](https://www.morphism.de/~markusp).
+* The GraphViz engine used by `Splash` is now configurable, thanks to [Markus Pfeiffer][].
 * The properties `IsPartialOrderDigraph`, `IsPreorderDigraph`, and `IsQuasiorderDigraph` were introduced by Chris Russell, along with the following functions for visualising these kinds of digraphs:
   * `DotPartialOrderDigraph`
   * `DotPreorderDigraph`
@@ -1166,12 +1166,12 @@ Pre-release version that was not made publicly available.
 
 [James D. Mitchell]: https://jdbm.me
 [Wilf A. Wilson]: https://wilf.me
-[Michael Young]: https://mct25.host.cs.st-andrews.ac.uk
+[Michael Young]: https://myoung.uk/work
 [Julius Jonusas]: http://julius.jonusas.work
-[Jan De Beule]: http://homepages.vub.ac.be/~jdbeule
-[Markus Pfeiffer]: https://www.morphism.de/~markusp
+[Jan De Beule]: https://researchportal.vub.be/en/persons/jan-de-beule
+[Markus Pfeiffer]: https://markusp.morphism.de
 [Maria Tsalakou]: https://mariatsalakou.github.io
-[Chris Jefferson]: https://caj.host.cs.st-andrews.ac.uk
+[Chris Jefferson]: https://heather.cafe
 [bliss]: http://www.tcs.hut.fi/Software/bliss/
 [Max Horn]: https://www.quendi.de/math
 [Edge Addition Planarity Suite]: https://github.com/graph-algorithms/edge-addition-planarity-suite
