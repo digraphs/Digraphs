@@ -1,0 +1,5 @@
+---
+layout: default
+---
+{% capture readme %}{% include_relative lib-README.md %}{% endcapture %}
+{{ readme | markdownify }}

@@ -8,11 +8,7 @@ layout: default
 
 The current version of this package is version {{site.data.package.version}}, released on {{site.data.package.date}}.
 For more information, please refer to [the package manual]({{site.data.package.doc-html}}).
-There is also a [README](README.html) file.
-
-{% if site.data.package.license %}
-  License: [{{ site.data.package.license }}](https://spdx.org/licenses/{{ site.data.package.license }})
-{% endif %}
+There is also a [README](README.html) file and a [CHANGELOG](CHANGELOG.html).
 
 ## Dependencies
 
@@ -32,6 +28,12 @@ The following additional GAP packages are not required, but suggested:
 {% endfor %}
 {% endif %}
 
+## Digraphs library
+
+There is a companion library of various digraphs that can be useful for testing
+and experiments.
+[Version 0.6 of this library is available to download here](digraphs-lib-0.6.tar.gz).
+There is also a corresponding [README](lib-README.html) file for this library.
 
 ## Author{% if site.data.package.authors.size != 1 %}s{% endif %}
 {% for person in site.data.package.authors %}
@@ -47,23 +49,26 @@ The following additional GAP packages are not required, but suggested:
  {% endfor %}
 {% endif %}
 
-{% if site.data.package.citeas %}
-## Citing
-
-Please, cite this package as
-
-{{site.data.package.citeas}}
-
-You can get more info by typing `Cite("{{ site.data.package.name }}");` in the gap prompt.
-
-{% include button-bibtex.html %}
-
-{% endif %}
-
-
 {% if site.github.issues_url %}
 ## Feedback
 
 For bug reports, feature requests and suggestions, please use the
 [issue tracker]({{site.github.issues_url}}).
 {% endif %}
+
+## How to cite {{site.data.package.name}}
+If you are using BibTeX, you can use the following BibTeX entry for the current 
+version of {{site.data.package.name}}:
+
+<pre style="white-space: pre-wrap;">@misc{DeBeule{{site.data.package.date | date: "%Y"}}aa,
+      Author = { Jan De Beule and
+                 Julius Jonu{\v s}as and
+                 James D. Mitchell and
+                 Michael Torpey and
+                 Maria Tsalakou and
+                 Wilf A. Wilson },
+      Title  = { Digraphs - {GAP} package, Version {{site.data.package.version}} },
+      Month  = { {{site.data.package.date | date: "%b"}} },
+      Year   = { {{site.data.package.date | date: "%Y"}} },
+      Url    = { https://digraphs.github.io/Digraphs }
+}</pre>
