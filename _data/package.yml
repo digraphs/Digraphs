@@ -134,6 +134,7 @@ suggested-pkgs:
 
 www: https://digraphs.github.io/Digraphs
 readme: README.md
+changes: CHANGELOG.md
 packageinfo: https://digraphs.github.io/Digraphs/PackageInfo.g
 
 downloads:

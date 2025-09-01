@@ -136,6 +136,9 @@ GeneratePackageYML:=function(pkg)
     tmp := SplitString(pkg.README_URL,"/");
     tmp := tmp[Length(tmp)];  # extract README filename (typically "README" or "README.md")
     AppendTo(stream, "readme: ", tmp, "\n");
+    tmp := SplitString(pkg.CHANGES_URL,"/");
+    tmp := tmp[Length(tmp)];  # extract CHANGES filename (typically "CHANGES", "CHANGES.md", or "CHANGELOG.md")
+    AppendTo(stream, "changes: ", tmp, "\n");
     AppendTo(stream, "packageinfo: ", pkg.PackageInfoURL, "\n");
     if IsBound(pkg.GithubWWW) then
         AppendTo(stream, "github: ", pkg.GithubWWW, "\n");
