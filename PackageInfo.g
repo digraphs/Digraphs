@@ -59,7 +59,7 @@ Persons := [
     IsMaintainer   := false,
     Email          := "jdebeule@cage.ugent.be",
     GithubUsername := "jdebeule",
-    WWWHome        := "https://wids.research.vub.be/en/jan-de-beule",
+    WWWHome        := "https://researchportal.vub.be/en/persons/jan-de-beule",
     PostalAddress  := Concatenation([
                       "Vrije Universiteit Brussel, ",
                       " Vakgroep Wiskunde, ",
