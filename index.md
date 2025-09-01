@@ -10,6 +10,10 @@ The current version of this package is version {{site.data.package.version}}, re
 For more information, please refer to [the package manual]({{site.data.package.doc-html}}).
 There is also a [README](README.html) file and a [CHANGELOG](CHANGELOG.html).
 
+{% if site.data.package.license %}
+  License: [{{ site.data.package.license }}](https://spdx.org/licenses/{{ site.data.package.license }})
+{% endif %}
+
 ## Dependencies
 
 This package requires GAP version {{site.data.package.GAP}}
