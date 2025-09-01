@@ -4,6 +4,14 @@ Wilf A. Wilson, Michael Young et al.
 
 Licensing information can be found in the `LICENSE` file.
 
+## Version 1.12.0 (released 02/09/2025)
+
+## What's Changed
+* [@wilfwilson](https://github.com/wilfwilson) added `IsDirectedForest` in
+[PR #794](https://github.com/digraphs/Digraphs/pull/794).
+
+**Full Changelog**: https://github.com/digraphs/Digraphs/compare/v1.11.0...v1.12.0
+
 ## Version 1.11.0 (released 28/08/2025)
 
 ## What's Changed
