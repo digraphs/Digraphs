@@ -10,7 +10,7 @@ Licensing information can be found in the `LICENSE` file.
 * [@wilfwilson](https://github.com/wilfwilson) added `IsDirectedForest` in
 [PR #794](https://github.com/digraphs/Digraphs/pull/794).
 
-**Full Changelog**: https://github.com/digraphs/Digraphs/compare/v1.11.0...v1.12.0
+**Full Changelog**: <https://github.com/digraphs/Digraphs/compare/v1.11.0...v1.12.0>
 
 ## Version 1.11.0 (released 28/08/2025)
 
@@ -512,7 +512,7 @@ The following issues were resolved, pull requests merged, or new features added:
 This is a minor release that fixes some bugs related to mutability in
 `DigraphDisjointUnion` and `ViewString`.
 
-These problems were reported and fixed by [Wilf A.  Wilson][] in
+These problems were reported and fixed by [Wilf A. Wilson][] in
 [Issue #276](https://github.com/digraphs/Digraphs/issues/276) and
 [PR #277](https://github.com/digraphs/Digraphs/pull/277), respectively.
 
