@@ -1499,22 +1499,21 @@ true</pre></div>
 <h5>6.6-8 IsDirectedTree</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsDirectedTree</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;property&nbsp;)</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsDirectedForest</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;property&nbsp;)</td></tr></table></div>
 <p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
 
-<p>Returns <code class="keyw">true</code> if the digraph <var class="Arg">digraph</var> is a directed tree, and <code class="keyw">false</code> if it is not.</p>
+<p>The property <code class="func">IsDirectedTree</code> returns <code class="keyw">true</code> if the digraph <var class="Arg">digraph</var> is a directed tree, and the property <code class="func">IsDirectedForest</code> returns <code class="keyw">true</code> if <var class="Arg">digraph</var> is a directed forest; otherwise these properties return <code class="keyw">false</code>.</p>
 
-<p>A <em>directed tree</em> is an acyclic digraph with precisely 1 source, such that no two vertices share an out-neighbour. Note that the empty digraph with zero vertices is not considered to be a directed tree, because it has no source.</p>
+<p>A <em>directed tree</em> is an acyclic digraph with precisely one source, without multiple edges, and such that no two vertices share an out-neighbour. See and <code class="func">IsAcyclicDigraph</code> (<a href="chap6_mj.html#X7BD08D4478218F77"><span class="RefLink">6.6-1</span></a>) and <code class="func">DigraphSources</code> (<a href="chap5_mj.html#X7F5C6268839BE98C"><span class="RefLink">5.1-9</span></a>) for more information about these terms.</p>
 
-<p>See also <code class="func">DigraphSources</code> (<a href="chap5_mj.html#X7F5C6268839BE98C"><span class="RefLink">5.1-9</span></a>).</p>
+<p>A <em>directed forest</em> is a digraph with at least one vertex, each of whose connected components is a directed tree. In other words, a directed forest is isomorphic to a disjoint union of directed trees. In particular, every directed tree is a directed forest. See <code class="func">DigraphConnectedComponents</code> (<a href="chap5_mj.html#X842FAD6A7B835977"><span class="RefLink">5.4-9</span></a>) and <code class="func">DigraphDisjointUnion</code> (<a href="chap3_mj.html#X814F1DFC83DB273F"><span class="RefLink">3.3-29</span></a>).</p>
+
+<p>Please note that the empty digraph with zero vertices is not considered to be a directed tree or directed forest, because it has no source.</p>
 
 <p>If the argument <var class="Arg">digraph</var> is mutable, then the return value of this property is recomputed every time it is called.</p>
 
 
 <div class="example"><pre>
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">D := Digraph([[], [2]]);</span>
-&lt;immutable digraph with 2 vertices, 1 edge&gt;
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsDirectedTree(D);</span>
-false
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">D := Digraph([[3], [3], []]);</span>
 &lt;immutable digraph with 3 vertices, 2 edges&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsDirectedTree(D);</span>
@@ -1522,6 +1521,8 @@ false
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">D := Digraph([[2], [3], []]);</span>
 &lt;immutable digraph with 3 vertices, 2 edges&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsDirectedTree(D);</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsDirectedForest(DigraphDisjointUnion(D, D));</span>
 true
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">D := Digraph([[2, 3], [6], [4, 5], [], [], []]);</span>
 &lt;immutable digraph with 6 vertices, 5 edges&gt;
@@ -1537,7 +1538,7 @@ true
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsUndirectedForest</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;property&nbsp;)</td></tr></table></div>
 <p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
 
-<p>The property <code class="code">IsUndirectedTree</code> returns <code class="keyw">true</code> if the digraph <var class="Arg">digraph</var> is an undirected tree, and the property <code class="code">IsUndirectedForest</code> returns <code class="keyw">true</code> if <var class="Arg">digraph</var> is an undirected forest; otherwise, these properties return <code class="keyw">false</code>.</p>
+<p>The property <code class="func">IsUndirectedTree</code> returns <code class="keyw">true</code> if the digraph <var class="Arg">digraph</var> is an undirected tree, and the property <code class="func">IsUndirectedForest</code> returns <code class="keyw">true</code> if <var class="Arg">digraph</var> is an undirected forest; otherwise, these properties return <code class="keyw">false</code>.</p>
 
 <p>An <em>undirected tree</em> is a symmetric digraph without loops, in which for any pair of distinct vertices <code class="code">u</code> and <code class="code">v</code>, there is exactly one directed path from <code class="code">u</code> to <code class="code">v</code>. See <code class="func">IsSymmetricDigraph</code> (<a href="chap6_mj.html#X81B3EA7887219860"><span class="RefLink">6.2-14</span></a>) and <code class="func">DigraphHasLoops</code> (<a href="chap6_mj.html#X7D92935C7D535187"><span class="RefLink">6.2-1</span></a>), and see Section <a href="chap1_mj.html#X84541F61810C741D"><span class="RefLink">1.1-1</span></a> for the definition of directed path. This definition implies that an undirected tree has no multiple edges.</p>
 
