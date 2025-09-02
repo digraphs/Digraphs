@@ -127,6 +127,7 @@ suggested-pkgs:
       url: "https://gap-packages.github.io/grape"
     - name: "nautytracesinterface"
       version: ">=0.2"
+      url: "https://gap-packages.github.io/NautyTracesInterface/"
     - name: "AutoDoc"
       version: ">=2020.08.11"
       url: "https://gap-packages.github.io/AutoDoc"

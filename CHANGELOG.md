@@ -4,6 +4,14 @@ Wilf A. Wilson, Michael Young et al.
 
 Licensing information can be found in the `LICENSE` file.
 
+## Version 1.12.0 (released 02/09/2025)
+
+## What's Changed
+* [@wilfwilson](https://github.com/wilfwilson) added `IsDirectedForest` in
+[PR #794](https://github.com/digraphs/Digraphs/pull/794).
+
+**Full Changelog**: <https://github.com/digraphs/Digraphs/compare/v1.11.0...v1.12.0>
+
 ## Version 1.11.0 (released 28/08/2025)
 
 ## What's Changed
@@ -52,8 +60,8 @@ available as options for `ChromaticNumber` in
 ## What's Changed
 * Fixed an bug in `ArticulationPoints` found by [@wilfwilson](https://github.com/wilfwilson)
 [PR #779](https://github.com/digraphs/Digraphs/pull/779).
-* Inclusion of an appendix to the manual that describes the DIMACS format.
-[PR #775](https://github.com/digraphs/Digraphs/pull/775)
+* Inclusion of an appendix to the manual that describes the DIMACS format
+[PR #775](https://github.com/digraphs/Digraphs/pull/775).
 * Various other small technical adjustments.
 
 **Full Changelog**: <https://github.com/digraphs/Digraphs/compare/v1.10.0...v1.10.1>
@@ -504,7 +512,7 @@ The following issues were resolved, pull requests merged, or new features added:
 This is a minor release that fixes some bugs related to mutability in
 `DigraphDisjointUnion` and `ViewString`.
 
-These problems were reported and fixed by [Wilf A.  Wilson][] in
+These problems were reported and fixed by [Wilf A. Wilson][] in
 [Issue #276](https://github.com/digraphs/Digraphs/issues/276) and
 [PR #277](https://github.com/digraphs/Digraphs/pull/277), respectively.
 
@@ -820,7 +828,7 @@ package](https://gap-packages.github.io/orb), or newer.
 
 This release of Digraphs contains some bugfixes, along with the following new features:
 
-* The GraphViz engine used by `Splash` is now configurable, thanks to [Markus Pfeiffer](https://www.morphism.de/~markusp).
+* The GraphViz engine used by `Splash` is now configurable, thanks to [Markus Pfeiffer][].
 * The properties `IsPartialOrderDigraph`, `IsPreorderDigraph`, and `IsQuasiorderDigraph` were introduced by Chris Russell, along with the following functions for visualising these kinds of digraphs:
   * `DotPartialOrderDigraph`
   * `DotPreorderDigraph`
@@ -1166,12 +1174,12 @@ Pre-release version that was not made publicly available.
 
 [James D. Mitchell]: https://jdbm.me
 [Wilf A. Wilson]: https://wilf.me
-[Michael Young]: https://mct25.host.cs.st-andrews.ac.uk
+[Michael Young]: https://myoung.uk/work
 [Julius Jonusas]: http://julius.jonusas.work
-[Jan De Beule]: http://homepages.vub.ac.be/~jdbeule
-[Markus Pfeiffer]: https://www.morphism.de/~markusp
+[Jan De Beule]: https://researchportal.vub.be/en/persons/jan-de-beule
+[Markus Pfeiffer]: https://markusp.morphism.de
 [Maria Tsalakou]: https://mariatsalakou.github.io
-[Chris Jefferson]: https://caj.host.cs.st-andrews.ac.uk
+[Chris Jefferson]: https://heather.cafe
 [bliss]: http://www.tcs.hut.fi/Software/bliss/
 [Max Horn]: https://www.quendi.de/math
 [Edge Addition Planarity Suite]: https://github.com/graph-algorithms/edge-addition-planarity-suite
