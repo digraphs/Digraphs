@@ -129,11 +129,10 @@ function(D)
   if data.counter = DigraphNrVertices(D) then
     connected := true;
     if data.nr_children > 1 then
-      AddSet(data.articulation_points, 1);
       # The `AddSet` is not really needed, and could just be `Add`, since 1
       # should not already be in articulation_points. But let's use AddSet
       # to keep the output sorted.
-      AddSet(articulation_points, 1);
+      AddSet(data.articulation_points, 1);
     fi;
     if not IsEmpty(data.bridges) then
       data.orientation := fail;

@@ -3410,7 +3410,7 @@ gap> data.backtracks = 13;
 true
 
 # Stopping ExecuteDFS - Consistency Check across configurations
-gap> gr := CompleteDigraph(10000);; # defaults, recursive
+gap> gr := CompleteDigraph(10000);;  # defaults, recursive
 gap> record := NewDFSRecord(gr);;
 gap> configs := [rec(forest := true), rec(forest_specific := DigraphVertices(gr)),
 >    rec(use_postorder := true), rec(use_preorder := true), rec(revisit := true, iterative := true)];;

@@ -1,4 +1,4 @@
-/*
+/*******************************************************************************
 **
 *A  dfs.c                  GAP package Digraphs               Lea Racine
 **                                                            James Mitchell
