@@ -1142,15 +1142,15 @@ gap> ArticulationPoints(CycleDigraph(5));
 [  ]
 gap> D := Digraph([[2, 7], [3, 5], [4], [2], [6], [1], []]);;
 gap> ArticulationPoints(D);
-[ 2, 1 ]
+[ 1, 2 ]
 gap> ArticulationPoints(ChainDigraph(5));
-[ 4, 3, 2 ]
+[ 2, 3, 4 ]
 gap> ArticulationPoints(NullDigraph(5));
 [  ]
 gap> D := ChainDigraph(IsMutableDigraph, 4);
 <mutable digraph with 4 vertices, 3 edges>
 gap> ArticulationPoints(D);
-[ 3, 2 ]
+[ 2, 3 ]
 ]]></Example>
   </Description>
 </ManSection>

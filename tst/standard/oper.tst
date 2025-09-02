@@ -3278,14 +3278,36 @@ gap> ExecuteDFS(record, [], 3, fail, fail, fail,
 > fail);
 Error, the 1st argument <record> has a value of <record>.config.forest_specifi\
 c that is not fail or a dense list,
+gap> record := NewDFSRecord(d);;
+gap> record.config.use_edge := false;;
+gap> ExecuteDFS(record, [], 1, fail, fail, fail,
+> fail);;
+Error, In a DFSRecord where the config flag iterative is false, use_edge and u\
+se_parents must be true
 
-# ExecuteDFS - Correctness
-gap> record := NewDFSRecord(CompleteDigraph(10));;
+# ExecuteDFS - Correctness of standalone function
+gap> gr := CompleteDigraph(10);;
+gap> record := NewDFSRecord(gr);;
+gap> record2 := NewDFSRecord(gr);;
+gap> record2.config.iterative := true;;
 gap> ExecuteDFS(record, [], 2, fail,
 >               fail, fail, fail);
-gap> preorder_list := [];;
+gap> ExecuteDFS(record2, [], 2, fail,
+>               fail, fail, fail);
 gap> record.preorder;
 [ 2, 1, 3, 4, 5, 6, 7, 8, 9, 10 ]
+gap> record.postorder;
+[ 9, 10, 8, 7, 6, 5, 4, 3, 2, 1 ]
+gap> record.parents;
+[ 2, 2, 1, 3, 4, 5, 6, 7, 8, 9 ]
+gap> ForAll([record, record2], r -> 
+> ((r.edge = record.edge) and
+> (r.parents = record.parents) and
+> (r.preorder = record.preorder) and
+> (r.postorder = record.postorder) and
+> (IsDuplicateFree(r.postorder) and IsDuplicateFree(r.preorder)))
+> );
+true
 gap> record := NewDFSRecord(CompleteDigraph(15));;
 gap> data := rec(cycle_vertex := 0);;
 gap> AncestorFunc := function(record, data)
@@ -3349,60 +3371,62 @@ gap> gr := Digraph(List([1 .. 5], x -> [1 .. 5]));;
 gap> record := NewDFSRecord(gr);;
 gap> ExecuteDFS(record, data, 1, fail, fail, fail,
 > fail);
-
-# Stopping ExecuteDFS
-gap> gr := CompleteDigraph(10000);;
+gap> gr := DigraphFromGraph6String("LCHK?p?O?c@`?_");;
 gap> record := NewDFSRecord(gr);;
-gap> data := rec(count := 0);;
+gap> PreorderFunc := function(record, data)
+>      data.visits := data.visits + 1;
+>    end;;
+gap> PostorderFunc := function(record, data)
+>      data.backtracks := data.backtracks + 1;
+>    end;;
+gap> data := rec(visits := 0, backtracks := 0);;
+gap> ExecuteDFS(record, data, 1, PreorderFunc, PostorderFunc, fail,
+> fail);;
+gap> record.preorder;
+[ 1, 7, 5, 2, 4, 6, 12, 3, 8, 9, 11, 10, 13 ]
+gap> record.postorder;
+[ 13, 4, 1, 12, 10, 9, 6, 11, 2, 3, 7, 8, 5 ]
+gap> data.visits = 13;
+true
+gap> data.backtracks = 13;
+true
+
+# Stopping ExecuteDFS - Consistency Check across configurations
+gap> gr := CompleteDigraph(10000);; # defaults, recursive
+gap> record := NewDFSRecord(gr);;
+gap> configs := [rec(forest := true), rec(forest_specific := DigraphVertices(gr)),
+>    rec(use_postorder := true), rec(use_preorder := true), rec(revisit := true, iterative := true)];;
+gap> results := [];;
 gap> PreorderFunc := function(record, data)
 >      data.count := data.count + 1;
 >      if record.current = 5000 then
 >        record.stop := true;
 >      fi; 
 >    end;;
-gap> ExecuteDFS(record, data, 1, PreorderFunc, fail, fail,
-> fail);
-gap> data.count;
-5000
-gap> record_iter := NewDFSRecord(gr);;
-gap> record_iter.config.iterative := true;;
-gap> data := rec(count := 0);;
-gap> ExecuteDFS(record_iter, data, 1, PreorderFunc, fail, fail,
-> fail);
-gap> data.count;
-5000
-gap> data := ["postorder", "preorder"];;
-gap> ForAll(data, x -> record_iter.(x) = record.(x));
+> for conf in configs do
+>   data := rec(count := 0);;
+>   flags := NewDFSConfig();;
+>   for field in RecNames(conf) do
+>     flags.(field) := conf.(field);
+>   od;
+>   record := NewDFSRecord(gr, flags);
+>   ExecuteDFS(record, data, 1, PreorderFunc, fail, fail, fail);
+>   Add(results, data.count);
+> od;
+gap> ForAll(results, \x -> x = 5000);
 true
-gap> record := NewDFSRecord(gr);;
-gap> record.config.revisit := true;;
-gap> record.config.iterative := true;;
-gap> record.config.use_postorder := true;;
-gap> data := rec(count := 0);;
-gap> ExecuteDFS(record, data, 1, PreorderFunc, fail, fail,
-> fail);
-gap> data.count;
-5000
 
-# Checking results are consistent for different options - BinaryTree(5)
+# BinaryTree(5) - ExecuteDFS Consistency check across configurations
 gap> gr := BinaryTree(5);;
 gap> record := NewDFSRecord(gr);;
-gap> configs := [];;
-gap> temp_conf := ShallowCopy(record.config);;  # forest, recursive
-gap> temp_conf.forest := true;;
-gap> Add(configs, temp_conf);;
-gap> temp_conf := ShallowCopy(record.config);;  # forest_specific, recursive
-gap> temp_conf.forest_specific := DigraphVertices(gr);;
-gap> Add(configs, temp_conf);;
-gap> temp_conf := ShallowCopy(configs[1]);;  # forest, iterative
-gap> temp_conf.iterative := true;;
-gap> Add(configs, temp_conf);;
-gap> temp_conf := ShallowCopy(configs[2]);;  # forest_specific, iterative
-gap> temp_conf.iterative := true;;
-gap> Add(configs, temp_conf);;
+gap> configs := [rec(forest := true), rec(forest_specific := DigraphVertices(gr)),
+> rec(forest := true, iterative := true), rec(forest_specific := DigraphVertices(gr), iterative := true)];;
 gap> records := [];;
 gap> for conf in configs do
->      record := NewDFSRecord(gr, conf);;
+>      record := NewDFSRecord(gr);;
+>      for field in RecNames(conf) do
+>        record.config.(field) := conf.(field);
+>      od;
 >      ExecuteDFS(record, fail, 1, fail, fail, fail, fail);;
 >      Add(records, record);;
 >     od;
@@ -3411,7 +3435,7 @@ gap> ForAll(records, r ->
 > (r.parents = records[1].parents) and
 > (r.preorder = records[1].preorder) and
 > (r.postorder = records[1].postorder) and
-> (IsSet(r.postorder) and IsSet(r.preorder)))
+> (IsDuplicateFree(r.postorder) and IsDuplicateFree(r.preorder)))
 > );
 true
 
@@ -3519,6 +3543,7 @@ gap> Unbind(PreorderFunc);
 gap> Unbind(AncestorFunc);
 gap> Unbind(CrossFunc);
 gap> Unbind(record);
+gap> Unbind(record2);
 gap> Unbind(data);
 gap> Unbind(parents);
 gap> Unbind(edge);

@@ -50,20 +50,21 @@ function(D)
     copy := D;
   fi;
 
-  flags := NewDFSFlagsLightweight();
+  flags := NewDFSConfigLightweight();
   flags.use_preorder := true;
   flags.use_edge := true;
   flags.use_parents := true;
 
   PostOrderFunc := function(record, data)
     local child, current;
+    # Backtracking on edge (current -> child)
     child := record.child;
     current := record.parents[child];
     # record.preorder[child] > record.preorder[current] then
-    if current <> child then
-      # stops the duplication of articulation_points
+
+    if current <> child then  # If not at the root node
       if current <> 1 and data.low[child] >= record.preorder[current] then
-        Add(data.articulation_points, current);
+        AddSet(data.articulation_points, current);
       fi;
       if data.low[child] = record.preorder[child] then
         Add(data.bridges, [current, child]);
@@ -128,7 +129,7 @@ function(D)
   if data.counter = DigraphNrVertices(D) then
     connected := true;
     if data.nr_children > 1 then
-      Add(data.articulation_points, 1);
+      AddSet(data.articulation_points, 1);
     fi;
     if not IsEmpty(data.bridges) then
       data.orientation := fail;
@@ -1073,7 +1074,7 @@ function(D)
     return [];
   fi;
 
-  flags := NewDFSFlagsLightweight();
+  flags := NewDFSConfigLightweight();
   flags.use_parents := true;
   flags.use_edge := true;
 
@@ -3048,15 +3049,17 @@ function(D)
   data := List(DigraphVertices(C), x -> []);
 
   PreOrderFunc := function(record, data)
+    # If this is not the root
     if record.parents[record.current] <> record.current then
       Add(data[record.parents[record.current]], record.current);
       Add(data[record.current], record.parents[record.current]);
     fi;
   end;
 
-  conf := NewDFSFlagsLightweight();
+  conf := NewDFSConfigLightweight();
   conf.use_parents := true;
-  conf.iterative := true;
+  conf.use_edge := true;
+  conf.iterative := false;
   conf.forest := true;
 
   record := NewDFSRecord(C, conf);

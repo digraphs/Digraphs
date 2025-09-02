@@ -245,7 +245,7 @@ function(D)
     return true;
   fi;
 
-  flags := NewDFSFlagsLightweight();
+  flags := NewDFSConfigLightweight();
   flags.iterative := true;
 
   record := NewDFSRecord(D, flags);
@@ -394,7 +394,7 @@ function(D)
     return true;
   fi;
 
-  flags := NewDFSFlagsLightweight();
+  flags := NewDFSConfigLightweight();
   flags.iterative := true;
 
   record := NewDFSRecord(D, flags);

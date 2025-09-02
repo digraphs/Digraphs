@@ -21,8 +21,8 @@
     <#Include Label="DigraphMaximalMatching">
     <#Include Label="DigraphMaximumMatching">
     <#Include Label="NewDFSRecord">
-    <#Include Label="NewDFSFlags">
-    <#Include Label="NewDFSFlagsLightweight">
+    <#Include Label="NewDFSConfig">
+    <#Include Label="NewDFSConfigLightweight">
     <#Include Label="ExecuteDFS">
   </Section>
 

@@ -1687,7 +1687,7 @@ function(D, u, v)
     return fail;
   fi;
 
-  flags := NewDFSFlagsLightweight();
+  flags := NewDFSConfigLightweight();
 
   flags.use_edge := true;
   flags.use_parents := true;
@@ -2043,7 +2043,7 @@ function(D, v)
                   "argument <D>,");
   fi;
 
-  flags := NewDFSFlagsLightweight();
+  flags := NewDFSConfigLightweight();
   flags.iterative := true;  # revisit DFS must be iterative
   flags.use_parents := true;
   flags.revisit := true;  # If found another edge to an already
@@ -2368,7 +2368,7 @@ function(D, root)
                   "argument (a digraph)");
   fi;
 
-  conf := NewDFSFlagsLightweight();
+  conf := NewDFSConfigLightweight();
 
   conf.use_edge := true;
   conf.use_parents := true;
@@ -2430,7 +2430,7 @@ function(D, roots)
     data.result[record.child] := true;
   end;
 
-  flags := NewDFSFlagsLightweight();
+  flags := NewDFSConfigLightweight();
   flags.use_edge := true;
   flags.use_parents := true;
 
@@ -2492,7 +2492,7 @@ function(D, root)
     Add(data, record.current);
   end;
 
-  flags := NewDFSFlagsLightweight();
+  flags := NewDFSConfigLightweight();
   flags.use_preorder := true;
   flags.use_parents := true;
   flags.use_edge := true;
@@ -2828,7 +2828,7 @@ DIGRAPHS_DFSError := function()
                 "NewDFSRecord,");
 end;
 
-DIGRAPHS_DFSFlagsBoolErr := function(flags, field)
+DIGRAPHS_DFSFlagsBoolCheck := function(flags, field)
   if not IsBool(flags.(field)) then
     ErrorNoReturn("the 2nd argument <conf> (a record) should have a Bool ",
                   "value for field <conf>,", field);
@@ -2841,23 +2841,16 @@ DIGRAPHS_DFS_CheckFlags := function(flags, graph)
 
   for bool_flag in ["iterative", "forest", "revisit", "use_parents", "use_edge",
                     "use_postorder", "use_preorder"] do
-      DIGRAPHS_DFSFlagsBoolErr(flags, bool_flag);
+      DIGRAPHS_DFSFlagsBoolCheck(flags, bool_flag);
   od;
 
-  if (flags.forest_specific <> fail) and
-      (not (IsDenseList(flags.forest_specific) and
-           (IsEmpty(flags.forest_specific)
-             or IsPosInt(flags.forest_specific[1])))) then
-    ErrorNoReturn("the 2nd argument <conf> (a record) should have a Bool ",
-                  "value for field <conf>.");
-  fi;
-
   if flags.forest_specific <> fail and
-      (ForAny(flags.forest_specific, n -> n < 1
-      or n > DigraphNrVertices(graph))) then
-      ErrorNoReturn("the 2nd argument <conf> (a record) has elements in ",
-                    "<conf>.forest_specific that are not vertices in the ",
-                    "second argument <graph>.");
+      (ForAny(flags.forest_specific, n -> (not IsPosInt(n)) or n < 0
+      or n > DigraphNrVertices(graph)) or
+      (not IsDenseList(flags.forest_specific))) then
+      ErrorNoReturn("the 2nd argument <conf> (a record) must have a value for ",
+                    "<conf>.forest_specific that is either fail or a dense ",
+                    "list of vertices from the second argument <graph>.");
   fi;
 end;
 
@@ -2867,12 +2860,12 @@ DIGRAPHS_ExecuteDFSCheck := function(record)
   record_names := DIGRAPHS_DFSRecNames();
   config_names := DIGRAPHS_DFSFlagNames();
 
-  if not IsBound(record.config) then
+  if not IsRecord(record) then
+    DIGRAPHS_DFSError();
+  elif ForAny(record_names, n -> not IsBound(record.(n))) then
     DIGRAPHS_DFSError();
   elif ForAny(config_names, n -> not IsBound(record.config.(n))) then
       DIGRAPHS_DFSError();
-  elif ForAny(record_names, n -> not IsBound(record.(n))) then
-    DIGRAPHS_DFSError();
   elif record.config.forest_specific <> fail and
        not IsDenseList(record.config.forest_specific) then
       ErrorNoReturn("the 1st argument <record> has a value of",
@@ -2886,12 +2879,12 @@ end;
 
 InstallMethod(NewDFSRecord,
 "for a digraph", [IsDigraph],
-Graph -> NewDFSRecord(Graph, NewDFSFlags()));
+Graph -> NewDFSRecord(Graph, NewDFSConfig()));
 
 InstallMethod(NewDFSRecord,
 "for a digraph and a record", [IsDigraph, IsRecord],
 function(graph, conf)
-  local record, config_names, N;
+  local record, config_names, N, use_var, list_name, var_pair;
 
   N := DigraphNrVertices(graph);
 
@@ -2910,32 +2903,30 @@ function(graph, conf)
   record.current := -1;
   record.stop := false;
 
-  if conf.use_preorder then
-    record.preorder := ListWithIdenticalEntries(N, -1);
-  else
-    record.preorder := fail;
-  fi;
-  if conf.use_parents then
-    record.parents := ListWithIdenticalEntries(N, -1);
-  else
-    record.parents := fail;
-  fi;
-  if conf.use_postorder then
-    record.postorder := ListWithIdenticalEntries(N, -1);
-  else
-    record.postorder := fail;
-  fi;
-  if conf.use_edge then
-    record.edge := ListWithIdenticalEntries(N, -1);
-  else
-    record.edge := fail;
-  fi;
+  for var_pair in [[conf.use_preorder, "preorder"],
+                              [conf.use_postorder, "postorder"],
+                              [conf.use_parents, "parents"],
+                              [conf.use_edge, "edge"]] do
+    use_var := var_pair[1];
+    list_name := var_pair[2];
+
+    if use_var then
+      record.(list_name) := ListWithIdenticalEntries(N, -1);
+    else
+      record.(list_name) := fail;
+    fi;
+
+    continue;
+  od;
 
   record.config := conf;
   return record;
 end);
 
-InstallMethod(NewDFSFlags,
+# Default Configuration, recursive with all data provided in the record
+# (preorder, postorder, parents, edges)
+
+InstallMethod(NewDFSConfig,
 "", [],
 function()
   local config;
@@ -2951,11 +2942,13 @@ function()
   return config;
 end);
 
-InstallMethod(NewDFSFlagsLightweight,
+# Minimal Memory DFS Configuration (<DFSRecord>.config value)
+
+InstallMethod(NewDFSConfigLightweight,
 "", [],
 function()
   local config;
-  config := NewDFSFlags();
+  config := NewDFSConfig();
   config.iterative := false;
   config.use_postorder := false;
   config.use_preorder := false;
