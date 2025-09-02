@@ -13,61 +13,13 @@ notice_it() {
     printf '\033[93m%s\033[0m\n' "$*"
 }
 
-# TODO: This function can be deleted once the code to compile the manual is gone
-run_gap() {
-  gap_output=$( \
-    (echo 'OnBreak:=function() Print("FATAL ERROR"); FORCE_QUIT_GAP(1); end;;' ; cat - ; echo ; echo "FORCE_QUIT_GAP(0);") \
-    | $GAP -A -q -b 2>&1 \
-    | tr -d '\r' )
-  mkdir -p "$TMP_DIR"
-  echo "$gap_output" > "$TMP_DIR/gap-error.log"
-  if echo "$gap_output" | grep -q '\(Error\|FATAL ERROR\|Syntax \)' ; then
-    error "there was an error running GAP, see $TMP_DIR/gap-error.log"
-  fi
-}
-
 notice_it "Running Digraphs package .release script"
 
 # Delete unnecessary files
 
 notice_it "Deleting additional unnecessary files"
 
-rm -f  .covignore .gaplint.yml .mailmap Dockerfile .codespellrc
-rm -rf ci etc scripts
-
-# TODO: in the newest commits of ReleaseTools, the manual is now built by the
-# time that this script is called, and soon release-gap-package will also
-# perform the check for non resolved references. Once this is the case, we will
-# be able to get rid of the compilation of the manual in this script.
-notice_it "Building Digraphs package documentation for archives (using makedoc.g)"
-
-run_gap <<GAPInput
-LogTo("makedoc.log");
-if not IsPackageMarkedForLoading("$PKG", "") then
-  SetPackagePath("$PKG", ".");
-fi;
-PushOptions(rec(relativePath:="../../.."));
-Read("makedoc.g");
-GAPInput
-rm -f doc/*.tex
-rm -f doc/*.aux doc/*.bbl doc/*.blg doc/*.brf doc/*.idx doc/*.ilg doc/*.ind doc/*.log doc/*.out doc/*.pnr doc/*.tst
-
-! grep -E "WARNING: non resolved reference" makedoc.log
-rm -f makedoc.log
-
-# Note: Long term, this functionality may become a standard part of ReleaseTools
-notice_it "Fixing the links in the documentation"
-for f in ./*/*.htm* ; do
-  sed 's;href="[^"]*digraphs[^"]*/doc/;href="https://digraphs.github.io/Digraphs/doc/;gi' "$f" > "$f.bak"
-  mv "$f.bak" "$f"
-  sed 's;href="[^"]*io[^"]*/doc/;href="https://gap-packages.github.io/io/doc/;gi' "$f" > "$f.bak"
-  mv "$f.bak" "$f"
-  sed 's;href="[^"]*smallsemi[^"]*/doc/;href="https://gap-packages.github.io/smallsemi/doc/;gi' "$f" > "$f.bak"
-  mv "$f.bak" "$f"
-  sed 's;href="[^"]*images[^"]*/doc/;href="https://gap-packages.github.io/images/doc/;gi' "$f" > "$f.bak"
-  mv "$f.bak" "$f"
-  sed 's;href="[^"]*GAPDoc[^"]*/doc/;href="http://www.math.rwth-aachen.de/~Frank.Luebeck/GAPDoc/doc/;gi' "$f" > "$f.bak"
-  mv "$f.bak" "$f"
-done
+rm -f  .covignore .mailmap Dockerfile .codespellrc
+rm -rf etc scripts
 
 notice_it "Finished running Digraphs package .release script!!!"
