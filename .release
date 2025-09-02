@@ -32,7 +32,7 @@ notice_it "Running Digraphs package .release script"
 
 notice_it "Deleting additional unnecessary files"
 
-rm -f  .covignore .gaplint.yml .mailmap Dockerfile
+rm -f  .covignore .gaplint.yml .mailmap Dockerfile .codespellrc
 rm -rf ci etc scripts
 
 # TODO: in the newest commits of ReleaseTools, the manual is now built by the
