@@ -14,6 +14,22 @@ gap> LoadPackage("digraphs", false);;
 #
 gap> DIGRAPHS_StartTest();
 
+# DigraphKings: for a digraph
+gap> gr := Digraph([[2], [3, 4], [1, 4], [1]]);
+<immutable digraph with 4 vertices, 6 edges>
+gap> DigraphKings(gr, 2);
+[ 1, 2, 3 ]
+gap> gr := Digraph([[], [3, 4], [1, 4], [1]]);
+<immutable digraph with 4 vertices, 5 edges>
+gap> DigraphKings(gr, 2);
+Error, the 1st argument <D> must be a tournament,
+gap> gr := RandomTournament(10);
+<immutable tournament with 10 vertices>
+gap> Length(DigraphKings(gr, 2)) >= 1;
+true
+gap> Length(DigraphKings(gr, 2)) <> 2;
+true
+
 #  DigraphSource and DigraphRange
 gap> nbs := [[12, 22, 17, 1, 10, 11], [23, 21, 21, 16],
 >  [15, 5, 22, 11, 12, 8, 10, 1], [21, 15, 23, 5, 23, 8, 24],
@@ -2029,7 +2045,7 @@ true
 gap> D := DigraphFromDigraph6String("&I~~~~^Znn~|~~x^|v{");
 <immutable digraph with 10 vertices, 89 edges>
 gap> tree := UndirectedSpanningTree(D);
-<immutable undirected tree digraph with 10 vertices>
+<immutable undirected tree with 10 vertices>
 gap> IsUndirectedSpanningTree(D, tree);
 true
 gap> tree := UndirectedSpanningTree(DigraphMutableCopy(D));
@@ -2184,6 +2200,24 @@ gap> gNew := DigraphRemoveEdges(g, edgeCut);
 <immutable digraph with 14 vertices, 18 edges>
 gap> IsConnectedDigraph(gNew);
 false
+
+# ArticulationPoints: Issue #777
+gap> D1 := DigraphFromGraph6String("LCHK?p?O?c@`?_");
+<immutable symmetric digraph with 13 vertices, 30 edges>
+gap> ArticulationPoints(D1);
+[ 2, 5, 6, 7 ]
+gap> x := (1, 4, 6, 2)(3, 7, 8, 5, 13, 11, 10, 9);;
+gap> D2 := OnDigraphs(D1, x);;
+gap> ArticulationPoints(D2) = OnSets(ArticulationPoints(D1), x);
+true
+gap> D := DigraphFromDigraph6String("&C?gG");
+<immutable digraph with 4 vertices, 3 edges>
+gap> ArticulationPoints(D);
+[ 3 ]
+gap> D := Digraph([[], [3], [1], [3], [3], [3], [3], [3], [3]]);
+<immutable digraph with 9 vertices, 8 edges>
+gap> ArticulationPoints(D);
+[ 3 ]
 
 # StrongOrientation
 gap> filename := Concatenation(DIGRAPHS_Dir(), "/data/graph5.g6.gz");;

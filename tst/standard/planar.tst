@@ -18,12 +18,10 @@ gap> D := NullDigraph(0);
 <immutable empty digraph with 0 vertices>
 gap> IsPlanarDigraph(D);
 true
-gap> D := CompleteDigraph(4);
-<immutable complete digraph with 4 vertices>
+gap> D := DigraphCopy(CompleteDigraph(4));;
 gap> IsPlanarDigraph(D);
 true
-gap> D := CompleteDigraph(5);
-<immutable complete digraph with 5 vertices>
+gap> D := DigraphCopy(CompleteDigraph(5));;
 gap> IsPlanarDigraph(D);
 false
 gap> D := Digraph([[2, 4, 7, 9, 10], [1, 3, 4, 6, 9, 10], [6, 10], 
@@ -35,11 +33,21 @@ gap> ChromaticNumber(D);
 gap> IsPlanarDigraph(D);
 false
 gap> D := CompleteBipartiteDigraph(3, 3);
-<immutable complete bipartite digraph with bicomponent sizes 3 and 3>
+<immutable complete bipartite digraph with bicomponents of size 3>
 gap> D := DigraphDisjointUnion(D, D);
 <immutable digraph with 12 vertices, 36 edges>
 gap> IsPlanarDigraph(D);
 false
+gap> D := DigraphCopy(CycleDigraph(6));;
+gap> IsPlanarDigraph(D);
+true
+gap> D;
+<immutable planar digraph with 6 vertices, 6 edges>
+gap> D := DigraphSymmetricClosure(D);;
+gap> IsPlanarDigraph(D);
+true
+gap> D;
+<immutable planar symmetric digraph with 6 vertices, 12 edges>
 
 # IsOuterPlanarDigraph
 gap> D := Digraph([[2, 4, 7, 9, 10], [1, 3, 4, 6, 9, 10], [6, 10], 

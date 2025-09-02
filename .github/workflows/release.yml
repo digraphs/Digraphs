@@ -1,0 +1,46 @@
+name: Release
+
+# Trigger the workflow manually
+on:
+  workflow_dispatch:
+    inputs:
+      dry-run:
+        description: "Dry run: do not actually push the release to GitHub"
+        type: boolean
+        required: false
+        default: false
+
+permissions: write-all
+
+jobs:
+  release:
+    name: "Release the GAP package"
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v5
+      - uses: gap-actions/setup-gap@v2
+        with:
+          GAP_PKGS_TO_BUILD: json
+      - uses: gap-actions/build-pkg-docs@v1
+        with:
+          use-latex: true
+      - name: Run .release script
+        run: |
+          ./.release
+      - uses: gap-actions/release-pkg@v1
+        with:
+          dry-run: ${{ inputs.dry-run }}
+      - uses: gap-actions/update-gh-pages@v1
+        if: ${{ !inputs.dry-run }}
+        with:
+          # The <clean> option stops the action from updating the website with
+          # the latest GitHubPagesForGAP code, because we have customised our
+          # website (with e.g. a section linking to the Digraphs library, and
+          # the Digraphs library itself), and these changes would be overwritten
+          # if this option was set to <true>, which is the default. However,
+          # we might want to manually update the GitHubPagesForGAP code from
+          # time to time, to receive any bugfixes or updates to parts of the
+          # website code that we haven't customised. But this would have to be
+          # done carefully.
+          clean: false

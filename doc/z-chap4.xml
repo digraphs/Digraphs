@@ -93,6 +93,8 @@
     <#Include Label="NrSpanningTrees">
     <#Include Label="DigraphDijkstra">
     <#Include Label="DigraphCycleBasis">
+    <#Include Label="DigraphIsKing">
+    <#Include Label="DigraphKings">
   </Section>
 
   <Section><Heading>Cayley graphs of groups</Heading>

@@ -433,13 +433,19 @@ fail
   <Attr Name="DualPlanarGraph" Arg="digraph"/>
   <Returns>A digraph or <K>fail</K>.</Returns>
   <Description>
-    If <A>digraph</A> is a planar digraph, then <E>DualPlanarGraph</E> returns the the dual graph of <A>digraph</A>.
-    If <A>digraph</A> is not planar, then fail is returned.<P/>
+    If <A>digraph</A> is a planar digraph, then <Ref Attr="DualPlanarGraph"/> returns the the dual graph of <A>digraph</A>.
+    If <A>digraph</A> is not planar, then <K>fail</K> is returned.<P/>
 
     The dual graph of a planar digraph <A>digraph</A> has a vertex for each face of <A>digraph</A> and an edge for 
     each pair of faces that are separated by an edge from each other.
     Vertex <A>i</A> of the dual graph corresponds to the facial walk at the <A>i</A>-th position calling 
-    <E>FacialWalks</E> of <A>digraph</A> with the rotation system returned by <E>PlanarEmbedding</E>.
+    <Ref Oper="FacialWalks"/> of <A>digraph</A> with the rotation system returned by <Ref Attr="PlanarEmbedding"/>.
+    <P/>
+
+    Note that <Ref Attr="PlanarEmbedding"/>, and therefore
+    <Ref Attr="DualPlanarGraph"/>, uses the reference implementation in
+    &EDGE_PLANARITY_SUITE; by John Boyer of the algorithms described in
+    <Cite Key="BM06"/>.
 
 <Example><![CDATA[
 gap> D := CompleteDigraph(4);;

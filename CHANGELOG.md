@@ -4,103 +4,165 @@ Wilf A. Wilson, Michael Young et al.
 
 Licensing information can be found in the `LICENSE` file.
 
+## Version 1.12.0 (released 02/09/2025)
+
+## What's Changed
+* [@wilfwilson](https://github.com/wilfwilson) added `IsDirectedForest` in
+[PR #794](https://github.com/digraphs/Digraphs/pull/794).
+
+**Full Changelog**: <https://github.com/digraphs/Digraphs/compare/v1.11.0...v1.12.0>
+
+## Version 1.11.0 (released 28/08/2025)
+
+## What's Changed
+* Added `IsTwoEdgeTransitive` by [@frankiegillis](https://github.com/frankiegillis) in
+[PR #733](https://github.com/digraphs/Digraphs/pull/733).
+* [@flsmith](https://github.com/flsmith) made `RandomDigraph` more random in
+[PR #738](https://github.com/digraphs/Digraphs/pull/738).
+* Added `BurntPancakeGraph` and `BurntPancakeGraph` in
+[PR #403](https://github.com/digraphs/Digraphs/pull/403).
+* Added a new optional first argument for mutability in `CayleyDigraph` by
+[@james-d-mitchell](https://github.com/james-d-mitchell) in [PR #403](https://github.com/digraphs/Digraphs/pull/403).
+* Added `MinimalCyclicEdgeCut` by [@MeikeWeiss](https://github.com/MeikeWeiss) in
+[PR #754](https://github.com/digraphs/Digraphs/pull/754).
+* Added `DigraphAllChordlessCyclesOfMaximalLength` by [@MeikeWeiss](https://github.com/MeikeWeiss) in
+[PR #754](https://github.com/digraphs/Digraphs/pull/754).
+* Added `DigraphKings` and `DigraphIsKing` by [@hrj4](https://github.com/hrj4) in
+[PR #521](https://github.com/digraphs/Digraphs/pull/521).
+* [@wilfwilson](https://github.com/wilfwilson) improved `ViewString` for digraphs in
+[PR #783](https://github.com/digraphs/Digraphs/pull/783).
+* [@EwanGilligan](https://github.com/EwanGilligan) implemented Zykov's and Christofides's algorithms and made them
+available as options for `ChromaticNumber` in
+[PR #491](https://github.com/digraphs/Digraphs/pull/491).
+* [@ChrisJefferson](https://github.com/ChrisJefferson) sped up `OnDigraphs` for a digraph and a permutation in
+[PR #267](https://github.com/digraphs/Digraphs/pull/267).
+* [@pramothragavan](https://github.com/pramothragavan) added dreadnaut support in
+[PR #651](https://github.com/digraphs/Digraphs/pull/651), along with the functions
+`DreadnautString`, `DigraphFromDreadnautString`, `DIMACSString`, and
+`DigraphFromDIMACSString`; and the variables `WholeFileEncoders` and
+`WholeFileDecoders` and the functions `IsWholeFileEncoder` and
+`IsWholeFileDecoder`.
+* [@RaiyanC](https://github.com/RaiyanC) added `DigraphMaximumFlow` in
+[PR #751](https://github.com/digraphs/Digraphs/pull/751).
+* [@RaiyanC](https://github.com/RaiyanC) added `RandomUniqueEdgeWeightedDigraph`
+[PR #755](https://github.com/digraphs/Digraphs/pull/755).
+
+## New Contributors
+* [@BaseMax](https://github.com/BaseMax) made their first contribution in [PR #749](https://github.com/digraphs/Digraphs/pull/749).
+* [@pramothragavan](https://github.com/pramothragavan) made their first contribution in [PR #651](https://github.com/digraphs/Digraphs/pull/651).
+* [@BlueRidingHood](https://github.com/BlueRidingHood) made their first contribution in [PR #706](https://github.com/digraphs/Digraphs/pull/706).
+* [@hrj4](https://github.com/hrj4) made their first contribution in [PR #521](https://github.com/digraphs/Digraphs/pull/521).
+
+**Full Changelog**: <https://github.com/digraphs/Digraphs/compare/v1.10.1...v1.11.0>
+
+## Version 1.10.1 (released 27/08/2025)
+
+## What's Changed
+* Fixed an bug in `ArticulationPoints` found by [@wilfwilson](https://github.com/wilfwilson)
+[PR #779](https://github.com/digraphs/Digraphs/pull/779).
+* Inclusion of an appendix to the manual that describes the DIMACS format
+[PR #775](https://github.com/digraphs/Digraphs/pull/775).
+* Various other small technical adjustments.
+
+**Full Changelog**: <https://github.com/digraphs/Digraphs/compare/v1.10.0...v1.10.1>
+
 ## Version 1.10.0 (released 14/02/2025)
 
 ## What's Changed
-* Added copy in `DigraphAllChordlessCycles` by @MeikeWeiss in
-https://github.com/digraphs/Digraphs/pull/702
-* Implementation of facial walks and dual graphs by @MeikeWeiss in
-https://github.com/digraphs/Digraphs/pull/713
-* Added `IsOrderFilter` by @zljlzljlz in
-https://github.com/digraphs/Digraphs/pull/707
-* Update old urls by @forktree in
-https://github.com/digraphs/Digraphs/pull/719
-* Edge weights #4: shortest path(s) by @mtorpey in
-https://github.com/digraphs/Digraphs/pull/656
+* Added copy in `DigraphAllChordlessCycles` by [@MeikeWeiss](https://github.com/MeikeWeiss) in
+[PR #702](https://github.com/digraphs/Digraphs/pull/702)
+* Implementation of facial walks and dual graphs by [@MeikeWeiss](https://github.com/MeikeWeiss) in
+[PR #713](https://github.com/digraphs/Digraphs/pull/713)
+* Added `IsOrderFilter` by [@zljlzljlz](https://github.com/zljlzljlz) in
+[PR #707](https://github.com/digraphs/Digraphs/pull/707)
+* Update old urls by [@forktree](https://github.com/forktree) in
+[PR #719](https://github.com/digraphs/Digraphs/pull/719)
+* Edge weights #4: shortest path(s) by [@mtorpey](https://github.com/mtorpey) in
+[PR #656](https://github.com/digraphs/Digraphs/pull/656)
 
 ## New Contributors
-* @zljlzljlz made their first contribution in https://github.com/digraphs/Digraphs/pull/707
-* @forktree made their first contribution in https://github.com/digraphs/Digraphs/pull/719
-* @frankiegillis made their first contribution in https://github.com/digraphs/Digraphs/pull/729
+* [@zljlzljlz](https://github.com/zljlzljlz) made their first contribution in [PR #707](https://github.com/digraphs/Digraphs/pull/707)
+* [@forktree](https://github.com/forktree) made their first contribution in [PR #719](https://github.com/digraphs/Digraphs/pull/719)
+* [@frankiegillis](https://github.com/frankiegillis) made their first contribution in [PR #729](https://github.com/digraphs/Digraphs/pull/729)
 
-**Full Changelog**: https://github.com/digraphs/Digraphs/compare/v1.9.0...v1.10.0
+**Full Changelog**: <https://github.com/digraphs/Digraphs/compare/v1.9.0...v1.10.0>
 
 ## Version 1.9.0 (released 06/09/2024)
 
 ## What's Changed
-* Update my web-address by @markuspf in
-https://github.com/digraphs/Digraphs/pull/674
-* Fix off by one error by @james-d-mitchell in
-https://github.com/digraphs/Digraphs/pull/677
-* Resolve issue #676 by @james-d-mitchell in
-https://github.com/digraphs/Digraphs/pull/678
-* Add hash function for digraphs by @reiniscirpons in
-https://github.com/digraphs/Digraphs/pull/675
-* kernel: use GAP's GVAR_FUNC macro by @fingolfin in
-https://github.com/digraphs/Digraphs/pull/682
-* Add DigraphAllChordlessCycles by @MeikeWeiss in
-https://github.com/digraphs/Digraphs/pull/679
-* Add DomainForAction mock for actions on digraphs by @reiniscirpons in
-https://github.com/digraphs/Digraphs/pull/686
-* doc: start using autodoc by @james-d-mitchell in
-https://github.com/digraphs/Digraphs/pull/684
-* Make Orb use digraph hashes by @reiniscirpons in
-https://github.com/digraphs/Digraphs/pull/687
-* Fix startup bug by @james-d-mitchell in
-https://github.com/digraphs/Digraphs/pull/688
-* Add comment to remove rank by @reiniscirpons in
-https://github.com/digraphs/Digraphs/pull/692
-* Lint for new version of gaplint by @james-d-mitchell in
-https://github.com/digraphs/Digraphs/pull/691
-* Add `SubdigraphsMonomorphisms` by @james-d-mitchell in
-https://github.com/digraphs/Digraphs/pull/690
-* Added method AllUndirectedSimpleCircuits by @MeikeWeiss in
-https://github.com/digraphs/Digraphs/pull/689
-* Update for recent gaplint by @james-d-mitchell in
-https://github.com/digraphs/Digraphs/pull/693
-* Add a test for issue #676 by @wilfwilson in
-https://github.com/digraphs/Digraphs/pull/695
-* Fix edge placement in HanoiGraph by @Joseph-Edwards in
-https://github.com/digraphs/Digraphs/pull/699
-* Fix planarity by @Joseph-Edwards in
-https://github.com/digraphs/Digraphs/pull/696
-* Clarify homomorphisms finder with specified image by @james-d-mitchell in
-https://github.com/digraphs/Digraphs/pull/700
+* Update my web-address by [@markuspf](https://github.com/markuspf) in
+[PR #674](https://github.com/digraphs/Digraphs/pull/674)
+* Fix off by one error by [@james-d-mitchell](https://github.com/james-d-mitchell) in
+[PR #677](https://github.com/digraphs/Digraphs/pull/677)
+* Resolve issue #676 by [@james-d-mitchell](https://github.com/james-d-mitchell) in
+[PR #678](https://github.com/digraphs/Digraphs/pull/678)
+* Add hash function for digraphs by [@reiniscirpons](https://github.com/reiniscirpons) in
+[PR #675](https://github.com/digraphs/Digraphs/pull/675)
+* kernel: use GAP's GVAR_FUNC macro by [@fingolfin](https://github.com/fingolfin) in
+[PR #682](https://github.com/digraphs/Digraphs/pull/682)
+* Add DigraphAllChordlessCycles by [@MeikeWeiss](https://github.com/MeikeWeiss) in
+[PR #679](https://github.com/digraphs/Digraphs/pull/679)
+* Add DomainForAction mock for actions on digraphs by [@reiniscirpons](https://github.com/reiniscirpons) in
+[PR #686](https://github.com/digraphs/Digraphs/pull/686)
+* doc: start using autodoc by [@james-d-mitchell](https://github.com/james-d-mitchell) in
+[PR #684](https://github.com/digraphs/Digraphs/pull/684)
+* Make Orb use digraph hashes by [@reiniscirpons](https://github.com/reiniscirpons) in
+[PR #687](https://github.com/digraphs/Digraphs/pull/687)
+* Fix startup bug by [@james-d-mitchell](https://github.com/james-d-mitchell) in
+[PR #688](https://github.com/digraphs/Digraphs/pull/688)
+* Add comment to remove rank by [@reiniscirpons](https://github.com/reiniscirpons) in
+[PR #692](https://github.com/digraphs/Digraphs/pull/692)
+* Lint for new version of gaplint by [@james-d-mitchell](https://github.com/james-d-mitchell) in
+[PR #691](https://github.com/digraphs/Digraphs/pull/691)
+* Add `SubdigraphsMonomorphisms` by [@james-d-mitchell](https://github.com/james-d-mitchell) in
+[PR #690](https://github.com/digraphs/Digraphs/pull/690)
+* Added method AllUndirectedSimpleCircuits by [@MeikeWeiss](https://github.com/MeikeWeiss) in
+[PR #689](https://github.com/digraphs/Digraphs/pull/689)
+* Update for recent gaplint by [@james-d-mitchell](https://github.com/james-d-mitchell) in
+[PR #693](https://github.com/digraphs/Digraphs/pull/693)
+* Add a test for issue #676 by [@wilfwilson](https://github.com/wilfwilson) in
+[PR #695](https://github.com/digraphs/Digraphs/pull/695)
+* Fix edge placement in HanoiGraph by [@Joseph-Edwards](https://github.com/Joseph-Edwards) in
+[PR #699](https://github.com/digraphs/Digraphs/pull/699)
+* Fix planarity by [@Joseph-Edwards](https://github.com/Joseph-Edwards) in
+[PR #696](https://github.com/digraphs/Digraphs/pull/696)
+* Clarify homomorphisms finder with specified image by [@james-d-mitchell](https://github.com/james-d-mitchell) in
+[PR #700](https://github.com/digraphs/Digraphs/pull/700)
 
 ## New Contributors
-* @MeikeWeiss made their first contribution in https://github.com/digraphs/Digraphs/pull/679
+* [@MeikeWeiss](https://github.com/MeikeWeiss) made their first contribution in [PR #679](https://github.com/digraphs/Digraphs/pull/679)
 
-**Full Changelog**: https://github.com/digraphs/Digraphs/compare/v1.8.0...v1.9.0
+**Full Changelog**: <https://github.com/digraphs/Digraphs/compare/v1.8.0...v1.9.0>
 
 ## Version 1.8.0 (released 27/08/2024)
 
 This release contains several improvements and bug fixes:
 
-* Update Joe's info by @Joseph-Edwards in https://github.com/digraphs/Digraphs/pull/621
-* Fix Issue #617: DigraphRemoveEdge now removes appropriate edge label by @mtorpey in https://github.com/digraphs/Digraphs/pull/619
-* Implement IsOrderIdeal by @DanielPointon in https://github.com/digraphs/Digraphs/pull/609
-* DigraphCycleBasis by @Jun2M in https://github.com/digraphs/Digraphs/pull/610
-* Fix compiler warnings by @james-d-mitchell in https://github.com/digraphs/Digraphs/pull/633
-* Add IsModularLatticeDigraph by @james-d-mitchell in https://github.com/digraphs/Digraphs/pull/629
-* Abort if malloc fails by @DanielPointon in https://github.com/digraphs/Digraphs/pull/627
-* Add DigraphContractEdge by @saffronmciver in https://github.com/digraphs/Digraphs/pull/618
-* cliques: some perf improvements by @james-d-mitchell in https://github.com/digraphs/Digraphs/pull/635
-* Add custom CSS to documentation by @mtorpey in https://github.com/digraphs/Digraphs/pull/640
-* Fix compile warnings by @Joseph-Edwards in https://github.com/digraphs/Digraphs/pull/648
-* Edge-weights #3: minimum spanning trees by @mtorpey in https://github.com/digraphs/Digraphs/pull/650
-* weights.gi: correct whitespace by @mtorpey in https://github.com/digraphs/Digraphs/pull/652
-* Refactor Floyd–Warshall C implementation by @mtorpey in https://github.com/digraphs/Digraphs/pull/657
-* Added requested clique and independent attributes - #634 by @mpan322 in https://github.com/digraphs/Digraphs/pull/655
-* Doc fixes by @james-d-mitchell in https://github.com/digraphs/Digraphs/pull/658
-* Reduce Memory Usage by @DanielPointon in https://github.com/digraphs/Digraphs/pull/626
+* Update Joe's info by [@Joseph-Edwards](https://github.com/Joseph-Edwards) in [PR #621](https://github.com/digraphs/Digraphs/pull/621)
+* Fix Issue #617: DigraphRemoveEdge now removes appropriate edge label by [@mtorpey](https://github.com/mtorpey) in [PR #619](https://github.com/digraphs/Digraphs/pull/619)
+* Implement IsOrderIdeal by [@DanielPointon](https://github.com/DanielPointon) in [PR #609](https://github.com/digraphs/Digraphs/pull/609)
+* DigraphCycleBasis by [@Jun2M](https://github.com/Jun2M) in [PR #610](https://github.com/digraphs/Digraphs/pull/610)
+* Fix compiler warnings by [@james-d-mitchell](https://github.com/james-d-mitchell) in [PR #633](https://github.com/digraphs/Digraphs/pull/633)
+* Add IsModularLatticeDigraph by [@james-d-mitchell](https://github.com/james-d-mitchell) in [PR #629](https://github.com/digraphs/Digraphs/pull/629)
+* Abort if malloc fails by [@DanielPointon](https://github.com/DanielPointon) in [PR #627](https://github.com/digraphs/Digraphs/pull/627)
+* Add DigraphContractEdge by [@saffronmciver](https://github.com/saffronmciver) in [PR #618](https://github.com/digraphs/Digraphs/pull/618)
+* cliques: some perf improvements by [@james-d-mitchell](https://github.com/james-d-mitchell) in [PR #635](https://github.com/digraphs/Digraphs/pull/635)
+* Add custom CSS to documentation by [@mtorpey](https://github.com/mtorpey) in [PR #640](https://github.com/digraphs/Digraphs/pull/640)
+* Fix compile warnings by [@Joseph-Edwards](https://github.com/Joseph-Edwards) in [PR #648](https://github.com/digraphs/Digraphs/pull/648)
+* Edge-weights #3: minimum spanning trees by [@mtorpey](https://github.com/mtorpey) in [PR #650](https://github.com/digraphs/Digraphs/pull/650)
+* weights.gi: correct whitespace by [@mtorpey](https://github.com/mtorpey) in [PR #652](https://github.com/digraphs/Digraphs/pull/652)
+* Refactor Floyd–Warshall C implementation by [@mtorpey](https://github.com/mtorpey) in [PR #657](https://github.com/digraphs/Digraphs/pull/657)
+* Added requested clique and independent attributes - #634 by [@mpan322](https://github.com/mpan322) in [PR #655](https://github.com/digraphs/Digraphs/pull/655)
+* Doc fixes by [@james-d-mitchell](https://github.com/james-d-mitchell) in [PR #658](https://github.com/digraphs/Digraphs/pull/658)
+* Reduce Memory Usage by [@DanielPointon](https://github.com/DanielPointon) in [PR #626](https://github.com/digraphs/Digraphs/pull/626)
 
 ## New Contributors
-* @DanielPointon made their first contribution in https://github.com/digraphs/Digraphs/pull/609
-* @Jun2M made their first contribution in https://github.com/digraphs/Digraphs/pull/610
-* @saffronmciver made their first contribution in https://github.com/digraphs/Digraphs/pull/618
-* @mpan322 made their first contribution in https://github.com/digraphs/Digraphs/pull/655
+* [@DanielPointon](https://github.com/DanielPointon) made their first contribution in [PR #609](https://github.com/digraphs/Digraphs/pull/609)
+* [@Jun2M](https://github.com/Jun2M) made their first contribution in [PR #610](https://github.com/digraphs/Digraphs/pull/610)
+* [@saffronmciver](https://github.com/saffronmciver) made their first contribution in [PR #618](https://github.com/digraphs/Digraphs/pull/618)
+* [@mpan322](https://github.com/mpan322) made their first contribution in [PR #655](https://github.com/digraphs/Digraphs/pull/655)
 
-**Full Changelog**: https://github.com/digraphs/Digraphs/compare/v1.7.1...v1.8.0
+**Full Changelog**: <https://github.com/digraphs/Digraphs/compare/v1.7.1...v1.8.0>
 
 ## Version 1.7.1 (released 19/02/2024)
 
@@ -113,113 +175,113 @@ This is a minor release with some new features, and some other improvements in
 code quality.
 
 ## What's Changed
-* Change test that relies on xpdf not being installed by @mtorpey in
-  https://github.com/digraphs/Digraphs/pull/578
-* DigraphAbsorptionProbabilities by @mtorpey in
-  https://github.com/digraphs/Digraphs/pull/548
-* Fix test files: strings and unbinds by @mtorpey in
-  https://github.com/digraphs/Digraphs/pull/579
-* Add immediate methods for connected and strongly connected graphs by @mtorpey
-  in https://github.com/digraphs/Digraphs/pull/583
+* Change test that relies on xpdf not being installed by [@mtorpey](https://github.com/mtorpey) in
+  [PR #578](https://github.com/digraphs/Digraphs/pull/578)
+* DigraphAbsorptionProbabilities by [@mtorpey](https://github.com/mtorpey) in
+  [PR #548](https://github.com/digraphs/Digraphs/pull/548)
+* Fix test files: strings and unbinds by [@mtorpey](https://github.com/mtorpey) in
+  [PR #579](https://github.com/digraphs/Digraphs/pull/579)
+* Add immediate methods for connected and strongly connected graphs by [@mtorpey](https://github.com/mtorpey)
+  in [PR #583](https://github.com/digraphs/Digraphs/pull/583)
 * kernel: fix mem leaks for permutations allocated but not freed. by
-  @james-d-mitchell in https://github.com/digraphs/Digraphs/pull/589
-* Remove references to bin/gap.sh by @fingolfin in
-  https://github.com/digraphs/Digraphs/pull/597
-* Fix prototype warnings by @fingolfin in
-  https://github.com/digraphs/Digraphs/pull/598
-* Added EdgeWeightedDigraph by @RaiyanC in
-  https://github.com/digraphs/Digraphs/pull/575
-* Add AbsorptionExpectedSteps by @mtorpey in
-  https://github.com/digraphs/Digraphs/pull/585
-* Fix a typo by @fingolfin in https://github.com/digraphs/Digraphs/pull/608
-* configure.ac: fix bashism in string equality test by @orlitzky in
-  https://github.com/digraphs/Digraphs/pull/613
+  [@james-d-mitchell](https://github.com/james-d-mitchell) in [PR #589](https://github.com/digraphs/Digraphs/pull/589)
+* Remove references to bin/gap.sh by [@fingolfin](https://github.com/fingolfin) in
+  [PR #597](https://github.com/digraphs/Digraphs/pull/597)
+* Fix prototype warnings by [@fingolfin](https://github.com/fingolfin) in
+  [PR #598](https://github.com/digraphs/Digraphs/pull/598)
+* Added EdgeWeightedDigraph by [@RaiyanC](https://github.com/RaiyanC) in
+  [PR #575](https://github.com/digraphs/Digraphs/pull/575)
+* Add AbsorptionExpectedSteps by [@mtorpey](https://github.com/mtorpey) in
+  [PR #585](https://github.com/digraphs/Digraphs/pull/585)
+* Fix a typo by [@fingolfin](https://github.com/fingolfin) in [PR #608](https://github.com/digraphs/Digraphs/pull/608)
+* configure.ac: fix bashism in string equality test by [@orlitzky](https://github.com/orlitzky) in
+  [PR #613](https://github.com/digraphs/Digraphs/pull/613)
 
 ## New Contributors
-* @RaiyanC made their first contribution in https://github.com/digraphs/Digraphs/pull/575
-* @orlitzky made their first contribution in https://github.com/digraphs/Digraphs/pull/613
+* [@RaiyanC](https://github.com/RaiyanC) made their first contribution in [PR #575](https://github.com/digraphs/Digraphs/pull/575)
+* [@orlitzky](https://github.com/orlitzky) made their first contribution in [PR #613](https://github.com/digraphs/Digraphs/pull/613)
 
-**Full Changelog**: https://github.com/digraphs/Digraphs/compare/v1.6.3...v1.7.0
+**Full Changelog**: <https://github.com/digraphs/Digraphs/compare/v1.6.3...v1.7.0>
 
 ## Version 1.6.3 (released 13/09/2023)
 
 This is a minor release with some bug fixes, and other issues resolved:
 
 * There was a minor bug in the `RandomDigraph` method for `IsEulerianDigraph`,
-  resolved by @mtorpey
+  resolved by [@mtorpey](https://github.com/mtorpey)
 * Joe Edwards and Maria Tsalakou were incorrectly listed as authors resolved
-  partially by @james-d-mitchell in https://github.com/digraphs/Digraphs/pull/576
+  partially by [@james-d-mitchell](https://github.com/james-d-mitchell) in [PR #576](https://github.com/digraphs/Digraphs/pull/576)
 * Standardise the way that `UndirectedSpanningForest` works in relation to
-  mutability by @wilfwilson in https://github.com/digraphs/Digraphs/pull/582
+  mutability by [@wilfwilson](https://github.com/wilfwilson) in [PR #582](https://github.com/digraphs/Digraphs/pull/582)
 * Add immediate methods for connected and strongly connected digraphs by
-  @mtorpey
+  [@mtorpey](https://github.com/mtorpey)
 * There was a minor memory leak in the kernel extension resolved by
-  @james-d-mitchell
+  [@james-d-mitchell](https://github.com/james-d-mitchell)
 
 ## Version 1.6.2 (released 05/04/2023)
 
-* PackageInfo.g: link to Mathjax manual by default by @fingolfin in
-  https://github.com/digraphs/Digraphs/pull/554
-* PackageInfo.g: link to Mathjax manual by default by @fingolfin in
-  https://github.com/digraphs/Digraphs/pull/558
-* ci: change master to main on azure by @james-d-mitchell in
-  https://github.com/digraphs/Digraphs/pull/567
-* Rewrite buildsystem to use Makefile.gappkg by @fingolfin in
-  https://github.com/digraphs/Digraphs/pull/566
-* Update two M4 files, correct a comment by @fingolfin in
-  https://github.com/digraphs/Digraphs/pull/568
-* Fix some typos found by codespell by @fingolfin in
-  https://github.com/digraphs/Digraphs/pull/569
-* Avoid src/ prefix for GAP headers by @fingolfin in
-  https://github.com/digraphs/Digraphs/pull/571
-* Use same URL as in my other packages by @olexandr-konovalov in
-  https://github.com/digraphs/Digraphs/pull/572
+* PackageInfo.g: link to Mathjax manual by default by [@fingolfin](https://github.com/fingolfin) in
+  [PR #554](https://github.com/digraphs/Digraphs/pull/554)
+* PackageInfo.g: link to Mathjax manual by default by [@fingolfin](https://github.com/fingolfin) in
+  [PR #558](https://github.com/digraphs/Digraphs/pull/558)
+* ci: change master to main on azure by [@james-d-mitchell](https://github.com/james-d-mitchell) in
+  [PR #567](https://github.com/digraphs/Digraphs/pull/567)
+* Rewrite buildsystem to use Makefile.gappkg by [@fingolfin](https://github.com/fingolfin) in
+  [PR #566](https://github.com/digraphs/Digraphs/pull/566)
+* Update two M4 files, correct a comment by [@fingolfin](https://github.com/fingolfin) in
+  [PR #568](https://github.com/digraphs/Digraphs/pull/568)
+* Fix some typos found by codespell by [@fingolfin](https://github.com/fingolfin) in
+  [PR #569](https://github.com/digraphs/Digraphs/pull/569)
+* Avoid src/ prefix for GAP headers by [@fingolfin](https://github.com/fingolfin) in
+  [PR #571](https://github.com/digraphs/Digraphs/pull/571)
+* Use same URL as in my other packages by [@olexandr-konovalov](https://github.com/olexandr-konovalov) in
+  [PR #572](https://github.com/digraphs/Digraphs/pull/572)
 
 ## Version 1.6.1 (released 06/12/2022)
 
 This is a minor release fixing a number of minor issues:
 
-* Use `compiled.h` instead of `src/compiled.h` by @fingolfin in https://github.com/digraphs/Digraphs/pull/560
-* Fix tourn decoder by @james-d-mitchell in https://github.com/digraphs/Digraphs/pull/559
-* Change `CayleyDigraph` to use `AsSet` by @fingolfin in https://github.com/digraphs/Digraphs/pull/564
+* Use `compiled.h` instead of `src/compiled.h` by [@fingolfin](https://github.com/fingolfin) in [PR #560](https://github.com/digraphs/Digraphs/pull/560)
+* Fix tourn decoder by [@james-d-mitchell](https://github.com/james-d-mitchell) in [PR #559](https://github.com/digraphs/Digraphs/pull/559)
+* Change `CayleyDigraph` to use `AsSet` by [@fingolfin](https://github.com/fingolfin) in [PR #564](https://github.com/digraphs/Digraphs/pull/564)
 
 ## Version 1.6.0 (released 08/09/2022)
 
 This is a minor release including a number of new features:
 
-* Implement `IsPermutationDigraph` by @baydrea in
-  https://github.com/digraphs/Digraphs/pull/513
-* Add more implications (including some implications of falsity) by @wilfwilson
-  in https://github.com/digraphs/Digraphs/pull/494
-* Add `OnTuplesDigraphs` and `OnSetsDigraphs` by @wilfwilson in
-  https://github.com/digraphs/Digraphs/pull/449
-* Add checks for upper/lower semimodular lattices by @james-d-mitchell in
-  https://github.com/digraphs/Digraphs/pull/375
-* Add `AsDigraph` for partial perms by @james-d-mitchell in
-  https://github.com/digraphs/Digraphs/pull/526
-* Add `DigraphRandomWalk` by @mtorpey in
-  https://github.com/digraphs/Digraphs/pull/543
+* Implement `IsPermutationDigraph` by [@baydrea](https://github.com/baydrea) in
+  [PR #513](https://github.com/digraphs/Digraphs/pull/513)
+* Add more implications (including some implications of falsity) by [@wilfwilson](https://github.com/wilfwilson)
+  in [PR #494](https://github.com/digraphs/Digraphs/pull/494)
+* Add `OnTuplesDigraphs` and `OnSetsDigraphs` by [@wilfwilson](https://github.com/wilfwilson) in
+  [PR #449](https://github.com/digraphs/Digraphs/pull/449)
+* Add checks for upper/lower semimodular lattices by [@james-d-mitchell](https://github.com/james-d-mitchell) in
+  [PR #375](https://github.com/digraphs/Digraphs/pull/375)
+* Add `AsDigraph` for partial perms by [@james-d-mitchell](https://github.com/james-d-mitchell) in
+  [PR #526](https://github.com/digraphs/Digraphs/pull/526)
+* Add `DigraphRandomWalk` by [@mtorpey](https://github.com/mtorpey) in
+  [PR #543](https://github.com/digraphs/Digraphs/pull/543)
 * Add constructors for random digraphs with particular properties by
-  @KamranKSharma in https://github.com/digraphs/Digraphs/pull/531
-* Add `LatticeDigraphEmbedding` method by @MTWhyte in https://github.com/digraphs/Digraphs/pull/538
-* Add `IsDistributiveLatticeDigraph` property by @MTWhyte in https://github.com/digraphs/Digraphs/pull/528
+  [@KamranKSharma](https://github.com/KamranKSharma) in [PR #531](https://github.com/digraphs/Digraphs/pull/531)
+* Add `LatticeDigraphEmbedding` method by [@MTWhyte](https://github.com/MTWhyte) in [PR #538](https://github.com/digraphs/Digraphs/pull/538)
+* Add `IsDistributiveLatticeDigraph` property by [@MTWhyte](https://github.com/MTWhyte) in [PR #528](https://github.com/digraphs/Digraphs/pull/528)
 
 The following improvements were also made:
 
 * Make improvements to `IsMeetSemilatticeDigraph` and
-  `IsJoinSemilatticeDigraph`  by @MTWhyte in
-  https://github.com/digraphs/Digraphs/pull/556
-* Add a workaround for macOS code signing issues by @fingolfin in
-  https://github.com/digraphs/Digraphs/pull/555
+  `IsJoinSemilatticeDigraph`  by [@MTWhyte](https://github.com/MTWhyte) in
+  [PR #556](https://github.com/digraphs/Digraphs/pull/556)
+* Add a workaround for macOS code signing issues by [@fingolfin](https://github.com/fingolfin) in
+  [PR #555](https://github.com/digraphs/Digraphs/pull/555)
 
 ## Version 1.5.3 (released 20/05/2022)
 
 This is a minor release including the following changes:
 
-* digraph: fix String method for chains/cycles by @james-d-mitchell in https://github.com/digraphs/Digraphs/pull/542
-* Disable edge labels if not already set in some cases by @james-d-mitchell in https://github.com/digraphs/Digraphs/pull/540
-* build: remove the default flag -march=native by @james-d-mitchell in https://github.com/digraphs/Digraphs/pull/541
-* doc: fix typos by @james-d-mitchell in https://github.com/digraphs/Digraphs/pull/544
+* digraph: fix String method for chains/cycles by [@james-d-mitchell](https://github.com/james-d-mitchell) in [PR #542](https://github.com/digraphs/Digraphs/pull/542)
+* Disable edge labels if not already set in some cases by [@james-d-mitchell](https://github.com/james-d-mitchell) in [PR #540](https://github.com/digraphs/Digraphs/pull/540)
+* build: remove the default flag -march=native by [@james-d-mitchell](https://github.com/james-d-mitchell) in [PR #541](https://github.com/digraphs/Digraphs/pull/541)
+* doc: fix typos by [@james-d-mitchell](https://github.com/james-d-mitchell) in [PR #544](https://github.com/digraphs/Digraphs/pull/544)
 
 ## Version 1.5.2 (released 30/03/2022)
 
@@ -450,7 +512,7 @@ The following issues were resolved, pull requests merged, or new features added:
 This is a minor release that fixes some bugs related to mutability in
 `DigraphDisjointUnion` and `ViewString`.
 
-These problems were reported and fixed by [Wilf A.  Wilson][] in
+These problems were reported and fixed by [Wilf A. Wilson][] in
 [Issue #276](https://github.com/digraphs/Digraphs/issues/276) and
 [PR #277](https://github.com/digraphs/Digraphs/pull/277), respectively.
 
@@ -766,7 +828,7 @@ package](https://gap-packages.github.io/orb), or newer.
 
 This release of Digraphs contains some bugfixes, along with the following new features:
 
-* The GraphViz engine used by `Splash` is now configurable, thanks to [Markus Pfeiffer](https://www.morphism.de/~markusp).
+* The GraphViz engine used by `Splash` is now configurable, thanks to [Markus Pfeiffer][].
 * The properties `IsPartialOrderDigraph`, `IsPreorderDigraph`, and `IsQuasiorderDigraph` were introduced by Chris Russell, along with the following functions for visualising these kinds of digraphs:
   * `DotPartialOrderDigraph`
   * `DotPreorderDigraph`
@@ -1112,12 +1174,12 @@ Pre-release version that was not made publicly available.
 
 [James D. Mitchell]: https://jdbm.me
 [Wilf A. Wilson]: https://wilf.me
-[Michael Young]: https://mct25.host.cs.st-andrews.ac.uk
+[Michael Young]: https://myoung.uk/work
 [Julius Jonusas]: http://julius.jonusas.work
-[Jan De Beule]: http://homepages.vub.ac.be/~jdbeule
-[Markus Pfeiffer]: https://www.morphism.de/~markusp
+[Jan De Beule]: https://researchportal.vub.be/en/persons/jan-de-beule
+[Markus Pfeiffer]: https://markusp.morphism.de
 [Maria Tsalakou]: https://mariatsalakou.github.io
-[Chris Jefferson]: https://caj.host.cs.st-andrews.ac.uk
+[Chris Jefferson]: https://heather.cafe
 [bliss]: http://www.tcs.hut.fi/Software/bliss/
 [Max Horn]: https://www.quendi.de/math
 [Edge Addition Planarity Suite]: https://github.com/graph-algorithms/edge-addition-planarity-suite

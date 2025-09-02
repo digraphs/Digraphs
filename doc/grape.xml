@@ -51,13 +51,7 @@ true]]></Example>
   <Description>
     Let <A>G</A> be any group and let <A>gens</A> be a list of elements of
     <A>G</A>. This operation returns a digraph that corresponds to the Cayley
-    graph of <A>G</A> with respect to <A>gens</A>. If the optional argument
-    <A>filt</A> is present, then it determines mutability of the returned
-    digraph. In other words, if <A>filt</A> is <C>IsMutable</C> or
-    <C>IsMutableDigraph</C>, then the returned digraph is mutable, and if
-    <A>filt</A> is <C>IsImmutableDigraph</C>, then the returned digraph is
-    immutable. 
-    <P/>
+    graph of <A>G</A> with respect to <A>gens</A>. <P/>
 
     The vertices of the digraph correspond to the elements of <A>G</A>, in the
     order given by <C>Set(<A>G</A>)</C>. There exists an edge from vertex
@@ -71,7 +65,9 @@ true]]></Example>
     see <Ref Oper="DigraphVertexLabel"/> and <Ref Oper="DigraphEdgeLabel"/>.
     <P/>
 
-    If the optional second argument <A>gens</A> is not present, then the
+    &STANDARD_FILT_TEXT;
+
+    If the optional third argument <A>gens</A> is not present, then the
     generators of <A>G</A> are used by default.<P/>
 
     The digraph created by this operation belongs to the category <Ref

@@ -36,7 +36,7 @@ jobs:
             pkgs-to-build: io orb datastructures grape NautyTracesInterface
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Output g++ version . . .
         run: g++ --version
       - name: Install macOS dependencies . . .
@@ -58,26 +58,22 @@ jobs:
           curl --retry 5 -L -O "https://digraphs.github.io/Digraphs/${{ env.DIGRAPHS_LIB }}.tar.gz"
           tar xf "${{ env.DIGRAPHS_LIB }}.tar.gz"
       - name: Run DigraphsTestInstall . . .
-        # TODO: Replace below with gap-actions/run-pkg-tests@v2 if the functionality gets added
-        uses: ./.github/actions/run-pkg-tests
+        uses: gap-actions/run-pkg-tests@v3
         with:
           NO_COVERAGE: true
           GAP_TESTFILE: tst/github_actions/install.g
       - name: Run DigraphsTestStandard . . .
-        # TODO: Replace below with gap-actions/run-pkg-tests@v2 if the functionality gets added
-        uses: ./.github/actions/run-pkg-tests
+        uses: gap-actions/run-pkg-tests@v3
         with:
           NO_COVERAGE: true
           GAP_TESTFILE: tst/github_actions/standard.g
       - name: Run DigraphsTestManualExamples . . .
-        # TODO: Replace below with gap-actions/run-pkg-tests@v2 if the functionality gets added
-        uses: ./.github/actions/run-pkg-tests
+        uses: gap-actions/run-pkg-tests@v3
         with:
           NO_COVERAGE: true
           GAP_TESTFILE: tst/github_actions/examples.g
       - name: Run DigraphsTestExtreme . . .
-        # TODO: Replace below with gap-actions/run-pkg-tests@v2 if the functionality gets added
-        uses: ./.github/actions/run-pkg-tests
+        uses: gap-actions/run-pkg-tests@v3
         with:
           NO_COVERAGE: true
           GAP_TESTFILE: tst/github_actions/extreme.g
@@ -88,7 +84,7 @@ jobs:
     env:
       CHERE_INVOKING: 1
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: gap-actions/setup-cygwin@v1
       - uses: gap-actions/setup-gap@cygwin-v2
         with:
