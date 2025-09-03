@@ -56,7 +56,7 @@ jobs:
         with:
           GAP_PKGS_TO_CLONE: NautyTracesInterface digraphs/graphviz
           GAP_PKGS_TO_BUILD: io orb datastructures grape NautyTracesInterface
-          GAPBRANCH: stable-4.14
+          GAPBRANCH: stable-4.15
       - name: Build Digraphs . . .
         uses: gap-actions/build-pkg@v1
         with:
@@ -95,7 +95,7 @@ jobs:
         with:
           GAP_PKGS_TO_CLONE: NautyTracesInterface digraphs/graphviz
           GAP_PKGS_TO_BUILD: io orb datastructures grape NautyTracesInterface
-          GAPBRANCH: stable-4.14
+          GAPBRANCH: stable-4.15
       - name: Build Digraphs . . .
         uses: gap-actions/build-pkg@v1
         with:

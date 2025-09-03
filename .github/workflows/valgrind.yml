@@ -20,7 +20,7 @@ concurrency:
 
 jobs:
   test-valgrind:
-    name: Ubuntu / GAP stable-4.14 / valgrind
+    name: Ubuntu / GAP stable-4.15 / valgrind
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -33,7 +33,7 @@ jobs:
         with:
           GAP_PKGS_TO_CLONE: NautyTracesInterface digraphs/graphviz
           GAP_PKGS_TO_BUILD: io orb datastructures grape NautyTracesInterface
-          GAPBRANCH: stable-4.14
+          GAPBRANCH: stable-4.15
           CONFIGFLAGS: --enable-valgrind
       - name: Build Digraphs . . .
         uses: gap-actions/build-pkg@v1
