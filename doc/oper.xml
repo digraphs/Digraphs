@@ -2089,14 +2089,14 @@ true
 </ManSection>
 <#/GAPDoc>
 
-<#GAPDoc Label="DigraphDijkstra">
+<#GAPDoc Label="DigraphShortestPaths">
 <ManSection>
-  <Oper Name="DigraphDijkstra" Arg="digraph, source, target" Label="for a source and target"/>
-  <Oper Name="DigraphDijkstra" Arg="digraph, source" Label="for a source"/>
+  <Oper Name="DigraphShortestPaths" Arg="digraph, source, target" Label="for a source and target"/>
+  <Oper Name="DigraphShortestPaths" Arg="digraph, source" Label="for a source"/>
   <Returns>Two lists.</Returns>
   <Description>
   If <A>digraph</A> is a digraph and <A>source</A> and <A>target</A>  are
-  vertices of <A>digraph</A>, then <C>DigraphDijkstra</C> calculates the
+  vertices of <A>digraph</A>, then <C>DigraphShortestPaths</C> calculates the
   length of the shortest path from <A>source</A> to <A>target</A> and returns
   two lists. Each element of the first list is the distance of the
   corresponding element from <A>source</A>.  If a vertex was not visited in
@@ -2109,7 +2109,7 @@ true
     will be <C>-1</C>.<P/>
 
     If the optional second argument <A>target</A> is not present, then
-    <C>DigraphDijkstra</C> returns the shortest path from <A>source</A> to
+    <C>DigraphShortestPaths</C> returns the shortest path from <A>source</A> to
     every vertex that is reachable from <A>source</A>.
 
   <Example><![CDATA[
@@ -2117,11 +2117,11 @@ gap> mat := [[0, 1, 1], [0, 0, 1], [0, 0, 0]];
 [ [ 0, 1, 1 ], [ 0, 0, 1 ], [ 0, 0, 0 ] ]
 gap> D := DigraphByAdjacencyMatrix(mat);
 <immutable digraph with 3 vertices, 3 edges>
-gap> DigraphDijkstra(D, 2, 3);
+gap> DigraphShortestPaths(D, 2, 3);
 [ [ infinity, 0, 1 ], [ -1, -1, 2 ] ]
-gap> DigraphDijkstra(D, 1, 3);
+gap> DigraphShortestPaths(D, 1, 3);
 [ [ 0, 1, 1 ], [ -1, 1, 1 ] ]
-gap> DigraphDijkstra(D, 1, 2);
+gap> DigraphShortestPaths(D, 1, 2);
 [ [ 0, 1, 1 ], [ -1, 1, 1 ] ]
 ]]></Example>
 </Description>
