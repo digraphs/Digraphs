@@ -86,16 +86,16 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - uses: gap-actions/setup-cygwin@v1
-      - uses: gap-actions/setup-gap@cygwin-v2
+      - uses: gap-actions/setup-gap@v2
         with:
           GAP_PKGS_TO_CLONE: NautyTracesInterface digraphs/graphviz
           GAP_PKGS_TO_BUILD: io orb datastructures grape NautyTracesInterface
           GAPBRANCH: stable-4.15
-      - uses: gap-actions/build-pkg@cygwin-v1
+      - uses: gap-actions/build-pkg@v1
       - name: Install digraphs-lib . . .
         run: |
           curl --retry 5 -L -O "https://digraphs.github.io/Digraphs/${{ env.DIGRAPHS_LIB }}.tar.gz"
           tar xf "${{ env.DIGRAPHS_LIB }}.tar.gz"
-      - uses: gap-actions/run-pkg-tests@cygwin-v2
+      - uses: gap-actions/run-pkg-tests@v2
         with:
           NO_COVERAGE: true
