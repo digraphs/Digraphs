@@ -34,7 +34,7 @@ jobs:
       - name: Clean up additional files
         run: |
           rm -f  .covignore .mailmap .codespellrc Dockerfile
-          rm -rf etc scripts
+          rm -rf etc
       - name: Extract the latest CHANGELOG entry to use as the GitHub release text
         run: |
           # Extract the part of CHANGELOG that is relevant to this release
