@@ -86,9 +86,15 @@ gap> EmptyDigraph(IsMutableDigraph, -1);
 Error, the argument <n> must be a non-negative integer,
 
 #  CycleDigraph
+#@if CompareVersionNumbers(ReplacedString(GAPInfo.Version, "dev", ""), "4.16")
+gap> gr := CycleDigraph(0);
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `CycleDigraph' on 1 argument
+#@else
 gap> gr := CycleDigraph(0);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `CycleDigraph' on 1 arguments
+#@fi
 gap> gr := CycleDigraph(1);
 <immutable digraph with 1 vertex, 1 edge>
 gap> AutomorphismGroup(gr) = Group(());
@@ -106,9 +112,15 @@ gap> gr = DigraphCycle(IsImmutableDigraph, 6);
 true
 
 #  ChainDigraph
+#@if CompareVersionNumbers(ReplacedString(GAPInfo.Version, "dev", ""), "4.16")
+gap> gr := ChainDigraph(0);
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `ChainDigraph' on 1 argument
+#@else
 gap> gr := ChainDigraph(0);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `ChainDigraph' on 1 arguments
+#@fi
 gap> gr := ChainDigraph(1);
 <immutable empty digraph with 1 vertex>
 gap> IsEmptyDigraph(gr);
@@ -490,9 +502,15 @@ gap> D := AndrasfaiGraph(3);
 vertices, 24 edges>
 gap> IsIsomorphicDigraph(D, MobiusLadderGraph(4));
 true
+#@if CompareVersionNumbers(ReplacedString(GAPInfo.Version, "dev", ""), "4.16")
+gap> AndrasfaiGraph(0);
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `AndrasfaiGraph' on 1 argument
+#@else
 gap> AndrasfaiGraph(0);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `AndrasfaiGraph' on 1 arguments
+#@fi
 
 # BinomialTreeGraph
 gap> D := BinomialTreeGraph(6);
@@ -507,9 +525,15 @@ gap> DigraphEdges(D);
   [ 15, 13 ], [ 15, 16 ], [ 16, 15 ] ]
 gap> BinomialTreeGraph(1);
 <immutable empty digraph with 1 vertex>
+#@if CompareVersionNumbers(ReplacedString(GAPInfo.Version, "dev", ""), "4.16")
+gap> BinomialTreeGraph(0);
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `BinomialTreeGraph' on 1 argument
+#@else
 gap> BinomialTreeGraph(0);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `BinomialTreeGraph' on 1 arguments
+#@fi
 
 # BondyGraph
 gap> D := BondyGraph(2);
@@ -571,9 +595,15 @@ gap> D := HalvedCubeGraph(3);
 <immutable Hamiltonian symmetric digraph with 4 vertices, 12 edges>
 gap> IsIsomorphicDigraph(D, CompleteDigraph(4));
 true
+#@if CompareVersionNumbers(ReplacedString(GAPInfo.Version, "dev", ""), "4.16")
+gap> HalvedCubeGraph(-1);
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `HalvedCubeGraph' on 1 argument
+#@else
 gap> HalvedCubeGraph(-1);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `HalvedCubeGraph' on 1 arguments
+#@fi
 
 # HanoiGraph
 gap> D := HanoiGraph(1);
@@ -588,9 +618,15 @@ gap> IsHamiltonianDigraph(gr);
 true
 gap> IsPlanarDigraph(DigraphMutableCopy(gr));
 true
+#@if CompareVersionNumbers(ReplacedString(GAPInfo.Version, "dev", ""), "4.16")
+gap> HanoiGraph(0);
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `HanoiGraph' on 1 argument
+#@else
 gap> HanoiGraph(0);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `HanoiGraph' on 1 arguments
+#@fi
 
 # HelmGraph
 gap> D := HelmGraph(6);
@@ -660,9 +696,15 @@ gap> D := LindgrenSousselierGraph(1);
 <immutable symmetric digraph with 10 vertices, 30 edges>
 gap> AutomorphismGroup(D) = Group([(4, 8)(5, 7)(9, 10), (2, 10, 9)(3, 4, 5, 6, 7, 8), (1, 2, 3, 4, 10)(5, 7, 9, 6, 8)]);
 true
+#@if CompareVersionNumbers(ReplacedString(GAPInfo.Version, "dev", ""), "4.16")
+gap> LindgrenSousselierGraph(0);
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `LindgrenSousselierGraph' on 1 argument
+#@else
 gap> LindgrenSousselierGraph(0);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `LindgrenSousselierGraph' on 1 arguments
+#@fi
 gap> LindgrenSousselierGraph(3);
 <immutable symmetric digraph with 22 vertices, 70 edges>
 gap> IsIsomorphicDigraph(LindgrenSousselierGraph(1), GeneralisedPetersenGraph(5, 2));
@@ -705,9 +747,15 @@ gap> IsIsomorphicDigraph(D, DigraphSymmetricClosure(ChainDigraph(4)));
 true
 gap> PathGraph(1);
 <immutable empty digraph with 1 vertex>
+#@if CompareVersionNumbers(ReplacedString(GAPInfo.Version, "dev", ""), "4.16")
+gap> PathGraph(0);
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `PathGraph' on 1 argument
+#@else
 gap> PathGraph(0);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `PathGraph' on 1 arguments
+#@fi
 
 # PermutationStarGraph
 gap> D := PermutationStarGraph(3, 2);
@@ -771,9 +819,15 @@ gap> D := WalshHadamardGraph(2);
 <immutable symmetric digraph with 8 vertices, 16 edges>
 gap> IsIsomorphicDigraph(D, CycleGraph(8));
 true
+#@if CompareVersionNumbers(ReplacedString(GAPInfo.Version, "dev", ""), "4.16")
+gap> WalshHadamardGraph(0);
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `WalshHadamardGraph' on 1 argument
+#@else
 gap> WalshHadamardGraph(0);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `WalshHadamardGraph' on 1 arguments
+#@fi
 
 # WebGraph
 gap> D := WebGraph(3);
