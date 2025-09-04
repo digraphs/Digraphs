@@ -253,10 +253,17 @@ gap> EdgeWeightedDigraphShortestPath(d, 1, 2);
 # Shortest paths: negative cycle
 gap> d := EdgeWeightedDigraph([[2], [3], [1]], [[-3], [-5], [-7]]);
 <immutable digraph with 3 vertices, 3 edges>
+#@if CompareVersionNumbers(ReplacedString(GAPInfo.Version, "dev", ""), "4.16")
+gap> EdgeWeightedDigraphShortestPaths(d);
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 2nd choice method found for `EdgeWeightedDigraphShortestPaths' on 1 \
+argument
+#@else
 gap> EdgeWeightedDigraphShortestPaths(d);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 2nd choice method found for `EdgeWeightedDigraphShortestPaths' on 1 \
 arguments
+#@fi
 
 # Shortest paths: source not in graph neg int
 gap> EdgeWeightedDigraphShortestPaths(d, -1);
