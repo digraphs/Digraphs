@@ -20,7 +20,7 @@ concurrency:
 
 jobs:
   test-unix:
-    name: ${{ matrix.os }}${{ matrix.ABI }} / GAP stable-4.14
+    name: ${{ matrix.os }}${{ matrix.ABI }} / GAP stable-4.15
     runs-on: ${{ matrix.os }}-latest
     strategy:
       fail-fast: false
@@ -47,7 +47,7 @@ jobs:
         with:
           GAP_PKGS_TO_CLONE: ${{ matrix.pkgs-to-clone }}
           GAP_PKGS_TO_BUILD: ${{ matrix.pkgs-to-build }}
-          GAPBRANCH: stable-4.14
+          GAPBRANCH: stable-4.15
           ABI: ${{ matrix.ABI }}
       - name: Build Digraphs . . .
         uses: gap-actions/build-pkg@v1
@@ -79,23 +79,25 @@ jobs:
           GAP_TESTFILE: tst/github_actions/extreme.g
 
   test-cygwin:
-    name: cygwin / GAP stable-4.14
+    name: cygwin / GAP stable-4.15
     runs-on: windows-latest
     env:
       CHERE_INVOKING: 1
     steps:
       - uses: actions/checkout@v5
-      - uses: gap-actions/setup-cygwin@v1
-      - uses: gap-actions/setup-gap@cygwin-v2
+      - uses: gap-actions/setup-cygwin@v2
+        with:
+          extra-pkgs-to-install: automake
+      - uses: gap-actions/setup-gap@v2
         with:
           GAP_PKGS_TO_CLONE: NautyTracesInterface digraphs/graphviz
           GAP_PKGS_TO_BUILD: io orb datastructures grape NautyTracesInterface
-          GAPBRANCH: stable-4.14
-      - uses: gap-actions/build-pkg@cygwin-v1
+          GAPBRANCH: stable-4.15
+      - uses: gap-actions/build-pkg@v1
       - name: Install digraphs-lib . . .
         run: |
           curl --retry 5 -L -O "https://digraphs.github.io/Digraphs/${{ env.DIGRAPHS_LIB }}.tar.gz"
           tar xf "${{ env.DIGRAPHS_LIB }}.tar.gz"
-      - uses: gap-actions/run-pkg-tests@cygwin-v2
+      - uses: gap-actions/run-pkg-tests@v3
         with:
           NO_COVERAGE: true

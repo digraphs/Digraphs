@@ -7,7 +7,7 @@
 
 ### Digraphs package for GAP
 
-#### Copyright (C) 2014-21 by Jan De Beule, Julius Jonušas, James D. Mitchell, Wilf A. Wilson, Michael Young et al.
+#### Copyright (C) 2014-25 by Jan De Beule, Julius Jonušas, James D. Mitchell, Wilf A. Wilson, Michael Young et al.
 ## Getting Digraphs
 
 To get the latest version of the package, download the archive file

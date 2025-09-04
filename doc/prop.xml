@@ -563,26 +563,33 @@ false
 <#GAPDoc Label="IsDirectedTree">
 <ManSection>
   <Prop Name="IsDirectedTree" Arg="digraph"/>
+  <Prop Name="IsDirectedForest" Arg="digraph"/>
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
-    Returns <K>true</K> if the digraph <A>digraph</A> is a directed tree, and
-    <K>false</K> if it is not. <P/>
+    The property <Ref Prop="IsDirectedTree"/> returns <K>true</K> if the
+    digraph <A>digraph</A> is a directed tree, and the property
+    <Ref Prop="IsDirectedForest"/> returns <K>true</K> if <A>digraph</A> is
+    a directed forest; otherwise these properties return <K>false</K>. <P/>
 
-    A <E>directed tree</E> is an acyclic digraph with precisely 1 source,
-    such that no two vertices share an out-neighbour.
-    Note that the empty digraph with zero vertices is not considered
-    to be a directed tree, because it has no source. <P/>
+    A <E>directed tree</E> is an acyclic digraph with precisely one source,
+    without multiple edges, and such that no two vertices share an
+    out-neighbour.  See and <Ref Attr="IsAcyclicDigraph"/> and
+    <Ref Attr="DigraphSources"/> for more information about these terms. <P/>
 
-    See also <Ref Attr="DigraphSources"/>.
-    <P/>
+    A <E>directed forest</E> is a digraph with at least one vertex,
+    each of whose connected components is a directed tree.
+    In other words, a directed forest is isomorphic to a disjoint union of
+    directed trees.
+    In particular, every directed tree is a directed forest.
+    See <Ref Attr="DigraphConnectedComponents" /> and
+    <Ref Func="DigraphDisjointUnion" Label="for a list of digraphs" />. <P/>
+
+    Please note that the empty digraph with zero vertices is not considered
+    to be a directed tree or directed forest, because it has no source. <P/>
 
     &MUTABLE_RECOMPUTED_PROP;
 
     <Example><![CDATA[
-gap> D := Digraph([[], [2]]);
-<immutable digraph with 2 vertices, 1 edge>
-gap> IsDirectedTree(D);
-false
 gap> D := Digraph([[3], [3], []]);
 <immutable digraph with 3 vertices, 2 edges>
 gap> IsDirectedTree(D);
@@ -590,6 +597,8 @@ false
 gap> D := Digraph([[2], [3], []]);
 <immutable digraph with 3 vertices, 2 edges>
 gap> IsDirectedTree(D);
+true
+gap> IsDirectedForest(DigraphDisjointUnion(D, D));
 true
 gap> D := Digraph([[2, 3], [6], [4, 5], [], [], []]);
 <immutable digraph with 6 vertices, 5 edges>
@@ -606,10 +615,10 @@ true
   <Prop Name="IsUndirectedForest" Arg="digraph"/>
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
-    The property <C>IsUndirectedTree</C> returns <K>true</K> if the digraph
-    <A>digraph</A> is an undirected tree, and the property
-    <C>IsUndirectedForest</C> returns <K>true</K> if <A>digraph</A> is an
-    undirected forest; otherwise, these properties return <K>false</K>. <P/>
+    The property <Ref Prop="IsUndirectedTree"/> returns <K>true</K> if the
+    digraph <A>digraph</A> is an undirected tree, and the property
+    <Ref Prop="IsUndirectedForest"/> returns <K>true</K> if <A>digraph</A> is
+    an undirected forest; otherwise, these properties return <K>false</K>. <P/>
 
     An <E>undirected tree</E> is a symmetric digraph without loops, in which for
     any pair of distinct vertices <C>u</C> and <C>v</C>, there is exactly one

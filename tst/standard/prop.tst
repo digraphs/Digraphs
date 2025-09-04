@@ -965,67 +965,117 @@ gap> D := Digraph(IsImmutableDigraph, [[2], [1, 3], [2, 4], [3]]);
 gap> IsCompleteMultipartiteDigraph(D);
 false
 
-#  IsDirectedTree
+#  IsDirectedTree and IsDirectedForest
 gap> g := Digraph([]);
 <immutable empty digraph with 0 vertices>
 gap> IsDirectedTree(g);
+false
+gap> IsDirectedForest(g);
 false
 gap> g := Digraph([[]]);
 <immutable empty digraph with 1 vertex>
 gap> IsDirectedTree(g);
 true
+gap> IsDirectedForest(g);
+true
 gap> g := Digraph([[], []]);
 <immutable empty digraph with 2 vertices>
 gap> IsDirectedTree(g);
 false
+gap> IsDirectedForest(g);
+true
 gap> g := Digraph([[1]]);
 <immutable digraph with 1 vertex, 1 edge>
 gap> IsDirectedTree(g);
+false
+gap> IsDirectedForest(g);
 false
 gap> g := Digraph([[2, 2], []]);
 <immutable multidigraph with 2 vertices, 2 edges>
 gap> IsDirectedTree(g);
 false
+gap> IsDirectedForest(g);
+false
 gap> g := Digraph([[], [2]]);
 <immutable digraph with 2 vertices, 1 edge>
 gap> IsDirectedTree(g);
+false
+gap> IsDirectedForest(g);
 false
 gap> g := Digraph([[2], [1]]);
 <immutable digraph with 2 vertices, 2 edges>
 gap> IsDirectedTree(g);
 false
+gap> IsDirectedForest(g);
+false
 gap> g := Digraph([[3], [3], []]);
 <immutable digraph with 3 vertices, 2 edges>
 gap> IsDirectedTree(g);
+false
+gap> IsDirectedForest(g);
 false
 gap> g := Digraph([[2], [3], []]);
 <immutable digraph with 3 vertices, 2 edges>
 gap> IsDirectedTree(g);
 true
+gap> IsDirectedForest(g);
+true
 gap> g := Digraph([[2], [3], [], []]);
 <immutable digraph with 4 vertices, 2 edges>
 gap> IsDirectedTree(g);
+false
+gap> IsDirectedForest(g);
 false
 gap> g := Digraph([[2, 3], [6], [4, 5], [], [], []]);
 <immutable digraph with 6 vertices, 5 edges>
 gap> IsDirectedTree(g);
 true
+gap> IsDirectedForest(g);
+true
 gap> g := Digraph([[2, 3], [6], [4, 5], [], [], [], []]);
 <immutable digraph with 7 vertices, 5 edges>
 gap> IsDirectedTree(g);
+false
+gap> IsDirectedForest(g);
 false
 gap> g := Digraph([[2, 3], [6], [4, 5], [7], [], [7], []]);
 <immutable digraph with 7 vertices, 7 edges>
 gap> IsDirectedTree(g);
 false
+gap> IsDirectedForest(g);
+false
 gap> g := Digraph([[2, 3], [1, 3], [1, 2]]);
 <immutable digraph with 3 vertices, 6 edges>
 gap> IsDirectedTree(g);
+false
+gap> IsDirectedForest(g);
 false
 gap> g := Digraph([[2, 3, 4], [1, 3, 4], [1, 2, 4], [1, 2, 3]]);
 <immutable digraph with 4 vertices, 12 edges>
 gap> IsDirectedTree(g);
 false
+gap> IsDirectedForest(g);
+false
+gap> IsDirectedTree(EmptyDigraph(0));
+false
+gap> IsDirectedForest(EmptyDigraph(0));
+false
+gap> IsDirectedTree(EmptyDigraph(1));
+true
+gap> IsDirectedForest(EmptyDigraph(1));
+true
+gap> IsDirectedTree(EmptyDigraph(2));
+false
+gap> IsDirectedForest(EmptyDigraph(2));
+true
+gap> D := DigraphFromDiSparse6String(".P_eAgCkJnF`pb@dCh@ekHeemg");
+<immutable digraph with 17 vertices, 15 edges>
+gap> IsDirectedTree(D);
+false
+gap> IsDirectedForest(D);
+true
+gap> D;
+<immutable directed forest with 17 vertices, 2 components>
 
 #  IsUndirectedTree
 gap> g := Digraph([]);
