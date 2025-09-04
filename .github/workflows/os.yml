@@ -86,8 +86,6 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - uses: gap-actions/setup-cygwin@v2
-        with:
-          extra-pkgs-to-install: automake
       - uses: gap-actions/setup-gap@v2
         with:
           GAP_PKGS_TO_CLONE: NautyTracesInterface digraphs/graphviz
