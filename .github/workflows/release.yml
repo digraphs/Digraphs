@@ -33,7 +33,7 @@ jobs:
           use-latex: true
       - name: Clean up additional files
         run: |
-          rm -f  .covignore .mailmap .codespellrc Dockerfile
+          rm -f  .mailmap .codespellrc Dockerfile
           rm -rf etc
       - name: Extract the latest CHANGELOG entry to use as the GitHub release text
         run: |
