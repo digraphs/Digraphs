@@ -142,7 +142,7 @@ downloads:
       url: https://github.com/digraphs/Digraphs/releases/download/v1.12.0/digraphs-1.12.0.tar.gz
 
 abstract: |
-    The &Digraphs; package is a &GAP; package containing
+    The <Strong>Digraphs</Strong> package is a <Strong>GAP</Strong> package containing
               methods for graphs, digraphs, and multidigraphs.
 
 status: deposited
@@ -161,7 +161,7 @@ citeas: |
 
 bibtex: |
     @misc{ Digraphs,
-      author =           {De  Beule,  J.  and  Jonusas,  J. and Mitchell, J. and
+      author =           {{De  Beule},  J.  and Jonusas, J. and Mitchell, J. and
                           Wilson,     W.     A.     and     Young,     M.    and
                           Anagnostopoulou\texttt{\symbol{45}}Merkouri,   M.  and
                           Buck,   F.  and  Burrell,  S.  and  Campbell,  G.  and
