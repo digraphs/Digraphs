@@ -621,7 +621,10 @@ AutoDoc := rec(
           on work by Max Neunh&#246;ffer, and independently Artur Sch&#228;fer.
         """)),
 
-        AbstractHTML := ~.AutoDoc.TitlePage.Abstract));
+        AbstractHTML := ReplacedString(ReplacedString(
+            ~.AutoDoc.TitlePage.Abstract,
+            "&Digraphs;", "<Strong>Digraphs</Strong>"),
+            "&GAP;", "<Strong>GAP</Strong>")));
 
 if not CompareVersionNumbers(GAPInfo.Version, "4.12") then
   Unbind(IsKernelExtensionAvailable);
