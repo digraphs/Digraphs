@@ -157,3 +157,10 @@ DeclareOperation("PartialOrderDigraphJoinOfVertices",
                  [IsDigraph, IsPosInt, IsPosInt]);
 DeclareOperation("PartialOrderDigraphMeetOfVertices",
                  [IsDigraph, IsPosInt, IsPosInt]);
+
+# 11. DFS
+DeclareOperation("NewDFSRecord", [IsDigraph]);
+DeclareOperation("NewDFSRecord", [IsDigraph, IsRecord]);
+DeclareOperation("NewDFSConfig", []);
+DeclareOperation("NewDFSConfigLightweight", []);
+DeclareGlobalFunction("ExecuteDFS");
