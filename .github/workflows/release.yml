@@ -27,21 +27,22 @@ jobs:
       - uses: gap-actions/setup-gap@v3
         with:
           gap-version: latest
-      - name: "Clone the NautyTracesInterface package (no need to build)"
+      - name: "Clone the NautyTracesInterface package (no need to build) . . ."
         run: |
           git clone https://github.com/gap-packages/NautyTracesInterface ${GAPROOT}/pkg/NautyTracesInterface
-      - name: "Build the json package"
+      - name: "Build the json package . . ."
+        # TODO: Why is this necessary? Unclear.
         run: |
           cd ${GAPROOT}/pkg
           ../bin/BuildPackages.sh --strict json
       - uses: gap-actions/build-pkg-docs@v2
         with:
           use-latex: true
-      - name: Clean up additional files
+      - name: "Clean up additional files . . ."
         run: |
           rm -f  .mailmap .codespellrc Dockerfile
           rm -rf etc
-      - name: Extract the latest CHANGELOG entry to use as the GitHub release text
+      - name: "Extract the latest CHANGELOG entry to use as the GitHub release text . . ."
         run: |
           # Extract the part of CHANGELOG that is relevant to this release
           LINES=`grep -n "## Version " CHANGELOG.md | head -2 | cut -d':' -f1`
