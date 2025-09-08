@@ -36,12 +36,13 @@ jobs:
       - name: "Install necessary GAP package clones . . ."
         run: |
           for PKG in https://github.com/digraphs/graphviz.git https://github.com/gap-packages/NautyTracesInterface.git; do
-            gap -c "LoadPackage(\"PackageManager\"); InstallPackage(\"$PKG\"); QUIT;"
+            cd ${GAPROOT}/pkg
+            git clone $PKG
           done
       - name: "Build additional necessary GAP packages . . ."
         run: |
           cd ${GAPROOT}/pkg
-          ../bin/BuildPackages.sh --strict io orb datastructures grape
+          ../bin/BuildPackages.sh --strict io orb datastructures grape NautyTracesInterface
       - name: Build Digraphs . . .
         uses: gap-actions/build-pkg@v1
       - name: Run DigraphsTestInstall . . .
