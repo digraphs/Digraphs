@@ -28,7 +28,7 @@ jobs:
         with:
           GAP_PKGS_TO_CLONE: NautyTracesInterface
           GAP_PKGS_TO_BUILD: json
-      - uses: gap-actions/build-pkg-docs@v1
+      - uses: gap-actions/build-pkg-docs@v2
         with:
           use-latex: true
       - name: Clean up additional files

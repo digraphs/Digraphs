@@ -37,7 +37,7 @@ jobs:
           GAP_BOOTSTRAP: minimal
         with:
           GAP_PKGS_TO_BUILD: ""
-      - uses: gap-actions/build-pkg-docs@v1
+      - uses: gap-actions/build-pkg-docs@v2
       - name: Upload compiled manuals . . .
         uses: actions/upload-artifact@v4
         with:
