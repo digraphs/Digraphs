@@ -472,6 +472,16 @@ gap> d := Digraph([[2, 3, 4, 5], [1, 3, 4], [1, 2, 4, 5], [1, 2, 3, 5],
 gap> Length(SubdigraphsMonomorphisms(CompleteMultipartiteDigraph([2, 3]), d));
 4
 
+# Issue #818 IsConnectedDigraph for a digraph without vertices
+gap> D := Digraph([]);;
+gap> IsConnectedDigraph(D);
+true
+gap> D := Digraph([]);;
+gap> DigraphConnectedComponents(D);
+rec( comps := [  ], id := [  ] )
+gap> IsConnectedDigraph(D);
+true
+
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(C);
 gap> Unbind(D);
