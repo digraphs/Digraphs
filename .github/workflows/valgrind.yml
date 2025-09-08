@@ -28,13 +28,21 @@ jobs:
         run: g++ --version
       - name: Install Valgrind . . .
         run: sudo apt-get install valgrind
-      - name: Install GAP and clone/compile necessary packages . . .
-        uses: gap-actions/setup-gap@v2
+      - name: "Install GAP . . ."
+        uses: gap-actions/setup-gap@v3
         with:
-          GAP_PKGS_TO_CLONE: NautyTracesInterface digraphs/graphviz
-          GAP_PKGS_TO_BUILD: io orb datastructures grape NautyTracesInterface
-          GAPBRANCH: stable-4.15
-          CONFIGFLAGS: --enable-valgrind
+          gap-version: stable-4.15
+          configflags: --enable-valgrind
+      - name: "Install necessary GAP package clones . . ."
+        run: |
+          for PKG in https://github.com/digraphs/graphviz.git https://github.com/gap-packages/NautyTracesInterface.git; do
+            cd ${GAPROOT}/pkg
+            git clone $PKG
+          done
+      - name: "Build additional necessary GAP packages . . ."
+        run: |
+          cd ${GAPROOT}/pkg
+          ../bin/BuildPackages.sh --strict io orb datastructures grape NautyTracesInterface
       - name: Build Digraphs . . .
         uses: gap-actions/build-pkg@v1
       - name: Run DigraphsTestInstall . . .

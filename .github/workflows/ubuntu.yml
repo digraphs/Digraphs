@@ -20,39 +20,49 @@ concurrency:
 
 jobs:
   test-unix:
-    name: GAP ${{ matrix.gap-branch }} / ${{ matrix.only-needed && 'only-needed' || 'needed+suggested' }}
+    name: GAP ${{ matrix.gap-version }} / ${{ matrix.only-needed && 'only-needed' || 'needed+suggested' }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        gap-branch:
+        gap-version:
           - master
-          - stable-4.11
-          - stable-4.12
-          - stable-4.13
-          - stable-4.14
           - stable-4.15
+          - v4.14
+          - v4.13
+          - v4.12
+          - v4.11
         only-needed:
           - true
           - false
         include:
           - only-needed: true
-            pkgs-to-clone: digraphs/graphviz
-            pkgs-to-build: io orb datastructures autodoc
+            pkgs-to-clone: https://github.com/digraphs/graphviz.git
+            # Remove asterisks * when we no longer support GAP 4.11
+            pkgs-to-build: io* orb* datastructures*
           - only-needed: false
-            pkgs-to-clone: NautyTracesInterface digraphs/graphviz
-            pkgs-to-build: io orb datastructures grape NautyTracesInterface autodoc
+            pkgs-to-clone: https://github.com/digraphs/graphviz.git https://github.com/gap-packages/NautyTracesInterface.git
+            # Remove asterisks * when we no longer support GAP 4.11
+            pkgs-to-build: io* orb* datastructures* grape* NautyTracesInterface
 
     steps:
       - uses: actions/checkout@v5
       - name: Output g++ version . . .
         run: g++ --version
-      - name: Install GAP and clone/compile necessary packages . . .
-        uses: gap-actions/setup-gap@v2
+      - name: "Install GAP . . ."
+        uses: gap-actions/setup-gap@v3
         with:
-          GAP_PKGS_TO_CLONE: ${{ matrix.pkgs-to-clone }}
-          GAP_PKGS_TO_BUILD: ${{ matrix.pkgs-to-build }}
-          GAPBRANCH: ${{ matrix.gap-branch }}
+          gap-version: ${{ matrix.gap-version }}
+      - name: "Install necessary GAP package clones . . ."
+        run: |
+          for PKG in ${{ matrix.pkgs-to-clone }}; do
+            cd ${GAPROOT}/pkg
+            git clone $PKG
+          done
+      - name: "Build additional necessary GAP packages . . ."
+        run: |
+          cd ${GAPROOT}/pkg
+          ../bin/BuildPackages.sh --strict ${{ matrix.pkgs-to-build }}
       - name: Build Digraphs . . .
         uses: gap-actions/build-pkg@v1
       - name: Install digraphs-lib . . .

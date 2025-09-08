@@ -19,7 +19,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  test-unix:
+  test:
     name: ${{ matrix.os }}${{ matrix.ABI }} / GAP stable-4.15
     runs-on: ${{ matrix.os }}-latest
     strategy:
@@ -28,27 +28,61 @@ jobs:
         include:
           - os: ubuntu
             ABI: 32
-            pkgs-to-clone: digraphs/graphviz
+            pkgs-to-clone: https://github.com/digraphs/graphviz.git
             pkgs-to-build: io orb datastructures grape
           - os: macos
-            ABI: ""
-            pkgs-to-clone: NautyTracesInterface digraphs/graphviz
+            ABI: 64
+            pkgs-to-clone: https://github.com/digraphs/graphviz.git https://github.com/gap-packages/NautyTracesInterface.git
             pkgs-to-build: io orb datastructures grape NautyTracesInterface
+          - os: windows
+            ABI: 64
+            pkgs-to-clone: https://github.com/digraphs/graphviz.git https://github.com/gap-packages/NautyTracesInterface.git
+            pkgs-to-build: io orb datastructures grape NautyTracesInterface
+
 
     steps:
       - uses: actions/checkout@v5
+      - uses: gap-actions/setup-cygwin@v2
+        if: ${{ runner.os == 'Windows' }}
       - name: Output g++ version . . .
         run: g++ --version
       - name: Install macOS dependencies . . .
         if: ${{ runner.os == 'macOS' }}
         run: brew install automake
-      - name: Install GAP and clone/compile necessary packages . . .
-        uses: gap-actions/setup-gap@v2
-        with:
-          GAP_PKGS_TO_CLONE: ${{ matrix.pkgs-to-clone }}
-          GAP_PKGS_TO_BUILD: ${{ matrix.pkgs-to-build }}
-          GAPBRANCH: stable-4.15
+      - name: "Install 32-bit packages . . ."
+        if: ${{ matrix.ABI == '32' }}
+        run: |
+          sudo dpkg --add-architecture i386
+          sudo apt-get update
+          packages=(
+            libgmp-dev:i386
+            libreadline-dev:i386
+            zlib1g-dev:i386
+            gcc-multilib
+            g++-multilib
+          )
+          sudo apt-get install "${packages[@]}"
+      - name: "Install GAP . . ."
+        uses: gap-actions/setup-gap@v3
+        env:
           ABI: ${{ matrix.ABI }}
+        with:
+          gap-version: stable-4.15
+          ABI: ${{ matrix.ABI }}
+      - name: "Install necessary GAP package clones . . ."
+        shell: bash
+        run: |
+          for PKG in ${{ matrix.pkgs-to-clone }}; do
+            cd ${GAPROOT}/pkg
+            git clone $PKG
+          done
+      - name: "Build additional necessary GAP packages . . ."
+        shell: bash
+        env:
+          ABI: ${{ matrix.ABI }}
+        run: |
+          cd ${GAPROOT}/pkg
+          ../bin/BuildPackages.sh --strict ${{ matrix.pkgs-to-build }}
       - name: Build Digraphs . . .
         uses: gap-actions/build-pkg@v1
         with:
@@ -74,30 +108,7 @@ jobs:
           GAP_TESTFILE: tst/github_actions/examples.g
       - name: Run DigraphsTestExtreme . . .
         uses: gap-actions/run-pkg-tests@v3
+        if: ${{ runner.os != 'Windows' }}
         with:
           NO_COVERAGE: true
           GAP_TESTFILE: tst/github_actions/extreme.g
-
-  test-cygwin:
-    name: cygwin / GAP stable-4.15
-    runs-on: windows-latest
-    env:
-      CHERE_INVOKING: 1
-    steps:
-      - uses: actions/checkout@v5
-      - uses: gap-actions/setup-cygwin@v2
-        with:
-          extra-pkgs-to-install: automake
-      - uses: gap-actions/setup-gap@v2
-        with:
-          GAP_PKGS_TO_CLONE: NautyTracesInterface digraphs/graphviz
-          GAP_PKGS_TO_BUILD: io orb datastructures grape NautyTracesInterface
-          GAPBRANCH: stable-4.15
-      - uses: gap-actions/build-pkg@v1
-      - name: Install digraphs-lib . . .
-        run: |
-          curl --retry 5 -L -O "https://digraphs.github.io/Digraphs/${{ env.DIGRAPHS_LIB }}.tar.gz"
-          tar xf "${{ env.DIGRAPHS_LIB }}.tar.gz"
-      - uses: gap-actions/run-pkg-tests@v3
-        with:
-          NO_COVERAGE: true

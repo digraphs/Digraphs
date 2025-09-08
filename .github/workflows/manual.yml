@@ -32,12 +32,10 @@ jobs:
           )
           sudo apt-get update
           sudo apt-get install "${packages[@]}"
-      - uses: gap-actions/setup-gap@v2
-        env:
-          GAP_BOOTSTRAP: minimal
+      - uses: gap-actions/setup-gap@v3
         with:
-          GAP_PKGS_TO_BUILD: ""
-      - uses: gap-actions/build-pkg-docs@v1
+          gap-version: latest
+      - uses: gap-actions/build-pkg-docs@v2
       - name: Upload compiled manuals . . .
         uses: actions/upload-artifact@v4
         with:
