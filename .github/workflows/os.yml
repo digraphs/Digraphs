@@ -33,11 +33,11 @@ jobs:
           - os: macos
             ABI: 64
             pkgs-to-clone: https://github.com/digraphs/graphviz.git https://github.com/gap-packages/NautyTracesInterface.git
-            pkgs-to-build: io orb datastructures grape
+            pkgs-to-build: io orb datastructures grape NautyTracesInterface
           - os: windows
             ABI: 64
             pkgs-to-clone: https://github.com/digraphs/graphviz.git https://github.com/gap-packages/NautyTracesInterface.git
-            pkgs-to-build: io orb datastructures grape
+            pkgs-to-build: io orb datastructures grape NautyTracesInterface
 
 
     steps:
@@ -73,8 +73,8 @@ jobs:
         shell: bash
         run: |
           for PKG in ${{ matrix.pkgs-to-clone }}; do
-            # Also compiles the package if necessary
-            gap -c "LoadPackage(\"PackageManager\"); InstallPackage(\"$PKG\"); QUIT;"
+            cd ${GAPROOT}/pkg
+            git clone $PKG
           done
       - name: "Build additional necessary GAP packages . . ."
         shell: bash

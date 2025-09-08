@@ -43,7 +43,7 @@ jobs:
           - only-needed: false
             pkgs-to-clone: https://github.com/digraphs/graphviz.git https://github.com/gap-packages/NautyTracesInterface.git
             # Remove asterisks * when we no longer support GAP 4.11
-            pkgs-to-build: io* orb* datastructures* grape*
+            pkgs-to-build: io* orb* datastructures* grape* NautyTracesInterface
 
     steps:
       - uses: actions/checkout@v5
@@ -56,8 +56,8 @@ jobs:
       - name: "Install necessary GAP package clones . . ."
         run: |
           for PKG in ${{ matrix.pkgs-to-clone }}; do
-            # Also compiles the package if necessary
-            gap -c "LoadPackage(\"PackageManager\"); InstallPackage(\"$PKG\"); QUIT;"
+            cd ${GAPROOT}/pkg
+            git clone $PKG
           done
       - name: "Build additional necessary GAP packages . . ."
         run: |
