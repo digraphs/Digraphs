@@ -37,11 +37,11 @@ jobs:
           - false
         include:
           - only-needed: true
-            pkgs-to-clone: git@github.com:digraphs/graphviz.git
+            pkgs-to-clone: https://github.com/digraphs/graphviz.git
             # Remove asterisks * when we no longer support GAP 4.11
             pkgs-to-build: io* orb* datastructures*
           - only-needed: false
-            pkgs-to-clone: git@github.com:gap-packages/NautyTracesInterface.git git@github.com:digraphs/graphviz.git
+            pkgs-to-clone: https://github.com/digraphs/graphviz.git https://github.com/gap-packages/NautyTracesInterface.git
             # Remove asterisks * when we no longer support GAP 4.11
             pkgs-to-build: io* orb* datastructures* grape*
 
@@ -49,17 +49,17 @@ jobs:
       - uses: actions/checkout@v5
       - name: Output g++ version . . .
         run: g++ --version
-      - name: Install GAP and clone/compile necessary packages . . .
+      - name: "Install GAP . . ."
         uses: gap-actions/setup-gap@v3
         with:
           gap-version: ${{ matrix.gap-version }}
-      - name: "Install necessary package clones"
+      - name: "Install necessary GAP package clones . . ."
         run: |
           for PKG in ${{ matrix.pkgs-to-clone }}; do
             # Also compiles the package if necessary
-            gap -c 'LoadPackage("PackageManager"); InstallPackage("$PKG"); QUIT;'
+            gap -c "LoadPackage(\"PackageManager\"); InstallPackage(\"$PKG\"); QUIT;"
           done
-      - name: "Build additional necessary packages"
+      - name: "Build additional necessary GAP packages . . ."
         run: |
           cd ${GAPROOT}/pkg
           ../bin/BuildPackages.sh --strict ${{ matrix.pkgs-to-build }}

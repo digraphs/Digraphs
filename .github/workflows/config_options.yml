@@ -51,12 +51,19 @@ jobs:
           echo "LD_LIBRARY_PATH=$MAMBA_ROOT_PREFIX/envs/digraphs/lib" >> $GITHUB_ENV
           echo "CFLAGS=-I$MAMBA_ROOT_PREFIX/envs/digraphs/include" >> $GITHUB_ENV
           echo "LDFLAGS=-L$MAMBA_ROOT_PREFIX/envs/digraphs/lib" >> $GITHUB_ENV
-      - name: Install GAP and clone/compile necessary packages . . .
-        uses: gap-actions/setup-gap@v2
+      - name: "Install GAP . . ."
+        uses: gap-actions/setup-gap@v3
         with:
-          GAP_PKGS_TO_CLONE: NautyTracesInterface digraphs/graphviz
-          GAP_PKGS_TO_BUILD: io orb datastructures grape NautyTracesInterface
-          GAPBRANCH: stable-4.15
+          gap-version: stable-4.15
+      - name: "Install necessary GAP package clones . . ."
+        run: |
+          for PKG in https://github.com/digraphs/graphviz.git https://github.com/gap-packages/NautyTracesInterface.git; do
+            gap -c "LoadPackage(\"PackageManager\"); InstallPackage(\"$PKG\"); QUIT;"
+          done
+      - name: "Build additional necessary GAP packages . . ."
+        run: |
+          cd ${GAPROOT}/pkg
+          ../bin/BuildPackages.sh --strict io orb datastructures grape
       - name: Build Digraphs . . .
         uses: gap-actions/build-pkg@v1
         with:
@@ -91,11 +98,18 @@ jobs:
       - name: Output g++ version . . .
         run: g++ --version
       - name: Install GAP and clone/compile necessary packages . . .
-        uses: gap-actions/setup-gap@v2
+        uses: gap-actions/setup-gap@v3
         with:
-          GAP_PKGS_TO_CLONE: NautyTracesInterface digraphs/graphviz
-          GAP_PKGS_TO_BUILD: io orb datastructures grape NautyTracesInterface
-          GAPBRANCH: stable-4.15
+          gap-version: stable-4.15
+      - name: "Install necessary package clones"
+        run: |
+          for PKG in https://github.com/digraphs/graphviz.git https://github.com/gap-packages/NautyTracesInterface.git; do
+            gap -c "LoadPackage(\"PackageManager\"); InstallPackage(\"$PKG\"); QUIT;"
+          done
+      - name: "Build additional necessary packages"
+        run: |
+          cd ${GAPROOT}/pkg
+          ../bin/BuildPackages.sh --strict io orb datastructures grape
       - name: Build Digraphs . . .
         uses: gap-actions/build-pkg@v1
         with:
