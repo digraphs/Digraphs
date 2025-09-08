@@ -48,7 +48,7 @@ jobs:
       - name: Output g++ version . . .
         run: g++ --version
       - name: Install GAP and clone/compile necessary packages . . .
-        uses: gap-actions/setup-gap@v2
+        uses: gap-actions/setup-gap@v3
         with:
           GAP_PKGS_TO_CLONE: ${{ matrix.pkgs-to-clone }}
           GAP_PKGS_TO_BUILD: ${{ matrix.pkgs-to-build }}

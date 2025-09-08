@@ -52,7 +52,7 @@ jobs:
           echo "CFLAGS=-I$MAMBA_ROOT_PREFIX/envs/digraphs/include" >> $GITHUB_ENV
           echo "LDFLAGS=-L$MAMBA_ROOT_PREFIX/envs/digraphs/lib" >> $GITHUB_ENV
       - name: Install GAP and clone/compile necessary packages . . .
-        uses: gap-actions/setup-gap@v2
+        uses: gap-actions/setup-gap@v3
         with:
           GAP_PKGS_TO_CLONE: NautyTracesInterface digraphs/graphviz
           GAP_PKGS_TO_BUILD: io orb datastructures grape NautyTracesInterface
@@ -91,7 +91,7 @@ jobs:
       - name: Output g++ version . . .
         run: g++ --version
       - name: Install GAP and clone/compile necessary packages . . .
-        uses: gap-actions/setup-gap@v2
+        uses: gap-actions/setup-gap@v3
         with:
           GAP_PKGS_TO_CLONE: NautyTracesInterface digraphs/graphviz
           GAP_PKGS_TO_BUILD: io orb datastructures grape NautyTracesInterface

@@ -29,7 +29,7 @@ jobs:
       - name: Install Valgrind . . .
         run: sudo apt-get install valgrind
       - name: Install GAP and clone/compile necessary packages . . .
-        uses: gap-actions/setup-gap@v2
+        uses: gap-actions/setup-gap@v3
         with:
           GAP_PKGS_TO_CLONE: NautyTracesInterface digraphs/graphviz
           GAP_PKGS_TO_BUILD: io orb datastructures grape NautyTracesInterface
