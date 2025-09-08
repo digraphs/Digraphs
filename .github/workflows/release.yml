@@ -24,11 +24,17 @@ jobs:
 
     steps:
       - uses: actions/checkout@v5
-      - uses: gap-actions/setup-gap@v2
+      - uses: gap-actions/setup-gap@v3
         with:
-          GAP_PKGS_TO_CLONE: NautyTracesInterface
-          GAP_PKGS_TO_BUILD: json
-      - uses: gap-actions/build-pkg-docs@v1
+          gap-version: latest
+      - name: "Clone the NautyTracesInterface package (no need to build)"
+        run: |
+          git clone https://github.com/gap-packages/NautyTracesInterface ${GAPROOT}/pkg/NautyTracesInterface
+      - name: "Build the json package"
+        run: |
+          cd ${GAPROOT}/pkg
+          ../bin/BuildPackages.sh --strict json
+      - uses: gap-actions/build-pkg-docs@v2
         with:
           use-latex: true
       - name: Clean up additional files
