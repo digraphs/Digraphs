@@ -1103,8 +1103,7 @@ function(_, n, par)
     ErrorNoReturn("arguments must be an integer <n> greater ",
                   "than 1 and a list of integers between 1 and n,");
   fi;
-  D := Digraph(IsMutableDigraph, []);
-  DigraphAddVertices(D, n);
+  D := EmptyDigraph(IsMutableDigraph, n);
   for i in [1 .. n] do
     for j in par do
       if (i - j) mod n = 0 then
@@ -1130,11 +1129,14 @@ function(_, n, par)
   D := MakeImmutable(CirculantGraphCons(IsMutableDigraph, n, par));
   SetIsMultiDigraph(D, false);
   SetIsSymmetricDigraph(D, true);
-  SetIsUndirectedTree(D, false);
-  SetIsRegularDigraph(D, true);
   SetIsVertexTransitive(D, true);
-  SetIsHamiltonianDigraph(D, true);
-  SetIsBiconnectedDigraph(D, true);
+  SetIsUndirectedTree(D, false);
+  SetIsUndirectedForest(D, IsEmpty(par) or
+                           (IsEvenInt(n) and Unique(par) = [n / 2]));
+  if Gcd(Concatenation([n], par)) = 1 then
+    SetIsHamiltonianDigraph(D, true);
+    SetIsBiconnectedDigraph(D, true);
+  fi;
   return D;
 end);
 
