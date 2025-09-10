@@ -6,6 +6,7 @@ on:
     branches:
       - main
       - stable-*.*
+      - dev-*.*
 jobs:
   codespell:
     runs-on: ubuntu-latest

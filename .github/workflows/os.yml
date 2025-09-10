@@ -6,6 +6,7 @@ on:
     branches:
       - main
       - stable-*.*
+      - dev-*.*
   schedule:
     # Every day at 3:30 AM UTC
     - cron: 30 3 * * *
