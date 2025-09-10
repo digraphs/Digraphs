@@ -9,7 +9,9 @@
 ##
 
 if not DIGRAPHS_IsGrapeLoaded() then
-  Add(DIGRAPHS_OmitFromTests, "Graph(");
+  Add(DIGRAPHS_OmitFromTests, " Graph(");
+  Add(DIGRAPHS_OmitFromTests, "(Graph(");
+  Add(DIGRAPHS_OmitFromTests, "AsGraph(");
 fi;
 
 _NautyTracesInterfaceVersion :=
