@@ -1636,7 +1636,7 @@ true
 gap> gr := DigraphAddEdges(DigraphAddVertex(CycleDigraph(600)),
 >                          [[600, 601], [601, 600]]);
 <immutable digraph with 601 vertices, 602 edges>
-gap> HamiltonianPath(gr);
+gap> HamiltonianCycle(gr);
 fail
 gap> IsHamiltonianDigraph(gr);
 false

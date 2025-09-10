@@ -85,7 +85,7 @@
     <#Include Label="DigraphLayers">
     <#Include Label="DigraphDegeneracy">
     <#Include Label="DigraphDegeneracyOrdering">
-    <#Include Label="HamiltonianPath">
+    <#Include Label="HamiltonianCycle">
     <#Include Label="NrSpanningTrees">
     <#Include Label="DigraphDijkstra">
     <#Include Label="DigraphCycleBasis">
