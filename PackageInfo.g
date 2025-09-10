@@ -38,8 +38,8 @@ fi;
 SetPackageInfo(rec(
 PackageName := "Digraphs",
 Subtitle := "Graphs, digraphs, and multidigraphs in GAP",
-Version := "1.12.0",
-Date := "02/09/2025",  # dd/mm/yyyy format
+Version := "1.12.1",
+Date := "10/09/2025",  # dd/mm/yyyy format
 License := "GPL-3.0-or-later",
 ArchiveFormats := ".tar.gz",
 
@@ -621,7 +621,10 @@ AutoDoc := rec(
           on work by Max Neunh&#246;ffer, and independently Artur Sch&#228;fer.
         """)),
 
-        AbstractHTML := ~.AutoDoc.TitlePage.Abstract));
+        AbstractHTML := ReplacedString(ReplacedString(
+            ~.AutoDoc.TitlePage.Abstract,
+            "&Digraphs;", "<Strong>Digraphs</Strong>"),
+            "&GAP;", "<Strong>GAP</Strong>")));
 
 if not CompareVersionNumbers(GAPInfo.Version, "4.12") then
   Unbind(IsKernelExtensionAvailable);

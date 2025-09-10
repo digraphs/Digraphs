@@ -1,7 +1,7 @@
 name: Digraphs
-version: "1.12.0"
+version: "1.12.1"
 license: "GPL-3.0-or-later"
-date: 2025-09-02
+date: 2025-09-10
 description: |
     Graphs, digraphs, and multidigraphs in GAP
 
@@ -139,7 +139,7 @@ packageinfo: https://digraphs.github.io/Digraphs/PackageInfo.g
 
 downloads:
     - name: .tar.gz
-      url: https://github.com/digraphs/Digraphs/releases/download/v1.12.0/digraphs-1.12.0.tar.gz
+      url: https://github.com/digraphs/Digraphs/releases/download/v1.12.1/digraphs-1.12.1.tar.gz
 
 abstract: |
     The <Strong>Digraphs</Strong> package is a <Strong>GAP</Strong> package containing
@@ -152,7 +152,7 @@ citeas: |
     <p class='BibEntry'>
     [<span class='BibKey'>BJMWYABBCCCCCEEFGFGHHJJJKKLLMMOPPPRRRSSSSSTVWWZ25</span>]   <b class='BibAuthor'>De Beule, J., Jonusas, J., Mitchell, J., Wilson, W. A., Young, M., Anagnostopoulou-Merkouri, M., Buck, F., Burrell, S., Campbell, G., Chowdhury, R., Cirpons, R., Clayton, A., Conti-Leslie, T., Edwards, J., Elliott, L., Fernando, I., Gilligan, E., Frankie, G., Gutsche, S., Harper, S., Horn, M., Jack, H., Jefferson, C., Johns, M., Konovalov, O., Kwon, H., Lau, A., Lee, A., McIver, S., Mohammadiyeh, S. A., Orlitzky, M., Pancer, M., Pfeiffer, M., Pointon, D., Ragavan, P., Racine, L., Russell, C., Schaefer, A., Scott, I., Sharma, K., Smith, F., Spiers, B., Tsalakou, M., Vishvanath, A., Weiss, M., Whyte, M. and Zickgraf, F.</b>,
      <i class='BibTitle'>Digraphs, Graphs, digraphs, and multidigraphs in GAP,
-             Version 1.12.0</i>
+             Version 1.12.1</i>
      (<span class='BibYear'>2025</span>)<br />
     (<span class='BibNote'>GAP package</span>),
     <span class='BibHowpublished'><a href="https://digraphs.github.io/Digraphs">https://digraphs.github.io/Digraphs</a></span>.
@@ -161,7 +161,7 @@ citeas: |
 
 bibtex: |
     @misc{ Digraphs,
-      author =           {{De  Beule},  J.  and Jonusas, J. and Mitchell, J. and
+      author =           {De  Beule,  J.  and  Jonusas,  J. and Mitchell, J. and
                           Wilson,     W.     A.     and     Young,     M.    and
                           Anagnostopoulou\texttt{\symbol{45}}Merkouri,   M.  and
                           Buck,   F.  and  Burrell,  S.  and  Campbell,  G.  and
@@ -178,7 +178,7 @@ bibtex: |
                           F.  and Spiers, B. and Tsalakou, M. and Vishvanath, A.
                           and Weiss, M. and Whyte, M. and Zickgraf, F.},
       title =            {{Digraphs},  {Graphs,  digraphs,  and multidigraphs in
-                          GAP}, {V}ersion 1.12.0},
+                          GAP}, {V}ersion 1.12.1},
       month =            {Sep},
       year =             {2025},
       note =             {GAP package},

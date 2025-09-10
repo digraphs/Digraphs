@@ -688,7 +688,7 @@ true
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphFile</code>( <var class="Arg">filename</var>[, <var class="Arg">coder</var>][, <var class="Arg">mode</var>] )</td><td class="tdright">(&nbsp;function&nbsp;)</td></tr></table></div>
 <p>Returns: An IO file object.</p>
 
-<p>If <var class="Arg">filename</var> is a string representing the name of a file, then <code class="code">DigraphFile</code> returns an <strong class="pkg">io</strong> package file object for that file.</p>
+<p>If <var class="Arg">filename</var> is a string representing the name of a file, then <code class="code">DigraphFile</code> returns an <span class="URL"><a href="https://gap-packages.github.io/io">IO</a></span> package file object for that file.</p>
 
 <p>If the optional argument <var class="Arg">coder</var> is specified and is a function which either encodes a digraph as a string, or decodes a string into a digraph, then this function will be used when reading or writing to the returned file object. If the optional argument <var class="Arg">coder</var> is not specified, then the encoding of the digraphs in the returned file object must be specified in the the file extension. The file extension must be one of: <code class="code">.g6</code>, <code class="code">.s6</code>, <code class="code">.d6</code>, <code class="code">.ds6</code>, <code class="code">.txt</code>, <code class="code">.p</code>, or <code class="code">.pickle</code>; more details of these file formats is given below.</p>
 
@@ -725,7 +725,7 @@ true
 
 </dd>
 <dt><strong class="Mark">pickled (<code class="file">.p</code> or <code class="file">.pickle</code>)</strong></dt>
-<dd><p>Digraphs are pickled using the <strong class="pkg">io</strong> package. This is particularly good when the <code class="func">DigraphGroup</code> (<a href="chap7.html#X803ACEDA7BBAC5B3"><span class="RefLink">7.2-10</span></a>) is non-trivial.</p>
+<dd><p>Digraphs are pickled using the <span class="URL"><a href="https://gap-packages.github.io/io">IO</a></span> package. This is particularly good when the <code class="func">DigraphGroup</code> (<a href="chap7.html#X803ACEDA7BBAC5B3"><span class="RefLink">7.2-10</span></a>) is non-trivial.</p>
 
 </dd>
 <dt><strong class="Mark">dreadnaut (.dre)</strong></dt>
@@ -758,7 +758,7 @@ true
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; ReadDigraphs</code>( <var class="Arg">filename</var>[, <var class="Arg">decoder</var>][, <var class="Arg">n</var>] )</td><td class="tdright">(&nbsp;function&nbsp;)</td></tr></table></div>
 <p>Returns: A digraph, or a list of digraphs.</p>
 
-<p>If <var class="Arg">filename</var> is a string containing the name of a file containing encoded digraphs or an <strong class="pkg">io</strong> file object created using <code class="func">DigraphFile</code> (<a href="chap9.html#X7845ACDA7D4D333D"><span class="RefLink">9.2-6</span></a>), then <code class="code">ReadDigraphs</code> returns the digraphs encoded in the file as a list. Note that if <var class="Arg">filename</var> is a compressed file, which has been compressed appropriately to give a filename extension of <code class="code">.gz</code>, <code class="code">.bz2</code>, or <code class="code">.xz</code>, then <code class="code">ReadDigraphs</code> can read <var class="Arg">filename</var> without it first needing to be decompressed.</p>
+<p>If <var class="Arg">filename</var> is a string containing the name of a file containing encoded digraphs or an <span class="URL"><a href="https://gap-packages.github.io/io">IO</a></span> file object created using <code class="func">DigraphFile</code> (<a href="chap9.html#X7845ACDA7D4D333D"><span class="RefLink">9.2-6</span></a>), then <code class="code">ReadDigraphs</code> returns the digraphs encoded in the file as a list. Note that if <var class="Arg">filename</var> is a compressed file, which has been compressed appropriately to give a filename extension of <code class="code">.gz</code>, <code class="code">.bz2</code>, or <code class="code">.xz</code>, then <code class="code">ReadDigraphs</code> can read <var class="Arg">filename</var> without it first needing to be decompressed.</p>
 
 <p>If the optional argument <var class="Arg">decoder</var> is specified and is a function which decodes a string into a digraph, then <code class="code">ReadDigraphs</code> will use <var class="Arg">decoder</var> to decode the digraphs contained in <var class="Arg">filename</var>.</p>
 
@@ -793,7 +793,7 @@ true
 
 </dd>
 <dt><strong class="Mark">pickled (<code class="file">.p</code> or <code class="file">.pickle</code>)</strong></dt>
-<dd><p>Digraphs are pickled using the <strong class="pkg">io</strong> package. This is particularly good when the <code class="func">DigraphGroup</code> (<a href="chap7.html#X803ACEDA7BBAC5B3"><span class="RefLink">7.2-10</span></a>) is non-trivial.</p>
+<dd><p>Digraphs are pickled using the <span class="URL"><a href="https://gap-packages.github.io/io">IO</a></span> package. This is particularly good when the <code class="func">DigraphGroup</code> (<a href="chap7.html#X803ACEDA7BBAC5B3"><span class="RefLink">7.2-10</span></a>) is non-trivial.</p>
 
 </dd>
 <dt><strong class="Mark">dreadnaut (.dre)</strong></dt>
@@ -835,7 +835,7 @@ true
 <h5>9.2-8 WriteDigraphs</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; WriteDigraphs</code>( <var class="Arg">filename</var>, <var class="Arg">digraphs</var>[, <var class="Arg">encoder</var>][, <var class="Arg">mode</var>] )</td><td class="tdright">(&nbsp;function&nbsp;)</td></tr></table></div>
-<p>If <var class="Arg">digraphs</var> is a list of digraphs or a digraph and <var class="Arg">filename</var> is a string or an <strong class="pkg">io</strong> file object created using <code class="func">DigraphFile</code> (<a href="chap9.html#X7845ACDA7D4D333D"><span class="RefLink">9.2-6</span></a>), then <code class="code">WriteDigraphs</code> writes the digraphs to the file represented by <var class="Arg">filename</var>. If the supplied filename ends in one of the extensions <code class="code">.gz</code>, <code class="code">.bz2</code>, or <code class="code">.xz</code>, then the file will be compressed appropriately. Excluding these extensions, if the file ends with an extension in the list below, the corresponding graph format will be used to encode it. If such an extension is not included, an appropriate format will be chosen intelligently, and an extension appended, to minimise file size.</p>
+<p>If <var class="Arg">digraphs</var> is a list of digraphs or a digraph and <var class="Arg">filename</var> is a string or an <span class="URL"><a href="https://gap-packages.github.io/io">IO</a></span> file object created using <code class="func">DigraphFile</code> (<a href="chap9.html#X7845ACDA7D4D333D"><span class="RefLink">9.2-6</span></a>), then <code class="code">WriteDigraphs</code> writes the digraphs to the file represented by <var class="Arg">filename</var>. If the supplied filename ends in one of the extensions <code class="code">.gz</code>, <code class="code">.bz2</code>, or <code class="code">.xz</code>, then the file will be compressed appropriately. Excluding these extensions, if the file ends with an extension in the list below, the corresponding graph format will be used to encode it. If such an extension is not included, an appropriate format will be chosen intelligently, and an extension appended, to minimise file size.</p>
 
 <p>For more verbose information on the progress of the function, set the info level of <var class="Arg">InfoDigraphs</var> to 1 or higher, using <code class="code">SetInfoLevel</code>.</p>
 
@@ -866,7 +866,7 @@ true
 
 </dd>
 <dt><strong class="Mark">pickled (<code class="file">.p</code> or <code class="file">.pickle</code>)</strong></dt>
-<dd><p>Digraphs are pickled using the <strong class="pkg">io</strong> package. This is particularly good when the <code class="func">DigraphGroup</code> (<a href="chap7.html#X803ACEDA7BBAC5B3"><span class="RefLink">7.2-10</span></a>) is non-trivial.</p>
+<dd><p>Digraphs are pickled using the <span class="URL"><a href="https://gap-packages.github.io/io">IO</a></span> package. This is particularly good when the <code class="func">DigraphGroup</code> (<a href="chap7.html#X803ACEDA7BBAC5B3"><span class="RefLink">7.2-10</span></a>) is non-trivial.</p>
 
 </dd>
 <dt><strong class="Mark">dreadnaut (.dre)</strong></dt>

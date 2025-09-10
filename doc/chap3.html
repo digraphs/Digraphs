@@ -2686,7 +2686,7 @@ true
 
 <p>If <var class="Arg">par</var> is <span class="SimpleMath">[1]</span>, then the graph is the <var class="Arg">n</var>th cyclic graph. If <var class="Arg">par</var> is <code class="code">[1,2,...,Int(<var class="Arg">n</var>/2)]</code>, then the graph is the complete graph on <var class="Arg">n</var> vertices. If <var class="Arg">n</var> is at least 4 and <var class="Arg">par</var> is <code class="code">[1,<var class="Arg">n</var>]</code> then the graph is the <var class="Arg">n</var>th Mobius ladder graph.</p>
 
-<p>A circulant graph is biconnected, cyclic, Hamiltonian, regular, and vertex transitive.</p>
+<p>A circulant graph is vertex transitive, but is not necessarily connected (consider <code class="code">CirculantGraph(4, [2])</code>, for example). However, a <em>connected</em> circulant graph is also Hamiltonian and biconnected.</p>
 
 <p>See <span class="URL"><a href="https://mathworld.wolfram.com/CirculantGraph.html">https://mathworld.wolfram.com/CirculantGraph.html</a></span> for further details.</p>
 
@@ -2694,10 +2694,19 @@ true
 
 
 <div class="example"><pre>
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">D := CirculantGraph(6, [1, 2, 3]);</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">D := CirculantGraph(6, [2]);</span>
+&lt;immutable vertex-transitive symmetric digraph with 6 vertices, 12 edg\
+es&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphNrConnectedComponents(D);</span>
+2
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">D := CirculantGraph(6, [2, 3]);</span>
 &lt;immutable Hamiltonian biconnected vertex-transitive symmetric digraph\
- with 6 vertices, 30 edges&gt;
-<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsIsomorphicDigraph(D, CompleteDigraph(6));</span>
+ with 6 vertices, 18 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">AutomorphismGroup(D) = DihedralGroup(IsPermGroup, 12);</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">HamiltonianPath(D);</span>
+[ 1, 3, 5, 2, 6, 4 ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsCompleteDigraph(CirculantGraph(6, [1, 2, 3]));</span>
 true</pre></div>
 
 <p><a id="X812417E278198D9C" name="X812417E278198D9C"></a></p>

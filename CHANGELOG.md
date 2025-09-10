@@ -4,48 +4,37 @@ Wilf A. Wilson, Michael Young et al.
 
 Licensing information can be found in the `LICENSE` file.
 
+## Version 1.12.1 (released 10/09/2025)
+
+## What's Changed
+* [@wilfwilson](https://github.com/wilfwilson) fixed a bug in an `ImmediateMethod` for `IsConnectedDigraph` in [PR #819](https://github.com/digraphs/Digraphs/pull/819).
+*  [@wilfwilson](https://github.com/wilfwilson) fixed a bug in `CirculantGraph` in [PR #820](https://github.com/digraphs/Digraphs/pull/820) (reported by Grahame Erskine, aka [@grahamee](https://github.com/grahamee)).
+
+**Full Changelog**: <https://github.com/digraphs/Digraphs/compare/v1.12.0...v1.12.1>
+
 ## Version 1.12.0 (released 02/09/2025)
 
 ## What's Changed
-* [@wilfwilson](https://github.com/wilfwilson) added `IsDirectedForest` in
-[PR #794](https://github.com/digraphs/Digraphs/pull/794).
+* [@wilfwilson](https://github.com/wilfwilson) added `IsDirectedForest` in [PR #794](https://github.com/digraphs/Digraphs/pull/794).
 
 **Full Changelog**: <https://github.com/digraphs/Digraphs/compare/v1.11.0...v1.12.0>
 
 ## Version 1.11.0 (released 28/08/2025)
 
 ## What's Changed
-* Added `IsTwoEdgeTransitive` by [@frankiegillis](https://github.com/frankiegillis) in
-[PR #733](https://github.com/digraphs/Digraphs/pull/733).
-* [@flsmith](https://github.com/flsmith) made `RandomDigraph` more random in
-[PR #738](https://github.com/digraphs/Digraphs/pull/738).
-* Added `BurntPancakeGraph` and `BurntPancakeGraph` in
-[PR #403](https://github.com/digraphs/Digraphs/pull/403).
-* Added a new optional first argument for mutability in `CayleyDigraph` by
-[@james-d-mitchell](https://github.com/james-d-mitchell) in [PR #403](https://github.com/digraphs/Digraphs/pull/403).
-* Added `MinimalCyclicEdgeCut` by [@MeikeWeiss](https://github.com/MeikeWeiss) in
-[PR #754](https://github.com/digraphs/Digraphs/pull/754).
-* Added `DigraphAllChordlessCyclesOfMaximalLength` by [@MeikeWeiss](https://github.com/MeikeWeiss) in
-[PR #754](https://github.com/digraphs/Digraphs/pull/754).
-* Added `DigraphKings` and `DigraphIsKing` by [@hrj4](https://github.com/hrj4) in
-[PR #521](https://github.com/digraphs/Digraphs/pull/521).
-* [@wilfwilson](https://github.com/wilfwilson) improved `ViewString` for digraphs in
-[PR #783](https://github.com/digraphs/Digraphs/pull/783).
-* [@EwanGilligan](https://github.com/EwanGilligan) implemented Zykov's and Christofides's algorithms and made them
-available as options for `ChromaticNumber` in
-[PR #491](https://github.com/digraphs/Digraphs/pull/491).
-* [@ChrisJefferson](https://github.com/ChrisJefferson) sped up `OnDigraphs` for a digraph and a permutation in
-[PR #267](https://github.com/digraphs/Digraphs/pull/267).
-* [@pramothragavan](https://github.com/pramothragavan) added dreadnaut support in
-[PR #651](https://github.com/digraphs/Digraphs/pull/651), along with the functions
-`DreadnautString`, `DigraphFromDreadnautString`, `DIMACSString`, and
-`DigraphFromDIMACSString`; and the variables `WholeFileEncoders` and
-`WholeFileDecoders` and the functions `IsWholeFileEncoder` and
-`IsWholeFileDecoder`.
-* [@RaiyanC](https://github.com/RaiyanC) added `DigraphMaximumFlow` in
-[PR #751](https://github.com/digraphs/Digraphs/pull/751).
-* [@RaiyanC](https://github.com/RaiyanC) added `RandomUniqueEdgeWeightedDigraph`
-[PR #755](https://github.com/digraphs/Digraphs/pull/755).
+* Added `IsTwoEdgeTransitive` by [@frankiegillis](https://github.com/frankiegillis) in [PR #733](https://github.com/digraphs/Digraphs/pull/733).
+* [@flsmith](https://github.com/flsmith) made `RandomDigraph` more random in [PR #738](https://github.com/digraphs/Digraphs/pull/738).
+* Added `BurntPancakeGraph` and `BurntPancakeGraph` in [PR #403](https://github.com/digraphs/Digraphs/pull/403).
+* Added a new optional first argument for mutability in `CayleyDigraph` by [@james-d-mitchell](https://github.com/james-d-mitchell) in [PR #403](https://github.com/digraphs/Digraphs/pull/403).
+* Added `MinimalCyclicEdgeCut` by [@MeikeWeiss](https://github.com/MeikeWeiss) in [PR #754](https://github.com/digraphs/Digraphs/pull/754).
+* Added `DigraphAllChordlessCyclesOfMaximalLength` by [@MeikeWeiss](https://github.com/MeikeWeiss) in [PR #754](https://github.com/digraphs/Digraphs/pull/754).
+* Added `DigraphKings` and `DigraphIsKing` by [@hrj4](https://github.com/hrj4) in [PR #521](https://github.com/digraphs/Digraphs/pull/521).
+* [@wilfwilson](https://github.com/wilfwilson) improved `ViewString` for digraphs in [PR #783](https://github.com/digraphs/Digraphs/pull/783).
+* [@EwanGilligan](https://github.com/EwanGilligan) implemented Zykov's and Christofides's algorithms and made them available as options for `ChromaticNumber` in [PR #491](https://github.com/digraphs/Digraphs/pull/491).
+* [@ChrisJefferson](https://github.com/ChrisJefferson) sped up `OnDigraphs` for a digraph and a permutation in [PR #267](https://github.com/digraphs/Digraphs/pull/267).
+* [@pramothragavan](https://github.com/pramothragavan) added dreadnaut support in [PR #651](https://github.com/digraphs/Digraphs/pull/651), along with the functions `DreadnautString`, `DigraphFromDreadnautString`, `DIMACSString`, and `DigraphFromDIMACSString`; and the variables `WholeFileEncoders` and `WholeFileDecoders` and the functions `IsWholeFileEncoder` and `IsWholeFileDecoder`.
+* [@RaiyanC](https://github.com/RaiyanC) added `DigraphMaximumFlow` in [PR #751](https://github.com/digraphs/Digraphs/pull/751).
+* [@RaiyanC](https://github.com/RaiyanC) added `RandomUniqueEdgeWeightedDigraph` [PR #755](https://github.com/digraphs/Digraphs/pull/755).
 
 ## New Contributors
 * [@BaseMax](https://github.com/BaseMax) made their first contribution in [PR #749](https://github.com/digraphs/Digraphs/pull/749).
