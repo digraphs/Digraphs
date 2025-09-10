@@ -108,7 +108,7 @@ maintainers:
 GAP: ">=4.10.0"
 
 needed-pkgs:
-    - name: "io"
+    - name: "IO"
       version: ">=4.5.1"
       url: "https://gap-packages.github.io/io"
     - name: "orb"
@@ -122,10 +122,10 @@ suggested-pkgs:
     - name: "GAPDoc"
       version: ">=1.6.3"
       url: "https://www.math.rwth-aachen.de/~Frank.Luebeck/GAPDoc"
-    - name: "grape"
+    - name: "GRAPE"
       version: ">=4.8.1"
       url: "https://gap-packages.github.io/grape"
-    - name: "nautytracesinterface"
+    - name: "NautyTracesInterface"
       version: ">=0.2"
       url: "https://gap-packages.github.io/NautyTracesInterface/"
     - name: "AutoDoc"
