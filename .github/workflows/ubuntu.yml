@@ -12,7 +12,7 @@ on:
     - cron: 30 3 * * *
 
 env:
-  DIGRAPHS_LIB: digraphs-lib-0.6
+  DIGRAPHS_LIB: digraphs-lib-0.7
   NO_COVERAGE: true
 
 concurrency:

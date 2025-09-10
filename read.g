@@ -14,7 +14,7 @@ fi;
 
 _NautyTracesInterfaceVersion :=
   First(PackageInfo("digraphs")[1].Dependencies.SuggestedOtherPackages,
-        x -> x[1] = "nautytracesinterface")[2];
+        x -> x[1] = "NautyTracesInterface")[2];
 
 BindGlobal("DIGRAPHS_NautyAvailable",
   IsPackageMarkedForLoading("NautyTracesInterface",
