@@ -31,7 +31,7 @@ jobs:
         run: |
           git clone https://github.com/gap-packages/NautyTracesInterface ${GAPROOT}/pkg/NautyTracesInterface
       - name: "Build the json package . . ."
-        # TODO: Why is this necessary? Unclear.
+        # FIXME: Remove this step when we can use gap-actions/release-pkg@v2
         run: |
           cd ${GAPROOT}/pkg
           ../bin/BuildPackages.sh --strict json

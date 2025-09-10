@@ -12,7 +12,6 @@ on:
 
 env:
   DIGRAPHS_LIB: digraphs-lib-0.7
-  NO_COVERAGE: true
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -70,26 +69,26 @@ jobs:
           curl --retry 5 -L -O "https://digraphs.github.io/Digraphs/${{ env.DIGRAPHS_LIB }}.tar.gz"
           tar xf "${{ env.DIGRAPHS_LIB }}.tar.gz"
       - name: Run DigraphsTestInstall . . .
-        uses: gap-actions/run-pkg-tests@v3
+        uses: gap-actions/run-pkg-tests@v4
         with:
-          NO_COVERAGE: true
-          GAP_TESTFILE: tst/github_actions/install.g
+          coverage: false
+          testfile: tst/github_actions/install.g
           only-needed: ${{ matrix.only-needed }}
       - name: Run DigraphsTestStandard . . .
-        uses: gap-actions/run-pkg-tests@v3
+        uses: gap-actions/run-pkg-tests@v4
         with:
-          NO_COVERAGE: true
-          GAP_TESTFILE: tst/github_actions/standard.g
+          coverage: false
+          testfile: tst/github_actions/standard.g
           only-needed: ${{ matrix.only-needed }}
       - name: Run DigraphsTestManualExamples . . .
-        uses: gap-actions/run-pkg-tests@v3
+        uses: gap-actions/run-pkg-tests@v4
         with:
-          NO_COVERAGE: true
-          GAP_TESTFILE: tst/github_actions/examples.g
+          coverage: false
+          testfile: tst/github_actions/examples.g
           only-needed: ${{ matrix.only-needed }}
       - name: Run DigraphsTestExtreme . . .
-        uses: gap-actions/run-pkg-tests@v3
+        uses: gap-actions/run-pkg-tests@v4
         with:
-          NO_COVERAGE: true
-          GAP_TESTFILE: tst/github_actions/extreme.g
+          coverage: false
+          testfile: tst/github_actions/extreme.g
           only-needed: ${{ matrix.only-needed }}
