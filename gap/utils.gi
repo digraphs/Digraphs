@@ -254,7 +254,7 @@ function(arg...)
                     ",");
     fi;
   else
-    omit := DIGRAPHS_OmitFromTests;
+    omit := DIGRAPHS_OmitFromTests();
     if Length(omit) > 0 then
       if Length(omit) = 1 then
         Print("# not testing examples containing the string ");
