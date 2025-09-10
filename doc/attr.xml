@@ -1579,43 +1579,44 @@ gap> FacialWalks(D3, rot);
 </ManSection>
 <#/GAPDoc>
 
-<#GAPDoc Label="HamiltonianPath">
+<#GAPDoc Label="HamiltonianCycle">
 <ManSection>
-  <Attr Name="HamiltonianPath" Arg="digraph"/>
+  <Attr Name="HamiltonianCycle" Arg="digraph"/>
   <Returns>A list or <K>fail</K>.</Returns>
   <Description>
-    Returns a Hamiltonian path if one exists, <K>fail</K> if not.<P/>
+    For a digraph <A>digraph</A>, this attribute returns a Hamiltonian cycle,
+    if one exists, and <K>fail</K> if one does not.<P/>
 
-    A <E>Hamiltonian path</E> of a digraph with <C>n</C> vertices is directed
+    A <E>Hamiltonian cycle</E> of a digraph with <C>n</C> vertices is a directed
     cycle of length <C>n</C>. If <A>digraph</A> is a digraph that contains a
-    Hamiltonian path, then this function returns one, described in the form
-    used by <Ref Attr="DigraphAllSimpleCircuits"/>. Note if <A>digraph</A> has
-    0 or 1 vertices, then <C>HamiltonianPath</C> returns <C>[]</C> or
+    Hamiltonian cycle, then this function returns one, described in the form
+    used by <Ref Attr="DigraphAllSimpleCircuits"/>. Note that if <A>digraph</A>
+    has 0 or 1 vertices, then <Ref Attr="HamiltonianCycle"/> returns <C>[]</C> or
     <C>[1]</C>, respectively.<P/>
 
     The method used in this attribute has the same worst case complexity as
     <Ref Oper="DigraphMonomorphism"/>.
 
     <Example><![CDATA[
-gap> D := Digraph([[]]);
+gap> D := EmptyDigraph(1);
 <immutable empty digraph with 1 vertex>
-gap> HamiltonianPath(D);
+gap> HamiltonianCycle(D);
 [ 1 ]
-gap> D := Digraph([[2], [1]]);
-<immutable digraph with 2 vertices, 2 edges>
-gap> HamiltonianPath(D);
+gap> D := CycleDigraph(2);
+<immutable cycle digraph with 2 vertices>
+gap> HamiltonianCycle(D);
 [ 1, 2 ]
 gap> D := Digraph([[3], [], [2]]);
 <immutable digraph with 3 vertices, 2 edges>
-gap> HamiltonianPath(D);
+gap> HamiltonianCycle(D);
 fail
-gap> D := Digraph([[2], [3], [1]]);
-<immutable digraph with 3 vertices, 3 edges>
-gap> HamiltonianPath(D);
+gap> D := CycleDigraph(3);
+<immutable cycle digraph with 3 vertices>
+gap> HamiltonianCycle(D);
 [ 1, 2, 3 ]
 gap> D := GeneralisedPetersenGraph(IsMutableDigraph, 5, 2);
 <mutable digraph with 10 vertices, 30 edges>
-gap> HamiltonianPath(D);
+gap> HamiltonianCycle(D);
 fail
 ]]></Example>
   </Description>

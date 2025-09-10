@@ -956,21 +956,21 @@ true
     &MUTABLE_RECOMPUTED_PROP;
 
     <Example><![CDATA[
-gap> g := Digraph([[]]);
+gap> D := EmptyDigraph(1);
 <immutable empty digraph with 1 vertex>
-gap> IsHamiltonianDigraph(g);
+gap> IsHamiltonianDigraph(D);
 true
-gap> g := Digraph([[2], [1]]);
-<immutable digraph with 2 vertices, 2 edges>
-gap> IsHamiltonianDigraph(g);
+gap> D := CycleDigraph(2);
+<immutable cycle digraph with 2 vertices>
+gap> IsHamiltonianDigraph(D);
 true
-gap> g := Digraph([[3], [], [2]]);
+gap> D := Digraph([[3], [], [2]]);
 <immutable digraph with 3 vertices, 2 edges>
-gap> IsHamiltonianDigraph(g);
+gap> IsHamiltonianDigraph(D);
 false
-gap> g := Digraph([[2], [3], [1]]);
-<immutable digraph with 3 vertices, 3 edges>
-gap> IsHamiltonianDigraph(g);
+gap> D := CycleDigraph(3);
+<immutable cycle digraph with 3 vertices>
+gap> IsHamiltonianDigraph(D);
 true
 ]]></Example>
   </Description>

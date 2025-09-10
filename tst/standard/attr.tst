@@ -2237,110 +2237,110 @@ gap> ForAll(D,
 > d -> DigraphNrEdges(d) / 2 = DigraphNrEdges(StrongOrientation(d)));
 true
 
-#  HamiltonianPath
+#  HamiltonianCycle
 gap> g := Digraph([]);
 <immutable empty digraph with 0 vertices>
-gap> HamiltonianPath(g);
+gap> HamiltonianCycle(g);
 [  ]
 gap> g := Digraph([[]]);
 <immutable empty digraph with 1 vertex>
-gap> HamiltonianPath(g);
+gap> HamiltonianCycle(g);
 [ 1 ]
 gap> g := Digraph([[], []]);
 <immutable empty digraph with 2 vertices>
-gap> HamiltonianPath(g);
+gap> HamiltonianCycle(g);
 fail
 gap> g := Digraph([[1]]);
 <immutable digraph with 1 vertex, 1 edge>
-gap> HamiltonianPath(g);
+gap> HamiltonianCycle(g);
 [ 1 ]
 gap> g := Digraph([[2, 2], []]);
 <immutable multidigraph with 2 vertices, 2 edges>
-gap> HamiltonianPath(g);
+gap> HamiltonianCycle(g);
 fail
 gap> g := Digraph([[2], [1]]);
 <immutable digraph with 2 vertices, 2 edges>
-gap> HamiltonianPath(g);
+gap> HamiltonianCycle(g);
 [ 1, 2 ]
 gap> g := Digraph([[3], [3], []]);
 <immutable digraph with 3 vertices, 2 edges>
-gap> HamiltonianPath(g);
+gap> HamiltonianCycle(g);
 fail
 gap> g := Digraph([[3], [3], [1, 2]]);
 <immutable digraph with 3 vertices, 4 edges>
-gap> HamiltonianPath(g);
+gap> HamiltonianCycle(g);
 fail
 gap> g := Digraph([[3], [], [2]]);
 <immutable digraph with 3 vertices, 2 edges>
-gap> HamiltonianPath(g);
+gap> HamiltonianCycle(g);
 fail
 gap> g := Digraph([[2], [3], [1]]);
 <immutable digraph with 3 vertices, 3 edges>
-gap> HamiltonianPath(g);
+gap> HamiltonianCycle(g);
 [ 1, 2, 3 ]
 gap> g := Digraph([[2], [3], [1], []]);
 <immutable digraph with 4 vertices, 3 edges>
-gap> HamiltonianPath(g);
+gap> HamiltonianCycle(g);
 fail
 gap> g := Digraph([[2], [3], [1, 4], []]);
 <immutable digraph with 4 vertices, 4 edges>
-gap> HamiltonianPath(g);
+gap> HamiltonianCycle(g);
 fail
 gap> g := Digraph([[3, 6], [4], [2, 1], [5, 1], [3], [4]]);
 <immutable digraph with 6 vertices, 9 edges>
-gap> HamiltonianPath(g);
+gap> HamiltonianCycle(g);
 fail
 gap> g := Digraph([[3, 6], [4, 1], [2, 1], [5, 1], [3], [4]]);
 <immutable digraph with 6 vertices, 10 edges>
-gap> HamiltonianPath(g);
+gap> HamiltonianCycle(g);
 [ 1, 6, 4, 5, 3, 2 ]
 gap> g := Digraph([[3, 6], [4], [2, 1], [5, 1], [3], [4, 7], []]);
 <immutable digraph with 7 vertices, 10 edges>
-gap> HamiltonianPath(g);
+gap> HamiltonianCycle(g);
 fail
 gap> g := Digraph([[3, 6, 7], [4, 1], [2, 1], [5, 1], [3], [4, 7], [6]]);
 <immutable digraph with 7 vertices, 13 edges>
-gap> HamiltonianPath(g);
+gap> HamiltonianCycle(g);
 [ 1, 7, 6, 4, 5, 3, 2 ]
 gap>  g := Digraph([[3, 6], [4], [2, 1], [5, 1], [3], [4, 7], [6]]);
 <immutable digraph with 7 vertices, 11 edges>
-gap> HamiltonianPath(g);
+gap> HamiltonianCycle(g);
 fail
 gap> g := Digraph([[5, 6, 10], [2, 9], [3, 7], [2, 3], [9, 10], [2, 9], [1],
 >                  [2, 3, 4, 7, 9], [3, 10], [4, 5, 6, 8]]);
 <immutable digraph with 10 vertices, 25 edges>
-gap> HamiltonianPath(g);
+gap> HamiltonianCycle(g);
 fail
 gap> g := Digraph([[2, 4, 6, 10], [1, 3, 4, 5, 6, 7, 9, 10], [1, 5, 7, 8],
 >                  [6, 10], [1, 7], [3, 4, 6, 7, 9], [2, 3, 4, 7],
 >                  [2, 4, 5, 6], [2, 3, 5, 6, 7, 9, 10], [2, 3, 5]]);
 <immutable digraph with 10 vertices, 43 edges>
-gap> HamiltonianPath(g);
+gap> HamiltonianCycle(g);
 [ 1, 4, 6, 9, 10, 3, 8, 5, 7, 2 ]
 gap> IsDigraphMonomorphism(CycleDigraph(10),
 >                          g,
->                          Transformation(HamiltonianPath(g)));
+>                          Transformation(HamiltonianCycle(g)));
 true
 gap> g := CompleteMultipartiteDigraph([1, 30]);
 <immutable complete bipartite digraph with bicomponent sizes 1 and 30>
-gap> HamiltonianPath(g);
+gap> HamiltonianCycle(g);
 fail
 gap> g := Digraph([[2, 5, 6], [3, 1, 7], [4, 2, 8], [5, 3, 9], [1, 4, 10],
 >                  [1, 8, 9], [2, 9, 10], [3, 10, 6], [4, 6, 7], [5, 7, 8]]);
 <immutable digraph with 10 vertices, 30 edges>
-gap> HamiltonianPath(g);
+gap> HamiltonianCycle(g);
 fail
 gap> g := CompleteMultipartiteDigraph([16, 15]);
 <immutable complete bipartite digraph with bicomponent sizes 16 and 15>
-gap> HamiltonianPath(g);
+gap> HamiltonianCycle(g);
 fail
 gap> g := CompleteMultipartiteDigraph([1, 15, 1, 1, 1, 1, 1, 1]);
 <immutable complete multipartite digraph with 22 vertices, 252 edges>
-gap> HamiltonianPath(g);
+gap> HamiltonianCycle(g);
 fail
 gap> g := CycleDigraph(100);
 <immutable cycle digraph with 100 vertices>
-gap> HamiltonianPath(g);
+gap> HamiltonianCycle(g);
 [ 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 
   96, 97, 98, 99, 100, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 
   17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 
@@ -2353,7 +2353,7 @@ gap> g := DigraphAddEdges(g, [[6, 8], [8, 7], [7, 9]]);
 <immutable digraph with 513 vertices, 516 edges>
 gap> g := DigraphRemoveEdge(g, [6, 7]);
 <immutable digraph with 513 vertices, 515 edges>
-gap> HamiltonianPath(g);
+gap> HamiltonianCycle(g);
 [ 1, 2, 3, 4, 5, 6, 8, 7, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 
   22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 
   41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 
@@ -2390,7 +2390,7 @@ gap> HamiltonianPath(g);
 gap> gr := DigraphAddEdges(DigraphAddVertex(CycleDigraph(600)),
 >                          [[600, 601], [601, 600]]);
 <immutable digraph with 601 vertices, 602 edges>
-gap> HamiltonianPath(gr);
+gap> HamiltonianCycle(gr);
 fail
 
 # DigraphCore
