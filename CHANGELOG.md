@@ -4,6 +4,14 @@ Wilf A. Wilson, Michael Young et al.
 
 Licensing information can be found in the `LICENSE` file.
 
+## Version 1.12.1 (released 10/09/2025)
+
+## What's Changed
+* [@wilfwilson](https://github.com/wilfwilson) fixed a bug in an `ImmediateMethod` for `IsConnectedDigraph` in [PR #819](https://github.com/digraphs/Digraphs/pull/819).
+*  [@wilfwilson](https://github.com/wilfwilson) fixed a bug in `CirculantGraph` in [PR #820](https://github.com/digraphs/Digraphs/pull/820) (reported by Grahame Erskine, aka [@grahamee](https://github.com/grahamee)).
+
+**Full Changelog**: <https://github.com/digraphs/Digraphs/compare/v1.12.0...v1.12.1>
+
 ## Version 1.12.0 (released 02/09/2025)
 
 ## What's Changed

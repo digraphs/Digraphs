@@ -76,8 +76,8 @@ jobs:
           dry-run: ${{ inputs.dry-run }}
           force: ${{ inputs.force }}
           body-text: ${{ env.BODY }}
+
       - uses: gap-actions/update-gh-pages@v1
-        if: ${{ !inputs.dry-run }}
         with:
           # The <clean> option stops the action from updating the website with
           # the latest GitHubPagesForGAP code, because we have customised our
@@ -89,3 +89,5 @@ jobs:
           # website code that we haven't customised. But this would have to be
           # done carefully.
           clean: false
+          dry-run: ${{ inputs.dry-run }}
+          extra-files: "CHANGELOG.md"
