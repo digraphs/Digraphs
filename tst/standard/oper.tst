@@ -3410,14 +3410,14 @@ gap> data.backtracks = 13;
 true
 
 # Stopping ExecuteDFS - Consistency Check across configurations
-gap> gr := CompleteDigraph(10000);;  # defaults, recursive
+gap> gr := CompleteDigraph(1000);;  # defaults, recursive
 gap> record := NewDFSRecord(gr);;
 gap> configs := [rec(forest := true), rec(forest_specific := DigraphVertices(gr)),
 >    rec(use_postorder := true), rec(use_preorder := true), rec(revisit := true, iterative := true)];;
 gap> results := [];;
 gap> PreorderFunc := function(record, data)
 >      data.count := data.count + 1;
->      if record.current = 5000 then
+>      if record.current = 500 then
 >        record.stop := true;
 >      fi; 
 >    end;;
@@ -3431,7 +3431,7 @@ gap> PreorderFunc := function(record, data)
 >   ExecuteDFS(record, data, 1, PreorderFunc, fail, fail, fail);
 >   Add(results, data.count);
 > od;
-gap> ForAll(results, \x -> x = 5000);
+gap> ForAll(results, \x -> x = 500);
 true
 
 # BinaryTree(5) - ExecuteDFS Consistency check across configurations

@@ -251,7 +251,8 @@ function(D)
   fi;
 
   flags := NewDFSConfigLightweight();
-  flags.iterative := true;
+  flags.use_edge := true;
+  flags.use_parents := true;
 
   record := NewDFSRecord(D, flags);
 
@@ -400,7 +401,8 @@ function(D)
   fi;
 
   flags := NewDFSConfigLightweight();
-  flags.iterative := true;
+  flags.use_edge := true;
+  flags.use_parents := true;
 
   record := NewDFSRecord(D, flags);
   record.config.forest := true;

@@ -2590,9 +2590,11 @@ true]]>
     <Mark>postorder</Mark>
     <Item>At each index, the postorder number (order in which the vertex is backtracked on)
           is stored.</Item>
-  </List><P/>
+  </List>
+  <P/>
 
   The record also stores a further 5 attributes:
+
   <List>
     <Mark>current</Mark>
     <Item>The current vertex that is being visited.<P/>
@@ -2633,6 +2635,7 @@ true]]>
     <Ref Oper="NewDFSConfig"/>.
     </Item>
   </List>
+  <P/>
 
   When this function is called as <C>NewDFSRecord</C>(<A>record</A>, <A>conf</A>), this function
   returns a <Ref Oper="NewDFSRecord" Label="for a digraph"/> with the
@@ -2678,16 +2681,17 @@ true
   <Oper Name="NewDFSConfig" Arg=""/>
   <Returns>A record.</Returns>
   <Description>
-  This function returns a DFSFlags <C>record</C> to be
+  This function returns a DFSConfig <C>record</C> to be
   used as the <C>config</C> field of a DFSRecord.
-  <Ref Oper="NewDFSRecord" Label="for a digraph"/> called as <C>NewDFSRecord</C>(<C>record</C>, <C>config</C>) should be used to set
+  <Ref Oper="NewDFSRecord" Label="for a digraph"/> called
+  as <C>NewDFSRecord</C>(<C>record</C>, <C>config</C>) should be used to set
   <C>config</C> (as shown by the below example), since
   fields such as <C>record.config.use_postorder</C>
   change the behaviour of <Ref Oper="NewDFSRecord" Label="for a digraph"/>. For
   example, <C>record.config.use_postorder</C> tells <Ref Oper="NewDFSRecord" Label="for a digraph"/>
   not to create the <C>record.postorder</C> field.<P/>
 
-  The fields for both NewDFSConfig and <Ref Oper="NewDFSConfigLightweight"/>
+  The fields for both <Ref Oper="NewDFSConfig"/> and <Ref Oper="NewDFSConfigLightweight"/>
   are described as follows, assuming <C>config</C> was returned
   by <Ref Oper="NewDFSConfig"/> or <Ref Oper="NewDFSConfigLightweight"/>,
   and <C>NewDFSRecord</C>(<C>d</C>, <C>config</C>) is
@@ -2697,32 +2701,28 @@ true
     <Mark>use_preorder</Mark>
     <Item>
     When <C>config.use_preorder</C> is <K>true</K>, <C>record.preorder</C>
-    is <K>fail</K>, and not used during the <Ref Oper="ExecuteDFS"/> procedure
-    (when called with first argument <C>record</C>).<P/>
+    is <K>fail</K>, and not used during the <Ref Oper="ExecuteDFS"/> procedure.<P/>
 
     Default: <K>true</K>
     </Item>
     <Mark>use_postorder</Mark>
     <Item>
     When <C>config.use_postorder</C> is <K>true</K>, <C>record.postorder</C>
-    is <K>fail</K>, and not used during the <Ref Oper="ExecuteDFS"/> procedure
-    (when called with first argument <C>record</C>).<P/>
+    is <K>fail</K>, and not used during the <Ref Oper="ExecuteDFS"/> procedure.<P/>
 
     Default: <K>true</K>
     </Item>
     <Mark>use_parents</Mark>
     <Item>
     When <C>config.use_parents</C> is <K>true</K>, <C>record.parents</C>
-    is <K>fail</K>, and not used during the <Ref Oper="ExecuteDFS"/> procedure
-    (when called with first argument <C>record</C>).<P/>
+    is <K>fail</K>, and not used during the <Ref Oper="ExecuteDFS"/> procedure.<P/>
 
     Default: <K>true</K>
     </Item>
     <Mark>use_edge</Mark>
     <Item>
     When <C>config.use_edge</C> is <K>true</K>, <C>record.edge</C>
-    is <K>fail</K>, and not used during the <Ref Oper="ExecuteDFS"/> procedure
-    (when called with first argument <C>record</C>).<P/>
+    is <K>fail</K>, and not used during the <Ref Oper="ExecuteDFS"/> procedure.<P/>
 
     Default: <K>true</K>
     </Item>
@@ -2737,25 +2737,22 @@ true
     </Item>
     <Mark>revisit</Mark>
     <Item>
-    Allows nodes to be revited during <Ref Oper="ExecuteDFS"/> if they
+    Allows vertices to be revisited during <Ref Oper="ExecuteDFS"/> if they
     are encountered as a successor, and have been backtracked in the current 
     DFS tree. When <C>config.revisit</C>
-    is <K>true</K>, <C>config.iterative</C> must also be <K>true</K>.
-    Requires <C>config.iterative</C> to be <K>true</K>.<P/>
+    is <K>true</K>, <C>config.iterative</C> must also be <K>true</K>.<P/>
 
     Default: <K>false</K>
     </Item>
     <Mark>forest</Mark>
     <Item>
-    Ensures all nodes are visited during <Ref Oper="ExecuteDFS"/>. <Ref
+    Ensures all vertices are visited during <Ref Oper="ExecuteDFS"/>. <Ref
 Oper="ExecuteDFS"/>
-    is first ran with a start node of <C>record.start</C>. For each
+    is first ran with a start vertex of <C>record.start</C>. For each
     <C>v</C> in <C>DigraphVertices</C>(<C>record.graph</C>),
-    if <C>v</C> has not been visited in any DFS traversals yet (if
-    <C>config.use_preorder</C> then this is the case when
-    <C>record.preorder</C>[<C>v</C>] is <C>-1</C>), a
-    DFS traversal with a start node of <C>v</C> is called until
-    all nodes in <C>DigraphVertices</C>(<C>record.graph</C>)
+    if <C>v</C> has not been visited in any DFS traversals yet, a
+    DFS traversal with a start vertex of <C>v</C> is called until
+    all vertices in <C>DigraphVertices</C>(<C>record.graph</C>)
     have been visited (traversing all disconnected components). Requires
     <C>config.forest_specific</C> to be <K>fail</K>.<P/>
 
@@ -2770,7 +2767,7 @@ Oper="ExecuteDFS"/>
     This is achieved in the same way as <C>config.forest</C>
     but instead of ensuring all vertices from <C>DigraphVertices</C>(<C>record.graph</C>)
     are visited, the same behaviour exists for all vertices
-    from <C>config.forest_specific</C> (if it is not <K>fail</K>).
+    in <C>config.forest_specific</C>.
     Requires <C>config.forest</C> to be <K>false</K>.<P/>
 
     Default: <K>fail</K>
@@ -2804,11 +2801,10 @@ fail
   <Oper Name="NewDFSConfigLightweight" Arg=""/>
   <Returns>A record.</Returns>
   <Description>
-  This function returns a DFSFlags <C>record</C> to be
+  This function returns a DFSConfig <C>record</C> to be
   used as the <C>config</C> field of a DFSRecord (see <Ref Oper="NewDFSRecord" Label="for a digraph"/>). It
   differs to the default <C>config</C> returned by see <Ref Oper="NewDFSConfig"/>
-  since all of <C>use_preorder</C>, <C>use_postorder</C>, <C>use_parents</C> and
-  <C>use_edge</C> are set to <K>false</K>.
+  since both <C>config.use_preorder</C>, <C>config.use_postorder</C> are set to <K>false</K>.
   <Example><![CDATA[
 gap> flags := NewDFSConfigLightweight();;
 gap> flags.use_preorder;
@@ -2816,23 +2812,21 @@ false
 gap> flags.use_postorder;
 false
 gap> flags.use_edge;
-false
+true
 gap> flags.use_parents;
-false
+true
 gap> flags.iterative := true;
 true
 gap> d := BinaryTree(2);;
 gap> record := NewDFSRecord(d, flags);;
-gap> record.config.use_parents;
-false
 gap> record.preorder;
 fail
 gap> record.postorder;
 fail
 gap> record.edge;
-fail
+[ -1, -1, -1 ]
 gap> record.parents;
-fail
+[ -1, -1, -1 ]
 ]]></Example>
 </Description>
 </ManSection>
@@ -2844,7 +2838,7 @@ fail
     Arg="record, data, start, PreOrderFunc, PostOrderFunc, AncestorFunc, CrossFunc"/>
   <Description>
   This performs a full depth first search from the <A>start</A> vertex (where <A>start</A> is a vertex within the graph).
-  The depth first search can be terminated by changing the <A>record</A>.stop attribute to <K>true</K> in the
+  The depth first search can be terminated by changing the <C><A>record</A>.stop</C> attribute to <K>true</K> in the
   <A>PreOrderFunc</A>, <A>PostOrderFunc</A>, <A>AncestorFunc</A> or <A>CrossFunc</A> functions.
   <C>ExecuteDFS</C> takes 7 arguments:
   <List>
@@ -2855,33 +2849,38 @@ fail
     <Mark>start</Mark>
     <Item>The vertex where the depth first search begins.</Item>
     <Mark>PreOrderFunc</Mark>
-    <Item>This function is called when a vertex is first visited. This vertex
-    is stored in <A>record</A>.current. A vertex can be backtracked
-    more than once when <A>record</A>.config.revisit is <K>true</K>.</Item>
+    <Item>A function taking two arguments <A>record</A>, <A>data</A>.
+    This function is called when a vertex is first visited. This vertex
+    is stored in <C><A>record</A>.current</C>. A vertex can be visited
+    more than once when <C><A>record</A>.config.revisit</C> is <K>true</K>. </Item>
     <Mark>PostOrderFunc</Mark>
-    <Item>This function is called when a vertex has no more unvisited children
-    causing us to backtrack. This vertex is stored in <A>record</A>.child and its parent is stored
-    in <A>record</A>.current. A vertex can be visited
-    more than once when <A>record</A>.config.revisit is <K>true</K>.<P/>
+    <Item>A function taking two arguments <A>record</A>, <A>data</A>.
+    This function is called when a vertex has no more unvisited children
+    causing us to backtrack. This vertex is stored in <C><A>record</A>.child</C> and its parent is stored
+    in <C><A>record</A>.current</C>. A vertex can be backtracked
+    more than once when <C><A>record</A>.config.revisit</C> is <K>true</K>.<P/>
 
     When <C><A>record</A>.PostOrderFunc</C> is not <K>fail</K>, then
     <C><A>record</A>.config.use_parents</C>
-    must be true (recursive DFS requires <C><A>record</A>.config.use_parents</C>
-    in general).
+    must be true.
     </Item>
     <Mark>AncestorFunc</Mark>
-    <Item>This function is called when <C>[<A>record</A>.current</C>,
-    <C><A>record</A>.child]</C> is an edge and <C><A>record</A>.child</C> is an ancestor of <C><A>record</A>.current</C>. An ancestor here means that
+    <Item>A function taking two arguments <A>record</A>, <A>data</A>.
+    This function is called when <C>[<A>record</A>.current</C>,
+    <C><A>record</A>.child]</C> is an edge and <C><A>record</A>.child</C>
+    is an ancestor of <C><A>record</A>.current</C>. An ancestor here means that
     <C><A>record</A>.child</C> is on the same branch as
     <C><A>record</A>.current</C> but was visited prior to
-    <C><A>record</A>.current</C> (<C><A>record</A>.current</C> has been backtracked
+    <C><A>record</A>.current</C> (<C><A>record</A>.child</C> has not been backtracked
     on). Equivalently, <C>[<A>record</A>.current,
     <A>record</A>.child]</C> is a back edge. </Item>
     <Mark>CrossFunc</Mark>
-    <Item>This function is called when <C>[<A>record</A>.current</C>,
-    <C><A>record</A>.child]</C> is an edge and <C><A>record</A>.child</C> has been visited before <C><A>record</A>.current</C>
-      and it is not an ancestor of <C><A>record</A>.current</C>. Equivalently, <C>[<A>record</A>.current,
-    <A>record</A>.child]</C> is a cross edge.<P/>
+    <Item>A function taking two arguments <A>record</A>, <A>data</A>.
+    This function is called when <C>[<A>record</A>.current</C>,
+    <C><A>record</A>.child]</C> is an edge and <C><A>record</A>.child</C> has
+    been visited before <C><A>record</A>.current</C> and it is not an ancestor
+    of <C><A>record</A>.current</C> (<C><A>record</A>.child</C> has been backtracked).
+    Equivalently, <C>[<A>record</A>.current, <A>record</A>.child]</C> is a cross edge.<P/>
 
     When <C><A>record</A>.CrossFunc</C> is not <K>fail</K>, <C><A>record</A>.config.use_preorder</C>
     must be true (to determine visit order).
@@ -2893,7 +2892,6 @@ fail
   Note that this function only performs a depth first search on the vertices reachable from <A>start</A>
   unless <C><A>record.config</A>.forest</C> is <K>true</K> or <C><A>record.config</A>.forest_specific</C>
   is a <A>list</A> of vertices to visit.
-  It is also important to note that all functions passed need to accept arguments <A>record</A> and <A>data</A>.
   Finally, for the <A>start</A> vertex, its parent is itself and the <A>PreOrderFunc</A>
   will be called on it. This is also the case for the start vertex of any additional
   searches required when <C><A>record</A>.config.forest</C> is <K>true</K> or

@@ -221,7 +221,8 @@ void parseConfig(struct dfs_args* args, Obj conf_record) {
   conf->use_parents   = ElmPRec(conf_record, RNamName("use_parents")) == True;
   conf->use_edge      = ElmPRec(conf_record, RNamName("use_edge")) == True;
   conf->forest_specific   = ElmPRec(conf_record, RNamName("forest_specific"));
-  conf->partial_postorder = false;
+  conf->partial_postorder = false;  // Updated when parsing the config (whether
+                                    // to use a bitset for backtracked vertices)
 
   if (!conf->iter && (!conf->use_edge || !conf->use_parents)) {
     ErrorQuit(

@@ -2061,6 +2061,7 @@ function(D, v)
   flags := NewDFSConfigLightweight();
   flags.iterative := true;  # revisit DFS must be iterative
   flags.use_parents := true;
+  flags.use_edge := false;
   flags.revisit := true;  # If found another edge to an already
                          # visited and backtracked on node,
                          # set to unvisited, and visit it
@@ -2980,8 +2981,8 @@ function()
   config.iterative := false;
   config.use_postorder := false;
   config.use_preorder := false;
-  config.use_parents := false;
-  config.use_edge := false;
+  config.use_parents := true;  # Must be true to use recursive dfs
+  config.use_edge := true;
   return config;
 end);
 

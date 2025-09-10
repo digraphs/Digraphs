@@ -173,6 +173,12 @@ gap> SortedList(DigraphLayers(gr, 6)[2]);
 gap> SortedList(DigraphLayers(gr, 1500)[2]);
 [ 81, 82, 169, 253, 254 ]
 
+# ExecuteDFS recursive stack overflow check
+gap> gr := CompleteDigraph(10000);;  # defaults, recursive
+gap> record := NewDFSRecord(gr);;
+gap> record.config.iterative := false;;
+gap> ExecuteDFS(record, fail, 1, fail, fail, fail, fail);
+
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(d);
 gap> Unbind(gr);
