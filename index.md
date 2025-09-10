@@ -36,7 +36,7 @@ The following additional GAP packages are not required, but suggested:
 
 There is a companion library of various digraphs that can be useful for testing
 and experiments.
-[Version 0.6 of this library is available to download here](digraphs-lib-0.6.tar.gz).
+[Version 0.7 of this library is available to download here](digraphs-lib-0.7.tar.gz).
 There is also a corresponding [README](lib-README.html) file for this library.
 
 ## Author{% if site.data.package.authors.size != 1 %}s{% endif %}
