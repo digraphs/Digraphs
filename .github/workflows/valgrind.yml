@@ -44,7 +44,7 @@ jobs:
           cd ${GAPROOT}/pkg
           ../bin/BuildPackages.sh --strict io orb datastructures grape NautyTracesInterface
       - name: "Build Digraphs . . ."
-        uses: gap-actions/build-pkg@v1
+        uses: gap-actions/build-pkg@v2
       - name: "Run DigraphsTestInstall . . ."
         uses: gap-actions/run-pkg-tests@v4
         with:

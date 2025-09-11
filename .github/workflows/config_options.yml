@@ -64,7 +64,7 @@ jobs:
           cd ${GAPROOT}/pkg
           ../bin/BuildPackages.sh --strict io orb datastructures grape NautyTracesInterface
       - name: Build Digraphs . . .
-        uses: gap-actions/build-pkg@v1
+        uses: gap-actions/build-pkg@v2
         with:
           CONFIGFLAGS: ${{ matrix.bliss }} ${{ matrix.planarity }}
       - name: Run Digraphs package's tst/teststandard.g . . .
@@ -113,7 +113,7 @@ jobs:
           cd ${GAPROOT}/pkg
           ../bin/BuildPackages.sh --strict io orb datastructures grape NautyTracesInterface
       - name: Build Digraphs . . .
-        uses: gap-actions/build-pkg@v1
+        uses: gap-actions/build-pkg@v2
         with:
           CONFIGFLAGS: ${{ matrix.debug }} ${{ matrix.without-intrinsics }} ${{ matrix.warnings && '--enable-compile-warnings WARNING_CXXFLAGS="-Werror" WARNING_CFLAGS="-Werror"' || '' }}
       - name: Run Digraphs package's tst/teststandard.g . . .

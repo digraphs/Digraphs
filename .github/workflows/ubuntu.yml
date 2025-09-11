@@ -63,7 +63,7 @@ jobs:
           cd ${GAPROOT}/pkg
           ../bin/BuildPackages.sh --strict ${{ matrix.pkgs-to-build }}
       - name: Build Digraphs . . .
-        uses: gap-actions/build-pkg@v1
+        uses: gap-actions/build-pkg@v2
       - name: Install digraphs-lib . . .
         run: |
           curl --retry 5 -L -O "https://digraphs.github.io/Digraphs/${{ env.DIGRAPHS_LIB }}.tar.gz"
