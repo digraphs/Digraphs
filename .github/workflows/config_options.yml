@@ -62,21 +62,21 @@ jobs:
       - name: "Build additional necessary GAP packages . . ."
         run: |
           cd ${GAPROOT}/pkg
-          ../bin/BuildPackages.sh --strict io orb datastructures grape NautyTracesInterface
+          ../bin/BuildPackages.sh --strict io orb datastructures profiling grape NautyTracesInterface
       - name: Build Digraphs . . .
         uses: gap-actions/build-pkg@v2
         with:
           CONFIGFLAGS: ${{ matrix.bliss }} ${{ matrix.planarity }}
       - name: Run Digraphs package's tst/teststandard.g . . .
         uses: gap-actions/run-pkg-tests@v4
+      - uses: gap-actions/process-coverage@v2
+      - uses: codecov/codecov-action@v5
         with:
-          coverage: false
+          token: ${{ secrets.CODECOV_TOKEN }}
 
   all-options:
     name: ${{ matrix.debug }} ${{ matrix.warnings }} ${{ matrix.without-intrinsics }}
     runs-on: ubuntu-latest
-    env:
-      NO_COVERAGE: true
     strategy:
       fail-fast: false
       matrix:
@@ -111,10 +111,14 @@ jobs:
       - name: "Build additional necessary packages"
         run: |
           cd ${GAPROOT}/pkg
-          ../bin/BuildPackages.sh --strict io orb datastructures grape NautyTracesInterface
+          ../bin/BuildPackages.sh --strict io orb datastructures profiling grape NautyTracesInterface
       - name: Build Digraphs . . .
         uses: gap-actions/build-pkg@v2
         with:
           CONFIGFLAGS: ${{ matrix.debug }} ${{ matrix.without-intrinsics }} ${{ matrix.warnings && '--enable-compile-warnings WARNING_CXXFLAGS="-Werror" WARNING_CFLAGS="-Werror"' || '' }}
       - name: Run Digraphs package's tst/teststandard.g . . .
         uses: gap-actions/run-pkg-tests@v4
+      - uses: gap-actions/process-coverage@v2
+      - uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}

@@ -38,11 +38,11 @@ jobs:
           - only-needed: true
             pkgs-to-clone: https://github.com/digraphs/graphviz.git
             # Remove asterisks * when we no longer support GAP 4.11
-            pkgs-to-build: io* orb* datastructures*
+            pkgs-to-build: io* orb* datastructures* profiling*
           - only-needed: false
             pkgs-to-clone: https://github.com/digraphs/graphviz.git https://github.com/gap-packages/NautyTracesInterface.git
             # Remove asterisks * when we no longer support GAP 4.11
-            pkgs-to-build: io* orb* datastructures* grape* NautyTracesInterface
+            pkgs-to-build: io* orb* datastructures* profiling* grape* NautyTracesInterface
 
     steps:
       - uses: actions/checkout@v5
@@ -71,24 +71,24 @@ jobs:
       - name: Run DigraphsTestInstall . . .
         uses: gap-actions/run-pkg-tests@v4
         with:
-          coverage: false
           testfile: tst/github_actions/install.g
           only-needed: ${{ matrix.only-needed }}
       - name: Run DigraphsTestStandard . . .
         uses: gap-actions/run-pkg-tests@v4
         with:
-          coverage: false
           testfile: tst/github_actions/standard.g
           only-needed: ${{ matrix.only-needed }}
       - name: Run DigraphsTestManualExamples . . .
         uses: gap-actions/run-pkg-tests@v4
         with:
-          coverage: false
           testfile: tst/github_actions/examples.g
           only-needed: ${{ matrix.only-needed }}
       - name: Run DigraphsTestExtreme . . .
         uses: gap-actions/run-pkg-tests@v4
         with:
-          coverage: false
           testfile: tst/github_actions/extreme.g
           only-needed: ${{ matrix.only-needed }}
+      - uses: gap-actions/process-coverage@v2
+      - uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}

@@ -28,15 +28,15 @@ jobs:
           - os: ubuntu
             ABI: 32
             pkgs-to-clone: https://github.com/digraphs/graphviz.git
-            pkgs-to-build: io orb datastructures grape
+            pkgs-to-build: io orb datastructures grape profiling
           - os: macos
             ABI: 64
             pkgs-to-clone: https://github.com/digraphs/graphviz.git https://github.com/gap-packages/NautyTracesInterface.git
-            pkgs-to-build: io orb datastructures grape NautyTracesInterface
+            pkgs-to-build: io orb datastructures grape profiling NautyTracesInterface
           - os: windows
             ABI: 64
             pkgs-to-clone: https://github.com/digraphs/graphviz.git https://github.com/gap-packages/NautyTracesInterface.git
-            pkgs-to-build: io orb datastructures grape NautyTracesInterface
+            pkgs-to-build: io orb datastructures grape profiling NautyTracesInterface
 
 
     steps:
@@ -93,21 +93,21 @@ jobs:
       - name: Run DigraphsTestInstall . . .
         uses: gap-actions/run-pkg-tests@v4
         with:
-          coverage: false
           testfile: tst/github_actions/install.g
       - name: Run DigraphsTestStandard . . .
         uses: gap-actions/run-pkg-tests@v4
         with:
-          coverage: false
           testfile: tst/github_actions/standard.g
       - name: Run DigraphsTestManualExamples . . .
         uses: gap-actions/run-pkg-tests@v4
         with:
-          coverage: false
           testfile: tst/github_actions/examples.g
       - name: Run DigraphsTestExtreme . . .
         uses: gap-actions/run-pkg-tests@v4
         if: ${{ runner.os != 'Windows' }}
         with:
-          coverage: false
           testfile: tst/github_actions/extreme.g
+      - uses: gap-actions/process-coverage@v2
+      - uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
