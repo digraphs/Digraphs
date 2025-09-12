@@ -19,7 +19,7 @@ concurrency:
 
 jobs:
   test-unix:
-    name: "GAP ${{ matrix.gap-version }} / ${{ matrix.mode == 'onlyneeded' && 'only needed' || 'default' }} packages"
+    name: "GAP ${{ matrix.gap-version }} / ${{ matrix.mode == 'onlyneeded' && 'only needed' || 'needed+suggested' }} packages"
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
