@@ -8,9 +8,17 @@
 #############################################################################
 ##
 
-if not DIGRAPHS_IsGrapeLoaded() then
-  Add(DIGRAPHS_OmitFromTests, "Graph(");
-fi;
+InstallGlobalFunction(DIGRAPHS_OmitFromTests,
+function()
+  local omit;
+  omit := [];
+  if not DIGRAPHS_IsGrapeLoaded() then
+    Add(omit, " Graph(");
+    Add(omit, "(Graph(");
+    Add(omit, "AsGraph(");
+  fi;
+  return omit;
+end);
 
 _NautyTracesInterfaceVersion :=
   First(PackageInfo("digraphs")[1].Dependencies.SuggestedOtherPackages,
