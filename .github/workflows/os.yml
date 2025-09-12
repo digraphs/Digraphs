@@ -67,7 +67,6 @@ jobs:
           ABI: ${{ matrix.ABI }}
         with:
           gap-version: stable-4.15
-          ABI: ${{ matrix.ABI }}
       - name: "Install necessary GAP package clones . . ."
         shell: bash
         run: |
@@ -84,6 +83,8 @@ jobs:
           ../bin/BuildPackages.sh --strict ${{ matrix.pkgs-to-build }}
       - name: Build Digraphs . . .
         uses: gap-actions/build-pkg@v2
+        env:
+          ABI: ${{ matrix.ABI }}
         with:
           ABI: ${{ matrix.ABI }}
       - name: Install digraphs-lib . . .

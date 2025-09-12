@@ -19,7 +19,7 @@ concurrency:
 
 jobs:
   test-unix:
-    name: GAP ${{ matrix.gap-version }} / ${{ matrix.only-needed && 'only-needed' || 'needed+suggested' }}
+    name: "GAP ${{ matrix.gap-version }} / ${{ matrix.mode == 'onlyneeded' && 'only needed' || 'default' }} packages"
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -31,15 +31,15 @@ jobs:
           - v4.13
           - v4.12
           - v4.11
-        only-needed:
-          - true
-          - false
+        mode:
+          - onlyneeded
+          - default
         include:
-          - only-needed: true
+          - mode: onlyneeded
             pkgs-to-clone: https://github.com/digraphs/graphviz.git
             # Remove asterisks * when we no longer support GAP 4.11
             pkgs-to-build: io* orb* datastructures* profiling*
-          - only-needed: false
+          - mode: default
             pkgs-to-clone: https://github.com/digraphs/graphviz.git https://github.com/gap-packages/NautyTracesInterface.git
             # Remove asterisks * when we no longer support GAP 4.11
             pkgs-to-build: io* orb* datastructures* profiling* grape* NautyTracesInterface
@@ -72,22 +72,22 @@ jobs:
         uses: gap-actions/run-pkg-tests@v4
         with:
           testfile: tst/github_actions/install.g
-          only-needed: ${{ matrix.only-needed }}
+          mode: ${{ matrix.mode }}
       - name: Run DigraphsTestStandard . . .
         uses: gap-actions/run-pkg-tests@v4
         with:
           testfile: tst/github_actions/standard.g
-          only-needed: ${{ matrix.only-needed }}
+          mode: ${{ matrix.mode }}
       - name: Run DigraphsTestManualExamples . . .
         uses: gap-actions/run-pkg-tests@v4
         with:
           testfile: tst/github_actions/examples.g
-          only-needed: ${{ matrix.only-needed }}
+          mode: ${{ matrix.mode }}
       - name: Run DigraphsTestExtreme . . .
         uses: gap-actions/run-pkg-tests@v4
         with:
           testfile: tst/github_actions/extreme.g
-          only-needed: ${{ matrix.only-needed }}
+          mode: ${{ matrix.mode }}
       - uses: gap-actions/process-coverage@v2
       - uses: codecov/codecov-action@v5
         with:
