@@ -73,6 +73,7 @@ jobs:
       - uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: true
 
   all-options:
     name: ${{ matrix.debug }} ${{ matrix.warnings }} ${{ matrix.without-intrinsics }}
@@ -122,3 +123,4 @@ jobs:
       - uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: true
