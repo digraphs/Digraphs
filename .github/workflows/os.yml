@@ -108,7 +108,7 @@ jobs:
         if: ${{ runner.os != 'Windows' }}
         with:
           testfile: tst/github_actions/extreme.g
-      - uses: gap-actions/process-coverage@v2
+      - uses: gap-actions/process-coverage@v3
       - uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}

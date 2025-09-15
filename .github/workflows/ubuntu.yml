@@ -88,7 +88,7 @@ jobs:
         with:
           testfile: tst/github_actions/extreme.g
           mode: ${{ matrix.mode }}
-      - uses: gap-actions/process-coverage@v2
+      - uses: gap-actions/process-coverage@v3
       - uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
