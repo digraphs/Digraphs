@@ -69,7 +69,7 @@ jobs:
           CONFIGFLAGS: ${{ matrix.bliss }} ${{ matrix.planarity }}
       - name: Run Digraphs package's tst/teststandard.g . . .
         uses: gap-actions/run-pkg-tests@v4
-      - uses: gap-actions/process-coverage@v2
+      - uses: gap-actions/process-coverage@v3
       - uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
@@ -119,7 +119,7 @@ jobs:
           CONFIGFLAGS: ${{ matrix.debug }} ${{ matrix.without-intrinsics }} ${{ matrix.warnings && '--enable-compile-warnings WARNING_CXXFLAGS="-Werror" WARNING_CFLAGS="-Werror"' || '' }}
       - name: Run Digraphs package's tst/teststandard.g . . .
         uses: gap-actions/run-pkg-tests@v4
-      - uses: gap-actions/process-coverage@v2
+      - uses: gap-actions/process-coverage@v3
       - uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
