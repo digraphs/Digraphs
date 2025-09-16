@@ -1680,10 +1680,11 @@ end);
 InstallMethod(DigraphPath, "for a digraph by out-neighbours and two pos ints",
 [IsDigraphByOutNeighboursRep, IsPosInt, IsPosInt],
 function(D, u, v)
-  local verts;
+  local N, record, PreOrderFunc, AncestorFunc, nodes, edges, current, parents,
+  flags;
 
-  verts := DigraphVertices(D);
-  if not (u in verts and v in verts) then
+  N := DigraphNrVertices(D);
+  if u > N or v > N then
     ErrorNoReturn("the 2nd and 3rd arguments <u> and <v> must be ",
                   "vertices of the 1st argument <D>,");
   elif IsDigraphEdge(D, u, v) then
@@ -1696,8 +1697,66 @@ function(D, u, v)
       and DigraphConnectedComponents(D).id[u] <>
           DigraphConnectedComponents(D).id[v] then
     return fail;
+  elif OutDegreeOfVertex(D, u) = 0
+      or (HasInNeighbours(D) and InDegreeOfVertex(D, v) = 0) then
+    return fail;
   fi;
-  return DIGRAPH_PATH(OutNeighbours(D), u, v);
+
+  flags := NewDFSConfigLightweight();
+
+  flags.use_edge := true;
+  flags.use_parents := true;
+
+  record := NewDFSRecord(D, flags);
+
+  if u <> v then
+    # if v is reachable from u, then u is an ancestor of v, and so at some
+    # point v will be encountered for the first time, and PreOrderFunc will be
+    # called.
+    PreOrderFunc := function(record, _)
+      if record.current = v then
+        record.stop := true;
+      fi;
+    end;
+    AncestorFunc := fail;
+  else
+    # if u is reachable from u, then u will be encountered as an ancestor of
+    # itself, but PreOrderFunc won't be called (because u has already been
+    # discovered).
+    PreOrderFunc := fail;
+    AncestorFunc := function(record, _)
+      if record.child = v then
+        record.stop := true;
+      fi;
+    end;
+  fi;
+
+  ExecuteDFS(record,
+             fail,
+             u,
+             PreOrderFunc,
+             fail,
+             AncestorFunc,
+             fail);
+  if not record.stop then
+    return fail;
+  fi;
+  nodes := [v];
+  edges := [];
+  current := v;
+  if u = v then
+    # Go one back from v to the last node in the tree
+    current := record.current;
+    Add(nodes, current);
+    Add(edges, Position(OutNeighboursOfVertex(D, current), u));
+  fi;
+  # Follow the path from current (which is a descendant of u) back to u
+  while current <> u do
+    Add(edges, record.edge[current]);
+    current := record.parents[current];
+    Add(nodes, current);
+  od;
+  return [Reversed(nodes), Reversed(edges)];
 end);
 
 InstallMethod(IsDigraphPath, "for a digraph and list",
@@ -1992,17 +2051,48 @@ end);
 InstallMethod(DigraphLongestDistanceFromVertex, "for a digraph and a pos int",
 [IsDigraphByOutNeighboursRep, IsPosInt],
 function(D, v)
-  local dist;
+  local record, PreOrderFunc, PostOrderFunc, data, AncestorFunc, flags;
 
   if not v in DigraphVertices(D) then
     ErrorNoReturn("the 2nd argument <v> must be a vertex of the 1st ",
                   "argument <D>,");
   fi;
-  dist := DIGRAPH_LONGEST_DIST_VERTEX(OutNeighbours(D), v);
-  if dist = -2 then
+
+  flags := NewDFSConfigLightweight();
+  flags.iterative := true;  # revisit DFS must be iterative
+  flags.use_parents := true;
+  flags.use_edge := false;
+  flags.revisit := true;  # If found another edge to an already
+                         # visited and backtracked on node,
+                         # set to unvisited, and visit it
+
+  record := NewDFSRecord(D, flags);
+
+  data := rec(prev := -1, best := 0);
+
+  AncestorFunc := function(record, _)
+    record.stop := true;
+  end;
+
+  PostOrderFunc := function(_, data)
+    data.prev := data.prev - 1;
+  end;
+
+  PreOrderFunc := function(_, data)
+    data.prev := data.prev + 1;
+    if data.prev > data.best then
+      data.best := data.prev;
+    fi;
+  end;
+
+  ExecuteDFS(record, data, v,
+               PreOrderFunc, PostOrderFunc,
+               AncestorFunc, fail);
+  if record.stop then
     return infinity;
   fi;
-  return dist;
+  return data.best;
+
 end);
 
 InstallMethod(DigraphRandomWalk,
@@ -2286,56 +2376,93 @@ end);
 InstallMethod(VerticesReachableFrom, "for a digraph and a vertex",
 [IsDigraph, IsPosInt],
 function(D, root)
-  local N;
-  N := DigraphNrVertices(D);
+  local N, record, conf, data, AncestorFunc, PreOrderFunc;
 
+  N := DigraphNrVertices(D);
   if 0 = root or root > N then
     ErrorNoReturn("the 2nd argument (root) is not a vertex of the 1st ",
                   "argument (a digraph)");
   fi;
 
-  return VerticesReachableFrom(D, [root]);
+  conf := NewDFSConfigLightweight();
+
+  conf.use_edge := true;
+  conf.use_parents := true;
+
+  record := NewDFSRecord(D, conf);
+  data := rec(result := [], root_reached := false);
+
+  PreOrderFunc := function(record, data)
+    if record.current <> root then
+      Add(data.result, record.current);
+    fi;
+  end;
+
+  AncestorFunc := function(record, data)
+    if record.child = root and not data.root_reached then
+      data.root_reached := true;
+      Add(data.result, root);
+    fi;
+  end;
+
+  ExecuteDFS(record,
+             data,
+             root,
+             PreOrderFunc,
+             fail,
+             AncestorFunc,
+             fail);
+  Sort(data.result);
+  return data.result;
 end);
 
 InstallMethod(VerticesReachableFrom, "for a digraph and a list of vertices",
 [IsDigraph, IsList],
 function(D, roots)
-  local N, index, visited, queue_tail, queue,
-  root, element, neighbour, graph_out_neighbors, node_neighbours;
+  local record, flags, N, PreOrderFunc, AncestorFunc,
+  data;
+
+  if (roots = []) then
+    return [];
+  fi;
 
   N := DigraphNrVertices(D);
 
-  for root in roots do
-    if not IsPosInt(N) or 0 = root or root > N then
-      ErrorNoReturn("an element of the 2nd argument ",
-                    "(roots) is not a vertex of the 1st ",
-                    "argument (a digraph)");
+  if (ForAny(roots, v -> v <= 0 or v > N)) then
+    ErrorNoReturn("an element of the 2nd argument ",
+                  "(roots) is not a vertex of the 1st ",
+                  "argument (a digraph)");
+  fi;
+
+  data := rec(result := BlistList([1 .. N], []));
+
+  PreOrderFunc := function(record, data)
+    if record.parents[record.current] <> record.current then
+      data.result[record.current] := true;
     fi;
-  od;
+  end;
 
-  visited := BlistList([1 .. N], []);
+  AncestorFunc := function(record, data)
+    data.result[record.child] := true;
+  end;
 
-  graph_out_neighbors := OutNeighbors(D);
-  queue := EmptyPlist(N);
-  Append(queue, roots);
+  flags := NewDFSConfigLightweight();
+  flags.use_edge := true;
+  flags.use_parents := true;
 
-  queue_tail := Length(roots);
+  flags.forest_specific := roots;
 
-  index := 1;
-  while IsBound(queue[index]) do
-    element := queue[index];
-    node_neighbours := graph_out_neighbors[element];
-    for neighbour in node_neighbours do
-      if not visited[neighbour] then;
-        visited[neighbour] := true;
-        queue_tail := queue_tail + 1;
-        queue[queue_tail] := neighbour;
-      fi;
-    od;
-    index := index + 1;
-  od;
+  record := NewDFSRecord(D, flags);
 
-  return ListBlist([1 .. N], visited);
+  ExecuteDFS(record,
+              data,
+              roots[1],
+              PreOrderFunc,
+              fail,
+              AncestorFunc,
+              fail);
+
+  return ListBlist([1 .. N], data.result);
 end);
 
 InstallMethod(IsOrderIdeal, "for a digraph and a list of vertices",
@@ -2364,9 +2491,10 @@ InstallMethod(IsOrderFilter, "for a digraph and a list of vertices",
 InstallMethod(DominatorTree, "for a digraph and a vertex",
 [IsDigraph, IsPosInt],
 function(D, root)
-  local M, node_to_preorder_num, preorder_num_to_node, parent, index, next,
-  current, succ, prev, n, semi, lastlinked, label, bucket, idom,
-  compress, eval, pred, N, w, y, x, i, v;
+  local M, preorder_num_to_node, PreOrderFunc, record, parents,
+  node_to_preorder_num, semi, lastlinked, label, bucket, idom, compress, eval,
+  pred, N, w, y, x, i, v, flags;
+
   M := DigraphNrVertices(D);
 
   if 0 = root or root > M then
@@ -2374,36 +2502,32 @@ function(D, root)
                   "argument (a digraph)");
   fi;
 
-  node_to_preorder_num := [];
-  node_to_preorder_num[root] := 1;
-  preorder_num_to_node := [root];
+  preorder_num_to_node := [];
 
-  parent := [];
-  parent[root] := fail;
+  PreOrderFunc := function(record, data)
+    Add(data, record.current);
+  end;
 
-  index := ListWithIdenticalEntries(M, 1);
+  flags := NewDFSConfigLightweight();
+  flags.use_preorder := true;
+  flags.use_parents := true;
+  flags.use_edge := true;
 
-  next := 2;
-  current := root;
-  succ := OutNeighbours(D);
-  repeat
-    prev := current;
-    for i in [index[current] .. Length(succ[current])] do
-      n := succ[current][i];
-      if not IsBound(node_to_preorder_num[n]) then
-        Add(preorder_num_to_node, n);
-        parent[n] := current;
-        index[current] := i + 1;
-        node_to_preorder_num[n] := next;
-        next := next + 1;
-        current := n;
-        break;
-      fi;
-    od;
-    if prev = current then
-      current := parent[current];
-    fi;
-  until current = fail;
+  record := NewDFSRecord(D, flags);
+
+  ExecuteDFS(record,
+             preorder_num_to_node,
+             root,
+             PreOrderFunc,
+             fail,
+             fail,
+             fail);
+
+  parents := record.parents;
+  node_to_preorder_num := record.preorder;
+
+  parents[root] := -1;
+
   semi := [1 .. M];
   lastlinked := M + 1;
   label := [];
@@ -2413,7 +2537,7 @@ function(D, root)
 
   compress := function(v)
     local u;
-    u := parent[v];
+    u := parents[v];
     if u <> fail and lastlinked <= M and node_to_preorder_num[u] >=
         node_to_preorder_num[lastlinked] then
       compress(u);
@@ -2421,7 +2545,7 @@ function(D, root)
           < node_to_preorder_num[semi[label[v]]] then
         label[v] := label[u];
       fi;
-      parent[v] := parent[u];
+      parents[v] := parents[u];
     fi;
   end;
 
@@ -2441,7 +2565,8 @@ function(D, root)
     w := preorder_num_to_node[i];
     for v in bucket[w] do
       y := eval(v);
-      if node_to_preorder_num[semi[y]] < node_to_preorder_num[w] then
+      if node_to_preorder_num[semi[y]] <
+          node_to_preorder_num[w] then
         idom[v] := y;
       else
         idom[v] := w;
@@ -2449,15 +2574,16 @@ function(D, root)
     od;
     bucket[w] := [];
     for v in pred[w] do
-      if IsBound(node_to_preorder_num[v]) then
+      if node_to_preorder_num[v] <> -1 then
         x := eval(v);
-        if node_to_preorder_num[semi[x]] < node_to_preorder_num[semi[w]] then
+        if node_to_preorder_num[semi[x]] <
+            node_to_preorder_num[semi[w]] then
           semi[w] := semi[x];
         fi;
       fi;
     od;
-    if parent[w] = semi[w] then
-      idom[w] := parent[w];
+    if parents[w] = semi[w] then
+      idom[w] := parents[w];
     else
       Add(bucket[semi[w]], w);
     fi;
@@ -2710,4 +2836,172 @@ function(D, n)
     fi;
   od;
   return kings;
+end);
+
+#############################################################################
+# 11. DFS
+#############################################################################
+
+DIGRAPHS_DFSRecNames := function()
+  return ["stop", "graph", "child", "parents", "preorder", "postorder",
+               "current", "edge"];
+  end;
+
+DIGRAPHS_DFSFlagNames := function()
+  return ["iterative", "forest", "revisit", "use_parents", "use_edge",
+                   "use_postorder", "use_preorder", "forest_specific"];
+  end;
+
+DIGRAPHS_DFSError := function()
+  ErrorNoReturn("the 1st argument <record> must be created with ",
+                "NewDFSRecord,");
+end;
+
+DIGRAPHS_DFSFlagsBoolCheck := function(flags, field)
+  if not IsBool(flags.(field)) then
+    ErrorNoReturn("the 2nd argument <conf> (a record) should have a Bool ",
+                  "value for field <conf>,", field);
+  fi;
+end;
+
+DIGRAPHS_DFS_CheckFlags := function(flags, graph)
+  # Already confirmed expected fields are bound
+  local bool_flag;
+
+  for bool_flag in ["iterative", "forest", "revisit", "use_parents", "use_edge",
+                    "use_postorder", "use_preorder"] do
+      DIGRAPHS_DFSFlagsBoolCheck(flags, bool_flag);
+  od;
+
+  if flags.forest_specific <> fail and
+      (ForAny(flags.forest_specific, n -> (not IsPosInt(n)) or n < 0
+      or n > DigraphNrVertices(graph)) or
+      (not IsDenseList(flags.forest_specific))) then
+      ErrorNoReturn("the 2nd argument <conf> (a record) must have a value for ",
+                    "<conf>.forest_specific that is either fail or a dense ",
+                    "list of vertices from the second argument <graph>.");
+  fi;
+end;
+
+DIGRAPHS_ExecuteDFSCheck := function(record)
+  local record_names, config_names;
+
+  record_names := DIGRAPHS_DFSRecNames();
+  config_names := DIGRAPHS_DFSFlagNames();
+
+  if not IsRecord(record) then
+    DIGRAPHS_DFSError();
+  elif ForAny(record_names, n -> not IsBound(record.(n))) then
+    DIGRAPHS_DFSError();
+  elif ForAny(config_names, n -> not IsBound(record.config.(n))) then
+      DIGRAPHS_DFSError();
+  elif record.config.forest_specific <> fail and
+       not IsDenseList(record.config.forest_specific) then
+      ErrorNoReturn("the 1st argument <record> has a value of",
+                    " <record>.config.forest_specific",
+                    " that is not fail or a dense list,");
+  elif ForAny(["parents", "preorder", "postorder", "edge"],
+              n -> record.(n) <> fail and not IsDenseList(record.(n))) then
+    DIGRAPHS_DFSError();
+  fi;
+end;
+
+InstallMethod(NewDFSRecord,
+"for a digraph", [IsDigraph],
+Graph -> NewDFSRecord(Graph, NewDFSConfig()));
+
+InstallMethod(NewDFSRecord,
+"for a digraph and a record", [IsDigraph, IsRecord],
+function(graph, conf)
+  local record, config_names, N, use_var, list_name, var_pair;
+
+  N := DigraphNrVertices(graph);
+
+  config_names := DIGRAPHS_DFSFlagNames();
+
+  record := rec();
+
+  if ForAny(config_names, n -> not IsBound(conf.(n))) then
+    DIGRAPHS_DFSError();
+  fi;
+
+  DIGRAPHS_DFS_CheckFlags(conf, graph);
+
+  record.graph := graph;
+  record.child := -1;
+  record.current := -1;
+  record.stop := false;
+
+  for var_pair in [[conf.use_preorder, "preorder"],
+                              [conf.use_postorder, "postorder"],
+                              [conf.use_parents, "parents"],
+                              [conf.use_edge, "edge"]] do
+    use_var := var_pair[1];
+    list_name := var_pair[2];
+
+    if use_var then
+      record.(list_name) := ListWithIdenticalEntries(N, -1);
+    else
+      record.(list_name) := fail;
+    fi;
+
+    continue;
+  od;
+
+  record.config := conf;
+  return record;
+end);
+
+# Default Configuration, recursive with all data provided in the record
+# (preorder, postorder, parents, edges)
+
+InstallMethod(NewDFSConfig,
+"", [],
+function()
+  local config;
+  config := rec();
+  config.forest := false;          # Visit all vertices (connected components)
+  config.forest_specific := fail;  # Visit specific vertices
+  config.revisit := false;         # Use for revisiting nodes (requires iter)
+  config.iterative := false;
+  config.use_edge := true;         # Whether these record fields are necessary
+  config.use_postorder := true;
+  config.use_preorder := true;
+  config.use_parents := true;
+  return config;
+end);
+
+# Minimal Memory DFS Configuration (<DFSRecord>.config value)
+
+InstallMethod(NewDFSConfigLightweight,
+"", [],
+function()
+  local config;
+  config := NewDFSConfig();
+  config.iterative := false;
+  config.use_postorder := false;
+  config.use_preorder := false;
+  config.use_parents := true;  # Must be true to use recursive dfs
+  config.use_edge := true;
+  return config;
+end);
+
+# * PreOrderFunc is called with (record, data) when a vertex is popped from the
+#   stack for the first time.
+# * PostOrderFunc is called with (record, data) when all of record.child's
+#   children have been visited (i.e. when we backtrack from record.child to
+#   record.parent[record.child]).
+# * AncestorFunc is called with (record, data) when (record.current,
+#   record.child) is an edge and record.child is an ancestor of record.current.
+# * CrossFunc is called with (record, data) when (record.current, record.child)
+#   is an edge, the preorder value of record.current is greater than the
+#   preorder value of child, and record.current and child are unrelated
+#   by ancestry.
+
+InstallGlobalFunction(ExecuteDFS,
+function(record, data, start, PreOrderFunc, PostOrderFunc, AncestorFunc,
+         CrossFunc)
+  DIGRAPHS_ExecuteDFSCheck(record);
+  ExecuteDFS_C(record, data, start, PreOrderFunc, PostOrderFunc,
+               AncestorFunc, CrossFunc);
 end);

@@ -28,8 +28,8 @@ InstallGlobalFunction(OutNeighbors, OutNeighbours);
 
 BindGlobal("DIGRAPHS_ArticulationPointsBridgesStrongOrientation",
 function(D)
-  local N, copy, articulation_points, bridges, orientation, nbs, counter, pre,
-        low, nr_children, stack, u, v, i, w, connected;
+  local N, copy, PostOrderFunc, PreOrderFunc, AncestorCrossFunc, data, record,
+  connected, parent, flags;
 
   N := DigraphNrVertices(D);
 
@@ -41,118 +41,120 @@ function(D)
     # the graph disconnected), no bridges, strong orientation (since
     # the digraph with 0 nodes is strongly connected).
     return [true, [], [], D];
-  elif not IsSymmetricDigraph(D) then
-    copy := DigraphSymmetricClosure(DigraphMutableCopyIfMutable(D));
+  elif not IsSymmetricDigraph(D) or IsMultiDigraph(D) then
+    copy := DigraphSymmetricClosure(DigraphMutableCopy(D));
+    copy := DigraphRemoveAllMultipleEdges(copy);
     MakeImmutable(copy);
+    # No forward edges or cross edges now exist
   else
     copy := D;
   fi;
 
+  flags := NewDFSConfigLightweight();
+  flags.use_preorder := true;
+  flags.use_edge := true;
+  flags.use_parents := true;
+
+  PostOrderFunc := function(record, data)
+    local child, current;
+    # Backtracking on edge (current -> child)
+    child := record.child;
+    current := record.parents[child];
+    # record.preorder[child] > record.preorder[current] then
+
+    if current <> child then  # If not at the root node
+      if current <> 1 and data.low[child] >= record.preorder[current] then
+        AddSet(data.articulation_points, current);
+      fi;
+      if data.low[child] = record.preorder[child] then
+        Add(data.bridges, [current, child]);
+      fi;
+      if data.low[child] < data.low[current] then
+        data.low[current] := data.low[child];
+      fi;
+    fi;
+  end;
+
+  PreOrderFunc := function(record, data)
+    local current, parents;
+    current := record.current;
+    if current <> 1 then
+      parent := record.parents[current];
+      if parent = 1 then
+        data.nr_children := data.nr_children + 1;
+      fi;
+      data.orientation[parent][current] := true;
+    fi;
+    data.counter := data.counter + 1;
+    data.low[current] := data.counter;
+  end;
+
+  AncestorCrossFunc := function(record, data)
+    local current, child, parent;
+    current := record.current;
+    child := record.child;
+    parent := record.parents[current];
+    # current -> child is a back edge or cross edge
+    if child <> parent and record.preorder[child] < data.low[current] then
+      data.low[current] := record.preorder[child];
+    fi;
+    data.orientation[current][child] := not data.orientation[child][current];
+  end;
+
+  data := rec();
+
   # outputs
-  articulation_points := [];
-  bridges             := [];
-  orientation         := List([1 .. N], x -> BlistList([1 .. N], []));
-
-  # Get out-neighbours once, to avoid repeated copying for mutable digraphs.
-  nbs := OutNeighbours(copy);
-
-  # number of nodes encountered in the search so far
-  counter := 0;
-
-  # the order in which the nodes are visited, -1 indicates "not yet visited".
-  pre := ListWithIdenticalEntries(N, -1);
+  data.articulation_points := [];
+  data.bridges             := [];
+  data.orientation         := List([1 .. N], x -> BlistList([1 .. N], []));
 
   # low[i] is the lowest value in pre currently reachable from node i.
-  low := [];
+  data.low := [];
+
+  # number of nodes encountered in the search so far
+  data.counter := 0;
 
   # nr_children of node 1, for articulation points the root node (1) is an
   # articulation point if and only if it has at least 2 children.
-  nr_children := 0;
+  data.nr_children := 0;
 
-  stack := Stack();
-  u := 1;
-  v := 1;
-  i := 0;
-
-  repeat
-    if pre[v] <> -1 then
-      # backtracking
-      i := Pop(stack);
-      v := Pop(stack);
-      u := Pop(stack);
-      w := nbs[v][i];
-
-      if v <> 1 and low[w] >= pre[v] then
-        AddSet(articulation_points, v);
-      fi;
-      if low[w] = pre[w] then
-        Add(bridges, [v, w]);
-      fi;
-      if low[w] < low[v] then
-        low[v] := low[w];
-      fi;
-    else
-      # diving - part 1
-      counter := counter + 1;
-      pre[v]  := counter;
-      low[v]  := counter;
-    fi;
-    i := PositionProperty(nbs[v], w -> w <> v, i);
-    while i <> fail do
-      w := nbs[v][i];
-      if pre[w] <> -1 then
-        # v -> w is a back edge
-        if w <> u and pre[w] < low[v] then
-          low[v] := pre[w];
-        fi;
-        orientation[v][w] := not orientation[w][v];
-        i := PositionProperty(nbs[v], w -> w <> v, i);
-      else
-        # diving - part 2
-        if v = 1 then
-          nr_children := nr_children + 1;
-        fi;
-        orientation[v][w] := true;
-        Push(stack, u);
-        Push(stack, v);
-        Push(stack, i);
-        u := v;
-        v := w;
-        i := 0;
-        break;
-      fi;
-    od;
-  until Size(stack) = 0;
-
-  if counter = DigraphNrVertices(D) then
+  record := NewDFSRecord(copy, flags);
+  ExecuteDFS(record,
+             data,
+             1,
+             PreOrderFunc,
+             PostOrderFunc,
+             AncestorCrossFunc,
+             AncestorCrossFunc);
+  if data.counter = DigraphNrVertices(D) then
     connected := true;
-    if nr_children > 1 then
+    if data.nr_children > 1 then
       # The `AddSet` is not really needed, and could just be `Add`, since 1
       # should not already be in articulation_points. But let's use AddSet
       # to keep the output sorted.
-      AddSet(articulation_points, 1);
+      AddSet(data.articulation_points, 1);
     fi;
-    if not IsEmpty(bridges) then
-      orientation := fail;
+    if not IsEmpty(data.bridges) then
+      data.orientation := fail;
     else
-      orientation := DigraphByAdjacencyMatrix(DigraphMutabilityFilter(D),
-                                              orientation);
+      data.orientation := DigraphByAdjacencyMatrix(DigraphMutabilityFilter(D),
+                                                    data.orientation);
     fi;
   else
-    connected           := false;
-    articulation_points := [];
-    bridges             := [];
-    orientation         := fail;
+    connected                := false;
+    data.articulation_points := [];
+    data.bridges             := [];
+    data.orientation         := fail;
   fi;
   if IsImmutableDigraph(D) then
     SetIsConnectedDigraph(D, connected);
-    SetArticulationPoints(D, articulation_points);
-    SetBridges(D, bridges);
+    SetArticulationPoints(D, data.articulation_points);
+    SetBridges(D, data.bridges);
     if IsSymmetricDigraph(D) then
-      SetStrongOrientationAttr(D, orientation);
+      SetStrongOrientationAttr(D, data.orientation);
     fi;
   fi;
-  return [connected, articulation_points, bridges, orientation];
+  return [connected, data.articulation_points, data.bridges, data.orientation];
 end);
 
 InstallMethod(ArticulationPoints, "for a digraph by out-neighbours",
@@ -1067,7 +1069,47 @@ end);
 
 InstallMethod(DigraphTopologicalSort, "for a digraph by out-neighbours",
 [IsDigraphByOutNeighboursRep],
-D -> DIGRAPH_TOPO_SORT(OutNeighbours(D)));
+function(D)
+  local N, record, count, out, PostOrderFunc, AncestorFunc, flags;
+
+  N := DigraphNrVertices(D);
+  if N = 0 then
+    return [];
+  fi;
+
+  flags := NewDFSConfigLightweight();
+  flags.use_parents := true;
+  flags.use_edge := true;
+
+  record := NewDFSRecord(D, flags);
+
+  count := 0;
+  out := ListWithIdenticalEntries(N, -1);
+  PostOrderFunc := function(record, _)
+    count := count + 1;
+    out[count] := record.child;
+  end;
+  AncestorFunc := function(record, _)
+    if record.current <> record.child then
+      record.stop := true;
+    fi;
+  end;
+
+  record.config.forest := true;
+
+  ExecuteDFS(record,
+             fail,
+             1,
+             fail,
+             PostOrderFunc,
+             AncestorFunc,
+             fail);
+  if record.stop then
+    return fail;
+  fi;
+
+  return out;
+end);
 
 InstallMethod(DigraphStronglyConnectedComponents,
 "for a digraph by out-neighbours",
@@ -3000,37 +3042,53 @@ InstallMethod(DigraphReflexiveTransitiveReductionAttr,
 "for an immutable digraph",
 [IsImmutableDigraph], DigraphReflexiveTransitiveReduction);
 
-InstallMethod(UndirectedSpanningForest,
-"for a mutable digraph by out-neighbours",
-[IsMutableDigraph and IsDigraphByOutNeighboursRep],
+InstallMethod(UndirectedSpanningForest, "for a digraph by out-neighbours",
+[IsDigraphByOutNeighboursRep],
 function(D)
-  if DigraphHasNoVertices(D) then
+  local C, record, conf, data, PreOrderFunc;
+  if DigraphNrVertices(D) = 0 then
     return fail;
   fi;
-  MaximalSymmetricSubdigraph(D);
-  D!.OutNeighbours := DIGRAPH_SYMMETRIC_SPANNING_FOREST(D!.OutNeighbours);
-  ClearDigraphEdgeLabels(D);
-  return D;
+  C := MaximalSymmetricSubdigraph(D);
+  data := List(DigraphVertices(C), x -> []);
+
+  PreOrderFunc := function(record, data)
+    # If this is not the root
+    if record.parents[record.current] <> record.current then
+      Add(data[record.parents[record.current]], record.current);
+      Add(data[record.current], record.parents[record.current]);
+    fi;
+  end;
+
+  conf := NewDFSConfigLightweight();
+  conf.use_parents := true;
+  conf.use_edge := true;
+  conf.iterative := false;
+  conf.forest := true;
+
+  record := NewDFSRecord(C, conf);
+
+  ExecuteDFS(record, data, 1, PreOrderFunc, fail,
+               fail, fail);
+
+  if IsMutableDigraph(D) then
+    D!.OutNeighbours := data;
+    ClearDigraphEdgeLabels(D);
+    return D;
+  fi;
+  C := ConvertToImmutableDigraphNC(data);
+  SetUndirectedSpanningForestAttr(D, C);
+  SetIsUndirectedForest(C, true);
+  SetIsMultiDigraph(C, false);
+  SetDigraphHasLoops(C, false);
+  return C;
 end);
 
 InstallMethod(UndirectedSpanningForest, "for an immutable digraph",
 [IsImmutableDigraph], UndirectedSpanningForestAttr);
 
 InstallMethod(UndirectedSpanningForestAttr, "for an immutable digraph",
-[IsImmutableDigraph and IsDigraphByOutNeighboursRep],
-function(D)
-  local C;
-  if DigraphHasNoVertices(D) then
-    return fail;
-  fi;
-  C := MaximalSymmetricSubdigraph(D);
-  C := DIGRAPH_SYMMETRIC_SPANNING_FOREST(C!.OutNeighbours);
-  C := ConvertToImmutableDigraphNC(C);
-  SetIsUndirectedForest(C, true);
-  SetIsMultiDigraph(C, false);
-  SetDigraphHasLoops(C, false);
-  return C;
-end);
+[IsImmutableDigraph and IsDigraphByOutNeighboursRep], UndirectedSpanningForest);
 
 InstallMethod(UndirectedSpanningTree, "for a mutable digraph",
 [IsMutableDigraph],
