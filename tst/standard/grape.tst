@@ -7,6 +7,9 @@
 ##
 #############################################################################
 ##
+
+#@local D, adjacencies, digraph, gens, gr, gr1, gr2, gr3, group, isGraph, names
+#@local order, representatives, schreierVector
 gap> START_TEST("Digraphs package: standard/grape.tst");
 gap> LoadPackage("digraphs", false);;
 

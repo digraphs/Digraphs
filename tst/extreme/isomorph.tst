@@ -7,6 +7,8 @@
 ##
 #############################################################################
 ##
+
+#@local G, H, gr, gr1, gr2, graph5, group5, p, treeAuts, trees
 gap> START_TEST("Digraphs package: extreme/isomorph.tst");
 gap> LoadPackage("digraphs", false);;
 

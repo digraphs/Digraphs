@@ -8,6 +8,8 @@
 ##
 #############################################################################
 ##
+
+#@local d, gr, gr2, i, layers, layers1, layers2, list, out
 gap> START_TEST("Digraphs package: extreme/oper.tst");
 gap> LoadPackage("digraphs", false);;
 

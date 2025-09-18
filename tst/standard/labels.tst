@@ -7,6 +7,8 @@
 ##
 #############################################################################
 ##
+
+#@local A, D, gr, l, x
 gap> START_TEST("Digraphs package: standard/labels.tst");
 gap> LoadPackage("digraphs", false);;
 

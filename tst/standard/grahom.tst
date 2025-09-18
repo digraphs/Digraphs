@@ -7,6 +7,10 @@
 ##
 #############################################################################
 ##
+
+#@local D, D1, D2, DD, G, H, N5, edges, epis, f, found, gens, gr, gr1, gr2
+#@local homos, hook, mat, mono, monos, order_func, p, parts, ran, s, src, t, tt
+#@local x
 gap> START_TEST("Digraphs package: standard/grahom.tst");
 gap> LoadPackage("digraphs", false);;
 
@@ -2908,7 +2912,6 @@ gap> Unbind(edges);
 gap> Unbind(epis);
 gap> Unbind(f);
 gap> Unbind(found);
-gap> Unbind(func);
 gap> Unbind(gens);
 gap> Unbind(gr);
 gap> Unbind(gr1);

@@ -7,6 +7,10 @@
 ##
 #############################################################################
 ##
+
+#@local C, D
+#@local adj, comps, d, distances, edges, f, func, gr, gr1, gr2, i, id, out, p
+#@local parents, r, str, topo
 gap> START_TEST("Digraphs package: testinstall.tst");
 gap> LoadPackage("digraphs", false);;
 

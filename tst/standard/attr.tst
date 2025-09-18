@@ -8,6 +8,15 @@
 ##
 #############################################################################
 ##
+
+#@local A, B, D, D1, D2
+#@local G, H, M, M1, P, S, a, adj, adj1, adj2, adjacencies, b
+#@local circuit, complete15, comps, cycle12, e, edgeCut, erev, filename, forest
+#@local g, gNew, gr, gr1, gr2, gr3, gr4, grid, group, i, id, isGraph, j, mat
+#@local multiple, names, nbs, nonPlanar, order, planar, probs, proj, r, rd
+#@local reflextrans, reflextrans1, reflextrans2, representatives, rev, rgr
+#@local rotationSy, rotationSystem, scc, schreierVector, sink, soccer, str
+#@local temp, topo, trans, trans1, trans2, tree, wcc, x, y, z
 gap> START_TEST("Digraphs package: standard/attr.tst");
 gap> LoadPackage("digraphs", false);;
 

@@ -7,6 +7,8 @@
 ##
 #############################################################################
 ##
+
+#@local circs, g, gr, str
 gap> START_TEST("Digraphs package: extreme/attr.tst");
 gap> LoadPackage("digraphs", false);;
 

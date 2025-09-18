@@ -9,6 +9,7 @@
 #############################################################################
 ##
 
+#@local D, d, distances, edges, gr, m, parents, r, tree
 gap> START_TEST("Digraphs package: standard/weights.tst");
 gap> LoadPackage("digraphs", false);;
 

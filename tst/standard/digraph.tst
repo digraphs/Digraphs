@@ -7,6 +7,17 @@
 ##
 #############################################################################
 ##
+
+#@local D, D1, D2
+#@local G, G1, G2, G3, G4, G5, S, T, U, adj
+#@local adjacencies, b, bin, c, c1, c2, d, di, digraph, divides, elms, eq
+#@local eq_distr, eq_new, error, f, failed, failed_names, failed_values, foo, g
+#@local gr, gr1, gr2, gr3, gr4, gr5, graph, graph1, graph2, grnc, group, h
+#@local hom13, hom21, hom23, hom31, hom41, hom42, hom52, hom53, i, im, inn
+#@local isGraph, iso, iso_distr, iso_new, j, k, list, m, main, mat, n, name
+#@local name2, names, new, order, p, prop, properties, r, r1, r2, record, rel1
+#@local rel2, rel3, representatives, s, schreierVector, sgn, temp, test, v, x
+#@local xxx, y
 gap> START_TEST("Digraphs package: standard/digraph.tst");
 gap> LoadPackage("digraphs", false);;
 

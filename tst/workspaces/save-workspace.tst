@@ -16,6 +16,8 @@
 #############################################################################
 
 # Set up testing environment
+
+#@local gr
 gap> START_TEST("Digraphs package: workspaces/save-workspace.tst");
 gap> SetInfoLevel(InfoDebug, 0);
 gap> LoadPackage("digraphs", false);;

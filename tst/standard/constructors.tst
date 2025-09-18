@@ -7,6 +7,8 @@
 ##
 #############################################################################
 ##
+
+#@local adj, bddigraph, bdgroup, ddigraph, digraph, gr, gr2, gr3, group, n, out
 gap> START_TEST("Digraphs package: standard/constructors.tst");
 gap> LoadPackage("digraphs", false);;
 

@@ -7,6 +7,9 @@
 ##
 #############################################################################
 ##
+
+#@local D, G, H, S, adj, endos1, endos2, func, gens, gr, gr1, gr2, graph5
+#@local homos, i, n, parts, str, t, tt, user_param
 gap> START_TEST("Digraphs package: extreme/grahom.tst");
 gap> LoadPackage("digraphs", false);;
 
