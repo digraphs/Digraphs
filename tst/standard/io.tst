@@ -464,21 +464,24 @@ gap> gr := TCodeDecoder("12 3 0 10 6 2 8 8");
 <immutable digraph with 12 vertices, 3 edges>
 gap> OutNeighbours(gr);
 [ [ 11 ], [  ], [  ], [  ], [  ], [  ], [ 3 ], [  ], [ 9 ], [  ], [  ], [  ] ]
-gap> gr := TCodeDecoder(3);
+gap> TCodeDecoder(3);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `TCodeDecoder' on 1 arguments
-gap> gr := TCodeDecoder("gr 5");
+gap> TCodeDecoder("gr 5");
 Error, the 2nd argument <s> must be a string of at least two space-separated n\
 on-negative integers,
-gap> gr := TCodeDecoder("10");
+gap> TCodeDecoder("10");
 Error, the 2nd argument <s> must be a string of at least two space-separated n\
 on-negative integers,
-gap> gr := TCodeDecoder("2 2 0 4 1 2");
+gap> TCodeDecoder("-1 5");
+Error, the 2nd argument <s> must be a string of at least two space-separated n\
+on-negative integers,
+gap> TCodeDecoder("2 2 0 4 1 2");
 Error, all integers in the 2nd argument <s>, except for the first two, must be\
  strictly less than the first integer, which is 2,
-gap> gr := TCodeDecoder("3 2 0 2");
+gap> TCodeDecoder("3 2 0 2");
 Error, the 2nd argument <s> must be a string of length at least 6
-gap> gr := TCodeDecoderNC("100 5 0 12 48 49 99 1 54 49 49 49");
+gap> TCodeDecoderNC("100 5 0 12 48 49 99 1 54 49 49 49");
 <immutable digraph with 100 vertices, 5 edges>
 
 #  Empty strings should not create graphs
