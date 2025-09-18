@@ -7,6 +7,8 @@
 ##
 #############################################################################
 ##
+
+#@local D
 gap> START_TEST("Digraphs package: extreme/cliques.tst");
 gap> LoadPackage("digraphs", false);;
 

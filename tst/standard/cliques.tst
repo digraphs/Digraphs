@@ -7,6 +7,8 @@
 ##
 #############################################################################
 ##
+
+#@local D, c, cliques, f, gr, lim, out
 gap> START_TEST("Digraphs package: standard/cliques.tst");
 gap> LoadPackage("digraphs", false);;
 

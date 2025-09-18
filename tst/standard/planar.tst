@@ -7,6 +7,8 @@
 ##
 #############################################################################
 ##
+
+#@local D, dualD
 gap> START_TEST("Digraphs package: standard/planar.tst");
 gap> LoadPackage("digraphs", false);;
 

@@ -7,6 +7,9 @@
 ##
 #############################################################################
 ##
+
+#@local D, G, canon, e_cols, ec, gr, gr1, gr2, gr3
+#@local gr4, gr5, gr6, gr7, i, iso, j, m, n, nauty, new, p, t, v_cols, vc
 gap> START_TEST("Digraphs package: standard/isomorph.tst");
 gap> LoadPackage("digraphs", false);;
 
@@ -1003,7 +1006,6 @@ gap> Number(FullTransformationMonoid(5),
 gap> Unbind(D);
 gap> Unbind(G);
 gap> Unbind(canon);
-gap> Unbind(cols);
 gap> Unbind(ec);
 gap> Unbind(gr);
 gap> Unbind(gr1);

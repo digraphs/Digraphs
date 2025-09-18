@@ -16,6 +16,7 @@
 #############################################################################
 
 # Set up testing environment
+
 gap> START_TEST("Digraphs package: workspaces/load-workspace.tst");
 gap> DIGRAPHS_StartTest();
 

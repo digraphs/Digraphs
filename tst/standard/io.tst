@@ -7,6 +7,10 @@
 ##
 #############################################################################
 ##
+
+#@local D, D2
+#@local badfilename, f, file, filename, files, fname, gr, gr2, it, l, list
+#@local list2, mult, newfilename, oldOnBreak, rdgr, read, str, x
 gap> START_TEST("Digraphs package: standard/io.tst");
 gap> LoadPackage("digraphs", false);;
 

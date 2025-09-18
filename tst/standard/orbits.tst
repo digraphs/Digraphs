@@ -7,6 +7,8 @@
 ##
 #############################################################################
 ##
+
+#@local gr
 gap> START_TEST("Digraphs package: standard/orbits.tst");
 gap> LoadPackage("digraphs", false);;
 

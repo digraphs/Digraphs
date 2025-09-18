@@ -7,6 +7,8 @@
 ##
 #############################################################################
 ##
+
+#@local D, G8_3, gr, grrt
 gap> START_TEST("Digraphs package: standard/examples.tst");
 gap> LoadPackage("digraphs", false);;
 

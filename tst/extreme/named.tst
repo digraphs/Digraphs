@@ -11,6 +11,8 @@
 ## database against known values. Attributes tested are largely from House
 ## of Graphs at hog.grinvin.org.
 ##
+
+#@local D, failed, name, names, prop, properties, r
 gap> START_TEST("Digraphs package: extreme/named.tst");
 gap> LoadPackage("digraphs", false);;
 
