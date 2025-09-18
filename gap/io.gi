@@ -1437,8 +1437,9 @@ function(func, s)
   Apply(s, Int);
 
   if not ForAll([3 .. Length(s)], i -> s[i] < s[1]) then
-    ErrorNoReturn("the 2nd argument <s> must be a string consisting of ",
-                  "integers in the range [0 .. ", s[1], "],");
+    ErrorNoReturn("all integers in the 2nd argument <s>, ",
+                  "except for the first two, must be strictly less than ",
+                  "the first integer, which is ", s[1], ",");
   elif Length(s) < 2 * s[2] + 2 then
     ErrorNoReturn("the 2nd argument <s> must be a string of length ",
                   "at least ", 2 * s[2] + 2);
