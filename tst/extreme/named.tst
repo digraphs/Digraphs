@@ -42,15 +42,6 @@ gap> for name in names do
 gap> failed;
 [  ]
 
-#  DIGRAPHS_UnbindVariables
-gap> Unbind(D);
-gap> Unbind(failed);
-gap> Unbind(name);
-gap> Unbind(names);
-gap> Unbind(prop);
-gap> Unbind(properties);
-gap> Unbind(r);
-
 #
 gap> DIGRAPHS_StopTest();
 gap> STOP_TEST("Digraphs package: extreme/named.tst", 0);

@@ -178,19 +178,6 @@ gap> gr := ChainDigraph(4);
 gap> LineUndirectedDigraph(gr);
 Error, the argument <D> must be a symmetric digraph,
 
-#  DIGRAPHS_UnbindVariables
-gap> Unbind(adj);
-gap> Unbind(bddigraph);
-gap> Unbind(bdgroup);
-gap> Unbind(ddigraph);
-gap> Unbind(digraph);
-gap> Unbind(gr);
-gap> Unbind(gr2);
-gap> Unbind(gr3);
-gap> Unbind(group);
-gap> Unbind(n);
-gap> Unbind(out);
-
 #
 gap> DIGRAPHS_StopTest();
 gap> STOP_TEST("Digraphs package: standard/constructors.tst", 0);

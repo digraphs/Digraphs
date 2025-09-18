@@ -554,26 +554,6 @@ fail
 # gap> D := Digraph(D, {x, y} -> x <> y and DigraphEmbedding(x, y) <> fail);
 # <immutable digraph with 393 vertices, 15253 edges>
 
-#  DIGRAPHS_UnbindVariables
-gap> Unbind(D);
-gap> Unbind(G);
-gap> Unbind(H);
-gap> Unbind(S);
-gap> Unbind(adj);
-gap> Unbind(func);
-gap> Unbind(gens);
-gap> Unbind(gr);
-gap> Unbind(gr1);
-gap> Unbind(gr2);
-gap> Unbind(graph5);
-gap> Unbind(homos);
-gap> Unbind(i);
-gap> Unbind(n);
-gap> Unbind(parts);
-gap> Unbind(str);
-gap> Unbind(t);
-gap> Unbind(tt);
-
 #
 gap> DIGRAPHS_StopTest();
 gap> STOP_TEST("Digraphs package: extreme/grahom.tst", 0);

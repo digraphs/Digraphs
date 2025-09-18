@@ -28,7 +28,7 @@ gap> DIGRAPHS_StartTest();
 ##  that they are saved to disk correctly.  Do not reuse variable names.
 #############################################################################
 
-#T# Temporary
+# Temporary
 gap> gr := Digraph([[1]]);
 <immutable digraph with 1 vertex, 1 edge>
 
@@ -40,9 +40,6 @@ gap> gr := Digraph([[1]]);
 gap> SaveWorkspace(Concatenation(DIGRAPHS_Dir(),
 >                                "/tst/workspaces/test-output.w"));
 true
-
-# DIGRAPHS_UnbindVariables
-gap> Unbind(gr);
 
 #
 gap> STOP_TEST("Digraphs package: workspaces/save-workspace.tst", 0);

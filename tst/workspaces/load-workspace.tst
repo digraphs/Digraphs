@@ -25,16 +25,13 @@ gap> DIGRAPHS_StartTest();
 ##  variable names.
 #############################################################################
 
-#T# Temporary
+# Temporary
 gap> DigraphNrVertices(gr);
 1
 
 #############################################################################
 ##  Tests end here
 #############################################################################
-
-# DIGRAPHS_UnbindVariables
-gap> Unbind(gr);
 
 #
 gap> STOP_TEST("Digraphs package: workspaces/load-workspace.tst", 0);

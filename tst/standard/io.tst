@@ -1074,28 +1074,6 @@ true
 gap> OnBreak = oldOnBreak;
 true
 
-#  DIGRAPHS_UnbindVariables
-gap> Unbind(D);
-gap> Unbind(D2);
-gap> Unbind(badfilename);
-gap> Unbind(f);
-gap> Unbind(file);
-gap> Unbind(filename);
-gap> Unbind(fname);
-gap> Unbind(gr);
-gap> Unbind(gr2);
-gap> Unbind(it);
-gap> Unbind(l);
-gap> Unbind(list);
-gap> Unbind(list2);
-gap> Unbind(mult);
-gap> Unbind(newfilename);
-gap> Unbind(rdgr);
-gap> Unbind(read);
-gap> Unbind(str);
-gap> Unbind(x);
-gap> Unbind(files);
-
 #
 gap> DIGRAPHS_StopTest();
 gap> STOP_TEST("Digraphs package: standard/io.tst", 0);

@@ -319,18 +319,6 @@ true
 gap> IsomorphismDigraphs(EmptyDigraph(1), gr1);
 fail
 
-#  DIGRAPHS_UnbindVariables
-gap> Unbind(G);
-gap> Unbind(H);
-gap> Unbind(gr);
-gap> Unbind(gr1);
-gap> Unbind(gr2);
-gap> Unbind(graph5);
-gap> Unbind(group5);
-gap> Unbind(p);
-gap> Unbind(treeAuts);
-gap> Unbind(trees);
-
 #
 gap> DIGRAPHS_StopTest();
 gap> STOP_TEST("Digraphs package: extreme/isomorph.tst", 0);

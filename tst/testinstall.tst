@@ -509,23 +509,6 @@ rec( comps := [  ], id := [  ] )
 gap> IsConnectedDigraph(D);
 true
 
-#  DIGRAPHS_UnbindVariables
-gap> Unbind(C);
-gap> Unbind(D);
-gap> Unbind(adj);
-gap> Unbind(d);
-gap> Unbind(f);
-gap> Unbind(func);
-gap> Unbind(gr);
-gap> Unbind(gr1);
-gap> Unbind(gr2);
-gap> Unbind(i);
-gap> Unbind(out);
-gap> Unbind(p);
-gap> Unbind(r);
-gap> Unbind(str);
-gap> Unbind(topo);
-
-#E#
+#
 gap> DIGRAPHS_StopTest();
 gap> STOP_TEST("Digraphs package: testinstall.tst", 0);

@@ -1969,40 +1969,6 @@ gap> SetIsUndirectedForest(D, true);
 gap> HasIsMultiDigraph(D) and not IsMultiDigraph(D);
 true
 
-#  DIGRAPHS_UnbindVariables
-gap> Unbind(D);
-gap> Unbind(G);
-gap> Unbind(M5);
-gap> Unbind(N5);
-gap> Unbind(adj);
-gap> Unbind(circuit);
-gap> Unbind(complete100);
-gap> Unbind(g);
-gap> Unbind(g1);
-gap> Unbind(g2);
-gap> Unbind(g3);
-gap> Unbind(g4);
-gap> Unbind(g5);
-gap> Unbind(g6);
-gap> Unbind(gr);
-gap> Unbind(gr1);
-gap> Unbind(gr2);
-gap> Unbind(gr3);
-gap> Unbind(gr4);
-gap> Unbind(gr5);
-gap> Unbind(gr6);
-gap> Unbind(grid);
-gap> Unbind(i);
-gap> Unbind(j);
-gap> Unbind(loop);
-gap> Unbind(mat);
-gap> Unbind(multiple);
-gap> Unbind(nottrans);
-gap> Unbind(r);
-gap> Unbind(range);
-gap> Unbind(source);
-gap> Unbind(trans);
-
 #
 gap> DIGRAPHS_StopTest();
 gap> STOP_TEST("Digraphs package: standard/prop.tst", 0);
