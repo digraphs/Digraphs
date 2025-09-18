@@ -209,13 +209,6 @@ gap> SetDigraphEdgeLabel(gr, 2, 2, "a");
 Error, there is no edge from 2 to 
 2 in the digraph <D> that is the 1st argument,
 
-#  DIGRAPHS_UnbindVariables
-gap> Unbind(A);
-gap> Unbind(D);
-gap> Unbind(gr);
-gap> Unbind(l);
-gap> Unbind(x);
-
 #
 gap> DIGRAPHS_StopTest();
 gap> STOP_TEST("Digraphs package: standard/labels.tst", 0);

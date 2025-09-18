@@ -2900,35 +2900,6 @@ gap> HomomorphismDigraphsFinder(H,
 > Group(()));
 [ Transformation( [ 8, 1, 5, 7, 3, 4, 6, 8 ] ) ]
 
-#  DIGRAPHS_UnbindVariables
-gap> Unbind(D);
-gap> Unbind(D1);
-gap> Unbind(D2);
-gap> Unbind(DD);
-gap> Unbind(G);
-gap> Unbind(H);
-gap> Unbind(N5);
-gap> Unbind(edges);
-gap> Unbind(epis);
-gap> Unbind(f);
-gap> Unbind(found);
-gap> Unbind(gens);
-gap> Unbind(gr);
-gap> Unbind(gr1);
-gap> Unbind(gr2);
-gap> Unbind(homos);
-gap> Unbind(hook);
-gap> Unbind(mat);
-gap> Unbind(mono);
-gap> Unbind(monos);
-gap> Unbind(parts);
-gap> Unbind(ran);
-gap> Unbind(s);
-gap> Unbind(src);
-gap> Unbind(t);
-gap> Unbind(tt);
-gap> Unbind(x);
-
 #
 gap> DIGRAPHS_StopTest();
 gap> STOP_TEST("Digraphs package: standard/grahom.tst", 0);

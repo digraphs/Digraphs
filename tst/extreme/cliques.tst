@@ -22,9 +22,6 @@ gap> D :=
 gap> Length(DigraphCliques(D));
 1651734
 
-#  DIGRAPHS_UnbindVariables
-gap> Unbind(D);
-
 #
 gap> DIGRAPHS_StopTest();
 gap> STOP_TEST("Digraphs package: standard/cliques.tst", 0);

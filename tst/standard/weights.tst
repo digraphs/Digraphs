@@ -400,10 +400,6 @@ true
 gap> SortedList(Flat(EdgeWeights(D))) = [1 .. DigraphNrEdges(D)];
 true
 
-#  DIGRAPHS_UnbindVariables
-gap> Unbind(d);
-gap> Unbind(tree);
-
 #
 gap> DIGRAPHS_StopTest();
 gap> STOP_TEST("Digraphs package: standard/weights.tst", 0);

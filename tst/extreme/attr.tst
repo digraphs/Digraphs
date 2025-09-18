@@ -70,12 +70,6 @@ gap> gr := DigraphFromGraph6String(str);;
 gap> ChromaticNumber(gr);
 6
 
-#  DIGRAPHS_UnbindVariables
-gap> Unbind(circs);
-gap> Unbind(g);
-gap> Unbind(gr);
-gap> Unbind(str);
-
 #
 gap> DIGRAPHS_StopTest();
 gap> STOP_TEST("Digraphs package: extreme/attr.tst", 0);
