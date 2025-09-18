@@ -464,13 +464,14 @@ gap> gr := TCodeDecoder(3);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `TCodeDecoder' on 1 arguments
 gap> gr := TCodeDecoder("gr 5");
-Error, the 2nd argument <s> must be a string of space-separated non-negative i\
-ntegers,
+Error, the 2nd argument <s> must be a string of at least two space-separated n\
+on-negative integers,
 gap> gr := TCodeDecoder("10");
-Error, the 2nd argument <s> must be a string of at least two integers,
+Error, the 2nd argument <s> must be a string of at least two space-separated n\
+on-negative integers,
 gap> gr := TCodeDecoder("2 2 0 4 1 2");
-Error, the 2nd argument <s> must be a string consisting of integers in the ran\
-ge [0 .. 2],
+Error, all integers in the 2nd argument <s>, except for the first two, must be\
+ strictly less than the first integer, which is 2,
 gap> gr := TCodeDecoder("3 2 0 2");
 Error, the 2nd argument <s> must be a string of length at least 6
 gap> gr := TCodeDecoderNC("100 5 0 12 48 49 99 1 54 49 49 49");
