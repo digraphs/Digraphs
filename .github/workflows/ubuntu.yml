@@ -30,19 +30,24 @@ jobs:
           - v4.14
           - v4.13
           - v4.12
-          - v4.11
         mode:
           - onlyneeded
           - default
         include:
           - mode: onlyneeded
             pkgs-to-clone: https://github.com/digraphs/graphviz.git
-            # Remove asterisks * when we no longer support GAP 4.11
-            pkgs-to-build: io* orb* datastructures* profiling*
+            pkgs-to-build: io orb datastructures profiling
           - mode: default
             pkgs-to-clone: https://github.com/digraphs/graphviz.git https://github.com/gap-packages/NautyTracesInterface.git
-            # Remove asterisks * when we no longer support GAP 4.11
-            pkgs-to-build: io* orb* datastructures* profiling* grape* NautyTracesInterface
+            pkgs-to-build: io orb datastructures profiling grape NautyTracesInterface
+
+          - gap-version: v4.11  # Note: NautyTracesInterface requires GAP 4.12
+            mode: default  # There wouldn't be much point testing GAP v4.11 with only needed packages. The only difference is whether Grape is loaded.
+            pkgs-to-clone: https://github.com/digraphs/graphviz.git
+            pkgs-to-build: io* orb* datastructures* profiling* grape*
+          - gap-version: v4.10  # Note: NautyTracesInterface requires GAP 4.12
+            mode: default  # There wouldn't be much point testing GAP v4.10 with only needed packages. The only difference is whether Grape is loaded.
+            pkgs-to-build: io* orb* datastructures profiling* grape*
 
     steps:
       - uses: actions/checkout@v5
@@ -53,11 +58,19 @@ jobs:
         with:
           gap-version: ${{ matrix.gap-version }}
       - name: "Install necessary GAP package clones . . ."
+        if: ${{ matrix.gap-version != 'v4.10' }}
         run: |
           for PKG in ${{ matrix.pkgs-to-clone }}; do
             cd ${GAPROOT}/pkg
             git clone $PKG
           done
+      # Add a special case for GAP v4.10 because it requires checking out a
+      # specific version of the repository (not the default branch).
+      - name: "Install datastructures v0.2.5 for GAP 4.10"
+        if: ${{ matrix.gap-version == 'v4.10' }}
+        run: |
+            cd ${GAPROOT}/pkg
+            git clone -b v0.2.5 https://github.com/gap-packages/datastructures datastructures
       - name: "Build additional necessary GAP packages . . ."
         run: |
           cd ${GAPROOT}/pkg
