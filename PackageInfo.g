@@ -38,8 +38,8 @@ fi;
 SetPackageInfo(rec(
 PackageName := "Digraphs",
 Subtitle := "Graphs, digraphs, and multidigraphs in GAP",
-Version := "1.12.1",
-Date := "10/09/2025",  # dd/mm/yyyy format
+Version := "1.12.2",
+Date := "20/09/2025",  # dd/mm/yyyy format
 License := "GPL-3.0-or-later",
 ArchiveFormats := ".tar.gz",
 
@@ -531,12 +531,12 @@ PackageDoc := rec(
 
 Dependencies := rec(
   GAP := ">=4.10.0",
-  NeededOtherPackages := [["io", ">=4.5.1"],
+  NeededOtherPackages := [["IO", ">=4.5.1"],
                           ["orb", ">=4.8.2"],
                           ["datastructures", ">=0.2.5"]],
   SuggestedOtherPackages := [["GAPDoc", ">=1.6.3"],
-                             ["grape", ">=4.8.1"],
-                             ["nautytracesinterface", ">=0.2"],
+                             ["GRAPE", ">=4.8.1"],
+                             ["NautyTracesInterface", ">=0.2"],
                              ["AutoDoc", ">=2020.08.11"]],
   ExternalConditions := [],
 ),
