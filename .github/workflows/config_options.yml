@@ -62,18 +62,16 @@ jobs:
       - name: "Build additional necessary GAP packages . . ."
         run: |
           cd ${GAPROOT}/pkg
-          ../bin/BuildPackages.sh --strict io orb datastructures profiling grape NautyTracesInterface
+          ../bin/BuildPackages.sh --strict io orb datastructures grape NautyTracesInterface
       - name: Build Digraphs . . .
         uses: gap-actions/build-pkg@v2
         with:
           CONFIGFLAGS: ${{ matrix.bliss }} ${{ matrix.planarity }}
+          coverage: false
       - name: Run Digraphs package's tst/teststandard.g . . .
         uses: gap-actions/run-pkg-tests@v4
-      - uses: gap-actions/process-coverage@v3
-      - uses: codecov/codecov-action@v5
         with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          fail_ci_if_error: true
+          coverage: false
 
   all-options:
     name: ${{ matrix.debug }} ${{ matrix.warnings }} ${{ matrix.without-intrinsics }}
@@ -112,15 +110,13 @@ jobs:
       - name: "Build additional necessary packages"
         run: |
           cd ${GAPROOT}/pkg
-          ../bin/BuildPackages.sh --strict io orb datastructures profiling grape NautyTracesInterface
+          ../bin/BuildPackages.sh --strict io orb datastructures grape NautyTracesInterface
       - name: Build Digraphs . . .
         uses: gap-actions/build-pkg@v2
         with:
           CONFIGFLAGS: ${{ matrix.debug }} ${{ matrix.without-intrinsics }} ${{ matrix.warnings && '--enable-compile-warnings WARNING_CXXFLAGS="-Werror" WARNING_CFLAGS="-Werror"' || '' }}
+          coverage: false
       - name: Run Digraphs package's tst/teststandard.g . . .
         uses: gap-actions/run-pkg-tests@v4
-      - uses: gap-actions/process-coverage@v3
-      - uses: codecov/codecov-action@v5
         with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          fail_ci_if_error: true
+          coverage: false
