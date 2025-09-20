@@ -4,6 +4,15 @@ Wilf A. Wilson, Michael Young et al.
 
 Licensing information can be found in the `LICENSE` file.
 
+## Version 1.12.2 (released 20/09/2025)
+
+This is a minor release of the Digraphs package, containing various technical changes and one bugfix.
+
+## What's Changed
+* [@wilfwilson](https://github.com/wilfwilson) fixed some problems with `TCodeDecoder` in [PR #840](https://github.com/digraphs/Digraphs/pull/840).
+
+**Full Changelog**: <https://github.com/digraphs/Digraphs/compare/v1.12.1...v1.12.2>
+
 ## Version 1.12.1 (released 10/09/2025)
 
 ## What's Changed
