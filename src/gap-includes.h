@@ -25,6 +25,10 @@
 #pragma GCC diagnostic ignored "-Winline"
 #endif
 // GAP headers
-#include "gap_all.h"  // for Obj, Int
+#include "gap_all.h"    // for Obj, Int
+#ifdef GAP410_OR_OLDER  // FIXME Remove this ifdef when we don't support
+                        // GAP 4.10
+#include "compiled.h"   // for Obj, Int
+#endif
 
 #endif  // DIGRAPHS_SRC_GAP_INCLUDES_H_
