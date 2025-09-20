@@ -36,6 +36,8 @@ jobs:
         mode:
           - onlyneeded
           - default
+        clone-branch:
+          - ''
         include:
           - mode: onlyneeded
             pkgs-to-clone: https://github.com/digraphs/graphviz.git
@@ -49,8 +51,9 @@ jobs:
             pkgs-to-build: io* orb* datastructures* profiling* grape*
           - gap-version: v4.10
             mode: default # There wouldn't be much point testing GAP v4.10 with only needed packages. The only difference is whether Grape is loaded.
-            pkgs-to-clone: "" # NautyTracesInterface requires GAP 4.12
-            pkgs-to-build: io* orb* datastructures* profiling* grape*
+            pkgs-to-clone: https://github.com/gap-packages/datastructures # NautyTracesInterface requires GAP 4.12
+            clone-branch: "-b v0.2.5"
+            pkgs-to-build: io* orb* datastructures profiling* grape*
 
     steps:
       - uses: actions/checkout@v5
@@ -64,7 +67,7 @@ jobs:
         run: |
           for PKG in ${{ matrix.pkgs-to-clone }}; do
             cd ${GAPROOT}/pkg
-            git clone $PKG
+            git clone ${{ matrix.clone-branch }} $PKG
           done
       - name: "Build additional necessary GAP packages . . ."
         run: |
