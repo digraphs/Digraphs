@@ -14,8 +14,11 @@ env:
   DIGRAPHS_LIB: digraphs-lib-0.7
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  # Group by workflow and ref; the last component ensures that for pull requests
+  # we limit to one concurrent job, but for the default/stable branch we don't
+  group: ${{ github.workflow }}-${{ github.ref }}-${{ (github.ref != github.event.repository.default_branch && !startsWith(github.ref, 'refs/heads/stable-')) || github.run_number }}
+  # Only cancel intermediate pull request builds
+  cancel-in-progress: ${{ startsWith(github.ref, 'refs/pull/') }}
 
 jobs:
   test-unix:
