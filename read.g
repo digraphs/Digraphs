@@ -30,6 +30,13 @@ BindGlobal("DIGRAPHS_NautyAvailable",
 
 Unbind(_NautyTracesInterfaceVersion);
 
+# Delete this when we no longer support GAP 4.10
+if not CompareVersionNumbers(ReplacedString(GAPInfo.Version, "dev", ""), "4.11")
+    then
+  BindGlobal("INTOBJ_MAX", 1152921504606846975);
+  BindGlobal("Last", {x} -> x[Length(x)]);
+fi;
+
 ReadPackage("digraphs", "gap/utils.gi");
 ReadPackage("digraphs", "gap/digraph.gi");
 ReadPackage("digraphs", "gap/constructors.gi");
