@@ -53,7 +53,8 @@ for Pkg in Concatenation(PkgInfo.Dependencies.NeededOtherPackages,
 od;
 
 ARCHIVENAME := SplitString(PkgInfo.ArchiveURL, "/");
-ARCHIVENAME := Concatenation(Last(ARCHIVENAME), PkgInfo.ArchiveFormats);
+ARCHIVENAME := Concatenation(ARCHIVENAME[Length(ARCHIVENAME)],
+                             PkgInfo.ArchiveFormats);
 XMLEntities.ARCHIVENAME := ARCHIVENAME;
 
 XMLEntities.DIGRAPHS := PackageEntity("Digraphs");
