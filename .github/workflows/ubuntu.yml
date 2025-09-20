@@ -10,9 +10,6 @@ on:
     # Every day at 3:30 AM UTC
     - cron: 30 3 * * *
 
-env:
-  DIGRAPHS_LIB: digraphs-lib-0.7
-
 concurrency:
   # Group by workflow and ref; the last component ensures that for pull requests
   # we limit to one concurrent job, but for the main/stable branches we don't
@@ -68,9 +65,7 @@ jobs:
       - name: Build Digraphs . . .
         uses: gap-actions/build-pkg@v2
       - name: Install digraphs-lib . . .
-        run: |
-          curl --retry 5 -L -O "https://digraphs.github.io/Digraphs/${{ env.DIGRAPHS_LIB }}.tar.gz"
-          tar xf "${{ env.DIGRAPHS_LIB }}.tar.gz"
+        run: git clone https://github.com/digraphs/digraphs-lib.git
       - name: Run DigraphsTestInstall . . .
         uses: gap-actions/run-pkg-tests@v4
         with:
