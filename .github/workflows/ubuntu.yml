@@ -33,19 +33,24 @@ jobs:
           - v4.14
           - v4.13
           - v4.12
-          - v4.11
         mode:
           - onlyneeded
           - default
         include:
           - mode: onlyneeded
             pkgs-to-clone: https://github.com/digraphs/graphviz.git
-            # Remove asterisks * when we no longer support GAP 4.11
-            pkgs-to-build: io* orb* datastructures* profiling*
+            pkgs-to-build: io orb datastructures profiling
           - mode: default
             pkgs-to-clone: https://github.com/digraphs/graphviz.git https://github.com/gap-packages/NautyTracesInterface.git
-            # Remove asterisks * when we no longer support GAP 4.11
-            pkgs-to-build: io* orb* datastructures* profiling* grape* NautyTracesInterface
+            pkgs-to-build: io orb datastructures profiling grape NautyTracesInterface
+          - gap-version: v4.11
+            mode: default # There wouldn't be much point testing GAP v4.11 with only needed packages. The only difference is whether Grape is loaded.
+            pkgs-to-clone: https://github.com/digraphs/graphviz.git # NautyTracesInterface requires GAP 4.12
+            pkgs-to-build: io* orb* datastructures* profiling* grape*
+          - gap-version: v4.10
+            mode: default # There wouldn't be much point testing GAP v4.10 with only needed packages. The only difference is whether Grape is loaded.
+            pkgs-to-clone: "" # NautyTracesInterface requires GAP 4.12
+            pkgs-to-build: io* orb* datastructures* profiling* grape*
 
     steps:
       - uses: actions/checkout@v5
