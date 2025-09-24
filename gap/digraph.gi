@@ -529,11 +529,14 @@ x -> ListNamedDigraphs(x, 2));
 
 InstallMethod(ViewString, "for a digraph", [IsDigraph],
 function(D)
-  local n, m, display_nredges, displayed_bipartite, str, x;
+  local n, m, suffix, display_nredges, display_digraph, displayed_bipartite,
+  str, x;
 
   n := DigraphNrVertices(D);
   m := DigraphNrEdges(D);
+  suffix := "";
   display_nredges := true;
+  display_digraph := true;
   displayed_bipartite := false;
 
   str := "<";
@@ -567,21 +570,46 @@ function(D)
     elif HasIsCompleteMultipartiteDigraph(D)
         and IsCompleteMultipartiteDigraph(D) then
       Append(str, "complete multipartite ");
-    elif HasIsLatticeDigraph(D) and IsLatticeDigraph(D) then
-      Append(str, "lattice ");
-    elif HasIsJoinSemilatticeDigraph(D) and IsJoinSemilatticeDigraph(D) then
-      Append(str, "join semilattice ");
-    elif HasIsMeetSemilatticeDigraph(D) and IsMeetSemilatticeDigraph(D) then
-      Append(str, "meet semilattice ");
-    elif HasIsUndirectedTree(D) and IsUndirectedTree(D) then
-      Append(str, "undirected tree ");
-      display_nredges := false;
-    elif HasIsUndirectedForest(D) and IsUndirectedForest(D) then
-      Append(str, "undirected forest ");
-    elif HasIsDirectedTree(D) and IsDirectedTree(D) then
+    elif (HasIsJoinSemilatticeDigraph(D) and IsJoinSemilatticeDigraph(D))
+        or (HasIsMeetSemilatticeDigraph(D) and IsMeetSemilatticeDigraph(D)) then
+      if HasIsPlanarDigraph(D) and IsPlanarDigraph(D) then
+        Append(str, "planar ");
+      fi;
+      if HasIsLatticeDigraph(D) and IsLatticeDigraph(D) then
+        Append(str, "lattice ");
+      elif HasIsJoinSemilatticeDigraph(D) and IsJoinSemilatticeDigraph(D) then
+        Append(str, "join semilattice ");
+      elif HasIsMeetSemilatticeDigraph(D) and IsMeetSemilatticeDigraph(D) then
+        Append(str, "meet semilattice ");
+      fi;
+    elif (HasIsUndirectedTree(D) and IsUndirectedTree(D))
+        or (HasIsDirectedTree(D) and IsDirectedTree(D)) then
+      if HasIsUndirectedTree(D) and IsUndirectedTree(D) then
+        Append(str, "un");
+      fi;
       Append(str, "directed tree ");
       display_nredges := false;
+      display_digraph := false;
+    elif (HasIsUndirectedForest(D) and IsUndirectedForest(D))
+        or (HasIsDirectedForest(D) and IsDirectedForest(D)) then
+      if HasIsUndirectedForest(D) and IsUndirectedForest(D) then
+        Append(str, "un");
+      fi;
+      Append(str, "directed forest ");
+      display_nredges := false;
+      display_digraph := false;
+      if HasDigraphNrConnectedComponents(D) then
+        suffix := Concatenation(String(DigraphNrConnectedComponents(D)),
+                                " components");
+      fi;
+    elif HasIsTournament(D) and IsTournament(D) then
+      Append(str, "tournament ");
+      display_nredges := false;
+      display_digraph := false;
     else
+      if HasIsPlanarDigraph(D) and IsPlanarDigraph(D) then
+        Append(str, "planar ");
+      fi;
       if HasIsEulerianDigraph(D) and IsEulerianDigraph(D) then
         Append(str, "Eulerian ");
         if HasIsHamiltonianDigraph(D) and IsHamiltonianDigraph(D) then
@@ -603,6 +631,8 @@ function(D)
             or not (HasIsStronglyConnectedDigraph(D)
                     and IsStronglyConnectedDigraph(D)))
           and not (HasIsTournament(D) and IsTournament(D))
+          and not (HasIsHamiltonianDigraph(D) and IsHamiltonianDigraph(D))
+          and not (HasIsEulerianDigraph(D) and IsEulerianDigraph(D))
           and HasIsConnectedDigraph(D) and IsConnectedDigraph(D) then
         Append(str, "connected ");
       fi;
@@ -656,20 +686,21 @@ function(D)
     Append(str, "multi");
   fi;
 
-  if not (HasIsCycleDigraph(D) and IsCycleDigraph(D))
-      and HasIsTournament(D) and IsTournament(D) and n > 1 then
-    Append(str, "tournament ");
-    display_nredges := false;
-  else
+  if display_digraph then
     Append(str, "digraph ");
   fi;
   Append(str, "with ");
 
   if displayed_bipartite then
     x := List(DigraphBicomponents(D), Length);
-    Append(str, "bicomponent sizes ");
-    Append(str, String(x[1]));
-    Append(str, " and ");
+    Append(str, "bicomponent");
+    if x[1] = x[2] then
+      Append(str, "s of size ");
+    else
+      Append(str, " sizes ");
+      Append(str, String(x[1]));
+      Append(str, " and ");
+    fi;
     Append(str, String(x[2]));
     Append(str, ">");
     return str;
@@ -689,6 +720,10 @@ function(D)
     else
       Append(str, " edges");
     fi;
+  fi;
+  if not IsEmpty(suffix) then
+    Append(str, ", ");
+    Append(str, suffix);
   fi;
   Append(str, ">");
   return str;

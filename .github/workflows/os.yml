@@ -11,16 +11,18 @@ on:
     - cron: 30 3 * * *
 
 env:
-  DIGRAPHS_LIB: digraphs-lib-0.6
-  NO_COVERAGE: true
+  DIGRAPHS_LIB: digraphs-lib-0.7
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  # Group by workflow and ref; the last component ensures that for pull requests
+  # we limit to one concurrent job, but for the main/stable branches we don't
+  group: ${{ github.workflow }}-${{ github.ref }}-${{ (github.ref != 'refs/heads/main' && !startsWith(github.ref, 'refs/heads/stable-')) || github.run_number }}
+  # Only cancel intermediate pull request builds
+  cancel-in-progress: ${{ startsWith(github.ref, 'refs/pull/') }}
 
 jobs:
-  test-unix:
-    name: ${{ matrix.os }}${{ matrix.ABI }} / GAP stable-4.14
+  test:
+    name: ${{ matrix.os }}${{ matrix.ABI }} / GAP stable-4.15
     runs-on: ${{ matrix.os }}-latest
     strategy:
       fail-fast: false
@@ -28,29 +30,64 @@ jobs:
         include:
           - os: ubuntu
             ABI: 32
-            pkgs-to-clone: digraphs/graphviz
-            pkgs-to-build: io orb datastructures grape
+            pkgs-to-clone: https://github.com/digraphs/graphviz.git
+            pkgs-to-build: io orb datastructures grape profiling
           - os: macos
-            ABI: ""
-            pkgs-to-clone: NautyTracesInterface digraphs/graphviz
-            pkgs-to-build: io orb datastructures grape NautyTracesInterface
+            ABI: 64
+            pkgs-to-clone: https://github.com/digraphs/graphviz.git https://github.com/gap-packages/NautyTracesInterface.git
+            pkgs-to-build: io orb datastructures grape profiling NautyTracesInterface
+          - os: windows
+            ABI: 64
+            pkgs-to-clone: https://github.com/digraphs/graphviz.git https://github.com/gap-packages/NautyTracesInterface.git
+            pkgs-to-build: io orb datastructures grape profiling NautyTracesInterface
+
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
+      - uses: gap-actions/setup-cygwin@v2
+        if: ${{ runner.os == 'Windows' }}
       - name: Output g++ version . . .
         run: g++ --version
       - name: Install macOS dependencies . . .
         if: ${{ runner.os == 'macOS' }}
         run: brew install automake
-      - name: Install GAP and clone/compile necessary packages . . .
-        uses: gap-actions/setup-gap@v2
-        with:
-          GAP_PKGS_TO_CLONE: ${{ matrix.pkgs-to-clone }}
-          GAP_PKGS_TO_BUILD: ${{ matrix.pkgs-to-build }}
-          GAPBRANCH: stable-4.14
+      - name: "Install 32-bit packages . . ."
+        if: ${{ matrix.ABI == '32' }}
+        run: |
+          sudo dpkg --add-architecture i386
+          sudo apt-get update
+          packages=(
+            libgmp-dev:i386
+            libreadline-dev:i386
+            zlib1g-dev:i386
+            gcc-multilib
+            g++-multilib
+          )
+          sudo apt-get install "${packages[@]}"
+      - name: "Install GAP . . ."
+        uses: gap-actions/setup-gap@v3
+        env:
           ABI: ${{ matrix.ABI }}
+        with:
+          gap-version: stable-4.15
+      - name: "Install necessary GAP package clones . . ."
+        shell: bash
+        run: |
+          for PKG in ${{ matrix.pkgs-to-clone }}; do
+            cd ${GAPROOT}/pkg
+            git clone $PKG
+          done
+      - name: "Build additional necessary GAP packages . . ."
+        shell: bash
+        env:
+          ABI: ${{ matrix.ABI }}
+        run: |
+          cd ${GAPROOT}/pkg
+          ../bin/BuildPackages.sh --strict ${{ matrix.pkgs-to-build }}
       - name: Build Digraphs . . .
-        uses: gap-actions/build-pkg@v1
+        uses: gap-actions/build-pkg@v2
+        env:
+          ABI: ${{ matrix.ABI }}
         with:
           ABI: ${{ matrix.ABI }}
       - name: Install digraphs-lib . . .
@@ -58,48 +95,24 @@ jobs:
           curl --retry 5 -L -O "https://digraphs.github.io/Digraphs/${{ env.DIGRAPHS_LIB }}.tar.gz"
           tar xf "${{ env.DIGRAPHS_LIB }}.tar.gz"
       - name: Run DigraphsTestInstall . . .
-        # TODO: Replace below with gap-actions/run-pkg-tests@v2 if the functionality gets added
-        uses: ./.github/actions/run-pkg-tests
+        uses: gap-actions/run-pkg-tests@v4
         with:
-          NO_COVERAGE: true
-          GAP_TESTFILE: tst/github_actions/install.g
+          testfile: tst/github_actions/install.g
       - name: Run DigraphsTestStandard . . .
-        # TODO: Replace below with gap-actions/run-pkg-tests@v2 if the functionality gets added
-        uses: ./.github/actions/run-pkg-tests
+        uses: gap-actions/run-pkg-tests@v4
         with:
-          NO_COVERAGE: true
-          GAP_TESTFILE: tst/github_actions/standard.g
+          testfile: tst/github_actions/standard.g
       - name: Run DigraphsTestManualExamples . . .
-        # TODO: Replace below with gap-actions/run-pkg-tests@v2 if the functionality gets added
-        uses: ./.github/actions/run-pkg-tests
+        uses: gap-actions/run-pkg-tests@v4
         with:
-          NO_COVERAGE: true
-          GAP_TESTFILE: tst/github_actions/examples.g
+          testfile: tst/github_actions/examples.g
       - name: Run DigraphsTestExtreme . . .
-        # TODO: Replace below with gap-actions/run-pkg-tests@v2 if the functionality gets added
-        uses: ./.github/actions/run-pkg-tests
+        uses: gap-actions/run-pkg-tests@v4
+        if: ${{ runner.os != 'Windows' }}
         with:
-          NO_COVERAGE: true
-          GAP_TESTFILE: tst/github_actions/extreme.g
-
-  test-cygwin:
-    name: cygwin / GAP stable-4.14
-    runs-on: windows-latest
-    env:
-      CHERE_INVOKING: 1
-    steps:
-      - uses: actions/checkout@v4
-      - uses: gap-actions/setup-cygwin@v1
-      - uses: gap-actions/setup-gap@cygwin-v2
+          testfile: tst/github_actions/extreme.g
+      - uses: gap-actions/process-coverage@v3
+      - uses: codecov/codecov-action@v5
         with:
-          GAP_PKGS_TO_CLONE: NautyTracesInterface digraphs/graphviz
-          GAP_PKGS_TO_BUILD: io orb datastructures grape NautyTracesInterface
-          GAPBRANCH: stable-4.14
-      - uses: gap-actions/build-pkg@cygwin-v1
-      - name: Install digraphs-lib . . .
-        run: |
-          curl --retry 5 -L -O "https://digraphs.github.io/Digraphs/${{ env.DIGRAPHS_LIB }}.tar.gz"
-          tar xf "${{ env.DIGRAPHS_LIB }}.tar.gz"
-      - uses: gap-actions/run-pkg-tests@cygwin-v2
-        with:
-          NO_COVERAGE: true
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: true

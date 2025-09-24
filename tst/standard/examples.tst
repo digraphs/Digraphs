@@ -7,6 +7,8 @@
 ##
 #############################################################################
 ##
+
+#@local D, G8_3, gr, grrt
 gap> START_TEST("Digraphs package: standard/examples.tst");
 gap> LoadPackage("digraphs", false);;
 
@@ -149,6 +151,8 @@ gap> gr := CompleteBipartiteDigraph(0, 2);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `CompleteBipartiteDigraph' on 2 argument\
 s
+gap> CompleteBipartiteDigraph(3, 4);
+<immutable complete bipartite digraph with bicomponent sizes 3 and 4>
 gap> gr := CompleteBipartiteDigraph(4, 3);
 <immutable complete bipartite digraph with bicomponent sizes 4 and 3>
 gap> AutomorphismGroup(gr) = Group((1, 2, 3, 4), (1, 2), (5, 6, 7), (5, 6));
@@ -159,7 +163,7 @@ gap> DigraphEdges(gr);
   [ 5, 3 ], [ 5, 4 ], [ 6, 1 ], [ 6, 2 ], [ 6, 3 ], [ 6, 4 ], [ 7, 1 ], 
   [ 7, 2 ], [ 7, 3 ], [ 7, 4 ] ]
 gap> gr := CompleteBipartiteDigraph(4, 4);
-<immutable complete bipartite digraph with bicomponent sizes 4 and 4>
+<immutable complete bipartite digraph with bicomponents of size 4>
 gap> AutomorphismGroup(gr) = Group((1, 2, 3, 4), (1, 2), (5, 6, 7, 8), (5, 6),
 >                                  (1, 5)(2, 6)(3, 7)(4, 8));
 true
@@ -258,35 +262,35 @@ gap> LollipopGraph(IsMutableDigraph, 5, 3);
 
 #  SquareGridGraph
 gap> SquareGridGraph(7, 7);
-<immutable connected bipartite symmetric digraph with bicomponent sizes 25 and\
- 24>
+<immutable planar connected bipartite symmetric digraph with bicomponent sizes\
+ 25 and 24>
 gap> SquareGridGraph(2, 4);
-<immutable connected bipartite symmetric digraph with bicomponent sizes 4 and \
-4>
+<immutable planar connected bipartite symmetric digraph with bicomponents of s\
+ize 4>
 gap> SquareGridGraph(IsMutableDigraph, 5, 3);
 <mutable digraph with 15 vertices, 44 edges>
 gap> SquareGridGraph(IsImmutableDigraph, 1, 1);
 <immutable empty digraph with 1 vertex>
 gap> SquareGridGraph(1, 4);
-<immutable connected bipartite symmetric digraph with bicomponent sizes 2 and \
-2>
+<immutable planar connected bipartite symmetric digraph with bicomponents of s\
+ize 2>
 gap> SquareGridGraph(2, 1);
-<immutable connected bipartite symmetric digraph with bicomponent sizes 1 and \
-1>
+<immutable planar connected bipartite symmetric digraph with bicomponents of s\
+ize 1>
 
 #  TriangularGridGraph
 gap> TriangularGridGraph(3, 4);
-<immutable connected symmetric digraph with 12 vertices, 46 edges>
+<immutable planar connected symmetric digraph with 12 vertices, 46 edges>
 gap> TriangularGridGraph(IsMutableDigraph, 7, 2);
 <mutable digraph with 14 vertices, 50 edges>
 gap> TriangularGridGraph(1, 1);
 <immutable empty digraph with 1 vertex>
 gap> TriangularGridGraph(1, 5);
-<immutable connected bipartite symmetric digraph with bicomponent sizes 3 and \
-2>
+<immutable planar connected bipartite symmetric digraph with bicomponent sizes\
+ 3 and 2>
 gap> TriangularGridGraph(3, 1);
-<immutable connected bipartite symmetric digraph with bicomponent sizes 2 and \
-1>
+<immutable planar connected bipartite symmetric digraph with bicomponent sizes\
+ 2 and 1>
 
 # StarGraph
 gap> StarGraph(IsMutable, 10);
@@ -310,7 +314,7 @@ gap> D := KingsGraph(4, 7);
 gap> IsConnectedDigraph(D);
 true
 gap> D := KingsGraph(2, 2);
-<immutable connected symmetric digraph with 4 vertices, 12 edges>
+<immutable planar connected symmetric digraph with 4 vertices, 12 edges>
 gap> OutNeighbors(D);
 [ [ 2, 3, 4 ], [ 1, 4, 3 ], [ 4, 1, 2 ], [ 3, 2, 1 ] ]
 gap> DigraphVertexLabels(KingsGraph(3, 4));
@@ -335,7 +339,8 @@ gap> DigraphVertexLabels(QueensGraph(3, 4));
 gap> RooksGraph(4, 8);
 <immutable connected regular symmetric digraph with 32 vertices, 320 edges>
 gap> D := RooksGraph(3, 2);
-<immutable connected regular symmetric digraph with 6 vertices, 18 edges>
+<immutable planar connected regular symmetric digraph with 6 vertices, 18 edge\
+s>
 gap> IsPlanarDigraph(D);
 true
 gap> OutNeighbours(D);
@@ -398,30 +403,30 @@ gap> HaarGraph(1);
 gap> OutNeighbours(last);
 [ [ 2 ], [ 1 ] ]
 gap> HaarGraph(2);
-<immutable bipartite vertex-transitive symmetric digraph with bicomponent size\
-s 2 and 2>
+<immutable bipartite vertex-transitive symmetric digraph with bicomponents of \
+size 2>
 gap> OutNeighbours(last);
 [ [ 3 ], [ 4 ], [ 1 ], [ 2 ] ]
 gap> HaarGraph(3);
-<immutable bipartite vertex-transitive symmetric digraph with bicomponent size\
-s 2 and 2>
+<immutable bipartite vertex-transitive symmetric digraph with bicomponents of \
+size 2>
 gap> OutNeighbours(last);
 [ [ 3, 4 ], [ 3, 4 ], [ 1, 2 ], [ 1, 2 ] ]
 gap> D := HaarGraph(16);
-<immutable bipartite vertex-transitive symmetric digraph with bicomponent size\
-s 5 and 5>
+<immutable bipartite vertex-transitive symmetric digraph with bicomponents of \
+size 5>
 gap> IsBipartiteDigraph(D);
 true
 
 # BananaTree
 gap> D := BananaTree(2, 4);
-<immutable undirected tree digraph with 9 vertices>
+<immutable undirected tree with 9 vertices>
 gap> D := BananaTree(3, 3);
-<immutable undirected tree digraph with 10 vertices>
+<immutable undirected tree with 10 vertices>
 gap> D := BananaTree(5, 2);
-<immutable undirected tree digraph with 11 vertices>
+<immutable undirected tree with 11 vertices>
 gap> D := BananaTree(3, 4);
-<immutable undirected tree digraph with 13 vertices>
+<immutable undirected tree with 13 vertices>
 gap> D := BananaTree(0, 0);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `BananaTree' on 2 arguments
@@ -444,13 +449,13 @@ gap> TadpoleGraph(3, 1);
 
 # BookGraph
 gap> BookGraph(1);
-<immutable bipartite symmetric digraph with bicomponent sizes 2 and 2>
+<immutable bipartite symmetric digraph with bicomponents of size 2>
 gap> BookGraph(2);
-<immutable bipartite symmetric digraph with bicomponent sizes 3 and 3>
+<immutable bipartite symmetric digraph with bicomponents of size 3>
 gap> BookGraph(7);
-<immutable bipartite symmetric digraph with bicomponent sizes 8 and 8>
+<immutable bipartite symmetric digraph with bicomponents of size 8>
 gap> BookGraph(12);
-<immutable bipartite symmetric digraph with bicomponent sizes 13 and 13>
+<immutable bipartite symmetric digraph with bicomponents of size 13>
 gap> BookGraph(IsMutable, 12);
 <mutable digraph with 26 vertices, 74 edges>
 gap> IsSymmetricDigraph(BookGraph(24));
@@ -460,11 +465,11 @@ true
 
 # StackedBookGraph
 gap> StackedBookGraph(1, 5);
-<immutable bipartite symmetric digraph with bicomponent sizes 5 and 5>
+<immutable bipartite symmetric digraph with bicomponents of size 5>
 gap> StackedBookGraph(20, 10);
-<immutable bipartite symmetric digraph with bicomponent sizes 105 and 105>
+<immutable bipartite symmetric digraph with bicomponents of size 105>
 gap> StackedBookGraph(7, 2);
-<immutable bipartite symmetric digraph with bicomponent sizes 8 and 8>
+<immutable bipartite symmetric digraph with bicomponents of size 8>
 gap> StackedBookGraph(12, 1);
 <immutable bipartite symmetric digraph with bicomponent sizes 1 and 12>
 gap> StackedBookGraph(IsMutable, 12, 2);
@@ -493,9 +498,9 @@ Error, no 1st choice method found for `AndrasfaiGraph' on 1 arguments
 
 # BinomialTreeGraph
 gap> D := BinomialTreeGraph(6);
-<immutable undirected tree digraph with 6 vertices>
+<immutable undirected tree with 6 vertices>
 gap> D := BinomialTreeGraph(16);
-<immutable undirected tree digraph with 16 vertices>
+<immutable undirected tree with 16 vertices>
 gap> DigraphEdges(D);
 [ [ 1, 2 ], [ 1, 3 ], [ 1, 5 ], [ 1, 9 ], [ 2, 1 ], [ 3, 1 ], [ 3, 4 ], 
   [ 4, 3 ], [ 5, 1 ], [ 5, 6 ], [ 5, 7 ], [ 6, 5 ], [ 7, 5 ], [ 7, 8 ], 
@@ -543,6 +548,18 @@ gap> D := CirculantGraph(10, [1, 5]);
  vertices, 30 edges>
 gap> IsIsomorphicDigraph(D, MobiusLadderGraph(5));
 true
+gap> Set(Filtered(Combinations([1 .. 6]),
+> x -> IsUndirectedForest(DigraphCopy(CirculantGraph(6, x)))));
+[ [  ], [ 3 ] ]
+gap> Set(Filtered(Combinations([1 .. 6]),
+> x -> IsUndirectedForest(CirculantGraph(6, x))));
+[ [  ], [ 3 ] ]
+gap> D := CirculantGraph(6, [3]);
+<immutable undirected forest with 6 vertices>
+gap> IsUndirectedForest(D);
+true
+gap> IsUndirectedForest(DigraphCopy(D));
+true
 
 # CycleGraph
 gap> IsIsomorphicDigraph(CycleGraph(5), DigraphSymmetricClosure(CycleDigraph(5)));
@@ -565,7 +582,7 @@ Error, the argument <n> must be an integer greater than 2,
 gap> HalvedCubeGraph(1);
 <immutable empty digraph with 1 vertex>
 gap> D := HalvedCubeGraph(3);
-<immutable Hamiltonian connected symmetric digraph with 4 vertices, 12 edges>
+<immutable Hamiltonian symmetric digraph with 4 vertices, 12 edges>
 gap> IsIsomorphicDigraph(D, CompleteDigraph(4));
 true
 gap> HalvedCubeGraph(-1);
@@ -574,12 +591,11 @@ Error, no 1st choice method found for `HalvedCubeGraph' on 1 arguments
 
 # HanoiGraph
 gap> D := HanoiGraph(1);
-<immutable Hamiltonian connected symmetric digraph with 3 vertices, 6 edges>
+<immutable planar Hamiltonian symmetric digraph with 3 vertices, 6 edges>
 gap> IsIsomorphicDigraph(D, CycleGraph(3));
 true
-gap> gr := HanoiGraph(4);
-<immutable Hamiltonian connected symmetric digraph with 81 vertices, 240 edges\
->
+gap> HanoiGraph(4);
+<immutable planar Hamiltonian symmetric digraph with 81 vertices, 240 edges>
 gap> IsPlanarDigraph(gr);
 true
 gap> IsHamiltonianDigraph(gr);
@@ -607,8 +623,8 @@ Error, the argument <n> must be an integer greater than 2,
 gap> HypercubeGraph(0);
 <immutable empty digraph with 1 vertex>
 gap> D := HypercubeGraph(2);
-<immutable Hamiltonian connected bipartite symmetric digraph with bicomponent \
-sizes 2 and 2>
+<immutable Hamiltonian bipartite symmetric digraph with bicomponents of size 2\
+>
 gap> IsIsomorphicDigraph(D, CycleGraph(4));
 true
 gap> HypercubeGraph(-1);
@@ -618,7 +634,7 @@ Error, the argument <n> must be a non-negative integer,
 gap> IsIsomorphicDigraph(EmptyDigraph(4), KellerGraph(1));
 true
 gap> D := KellerGraph(2);
-<immutable Hamiltonian connected symmetric digraph with 16 vertices, 80 edges>
+<immutable Hamiltonian symmetric digraph with 16 vertices, 80 edges>
 gap> KellerGraph(-1);
 Error, the argument <n> must be a non-negative integer,
 
@@ -650,8 +666,8 @@ gap> D := KneserGraph(6, 4);
 gap> ChromaticNumber(D);
 1
 gap> D := KneserGraph(10, 2);
-<immutable Hamiltonian connected edge- and vertex-transitive symmetric digraph\
- with 45 vertices, 1260 edges>
+<immutable Hamiltonian edge- and vertex-transitive symmetric digraph with 45 v\
+ertices, 1260 edges>
 
 # LindgrenSousselierGraph
 gap> D := LindgrenSousselierGraph(1);
@@ -681,7 +697,7 @@ gap> MobiusLadderGraph(10);
 
 # MycielskiGraph
 gap> D := MycielskiGraph(2);
-<immutable Hamiltonian connected symmetric digraph with 2 vertices, 2 edges>
+<immutable Hamiltonian symmetric digraph with 2 vertices, 2 edges>
 gap> IsIsomorphicDigraph(MycielskiGraph(3), CycleGraph(5));
 true
 gap> MycielskiGraph(1);
@@ -698,7 +714,7 @@ Error, the argument <n> must be an integer greater than 0,
 
 # PathGraph
 gap> D := PathGraph(4);
-<immutable undirected tree digraph with 4 vertices>
+<immutable undirected tree with 4 vertices>
 gap> IsIsomorphicDigraph(D, DigraphSymmetricClosure(ChainDigraph(4)));
 true
 gap> PathGraph(1);
@@ -786,7 +802,7 @@ Error, the argument <n> must be an integer greater than 2,
 
 # WheelGraph
 gap> D := WheelGraph(5);
-<immutable Hamiltonian connected symmetric digraph with 5 vertices, 16 edges>
+<immutable planar Hamiltonian symmetric digraph with 5 vertices, 16 edges>
 gap> DigraphEdges(D);
 [ [ 1, 2 ], [ 1, 4 ], [ 1, 5 ], [ 2, 1 ], [ 2, 3 ], [ 2, 5 ], [ 3, 2 ], 
   [ 3, 4 ], [ 3, 5 ], [ 4, 1 ], [ 4, 3 ], [ 4, 5 ], [ 5, 1 ], [ 5, 2 ], 
@@ -796,7 +812,7 @@ Error, the argument <n> must be an integer greater than 3,
 gap> ChromaticNumber(D);
 3
 gap> D := WheelGraph(6);
-<immutable Hamiltonian connected symmetric digraph with 6 vertices, 20 edges>
+<immutable planar Hamiltonian symmetric digraph with 6 vertices, 20 edges>
 gap> ChromaticNumber(D);
 4
 
@@ -818,7 +834,7 @@ Error, no 1st choice method found for `WindmillGraph' on 2 arguments
 
 # PancakeGraph
 gap> D := PancakeGraph(3);
-<immutable Hamiltonian connected symmetric digraph with 6 vertices, 12 edges>
+<immutable Hamiltonian symmetric digraph with 6 vertices, 12 edges>
 gap> ChromaticNumber(D);
 2
 gap> IsVertexTransitive(D);
@@ -839,12 +855,6 @@ gap> BurntPancakeGraph(5);
 <immutable symmetric digraph with 3840 vertices, 19200 edges>
 gap> BurntPancakeGraph(IsMutableDigraph, 1);
 <mutable digraph with 1 vertex, 1 edge>
-
-# DIGRAPHS_UnbindVariables
-gap> Unbind(D);
-gap> Unbind(G8_3);
-gap> Unbind(gr);
-gap> Unbind(grrt);
 
 #
 gap> DIGRAPHS_StopTest();

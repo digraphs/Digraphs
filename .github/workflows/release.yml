@@ -1,0 +1,88 @@
+name: Release
+
+# Trigger the workflow manually
+on:
+  workflow_dispatch:
+    inputs:
+      dry-run:
+        description: "Dry run: do not actually push the release to GitHub"
+        type: boolean
+        required: false
+        default: false
+      force:
+        description: "Allow overwriting an existing release, or making a release with an incorrect date"
+        type: boolean
+        required: false
+        default: false
+
+permissions: write-all
+
+jobs:
+  release:
+    name: "Release the GAP package"
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v5
+      - uses: gap-actions/setup-gap@v3
+        with:
+          gap-version: latest
+      - name: "Clone the NautyTracesInterface package (no need to build) . . ."
+        run: |
+          git clone https://github.com/gap-packages/NautyTracesInterface ${GAPROOT}/pkg/NautyTracesInterface
+      - uses: gap-actions/build-pkg-docs@v2
+        with:
+          use-latex: true
+      - name: "Clean up additional files . . ."
+        run: |
+          rm -f  .mailmap .codespellrc Dockerfile
+          rm -rf etc
+      - name: "Extract the latest CHANGELOG entry to use as the GitHub release text . . ."
+        run: |
+          # Extract the part of CHANGELOG that is relevant to this release
+          LINES=`grep -n "## Version " CHANGELOG.md | head -2 | cut -d':' -f1`
+
+          # Find the line number where the relevant section starts
+          # (Increment by 1 if that first line is empty)
+          START=`echo $LINES | cut -d' ' -f1`;
+          START=$((START + 1))
+          if [ "`sed \"${START}q;d\" CHANGELOG.md`" == "" ]; then
+            START=$(( START + 1 ));
+          fi
+
+          # Find the line number where the relevant section ends
+          # (Decrement by 1 if that last line is empty)
+          STOP=`echo $LINES | cut -d' ' -f2`;
+          STOP=$((STOP - 1))
+          if [ "`sed \"${STOP}q;d\" CHANGELOG.md`" == "" ]; then
+            STOP=$(( STOP - 1 ));
+          fi
+
+          # Store the potentially multi-line text in the BODY environment so
+          # that we can pass it to the release-pkg action as an input
+          {
+            echo 'BODY<<EOF'
+            sed -n "${START},${STOP}p" CHANGELOG.md
+            echo EOF
+          } >> "$GITHUB_ENV"
+
+      - uses: gap-actions/release-pkg@v1
+        with:
+          dry-run: ${{ inputs.dry-run }}
+          force: ${{ inputs.force }}
+          body-text: ${{ env.BODY }}
+
+      - uses: gap-actions/update-gh-pages@v1
+        with:
+          # The <clean> option stops the action from updating the website with
+          # the latest GitHubPagesForGAP code, because we have customised our
+          # website (with e.g. a section linking to the Digraphs library, and
+          # the Digraphs library itself), and these changes would be overwritten
+          # if this option was set to <true>, which is the default. However,
+          # we might want to manually update the GitHubPagesForGAP code from
+          # time to time, to receive any bugfixes or updates to parts of the
+          # website code that we haven't customised. But this would have to be
+          # done carefully.
+          clean: false
+          dry-run: ${{ inputs.dry-run }}
+          extra-files: "CHANGELOG.md"

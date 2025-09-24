@@ -133,7 +133,7 @@ AutoDoc("digraphs", rec(
 
     scaffold := rec(
         includes := Includes,
-        appendix := ["z-appA.xml"],
+        appendix := ["z-appA.xml", "z-appB.xml"],
         bib := "digraphs.bib",
         entities := XMLEntities)));
 

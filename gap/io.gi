@@ -1428,21 +1428,23 @@ function(func, s)
   local out, i;
 
   s := SplitString(Chomp(s), " ");
-  Apply(s, EvalString);
 
-  if not ForAll(s, x -> IsInt(x) and x >= 0) then
+  if not ForAll(s, x -> ForAll(x, IsDigitChar)) or Length(s) < 2 then
     ErrorNoReturn("the 2nd argument <s> must be a string of ",
-                  "space-separated non-negative integers,");
-  elif not Length(s) >= 2 then
-    ErrorNoReturn("the 2nd argument <s> must be a string of ",
-                  "at least two integers,");
-  elif not ForAll([3 .. Length(s)], i -> s[i] < s[1]) then
-    ErrorNoReturn("the 2nd argument <s> must be a string consisting of ",
-                  "integers in the range [0 .. ", s[1], "],");
+                  "at least two space-separated non-negative integers,");
+  fi;
+
+  Apply(s, Int);
+
+  if not ForAll([3 .. Length(s)], i -> s[i] < s[1]) then
+    ErrorNoReturn("all integers in the 2nd argument <s>, ",
+                  "except for the first two, must be strictly less than ",
+                  "the first integer, which is ", s[1], ",");
   elif Length(s) < 2 * s[2] + 2 then
     ErrorNoReturn("the 2nd argument <s> must be a string of length ",
                   "at least ", 2 * s[2] + 2);
   fi;
+
   out := List([1 .. s[1]], x -> []);
   for i in [1 .. s[2]] do
     Add(out[s[2 * i + 1] + 1], s[2 * i + 2] + 1);

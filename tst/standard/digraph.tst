@@ -7,6 +7,17 @@
 ##
 #############################################################################
 ##
+
+#@local D, D1, D2
+#@local G, G1, G2, G3, G4, G5, S, T, U, adj
+#@local adjacencies, b, bin, c, c1, c2, d, di, digraph, divides, elms, eq
+#@local eq_distr, eq_new, error, f, failed, failed_names, failed_values, foo, g
+#@local gr, gr1, gr2, gr3, gr4, gr5, graph, graph1, graph2, grnc, group, h
+#@local hom13, hom21, hom23, hom31, hom41, hom42, hom52, hom53, i, im, inn
+#@local isGraph, iso, iso_distr, iso_new, j, k, list, m, main, mat, n, name
+#@local name2, names, new, order, p, prop, properties, r, r1, r2, record, rel1
+#@local rel2, rel3, representatives, s, schreierVector, sgn, temp, test, v, x
+#@local xxx, y
 gap> START_TEST("Digraphs package: standard/digraph.tst");
 gap> LoadPackage("digraphs", false);;
 
@@ -2058,82 +2069,6 @@ gap> graph := RandomDigraph(IsEulerianDigraph, 10);;
 >   if not IsEulerianDigraph(graph) then
 >     Print("False");
 >   fi;
-
-#  DIGRAPHS_UnbindVariables
-gap> Unbind(D);
-gap> Unbind(D1);
-gap> Unbind(D2);
-gap> Unbind(G);
-gap> Unbind(G1);
-gap> Unbind(G2);
-gap> Unbind(G3);
-gap> Unbind(G4);
-gap> Unbind(G5);
-gap> Unbind(S);
-gap> Unbind(T);
-gap> Unbind(U);
-gap> Unbind(adj);
-gap> Unbind(b);
-gap> Unbind(bin);
-gap> Unbind(d);
-gap> Unbind(di);
-gap> Unbind(digraph);
-gap> Unbind(divides);
-gap> Unbind(elms);
-gap> Unbind(eq);
-gap> Unbind(error);
-gap> Unbind(f);
-gap> Unbind(failed);
-gap> Unbind(foo);
-gap> Unbind(g);
-gap> Unbind(gr);
-gap> Unbind(gr1);
-gap> Unbind(gr2);
-gap> Unbind(gr3);
-gap> Unbind(gr4);
-gap> Unbind(gr5);
-gap> Unbind(graph);
-gap> Unbind(graph1);
-gap> Unbind(graph2);
-gap> Unbind(grnc);
-gap> Unbind(h);
-gap> Unbind(hom13);
-gap> Unbind(hom21);
-gap> Unbind(hom23);
-gap> Unbind(hom31);
-gap> Unbind(hom41);
-gap> Unbind(hom42);
-gap> Unbind(hom52);
-gap> Unbind(hom53);
-gap> Unbind(i);
-gap> Unbind(im);
-gap> Unbind(inn);
-gap> Unbind(iso);
-gap> Unbind(j);
-gap> Unbind(list);
-gap> Unbind(m);
-gap> Unbind(main);
-gap> Unbind(mat);
-gap> Unbind(n);
-gap> Unbind(name);
-gap> Unbind(names);
-gap> Unbind(new);
-gap> Unbind(p);
-gap> Unbind(prop);
-gap> Unbind(r);
-gap> Unbind(r1);
-gap> Unbind(r2);
-gap> Unbind(record);
-gap> Unbind(rel1);
-gap> Unbind(rel2);
-gap> Unbind(rel3);
-gap> Unbind(s);
-gap> Unbind(sgn);
-gap> Unbind(temp);
-gap> Unbind(test);
-gap> Unbind(v);
-gap> Unbind(x);
-gap> Unbind(y);
 
 #
 gap> DIGRAPHS_StopTest();

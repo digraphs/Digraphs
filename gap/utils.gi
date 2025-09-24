@@ -240,7 +240,7 @@ end);
 InstallGlobalFunction(DigraphsTestManualExamples,
 function(arg...)
   local exlists, indices, omit, oldscr, passed, pad, total, l, sp, bad, s,
-  start_time, test, end_time, elapsed, pex, str, j, ex, i;
+  start_time, test, end_time, elapsed, pex, str, j, ex, i, first;
 
   exlists := DIGRAPHS_ManualExamples();
   if Length(arg) > 0 then
@@ -254,13 +254,23 @@ function(arg...)
                     ",");
     fi;
   else
-    omit := DIGRAPHS_OmitFromTests;
+    omit := DIGRAPHS_OmitFromTests();
     if Length(omit) > 0 then
-      Print("# not testing examples containing the strings:");
+      if Length(omit) = 1 then
+        Print("# not testing examples containing the string ");
+      else
+        Print("# not testing examples containing the strings: ");
+      fi;
+      first := true;
       for str in omit do
         exlists := Filtered(exlists,
                             x -> PositionSublist(x[1][1], str) = fail);
-        Print(", \"", str, "\"");
+        if first then
+          first := false;
+        else
+          Print(", ");
+        fi;
+        Print("\"", str, "\"");
       od;
       Print(" . . .\n");
     fi;

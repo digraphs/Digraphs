@@ -8,11 +8,37 @@
 ##
 #############################################################################
 ##
+
+#@local C, D, D1, D2, D3, D3_edges, DD
+#@local G, G1, L, TestPartialOrderDigraph
+#@local TestPartialOrderDigraph2, TestUnion, a, adj, b, comps, copy, d, e
+#@local edges, edges2, func, g, gr, gr1, gr2, gr3, gr4, gri, grrt, grt, h, i
+#@local i1, i2, id, idom, in1, in2, in3, iter, j1, j2, m, m1, m2, mat, n, nbs
+#@local out, out1, out2, out3, p1, p2, path, preorder, qr, r, res, rtclosure, t
+#@local tclosure, u1, u2, x
 gap> START_TEST("Digraphs package: standard/oper.tst");
 gap> LoadPackage("digraphs", false);;
 
 #
 gap> DIGRAPHS_StartTest();
+
+#  DigraphIsKing: for a digraph, a node and a positive integer
+gap> gr := Digraph([[2], [3, 4], [1, 4], [1]]);
+<immutable digraph with 4 vertices, 6 edges>
+gap> IsTournament(gr);
+true
+gap> DigraphIsKing(gr, 2, 2);
+true
+gap> DigraphIsKing(gr, 4, 2);
+false
+gap> DigraphIsKing(gr, 4, 3);
+true
+gap> DigraphIsKing(gr, 5, 2);
+Error, the 2nd argument <v> is not a vertex of the 1st argument <D>,
+gap> gr := Digraph([[], [3, 4], [1, 4], [1]]);
+<immutable digraph with 4 vertices, 5 edges>
+gap> DigraphIsKing(gr, 2, 2);
+Error, the 1st argument <D> must be a tournament,
 
 #  DigraphRemoveLoops
 gap> gr := DigraphFromDigraph6String("&EhxPC?@");
@@ -3233,68 +3259,6 @@ gap> DigraphEdges(D);
   [ 5, 4 ] ]
 gap> DigraphVertexLabels(D);
 [ 1, 2, 3, 6, [ 4, 5 ] ]
-
-#  DIGRAPHS_UnbindVariables
-gap> Unbind(C);
-gap> Unbind(D);
-gap> Unbind(D1);
-gap> Unbind(D2);
-gap> Unbind(D3);
-gap> Unbind(D3_edges);
-gap> Unbind(DD);
-gap> Unbind(G);
-gap> Unbind(G1);
-gap> Unbind(L);
-gap> Unbind(a);
-gap> Unbind(adj);
-gap> Unbind(b);
-gap> Unbind(copy);
-gap> Unbind(d);
-gap> Unbind(edges);
-gap> Unbind(edges2);
-gap> Unbind(func);
-gap> Unbind(g);
-gap> Unbind(gr);
-gap> Unbind(gr1);
-gap> Unbind(gr2);
-gap> Unbind(gr3);
-gap> Unbind(gr4);
-gap> Unbind(gri);
-gap> Unbind(grrt);
-gap> Unbind(grt);
-gap> Unbind(h);
-gap> Unbind(i);
-gap> Unbind(i1);
-gap> Unbind(i2);
-gap> Unbind(in1);
-gap> Unbind(in2);
-gap> Unbind(in3);
-gap> Unbind(iter);
-gap> Unbind(j1);
-gap> Unbind(j2);
-gap> Unbind(m);
-gap> Unbind(m1);
-gap> Unbind(m2);
-gap> Unbind(mat);
-gap> Unbind(n);
-gap> Unbind(nbs);
-gap> Unbind(out);
-gap> Unbind(out1);
-gap> Unbind(out2);
-gap> Unbind(out3);
-gap> Unbind(p1);
-gap> Unbind(p2);
-gap> Unbind(path);
-gap> Unbind(qr);
-gap> Unbind(r);
-gap> Unbind(res);
-gap> Unbind(rtclosure);
-gap> Unbind(t);
-gap> Unbind(tclosure);
-gap> Unbind(u1);
-gap> Unbind(u2);
-gap> Unbind(x);
-gap> Unbind(TestPartialOrderDigraph);
 
 #
 gap> DIGRAPHS_StopTest();

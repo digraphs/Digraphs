@@ -214,7 +214,7 @@ end);
 
 InstallImmediateMethod(IsConnectedDigraph,
 IsDigraph and HasDigraphConnectedComponents, 0,
-D -> Length(DigraphConnectedComponents(D).comps) = 1);
+D -> Length(DigraphConnectedComponents(D).comps) <= 1);
 
 InstallMethod(IsConnectedDigraph, "for a digraph", [IsDigraph],
 function(D)
@@ -227,6 +227,11 @@ function(D)
   # Otherwise use DigraphConnectedComponents method
   return DigraphNrConnectedComponents(D) = 1;
 end);
+
+InstallImmediateMethod(IsConnectedDigraph,
+"for a digraph with known number of connected components",
+IsDigraph and HasDigraphNrConnectedComponents, 0,
+D -> DigraphNrConnectedComponents(D) <= 1);
 
 InstallImmediateMethod(IsAcyclicDigraph, "for a reflexive digraph",
 IsReflexiveDigraph, 0,
@@ -479,12 +484,13 @@ function(D)
 end);
 
 InstallMethod(IsDirectedTree, "for a digraph", [IsDigraph],
-function(D)
-  if IsNullDigraph(D) then
-    return DigraphNrVertices(D) = 1;
-  fi;
-  return IsConnectedDigraph(D) and InDegreeSet(D) = [0, 1];
-end);
+{D} -> DigraphHasAVertex(D) and IsConnectedDigraph(D)
+     and (IsEmptyDigraph(D) or InDegreeSet(D) = [0, 1]));
+
+InstallMethod(IsDirectedForest, "for a digraph", [IsDigraph],
+{D} -> DigraphHasAVertex(D) and
+    (IsEmptyDigraph(D) or ForAll(DigraphConnectedComponents(D).comps,
+                                 x -> Set(InDegrees(D){x}) = [0, 1])));
 
 InstallMethod(IsEulerianDigraph, "for a digraph", [IsDigraph],
 function(D)

@@ -16,24 +16,8 @@
     <Item>Wilf A. Wilson, and</Item>
     <Item>Michael C. Young.</Item>
   </List>
-  Additional contributions were made by:
-  <List>
-    <Item>Marina Anagnostopoulou-Merkouri,</Item>
-    <Item>Finn Buck,</Item>
-    <Item>Stuart Burrell,</Item>
-    <Item>Reinis Cirpons,</Item>
-    <Item>Tom Conti-Leslie,</Item>
-    <Item>Luke Elliott,</Item>
-    <Item>Ewan Gilligan,</Item>
-    <Item>Max Horn,</Item>
-    <Item>Christopher Jefferson,</Item>
-    <Item>Markus Pfeiffer,</Item>
-    <Item>Lea Racine,</Item>
-    <Item>Christopher Russell,</Item>
-    <Item>Finn Smith,</Item>
-    <Item>Ben Spiers, and</Item>
-    <Item>Murray Whyte.</Item>
-  </List>
+  Additional contributions were made by many people, for which the authors are
+  very grateful. A full list can be found on the title page.
 
   The &Digraphs; package contains a variety of methods for efficiently creating
   and storing mutable and immutable digraphs and computing information about

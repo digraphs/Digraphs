@@ -83,7 +83,7 @@ function(D)
       w := nbs[v][i];
 
       if v <> 1 and low[w] >= pre[v] then
-        Add(articulation_points, v);
+        AddSet(articulation_points, v);
       fi;
       if low[w] = pre[w] then
         Add(bridges, [v, w]);
@@ -127,7 +127,10 @@ function(D)
   if counter = DigraphNrVertices(D) then
     connected := true;
     if nr_children > 1 then
-      Add(articulation_points, 1);
+      # The `AddSet` is not really needed, and could just be `Add`, since 1
+      # should not already be in articulation_points. But let's use AddSet
+      # to keep the output sorted.
+      AddSet(articulation_points, 1);
     fi;
     if not IsEmpty(bridges) then
       orientation := fail;
@@ -1097,6 +1100,11 @@ InstallMethod(DigraphNrConnectedComponents, "for a digraph",
 [IsDigraph],
 D -> Length(DigraphConnectedComponents(D).comps));
 
+InstallImmediateMethod(DigraphNrConnectedComponents,
+"for a digraph with known connected components",
+IsDigraph and HasDigraphConnectedComponents, 0,
+D -> Length(DigraphConnectedComponents(D).comps));
+
 InstallMethod(OutDegrees, "for a digraph by out-neighbours",
 [IsDigraphByOutNeighboursRep],
 function(D)
@@ -1850,10 +1858,6 @@ end);
 InstallMethod(DigraphAllChordlessCycles, "for a digraph",
 [IsDigraph],
 D -> DigraphAllChordlessCyclesOfMaximalLength(D, INTOBJ_MAX));
-
-InstallMethod(ArticulationPoints, "for a digraph by out-neighbours",
-[IsDigraphByOutNeighboursRep],
-D -> DIGRAPHS_ArticulationPointsBridgesStrongOrientation(D)[2]);
 
 # Compute for a given rotation system the facial walks
 InstallMethod(FacialWalks, "for a digraph and a list",

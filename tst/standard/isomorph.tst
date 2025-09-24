@@ -7,6 +7,9 @@
 ##
 #############################################################################
 ##
+
+#@local D, G, canon, e_cols, ec, gr, gr1, gr2, gr3
+#@local gr4, gr5, gr6, gr7, i, iso, j, m, n, nauty, new, p, t, v_cols, vc
 gap> START_TEST("Digraphs package: standard/isomorph.tst");
 gap> LoadPackage("digraphs", false);;
 
@@ -389,7 +392,7 @@ true
 
 #  AutomorphismGroup: for a digraph with colored vertices
 gap> gr := CompleteBipartiteDigraph(4, 4);
-<immutable complete bipartite digraph with bicomponent sizes 4 and 4>
+<immutable complete bipartite digraph with bicomponents of size 4>
 gap> AutomorphismGroup(gr) = Group([
 > (7, 8), (6, 7), (5, 6), (3, 4), (2, 3), (1, 2), (1, 5)(2, 6)(3, 7)(4, 8)]);
 true
@@ -400,7 +403,7 @@ Group(())
 
 #  AutomorphismGroup: for a digraph with incorrect colors
 gap> gr := CompleteBipartiteDigraph(4, 4);
-<immutable complete bipartite digraph with bicomponent sizes 4 and 4>
+<immutable complete bipartite digraph with bicomponents of size 4>
 gap> AutomorphismGroup(gr, [[1 .. 4], [5 .. 9]]);
 Error, the 2nd argument <partition> does not define a colouring of the vertice\
 s [1 .. 8], since the entry in position 2 contains 
@@ -426,7 +429,7 @@ s [1 ..
 
 #  CanonicalLabelling: for a digraph with colored vertices
 gap> gr := CompleteBipartiteDigraph(4, 4);
-<immutable complete bipartite digraph with bicomponent sizes 4 and 4>
+<immutable complete bipartite digraph with bicomponents of size 4>
 gap> BlissCanonicalLabelling(gr);
 (1,8,4)(2,3)(5,7)
 gap> not DIGRAPHS_NautyAvailable
@@ -451,7 +454,7 @@ gap> BlissCanonicalLabelling(BlissCanonicalDigraph(gr));
 
 #  CanonicalLabelling: for a digraph with incorrect colors
 gap> gr := CompleteBipartiteDigraph(4, 4);
-<immutable complete bipartite digraph with bicomponent sizes 4 and 4>
+<immutable complete bipartite digraph with bicomponents of size 4>
 gap> BlissCanonicalLabelling(gr, [[1 .. 4], [5 .. 9]]);
 Error, the 2nd argument <partition> does not define a colouring of the vertice\
 s [1 .. 8], since the entry in position 2 contains 
@@ -998,30 +1001,6 @@ gap> Number(FullTransformationMonoid(5),
 >                                      t,
 >                                      [1, 1, 1, 1, 1]));   
 5
-
-#  DIGRAPHS_UnbindVariables
-gap> Unbind(D);
-gap> Unbind(G);
-gap> Unbind(canon);
-gap> Unbind(cols);
-gap> Unbind(ec);
-gap> Unbind(gr);
-gap> Unbind(gr1);
-gap> Unbind(gr2);
-gap> Unbind(gr3);
-gap> Unbind(gr4);
-gap> Unbind(gr5);
-gap> Unbind(gr6);
-gap> Unbind(gr7);
-gap> Unbind(i);
-gap> Unbind(iso);
-gap> Unbind(j);
-gap> Unbind(m);
-gap> Unbind(n);
-gap> Unbind(nauty);
-gap> Unbind(p);
-gap> Unbind(t);
-gap> Unbind(vc);
 
 #
 gap> DIGRAPHS_StopTest();

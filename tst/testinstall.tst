@@ -7,6 +7,10 @@
 ##
 #############################################################################
 ##
+
+#@local C, D
+#@local adj, comps, d, distances, edges, f, func, gr, gr1, gr2, i, id, out, p
+#@local parents, r, str, topo
 gap> START_TEST("Digraphs package: testinstall.tst");
 gap> LoadPackage("digraphs", false);;
 
@@ -472,23 +476,39 @@ gap> d := Digraph([[2, 3, 4, 5], [1, 3, 4], [1, 2, 4, 5], [1, 2, 3, 5],
 gap> Length(SubdigraphsMonomorphisms(CompleteMultipartiteDigraph([2, 3]), d));
 4
 
-#  DIGRAPHS_UnbindVariables
-gap> Unbind(C);
-gap> Unbind(D);
-gap> Unbind(adj);
-gap> Unbind(d);
-gap> Unbind(f);
-gap> Unbind(func);
-gap> Unbind(gr);
-gap> Unbind(gr1);
-gap> Unbind(gr2);
-gap> Unbind(i);
-gap> Unbind(out);
-gap> Unbind(p);
-gap> Unbind(r);
-gap> Unbind(str);
-gap> Unbind(topo);
+# Issue #764 Disconnected CirculantGraphs are not Hamiltonian, etc
+gap> D := CirculantGraph(12, [2, 4]);
+<immutable vertex-transitive symmetric digraph with 12 vertices, 48 edges>
+gap> IsHamiltonianDigraph(D) or IsBiconnectedDigraph(D);
+false
+gap> D := DigraphCopy(D);;
+gap> IsHamiltonianDigraph(D) or IsBiconnectedDigraph(D);
+false
+gap> IsVertexTransitive(D);
+true
+gap> D := CirculantGraph(4, [2]);
+<immutable undirected forest with 4 vertices>
+gap> IsHamiltonianDigraph(D) or IsBiconnectedDigraph(D);
+false
+gap> D := CirculantGraph(6, [2]);
+<immutable vertex-transitive symmetric digraph with 6 vertices, 12 edges>
+gap> IsHamiltonianDigraph(D) or IsBiconnectedDigraph(D);
+false
+gap> D := DigraphCopy(CirculantGraph(9, [3]));
+<immutable digraph with 9 vertices, 18 edges>
+gap> IsHamiltonianDigraph(D) or IsBiconnectedDigraph(D);
+false
 
-#E#
+# Issue #818 IsConnectedDigraph for a digraph without vertices
+gap> D := Digraph([]);;
+gap> IsConnectedDigraph(D);
+true
+gap> D := Digraph([]);;
+gap> DigraphConnectedComponents(D);
+rec( comps := [  ], id := [  ] )
+gap> IsConnectedDigraph(D);
+true
+
+#
 gap> DIGRAPHS_StopTest();
 gap> STOP_TEST("Digraphs package: testinstall.tst", 0);

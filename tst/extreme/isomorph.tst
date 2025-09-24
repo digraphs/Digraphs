@@ -7,6 +7,8 @@
 ##
 #############################################################################
 ##
+
+#@local G, H, gr, gr1, gr2, graph5, group5, p, treeAuts, trees
 gap> START_TEST("Digraphs package: extreme/isomorph.tst");
 gap> LoadPackage("digraphs", false);;
 
@@ -316,18 +318,6 @@ gap> OnDigraphs(gr1, p) = gr2;
 true
 gap> IsomorphismDigraphs(EmptyDigraph(1), gr1);
 fail
-
-#  DIGRAPHS_UnbindVariables
-gap> Unbind(G);
-gap> Unbind(H);
-gap> Unbind(gr);
-gap> Unbind(gr1);
-gap> Unbind(gr2);
-gap> Unbind(graph5);
-gap> Unbind(group5);
-gap> Unbind(p);
-gap> Unbind(treeAuts);
-gap> Unbind(trees);
 
 #
 gap> DIGRAPHS_StopTest();

@@ -7,6 +7,8 @@
 ##
 #############################################################################
 ##
+
+#@local circs, g, gr, str
 gap> START_TEST("Digraphs package: extreme/attr.tst");
 gap> LoadPackage("digraphs", false);;
 
@@ -67,12 +69,6 @@ gap> str := Concatenation("""khdLA_gc?N_QQchPIS@Q_dH@GKA_W@OW?Fo???~{G??SgSo""",
 gap> gr := DigraphFromGraph6String(str);;
 gap> ChromaticNumber(gr);
 6
-
-#  DIGRAPHS_UnbindVariables
-gap> Unbind(circs);
-gap> Unbind(g);
-gap> Unbind(gr);
-gap> Unbind(str);
 
 #
 gap> DIGRAPHS_StopTest();

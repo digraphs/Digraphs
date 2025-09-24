@@ -426,7 +426,7 @@ function(arg...)
     size := fail;
   fi;
 
-  # use cached value is not special case due to exclusion / size / etc.
+  # use cached value if it's not a special case due to exclusion / size / etc.
   if IsList(include) and IsEmpty(include) and IsList(exclude)
       and IsEmpty(exclude) and limit = infinity and size = fail
       and HasDigraphCliquesAttr(D) then
