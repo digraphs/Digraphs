@@ -69,6 +69,7 @@ DeclareSynonymAttr("IsEquivalenceDigraph",
 DeclareSynonymAttr("IsAntiSymmetricDigraph", IsAntisymmetricDigraph);
 DeclareSynonymAttr("IsNullDigraph", IsEmptyDigraph);
 DeclareSynonymAttr("IsQuasiorderDigraph", IsPreorderDigraph);
+DeclareSynonymAttr("IsTwoEdgeTransitive", Is2EdgeTransitive);
 
 DeclareOperation("DIGRAPHS_IsJoinSemilatticeAndJoinTable", [IsDigraph]);
 DeclareOperation("DIGRAPHS_IsMeetSemilatticeAndMeetTable", [IsDigraph]);
