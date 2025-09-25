@@ -693,25 +693,94 @@ function(D)
   return LatticeDigraphEmbedding(N5, D) = fail;
 end);
 
-InstallMethod(IsTwoEdgeTransitive,
+InstallMethod(Is2EdgeTransitive,
 "for a digraph without multiple edges",
 [IsDigraph],
 function(D)
-  local twoEdges;
-
+  local Aut, O, I, Centers, Count, In, Out, u;
   if IsMultiDigraph(D) then
     ErrorNoReturn("the argument <D> must be a digraph with no multiple",
                   " edges,");
   fi;
 
-  twoEdges := Filtered(Cartesian(DigraphEdges(D), DigraphEdges(D)),
-                       pair -> pair[1][2] = pair[2][1]
-                               and pair[1][1] <> pair[2][2]);
+  Aut := AutomorphismGroup(D);
+  D := DigraphRemoveLoops(D);
+  O := D!.OutNeighbours;
+  I := InNeighbours(D);
+  # The list Centers will store all those vertices which lie at the
+  # center of a 2-edge.
 
-  if Length(twoEdges) = 0 then
+  Centers := [];
+
+  for u in [1 .. Length(O)] do
+    if Length(O[u]) > 0 and Length(I[u]) > 0 then
+      # If u has precisely one in neighbour and out neighbour,
+      # we must check these are not the same vertex as then there
+      # would be no 2-edge centered at u.
+
+      if Length(O[u]) = 1 and Length(I[u]) = 1 then
+        if O[u][1] = I[u][1] then
+          continue;
+        fi;
+      fi;
+      if not IsBound(Out) then
+        Out := Length(O[u]);
+        In := Length(I[u]);
+      fi;
+      # For D to be 2-edge transitive, it must be transitive
+      # on 2-edge centers, so all 2-edge centers must have the
+      # same in-degree and same out-degree.
+
+      if Out <> Length(O[u]) or In <> Length(I[u]) then
+        return false;
+      fi;
+      Add(Centers, u);
+    fi;
+  od;
+  # If Centers is empty, D has no 2-edges so is vacuously 2-edge
+  # transtive.
+
+  if Length(Centers) = 0 then
     return true;
-  else
-    return OrbitLength(AutomorphismGroup(D), twoEdges[1], OnTuplesTuples)
-         = Length(twoEdges);
   fi;
+  # Find the number of 2-cycles at any center. We will have to subtract
+  # these from the total number of 2-edges as 2-cycles are not classed
+  # as 2-edges.
+
+  Count := 0;
+  for u in O[Centers[1]] do
+    if Centers[1] in O[u] then
+      Count := Count + 1;
+    fi;
+  od;
+
+  # Find a 2-edge and check if its orbit length equals the number of 2-edges.
+  # By this point, we know that D is likely a highly symmetric digraph,
+  # since all 2-edge centers share a common in and out degree
+  # (This is by no means a guarantee, see Frucht's graph). From testing,
+  # calculating the stabilizer and using the orbit-stabilizer
+  # theorem is usually must faster in this case, so we instead determine
+  # the stabilizer of a 2-edge.
+
+  for u in I[Centers[1]] do
+    if Position(O[Centers[1]], u) = 1 then
+      if Length(O[Centers[1]]) = 1 then
+        continue;
+      else
+        return (In * Out - Count) * Length(Centers) =
+               Order(Aut) / Order(Stabilizer(Aut,
+                                             [u,
+                                              Centers[1],
+                                              O[Centers[1]][2]],
+                                             OnTuples));
+      fi;
+    else
+      return (In * Out - Count) * Length(Centers) =
+             Order(Aut) / Order(Stabilizer(Aut,
+                                           [u,
+                                            Centers[1],
+                                            O[Centers[1]][1]],
+                                           OnTuples));
+    fi;
+  od;
 end);

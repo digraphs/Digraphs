@@ -440,8 +440,8 @@ rec( distances := [ [ 0, 5 ], [ 5, 0 ] ],
 gap> EdgeWeightedDigraphShortestPath(d, 1, 2);
 [ [ 1, 2 ], [ 1 ] ]
 
-# IsTwoEdgeTransitive
-gap> IsTwoEdgeTransitive(DigraphByEdges([[1, 2], [2, 3], [3, 1]]));
+# Is2EdgeTransitive
+gap> Is2EdgeTransitive(DigraphByEdges([[1, 2], [2, 3], [3, 1]]));
 true
 
 # Issue 617: bug in DigraphRemoveEdge, wasn't removing edge labels

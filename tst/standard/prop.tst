@@ -1738,22 +1738,22 @@ true
 gap> IsEdgeTransitive(Digraph([[2], [3, 3, 3], []]));
 Error, the argument <D> must be a digraph with no multiple edges,
 
-# IsTwoEdgeTransitive
-gap> IsTwoEdgeTransitive(DigraphByEdges([[1, 2], [2, 3], [3, 1]]));
+# Is2EdgeTransitive
+gap> Is2EdgeTransitive(DigraphByEdges([[1, 2], [2, 3], [3, 1]]));
 true
-gap> IsTwoEdgeTransitive(DigraphByEdges([[1, 2], [2, 3], [3, 1], [3, 4]]));
+gap> Is2EdgeTransitive(DigraphByEdges([[1, 2], [2, 3], [3, 1], [3, 4]]));
 false
-gap> IsTwoEdgeTransitive(CompleteDigraph(4));
+gap> Is2EdgeTransitive(CompleteDigraph(4));
 true
-gap> IsTwoEdgeTransitive(CycleDigraph(100));
+gap> Is2EdgeTransitive(CycleDigraph(100));
 true
-gap> IsTwoEdgeTransitive(CompleteBipartiteDigraph(11, 23));
+gap> Is2EdgeTransitive(CompleteBipartiteDigraph(11, 23));
 false
-gap> IsTwoEdgeTransitive(DigraphByEdges([[1, 2]]));
+gap> Is2EdgeTransitive(DigraphByEdges([[1, 2]]));
 true
-gap> IsTwoEdgeTransitive(DigraphByEdges([]));
+gap> Is2EdgeTransitive(DigraphByEdges([]));
 true
-gap> IsTwoEdgeTransitive(Digraph([[2], [3, 3, 3], []]));
+gap> Is2EdgeTransitive(Digraph([[2], [3, 3, 3], []]));
 Error, the argument <D> must be a digraph with no multiple edges,
 
 # DigraphHasNoVertices and DigraphHasAVertex
