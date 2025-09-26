@@ -109,6 +109,7 @@
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6.html#X78C0B2637985648B">6.8-1 IsDigraphCore</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6.html#X8361CA6E8401FF26">6.8-2 IsEdgeTransitive</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6.html#X7B26E4447A1611E9">6.8-3 IsVertexTransitive</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6.html#X7FB8789A7BF847E6">6.8-4 Is2EdgeTransitive</a></span>
 </div></div>
 </div>
 
@@ -1814,6 +1815,29 @@ Error, the argument &lt;D&gt; must be a digraph with no multiple edges,
 true
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsVertexTransitive(ChainDigraph(3));</span>
 false
+</pre></div>
+
+<p><a id="X7FB8789A7BF847E6" name="X7FB8789A7BF847E6"></a></p>
+
+<h5>6.8-4 Is2EdgeTransitive</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; Is2EdgeTransitive</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;property&nbsp;)</td></tr></table></div>
+<p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
+
+<p>If <var class="Arg">digraph</var> is a digraph without multiple edges, then <code class="code">Is2EdgeTransitive</code> returns <code class="keyw">true</code> if <var class="Arg">digraph</var> is 2-edge transitive, and <code class="keyw">false</code> otherwise. If <var class="Arg">digraph</var> has multiple edges, then <code class="code">Is2EdgeTransitive</code> returns an error. A digraph is <em>2-edge transitive</em> if its automorphism group acts transitively on 2-edges via the action <code class="func">OnTuples</code> (<a href="https://docs.gap-system.org/doc/ref/chap41.html#X832CC5F87EEA4A7E"><span class="RefLink">Reference: OnTuples</span></a>). A <em>2-edge</em> in a digraph is a triple (u, v, w) of distinct vertices such that (u, v) and (v, w) are edges.</p>
+
+<p>If the argument <var class="Arg">digraph</var> is mutable, then the return value of this property is recomputed every time it is called.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">Is2EdgeTransitive(CompleteDigraph(4));</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">Is2EdgeTransitive(DigraphByEdges([[1, 2], [2, 3], [3, 4]]));</span>
+false
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">Is2EdgeTransitive(CycleDigraph(5));</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">Is2EdgeTransitive(Digraph([[2], [3, 3, 3], []]));</span>
+Error, the argument &lt;D&gt; must be a digraph with no multiple edges,
 </pre></div>
 
 
