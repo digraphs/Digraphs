@@ -3114,6 +3114,95 @@ gap> D := DigraphRemoveEdge(D, 1, 3);
 gap> D := DigraphRemoveEdge(D, 1, 3);
 <immutable digraph with 6 vertices, 11 edges>
 
+# VertexConnectivity
+gap> D := CompleteDigraph(10);
+<immutable complete digraph with 10 vertices>
+gap> VertexConnectivity(D);
+9
+gap> ForAny(Combinations(DigraphVertices(D), 8),
+> x -> not IsConnectedDigraph(InducedSubdigraph(D,
+>                               Difference(DigraphVertices(D), x))));
+false
+gap> D := JohnsonDigraph(9, 2);
+<immutable symmetric digraph with 36 vertices, 504 edges>
+gap> VertexConnectivity(D);
+14
+gap> D := EmptyDigraph(0);
+<immutable empty digraph with 0 vertices>
+gap> VertexConnectivity(D);
+0
+gap> D := EmptyDigraph(1);
+<immutable empty digraph with 1 vertex>
+gap> VertexConnectivity(D);
+0
+gap> D := Digraph([[2, 4, 5], [1, 4], [4, 7], [1, 2, 3, 5, 6, 7],
+>                  [1, 4], [4, 7], [3, 4, 6]]);
+<immutable digraph with 7 vertices, 20 edges>
+gap> VertexConnectivity(D);
+1
+gap> not IsConnectedDigraph(D);
+false
+gap> ForAny(Combinations(DigraphVertices(D), 1),
+> x -> not IsConnectedDigraph(InducedSubdigraph(D,
+>                               Difference(DigraphVertices(D), x))));
+true
+gap> D := Digraph([[2, 4, 5], [1, 3, 4], [4, 7], [1, 2, 3, 5, 6, 7],
+>                  [1, 4], [4, 7], [3, 4, 6]]);
+<immutable digraph with 7 vertices, 21 edges>
+gap> VertexConnectivity(D);
+2
+gap> ForAny(Combinations(DigraphVertices(D), 1),
+> x -> not IsConnectedDigraph(InducedSubdigraph(D,
+>                               Difference(DigraphVertices(D), x))));
+false
+gap> ForAny(Combinations(DigraphVertices(D), 2),
+> x -> not IsConnectedDigraph(InducedSubdigraph(D,
+>                               Difference(DigraphVertices(D), x))));
+true
+gap> D := Digraph([[2, 3], [3, 5], [1, 2, 4], [2, 3], [3]]);
+<immutable digraph with 5 vertices, 10 edges>
+gap> VertexConnectivity(D);
+2
+gap> ForAny(Combinations(DigraphVertices(D), 1),
+> x -> not IsConnectedDigraph(InducedSubdigraph(D,
+>                               Difference(DigraphVertices(D), x))));
+false
+gap> ForAny(Combinations(DigraphVertices(D), 2),
+> x -> not IsConnectedDigraph(InducedSubdigraph(D,
+>                               Difference(DigraphVertices(D), x))));
+true
+gap> D := DigraphFromGraph6String("NoCQ@?EAS_C`QA?c_Kg");;
+gap> VertexConnectivity(D);
+3
+gap> ForAny(Combinations(DigraphVertices(D), 2),
+> x -> not IsConnectedDigraph(InducedSubdigraph(D,
+>                               Difference(DigraphVertices(D), x))));
+false
+gap> ForAny(Combinations(DigraphVertices(D), 3),
+> x -> not IsConnectedDigraph(InducedSubdigraph(D,
+>                               Difference(DigraphVertices(D), x))));
+true
+gap> D := DigraphFromGraph6String("HoStIv{");;
+gap> VertexConnectivity(D);
+4
+gap> ForAny(Combinations(DigraphVertices(D), 3),
+> x -> not IsConnectedDigraph(InducedSubdigraph(D,
+>                               Difference(DigraphVertices(D), x))));
+false
+gap> ForAny(Combinations(DigraphVertices(D), 4),
+> x -> not IsConnectedDigraph(InducedSubdigraph(D,
+>                               Difference(DigraphVertices(D), x))));
+true
+gap> D := PancakeGraph(4);
+gap> ForAny(Combinations(DigraphVertices(D), 2),
+> x -> not IsConnectedDigraph(InducedSubdigraph(D,
+>                               Difference(DigraphVertices(D), x))));
+false
+gap> ForAny(Combinations(DigraphVertices(D), 3),
+> x -> not IsConnectedDigraph(InducedSubdigraph(D,
+>                               Difference(DigraphVertices(D), x))));
+true
+
 # Semimodular lattices
 gap> D := DigraphFromDigraph6String("&C[o?");
 <immutable digraph with 4 vertices, 5 edges>
