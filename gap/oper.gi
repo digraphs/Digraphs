@@ -1825,7 +1825,7 @@ function(digraph, source, target)
   while not IsEmpty(queue) do
     u := Pop(queue);
     u := u[2];
-    # TODO: this has a small performance impact for DigraphDijkstraS,
+    # TODO: this has a small performance impact for DigraphShortestPathsS,
     #       but do we care?
     if u = target then
       return [dist, prev];
@@ -1842,10 +1842,10 @@ function(digraph, source, target)
   return [dist, prev];
 end);
 
-InstallMethod(DigraphDijkstra, "for a digraph, a vertex, and a vertex",
+InstallMethod(DigraphShortestPaths, "for a digraph, a vertex, and a vertex",
 [IsDigraph, IsPosInt, IsPosInt], DIGRAPHS_DijkstraST);
 
-InstallMethod(DigraphDijkstra, "for a digraph, and a vertex",
+InstallMethod(DigraphShortestPaths, "for a digraph, and a vertex",
 [IsDigraph, IsPosInt],
 {digraph, source} -> DIGRAPHS_DijkstraST(digraph, source, fail));
 

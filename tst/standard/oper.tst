@@ -2284,18 +2284,18 @@ gap> OutNeighbours(C);
 [ [ 5, 6, 7 ], [ 7 ], [ 7 ], [ 7 ], [ 1, 6, 7 ], [ 1, 5, 7 ], 
   [ 3, 2, 1, 6, 5, 4 ] ]
 
-# DigraphDijkstra - when there is one path to target
+# DigraphShortestPaths - when there is one path to target
 gap> mat := [[0, 1, 1], [0, 0, 1], [0, 0, 0]];
 [ [ 0, 1, 1 ], [ 0, 0, 1 ], [ 0, 0, 0 ] ]
 gap> gr := DigraphByAdjacencyMatrix(mat);
 <immutable digraph with 3 vertices, 3 edges>
 gap> DigraphShortestDistance(gr, 2, 3);
 1
-gap> DigraphDijkstra(gr, 2, 3);
+gap> DigraphShortestPaths(gr, 2, 3);
 [ [ infinity, 0, 1 ], [ -1, -1, 2 ] ]
-gap> DigraphDijkstra(gr, 1, 3);
+gap> DigraphShortestPaths(gr, 1, 3);
 [ [ 0, 1, 1 ], [ -1, 1, 1 ] ]
-gap> DigraphDijkstra(gr, 1, 2);
+gap> DigraphShortestPaths(gr, 1, 2);
 [ [ 0, 1, 1 ], [ -1, 1, 1 ] ]
 gap> DigraphShortestDistance(gr, 1, 3);
 1
@@ -2307,21 +2307,21 @@ gap> gr := DigraphByAdjacencyMatrix(mat);
 <immutable digraph with 3 vertices, 2 edges>
 gap> DigraphShortestDistance(gr, 2, 3);
 fail
-gap> DigraphDijkstra(gr, 2, 3);
+gap> DigraphShortestPaths(gr, 2, 3);
 [ [ infinity, 0, infinity ], [ -1, -1, -1 ] ]
 gap> mat := [[0, 1, 1, 1], [0, 0, 1, 1], [0, 1, 0, 0], [1, 0, 0, 0]];
 [ [ 0, 1, 1, 1 ], [ 0, 0, 1, 1 ], [ 0, 1, 0, 0 ], [ 1, 0, 0, 0 ] ]
 gap> gr := DigraphByAdjacencyMatrix(mat);
 <immutable digraph with 4 vertices, 7 edges>
-gap> DigraphDijkstra(gr, 1, 4);
+gap> DigraphShortestPaths(gr, 1, 4);
 [ [ 0, 1, 1, 1 ], [ -1, 1, 1, 1 ] ]
 gap> mat := [[0, 1, 1, 1], [0, 0, 1, 1], [0, 1, 0, 0], [1, 0, 0, 0]];
 [ [ 0, 1, 1, 1 ], [ 0, 0, 1, 1 ], [ 0, 1, 0, 0 ], [ 1, 0, 0, 0 ] ]
 gap> gr := DigraphByAdjacencyMatrix(mat);
 <immutable digraph with 4 vertices, 7 edges>
-gap> DigraphDijkstra(gr, 1, 2);
+gap> DigraphShortestPaths(gr, 1, 2);
 [ [ 0, 1, 1, 1 ], [ -1, 1, 1, 1 ] ]
-gap> DigraphDijkstra(gr, 1, 3);
+gap> DigraphShortestPaths(gr, 1, 3);
 [ [ 0, 1, 1, 1 ], [ -1, 1, 1, 1 ] ]
 
 # ModularProduct
