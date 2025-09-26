@@ -2381,6 +2381,64 @@ true
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="AmalgamDigraphs">
+<ManSection>
+  <Oper Name="AmalgamDigraphs" Arg="D1, D2,
+    S[, map1[, map2]]"/>
+  <Returns>An immutable digraph and a transformation.</Returns>
+  <Description>
+
+  <C>AmalgamDigraphs</C> takes as input two digraphs <A>D1</A> and <A>D2</A>
+  and a digraph <A>S</A> for which there is an embedding into both
+  <A>D1</A> and <A>D2</A>. Additional optional arguments <A>map1</A> and
+  <A>map2</A> are transformation objects which can force specific
+  embeddings of <A>S</A> into <A>D1</A> and <A>D2</A> respectively. If
+  <A>map1</A> and <A>map2</A> are not given then arbitrary embeddings
+  will be found using <C>DigraphEmbedding</C>. If no embeddings can be found
+  the function will throw an error.<P/>
+
+  If <A>D1</A>, <A>D2</A> and <A>S</A> are not multidigraphs then
+  <C>AmalgamDigraphs</C> calculates a new digraph, the <E>amalgam digraph</E>
+  <M>D_A</M>. <M>D_A</M> is an amalgam of <A>D1</A> and <A>D2</A> over
+  <A>S</A> with respect to embeddings (where the embeddings of <A>S</A> into
+  <A>D1</A> and <A>D2</A> can be specified by <A>map1</A> and <A>map2</A>).
+  The embedding of <A>D1</A> into <M>D_A</M> is set to always be the
+  <C>IdentityTransformation</C>.<P/>
+
+  Note that <C>AmalgamDigraphs</C> does not necessarily return the smallest
+  possible digraph satisfying these properties. For examble, when
+  <A>D1</A> and <A>D2</A> are equal, the embedding from <A>D2</A>
+  to <M>D_A</M> will not be the <C>IdentityTransformation</C> and so
+  <M>D_A</M> could have many more vertices than the smallest possible amalgam
+  of <A>D1</A> and <A>D2</A> over <A>S</A>. A less formal way to picture
+  the exact form of <M>D_A</M> is to think of it as <A>D1</A> and <A>D2</A>
+  'joined together' by the common subdigraph <A>S</A>.<P/>
+
+  <C>AmalgamDigraphs</C> returns a <E>tuple</E> of size two, with the first
+  element being the digraph <M>A_D</M> and the second element being a
+  transformation object which describes the embedding of <A>D2</A> into
+  <M>A_D</M>.
+
+  <Example><![CDATA[
+gap> D := CycleGraph(3);;
+gap> S := PathGraph(2);;
+gap> AmalgamDigraphs(D, D, S);
+[ <immutable digraph with 4 vertices, 10 edges>, 
+  Transformation( [ 1, 2, 4, 4 ] ) ]
+gap> D1 := Digraph([[2, 3], [1, 3, 4], [1, 2, 4], [2, 3, 5], [4]]);;
+gap> D2 := Digraph(
+>   [[2, 3], [1, 3, 4], [1, 2, 4, 5], [2, 3, 5], [3, 4]]);;
+gap> S := CycleGraph(3);;
+gap> map1 := Transformation([2, 4, 3, 4]);;
+gap> map2 := Transformation([2, 3, 4, 4]);;
+gap> AmalgamDigraphs(D1, D2, S, map1, map2);
+[ <immutable digraph with 7 vertices, 20 edges>, 
+  Transformation( [ 6, 2, 4, 3, 7, 6, 7 ] ) ]
+]]></Example>
+</Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="DigraphCycleBasis">
 <ManSection>
   <Oper Name="DigraphCycleBasis" Arg="digraph"/>
