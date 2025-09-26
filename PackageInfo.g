@@ -38,8 +38,8 @@ fi;
 SetPackageInfo(rec(
 PackageName := "Digraphs",
 Subtitle := "Graphs, digraphs, and multidigraphs in GAP",
-Version := "1.12.2",
-Date := "20/09/2025",  # dd/mm/yyyy format
+Version := "1.13.0",
+Date := "26/09/2025",  # dd/mm/yyyy format
 License := "GPL-3.0-or-later",
 ArchiveFormats := ".tar.gz",
 
@@ -211,6 +211,15 @@ Persons := [
     Institution    := "University of Manchester",
     WWWHome        := Concatenation("https://research.manchester.ac.uk/",
                                     "en/persons/luna-elliott")),
+
+  rec(
+    LastName       := "Engelhardt",
+    FirstNames     := "Jan",
+    IsAuthor       := true,
+    IsMaintainer   := false,
+    Email          := "jengelh@inai.de",
+    GithubUsername := "jengelh",
+    WWWHome        := "https://inai.de"),
 
   rec(
     LastName       := "Fernando",
