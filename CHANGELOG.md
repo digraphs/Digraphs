@@ -4,6 +4,18 @@ Wilf A. Wilson, Michael Young et al.
 
 Licensing information can be found in the `LICENSE` file.
 
+## Version 1.13.0 (released 26/09/2025)
+
+## What's Changed
+* [@jengelh](https://github.com/jengelh) added support for version 4 of the [Edge Addition Planarity Suite][] in [PR #766](https://github.com/digraphs/Digraphs/pull/766). Version 4 is now the version that is vendored with the Digraphs package.
+* [@frankiegillis](https://github.com/frankiegillis) improved the performance of `IsTwoEdgeTransitive` in [PR #739](https://github.com/digraphs/Digraphs/pull/739), and added `Is2EdgeTransitive` as a synonym for this property.
+* [Wilf A. Wilson][] restored compatibility with GAP 4.10 in [PR #846](https://github.com/digraphs/Digraphs/pull/846).
+
+## New Contributors
+* Jan Engelhardt ([@jengelh](https://github.com/jengelh)) made their first contribution in [PR #766](https://github.com/digraphs/Digraphs/pull/766).
+
+**Full Changelog**: <https://github.com/digraphs/Digraphs/compare/v1.12.2...v1.13.0>
+
 ## Version 1.12.2 (released 20/09/2025)
 
 This is a minor release of the Digraphs package, containing various technical changes and one bugfix.
