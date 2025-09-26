@@ -8,6 +8,8 @@
 ##
 #############################################################################
 ##
+
+#@local d, gr, gr2, i, layers, layers1, layers2, list, out
 gap> START_TEST("Digraphs package: extreme/oper.tst");
 gap> LoadPackage("digraphs", false);;
 
@@ -172,17 +174,6 @@ gap> SortedList(DigraphLayers(gr, 6)[2]);
 [ 1391, 2144, 2395, 2544, 2645 ]
 gap> SortedList(DigraphLayers(gr, 1500)[2]);
 [ 81, 82, 169, 253, 254 ]
-
-#  DIGRAPHS_UnbindVariables
-gap> Unbind(d);
-gap> Unbind(gr);
-gap> Unbind(gr2);
-gap> Unbind(i);
-gap> Unbind(layers);
-gap> Unbind(layers1);
-gap> Unbind(layers2);
-gap> Unbind(list);
-gap> Unbind(out);
 
 #
 gap> DIGRAPHS_StopTest();

@@ -7,6 +7,8 @@
 ##
 #############################################################################
 ##
+
+#@local gr
 gap> START_TEST("Digraphs package: standard/orbits.tst");
 gap> LoadPackage("digraphs", false);;
 
@@ -59,9 +61,6 @@ gap> gr := CycleDigraph(12);
 <immutable cycle digraph with 12 vertices>
 gap> RepresentativeOutNeighbours(gr);
 [ [ 2 ] ]
-
-#  DIGRAPHS_UnbindVariables
-gap> Unbind(gr);
 
 #
 gap> DIGRAPHS_StopTest();

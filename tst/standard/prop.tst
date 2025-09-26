@@ -8,6 +8,11 @@
 ##
 #############################################################################
 ##
+
+#@local D, DigraphNrVertices, DigraphRange, DigraphSource, DigraphVertices, G
+#@local M3, M5, N5, adj, circuit, complete100, comps, g, g1, g2, g3, g4, g5, g6
+#@local gr, gr1, gr2, gr3, gr4, gr5, gr6, grid, i, id, j, loop, mat, multiple
+#@local nottrans, r, range, source, trans
 gap> START_TEST("Digraphs package: standard/prop.tst");
 gap> LoadPackage("digraphs", false);;
 
@@ -1733,22 +1738,22 @@ true
 gap> IsEdgeTransitive(Digraph([[2], [3, 3, 3], []]));
 Error, the argument <D> must be a digraph with no multiple edges,
 
-# IsTwoEdgeTransitive
-gap> IsTwoEdgeTransitive(DigraphByEdges([[1, 2], [2, 3], [3, 1]]));
+# Is2EdgeTransitive
+gap> Is2EdgeTransitive(DigraphByEdges([[1, 2], [2, 3], [3, 1]]));
 true
-gap> IsTwoEdgeTransitive(DigraphByEdges([[1, 2], [2, 3], [3, 1], [3, 4]]));
+gap> Is2EdgeTransitive(DigraphByEdges([[1, 2], [2, 3], [3, 1], [3, 4]]));
 false
-gap> IsTwoEdgeTransitive(CompleteDigraph(4));
+gap> Is2EdgeTransitive(CompleteDigraph(4));
 true
-gap> IsTwoEdgeTransitive(CycleDigraph(100));
+gap> Is2EdgeTransitive(CycleDigraph(100));
 true
-gap> IsTwoEdgeTransitive(CompleteBipartiteDigraph(11, 23));
+gap> Is2EdgeTransitive(CompleteBipartiteDigraph(11, 23));
 false
-gap> IsTwoEdgeTransitive(DigraphByEdges([[1, 2]]));
+gap> Is2EdgeTransitive(DigraphByEdges([[1, 2]]));
 true
-gap> IsTwoEdgeTransitive(DigraphByEdges([]));
+gap> Is2EdgeTransitive(DigraphByEdges([]));
 true
-gap> IsTwoEdgeTransitive(Digraph([[2], [3, 3, 3], []]));
+gap> Is2EdgeTransitive(Digraph([[2], [3, 3, 3], []]));
 Error, the argument <D> must be a digraph with no multiple edges,
 
 # DigraphHasNoVertices and DigraphHasAVertex
@@ -1963,40 +1968,6 @@ gap> D := Digraph([[2], [1, 3, 4], [2], [2], [6], [5]]);;
 gap> SetIsUndirectedForest(D, true);
 gap> HasIsMultiDigraph(D) and not IsMultiDigraph(D);
 true
-
-#  DIGRAPHS_UnbindVariables
-gap> Unbind(D);
-gap> Unbind(G);
-gap> Unbind(M5);
-gap> Unbind(N5);
-gap> Unbind(adj);
-gap> Unbind(circuit);
-gap> Unbind(complete100);
-gap> Unbind(g);
-gap> Unbind(g1);
-gap> Unbind(g2);
-gap> Unbind(g3);
-gap> Unbind(g4);
-gap> Unbind(g5);
-gap> Unbind(g6);
-gap> Unbind(gr);
-gap> Unbind(gr1);
-gap> Unbind(gr2);
-gap> Unbind(gr3);
-gap> Unbind(gr4);
-gap> Unbind(gr5);
-gap> Unbind(gr6);
-gap> Unbind(grid);
-gap> Unbind(i);
-gap> Unbind(j);
-gap> Unbind(loop);
-gap> Unbind(mat);
-gap> Unbind(multiple);
-gap> Unbind(nottrans);
-gap> Unbind(r);
-gap> Unbind(range);
-gap> Unbind(source);
-gap> Unbind(trans);
 
 #
 gap> DIGRAPHS_StopTest();

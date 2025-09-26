@@ -1814,12 +1814,12 @@ function(D, maxLength)
     # Extends a given chordless path if possible
     CCExtension := function(digraph, path, C, key, blocked)
         local v, extendedPath, data;
-        blocked := BlockNeighbours(digraph, Last(path), blocked);
-        for v in OutNeighboursOfVertex(digraph, Last(path)) do
+        blocked := BlockNeighbours(digraph, path[Length(path)], blocked);
+        for v in OutNeighboursOfVertex(digraph, path[Length(path)]) do
             if DigraphVertexLabel(digraph, v) > key and blocked[v] = 1
               and Length(path) < maxLength then
                 extendedPath := Concatenation(path, [v]);
-                if IsDigraphEdge(digraph, v, First(path)) then
+                if IsDigraphEdge(digraph, v, path[1]) then
                     Add(C, extendedPath);
                 else
                     data := CCExtension(digraph, extendedPath, C, key, blocked);
@@ -1828,7 +1828,7 @@ function(D, maxLength)
                 fi;
             fi;
         od;
-        blocked := UnblockNeighbours(digraph, Last(path), blocked);
+        blocked := UnblockNeighbours(digraph, path[Length(path)], blocked);
         return [C, blocked];
     end;
 

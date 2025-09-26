@@ -9,6 +9,7 @@
 #############################################################################
 ##
 
+#@local D, d, distances, edges, gr, m, parents, r, tree
 gap> START_TEST("Digraphs package: standard/weights.tst");
 gap> LoadPackage("digraphs", false);;
 
@@ -398,10 +399,6 @@ gap> IsEulerianDigraph(D);
 true
 gap> SortedList(Flat(EdgeWeights(D))) = [1 .. DigraphNrEdges(D)];
 true
-
-#  DIGRAPHS_UnbindVariables
-gap> Unbind(d);
-gap> Unbind(tree);
 
 #
 gap> DIGRAPHS_StopTest();

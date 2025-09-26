@@ -7,6 +7,8 @@
 ##
 #############################################################################
 ##
+
+#@local adj, bddigraph, bdgroup, ddigraph, digraph, gr, gr2, gr3, group, n, out
 gap> START_TEST("Digraphs package: standard/constructors.tst");
 gap> LoadPackage("digraphs", false);;
 
@@ -175,19 +177,6 @@ gap> gr := ChainDigraph(4);
 <immutable chain digraph with 4 vertices>
 gap> LineUndirectedDigraph(gr);
 Error, the argument <D> must be a symmetric digraph,
-
-#  DIGRAPHS_UnbindVariables
-gap> Unbind(adj);
-gap> Unbind(bddigraph);
-gap> Unbind(bdgroup);
-gap> Unbind(ddigraph);
-gap> Unbind(digraph);
-gap> Unbind(gr);
-gap> Unbind(gr2);
-gap> Unbind(gr3);
-gap> Unbind(group);
-gap> Unbind(n);
-gap> Unbind(out);
 
 #
 gap> DIGRAPHS_StopTest();

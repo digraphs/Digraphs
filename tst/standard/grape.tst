@@ -7,6 +7,9 @@
 ##
 #############################################################################
 ##
+
+#@local D, adjacencies, digraph, gens, gr, gr1, gr2, gr3, group, isGraph, names
+#@local order, representatives, schreierVector
 gap> START_TEST("Digraphs package: standard/grape.tst");
 gap> LoadPackage("digraphs", false);;
 
@@ -267,16 +270,6 @@ gap> if DIGRAPHS_IsGrapeLoaded() then
 # Non-trivial action
 gap> Digraph(SymmetricGroup(3), [1, 2, 3], OnPoints, {x, y} -> x <> y);
 <immutable digraph with 3 vertices, 6 edges>
-
-#  DIGRAPHS_UnbindVariables
-gap> Unbind(D);
-gap> Unbind(digraph);
-gap> Unbind(gens);
-gap> Unbind(gr);
-gap> Unbind(gr1);
-gap> Unbind(gr2);
-gap> Unbind(gr3);
-gap> Unbind(group);
 
 #
 gap> Digraph(IsSemigroup, SymmetricGroup(3), [1, 2, 3], OnPoints, 

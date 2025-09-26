@@ -1,0 +1,3 @@
+# From https://stackoverflow.com/a/42136008
+# See also https://docs.github.com/en/get-started/git-basics/configuring-git-to-handle-line-endings
+* text=auto eol=lf

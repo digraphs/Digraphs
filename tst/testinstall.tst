@@ -7,6 +7,10 @@
 ##
 #############################################################################
 ##
+
+#@local C, D
+#@local adj, comps, d, distances, edges, f, func, gr, gr1, gr2, i, id, out, p
+#@local parents, r, str, topo
 gap> START_TEST("Digraphs package: testinstall.tst");
 gap> LoadPackage("digraphs", false);;
 
@@ -436,8 +440,8 @@ rec( distances := [ [ 0, 5 ], [ 5, 0 ] ],
 gap> EdgeWeightedDigraphShortestPath(d, 1, 2);
 [ [ 1, 2 ], [ 1 ] ]
 
-# IsTwoEdgeTransitive
-gap> IsTwoEdgeTransitive(DigraphByEdges([[1, 2], [2, 3], [3, 1]]));
+# Is2EdgeTransitive
+gap> Is2EdgeTransitive(DigraphByEdges([[1, 2], [2, 3], [3, 1]]));
 true
 
 # Issue 617: bug in DigraphRemoveEdge, wasn't removing edge labels
@@ -505,23 +509,6 @@ rec( comps := [  ], id := [  ] )
 gap> IsConnectedDigraph(D);
 true
 
-#  DIGRAPHS_UnbindVariables
-gap> Unbind(C);
-gap> Unbind(D);
-gap> Unbind(adj);
-gap> Unbind(d);
-gap> Unbind(f);
-gap> Unbind(func);
-gap> Unbind(gr);
-gap> Unbind(gr1);
-gap> Unbind(gr2);
-gap> Unbind(i);
-gap> Unbind(out);
-gap> Unbind(p);
-gap> Unbind(r);
-gap> Unbind(str);
-gap> Unbind(topo);
-
-#E#
+#
 gap> DIGRAPHS_StopTest();
 gap> STOP_TEST("Digraphs package: testinstall.tst", 0);

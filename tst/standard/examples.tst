@@ -7,6 +7,8 @@
 ##
 #############################################################################
 ##
+
+#@local D, G8_3, gr, grrt
 gap> START_TEST("Digraphs package: standard/examples.tst");
 gap> LoadPackage("digraphs", false);;
 
@@ -853,12 +855,6 @@ gap> BurntPancakeGraph(5);
 <immutable symmetric digraph with 3840 vertices, 19200 edges>
 gap> BurntPancakeGraph(IsMutableDigraph, 1);
 <mutable digraph with 1 vertex, 1 edge>
-
-# DIGRAPHS_UnbindVariables
-gap> Unbind(D);
-gap> Unbind(G8_3);
-gap> Unbind(gr);
-gap> Unbind(grrt);
 
 #
 gap> DIGRAPHS_StopTest();
