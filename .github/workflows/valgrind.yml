@@ -9,6 +9,7 @@ on:
   pull_request:
     paths:
       - src/*.[hc]
+      - .VERSION
 
 env:
   VALGRIND: valgrind --trace-children=yes --leak-check=full --error-exitcode=1
