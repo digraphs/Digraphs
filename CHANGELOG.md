@@ -9,7 +9,7 @@ Licensing information can be found in the `LICENSE` file.
 This is a minor release of the Digraphs package, containing one bugfix.
 
 ## What's Changed
-* In [PR #852](https://github.com/digraphs/Digraphs/pull/852), [@wilfwilson](https://github.com/wilfwilson) fixed a bug that could result in an incorrect result being given for the `AutomorphismGroup` for a digraph that was created by the `CompleteBipartiteDigraph` operation.
+* In [PR #852](https://github.com/digraphs/Digraphs/pull/852), [@wilfwilson](https://github.com/wilfwilson) fixed a bug that could result in an incorrect result being given for the `AutomorphismGroup` of a digraph that was created by the `CompleteBipartiteDigraph` operation.
     * This bug was reported by [@bojankuzma000](https://github.com/bojankuzma000) in [Issue #850](https://github.com/digraphs/Digraphs/issues/850).
 
 **Full Changelog**: <https://github.com/digraphs/Digraphs/compare/v1.13.0...v1.13.1>
