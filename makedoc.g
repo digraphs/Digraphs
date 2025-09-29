@@ -52,9 +52,12 @@ for Pkg in Concatenation(PkgInfo.Dependencies.NeededOtherPackages,
   XMLEntities.(entity_name) := RemovePrefixVersion(Pkg[2]);
 od;
 
-ARCHIVENAME := SplitString(PkgInfo.ArchiveURL, "/");
-ARCHIVENAME := Concatenation(ARCHIVENAME[Length(ARCHIVENAME)],
-                             PkgInfo.ArchiveFormats);
+# Can change the following line to use Last() once we drop GAP 4.10 support
+ARCHIVE_BASENAME := SplitString(PkgInfo.ArchiveURL, "/");
+ARCHIVE_BASENAME := ARCHIVE_BASENAME[Length(ARCHIVE_BASENAME)];
+XMLEntities.ARCHIVE_BASENAME := ARCHIVE_BASENAME;
+
+ARCHIVENAME := Concatenation(ARCHIVE_BASENAME, PkgInfo.ArchiveFormats);
 XMLEntities.ARCHIVENAME := ARCHIVENAME;
 
 XMLEntities.DIGRAPHS := PackageEntity("Digraphs");
