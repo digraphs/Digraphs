@@ -94,6 +94,8 @@ XMLEntities.NAUTY := UrlEntity("nauty",
   "https://pallini.di.uniroma1.it");
 XMLEntities.EDGE_PLANARITY_SUITE := UrlEntity("edge-addition-planarity-suite",
 "https://github.com/graph-algorithms/edge-addition-planarity-suite");
+XMLEntities.DIGRAPHS_LIB := UrlEntity("digraphs-lib",
+  "http://github.com/digraphs/digraphs-lib");
 
 XMLEntities.MUTABLE_RECOMPUTED_ATTR := """If the argument <A>digraph</A> is
 mutable, then the return value of this attribute is recomputed every time it is
