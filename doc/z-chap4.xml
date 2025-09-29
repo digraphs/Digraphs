@@ -88,7 +88,7 @@
     <#Include Label="HamiltonianPath">
     <#Include Label="NrSpanningTrees">
     <#Include Label="DigraphDijkstra">
-    <#Include Label="VertexConnectivity">
+    <#Include Label="DigraphVertexConnectivity">
     <#Include Label="DigraphCycleBasis">
     <#Include Label="DigraphIsKing">
     <#Include Label="DigraphKings">

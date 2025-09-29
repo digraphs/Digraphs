@@ -2680,42 +2680,76 @@ gap> Length(M);
 </ManSection>
 <#/GAPDoc>
 
-<#GAPDoc Label="VertexConnectivity">
+<#GAPDoc Label="DigraphVertexConnectivity">
 <ManSection>
-  <Attr Name="VertexConnectivity" Arg="digraph"/>
+  <Attr Name="DigraphVertexConnectivity" Arg="digraph"/>
   <Returns>An non-negative integer.</Returns>
   <Description>
-    For a digraph <A>digraph</A> with set of vertices <C>V</C>, the attribute
-    <C>VertexConnectivity(<A>digraph</A>)</C> returns the least cardinality
-    <C>|S|</C> of a subset <C>S</C> of <C>V</C> such that the induced subdigraph
-    of <A>digraph</A> on <C>V \ S</C> is disconnected, or has at most one
-    vertex. <P/>
+    This function returns the vertex connectivity of the digraph
+    <A>digraph</A>. This is also sometimes called the weak vertex connectivity.
+    <P/>
 
-    Note, in particular, that empty digraphs, and disconnected digraphs, have
-    vertex connectivity zero. <P/>
+    The vertex connectivity of a connected digraph (in the sense of
+    <Ref Prop="IsConnectedDigraph"/>) is the largest number <M>k</M> such that:
+    <List>
+      <Item> the digraph has at least <M>k + 1</M> vertices, and</Item>
+      <Item> the digraph remains connected after the removal of any set of at
+             most <M>k - 1</M> vertices.</Item>
+    </List>
+    If the digraph is not connected, then its vertex connectivity is 0.
+    For a non-empty digraph whose symmetric closure is not complete, the vertex
+    connectivity is equal to the size of the smallest set of vertices whose
+    removal would disconnect the digraph.
+    <P/>
 
-    The algorithm makes <C>n - d - 1 + d * (d - 1) / 2</C> calls to a max-flow
-    algorithm which itself has complexity <C>O((n ^ 2) * e)</C>, where <C>n</C>
-    is the number of vertices of <A>digraph</A>, and <C>e, d</C> are the number
-    of edges and the minimum degree (respectively) of the underlying undirected
-    graph of <A>digraph</A>.
+    Vertex connectivity of small digraphs may be counterintuitive
+    with respect to the notions of connectivity, as defined by
+    <Ref Prop="IsConnectedDigraph"/>, and biconnecivity, as defined by
+    <Ref Prop="IsBiconnectedDigraph"/>. Namely
+    <List>
+      <Item> the empty digraph is connected, but its vertex connectivity is 0;
+      </Item>
+      <Item> the singleton digraph is connected, but its vertex connectivity is
+             0;</Item>
+      <Item> the 2-cycle digraph is biconnected, but its vertex connectivity is
+             only 1.</Item>
+    </List>
+    However, for a digraph with at least 3 vertices, having vertex connectivity
+    greater than or equal to 1 is equivalent to being connected, and having
+    vertex connectivity greater than or equal to 2 is equivalent to being
+    biconnected.
+    <P/>
+
+    The algorithm makes <M>n - d - 1 + d \cdot (d - 1) / 2</M> calls to the
+    <Ref Attr="DigraphMaximumFlow"/> maximum flow algorithm, where <M>n</M>
+    is the number of vertices of <A>digraph</A>, and <M>d</M> is the
+    minimum degree of the symmetric closure of <A>digraph</A>,
+    see <Ref Oper="DigraphSymmetricClosure"/>.
 
     <Example><![CDATA[
-gap> J := JohnsonDigraph(9, 2);
-<immutable symmetric digraph with 36 vertices, 504 edges>
-gap> VertexConnectivity(J);
-14
 gap> D := CompleteBipartiteDigraph(4, 5);
 <immutable complete bipartite digraph with bicomponent sizes 4 and 5>
-gap> VertexConnectivity(D);
+gap> DigraphVertexConnectivity(D);
 4
-gap> VertexConnectivity(PancakeGraph(4));
+gap> DigraphVertexConnectivity(PancakeGraph(4));
 3
 gap> D := Digraph([[2, 4, 5], [1, 4], [4, 7], [1, 2, 3, 5, 6, 7],
 >                  [1, 4], [4, 7], [3, 4, 6]]);
 <immutable digraph with 7 vertices, 20 edges>
-gap> VertexConnectivity(D);
+gap> DigraphVertexConnectivity(D);
 1
+gap> J := JohnsonDigraph(9, 2);
+<immutable symmetric digraph with 36 vertices, 504 edges>
+gap> DigraphVertexConnectivity(J);
+14
+gap> DigraphVertexConnectivity(Digraph([]));
+0
+gap> DigraphVertexConnectivity(Digraph([[1]]));
+0
+gap> DigraphVertexConnectivity(CycleDigraph(2));
+1
+gap> DigraphVertexConnectivity(CompleteDigraph(5));
+4
 ]]></Example>
   </Description>
 </ManSection>

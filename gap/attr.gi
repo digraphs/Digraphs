@@ -3358,148 +3358,150 @@ function(D)
   return Union(M, DIGRAPHS_MateToMatching(D, mateD));
 end);
 
-InstallMethod(VertexConnectivity, "for a digraph", [IsDigraph],
-function(digraph)
-  local kappas, newnetw, edmondskarp, mat, degs, mindegv, mindeg, Nv, outn, k,
-        i, j, x, y;
+InstallMethod(DigraphVertexConnectivity, "for a digraph", [IsDigraph],
+function(D)
+  local doubled_D_adj, doubled_D, max_flow, u, v, i, j,
+    neighbours_v, kappa, kappa_min, is_multi, has_loops, is_nonsymm;
 
-  if DigraphNrVertices(digraph) <= 1 or not IsConnectedDigraph(digraph) then
+  # As per Wikipedia:
+  # "A graph is said to be k-vertex-connected if it contains at least k + 1
+  # vertices, but does not contain a set of k − 1 vertices whose removal
+  # disconnects the graph."
+  # https://en.wikipedia.org/wiki/Connectivity_(graph_theory)
+  # The knock-on effect is that the singleton graph has vertex connectivity 0.
+  # This is discussed in the documentation in more detail.
+  if DigraphNrVertices(D) <= 1 or not IsConnectedDigraph(D) then
     return 0;
   fi;
 
-  if IsMultiDigraph(digraph) then
-    digraph := DigraphRemoveAllMultipleEdges(digraph);
+  # Remove multiple edges, loops and symmetrize, if necessary
+  is_multi := IsMultiDigraph(D);
+  has_loops := DigraphHasLoops(D);
+  is_nonsymm := not IsSymmetricDigraph(D);
+  if is_multi or has_loops or is_nonsymm then
+    D := DigraphMutableCopy(D);
+    if is_multi then
+      DigraphRemoveAllMultipleEdges(D);
+    fi;
+    if has_loops then
+      DigraphRemoveLoops(D);
+    fi;
+    if is_nonsymm then
+      DigraphSymmetricClosure(D);
+    fi;
+    # NOTE: D is mutable following this operation. This should not cause issues
+    # or slow down the computations.
   fi;
 
-  kappas := [DigraphNrVertices(digraph) - 1];
+  # Special case complete digraph since no set of vertices disconnects it.
+  if IsCompleteDigraph(D) then
+    return DigraphNrVertices(D) - 1;
+  fi;
 
-  # The function newnetw is an implementation of Algorithm Nine from
-  # Abdol-Hossein Esfahanian's ``Connectivity Algorithms'' which can be found at
+  # Construct "doubled" digraph as per Theorem 6.4 of
+  # Even S. Applications of Network Flow Techniques.
+  # In: Even G, ed. Graph Algorithms.
+  # Cambridge University Press; 2011:117-145.
+  # https://doi.org/10.1017/CBO9781139015165
+  # Doubles the vertices of the digraph `D`. For every vertex v, 2*v-1 is
+  # called the "in"-vertex and 2*v is called the "out"-vertex. For every edge
+  # (v, u) in `D`, the doubled digraph contains an edge (2*v, 2*u-1) from
+  # the out-vertex of `v` to the in-vertex of `u`. Additionally, there is an
+  # edge (2*v-1, 2*v) for every vertex v in `D`.
+  doubled_D_adj := List([1 .. 2 * DigraphNrVertices(D)], x -> []);
+  for v in DigraphVertices(D) do
+    for u in OutNeighborsOfVertex(D, v) do
+        Add(doubled_D_adj[2 * v], 2 * u - 1);
+    od;
+    Add(doubled_D_adj[2 * v - 1], 2 * v);
+  od;
+  doubled_D := EdgeWeightedDigraph(
+    doubled_D_adj,
+    List(doubled_D_adj, x -> ListWithIdenticalEntries(Length(x), 1)));
+
+  # The resulting graph, `doubled_D` is bipartite, and, additionally,
+  # there is a correspondence between paths in `D` and `doubled_D`
+  # given by mapping the path (v_1, v_2, ... v_n) in `D` to the path
+  # (2*v_1, 2*v_2 - 1, 2*v_2, ..., 2*v_{n-1} - 1, 2*v_{n-1}, 2*v_n - 1) in
+  # `doubled_D`. An conversely, any path starting with an even vertex and
+  # ending with an odd vertex in `doubled_D` is of the form
+  # (2*v_1, 2*v_2 - 1, 2*v_2, ..., 2*v_{n-1} - 1, 2*v_{n-1}, 2*v_n - 1) for
+  # some path (v_1, v_2, ... v_n) in `D`.
+
+  # The local vertex connectivity for a pair of vertices u, v is the
+  # size of the least set S that contain u and v
+  # such that any (u, v)-path (that is, a path with source u and target v)
+  # passes through S. If two vertices are adjacent, then the local connectivity
+  # is infinity by convention. The minimum cut with source u and target v is
+  # the least number of edges that need to be removed so that there is no
+  # longer a (u, v)-path.
+
+  # Let u and v be non-adjacent vertices in `D`. Because of the
+  # correspondence of paths in `D` and `doubled_D`, any such set S
+  # for `D` corresponds to a set of edges E_S (obtained by replacing the
+  # vertex w by the edge (2*w-1, 2*w)) in `doubled_D` whose removal
+  # disconnects 2*u from 2*v-1.
+  # Conversely, it can be shown that the smallest set of edges disconnecting
+  # 2*u from 2*v-1 has the same cardinality as E_S. This is because, whenever
+  # we remove any edge (2*s, 2*t-1) from `doubled_D` with the goal of
+  # disconnecting 2*u from 2*v-1, it is always just as
+  # efficient or more efficient to remove the edge (2*s-1, 2*s) instead, since
+  # any path from 2*u to 2*v-1 utilizing (2*s, 2*t-1) in `doubled_D` must
+  # pass through (2*s-1, 2*s) by construction. Note that u and v are
+  # non-adjacent by assumption, so it cannot be the case that
+  # (2*s, 2*t-1) = (2*u, 2*v-1).
+  # It follows that, for non-adjacent vertices, the local connectivity of u and
+  # v in `D` is equal to the minimum cut with source 2*u-1 and target 2*v
+  # in `doubled_D`.
+
+  # By the max-flow min-cut theorem, the size of the minimum cut with source u
+  # and target v equals the maximum flow between u and v see Wikipedia below:
+  # https://en.wikipedia.org/wiki/Max-flow_min-cut_theorem
+  # Hence we can compute local vertex connectivity by repeated calls to the
+  # max_flow function below:
+  max_flow := {digraph, source, target} ->
+    Sum(DigraphMaximumFlow(digraph, source, target)[source]);
+
+  # The vertex connectivity is the minimum of the local vertex connectivity
+  # over all pairs of vertices. However, it can be computed a bit more
+  # cleverly by utilizing some theory to reduce the number of pairs considered.
+  # In this function we implement Algorithm 11 from Abdol-Hossein
+  # Esfahanian's ``Connectivity Algorithms'' which can be found at
   # https://www.cse.msu.edu/~cse835/Papers/Graph_connectivity_revised.pdf
-  newnetw := function(digraph, source, sink)
-    local n, mat, outn, x, y;
-    n := DigraphNrVertices(digraph);
-    mat := List([1 .. 2 * n], x -> BlistList([1 .. 2 * n], []));
-    outn := OutNeighbours(digraph);
-    for x in [1 .. DigraphNrVertices(digraph)] do
-      if x <> source and x <> sink then
-        mat[x + n][x] := true;
-      fi;
-      for y in outn[x] do
-        if x = source or x = sink then
-          mat[x][y + n] := true;
-          mat[y][x]     := true;
-        elif y = source or y = sink then
-          mat[y][x + n] := true;
-          mat[x][y]     := true;
-        else
-          mat[y][x + n] := true;
-          mat[x][y + n] := true;
-        fi;
-      od;
-    od;
-    return List(mat, x -> ListBlist([1 .. 2 * n], x));
-  end;
-
-  # The following function is an implementation of the Edmonds-Karp algorithm
-  # with some minor adjustments that take into account the fact that the
-  # capacity of all edges is 1.
-  edmondskarp := function(netw, source, sink)
-    local flow, capacity, queue, m, predecessor, edgeindex, stop, current, n, v;
-
-    flow := 0;
-    capacity := List(netw, x -> BlistList(x, x));
-    # nredges := Sum(List(netw, Length));
-
-    while true do
-      queue       := [source];
-      m           := 1;
-      predecessor := List(netw, x -> 0);
-      edgeindex   := List(netw, x -> 0);
-      stop := false;
-      while m <= Size(queue) and not stop do
-        current := queue[m];
-        n := 0;
-        for v in netw[current] do
-          n := n + 1;
-          if predecessor[v] = 0 and v <> source and capacity[current][n] then
-            predecessor[v] := current;
-            edgeindex[v]   := n;
-            Add(queue, v);
-          fi;
-          if v = sink then
-            stop := true;
-            break;
-          fi;
-        od;
-        m := m + 1;
-      od;
-
-      if predecessor[sink] <> 0 then
-        v := predecessor[sink];
-        n := edgeindex[sink];
-        while v <> 0 do
-          capacity[v][n] := false;
-          n := edgeindex[v];
-          v := predecessor[v];
-        od;
-        flow := flow + 1;
-      else
-        return flow;
-      fi;
-    od;
-  end;
-
-  # Referring once again to Abdol-Hossein Esfahanian's paper
-  # (see newnetw, above).
-  # The following lines implement Algorithm Eleven of that paper.
-  mat  := BooleanAdjacencyMatrix(digraph);
-  degs := ListWithIdenticalEntries(DigraphNrVertices(digraph), 0);
-  for i in DigraphVertices(digraph) do
-    for j in [i + 1 .. DigraphNrVertices(digraph)] do
-      if mat[i][j] or mat[j][i] then
-        degs[i] := degs[i] + 1;
-        degs[j] := degs[j] + 1;
-      fi;
-    od;
-  od;
-
-  mindegv := 0;
-  mindeg  := DigraphNrVertices(digraph) + 1;
-  for i in DigraphVertices(digraph) do
-    if degs[i] < mindeg then
-      mindeg  := degs[i];
-      mindegv := i;
-    fi;
-  od;
-
-  Nv := OutNeighboursOfVertex(digraph, mindegv);
-  outn := OutNeighbours(digraph);
-
-  for x in DigraphVertices(digraph) do
-    if x <> mindegv and not mat[x][mindegv] and not mat[mindegv][x] then
-      k := edmondskarp(newnetw(digraph, mindegv, x), mindegv, x);
-      if k = 0 then
-        return 0;
-      else
-        AddSet(kappas, k);
+  # In particular, we reduce the number of local vertex connectivity
+  # computations to n-d-1 + d*(d-1)/2 where n is the total number of vertices
+  # and d is the minimum degree of any vertex.
+  v := PositionMinimum(OutDegrees(D));
+  neighbours_v := OutNeighboursOfVertex(D, v);
+  kappa_min := fail;
+  for u in DigraphVertices(D) do
+    if u <> v and not IsDigraphEdge(D, v, u) then
+      kappa := max_flow(doubled_D, 2 * u, 2 * v - 1);
+      if kappa_min = fail or kappa < kappa_min then
+        kappa_min := kappa;
       fi;
     fi;
   od;
 
-  for x in [1 .. Size(Nv) - 1] do
-    for y in [x + 1 .. Size(Nv)] do
-      if not mat[Nv[x]][Nv[y]] and not mat[Nv[y]][Nv[x]] then
-        k := edmondskarp(newnetw(digraph, Nv[x], Nv[y]), Nv[x], Nv[y]);
-        if k = 0 then
-          return 0;
-        else
-          AddSet(kappas, k);
+  for i in [1 .. Length(neighbours_v)] do
+    for j in [i + 1 .. Length(neighbours_v)] do
+      u := neighbours_v[i];
+      v := neighbours_v[j];
+      if not IsDigraphEdge(D, v, u) then
+        kappa := max_flow(doubled_D, 2 * u, 2 * v - 1);
+        if kappa_min = fail or kappa < kappa_min then
+            kappa_min := kappa;
         fi;
       fi;
     od;
   od;
-  return kappas[1];
+
+  # We can only be here if every vertex is adjacent to a vertex of minimum
+  # degree u and every pair of vertices v, w adjacent to u are also adjacent
+  # to each other. In other words, `D` is a complete graph, but we
+  # deal with these at the start. So this assert should pass.
+  Assert(1, kappa_min <> fail);
+  return kappa_min;
 end);
 
 # The following function is a transliteration from python to GAP of
