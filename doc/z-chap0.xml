@@ -33,7 +33,7 @@
   The &BLISS; tool <Cite Key="JK07"/> is included in this package.  It
   is an open-source tool for computing automorphism groups and canonical forms
   of graphs, written by Tommi Junttila and Petteri Kaski. Several of the methods
-  in the &Digraphs; package rely on &BLISS;. If the &NautyTracesInterface;
+  in the &Digraphs; package rely on &BLISS;. If the &NAUTYTRACESINTERFACE;
   package for GAP is available then it is also possible to use &NAUTY; <Cite
     Key="MP14"/> for computing automorphism groups and canonical forms
   in &Digraphs;. See Section 

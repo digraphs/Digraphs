@@ -89,8 +89,6 @@ XMLEntities.BLISS := UrlEntity("bliss",
   "http://www.tcs.tkk.fi/Software/bliss/");
 XMLEntities.NAUTY := UrlEntity("nauty",
   "https://pallini.di.uniroma1.it");
-XMLEntities.NautyTracesInterface := UrlEntity("NautyTracesInterface",
-  "https://github.com/gap-packages/NautyTracesInterface");
 XMLEntities.EDGE_PLANARITY_SUITE := UrlEntity("edge-addition-planarity-suite",
 "https://github.com/graph-algorithms/edge-addition-planarity-suite");
 
