@@ -3193,7 +3193,7 @@ gap> ForAny(Combinations(DigraphVertices(D), 4),
 > x -> not IsConnectedDigraph(InducedSubdigraph(D,
 >                               Difference(DigraphVertices(D), x))));
 true
-gap> D := PancakeGraph(4);
+gap> D := PancakeGraph(4);;
 gap> ForAny(Combinations(DigraphVertices(D), 2),
 > x -> not IsConnectedDigraph(InducedSubdigraph(D,
 >                               Difference(DigraphVertices(D), x))));
@@ -3202,6 +3202,41 @@ gap> ForAny(Combinations(DigraphVertices(D), 3),
 > x -> not IsConnectedDigraph(InducedSubdigraph(D,
 >                               Difference(DigraphVertices(D), x))));
 true
+gap> D := DigraphFromGraph6String(
+> "Os_??L@GOS`SEKT@E`BK?");;  # House of Graphs 44091
+gap> VertexConnectivity(D);
+4
+gap> D := DigraphFromGraph6String(
+> "]s_??CD@?C_O@@?S?C_@O?O_E??_AgO@X?@?G?CI??OC?C@CA?GA?_@AA?A?OG?OG???d???@g"
+> );;  # House of Graphs 49360
+gap> VertexConnectivity(D);
+4
+gap> D := CirculantGraph(14, [1, 4, 7]);;  # House of Graphs 53516
+gap> VertexConnectivity(D);
+5
+gap> D := CirculantGraph(16, [1, 3, 8]);;  # House of Graphs 53524
+gap> VertexConnectivity(D);
+5
+gap> D := CirculantGraph(17, [1, 3, 5]);;  # House of Graphs 53527
+gap> VertexConnectivity(D);
+6
+gap> D := CirculantGraph(16, [1, 4, 7]);;  # House of Graphs 53528
+gap> VertexConnectivity(D);
+6
+gap> D := CirculantGraph(19, [3, 4, 5]);;  # House of Graphs 53529
+gap> VertexConnectivity(D);
+6
+gap> D := CirculantGraph(20, [1, 5, 8]);;  # House of Graphs 53696
+gap> VertexConnectivity(D);
+6
+gap> D := CirculantGraph(19, [1, 5, 8]);;  # House of Graphs 53697
+gap> VertexConnectivity(D);
+6
+gap> D := DigraphFromGraph6String(
+> "[~yCKMF`{~r}????`?WOFA?{OBy?VwoFL_B|Y?}r_FyM@jkH{?MF{__M}_?ZNw?E"
+> );;  # House of Graphs 33964
+gap> VertexConnectivity(D);
+7
 
 # Semimodular lattices
 gap> D := DigraphFromDigraph6String("&C[o?");
