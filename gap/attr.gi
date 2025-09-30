@@ -3478,11 +3478,11 @@ function(digraph)
   neighbours_v := OutNeighboursOfVertex(digraph, v);
   # TODO: is adjacency function the best way to check adjacency?
   adjacency_function := DigraphAdjacencyFunction(digraph);
-  kappa_min := -1;
+  kappa_min := fail;
   for u in DigraphVertices(digraph) do
     if u <> v and not adjacency_function(v, u) then
       kappa := max_flow(doubled_digraph, 2 * u, 2 * v - 1);
-      if kappa_min = -1 or kappa < kappa_min then
+      if kappa_min = fail or kappa < kappa_min then
         kappa_min := kappa;
       fi;
     fi;
@@ -3494,20 +3494,18 @@ function(digraph)
       v := neighbours_v[j];
       if not adjacency_function(v, u) then
         kappa := max_flow(doubled_digraph, 2 * u, 2 * v - 1);
-        if kappa_min = -1 or kappa < kappa_min then
+        if kappa_min = fail or kappa < kappa_min then
             kappa_min := kappa;
         fi;
       fi;
     od;
   od;
 
-  if kappa_min = -1 then
-    # We can only be here if every vertex is adjacent to a vertex of minimum
-    # degree u and every pair of vertices v, w adjacent to u are also adjacent
-    # to each other. In other words, `digraph` is a complete graph, but we
-    # deal with these at the start. So this return should be unreachable.
-    return fail;
-  fi;
+  # We can only be here if every vertex is adjacent to a vertex of minimum
+  # degree u and every pair of vertices v, w adjacent to u are also adjacent
+  # to each other. In other words, `digraph` is a complete graph, but we
+  # deal with these at the start. So this return should be unreachable.
+  Assert(1, kappa_min <> fail);
   return kappa_min;
 end);
 
