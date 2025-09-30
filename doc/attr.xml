@@ -2685,26 +2685,46 @@ gap> Length(M);
   <Attr Name="VertexConnectivity" Arg="digraph"/>
   <Returns>An non-negative integer.</Returns>
   <Description>
-    For a digraph <A>digraph</A> with set of vertices <C>V</C>, the attribute
-    <C>VertexConnectivity(<A>digraph</A>)</C> returns the least cardinality
-    <C>|S|</C> of a subset <C>S</C> of <C>V</C> such that the induced subdigraph
-    of <A>digraph</A> on <C>V \ S</C> is disconnected, or has at most one
-    vertex. <P/>
+    This function returns the weak vertex connectivity of the digraph
+    <A>digraph</A>.
+    <P/>
 
-    Note, in particular, that empty digraphs, and disconnected digraphs, have
-    vertex connectivity zero. <P/>
+    The weak vertex connectivity for a weakly connected digraph is the largest
+    number <M>k</M> such that:
+    <List>
+      <Item> the digraph has at least <M>k + 1</M> vertices and</Item>
+      <Item> the digraph remains weakly connected after the removal of any set
+             of at most <M>k - 1</M> vertices.</Item>
+    </List>
+    If the digraph is not weakly connected, then its vertex connectivity is 0.
+    For a non-empty digraph whose symmetric closure is not complete, the vertex
+    connectivity is equal to the size of the smallest set of vertices whose
+    removal would (weakly) disconnect the digraph.
+    <P/>
 
-    The algorithm makes <C>n - d - 1 + d * (d - 1) / 2</C> calls to a max-flow
-    algorithm which itself has complexity <C>O((n ^ 2) * e)</C>, where <C>n</C>
-    is the number of vertices of <A>digraph</A>, and <C>e, d</C> are the number
-    of edges and the minimum degree (respectively) of the underlying undirected
-    graph of <A>digraph</A>.
+    By convention the vertex connectivity of the empty digraph is
+    0, and the vertex connectivity of a complete graph on <M>n</M> vertices is
+    <M>n-1</M>. In particular the singleton graph has vertex connectivity 0 and
+    the 2-cycle graph has vertex connectivity 1. This means that weak
+    connectivity (see <Ref Prop="IsConnectedDigraph"/>) does not imply weak
+    vertex 1-connectivity and biconnectivity
+    (see <Ref Prop="IsBiconnectedDigraph"/>) does not imply weak vertex
+    2-connectivity.
+    <P/>
+
+    The algorithm makes <M>n - d - 1 + d \cdot (d - 1) / 2</M> calls to the
+    <Ref Attr="DigraphMaximumFlow"/> maximum flow algorithm, where <M>n</M>
+    is the number of vertices of <A>digraph</A>, and <M>d</M> is the
+    minimum degree of the symmetric closure of <A>digraph</A>,
+    see <Ref Oper="DigraphSymmetricClosure"/>.
 
     <Example><![CDATA[
-gap> J := JohnsonDigraph(9, 2);
-<immutable symmetric digraph with 36 vertices, 504 edges>
-gap> VertexConnectivity(J);
-14
+gap> VertexConnectivity(Digraph([]));
+0
+gap> VertexConnectivity(Digraph([[]]));
+0
+gap> VertexConnectivity(CycleDigraph(2));
+1
 gap> D := CompleteBipartiteDigraph(4, 5);
 <immutable complete bipartite digraph with bicomponent sizes 4 and 5>
 gap> VertexConnectivity(D);
@@ -2716,6 +2736,10 @@ gap> D := Digraph([[2, 4, 5], [1, 4], [4, 7], [1, 2, 3, 5, 6, 7],
 <immutable digraph with 7 vertices, 20 edges>
 gap> VertexConnectivity(D);
 1
+gap> J := JohnsonDigraph(9, 2);
+<immutable symmetric digraph with 36 vertices, 504 edges>
+gap> VertexConnectivity(J);
+14
 ]]></Example>
   </Description>
 </ManSection>
