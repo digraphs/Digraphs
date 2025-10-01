@@ -1859,7 +1859,7 @@ InstallMethod(DigraphAllChordlessCycles, "for a digraph",
 D -> DigraphAllChordlessCyclesOfMaximalLength(D, INTOBJ_MAX));
 
 # Compute for a given rotation system the facial walks
-InstallMethod(FacialWalks, "for a digraph and a list",
+InstallMethod(FacialWalks, "for a digraph and a dense list",
 [IsDigraph, IsDenseList],
 function(D, rotationSystem)
   local FacialWalk, facialWalks, remEdges, cycle;
@@ -1868,18 +1868,17 @@ function(D, rotationSystem)
     ErrorNoReturn("the 1st argument (digraph <D>) must be Eulerian");
   fi;
 
-  if Length(rotationSystem) <> DigraphNrVertices(D) then
-    ErrorNoReturn("the 2nd argument (list <rotationSystem>) is not a rotation ",
-                  "system for the 1st argument (digraph <D>), expected a dense",
-                  " list of length ", DigraphNrVertices(D), "but found a dense",
-                  " list of length ", Length(rotationSystem));
-  fi;
-
-  if Difference(Union(rotationSystem), DigraphVertices(D)) <> [] then
+  if Length(rotationSystem) <> DigraphNrVertices(D)
+      or not ForAll(rotationSystem, IsList) then
     ErrorNoReturn("the 2nd argument (dense list <rotationSystem>) is not a ",
                   "rotation system for the 1st argument (digraph <D>), ",
-                  "expected the union to be ", DigraphVertices(D), " but ",
-                  "found ", Union(rotationSystem));
+                  "expected a list of ", DigraphNrVertices(D), " lists,");
+  fi;
+
+  if Union(rotationSystem) <> DigraphVertices(D) then
+    ErrorNoReturn("the 2nd argument (dense list <rotationSystem>) is not a ",
+                  "rotation system for the 1st argument (digraph <D>), ",
+                  "expected its union to be the vertices of <D>,");
   fi;
 
   # computes a facial cycles starting with the edge 'startEdge'
