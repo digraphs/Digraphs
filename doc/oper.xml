@@ -788,7 +788,7 @@ true
     <P/>
 
     <Example><![CDATA[
-gap> D3 := Digraph(IsMutableDigraph, [[2],[1],[2]]);
+gap> D3 := Digraph(IsMutableDigraph, [[2], [1], [2]]);
 <mutable digraph with 3 vertices, 3 edges>
 gap> DigraphRemoveAllEdges(D3);
 <mutable empty digraph with 3 vertices>
