@@ -744,7 +744,7 @@ true
     <P/>
 
     <Example><![CDATA[
-gap> D3 := Digraph(IsMutableDigraph, [[2],[1],[2]]);
+gap> D3 := Digraph(IsMutableDigraph, [[2], [1], [2]]);
 <mutable digraph with 3 vertices, 3 edges>
 gap> DigraphRemoveAllEdges(D3);
 <mutable empty digraph with 3 vertices>
@@ -2361,7 +2361,7 @@ gap> HomomorphicProduct(D1, D2);
   <A>D1</A> and <A>D2</A>.
 
   <Example><![CDATA[
-gap> D1 := Digraph(IsMutableDigraph, [[4],[5],[1,2],[],[]]);
+gap> D1 := Digraph(IsMutableDigraph, [[4], [5], [1, 2], [], []]);
 <mutable digraph with 5 vertices, 4 edges>
 gap> D2 := Digraph(IsMutableDigraph, [[2, 3, 4], [1, 3, 4, 5], [1, 2], [5], [4]]);
 <mutable digraph with 5 vertices, 11 edges>

@@ -542,7 +542,7 @@ gap> AutomorphismGroup(D)
 true
 
 # SwapDigraphs
-gap> C := Digraph(IsMutableDigraph, [[4],[5],[1,2],[],[]]);;
+gap> C := Digraph(IsMutableDigraph, [[4], [5], [1, 2], [], []]);;
 gap> D := Digraph(IsMutableDigraph, [[2, 3, 4], [1, 3, 4, 5], [1, 2], [5], [4]]);;
 gap> SwapDigraphs(C, D);
 gap> OutNeighbours(D);

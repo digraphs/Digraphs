@@ -2542,7 +2542,7 @@ gap> LexicographicProduct(ChainDigraph(3), CycleDigraph(7));
 # SwapDigraphs
 gap> D1 := Digraph([[2, 3, 4], [1, 3, 4, 5], [1, 2], [5], [4]]);
 <immutable digraph with 5 vertices, 11 edges>
-gap> D2 := Digraph(IsMutableDigraph, [[4],[5],[1,2],[],[]]);
+gap> D2 := Digraph(IsMutableDigraph, [[4], [5], [1, 2], [], []]);
 <mutable digraph with 5 vertices, 4 edges>
 gap> SwapDigraphs(D1, D2);
 Error, Arguments must be mutable digraphs
@@ -2553,7 +2553,7 @@ gap> OutNeighbours(D1);
 [ [ 4 ], [ 5 ], [ 1, 2 ], [  ], [  ] ]
 gap> OutNeighbours(D2);
 [ [ 2, 3, 4 ], [ 1, 3, 4, 5 ], [ 1, 2 ], [ 5 ], [ 4 ] ]
-gap> D3 := Digraph(IsMutableDigraph, [[2],[1],[2]]);
+gap> D3 := Digraph(IsMutableDigraph, [[2], [1], [2]]);
 <mutable digraph with 3 vertices, 3 edges>
 gap> SwapDigraphs(D1, D3);
 gap> OutNeighbours(D1);
@@ -2565,7 +2565,7 @@ gap> OutNeighbours(D1);
 [ [ 4 ], [ 5 ], [ 1, 2 ], [  ], [  ] ]
 gap> OutNeighbours(D3);
 [ [ 2 ], [ 1 ], [ 2 ] ]
-gap> D2 := Digraph(IsMutableDigraph, [[],[],[]]);
+gap> D2 := Digraph(IsMutableDigraph, [[], [], []]);
 <mutable empty digraph with 3 vertices>
 gap> SwapDigraphs(D3, D2);
 gap> OutNeighbours(D2);
