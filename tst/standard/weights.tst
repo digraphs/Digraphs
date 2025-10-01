@@ -30,9 +30,9 @@ gap> EdgeWeightedDigraphTotalWeight(d);
 
 # weight not valid
 gap> d := EdgeWeightedDigraph([[2], []], [["a"], []]);
-Error, out neighbour weight must be an integer, float or rational,
+Error, out-neighbour weights must be integers, floats, or rationals,
 
-# check all elements of out neighbours are list
+# check all elements of out-neighbours are list
 gap> d := EdgeWeightedDigraph(["a", []], [[5], []]);
 Error, the argument <list> must be a list of lists of positive integers not ex\
 ceeding the length of the argument,
@@ -53,15 +53,17 @@ ceeding the length of the argument,
 
 # incorrect digraph and weights
 gap> d := EdgeWeightedDigraph([[2], []], [[5]]);
-Error, the number of out neighbours and weights must be equal,
+Error, the number of out-neighbours and weights must be equal,
 
 # incorrect digraph and weights
 gap> d := EdgeWeightedDigraph([[2, 2], []], [[5], []]);
-Error, the sizes of the out neighbours and weights for vertex 1 must be equal,
+Error, the number of out-neighbours and weights for the vertex 1 must be equal\
+,
 
 # incorrect digraph and weights
 gap> d := EdgeWeightedDigraph([[2], []], [[5, 10], []]);
-Error, the sizes of the out neighbours and weights for vertex 1 must be equal,
+Error, the number of out-neighbours and weights for the vertex 1 must be equal\
+,
 
 #############################################################################
 # 2. Copies of edge weights
@@ -103,7 +105,7 @@ true
 gap> d := EdgeWeightedDigraph([[1], [2]], [[5], [10]]);
 <immutable digraph with 2 vertices, 2 edges>
 gap> EdgeWeightedDigraphMinimumSpanningTree(d);
-Error, the argument <digraph> must be a connected digraph,
+Error, the argument <D> must be a connected digraph,
 
 # digraph with one node
 gap> d := EdgeWeightedDigraph([[]], [[]]);
@@ -210,13 +212,11 @@ arguments
 gap> d := EdgeWeightedDigraph([[2], [1]], [[2], [7]]);
 <immutable digraph with 2 vertices, 2 edges>
 gap> EdgeWeightedDigraphShortestPaths(d, 3);
-Error, the 2nd argument <source> must be a vertex of the 1st argument <digraph\
->,
+Error, the 2nd argument <source> must be a vertex of the 1st argument <D>,
 gap> EdgeWeightedDigraphShortestPath(d, 3, 1);
-Error, the 2nd argument <source> must be a vertex of the 1st argument <digraph\
->,
+Error, the 2nd argument <source> must be a vertex of the 1st argument <D>,
 gap> EdgeWeightedDigraphShortestPath(d, 1, 3);
-Error, the 3rd argument <dest> must be a vertex of the 1st argument <digraph>,
+Error, the 3rd argument <dest> must be a vertex of the 1st argument <D>,
 
 # Shortest paths: no path exists
 gap> d := EdgeWeightedDigraph([[1], [2]], [[5], [10]]);
@@ -286,8 +286,7 @@ rec( distances := [ [ 0, 3, 8, fail, fail ], [ fail, 0, 5, fail, fail ],
       [ fail, fail, fail, fail, fail ], [ fail, fail, fail, fail, fail ], 
       [ fail, fail, fail, fail, fail ] ] )
 gap> EdgeWeightedDigraphShortestPaths(d, 6);
-Error, the 2nd argument <source> must be a vertex of the 1st argument <digraph\
->,
+Error, the 2nd argument <source> must be a vertex of the 1st argument <D>,
 gap> EdgeWeightedDigraphShortestPath(d, 1, 3);
 [ [ 1, 2, 3 ], [ 1, 1 ] ]
 
@@ -299,7 +298,7 @@ gap> EdgeWeightedDigraphShortestPath(d, 1, 3);
 gap> d := EdgeWeightedDigraph([], []);
 <immutable empty digraph with 0 vertices>
 gap> DigraphMaximumFlow(d, 1, 1);
-Error, <start> must be a vertex of <digraph>,
+Error, <start> must be a vertex of <D>,
 
 # Maximum flow: single vertex (also empty digraphs)
 gap> d := EdgeWeightedDigraph([[]], [[]]);
@@ -323,13 +322,13 @@ gap> DigraphMaximumFlow(d, 1, 2);
 gap> d := EdgeWeightedDigraph([[1, 2], []], [[5, 10], []]);
 <immutable digraph with 2 vertices, 2 edges>
 gap> DigraphMaximumFlow(d, 5, 2);
-Error, <start> must be a vertex of <digraph>,
+Error, <start> must be a vertex of <D>,
 
 # Maximum flow: invalid sink
 gap> d := EdgeWeightedDigraph([[1, 2], []], [[5, 10], []]);
 <immutable digraph with 2 vertices, 2 edges>
 gap> DigraphMaximumFlow(d, 1, 5);
-Error, <destination> must be a vertex of <digraph>,
+Error, <destination> must be a vertex of <D>,
 
 # Maximum flow: sink not reachable
 gap> d := EdgeWeightedDigraph([[1], []], [[5], []]);
@@ -343,7 +342,7 @@ gap> d := EdgeWeightedDigraph([[2], [3], []], [[5], [10], []]);
 gap> DigraphMaximumFlow(d, 2, 3);
 [ [ 0 ], [ 10 ], [  ] ]
 
-# Maximum flow: sink has out neighbours
+# Maximum flow: sink has out-neighbours
 gap> d := EdgeWeightedDigraph([[2], [3], [2]], [[5], [10], [7]]);
 <immutable digraph with 3 vertices, 3 edges>
 gap> DigraphMaximumFlow(d, 2, 3);                           
