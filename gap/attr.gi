@@ -1761,97 +1761,97 @@ function(D, maxLength)
   local BlockNeighbours, UnblockNeighbours, Triplets, CCExtension, temp, T, C,
         blocked, triple;
 
-    if IsEmptyDigraph(D) then
-        return [];
-    fi;
+  if IsEmptyDigraph(D) then
+    return [];
+  fi;
 
-    BlockNeighbours := function(D, v, blocked)
-        local u;
-        for u in OutNeighboursOfVertex(D, v) do
-            blocked[u] := blocked[u] + 1;
-        od;
-        return blocked;
-    end;
-
-    UnblockNeighbours := function(D, v, blocked)
-        local u;
-        for u in OutNeighboursOfVertex(D, v) do
-            if blocked[u] > 0 then
-                blocked[u] := blocked[u] - 1;
-            fi;
-        od;
-        return blocked;
-    end;
-
-    # Computes all possible triplets
-    Triplets := function(D)
-        local T, C, u, pair, x, y, labels;
-        T := [];
-        C := [];
-        for u in DigraphVertices(D) do
-            for pair in Combinations(OutNeighboursOfVertex(D, u), 2) do
-                x := pair[1];
-                y := pair[2];
-                labels := DigraphVertexLabels(D);
-                if labels[u] < labels[x] and labels[x] < labels[y] then
-                    if not IsDigraphEdge(D, x, y) then
-                        Add(T, [x, u, y]);
-                    else
-                        Add(C, [x, u, y]);
-                    fi;
-                elif labels[u] < labels[y] and labels[y] < labels[x] then
-                    if not IsDigraphEdge(D, x, y) then
-                        Add(T, [y, u, x]);
-                    else
-                        Add(C, [y, u, x]);
-                    fi;
-                fi;
-            od;
-        od;
-        return [T, C];
-    end;
-
-    # Extends a given chordless path if possible
-    CCExtension := function(D, path, C, key, blocked)
-        local v, extendedPath, data;
-        blocked := BlockNeighbours(D, path[Length(path)], blocked);
-        for v in OutNeighboursOfVertex(D, path[Length(path)]) do
-            if DigraphVertexLabel(D, v) > key and blocked[v] = 1
-              and Length(path) < maxLength then
-                extendedPath := Concatenation(path, [v]);
-                if IsDigraphEdge(D, v, path[1]) then
-                    Add(C, extendedPath);
-                else
-                    data := CCExtension(D, extendedPath, C, key, blocked);
-                    C := data[1];
-                    blocked := data[2];
-                fi;
-            fi;
-        od;
-        blocked := UnblockNeighbours(D, path[Length(path)], blocked);
-        return [C, blocked];
-    end;
-
-    D := DigraphMutableCopy(D);
-    DigraphSymmetricClosure(DigraphRemoveLoops(
-                            DigraphRemoveAllMultipleEdges(D)));
-    MakeImmutable(D);
-    SetDigraphVertexLabels(D, Reversed(DigraphDegeneracyOrdering(D)));
-
-    temp := Triplets(D);
-    T := temp[1];
-    C := temp[2];
-    blocked := List(DigraphVertices(D), i -> 0);
-    while T <> [] do
-        triple := Remove(T);
-        blocked := BlockNeighbours(D, triple[2], blocked);
-        temp := CCExtension(D, triple, C,
-                              DigraphVertexLabel(D, triple[2]), blocked);
-        C := temp[1];
-        blocked := temp[2];
-        blocked := UnblockNeighbours(D, triple[2], blocked);
+  BlockNeighbours := function(D, v, blocked)
+    local u;
+    for u in OutNeighboursOfVertex(D, v) do
+      blocked[u] := blocked[u] + 1;
     od;
-    return C;
+    return blocked;
+  end;
+
+  UnblockNeighbours := function(D, v, blocked)
+    local u;
+    for u in OutNeighboursOfVertex(D, v) do
+      if blocked[u] > 0 then
+        blocked[u] := blocked[u] - 1;
+      fi;
+    od;
+    return blocked;
+  end;
+
+  # Computes all possible triplets
+  Triplets := function(D)
+    local T, C, u, pair, x, y, labels;
+    T := [];
+    C := [];
+    for u in DigraphVertices(D) do
+      for pair in Combinations(OutNeighboursOfVertex(D, u), 2) do
+        x := pair[1];
+        y := pair[2];
+        labels := DigraphVertexLabels(D);
+        if labels[u] < labels[x] and labels[x] < labels[y] then
+          if not IsDigraphEdge(D, x, y) then
+            Add(T, [x, u, y]);
+          else
+            Add(C, [x, u, y]);
+          fi;
+        elif labels[u] < labels[y] and labels[y] < labels[x] then
+          if not IsDigraphEdge(D, x, y) then
+            Add(T, [y, u, x]);
+          else
+            Add(C, [y, u, x]);
+          fi;
+        fi;
+      od;
+    od;
+    return [T, C];
+  end;
+
+  # Extends a given chordless path if possible
+  CCExtension := function(D, path, C, key, blocked)
+    local v, extendedPath, data;
+    blocked := BlockNeighbours(D, path[Length(path)], blocked);
+    for v in OutNeighboursOfVertex(D, path[Length(path)]) do
+      if DigraphVertexLabel(D, v) > key and blocked[v] = 1
+          and Length(path) < maxLength then
+        extendedPath := Concatenation(path, [v]);
+        if IsDigraphEdge(D, v, path[1]) then
+          Add(C, extendedPath);
+        else
+          data := CCExtension(D, extendedPath, C, key, blocked);
+          C := data[1];
+          blocked := data[2];
+        fi;
+      fi;
+    od;
+    blocked := UnblockNeighbours(D, path[Length(path)], blocked);
+    return [C, blocked];
+  end;
+
+  D := DigraphMutableCopy(D);
+  DigraphSymmetricClosure(DigraphRemoveLoops(
+  DigraphRemoveAllMultipleEdges(D)));
+  MakeImmutable(D);
+  SetDigraphVertexLabels(D, Reversed(DigraphDegeneracyOrdering(D)));
+
+  temp := Triplets(D);
+  T := temp[1];
+  C := temp[2];
+  blocked := List(DigraphVertices(D), i -> 0);
+  while T <> [] do
+    triple := Remove(T);
+    blocked := BlockNeighbours(D, triple[2], blocked);
+    temp := CCExtension(D, triple, C, DigraphVertexLabel(D, triple[2]),
+                        blocked);
+    C := temp[1];
+    blocked := temp[2];
+    blocked := UnblockNeighbours(D, triple[2], blocked);
+  od;
+  return C;
 end);
 
 InstallMethod(DigraphAllChordlessCycles, "for a digraph",
@@ -1862,74 +1862,72 @@ D -> DigraphAllChordlessCyclesOfMaximalLength(D, INTOBJ_MAX));
 InstallMethod(FacialWalks, "for a digraph and a list",
 [IsDigraph, IsDenseList],
 function(D, rotationSystem)
+  local FacialWalk, facialWalks, remEdges, cycle;
 
-    local FacialWalk, facialWalks, remEdges, cycle;
+  if not IsEulerianDigraph(D) then
+    ErrorNoReturn("the 1st argument (digraph <D>) must be Eulerian");
+  fi;
 
-    if not IsEulerianDigraph(D) then
-        ErrorNoReturn("the 1st argument (digraph <D>) must be Eulerian");
-    fi;
+  if Length(rotationSystem) <> DigraphNrVertices(D) then
+    ErrorNoReturn("the 2nd argument (list <rotationSystem>) is not a rotation ",
+                  "system for the 1st argument (digraph <D>), expected a dense",
+                  " list of length ", DigraphNrVertices(D), "but found a dense",
+                  " list of length ", Length(rotationSystem));
+  fi;
 
-    if Length(rotationSystem) <> DigraphNrVertices(D) then
-      ErrorNoReturn("the 2nd argument (list <rotationSystem>) is not a ",
-          "rotation ",
-          "system for the 1st argument (digraph <D>), expected a dense",
-          " list of length ", DigraphNrVertices(D), "but found a dense",
-          " list of length ", Length(rotationSystem));
-    fi;
+  if Difference(Union(rotationSystem), DigraphVertices(D)) <> [] then
+    ErrorNoReturn("the 2nd argument (dense list <rotationSystem>) is not a ",
+                  "rotation system for the 1st argument (digraph <D>), ",
+                  "expected the union to be ", DigraphVertices(D), " but ",
+                  "found ", Union(rotationSystem));
+  fi;
 
-    if Difference(Union(rotationSystem), DigraphVertices(D)) <> [] then
-      ErrorNoReturn("the 2nd argument (dense list <rotationSystem>) is not a ",
-                    "rotation system for the 1st argument (digraph <D>), ",
-                    "expected the union to be ", DigraphVertices(D), " but ",
-                    "found ", Union(rotationSystem));
-    fi;
+  # computes a facial cycles starting with the edge 'startEdge'
+  FacialWalk := function(rotationSystem, startEdge)
+    local startVertex, preVertex, actVertex, cycle, nextVertex, pos;
 
-    # computes a facial cycles starting with the edge 'startEdge'
-    FacialWalk := function(rotationSystem, startEdge)
-        local startVertex, preVertex, actVertex, cycle, nextVertex, pos;
+    startVertex := startEdge[1];
+    actVertex := startEdge[2];
+    preVertex := startVertex;
 
-        startVertex := startEdge[1];
-        actVertex := startEdge[2];
-        preVertex := startVertex;
+    cycle := [startVertex, actVertex];
 
-        cycle := [startVertex, actVertex];
+    nextVertex := 0;  # just an initialization
+    while true do
+      pos := Position(rotationSystem[actVertex], preVertex);
 
-        nextVertex := 0;  # just an initialization
-        while true do
-            pos := Position(rotationSystem[actVertex], preVertex);
-
-            if pos < Length(rotationSystem[actVertex]) then
-                nextVertex := rotationSystem[actVertex][pos + 1];
-            else
-                nextVertex := rotationSystem[actVertex][1];
-            fi;
-            if nextVertex <> startEdge[2] or actVertex <> startVertex then
-                Add(cycle, nextVertex);
-                Remove(remEdges, Position(remEdges, [preVertex, actVertex]));
-                preVertex := actVertex;
-                actVertex := nextVertex;
-            else
-                break;
-            fi;
-        od;
-        Remove(remEdges, Position(remEdges, [preVertex, startVertex]));
-        # Remove the last vertex, otherwise otherwise
-        # the start vertex is contained twice
-        Remove(cycle);
-        return cycle;
-    end;
-
-    D := DigraphRemoveLoops(DigraphRemoveAllMultipleEdges(
-        DigraphMutableCopyIfMutable(D)));
-
-    facialWalks := [];
-    remEdges := ShallowCopy(DigraphEdges(D));
-
-    while remEdges <> [] do
-        cycle := FacialWalk(rotationSystem, remEdges[1]);
-        Add(facialWalks, cycle);
+      if pos < Length(rotationSystem[actVertex]) then
+        nextVertex := rotationSystem[actVertex][pos + 1];
+      else
+        nextVertex := rotationSystem[actVertex][1];
+      fi;
+      if nextVertex <> startEdge[2] or actVertex <> startVertex then
+        Add(cycle, nextVertex);
+        Remove(remEdges, Position(remEdges, [preVertex, actVertex]));
+        preVertex := actVertex;
+        actVertex := nextVertex;
+      else
+        break;
+      fi;
     od;
-    return facialWalks;
+    Remove(remEdges, Position(remEdges, [preVertex, startVertex]));
+    # Remove the last vertex, otherwise otherwise
+    # the start vertex is contained twice
+    Remove(cycle);
+    return cycle;
+  end;
+
+  D := DigraphRemoveLoops(DigraphRemoveAllMultipleEdges(
+       DigraphMutableCopyIfMutable(D)));
+
+  facialWalks := [];
+  remEdges := ShallowCopy(DigraphEdges(D));
+
+  while remEdges <> [] do
+    cycle := FacialWalk(rotationSystem, remEdges[1]);
+    Add(facialWalks, cycle);
+  od;
+  return facialWalks;
 end);
 
 # Computes the minimal cyclic edge cut of connected cubic graphs with at
