@@ -277,6 +277,25 @@ InstallMethod(DigraphRemoveEdges, "for an immutable digraph and a list",
 [IsImmutableDigraph, IsList],
 {D, edges} -> MakeImmutable(DigraphRemoveEdges(DigraphMutableCopy(D), edges)));
 
+InstallMethod(DigraphRemoveAllEdges, "for a mutable digraph", 
+[IsDigraph], 
+function(D)
+  local i, neighbour, nbs, currentEdges;
+  if IsImmutableDigraph(D) then
+    ErrorNoReturn("Argument must be a mutable digraph");
+  else 
+    nbs := OutNeighboursMutableCopy(D);
+    
+    for i in [1..Length(nbs)] do
+      currentEdges := DigraphOutEdges(D, i);
+      DigraphRemoveEdges(D, currentEdges);
+    od;
+
+    return D;
+  fi;
+end);
+
+
 InstallMethod(DigraphReverseEdge,
 "for a mutable digraph by out-neighbours and two positive integers",
 [IsMutableDigraph and IsDigraphByOutNeighboursRep, IsPosInt, IsPosInt],
@@ -987,6 +1006,48 @@ function(D1, D2, edge_function)
   od;
 
   return Digraph(edges);
+end);
+
+InstallMethod(SwapDigraphs, 
+"for a digraph and digraph", 
+[IsDigraph, IsDigraph], 
+function(D1, D2)
+  local nb1, nb2, i, neighbour, d2edges;
+
+  if IsMutableDigraph(D1) and IsMutableDigraph(D2) then
+    nb1 := OutNeighboursMutableCopy(D1);
+    nb2 := OutNeighboursMutableCopy(D2);
+    
+    DigraphRemoveAllEdges(D1);
+    DigraphRemoveAllEdges(D2);
+
+    #If the second digraph has more vertices than the first
+    if Length(nb2) < Length(nb1) then
+      for i in [Length(nb2)..Length(nb1)-1] do
+        DigraphRemoveVertex(D1, Length(nb2)+1);
+        DigraphAddVertex(D2);
+      od;
+    else
+      for i in [Length(nb1)..Length(nb2)-1] do
+        DigraphRemoveVertex(D2, Length(nb1)+1);
+        DigraphAddVertex(D1);
+      od;
+    fi;
+
+    for i in [1..Length(nb2)] do
+      for neighbour in nb2[i] do
+        DigraphAddEdge(D1, i, neighbour);
+      od;
+    od;
+    
+    for i in [1..Length(nb1)] do
+      for neighbour in nb1[i] do
+        DigraphAddEdge(D2, i, neighbour);
+      od;
+    od;
+  else
+    ErrorNoReturn("Arguments must be mutable digraphs");
+  fi;
 end);
 
 ###############################################################################
