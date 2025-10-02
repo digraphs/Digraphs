@@ -2680,36 +2680,44 @@ gap> Length(M);
 </ManSection>
 <#/GAPDoc>
 
-<#GAPDoc Label="VertexConnectivity">
+<#GAPDoc Label="DigraphVertexConnectivity">
 <ManSection>
-  <Attr Name="VertexConnectivity" Arg="digraph"/>
+  <Attr Name="DigraphVertexConnectivity" Arg="digraph"/>
   <Returns>An non-negative integer.</Returns>
   <Description>
-    This function returns the weak vertex connectivity of the digraph
-    <A>digraph</A>.
+    This function returns the vertex connectivity of the digraph
+    <A>digraph</A>. This is also sometimes called the weak vertex connectivity.
     <P/>
 
-    The weak vertex connectivity for a weakly connected digraph is the largest
-    number <M>k</M> such that:
+    The vertex connectivity of a connected digraph (in the sense of
+    <Ref Prop="IsConnectedDigraph"/>) is the largest number <M>k</M> such that:
     <List>
-      <Item> the digraph has at least <M>k + 1</M> vertices and</Item>
-      <Item> the digraph remains weakly connected after the removal of any set
-             of at most <M>k - 1</M> vertices.</Item>
+      <Item> the digraph has at least <M>k + 1</M> vertices, and</Item>
+      <Item> the digraph remains connected after the removal of any set of at
+             most <M>k - 1</M> vertices.</Item>
     </List>
-    If the digraph is not weakly connected, then its vertex connectivity is 0.
+    If the digraph is not connected, then its vertex connectivity is 0.
     For a non-empty digraph whose symmetric closure is not complete, the vertex
     connectivity is equal to the size of the smallest set of vertices whose
-    removal would (weakly) disconnect the digraph.
+    removal would disconnect the digraph.
     <P/>
 
-    By convention the vertex connectivity of the empty digraph is
-    0, and the vertex connectivity of a complete graph on <M>n</M> vertices is
-    <M>n-1</M>. In particular the singleton graph has vertex connectivity 0 and
-    the 2-cycle graph has vertex connectivity 1. This means that weak
-    connectivity (see <Ref Prop="IsConnectedDigraph"/>) does not imply weak
-    vertex 1-connectivity and biconnectivity
-    (see <Ref Prop="IsBiconnectedDigraph"/>) does not imply weak vertex
-    2-connectivity.
+    Vertex connectivity of small digraphs may be counterintuitive
+    with respect to the notions of connectivity, as defined by
+    <Ref Prop="IsConnectedDigraph"/>, and biconnecivity, as defined by
+    <Ref Prop="IsBiconnectedDigraph"/>. Namely
+    <List>
+      <Item> the empty digraph is connected, but its vertex connectivity is 0;
+      </Item>
+      <Item> the singleton digraph is connected, but its vertex connectivity is
+             0;</Item>
+      <Item> the 2-cycle digraph is biconnected, but its vertex connectivity is
+             only 1.</Item>
+    </List>
+    However, for a digraph with at least 3 vertices, having vertex connectivity
+    greater than or equal to 1 is equivalent to being connected, and having
+    vertex connectivity greater than or equal to 2 is equivalent to being
+    biconnected.
     <P/>
 
     The algorithm makes <M>n - d - 1 + d \cdot (d - 1) / 2</M> calls to the
@@ -2719,27 +2727,29 @@ gap> Length(M);
     see <Ref Oper="DigraphSymmetricClosure"/>.
 
     <Example><![CDATA[
-gap> VertexConnectivity(Digraph([]));
-0
-gap> VertexConnectivity(Digraph([[]]));
-0
-gap> VertexConnectivity(CycleDigraph(2));
-1
 gap> D := CompleteBipartiteDigraph(4, 5);
 <immutable complete bipartite digraph with bicomponent sizes 4 and 5>
-gap> VertexConnectivity(D);
+gap> DigraphVertexConnectivity(D);
 4
-gap> VertexConnectivity(PancakeGraph(4));
+gap> DigraphVertexConnectivity(PancakeGraph(4));
 3
 gap> D := Digraph([[2, 4, 5], [1, 4], [4, 7], [1, 2, 3, 5, 6, 7],
 >                  [1, 4], [4, 7], [3, 4, 6]]);
 <immutable digraph with 7 vertices, 20 edges>
-gap> VertexConnectivity(D);
+gap> DigraphVertexConnectivity(D);
 1
 gap> J := JohnsonDigraph(9, 2);
 <immutable symmetric digraph with 36 vertices, 504 edges>
-gap> VertexConnectivity(J);
+gap> DigraphVertexConnectivity(J);
 14
+gap> DigraphVertexConnectivity(Digraph([]));
+0
+gap> DigraphVertexConnectivity(Digraph([[1]]));
+0
+gap> DigraphVertexConnectivity(CycleDigraph(2));
+1
+gap> DigraphVertexConnectivity(CompleteDigraph(5));
+4
 ]]></Example>
   </Description>
 </ManSection>

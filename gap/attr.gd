@@ -77,8 +77,7 @@ DeclareAttribute("DigraphCore", IsDigraph);
 
 DeclareAttribute("CharacteristicPolynomial", IsDigraph);
 DeclareAttribute("NrSpanningTrees", IsDigraph);
-# TODO: Should we change the name to DigraphVertexConnectivity?
-DeclareAttribute("VertexConnectivity", IsDigraph);
+DeclareAttribute("DigraphVertexConnectivity", IsDigraph);
 
 # AsGraph must be mutable for grape to function properly
 DeclareAttribute("AsGraph", IsDigraph, "mutable");

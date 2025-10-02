@@ -3358,47 +3358,44 @@ function(D)
   return Union(M, DIGRAPHS_MateToMatching(D, mateD));
 end);
 
-InstallMethod(VertexConnectivity, "for a digraph", [IsDigraph],
-function(digraph)
-  local doubled_digraph_adj, doubled_digraph, max_flow, u, v, i, j,
-    neighbours_v, kappa, kappa_min, adjacency_function;
+InstallMethod(DigraphVertexConnectivity, "for a digraph", [IsDigraph],
+function(D)
+  local doubled_D_adj, doubled_D, max_flow, u, v, i, j,
+    neighbours_v, kappa, kappa_min, is_multi, has_loops, is_nonsymm;
 
   # As per Wikipedia:
   # "A graph is said to be k-vertex-connected if it contains at least k + 1
   # vertices, but does not contain a set of k − 1 vertices whose removal
   # disconnects the graph."
   # https://en.wikipedia.org/wiki/Connectivity_(graph_theory)
-  # The knock-on effect is that the singleton graph is not 1-connected, which
-  # is slightly confusing.
-  # TODO: Maybe change this convention, because at the moment e.g.
-  # The graph on 1 vertex is connected according to IsConnectedDigraph, but is
-  # not 1-connected according to this function.
-  # Similarly CycleDigraph(2) is biconnected according to IsBiconnectDigraph,
-  # but it is not 2-connected according to this function, which is a bit
-  # frustrating.
-  if DigraphNrVertices(digraph) <= 1 or not IsConnectedDigraph(digraph) then
+  # The knock-on effect is that the singleton graph has vertex connectivity 0.
+  # This is discussed in the documentation in more detail.
+  if DigraphNrVertices(D) <= 1 or not IsConnectedDigraph(D) then
     return 0;
   fi;
 
-  # Remove multiple edges
-  # TODO: Do each check separately? Or work this into the doubled digraph
-  # computation?
-  if IsMultiDigraph(digraph) or
-      DigraphHasLoops(digraph) or
-      not IsSymmetricDigraph(digraph) then
-    digraph := DigraphMutableCopy(digraph);
-    digraph := DigraphRemoveAllMultipleEdges(digraph);
-    digraph := DigraphRemoveLoops(digraph);
-    digraph := DigraphSymmetricClosure(digraph);
-    digraph := MakeImmutable(digraph);
+  # Remove multiple edges, loops and symmetrize, if necessary
+  is_multi := IsMultiDigraph(D);
+  has_loops := DigraphHasLoops(D);
+  is_nonsymm := not IsSymmetricDigraph(D);
+  if is_multi or has_loops or is_nonsymm then
+    D := DigraphMutableCopy(D);
+    if is_multi then
+      DigraphRemoveAllMultipleEdges(D);
+    fi;
+    if has_loops then
+      DigraphRemoveLoops(D);
+    fi;
+    if is_nonsymm then
+      DigraphSymmetricClosure(D);
+    fi;
+    # NOTE: D is mutable following this operation. This should not cause issues
+    # or slow down the computations.
   fi;
 
-  # Special case complete digraph since technically no set of vertices
-  # disconnects it.
-  # TODO: if we decide to change the convention above then we should change it
-  # here too.
-  if IsCompleteDigraph(digraph) then
-    return DigraphNrVertices(digraph) - 1;
+  # Special case complete digraph since no set of vertices disconnects it.
+  if IsCompleteDigraph(D) then
+    return DigraphNrVertices(D) - 1;
   fi;
 
   # Construct "doubled" digraph as per Theorem 6.4 of
@@ -3406,30 +3403,30 @@ function(digraph)
   # In: Even G, ed. Graph Algorithms.
   # Cambridge University Press; 2011:117-145.
   # https://doi.org/10.1017/CBO9781139015165
-  # Doubles the vertices of `digraph`. For every vertex v, 2*v-1 is called the
-  # "in"-vertex and 2*v is called the "out"-vertex. For every edge (v, u) in
-  # `digraph`, the doubled digraph contains an edge (2*v, 2*u-1) from the
-  # out-vertex of `v` to the in-vertex of `u`. Additionally, there is an edge
-  # (2*v-1, 2*v) for every vertex v in `digraph`.
-  doubled_digraph_adj := List([1 .. 2 * DigraphNrVertices(digraph)], x -> []);
-  for v in DigraphVertices(digraph) do
-    for u in OutNeighborsOfVertex(digraph, v) do
-        Add(doubled_digraph_adj[2 * v], 2 * u - 1);
+  # Doubles the vertices of the digraph `D`. For every vertex v, 2*v-1 is
+  # called the "in"-vertex and 2*v is called the "out"-vertex. For every edge
+  # (v, u) in `D`, the doubled digraph contains an edge (2*v, 2*u-1) from
+  # the out-vertex of `v` to the in-vertex of `u`. Additionally, there is an
+  # edge (2*v-1, 2*v) for every vertex v in `D`.
+  doubled_D_adj := List([1 .. 2 * DigraphNrVertices(D)], x -> []);
+  for v in DigraphVertices(D) do
+    for u in OutNeighborsOfVertex(D, v) do
+        Add(doubled_D_adj[2 * v], 2 * u - 1);
     od;
-    Add(doubled_digraph_adj[2 * v - 1], 2 * v);
+    Add(doubled_D_adj[2 * v - 1], 2 * v);
   od;
-  doubled_digraph := EdgeWeightedDigraph(
-    doubled_digraph_adj,
-    List(doubled_digraph_adj, x -> ListWithIdenticalEntries(Length(x), 1)));
+  doubled_D := EdgeWeightedDigraph(
+    doubled_D_adj,
+    List(doubled_D_adj, x -> ListWithIdenticalEntries(Length(x), 1)));
 
-  # The resulting graph, `doubled_digraph` is bipartite, and, additionally,
-  # there is a correspondence between paths in `digraph` and `doubled_digraph`
-  # given by mapping the path (v_1, v_2, ... v_n) in `digraph` to the path
+  # The resulting graph, `doubled_D` is bipartite, and, additionally,
+  # there is a correspondence between paths in `D` and `doubled_D`
+  # given by mapping the path (v_1, v_2, ... v_n) in `D` to the path
   # (2*v_1, 2*v_2 - 1, 2*v_2, ..., 2*v_{n-1} - 1, 2*v_{n-1}, 2*v_n - 1) in
-  # `doubled_digraph`. An conversely, any path starting with an even vertex and
-  # ending with an odd vertex in `doubled_digraph` is of the form
+  # `doubled_D`. An conversely, any path starting with an even vertex and
+  # ending with an odd vertex in `doubled_D` is of the form
   # (2*v_1, 2*v_2 - 1, 2*v_2, ..., 2*v_{n-1} - 1, 2*v_{n-1}, 2*v_n - 1) for
-  # some path (v_1, v_2, ... v_n) in `digraph`.
+  # some path (v_1, v_2, ... v_n) in `D`.
 
   # The local vertex connectivity for a pair of vertices u, v is the
   # size of the least set S that contain u and v
@@ -3439,31 +3436,31 @@ function(digraph)
   # the least number of edges that need to be removed so that there is no
   # longer a (u, v)-path.
 
-  # Let u and v be non-adjacent vertices in `digraph`. Because of the
-  # correspondence of paths in `digraph` and `doubled_digraph`, any such set S
-  # for `digraph` corresponds to a set of edges E_S (obtained by replacing the
-  # vertex w by the edge (2*w-1, 2*w)) in `doubled_digraph` whose removal
+  # Let u and v be non-adjacent vertices in `D`. Because of the
+  # correspondence of paths in `D` and `doubled_D`, any such set S
+  # for `D` corresponds to a set of edges E_S (obtained by replacing the
+  # vertex w by the edge (2*w-1, 2*w)) in `doubled_D` whose removal
   # disconnects 2*u from 2*v-1.
   # Conversely, it can be shown that the smallest set of edges disconnecting
   # 2*u from 2*v-1 has the same cardinality as E_S. This is because, whenever
-  # we remove any edge (2*s, 2*t-1) from `doubled_digraph` with the goal of
+  # we remove any edge (2*s, 2*t-1) from `doubled_D` with the goal of
   # disconnecting 2*u from 2*v-1, it is always just as
   # efficient or more efficient to remove the edge (2*s-1, 2*s) instead, since
-  # any path from 2*u to 2*v-1 utilizing (2*s, 2*t-1) in `doubled_digraph` must
+  # any path from 2*u to 2*v-1 utilizing (2*s, 2*t-1) in `doubled_D` must
   # pass through (2*s-1, 2*s) by construction. Note that u and v are
   # non-adjacent by assumption, so it cannot be the case that
   # (2*s, 2*t-1) = (2*u, 2*v-1).
   # It follows that, for non-adjacent vertices, the local connectivity of u and
-  # v in `digraph` is equal to the minimum cut with source 2*u-1 and target 2*v
-  # in `doubled_digraph`.
+  # v in `D` is equal to the minimum cut with source 2*u-1 and target 2*v
+  # in `doubled_D`.
 
   # By the max-flow min-cut theorem, the size of the minimum cut with source u
   # and target v equals the maximum flow between u and v see Wikipedia below:
   # https://en.wikipedia.org/wiki/Max-flow_min-cut_theorem
   # Hence we can compute local vertex connectivity by repeated calls to the
   # max_flow function below:
-  max_flow := {D, source, target} ->
-    Sum(DigraphMaximumFlow(D, source, target)[source]);
+  max_flow := {digraph, source, target} ->
+    Sum(DigraphMaximumFlow(digraph, source, target)[source]);
 
   # The vertex connectivity is the minimum of the local vertex connectivity
   # over all pairs of vertices. However, it can be computed a bit more
@@ -3474,14 +3471,12 @@ function(digraph)
   # In particular, we reduce the number of local vertex connectivity
   # computations to n-d-1 + d*(d-1)/2 where n is the total number of vertices
   # and d is the minimum degree of any vertex.
-  v := PositionMinimum(OutDegrees(digraph));
-  neighbours_v := OutNeighboursOfVertex(digraph, v);
-  # TODO: is adjacency function the best way to check adjacency?
-  adjacency_function := DigraphAdjacencyFunction(digraph);
+  v := PositionMinimum(OutDegrees(D));
+  neighbours_v := OutNeighboursOfVertex(D, v);
   kappa_min := fail;
-  for u in DigraphVertices(digraph) do
-    if u <> v and not adjacency_function(v, u) then
-      kappa := max_flow(doubled_digraph, 2 * u, 2 * v - 1);
+  for u in DigraphVertices(D) do
+    if u <> v and not IsDigraphEdge(D, v, u) then
+      kappa := max_flow(doubled_D, 2 * u, 2 * v - 1);
       if kappa_min = fail or kappa < kappa_min then
         kappa_min := kappa;
       fi;
@@ -3492,8 +3487,8 @@ function(digraph)
     for j in [i + 1 .. Length(neighbours_v)] do
       u := neighbours_v[i];
       v := neighbours_v[j];
-      if not adjacency_function(v, u) then
-        kappa := max_flow(doubled_digraph, 2 * u, 2 * v - 1);
+      if not IsDigraphEdge(D, v, u) then
+        kappa := max_flow(doubled_D, 2 * u, 2 * v - 1);
         if kappa_min = fail or kappa < kappa_min then
             kappa_min := kappa;
         fi;
@@ -3503,8 +3498,8 @@ function(digraph)
 
   # We can only be here if every vertex is adjacent to a vertex of minimum
   # degree u and every pair of vertices v, w adjacent to u are also adjacent
-  # to each other. In other words, `digraph` is a complete graph, but we
-  # deal with these at the start. So this return should be unreachable.
+  # to each other. In other words, `D` is a complete graph, but we
+  # deal with these at the start. So this assert should pass.
   Assert(1, kappa_min <> fail);
   return kappa_min;
 end);
