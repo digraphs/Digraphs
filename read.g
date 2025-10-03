@@ -44,7 +44,7 @@ ReadPackage("digraphs", "gap/labels.gi");
 ReadPackage("digraphs", "gap/attr.gi");
 ReadPackage("digraphs", "gap/prop.gi");
 ReadPackage("digraphs", "gap/oper.gi");
-ReadPackage("digraphs", "gap/display.gi");
+# ReadPackage("digraphs", "gap/display.gi");
 ReadPackage("digraphs", "gap/isomorph.gi");
 ReadPackage("digraphs", "gap/io.gi");
 ReadPackage("digraphs", "gap/grahom.gi");
