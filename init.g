@@ -71,5 +71,6 @@ ReadPackage("digraphs", "gap/cliques.gd");
 ReadPackage("digraphs", "gap/planar.gd");
 ReadPackage("digraphs", "gap/examples.gd");
 ReadPackage("digraphs", "gap/weights.gd");
+ReadPackage("digraphs", "gap/deprecated.gd");
 
 DeclareInfoClass("InfoDigraphs");
