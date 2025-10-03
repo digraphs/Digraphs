@@ -275,10 +275,10 @@ function(filename)
   fi;
 
   splitname := SplitString(filename, ".");
-  extension := splitname[Length(splitname)];
+  extension := Remove(splitname);
 
   if extension in ["gz", "bz2", "xz"] then
-    extension := splitname[Length(splitname) - 1];
+    extension := Remove(splitname);
   fi;
 
   if extension = "txt" then
@@ -313,10 +313,10 @@ function(filename)
   fi;
 
   splitname := SplitString(filename, ".");
-  extension := splitname[Length(splitname)];
+  extension := Remove(splitname);
 
   if extension in ["gz", "bz2", "xz"] then
-    extension := splitname[Length(splitname) - 1];
+    extension := Remove(splitname);
   fi;
 
   if extension = "txt" then
@@ -549,9 +549,8 @@ function(arg...)
       # the file encoder was not specified and cannot be deduced from the
       # filename, so we try to make a guess based on the digraphs themselves
       splitname := SplitString(name, ".");
-      if splitname[Length(splitname)] in ["xz", "gz", "bz2"] then
-        compext := splitname[Length(splitname)];
-        splitname := splitname{[1 .. Length(splitname) - 1]};
+      if Last(splitname) in ["xz", "gz", "bz2"] then
+        compext := Remove(splitname);
       fi;
 
       # Do we know all the graphs to be symmetric?
@@ -647,7 +646,7 @@ function(arg...)
           " is a whole file encoder, and so only one digraph should be ",
           "specified. Only the last digraph will be encoded.");
     fi;
-    IO_Write(file, encoder(digraphs[Length(digraphs)]));
+    IO_Write(file, encoder(Last(digraphs)));
   else
     for i in [1 .. Length(digraphs)] do
       encoder(file, digraphs[i]);
@@ -715,7 +714,7 @@ function(filt, s)
   maxedges := n * (n - 1) / 2;
   if list <> [0] and list <> [1] and
       not (Int((maxedges - 1) / 6) + start = Length(list) and
-           list[Length(list)] mod 2 ^ ((0 - maxedges) mod 6) = 0) then
+           Last(list) mod 2 ^ ((0 - maxedges) mod 6) = 0) then
     ErrorNoReturn("the 2nd argument <s> is not a valid graph6 string,");
   fi;
 
@@ -732,8 +731,8 @@ function(filt, s)
         i := i / 2;
       else
         edge := FindCoord(pos + 6 - bpos, 0);
-        out[edge[1]][Length(out[edge[1]]) + 1] := edge[2];
-        out[edge[2]][Length(out[edge[2]]) + 1] := edge[1];
+        Add(out[edge[1]], edge[2]);
+        Add(out[edge[2]], edge[1]);
         nredges := nredges + 1;
         i := (i - 1) / 2;
       fi;
@@ -2165,7 +2164,7 @@ function(args...)
       positions := PositionsProperty(partition, x -> x = i);
       joinedPositions := JoinStringsWithSeparator(positions, " ");
       partitionString := Concatenation(partitionString, joinedPositions);
-      if i <> dflabels[Length(dflabels)] then
+      if i <> Last(dflabels) then
         partitionString := Concatenation(partitionString, " | ");
       fi;
     od;
