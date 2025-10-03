@@ -52,9 +52,12 @@ for Pkg in Concatenation(PkgInfo.Dependencies.NeededOtherPackages,
   XMLEntities.(entity_name) := RemovePrefixVersion(Pkg[2]);
 od;
 
-ARCHIVENAME := SplitString(PkgInfo.ArchiveURL, "/");
-ARCHIVENAME := Concatenation(ARCHIVENAME[Length(ARCHIVENAME)],
-                             PkgInfo.ArchiveFormats);
+# Can change the following line to use Last() once we drop GAP 4.10 support
+ARCHIVE_BASENAME := SplitString(PkgInfo.ArchiveURL, "/");
+ARCHIVE_BASENAME := ARCHIVE_BASENAME[Length(ARCHIVE_BASENAME)];
+XMLEntities.ARCHIVE_BASENAME := ARCHIVE_BASENAME;
+
+ARCHIVENAME := Concatenation(ARCHIVE_BASENAME, PkgInfo.ArchiveFormats);
 XMLEntities.ARCHIVENAME := ARCHIVENAME;
 
 XMLEntities.DIGRAPHS := PackageEntity("Digraphs");
@@ -89,10 +92,10 @@ XMLEntities.BLISS := UrlEntity("bliss",
   "http://www.tcs.tkk.fi/Software/bliss/");
 XMLEntities.NAUTY := UrlEntity("nauty",
   "https://pallini.di.uniroma1.it");
-XMLEntities.NautyTracesInterface := UrlEntity("NautyTracesInterface",
-  "https://github.com/gap-packages/NautyTracesInterface");
 XMLEntities.EDGE_PLANARITY_SUITE := UrlEntity("edge-addition-planarity-suite",
 "https://github.com/graph-algorithms/edge-addition-planarity-suite");
+XMLEntities.DIGRAPHS_LIB := UrlEntity("digraphs-lib",
+  "http://github.com/digraphs/digraphs-lib");
 
 XMLEntities.MUTABLE_RECOMPUTED_ATTR := """If the argument <A>digraph</A> is
 mutable, then the return value of this attribute is recomputed every time it is
