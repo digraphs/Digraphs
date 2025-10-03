@@ -29,6 +29,8 @@ DeclareOperation("DigraphRemoveEdge", [IsDigraph, IsPosInt, IsPosInt]);
 DeclareOperation("DigraphRemoveEdge", [IsDigraph, IsList]);
 DeclareOperation("DigraphRemoveEdges", [IsDigraph, IsList]);
 
+DeclareOperation("DigraphRemoveAllEdges", [IsDigraph]);
+
 DeclareOperation("DigraphReverseEdge", [IsDigraph, IsList]);
 DeclareOperation("DigraphReverseEdge", [IsDigraph, IsPosInt, IsPosInt]);
 DeclareOperation("DigraphReverseEdges", [IsDigraph, IsList]);
@@ -58,6 +60,8 @@ DeclareSynonym("DigraphLexicographicProduct", LexicographicProduct);
 
 DeclareGlobalFunction("DIGRAPHS_CombinationOperProcessArgs");
 DeclareOperation("DIGRAPHS_GraphProduct", [IsDigraph, IsDigraph, IsFunction]);
+
+DeclareOperation("SwapDigraphs", [IsDigraph, IsDigraph]);
 
 # 4. Actions . . .
 DeclareOperation("OnDigraphs", [IsDigraph, IsPerm]);
