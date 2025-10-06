@@ -29,8 +29,6 @@ DeclareOperation("DigraphRemoveEdge", [IsDigraph, IsPosInt, IsPosInt]);
 DeclareOperation("DigraphRemoveEdge", [IsDigraph, IsList]);
 DeclareOperation("DigraphRemoveEdges", [IsDigraph, IsList]);
 
-DeclareOperation("DigraphRemoveAllEdges", [IsDigraph]);
-
 DeclareOperation("DigraphReverseEdge", [IsDigraph, IsList]);
 DeclareOperation("DigraphReverseEdge", [IsDigraph, IsPosInt, IsPosInt]);
 DeclareOperation("DigraphReverseEdges", [IsDigraph, IsList]);

@@ -277,23 +277,6 @@ InstallMethod(DigraphRemoveEdges, "for an immutable digraph and a list",
 [IsImmutableDigraph, IsList],
 {D, edges} -> MakeImmutable(DigraphRemoveEdges(DigraphMutableCopy(D), edges)));
 
-InstallMethod(DigraphRemoveAllEdges, "for a mutable digraph",
-[IsDigraph],
-function(D)
-  local i, nbs, currentEdges;
-  if IsImmutableDigraph(D) then
-    ErrorNoReturn("Argument must be a mutable digraph");
-  else
-    nbs := OutNeighboursMutableCopy(D);
-    for i in [1 .. Length(nbs)] do
-      currentEdges := DigraphOutEdges(D, i);
-      DigraphRemoveEdges(D, currentEdges);
-    od;
-
-    return D;
-  fi;
-end);
-
 InstallMethod(DigraphReverseEdge,
 "for a mutable digraph by out-neighbours and two positive integers",
 [IsMutableDigraph and IsDigraphByOutNeighboursRep, IsPosInt, IsPosInt],
