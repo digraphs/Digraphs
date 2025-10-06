@@ -2091,6 +2091,30 @@ gap> D;
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="DigraphRemoveAllEdges">
+<ManSection>
+  <Oper Name="DigraphRemoveAllEdges" Arg="digraph"/>
+  <Attr Name="DigraphRemoveAllEdgesAttr" Arg="digraph"/>
+  <Returns>An empty digraph.</Returns>
+  <Description>
+    This operation returns a digraph constructed from <A>digraph</A>, which is mutable,
+    by removing all of the edges in the original digraph
+    (see <Ref Oper="DigraphRemoveEdge" Label="for a digraph and an edge"/>).
+    <P/>
+
+    If <A>digraph</A> is immutable, then a new, empty immutable digraph with the same number of vertices is returned.
+
+    <Example><![CDATA[
+gap> D3 := Digraph(IsMutableDigraph, [[2], [1], [2]]);
+<mutable digraph with 3 vertices, 3 edges>
+gap> DigraphRemoveAllEdges(D3);
+<mutable empty digraph with 3 vertices>
+true
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="DigraphAddAllLoops">
 <ManSection>
   <Oper Name="DigraphAddAllLoops" Arg="digraph"/>

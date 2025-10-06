@@ -733,27 +733,6 @@ true
 </ManSection>
 <#/GAPDoc>
 
-<#GAPDoc Label="DigraphRemoveAllEdges">
-<ManSection>
-  <Oper Name="DigraphRemoveAllEdges" Arg="digraph"/>
-  <Returns>An empty digraph.</Returns>
-  <Description>
-    This operation returns a digraph constructed from <A>digraph</A>, which is mutable,
-    by removing all of the edges in the original digraph.
-    (see <Ref Oper="DigraphRemoveEdge" Label="for a digraph and an edge"/>).
-    <P/>
-
-    <Example><![CDATA[
-gap> D3 := Digraph(IsMutableDigraph, [[2], [1], [2]]);
-<mutable digraph with 3 vertices, 3 edges>
-gap> DigraphRemoveAllEdges(D3);
-<mutable empty digraph with 3 vertices>
-true
-]]></Example>
-  </Description>
-</ManSection>
-<#/GAPDoc>
-
 <#GAPDoc Label="InducedSubdigraph">
 <ManSection>
   <Oper Name="InducedSubdigraph" Arg="digraph, verts"/>
@@ -2272,46 +2251,6 @@ gap> ConormalProduct(NullDigraph(0), CompleteDigraph(10));
 </Description>
 </ManSection>
 <#/GAPDoc>
-
-<#GAPDoc Label="HomomorphicProduct">
-<ManSection>
-  <Oper Name="HomomorphicProduct" Arg="D1, D2"/>
-  <Returns>A digraph.</Returns>
-  <Description>
-  If <A>D1</A> and <A>D2</A> are digraphs without multiple edges,
-  then <C>HomomorphicProduct</C> calculates the <E>homomorphic product digraph</E>
-  (<C>HPD</C>) of <A>D1</A> and <A>D2</A>.
-
-  <C>HPD</C> has vertex set <C>V1 x V2</C> where <C>V1</C> is the vertex set of
-  <A>D1</A> and <C>V2</C> is the vertex set of <A>D2</A> (a vertex
-  <C>[a, b]</C> has label <C>(a - 1) * |V2| + b</C> in the  output). There is
-  an edge from <C>[a, b]</C> to <C>[c, d]</C> when at least one of the
-  following two conditions are satisfied:
-  <List>
-    <Item>
-      The vertices <C>a</C> and <C>c</C> of <A>D1</A> are equal.
-    </Item>
-    <Item>
-      There is an edge from <C>a</C> to <C>c</C> in <A>D1</A> and no edge from
-      <C>b</C> to <C>d</C> in <A>D2</A>.
-    </Item>
-  </List>
-
-  <Example><![CDATA[
-gap> HomomorphicProduct(PetersenGraph(),
-> DigraphSymmetricClosure(ChainDigraph(4)));
-<immutable digraph with 40 vertices, 460 edges>
-gap> D1 := Digraph([[2], [1, 3, 4], [2, 5], [2, 5], [3, 4]]);
-<immutable digraph with 5 vertices, 10 edges>
-gap> D2 := Digraph([[2], [1, 3], [2, 4], [3]]);
-<immutable digraph with 4 vertices, 6 edges>
-gap> HomomorphicProduct(D1, D2);
-<immutable digraph with 20 vertices, 180 edges>
-]]></Example>
-</Description>
-</ManSection>
-<#/GAPDoc>
-
 
 <#GAPDoc Label="HomomorphicProduct">
 <ManSection>

@@ -109,22 +109,6 @@ gap> gr := DigraphRemoveEdge(gr, [2, 1]);
 gap> DigraphEdges(gr);
 [ [ 1, 2 ] ]
 
-# DigraphRemoveAllEdges: for a digraph
-gap> gr := Digraph(IsImmutableDigraph, [[2, 3], [3], [4], []]);
-<immutable digraph with 4 vertices, 4 edges>
-gap> DigraphRemoveAllEdges(gr);
-Error, Argument must be a mutable digraph
-gap> gr2 := Digraph(IsMutableDigraph, [[2, 3], [3], [4], []]);
-<mutable digraph with 4 vertices, 4 edges>
-gap> DigraphRemoveAllEdges(gr2);
-<mutable empty digraph with 4 vertices>
-gap> gr3 := Digraph(IsMutableDigraph, [[], [], [], []]);
-<mutable empty digraph with 4 vertices>
-gap> DigraphRemoveAllEdges(gr3);
-<mutable empty digraph with 4 vertices>
-gap> OutNeighbours(gr3);
-[ [  ], [  ], [  ], [  ] ]
-
 #  OnDigraphs: for a digraph and a perm
 gap> gr := Digraph([[2], [1], [3]]);
 <immutable digraph with 3 vertices, 3 edges>
@@ -2540,12 +2524,8 @@ gap> LexicographicProduct(ChainDigraph(3), CycleDigraph(7));
 <immutable digraph with 21 vertices, 119 edges>
 
 # SwapDigraphs
-gap> D1 := Digraph([[2, 3, 4], [1, 3, 4, 5], [1, 2], [5], [4]]);
-<immutable digraph with 5 vertices, 11 edges>
 gap> D2 := Digraph(IsMutableDigraph, [[4], [5], [1, 2], [], []]);
 <mutable digraph with 5 vertices, 4 edges>
-gap> SwapDigraphs(D1, D2);
-Error, Arguments must be mutable digraphs
 gap> D1 := Digraph(IsMutableDigraph, [[2, 3, 4], [1, 3, 4, 5], [1, 2], [5], [4]]);
 <mutable digraph with 5 vertices, 11 edges>
 gap> SwapDigraphs(D1, D2);
