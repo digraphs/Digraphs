@@ -90,7 +90,8 @@ DeclareAttributeThatReturnsDigraph("DigraphReverse", IsDigraph);
 DeclareAttributeThatReturnsDigraph("DigraphDual", IsDigraph);
 DeclareAttributeThatReturnsDigraph("ReducedDigraph", IsDigraph);
 DeclareAttributeThatReturnsDigraph("DigraphRemoveAllMultipleEdges", IsDigraph);
-DeclareAttributeThatReturnsDigraph("DigraphRemoveAllEdges", IsDigraph);
+DeclareAttributeThatReturnsDigraph("DigraphRemoveAllEdges", IsImmutableDigraph);
+DeclareAttributeThatReturnsDigraph("DigraphRemoveAllEdges", IsMutableDigraph);
 
 # TODO replace all DeclareOperations below to
 # DeclareAttributeThatReturnsDigraph, and remove the *Attr versions.
