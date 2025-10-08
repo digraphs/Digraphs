@@ -990,7 +990,7 @@ function(D1, D2, edge_function)
 end);
 
 InstallMethod(SwapDigraphs,
-"for a digraph and digraph",
+"for a mutable digraph and mutable digraph",
 [IsMutableDigraph, IsMutableDigraph],
 function(D1, D2)
   local nb1, nb2;

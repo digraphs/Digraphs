@@ -2537,24 +2537,22 @@ function(D)
   return D;
 end);
 
-InstallMethodThatReturnsDigraph(DigraphRemoveAllEdges, "for a digraph",
-[IsDigraph],
+InstallMethodThatReturnsDigraph(DigraphRemoveAllEdges,
+"for an immutable digraph",
+[IsImmutableDigraph],
+D -> NullDigraph(DigraphNrVertices(D))
+);
+
+InstallMethodThatReturnsDigraph(DigraphRemoveAllEdges,
+"for a mutable digraph",
+[IsMutableDigraph],
 function(D)
-  local i, nbs, currentEdges, emptynbs;
-  nbs := OutNeighboursMutableCopy(D);
-  if IsImmutableDigraph(D) then
-    emptynbs := [];
-    for i in [1 .. Length(nbs)] do
-      Add(emptynbs, []);
-    od;
-    return Digraph(IsImmutableDigraph, emptynbs);
-  else
-    for i in [1 .. Length(nbs)] do
-      currentEdges := DigraphOutEdges(D, i);
-      DigraphRemoveEdges(D, currentEdges);
-    od;
-    return D;
-  fi;
+  local i, currentEdges;
+  for i in [1 .. Length(OutNeighbours(D))] do
+    currentEdges := DigraphOutEdges(D, i);
+    DigraphRemoveEdges(D, currentEdges);
+  od;
+  return D;
 end);
 
 InstallMethod(DigraphAddAllLoops, "for a digraph", [IsDigraph],

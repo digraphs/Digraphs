@@ -59,7 +59,7 @@ DeclareSynonym("DigraphLexicographicProduct", LexicographicProduct);
 DeclareGlobalFunction("DIGRAPHS_CombinationOperProcessArgs");
 DeclareOperation("DIGRAPHS_GraphProduct", [IsDigraph, IsDigraph, IsFunction]);
 
-DeclareOperation("SwapDigraphs", [IsDigraph, IsDigraph]);
+DeclareOperation("SwapDigraphs", [IsMutableDigraph, IsMutableDigraph]);
 
 # 4. Actions . . .
 DeclareOperation("OnDigraphs", [IsDigraph, IsPerm]);
