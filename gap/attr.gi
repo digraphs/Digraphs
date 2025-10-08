@@ -2540,18 +2540,13 @@ end);
 InstallMethodThatReturnsDigraph(DigraphRemoveAllEdges,
 "for an immutable digraph",
 [IsImmutableDigraph],
-D -> NullDigraph(DigraphNrVertices(D))
-);
+D -> NullDigraph(DigraphNrVertices(D)));
 
 InstallMethodThatReturnsDigraph(DigraphRemoveAllEdges,
 "for a mutable digraph",
 [IsMutableDigraph],
 function(D)
-  local i, currentEdges;
-  for i in [1 .. Length(OutNeighbours(D))] do
-    currentEdges := DigraphOutEdges(D, i);
-    DigraphRemoveEdges(D, currentEdges);
-  od;
+  D!.OutNeighbours := List(DigraphVertices(D), v -> []);
   return D;
 end);
 
