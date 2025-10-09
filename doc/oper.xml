@@ -2291,6 +2291,29 @@ gap> HomomorphicProduct(D1, D2);
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="SwapDigraphs">
+<ManSection>
+  <Oper Name="SwapDigraphs" Arg="D1, D2"/>
+  <Description>
+  If <A>D1</A> and <A>D2</A> are mutable digraphs,
+  then <C>SwapDigraphs</C> will swap the contents of
+  <A>D1</A> and <A>D2</A>.
+
+  <Example><![CDATA[
+gap> D1 := Digraph(IsMutableDigraph, [[4], [5], [1, 2], [], []]);
+<mutable digraph with 5 vertices, 4 edges>
+gap> D2 := Digraph(IsMutableDigraph, [[2, 3, 4], [1, 3, 4, 5], [1, 2], [5], [4]]);
+<mutable digraph with 5 vertices, 11 edges>
+gap> SwapDigraphs(D1, D2);
+gap> OutNeighbours(D2);
+[ [ 4 ], [ 5 ], [ 1, 2 ], [  ], [  ] ]
+gap> OutNeighbours(D1);
+[ [ 2, 3, 4 ], [ 1, 3, 4, 5 ], [ 1, 2 ], [ 5 ], [ 4 ] ]
+]]></Example>
+</Description>
+</ManSection>
+<#/GAPDoc> 
+
 <#GAPDoc Label="LexicographicProduct">
 <ManSection>
   <Oper Name="LexicographicProduct" Arg="D1, D2"/>
