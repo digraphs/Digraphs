@@ -30,6 +30,7 @@ jobs:
           - v4.14
           - v4.13
           - v4.12
+          - further-pluralization
         mode:
           - onlyneeded
           - default
@@ -51,9 +52,16 @@ jobs:
       - name: Output g++ version . . .
         run: g++ --version
       - name: "Install GAP . . ."
+        if: ${{ matrix.gap-version != 'further-pluralization' }}
         uses: gap-actions/setup-gap@v3
         with:
           gap-version: ${{ matrix.gap-version }}
+      - name: "Install GAP . . ."
+        if: ${{ matrix.gap-version == 'further-pluralization' }}
+        uses: gap-actions/setup-gap@v3
+        with:
+          gap-version: ${{ matrix.gap-version }}
+          repository: wilfwilson/gap
       - name: "Build Digraphs . . ."
         uses: gap-actions/build-pkg@v2
       - name: "Clone additional GAP packages . . ."

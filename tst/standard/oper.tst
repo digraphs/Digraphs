@@ -2880,9 +2880,15 @@ gap> IsOrderFilter(D, [1, 4]);
 false
 gap> IsOrderFilter(D, [4]);
 false
+#@if CompareVersionNumbers(ReplacedString(GAPInfo.Version, "dev", ""), "4.16")
+gap> IsOrderFilter(4);
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `IsOrderFilter' on 1 argument
+#@else
 gap> IsOrderFilter(4);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `IsOrderFilter' on 1 arguments
+#@fi
 gap> IsOrderFilter(D, 4);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `IsOrderFilter' on 2 arguments
