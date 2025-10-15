@@ -2553,6 +2553,15 @@ gap> OutNeighbours(D2);
 gap> OutNeighbours(D3);
 [ [  ], [  ], [  ] ]
 
+# SwapDigraphs: ensure lists are not copied
+gap> D1 := Digraph(IsMutableDigraph, [[2], [3, 4], [1], []]);;
+gap> D2 := Digraph(IsMutableDigraph, [[1, 3], [3], [1, 2, 4], []]);;
+gap> out1 := OutNeighbours(D1);
+[ [ 2 ], [ 3, 4 ], [ 1 ], [  ] ]
+gap> SwapDigraphs(D1, D2);
+gap> IsIdenticalObj(out1, OutNeighbours(D2));
+true
+
 # DigraphShortestPathSpanningTree
 gap> D := Digraph([[2, 3, 4], [1, 3, 4, 5], [1, 2], [5], [4]]);
 <immutable digraph with 5 vertices, 11 edges>
