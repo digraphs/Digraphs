@@ -2529,6 +2529,19 @@ function(D)
   return D;
 end);
 
+InstallMethodThatReturnsDigraph(DigraphRemoveAllEdges,
+"for an immutable digraph",
+[IsImmutableDigraph],
+D -> NullDigraph(DigraphNrVertices(D)));
+
+InstallMethodThatReturnsDigraph(DigraphRemoveAllEdges,
+"for a mutable digraph",
+[IsMutableDigraph],
+function(D)
+  D!.OutNeighbours := List(DigraphVertices(D), v -> []);
+  return D;
+end);
+
 InstallMethod(DigraphAddAllLoops, "for a digraph", [IsDigraph],
 function(D)
   local C, v;

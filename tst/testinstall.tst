@@ -258,6 +258,11 @@ gap> DigraphNrEdges(gr2);
 gap> DigraphNrAdjacencies(gr2);
 21
 
+# DigraphRemoveAllEdges
+gap> gr := Digraph(IsMutableDigraph, [[3], [4], [5], [1, 5], [1, 2]]);;
+gap> DigraphRemoveAllEdges(gr);
+<mutable empty digraph with 5 vertices>
+
 #  Fix seg fault cause by wrong handling of no edges in
 # FuncDIGRAPH_SOURCE_RANGE
 gap> gr := Digraph([[]]);
@@ -535,6 +540,15 @@ gap> D := CompleteBipartiteDigraph(3, 3);
 gap> AutomorphismGroup(D)
 > = Group([(1, 2, 3), (1, 2), (4, 5, 6), (4, 5), (1, 4)(2, 5)(3, 6)]);
 true
+
+# SwapDigraphs
+gap> C := Digraph(IsMutableDigraph, [[4], [5], [1, 2], [], []]);;
+gap> D := Digraph(IsMutableDigraph, [[2, 3, 4], [1, 3, 4, 5], [1, 2], [5], [4]]);;
+gap> SwapDigraphs(C, D);
+gap> OutNeighbours(D);
+[ [ 4 ], [ 5 ], [ 1, 2 ], [  ], [  ] ]
+gap> OutNeighbours(C);
+[ [ 2, 3, 4 ], [ 1, 3, 4, 5 ], [ 1, 2 ], [ 5 ], [ 4 ] ]
 
 #
 gap> DIGRAPHS_StopTest();

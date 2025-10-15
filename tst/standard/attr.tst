@@ -2560,6 +2560,22 @@ true
 gap> IsChainDigraph(MaximalAntiSymmetricSubdigraph(D));
 true
 
+# DigraphRemoveAllEdges: for a digraph
+gap> gr := Digraph(IsImmutableDigraph, [[2, 3], [3], [4], []]);
+<immutable digraph with 4 vertices, 4 edges>
+gap> DigraphRemoveAllEdges(gr);
+<immutable empty digraph with 4 vertices>
+gap> gr2 := Digraph(IsMutableDigraph, [[2, 3], [3], [4], []]);
+<mutable digraph with 4 vertices, 4 edges>
+gap> DigraphRemoveAllEdges(gr2);
+<mutable empty digraph with 4 vertices>
+gap> gr3 := Digraph(IsMutableDigraph, [[], [], [], []]);
+<mutable empty digraph with 4 vertices>
+gap> DigraphRemoveAllEdges(gr3);
+<mutable empty digraph with 4 vertices>
+gap> OutNeighbours(gr3);
+[ [  ], [  ], [  ], [  ] ]
+
 # CharacteristicPolynomial
 gap> gr := Digraph([
 > [2, 2, 2], [1, 3, 6, 8, 9, 10], [4, 6, 8],
