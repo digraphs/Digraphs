@@ -641,7 +641,7 @@ function(D)
         displayed_bipartite := true;
       fi;
       if HasEdgeWeights(D) = true then
-        Append(str, "edge-weighted");
+        Append(str, "edge-weighted ");
       fi;
       if HasIsEdgeTransitive(D) and IsEdgeTransitive(D) and
           HasIsVertexTransitive(D) and IsVertexTransitive(D) then
