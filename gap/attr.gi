@@ -3586,3 +3586,42 @@ D -> DIGRAPHS_IsJoinSemilatticeAndJoinTable(D)[2]);
 InstallMethod(DigraphMeetTable, "for a digraph",
 [IsDigraph],
 D -> DIGRAPHS_IsMeetSemilatticeAndMeetTable(D)[2]);
+
+InstallMethod(DigraphDistanceMetrics, "for a digraph",
+[IsDigraph],
+function(G)
+  local ecc, c, u, v;
+  if not IsDigraph(G) then
+    Error("Input must be a digraph");
+  elif not IsStronglyConnectedDigraph(G) then
+    Error("Input digraph is not strongly connected; property undefined");
+  fi;
+  ecc := [];
+  for u in [1 .. DigraphNrVertices(G)] do
+    c := 0;
+    for v in [1 .. DigraphNrVertices(G)] do
+      if u <> v then
+        c := Maximum(c, DigraphShortestDistance(G, u, v));
+      fi;
+    od;
+    Add(ecc, c);
+  od;
+  return rec(
+    Radius        := Minimum(ecc),
+    DigraphCentre := Filtered([1 .. DigraphNrVertices(G)],
+    i -> ecc[i] = Minimum(ecc)),
+    Periphery     := Filtered([1 .. DigraphNrVertices(G)],
+    i -> ecc[i] = Maximum(ecc)));
+end);
+
+InstallMethod(DigraphRadius, "for a digraph",
+[IsDigraph],
+D -> DigraphDistanceMetrics(D).Radius);
+
+InstallMethod(DigraphCentre, "for a digraph",
+[IsDigraph],
+D -> DigraphDistanceMetrics(D).DigraphCentre);
+
+InstallMethod(DigraphPeriphery, "for a digraph",
+[IsDigraph],
+D -> DigraphDistanceMetrics(D).Periphery);

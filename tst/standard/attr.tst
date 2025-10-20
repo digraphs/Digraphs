@@ -3384,6 +3384,14 @@ true
 gap> B[14, 15] = z;
 true
 
+# DigraphDistanceMetrics
+gap> DigraphRadius(CycleDigraph(5));
+4
+gap> DigraphCentre(Digraph([[2], [3], [1]]));
+[ 1, 2, 3 ]
+gap> DigraphPeriphery(CycleDigraph(13));
+[ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 ]
+
 # DigraphAbsorptionProbabilities
 gap> gr := Digraph([[2, 3, 4], [3], [2], []]);
 <immutable digraph with 4 vertices, 5 edges>
