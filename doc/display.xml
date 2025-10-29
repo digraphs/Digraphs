@@ -242,7 +242,7 @@ node [shape=circle]
 4 -> 2[color=pink]
 4 -> 3[color=purple]
 }
-
+gap> FileString("dot/k4.dot", DotDigraph(D));
 gap> D := Digraph([[2, 3], [1, 3], [1]]);
 <immutable digraph with 3 vertices, 5 edges>
 gap> vertcolors := ["blue", "red", "green"];;
@@ -261,7 +261,6 @@ node [shape=circle]
 3 -> 1[color=yellow]
 }
 
-gap> FileString("dot/k4.dot", DotDigraph(gr));
 154]]></Example>
     </Description>
   </ManSection>
