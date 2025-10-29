@@ -245,16 +245,9 @@ node [shape=circle]
 
 gap> D := Digraph([[2, 3], [1, 3], [1]]);
 <immutable digraph with 3 vertices, 5 edges>
-gap> vertcolors := [];;
-gap> vertcolors[1] := "blue";; vertcolors[2] := "red";;
-gap> vertcolors[3] := "green";;
-gap> edgecolors := [];;
-gap> edgecolors[1] := [];; edgecolors[2] := [];;
-gap> edgecolors[3] := [];;
-gap> edgecolors[1][2] := "orange";; edgecolors[1][3] := "yellow";;
-gap> edgecolors[2][1] := "orange";; edgecolors[2][3] := "pink";;
-gap> edgecolors[3][1] := "yellow";;
-gap> Print(DotColoredDigraph(D, vertcolors, edgecolors));;
+gap> vertcolors := ["blue", "red", "green"];;
+gap> edgecolors := [["orange", "yellow"], ["orange", "pink"], ["yellow"]];;
+gap> Print(DotColoredDigraph(D, vertcolors, edgecolors));
 //dot
 digraph hgn{
 node [shape=circle]
