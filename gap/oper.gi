@@ -1161,16 +1161,6 @@ InstallMethod(DomainForAction, "for a digraph, list or collection and function",
 [IsDigraph, IsListOrCollection, IsFunction],
 ReturnTrue);
 
-# Operator action: D^p  and  D^t
-# Allow D ^ p (digraph and permutation) to call OnDigraphs(D, p)
-# and D ^ t (digraph and transformation) to call OnDigraphs(D, t)
-
-InstallMethod(\^, "digraph acted on by a permutation",
-  [ IsDigraph, IsPerm ], OnDigraphs);
-
-InstallMethod(\^, "digraph acted on by a transformation",
-  [ IsDigraph, IsTransformation ], OnDigraphs);
-
 #############################################################################
 # 5. Substructures and quotients
 #############################################################################
