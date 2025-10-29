@@ -91,9 +91,9 @@
 
       This function was written by Attila Egri-Nagy and Manuel Delgado with some
       minor changes by J. D. Mitchell.<P/>
-      <Log><![CDATA[
+      <Example><![CDATA[
 gap> Splash(DotDigraph(RandomDigraph(4)));
-]]></Log>
+]]></Example>
     </Description>
   </ManSection>
 <#/GAPDoc>
@@ -152,13 +152,7 @@ gap> Splash(DotDigraph(RandomDigraph(4)));
       The string returned by <C>DotDigraph</C> or
       <C>DotVertexLabelledDigraph</C> can be written to a file using
       the command <Ref Func="FileString" BookName="GAPDoc"/>.<P/>
-      <Log><![CDATA[
-gap> adj := List([1 .. 4], x -> [1, 1, 1, 1]);
-[ [ 1, 1, 1, 1 ], [ 1, 1, 1, 1 ], [ 1, 1, 1, 1 ], [ 1, 1, 1, 1 ] ]
-gap> adj[1][3] := 0;
-0
-gap> gr := DigraphByAdjacencyMatrix(adj);
-<immutable digraph with 4 vertices, 15 edges>
+      <Example><![CDATA[
 gap> D := CompleteDigraph(4);
 <immutable complete digraph with 4 vertices>
 gap> vertcolors := [];;
@@ -357,7 +351,7 @@ node [shape=circle]
 4 -> 3[color=purple]
 }
 gap> FileString("dot/k4.dot", DotDigraph(gr));
-154]]></Log>
+154]]></Example>
     </Description>
   </ManSection>
  <#/GAPDoc>
