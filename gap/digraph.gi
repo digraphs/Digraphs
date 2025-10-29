@@ -640,9 +640,7 @@ function(D)
         Append(str, "bipartite ");
         displayed_bipartite := true;
       fi;
-      if HasEdgeWeights(D) = true then
-        Append(str, "edge-weighted ");
-      fi;
+      
       if HasIsEdgeTransitive(D) and IsEdgeTransitive(D) and
           HasIsVertexTransitive(D) and IsVertexTransitive(D) then
         Append(str, "edge- and vertex-transitive ");
@@ -683,6 +681,10 @@ function(D)
         fi;
       fi;
     fi;
+  fi;
+  
+  if HasEdgeWeights(D) = true then
+    Append(str, "edge-weighted ");
   fi;
 
   if IsMultiDigraph(D) then
