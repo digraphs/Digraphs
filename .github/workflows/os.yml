@@ -110,4 +110,5 @@ jobs:
       - uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          fail_ci_if_error: true
+          # codecov/codecov-action seems unreliable on Windows
+          fail_ci_if_error: ${{ runner.os != 'Windows' }}
