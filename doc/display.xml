@@ -321,11 +321,7 @@ node [shape=circle]
       file using the command <Ref Func="FileString" BookName="GAPDoc"/>.<P/>
 
       <Example><![CDATA[
-gap> star := Digraph([[2, 2, 3, 4], [1, 1], [1], [1, 4]]);
-<immutable multidigraph with 4 vertices, 9 edges>
-gap> IsSymmetricDigraph(star);
-true
-gap> FileString("dot/star.dot", DotSymmetricDigraph(gr));
+
 gap> D := Digraph([[2], [1, 3], [2]]);
 <immutable digraph with 3 vertices, 4 edges>
 gap> vertcolors := [];;
