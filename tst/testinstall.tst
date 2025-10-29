@@ -427,15 +427,15 @@ gap> String(CycleDigraph(4));
 
 # Edge-weighted digraphs
 gap> d := EdgeWeightedDigraph([[2], [1]], [[5], [10]]);
-<immutable digraph with 2 vertices, 2 edges>
+<immutable edge-weighted digraph with 2 vertices, 2 edges>
 gap> EdgeWeights(d);
 [ [ 5 ], [ 10 ] ]
 gap> EdgeWeightedDigraphTotalWeight(d);
 15
 gap> EdgeWeightedDigraphMinimumSpanningTree(d);
-<immutable digraph with 2 vertices, 1 edge>
+<immutable edge-weighted digraph with 2 vertices, 1 edge>
 gap> d := EdgeWeightedDigraph([[2], [1, 2]], [[5], [5, 5]]);
-<immutable digraph with 2 vertices, 3 edges>
+<immutable edge-weighted digraph with 2 vertices, 3 edges>
 gap> EdgeWeightedDigraphShortestPaths(d, 1);
 rec( distances := [ 0, 5 ], edges := [ fail, 1 ], parents := [ fail, 1 ] )
 gap> EdgeWeightedDigraphShortestPaths(d);

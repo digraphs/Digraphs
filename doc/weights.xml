@@ -27,7 +27,7 @@
     using <C>SetEdgeWeights</C> or <Ref Func="EdgeWeightedDigraph" />.<P/>
     <Example><![CDATA[
 gap> gr := EdgeWeightedDigraph([[2], [3], [1]], [[5], [10], [15]]);
-<immutable digraph with 3 vertices, 3 edges>
+<immutable edge-weighted digraph with 3 vertices, 3 edges>
 gap> EdgeWeights(gr);
 [ [ 5 ], [ 10 ], [ 15 ] ]
 gap> a := EdgeWeightsMutableCopy(gr);
@@ -60,9 +60,9 @@ Error, List Assignment: <list> must be a mutable list
         See <Ref Attr="EdgeWeights"/>.
     <Example><![CDATA[
 gap> g := EdgeWeightedDigraph(Digraph([[2], [1]]), [[5], [15]]);
-<immutable digraph with 2 vertices, 2 edges>
+<immutable edge-weighted digraph with 2 vertices, 2 edges>
 gap> g := EdgeWeightedDigraph([[2], [1]], [[5], [15]]);
-<immutable digraph with 2 vertices, 2 edges>
+<immutable edge-weighted digraph with 2 vertices, 2 edges>
 gap> EdgeWeights(g);
 [ [ 5 ], [ 15 ] ]
 ]]></Example>
@@ -84,7 +84,7 @@ gap> EdgeWeights(g);
     <Example><![CDATA[
 gap> D := EdgeWeightedDigraph([[2], [1], [1, 2]],
 >                             [[12], [5], [6, 9]]);
-<immutable digraph with 3 vertices, 4 edges>
+<immutable edge-weighted digraph with 3 vertices, 4 edges>
 gap> EdgeWeightedDigraphTotalWeight(D);
 32]]></Example>
     </Description>
@@ -113,9 +113,9 @@ gap> EdgeWeightedDigraphTotalWeight(D);
     <Example><![CDATA[
 gap> D := EdgeWeightedDigraph([[2], [1], [1, 2]],
 >                             [[12], [5], [6, 9]]);
-<immutable digraph with 3 vertices, 4 edges>
+<immutable edge-weighted digraph with 3 vertices, 4 edges>
 gap> T := EdgeWeightedDigraphMinimumSpanningTree(D);
-<immutable digraph with 3 vertices, 2 edges>
+<immutable edge-weighted digraph with 3 vertices, 2 edges>
 gap> EdgeWeights(T);
 [ [  ], [ 5 ], [ 6 ] ]]]></Example>
     </Description>
@@ -175,12 +175,12 @@ gap> EdgeWeights(T);
     <Example><![CDATA[
 gap> D := EdgeWeightedDigraph([[2, 3], [4], [4], []],
 >                             [[5, 1], [6], [11], []]);
-<immutable digraph with 4 vertices, 4 edges>
+<immutable edge-weighted digraph with 4 vertices, 4 edges>
 gap> EdgeWeightedDigraphShortestPaths(D, 1);
 rec( distances := [ 0, 5, 1, 11 ], edges := [ fail, 1, 2, 1 ], 
   parents := [ fail, 1, 1, 2 ] )
 gap> D := EdgeWeightedDigraph([[2], [3], [1]], [[1], [2], [3]]);
-<immutable digraph with 3 vertices, 3 edges>
+<immutable edge-weighted digraph with 3 vertices, 3 edges>
 gap> EdgeWeightedDigraphShortestPaths(D);
 rec( distances := [ [ 0, 1, 3 ], [ 5, 0, 2 ], [ 3, 4, 0 ] ], 
   edges := [ [ fail, 1, 1 ], [ 1, fail, 1 ], [ 1, 1, fail ] ], 
@@ -211,7 +211,7 @@ rec( distances := [ [ 0, 1, 3 ], [ 5, 0, 2 ], [ 3, 4, 0 ] ],
     <Example><![CDATA[
 gap> D := EdgeWeightedDigraph([[2, 3], [4], [4], []],
 >                             [[5, 1], [6], [11], []]);
-<immutable digraph with 4 vertices, 4 edges>
+<immutable edge-weighted digraph with 4 vertices, 4 edges>
 gap> EdgeWeightedDigraphShortestPath(D, 1, 4);
 [ [ 1, 2, 4 ], [ 1, 1 ] ]
 gap> EdgeWeightedDigraphShortestPath(D, 3, 2);
@@ -263,7 +263,7 @@ fail]]></Example>
     See <Ref Attr="EdgeWeights" Func="EdgeWeightedDigraph"/>.
     <Example><![CDATA[
 gap> g := EdgeWeightedDigraph([[2, 2], [3], []], [[3, 2], [1], []]);
-<immutable multidigraph with 3 vertices, 3 edges>
+<immutable edge-weighted multidigraph with 3 vertices, 3 edges>
 gap> flow := DigraphMaximumFlow(g, 1, 3);
 [ [ 1, 0 ], [ 1 ], [  ] ]
 gap> Sum(flow[1]);
@@ -298,11 +298,11 @@ gap> Sum(flow[1]);
 
     <Log><![CDATA[
 gap> RandomUniqueEdgeWeightedDigraph(5);
-<immutable digraph with 5 vertices, 21 edges>
+<immutable edge-weighted digraph with 5 vertices, 21 edges>
 gap> RandomUniqueEdgeWeightedDigraph(5, 1 / 2);
-<immutable digraph with 5 vertices, 14 edges>
+<immutable edge-weighted digraph with 5 vertices, 14 edges>
 gap> RandomUniqueEdgeWeightedDigraph(IsEulerianDigraph, 5, 1 / 3);
-<immutable digraph with 5 vertices, 6 edges>]]></Log>
+<immutable edge-weighted digraph with 5 vertices, 6 edges>]]></Log>
   </Description>
 </ManSection>
 <#/GAPDoc>
