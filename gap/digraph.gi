@@ -172,6 +172,11 @@ function(D)
   if HaveEdgeLabelsBeenAssigned(D) then
     SetDigraphEdgeLabelsNC(copy, StructuralCopy(DigraphEdgeLabelsNC(D)));
   fi;
+
+  if HasEdgeWeights(D) then
+      SetEdgeWeights(copy, StructuralCopy(EdgeWeights(D)));
+  fi;
+
   return copy;
 end);
 
@@ -1837,3 +1842,28 @@ n -> RandomLatticeCons(IsImmutableDigraph, n));
 
 InstallMethod(RandomLattice, "for a func and a pos int", [IsFunction, IsPosInt],
 RandomLatticeCons);
+
+InstallGlobalFunction(CopyEdgeWeightsForSubdigraph, 
+function(oldDigraph, newDigraph, removedVertices)
+    local oldWeights, newWeights, i, j, weight, shiftVertices;
+
+    if not HasEdgeWeights(oldDigraph) then
+        return;
+    fi;
+
+    oldWeights := EdgeWeights(oldDigraph);
+    newWeights := [];
+    for i in [1 .. DigraphNrVertices(newDigraph)] do
+        newWeights[i] := [];
+        
+        for j in OutNeighbours(newDigraph, i) do
+            shiftVertices := function(x)
+                return x + Length(Filtered(removedVertices, v -> v <= x));
+            end;
+            weight := oldWeights[shiftVertices(i)][shiftVertices(j)];
+            Add(newWeights[i], weight);
+        od;
+    od;
+
+    SetEdgeWeights(newDigraph, newWeights);
+end);
