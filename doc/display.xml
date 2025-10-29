@@ -242,22 +242,7 @@ node [shape=circle]
 4 -> 2[color=pink]
 4 -> 3[color=purple]
 }
-gap> D := EmptyDigraph(3);
-<immutable empty digraph with 3 vertices>
-gap> vertcolors := [];;
-gap> vertcolors[1] := "blue";; vertcolors[2] := "red";;
-gap> vertcolors[3] := "green";;
-gap> edgecolors := [];;
-gap> edgecolors[1] := [];; edgecolors[2] := [];; 
-gap> edgecolors[3] := [];;
-gap> Print(DotColoredDigraph(D, vertcolors, edgecolors));
-//dot
-digraph hgn{
-node [shape=circle]
-1[color=blue, style=filled]
-2[color=red, style=filled]
-3[color=green, style=filled]
-}
+
 gap> D := Digraph([[2], [1, 3], [2]]);
 <immutable digraph with 3 vertices, 4 edges>
 gap> vertcolors := [];;
