@@ -324,15 +324,10 @@ node [shape=circle]
 
 gap> D := Digraph([[2], [1, 3], [2]]);
 <immutable digraph with 3 vertices, 4 edges>
-gap> vertcolors := [];;
-gap> vertcolors[1] := "blue";;
-gap> vertcolors[2] := "pink";;
-gap> vertcolors[3] := "purple";;
-gap> edgecolors := [];;
-gap> edgecolors[1] := [];; edgecolors[2] := [];;
-gap> edgecolors[3] := [];;
-gap> edgecolors[1][2] := "green";; edgecolors[2][1] := "green";;
-gap> edgecolors[2][3] := "red";; edgecolors[3][2] := "red";;
+gap> IsSymmetricDigraph(D);
+true
+gap> vertcolors := ["blue", "pink", "purple"];;
+gap> edgecolors := [["green"], ["green", "red"], ["red"]];;
 gap> Print(DotSymmetricColoredDigraph(D, vertcolors, edgecolors));
 //dot
 graph hgn{
@@ -344,12 +339,6 @@ node [shape=circle]
 1 -- 2[color=green]
 2 -- 3[color=red]
 }
-gap> D := Digraph([[2], [1, 3], [2]]);
-<immutable digraph with 3 vertices, 4 edges>
-gap> vertcolors := [];;
-gap> vertcolors[1] := "blue";;
-gap> vertcolors[2] := "pink";;
-gap> vertcolors[3] := "purple";;
 gap> Print(DotSymmetricVertexColoredDigraph(D, vertcolors));
 //dot
 graph hgn{
@@ -361,13 +350,7 @@ node [shape=circle]
 1 -- 2
 2 -- 3
 }
-gap> D := Digraph([[2], [1, 3], [2]]);
-<immutable digraph with 3 vertices, 4 edges>
-gap> edgecolors := [];;
-gap> edgecolors[1] := [];; edgecolors[2] := [];;
-gap> edgecolors[3] := [];;
-gap> edgecolors[1][2] := "green";; edgecolors[2][1] := "green";;
-gap> edgecolors[2][3] := "red";; edgecolors[3][2] := "red";;
+
 gap> Print(DotSymmetricEdgeColoredDigraph(D, edgecolors));
 //dot
 graph hgn{
