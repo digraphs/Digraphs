@@ -391,8 +391,8 @@ node [shape=circle]
       file using the command <Ref Func="FileString" BookName="GAPDoc"/>.<P/>
 
       <Example><![CDATA[
-gap> poset := Digraph([[1, 4], [2], [2, 3, 4], [4]);
-gap> IsPartialOrderDigraph(gr);
+gap> poset := Digraph([[1, 4], [2], [2, 3, 4], [4]]);
+gap> IsPartialOrderDigraph(poset);
 true
 gap> FileString("dot/poset.dot", DotPartialOrderDigraph(gr));
 83]]></Example>
@@ -432,8 +432,8 @@ gap> FileString("dot/poset.dot", DotPartialOrderDigraph(gr));
       file using the command <Ref Func="FileString" BookName="GAPDoc"/>.<P/>
 
       <Example><![CDATA[
-gap> preset := Digraph([[1, 2, 4, 5], [1, 2, 4, 5], [3, 4], [4], [1, 2, 4, 5]);
-gap> IsPreorderDigraph(gr);
+gap> preset := Digraph([[1, 2, 4, 5], [1, 2, 4, 5], [3, 4], [4], [1, 2, 4, 5]]);
+gap> IsPreorderDigraph(preset);
 true
 gap> FileString("dot/preset.dot", DotProrderDigraph(gr));
 83]]></Example>
