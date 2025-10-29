@@ -296,13 +296,13 @@ gap> EdgeWeightedDigraphShortestPath(d, 1, 3);
 
 # Maximum flow: empty digraphs
 gap> d := EdgeWeightedDigraph([], []);
-<immutable edge-weighted empty digraph with 0 vertices>
+<immutable empty digraph with 0 vertices>
 gap> DigraphMaximumFlow(d, 1, 1);
 Error, <start> must be a vertex of <D>,
 
 # Maximum flow: single vertex (also empty digraphs)
 gap> d := EdgeWeightedDigraph([[]], [[]]);
-<immutable edge-weighted empty digraph with 1 vertex>
+<immutable empty digraph with 1 vertex>
 gap> DigraphMaximumFlow(d, 1, 1);
 [ [  ] ]
 
