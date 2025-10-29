@@ -260,36 +260,7 @@ node [shape=circle]
 2 -> 3[color=pink]
 3 -> 1[color=yellow]
 }
-gap> D := Digraph(IsMutableDigraph, [[2, 3], [1, 3], [1]]);
-<mutable digraph with 3 vertices, 5 edges>
-gap> vertcolors := [];;
-gap> vertcolors[1] := "blue";; vertcolors[2] := "red";;
-gap> vertcolors[3] := "green";;
-gap> edgecolors := [];;
-gap> edgecolors[1] := [];; edgecolors[2] := [];;
-gap> edgecolors[3] := [];;
-gap> edgecolors[1][2] := "orange";; edgecolors[1][3] := "yellow";;
-gap> edgecolors[2][1] := "orange";; edgecolors[2][3] := "pink";;
-gap> edgecolors[3][1] := "yellow";;
-gap> Print(DotColoredDigraph(D, vertcolors, edgecolors));;
-//dot
-digraph hgn{
-node [shape=circle]
-1[color=blue, style=filled]
-2[color=red, style=filled]
-3[color=green, style=filled]
-1 -> 2[color=orange]
-1 -> 3[color=yellow]
-2 -> 1[color=orange]
-2 -> 3[color=pink]
-3 -> 1[color=yellow]
-}
-gap> D;
-<mutable digraph with 3 vertices, 5 edges>
-gap> DotSymmetricDigraph(gr2){[12 .. 70]};
-" hgn{\nnode [shape=circle]\n\n1\n2\n3\n4\n1 -- 2\n2 -- 3\n3 -- 3\n3 -"
-gap> DotSymmetricDigraph(gr1);
-Error, the argument <D> must be a symmetric digraph,
+
 gap> D := CompleteDigraph(4);
 <immutable complete digraph with 4 vertices>
 gap> vertcolors := [];;
