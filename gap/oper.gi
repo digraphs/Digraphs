@@ -1143,10 +1143,10 @@ ReturnTrue);
 # and D ^ t (digraph and transformation) to call OnDigraphs(D, t)
 
 InstallMethod(\^, "digraph acted on by a permutation",
-  [ IsDigraph, IsPerm ], OnDigraphs);
+  [IsDigraph, IsPerm], OnDigraphs);
 
 InstallMethod(\^, "digraph acted on by a transformation",
-  [ IsDigraph, IsTransformation ], OnDigraphs);
+  [IsDigraph, IsTransformation], OnDigraphs);
 
 #############################################################################
 # 5. Substructures and quotients
