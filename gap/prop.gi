@@ -784,3 +784,99 @@ function(D)
     fi;
   od;
 end);
+
+InstallMethod(Naive,
+"Is2EdgeTransitive O(n^3)",
+[IsDigraph],
+function(D)
+  local O, G, n, u, v, w, twoEdges, numTwoEdges;
+  O := OutNeighbours(D);
+  n := Length(O);
+  twoEdges := [];
+  for u in [1..n] do
+    for v in O[u] do
+      for w in O[v] do
+        if u <> v and v <> w and w <> u then
+          Add(twoEdges, [u, v, w]);
+        fi;
+      od;
+    od;
+  od;
+  numTwoEdges := Length(twoEdges);
+  if numTwoEdges = 0 then
+    return true;
+  else
+    G := AutomorphismGroup(D);
+    return numTwoEdges * Order(Stabilizer(G, twoEdges[1], OnTuples)) = Order(G);
+  fi;
+end
+);
+
+InstallMethod(Faster,
+"Is2EdgeTransitive O(n^2 + m)",
+[IsDigraph],
+function(D)
+  local O, I, G, n, p, q, l, c, p_0, q_0, l_0, c_0, centers,
+  twoEdge, numTwoEdges, i, j, u, v, w;
+  O := OutNeighbours(D);
+  I := InNeighbours(D);
+  n := Length(O);
+  p := 0;
+  q := 0;
+  l := 0;
+  c := 0;
+  centers := [];
+  for u in [1..n] do
+    p_0 := Length(I[u]);
+    q_0 := Length(O[u]);
+    if u in O[u] then
+      l_0 := 1;
+    else
+      l_0 := 0;
+    fi;
+    c_0 := 0;
+    i := 1;
+    j := 1;
+    while i <= Length(O[u]) and j <= Length(I[u]) do
+      if O[i] < I[j] then
+        i := i + 1;
+      elif O[i] > I[j] then
+        j := j + 1;
+      else
+        c_0 := c_0 + 1;
+        i := i + 1;
+        j := j + 1;
+      fi;
+    od;
+    if (p_0 - l_0) * (q_0 - l_0) - c_0 > 0 then
+      Add(centers, u);
+      if p = 0 then
+        p := p_0;
+        q := q_0;
+        l := l_0;
+        c := c_0;
+      else
+        if p <> p_0 or q <> q_0 or l <> l_0 or c <> c_0 then
+          return false;
+        fi;
+      fi;
+    fi;
+  od;
+  numTwoEdges := ((p-l) * (q - l) - c) * Length(centers);
+  if numTwoEdges = 0 then
+    return true;
+  else
+    v := centers[1];
+    for u in I[v] do
+      for w in O[v] do
+        if u <> v and v <> w and w <> u then
+          twoEdge := [u, v, w];
+          G := AutomorphismGroup(D);
+          return numTwoEdges * Order(Stabilizer(G, twoEdge, OnTuples)) =
+                 Order(G);
+        fi;
+      od;
+    od;
+  fi;
+end
+);
