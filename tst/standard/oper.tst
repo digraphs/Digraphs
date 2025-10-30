@@ -112,24 +112,24 @@ gap> DigraphEdges(gr);
 # Tests for digraph operator "^" (implements D ^ p and D ^ t using OnDigraphs)
 gap> D := CycleDigraph(5);
 <immutable cycle digraph with 5 vertices>
-gap> p := (1, 5)(2, 4);
+gap> p := (1, 5)(2, 4);;
 gap> D ^ p = DigraphReverse(D);
 true
 gap> OnDigraphs(D, p) = D ^ p;
 true
-gap> idp := ();
+gap> idp := ();;
 gap> D ^ idp = D;
 true
-gap> q := (1, 2, 3, 4, 5);
+gap> q := (1, 2, 3, 4, 5);;
 gap> (D ^ q) ^ (q ^ -1) = D;
 true
-gap> t := Transformation([2, 3, 4, 5, 1]);
+gap> t := Transformation([2, 3, 4, 5, 1]);;
 gap> D ^ t = OnDigraphs(D, t);
 true
-gap> idt := Transformation([1, 2, 3, 4, 5]);
+gap> idt := Transformation([1, 2, 3, 4, 5]);;
 gap> D ^ idt = D;
 true
-gap> M := DigraphMutableCopy(D);
+gap> M := DigraphMutableCopy(D);;
 gap> M ^ p = OnDigraphs(M, p);
 true
 
