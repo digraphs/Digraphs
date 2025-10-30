@@ -1,0 +1,229 @@
+{
+    "configurations": [
+        {
+            "name": "Python Debugger: Current File with Arguments",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "subProcess": true,
+            "justMyCode": false,
+            "args": [
+                // Args to test test_table_generation_with_numInvalidOK.py 
+                // "-n",
+                // "5,8",
+                // "-c",
+                // "3",
+                // "p",
+                // "o"
+            ]
+        },
+        {
+            "name": "C/C++: (Windows) [Debug] gcc.exe build and debug planarity project",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}\\Debug\\planarity.exe",
+            "args": [
+                // Command: `planarity -x [-q] -a I O`
+                // "-x",
+                // "-a",
+                // "${workspaceFolder}\\c\\samples\\nauty_example.g6",
+                // "${workspaceFolder}\\c\\samples\\nauty_example.g6.AdjList.expected.out.txt"
+                // Command: `planarity -test <samplesDir>`
+                // "-test",
+                // "${workspaceFolder}\\c\\samples"
+            ],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": true,
+            "MIMode": "gdb",
+            "miDebuggerPath": "C:\\msys64\\ucrt64\\bin\\gdb.exe",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                },
+                {
+                    "description": "Set Disassembly Flavor to Intel",
+                    "text": "-gdb-set disassembly-flavor intel",
+                    "ignoreFailures": true
+                }
+            ],
+            "preLaunchTask": "C/C++: (Windows) [Debug] gcc.exe build planarity project"
+        },
+        {
+            "name": "C/C++: (Windows) [Release] gcc.exe build and run planarity project",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}\\Release\\planarity.exe",
+            "args": [
+                // Command: `planarity -x [-q] -a I O`
+                // "-x",
+                // "-a",
+                // "${workspaceFolder}\\c\\samples\\nauty_example.g6",
+                // "${workspaceFolder}\\c\\samples\\nauty_example.g6.AdjList.expected.out.txt"
+                // Command: `planarity -test <samplesDir>`
+                // "-test",
+                // "${workspaceFolder}\\c\\samples"
+            ],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": true,
+            "MIMode": "gdb",
+            "miDebuggerPath": "C:\\msys64\\ucrt64\\bin\\gdb.exe",
+            "setupCommands": [],
+            "preLaunchTask": "C/C++: (Windows) [Release] gcc.exe build planarity project"
+        },
+        {
+            "name": "C/C++: (Linux) [Debug] gcc build and debug planarity project",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/Debug/planarity",
+            "args": [
+                // Command: `planarity -x [-q] -a I O`
+                // "-x",
+                // "-a",
+                // "${workspaceFolder}/c/samples/nauty_example.g6",
+                // "${workspaceFolder}/c/samples/nauty_example.g6.AdjList.expected.out.txt"
+                // Command: `planarity -test <samplesDir>`
+                // "-test",
+                // "${workspaceFolder}/c/samples"
+            ],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": true,
+            "MIMode": "gdb",
+            "miDebuggerPath": "/usr/bin/gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                },
+                {
+                    "description": "Set Disassembly Flavor to Intel",
+                    "text": "-gdb-set disassembly-flavor intel",
+                    "ignoreFailures": true
+                }
+            ],
+            "preLaunchTask": "C/C++: (Linux) [Debug] gcc build planarity project"
+        },
+        {
+            "name": "C/C++: (Linux) [Release] gcc build and run planarity project",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/Release/planarity",
+            "args": [
+                // Command: `planarity -x [-q] -a I O`
+                // "-x",
+                // "-a",
+                // "${workspaceFolder}/c/samples/nauty_example.g6",
+                // "${workspaceFolder}/c/samples/nauty_example.g6.AdjList.expected.out.txt"
+                // Command: `planarity -test <samplesDir>`
+                // "-test",
+                // "${workspaceFolder}/c/samples"
+            ],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": true,
+            "MIMode": "gdb",
+            "miDebuggerPath": "/usr/bin/gdb",
+            "setupCommands": [],
+            "preLaunchTask": "C/C++: (Linux) [Release] gcc build planarity project"
+        },
+        {
+            "name": "C/C++: (Windows) [Debug] cl.exe build and debug planarity project",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}\\Debug\\planarity.exe",
+            "args": [
+                // Command: `planarity -x [-q] -a I O`
+                // "-x",
+                // "-a",
+                // "${workspaceFolder}\\c\\samples\\nauty_example.g6",
+                // "${workspaceFolder}\\c\\samples\\nauty_example.g6.AdjList.expected.out.txt"
+                // Command: `planarity -test <samplesDir>`
+                // "-test",
+                // "${workspaceFolder}\\c\\samples"
+            ],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "console": "integratedTerminal",
+            // "externalConsole": false, // externalConsole deprecated for MSVC
+            "preLaunchTask": "C/C++: (Windows) [Debug] cl.exe build planarity project"
+        },
+        {
+            "name": "C/C++: (Windows) [Release] cl.exe build and run planarity project",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}\\Release\\planarity.exe",
+            "args": [
+                // Command: `planarity -x [-q] -a I O`
+                // "-x",
+                // "-a",
+                // "${workspaceFolder}\\c\\samples\\nauty_example.g6",
+                // "${workspaceFolder}\\c\\samples\\nauty_example.g6.AdjList.expected.out.txt"
+                // Command: `planarity -test <samplesDir>`
+                // "-test",
+                // "${workspaceFolder}\\c\\samples"
+            ],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "console": "integratedTerminal",
+            // "externalConsole": false, // externalConsole deprecated for MSVC
+            "preLaunchTask": "C/C++: (Windows) [Release] cl.exe build planarity project"
+        },
+        {
+            "name": "C/C++: (MacOS) [Debug] clang build and debug planarity project",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/Debug/planarity",
+            "args": [
+                // Command: `planarity -x [-q] -a I O`
+                // "-x",
+                // "-a",
+                // "${workspaceFolder}/c/samples/nauty_example.g6",
+                // "${workspaceFolder}/c/samples/nauty_example.g6.AdjList.expected.out.txt"
+                // Command: `planarity -test <samplesDir>`
+                // "-test",
+                // "${workspaceFolder}/c/samples"
+            ],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": true,
+            "MIMode": "lldb",
+            "preLaunchTask": "C/C++: (MacOS) [Debug] clang build planarity project"
+        },
+        {
+            "name": "C/C++: (MacOS) [Release] clang build and run planarity project",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/Release/planarity",
+            "args": [
+                // Command: `planarity -x [-q] -a I O`
+                // "-x",
+                // "-a",
+                // "${workspaceFolder}/c/samples/nauty_example.g6",
+                // "${workspaceFolder}/c/samples/nauty_example.g6.AdjList.expected.out.txt"
+                // Command: `planarity -test <samplesDir>`
+                // "-test",
+                // "${workspaceFolder}/c/samples"
+            ],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": true,
+            "MIMode": "lldb",
+            "preLaunchTask": "C/C++: (MacOS) [Release] clang build planarity project"
+        }
+    ],
+    "version": "2.0.0"
+}

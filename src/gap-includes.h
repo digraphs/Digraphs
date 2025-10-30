@@ -26,5 +26,5 @@
 #endif
 // GAP headers
 #include "gap_all.h"  // for Obj, Int
-
-#endif  // DIGRAPHS_SRC_GAP_INCLUDES_H_
+                      //
+#endif                // DIGRAPHS_SRC_GAP_INCLUDES_H_

@@ -17,7 +17,7 @@ from} $E_a$ \emph{to} $E_b$. In this case we say that $E_a$ and $E_b$ are
   <Section Label="Isomorphisms and canonical labellings">
     <Heading>Isomorphisms and canonical labellings</Heading>
     From version 0.11.0 of &Digraphs; it is possible to use either &BLISS; or
-    &NAUTY; (via &NautyTracesInterface;) to calculate canonical labellings and
+    &NAUTY; (via &NAUTYTRACESINTERFACE;) to calculate canonical labellings and
     automorphism groups of digraphs; see <Cite Key="JK07"/> and <Cite
       Key="MP14"/> for more details about &BLISS; and &NAUTY;,
     respectively.

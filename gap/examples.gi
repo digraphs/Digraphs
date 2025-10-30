@@ -68,14 +68,22 @@ InstallMethod(CompleteBipartiteDigraphCons,
 [IsImmutableDigraph, IsPosInt, IsPosInt],
 function(_, m, n)
   local D, aut;
+
+  if Maximum(m, n) = 1 then
+    return CompleteDigraph(IsImmutableDigraph, 2);
+  fi;
+
   D := MakeImmutable(CompleteBipartiteDigraph(IsMutableDigraph, m, n));
   SetIsSymmetricDigraph(D, true);
   SetDigraphNrEdges(D, 2 * m * n);
   SetIsCompleteBipartiteDigraph(D, true);
   if m = n then
-    aut := WreathProduct(SymmetricGroup(m), Group((1, 2)));
+    aut := WreathProduct(SymmetricGroup([1 .. m]), Group((1, m + 1)));
+  elif m = 1 then
+    aut := SymmetricGroup([2 .. n + 1]);
   else
-    aut := DirectProduct(SymmetricGroup(m), SymmetricGroup(n));
+    aut := DirectProduct(SymmetricGroup([1 .. m]),
+                         SymmetricGroup([m + 1 .. m + n]));
   fi;
   SetAutomorphismGroup(D, aut);
   SetIsPlanarDigraph(D, m <= 2 or n <= 2);
@@ -288,6 +296,9 @@ function(_, n, k)
   D := MakeImmutable(JohnsonDigraphCons(IsMutableDigraph, n, k));
   SetIsMultiDigraph(D, false);
   SetIsSymmetricDigraph(D, true);
+  if k <= n then
+    SetDigraphVertexConnectivity(D, (n - k) * k);
+  fi;
   return D;
 end);
 

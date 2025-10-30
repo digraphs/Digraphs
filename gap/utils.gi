@@ -196,8 +196,8 @@ function(arg...)
   if file = fail then
     ErrorNoReturn("the file pkg/digraphs/digraphs-lib/extreme.d6.gz is ",
                   "required for these tests to run. Please install the ",
-                  "'digraphs-lib' archive from ",
-                  "https://digraphs.github.io/Digraphs/ ",
+                  "most recent 'digraphs-lib' release archive from ",
+                  "https://github.com/digraphs/digraphs-lib ",
                   "and try again,");
   fi;
 

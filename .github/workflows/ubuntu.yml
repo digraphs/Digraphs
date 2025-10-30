@@ -10,9 +10,6 @@ on:
     # Every day at 3:30 AM UTC
     - cron: 30 3 * * *
 
-env:
-  DIGRAPHS_LIB: digraphs-lib-0.7
-
 concurrency:
   # Group by workflow and ref; the last component ensures that for pull requests
   # we limit to one concurrent job, but for the main/stable branches we don't
@@ -33,19 +30,21 @@ jobs:
           - v4.14
           - v4.13
           - v4.12
-          - v4.11
         mode:
           - onlyneeded
           - default
         include:
           - mode: onlyneeded
             pkgs-to-clone: https://github.com/digraphs/graphviz.git
-            # Remove asterisks * when we no longer support GAP 4.11
-            pkgs-to-build: io* orb* datastructures* profiling*
+            pkgs-to-build: io orb datastructures profiling
           - mode: default
             pkgs-to-clone: https://github.com/digraphs/graphviz.git https://github.com/gap-packages/NautyTracesInterface.git
-            # Remove asterisks * when we no longer support GAP 4.11
-            pkgs-to-build: io* orb* datastructures* profiling* grape* NautyTracesInterface
+            pkgs-to-build: io orb datastructures profiling grape NautyTracesInterface
+
+          - gap-version: v4.11  # Note: NautyTracesInterface requires GAP 4.12
+            mode: default  # There wouldn't be much point testing GAP v4.11 with only needed packages. The only difference is whether Grape is loaded.
+            pkgs-to-clone: https://github.com/digraphs/graphviz.git
+            pkgs-to-build: io* orb* datastructures* profiling* grape*
 
     steps:
       - uses: actions/checkout@v5
@@ -55,38 +54,39 @@ jobs:
         uses: gap-actions/setup-gap@v3
         with:
           gap-version: ${{ matrix.gap-version }}
-      - name: "Install necessary GAP package clones . . ."
+      - name: "Build Digraphs . . ."
+        uses: gap-actions/build-pkg@v2
+      - name: "Clone additional GAP packages . . ."
         run: |
           for PKG in ${{ matrix.pkgs-to-clone }}; do
             cd ${GAPROOT}/pkg
             git clone $PKG
           done
-      - name: "Build additional necessary GAP packages . . ."
+      - name: "Build relevant GAP packages . . ."
         run: |
           cd ${GAPROOT}/pkg
           ../bin/BuildPackages.sh --strict ${{ matrix.pkgs-to-build }}
-      - name: Build Digraphs . . .
-        uses: gap-actions/build-pkg@v2
-      - name: Install digraphs-lib . . .
-        run: |
-          curl --retry 5 -L -O "https://digraphs.github.io/Digraphs/${{ env.DIGRAPHS_LIB }}.tar.gz"
-          tar xf "${{ env.DIGRAPHS_LIB }}.tar.gz"
-      - name: Run DigraphsTestInstall . . .
+      - name: "Install digraphs-lib . . ."
+        uses: actions/checkout@v5
+        with:
+          repository: digraphs/digraphs-lib
+          path: digraphs-lib
+      - name: "Run DigraphsTestInstall . . ."
         uses: gap-actions/run-pkg-tests@v4
         with:
           testfile: tst/github_actions/install.g
           mode: ${{ matrix.mode }}
-      - name: Run DigraphsTestStandard . . .
+      - name: "Run DigraphsTestStandard . . ."
         uses: gap-actions/run-pkg-tests@v4
         with:
           testfile: tst/github_actions/standard.g
           mode: ${{ matrix.mode }}
-      - name: Run DigraphsTestManualExamples . . .
+      - name: "Run DigraphsTestManualExamples . . ."
         uses: gap-actions/run-pkg-tests@v4
         with:
           testfile: tst/github_actions/examples.g
           mode: ${{ matrix.mode }}
-      - name: Run DigraphsTestExtreme . . .
+      - name: "Run DigraphsTestExtreme . . ."
         uses: gap-actions/run-pkg-tests@v4
         with:
           testfile: tst/github_actions/extreme.g

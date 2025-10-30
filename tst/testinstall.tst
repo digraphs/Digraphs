@@ -258,6 +258,11 @@ gap> DigraphNrEdges(gr2);
 gap> DigraphNrAdjacencies(gr2);
 21
 
+# DigraphRemoveAllEdges
+gap> gr := Digraph(IsMutableDigraph, [[3], [4], [5], [1, 5], [1, 2]]);;
+gap> DigraphRemoveAllEdges(gr);
+<mutable empty digraph with 5 vertices>
+
 #  Fix seg fault cause by wrong handling of no edges in
 # FuncDIGRAPH_SOURCE_RANGE
 gap> gr := Digraph([[]]);
@@ -508,6 +513,42 @@ gap> DigraphConnectedComponents(D);
 rec( comps := [  ], id := [  ] )
 gap> IsConnectedDigraph(D);
 true
+
+# Issue #850: Problems with AutomorphismGroup for CompleteBipartiteDigraph
+gap> D := CompleteBipartiteDigraph(1, 5);
+<immutable complete bipartite digraph with bicomponent sizes 1 and 5>
+gap> AutomorphismGroup(D) = SymmetricGroup([2 .. 6]);
+true
+gap> not DIGRAPHS_IsGrapeLoaded() or
+> (DIGRAPHS_IsGrapeLoaded() and
+>  IsomorphismDigraphs(Digraph(Graph(D)), D) <> fail);
+true
+gap> not DIGRAPHS_IsGrapeLoaded() or
+> (DIGRAPHS_IsGrapeLoaded() and
+>  OnDigraphs(D, IsomorphismDigraphs(Digraph(Graph(D)), D)) = D);
+true
+gap> D := CompleteBipartiteDigraph(5, 1);
+<immutable complete bipartite digraph with bicomponent sizes 5 and 1>
+gap> AutomorphismGroup(D) = SymmetricGroup([1 .. 5]);
+true
+gap> D := CompleteBipartiteDigraph(1, 1);
+<immutable complete digraph with 2 vertices>
+gap> AutomorphismGroup(D) = Group([(1, 2)]);
+true
+gap> D := CompleteBipartiteDigraph(3, 3);
+<immutable complete bipartite digraph with bicomponents of size 3>
+gap> AutomorphismGroup(D)
+> = Group([(1, 2, 3), (1, 2), (4, 5, 6), (4, 5), (1, 4)(2, 5)(3, 6)]);
+true
+
+# SwapDigraphs
+gap> C := Digraph(IsMutableDigraph, [[4], [5], [1, 2], [], []]);;
+gap> D := Digraph(IsMutableDigraph, [[2, 3, 4], [1, 3, 4, 5], [1, 2], [5], [4]]);;
+gap> SwapDigraphs(C, D);
+gap> OutNeighbours(D);
+[ [ 4 ], [ 5 ], [ 1, 2 ], [  ], [  ] ]
+gap> OutNeighbours(C);
+[ [ 2, 3, 4 ], [ 1, 3, 4, 5 ], [ 1, 2 ], [ 5 ], [ 4 ] ]
 
 #
 gap> DIGRAPHS_StopTest();
