@@ -272,6 +272,33 @@ gap> Sum(flow[1]);
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="DigraphMinimumCut">
+<ManSection>
+  <Attr Name="DigraphMinimumCut" Arg="digraph, start, destination"/>
+  <Returns>A list of lists of integers.</Returns>
+  <Description>
+    If <A>digraph</A> is an edge-weighted digraph with distinct vertices <A>start</A> and
+    <A>destination</A>, this returns a list of two lists representing the components of
+    a minimum start-destination cut of <A>digraph</A>. <P/>
+
+    An <E>s-t cut</E> is a partition of the vertices (S, T) such that s is in S and
+    t is in T. The <E>capacity</E> of an s-t cut is the sum of the weights of every
+    edge whose source is in S and whose range is in T. <P/>
+
+    This attribute is computed by using <Ref Func="DigraphMaximumFlow"/> and the
+    max-cut min-flow theorem.<P/>
+
+    See <Ref Attr="EdgeWeights" Func="EdgeWeightedDigraph"/>.
+    <Example><![CDATA[
+gap> g := EdgeWeightedDigraph([[2, 2], [3], []], [[3, 2], [1], []]);
+<immutable multidigraph with 3 vertices, 3 edges>
+gap> DigraphMinimumCut(g, 1, 3);
+[ [ 2, 1 ], [3]]
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="RandomUniqueEdgeWeightedDigraph">
 <ManSection>
   <Oper Name="RandomUniqueEdgeWeightedDigraph" Arg="[filt, ]n[, p]"/>
