@@ -112,30 +112,23 @@ gap> DigraphEdges(gr);
 # Tests for digraph operator "^" (implements D ^ p and D ^ t using OnDigraphs)
 gap> D := CycleDigraph(5);
 <immutable cycle digraph with 5 vertices>
-# Applying a permutation that reverses the cycle
 gap> p := (1, 5)(2, 4);
 gap> D ^ p = DigraphReverse(D);
 true
-# Checking that D ^ p gives the same result as OnDigraphs(D, p)
 gap> OnDigraphs(D, p) = D ^ p;
 true
-# Using the identity permutation should return the same digraph
 gap> idp := ();
 gap> D ^ idp = D;
 true
-# Applying a permutation and then its inverse should give back the original digraph
 gap> q := (1, 2, 3, 4, 5);
 gap> (D ^ q) ^ (q ^ -1) = D;
 true
-# Applying a transformation that rotates the vertices
 gap> t := Transformation([2, 3, 4, 5, 1]);
 gap> D ^ t = OnDigraphs(D, t);
 true
-# The identity transformation should leave the digraph unchanged
 gap> idt := Transformation([1, 2, 3, 4, 5]);
 gap> D ^ idt = D;
 true
-# The same behaviour for a mutable digraph
 gap> M := DigraphMutableCopy(D);
 gap> M ^ p = OnDigraphs(M, p);
 true
