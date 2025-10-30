@@ -110,6 +110,7 @@ gap> DigraphEdges(gr);
 [ [ 1, 2 ] ]
 
 # Tests for digraph operator "^" (implements D ^ p and D ^ t using OnDigraphs)
+gap> local D, p, q, t, idp, idt, M;
 gap> D := CycleDigraph(5);
 <immutable cycle digraph with 5 vertices>
 gap> p := (1, 5)(2, 4);;
