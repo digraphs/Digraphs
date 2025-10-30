@@ -741,7 +741,6 @@ function(D)
   # transtive.
 
   if Length(Centers) = 0 then
-<<<<<<< HEAD
     return true;
   fi;
   # Find the number of 2-cycles at any center. We will have to subtract
