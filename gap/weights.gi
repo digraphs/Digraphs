@@ -772,7 +772,7 @@ function(D, start, destination)
   return flows;
 end);
 
-InstallMethod(DigraphMinimumCut, "for an edge weighted digraph",
+InstallMethod(DigraphMinimumCutSet, "for an edge weighted digraph",
 [IsDigraph and HasEdgeWeights, IsPosInt, IsPosInt],
 function(D, s, t)
   local weights, outs, vertices, flow, residuals, G, o, u, v, S, T; 
@@ -811,7 +811,7 @@ function(D, s, t)
   G := Digraph(G);
 
   # Find all vertices reachable from the source in this digraph
-  # This gives the minimal cut by the max-flow min-cut theorem
+  # This gives the minimal cut set by the max-flow min-cut theorem
   S := Filtered(vertices, x -> IsReachable(G, s, x));
   if not s in S then
     Add(S, s);
