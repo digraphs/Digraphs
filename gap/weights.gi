@@ -775,7 +775,7 @@ end);
 InstallMethod(DigraphMinimumCutSet, "for an edge weighted digraph",
 [IsDigraph and HasEdgeWeights, IsPosInt, IsPosInt],
 function(D, s, t)
-  local weights, outs, vertices, flow, residuals, G, o, u, v, S, T; 
+  local weights, outs, vertices, flow, residuals, G, o, u, v, S, T;
 
   # Extract important data
   weights := EdgeWeights(D);
@@ -798,9 +798,9 @@ function(D, s, t)
   # Construct the digraph containing all edges with nonzero
   # residual capacity
   G := [];
-  for u in [1..Length(outs)] do
+  for u in [1 .. Length(outs)] do
     o := [];
-    for v in [1..Length(outs[u])] do
+    for v in [1 .. Length(outs[u])] do
       if residuals[u][v] > 0 then
         Add(o, outs[u][v]);
       fi;
