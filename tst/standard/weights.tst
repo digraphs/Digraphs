@@ -109,9 +109,9 @@ Error, the argument <D> must be a connected digraph,
 
 # digraph with one node
 gap> d := EdgeWeightedDigraph([[]], [[]]);
-<immutable edge-weighted empty digraph with 1 vertex>
+<immutable empty edge-weighted digraph with 1 vertex>
 gap> tree := EdgeWeightedDigraphMinimumSpanningTree(d);
-<immutable edge-weighted empty digraph with 1 vertex>
+<immutable empty edge-weighted digraph with 1 vertex>
 gap> EdgeWeightedDigraphTotalWeight(tree);
 0
 
@@ -119,7 +119,7 @@ gap> EdgeWeightedDigraphTotalWeight(tree);
 gap> d := EdgeWeightedDigraph([[1]], [[5]]);
 <immutable edge-weighted digraph with 1 vertex, 1 edge>
 gap> EdgeWeightedDigraphMinimumSpanningTree(d);
-<immutable edge-weighted empty digraph with 1 vertex>
+<immutable empty edge-weighted digraph with 1 vertex>
 
 # digraph with cycle
 gap> d := EdgeWeightedDigraph([[2], [3], [1]], [[5], [10], [15]]);
@@ -153,7 +153,7 @@ gap> EdgeWeightedDigraphMinimumSpanningTree(d);
 
 # Shortest paths: one node
 gap> d := EdgeWeightedDigraph([[]], [[]]);
-<immutable edge-weighted empty digraph with 1 vertex>
+<immutable empty edge-weighted digraph with 1 vertex>
 gap> EdgeWeightedDigraphShortestPaths(d, 1);
 rec( distances := [ 0 ], edges := [ fail ], parents := [ fail ] )
 
@@ -296,13 +296,13 @@ gap> EdgeWeightedDigraphShortestPath(d, 1, 3);
 
 # Maximum flow: empty digraphs
 gap> d := EdgeWeightedDigraph([], []);
-<immutable edge-weighted empty digraph with 0 vertices>
+<immutable empty edge-weighted digraph with 0 vertices>
 gap> DigraphMaximumFlow(d, 1, 1);
 Error, <start> must be a vertex of <D>,
 
 # Maximum flow: single vertex (also empty digraphs)
 gap> d := EdgeWeightedDigraph([[]], [[]]);
-<immutable edge-weighted empty digraph with 1 vertex>
+<immutable empty edge-weighted digraph with 1 vertex>
 gap> DigraphMaximumFlow(d, 1, 1);
 [ [  ] ]
 
