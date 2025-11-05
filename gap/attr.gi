@@ -2267,6 +2267,31 @@ function(D)
 
   if DigraphNrVertices(D) <= 1 then
     return DigraphVertices(D);
+  elif DigraphNrVertices(D) < 256 then
+    path := DigraphMonomorphism(ChainDigraph(DigraphNrVertices(D)), D);
+    if path = fail then
+      return fail;
+    fi;
+    return ImageListOfTransformation(path, DigraphNrVertices(D));
+  fi;
+
+  iter := IteratorOfPaths(D, 1, 1);
+  n := DigraphNrVertices(D) + 1;
+  while not IsDoneIterator(iter) do
+    path := NextIterator(iter)[1];
+    if Length(path) = n then
+      return path;
+    fi;
+  od;
+  return fail;
+end);
+
+InstallMethod(HamiltonianCycle, "for a digraph", [IsDigraph],
+function(D)
+  local path, iter, n;
+
+  if DigraphNrVertices(D) <= 1 then
+    return DigraphVertices(D);
   elif not IsStronglyConnectedDigraph(D) then
     return fail;
   elif DigraphNrVertices(D) < 256 then
