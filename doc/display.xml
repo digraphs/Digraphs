@@ -465,7 +465,7 @@ gap> FileString("preset.dot", DotPreorderDigraph(preset));
 
       <Example><![CDATA[
 gap> digraph := Digraph([[2, 3], [2], [1, 3]]);
-<digraph with 3 vertices, 5 edges>
+<immutable digraph with 3 vertices, 5 edges>
 gap> FileString("my_digraph.dot", DotHighlightedDigraph(digraph, [1, 2], "red", "black"));
 264]]></Example>
     </Description>
