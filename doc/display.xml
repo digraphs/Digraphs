@@ -242,7 +242,7 @@ node [shape=circle]
 4 -> 2[color=pink]
 4 -> 3[color=purple]
 }
-gap> FileString("dot/k4.dot", DotDigraph(D));
+gap> FileString("k4.dot", DotDigraph(D));
 133
 
 gap> D := Digraph([[2, 3], [1, 3], [1]]);
@@ -262,7 +262,7 @@ node [shape=circle]
 2 -> 3[color=pink]
 3 -> 1[color=yellow]
 }
-gap> FileString("dot/digraph.dot", DotDigraph(D));
+gap> FileString("digraph.dot", DotDigraph(D));
 154]]></Example>
     </Description>
   </ManSection>
@@ -397,7 +397,7 @@ gap> poset := Digraph([[1, 4], [2], [2, 3, 4], [4]]);
 <immutable digraph with 4 vertices, 7 edges>
 gap> IsPartialOrderDigraph(poset);
 true
-gap> FileString("dot/poset.dot", DotPartialOrderDigraph(poset));
+gap> FileString("poset.dot", DotPartialOrderDigraph(poset));
 83]]></Example>
     </Description>
   </ManSection>
@@ -439,7 +439,7 @@ gap> preset := Digraph([[1, 2, 4, 5], [1, 2, 4, 5], [3, 4], [4], [1, 2, 4, 5]]);
 <immutable digraph with 5 vertices, 15 edges>
 gap> IsPreorderDigraph(preset);
 true
-gap> FileString("dot/preset.dot", DotProrderDigraph(preset));
+gap> FileString("preset.dot", DotPreorderDigraph(preset));
 83]]></Example>
     </Description>
   </ManSection>
@@ -466,7 +466,7 @@ gap> FileString("dot/preset.dot", DotProrderDigraph(preset));
       <Example><![CDATA[
 gap> digraph := Digraph([[2, 3], [2], [1, 3]]);
 <digraph with 3 vertices, 5 edges>
-gap> FileString("dot/my_digraph.dot", DotHighlightedDigraph(digraph, [1, 2], "red", "black"));
+gap> FileString("my_digraph.dot", DotHighlightedDigraph(digraph, [1, 2], "red", "black"));
 264]]></Example>
     </Description>
   </ManSection>
