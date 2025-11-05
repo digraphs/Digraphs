@@ -2261,7 +2261,7 @@ function(D)
   return Determinant(mat);
 end);
 
-InstallMethod(HamiltonianPath, "for a digraph", [IsDigraph],
+InstallMethod(HamiltonianCycle, "for a digraph", [IsDigraph],
 function(D)
   local path, iter, n;
 
