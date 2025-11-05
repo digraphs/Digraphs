@@ -91,9 +91,9 @@
 
       This function was written by Attila Egri-Nagy and Manuel Delgado with some
       minor changes by J. D. Mitchell.<P/>
-      <Example><![CDATA[
+      <Log><![CDATA[
 gap> Splash(DotDigraph(RandomDigraph(4)));
-]]></Example>
+]]></Log>
     </Description>
   </ManSection>
 <#/GAPDoc>
@@ -247,7 +247,8 @@ gap> FileString("k4.dot", DotDigraph(D));
 gap> D := Digraph([[2, 3], [1, 3], [1]]);
 <immutable digraph with 3 vertices, 5 edges>
 gap> vertcolors := ["blue", "red", "green"];;
-gap> edgecolors := [["orange", "yellow"], ["orange", "pink"], ["yellow"]];;
+gap> edgecolors := [["orange", "yellow"], ["orange", 
+> "pink"], ["yellow"]];;
 gap> Print(DotColoredDigraph(D, vertcolors, edgecolors));
 //dot
 digraph hgn{
@@ -434,7 +435,8 @@ gap> FileString("poset.dot", DotPartialOrderDigraph(poset));
       file using the command <Ref Func="FileString" BookName="GAPDoc"/>.<P/>
 
       <Example><![CDATA[
-gap> preset := Digraph([[1, 2, 4, 5], [1, 2, 4, 5], [3, 4], [4], [1, 2, 4, 5]]);
+gap> preset := Digraph([[1, 2, 4, 5], [1, 2, 4, 5], [3, 4], [4], 
+> [1, 2, 4, 5]]);
 <immutable digraph with 5 vertices, 15 edges>
 gap> IsPreorderDigraph(preset);
 true
@@ -465,7 +467,8 @@ gap> FileString("preset.dot", DotPreorderDigraph(preset));
       <Example><![CDATA[
 gap> digraph := Digraph([[2, 3], [2], [1, 3]]);
 <immutable digraph with 3 vertices, 5 edges>
-gap> FileString("my_digraph.dot", DotHighlightedDigraph(digraph, [1, 2], "red", "black"));
+gap> FileString("my_digraph.dot", DotHighlightedDigraph(digraph, 
+> [1, 2], "red", "black"));
 264]]></Example>
     </Description>
   </ManSection>
