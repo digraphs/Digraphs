@@ -291,7 +291,7 @@ gap> EdgeWeightedDigraphShortestPath(d, 1, 3);
 [ [ 1, 2, 3 ], [ 1, 1 ] ]
 
 #############################################################################
-# 5. Maximum Flow
+# 5. Maximum Flow and Minimum Cut
 #############################################################################
 
 # Maximum flow: empty digraphs
@@ -367,6 +367,80 @@ gap> gr := EdgeWeightedDigraph([[2], [3, 6], [4], [1, 6], [1, 3], []],
 >                              [[12], [3, 7], [10], [5, 10], [15, 4], []]);;
 gap> DigraphMaximumFlow(gr, 5, 6);
 [ [ 10 ], [ 3, 7 ], [ 7 ], [ 0, 7 ], [ 10, 4 ], [  ] ]
+
+# Minimum cut set: empty digraphs
+gap> d := EdgeWeightedDigraph([], []);
+<immutable empty digraph with 0 vertices>
+gap> DigraphMinimumCutSet(d, 1, 1);
+Error, <s> must be a vertex of <D>,
+
+# Minimum cut set: single vertex (also empty digraphs)
+gap> d := EdgeWeightedDigraph([[]], [[]]);
+<immutable empty digraph with 1 vertex>
+gap> DigraphMinimumCutSet(d, 1, 1);
+Error, <s> and <t> must be distinct
+
+# Minimum cut set: source = dest
+gap> d := EdgeWeightedDigraph([[2], []], [[5], []]);
+<immutable digraph with 2 vertices, 1 edge>
+gap> DigraphMinimumCutSet(d, 1, 1);
+Error, <s> and <t> must be distinct
+
+# Minimum cut set: has loop
+gap> d := EdgeWeightedDigraph([[1, 2], []], [[5, 10], []]);
+<immutable digraph with 2 vertices, 2 edges>
+gap> DigraphMinimumCutSet(d, 1, 2);
+[ [ 1 ], [ 2 ] ]
+
+# Minimum cut set: invalid source
+gap> d := EdgeWeightedDigraph([[1, 2], []], [[5, 10], []]);
+<immutable digraph with 2 vertices, 2 edges>
+gap> DigraphMinimumCutSet(d, 5, 2);
+Error, <s> must be a vertex of <D>,
+
+# Minimum cut set: invalid sink
+gap> d := EdgeWeightedDigraph([[1, 2], []], [[5, 10], []]);
+<immutable digraph with 2 vertices, 2 edges>
+gap> DigraphMinimumCutSet(d, 1, 5);
+Error, <t> must be a vertex of <D>,
+
+# Minimum cut set: sink not reachable
+gap> d := EdgeWeightedDigraph([[1], []], [[5], []]);
+<immutable digraph with 2 vertices, 1 edge>
+gap> DigraphMinimumCutSet(d, 1, 2);
+[ [ 1 ], [ 2 ] ]
+
+# Minimum cut set: source has in neighbours
+gap> d := EdgeWeightedDigraph([[2], [3], []], [[5], [10], []]);
+<immutable digraph with 3 vertices, 2 edges>
+gap> DigraphMinimumCutSet(d, 2, 3);
+[ [ 2 ], [ 1, 3 ] ]
+
+# Minimum cut set: sink has out-neighbours
+gap> d := EdgeWeightedDigraph([[2], [3], [2]], [[5], [10], [7]]);
+<immutable digraph with 3 vertices, 3 edges>
+gap> DigraphMinimumCutSet(d, 2, 3);
+[ [ 2 ], [ 1, 3 ] ]
+
+# Minimum cut set: cycle
+gap> d := EdgeWeightedDigraph([[2], [3], [1]], [[5], [10], [7]]);
+<immutable digraph with 3 vertices, 3 edges>
+gap> DigraphMinimumCutSet(d, 1, 3);
+[ [ 1 ], [ 2, 3 ] ]
+
+# Minimum cut set: example from Wikipedia
+gap> gr := EdgeWeightedDigraph([[3, 4], [], [2, 4], [2]],
+>                              [[10, 5], [], [5, 15], [10]]);;
+gap> DigraphMinimumCutSet(gr, 1, 2);
+[ [ 1 ], [ 2, 3, 4 ] ]
+gap> DigraphMinimumCutSet(gr, 3, 2);
+[ [ 4, 3 ], [ 1, 2 ] ]
+
+# Minimum cut set: example from Wikipedia article on Push-label maximum flow
+gap> gr := EdgeWeightedDigraph([[2], [3, 6], [4], [1, 6], [1, 3], []],
+>                              [[12], [3, 7], [10], [5, 10], [15, 4], []]);;
+gap> DigraphMinimumCutSet(gr, 5, 6);
+[ [ 1, 2, 5 ], [ 3, 4, 6 ] ]
 
 #############################################################################
 # 6. Random edge-weighted digraphs
