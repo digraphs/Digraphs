@@ -278,7 +278,7 @@ true
 </ManSection>
 <#/GAPDoc>
 
-<#GAPDoc Label="^OperatorOnDigraphs">
+<#GAPDoc Label="CaretOperatorOnDigraphs">
 <ManSection>
   <Oper Name="^" Arg="digraph, permOrTrans"/>
   <Returns>A digraph.</Returns>
@@ -286,7 +286,7 @@ true
     The <C>^</C> operator acts on digraphs with either a permutation or a transformation.
     For a digraph <A>digraph</A> and a permutation <A>perm</A>,
     <C>digraph ^ perm</C> gives the same result as
-    <C>OnDigraphs(digraph, perm)</C> — a digraph whose vertices have been relabelled according to the permutation.
+    <C>OnDigraphs(digraph, perm)</C> — a digraph whose vertices have been relabelled according to the permutation. <P/>
 
     Similarly, if the second argument is a transformation <A>trans</A>,
     then <C>digraph ^ trans</C> calls <C>OnDigraphs(digraph, trans)</C>.
@@ -295,7 +295,7 @@ true
     <Example><![CDATA[
 gap> D := CycleDigraph(5);
 <immutable cycle digraph with 5 vertices>
-gap> p := (1,5)(2,4);;
+gap> p := (1, 5)(2, 4);;
 gap> D ^ p = DigraphReverse(D);
 true
 gap> OnDigraphs(D, p) = D ^ p;
@@ -303,13 +303,13 @@ true
 gap> idp := ();;
 gap> D ^ idp = D;
 true
-gap> q := (1,2,3,4,5);;
-gap> (D ^ q) ^ (q^-1) = D;
+gap> q := (1, 2, 3, 4, 5);;
+gap> (D ^ q) ^ (q ^ -1) = D;
 true
-gap> t := Transformation([2,3,4,5,1]);;
+gap> t := Transformation([2, 3, 4, 5, 1]);;
 gap> D ^ t = OnDigraphs(D, t);
 true
-gap> idt := Transformation([1,2,3,4,5]);;
+gap> idt := Transformation([1, 2, 3, 4, 5]);;
 gap> D ^ idt = D;
 true
 gap> M := DigraphMutableCopy(D);;
