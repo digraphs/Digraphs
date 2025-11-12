@@ -10,6 +10,7 @@ from} $E_a$ \emph{to} $E_b$. In this case we say that $E_a$ and $E_b$ are
 
   <Section><Heading>Acting on digraphs</Heading>
     <#Include Label="OnDigraphs">
+    <#Include Label="\^OperatorOnDigraphs">
     <#Include Label="OnMultiDigraphs">
     <#Include Label="OnTuplesDigraphs">
   </Section>

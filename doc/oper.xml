@@ -278,9 +278,9 @@ true
 </ManSection>
 <#/GAPDoc>
 
-<#GAPDoc Label="CaretOperatorOnDigraphs">
+<#GAPDoc Label="\^OperatorOnDigraphs">
 <ManSection>
-  <Oper Name="^" Arg="digraph, permOrTrans"/>
+  <Oper Name="\^" Arg="digraph, permOrTrans" Label="for a digraph and a permutation or transformation"/>
   <Returns>A digraph.</Returns>
   <Description>
     The <C>^</C> operator acts on digraphs with either a permutation or a transformation.
