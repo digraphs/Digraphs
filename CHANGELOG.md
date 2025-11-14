@@ -6,11 +6,9 @@ Licensing information can be found in the `LICENSE` file.
 
 ## Version 1.13.1 (released 27/09/2025)
 
-This is a minor release of the Digraphs package, containing one bugfix.
+This is a minor release of the Digraphs package, containing one bugfix:
 
-## What's Changed
-* In [PR #852](https://github.com/digraphs/Digraphs/pull/852), [@wilfwilson](https://github.com/wilfwilson) fixed a bug that could result in an incorrect result being given for the `AutomorphismGroup` for a digraph that was created by the `CompleteBipartiteDigraph` operation.
-    * This bug was reported by [@bojankuzma000](https://github.com/bojankuzma000) in [Issue #850](https://github.com/digraphs/Digraphs/issues/850).
+In [PR #852](https://github.com/digraphs/Digraphs/pull/852), [@wilfwilson](https://github.com/wilfwilson) fixed a bug that could result in an incorrect result being given for the `AutomorphismGroup` of a digraph created by the `CompleteBipartiteDigraph` operation.  This bug was reported by Bojan Kuzma ([@bojankuzma000](https://github.com/bojankuzma000)) in [Issue #850](https://github.com/digraphs/Digraphs/issues/850).
 
 **Full Changelog**: <https://github.com/digraphs/Digraphs/compare/v1.13.0...v1.13.1>
 
@@ -19,7 +17,7 @@ This is a minor release of the Digraphs package, containing one bugfix.
 ## What's Changed
 * [@jengelh](https://github.com/jengelh) added support for version 4 of the [Edge Addition Planarity Suite][] in [PR #766](https://github.com/digraphs/Digraphs/pull/766). Version 4 is now the version that is vendored with the Digraphs package.
 * [@frankiegillis](https://github.com/frankiegillis) improved the performance of `IsTwoEdgeTransitive` in [PR #739](https://github.com/digraphs/Digraphs/pull/739), and added `Is2EdgeTransitive` as a synonym for this property.
-* [Wilf A. Wilson][] restored compatibility with GAP 4.10 in [PR #846](https://github.com/digraphs/Digraphs/pull/846).
+* [@wilfwilson](https://github.com/wilfwilson) restored compatibility with GAP 4.10 in [PR #846](https://github.com/digraphs/Digraphs/pull/846).
 
 ## New Contributors
 * Jan Engelhardt ([@jengelh](https://github.com/jengelh)) made their first contribution in [PR #766](https://github.com/digraphs/Digraphs/pull/766).
@@ -53,36 +51,42 @@ This is a minor release of the Digraphs package, containing various technical ch
 ## Version 1.11.0 (released 28/08/2025)
 
 ## What's Changed
-* Added `IsTwoEdgeTransitive` by [@frankiegillis](https://github.com/frankiegillis) in [PR #733](https://github.com/digraphs/Digraphs/pull/733).
+
+* [@frankiegillis](https://github.com/frankiegillis) added `IsTwoEdgeTransitive` in [PR #733](https://github.com/digraphs/Digraphs/pull/733).
 * [@flsmith](https://github.com/flsmith) made `RandomDigraph` more random in [PR #738](https://github.com/digraphs/Digraphs/pull/738).
-* Added `BurntPancakeGraph` and `BurntPancakeGraph` in [PR #403](https://github.com/digraphs/Digraphs/pull/403).
-* Added a new optional first argument for mutability in `CayleyDigraph` by [@james-d-mitchell](https://github.com/james-d-mitchell) in [PR #403](https://github.com/digraphs/Digraphs/pull/403).
-* Added `MinimalCyclicEdgeCut` by [@MeikeWeiss](https://github.com/MeikeWeiss) in [PR #754](https://github.com/digraphs/Digraphs/pull/754).
-* Added `DigraphAllChordlessCyclesOfMaximalLength` by [@MeikeWeiss](https://github.com/MeikeWeiss) in [PR #754](https://github.com/digraphs/Digraphs/pull/754).
-* Added `DigraphKings` and `DigraphIsKing` by [@hrj4](https://github.com/hrj4) in [PR #521](https://github.com/digraphs/Digraphs/pull/521).
+* [@james-d-mitchell](https://github.com/james-d-mitchell) added `BurntPancakeGraph` and `BurntPancakeGraph` in [PR #403](https://github.com/digraphs/Digraphs/pull/403).
+* [@james-d-mitchell](https://github.com/james-d-mitchell) added a new optional first argument for mutability in `CayleyDigraph` in [PR #403](https://github.com/digraphs/Digraphs/pull/403).
+* [@MeikeWeiss](https://github.com/MeikeWeiss) added `MinimalCyclicEdgeCut` in [PR #754](https://github.com/digraphs/Digraphs/pull/754).
+* [@MeikeWeiss](https://github.com/MeikeWeiss) added `DigraphAllChordlessCyclesOfMaximalLength` in [PR #754](https://github.com/digraphs/Digraphs/pull/754).
+* [@hrj4](https://github.com/hrj4) added `DigraphKings` and `DigraphIsKing` in [PR #521](https://github.com/digraphs/Digraphs/pull/521).
 * [@wilfwilson](https://github.com/wilfwilson) improved `ViewString` for digraphs in [PR #783](https://github.com/digraphs/Digraphs/pull/783).
 * [@EwanGilligan](https://github.com/EwanGilligan) implemented Zykov's and Christofides's algorithms and made them available as options for `ChromaticNumber` in [PR #491](https://github.com/digraphs/Digraphs/pull/491).
 * [@ChrisJefferson](https://github.com/ChrisJefferson) sped up `OnDigraphs` for a digraph and a permutation in [PR #267](https://github.com/digraphs/Digraphs/pull/267).
-* [@pramothragavan](https://github.com/pramothragavan) added dreadnaut support in [PR #651](https://github.com/digraphs/Digraphs/pull/651), along with the functions `DreadnautString`, `DigraphFromDreadnautString`, `DIMACSString`, and `DigraphFromDIMACSString`; and the variables `WholeFileEncoders` and `WholeFileDecoders` and the functions `IsWholeFileEncoder` and `IsWholeFileDecoder`.
 * [@RaiyanC](https://github.com/RaiyanC) added `DigraphMaximumFlow` in [PR #751](https://github.com/digraphs/Digraphs/pull/751).
 * [@RaiyanC](https://github.com/RaiyanC) added `RandomUniqueEdgeWeightedDigraph` [PR #755](https://github.com/digraphs/Digraphs/pull/755).
+* [@pramothragavan](https://github.com/pramothragavan) added dreadnaut support in [PR #651](https://github.com/digraphs/Digraphs/pull/651), along with the variables `WholeFileEncoders` and `WholeFileDecoders`, and the the functions:
+    * `IsWholeFileEncoder`,
+    * `IsWholeFileDecoder`,
+    * `DreadnautString`,
+    * `DigraphFromDreadnautString`,
+    * `DIMACSString`, and
+    * `DigraphFromDIMACSString`.
 
 ## New Contributors
-* [@BaseMax](https://github.com/BaseMax) made their first contribution in [PR #749](https://github.com/digraphs/Digraphs/pull/749).
+* [@hrj4](https://github.com/hrj4) made their first contribution in [PR #521](https://github.com/digraphs/Digraphs/pull/521).
 * [@pramothragavan](https://github.com/pramothragavan) made their first contribution in [PR #651](https://github.com/digraphs/Digraphs/pull/651).
 * [@BlueRidingHood](https://github.com/BlueRidingHood) made their first contribution in [PR #706](https://github.com/digraphs/Digraphs/pull/706).
-* [@hrj4](https://github.com/hrj4) made their first contribution in [PR #521](https://github.com/digraphs/Digraphs/pull/521).
+* [@BaseMax](https://github.com/BaseMax) made their first contribution in [PR #749](https://github.com/digraphs/Digraphs/pull/749).
 
 **Full Changelog**: <https://github.com/digraphs/Digraphs/compare/v1.10.1...v1.11.0>
 
 ## Version 1.10.1 (released 27/08/2025)
 
+This is a minor release containing various small technical adjustments, and the following bugfix and improvement:
+
 ## What's Changed
-* Fixed an bug in `ArticulationPoints` found by [@wilfwilson](https://github.com/wilfwilson)
-[PR #779](https://github.com/digraphs/Digraphs/pull/779).
-* Inclusion of an appendix to the manual that describes the DIMACS format
-[PR #775](https://github.com/digraphs/Digraphs/pull/775).
-* Various other small technical adjustments.
+* [@wilfwilson](https://github.com/wilfwilson) fixed an bug in `ArticulationPoints` in [PR #779](https://github.com/digraphs/Digraphs/pull/779).
+* [@wilfwilson](https://github.com/wilfwilson) added an appendix to the manual that describes the DIMACS format in [PR #775](https://github.com/digraphs/Digraphs/pull/775).
 
 **Full Changelog**: <https://github.com/digraphs/Digraphs/compare/v1.10.0...v1.10.1>
 

@@ -51,7 +51,7 @@ KEXT_BINARCHDIR = bin/$(GAParch)
 KEXT_SO = $(KEXT_BINARCHDIR)/$(KEXT_NAME).so
 
 # the following settings are provided by sysinfo.gap in GAP >= 4.12;
-# for compatibility with older GAP version (at least 4.9, 4.10, 4.11)
+# for compatibility with GAP 4.11
 # we try to "guess" suitable values here
 GAP ?= $(GAPPATH)/gap
 GAC ?= $(GAPPATH)/gac

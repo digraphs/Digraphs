@@ -45,9 +45,6 @@ jobs:
             mode: default  # There wouldn't be much point testing GAP v4.11 with only needed packages. The only difference is whether Grape is loaded.
             pkgs-to-clone: https://github.com/digraphs/graphviz.git
             pkgs-to-build: io* orb* datastructures* profiling* grape*
-          - gap-version: v4.10  # Note: NautyTracesInterface requires GAP 4.12
-            mode: default  # There wouldn't be much point testing GAP v4.10 with only needed packages. The only difference is whether Grape is loaded.
-            pkgs-to-build: io* orb* datastructures profiling* grape*
 
     steps:
       - uses: actions/checkout@v5
@@ -57,44 +54,39 @@ jobs:
         uses: gap-actions/setup-gap@v3
         with:
           gap-version: ${{ matrix.gap-version }}
-      - name: "Install necessary GAP package clones . . ."
-        if: ${{ matrix.gap-version != 'v4.10' }}
+      - name: "Build Digraphs . . ."
+        uses: gap-actions/build-pkg@v2
+      - name: "Clone additional GAP packages . . ."
         run: |
           for PKG in ${{ matrix.pkgs-to-clone }}; do
             cd ${GAPROOT}/pkg
             git clone $PKG
           done
-      # Add a special case for GAP v4.10 because it requires checking out a
-      # specific version of the repository (not the default branch).
-      - name: "Install datastructures v0.2.5 for GAP 4.10"
-        if: ${{ matrix.gap-version == 'v4.10' }}
-        run: |
-            cd ${GAPROOT}/pkg
-            git clone -b v0.2.5 https://github.com/gap-packages/datastructures datastructures
-      - name: "Build additional necessary GAP packages . . ."
+      - name: "Build relevant GAP packages . . ."
         run: |
           cd ${GAPROOT}/pkg
           ../bin/BuildPackages.sh --strict ${{ matrix.pkgs-to-build }}
-      - name: Build Digraphs . . .
-        uses: gap-actions/build-pkg@v2
-      - name: Install digraphs-lib . . .
-        run: git clone https://github.com/digraphs/digraphs-lib.git
-      - name: Run DigraphsTestInstall . . .
+      - name: "Install digraphs-lib . . ."
+        uses: actions/checkout@v5
+        with:
+          repository: digraphs/digraphs-lib
+          path: digraphs-lib
+      - name: "Run DigraphsTestInstall . . ."
         uses: gap-actions/run-pkg-tests@v4
         with:
           testfile: tst/github_actions/install.g
           mode: ${{ matrix.mode }}
-      - name: Run DigraphsTestStandard . . .
+      - name: "Run DigraphsTestStandard . . ."
         uses: gap-actions/run-pkg-tests@v4
         with:
           testfile: tst/github_actions/standard.g
           mode: ${{ matrix.mode }}
-      - name: Run DigraphsTestManualExamples . . .
+      - name: "Run DigraphsTestManualExamples . . ."
         uses: gap-actions/run-pkg-tests@v4
         with:
           testfile: tst/github_actions/examples.g
           mode: ${{ matrix.mode }}
-      - name: Run DigraphsTestExtreme . . .
+      - name: "Run DigraphsTestExtreme . . ."
         uses: gap-actions/run-pkg-tests@v4
         with:
           testfile: tst/github_actions/extreme.g

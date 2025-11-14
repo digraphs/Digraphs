@@ -45,36 +45,36 @@
       
       <Item>
         <B>This step is optional:</B> certain functions in &Digraphs; require
-          the &NautyTracesInterface; package to be available.
+          the &NAUTYTRACESINTERFACE; package to be available.
         <!-- TODO 
           see Section
         <Ref Subsect="The Grape package"/> for full details.  -->
         If you want to make use of these functions, please ensure that the
-        &NautyTracesInterface; package version &NAUTYTRACESINTERFACEVERS; or
-        higher is available.  If &NautyTracesInterface; is not available,
+        &NAUTYTRACESINTERFACE; package version &NAUTYTRACESINTERFACEVERS; or
+        higher is available.  If &NAUTYTRACESINTERFACE; is not available,
         then &Digraphs; can be used as normal with the exception that 
           functions whose names contain <Q>Nauty</Q> will not work.
       </Item>
 
       <Item>
-        download the package archive <F>&ARCHIVENAME;.tar.gz</F> from
-        <URL Text="the Digraphs package webpage">https://digraphs.github.io/Digraphs/</URL>.
+        download the package archive <F>&ARCHIVENAME;</F> from
+        <URL Text="the Digraphs package webpage">https://digraphs.github.io/Digraphs</URL>.
       </Item>
 
       <Item>
         unzip and untar the file, this should create a directory called
-        <F>&ARCHIVENAME;</F>.
+        <F>&ARCHIVE_BASENAME;</F>.
       </Item>
 
       <Item>
         locate the <F>pkg</F> directory of your &GAP; directory, which contains
         the directories <F>lib</F>, <F>doc</F> and so on. Move the directory
-        <F>&ARCHIVENAME;</F> into the <F>pkg</F> directory.
+        <F>&ARCHIVE_BASENAME;</F> into the <F>pkg</F> directory.
       </Item>
 
       <Item>
         it is necessary to compile the &Digraphs; package.
-        Inside the <F>pkg/&ARCHIVENAME;</F> directory, type
+        Inside the <F>pkg/&ARCHIVE_BASENAME;</F> directory, type
         <Listing>
 <![CDATA[./configure
 make]]></Listing>
@@ -177,7 +177,7 @@ flags are provided.
 
     It is not possible to use the &Digraphs; package without compiling it.<P/>
 
-    To compile the kernel component inside the <F>pkg/&ARCHIVENAME;</F>
+    To compile the kernel component inside the <F>pkg/&ARCHIVE_BASENAME;</F>
     directory, type
 <Listing>
 <![CDATA[

@@ -989,6 +989,17 @@ function(D1, D2, edge_function)
   return Digraph(edges);
 end);
 
+InstallMethod(SwapDigraphs,
+"for two mutable digraphs",
+[IsMutableDigraph, IsMutableDigraph],
+function(D1, D2)
+  local nb1, nb2;
+    nb1 := OutNeighbours(D1);
+    nb2 := OutNeighbours(D2);
+    D1!.OutNeighbours := nb2;
+    D2!.OutNeighbours := nb1;
+end);
+
 ###############################################################################
 # 4. Actions
 ###############################################################################

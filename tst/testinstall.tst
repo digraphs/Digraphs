@@ -258,6 +258,11 @@ gap> DigraphNrEdges(gr2);
 gap> DigraphNrAdjacencies(gr2);
 21
 
+# DigraphRemoveAllEdges
+gap> gr := Digraph(IsMutableDigraph, [[3], [4], [5], [1, 5], [1, 2]]);;
+gap> DigraphRemoveAllEdges(gr);
+<mutable empty digraph with 5 vertices>
+
 #  Fix seg fault cause by wrong handling of no edges in
 # FuncDIGRAPH_SOURCE_RANGE
 gap> gr := Digraph([[]]);
@@ -422,15 +427,15 @@ gap> String(CycleDigraph(4));
 
 # Edge-weighted digraphs
 gap> d := EdgeWeightedDigraph([[2], [1]], [[5], [10]]);
-<immutable digraph with 2 vertices, 2 edges>
+<immutable edge-weighted digraph with 2 vertices, 2 edges>
 gap> EdgeWeights(d);
 [ [ 5 ], [ 10 ] ]
 gap> EdgeWeightedDigraphTotalWeight(d);
 15
 gap> EdgeWeightedDigraphMinimumSpanningTree(d);
-<immutable digraph with 2 vertices, 1 edge>
+<immutable edge-weighted digraph with 2 vertices, 1 edge>
 gap> d := EdgeWeightedDigraph([[2], [1, 2]], [[5], [5, 5]]);
-<immutable digraph with 2 vertices, 3 edges>
+<immutable edge-weighted digraph with 2 vertices, 3 edges>
 gap> EdgeWeightedDigraphShortestPaths(d, 1);
 rec( distances := [ 0, 5 ], edges := [ fail, 1 ], parents := [ fail, 1 ] )
 gap> EdgeWeightedDigraphShortestPaths(d);
@@ -555,6 +560,14 @@ gap> EdgeWeights(D);
 [ [ 1 ], [  ] ]
 
 
+# SwapDigraphs
+gap> C := Digraph(IsMutableDigraph, [[4], [5], [1, 2], [], []]);;
+gap> D := Digraph(IsMutableDigraph, [[2, 3, 4], [1, 3, 4, 5], [1, 2], [5], [4]]);;
+gap> SwapDigraphs(C, D);
+gap> OutNeighbours(D);
+[ [ 4 ], [ 5 ], [ 1, 2 ], [  ], [  ] ]
+gap> OutNeighbours(C);
+[ [ 2, 3, 4 ], [ 1, 3, 4, 5 ], [ 1, 2 ], [ 5 ], [ 4 ] ]
 
 #
 gap> DIGRAPHS_StopTest();

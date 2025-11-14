@@ -13,13 +13,13 @@
 #############################################################################
 
 InstallGlobalFunction(EdgeWeightedDigraph,
-function(digraph, weights)
-  local digraphVertices, nrVertices, u, outNeighbours,
-        outNeighbourWeights, idx;
-  if IsDigraph(digraph) then
-    digraph := DigraphCopy(digraph);
+function(D, weights)
+  local outNeighbours, outNeighbourWeights, u, i;
+
+  if IsDigraph(D) then
+    D := DigraphCopy(D);
   else
-    digraph := Digraph(digraph);
+    D := Digraph(D);
   fi;
 
   # check all elements of weights is a list
@@ -27,46 +27,42 @@ function(digraph, weights)
     ErrorNoReturn("the 2nd argument (list) must be a list of lists,");
   fi;
 
-  digraphVertices := DigraphVertices(digraph);
-  nrVertices := Size(digraphVertices);
-
   # check number there is an edge weight list for vertex u
-  if nrVertices <> Size(weights) then
-    ErrorNoReturn("the number of out neighbours and weights must be equal,");
+  if DigraphNrVertices(D) <> Length(weights) then
+    ErrorNoReturn("the number of out-neighbours and weights must be equal,");
   fi;
 
   # check all elements of weights is a list and size/shape is correct
-  for u in digraphVertices do
-    outNeighbours := OutNeighbors(digraph)[u];
+  for u in DigraphVertices(D) do
+    outNeighbours := OutNeighboursOfVertex(D, u);
     outNeighbourWeights := weights[u];
 
-    # check number of out neighbours for u
-    # and number of weights given is the same
-    if Size(outNeighbours) <> Size(outNeighbourWeights) then
-      ErrorNoReturn("the sizes of the out neighbours and weights for vertex ",
-                    u, " must be equal,");
+    # check number of out-neighbours of u and number of weights given is equal
+    if Length(outNeighbours) <> Length(outNeighbourWeights) then
+      ErrorNoReturn("the number of out-neighbours and weights for ",
+                    "the vertex ", String(u), " must be equal,");
     fi;
 
-    # check all elements of out neighbours are appropriate
-    for idx in [1 .. Size(outNeighbours)] do
-      if not (IsInt(outNeighbourWeights[idx])
-              or IsFloat(outNeighbourWeights[idx])
-              or IsRat(outNeighbourWeights[idx])) then
-        ErrorNoReturn("out neighbour weight must be ",
-                      "an integer, float or rational,");
+    # check all elements of out-neighbours are appropriate
+    for i in [1 .. Length(outNeighbours)] do
+      if not (IsInt(outNeighbourWeights[i])
+              or IsFloat(outNeighbourWeights[i])
+              or IsRat(outNeighbourWeights[i])) then
+        ErrorNoReturn("out-neighbour weights must be integers, floats, or ",
+                      "rationals,");
       fi;
     od;
   od;
 
-  SetEdgeWeights(digraph, weights);
-  return digraph;
+  SetEdgeWeights(D, weights);
+  return D;
 end);
 
 InstallMethod(IsNegativeEdgeWeightedDigraph, "for a digraph with edge weights",
 [IsDigraph and HasEdgeWeights],
-function(digraph)
+function(D)
   local weights, u, w;
-  weights := EdgeWeights(digraph);
+  weights := EdgeWeights(D);
 
   for u in weights do
     for w in u do
@@ -105,30 +101,30 @@ D -> List(EdgeWeights(D), ShallowCopy));
 #############################################################################
 
 InstallMethod(EdgeWeightedDigraphMinimumSpanningTree,
-"for a digraph with edge weights",
+"for a D with edge weights",
 [IsDigraph and HasEdgeWeights],
-function(digraph)
-  local weights, numberOfVertices, edgeList, u, outNeighbours, idx, v, w, mst,
-        mstWeights, partition, i, nrEdges, total, node, x, y, out;
+function(D)
+  local weights, n, edgeList, outNeighbours, v, w, mst, mstWeights, partition,
+        i, nrEdges, total, node, u, x, y, out;
 
   # check graph is connected
-  if not IsConnectedDigraph(digraph) then
-    ErrorNoReturn("the argument <digraph> must be a connected digraph,");
+  if not IsConnectedDigraph(D) then
+    ErrorNoReturn("the argument <D> must be a connected digraph,");
   fi;
 
-  weights := EdgeWeights(digraph);
+  weights := EdgeWeights(D);
 
   # create a list of edges containing u-v
   # w: the weight of the edge
   # u: the start vertex
   # v: the finishing vertex of that edge
-  numberOfVertices := DigraphNrVertices(digraph);
+  n := DigraphNrVertices(D);
   edgeList := [];
-  for u in DigraphVertices(digraph) do
-    outNeighbours := OutNeighboursOfVertex(digraph, u);
-    for idx in [1 .. Size(outNeighbours)] do
-      v := outNeighbours[idx];  # the out neighbour
-      w := weights[u][idx];     # the weight to the out neighbour
+  for u in DigraphVertices(D) do
+    outNeighbours := OutNeighboursOfVertex(D, u);
+    for i in [1 .. Length(outNeighbours)] do
+      v := outNeighbours[i];  # the out-neighbour
+      w := weights[u][i];     # the weight to the out-neighbour
       Add(edgeList, [w, u, v]);
     od;
   od;
@@ -136,12 +132,12 @@ function(digraph)
   # sort edge weights by their weight
   StableSortBy(edgeList, x -> x[1]);
 
-  mst        := EmptyPlist(numberOfVertices);
-  mstWeights := EmptyPlist(numberOfVertices);
+  mst        := EmptyPlist(n);
+  mstWeights := EmptyPlist(n);
 
-  partition := PartitionDS(IsPartitionDS, numberOfVertices);
+  partition := PartitionDS(IsPartitionDS, n);
 
-  for v in [1 .. numberOfVertices] do
+  for v in DigraphVertices(D) do
     Add(mst, []);
     Add(mstWeights, []);
   od;
@@ -149,7 +145,7 @@ function(digraph)
   i := 1;
   nrEdges := 0;
   total := 0;
-  while nrEdges < numberOfVertices - 1 do
+  while nrEdges < n - 1 do
     node := edgeList[i];
 
     w := node[1];
@@ -181,9 +177,9 @@ end);
 #############################################################################
 #
 # Three different "shortest path" problems are solved:
-# - All pairs:       EdgeWeightedDigraphShortestPaths(digraph)
-# - Single source:   EdgeWeightedDigraphShortestPaths(digraph, source)
-# - Source and dest: EdgeWeightedDigraphShortestPath (digraph, source, dest)
+# - All pairs:       EdgeWeightedDigraphShortestPaths(D)
+# - Single source:   EdgeWeightedDigraphShortestPaths(D, source)
+# - Source and dest: EdgeWeightedDigraphShortestPath (D, source, dest)
 #
 # The "all pairs" problem has two algorithms:
 # - Johnson: better for sparse digraphs
@@ -208,28 +204,24 @@ end);
 InstallMethod(EdgeWeightedDigraphShortestPaths,
 "for a digraph with edge weights",
 [IsDigraph and HasEdgeWeights],
-function(digraph)
-  local maxNodes, threshold, digraphVertices, nrVertices, nrEdges, result;
+function(D)
+  local maxNodes, threshold, result;
 
-  digraphVertices := DigraphVertices(digraph);
-  nrVertices := Size(digraphVertices);
-  nrEdges := DigraphNrEdges(digraph);
-
-  maxNodes := nrVertices * (nrVertices - 1);
+  maxNodes := DigraphNrVertices(D) * (DigraphNrVertices(D) - 1);
 
   # For dense graphs we use Floyd-Warshall; for sparse graphs Johnson. The
   # threshold for "dense", based on experiments, is n(n-1)/8 edges.
   threshold := Int(maxNodes / 8);
-  if nrEdges <= threshold then
-    result := DIGRAPHS_Edge_Weighted_Johnson(digraph);
+  if DigraphNrEdges(D) <= threshold then
+    result := DIGRAPHS_Edge_Weighted_Johnson(D);
   else
-    result := DIGRAPHS_Edge_Weighted_FloydWarshall(digraph);
+    result := DIGRAPHS_Edge_Weighted_FloydWarshall(D);
   fi;
 
   # Currently we have no method that works for digraphs with negative cycles.
   # It may be possible if we implement a further algorithm in future.
   if result = fail then
-    Info(InfoDigraphs, 1, "<digraph> contains a negative cycle, so there is ",
+    Info(InfoDigraphs, 1, "<D> contains a negative cycle, so there is ",
          "currently no suitable method for EdgeWeightedDigraphShortestPaths");
     TryNextMethod();
   fi;
@@ -241,14 +233,14 @@ InstallMethod(EdgeWeightedDigraphShortestPaths,
 "for a digraph with edge weights and known shortest paths and a pos int",
 [IsDigraph and HasEdgeWeights and HasEdgeWeightedDigraphShortestPaths,
  IsPosInt],
-function(digraph, source)
+function(D, source)
   local all_paths;
-  if not source in DigraphVertices(digraph) then
+  if not source in DigraphVertices(D) then
     ErrorNoReturn("the 2nd argument <source> must be a vertex of the ",
-                  "1st argument <digraph>,");
+                  "1st argument <D>,");
   fi;
   # Shortest paths are known for all vertices. Extract the one we want.
-  all_paths := EdgeWeightedDigraphShortestPaths(digraph);
+  all_paths := EdgeWeightedDigraphShortestPaths(D);
   return rec(distances := all_paths.distances[source],
              edges     := all_paths.edges[source],
              parents   := all_paths.parents[source]);
@@ -257,37 +249,37 @@ end);
 InstallMethod(EdgeWeightedDigraphShortestPaths,
 "for a digraph with edge weights and a pos int",
 [IsDigraph and HasEdgeWeights, IsPosInt],
-function(digraph, source)
+function(D, source)
   local result;
-  if not source in DigraphVertices(digraph) then
+  if not source in DigraphVertices(D) then
     ErrorNoReturn("the 2nd argument <source> must be a vertex of the ",
-                  "1st argument <digraph>,");
+                  "1st argument <D>,");
   fi;
 
-  if IsNegativeEdgeWeightedDigraph(digraph) then
-    result := DIGRAPHS_Edge_Weighted_Bellman_Ford(digraph, source);
+  if IsNegativeEdgeWeightedDigraph(D) then
+    result := DIGRAPHS_Edge_Weighted_Bellman_Ford(D, source);
     if result = fail then
-      Info(InfoDigraphs, 1, "<digraph> contains a negative cycle, so there is ",
+      Info(InfoDigraphs, 1, "<D> contains a negative cycle, so there is ",
            "currently no suitable method for EdgeWeightedDigraphShortestPaths");
       TryNextMethod();
     fi;
     return result;
   else
-    return DIGRAPHS_Edge_Weighted_Dijkstra(digraph, source);
+    return DIGRAPHS_Edge_Weighted_Dijkstra(D, source);
   fi;
 end);
 
 InstallMethod(EdgeWeightedDigraphShortestPath,
 "for a digraph with edge weights and two pos ints",
 [IsDigraph and HasEdgeWeights, IsPosInt, IsPosInt],
-function(digraph, source, dest)
+function(D, source, dest)
   local paths, v, a, current, edge_index;
-  if not source in DigraphVertices(digraph) then
+  if not source in DigraphVertices(D) then
     ErrorNoReturn("the 2nd argument <source> must be a vertex of the ",
-                  "1st argument <digraph>,");
-  elif not dest in DigraphVertices(digraph) then
+                  "1st argument <D>,");
+  elif not dest in DigraphVertices(D) then
     ErrorNoReturn("the 3rd argument <dest> must be a vertex of the ",
-                  "1st argument <digraph>,");
+                  "1st argument <D>,");
   fi;
 
   # No trivial paths
@@ -296,7 +288,7 @@ function(digraph, source, dest)
   fi;
 
   # Get shortest paths information for this source vertex
-  paths := EdgeWeightedDigraphShortestPaths(digraph, source);
+  paths := EdgeWeightedDigraphShortestPaths(D, source);
 
   # Convert to DigraphPath's [v, a] format by exploring backwards from dest
   v := [dest];
@@ -316,29 +308,28 @@ function(digraph, source, dest)
 end);
 
 InstallGlobalFunction(DIGRAPHS_Edge_Weighted_Johnson,
-function(digraph)
-  local vertices, nrVertices, mutableOuts, mutableWeights, new, v, bellman,
-        bellmanDistances, u, outNeighbours, idx, w, distances, parents, edges,
-        dijkstra;
-  vertices := DigraphVertices(digraph);
-  nrVertices := Size(vertices);
-  mutableOuts := OutNeighborsMutableCopy(digraph);
-  mutableWeights := EdgeWeightsMutableCopy(digraph);
+function(D)
+  local n, mutableOuts, mutableWeights, new, v, bellman, bellmanDistances, u,
+        outNeighbours, i, w, distances, parents, edges, dijkstra;
+
+  n := DigraphNrVertices(D);
+  mutableOuts := OutNeighboursMutableCopy(D);
+  mutableWeights := EdgeWeightsMutableCopy(D);
 
   # add new u that connects to all other v with weight 0
-  new := nrVertices + 1;
+  new := n + 1;
   mutableOuts[new] := [];
   mutableWeights[new] := [];
 
   # fill new u
-  for v in [1 .. nrVertices] do
+  for v in DigraphVertices(D) do
     mutableOuts[new][v] := v;
     mutableWeights[new][v] := 0;
   od;
 
   # calculate shortest paths from the new vertex (could be negative)
-  digraph := EdgeWeightedDigraph(mutableOuts, mutableWeights);
-  bellman := DIGRAPHS_Edge_Weighted_Bellman_Ford(digraph, new);
+  D := EdgeWeightedDigraph(mutableOuts, mutableWeights);
+  bellman := DIGRAPHS_Edge_Weighted_Bellman_Ford(D, new);
   if bellman = fail then
     # negative cycle detected: this algorithm fails
     return fail;
@@ -346,17 +337,17 @@ function(digraph)
   bellmanDistances := bellman.distances;
 
   # new copy of neighbours and weights
-  mutableOuts := OutNeighborsMutableCopy(digraph);
-  mutableWeights := EdgeWeightsMutableCopy(digraph);
+  mutableOuts := OutNeighboursMutableCopy(D);
+  mutableWeights := EdgeWeightsMutableCopy(D);
 
   # set weight(u, v) equal to weight(u, v) + bell_dist(u) - bell_dist(v)
   # for each edge (u, v)
-  for u in vertices do
+  for u in DigraphVertices(D) do
     outNeighbours := mutableOuts[u];
-    for idx in [1 .. Size(outNeighbours)] do
-      v                      := outNeighbours[idx];
-      w                      := mutableWeights[u][idx];
-      mutableWeights[u][idx] := w +
+    for i in [1 .. Length(outNeighbours)] do
+      v := outNeighbours[i];
+      w := mutableWeights[u][i];
+      mutableWeights[u][i] := w +
                                 bellmanDistances[u] - bellmanDistances[v];
     od;
   od;
@@ -364,22 +355,22 @@ function(digraph)
   Remove(mutableOuts, new);
   Remove(mutableWeights, new);
 
-  digraph   := EdgeWeightedDigraph(mutableOuts, mutableWeights);
-  distances := EmptyPlist(nrVertices);
-  parents   := EmptyPlist(nrVertices);
-  edges     := EmptyPlist(nrVertices);
+  D         := EdgeWeightedDigraph(mutableOuts, mutableWeights);
+  distances := EmptyPlist(n);
+  parents   := EmptyPlist(n);
+  edges     := EmptyPlist(n);
 
   # run dijkstra
-  for u in vertices do
-    dijkstra     := DIGRAPHS_Edge_Weighted_Dijkstra(digraph, u);
+  for u in DigraphVertices(D) do
+    dijkstra     := DIGRAPHS_Edge_Weighted_Dijkstra(D, u);
     distances[u] := dijkstra.distances;
     parents[u]   := dijkstra.parents;
     edges[u]     := dijkstra.edges;
   od;
 
   # correct distances
-  for u in vertices do
-    for v in vertices do
+  for u in DigraphVertices(D) do
+    for v in DigraphVertices(D) do
       if distances[u][v] = fail then
         continue;
       fi;
@@ -392,42 +383,43 @@ function(digraph)
 end);
 
 InstallGlobalFunction(DIGRAPHS_Edge_Weighted_FloydWarshall,
-function(digraph)
+function(D)
   # Note: we aren't using the C function FLOYD_WARSHALL here since it is set up
   # for a different task: it always creates a distance matrix consisting of two
   # values (edge and non-edge) rather than multiple values; and it only stores
   # distances, and doesn't remember info about the actual paths.  In the future
   # we might want to refactor the C function so we can use it here.
-  local weights, adjMatrix, vertices, nrVertices, u, v, edges, outs, idx,
-        outNeighbours, w, i, k, distances, parents;
-  weights    := EdgeWeights(digraph);
-  vertices   := DigraphVertices(digraph);
-  nrVertices := Size(vertices);
-  outs       := OutNeighbours(digraph);
+  local weights, vertices, n, outs, adjMatrix, outNeighbours, v, w, distances,
+        parents, edges, i, u, k;
+
+  weights  := EdgeWeights(D);
+  vertices := DigraphVertices(D);
+  n        := DigraphNrVertices(D);
+  outs     := OutNeighbours(D);
 
   # Create adjacency matrix with (minimum weight, edge index), or a hole
-  adjMatrix := EmptyPlist(nrVertices);
+  adjMatrix := EmptyPlist(n);
   for u in vertices do
-    adjMatrix[u] := EmptyPlist(nrVertices);
+    adjMatrix[u] := EmptyPlist(n);
     outNeighbours := outs[u];
-    for idx in [1 .. Size(outNeighbours)] do
-      v := outNeighbours[idx];  # the out neighbour
-      w := weights[u][idx];     # the weight to the out neighbour
+    for i in [1 .. Length(outNeighbours)] do
+      v := outNeighbours[i];  # the out-neighbour
+      w := weights[u][i];     # the weight to the out-neighbour
       # Use minimum weight edge
       if (not IsBound(adjMatrix[u][v])) or (w < adjMatrix[u][v][1]) then
-        adjMatrix[u][v] := [w, idx];
+        adjMatrix[u][v] := [w, i];
       fi;
     od;
   od;
 
   # Store shortest paths for single edges
-  distances := EmptyPlist(nrVertices);
-  parents   := EmptyPlist(nrVertices);
-  edges     := EmptyPlist(nrVertices);
+  distances := EmptyPlist(n);
+  parents   := EmptyPlist(n);
+  edges     := EmptyPlist(n);
   for u in vertices do
-    distances[u] := EmptyPlist(nrVertices);
-    parents[u]   := EmptyPlist(nrVertices);
-    edges[u]     := EmptyPlist(nrVertices);
+    distances[u] := EmptyPlist(n);
+    parents[u]   := EmptyPlist(n);
+    edges[u]     := EmptyPlist(n);
 
     for v in vertices do
       distances[u][v] := infinity;
@@ -440,12 +432,12 @@ function(digraph)
         parents[u][v] := fail;
         edges[u][v]   := fail;
       elif IsBound(adjMatrix[u][v]) then
-        w   := adjMatrix[u][v][1];
-        idx := adjMatrix[u][v][2];
+        w := adjMatrix[u][v][1];
+        i := adjMatrix[u][v][2];
 
         distances[u][v] := w;
         parents[u][v]   := u;
-        edges[u][v]     := idx;
+        edges[u][v]     := i;
       fi;
     od;
   od;
@@ -470,7 +462,7 @@ function(digraph)
   # detect negative cycles
   for i in vertices do
     if distances[i][i] < 0 then
-      # digraph contains a negative cycle: this algorithm fails
+      # D contains a negative cycle: this algorithm fails
       return fail;
     fi;
   od;
@@ -488,40 +480,39 @@ function(digraph)
 end);
 
 InstallGlobalFunction(DIGRAPHS_Edge_Weighted_Dijkstra,
-function(digraph, source)
-  local weights, vertices, nrVertices, adj, u, outNeighbours, idx, v, w,
-        distances, parents, edges, visited, queue, node, currDist, neighbour,
-        edgeInfo, distance, i;
+function(D, source)
+  local weights, vertices, n, adj, outNeighbours, v, w, distances, parents, u,
+        edges, visited, queue, node, currDist, edgeInfo, i, distance, neighbour;
 
-  weights    := EdgeWeights(digraph);
-  vertices   := DigraphVertices(digraph);
-  nrVertices := Size(vertices);
+  weights  := EdgeWeights(D);
+  vertices := DigraphVertices(D);
+  n        := DigraphNrVertices(D);
 
   # Create an adjacency map for the shortest edges: index and weight
   adj := HashMap();
   for u in vertices do
     adj[u] := HashMap();
-    outNeighbours := OutNeighbors(digraph)[u];
-    for idx in [1 .. Size(outNeighbours)] do
-      v := outNeighbours[idx];  # the out neighbour
-      w := weights[u][idx];     # the weight to the out neighbour
+    outNeighbours := OutNeighbours(D)[u];
+    for i in [1 .. Length(outNeighbours)] do
+      v := outNeighbours[i];  # the out-neighbour
+      w := weights[u][i];     # the weight to the out-neighbour
 
       # an edge to v already exists
       if v in adj[u] then
         # check if edge weight is less than current weight,
-        # and keep track of edge idx
+        # and keep track of edge i
         if w < adj[u][v][1] then
-          adj[u][v] := [w, idx];
+          adj[u][v] := [w, i];
         fi;
       else  # edge doesn't exist already, so add it
-        adj[u][v] := [w, idx];
+        adj[u][v] := [w, i];
       fi;
     od;
   od;
 
-  distances := ListWithIdenticalEntries(nrVertices, infinity);
-  parents   := EmptyPlist(nrVertices);
-  edges     := EmptyPlist(nrVertices);
+  distances := ListWithIdenticalEntries(n, infinity);
+  parents   := EmptyPlist(n);
+  edges     := EmptyPlist(n);
 
   distances[source] := 0;
   parents[source]   := fail;
@@ -550,7 +541,7 @@ function(digraph, source)
       v        := neighbour[1];
       edgeInfo := neighbour[2];
       w        := edgeInfo[1];
-      idx      := edgeInfo[2];
+      i        := edgeInfo[2];
 
       distance := currDist + w;
 
@@ -558,7 +549,7 @@ function(digraph, source)
         distances[v] := distance;
 
         parents[v] := u;
-        edges[v]   := idx;
+        edges[v]   := i;
 
         if not visited[v] then
           Push(queue, [distance, v]);
@@ -580,27 +571,27 @@ function(digraph, source)
 end);
 
 InstallGlobalFunction(DIGRAPHS_Edge_Weighted_Bellman_Ford,
-function(digraph, source)
-  local edgeList, weights, vertices, nrVertices, distances, u, outNeighbours,
-        idx, v, w, edge, parents, edges, i, flag, _;
+function(D, source)
+  local weights, vertices, n, edgeList, outNeighbours, v, w, distances, parents,
+        edges, flag, u, i, _, edge;
 
-  weights    := EdgeWeights(digraph);
-  vertices   := DigraphVertices(digraph);
-  nrVertices := Size(vertices);
+  weights  := EdgeWeights(D);
+  vertices := DigraphVertices(D);
+  n := DigraphNrVertices(D);
 
   edgeList := [];
-  for u in DigraphVertices(digraph) do
-    outNeighbours := OutNeighbours(digraph)[u];
-    for idx in [1 .. Size(outNeighbours)] do
-      v := outNeighbours[idx];  # the out neighbour
-      w := weights[u][idx];     # the weight to the out neighbour
-      Add(edgeList, [w, u, v, idx]);
+  for u in DigraphVertices(D) do
+    outNeighbours := OutNeighbours(D)[u];
+    for i in [1 .. Length(outNeighbours)] do
+      v := outNeighbours[i];  # the out-neighbour
+      w := weights[u][i];     # the weight to the out-neighbour
+      Add(edgeList, [w, u, v, i]);
     od;
   od;
 
-  distances := ListWithIdenticalEntries(nrVertices, infinity);
-  parents   := EmptyPlist(nrVertices);
-  edges     := EmptyPlist(nrVertices);
+  distances := ListWithIdenticalEntries(n, infinity);
+  parents   := EmptyPlist(n);
+  edges     := EmptyPlist(n);
 
   distances[source] := 0;
   parents[source]   := fail;
@@ -613,14 +604,14 @@ function(digraph, source)
       w := edge[1];
       u := edge[2];
       v := edge[3];
-      idx := edge[4];
+      i := edge[4];
 
       if distances[u] <> infinity
           and Float(distances[u]) + Float(w) < Float(distances[v]) then
         distances[v] := distances[u] + w;
 
         parents[v] := u;
-        edges[v]   := idx;
+        edges[v]   := i;
         flag       := false;
       fi;
     od;
@@ -661,8 +652,8 @@ end);
 
 InstallMethod(DigraphMaximumFlow, "for an edge weighted digraph",
 [IsDigraph and HasEdgeWeights, IsPosInt, IsPosInt],
-function(digraph, start, destination)
-  local push, relabel, discharge, weights, vertices, nrVertices, outs, capacity,
+function(D, start, destination)
+  local push, relabel, discharge, weights, vertices, n, outs, capacity,
         flowMatrix, seen, height, excess, queue, u, outNeighbours, i, v, w,
         flows, delta;
 
@@ -700,7 +691,7 @@ function(digraph, start, destination)
   discharge := function(u)
     local v;
     while excess[u] > 0 do
-      if seen[u] <= nrVertices then
+      if seen[u] <= n then
         v := seen[u];
         if capacity[u][v] - flowMatrix[u][v] > 0
             and height[u] > height[v] then
@@ -716,28 +707,28 @@ function(digraph, start, destination)
   end;
 
   # Extract important data
-  weights    := EdgeWeights(digraph);
-  vertices   := DigraphVertices(digraph);
-  nrVertices := Length(vertices);
-  outs       := OutNeighbors(digraph);
+  weights  := EdgeWeights(D);
+  vertices := DigraphVertices(D);
+  n        := DigraphNrVertices(D);
+  outs     := OutNeighbours(D);
 
   # Check input
   if not start in vertices then
-    ErrorNoReturn("<start> must be a vertex of <digraph>,");
+    ErrorNoReturn("<start> must be a vertex of <D>,");
   elif not destination in vertices then
-    ErrorNoReturn("<destination> must be a vertex of <digraph>,");
+    ErrorNoReturn("<destination> must be a vertex of <D>,");
   fi;
 
   # Setup data structures
-  capacity   := EmptyPlist(nrVertices);
-  flowMatrix := EmptyPlist(nrVertices);
-  seen       := EmptyPlist(nrVertices);
-  height     := EmptyPlist(nrVertices);
-  excess     := EmptyPlist(nrVertices);
+  capacity   := EmptyPlist(n);
+  flowMatrix := EmptyPlist(n);
+  seen       := EmptyPlist(n);
+  height     := EmptyPlist(n);
+  excess     := EmptyPlist(n);
   queue      := PlistDeque();
   for u in vertices do
-    capacity[u]   := ListWithIdenticalEntries(nrVertices, 0);
-    flowMatrix[u] := ListWithIdenticalEntries(nrVertices, 0);
+    capacity[u]   := ListWithIdenticalEntries(n, 0);
+    flowMatrix[u] := ListWithIdenticalEntries(n, 0);
     seen[u]       := 1;  # highest vertex to which we've pushed flow from u
     height[u]     := 0;  # proximity to start (further is lower)
     excess[u]     := 0;  # flow coming into u that isn't yet leaving u
@@ -749,15 +740,15 @@ function(digraph, start, destination)
   # Compute total capacity from each u to v
   for u in vertices do
     outNeighbours := outs[u];
-    for i in [1 .. Size(outNeighbours)] do
-      v := outNeighbours[i];  # the out neighbour
-      w := weights[u][i];     # the weight to the out neighbour
+    for i in [1 .. Length(outNeighbours)] do
+      v := outNeighbours[i];  # the out-neighbour
+      w := weights[u][i];     # the weight to the out-neighbour
       capacity[u][v] := capacity[u][v] + w;
     od;
   od;
 
   # start vertex is "top", with unlimited flow coming out
-  height[start] := nrVertices;
+  height[start] := n;
   excess[start] := infinity;
 
   # Push flow from start to the other vertices
@@ -796,17 +787,17 @@ end);
 
 BindGlobal("DIGRAPHS_RandomEdgeWeightedDigraphFilt",
 function(arg...)
-  local digraph, outs, weightsSource, weights;
+  local D, outs, weightsSource, weights;
   # Create random digraph
-  digraph := CallFuncList(RandomDigraphCons, arg);
-  outs := OutNeighbours(digraph);
+  D := CallFuncList(RandomDigraphCons, arg);
+  outs := OutNeighbours(D);
 
   # Unique weights are taken randomly from [1..nredges]
-  weightsSource := Shuffle([1 .. DigraphNrEdges(digraph)]);
-  weights := List(DigraphVertices(digraph),
+  weightsSource := Shuffle([1 .. DigraphNrEdges(D)]);
+  weights := List(DigraphVertices(D),
                   u -> List(outs[u], _ -> Remove(weightsSource)));
 
-  return EdgeWeightedDigraph(digraph, weights);
+  return EdgeWeightedDigraph(D, weights);
 end);
 
 InstallMethod(RandomUniqueEdgeWeightedDigraph,

@@ -77,6 +77,7 @@ DeclareAttribute("DigraphCore", IsDigraph);
 
 DeclareAttribute("CharacteristicPolynomial", IsDigraph);
 DeclareAttribute("NrSpanningTrees", IsDigraph);
+DeclareAttribute("DigraphVertexConnectivity", IsDigraph);
 
 # AsGraph must be mutable for grape to function properly
 DeclareAttribute("AsGraph", IsDigraph, "mutable");
@@ -89,6 +90,7 @@ DeclareAttributeThatReturnsDigraph("DigraphReverse", IsDigraph);
 DeclareAttributeThatReturnsDigraph("DigraphDual", IsDigraph);
 DeclareAttributeThatReturnsDigraph("ReducedDigraph", IsDigraph);
 DeclareAttributeThatReturnsDigraph("DigraphRemoveAllMultipleEdges", IsDigraph);
+DeclareAttributeThatReturnsDigraph("DigraphRemoveAllEdges", IsDigraph);
 
 # TODO replace all DeclareOperations below to
 # DeclareAttributeThatReturnsDigraph, and remove the *Attr versions.

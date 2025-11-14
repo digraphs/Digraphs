@@ -1557,27 +1557,27 @@ end);
 
 InstallMethod(DigraphOddGirth, "for a digraph",
 [IsDigraph],
-function(digraph)
+function(D)
   local comps, girth, oddgirth, A, B, gr, k, comp;
 
-  if IsAcyclicDigraph(digraph) then
+  if IsAcyclicDigraph(D) then
     return infinity;
-  elif IsOddInt(DigraphGirth(digraph)) then
+  elif IsOddInt(DigraphGirth(D)) then
     # No need to check girth isn't infinity, as we have
     # that digraph is not acyclic.
-    return DigraphGirth(digraph);
+    return DigraphGirth(D);
   fi;
-  comps := DigraphStronglyConnectedComponents(digraph).comps;
-  if Length(comps) > 1 and IsMutableDigraph(digraph) then
+  comps := DigraphStronglyConnectedComponents(D).comps;
+  if Length(comps) > 1 and IsMutableDigraph(D) then
     # Necessary because InducedSubdigraph alters mutable args
-    digraph := DigraphImmutableCopy(digraph);
+    D := DigraphImmutableCopy(D);
   fi;
   oddgirth := infinity;
   for comp in comps do
-    if Length(comps) > 1 then  # i.e. if not IsStronglyConnectedDigraph(digraph)
-      gr := InducedSubdigraph(digraph, comp);
+    if Length(comps) > 1 then  # i.e. if not IsStronglyConnectedDigraph(D)
+      gr := InducedSubdigraph(D, comp);
     else
-      gr := digraph;
+      gr := D;
       # If digraph is strongly connected, then we needn't
       # induce the subdigraph of its strongly connected comp.
     fi;
@@ -1758,101 +1758,100 @@ end);
 InstallMethod(DigraphAllChordlessCyclesOfMaximalLength,
 "for a digraph and an integer", [IsDigraph, IsInt],
 function(D, maxLength)
-  local BlockNeighbours, UnblockNeighbours,
-  Triplets, CCExtension, digraph, temp, T, C, blocked, triple;
+  local BlockNeighbours, UnblockNeighbours, Triplets, CCExtension, temp, T, C,
+        blocked, triple;
 
-    if IsEmptyDigraph(D) then
-        return [];
-    fi;
+  if IsEmptyDigraph(D) then
+    return [];
+  fi;
 
-    BlockNeighbours := function(digraph, v, blocked)
-        local u;
-        for u in OutNeighboursOfVertex(digraph, v) do
-            blocked[u] := blocked[u] + 1;
-        od;
-        return blocked;
-    end;
-
-    UnblockNeighbours := function(digraph, v, blocked)
-        local u;
-        for u in OutNeighboursOfVertex(digraph, v) do
-            if blocked[u] > 0 then
-                blocked[u] := blocked[u] - 1;
-            fi;
-        od;
-        return blocked;
-    end;
-
-    # Computes all possible triplets
-    Triplets := function(digraph)
-        local T, C, u, pair, x, y, labels;
-        T := [];
-        C := [];
-        for u in DigraphVertices(digraph) do
-            for pair in Combinations(OutNeighboursOfVertex(digraph, u), 2) do
-                x := pair[1];
-                y := pair[2];
-                labels := DigraphVertexLabels(digraph);
-                if labels[u] < labels[x] and labels[x] < labels[y] then
-                    if not IsDigraphEdge(digraph, x, y) then
-                        Add(T, [x, u, y]);
-                    else
-                        Add(C, [x, u, y]);
-                    fi;
-                elif labels[u] < labels[y] and labels[y] < labels[x] then
-                    if not IsDigraphEdge(digraph, x, y) then
-                        Add(T, [y, u, x]);
-                    else
-                        Add(C, [y, u, x]);
-                    fi;
-                fi;
-            od;
-        od;
-        return [T, C];
-    end;
-
-    # Extends a given chordless path if possible
-    CCExtension := function(digraph, path, C, key, blocked)
-        local v, extendedPath, data;
-        blocked := BlockNeighbours(digraph, path[Length(path)], blocked);
-        for v in OutNeighboursOfVertex(digraph, path[Length(path)]) do
-            if DigraphVertexLabel(digraph, v) > key and blocked[v] = 1
-              and Length(path) < maxLength then
-                extendedPath := Concatenation(path, [v]);
-                if IsDigraphEdge(digraph, v, path[1]) then
-                    Add(C, extendedPath);
-                else
-                    data := CCExtension(digraph, extendedPath, C, key, blocked);
-                    C := data[1];
-                    blocked := data[2];
-                fi;
-            fi;
-        od;
-        blocked := UnblockNeighbours(digraph, path[Length(path)], blocked);
-        return [C, blocked];
-    end;
-
-    digraph := DigraphMutableCopy(D);
-    DigraphSymmetricClosure(DigraphRemoveLoops(
-                 DigraphRemoveAllMultipleEdges(digraph)));
-    MakeImmutable(digraph);
-    SetDigraphVertexLabels(digraph,
-                 Reversed(DigraphDegeneracyOrdering(digraph)));
-
-    temp := Triplets(digraph);
-    T := temp[1];
-    C := temp[2];
-    blocked := List(DigraphVertices(digraph), i -> 0);
-    while T <> [] do
-        triple := Remove(T);
-        blocked := BlockNeighbours(digraph, triple[2], blocked);
-        temp := CCExtension(digraph, triple, C,
-                              DigraphVertexLabel(digraph, triple[2]), blocked);
-        C := temp[1];
-        blocked := temp[2];
-        blocked := UnblockNeighbours(digraph, triple[2], blocked);
+  BlockNeighbours := function(D, v, blocked)
+    local u;
+    for u in OutNeighboursOfVertex(D, v) do
+      blocked[u] := blocked[u] + 1;
     od;
-    return C;
+    return blocked;
+  end;
+
+  UnblockNeighbours := function(D, v, blocked)
+    local u;
+    for u in OutNeighboursOfVertex(D, v) do
+      if blocked[u] > 0 then
+        blocked[u] := blocked[u] - 1;
+      fi;
+    od;
+    return blocked;
+  end;
+
+  # Computes all possible triplets
+  Triplets := function(D)
+    local T, C, u, pair, x, y, labels;
+    T := [];
+    C := [];
+    for u in DigraphVertices(D) do
+      for pair in Combinations(OutNeighboursOfVertex(D, u), 2) do
+        x := pair[1];
+        y := pair[2];
+        labels := DigraphVertexLabels(D);
+        if labels[u] < labels[x] and labels[x] < labels[y] then
+          if not IsDigraphEdge(D, x, y) then
+            Add(T, [x, u, y]);
+          else
+            Add(C, [x, u, y]);
+          fi;
+        elif labels[u] < labels[y] and labels[y] < labels[x] then
+          if not IsDigraphEdge(D, x, y) then
+            Add(T, [y, u, x]);
+          else
+            Add(C, [y, u, x]);
+          fi;
+        fi;
+      od;
+    od;
+    return [T, C];
+  end;
+
+  # Extends a given chordless path if possible
+  CCExtension := function(D, path, C, key, blocked)
+    local v, extendedPath, data;
+    blocked := BlockNeighbours(D, Last(path), blocked);
+    for v in OutNeighboursOfVertex(D, Last(path)) do
+      if DigraphVertexLabel(D, v) > key and blocked[v] = 1
+          and Length(path) < maxLength then
+        extendedPath := Concatenation(path, [v]);
+        if IsDigraphEdge(D, v, path[1]) then
+          Add(C, extendedPath);
+        else
+          data := CCExtension(D, extendedPath, C, key, blocked);
+          C := data[1];
+          blocked := data[2];
+        fi;
+      fi;
+    od;
+    blocked := UnblockNeighbours(D, Last(path), blocked);
+    return [C, blocked];
+  end;
+
+  D := DigraphMutableCopy(D);
+  DigraphSymmetricClosure(DigraphRemoveLoops(
+  DigraphRemoveAllMultipleEdges(D)));
+  MakeImmutable(D);
+  SetDigraphVertexLabels(D, Reversed(DigraphDegeneracyOrdering(D)));
+
+  temp := Triplets(D);
+  T := temp[1];
+  C := temp[2];
+  blocked := List(DigraphVertices(D), i -> 0);
+  while T <> [] do
+    triple := Remove(T);
+    blocked := BlockNeighbours(D, triple[2], blocked);
+    temp := CCExtension(D, triple, C, DigraphVertexLabel(D, triple[2]),
+                        blocked);
+    C := temp[1];
+    blocked := temp[2];
+    blocked := UnblockNeighbours(D, triple[2], blocked);
+  od;
+  return C;
 end);
 
 InstallMethod(DigraphAllChordlessCycles, "for a digraph",
@@ -1860,95 +1859,92 @@ InstallMethod(DigraphAllChordlessCycles, "for a digraph",
 D -> DigraphAllChordlessCyclesOfMaximalLength(D, INTOBJ_MAX));
 
 # Compute for a given rotation system the facial walks
-InstallMethod(FacialWalks, "for a digraph and a list",
+InstallMethod(FacialWalks, "for a digraph and a dense list",
 [IsDigraph, IsDenseList],
 function(D, rotationSystem)
+  local FacialWalk, facialWalks, remEdges, cycle;
 
-    local FacialWalk, facialWalks, remEdges, cycle;
+  if not IsEulerianDigraph(D) then
+    ErrorNoReturn("the 1st argument (digraph <D>) must be Eulerian");
+  fi;
 
-    if not IsEulerianDigraph(D) then
-        Error("the 1st argument (digraph <D>) must be Eulerian, but it is not");
-    fi;
+  if Length(rotationSystem) <> DigraphNrVertices(D)
+      or not ForAll(rotationSystem, IsList) then
+    ErrorNoReturn("the 2nd argument (dense list <rotationSystem>) is not a ",
+                  "rotation system for the 1st argument (digraph <D>), ",
+                  "expected a list of ", DigraphNrVertices(D), " lists,");
+  fi;
 
-    if Length(rotationSystem) <> DigraphNrVertices(D) then
-        Error("the 2nd argument (list <rotationSystem>) is not a rotation ",
-              "system for the 1st argument (digraph <D>), expected a ",
-              "dense list of length ", DigraphNrVertices(D),
-              "but found dense list of length ", Length(rotationSystem));
-    fi;
+  if Union(rotationSystem) <> DigraphVertices(D) then
+    ErrorNoReturn("the 2nd argument (dense list <rotationSystem>) is not a ",
+                  "rotation system for the 1st argument (digraph <D>), ",
+                  "expected its union to be the vertices of <D>,");
+  fi;
 
-    if Difference(Union(rotationSystem), DigraphVertices(D))
-       <> [] then
-        Error("the 2nd argument (dense list <rotationSystem>) is not ",
-              "a rotation system for the 1st argument (digraph <D>), ",
-              "expected the union to be ", DigraphVertices(D), " but found ",
-              Union(rotationSystem));
-    fi;
+  # computes a facial cycles starting with the edge 'startEdge'
+  FacialWalk := function(rotationSystem, startEdge)
+    local startVertex, preVertex, actVertex, cycle, nextVertex, pos;
 
-    # computes a facial cycles starting with the edge 'startEdge'
-    FacialWalk := function(rotationSystem, startEdge)
-        local startVertex, preVertex, actVertex, cycle, nextVertex, pos;
+    startVertex := startEdge[1];
+    actVertex := startEdge[2];
+    preVertex := startVertex;
 
-        startVertex := startEdge[1];
-        actVertex := startEdge[2];
-        preVertex := startVertex;
+    cycle := [startVertex, actVertex];
 
-        cycle := [startVertex, actVertex];
+    nextVertex := 0;  # just an initialization
+    while true do
+      pos := Position(rotationSystem[actVertex], preVertex);
 
-        nextVertex := 0;  # just an initialization
-        while true do
-            pos := Position(rotationSystem[actVertex], preVertex);
-
-            if pos < Length(rotationSystem[actVertex]) then
-                nextVertex := rotationSystem[actVertex][pos + 1];
-            else
-                nextVertex := rotationSystem[actVertex][1];
-            fi;
-            if nextVertex <> startEdge[2] or actVertex <> startVertex then
-                Add(cycle, nextVertex);
-                Remove(remEdges, Position(remEdges, [preVertex, actVertex]));
-                preVertex := actVertex;
-                actVertex := nextVertex;
-            else
-                break;
-            fi;
-        od;
-        Remove(remEdges, Position(remEdges, [preVertex, startVertex]));
-        # Remove the last vertex, otherwise otherwise
-        # the start vertex is contained twice
-        Remove(cycle);
-        return cycle;
-    end;
-
-    D := DigraphRemoveLoops(DigraphRemoveAllMultipleEdges(
-        DigraphMutableCopyIfMutable(D)));
-
-    facialWalks := [];
-    remEdges := ShallowCopy(DigraphEdges(D));
-
-    while remEdges <> [] do
-        cycle := FacialWalk(rotationSystem, remEdges[1]);
-        Add(facialWalks, cycle);
+      if pos < Length(rotationSystem[actVertex]) then
+        nextVertex := rotationSystem[actVertex][pos + 1];
+      else
+        nextVertex := rotationSystem[actVertex][1];
+      fi;
+      if nextVertex <> startEdge[2] or actVertex <> startVertex then
+        Add(cycle, nextVertex);
+        Remove(remEdges, Position(remEdges, [preVertex, actVertex]));
+        preVertex := actVertex;
+        actVertex := nextVertex;
+      else
+        break;
+      fi;
     od;
-    return facialWalks;
+    Remove(remEdges, Position(remEdges, [preVertex, startVertex]));
+    # Remove the last vertex, otherwise otherwise
+    # the start vertex is contained twice
+    Remove(cycle);
+    return cycle;
+  end;
+
+  D := DigraphRemoveLoops(DigraphRemoveAllMultipleEdges(
+       DigraphMutableCopyIfMutable(D)));
+
+  facialWalks := [];
+  remEdges := ShallowCopy(DigraphEdges(D));
+
+  while remEdges <> [] do
+    cycle := FacialWalk(rotationSystem, remEdges[1]);
+    Add(facialWalks, cycle);
+  od;
+  return facialWalks;
 end);
 
 # Computes the minimal cyclic edge cut of connected cubic graphs with at
 # least 8 vertices based on the paper "An Algorithm for Cyclic Edge Connectivity
 # of Cubic Graphs"
 InstallMethod(MinimalCyclicEdgeCut, "for a digraph", [IsDigraph],
-function(digraph)
+function(D)
   local girth, cut, cutsize, vertex, treedepth, paths, treev, treew,
   minimal_cycle, v, w, FullTree, FindCut, FindPath, e;
 
   # Compute a full tree of the given depth centered at the given vertex
-  FullTree := function(digraph, vertex, depth)
+  FullTree := function(D, vertex, depth)
     local result, i, lastTree, node;
     result := Set([vertex]);
     for i in [1 .. depth] do
       lastTree := ShallowCopy(result);
       for node in lastTree do
-          UniteSet(result, OutNeighboursOfVertex(digraph, node));
+          UniteSet(result, OutNeighboursOfVertex(D, node));
       od;
     od;
     return result;
@@ -1956,10 +1952,10 @@ function(digraph)
 
   # Compute a maximal amount of paths between the two distinct sets of
   # nodes treev and treew by using a variation of the Ford-Fulkerson algorithm
-  FindPath := function(digraph, treev, treew)
+  FindPath := function(D, treev, treew)
     local digraphCopy, pathlist, newPathFound, node1, node2, path, i;
 
-    digraphCopy := DigraphMutableCopy(digraph);
+    digraphCopy := DigraphMutableCopy(D);
     pathlist := [];
     newPathFound := true;
     while newPathFound do
@@ -1992,7 +1988,7 @@ function(digraph)
 
   # Finds a cut that disconnects the node sets treev and treew in
   # the given digraph by using the paths found in FindPath
-  FindCut := function(digraph, treev, treew, allPaths)
+  FindCut := function(D, treev, treew, allPaths)
     local pathByEdges, path, edgeList, i, cutEdges, edge, component1,
     component2, edgeSet, digraphCopy, permutations, nodeSet,
     v, pathInducedSubgraph;
@@ -2015,8 +2011,8 @@ function(digraph)
     od;
 
     edgeSet := Set([]);
-    for v in DigraphVertices(digraph) do
-      for w in OutNeighboursOfVertex(digraph, v) do
+    for v in DigraphVertices(D) do
+      for w in OutNeighboursOfVertex(D, v) do
         UniteSet(edgeSet, [[v, w]]);
         UniteSet(edgeSet, [[w, v]]);
       od;
@@ -2035,9 +2031,9 @@ function(digraph)
         digraphCopy := DigraphRemoveEdge(digraphCopy, edge[2], edge[1]);
       od;
       if not IsConnectedDigraph(digraphCopy) then
-        component1 := InducedSubdigraph(digraph,
+        component1 := InducedSubdigraph(D,
           DigraphConnectedComponent(digraphCopy, treev[1]));
-        component2 := InducedSubdigraph(digraph,
+        component2 := InducedSubdigraph(D,
           DigraphConnectedComponent(digraphCopy, treew[1]));
         if DigraphUndirectedGirth(component1) <> infinity and
               DigraphUndirectedGirth(component2) <> infinity then
@@ -2047,30 +2043,28 @@ function(digraph)
     od;
   end;
 
-  if not IsConnectedDigraph(digraph) or
-        Length(DigraphVertices(digraph)) < 8 then
+  if not IsConnectedDigraph(D) or Length(DigraphVertices(D)) < 8 then
       return fail;
   fi;
 
-  digraph := DigraphMutableCopy(digraph);
+  D := DigraphMutableCopy(D);
   DigraphSymmetricClosure(DigraphRemoveLoops(
-              DigraphRemoveAllMultipleEdges(digraph)));
-  MakeImmutable(digraph);
+              DigraphRemoveAllMultipleEdges(D)));
+  MakeImmutable(D);
 
-  v := DigraphVertices(digraph)[1];
-  if not IsRegularDigraph(digraph) or OutDegreeOfVertex(digraph, v) <> 3 then
+  if not IsRegularDigraph(D) or OutDegreeOfVertex(D, 1) <> 3 then
     return fail;
   fi;
 
-  girth := DigraphUndirectedGirth(digraph);
+  girth := DigraphUndirectedGirth(D);
   cut := [];
 
   # A cycle of minimal length yields a starting cyclic edge cut
   minimal_cycle :=
-    DigraphAllChordlessCyclesOfMaximalLength(digraph, girth)[1];
+    DigraphAllChordlessCyclesOfMaximalLength(D, girth)[1];
   cut := [];
   for v in minimal_cycle do
-    for w in OutNeighboursOfVertex(digraph, v) do
+    for w in OutNeighboursOfVertex(D, v) do
       if not w in minimal_cycle then
         Append(cut, [[v, w]]);
       fi;
@@ -2079,8 +2073,8 @@ function(digraph)
 
   # Look for smaller cyclic edge cuts
   cutsize := girth;
-  for v in DigraphVertices(digraph) do
-    for w in DigraphVertices(digraph) do
+  for v in DigraphVertices(D) do
+    for w in DigraphVertices(D) do
       if w < v then  # The function is symmetric in v and w
         continue;
       fi;
@@ -2088,14 +2082,14 @@ function(digraph)
       paths := [];
       while 3 * 2 ^ treedepth < cutsize do
         treedepth := treedepth + 1;
-        treev := FullTree(digraph, v, treedepth);
-        treew := FullTree(digraph, w, treedepth);
+        treev := FullTree(D, v, treedepth);
+        treew := FullTree(D, w, treedepth);
         if Intersection(treev, treew) <> [] then
           break;
         fi;
-        paths := FindPath(digraph, treev, treew);
+        paths := FindPath(D, treev, treew);
         if Length(paths) < cutsize and Length(paths) < 3 * 2 ^ treedepth then
-          cut := FindCut(digraph, treev, treew, paths);
+          cut := FindCut(D, treev, treew, paths);
           cutsize := Length(paths);
         fi;
       od;
@@ -2296,45 +2290,43 @@ end);
 
 InstallMethod(DigraphCore, "for a digraph",
 [IsDigraph],
-function(digraph)
-  local N, lo, topdown, bottomup, hom, lo_var, image,
-  comps, comp, cores, D, in_core, n, m, L, i;
-  digraph := DigraphImmutableCopy(digraph);
+function(D)
+  local N, i, comps, cores, DD, L, in_core, n, m, lo, hom, lo_var, bottomup,
+        topdown, image, comp;
+
+  D := DigraphImmutableCopy(D);
   # copy is necessary so can change vertex labels in function
-  N := DigraphNrVertices(digraph);
-  if IsEmptyDigraph(digraph) then
+  N := DigraphNrVertices(D);
+  if IsEmptyDigraph(D) then
     if N >= 1 then
       return [1];
     fi;
     return [];
   fi;
-  SetDigraphVertexLabels(digraph, [1 .. N]);
-  digraph := ReducedDigraph(digraph);  # isolated verts are not in core
-  N       := DigraphNrVertices(digraph);
-  if DigraphHasLoops(digraph) then
-    i := First(DigraphVertices(digraph),
-         i -> i in OutNeighboursOfVertex(digraph, i));
-    return [DigraphVertexLabel(digraph, i)];
-  elif IsCompleteDigraph(digraph) then
-    return DigraphVertexLabels(digraph);
-  elif IsSymmetricDigraph(digraph) and IsBipartiteDigraph(digraph) then
+  SetDigraphVertexLabels(D, [1 .. N]);
+  D := ReducedDigraph(D);  # isolated verts are not in core
+  N := DigraphNrVertices(D);
+  if DigraphHasLoops(D) then
+    i := First(DigraphVertices(D), i -> i in OutNeighboursOfVertex(D, i));
+    return [DigraphVertexLabel(D, i)];
+  elif IsCompleteDigraph(D) then
+    return DigraphVertexLabels(D);
+  elif IsSymmetricDigraph(D) and IsBipartiteDigraph(D) then
     # TODO symmetric is not necessary, you just need bipartite and:
-    # DigraphGirth(digraph) = 2
-    # i.e. not IsAntiSymmetricDigraph(digraph)
+    # DigraphGirth(D) = 2
+    # i.e. not IsAntiSymmetricDigraph(D)
     # i.e. a pair [i, j] with edges i -> j and j -> i.
     # Given this, the core is [i, j]
     # This would allow you to <return 3> rather than <return 2> in function <lo>
-    i := First(DigraphVertices(digraph),
-               i -> OutDegreeOfVertex(digraph, i) > 0);
-    return DigraphVertexLabels(digraph){
-    [i, OutNeighboursOfVertex(digraph, i)[1]]};
-  elif not IsConnectedDigraph(digraph) then
-    comps  := DigraphConnectedComponents(digraph).comps;
+    i := First(DigraphVertices(D), i -> OutDegreeOfVertex(D, i) > 0);
+    return DigraphVertexLabels(D){[i, OutNeighboursOfVertex(D, i)[1]]};
+  elif not IsConnectedDigraph(D) then
+    comps  := DigraphConnectedComponents(D).comps;
     cores  := [];
     for comp in comps do
-      D := InducedSubdigraph(digraph, comp);
-      D := InducedSubdigraph(D, DigraphCore(D));
-      Add(cores, D);
+      DD := InducedSubdigraph(D, comp);
+      DD := InducedSubdigraph(DD, DigraphCore(DD));
+      Add(cores, DD);
     od;
     L       := Length(cores);
     in_core := ListWithIdenticalEntries(L, true);
@@ -2359,8 +2351,8 @@ function(digraph)
     od;
     cores := ListBlist(cores, in_core);
     return Union(List(cores, DigraphVertexLabels));
-  elif IsDigraphCore(digraph) then
-    return DigraphVertexLabels(digraph);
+  elif IsDigraphCore(D) then
+    return DigraphVertexLabels(D);
   fi;
 
   lo := function(D)  # lower bound on core size
@@ -2373,45 +2365,45 @@ function(digraph)
   end;
 
   hom      := [];
-  lo_var   := lo(digraph);
+  lo_var   := lo(D);
   bottomup := lo_var;
-  N        := DigraphNrVertices(digraph);
+  N        := DigraphNrVertices(D);
   topdown  := N;
 
   while topdown >= bottomup do
-    HomomorphismDigraphsFinder(digraph,                   # domain copy
-                               digraph,                   # range copy
-                               fail,                      # hook
-                               hom,                       # user_param
-                               1,                         # max_results
-                               bottomup,                  # hint (i.e. rank)
-                               false,                     # injective
-                               DigraphVertices(digraph),  # image
-                               [],                        # partial_map
-                               fail,                      # colors1
-                               fail);                     # colors2
+    HomomorphismDigraphsFinder(D,                   # domain copy
+                               D,                   # range copy
+                               fail,                # hook
+                               hom,                 # user_param
+                               1,                   # max_results
+                               bottomup,            # hint (i.e. rank)
+                               false,               # injective
+                               DigraphVertices(D),  # image
+                               [],                  # partial_map
+                               fail,                # colors1
+                               fail);               # colors2
 
     if Length(hom) = 1 then
-      return DigraphVertexLabels(digraph){ImageSetOfTransformation(hom[1], N)};
+      return DigraphVertexLabels(D){ImageSetOfTransformation(hom[1], N)};
     fi;
 
-    HomomorphismDigraphsFinder(digraph,                   # domain copy
-                               digraph,                   # range copy
-                               fail,                      # hook
-                               hom,                       # user_param
-                               1,                         # max_results
-                               topdown,                   # hint (i.e. rank)
-                               false,                     # injective
-                               DigraphVertices(digraph),  # image
-                               [],                        # partial_map
-                               fail,                      # colors1
-                               fail);                     # colors2
+    HomomorphismDigraphsFinder(D,                   # domain copy
+                               D,                   # range copy
+                               fail,                # hook
+                               hom,                 # user_param
+                               1,                   # max_results
+                               topdown,             # hint (i.e. rank)
+                               false,               # injective
+                               DigraphVertices(D),  # image
+                               [],                  # partial_map
+                               fail,                # colors1
+                               fail);               # colors2
 
     if Length(hom) = 1 then
-      image    := ImageSetOfTransformation(hom[1], N);
-      digraph  := InducedSubdigraph(digraph, image);
-      N        := DigraphNrVertices(digraph);
-      lo_var   := lo(digraph);
+      image  := ImageSetOfTransformation(hom[1], N);
+      D      := InducedSubdigraph(D, image);
+      N      := DigraphNrVertices(D);
+      lo_var := lo(D);
       Unbind(hom[1]);
     fi;
 
@@ -2419,7 +2411,7 @@ function(digraph)
     bottomup := Maximum(bottomup + 1, lo_var);
 
   od;
-  return DigraphVertexLabels(digraph);
+  return DigraphVertexLabels(D);
 end);
 
 InstallMethod(CharacteristicPolynomial, "for a digraph", [IsDigraph],
@@ -2534,6 +2526,19 @@ function(D)
     D := MakeImmutable(DigraphRemoveAllMultipleEdges(DigraphMutableCopy(D)));
     SetIsMultiDigraph(D, false);
   fi;
+  return D;
+end);
+
+InstallMethodThatReturnsDigraph(DigraphRemoveAllEdges,
+"for an immutable digraph",
+[IsImmutableDigraph],
+D -> NullDigraph(DigraphNrVertices(D)));
+
+InstallMethodThatReturnsDigraph(DigraphRemoveAllEdges,
+"for a mutable digraph",
+[IsMutableDigraph],
+function(D)
+  D!.OutNeighbours := List(DigraphVertices(D), v -> []);
   return D;
 end);
 
@@ -3356,6 +3361,152 @@ function(D)
   od;
   M := List(DigraphLoops(D), x -> [x, x]);
   return Union(M, DIGRAPHS_MateToMatching(D, mateD));
+end);
+
+InstallMethod(DigraphVertexConnectivity, "for a digraph", [IsDigraph],
+function(D)
+  local doubled_D_adj, doubled_D, max_flow, u, v, i, j,
+    neighbours_v, kappa, kappa_min, is_multi, has_loops, is_nonsymm;
+
+  # As per Wikipedia:
+  # "A graph is said to be k-vertex-connected if it contains at least k + 1
+  # vertices, but does not contain a set of k − 1 vertices whose removal
+  # disconnects the graph."
+  # https://en.wikipedia.org/wiki/Connectivity_(graph_theory)
+  # The knock-on effect is that the singleton graph has vertex connectivity 0.
+  # This is discussed in the documentation in more detail.
+  if DigraphNrVertices(D) <= 1 or not IsConnectedDigraph(D) then
+    return 0;
+  fi;
+
+  # Remove multiple edges, loops and symmetrize, if necessary
+  is_multi := IsMultiDigraph(D);
+  has_loops := DigraphHasLoops(D);
+  is_nonsymm := not IsSymmetricDigraph(D);
+  if is_multi or has_loops or is_nonsymm then
+    D := DigraphMutableCopy(D);
+    if is_multi then
+      DigraphRemoveAllMultipleEdges(D);
+    fi;
+    if has_loops then
+      DigraphRemoveLoops(D);
+    fi;
+    if is_nonsymm then
+      DigraphSymmetricClosure(D);
+    fi;
+    # NOTE: D is mutable following this operation. This should not cause issues
+    # or slow down the computations.
+  fi;
+
+  # Special case complete digraph since no set of vertices disconnects it.
+  if IsCompleteDigraph(D) then
+    return DigraphNrVertices(D) - 1;
+  fi;
+
+  # Construct "doubled" digraph as per Theorem 6.4 of
+  # Even S. Applications of Network Flow Techniques.
+  # In: Even G, ed. Graph Algorithms.
+  # Cambridge University Press; 2011:117-145.
+  # https://doi.org/10.1017/CBO9781139015165
+  # Doubles the vertices of the digraph `D`. For every vertex v, 2*v-1 is
+  # called the "in"-vertex and 2*v is called the "out"-vertex. For every edge
+  # (v, u) in `D`, the doubled digraph contains an edge (2*v, 2*u-1) from
+  # the out-vertex of `v` to the in-vertex of `u`. Additionally, there is an
+  # edge (2*v-1, 2*v) for every vertex v in `D`.
+  doubled_D_adj := List([1 .. 2 * DigraphNrVertices(D)], x -> []);
+  for v in DigraphVertices(D) do
+    for u in OutNeighborsOfVertex(D, v) do
+        Add(doubled_D_adj[2 * v], 2 * u - 1);
+    od;
+    Add(doubled_D_adj[2 * v - 1], 2 * v);
+  od;
+  doubled_D := EdgeWeightedDigraph(
+    doubled_D_adj,
+    List(doubled_D_adj, x -> ListWithIdenticalEntries(Length(x), 1)));
+
+  # The resulting graph, `doubled_D` is bipartite, and, additionally,
+  # there is a correspondence between paths in `D` and `doubled_D`
+  # given by mapping the path (v_1, v_2, ... v_n) in `D` to the path
+  # (2*v_1, 2*v_2 - 1, 2*v_2, ..., 2*v_{n-1} - 1, 2*v_{n-1}, 2*v_n - 1) in
+  # `doubled_D`. An conversely, any path starting with an even vertex and
+  # ending with an odd vertex in `doubled_D` is of the form
+  # (2*v_1, 2*v_2 - 1, 2*v_2, ..., 2*v_{n-1} - 1, 2*v_{n-1}, 2*v_n - 1) for
+  # some path (v_1, v_2, ... v_n) in `D`.
+
+  # The local vertex connectivity for a pair of vertices u, v is the
+  # size of the least set S that contain u and v
+  # such that any (u, v)-path (that is, a path with source u and target v)
+  # passes through S. If two vertices are adjacent, then the local connectivity
+  # is infinity by convention. The minimum cut with source u and target v is
+  # the least number of edges that need to be removed so that there is no
+  # longer a (u, v)-path.
+
+  # Let u and v be non-adjacent vertices in `D`. Because of the
+  # correspondence of paths in `D` and `doubled_D`, any such set S
+  # for `D` corresponds to a set of edges E_S (obtained by replacing the
+  # vertex w by the edge (2*w-1, 2*w)) in `doubled_D` whose removal
+  # disconnects 2*u from 2*v-1.
+  # Conversely, it can be shown that the smallest set of edges disconnecting
+  # 2*u from 2*v-1 has the same cardinality as E_S. This is because, whenever
+  # we remove any edge (2*s, 2*t-1) from `doubled_D` with the goal of
+  # disconnecting 2*u from 2*v-1, it is always just as
+  # efficient or more efficient to remove the edge (2*s-1, 2*s) instead, since
+  # any path from 2*u to 2*v-1 utilizing (2*s, 2*t-1) in `doubled_D` must
+  # pass through (2*s-1, 2*s) by construction. Note that u and v are
+  # non-adjacent by assumption, so it cannot be the case that
+  # (2*s, 2*t-1) = (2*u, 2*v-1).
+  # It follows that, for non-adjacent vertices, the local connectivity of u and
+  # v in `D` is equal to the minimum cut with source 2*u-1 and target 2*v
+  # in `doubled_D`.
+
+  # By the max-flow min-cut theorem, the size of the minimum cut with source u
+  # and target v equals the maximum flow between u and v see Wikipedia below:
+  # https://en.wikipedia.org/wiki/Max-flow_min-cut_theorem
+  # Hence we can compute local vertex connectivity by repeated calls to the
+  # max_flow function below:
+  max_flow := {digraph, source, target} ->
+    Sum(DigraphMaximumFlow(digraph, source, target)[source]);
+
+  # The vertex connectivity is the minimum of the local vertex connectivity
+  # over all pairs of vertices. However, it can be computed a bit more
+  # cleverly by utilizing some theory to reduce the number of pairs considered.
+  # In this function we implement Algorithm 11 from Abdol-Hossein
+  # Esfahanian's ``Connectivity Algorithms'' which can be found at
+  # https://www.cse.msu.edu/~cse835/Papers/Graph_connectivity_revised.pdf
+  # In particular, we reduce the number of local vertex connectivity
+  # computations to n-d-1 + d*(d-1)/2 where n is the total number of vertices
+  # and d is the minimum degree of any vertex.
+  v := PositionMinimum(OutDegrees(D));
+  neighbours_v := OutNeighboursOfVertex(D, v);
+  kappa_min := fail;
+  for u in DigraphVertices(D) do
+    if u <> v and not IsDigraphEdge(D, v, u) then
+      kappa := max_flow(doubled_D, 2 * u, 2 * v - 1);
+      if kappa_min = fail or kappa < kappa_min then
+        kappa_min := kappa;
+      fi;
+    fi;
+  od;
+
+  for i in [1 .. Length(neighbours_v)] do
+    for j in [i + 1 .. Length(neighbours_v)] do
+      u := neighbours_v[i];
+      v := neighbours_v[j];
+      if not IsDigraphEdge(D, v, u) then
+        kappa := max_flow(doubled_D, 2 * u, 2 * v - 1);
+        if kappa_min = fail or kappa < kappa_min then
+            kappa_min := kappa;
+        fi;
+      fi;
+    od;
+  od;
+
+  # We can only be here if every vertex is adjacent to a vertex of minimum
+  # degree u and every pair of vertices v, w adjacent to u are also adjacent
+  # to each other. In other words, `D` is a complete graph, but we
+  # deal with these at the start. So this assert should pass.
+  Assert(1, kappa_min <> fail);
+  return kappa_min;
 end);
 
 # The following function is a transliteration from python to GAP of
