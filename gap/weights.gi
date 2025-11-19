@@ -772,20 +772,20 @@ function(D, start, destination)
   return flows;
 end);
 
-InstallMethod(DigraphMinimumCutSet, "for an edge weighted digraph",
+InstallMethod(DigraphMinimumCut, "for an edge weighted digraph",
 [IsDigraph and HasEdgeWeights, IsPosInt, IsPosInt],
 function(D, s, t)
-  local weights, outs, vertices, flow, residuals, G, o, u, v, S, T;
+  local weights, outs, vertices, flow, residuals, u, v, S, T, Q;
 
   # Extract important data
   weights := EdgeWeights(D);
   outs := OutNeighbours(D);
   vertices := DigraphVertices(D);
-
+  
   # Check input
-  if not s in vertices then
+  if s < 1 or s > Length(vertices) then
     ErrorNoReturn("<s> must be a vertex of <D>,");
-  elif not t in vertices then
+  elif t < 1 or t > Length(vertices) then
     ErrorNoReturn("<t> must be a vertex of <D>,");
   elif s = t then
     ErrorNoReturn("<s> and <t> must be distinct");
@@ -794,28 +794,26 @@ function(D, s, t)
   # Find the residual edge capacities under the maximum flow
   flow := DigraphMaximumFlow(D, s, t);
   residuals := weights - flow;
+  
+  # Carry out a BFS to find all the vertices in the residual
+  # network which are reachable from s. This gives the minimum
+  # cut by the max-flow min-cut theorem.
 
-  # Construct the digraph containing all edges with nonzero
-  # residual capacity
-  G := [];
-  for u in [1 .. Length(outs)] do
-    o := [];
+  S := [s];
+  Q := [s];
+  while not IsEmpty(Q) do
+    u := Q[1];
+    Remove(Q, 1);
     for v in [1 .. Length(outs[u])] do
       if residuals[u][v] > 0 then
-        Add(o, outs[u][v]);
+        if not outs[u][v] in S then
+          Add(Q, outs[u][v]);
+          Add(S, outs[u][v]);
+        fi;
       fi;
     od;
-    Add(G, o);
   od;
 
-  G := Digraph(G);
-
-  # Find all vertices reachable from the source in this digraph
-  # This gives the minimal cut set by the max-flow min-cut theorem
-  S := Filtered(vertices, x -> IsReachable(G, s, x));
-  if not s in S then
-    Add(S, s);
-  fi;
   T := Difference(vertices, S);
   return [S, T];
 end);

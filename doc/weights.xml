@@ -279,12 +279,12 @@ gap> Sum(flow[1]);
   <Description>
     If <A>digraph</A> is an edge-weighted digraph with distinct vertices <A>s</A> and
     <A>t</A>, this returns a list of two lists representing the components of
-    a minimal s-t cut set of <A>digraph</A>. <P/>
+    a minimal <M>s</M>-<M>t</M> cut of <A>digraph</A>. <P/>
 
-    An <E>s-t cut set</E> is a partition of the vertices [S, T] such that s is in S and
-    t is in T. The <E>capacity</E> of an s-t cut set is the sum of the weights of every
-    edge whose source is in S and whose range is in T. A minimum s-t cut set is an s-t
-    cut set whose capacity is minimal.<P/>
+    An <E><M>s</M>-<M>t</M> cut</E> is a partition of the vertices <M>\{ S, T \}</M> such that <A>s</A> is in <M>S</M> and
+    <A>t</A> is in <M>T</M>. The <E>capacity</E> of an <M>s</M>-<M>t</M> cut is the sum of the weights of every
+    edge whose source is in <M>S</M> and whose range is in <M>T</M>. A minimum <M>s</M>-<M>t</M> cut is an <M>s</M>-<M>t</M>
+    cut whose capacity is minimal.<P/>
 
     This attribute is computed by using <Ref Func="DigraphMaximumFlow"/> and the
     max-cut min-flow theorem.<P/>
@@ -293,7 +293,7 @@ gap> Sum(flow[1]);
     <Example><![CDATA[
 gap> g := EdgeWeightedDigraph([[2, 2], [3], []], [[3, 2], [1], []]);
 <immutable multidigraph with 3 vertices, 3 edges>
-gap> DigraphMinimumCutSet(g, 1, 3);
+gap> DigraphMinimumCut(g, 1, 3);
 [ [ 2, 1 ], [3]]
 ]]></Example>
   </Description>
