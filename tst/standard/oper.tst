@@ -16,7 +16,7 @@
 #@local i1, i2, id, idom, in1, in2, in3, iter, j1, j2, m, m1, m2, mat, n, nbs
 #@local out, out1, out2, out3, p1, p2, path, preorder, qr, r, res, rtclosure, t
 #@local tclosure, u1, u2, x
-#@local D, p, q, t, idp, idt, M
+#@local p, q, idp, idt, M
 gap> START_TEST("Digraphs package: standard/oper.tst");
 gap> LoadPackage("digraphs", false);;
 

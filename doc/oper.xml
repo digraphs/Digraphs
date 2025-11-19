@@ -248,6 +248,8 @@ true
     with <C>OnDigraphs(<A>digraph</A>, AsPermutation(<A>trans</A>))</C>.
     <P/>
 
+    Note: <C>OnDigraphs</C> for a digraph and a permutation or transformation can also be used via the <C>\^</C> operator. <P/>
+
     The <Ref Oper="DigraphVertexLabels"/> of <A>digraph</A> will not be retained
     in the returned digraph. <P/>
 
@@ -287,12 +289,10 @@ true
     For a digraph <A>digraph</A> and a permutation <A>perm</A>,
     <C>digraph ^ perm</C> gives the same result as
     <C>OnDigraphs(digraph, perm)</C> — a digraph whose vertices have been relabelled according to the permutation. <P/>
-    Note: <C>OnDigraphs</C> for a digraph and a permutation can also be used via the <C>\^</C> operator. <P/>
 
     Similarly, if the second argument is a transformation <A>trans</A>,
     then <C>digraph ^ trans</C> calls <C>OnDigraphs(digraph, trans)</C>.
     This allows a simple way to apply vertex relabelling or transformations directly using the <C>^</C> symbol. <P/>
-    Note: <C>OnDigraphs</C> for a digraph and a transformation can also be used via the <C>\^</C> operator. <P/>
 
     <Example><![CDATA[
 gap> D := CycleDigraph(5);
