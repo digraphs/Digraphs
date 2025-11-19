@@ -772,6 +772,200 @@ function(D, start, destination)
   return flows;
 end);
 
+# DigraphEdgeConnectivity calculated using Spanning Trees
+InstallMethod(DigraphEdgeConnectivity, "for a digraph",
+[IsDigraph],
+function(digraph)
+  local w, weights, EdgeD, VerticesED, min, u, v,
+    sum, a, b, st, added, NeighboursV, Edges, notadded,
+    max, NextVertex, notAddedNeighbours, non_leaf;
+
+  if DigraphNrVertices(digraph) = 1 then
+    return 0;
+  fi;
+
+  if DigraphNrStronglyConnectedComponents(digraph) > 1 then
+    return 0;
+  fi;
+
+  weights := List([1 .. DigraphNrVertices(digraph)],
+  x -> List([1 .. Length(OutNeighbours(digraph)[x])],
+  y -> 1));
+  EdgeD := EdgeWeightedDigraph(digraph, weights);
+  VerticesED := [1 .. DigraphNrVertices(EdgeD)];
+
+  min := -1;
+
+  # Algorithm 4: Constructing a Spanning Tree with a large numbers of leaves
+
+  st := EmptyDigraph(DigraphNrVertices(EdgeD));
+  v := 1;
+  added := [v];
+
+  while DigraphNrEdges(st) < DigraphNrVertices(EdgeD) - 1 do
+
+    # Add all edges incident from v
+    NeighboursV := OutNeighbors(EdgeD)[v];
+
+    Edges := List([1 .. Length(NeighboursV)],
+    x -> [v, OutNeighbours(EdgeD)[v][x]]);
+
+    Edges := Difference(Edges, [[v, v]]);
+
+    st := DigraphAddEdges(st, Edges);
+    Append(added, Difference(OutNeighbours(EdgeD)[v], added));
+
+    # Select the neighbour to v with the highest number of not-added neighbours:
+
+    notadded := Difference(VerticesED, added);
+    max := 0;
+    NextVertex := v;
+
+    # Preventing infinite iteration if the current vertex has no neighbours
+    if (Length(NeighboursV) = 0) then
+      # Pick from a vertex that hasn't been added yet
+      NextVertex := notadded[1];
+    fi;
+
+    for w in Difference(NeighboursV, [v]) do;
+      notAddedNeighbours := Intersection(notadded, OutNeighbours(EdgeD)[w]);
+      if (Length(notAddedNeighbours) > max) then
+        max := Length(notAddedNeighbours);
+        NextVertex := w;
+      fi;
+    od;
+
+    v := NextVertex;
+
+  od;
+
+  # Algorithm 5: Using Algorithm 4 to find the Edge Connectivity
+
+  non_leaf := [];
+  for b in VerticesED do
+    if not IsEmpty(OutNeighbours(st)[b]) then
+      Append(non_leaf, [b]);
+    fi;
+  od;
+
+  # Get the smaller of non_leaf and Difference(Vertices in EdgeD, non_leaf)
+
+  if (Length(non_leaf) > 1) then
+    u := non_leaf[1];
+
+    for v in [2 .. Length(non_leaf)] do
+      a := DigraphMaximumFlow(EdgeD, u, non_leaf[v])[u];
+      b := DigraphMaximumFlow(EdgeD, non_leaf[v], u)[non_leaf[v]];
+
+      sum := Minimum(Sum(a), Sum(b));
+      if (sum < min or min = -1) then
+        min := sum;
+      fi;
+
+      if (sum = 0) then
+        return 0;
+      fi;
+    od;
+
+    min := Minimum(min, Minimum(Minimum(OutDegrees(EdgeD)),
+      Minimum(InDegrees(EdgeD))));
+  else
+    # In the case of spanning trees with only one non-leaf node,
+    # the above algorithm does not work
+
+    u := 1;
+    for v in [2 .. DigraphNrVertices(EdgeD)] do
+      a := DigraphMaximumFlow(EdgeD, u, v)[u];
+      b := DigraphMaximumFlow(EdgeD, v, u)[v];
+
+      sum := Minimum(Sum(a), Sum(b));
+      if (sum < min or min = -1) then
+        min := sum;
+      fi;
+
+      if (sum = 0) then
+        return 0;
+      fi;
+
+    od;
+  fi;
+
+  if (min = -1) then
+    return 0;
+  fi;
+
+  return min;
+end);
+
+# Digraph EdgeConnectivity calculated with Dominating Sets
+InstallMethod(DigraphEdgeConnectivityDS, "for a digraph",
+[IsDigraph],
+function(digraph)
+  # Form an identical but edge weighted digraph with all edge weights as 1:
+  local weights, i, u, v, w, neighbourhood, EdgeD,
+    maxFlow, min, sum, a, b, V, added, st, non_leaf, max,
+    notAddedNeighbours, notadded, NextVertex, NeighboursV,
+    neighbour, Edges, D, VerticesLeft, VerticesED;
+
+  if DigraphNrVertices(digraph) = 1 then
+    return 0;
+  fi;
+
+  if DigraphNrStronglyConnectedComponents(digraph) > 1 then
+    return 0;
+  fi;
+
+  weights := List([1 .. DigraphNrVertices(digraph)],
+  x -> List([1 .. Length(OutNeighbours(digraph)[x])],
+  y -> 1));
+  EdgeD := EdgeWeightedDigraph(digraph, weights);
+
+  min := -1;
+
+  # Algorithm 7: Creating a dominating set of the digraph
+
+  D := DigraphDominatingSet(digraph);
+
+  # Algorithm 6:
+
+  if Length(D) > 1 then
+
+    v := D[1];
+    for i in [2 .. Length(D)] do
+      w := D[i];
+      a := DigraphMaximumFlow(EdgeD, v, w)[v];
+      b := DigraphMaximumFlow(EdgeD, w, v)[w];
+
+      sum := Minimum(Sum(a), Sum(b));
+      if (sum < min or min = -1) then
+        min := sum;
+      fi;
+    od;
+
+  else
+    # If the dominating set of EdgeD is of Length 1,
+    # the above algorithm will not work
+
+    u := 1;
+
+    for v in [2 .. DigraphNrVertices(EdgeD)] do
+      a := DigraphMaximumFlow(EdgeD, u, v)[u];
+      b := DigraphMaximumFlow(EdgeD, v, u)[v];
+
+      sum := Minimum(Sum(a), Sum(b));
+      if (sum < min or min = -1) then
+        min := sum;
+      fi;
+
+    od;
+  fi;
+
+  return Minimum(min,
+    Minimum(Minimum(OutDegrees(EdgeD)),
+    Minimum(InDegrees(EdgeD))));
+
+end);
+
 #############################################################################
 # 6. Random edge weighted digraphs
 #############################################################################

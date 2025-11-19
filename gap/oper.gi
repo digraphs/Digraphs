@@ -2522,6 +2522,43 @@ function(D, root)
   return result;
 end);
 
+# For calculating a dominating set for a digraph
+InstallMethod(DigraphDominatingSet, "for a digraph",
+[IsDigraph],
+function(digraph)
+  local D, neighbourhood, VerticesLeft, Vertices;
+
+  Vertices := [1 .. DigraphNrVertices(digraph)];
+  Shuffle(Vertices);
+
+  # Shuffling not technically necessary - may be better to just do D := [1]?
+  D := [Vertices[1]];
+  neighbourhood := DigraphGetNeighbourhood(digraph, D);
+  VerticesLeft := Difference(Vertices, Union(neighbourhood, D));
+
+  while not IsEmpty(VerticesLeft) do;
+    Append(D, [VerticesLeft[1]]);
+    neighbourhood := DigraphGetNeighbourhood(digraph, D);
+    VerticesLeft := Difference(Vertices, Union(neighbourhood, D));
+  od;
+
+  return D;
+end);
+
+# For getting the neighbourhood for a given List of Vertices in a Digraph
+InstallMethod(DigraphGetNeighbourhood, "for a digraph and a List of vertices",
+[IsDigraph, IsList],
+function(digraph, vertices)
+  local v, neighbourhood;
+  neighbourhood := [];
+  for v in vertices do
+    neighbourhood := Difference(Union(neighbourhood,
+      OutNeighbours(digraph)[v]), vertices);
+  od;
+
+  return neighbourhood;
+end);
+
 # Computes the fundamental cycle basis of a symmetric digraph
 # First, notice that the cycle space is composed of orthogonal subspaces
 # corresponding to the cycle spaces of the connected components.
