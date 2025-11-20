@@ -248,6 +248,8 @@ true
     with <C>OnDigraphs(<A>digraph</A>, AsPermutation(<A>trans</A>))</C>.
     <P/>
 
+    Note: <C>OnDigraphs</C> for a digraph and a permutation or transformation can also be used via the <C>\^</C> operator. <P/>
+
     The <Ref Oper="DigraphVertexLabels"/> of <A>digraph</A> will not be retained
     in the returned digraph. <P/>
 
@@ -272,6 +274,48 @@ gap> OutNeighbours(new);
 [ [ 2, 2 ], [  ], [  ] ]
 gap> ForAll(DigraphEdges(D),
 >  e -> IsDigraphEdge(new, [e[1] ^ t, e[2] ^ t]));
+true
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="\^OperatorOnDigraphs">
+<ManSection>
+  <Oper Name="\^" Arg="digraph, permOrTrans" Label="for a digraph and a permutation or transformation"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    The <C>^</C> operator acts on digraphs with either a permutation or a transformation.
+    For a digraph <A>digraph</A> and a permutation <A>perm</A>,
+    <C>digraph ^ perm</C> gives the same result as
+    <C>OnDigraphs(digraph, perm)</C> — a digraph whose vertices have been relabelled according to the permutation. <P/>
+
+    Similarly, if the second argument is a transformation <A>trans</A>,
+    then <C>digraph ^ trans</C> calls <C>OnDigraphs(digraph, trans)</C>.
+    This allows a simple way to apply vertex relabelling or transformations directly using the <C>^</C> symbol. <P/>
+
+    <Example><![CDATA[
+gap> D := CycleDigraph(5);
+<immutable cycle digraph with 5 vertices>
+gap> p := (1, 5)(2, 4);;
+gap> D ^ p = DigraphReverse(D);
+true
+gap> OnDigraphs(D, p) = D ^ p;
+true
+gap> idp := ();;
+gap> D ^ idp = D;
+true
+gap> q := (1, 2, 3, 4, 5);;
+gap> (D ^ q) ^ (q ^ -1) = D;
+true
+gap> t := Transformation([2, 3, 4, 5, 1]);;
+gap> D ^ t = OnDigraphs(D, t);
+true
+gap> idt := Transformation([1, 2, 3, 4, 5]);;
+gap> D ^ idt = D;
+true
+gap> M := DigraphMutableCopy(D);;
+gap> M ^ p = OnDigraphs(M, p);
 true
 ]]></Example>
   </Description>
