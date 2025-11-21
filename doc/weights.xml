@@ -272,6 +272,31 @@ gap> Sum(flow[1]);
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="DigraphEdgeConnectivity">
+<ManSection>
+  <Attr Name="DigraphEdgeConnectivity" Arg="digraph"/>
+  <Returns>An integer</Returns>
+  <Description>
+    This returns a record representing the edge connectivity of <A>digraph</A>.<P/>
+
+    It makes use of  <C>DigraphMaximumFlow(<A>digraph</A>)</C>, by constructing an edge-weighted Digraph
+    with edge weights of 1, then using the Max-flow min-cut theorem to determine the size of the minimum cut.
+    For a digraph, the minimum cut is the set of edges that need to be removed to ensure the digraph is 
+    no longer Strongly Connected. </P>
+    <Example><![CDATA[
+gap> D := Digraph([[2, 3, 4], [1, 3, 4], [1, 2], [2, 3]]);;
+gap> DigraphEdgeConnectivity(D);
+2
+gap> D := Digraph([[], [1, 2], [2]]);;
+gap> DigraphEdgeConnectivity(D);
+0
+gap> D := Digraph([[1, 2, 3, 4, 5], [1, 2, 3, 4, 5], [1, 2, 3, 4, 5], [1, 2, 3, 4, 5], [1, 2, 3, 4, 5]]);;
+gap> DigraphEdgeConnectivity(D);
+4]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="RandomUniqueEdgeWeightedDigraph">
 <ManSection>
   <Oper Name="RandomUniqueEdgeWeightedDigraph" Arg="[filt, ]n[, p]"/>
