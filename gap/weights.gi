@@ -772,7 +772,27 @@ function(D, start, destination)
   return flows;
 end);
 
-# DigraphEdgeConnectivity calculated using Spanning Trees
+#############################################################################
+# Digraph Edge Connectivity
+#############################################################################
+
+# Algorithms constructed off the algorithms detailed in:
+# https://www.cse.msu.edu/~cse835/Papers/Graph_connectivity_revised.pdf
+# Each Algorithm uses a different method to decrease the time complexity,
+# of calculating Edge Connectivity, though all make use of DigraphMaximumFlow()
+# due to the Max-Flow, Min-Cut Theorem
+
+# Algorithm 1: Calculating the Maximum Flow of every possible source and sink
+# Algorithm 2: Calculating the Maximum Flow to all sinks of an arbitrary source
+# Algorithm 3: Finding Maximum Flow within the non-leaves of a Spanning Tree
+# Algorithm 4: Constructing a spanning tree with a high number of leaves
+# Algorithm 5: Using the spanning tree^ to find Maximum Flow within non-leaves
+# Algorithm 6: Finding Maximum Flow within a dominating set of the digraph
+# Algorithm 7: Constructing a dominating set for use in Algorithm 6
+
+# Algorithms 4-7 are used below:
+
+# DigraphEdgeConnectivity calculated using Spanning Trees (Algorithm 4 & 5)
 InstallMethod(DigraphEdgeConnectivity, "for a digraph",
 [IsDigraph],
 function(digraph)
@@ -816,7 +836,6 @@ function(digraph)
     Append(added, Difference(OutNeighbours(EdgeD)[v], added));
 
     # Select the neighbour to v with the highest number of not-added neighbours:
-
     notadded := Difference(VerticesED, added);
     max := 0;
     NextVertex := v;
@@ -839,16 +858,14 @@ function(digraph)
 
   od;
 
-  # Algorithm 5: Using Algorithm 4 to find the Edge Connectivity
-
+  # Algorithm 5: Iterating through the non-leaves of the
+  # Spanning Tree created in Algorithm 4 to find the Edge Connectivity
   non_leaf := [];
   for b in VerticesED do
     if not IsEmpty(OutNeighbours(st)[b]) then
       Append(non_leaf, [b]);
     fi;
   od;
-
-  # Get the smaller of non_leaf and Difference(Vertices in EdgeD, non_leaf)
 
   if (Length(non_leaf) > 1) then
     u := non_leaf[1];
@@ -872,6 +889,7 @@ function(digraph)
   else
     # In the case of spanning trees with only one non-leaf node,
     # the above algorithm does not work
+    # Revert to iterating through all vertices of the original digraph
 
     u := 1;
     for v in [2 .. DigraphNrVertices(EdgeD)] do
@@ -897,7 +915,7 @@ function(digraph)
   return min;
 end);
 
-# Digraph EdgeConnectivity calculated with Dominating Sets
+# Digraph EdgeConnectivity calculated with Dominating Sets (Algorithm 6-7)
 InstallMethod(DigraphEdgeConnectivityDS, "for a digraph",
 [IsDigraph],
 function(digraph)
@@ -923,10 +941,10 @@ function(digraph)
   min := -1;
 
   # Algorithm 7: Creating a dominating set of the digraph
-
+  
   D := DigraphDominatingSet(digraph);
 
-  # Algorithm 6:
+  # Algorithm 6: Using the dominating set created to determine the Maximum Flow
 
   if Length(D) > 1 then
 
@@ -945,6 +963,7 @@ function(digraph)
   else
     # If the dominating set of EdgeD is of Length 1,
     # the above algorithm will not work
+    # Revert to iterating through all vertices of the original digraph
 
     u := 1;
 

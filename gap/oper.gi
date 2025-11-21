@@ -2523,6 +2523,8 @@ function(D, root)
 end);
 
 # For calculating a dominating set for a digraph
+# Algorithm 7 in :
+# https://www.cse.msu.edu/~cse835/Papers/Graph_connectivity_revised.pdf
 InstallMethod(DigraphDominatingSet, "for a digraph",
 [IsDigraph],
 function(digraph)

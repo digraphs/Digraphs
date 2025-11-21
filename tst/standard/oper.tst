@@ -2861,6 +2861,21 @@ rec( idom := [ fail ], preorder := [ 1 ] )
 gap> DominatorTree(D, 6);
 rec( idom := [ ,,,,, fail ], preorder := [ 6 ] )
 
+# DigraphGetNeighbourhood
+gap> D := Digraph([[2, 3, 4], [1], [], []]);;
+gap> DigraphGetNeighbourhood(D, [1]);
+[ 2, 3, 4 ]
+gap> DigraphGetNeighbourhood(D, [1, 2]);
+[ 3, 4 ]
+gap> D := Digraph([[2, 3, 4], [], [], []]);;
+gap> DigraphGetNeighbourhood(D, [2]);
+[  ]
+gap> D := Digraph([[2], [3], [4], [1]]);;
+gap> DigraphGetNeighbourhood(D, [1]);
+[ 2 ]
+gap> DigraphGetNeighbourhood(D, [1, 3]);
+[ 2, 4 ]
+
 # IsDigraphPath
 gap> D := Digraph(IsMutableDigraph, Combinations([1 .. 5]), IsSubset);
 <mutable digraph with 32 vertices, 243 edges>
