@@ -47,7 +47,7 @@ jobs:
             pkgs-to-build: io* orb* datastructures* profiling* grape*
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Output g++ version . . .
         run: g++ --version
       - name: "Install GAP . . ."
@@ -67,7 +67,7 @@ jobs:
           cd ${GAPROOT}/pkg
           ../bin/BuildPackages.sh --strict ${{ matrix.pkgs-to-build }}
       - name: "Install digraphs-lib . . ."
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           repository: digraphs/digraphs-lib
           path: digraphs-lib
