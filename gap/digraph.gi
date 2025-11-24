@@ -167,14 +167,18 @@ InstallMethod(DigraphMutableCopy, "for a digraph by out-neighbours",
 [IsDigraphByOutNeighboursRep],
 function(D)
   local copy;
+
   copy := ConvertToMutableDigraphNC(OutNeighboursMutableCopy(D));
   SetDigraphVertexLabels(copy, StructuralCopy(DigraphVertexLabels(D)));
+
   if HaveEdgeLabelsBeenAssigned(D) then
     SetDigraphEdgeLabelsNC(copy, StructuralCopy(DigraphEdgeLabelsNC(D)));
   fi;
 
-  if HasEdgeWeights(D) then
-      SetEdgeWeights(copy, StructuralCopy(EdgeWeights(D)));
+  if IsImmutableDigraph(D) and HasEdgeWeights(D) then
+      copy!.edgeweights := EdgeWeightsMutableCopy(D);
+  elif IsMutableDigraph(D) and IsBound(D!.edgeweights) then
+      copy!.edgeweights := StructuralCopy(D!.edgeweights);
   fi;
 
   return copy;
@@ -184,11 +188,20 @@ InstallMethod(DigraphImmutableCopy, "for a digraph by out-neighbours",
 [IsDigraphByOutNeighboursRep],
 function(D)
   local copy;
+
   copy := ConvertToImmutableDigraphNC(OutNeighboursMutableCopy(D));
   SetDigraphVertexLabels(copy, StructuralCopy(DigraphVertexLabels(D)));
+
   if HaveEdgeLabelsBeenAssigned(D) then
     SetDigraphEdgeLabelsNC(copy, StructuralCopy(DigraphEdgeLabelsNC(D)));
   fi;
+
+  if IsImmutableDigraph(D) and HasEdgeWeights(D) then
+      SetEdgeWeights(copy, StructuralCopy(EdgeWeights(D)));
+  elif IsMutableDigraph(D) and IsBound(D!.edgeweights) then
+      SetEdgeWeights(copy, StructuralCopy(D!.edgeweights));
+  fi;
+
   return copy;
 end);
 
@@ -1843,25 +1856,31 @@ n -> RandomLatticeCons(IsImmutableDigraph, n));
 InstallMethod(RandomLattice, "for a func and a pos int", [IsFunction, IsPosInt],
 RandomLatticeCons);
 
-InstallGlobalFunction(CopyEdgeWeightsForSubdigraph,
-function(oldDigraph, newDigraph, removedVertices)
-    local oldWeights, newWeights, i, j, weight, shiftVertices;
+InstallMethod(RemoveDigraphEdgeWeight, "for a mutable digraph, pos int, pos int",
+[IsMutableDigraph and IsDigraphByOutNeighboursRep, IsPosInt, IsPosInt],
+function(D, v, pos)
+    if IsBound(D!.edgeweights) and v <= Length(D!.edgeweights) and pos <= Length(D!.edgeweights[v]) then
+        Remove(D!.edgeweights[v], pos);
+    fi;
+end);
 
-    if not HasEdgeWeights(oldDigraph) then
-        return;
+InstallMethod(RemoveDigraphEdgeWeight, "for an immutable digraph, pos int, pos int",
+[IsImmutableDigraph, IsPosInt, IsPosInt],
+function(D, v, pos)
+    local newD, w;
+    newD := DigraphMutableCopy(D);
+
+    if IsBound(newD!.edgeweights) then
+        if v <= Length(newD!.edgeweights)
+           and pos <= Length(newD!.edgeweights[v]) then
+            Remove(newD!.edgeweights[v], pos);
+        fi;
     fi;
 
-    oldWeights := EdgeWeights(oldDigraph);
-    newWeights := [];
-    shiftVertices := x -> x + Length(Filtered(removedVertices, v -> v <= x));
+    MakeImmutable(newD);
+    if IsBound(newD!.edgeweights) then
+        SetEdgeWeights(newD, StructuralCopy(newD!.edgeweights));
+    fi;
 
-    for i in [1 .. DigraphNrVertices(newDigraph)] do
-        newWeights[i] := [];
-        for j in OutNeighbours(newDigraph, i) do
-            weight := oldWeights[shiftVertices(i)][shiftVertices(j)];
-            Add(newWeights[i], weight);
-        od;
-    od;
-
-    SetEdgeWeights(newDigraph, newWeights);
+    return newD;
 end);

@@ -103,57 +103,59 @@ function(D, m, labels)
   return DigraphAddVertices(D, labels);
 end);
 
-InstallMethod(DigraphRemoveVertex,
-"for a mutable digraph by out-neighbours and positive integer",
+InstallMethod(DigraphRemoveVertex, "for a mutable digraph by out-neighbours and positive integer",
 [IsMutableDigraph and IsDigraphByOutNeighboursRep, IsPosInt],
 function(D, u)
-  local pos, w, v, oldD;
-  oldD := StructuralCopy(D);
+  local pos, w, v;
+
   if u > DigraphNrVertices(D) then
     return D;
   fi;
+
   RemoveDigraphVertexLabel(D, u);
   if IsBound(D!.edgelabels) then
     Remove(D!.edgelabels, u);
   fi;
+
   Remove(D!.OutNeighbours, u);
+  if IsBound(D!.edgeweights) then
+      Remove(D!.edgeweights, u);
+  fi;
+
   for v in DigraphVertices(D) do
     pos := 1;
     while pos <= Length(D!.OutNeighbours[v]) do
       w := D!.OutNeighbours[v][pos];
+
       if w = u then
         Remove(D!.OutNeighbours[v], pos);
         RemoveDigraphEdgeLabel(D, v, pos);
+        RemoveDigraphEdgeWeight(D, v, pos);
+
       elif w > u then
-         D!.OutNeighbours[v][pos] := w - 1;
-         pos := pos + 1;
+        D!.OutNeighbours[v][pos] := w - 1;
+        pos := pos + 1;
+
       else
-         pos := pos + 1;
+        pos := pos + 1;
       fi;
     od;
   od;
-
-  if HasEdgeWeights(D) then
-      CopyEdgeWeightsForSubdigraph(oldD, D, [u]);
-  fi;
-
   return D;
 end);
 
-InstallMethod(DigraphRemoveVertex,
-"for an immutable digraph and positive integer",
+InstallMethod(DigraphRemoveVertex, "for an immutable digraph and positive integer",
 [IsImmutableDigraph, IsPosInt],
 function(D, u)
   local newD;
-  if u > DigraphNrVertices(D) then
-    return D;
-  fi;
 
-  newD := DigraphRemoveVertex(DigraphMutableCopy(D), u);
-  if HasEdgeWeights(D) then
-      CopyEdgeWeightsForSubdigraph(D, newD, [u]);
-  fi;
+  newD := DigraphMutableCopy(D);
+  DigraphRemoveVertex(newD, u);
   MakeImmutable(newD);
+
+  if IsBound(newD!.edgeweights) then
+      SetEdgeWeights(newD, StructuralCopy(newD!.edgeweights));
+  fi;
 
   return newD;
 end);
@@ -237,11 +239,10 @@ InstallMethod(DigraphAddEdges, "for an immutable digraph and a list",
 [IsImmutableDigraph, IsList],
 {D, edges} -> MakeImmutable(DigraphAddEdges(DigraphMutableCopy(D), edges)));
 
-InstallMethod(DigraphRemoveEdge,
-"for a mutable digraph by out-neighbours and two positive integers",
+InstallMethod(DigraphRemoveEdge, "for a mutable digraph by out-neighbours and two positive integers",
 [IsMutableDigraph and IsDigraphByOutNeighboursRep, IsPosInt, IsPosInt],
 function(D, src, ran)
-  local pos, weights;
+  local pos;
   if IsMultiDigraph(D) then
     ErrorNoReturn("the 1st argument <D> must be a digraph with no multiple ",
                   "edges,");
@@ -252,28 +253,33 @@ function(D, src, ran)
     ErrorNoReturn("the 3rd argument <ran> must be a vertex of the ",
                   "digraph <D> that is the 1st argument,");
   fi;
+
   pos := Position(D!.OutNeighbours[src], ran);
+
   if pos <> fail then
     Remove(D!.OutNeighbours[src], pos);
     RemoveDigraphEdgeLabel(D, src, pos);
-  fi;
-
-  if HasEdgeWeights(D) then
-      weights := StructuralCopy(EdgeWeights(D));
-      if IsBound(weights[src]) and IsBound(weights[src][ran]) then
-          weights[src][ran] := fail;
-      fi;
-      SetEdgeWeights(D, weights);
+    RemoveDigraphEdgeWeight(D, src, pos);
   fi;
 
   return D;
 end);
 
-InstallMethod(DigraphRemoveEdge,
-"for a immutable digraph and two positive integers",
+InstallMethod(DigraphRemoveEdge, "for a immutable digraph and two positive integers",
 [IsImmutableDigraph, IsPosInt, IsPosInt],
-{D, src, ran}
--> MakeImmutable(DigraphRemoveEdge(DigraphMutableCopy(D), src, ran)));
+function(D, src, ran)
+    local newD;
+
+    newD := DigraphMutableCopy(D);
+    DigraphRemoveEdge(newD, src, ran);
+    MakeImmutable(newD);
+
+    if IsBound(newD!.edgeweights) then
+        SetEdgeWeights(newD, StructuralCopy(newD!.edgeweights));
+    fi;
+
+    return newD;
+end);
 
 InstallMethod(DigraphRemoveEdge, "for a mutable digraph and a list",
 [IsMutableDigraph, IsList],

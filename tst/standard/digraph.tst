@@ -13,7 +13,7 @@
 #@local adjacencies, b, bin, c, c1, c2, d, di, digraph, divides, elms, eq
 #@local eq_distr, eq_new, error, f, failed, failed_names, failed_values, foo, g
 #@local gr, gr1, gr2, gr3, gr4, gr5, graph, graph1, graph2, grnc, group, h
-#@local hom13, hom21, hom23, hom31, hom41, hom42, hom52, hom53, i, im, inn
+#@local hom13, hom21, hom23, hom31, hom41, hom42, hom52, hom53, i, im, im2, inn
 #@local isGraph, iso, iso_distr, iso_new, j, k, list, m, main, mat, n, name
 #@local name2, names, new, order, p, prop, properties, r, r1, r2, record, rel1
 #@local rel2, rel3, representatives, s, schreierVector, sgn, temp, test, v, x
@@ -564,6 +564,63 @@ gap> OutNeighbours(D);
 [ [ 1 ], [ 5 ], [ 2 ], [ 4 ], [ 3 ], [  ] ]
 gap> AsDigraph(AsPartialPerm((2, 5, 3)), 2);
 fail
+
+#  Tests for DigraphMutableCopy, DigraphImmutableCopy, RemoveDigraphEdgeWeight (mutable & immutable).
+gap> d := EdgeWeightedDigraph([[2,3],[3],[],[]], [[5,10],[15],[],[]]);
+<immutable digraph with 4 vertices, 3 edges>
+gap> HasEdgeWeights(d);
+true
+gap> EdgeWeights(d);
+[ [ 5, 10 ], [ 15 ], [  ], [  ] ]
+gap> m := DigraphMutableCopy(d);
+<mutable digraph with 4 vertices, 3 edges>
+gap> IsMutableDigraph(m);
+true
+gap> OutNeighbours(m) = OutNeighbours(d);
+true
+gap> DigraphVertexLabels(m) = DigraphVertexLabels(d);
+true
+gap> HasEdgeWeights(m);
+false
+gap> IsBound(m!.edgeweights);
+true
+gap> m!.edgeweights = [[5,10],[15],[],[]];
+true
+gap> m!.edgeweights[1][1] := 999;
+999
+gap> EdgeWeights(d)[1][1];
+5
+gap> im := DigraphImmutableCopy(d);
+<immutable digraph with 4 vertices, 3 edges>
+gap> IsImmutableDigraph(im);
+true
+gap> OutNeighbours(im) = OutNeighbours(d);
+true
+gap> HasEdgeWeights(im);
+true
+gap> EdgeWeights(im);
+[ [ 5, 10 ], [ 15 ], [  ], [  ] ]
+gap> EdgeWeights(im)[1][1] := 777;
+Error, List Assignment: <list> must be a mutable list
+gap> EdgeWeights(d);
+[ [ 5, 10 ], [ 15 ], [  ], [  ] ]
+gap> m := DigraphMutableCopy(d);
+<mutable digraph with 4 vertices, 3 edges>
+gap> RemoveDigraphEdgeWeight(m, 1, 2);
+gap> m!.edgeweights;
+[ [ 5 ], [ 15 ], [  ], [  ] ]
+gap> EdgeWeights(d);
+[ [ 5, 10 ], [ 15 ], [  ], [  ] ]
+gap> im2 := DigraphImmutableCopy(d);
+<immutable digraph with 4 vertices, 3 edges>
+gap> im2 := RemoveDigraphEdgeWeight(im2, 1, 2);
+<immutable digraph with 4 vertices, 3 edges>
+gap> EdgeWeights(im2);
+[ [ 5 ], [ 15 ], [  ], [  ] ]
+gap> HasEdgeWeights(im2);
+true
+gap> EdgeWeights(d);
+[ [ 5, 10 ], [ 15 ], [  ], [  ] ]
 
 #  RandomDigraph
 gap> IsImmutableDigraph(RandomDigraph(100, 0.2));

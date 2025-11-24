@@ -153,4 +153,4 @@ DeclareOperation("RandomLattice", [IsFunction, IsPosInt]);
 DeclareOperation("RandomMultiDigraph", [IsPosInt]);
 DeclareOperation("RandomMultiDigraph", [IsPosInt, IsPosInt]);
 
-DeclareGlobalFunction("CopyEdgeWeightsForSubdigraph");
+DeclareOperation("RemoveDigraphEdgeWeight", [IsDigraph, IsPosInt, IsPosInt]);
