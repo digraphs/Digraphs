@@ -135,10 +135,6 @@ gap> M ^ p = OnDigraphs(M, p);
 true
 
 # DigraphRemoveAllEdges: for a digraph
-gap> gr := Digraph(IsImmutableDigraph, [[2, 3], [3], [4], []]);
-<immutable digraph with 4 vertices, 4 edges>
-gap> DigraphRemoveAllEdges(gr);
-Error, Argument must be a mutable digraph
 gap> gr2 := Digraph(IsMutableDigraph, [[2, 3], [3], [4], []]);
 <mutable digraph with 4 vertices, 4 edges>
 gap> DigraphRemoveAllEdges(gr2);

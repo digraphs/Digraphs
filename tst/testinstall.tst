@@ -560,7 +560,7 @@ gap> DigraphEdgeConnectivity(D);
 gap> C := Digraph([[3, 4], [1, 3, 4], [2], [3]]);;
 gap> DigraphEdgeConnectivity(C);
 1
-gap> D := Digraph([[ 1, 2, 3, 4, 5 ], [ 1, 2, 3, 4, 5 ], [ 1, 2, 3, 4, 5 ], [ 1, 2, 3, 4, 5 ], [ 1, 2, 3, 4, 5 ]]);;
+gap> D := Digraph([[1, 2, 3, 4, 5], [1, 2, 3, 4, 5], [1, 2, 3, 4, 5], [1, 2, 3, 4, 5], [1, 2, 3, 4, 5]]);;
 gap> DigraphEdgeConnectivity(D);
 4
 

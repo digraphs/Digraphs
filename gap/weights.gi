@@ -941,7 +941,6 @@ function(digraph)
   min := -1;
 
   # Algorithm 7: Creating a dominating set of the digraph
-  
   D := DigraphDominatingSet(digraph);
 
   # Algorithm 6: Using the dominating set created to determine the Maximum Flow
