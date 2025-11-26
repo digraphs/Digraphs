@@ -153,7 +153,7 @@ function(D, u)
   DigraphRemoveVertex(newD, u);
   MakeImmutable(newD);
 
-  if IsBound(newD!.edgeweights) then
+  if HasEdgeWeights(D) then
       SetEdgeWeights(newD, StructuralCopy(newD!.edgeweights));
   fi;
 
@@ -274,7 +274,7 @@ function(D, src, ran)
     DigraphRemoveEdge(newD, src, ran);
     MakeImmutable(newD);
 
-    if IsBound(newD!.edgeweights) then
+    if HasEdgeWeights(D) then
         SetEdgeWeights(newD, StructuralCopy(newD!.edgeweights));
     fi;
 

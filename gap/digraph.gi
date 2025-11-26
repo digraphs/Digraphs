@@ -1870,7 +1870,7 @@ function(D, v, pos)
     local newD, w;
     newD := DigraphMutableCopy(D);
 
-    if IsBound(newD!.edgeweights) then
+    if HasEdgeWeights(D) then
         if v <= Length(newD!.edgeweights)
            and pos <= Length(newD!.edgeweights[v]) then
             Remove(newD!.edgeweights[v], pos);
@@ -1878,7 +1878,7 @@ function(D, v, pos)
     fi;
 
     MakeImmutable(newD);
-    if IsBound(newD!.edgeweights) then
+    if HasEdgeWeights(D) then
         SetEdgeWeights(newD, StructuralCopy(newD!.edgeweights));
     fi;
 
