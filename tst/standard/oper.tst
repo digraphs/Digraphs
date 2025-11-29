@@ -3383,6 +3383,24 @@ gap> D := Digraph([[2, 3, 4, 5], [], [], [], []]);;
 gap> DigraphColourRefinement(D);
 [ 2, 1, 1, 1, 1 ]
 
+# DigraphDominatingSet
+gap> d := Digraph([[2, 3], [2, 3], [1, 2, 3]]);;
+gap> p := DigraphDominatingSet(d);;
+gap> DigraphVertices(d) = Union(DigraphGetNeighbourhood(d, p), p);
+true
+gap> d := Digraph([[2, 4], [3], [1, 5], [3], [4]]);;
+gap> p := DigraphDominatingSet(d);;
+gap> DigraphVertices(d) = Union(DigraphGetNeighbourhood(d, p), p);
+true
+gap> D := Digraph([[1, 2, 3, 4, 5], [1, 2, 3, 4, 5], [1, 2, 3, 4, 5], [1, 2, 3, 4, 5], [1, 2, 3, 4, 5]]);;
+gap> p := DigraphDominatingSet(d);;
+gap> DigraphVertices(d) = Union(DigraphGetNeighbourhood(d, p), p);
+true
+gap> D := RandomDigraph(1);;
+gap> p := DigraphDominatingSet(d);;
+gap> DigraphVertices(d) = Union(DigraphGetNeighbourhood(d, p), p);
+true
+
 #
 gap> DIGRAPHS_StopTest();
 gap> STOP_TEST("Digraphs package: standard/oper.tst", 0);
