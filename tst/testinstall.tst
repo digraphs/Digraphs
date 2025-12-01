@@ -543,19 +543,19 @@ true
 
 # UnitEdgeWeightedDigraph
 gap> D := UnitEdgeWeightedDigraph(Digraph([[2],[1,3],[1]]));
-<immutable digraph with 3 vertices, 4 edges>
+<immutable edge-weighted digraph with 3 vertices, 4 edges>
 gap> EdgeWeights(D);
 [ [ 1 ], [ 1, 1 ], [ 1 ] ]
 gap> D := UnitEdgeWeightedDigraph(Digraph([[3,4],[1,3,4],[2,4],[1,2,3]]));
-<immutable digraph with 4 vertices, 10 edges>
+<immutable edge-weighted digraph with 4 vertices, 10 edges>
 gap> EdgeWeights(D);
 [ [ 1, 1 ], [ 1, 1, 1 ], [ 1, 1 ], [ 1, 1, 1 ] ]
 gap> D := UnitEdgeWeightedDigraph(EmptyDigraph(4));
-<immutable empty digraph with 4 vertices>
+<immutable empty edge-weighted digraph with 4 vertices>
 gap> EdgeWeights(D);
 [ [  ], [  ], [  ], [  ] ]
 gap> D := UnitEdgeWeightedDigraph(EdgeWeightedDigraph([[2], []], [[5], []]));
-<immutable digraph with 2 vertices, 1 edge>
+<immutable edge-weighted digraph with 2 vertices, 1 edge>
 gap> EdgeWeights(D);
 [ [ 1 ], [  ] ]
 
