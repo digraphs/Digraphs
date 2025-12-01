@@ -907,16 +907,18 @@ function(digraph)
   st := EmptyDigraph(DigraphNrVertices(EdgeD));
   v := 1;
   added := [v];
+  notadded := Difference(VerticesED, added);
 
-  while DigraphNrEdges(st) < DigraphNrVertices(EdgeD) - 1 do
+  while (DigraphNrEdges(st) < DigraphNrVertices(EdgeD) - 1) and
+              Length(notadded) > 0 do
 
     # Add all edges incident from v
-    NeighboursV := OutNeighbors(EdgeD)[v];
+    NeighboursV := Difference(OutNeighbors(EdgeD)[v], added);
 
     Edges := List([1 .. Length(NeighboursV)],
-    x -> [v, OutNeighbours(EdgeD)[v][x]]);
+    x -> [v, NeighboursV[x]]);
 
-    Edges := Difference(Edges, [[v, v]]);
+    # Edges := Difference(Edges, [[v, v]]);
 
     st := DigraphAddEdges(st, Edges);
     Append(added, Difference(OutNeighbours(EdgeD)[v], added));
@@ -926,13 +928,13 @@ function(digraph)
     max := 0;
     NextVertex := v;
 
-    # Preventing infinite iteration if the current vertex has no neighbours
+    # Preventing infinite iteration if v has no non-added neighbours
     if (Length(NeighboursV) = 0) then
       # Pick from a vertex that hasn't been added yet
       NextVertex := notadded[1];
     fi;
 
-    for w in Difference(NeighboursV, [v]) do;
+    for w in NeighboursV do;
       notAddedNeighbours := Intersection(notadded, OutNeighbours(EdgeD)[w]);
       if (Length(notAddedNeighbours) > max) then
         max := Length(notAddedNeighbours);
@@ -964,10 +966,6 @@ function(digraph)
       if (sum < min or min = -1) then
         min := sum;
       fi;
-
-      if (sum = 0) then
-        return 0;
-      fi;
     od;
 
     min := Minimum(min, Minimum(Minimum(OutDegrees(EdgeD)),
@@ -986,11 +984,6 @@ function(digraph)
       if (sum < min or min = -1) then
         min := sum;
       fi;
-
-      if (sum = 0) then
-        return 0;
-      fi;
-
     od;
   fi;
 
