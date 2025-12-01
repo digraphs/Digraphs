@@ -381,6 +381,9 @@ gap> DigraphEdgeConnectivity(d);
 gap> D := Digraph([[1, 2, 3, 4, 5], [1, 2, 3, 4, 5], [1, 2, 3, 4, 5], [1, 2, 3, 4, 5], [1, 2, 3, 4, 5]]);;
 gap> DigraphEdgeConnectivity(D);
 4
+gap> D := DigraphFromGraph6String("I~~~~~~~w");;
+gap> DigraphEdgeConnectivity(D);
+9
 
 # EdgeConnectivity (Dominating Set Algorithm)
 gap> d := Digraph([[2, 3], [2, 3], [1, 2, 3]]);;
@@ -395,6 +398,9 @@ gap> DigraphEdgeConnectivityDS(d);
 gap> D := Digraph([[1, 2, 3, 4, 5], [1, 2, 3, 4, 5], [1, 2, 3, 4, 5], [1, 2, 3, 4, 5], [1, 2, 3, 4, 5]]);;
 gap> DigraphEdgeConnectivityDS(D);
 4
+gap> D := DigraphFromGraph6String("I~~~~~~~w");;
+gap> DigraphEdgeConnectivityDS(D);
+9
 
 #############################################################################
 # 6. Random edge-weighted digraphs
