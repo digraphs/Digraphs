@@ -14,6 +14,7 @@ DeclareGlobalFunction("EdgeWeightedDigraph");
 DeclareProperty("IsNegativeEdgeWeightedDigraph", IsDigraph and HasEdgeWeights);
 DeclareAttribute("EdgeWeightedDigraphTotalWeight",
 IsDigraph and HasEdgeWeights);
+DeclareAttribute("UnitEdgeWeightedDigraph", IsDigraph);
 
 # 2. Edge Weight Copies
 DeclareOperation("EdgeWeightsMutableCopy", [IsDigraph and HasEdgeWeights]);
