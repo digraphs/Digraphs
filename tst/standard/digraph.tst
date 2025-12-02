@@ -565,31 +565,13 @@ gap> OutNeighbours(D);
 gap> AsDigraph(AsPartialPerm((2, 5, 3)), 2);
 fail
 
-#  Tests for DigraphMutableCopy, DigraphImmutableCopy, RemoveDigraphEdgeWeight (mutable & immutable).
+#  Tests for DigraphImmutableCopy
 gap> d := EdgeWeightedDigraph([[2,3],[3],[],[]], [[5,10],[15],[],[]]);
 <immutable digraph with 4 vertices, 3 edges>
 gap> HasEdgeWeights(d);
 true
 gap> EdgeWeights(d);
 [ [ 5, 10 ], [ 15 ], [  ], [  ] ]
-gap> m := DigraphMutableCopy(d);
-<mutable digraph with 4 vertices, 3 edges>
-gap> IsMutableDigraph(m);
-true
-gap> OutNeighbours(m) = OutNeighbours(d);
-true
-gap> DigraphVertexLabels(m) = DigraphVertexLabels(d);
-true
-gap> HasEdgeWeights(m);
-false
-gap> IsBound(m!.edgeweights);
-true
-gap> m!.edgeweights = [[5,10],[15],[],[]];
-true
-gap> m!.edgeweights[1][1] := 999;
-999
-gap> EdgeWeights(d)[1][1];
-5
 gap> im := DigraphImmutableCopy(d);
 <immutable digraph with 4 vertices, 3 edges>
 gap> IsImmutableDigraph(im);
@@ -604,17 +586,10 @@ gap> EdgeWeights(im)[1][1] := 777;
 Error, List Assignment: <list> must be a mutable list
 gap> EdgeWeights(d);
 [ [ 5, 10 ], [ 15 ], [  ], [  ] ]
-gap> m := DigraphMutableCopy(d);
-<mutable digraph with 4 vertices, 3 edges>
-gap> RemoveDigraphEdgeWeight(m, 1, 2);
-gap> m!.edgeweights;
-[ [ 5 ], [ 15 ], [  ], [  ] ]
-gap> EdgeWeights(d);
-[ [ 5, 10 ], [ 15 ], [  ], [  ] ]
 gap> im2 := DigraphImmutableCopy(d);
 <immutable digraph with 4 vertices, 3 edges>
-gap> im2 := RemoveDigraphEdgeWeight(im2, 1, 2);
-<immutable digraph with 4 vertices, 3 edges>
+gap> im2 := DigraphRemoveEdge(im2, 1, 3);
+<immutable digraph with 4 vertices, 2 edges>
 gap> EdgeWeights(im2);
 [ [ 5 ], [ 15 ], [  ], [  ] ]
 gap> HasEdgeWeights(im2);
