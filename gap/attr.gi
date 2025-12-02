@@ -2263,27 +2263,50 @@ end);
 
 InstallMethod(HamiltonianPath, "for a digraph", [IsDigraph],
 function(D)
-  local path, iter, n;
+    local iter, recpath, vertices, n, v, start, finish;
 
-  if DigraphNrVertices(D) <= 1 then
-    return DigraphVertices(D);
-  elif DigraphNrVertices(D) < 256 then
-    path := DigraphMonomorphism(ChainDigraph(DigraphNrVertices(D)), D);
-    if path = fail then
-      return fail;
-    fi;
-    return ImageListOfTransformation(path, DigraphNrVertices(D));
-  fi;
+    v := DigraphNrVertices(D);
 
-  iter := IteratorOfPaths(D, 1, 1);
-  n := DigraphNrVertices(D) + 1;
-  while not IsDoneIterator(iter) do
-    path := NextIterator(iter)[1];
-    if Length(path) = n then
-      return path;
+    # trivial cases
+    if v <= 1 then
+        return DigraphVertices(D);
+    elif v < 256 then
+        recpath := DigraphMonomorphism(ChainDigraph(v), D);
+        if recpath = fail then
+            return fail;
+        fi;
+        return ImageListOfTransformation(recpath, v);
     fi;
-  od;
-  return fail;
+
+    # For large graphs: search all simple paths from every start to every end
+    n := v;   # Hamiltonian path must have exactly v vertices
+
+    for start in [1..v] do
+        for finish in [1..v] do
+
+            iter := IteratorOfPaths(D, start, finish);
+
+            while not IsDoneIterator(iter) do
+                recpath := NextIterator(iter);
+
+                # safety: ensure this is a path record with vertices
+                if not IsRecord(recpath) or not IsBound(recpath.vertices) then
+                    continue;
+                fi;
+
+                vertices := recpath.vertices;
+
+                # Hamiltonian path condition
+                if Length(vertices) = n and IsDuplicateFreeList(vertices) then
+                    return vertices;
+                fi;
+
+            od;
+
+        od;
+    od;
+
+    return fail;
 end);
 
 InstallMethod(HamiltonianCycle, "for a digraph", [IsDigraph],

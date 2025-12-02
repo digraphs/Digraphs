@@ -1,0 +1,11 @@
+//dot
+digraph hgn{
+node [shape=circle]
+1
+2
+3
+4
+1 -> 4
+3 -> 4
+3 -> 2
+}

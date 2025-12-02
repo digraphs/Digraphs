@@ -2258,6 +2258,146 @@ gap> ForAll(D,
 > d -> DigraphNrEdges(d) / 2 = DigraphNrEdges(StrongOrientation(d)));
 true
 
+#  HamiltonianPath
+gap> g := Digraph([]);
+<immutable empty digraph with 0 vertices>
+gap> TestHamiltonianPath(g);
+SUCCESS: Path is a valid Hamiltonian path.
+true
+gap> g := Digraph([[]]);
+<immutable empty digraph with 1 vertex>
+gap> TestHamiltonianPath(g);
+SUCCESS: Path is a valid Hamiltonian path.
+true
+gap> g := Digraph([[], []]);
+<immutable empty digraph with 2 vertices>
+gap> TestHamiltonianPath(g);
+HamiltonianPath returned fail.
+false
+gap> g := Digraph([[1]]);
+<immutable digraph with 1 vertex, 1 edge>
+gap> TestHamiltonianPath(g);
+SUCCESS: Path is a valid Hamiltonian path.
+true
+gap> g := Digraph([[2], [1]]);
+<immutable digraph with 2 vertices, 2 edges>
+gap> TestHamiltonianPath(g);
+SUCCESS: Path is a valid Hamiltonian path.
+true
+gap> g := Digraph([[3], [3], []]);
+<immutable digraph with 3 vertices, 2 edges>
+gap> TestHamiltonianPath(g);
+HamiltonianPath returned fail.
+false
+gap> g := Digraph([[3], [3], [1, 2]]);
+<immutable digraph with 3 vertices, 4 edges>
+gap> TestHamiltonianPath(g);
+SUCCESS: Path is a valid Hamiltonian path.
+true
+gap> g := Digraph([[3], [], [2]]);
+<immutable digraph with 3 vertices, 2 edges>
+gap> TestHamiltonianPath(g);
+SUCCESS: Path is a valid Hamiltonian path.
+true
+gap> g := Digraph([[2], [3], [1]]);
+<immutable digraph with 3 vertices, 3 edges>
+gap> TestHamiltonianPath(g);
+SUCCESS: Path is a valid Hamiltonian path.
+true
+gap> g := Digraph([[2], [3], [1], []]);
+<immutable digraph with 4 vertices, 3 edges>
+gap> TestHamiltonianPath(g);
+HamiltonianPath returned fail.
+false
+gap> g := Digraph([[2], [3], [1, 4], []]);
+<immutable digraph with 4 vertices, 4 edges>
+gap> TestHamiltonianPath(g);
+SUCCESS: Path is a valid Hamiltonian path.
+true
+gap> g := Digraph([[3, 6], [4], [2, 1], [5, 1], [3], [4]]);
+<immutable digraph with 6 vertices, 9 edges>
+gap> TestHamiltonianPath(g);
+SUCCESS: Path is a valid Hamiltonian path.
+true
+gap> g := Digraph([[3, 6], [4, 1], [2, 1], [5, 1], [3], [4]]);
+<immutable digraph with 6 vertices, 10 edges>
+gap> TestHamiltonianPath(g);
+SUCCESS: Path is a valid Hamiltonian path.
+true
+gap> g := Digraph([[3, 6], [4], [2, 1], [5, 1], [3], [4, 7], []]);
+<immutable digraph with 7 vertices, 10 edges>
+gap> TestHamiltonianPath(g);
+SUCCESS: Path is a valid Hamiltonian path.
+true
+gap> g := Digraph([[3, 6, 7], [4, 1], [2, 1], [5, 1], [3], [4, 7], [6]]);
+<immutable digraph with 7 vertices, 13 edges>
+gap> TestHamiltonianPath(g);
+SUCCESS: Path is a valid Hamiltonian path.
+true
+gap>  g := Digraph([[3, 6], [4], [2, 1], [5, 1], [3], [4, 7], [6]]);
+<immutable digraph with 7 vertices, 11 edges>
+gap> TestHamiltonianPath(g);
+SUCCESS: Path is a valid Hamiltonian path.
+true
+gap> g := Digraph([[5, 6, 10], [2, 9], [3, 7], [2, 3], [9, 10], [2, 9], [1],
+>                  [2, 3, 4, 7, 9], [3, 10], [4, 5, 6, 8]]);
+<immutable digraph with 10 vertices, 25 edges>
+gap> TestHamiltonianPath(g);
+SUCCESS: Path is a valid Hamiltonian path.
+true
+gap> g := Digraph([[2, 4, 6, 10], [1, 3, 4, 5, 6, 7, 9, 10], [1, 5, 7, 8],
+>                  [6, 10], [1, 7], [3, 4, 6, 7, 9], [2, 3, 4, 7],
+>                  [2, 4, 5, 6], [2, 3, 5, 6, 7, 9, 10], [2, 3, 5]]);
+<immutable digraph with 10 vertices, 43 edges>
+gap> TestHamiltonianPath(g);
+SUCCESS: Path is a valid Hamiltonian path.
+true
+gap> IsDigraphMonomorphism(CycleDigraph(10),
+>                          g,
+>                          Transformation(HamiltonianPath(g)));
+true
+gap> g := CompleteMultipartiteDigraph([1, 30]);
+<immutable complete bipartite digraph with bicomponent sizes 1 and 30>
+gap> TestHamiltonianPath(g);
+HamiltonianPath returned fail.
+false
+gap> g := Digraph([[2, 5, 6], [3, 1, 7], [4, 2, 8], [5, 3, 9], [1, 4, 10],
+>                  [1, 8, 9], [2, 9, 10], [3, 10, 6], [4, 6, 7], [5, 7, 8]]);
+<immutable digraph with 10 vertices, 30 edges>
+gap> TestHamiltonianPath(g);
+SUCCESS: Path is a valid Hamiltonian path.
+true
+gap> g := CompleteMultipartiteDigraph([16, 15]);
+<immutable complete bipartite digraph with bicomponent sizes 16 and 15>
+gap> TestHamiltonianPath(g);
+SUCCESS: Path is a valid Hamiltonian path.
+true
+gap> g := CompleteMultipartiteDigraph([1, 15, 1, 1, 1, 1, 1, 1]);
+<immutable complete multipartite digraph with 22 vertices, 252 edges>
+gap> TestHamiltonianPath(g);
+HamiltonianPath returned fail.
+false
+gap> g := CycleDigraph(100);
+<immutable cycle digraph with 100 vertices>
+gap> TestHamiltonianPath(g);
+SUCCESS: Path is a valid Hamiltonian path.
+true
+gap> g := CycleDigraph(513);
+<immutable cycle digraph with 513 vertices>
+gap> g := DigraphAddEdges(g, [[6, 8], [8, 7], [7, 9]]);
+<immutable digraph with 513 vertices, 516 edges>
+gap> g := DigraphRemoveEdge(g, [6, 7]);
+<immutable digraph with 513 vertices, 515 edges>
+gap> TestHamiltonianPath(g);
+HamiltonianPath returned fail.
+false
+gap> gr := DigraphAddEdges(DigraphAddVertex(CycleDigraph(600)),
+>                          [[600, 601], [601, 600]]);
+<immutable digraph with 601 vertices, 602 edges>
+gap> TestHamiltonianPath(gr);
+HamiltonianPath returned fail.
+false
+
 #  HamiltonianCycle
 gap> g := Digraph([]);
 <immutable empty digraph with 0 vertices>
