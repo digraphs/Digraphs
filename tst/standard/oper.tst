@@ -16,6 +16,7 @@
 #@local i1, i2, id, idom, in1, in2, in3, iter, j1, j2, m, m1, m2, mat, n, nbs
 #@local out, out1, out2, out3, p1, p2, path, preorder, qr, r, res, rtclosure, t
 #@local tclosure, u1, u2, x, imE, imV
+#@local p, q, idp, idt, M
 gap> START_TEST("Digraphs package: standard/oper.tst");
 gap> LoadPackage("digraphs", false);;
 
@@ -108,6 +109,30 @@ gap> gr := DigraphRemoveEdge(gr, [2, 1]);
 <immutable digraph with 2 vertices, 1 edge>
 gap> DigraphEdges(gr);
 [ [ 1, 2 ] ]
+
+# Tests for digraph operator "^" (implements D ^ p and D ^ t using OnDigraphs)
+gap> D := CycleDigraph(5);
+<immutable cycle digraph with 5 vertices>
+gap> p := (1, 5)(2, 4);;
+gap> D ^ p = DigraphReverse(D);
+true
+gap> OnDigraphs(D, p) = D ^ p;
+true
+gap> idp := ();;
+gap> D ^ idp = D;
+true
+gap> q := (1, 2, 3, 4, 5);;
+gap> (D ^ q) ^ (q ^ -1) = D;
+true
+gap> t := Transformation([2, 3, 4, 5, 1]);;
+gap> D ^ t = OnDigraphs(D, t);
+true
+gap> idt := Transformation([1, 2, 3, 4, 5]);;
+gap> D ^ idt = D;
+true
+gap> M := DigraphMutableCopy(D);;
+gap> M ^ p = OnDigraphs(M, p);
+true
 
 #  OnDigraphs: for a digraph and a perm
 gap> gr := Digraph([[2], [1], [3]]);

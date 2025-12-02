@@ -700,6 +700,9 @@ function(D)
       fi;
     fi;
   fi;
+  if HasEdgeWeights(D) then
+    Append(str, "edge-weighted ");
+  fi;
 
   if IsMultiDigraph(D) then
     Append(str, "multi");

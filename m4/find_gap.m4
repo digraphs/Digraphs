@@ -83,9 +83,6 @@ AC_DEFUN([FIND_GAP],
     AC_MSG_ERROR([No GAP_CPPFLAGS is given])
   fi
 
-  # compatibility with GAP 4.9 (not needed in GAP >= 4.10)
-  GAP_CPPFLAGS="$GAP_CPPFLAGS -I${GAP_LIB_DIR}/src"
-
   AC_SUBST(GAPARCH)
   AC_SUBST(GAPROOT)
   AC_SUBST(GAP_CPPFLAGS)
