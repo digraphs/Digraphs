@@ -3140,7 +3140,7 @@ gap> D := DigraphAddEdge(D, 1, 3);
 gap> D := DigraphRemoveEdge(D, 1, 3);
 <immutable digraph with 6 vertices, 11 edges>
 gap> D := DigraphRemoveEdge(D, 1, 3);
-<immutable digraph with 6 vertices, 11 edges>
+Error, the edge [1, 3] does not exist,
 
 # DigraphVertexConnectivity
 gap> D := Digraph([[2, 3, 4], [3, 4], [4], []]);
