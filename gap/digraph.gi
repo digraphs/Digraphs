@@ -181,7 +181,7 @@ InstallMethod(DigraphImmutableCopy,
 function(D)
   local copy, weights;
   copy := DigraphImmutableCopyNoWeights(D);
-  
+
   if HasEdgeWeights(D) then
       weights := EdgeWeightsMutableCopy(D);
       SetEdgeWeights(copy, weights);

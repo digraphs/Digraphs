@@ -566,7 +566,7 @@ gap> AsDigraph(AsPartialPerm((2, 5, 3)), 2);
 fail
 
 #  Tests for DigraphImmutableCopy
-gap> d := EdgeWeightedDigraph([[2,3],[3],[],[]], [[5,10],[15],[],[]]);
+gap> d := EdgeWeightedDigraph([ [ 2, 3 ], [ 3 ], [ ], [ ] ], [ [ 5, 10 ], [ 15 ], [ ], [ ] ]);
 <immutable digraph with 4 vertices, 3 edges>
 gap> HasEdgeWeights(d);
 true
