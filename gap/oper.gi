@@ -138,28 +138,28 @@ InstallMethod(DigraphRemoveVertex,
 "for an immutable digraph and positive integer",
 [IsImmutableDigraph, IsPosInt],
 function(D, u)
-    local newD, weights;
+  local newD, weights;
 
-    if u > DigraphNrVertices(D) then
-        return D;
-    fi;
+  if u > DigraphNrVertices(D) then
+      return D;
+  fi;
 
-    newD := DigraphImmutableCopyNoWeights(D);
-    newD := DigraphMutableCopy(newD);
-    DigraphRemoveVertex(newD, u);
-    MakeImmutable(newD);
+  newD := DigraphImmutableCopyNoWeights(D);
+  newD := DigraphMutableCopy(newD);
+  DigraphRemoveVertex(newD, u);
+  MakeImmutable(newD);
 
-    if HasEdgeWeights(D) then
-        weights := EdgeWeightsMutableCopy(D);
+  if HasEdgeWeights(D) then
+      weights := EdgeWeightsMutableCopy(D);
 
-        if u <= Length(weights) then
-            Remove(weights, u);
-        fi;
+      if u <= Length(weights) then
+          Remove(weights, u);
+      fi;
 
-        SetEdgeWeights(newD, weights);
-    fi;
+      SetEdgeWeights(newD, weights);
+  fi;
 
-    return newD;
+  return newD;
 end);
 
 InstallMethod(DigraphRemoveVertices, "for a mutable digraph and a list",
@@ -268,26 +268,26 @@ InstallMethod(DigraphRemoveEdge,
 "for an immutable digraph and two positive integers",
 [IsImmutableDigraph, IsPosInt, IsPosInt],
 function(D, src, ran)
-    local newD, weights, pos, outs;
+  local newD, weights, pos, outs;
 
-    newD := DigraphImmutableCopyNoWeights(D);
-    newD := DigraphMutableCopy(newD);
-    DigraphRemoveEdge(newD, src, ran);
-    MakeImmutable(newD);
+  newD := DigraphImmutableCopyNoWeights(D);
+  newD := DigraphMutableCopy(newD);
+  DigraphRemoveEdge(newD, src, ran);
+  MakeImmutable(newD);
 
-    if HasEdgeWeights(D) then
-        weights := EdgeWeightsMutableCopy(D);
-        outs := OutNeighbours(D)[src];
-        pos := Position(outs, ran);
+  if HasEdgeWeights(D) then
+      weights := EdgeWeightsMutableCopy(D);
+      outs := OutNeighbours(D)[src];
+      pos := Position(outs, ran);
 
-        if pos <> fail and pos <= Length(weights[src]) then
-            Remove(weights[src], pos);
-        fi;
+      if pos <> fail and pos <= Length(weights[src]) then
+          Remove(weights[src], pos);
+      fi;
 
-        SetEdgeWeights(newD, weights);
-    fi;
+      SetEdgeWeights(newD, weights);
+  fi;
 
-    return newD;
+  return newD;
 end);
 
 InstallMethod(DigraphRemoveEdge, "for a mutable digraph and a list",

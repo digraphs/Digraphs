@@ -179,31 +179,31 @@ InstallMethod(DigraphImmutableCopy,
 "for a digraph by out-neighbours",
 [IsDigraphByOutNeighboursRep],
 function(D)
-    local copy, weights;
-    copy := DigraphImmutableCopyNoWeights(D);
-    
-    if HasEdgeWeights(D) then
-        weights := EdgeWeightsMutableCopy(D);
-        SetEdgeWeights(copy, weights);
-    fi;
+  local copy, weights;
+  copy := DigraphImmutableCopyNoWeights(D);
+  
+  if HasEdgeWeights(D) then
+      weights := EdgeWeightsMutableCopy(D);
+      SetEdgeWeights(copy, weights);
+  fi;
 
-    return copy;
+  return copy;
 end);
 
 InstallMethod(DigraphImmutableCopyNoWeights,
 "for a digraph by out-neighbours",
 [IsDigraphByOutNeighboursRep],
 function(D)
-    local copy;
+  local copy;
 
-    copy := ConvertToImmutableDigraphNC(OutNeighboursMutableCopy(D));
-    SetDigraphVertexLabels(copy, StructuralCopy(DigraphVertexLabels(D)));
+  copy := ConvertToImmutableDigraphNC(OutNeighboursMutableCopy(D));
+  SetDigraphVertexLabels(copy, StructuralCopy(DigraphVertexLabels(D)));
 
-    if HaveEdgeLabelsBeenAssigned(D) then
-        SetDigraphEdgeLabelsNC(copy, StructuralCopy(DigraphEdgeLabelsNC(D)));
-    fi;
+  if HaveEdgeLabelsBeenAssigned(D) then
+      SetDigraphEdgeLabelsNC(copy, StructuralCopy(DigraphEdgeLabelsNC(D)));
+  fi;
 
-    return copy;
+  return copy;
 end);
 
 InstallMethod(DigraphCopySameMutability, "for a mutable digraph",
