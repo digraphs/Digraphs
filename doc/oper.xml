@@ -715,6 +715,10 @@ true
     the edge is returned.
     <P/>
 
+    Note that if <A>digraph</A> belongs to <Ref Filt="IsImmutableDigraph"/>,
+    then a new copy of <A>digraph</A> will be returned even if <A>edge</A> or 
+    <A>[src, ran]</A> does not define an edge of <A>digraph</A>.<P/>
+
     <Example><![CDATA[
 gap> D := CycleDigraph(250000);
 <immutable cycle digraph with 250000 vertices>
