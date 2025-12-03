@@ -567,13 +567,13 @@ fail
 
 #  Tests for DigraphImmutableCopy
 gap> d := EdgeWeightedDigraph([[2, 3], [3], [], []], [[5, 10], [15], [], []]);
-<immutable digraph with 4 vertices, 3 edges>
+<immutable edge-weighted digraph with 4 vertices, 3 edges>
 gap> HasEdgeWeights(d);
 true
 gap> EdgeWeights(d);
 [ [ 5, 10 ], [ 15 ], [  ], [  ] ]
 gap> im := DigraphImmutableCopy(d);
-<immutable digraph with 4 vertices, 3 edges>
+<immutable edge-weighted digraph with 4 vertices, 3 edges>
 gap> IsImmutableDigraph(im);
 true
 gap> OutNeighbours(im) = OutNeighbours(d);
@@ -587,9 +587,9 @@ Error, List Assignment: <list> must be a mutable list
 gap> EdgeWeights(d);
 [ [ 5, 10 ], [ 15 ], [  ], [  ] ]
 gap> im2 := DigraphImmutableCopy(d);
-<immutable digraph with 4 vertices, 3 edges>
+<immutable edge-weighted digraph with 4 vertices, 3 edges>
 gap> im2 := DigraphRemoveEdge(im2, 1, 3);
-<immutable digraph with 4 vertices, 2 edges>
+<immutable edge-weighted digraph with 4 vertices, 2 edges>
 gap> EdgeWeights(im2);
 [ [ 5 ], [ 15 ], [  ], [  ] ]
 gap> HasEdgeWeights(im2);

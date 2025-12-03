@@ -3326,9 +3326,9 @@ gap> DigraphVertexLabels(D);
 
 # Tests for DigraphRemoveVertex (immutable) and DigraphRemoveEdge (immutable).
 gap> d := EdgeWeightedDigraph([[2, 3], [3], [], []], [[5, 10], [15], [], []]);
-<immutable digraph with 4 vertices, 3 edges>
+<immutable edge-weighted digraph with 4 vertices, 3 edges>
 gap> imE := DigraphRemoveEdge(d, 1, 3);
-<immutable digraph with 4 vertices, 2 edges>
+<immutable edge-weighted digraph with 4 vertices, 2 edges>
 gap> IsImmutableDigraph(imE);
 true
 gap> OutNeighbours(imE);
@@ -3338,7 +3338,7 @@ gap> EdgeWeights(imE);
 gap> EdgeWeights(d);
 [ [ 5, 10 ], [ 15 ], [  ], [  ] ]
 gap> imV := DigraphRemoveVertex(d, 1);
-<immutable digraph with 3 vertices, 1 edge>
+<immutable edge-weighted digraph with 3 vertices, 1 edge>
 gap> IsImmutableDigraph(imV);
 true
 gap> OutNeighbours(imV);

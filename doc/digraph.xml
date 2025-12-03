@@ -602,7 +602,7 @@ true]]></Example>
 
     <Example><![CDATA[
 gap> D := EdgeWeightedDigraph([[2, 3], [3], []], [[2, 5], [3], []]);
-<immutable digraph with 3 vertices, 3 edges>
+<immutable edge-weighted digraph with 3 vertices, 3 edges>
 gap> HasEdgeWeights(D);
 true
 gap> D2 := DigraphImmutableCopyNoWeights(D);
