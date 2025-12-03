@@ -460,6 +460,18 @@ gap> d := EdgeWeightedDigraph([[2], [3], [1]], [[5], [10], [7]]);
 gap> DigraphMinimumCutSet(d, 1, 3);
 [ [ 1, 2 ] ]
 
+# Minimum cut set: invalid sink
+gap> d := EdgeWeightedDigraph([[1, 2], []], [[5, 10], []]);
+<immutable edge-weighted digraph with 2 vertices, 2 edges>
+gap> DigraphMinimumCutSet(d, 1, 5);
+Error, <t> must be a vertex of <D>,
+
+# Minimum cut set: source = dest
+gap> d := EdgeWeightedDigraph([[2], []], [[5], []]);
+<immutable edge-weighted digraph with 2 vertices, 1 edge>
+gap> DigraphMinimumCutSet(d, 1, 1);
+Error, <s> and <t> must be distinct
+
 #############################################################################
 # 6. Random edge-weighted digraphs
 #############################################################################
