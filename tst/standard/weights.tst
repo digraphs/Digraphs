@@ -399,7 +399,7 @@ gap> DigraphMinimumCut(d, 5, 2);
 Error, <s> must be a vertex of <D>,
 
 # Minimum cut: invalid sink
-ap> d := EdgeWeightedDigraph([[1, 2], []], [[5, 10], []]);
+gap> d := EdgeWeightedDigraph([[1, 2], []], [[5, 10], []]);
 <immutable edge-weighted digraph with 2 vertices, 2 edges>
 gap> DigraphMinimumCut(d, 1, 5);
 Error, <t> must be a vertex of <D>,
