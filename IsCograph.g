@@ -8,7 +8,7 @@
 # 145(2). 183-197. https://doi.org/10.1016/j.dam.2004.01.011.
 
 IsCograph := function(D)
-  local verts, P, origin, adj, part, neighbours, used_parts, unused_parts,
+  local verts, P, origin, adj, part, used_parts, unused_parts,
   k, M, p, m, ma, j, n, v, zl, zr, new_P, t, current_part, zrpart,
   pivot, zlpart, upd_m, pivotset, sigma, succz, precz, z, N_z, N_precz,
   N_succz, options, list, subpart;
@@ -39,18 +39,18 @@ IsCograph := function(D)
     while ForAll(P, part -> Length(part) <= 1) = false do
         k := PositionProperty(P, part -> origin in part);
         if Length(P[k]) > 1 then
-            part := Remove(P, k);
-            neighbours := OutNeighboursOfVertex(D, origin);
-            part := [Filtered(neighbours, p -> p in part), [origin],
-            Difference(part, Union([origin], neighbours))];
+            part := [Filtered(OutNeighboursOfVertex(D, origin), p -> p in P[k]), 
+            [origin], Difference(P[k], Union([origin], OutNeighboursOfVertex
+            (D, origin)))];
             unused_parts := [part[1], part[3]];
             used_parts := [origin];
+            Remove(P,k);
             for p in Filtered(part, u -> u <> []) do
                 Add(P, p, k);
             od;
         fi;
 
-    # Procedure 3
+        # Procedure 3
         new_P := ShallowCopy(P);
         # while we have unused parts, pick an unused part, set an unused pivot
         # and refine with rule 2 using the neighbours of the pivot
@@ -66,6 +66,8 @@ IsCograph := function(D)
             fi;
 
             # Procedure 4
+            # M is the set of parts strictly intersected by the
+            # neighbourhood of the pivot
             M := [];
             current_part := ShallowCopy(new_P[PositionProperty(new_P,
             part -> pivot in part)]);
@@ -80,22 +82,29 @@ IsCograph := function(D)
                     Add(M, p);
                 fi;
             od;
+            # if we have parts to refine, do so
             if M <> [] then
+                # for each part in M, split into those in pivot set
+                # and those not
                 for m in M do
                     ma := Filtered(m, p -> p in pivotset);
                     upd_m := [ma, Difference(m, ma)];
                     for t in Filtered(upd_m, x -> x <> []) do
                         Add(new_P, t, k);
                     od;
+                    # if our part is unused, mark the new parts as unused
+                    # and mark this one as used
                     if m in unused_parts then
                         Remove(unused_parts, Position(unused_parts, m));
                         if not ma in unused_parts and ma <> [] then
                             Add(unused_parts, ma);
                         fi;
-                        if not Difference(m, ma) in unused_parts and 
+                        if not Difference(m, ma) in unused_parts and
                         Difference(m, ma) <> [] then
                             Add(unused_parts, Difference(m, ma));
                         fi;
+                    # otherwise the new subpart not containing the pivot
+                    # is unused
                     else
                         if Minimum(m) in upd_m[1] then
                             Add(unused_parts, upd_m[2]);
@@ -111,9 +120,9 @@ IsCograph := function(D)
                 Remove(unused_parts, Position(unused_parts, current_part));
             fi;
             Add(used_parts, current_part);
-        od;   
+        od;
         P := ShallowCopy(new_P);
-        # consider the pivots either side of origin 
+        # consider the pivots either side of origin
         zlpart := PositionProperty(P, part -> Length(part) > 1
         and Position(P, [origin]) > Position(P, part));
         zrpart := PositionProperty(P, part -> Length(part) > 1
@@ -130,7 +139,7 @@ IsCograph := function(D)
                 zr := ShallowCopy(Minimum(P[zrpart]));
                 origin := ShallowCopy(zr);
             fi;
-        # if both exist, if they are adjacent in G, set 
+        # if both exist, if they are adjacent in G, set
         # origin to be the left pivot, else the right pivot
         else
             zl := ShallowCopy(Minimum(P[zlpart]));
@@ -156,14 +165,14 @@ IsCograph := function(D)
   # move left to right
   z := sigma[2];
   while z <> Length(verts) + 1 do
-  # calculate neighbours of z, predecessor and 
-  # successor
+    # calculate neighbours of z, predecessor and
+    # successor
     succz := sigma[Position(sigma, z) + 1];
     precz := sigma[Position(sigma, z) - 1];
     N_z := Filtered(sigma, n -> n in
     OutNeighboursOfVertex(D, z));
-  # deal with cases where predecessor or 
-  # successor is a marker
+    # deal with cases where predecessor or
+    # successor is a marker
     if precz <> 0 then
       N_precz := Filtered(sigma, n -> n in
       OutNeighboursOfVertex(D, precz));
@@ -171,18 +180,18 @@ IsCograph := function(D)
       N_precz := [0];
     fi;
     if succz <> Length(verts) + 1 then
-      N_succz := Filtered(sigma, n -> n in 
+      N_succz := Filtered(sigma, n -> n in
       OutNeighboursOfVertex(D, succz));
     else
       N_succz := [0];
     fi;
-  # if z shares a neighbourhood with predecessor or successor,
-  # remove the predecessor and move right
+    # if z shares a neighbourhood with predecessor or successor,
+    # remove the predecessor and move right
     if N_z = N_precz or Union(N_z, [z]) =
-    Union(N_precz, [precz]) then
+      Union(N_precz, [precz]) then
       Remove(sigma, Position(sigma, precz));
     elif N_z = N_succz or Union(N_z, [z]) =
-    Union(N_succz, [succz]) then
+      Union(N_succz, [succz]) then
       z := succz;
       Remove(sigma, Position(sigma, precz) + 1);
     else
