@@ -83,7 +83,7 @@ InstallMethod(UnitEdgeWeightedDigraph, "for a digraph",
 [IsDigraph],
 function(D)
   local x, unitweights;
-  unitweights := List(DigraphVertices(D), x -> 
+  unitweights := List(DigraphVertices(D), x ->
   ListWithIdenticalEntries(OutDegreeOfVertex(D, x), 1));
   return(EdgeWeightedDigraph(D, unitweights));
 end);
