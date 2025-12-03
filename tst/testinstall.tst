@@ -542,11 +542,11 @@ gap> AutomorphismGroup(D)
 true
 
 # UnitEdgeWeightedDigraph
-gap> D := UnitEdgeWeightedDigraph(Digraph([[2],[1,3],[1]]));
+gap> D := UnitEdgeWeightedDigraph(Digraph([[2], [1, 3], [1]]));
 <immutable edge-weighted digraph with 3 vertices, 4 edges>
 gap> EdgeWeights(D);
 [ [ 1 ], [ 1, 1 ], [ 1 ] ]
-gap> D := UnitEdgeWeightedDigraph(Digraph([[3,4],[1,3,4],[2,4],[1,2,3]]));
+gap> D := UnitEdgeWeightedDigraph(Digraph([[3, 4], [1, 3, 4], [2, 4], [1, 2, 3]]));
 <immutable edge-weighted digraph with 4 vertices, 10 edges>
 gap> EdgeWeights(D);
 [ [ 1, 1 ], [ 1, 1, 1 ], [ 1, 1 ], [ 1, 1, 1 ] ]
