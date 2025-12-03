@@ -1,15 +1,15 @@
 # Function that identifies a cograph from a symmetric digraph
 
-# Created from the algorithm described in the paper "A Simple 
+# Created from the algorithm described in the paper "A Simple
 # Linear Time Recognition Algorithm for Cographs"
 
-# Habib, M & Paul, C & Viennot (2005). A Simple Linear Time 
-# Recognition Algorithm for Cographs. Discrete Applied Mathematics. 
+# Habib, M & Paul, C & Viennot (2005). A Simple Linear Time
+# Recognition Algorithm for Cographs. Discrete Applied Mathematics.
 # 145(2). 183-197. https://doi.org/10.1016/j.dam.2004.01.011.
 
 IsCograph := function(D)
-  local verts, P, origin, adj, part, neighbours, used_parts, unused_parts, 
-  k, M, p, m, ma, j, n, v, zl, zr, prevorigin, new_P, t, current_part, zrpart, 
+  local verts, P, origin, adj, part, neighbours, used_parts, unused_parts,
+  k, M, p, m, ma, j, n, v, zl, zr, new_P, t, current_part, zrpart,
   pivot, zlpart, upd_m, pivotset, sigma, succz, precz, z, N_z, N_precz,
   N_succz, options, list, subpart;
 
@@ -21,24 +21,27 @@ IsCograph := function(D)
     verts := DigraphVertices(D);
     P := [verts];
 
-    # a graph with fewer than 4 vertices cannot contain a P4 graph
+    # a graph with fewer than 4 vertices cannot contain P4 graph
     if Length(verts) < 4 then
         return true;
     fi;
 
+    # set origin to be a non-isolated or universal vertex
     origin := 1;
     adj := OutNeighboursOfVertex(D, origin);
     if Length(adj) = 0 or Length(adj) = Length(verts) - 1 then
-        return IsCograph(InducedSubdigraph(D, Filtered(verts, v -> v <> origin)));
+        return IsCograph(InducedSubdigraph(D, Filtered(verts, v ->
+        v <> origin)));
     fi;
 
-    # Algorithm 3: Partition Refinement
+    # Algorithm 2: Partition Refinement
+    # while there exist non-singleton parts, refine using rule 1
     while ForAll(P, part -> Length(part) <= 1) = false do
         k := PositionProperty(P, part -> origin in part);
         if Length(P[k]) > 1 then
             part := Remove(P, k);
             neighbours := OutNeighboursOfVertex(D, origin);
-            part := [Filtered(neighbours, p -> p in part), [origin], 
+            part := [Filtered(neighbours, p -> p in part), [origin],
             Difference(part, Union([origin], neighbours))];
             unused_parts := [part[1], part[3]];
             used_parts := [origin];
@@ -49,10 +52,8 @@ IsCograph := function(D)
 
     # Procedure 3
         new_P := ShallowCopy(P);
-        if ForAll(new_P, part -> Length(part) <= 1) = true then
-         break;
-        fi;
-
+        # while we have unused parts, pick an unused part, set an unused pivot
+        # and refine with rule 2 using the neighbours of the pivot
         while Length(Filtered(unused_parts, u -> u <> [])) > 0 do
             options := Filtered(unused_parts, part -> Length(part) > 0);
             list := List(options, j -> Minimum(j));
@@ -66,20 +67,19 @@ IsCograph := function(D)
 
             # Procedure 4
             M := [];
-            current_part := ShallowCopy(new_P[PositionProperty(new_P, 
+            current_part := ShallowCopy(new_P[PositionProperty(new_P,
             part -> pivot in part)]);
-            pivotset := OutNeighboursOfVertex(D, pivot); 
+            pivotset := OutNeighboursOfVertex(D, pivot);
 
             for p in Difference(new_P, [current_part]) do
-                if Intersection(p, pivotset) <> [] and 
-                Intersection(p, pivotset) <> p 
+                if Intersection(p, pivotset) <> [] and
+                Intersection(p, pivotset) <> p
                 and Intersection(p, pivotset) <> [origin] then
                     k := ShallowCopy(Position(new_P, p));
                     Remove(new_P, k);
                     Add(M, p);
                 fi;
             od;
-    
             if M <> [] then
                 for m in M do
                     ma := Filtered(m, p -> p in pivotset);
@@ -93,7 +93,7 @@ IsCograph := function(D)
                             Add(unused_parts, ma);
                         fi;
                         if not Difference(m, ma) in unused_parts and 
-                        Difference(m,ma) <> [] then
+                        Difference(m, ma) <> [] then
                             Add(unused_parts, Difference(m, ma));
                         fi;
                     else
@@ -110,39 +110,41 @@ IsCograph := function(D)
             if current_part in unused_parts then
                 Remove(unused_parts, Position(unused_parts, current_part));
             fi;
-            Add(used_parts, current_part); 
-        od;
-        
+            Add(used_parts, current_part);
+        od;   
         P := ShallowCopy(new_P);
-
-        zlpart := PositionProperty(P, part -> Length(part) > 1 
+        # consider the pivots either side of origin 
+        zlpart := PositionProperty(P, part -> Length(part) > 1
         and Position(P, [origin]) > Position(P, part));
-        zrpart := PositionProperty(P, part -> Length(part) > 1 
+        zrpart := PositionProperty(P, part -> Length(part) > 1
         and Position(P, [origin]) < Position(P, part));
-
+        # if there is no part on rhs or lhs, consider
+        # only the existing ones
         if zlpart = fail or zrpart = fail then
             if zlpart = fail and zrpart = fail then
                 continue;
-            elif zrpart = fail then 
+            elif zrpart = fail then
                 zl := ShallowCopy(Minimum(P[zlpart]));
                 origin := ShallowCopy(zl);
             else
                 zr := ShallowCopy(Minimum(P[zrpart]));
                 origin := ShallowCopy(zr);
             fi;
+        # if both exist, if they are adjacent in G, set 
+        # origin to be the left pivot, else the right pivot
         else
             zl := ShallowCopy(Minimum(P[zlpart]));
             zr := ShallowCopy(Minimum(P[zrpart]));
             if zl in OutNeighboursOfVertex(D, zr) then
                 origin := ShallowCopy(zl);
-            else 
+            else
                 origin := ShallowCopy(zr);
             fi;
         fi;
     od;
-  
-  # Algorithm 5: Recognition Test
 
+  # Algorithm 5: Recognition Test
+  # add markers to either end of permutation
   sigma := [0];
   for p in P do
     for v in p do
@@ -150,14 +152,20 @@ IsCograph := function(D)
     od;
   od;
   Add(sigma, Length(verts) + 1);
+
+  # move left to right
   z := sigma[2];
   while z <> Length(verts) + 1 do
+  # calculate neighbours of z, predecessor and 
+  # successor
     succz := sigma[Position(sigma, z) + 1];
     precz := sigma[Position(sigma, z) - 1];
-    N_z := Filtered(sigma, n -> n in 
+    N_z := Filtered(sigma, n -> n in
     OutNeighboursOfVertex(D, z));
+  # deal with cases where predecessor or 
+  # successor is a marker
     if precz <> 0 then
-      N_precz := Filtered(sigma, n -> n in 
+      N_precz := Filtered(sigma, n -> n in
       OutNeighboursOfVertex(D, precz));
     else
       N_precz := [0];
@@ -168,10 +176,12 @@ IsCograph := function(D)
     else
       N_succz := [0];
     fi;
-    if N_z = N_precz or Union(N_z, [z]) = 
+  # if z shares a neighbourhood with predecessor or successor,
+  # remove the predecessor and move right
+    if N_z = N_precz or Union(N_z, [z]) =
     Union(N_precz, [precz]) then
       Remove(sigma, Position(sigma, precz));
-    elif N_z = N_succz or Union(N_z, [z]) = 
+    elif N_z = N_succz or Union(N_z, [z]) =
     Union(N_succz, [succz]) then
       z := succz;
       Remove(sigma, Position(sigma, precz) + 1);
@@ -179,5 +189,7 @@ IsCograph := function(D)
       z := succz;
     fi;
   od;
-  return Length(Difference(sigma, [0, Length(verts)+1])) = 1;
+  # continue until we hit end marker
+  # if only markers remain, G is a cograph
+  return Length(Difference(sigma, [0, Length(verts) + 1])) = 1;
 end;
