@@ -134,6 +134,18 @@ gap> M := DigraphMutableCopy(D);;
 gap> M ^ p = OnDigraphs(M, p);
 true
 
+# DigraphRemoveAllEdges: for a digraph
+gap> gr2 := Digraph(IsMutableDigraph, [[2, 3], [3], [4], []]);
+<mutable digraph with 4 vertices, 4 edges>
+gap> DigraphRemoveAllEdges(gr2);
+<mutable empty digraph with 4 vertices>
+gap> gr3 := Digraph(IsMutableDigraph, [[], [], [], []]);
+<mutable empty digraph with 4 vertices>
+gap> DigraphRemoveAllEdges(gr3);
+<mutable empty digraph with 4 vertices>
+gap> OutNeighbours(gr3);
+[ [  ], [  ], [  ], [  ] ]
+
 #  OnDigraphs: for a digraph and a perm
 gap> gr := Digraph([[2], [1], [3]]);
 <immutable digraph with 3 vertices, 3 edges>
@@ -2845,6 +2857,21 @@ rec( idom := [ fail ], preorder := [ 1 ] )
 gap> DominatorTree(D, 6);
 rec( idom := [ ,,,,, fail ], preorder := [ 6 ] )
 
+# DigraphGetNeighbourhood
+gap> D := Digraph([[2, 3, 4], [1], [], []]);;
+gap> DigraphGetNeighbourhood(D, [1]);
+[ 2, 3, 4 ]
+gap> DigraphGetNeighbourhood(D, [1, 2]);
+[ 3, 4 ]
+gap> D := Digraph([[2, 3, 4], [], [], []]);;
+gap> DigraphGetNeighbourhood(D, [2]);
+[  ]
+gap> D := Digraph([[2], [3], [4], [1]]);;
+gap> DigraphGetNeighbourhood(D, [1]);
+[ 2 ]
+gap> DigraphGetNeighbourhood(D, [1, 3]);
+[ 2, 4 ]
+
 # IsDigraphPath
 gap> D := Digraph(IsMutableDigraph, Combinations([1 .. 5]), IsSubset);
 <mutable digraph with 32 vertices, 243 edges>
@@ -3323,6 +3350,24 @@ gap> DigraphEdges(D);
   [ 5, 4 ] ]
 gap> DigraphVertexLabels(D);
 [ 1, 2, 3, 6, [ 4, 5 ] ]
+
+# DigraphDominatingSet
+gap> d := Digraph([[2, 3], [2, 3], [1, 2, 3]]);;
+gap> p := DigraphDominatingSet(d);;
+gap> DigraphVertices(d) = Union(DigraphGetNeighbourhood(d, p), p);
+true
+gap> d := Digraph([[2, 4], [3], [1, 5], [3], [4]]);;
+gap> p := DigraphDominatingSet(d);;
+gap> DigraphVertices(d) = Union(DigraphGetNeighbourhood(d, p), p);
+true
+gap> D := Digraph([[1, 2, 3, 4, 5], [1, 2, 3, 4, 5], [1, 2, 3, 4, 5], [1, 2, 3, 4, 5], [1, 2, 3, 4, 5]]);;
+gap> p := DigraphDominatingSet(d);;
+gap> DigraphVertices(d) = Union(DigraphGetNeighbourhood(d, p), p);
+true
+gap> D := RandomDigraph(1);;
+gap> p := DigraphDominatingSet(d);;
+gap> DigraphVertices(d) = Union(DigraphGetNeighbourhood(d, p), p);
+true
 
 #
 gap> DIGRAPHS_StopTest();

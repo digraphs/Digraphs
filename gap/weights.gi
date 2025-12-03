@@ -773,6 +773,95 @@ function(D, start, destination)
 end);
 
 #############################################################################
+# Digraph Edge Connectivity
+#############################################################################
+
+# Algorithms constructed off the algorithms detailed in:
+# https://www.cse.msu.edu/~cse835/Papers/Graph_connectivity_revised.pdf
+# Each Algorithm uses a different method to decrease the time complexity,
+# of calculating Edge Connectivity, though all make use of DigraphMaximumFlow()
+# due to the Max-Flow, Min-Cut Theorem
+
+# Algorithm 1: Calculating the Maximum Flow of every possible source and sink
+# Algorithm 2: Calculating the Maximum Flow to all sinks of an arbitrary source
+# Algorithm 3: Finding Maximum Flow within the non-leaves of a Spanning Tree
+# Algorithm 4: Constructing a spanning tree with a high number of leaves
+# Algorithm 5: Using the spanning tree^ to find Maximum Flow within non-leaves
+# Algorithm 6: Finding Maximum Flow within a dominating set of the digraph
+# Algorithm 7: Constructing a dominating set for use in Algorithm 6
+
+# Algorithms 4-7 are used below:
+
+# Digraph EdgeConnectivity calculated with Dominating Sets (Algorithm 6-7)
+InstallMethod(DigraphEdgeConnectivity, "for a digraph",
+[IsDigraph],
+function(digraph)
+  # Form an identical but edge weighted digraph with all edge weights as 1:
+  local weights, i, u, v, w, neighbourhood, EdgeD,
+    maxFlow, min, sum, a, b, V, added, st, non_leaf, max,
+    notAddedNeighbours, notadded, NextVertex, NeighboursV,
+    neighbour, Edges, D, VerticesLeft, VerticesED;
+
+  if DigraphNrVertices(digraph) = 1 then
+    return 0;
+  fi;
+
+  if DigraphNrStronglyConnectedComponents(digraph) > 1 then
+    return 0;
+  fi;
+
+  weights := List([1 .. DigraphNrVertices(digraph)],
+  x -> List([1 .. Length(OutNeighbours(digraph)[x])],
+  y -> 1));
+  EdgeD := EdgeWeightedDigraph(digraph, weights);
+
+  min := -1;
+
+  # Algorithm 7: Creating a dominating set of the digraph
+  D := DigraphDominatingSet(digraph);
+
+  # Algorithm 6: Using the dominating set created to determine the Maximum Flow
+
+  if Length(D) > 1 then
+
+    v := D[1];
+    for i in [2 .. Length(D)] do
+      w := D[i];
+      a := DigraphMaximumFlow(EdgeD, v, w)[v];
+      b := DigraphMaximumFlow(EdgeD, w, v)[w];
+
+      sum := Minimum(Sum(a), Sum(b));
+      if (sum < min or min = -1) then
+        min := sum;
+      fi;
+    od;
+
+  else
+    # If the dominating set of EdgeD is of Length 1,
+    # the above algorithm will not work
+    # Revert to iterating through all vertices of the original digraph
+
+    u := 1;
+
+    for v in [2 .. DigraphNrVertices(EdgeD)] do
+      a := DigraphMaximumFlow(EdgeD, u, v)[u];
+      b := DigraphMaximumFlow(EdgeD, v, u)[v];
+
+      sum := Minimum(Sum(a), Sum(b));
+      if (sum < min or min = -1) then
+        min := sum;
+      fi;
+
+    od;
+  fi;
+
+  return Minimum(min,
+    Minimum(Minimum(OutDegrees(EdgeD)),
+    Minimum(InDegrees(EdgeD))));
+
+end);
+
+#############################################################################
 # 6. Random edge weighted digraphs
 #############################################################################
 
