@@ -9,7 +9,7 @@
 
 IsCograph := function(D)
   local verts, P, origin, adj, part, used_parts, unused_parts,
-  k, M, p, m, ma, j, n, v, zl, zr, new_P, t, current_part, zrpart,
+  k, M, p, m, ma, n, v, zl, zr, new_P, t, current_part, zrpart,
   pivot, zlpart, upd_m, pivotset, sigma, succz, precz, z, N_z, N_precz,
   N_succz, options, list, subpart;
 
