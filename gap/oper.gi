@@ -141,7 +141,7 @@ function(D, u)
   local newD, weights;
 
   if u > DigraphNrVertices(D) then
-      return D;
+    return D;
   fi;
 
   newD := DigraphImmutableCopyNoWeights(D);
@@ -150,13 +150,13 @@ function(D, u)
   MakeImmutable(newD);
 
   if HasEdgeWeights(D) then
-      weights := EdgeWeightsMutableCopy(D);
+    weights := EdgeWeightsMutableCopy(D);
 
-      if u <= Length(weights) then
-          Remove(weights, u);
-      fi;
+    if u <= Length(weights) then
+      Remove(weights, u);
+    fi;
 
-      SetEdgeWeights(newD, weights);
+    SetEdgeWeights(newD, weights);
   fi;
 
   return newD;
@@ -276,15 +276,15 @@ function(D, src, ran)
   MakeImmutable(newD);
 
   if HasEdgeWeights(D) then
-      weights := EdgeWeightsMutableCopy(D);
-      outs := OutNeighbours(D)[src];
-      pos := Position(outs, ran);
+    weights := EdgeWeightsMutableCopy(D);
+    outs := OutNeighbours(D)[src];
+    pos := Position(outs, ran);
 
-      if pos <> fail and pos <= Length(weights[src]) then
-          Remove(weights[src], pos);
-      fi;
+    if pos <> fail and pos <= Length(weights[src]) then
+        Remove(weights[src], pos);
+    fi;
 
-      SetEdgeWeights(newD, weights);
+    SetEdgeWeights(newD, weights);
   fi;
 
   return newD;

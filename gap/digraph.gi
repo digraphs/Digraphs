@@ -183,8 +183,8 @@ function(D)
   copy := DigraphImmutableCopyNoWeights(D);
 
   if HasEdgeWeights(D) then
-      weights := EdgeWeightsMutableCopy(D);
-      SetEdgeWeights(copy, weights);
+    weights := EdgeWeightsMutableCopy(D);
+    SetEdgeWeights(copy, weights);
   fi;
 
   return copy;
@@ -200,7 +200,7 @@ function(D)
   SetDigraphVertexLabels(copy, StructuralCopy(DigraphVertexLabels(D)));
 
   if HaveEdgeLabelsBeenAssigned(D) then
-      SetDigraphEdgeLabelsNC(copy, StructuralCopy(DigraphEdgeLabelsNC(D)));
+    SetDigraphEdgeLabelsNC(copy, StructuralCopy(DigraphEdgeLabelsNC(D)));
   fi;
 
   return copy;
