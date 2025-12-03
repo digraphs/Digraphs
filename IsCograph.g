@@ -1,13 +1,17 @@
 # Function that identifies a cograph from a symmetric digraph
-# Created from the algorithm described in the paper "A Simple Linear Time Recognition Algorithm for Cographs"
-# Habib, M & Paul, C & Viennot (2005). A Simple Linear Time Recognition Algorithm for Cographs. Discrete Applied Mathematics. 145(2). 183-197. https://doi.org/10.1016/j.dam.2004.01.011.
+
+# Created from the algorithm described in the paper "A Simple 
+# Linear Time Recognition Algorithm for Cographs"
+
+# Habib, M & Paul, C & Viennot (2005). A Simple Linear Time 
+# Recognition Algorithm for Cographs. Discrete Applied Mathematics. 
+# 145(2). 183-197. https://doi.org/10.1016/j.dam.2004.01.011.
 
 IsCograph := function(D)
-  local verts, P, origin, adj, part, neighbours, n_x,
-        used_parts, unused_parts, unused_parts_refined,
-        k, y, N_y, M, p, m, ma, j,n,v,
-        zl, zr, prevorigin, new_P, t, current_part, zrpart, pivot,
-        upd_part, zlpart, upd_m, pivotset, sigma, succz, precz, z, N_z, N_precz, N_succz, options, list, subpart;
+  local verts, P, origin, adj, part, neighbours, used_parts, unused_parts, 
+  k, M, p, m, ma, j, n, v, zl, zr, prevorigin, new_P, t, current_part, zrpart, 
+  pivot, zlpart, upd_m, pivotset, sigma, succz, precz, z, N_z, N_precz,
+  N_succz, options, list, subpart;
 
     # input must be symmetric
     if not IsSymmetricDigraph(D) then;
@@ -34,7 +38,8 @@ IsCograph := function(D)
         if Length(P[k]) > 1 then
             part := Remove(P, k);
             neighbours := OutNeighboursOfVertex(D, origin);
-            part := [Filtered(neighbours, p -> p in part), [origin], Difference(part, Union([origin], neighbours))];
+            part := [Filtered(neighbours, p -> p in part), [origin], 
+            Difference(part, Union([origin], neighbours))];
             unused_parts := [part[1], part[3]];
             used_parts := [origin];
             for p in Filtered(part, u -> u <> []) do
@@ -61,11 +66,14 @@ IsCograph := function(D)
 
             # Procedure 4
             M := [];
-            current_part := ShallowCopy(new_P[PositionProperty(new_P, part -> pivot in part)]);
+            current_part := ShallowCopy(new_P[PositionProperty(new_P, 
+            part -> pivot in part)]);
             pivotset := OutNeighboursOfVertex(D, pivot); 
 
             for p in Difference(new_P, [current_part]) do
-                if Intersection(p, pivotset) <> [] and Intersection(p, pivotset) <> p and Intersection(p, pivotset) <> [origin] then
+                if Intersection(p, pivotset) <> [] and 
+                Intersection(p, pivotset) <> p 
+                and Intersection(p, pivotset) <> [origin] then
                     k := ShallowCopy(Position(new_P, p));
                     Remove(new_P, k);
                     Add(M, p);
@@ -84,7 +92,8 @@ IsCograph := function(D)
                         if not ma in unused_parts and ma <> [] then
                             Add(unused_parts, ma);
                         fi;
-                        if not Difference(m, ma) in unused_parts and Difference(m,ma) <> [] then
+                        if not Difference(m, ma) in unused_parts and 
+                        Difference(m,ma) <> [] then
                             Add(unused_parts, Difference(m, ma));
                         fi;
                     else
@@ -105,10 +114,11 @@ IsCograph := function(D)
         od;
         
         P := ShallowCopy(new_P);
-        prevorigin := ShallowCopy(origin);
 
-        zlpart := PositionProperty(P, part -> Length(part) > 1 and Position(P, [origin]) > Position(P, part));
-        zrpart := PositionProperty(P, part -> Length(part) > 1 and Position(P, [origin]) < Position(P, part));
+        zlpart := PositionProperty(P, part -> Length(part) > 1 
+        and Position(P, [origin]) > Position(P, part));
+        zrpart := PositionProperty(P, part -> Length(part) > 1 
+        and Position(P, [origin]) < Position(P, part));
 
         if zlpart = fail or zrpart = fail then
             if zlpart = fail and zrpart = fail then
@@ -140,39 +150,34 @@ IsCograph := function(D)
     od;
   od;
   Add(sigma, Length(verts) + 1);
-
   z := sigma[2];
-
   while z <> Length(verts) + 1 do
     succz := sigma[Position(sigma, z) + 1];
     precz := sigma[Position(sigma, z) - 1];
-    N_z := Filtered(sigma, n -> n in OutNeighboursOfVertex(D, z));
+    N_z := Filtered(sigma, n -> n in 
+    OutNeighboursOfVertex(D, z));
     if precz <> 0 then
-      N_precz := Filtered(sigma, n -> n in OutNeighboursOfVertex(D, precz));
+      N_precz := Filtered(sigma, n -> n in 
+      OutNeighboursOfVertex(D, precz));
     else
       N_precz := [0];
     fi;
-
     if succz <> Length(verts) + 1 then
-      N_succz := Filtered(sigma, n -> n in OutNeighboursOfVertex(D, succz));
+      N_succz := Filtered(sigma, n -> n in 
+      OutNeighboursOfVertex(D, succz));
     else
       N_succz := [0];
     fi;
-
-    if N_z = N_precz or Union(N_z, [z]) = Union(N_precz, [precz]) then
+    if N_z = N_precz or Union(N_z, [z]) = 
+    Union(N_precz, [precz]) then
       Remove(sigma, Position(sigma, precz));
-    elif N_z = N_succz or Union(N_z, [z]) = Union(N_succz, [succz]) then
+    elif N_z = N_succz or Union(N_z, [z]) = 
+    Union(N_succz, [succz]) then
       z := succz;
       Remove(sigma, Position(sigma, precz) + 1);
     else
       z := succz;
     fi;
   od;
-
-  if Length(Difference(sigma, [0, Length(verts)+1])) = 1 then
-    return true;
-  else
-    return false;
-  fi;
- 
+  return Length(Difference(sigma, [0, Length(verts)+1])) = 1;
 end;
