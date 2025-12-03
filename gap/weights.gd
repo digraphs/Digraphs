@@ -46,7 +46,6 @@ DeclareOperation("DigraphMinimumCutSet",
 
 # Digraph Edge Connectivity
 DeclareOperation("DigraphEdgeConnectivity", [IsDigraph]);
-DeclareOperation("DigraphEdgeConnectivityDS", [IsDigraph]);
 
 # 6. Random edge weighted digraphs
 DeclareOperation("RandomUniqueEdgeWeightedDigraph", [IsPosInt]);
