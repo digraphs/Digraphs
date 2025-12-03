@@ -301,6 +301,35 @@ gap> DigraphMinimumCut(g, 1, 3);
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="DigraphMinimumCutSet">
+<ManSection>
+  <Attr Name="DigraphMinimumCutSet" Arg="digraph, s, t"/>
+  <Returns>A list of lists integers.</Returns>
+  <Description>
+    If <A>digraph</A> is an edge-weighted digraph with distinct vertices <A>s</A>
+    and <A>t</A>, this function returns a list of lists of integers representing the
+    minimum <M>s</M>-<M>t</M> cut of <A>digraph</A>. <P/>
+
+    An <E><M>s</M>-<M>t</M> cut</E> is a partition of the vertices <M>\{ S, T \}</M>
+    such that <A>s</A> is in <M>S</M> and <A>t</A> is in <M>T</M>. The <E>cut set</E>
+    corresponding to this cut is the set of edges whose source is in <M>S</M> and
+    whose range is in <M>T</M>. The minimum <M>s</M>-<M>t</M> cut set is
+    the <M>s</M>-<M>t</M> cut set such that the sum of the weights of the edges in
+    the cut set is minimal.<P/>
+
+    This attribute is computed by using <Ref Func="DigraphMinimumCut"/>.<P/>
+
+    See <Ref Attr="EdgeWeights" Func="EdgeWeightedDigraph"/>.
+    <Example><![CDATA[
+gap> g := EdgeWeightedDigraph([[2, 2], [3], []], [[3, 2], [1], []]);
+<immutable multidigraph with 3 vertices, 3 edges>
+gap> DigraphMinimumCutSet(g, 1, 3);
+[ [ 2, 3 ] ]
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="RandomUniqueEdgeWeightedDigraph">
 <ManSection>
   <Oper Name="RandomUniqueEdgeWeightedDigraph" Arg="[filt, ]n[, p]"/>

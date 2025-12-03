@@ -33,6 +33,7 @@
     <#Include Label="EdgeWeightedDigraphShortestPath">
     <#Include Label="DigraphMaximumFlow">
     <#Include Label="DigraphMinimumCut">
+    <#Include Label="DigraphMinimumCutSet">
     <#Include Label="RandomUniqueEdgeWeightedDigraph">
   </Section>
 
