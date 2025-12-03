@@ -39,12 +39,14 @@ IsCograph := function(D)
     while ForAll(P, part -> Length(part) <= 1) = false do
         k := PositionProperty(P, part -> origin in part);
         if Length(P[k]) > 1 then
-            part := [Filtered(OutNeighboursOfVertex(D, origin), p -> p in P[k]), 
-            [origin], Difference(P[k], Union([origin], OutNeighboursOfVertex
-            (D, origin)))];
+            part := [Filtered(OutNeighboursOfVertex(D, origin), p -> p
+            in P[k]), [origin], Difference(P[k], Union([origin],
+            OutNeighboursOfVertex(D, origin)))];
+            # make note of unused and used parts
             unused_parts := [part[1], part[3]];
             used_parts := [origin];
-            Remove(P,k);
+            # replace the used part with our new refinement
+            Remove(P, k);
             for p in Filtered(part, u -> u <> []) do
                 Add(P, p, k);
             od;
@@ -58,7 +60,8 @@ IsCograph := function(D)
             options := Filtered(unused_parts, part -> Length(part) > 0);
             list := List(options, j -> Minimum(j));
             subpart := unused_parts[Position(list, Minimum(list))];
-
+            # pick our pivot to be either an unused vertex in the subpart,
+            # or if none exist, any vertex in the subpart
             if Filtered(subpart, u -> u in used_parts) = [] then
                 pivot := Minimum(subpart);
             else
@@ -72,7 +75,8 @@ IsCograph := function(D)
             current_part := ShallowCopy(new_P[PositionProperty(new_P,
             part -> pivot in part)]);
             pivotset := OutNeighboursOfVertex(D, pivot);
-
+            # Add to M any part that is strictly intersected
+            # by pivotset
             for p in Difference(new_P, [current_part]) do
                 if Intersection(p, pivotset) <> [] and
                 Intersection(p, pivotset) <> p
@@ -188,10 +192,10 @@ IsCograph := function(D)
     # if z shares a neighbourhood with predecessor or successor,
     # remove the predecessor and move right
     if N_z = N_precz or Union(N_z, [z]) =
-      Union(N_precz, [precz]) then
+        Union(N_precz, [precz]) then
       Remove(sigma, Position(sigma, precz));
     elif N_z = N_succz or Union(N_z, [z]) =
-      Union(N_succz, [succz]) then
+        Union(N_succz, [succz]) then
       z := succz;
       Remove(sigma, Position(sigma, precz) + 1);
     else
