@@ -277,14 +277,15 @@ gap> Sum(flow[1]);
   <Attr Name="DigraphMinimumCut" Arg="digraph, s, t"/>
   <Returns>A list of lists of integers.</Returns>
   <Description>
-    If <A>digraph</A> is an edge-weighted digraph with distinct vertices <A>s</A> and
-    <A>t</A>, this returns a list of two lists representing the components of
-    a minimal <M>s</M>-<M>t</M> cut of <A>digraph</A>. <P/>
+    If <A>digraph</A> is an edge-weighted digraph with distinct vertices <A>s</A>
+    and <A>t</A>, this function returns a list of two lists representing the
+    components of the minimum <M>s</M>-<M>t</M> cut of <A>digraph</A>. <P/>
 
-    An <E><M>s</M>-<M>t</M> cut</E> is a partition of the vertices <M>\{ S, T \}</M> such that <A>s</A> is in <M>S</M> and
-    <A>t</A> is in <M>T</M>. The <E>capacity</E> of an <M>s</M>-<M>t</M> cut is the sum of the weights of every
-    edge whose source is in <M>S</M> and whose range is in <M>T</M>. A minimum <M>s</M>-<M>t</M> cut is an <M>s</M>-<M>t</M>
-    cut whose capacity is minimal.<P/>
+    An <E><M>s</M>-<M>t</M> cut</E> is a partition of the vertices <M>\{ S, T \}</M>
+    such that <A>s</A> is in <M>S</M> and <A>t</A> is in <M>T</M>. The <E>capacity</E>
+    of an <M>s</M>-<M>t</M> cut is the sum of the weights of every edge whose source
+    is in <M>S</M> and whose range is in <M>T</M>. The minimum <M>s</M>-<M>t</M> cut is
+    the <M>s</M>-<M>t</M> cut whose capacity is minimal.<P/>
 
     This attribute is computed by using <Ref Func="DigraphMaximumFlow"/> and the
     max-cut min-flow theorem.<P/>

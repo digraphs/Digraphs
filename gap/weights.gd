@@ -40,6 +40,8 @@ DeclareOperation("DigraphMaximumFlow",
                  [IsDigraph and HasEdgeWeights, IsPosInt, IsPosInt]);
 DeclareOperation("DigraphMinimumCut",
                  [IsDigraph and HasEdgeWeights, IsPosInt, IsPosInt]);
+DeclareOperation("DigraphMinimumCutSet",
+                 [IsDigraph and HasEdgeWeights, IsPosInt, IsPosInt]);
 
 # 6. Random edge weighted digraphs
 DeclareOperation("RandomUniqueEdgeWeightedDigraph", [IsPosInt]);
