@@ -33,6 +33,7 @@
     <#Include Label="EdgeWeightedDigraphShortestPath">
     <#Include Label="DigraphMaximumFlow">
     <#Include Label="RandomUniqueEdgeWeightedDigraph">
+    <#Include Label="DigraphImmutableCopyNoWeights">
   </Section>
 
   <Section><Heading>Orders</Heading>
