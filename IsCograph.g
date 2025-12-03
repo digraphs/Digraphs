@@ -58,7 +58,7 @@ IsCograph := function(D)
         # and refine with rule 2 using the neighbours of the pivot
         while Length(Filtered(unused_parts, u -> u <> [])) > 0 do
             options := Filtered(unused_parts, part -> Length(part) > 0);
-            list := List(options, j -> Minimum(j));
+            list := List(options, Minimum);
             subpart := unused_parts[Position(list, Minimum(list))];
             # pick our pivot to be either an unused vertex in the subpart,
             # or if none exist, any vertex in the subpart
