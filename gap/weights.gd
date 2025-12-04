@@ -35,8 +35,12 @@ DeclareGlobalFunction("DIGRAPHS_Edge_Weighted_FloydWarshall");
 DeclareGlobalFunction("DIGRAPHS_Edge_Weighted_Bellman_Ford");
 DeclareGlobalFunction("DIGRAPHS_Edge_Weighted_Dijkstra");
 
-# 5. Maximum Flow
+# 5. Maximum Flow and Minimum Cut
 DeclareOperation("DigraphMaximumFlow",
+                 [IsDigraph and HasEdgeWeights, IsPosInt, IsPosInt]);
+DeclareOperation("DigraphMinimumCut",
+                 [IsDigraph and HasEdgeWeights, IsPosInt, IsPosInt]);
+DeclareOperation("DigraphMinimumCutSet",
                  [IsDigraph and HasEdgeWeights, IsPosInt, IsPosInt]);
 
 # 6. Random edge weighted digraphs

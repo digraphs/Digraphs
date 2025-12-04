@@ -638,7 +638,7 @@ function(D, source)
 end);
 
 #############################################################################
-# 5. Maximum Flow
+# 5. Maximum Flow and Minimum Cut
 #############################################################################
 
 InstallMethod(DigraphMaximumFlow, "for an edge weighted digraph",
@@ -770,6 +770,87 @@ function(D, start, destination)
   od;
 
   return flows;
+end);
+
+InstallMethod(DigraphMinimumCut, "for an edge weighted digraph",
+[IsDigraph and HasEdgeWeights, IsPosInt, IsPosInt],
+function(D, s, t)
+  local weights, outs, vertices, flow, residuals, u, v, S, T, seen, i;
+
+  # Extract important data
+  weights := EdgeWeights(D);
+  outs := OutNeighbours(D);
+  vertices := DigraphVertices(D);
+
+  # Check input
+  if s < 1 or s > Length(vertices) then
+    ErrorNoReturn("<s> must be a vertex of <D>,");
+  elif t < 1 or t > Length(vertices) then
+    ErrorNoReturn("<t> must be a vertex of <D>,");
+  elif s = t then
+    ErrorNoReturn("<s> and <t> must be distinct");
+  fi;
+
+  # Find the residual edge capacities under the maximum flow
+  flow := DigraphMaximumFlow(D, s, t);
+  residuals := weights - flow;
+
+  # Carry out a BFS to find all the vertices in the residual
+  # network which are reachable from s. This gives the minimum
+  # cut by the max-flow min-cut theorem.
+
+  S := [s];
+  seen := BlistList(DigraphVertices(D), [s]);
+  i := 1;
+  while i <= Length(S) do
+    u := S[i];
+    i := i + 1;
+    for v in [1 .. Length(outs[u])] do
+      if residuals[u][v] > 0 then
+        if not seen[outs[u][v]] then
+          Add(S, outs[u][v]);
+          seen[outs[u][v]] := true;
+        fi;
+      fi;
+    od;
+  od;
+
+  T := Difference(vertices, S);
+  return [S, T];
+end);
+
+InstallMethod(DigraphMinimumCutSet, "for an edge weighted digraph",
+[IsDigraph and HasEdgeWeights, IsPosInt, IsPosInt],
+function(D, s, t)
+  local cut, cutset, u, v, S, T;
+
+  # Check input
+  if s < 1 or s > DigraphNrVertices(D) then
+    ErrorNoReturn("<s> must be a vertex of <D>,");
+  elif t < 1 or t > DigraphNrVertices(D) then
+    ErrorNoReturn("<t> must be a vertex of <D>,");
+  elif s = t then
+    ErrorNoReturn("<s> and <t> must be distinct");
+  fi;
+
+  # Get the minimum cut
+
+  cut := DigraphMinimumCut(D, s, t);
+  S := cut[1];
+  T := cut[2];
+
+  # Compute the cut-set corresponding to the minimum cut
+
+  cutset := [];
+  for u in S do
+    for v in OutNeighbours(D)[u] do
+      if v in T then
+        Add(cutset, [u, v]);
+      fi;
+    od;
+  od;
+
+  return cutset;
 end);
 
 #############################################################################
