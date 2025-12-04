@@ -1596,6 +1596,40 @@ function(D, edges)
   return true;
 end);
 
+InstallMethod(TestHamiltonianPath, "for a digraph", [IsDigraph],
+function(D)
+    local P, edges, i;
+
+    P := HamiltonianPath(D);
+
+    if P = fail then
+        Print("HamiltonianPath returned fail.\n");
+        return false;
+    fi;
+
+    # convert vertex list to edge list
+    edges := [];
+    for i in [1 .. Length(P)-1] do
+        Add(edges, [ P[i], P[i+1] ]);
+    od;
+
+    # 2. Check if path has no repeated vertices
+    if not IsDuplicateFreeList(P) then
+        Print("FAIL: Path repeats vertices.\n");
+        return false;
+    fi;
+
+    # 3. Check if path length equals number of vertices
+    if Length(P) <> DigraphNrVertices(D) then
+        Print("FAIL: Path length is ", Length(P),
+              " but graph has ", DigraphNrVertices(D), " vertices.\n");
+        return false;
+    fi;
+
+    Print("SUCCESS: Path is a valid Hamiltonian path.\n");
+    return true;
+end);
+
 #############################################################################
 # 9.  Connectivity
 #############################################################################
