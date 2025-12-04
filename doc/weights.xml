@@ -285,7 +285,7 @@ gap> Sum(flow[1]);
     such that <A>s</A> is in <M>S</M> and <A>t</A> is in <M>T</M>. The <E>capacity</E>
     of an <M>s</M>-<M>t</M> cut is the sum of the weights of every edge whose source
     is in <M>S</M> and whose range is in <M>T</M>. The minimum <M>s</M>-<M>t</M> cut is
-    the <M>s</M>-<M>t</M> cut whose capacity is minimal.<P/>
+    the <M>s</M>-<M>t</M> cut whose capacity is the smallest possible.<P/>
 
     This attribute is computed by using <Ref Func="DigraphMaximumFlow"/> and the
     max-cut min-flow theorem.<P/>
@@ -315,7 +315,7 @@ gap> DigraphMinimumCut(g, 1, 3);
     corresponding to this cut is the set of edges whose source is in <M>S</M> and
     whose range is in <M>T</M>. The minimum <M>s</M>-<M>t</M> cut set is
     the <M>s</M>-<M>t</M> cut set such that the sum of the weights of the edges in
-    the cut set is minimal.<P/>
+    the cut set is the smallest possible.<P/>
 
     This attribute is computed by using <Ref Func="DigraphMinimumCut"/>.<P/>
 
