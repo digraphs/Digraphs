@@ -1967,8 +1967,10 @@ function(D)
           if path <> fail then
             for i in [1 .. (Length(path[1]) - 1)] do
               # remove edges corresponding to the current path
-              digraphCopy := DigraphRemoveEdge(digraphCopy,
-                [path[1][i], path[1][i + 1]]);
+              if [path[1][i], path[1][i + 1]] in DigraphEdges(digraphCopy) then
+                digraphCopy := DigraphRemoveEdge(digraphCopy,
+                  [path[1][i], path[1][i + 1]]);
+              fi;
               # add backward edges, if they are missing
               if not [path[1][i + 1], path[1][i]] in
                     DigraphEdges(digraphCopy) then
@@ -2027,8 +2029,12 @@ function(D)
     for cutEdges in permutations do
       digraphCopy := DigraphMutableCopy(pathInducedSubgraph);
       for edge in cutEdges do
-        digraphCopy := DigraphRemoveEdge(digraphCopy, edge[1], edge[2]);
-        digraphCopy := DigraphRemoveEdge(digraphCopy, edge[2], edge[1]);
+        if [edge[1], edge[2]] in DigraphEdges(digraphCopy) then
+          digraphCopy := DigraphRemoveEdge(digraphCopy, edge[1], edge[2]);
+        fi;
+        if [edge[2], edge[1]] in DigraphEdges(digraphCopy) then
+          digraphCopy := DigraphRemoveEdge(digraphCopy, edge[2], edge[1]);
+        fi;
       od;
       if not IsConnectedDigraph(digraphCopy) then
         component1 := InducedSubdigraph(D,
