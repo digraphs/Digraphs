@@ -506,7 +506,7 @@ gap> D := AsDigraph(b);
   <Description>
     Each of these operations returns a new copy of <A>digraph</A>,
     of the appropriate mutability, retaining none of the attributes or
-    properties of <A>digraph</A>. <P/>
+    properties of <A>digraph</A>, with the exception that edge weights are preserved. <P/>
 
     <C>DigraphCopy</C> is a synonym for <C>DigraphCopySameMutability</C>.
 <Example><![CDATA[
@@ -581,6 +581,35 @@ gap> IsIdenticalObj(C, D);
 true
 gap> IsMutableDigraph(D);
 true]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphImmutableCopyNoWeights">
+<ManSection>
+  <Oper Name="DigraphImmutableCopyNoWeights" Arg="digraph"/>
+  <Returns>An immutable digraph.</Returns>
+  <Description>
+    This operation returns an immutable copy of <A>digraph</A> that is
+    identical to <Ref Oper="DigraphImmutableCopy"/>, except that any edge
+    weights that <A>digraph</A> may have are not copied to the returned
+    digraph. <P/>
+
+    This can be useful when modifying the structure of a digraph with
+    <Ref Oper="DigraphRemoveVertex"/> or <Ref Oper="DigraphRemoveEdge"/>,
+    where the weights need to be updated to match the new structure,
+    rather than simply copied. <P/>
+
+    <Example><![CDATA[
+gap> D := EdgeWeightedDigraph([[2, 3], [3], []], [[2, 5], [3], []]);
+<immutable edge-weighted digraph with 3 vertices, 3 edges>
+gap> HasEdgeWeights(D);
+true
+gap> D2 := DigraphImmutableCopyNoWeights(D);
+<immutable digraph with 3 vertices, 3 edges>
+gap> HasEdgeWeights(D2);
+false
+]]></Example>
   </Description>
 </ManSection>
 <#/GAPDoc>
