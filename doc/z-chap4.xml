@@ -76,6 +76,7 @@
     <#Include Label="DigraphAbsorptionExpectedSteps">
     <#Include Label="Dominators">
     <#Include Label="DominatorTree">
+    <#Include Label="DigraphDominatingSet">
     <#Include Label="IteratorOfPaths">
     <#Include Label="DigraphAllSimpleCircuits">
     <#Include Label="DigraphLongestSimpleCircuit">
