@@ -2857,21 +2857,6 @@ rec( idom := [ fail ], preorder := [ 1 ] )
 gap> DominatorTree(D, 6);
 rec( idom := [ ,,,,, fail ], preorder := [ 6 ] )
 
-# DigraphOutNeighbourhood
-gap> D := Digraph([[2, 3, 4], [1], [], []]);;
-gap> DigraphOutNeighbourhood(D, [1]);
-[ 2, 3, 4 ]
-gap> DigraphOutNeighbourhood(D, [1, 2]);
-[ 3, 4 ]
-gap> D := Digraph([[2, 3, 4], [], [], []]);;
-gap> DigraphOutNeighbourhood(D, [2]);
-[  ]
-gap> D := Digraph([[2], [3], [4], [1]]);;
-gap> DigraphOutNeighbourhood(D, [1]);
-[ 2 ]
-gap> DigraphOutNeighbourhood(D, [1, 3]);
-[ 2, 4 ]
-
 # IsDigraphPath
 gap> D := Digraph(IsMutableDigraph, Combinations([1 .. 5]), IsSubset);
 <mutable digraph with 32 vertices, 243 edges>
@@ -3354,19 +3339,35 @@ gap> DigraphVertexLabels(D);
 # DigraphDominatingSet
 gap> d := Digraph([[2, 3], [2, 3], [1, 2, 3]]);;
 gap> p := DigraphDominatingSet(d);;
-gap> DigraphVertices(d) = Union(DigraphOutNeighbourhood(d, p), p);
+gap> neighbours := [];;
+gap> for v in p do
+> Append(neighbours, OutNeighbours(d)[v]);
+> od;
+gap> DigraphVertices(d) = Union(neighbours, p);
 true
 gap> d := Digraph([[2, 4], [3], [1, 5], [3], [4]]);;
 gap> p := DigraphDominatingSet(d);;
-gap> DigraphVertices(d) = Union(DigraphOutNeighbourhood(d, p), p);
+gap> neighbours := [];;
+gap> for v in p do
+> Append(neighbours, OutNeighbours(d)[v]);
+> od;
+gap> DigraphVertices(d) = Union(neighbours, p);
 true
 gap> D := Digraph([[1, 2, 3, 4, 5], [1, 2, 3, 4, 5], [1, 2, 3, 4, 5], [1, 2, 3, 4, 5], [1, 2, 3, 4, 5]]);;
 gap> p := DigraphDominatingSet(d);;
-gap> DigraphVertices(d) = Union(DigraphOutNeighbourhood(d, p), p);
+gap> neighbours := [];;
+gap> for v in p do
+> Append(neighbours, OutNeighbours(d)[v]);
+> od;
+gap> DigraphVertices(d) = Union(neighbours, p);
 true
 gap> D := RandomDigraph(1);;
 gap> p := DigraphDominatingSet(d);;
-gap> DigraphVertices(d) = Union(DigraphOutNeighbourhood(d, p), p);
+gap> neighbours := [];;
+gap> for v in p do
+> Append(neighbours, OutNeighbours(d)[v]);
+> od;
+gap> DigraphVertices(d) = Union(neighbours, p);
 true
 
 #
