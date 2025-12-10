@@ -155,7 +155,6 @@ DeclareOperation("IsOrderFilter", [IsDigraph, IsList]);
 DeclareOperation("Dominators", [IsDigraph, IsPosInt]);
 DeclareOperation("DominatorTree", [IsDigraph, IsPosInt]);
 DeclareOperation("DigraphDominatingSet", [IsDigraph]);
-DeclareOperation("DigraphOutNeighbourhood", [IsDigraph, IsList]);
 DeclareOperation("DigraphCycleBasis", [IsDigraph]);
 
 DeclareOperation("DigraphColourRefinement", [IsDigraph]);

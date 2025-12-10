@@ -2550,20 +2550,6 @@ function(digraph)
   return D;
 end);
 
-# For getting the neighbourhood for a given List of Vertices in a Digraph
-InstallMethod(DigraphOutNeighbourhood, "for a digraph and a List of vertices",
-[IsDigraph, IsList],
-function(digraph, vertices)
-  local v, neighbourhood;
-  neighbourhood := [];
-
-  for v in vertices do
-    Append(neighbourhood, OutNeighbours(digraph)[v]);
-  od;
-
-  return Difference(Unique(neighbourhood), vertices);
-end);
-
 # Computes the fundamental cycle basis of a symmetric digraph
 # First, notice that the cycle space is composed of orthogonal subspaces
 # corresponding to the cycle spaces of the connected components.

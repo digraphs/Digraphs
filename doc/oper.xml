@@ -1975,26 +1975,6 @@ gap> DigraphDominatingSet(D);
 </ManSection>
 <#/GAPDoc>
 
-<#GAPDoc Label="DigraphOutNeighbourhood">
-<ManSection>
-  <Oper Name="DigraphOutNeighbourhood" Arg="digraph, vertices"/>
-  <Returns>A List</Returns>
-  <Description>
-    This returns the set of vertices for which there is an edge directed towards it from a vertex in <A>vertices</A>,
-    not including any vertices that exist in <A>vertices</A>. 
-  <Example><![CDATA[
-gap> D := Digraph([[2, 3, 4], [1], [], []]);;
-gap> DigraphOutNeighbourhood(D, [1]);
-[ 2, 3, 4 ]
-gap> DigraphOutNeighbourhood(D, [1, 2]);
-[ 3, 4 ]
-gap> D := Digraph([[2, 3, 4], [], [], []]);;
-gap> DigraphOutNeighbourhood(D, [2]);
-[  ]]]></Example>
-  </Description>
-</ManSection>
-<#/GAPDoc>
-
 <#GAPDoc Label="PartialOrderDigraphMeetOfVertices">
 <ManSection>
   <Oper Name="PartialOrderDigraphMeetOfVertices"
