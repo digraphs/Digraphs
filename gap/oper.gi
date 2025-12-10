@@ -2528,37 +2528,40 @@ end);
 InstallMethod(DigraphDominatingSet, "for a digraph",
 [IsDigraph],
 function(digraph)
-  local D, neighbourhood, VerticesLeft, Vertices;
+  local D, seen, Vertices, neighbour, v;
 
   Vertices := [1 .. DigraphNrVertices(digraph)];
+
+  # Shuffling not technically necessary - may be better not to?
   Shuffle(Vertices);
 
-  # Shuffling not technically necessary - may be better to just do D := [1]?
-  D := [Vertices[1]];
-  neighbourhood := DigraphGetNeighbourhood(digraph, D);
-  VerticesLeft := Difference(Vertices, Union(neighbourhood, D));
-
-  while not IsEmpty(VerticesLeft) do;
-    Append(D, [VerticesLeft[1]]);
-    neighbourhood := DigraphGetNeighbourhood(digraph, D);
-    VerticesLeft := Difference(Vertices, Union(neighbourhood, D));
+  seen := BlistList([1 .. DigraphNrVertices(digraph)], []);
+  D := [];
+  for v in Vertices do
+    if seen[v] = false then
+      seen[v] := true;
+      Append(D, [v]);
+      for neighbour in OutNeighbours(digraph)[v] do
+        seen[neighbour] := true;
+      od;
+    fi;
   od;
 
   return D;
 end);
 
 # For getting the neighbourhood for a given List of Vertices in a Digraph
-InstallMethod(DigraphGetNeighbourhood, "for a digraph and a List of vertices",
+InstallMethod(DigraphOutNeighbourhood, "for a digraph and a List of vertices",
 [IsDigraph, IsList],
 function(digraph, vertices)
   local v, neighbourhood;
   neighbourhood := [];
+
   for v in vertices do
-    neighbourhood := Difference(Union(neighbourhood,
-      OutNeighbours(digraph)[v]), vertices);
+    Append(neighbourhood, OutNeighbours(digraph)[v]);
   od;
 
-  return neighbourhood;
+  return Difference(Unique(neighbourhood), vertices);
 end);
 
 # Computes the fundamental cycle basis of a symmetric digraph

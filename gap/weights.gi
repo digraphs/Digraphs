@@ -802,11 +802,8 @@ function(digraph)
     notAddedNeighbours, notadded, NextVertex, NeighboursV,
     neighbour, Edges, D, VerticesLeft, VerticesED;
 
-  if DigraphNrVertices(digraph) = 1 then
-    return 0;
-  fi;
-
-  if DigraphNrStronglyConnectedComponents(digraph) > 1 then
+  if DigraphNrVertices(digraph) = 1 or
+      DigraphNrStronglyConnectedComponents(digraph) > 1 then
     return 0;
   fi;
 

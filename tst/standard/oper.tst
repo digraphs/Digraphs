@@ -2857,19 +2857,19 @@ rec( idom := [ fail ], preorder := [ 1 ] )
 gap> DominatorTree(D, 6);
 rec( idom := [ ,,,,, fail ], preorder := [ 6 ] )
 
-# DigraphGetNeighbourhood
+# DigraphOutNeighbourhood
 gap> D := Digraph([[2, 3, 4], [1], [], []]);;
-gap> DigraphGetNeighbourhood(D, [1]);
+gap> DigraphOutNeighbourhood(D, [1]);
 [ 2, 3, 4 ]
-gap> DigraphGetNeighbourhood(D, [1, 2]);
+gap> DigraphOutNeighbourhood(D, [1, 2]);
 [ 3, 4 ]
 gap> D := Digraph([[2, 3, 4], [], [], []]);;
-gap> DigraphGetNeighbourhood(D, [2]);
+gap> DigraphOutNeighbourhood(D, [2]);
 [  ]
 gap> D := Digraph([[2], [3], [4], [1]]);;
-gap> DigraphGetNeighbourhood(D, [1]);
+gap> DigraphOutNeighbourhood(D, [1]);
 [ 2 ]
-gap> DigraphGetNeighbourhood(D, [1, 3]);
+gap> DigraphOutNeighbourhood(D, [1, 3]);
 [ 2, 4 ]
 
 # IsDigraphPath
@@ -3354,19 +3354,19 @@ gap> DigraphVertexLabels(D);
 # DigraphDominatingSet
 gap> d := Digraph([[2, 3], [2, 3], [1, 2, 3]]);;
 gap> p := DigraphDominatingSet(d);;
-gap> DigraphVertices(d) = Union(DigraphGetNeighbourhood(d, p), p);
+gap> DigraphVertices(d) = Union(DigraphOutNeighbourhood(d, p), p);
 true
 gap> d := Digraph([[2, 4], [3], [1, 5], [3], [4]]);;
 gap> p := DigraphDominatingSet(d);;
-gap> DigraphVertices(d) = Union(DigraphGetNeighbourhood(d, p), p);
+gap> DigraphVertices(d) = Union(DigraphOutNeighbourhood(d, p), p);
 true
 gap> D := Digraph([[1, 2, 3, 4, 5], [1, 2, 3, 4, 5], [1, 2, 3, 4, 5], [1, 2, 3, 4, 5], [1, 2, 3, 4, 5]]);;
 gap> p := DigraphDominatingSet(d);;
-gap> DigraphVertices(d) = Union(DigraphGetNeighbourhood(d, p), p);
+gap> DigraphVertices(d) = Union(DigraphOutNeighbourhood(d, p), p);
 true
 gap> D := RandomDigraph(1);;
 gap> p := DigraphDominatingSet(d);;
-gap> DigraphVertices(d) = Union(DigraphGetNeighbourhood(d, p), p);
+gap> DigraphVertices(d) = Union(DigraphOutNeighbourhood(d, p), p);
 true
 
 #

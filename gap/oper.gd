@@ -155,7 +155,7 @@ DeclareOperation("IsOrderFilter", [IsDigraph, IsList]);
 DeclareOperation("Dominators", [IsDigraph, IsPosInt]);
 DeclareOperation("DominatorTree", [IsDigraph, IsPosInt]);
 DeclareOperation("DigraphDominatingSet", [IsDigraph]);
-DeclareOperation("DigraphGetNeighbourhood", [IsDigraph, IsList]);
+DeclareOperation("DigraphOutNeighbourhood", [IsDigraph, IsList]);
 DeclareOperation("DigraphCycleBasis", [IsDigraph]);
 
 # 10. Operations for vertices . . .
