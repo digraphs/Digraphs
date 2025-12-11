@@ -596,7 +596,7 @@ true]]></Example>
     digraph. <P/>
 
     This can be useful when modifying the structure of a digraph with
-    <Ref Oper="DigraphRemoveVertex"/> or <Ref Oper="DigraphRemoveEdge"/>,
+    <Ref Oper="DigraphRemoveVertex"/> or <Ref Oper="DigraphRemoveEdge" Label="for a digraph and an edge"/>,
     where the weights need to be updated to match the new structure,
     rather than simply copied. <P/>
 
