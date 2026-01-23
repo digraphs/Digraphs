@@ -26,8 +26,9 @@
 </span>
 <div class="ContSSBlock">
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7.html#X808972017C486F1F">7.1-1 OnDigraphs</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7.html#X7AFBA7608498F9CE">7.1-2 OnMultiDigraphs</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7.html#X7F6A97E6870CDDA3">7.1-3 OnTuplesDigraphs</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7.html#X787FD1B479258B12"><code>7.1-2 \^</code></a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7.html#X7AFBA7608498F9CE">7.1-3 OnMultiDigraphs</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7.html#X7F6A97E6870CDDA3">7.1-4 OnTuplesDigraphs</a></span>
 </div></div>
 <div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap7.html#X7E48B9F87A0F22D4">7.2 <span class="Heading">Isomorphisms and canonical labellings</span></a>
 </span>
@@ -101,6 +102,8 @@
 
 <p>If the second argument is a <em>transformation</em> <var class="Arg">trans</var> of the vertices of <var class="Arg">digraph</var>, then this operation returns a digraph constructed by transforming the source and range of each edge according to <var class="Arg">trans</var>. Thus a vertex which does not appear in the image of <var class="Arg">trans</var> will be isolated in the returned digraph, and the returned digraph may contain multiple edges, even if <var class="Arg">digraph</var> does not. If <var class="Arg">trans</var> is mathematically a permutation, then the result coincides with <code class="code">OnDigraphs(<var class="Arg">digraph</var>, AsPermutation(<var class="Arg">trans</var>))</code>.</p>
 
+<p>Note: <code class="code">OnDigraphs</code> for a digraph and a permutation or transformation can also be used via the <code class="code">\^</code> operator.</p>
+
 <p>The <code class="func">DigraphVertexLabels</code> (<a href="chap5.html#X7E51F2FE87140B32"><span class="RefLink">5.1-12</span></a>) of <var class="Arg">digraph</var> will not be retained in the returned digraph.</p>
 
 <p>If <var class="Arg">digraph</var> belongs to <code class="func">IsMutableDigraph</code> (<a href="chap3.html#X7D7EDF83820ED6F5"><span class="RefLink">3.1-2</span></a>), then relabelling of the vertices is performed directly on <var class="Arg">digraph</var>. If <var class="Arg">digraph</var> belongs to <code class="func">IsImmutableDigraph</code> (<a href="chap3.html#X7CAFAA89804F80BD"><span class="RefLink">3.1-3</span></a>), an immutable copy of <var class="Arg">digraph</var> with the vertices relabelled is returned.</p>
@@ -125,9 +128,46 @@
 true
 </pre></div>
 
+<p><a id="X787FD1B479258B12" name="X787FD1B479258B12"></a></p>
+
+<h5><code>7.1-2 \^</code></h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; \^</code>( <var class="Arg">digraph</var>, <var class="Arg">permOrTrans</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
+<p>Returns: A digraph.</p>
+
+<p>The <code class="code">^</code> operator acts on digraphs with either a permutation or a transformation. For a digraph <var class="Arg">digraph</var> and a permutation <var class="Arg">perm</var>, <code class="code">digraph ^ perm</code> gives the same result as <code class="code">OnDigraphs(digraph, perm)</code> — a digraph whose vertices have been relabelled according to the permutation.</p>
+
+<p>Similarly, if the second argument is a transformation <var class="Arg">trans</var>, then <code class="code">digraph ^ trans</code> calls <code class="code">OnDigraphs(digraph, trans)</code>. This allows a simple way to apply vertex relabelling or transformations directly using the <code class="code">^</code> symbol.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">D := CycleDigraph(5);</span>
+&lt;immutable cycle digraph with 5 vertices&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">p := (1, 5)(2, 4);;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">D ^ p = DigraphReverse(D);</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">OnDigraphs(D, p) = D ^ p;</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">idp := ();;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">D ^ idp = D;</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">q := (1, 2, 3, 4, 5);;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">(D ^ q) ^ (q ^ -1) = D;</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">t := Transformation([2, 3, 4, 5, 1]);;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">D ^ t = OnDigraphs(D, t);</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">idt := Transformation([1, 2, 3, 4, 5]);;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">D ^ idt = D;</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">M := DigraphMutableCopy(D);;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">M ^ p = OnDigraphs(M, p);</span>
+true
+</pre></div>
+
 <p><a id="X7AFBA7608498F9CE" name="X7AFBA7608498F9CE"></a></p>
 
-<h5>7.1-2 OnMultiDigraphs</h5>
+<h5>7.1-3 OnMultiDigraphs</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; OnMultiDigraphs</code>( <var class="Arg">digraph</var>, <var class="Arg">pair</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; OnMultiDigraphs</code>( <var class="Arg">digraph</var>, <var class="Arg">perm1</var>, <var class="Arg">perm2</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
@@ -154,7 +194,7 @@ true
 
 <p><a id="X7F6A97E6870CDDA3" name="X7F6A97E6870CDDA3"></a></p>
 
-<h5>7.1-3 OnTuplesDigraphs</h5>
+<h5>7.1-4 OnTuplesDigraphs</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; OnTuplesDigraphs</code>( <var class="Arg">list</var>, <var class="Arg">perm</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; OnSetsDigraphs</code>( <var class="Arg">list</var>, <var class="Arg">perm</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
@@ -192,7 +232,7 @@ true</pre></div>
 
 <h4>7.2 <span class="Heading">Isomorphisms and canonical labellings</span></h4>
 
-<p>From version 0.11.0 of <strong class="pkg">Digraphs</strong> it is possible to use either <span class="URL"><a href="http://www.tcs.tkk.fi/Software/bliss/">bliss</a></span> or <span class="URL"><a href="https://pallini.di.uniroma1.it">nauty</a></span> (via <span class="URL"><a href="https://github.com/gap-packages/NautyTracesInterface">NautyTracesInterface</a></span> ) to calculate canonical labellings and automorphism groups of digraphs; see <a href="chapBib.html#biBJK07">[JK07]</a> and <a href="chapBib.html#biBMP14">[MP14]</a> for more details about <span class="URL"><a href="http://www.tcs.tkk.fi/Software/bliss/">bliss</a></span> and <span class="URL"><a href="https://pallini.di.uniroma1.it">nauty</a></span> , respectively.</p>
+<p>From version 0.11.0 of <strong class="pkg">Digraphs</strong> it is possible to use either <span class="URL"><a href="http://www.tcs.tkk.fi/Software/bliss/">bliss</a></span> or <span class="URL"><a href="https://pallini.di.uniroma1.it">nauty</a></span> (via <strong class="pkg">NautyTracesInterface</strong>) to calculate canonical labellings and automorphism groups of digraphs; see <a href="chapBib.html#biBJK07">[JK07]</a> and <a href="chapBib.html#biBMP14">[MP14]</a> for more details about <span class="URL"><a href="http://www.tcs.tkk.fi/Software/bliss/">bliss</a></span> and <span class="URL"><a href="https://pallini.di.uniroma1.it">nauty</a></span> , respectively.</p>
 
 <p><a id="X83E593F3855B122E" name="X83E593F3855B122E"></a></p>
 
@@ -202,7 +242,7 @@ true</pre></div>
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphsUseBliss</code>(  )</td><td class="tdright">(&nbsp;function&nbsp;)</td></tr></table></div>
 <p>Returns: Nothing.</p>
 
-<p>These functions can be used to specify whether <span class="URL"><a href="https://pallini.di.uniroma1.it">nauty</a></span> or <span class="URL"><a href="http://www.tcs.tkk.fi/Software/bliss/">bliss</a></span> should be used by default by <strong class="pkg">Digraphs</strong>. If <span class="URL"><a href="https://github.com/gap-packages/NautyTracesInterface">NautyTracesInterface</a></span> is not available, then these functions do nothing. Otherwise, by calling <code class="code">DigraphsUseNauty</code> subsequent computations will default to using <span class="URL"><a href="https://pallini.di.uniroma1.it">nauty</a></span> rather than <span class="URL"><a href="http://www.tcs.tkk.fi/Software/bliss/">bliss</a></span> , where possible.</p>
+<p>These functions can be used to specify whether <span class="URL"><a href="https://pallini.di.uniroma1.it">nauty</a></span> or <span class="URL"><a href="http://www.tcs.tkk.fi/Software/bliss/">bliss</a></span> should be used by default by <strong class="pkg">Digraphs</strong>. If <strong class="pkg">NautyTracesInterface</strong> is not available, then these functions do nothing. Otherwise, by calling <code class="code">DigraphsUseNauty</code> subsequent computations will default to using <span class="URL"><a href="https://pallini.di.uniroma1.it">nauty</a></span> rather than <span class="URL"><a href="http://www.tcs.tkk.fi/Software/bliss/">bliss</a></span> , where possible.</p>
 
 <p>You can call these functions at any point in a <strong class="pkg">GAP</strong> session, as many times as you like, it is guaranteed that existing digraphs remain valid, and that comparison of existing digraphs and newly created digraphs via <code class="func">IsIsomorphicDigraph</code> (<a href="chap7.html#X7B4F24B283C9EE28"><span class="RefLink">7.2-15</span></a>), <code class="func">IsIsomorphicDigraph</code> (<a href="chap7.html#X7D4A1FA8868DA930"><span class="RefLink">7.2-16</span></a>), <code class="func">IsomorphismDigraphs</code> (<a href="chap7.html#X8219FE6C839D9457"><span class="RefLink">7.2-17</span></a>), and <code class="func">IsomorphismDigraphs</code> (<a href="chap7.html#X7ED93C0F86D9D34F"><span class="RefLink">7.2-18</span></a>) are also valid.</p>
 
@@ -221,7 +261,7 @@ true</pre></div>
 
 <p>If <var class="Arg">digraph</var> is a multidigraph then the automorphism group is returned as the direct product of a group of permutations on the set of vertices of <var class="Arg">digraph</var> with a group of permutations on the set of edges of <var class="Arg">digraph</var>. These groups can be accessed using <code class="func">Projection</code> (<a href="https://docs.gap-system.org/doc/ref/chap32.html#X8769E8DA80BC96C1"><span class="RefLink">Reference: Projection for a domain and a positive integer</span></a>) on the returned group.</p>
 
-<p>By default, the automorphism group is found using <span class="URL"><a href="http://www.tcs.tkk.fi/Software/bliss/">bliss</a></span> by Tommi Junttila and Petteri Kaski. If <span class="URL"><a href="https://github.com/gap-packages/NautyTracesInterface">NautyTracesInterface</a></span> is available, then <span class="URL"><a href="https://pallini.di.uniroma1.it">nauty</a></span> by Brendan Mckay and Adolfo Piperno can be used instead; see <code class="func">BlissAutomorphismGroup</code> (<a href="chap7.html#X7E7B0D88865A89F6"><span class="RefLink">7.2-3</span></a>), <code class="func">NautyAutomorphismGroup</code> (<a href="chap7.html#X857758B18144C0CD"><span class="RefLink">7.2-4</span></a>), <code class="func">DigraphsUseBliss</code> (<a href="chap7.html#X83E593F3855B122E"><span class="RefLink">7.2-1</span></a>), and <code class="func">DigraphsUseNauty</code> (<a href="chap7.html#X83E593F3855B122E"><span class="RefLink">7.2-1</span></a>).</p>
+<p>By default, the automorphism group is found using <span class="URL"><a href="http://www.tcs.tkk.fi/Software/bliss/">bliss</a></span> by Tommi Junttila and Petteri Kaski. If <strong class="pkg">NautyTracesInterface</strong> is available, then <span class="URL"><a href="https://pallini.di.uniroma1.it">nauty</a></span> by Brendan Mckay and Adolfo Piperno can be used instead; see <code class="func">BlissAutomorphismGroup</code> (<a href="chap7.html#X7E7B0D88865A89F6"><span class="RefLink">7.2-3</span></a>), <code class="func">NautyAutomorphismGroup</code> (<a href="chap7.html#X857758B18144C0CD"><span class="RefLink">7.2-4</span></a>), <code class="func">DigraphsUseBliss</code> (<a href="chap7.html#X83E593F3855B122E"><span class="RefLink">7.2-1</span></a>), and <code class="func">DigraphsUseNauty</code> (<a href="chap7.html#X83E593F3855B122E"><span class="RefLink">7.2-1</span></a>).</p>
 
 <p>If the argument <var class="Arg">digraph</var> is mutable, then the return value of this attribute is recomputed every time it is called.</p>
 
@@ -270,7 +310,7 @@ true
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; NautyAutomorphismGroup</code>( <var class="Arg">digraph</var>[, <var class="Arg">vert_colours</var>] )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
 <p>Returns: A permutation group.</p>
 
-<p>If <var class="Arg">digraph</var> is a digraph, then this attribute contains the group of automorphisms of <var class="Arg">digraph</var> as calculated using <span class="URL"><a href="https://pallini.di.uniroma1.it">nauty</a></span> by Brendan Mckay and Adolfo Piperno via <span class="URL"><a href="https://github.com/gap-packages/NautyTracesInterface">NautyTracesInterface</a></span> . The attribute <code class="func">AutomorphismGroup</code> (<a href="chap7.html#X858C32127A190175"><span class="RefLink">7.2-2</span></a>) and operation <code class="func">AutomorphismGroup</code> (<a href="chap7.html#X877732B1783C391B"><span class="RefLink">7.2-5</span></a>) returns the value of either <code class="code">NautyAutomorphismGroup</code> or <code class="func">BlissAutomorphismGroup</code> (<a href="chap7.html#X7E7B0D88865A89F6"><span class="RefLink">7.2-3</span></a>). These groups are, of course, equal but their generating sets may differ.</p>
+<p>If <var class="Arg">digraph</var> is a digraph, then this attribute contains the group of automorphisms of <var class="Arg">digraph</var> as calculated using <span class="URL"><a href="https://pallini.di.uniroma1.it">nauty</a></span> by Brendan Mckay and Adolfo Piperno via <strong class="pkg">NautyTracesInterface</strong>. The attribute <code class="func">AutomorphismGroup</code> (<a href="chap7.html#X858C32127A190175"><span class="RefLink">7.2-2</span></a>) and operation <code class="func">AutomorphismGroup</code> (<a href="chap7.html#X877732B1783C391B"><span class="RefLink">7.2-5</span></a>) returns the value of either <code class="code">NautyAutomorphismGroup</code> or <code class="func">BlissAutomorphismGroup</code> (<a href="chap7.html#X7E7B0D88865A89F6"><span class="RefLink">7.2-3</span></a>). These groups are, of course, equal but their generating sets may differ.</p>
 
 <p>See also <code class="func">DigraphsUseBliss</code> (<a href="chap7.html#X83E593F3855B122E"><span class="RefLink">7.2-1</span></a>), and <code class="func">DigraphsUseNauty</code> (<a href="chap7.html#X83E593F3855B122E"><span class="RefLink">7.2-1</span></a>).</p>
 
@@ -306,7 +346,7 @@ Group([ (3,4)(6,7)(8,9), (2,3)(5,6)(9,10), (2,5)(3,6)(4,7),
 
 <p>If <var class="Arg">digraph</var> is a multidigraph then the automorphism group is returned as the direct product of a group of permutations on the set of vertices of <var class="Arg">digraph</var> with a group of permutations on the set of edges of <var class="Arg">digraph</var>. These groups can be accessed using <code class="func">Projection</code> (<a href="https://docs.gap-system.org/doc/ref/chap32.html#X8769E8DA80BC96C1"><span class="RefLink">Reference: Projection for a domain and a positive integer</span></a>) on the returned group.</p>
 
-<p>By default, the automorphism group is found using <span class="URL"><a href="http://www.tcs.tkk.fi/Software/bliss/">bliss</a></span> by Tommi Junttila and Petteri Kaski. If <span class="URL"><a href="https://github.com/gap-packages/NautyTracesInterface">NautyTracesInterface</a></span> is available, then <span class="URL"><a href="https://pallini.di.uniroma1.it">nauty</a></span> by Brendan Mckay and Adolfo Piperno can be used instead; see <code class="func">BlissAutomorphismGroup</code> (<a href="chap7.html#X7E7B0D88865A89F6"><span class="RefLink">7.2-3</span></a>), <code class="func">NautyAutomorphismGroup</code> (<a href="chap7.html#X857758B18144C0CD"><span class="RefLink">7.2-4</span></a>), <code class="func">DigraphsUseBliss</code> (<a href="chap7.html#X83E593F3855B122E"><span class="RefLink">7.2-1</span></a>), and <code class="func">DigraphsUseNauty</code> (<a href="chap7.html#X83E593F3855B122E"><span class="RefLink">7.2-1</span></a>).</p>
+<p>By default, the automorphism group is found using <span class="URL"><a href="http://www.tcs.tkk.fi/Software/bliss/">bliss</a></span> by Tommi Junttila and Petteri Kaski. If <strong class="pkg">NautyTracesInterface</strong> is available, then <span class="URL"><a href="https://pallini.di.uniroma1.it">nauty</a></span> by Brendan Mckay and Adolfo Piperno can be used instead; see <code class="func">BlissAutomorphismGroup</code> (<a href="chap7.html#X7E7B0D88865A89F6"><span class="RefLink">7.2-3</span></a>), <code class="func">NautyAutomorphismGroup</code> (<a href="chap7.html#X857758B18144C0CD"><span class="RefLink">7.2-4</span></a>), <code class="func">DigraphsUseBliss</code> (<a href="chap7.html#X83E593F3855B122E"><span class="RefLink">7.2-1</span></a>), and <code class="func">DigraphsUseNauty</code> (<a href="chap7.html#X83E593F3855B122E"><span class="RefLink">7.2-1</span></a>).</p>
 
 
 <div class="example"><pre>
@@ -352,7 +392,7 @@ true</pre></div>
 
 <p>If <var class="Arg">digraph</var> is a multidigraph then the automorphism group is returned as the direct product of a group of permutations on the set of vertices of <var class="Arg">digraph</var> with a group of permutations on the set of edges of <var class="Arg">digraph</var>. These groups can be accessed using <code class="func">Projection</code> (<a href="https://docs.gap-system.org/doc/ref/chap32.html#X8769E8DA80BC96C1"><span class="RefLink">Reference: Projection for a domain and a positive integer</span></a>) on the returned group.</p>
 
-<p>By default, the automorphism group is found using <span class="URL"><a href="http://www.tcs.tkk.fi/Software/bliss/">bliss</a></span> by Tommi Junttila and Petteri Kaski. If <span class="URL"><a href="https://github.com/gap-packages/NautyTracesInterface">NautyTracesInterface</a></span> is available, then <span class="URL"><a href="https://pallini.di.uniroma1.it">nauty</a></span> by Brendan Mckay and Adolfo Piperno can be used instead; see <code class="func">BlissAutomorphismGroup</code> (<a href="chap7.html#X7E7B0D88865A89F6"><span class="RefLink">7.2-3</span></a>), <code class="func">NautyAutomorphismGroup</code> (<a href="chap7.html#X857758B18144C0CD"><span class="RefLink">7.2-4</span></a>), <code class="func">DigraphsUseBliss</code> (<a href="chap7.html#X83E593F3855B122E"><span class="RefLink">7.2-1</span></a>), and <code class="func">DigraphsUseNauty</code> (<a href="chap7.html#X83E593F3855B122E"><span class="RefLink">7.2-1</span></a>).</p>
+<p>By default, the automorphism group is found using <span class="URL"><a href="http://www.tcs.tkk.fi/Software/bliss/">bliss</a></span> by Tommi Junttila and Petteri Kaski. If <strong class="pkg">NautyTracesInterface</strong> is available, then <span class="URL"><a href="https://pallini.di.uniroma1.it">nauty</a></span> by Brendan Mckay and Adolfo Piperno can be used instead; see <code class="func">BlissAutomorphismGroup</code> (<a href="chap7.html#X7E7B0D88865A89F6"><span class="RefLink">7.2-3</span></a>), <code class="func">NautyAutomorphismGroup</code> (<a href="chap7.html#X857758B18144C0CD"><span class="RefLink">7.2-4</span></a>), <code class="func">DigraphsUseBliss</code> (<a href="chap7.html#X83E593F3855B122E"><span class="RefLink">7.2-1</span></a>), and <code class="func">DigraphsUseNauty</code> (<a href="chap7.html#X83E593F3855B122E"><span class="RefLink">7.2-1</span></a>).</p>
 
 
 <div class="example"><pre>
@@ -706,7 +746,7 @@ Group(())
 
 <p>This operation returns <code class="keyw">true</code> if there exists an isomorphism from the digraph <var class="Arg">digraph1</var> to the digraph <var class="Arg">digraph2</var>. See <code class="func">IsomorphismDigraphs</code> (<a href="chap7.html#X8219FE6C839D9457"><span class="RefLink">7.2-17</span></a>) for more information about isomorphisms of digraphs.</p>
 
-<p>By default, an isomorphism is found using the canonical labellings of the digraphs obtained from <span class="URL"><a href="http://www.tcs.tkk.fi/Software/bliss/">bliss</a></span> by Tommi Junttila and Petteri Kaski. If <span class="URL"><a href="https://github.com/gap-packages/NautyTracesInterface">NautyTracesInterface</a></span> is available, then <span class="URL"><a href="https://pallini.di.uniroma1.it">nauty</a></span> by Brendan Mckay and Adolfo Piperno can be used instead; see <code class="func">DigraphsUseBliss</code> (<a href="chap7.html#X83E593F3855B122E"><span class="RefLink">7.2-1</span></a>), and <code class="func">DigraphsUseNauty</code> (<a href="chap7.html#X83E593F3855B122E"><span class="RefLink">7.2-1</span></a>).</p>
+<p>By default, an isomorphism is found using the canonical labellings of the digraphs obtained from <span class="URL"><a href="http://www.tcs.tkk.fi/Software/bliss/">bliss</a></span> by Tommi Junttila and Petteri Kaski. If <strong class="pkg">NautyTracesInterface</strong> is available, then <span class="URL"><a href="https://pallini.di.uniroma1.it">nauty</a></span> by Brendan Mckay and Adolfo Piperno can be used instead; see <code class="func">DigraphsUseBliss</code> (<a href="chap7.html#X83E593F3855B122E"><span class="RefLink">7.2-1</span></a>), and <code class="func">DigraphsUseNauty</code> (<a href="chap7.html#X83E593F3855B122E"><span class="RefLink">7.2-1</span></a>).</p>
 
 
 <div class="example"><pre>
@@ -747,7 +787,7 @@ true</pre></div>
 </ul>
 <p>If <var class="Arg">digraph1</var> and <var class="Arg">digraph2</var> are digraphs without multiple edges, and <var class="Arg">colours1</var> and <var class="Arg">colours2</var> are colourings of <var class="Arg">digraph1</var> and <var class="Arg">digraph2</var>, respectively, then this operation returns <code class="keyw">true</code> if there exists an isomorphism between these two coloured digraphs. See <code class="func">IsomorphismDigraphs</code> (<a href="chap7.html#X7ED93C0F86D9D34F"><span class="RefLink">7.2-18</span></a>) for more information about isomorphisms of coloured digraphs.</p>
 
-<p>By default, an isomorphism is found using the canonical labellings of the digraphs obtained from <span class="URL"><a href="http://www.tcs.tkk.fi/Software/bliss/">bliss</a></span> by Tommi Junttila and Petteri Kaski. If <span class="URL"><a href="https://github.com/gap-packages/NautyTracesInterface">NautyTracesInterface</a></span> is available, then <span class="URL"><a href="https://pallini.di.uniroma1.it">nauty</a></span> by Brendan Mckay and Adolfo Piperno can be used instead; see <code class="func">DigraphsUseBliss</code> (<a href="chap7.html#X83E593F3855B122E"><span class="RefLink">7.2-1</span></a>), and <code class="func">DigraphsUseNauty</code> (<a href="chap7.html#X83E593F3855B122E"><span class="RefLink">7.2-1</span></a>).</p>
+<p>By default, an isomorphism is found using the canonical labellings of the digraphs obtained from <span class="URL"><a href="http://www.tcs.tkk.fi/Software/bliss/">bliss</a></span> by Tommi Junttila and Petteri Kaski. If <strong class="pkg">NautyTracesInterface</strong> is available, then <span class="URL"><a href="https://pallini.di.uniroma1.it">nauty</a></span> by Brendan Mckay and Adolfo Piperno can be used instead; see <code class="func">DigraphsUseBliss</code> (<a href="chap7.html#X83E593F3855B122E"><span class="RefLink">7.2-1</span></a>), and <code class="func">DigraphsUseNauty</code> (<a href="chap7.html#X83E593F3855B122E"><span class="RefLink">7.2-1</span></a>).</p>
 
 
 <div class="example"><pre>
@@ -783,7 +823,7 @@ false</pre></div>
 
 <p>If there exists such an isomorphism, then this operation returns one. The form of this isomorphism is a permutation <code class="code">p</code> of the vertices of <var class="Arg">digraph1</var> such that</p>
 
-<p><code class="code">OnDigraphs(<var class="Arg">digraph1</var>, p) = digraph2</code>. By default, an isomorphism is found using the canonical labellings of the digraphs obtained from <span class="URL"><a href="http://www.tcs.tkk.fi/Software/bliss/">bliss</a></span> by Tommi Junttila and Petteri Kaski. If <span class="URL"><a href="https://github.com/gap-packages/NautyTracesInterface">NautyTracesInterface</a></span> is available, then <span class="URL"><a href="https://pallini.di.uniroma1.it">nauty</a></span> by Brendan Mckay and Adolfo Piperno can be used instead; see <code class="func">DigraphsUseBliss</code> (<a href="chap7.html#X83E593F3855B122E"><span class="RefLink">7.2-1</span></a>), and <code class="func">DigraphsUseNauty</code> (<a href="chap7.html#X83E593F3855B122E"><span class="RefLink">7.2-1</span></a>).</p>
+<p><code class="code">OnDigraphs(<var class="Arg">digraph1</var>, p) = digraph2</code>. By default, an isomorphism is found using the canonical labellings of the digraphs obtained from <span class="URL"><a href="http://www.tcs.tkk.fi/Software/bliss/">bliss</a></span> by Tommi Junttila and Petteri Kaski. If <strong class="pkg">NautyTracesInterface</strong> is available, then <span class="URL"><a href="https://pallini.di.uniroma1.it">nauty</a></span> by Brendan Mckay and Adolfo Piperno can be used instead; see <code class="func">DigraphsUseBliss</code> (<a href="chap7.html#X83E593F3855B122E"><span class="RefLink">7.2-1</span></a>), and <code class="func">DigraphsUseNauty</code> (<a href="chap7.html#X83E593F3855B122E"><span class="RefLink">7.2-1</span></a>).</p>
 
 
 <div class="example"><pre>
@@ -825,7 +865,7 @@ true
 
 <p>This operation returns such an isomorphism if one exists, else it returns <code class="keyw">fail</code>.</p>
 
-<p>By default, an isomorphism is found using the canonical labellings of the digraphs obtained from <span class="URL"><a href="http://www.tcs.tkk.fi/Software/bliss/">bliss</a></span> by Tommi Junttila and Petteri Kaski. If <span class="URL"><a href="https://github.com/gap-packages/NautyTracesInterface">NautyTracesInterface</a></span> is available, then <span class="URL"><a href="https://pallini.di.uniroma1.it">nauty</a></span> by Brendan Mckay and Adolfo Piperno can be used instead; see <code class="func">DigraphsUseBliss</code> (<a href="chap7.html#X83E593F3855B122E"><span class="RefLink">7.2-1</span></a>), and <code class="func">DigraphsUseNauty</code> (<a href="chap7.html#X83E593F3855B122E"><span class="RefLink">7.2-1</span></a>).</p>
+<p>By default, an isomorphism is found using the canonical labellings of the digraphs obtained from <span class="URL"><a href="http://www.tcs.tkk.fi/Software/bliss/">bliss</a></span> by Tommi Junttila and Petteri Kaski. If <strong class="pkg">NautyTracesInterface</strong> is available, then <span class="URL"><a href="https://pallini.di.uniroma1.it">nauty</a></span> by Brendan Mckay and Adolfo Piperno can be used instead; see <code class="func">DigraphsUseBliss</code> (<a href="chap7.html#X83E593F3855B122E"><span class="RefLink">7.2-1</span></a>), and <code class="func">DigraphsUseNauty</code> (<a href="chap7.html#X83E593F3855B122E"><span class="RefLink">7.2-1</span></a>).</p>
 
 
 <div class="example"><pre>

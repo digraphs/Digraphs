@@ -119,9 +119,10 @@
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X863FDFC4839A3B82">5.4-39 HamiltonianPath</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X82F30D5681466BC6">5.4-40 NrSpanningTrees</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X79352A8286D1D8F6">5.4-41 DigraphDijkstra</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X794CD6037D4CF58C">5.4-42 DigraphCycleBasis</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X835AAF9085BC9D84">5.4-43 DigraphIsKing</a></span>
-<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X7A17B9B67AC50561">5.4-44 DigraphKings</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X87ADACAB7A81805A">5.4-42 DigraphVertexConnectivity</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X794CD6037D4CF58C">5.4-43 DigraphCycleBasis</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X835AAF9085BC9D84">5.4-44 DigraphIsKing</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap5_mj.html#X7A17B9B67AC50561">5.4-45 DigraphKings</a></span>
 </div></div>
 <div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap5_mj.html#X82F900777D677F55">5.5 <span class="Heading">Cayley graphs of groups</span></a>
 </span>
@@ -2638,9 +2639,76 @@ fail
 [ [ 0, 1, 1 ], [ -1, 1, 1 ] ]
 </pre></div>
 
+<p><a id="X87ADACAB7A81805A" name="X87ADACAB7A81805A"></a></p>
+
+<h5>5.4-42 DigraphVertexConnectivity</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphVertexConnectivity</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;attribute&nbsp;)</td></tr></table></div>
+<p>Returns: An non-negative integer.</p>
+
+<p>This function returns the vertex connectivity of the digraph <var class="Arg">digraph</var>. This is also sometimes called the weak vertex connectivity.</p>
+
+<p>The vertex connectivity of a connected digraph (in the sense of <code class="func">IsConnectedDigraph</code> (<a href="chap6_mj.html#X83C08C0B7EC1A91F"><span class="RefLink">6.6-3</span></a>)) is the largest number <span class="SimpleMath">\(k\)</span> such that:</p>
+
+
+<ul>
+<li><p>the digraph has at least <span class="SimpleMath">\(k + 1\)</span> vertices, and</p>
+
+</li>
+<li><p>the digraph remains connected after the removal of any set of at most <span class="SimpleMath">\(k - 1\)</span> vertices.</p>
+
+</li>
+</ul>
+<p>If the digraph is not connected, then its vertex connectivity is 0. For a non-empty digraph whose symmetric closure is not complete, the vertex connectivity is equal to the size of the smallest set of vertices whose removal would disconnect the digraph.</p>
+
+<p>Vertex connectivity of small digraphs may be counterintuitive with respect to the notions of connectivity, as defined by <code class="func">IsConnectedDigraph</code> (<a href="chap6_mj.html#X83C08C0B7EC1A91F"><span class="RefLink">6.6-3</span></a>), and biconnecivity, as defined by <code class="func">IsBiconnectedDigraph</code> (<a href="chap6_mj.html#X838FAF2D825977BE"><span class="RefLink">6.6-4</span></a>). Namely</p>
+
+
+<ul>
+<li><p>the empty digraph is connected, but its vertex connectivity is 0;</p>
+
+</li>
+<li><p>the singleton digraph is connected, but its vertex connectivity is 0;</p>
+
+</li>
+<li><p>the 2-cycle digraph is biconnected, but its vertex connectivity is only 1.</p>
+
+</li>
+</ul>
+<p>However, for a digraph with at least 3 vertices, having vertex connectivity greater than or equal to 1 is equivalent to being connected, and having vertex connectivity greater than or equal to 2 is equivalent to being biconnected.</p>
+
+<p>The algorithm makes <span class="SimpleMath">\(n - d - 1 + d \cdot (d - 1) / 2\)</span> calls to the <code class="func">DigraphMaximumFlow</code> (<a href="chap6_mj.html#X869EFE9F818C6E22"><span class="RefLink">6.3-7</span></a>) maximum flow algorithm, where <span class="SimpleMath">\(n\)</span> is the number of vertices of <var class="Arg">digraph</var>, and <span class="SimpleMath">\(d\)</span> is the minimum degree of the symmetric closure of <var class="Arg">digraph</var>, see <code class="func">DigraphSymmetricClosure</code> (<a href="chap3_mj.html#X874883DD7DD450C4"><span class="RefLink">3.3-12</span></a>).</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">D := CompleteBipartiteDigraph(4, 5);</span>
+&lt;immutable complete bipartite digraph with bicomponent sizes 4 and 5&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphVertexConnectivity(D);</span>
+4
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphVertexConnectivity(PancakeGraph(4));</span>
+3
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">D := Digraph([[2, 4, 5], [1, 4], [4, 7], [1, 2, 3, 5, 6, 7],</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">                 [1, 4], [4, 7], [3, 4, 6]]);</span>
+&lt;immutable digraph with 7 vertices, 20 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphVertexConnectivity(D);</span>
+1
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">J := JohnsonDigraph(9, 2);</span>
+&lt;immutable symmetric digraph with 36 vertices, 504 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphVertexConnectivity(J);</span>
+14
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphVertexConnectivity(Digraph([]));</span>
+0
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphVertexConnectivity(Digraph([[1]]));</span>
+0
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphVertexConnectivity(CycleDigraph(2));</span>
+1
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphVertexConnectivity(CompleteDigraph(5));</span>
+4
+</pre></div>
+
 <p><a id="X794CD6037D4CF58C" name="X794CD6037D4CF58C"></a></p>
 
-<h5>5.4-42 DigraphCycleBasis</h5>
+<h5>5.4-43 DigraphCycleBasis</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphCycleBasis</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: A list and a list of GF(2) vectors</p>
@@ -2679,7 +2747,7 @@ fail
 
 <p><a id="X835AAF9085BC9D84" name="X835AAF9085BC9D84"></a></p>
 
-<h5>5.4-43 DigraphIsKing</h5>
+<h5>5.4-44 DigraphIsKing</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphIsKing</code>( <var class="Arg">D</var>, <var class="Arg">v</var>, <var class="Arg">k</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
@@ -2705,12 +2773,12 @@ true</pre></div>
 
 <p><a id="X7A17B9B67AC50561" name="X7A17B9B67AC50561"></a></p>
 
-<h5>5.4-44 DigraphKings</h5>
+<h5>5.4-45 DigraphKings</h5>
 
 <div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphKings</code>( <var class="Arg">D</var>, <var class="Arg">n</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
 <p>Returns: A list.</p>
 
-<p>If <var class="Arg">D</var> is a tournament, then this operation returns a list of the <var class="Arg">n</var>-kings in the tournament (see <code class="func">DigraphIsKing</code> (<a href="chap5_mj.html#X835AAF9085BC9D84"><span class="RefLink">5.4-43</span></a>)).</p>
+<p>If <var class="Arg">D</var> is a tournament, then this operation returns a list of the <var class="Arg">n</var>-kings in the tournament (see <code class="func">DigraphIsKing</code> (<a href="chap5_mj.html#X835AAF9085BC9D84"><span class="RefLink">5.4-44</span></a>)).</p>
 
 <p>If <var class="Arg">D</var> is not tournament, then an error is given (see <code class="func">IsTournament</code> (<a href="chap6_mj.html#X7DD8D1A185EBE865"><span class="RefLink">6.2-15</span></a>)). If the tournament contains a source, then the source is the only 2-king (see <code class="func">DigraphSources</code> (<a href="chap5_mj.html#X7F5C6268839BE98C"><span class="RefLink">5.1-9</span></a>)). The number of 2-kings in a tournament without a source is at least three. A tournament cannot have exactly two 2-kings.</p>
 

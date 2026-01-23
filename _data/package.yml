@@ -1,7 +1,7 @@
 name: Digraphs
-version: "1.13.1"
+version: "1.14.0"
 license: "GPL-3.0-or-later"
-date: 2025-09-27
+date: 2026-01-22
 description: |
     Graphs, digraphs, and multidigraphs in GAP
 
@@ -18,11 +18,15 @@ authors:
       url: https://myoung.uk/work/
     - name: Marina Anagnostopoulou-Merkouri
       url: mailto:mam49@st-andrews.ac.uk
+    - name: Cora Aked
+      url: mailto:ca219@st-andrews.ac.uk
     - name: Finn Buck
       url: mailto:finneganlbuck@gmail.com
     - name: Stuart Burrell
       url: https://stuartburrell.github.io
     - name: Graham Campbell
+    - name: Devansh Chopra
+      url: mailto:dc268@st-andrews.ac.uk
     - name: Raiyan Chowdhury
     - name: Reinis Cirpons
       url: mailto:rc234@st-andrews.ac.uk
@@ -36,6 +40,8 @@ authors:
       url: https://research.manchester.ac.uk/en/persons/luna-elliott
     - name: Jan Engelhardt
       url: https://inai.de
+    - name: Fernando Flores Brito
+      url: mailto:ffloresbrito@gmail.com
     - name: Isuru Fernando
       url: mailto:isuruf@gmail.com
     - name: Ewan Gilligan
@@ -65,12 +71,16 @@ authors:
       url: mailto:sm544@st-andrews.ac.uk
     - name: Seyyed Ali Mohammadiyeh
       url: mailto:MaxBaseCode@Gmail.Com
+    - name: Rheya Monerasinghe
+      url: mailto:rm387@st-andrews.ac.uk
     - name: Michael Orlitzky
       url: https://michael.orlitzky.com/
     - name: Matthew Pancer
       url: mailto:mp322@st-andrews.ac.uk
     - name: Markus Pfeiffer
       url: https://markusp.morphism.de/
+    - name: Amelia Phillips
+      url: mailto:ap410@st-andrews.ac.uk
     - name: Daniel Pointon
       url: mailto:dp211@st-andrews.ac.uk
     - name: Pramoth Ragavan
@@ -107,7 +117,7 @@ maintainers:
     - name: Michael Young
       url: https://myoung.uk/work/
 
-GAP: ">=4.10.0"
+GAP: ">=4.11.0"
 
 needed-pkgs:
     - name: "IO"
@@ -141,7 +151,7 @@ packageinfo: https://digraphs.github.io/Digraphs/PackageInfo.g
 
 downloads:
     - name: .tar.gz
-      url: https://github.com/digraphs/Digraphs/releases/download/v1.13.1/digraphs-1.13.1.tar.gz
+      url: https://github.com/digraphs/Digraphs/releases/download/v1.14.0/digraphs-1.14.0.tar.gz
 
 abstract: |
     The <Strong>Digraphs</Strong> package is a <Strong>GAP</Strong> package containing
@@ -152,10 +162,10 @@ doc-html: doc/chap0_mj.html
 doc-pdf: doc/manual.pdf
 citeas: |
     <p class='BibEntry'>
-    [<span class='BibKey'>BJMWYABBCCCCCEEEFGFGHHJJJKKLLMMOPPPRRRSSSSSTVWWZ25</span>]   <b class='BibAuthor'>De Beule, J., Jonusas, J., Mitchell, J., Wilson, W. A., Young, M., Anagnostopoulou-Merkouri, M., Buck, F., Burrell, S., Campbell, G., Chowdhury, R., Cirpons, R., Clayton, A., Conti-Leslie, T., Edwards, J., Elliott, L., Engelhardt, J., Fernando, I., Gilligan, E., Frankie, G., Gutsche, S., Harper, S., Horn, M., Jack, H., Jefferson, C., Johns, M., Konovalov, O., Kwon, H., Lau, A., Lee, A., McIver, S., Mohammadiyeh, S. A., Orlitzky, M., Pancer, M., Pfeiffer, M., Pointon, D., Ragavan, P., Racine, L., Russell, C., Schaefer, A., Scott, I., Sharma, K., Smith, F., Spiers, B., Tsalakou, M., Vishvanath, A., Weiss, M., Whyte, M. and Zickgraf, F.</b>,
+    [<span class='BibKey'>BJMWYAABBCCCCCCEEEBFGFGHHJJJKKLLMMMOPPPPRRRSSSSSTVWWZ26</span>]   <b class='BibAuthor'>De Beule, J., Jonusas, J., Mitchell, J., Wilson, W. A., Young, M., Anagnostopoulou-Merkouri, M., Aked, C., Buck, F., Burrell, S., Campbell, G., Chopra, D., Chowdhury, R., Cirpons, R., Clayton, A., Conti-Leslie, T., Edwards, J., Elliott, L., Engelhardt, J., Flores Brito, F., Fernando, I., Gilligan, E., Frankie, G., Gutsche, S., Harper, S., Horn, M., Jack, H., Jefferson, C., Johns, M., Konovalov, O., Kwon, H., Lau, A., Lee, A., McIver, S., Mohammadiyeh, S. A., Monerasinghe, R., Orlitzky, M., Pancer, M., Pfeiffer, M., Phillips, A., Pointon, D., Ragavan, P., Racine, L., Russell, C., Schaefer, A., Scott, I., Sharma, K., Smith, F., Spiers, B., Tsalakou, M., Vishvanath, A., Weiss, M., Whyte, M. and Zickgraf, F.</b>,
      <i class='BibTitle'>Digraphs, Graphs, digraphs, and multidigraphs in GAP,
-             Version 1.13.1</i>
-     (<span class='BibYear'>2025</span>)<br />
+             Version 1.14.0</i>
+     (<span class='BibYear'>2026</span>)<br />
     (<span class='BibNote'>GAP package</span>),
     <span class='BibHowpublished'><a href="https://digraphs.github.io/Digraphs">https://digraphs.github.io/Digraphs</a></span>.
     </p>
@@ -166,29 +176,30 @@ bibtex: |
       author =           {De  Beule,  J.  and  Jonusas,  J. and Mitchell, J. and
                           Wilson,     W.     A.     and     Young,     M.    and
                           Anagnostopoulou\texttt{\symbol{45}}Merkouri,   M.  and
-                          Buck,   F.  and  Burrell,  S.  and  Campbell,  G.  and
-                          Chowdhury,  R.  and  Cirpons,  R.  and Clayton, A. and
-                          Conti\texttt{\symbol{45}}Leslie,  T.  and  Edwards, J.
-                          and  Elliott,  L.  and Engelhardt, J. and Fernando, I.
-                          and  Gilligan,  E. and Frankie, G. and Gutsche, S. and
-                          Harper, S. and Horn, M. and Jack, H. and Jefferson, C.
-                          and  Johns, M. and Konovalov, O. and Kwon, H. and Lau,
-                          A.  and Lee, A. and McIver, S. and Mohammadiyeh, S. A.
-                          and  Orlitzky,  M. and Pancer, M. and Pfeiffer, M. and
-                          Pointon,  D.  and  Ragavan,  P.  and  Racine,  L.  and
-                          Russell, C. and Schaefer, A. and Scott, I. and Sharma,
-                          K.  and  Smith, F. and Spiers, B. and Tsalakou, M. and
-                          Vishvanath,  A.  and  Weiss,  M.  and  Whyte,  M.  and
-                          Zickgraf, F.},
+                          Aked, C. and Buck, F. and Burrell, S. and Campbell, G.
+                          and  Chopra,  D. and Chowdhury, R. and Cirpons, R. and
+                          Clayton,  A.  and  Conti\texttt{\symbol{45}}Leslie, T.
+                          and Edwards, J. and Elliott, L. and Engelhardt, J. and
+                          Flores Brito, F. and Fernando, I. and Gilligan, E. and
+                          Frankie,  G.  and Gutsche, S. and Harper, S. and Horn,
+                          M.  and  Jack,  H. and Jefferson, C. and Johns, M. and
+                          Konovalov, O. and Kwon, H. and Lau, A. and Lee, A. and
+                          McIver,  S.  and Mohammadiyeh, S. A. and Monerasinghe,
+                          R.  and  Orlitzky,  M. and Pancer, M. and Pfeiffer, M.
+                          and  Phillips,  A. and Pointon, D. and Ragavan, P. and
+                          Racine, L. and Russell, C. and Schaefer, A. and Scott,
+                          I.  and  Sharma,  K.  and Smith, F. and Spiers, B. and
+                          Tsalakou,  M.  and  Vishvanath,  A.  and Weiss, M. and
+                          Whyte, M. and Zickgraf, F.},
       title =            {{Digraphs},  {Graphs,  digraphs,  and multidigraphs in
-                          GAP}, {V}ersion 1.13.1},
-      month =            {Sep},
-      year =             {2025},
+                          GAP}, {V}ersion 1.14.0},
+      month =            {Jan},
+      year =             {2026},
       note =             {GAP package},
       howpublished =     {\href            {https://digraphs.github.io/Digraphs}
                           {\texttt{https://digraphs.github.io/}\discretionary
                           {}{}{}\texttt{Digraphs}}},
       keywords =         {},
-      printedkey =       {BJMWYABBCCCCCEEEFGFGHHJJJKKLLMMOPPPRRRSSSSSTVWWZ25}
+      printedkey =       {BJMWYAABBCCCCCCEEEBFGFGHHJJJKKLLMMMOPPPPRRRSSSSSTVWWZ26}
     }
 
