@@ -369,15 +369,15 @@ gap> DigraphMaximumFlow(gr, 5, 6);
 [ [ 10 ], [ 3, 7 ], [ 7 ], [ 0, 7 ], [ 10, 4 ], [  ] ]
 
 # EdgeConnectivity
-gap> d := Digraph([[2, 3], [2, 3], [1, 2, 3]]);;
-gap> DigraphEdgeConnectivity(d);
+gap> d := Digraph([[4], [4], [4], [1, 2, 3]]);;
+gap> DigraphEdgeConnectivity(d);  
 1
 gap> D := RandomDigraph(1);;
 gap> DigraphEdgeConnectivity(D);
 0
-gap> d := Digraph([[2, 4], [3], [1, 5], [3], [4]]);;
+gap> d := Digraph([[2, 3], [1, 4], [1, 4], [2, 3]]);;
 gap> DigraphEdgeConnectivity(d);
-1
+2
 gap> D := Digraph([[1, 2, 3, 4, 5], [1, 2, 3, 4, 5], [1, 2, 3, 4, 5], [1, 2, 3, 4, 5], [1, 2, 3, 4, 5]]);;
 gap> DigraphEdgeConnectivity(D);
 4

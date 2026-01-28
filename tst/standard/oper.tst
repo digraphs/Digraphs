@@ -14,9 +14,9 @@
 #@local TestPartialOrderDigraph2, TestUnion, a, adj, b, comps, copy, d, e
 #@local edges, edges2, func, g, gr, gr1, gr2, gr3, gr4, gri, grrt, grt, h, i
 #@local i1, i2, id, idom, in1, in2, in3, iter, j1, j2, m, m1, m2, mat, n, nbs
-#@local out, out1, out2, out3, p1, p2, path, preorder, qr, r, res, rtclosure, t
+#@local out, out1, out2, out3, p1, p2, path, preorder, qr, r, res, rtclosure, t, neighbours
 #@local tclosure, u1, u2, x
-#@local p, q, idp, idt, M
+#@local p, q, idp, idt, M, v
 gap> START_TEST("Digraphs package: standard/oper.tst");
 gap> LoadPackage("digraphs", false);;
 

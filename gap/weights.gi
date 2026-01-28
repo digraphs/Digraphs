@@ -793,7 +793,7 @@ end);
 # Algorithms 4-7 are used below:
 
 # Digraph EdgeConnectivity calculated with Dominating Sets (Algorithm 6-7)
-InstallMethod(DigraphEdgeConnectivity, "for a digraph",
+InstallMethod(DigraphEdgeConnectivity, "for a symmetric digraph",
 [IsDigraph],
 function(digraph)
   # Form an identical but edge weighted digraph with all edge weights as 1:
@@ -801,6 +801,11 @@ function(digraph)
     maxFlow, min, sum, a, b, V, added, st, non_leaf, max,
     notAddedNeighbours, notadded, NextVertex, NeighboursV,
     neighbour, Edges, D, VerticesLeft, VerticesED;
+
+  # check for symmetric digraph
+  if not IsSymmetricDigraph(digraph) then
+    ErrorNoReturn("Digraph given must be a symmetric digraph");
+  fi;
 
   if DigraphNrVertices(digraph) = 1 or
       DigraphNrStronglyConnectedComponents(digraph) > 1 then
