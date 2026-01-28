@@ -583,15 +583,15 @@ gap> D = out;
 false
 
 # DigraphEdgeConnectivity
-gap> D := Digraph([[2, 3, 4], [1, 3, 4], [1, 2], [2, 3]]);;
+gap> D := Digraph([[4, 5], [4, 5], [4, 5], [1, 2, 3], [1, 2, 3]]);;
 gap> DigraphEdgeConnectivity(D);
 2
-gap> D := Digraph([[], [1, 2], [2]]);;
+gap> D := Digraph([[], [3], [2]]);;
 gap> DigraphEdgeConnectivity(D);
 0
 gap> C := Digraph([[3, 4], [1, 3, 4], [2], [3]]);;
 gap> DigraphEdgeConnectivity(C);
-1
+Error, Digraph given must be a symmetric digraph
 gap> D := Digraph([[1, 2, 3, 4, 5], [1, 2, 3, 4, 5], [1, 2, 3, 4, 5], [1, 2, 3, 4, 5], [1, 2, 3, 4, 5]]);;
 gap> DigraphEdgeConnectivity(D);
 4
