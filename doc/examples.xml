@@ -1044,8 +1044,9 @@ true]]></Example>
     <A>par</A> is <C>[1,<A>n</A>]</C> then the graph is the <A>n</A>th Mobius
     ladder graph.<P/>
 
-    A circulant graph is biconnected, cyclic, Hamiltonian, regular, and vertex
-    transitive.<P/>
+    A circulant graph is vertex transitive, but is not necessarily connected
+    (consider <C>CirculantGraph(4, [2])</C>, for example).  However, a
+    <E>connected</E> circulant graph is also Hamiltonian and biconnected.<P/>
 
     See <URL>https://mathworld.wolfram.com/CirculantGraph.html</URL> for further
     details.<P/>
@@ -1053,10 +1054,19 @@ true]]></Example>
     &STANDARD_FILT_TEXT;
 
 <Example><![CDATA[
-gap> D := CirculantGraph(6, [1, 2, 3]);
+gap> D := CirculantGraph(6, [2]);
+<immutable vertex-transitive symmetric digraph with 6 vertices, 12 edg\
+es>
+gap> DigraphNrConnectedComponents(D);
+2
+gap> D := CirculantGraph(6, [2, 3]);
 <immutable Hamiltonian biconnected vertex-transitive symmetric digraph\
- with 6 vertices, 30 edges>
-gap> IsIsomorphicDigraph(D, CompleteDigraph(6));
+ with 6 vertices, 18 edges>
+gap> AutomorphismGroup(D) = DihedralGroup(IsPermGroup, 12);
+true
+gap> HamiltonianPath(D);
+[ 1, 3, 5, 2, 6, 4 ]
+gap> IsCompleteDigraph(CirculantGraph(6, [1, 2, 3]));
 true]]></Example>
   </Description>
 </ManSection>

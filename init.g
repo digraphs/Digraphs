@@ -45,13 +45,6 @@ fi;
 if not IsBound(Adjacency) then
   Adjacency := IdFunc;
 fi;
-# Avoid warnings with GAP 4.10 for use of FlipBlist
-# Can be removed once Digraphs requires GAP>=4.11
-if not IsBound(FlipBlist) then
-  FlipBlist := function(BList)
-    Apply(BList, x -> not x);
-  end;
-fi;
 
 ReadPackage("digraphs", "gap/digraph.gd");
 ReadPackage("digraphs", "gap/digraphs.g");

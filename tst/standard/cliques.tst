@@ -7,6 +7,8 @@
 ##
 #############################################################################
 ##
+
+#@local D, c, cliques, f, gr, lim, out
 gap> START_TEST("Digraphs package: standard/cliques.tst");
 gap> LoadPackage("digraphs", false);;
 
@@ -621,15 +623,6 @@ gap> f := function(a, b)
 > end;;
 gap> CliquesFinder(CompleteDigraph(3), f, [], 4, [], [], false, 2, true);
 [ 2 ]
-
-#  DIGRAPHS_UnbindVariables
-gap> Unbind(D);
-gap> Unbind(c);
-gap> Unbind(cliques);
-gap> Unbind(f);
-gap> Unbind(gr);
-gap> Unbind(lim);
-gap> Unbind(out);
 
 #
 gap> DIGRAPHS_StopTest();

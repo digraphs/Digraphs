@@ -681,6 +681,9 @@ function(D)
       fi;
     fi;
   fi;
+  if HasEdgeWeights(D) then
+    Append(str, "edge-weighted ");
+  fi;
 
   if IsMultiDigraph(D) then
     Append(str, "multi");
@@ -1393,80 +1396,25 @@ end);
 # 10. Random digraphs
 ########################################################################
 
-InstallMethod(RandomDigraphCons, "for IsMutableDigraph and an integer",
-[IsMutableDigraph, IsInt],
-{_, n}
--> RandomDigraphCons(IsMutableDigraph, n, Float(Random(0, n ^ 2) / n ^ 2)));
+# Methods for probability unspecified or given as a rational
+for filter in ["IsMutableDigraph",
+               "IsImmutableDigraph",
+               "IsHamiltonianDigraph",
+               "IsEulerianDigraph",
+               "IsConnectedDigraph",
+               "IsStronglyConnectedDigraph",
+               "IsAcyclicDigraph",
+               "IsSymmetricDigraph"] do
+  InstallMethod(RandomDigraphCons,
+  Concatenation("for ", filter, " and an integer"),
+  [EvalString(filter), IsInt],
+  {f, n} -> RandomDigraphCons(f, n, Float(Random(0, n ^ 2) / n ^ 2)));
 
-InstallMethod(RandomDigraphCons, "for IsMutableDigraph and an integer",
-[IsImmutableDigraph, IsInt],
-{_, n}
--> RandomDigraphCons(IsImmutableDigraph, n, Float(Random(0, n ^ 2) / n ^ 2)));
-
-InstallMethod(RandomDigraphCons, "for IsHamiltonianDigraph and an integer",
-[IsHamiltonianDigraph, IsInt],
-{_, n}
--> RandomDigraphCons(IsHamiltonianDigraph, n, Float(Random(0, n ^ 2) / n ^ 2)));
-
-InstallMethod(RandomDigraphCons, "for IsEulerianDigraph and an integer",
-[IsEulerianDigraph, IsInt],
-{_, n}
--> RandomDigraphCons(IsEulerianDigraph, n, Float(Random(0, n ^ 2) / n ^ 2)));
-
-InstallMethod(RandomDigraphCons, "for IsConnectedDigraph and an integer",
-[IsConnectedDigraph, IsInt],
-{_, n}
--> RandomDigraphCons(IsConnectedDigraph, n, Float(Random(0, n ^ 2) / n ^ 2)));
-
-InstallMethod(RandomDigraphCons, "for IsAcyclicDigraph and an integer",
-[IsAcyclicDigraph, IsInt],
-{_, n}
--> RandomDigraphCons(IsAcyclicDigraph, n, Float(Random(0, n ^ 2) / n ^ 2)));
-
-InstallMethod(RandomDigraphCons, "for IsSymmetricDigraph and an integer",
-[IsSymmetricDigraph, IsInt],
-{_, n}
--> RandomDigraphCons(IsSymmetricDigraph, n, Float(Random(0, n ^ 2) / n ^ 2)));
-
-InstallMethod(RandomDigraphCons,
-"for IsMutableDigraph, an integer, and a rational",
-[IsMutableDigraph, IsInt, IsRat],
-{_, n, p} -> RandomDigraphCons(IsMutableDigraph, n, Float(p)));
-
-InstallMethod(RandomDigraphCons,
-"for IsImmutableDigraph, an integer, and a rational",
-[IsImmutableDigraph, IsInt, IsRat],
-{_, n, p} -> RandomDigraphCons(IsImmutableDigraph, n, Float(p)));
-
-InstallMethod(RandomDigraphCons,
-"for IsHamiltonianDigraph, an integer, and a rational",
-[IsHamiltonianDigraph, IsInt, IsRat],
-{_, n, p} -> RandomDigraphCons(IsHamiltonianDigraph, n, Float(p)));
-
-InstallMethod(RandomDigraphCons,
-"for IsEulerianDigraph, an integer, and a rational",
-[IsEulerianDigraph, IsInt, IsRat],
-{_, n, p} -> RandomDigraphCons(IsEulerianDigraph, n, Float(p)));
-
-InstallMethod(RandomDigraphCons,
-"for IsConnectedDigraph, an integer, and a rational",
-[IsConnectedDigraph, IsInt, IsRat],
-{_, n, p} -> RandomDigraphCons(IsConnectedDigraph, n, Float(p)));
-
-InstallMethod(RandomDigraphCons,
-"for IsStronglyConnectedDigraph, an integer, and a rational",
-[IsStronglyConnectedDigraph, IsInt, IsRat],
-{filt, n, p} -> RandomDigraphCons(IsStronglyConnectedDigraph, n, Float(p)));
-
-InstallMethod(RandomDigraphCons,
-"for IsAcyclicDigraph, an integer, and a rational",
-[IsAcyclicDigraph, IsInt, IsRat],
-{_, n, p} -> RandomDigraphCons(IsAcyclicDigraph, n, Float(p)));
-
-InstallMethod(RandomDigraphCons,
-"for IsSymmetricDigraph, an integer, and a rational",
-[IsSymmetricDigraph, IsInt, IsRat],
-{_, n, p} -> RandomDigraphCons(IsSymmetricDigraph, n, Float(p)));
+  InstallMethod(RandomDigraphCons,
+  Concatenation("for ", filter, ", an integer, and a rational"),
+  [EvalString(filter), IsInt, IsRat],
+  {f, n, p} -> RandomDigraphCons(f, n, Float(p)));
+od;
 
 InstallMethod(RandomDigraphCons,
 "for IsMutableDigraph, a positive integer, and a float",

@@ -7,6 +7,8 @@
 ##
 #############################################################################
 ##
+
+#@local D, dualD
 gap> START_TEST("Digraphs package: standard/planar.tst");
 gap> LoadPackage("digraphs", false);;
 
@@ -271,11 +273,8 @@ true
 gap> IS_PLANAR(CompleteDigraph(2));
 true
 
-#  DIGRAPHS_UnbindVariables
-gap> Unbind(D);
-
 #
 gap> DIGRAPHS_StopTest();
 gap> STOP_TEST("Digraphs package: standard/planar.tst", 0);
 
-#T# DigraphSource and DigraphRange
+# DigraphSource and DigraphRange

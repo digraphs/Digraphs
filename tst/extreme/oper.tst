@@ -8,6 +8,8 @@
 ##
 #############################################################################
 ##
+
+#@local d, gr, gr2, i, layers, layers1, layers2, list, out
 gap> START_TEST("Digraphs package: extreme/oper.tst");
 gap> LoadPackage("digraphs", false);;
 
@@ -178,17 +180,6 @@ gap> gr := CompleteDigraph(10000);;  # defaults, recursive
 gap> record := NewDFSRecord(gr);;
 gap> record.config.iterative := false;;
 gap> ExecuteDFS(record, fail, 1, fail, fail, fail, fail);
-
-#  DIGRAPHS_UnbindVariables
-gap> Unbind(d);
-gap> Unbind(gr);
-gap> Unbind(gr2);
-gap> Unbind(i);
-gap> Unbind(layers);
-gap> Unbind(layers1);
-gap> Unbind(layers2);
-gap> Unbind(list);
-gap> Unbind(out);
 
 #
 gap> DIGRAPHS_StopTest();

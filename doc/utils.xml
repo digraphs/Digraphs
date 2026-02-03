@@ -64,7 +64,7 @@
     For these tests to complete, the digraphs library <C>digraphs-lib</C> must
     be downloaded and placed in the <C>digraphs</C> directory in a subfolder
     named <F>digraphs-lib</F>.
-    This library can be found on the &Digraphs; website.
+    This library can be found in the &DIGRAPHS_LIB; repository.
   </Description>
 </ManSection>
 <#/GAPDoc>

@@ -7,6 +7,8 @@
 ##
 #############################################################################
 ##
+
+#@local D
 gap> START_TEST("Digraphs package: extreme/cliques.tst");
 gap> LoadPackage("digraphs", false);;
 
@@ -19,9 +21,6 @@ gap> D :=
 <immutable symmetric digraph with 41 vertices, 1212 edges>
 gap> Length(DigraphCliques(D));
 1651734
-
-#  DIGRAPHS_UnbindVariables
-gap> Unbind(D);
 
 #
 gap> DIGRAPHS_StopTest();

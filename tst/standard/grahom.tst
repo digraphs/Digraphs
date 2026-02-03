@@ -7,6 +7,10 @@
 ##
 #############################################################################
 ##
+
+#@local D, D1, D2, DD, G, H, N5, edges, epis, f, found, gens, gr, gr1, gr2
+#@local homos, hook, mat, mono, monos, order_func, p, parts, ran, s, src, t, tt
+#@local x
 gap> START_TEST("Digraphs package: standard/grahom.tst");
 gap> LoadPackage("digraphs", false);;
 
@@ -48,16 +52,14 @@ Error, the 7th argument <injective> must 0, 1, or 2, not -1,
 gap> HomomorphismDigraphsFinder(gr1, gr2, fail, "a", infinity, 2, 1, 0, 0,
 > 0, 0);
 Error, the 8th argument <image> must be a list or fail, not integer,
-
-# Commented out due to difference in the rmessage for GAP 4.10 vs GAP 4.11
-#gap> HomomorphismDigraphsFinder(gr1, gr2, fail, [], 1, 1, 1, [1, []], 0,
-#> 0, 0);
-#Error, the 8th argument <image> must only contain positive integers, but found\
-# list (plain,empty) in position 2,
-#gap> HomomorphismDigraphsFinder(gr1, gr2, fail, [], 1, 1, 1, [[], []], 0,
-#> 0, 0);
-#Error, the 8th argument <image> must only contain positive integers, but found\
-# list (plain,empty) in position 1,
+gap> HomomorphismDigraphsFinder(gr1, gr2, fail, [], 1, 1, 1, [1, []], 0,
+> 0, 0);
+Error, the 8th argument <image> must only contain positive integers, but found\
+ empty plain list in position 2,
+gap> HomomorphismDigraphsFinder(gr1, gr2, fail, [], 1, 1, 1, [[], []], 0,
+> 0, 0);
+Error, the 8th argument <image> must only contain positive integers, but found\
+ empty plain list in position 1,
 gap> HomomorphismDigraphsFinder(gr1, gr2, fail, [], 1, 1, 1, [0, 1], 0, 0,
 > 0);
 Error, the 8th argument <image> must only contain positive integers, but found\
@@ -2895,36 +2897,6 @@ gap> HomomorphismDigraphsFinder(H,
 > DigraphWelshPowellOrder(H),
 > Group(()));
 [ Transformation( [ 8, 1, 5, 7, 3, 4, 6, 8 ] ) ]
-
-#  DIGRAPHS_UnbindVariables
-gap> Unbind(D);
-gap> Unbind(D1);
-gap> Unbind(D2);
-gap> Unbind(DD);
-gap> Unbind(G);
-gap> Unbind(H);
-gap> Unbind(N5);
-gap> Unbind(edges);
-gap> Unbind(epis);
-gap> Unbind(f);
-gap> Unbind(found);
-gap> Unbind(func);
-gap> Unbind(gens);
-gap> Unbind(gr);
-gap> Unbind(gr1);
-gap> Unbind(gr2);
-gap> Unbind(homos);
-gap> Unbind(hook);
-gap> Unbind(mat);
-gap> Unbind(mono);
-gap> Unbind(monos);
-gap> Unbind(parts);
-gap> Unbind(ran);
-gap> Unbind(s);
-gap> Unbind(src);
-gap> Unbind(t);
-gap> Unbind(tt);
-gap> Unbind(x);
 
 #
 gap> DIGRAPHS_StopTest();

@@ -53,7 +53,7 @@ DeclareProperty("IsMeetSemilatticeDigraph", IsDigraph);
 DeclareProperty("IsPermutationDigraph", IsDigraph);
 DeclareProperty("IsDistributiveLatticeDigraph", IsDigraph);
 DeclareProperty("IsModularLatticeDigraph", IsDigraph);
-DeclareProperty("IsTwoEdgeTransitive", IsDigraph);
+DeclareProperty("Is2EdgeTransitive", IsDigraph);
 DeclareSynonymAttr("IsLatticeDigraph",
                    IsMeetSemilatticeDigraph and IsJoinSemilatticeDigraph);
 DeclareSynonymAttr("IsPreorderDigraph",
@@ -70,6 +70,7 @@ DeclareSynonymAttr("IsEquivalenceDigraph",
 DeclareSynonymAttr("IsAntiSymmetricDigraph", IsAntisymmetricDigraph);
 DeclareSynonymAttr("IsNullDigraph", IsEmptyDigraph);
 DeclareSynonymAttr("IsQuasiorderDigraph", IsPreorderDigraph);
+DeclareSynonymAttr("IsTwoEdgeTransitive", Is2EdgeTransitive);
 
 DeclareOperation("DIGRAPHS_IsJoinSemilatticeAndJoinTable", [IsDigraph]);
 DeclareOperation("DIGRAPHS_IsMeetSemilatticeAndMeetTable", [IsDigraph]);
