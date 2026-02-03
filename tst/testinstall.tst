@@ -7,6 +7,10 @@
 ##
 #############################################################################
 ##
+
+#@local C, D
+#@local adj, comps, d, distances, edges, f, func, gr, gr1, gr2, i, id, out, p
+#@local parents, r, str, topo
 gap> START_TEST("Digraphs package: testinstall.tst");
 gap> LoadPackage("digraphs", false);;
 
@@ -254,6 +258,11 @@ gap> DigraphNrEdges(gr2);
 gap> DigraphNrAdjacencies(gr2);
 21
 
+# DigraphRemoveAllEdges
+gap> gr := Digraph(IsMutableDigraph, [[3], [4], [5], [1, 5], [1, 2]]);;
+gap> DigraphRemoveAllEdges(gr);
+<mutable empty digraph with 5 vertices>
+
 #  Fix seg fault cause by wrong handling of no edges in
 # FuncDIGRAPH_SOURCE_RANGE
 gap> gr := Digraph([[]]);
@@ -418,15 +427,15 @@ gap> String(CycleDigraph(4));
 
 # Edge-weighted digraphs
 gap> d := EdgeWeightedDigraph([[2], [1]], [[5], [10]]);
-<immutable digraph with 2 vertices, 2 edges>
+<immutable edge-weighted digraph with 2 vertices, 2 edges>
 gap> EdgeWeights(d);
 [ [ 5 ], [ 10 ] ]
 gap> EdgeWeightedDigraphTotalWeight(d);
 15
 gap> EdgeWeightedDigraphMinimumSpanningTree(d);
-<immutable digraph with 2 vertices, 1 edge>
+<immutable edge-weighted digraph with 2 vertices, 1 edge>
 gap> d := EdgeWeightedDigraph([[2], [1, 2]], [[5], [5, 5]]);
-<immutable digraph with 2 vertices, 3 edges>
+<immutable edge-weighted digraph with 2 vertices, 3 edges>
 gap> EdgeWeightedDigraphShortestPaths(d, 1);
 rec( distances := [ 0, 5 ], edges := [ fail, 1 ], parents := [ fail, 1 ] )
 gap> EdgeWeightedDigraphShortestPaths(d);
@@ -436,8 +445,8 @@ rec( distances := [ [ 0, 5 ], [ 5, 0 ] ],
 gap> EdgeWeightedDigraphShortestPath(d, 1, 2);
 [ [ 1, 2 ], [ 1 ] ]
 
-# IsTwoEdgeTransitive
-gap> IsTwoEdgeTransitive(DigraphByEdges([[1, 2], [2, 3], [3, 1]]));
+# Is2EdgeTransitive
+gap> Is2EdgeTransitive(DigraphByEdges([[1, 2], [2, 3], [3, 1]]));
 true
 
 # Issue 617: bug in DigraphRemoveEdge, wasn't removing edge labels
@@ -472,23 +481,75 @@ gap> d := Digraph([[2, 3, 4, 5], [1, 3, 4], [1, 2, 4, 5], [1, 2, 3, 5],
 gap> Length(SubdigraphsMonomorphisms(CompleteMultipartiteDigraph([2, 3]), d));
 4
 
-#  DIGRAPHS_UnbindVariables
-gap> Unbind(C);
-gap> Unbind(D);
-gap> Unbind(adj);
-gap> Unbind(d);
-gap> Unbind(f);
-gap> Unbind(func);
-gap> Unbind(gr);
-gap> Unbind(gr1);
-gap> Unbind(gr2);
-gap> Unbind(i);
-gap> Unbind(out);
-gap> Unbind(p);
-gap> Unbind(r);
-gap> Unbind(str);
-gap> Unbind(topo);
+# Issue #764 Disconnected CirculantGraphs are not Hamiltonian, etc
+gap> D := CirculantGraph(12, [2, 4]);
+<immutable vertex-transitive symmetric digraph with 12 vertices, 48 edges>
+gap> IsHamiltonianDigraph(D) or IsBiconnectedDigraph(D);
+false
+gap> D := DigraphCopy(D);;
+gap> IsHamiltonianDigraph(D) or IsBiconnectedDigraph(D);
+false
+gap> IsVertexTransitive(D);
+true
+gap> D := CirculantGraph(4, [2]);
+<immutable undirected forest with 4 vertices>
+gap> IsHamiltonianDigraph(D) or IsBiconnectedDigraph(D);
+false
+gap> D := CirculantGraph(6, [2]);
+<immutable vertex-transitive symmetric digraph with 6 vertices, 12 edges>
+gap> IsHamiltonianDigraph(D) or IsBiconnectedDigraph(D);
+false
+gap> D := DigraphCopy(CirculantGraph(9, [3]));
+<immutable digraph with 9 vertices, 18 edges>
+gap> IsHamiltonianDigraph(D) or IsBiconnectedDigraph(D);
+false
 
-#E#
+# Issue #818 IsConnectedDigraph for a digraph without vertices
+gap> D := Digraph([]);;
+gap> IsConnectedDigraph(D);
+true
+gap> D := Digraph([]);;
+gap> DigraphConnectedComponents(D);
+rec( comps := [  ], id := [  ] )
+gap> IsConnectedDigraph(D);
+true
+
+# Issue #850: Problems with AutomorphismGroup for CompleteBipartiteDigraph
+gap> D := CompleteBipartiteDigraph(1, 5);
+<immutable complete bipartite digraph with bicomponent sizes 1 and 5>
+gap> AutomorphismGroup(D) = SymmetricGroup([2 .. 6]);
+true
+gap> not DIGRAPHS_IsGrapeLoaded() or
+> (DIGRAPHS_IsGrapeLoaded() and
+>  IsomorphismDigraphs(Digraph(Graph(D)), D) <> fail);
+true
+gap> not DIGRAPHS_IsGrapeLoaded() or
+> (DIGRAPHS_IsGrapeLoaded() and
+>  OnDigraphs(D, IsomorphismDigraphs(Digraph(Graph(D)), D)) = D);
+true
+gap> D := CompleteBipartiteDigraph(5, 1);
+<immutable complete bipartite digraph with bicomponent sizes 5 and 1>
+gap> AutomorphismGroup(D) = SymmetricGroup([1 .. 5]);
+true
+gap> D := CompleteBipartiteDigraph(1, 1);
+<immutable complete digraph with 2 vertices>
+gap> AutomorphismGroup(D) = Group([(1, 2)]);
+true
+gap> D := CompleteBipartiteDigraph(3, 3);
+<immutable complete bipartite digraph with bicomponents of size 3>
+gap> AutomorphismGroup(D)
+> = Group([(1, 2, 3), (1, 2), (4, 5, 6), (4, 5), (1, 4)(2, 5)(3, 6)]);
+true
+
+# SwapDigraphs
+gap> C := Digraph(IsMutableDigraph, [[4], [5], [1, 2], [], []]);;
+gap> D := Digraph(IsMutableDigraph, [[2, 3, 4], [1, 3, 4, 5], [1, 2], [5], [4]]);;
+gap> SwapDigraphs(C, D);
+gap> OutNeighbours(D);
+[ [ 4 ], [ 5 ], [ 1, 2 ], [  ], [  ] ]
+gap> OutNeighbours(C);
+[ [ 2, 3, 4 ], [ 1, 3, 4, 5 ], [ 1, 2 ], [ 5 ], [ 4 ] ]
+
+#
 gap> DIGRAPHS_StopTest();
 gap> STOP_TEST("Digraphs package: testinstall.tst", 0);

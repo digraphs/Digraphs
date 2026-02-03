@@ -32,6 +32,8 @@
     <#Include Label="EdgeWeightedDigraphShortestPaths">
     <#Include Label="EdgeWeightedDigraphShortestPath">
     <#Include Label="DigraphMaximumFlow">
+    <#Include Label="DigraphMinimumCut">
+    <#Include Label="DigraphMinimumCutSet">
     <#Include Label="RandomUniqueEdgeWeightedDigraph">
   </Section>
 
@@ -78,6 +80,7 @@
     <#Include Label="IsDigraphCore">
     <#Include Label="IsEdgeTransitive">
     <#Include Label="IsVertexTransitive">
+    <#Include Label="Is2EdgeTransitive">
   </Section>
 
   

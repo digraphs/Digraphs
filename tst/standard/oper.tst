@@ -8,6 +8,15 @@
 ##
 #############################################################################
 ##
+
+#@local C, D, D1, D2, D3, D3_edges, DD
+#@local G, G1, L, TestPartialOrderDigraph
+#@local TestPartialOrderDigraph2, TestUnion, a, adj, b, comps, copy, d, e
+#@local edges, edges2, func, g, gr, gr1, gr2, gr3, gr4, gri, grrt, grt, h, i
+#@local i1, i2, id, idom, in1, in2, in3, iter, j1, j2, m, m1, m2, mat, n, nbs
+#@local out, out1, out2, out3, p1, p2, path, preorder, qr, r, res, rtclosure, t
+#@local tclosure, u1, u2, x
+#@local p, q, idp, idt, M
 gap> START_TEST("Digraphs package: standard/oper.tst");
 gap> LoadPackage("digraphs", false);;
 
@@ -100,6 +109,30 @@ gap> gr := DigraphRemoveEdge(gr, [2, 1]);
 <immutable digraph with 2 vertices, 1 edge>
 gap> DigraphEdges(gr);
 [ [ 1, 2 ] ]
+
+# Tests for digraph operator "^" (implements D ^ p and D ^ t using OnDigraphs)
+gap> D := CycleDigraph(5);
+<immutable cycle digraph with 5 vertices>
+gap> p := (1, 5)(2, 4);;
+gap> D ^ p = DigraphReverse(D);
+true
+gap> OnDigraphs(D, p) = D ^ p;
+true
+gap> idp := ();;
+gap> D ^ idp = D;
+true
+gap> q := (1, 2, 3, 4, 5);;
+gap> (D ^ q) ^ (q ^ -1) = D;
+true
+gap> t := Transformation([2, 3, 4, 5, 1]);;
+gap> D ^ t = OnDigraphs(D, t);
+true
+gap> idt := Transformation([1, 2, 3, 4, 5]);;
+gap> D ^ idt = D;
+true
+gap> M := DigraphMutableCopy(D);;
+gap> M ^ p = OnDigraphs(M, p);
+true
 
 #  OnDigraphs: for a digraph and a perm
 gap> gr := Digraph([[2], [1], [3]]);
@@ -2526,6 +2559,45 @@ gap> OutNeighbours(last);
 gap> LexicographicProduct(ChainDigraph(3), CycleDigraph(7));   
 <immutable digraph with 21 vertices, 119 edges>
 
+# SwapDigraphs
+gap> D2 := Digraph(IsMutableDigraph, [[4], [5], [1, 2], [], []]);
+<mutable digraph with 5 vertices, 4 edges>
+gap> D1 := Digraph(IsMutableDigraph, [[2, 3, 4], [1, 3, 4, 5], [1, 2], [5], [4]]);
+<mutable digraph with 5 vertices, 11 edges>
+gap> SwapDigraphs(D1, D2);
+gap> OutNeighbours(D1);
+[ [ 4 ], [ 5 ], [ 1, 2 ], [  ], [  ] ]
+gap> OutNeighbours(D2);
+[ [ 2, 3, 4 ], [ 1, 3, 4, 5 ], [ 1, 2 ], [ 5 ], [ 4 ] ]
+gap> D3 := Digraph(IsMutableDigraph, [[2], [1], [2]]);
+<mutable digraph with 3 vertices, 3 edges>
+gap> SwapDigraphs(D1, D3);
+gap> OutNeighbours(D1);
+[ [ 2 ], [ 1 ], [ 2 ] ]
+gap> OutNeighbours(D3);
+[ [ 4 ], [ 5 ], [ 1, 2 ], [  ], [  ] ]
+gap> SwapDigraphs(D1, D3);
+gap> OutNeighbours(D1);
+[ [ 4 ], [ 5 ], [ 1, 2 ], [  ], [  ] ]
+gap> OutNeighbours(D3);
+[ [ 2 ], [ 1 ], [ 2 ] ]
+gap> D2 := Digraph(IsMutableDigraph, [[], [], []]);
+<mutable empty digraph with 3 vertices>
+gap> SwapDigraphs(D3, D2);
+gap> OutNeighbours(D2);
+[ [ 2 ], [ 1 ], [ 2 ] ]
+gap> OutNeighbours(D3);
+[ [  ], [  ], [  ] ]
+
+# SwapDigraphs: ensure lists are not copied
+gap> D1 := Digraph(IsMutableDigraph, [[2], [3, 4], [1], []]);;
+gap> D2 := Digraph(IsMutableDigraph, [[1, 3], [3], [1, 2, 4], []]);;
+gap> out1 := OutNeighbours(D1);
+[ [ 2 ], [ 3, 4 ], [ 1 ], [  ] ]
+gap> SwapDigraphs(D1, D2);
+gap> IsIdenticalObj(out1, OutNeighbours(D2));
+true
+
 # DigraphShortestPathSpanningTree
 gap> D := Digraph([[2, 3, 4], [1, 3, 4, 5], [1, 2], [5], [4]]);
 <immutable digraph with 5 vertices, 11 edges>
@@ -3495,78 +3567,6 @@ gap> ForAll(List(IteratorOfPaths(D, 6, 1)), x -> IsDigraphPath(D, x));
 true
 gap> IsDigraphPath(D, []);
 Error, the 2nd argument (a list) must have length 2, but found length 0
-
-#  DIGRAPHS_UnbindVariables
-gap> Unbind(C);
-gap> Unbind(D);
-gap> Unbind(D1);
-gap> Unbind(D2);
-gap> Unbind(D3);
-gap> Unbind(D3_edges);
-gap> Unbind(DD);
-gap> Unbind(G);
-gap> Unbind(G1);
-gap> Unbind(L);
-gap> Unbind(a);
-gap> Unbind(adj);
-gap> Unbind(b);
-gap> Unbind(copy);
-gap> Unbind(d);
-gap> Unbind(edges);
-gap> Unbind(edges2);
-gap> Unbind(func);
-gap> Unbind(g);
-gap> Unbind(gr);
-gap> Unbind(gr1);
-gap> Unbind(gr2);
-gap> Unbind(gr3);
-gap> Unbind(gr4);
-gap> Unbind(gri);
-gap> Unbind(grrt);
-gap> Unbind(grt);
-gap> Unbind(h);
-gap> Unbind(i);
-gap> Unbind(i1);
-gap> Unbind(i2);
-gap> Unbind(in1);
-gap> Unbind(in2);
-gap> Unbind(in3);
-gap> Unbind(iter);
-gap> Unbind(j1);
-gap> Unbind(j2);
-gap> Unbind(m);
-gap> Unbind(m1);
-gap> Unbind(m2);
-gap> Unbind(mat);
-gap> Unbind(n);
-gap> Unbind(nbs);
-gap> Unbind(out);
-gap> Unbind(out1);
-gap> Unbind(out2);
-gap> Unbind(out3);
-gap> Unbind(p1);
-gap> Unbind(p2);
-gap> Unbind(path);
-gap> Unbind(qr);
-gap> Unbind(r);
-gap> Unbind(res);
-gap> Unbind(rtclosure);
-gap> Unbind(t);
-gap> Unbind(tclosure);
-gap> Unbind(u1);
-gap> Unbind(u2);
-gap> Unbind(x);
-gap> Unbind(TestPartialOrderDigraph);
-gap> Unbind(PreorderFunc);
-gap> Unbind(AncestorFunc);
-gap> Unbind(CrossFunc);
-gap> Unbind(record);
-gap> Unbind(record2);
-gap> Unbind(data);
-gap> Unbind(parents);
-gap> Unbind(edge);
-gap> Unbind(postorder);
-gap> Unbind(preorder);
 
 #
 gap> DIGRAPHS_StopTest();

@@ -8,7 +8,7 @@
 #############################################################################
 ##
 
-BindGlobal("DIGRAPHS_OmitFromTests", []);
+DeclareGlobalFunction("DIGRAPHS_OmitFromTests");
 
 DeclareGlobalFunction("DIGRAPHS_Dir");
 DeclareGlobalFunction("DIGRAPHS_ManualExamples");

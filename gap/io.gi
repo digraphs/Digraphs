@@ -275,10 +275,10 @@ function(filename)
   fi;
 
   splitname := SplitString(filename, ".");
-  extension := splitname[Length(splitname)];
+  extension := Remove(splitname);
 
   if extension in ["gz", "bz2", "xz"] then
-    extension := splitname[Length(splitname) - 1];
+    extension := Remove(splitname);
   fi;
 
   if extension = "txt" then
@@ -313,10 +313,10 @@ function(filename)
   fi;
 
   splitname := SplitString(filename, ".");
-  extension := splitname[Length(splitname)];
+  extension := Remove(splitname);
 
   if extension in ["gz", "bz2", "xz"] then
-    extension := splitname[Length(splitname) - 1];
+    extension := Remove(splitname);
   fi;
 
   if extension = "txt" then
@@ -549,9 +549,8 @@ function(arg...)
       # the file encoder was not specified and cannot be deduced from the
       # filename, so we try to make a guess based on the digraphs themselves
       splitname := SplitString(name, ".");
-      if splitname[Length(splitname)] in ["xz", "gz", "bz2"] then
-        compext := splitname[Length(splitname)];
-        splitname := splitname{[1 .. Length(splitname) - 1]};
+      if Last(splitname) in ["xz", "gz", "bz2"] then
+        compext := Remove(splitname);
       fi;
 
       # Do we know all the graphs to be symmetric?
@@ -647,7 +646,7 @@ function(arg...)
           " is a whole file encoder, and so only one digraph should be ",
           "specified. Only the last digraph will be encoded.");
     fi;
-    IO_Write(file, encoder(digraphs[Length(digraphs)]));
+    IO_Write(file, encoder(Last(digraphs)));
   else
     for i in [1 .. Length(digraphs)] do
       encoder(file, digraphs[i]);
@@ -715,7 +714,7 @@ function(filt, s)
   maxedges := n * (n - 1) / 2;
   if list <> [0] and list <> [1] and
       not (Int((maxedges - 1) / 6) + start = Length(list) and
-           list[Length(list)] mod 2 ^ ((0 - maxedges) mod 6) = 0) then
+           Last(list) mod 2 ^ ((0 - maxedges) mod 6) = 0) then
     ErrorNoReturn("the 2nd argument <s> is not a valid graph6 string,");
   fi;
 
@@ -732,8 +731,8 @@ function(filt, s)
         i := i / 2;
       else
         edge := FindCoord(pos + 6 - bpos, 0);
-        out[edge[1]][Length(out[edge[1]]) + 1] := edge[2];
-        out[edge[2]][Length(out[edge[2]]) + 1] := edge[1];
+        Add(out[edge[1]], edge[2]);
+        Add(out[edge[2]], edge[1]);
         nredges := nredges + 1;
         i := (i - 1) / 2;
       fi;
@@ -1238,8 +1237,7 @@ function(s)
     # digraph definition line
     if first_char = 'p' then
       if IsBound(vertices) or Length(split) <> 4 or split[2] <> "edge" then
-        ErrorNoReturn("the format of the string <s>",
-                             " cannot be determined");
+        ErrorNoReturn("the format of the string <s> cannot be determined");
       fi;
       nr_vertices     := int_from_string(split[3]);
       vertices        := [1 .. nr_vertices];
@@ -1428,21 +1426,23 @@ function(func, s)
   local out, i;
 
   s := SplitString(Chomp(s), " ");
-  Apply(s, EvalString);
 
-  if not ForAll(s, x -> IsInt(x) and x >= 0) then
+  if not ForAll(s, x -> ForAll(x, IsDigitChar)) or Length(s) < 2 then
     ErrorNoReturn("the 2nd argument <s> must be a string of ",
-                  "space-separated non-negative integers,");
-  elif not Length(s) >= 2 then
-    ErrorNoReturn("the 2nd argument <s> must be a string of ",
-                  "at least two integers,");
-  elif not ForAll([3 .. Length(s)], i -> s[i] < s[1]) then
-    ErrorNoReturn("the 2nd argument <s> must be a string consisting of ",
-                  "integers in the range [0 .. ", s[1], "],");
+                  "at least two space-separated non-negative integers,");
+  fi;
+
+  Apply(s, Int);
+
+  if not ForAll([3 .. Length(s)], i -> s[i] < s[1]) then
+    ErrorNoReturn("all integers in the 2nd argument <s>, ",
+                  "except for the first two, must be strictly less than ",
+                  "the first integer, which is ", s[1], ",");
   elif Length(s) < 2 * s[2] + 2 then
     ErrorNoReturn("the 2nd argument <s> must be a string of length ",
                   "at least ", 2 * s[2] + 2);
   fi;
+
   out := List([1 .. s[1]], x -> []);
   for i in [1 .. s[2]] do
     Add(out[s[2 * i + 1] + 1], s[2 * i + 2] + 1);
@@ -2163,7 +2163,7 @@ function(args...)
       positions := PositionsProperty(partition, x -> x = i);
       joinedPositions := JoinStringsWithSeparator(positions, " ");
       partitionString := Concatenation(partitionString, joinedPositions);
-      if i <> dflabels[Length(dflabels)] then
+      if i <> Last(dflabels) then
         partitionString := Concatenation(partitionString, " | ");
       fi;
     od;

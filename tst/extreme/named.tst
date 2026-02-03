@@ -11,6 +11,8 @@
 ## database against known values. Attributes tested are largely from House
 ## of Graphs at hog.grinvin.org.
 ##
+
+#@local D, failed, name, names, prop, properties, r
 gap> START_TEST("Digraphs package: extreme/named.tst");
 gap> LoadPackage("digraphs", false);;
 
@@ -39,15 +41,6 @@ gap> for name in names do
 >    od;
 gap> failed;
 [  ]
-
-#  DIGRAPHS_UnbindVariables
-gap> Unbind(D);
-gap> Unbind(failed);
-gap> Unbind(name);
-gap> Unbind(names);
-gap> Unbind(prop);
-gap> Unbind(properties);
-gap> Unbind(r);
 
 #
 gap> DIGRAPHS_StopTest();

@@ -10,75 +10,89 @@ on:
     # Every day at 3:30 AM UTC
     - cron: 30 3 * * *
 
-env:
-  DIGRAPHS_LIB: digraphs-lib-0.6
-  NO_COVERAGE: true
-
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  # Group by workflow and ref; the last component ensures that for pull requests
+  # we limit to one concurrent job, but for the main/stable branches we don't
+  group: ${{ github.workflow }}-${{ github.ref }}-${{ (github.ref != 'refs/heads/main' && !startsWith(github.ref, 'refs/heads/stable-')) || github.run_number }}
+  # Only cancel intermediate pull request builds
+  cancel-in-progress: ${{ startsWith(github.ref, 'refs/pull/') }}
 
 jobs:
   test-unix:
-    name: GAP ${{ matrix.gap-branch }} / ${{ matrix.only-needed && 'only-needed' || 'needed+suggested' }}
+    name: "GAP ${{ matrix.gap-version }} / ${{ matrix.mode == 'onlyneeded' && 'only needed' || 'needed+suggested' }} packages"
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        gap-branch:
+        gap-version:
           - master
-          - stable-4.11
-          - stable-4.12
-          - stable-4.13
-          - stable-4.14
-        only-needed:
-          - true
-          - false
+          - stable-4.15
+          - v4.14
+          - v4.13
+          - v4.12
+        mode:
+          - onlyneeded
+          - default
         include:
-          - only-needed: true
-            pkgs-to-clone: digraphs/graphviz
-            pkgs-to-build: io orb datastructures autodoc
-          - only-needed: false
-            pkgs-to-clone: NautyTracesInterface digraphs/graphviz
-            pkgs-to-build: io orb datastructures grape NautyTracesInterface autodoc
+          - mode: onlyneeded
+            pkgs-to-clone: https://github.com/digraphs/graphviz.git
+            pkgs-to-build: io orb datastructures profiling
+          - mode: default
+            pkgs-to-clone: https://github.com/digraphs/graphviz.git https://github.com/gap-packages/NautyTracesInterface.git
+            pkgs-to-build: io orb datastructures profiling grape NautyTracesInterface
+
+          - gap-version: v4.11  # Note: NautyTracesInterface requires GAP 4.12
+            mode: default  # There wouldn't be much point testing GAP v4.11 with only needed packages. The only difference is whether Grape is loaded.
+            pkgs-to-clone: https://github.com/digraphs/graphviz.git
+            pkgs-to-build: io* orb* datastructures* profiling* grape*
 
     steps:
       - uses: actions/checkout@v5
       - name: Output g++ version . . .
         run: g++ --version
-      - name: Install GAP and clone/compile necessary packages . . .
-        uses: gap-actions/setup-gap@v2
+      - name: "Install GAP . . ."
+        uses: gap-actions/setup-gap@v3
         with:
-          GAP_PKGS_TO_CLONE: ${{ matrix.pkgs-to-clone }}
-          GAP_PKGS_TO_BUILD: ${{ matrix.pkgs-to-build }}
-          GAPBRANCH: ${{ matrix.gap-branch }}
-      - name: Build Digraphs . . .
-        uses: gap-actions/build-pkg@v1
-      - name: Install digraphs-lib . . .
+          gap-version: ${{ matrix.gap-version }}
+      - name: "Build Digraphs . . ."
+        uses: gap-actions/build-pkg@v2
+      - name: "Clone additional GAP packages . . ."
         run: |
-          curl --retry 5 -L -O "https://digraphs.github.io/Digraphs/${{ env.DIGRAPHS_LIB }}.tar.gz"
-          tar xf "${{ env.DIGRAPHS_LIB }}.tar.gz"
-      - name: Run DigraphsTestInstall . . .
-        uses: gap-actions/run-pkg-tests@v3
+          for PKG in ${{ matrix.pkgs-to-clone }}; do
+            cd ${GAPROOT}/pkg
+            git clone $PKG
+          done
+      - name: "Build relevant GAP packages . . ."
+        run: |
+          cd ${GAPROOT}/pkg
+          ../bin/BuildPackages.sh --strict ${{ matrix.pkgs-to-build }}
+      - name: "Install digraphs-lib . . ."
+        uses: actions/checkout@v5
         with:
-          NO_COVERAGE: true
-          GAP_TESTFILE: tst/github_actions/install.g
-          only-needed: ${{ matrix.only-needed }}
-      - name: Run DigraphsTestStandard . . .
-        uses: gap-actions/run-pkg-tests@v3
+          repository: digraphs/digraphs-lib
+          path: digraphs-lib
+      - name: "Run DigraphsTestInstall . . ."
+        uses: gap-actions/run-pkg-tests@v4
         with:
-          NO_COVERAGE: true
-          GAP_TESTFILE: tst/github_actions/standard.g
-          only-needed: ${{ matrix.only-needed }}
-      - name: Run DigraphsTestManualExamples . . .
-        uses: gap-actions/run-pkg-tests@v3
+          testfile: tst/github_actions/install.g
+          mode: ${{ matrix.mode }}
+      - name: "Run DigraphsTestStandard . . ."
+        uses: gap-actions/run-pkg-tests@v4
         with:
-          NO_COVERAGE: true
-          GAP_TESTFILE: tst/github_actions/examples.g
-          only-needed: ${{ matrix.only-needed }}
-      - name: Run DigraphsTestExtreme . . .
-        uses: gap-actions/run-pkg-tests@v3
+          testfile: tst/github_actions/standard.g
+          mode: ${{ matrix.mode }}
+      - name: "Run DigraphsTestManualExamples . . ."
+        uses: gap-actions/run-pkg-tests@v4
         with:
-          NO_COVERAGE: true
-          GAP_TESTFILE: tst/github_actions/extreme.g
-          only-needed: ${{ matrix.only-needed }}
+          testfile: tst/github_actions/examples.g
+          mode: ${{ matrix.mode }}
+      - name: "Run DigraphsTestExtreme . . ."
+        uses: gap-actions/run-pkg-tests@v4
+        with:
+          testfile: tst/github_actions/extreme.g
+          mode: ${{ matrix.mode }}
+      - uses: gap-actions/process-coverage@v3
+      - uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: true

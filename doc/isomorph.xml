@@ -15,7 +15,7 @@
   <Returns>Nothing.</Returns>
   <Description>
     These functions can be used to specify whether &NAUTY; or &BLISS; should be
-    used by default by &Digraphs;. If &NautyTracesInterface; is not available,
+    used by default by &Digraphs;. If &NAUTYTRACESINTERFACE; is not available,
     then these functions do nothing. Otherwise, by calling
     <C>DigraphsUseNauty</C> subsequent computations will default to using
     &NAUTY; rather than &BLISS;, where possible.
@@ -87,7 +87,7 @@ gap> Size(G);
   <Description>
     If <A>digraph</A> is a digraph, then this attribute contains the group of
     automorphisms of <A>digraph</A> as calculated using &NAUTY; by
-    Brendan Mckay and Adolfo Piperno via &NautyTracesInterface;.
+    Brendan Mckay and Adolfo Piperno via &NAUTYTRACESINTERFACE;.
 
     <!-- FIXME be more explicit about what the second arg is -->
 
@@ -134,7 +134,7 @@ Group([ (3,4)(6,7)(8,9), (2,3)(5,6)(9,10), (2,5)(3,6)(4,7),
     returned group.<P/>
 
     By default, the automorphism group is found using &BLISS; by Tommi Junttila
-    and Petteri Kaski. If &NautyTracesInterface; is available, then &NAUTY; by
+    and Petteri Kaski. If &NAUTYTRACESINTERFACE; is available, then &NAUTY; by
     Brendan Mckay and Adolfo Piperno can be used instead; see
     <Ref Attr="BlissAutomorphismGroup" Label="for a digraph"/>, 
     <Ref Attr="NautyAutomorphismGroup"/>, <Ref Func="DigraphsUseBliss"/>,
@@ -207,7 +207,7 @@ true]]></Example>
     returned group.<P/>
 
     By default, the automorphism group is found using &BLISS; by Tommi Junttila
-    and Petteri Kaski. If &NautyTracesInterface; is available, then &NAUTY; by
+    and Petteri Kaski. If &NAUTYTRACESINTERFACE; is available, then &NAUTY; by
     Brendan Mckay and Adolfo Piperno can be used instead; see
     <Ref Attr="BlissAutomorphismGroup"
       Label="for a digraph and homogeneous list"/>,
@@ -295,7 +295,7 @@ true]]></Example>
     returned group.<P/>
 
     By default, the automorphism group is found using &BLISS; by Tommi Junttila
-    and Petteri Kaski. If &NautyTracesInterface; is available, then &NAUTY; by
+    and Petteri Kaski. If &NAUTYTRACESINTERFACE; is available, then &NAUTY; by
     Brendan Mckay and Adolfo Piperno can be used instead; see
      <Ref Attr="BlissAutomorphismGroup"
        Label="for a digraph, homogeneous list, and list"/>,
@@ -488,7 +488,7 @@ gap> List(DigraphVertices(digraph), i -> colours[i / p]);
 
     By default, an isomorphism is found using the canonical labellings of the
     digraphs obtained from &BLISS; by Tommi Junttila
-    and Petteri Kaski. If &NautyTracesInterface; is available, then &NAUTY; by
+    and Petteri Kaski. If &NAUTYTRACESINTERFACE; is available, then &NAUTY; by
     Brendan Mckay and Adolfo Piperno can be used instead; see
     <Ref Func="DigraphsUseBliss"/>, and <Ref Func="DigraphsUseNauty"/>.
 
@@ -548,7 +548,7 @@ true]]></Example>
 
     By default, an isomorphism is found using the canonical labellings of the
     digraphs obtained from &BLISS; by Tommi Junttila
-    and Petteri Kaski. If &NautyTracesInterface; is available, then &NAUTY; by
+    and Petteri Kaski. If &NAUTYTRACESINTERFACE; is available, then &NAUTY; by
     Brendan Mckay and Adolfo Piperno can be used instead; see
     <Ref Func="DigraphsUseBliss"/>, and <Ref Func="DigraphsUseNauty"/>.
 
@@ -599,7 +599,7 @@ false]]></Example>
 
     By default, an isomorphism is found using the canonical labellings of the
     digraphs obtained from &BLISS; by Tommi Junttila
-    and Petteri Kaski. If &NautyTracesInterface; is available, then &NAUTY; by
+    and Petteri Kaski. If &NAUTYTRACESINTERFACE; is available, then &NAUTY; by
     Brendan Mckay and Adolfo Piperno can be used instead; see
     <Ref Func="DigraphsUseBliss"/>, and <Ref Func="DigraphsUseNauty"/>.
 
@@ -667,7 +667,7 @@ true
 
     By default, an isomorphism is found using the canonical labellings of the
     digraphs obtained from &BLISS; by Tommi Junttila
-    and Petteri Kaski. If &NautyTracesInterface; is available, then &NAUTY; by
+    and Petteri Kaski. If &NAUTYTRACESINTERFACE; is available, then &NAUTY; by
     Brendan Mckay and Adolfo Piperno can be used instead; see
     <Ref Func="DigraphsUseBliss"/>, and <Ref Func="DigraphsUseNauty"/>.
 

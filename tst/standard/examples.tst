@@ -7,6 +7,8 @@
 ##
 #############################################################################
 ##
+
+#@local D, G8_3, gr, grrt
 gap> START_TEST("Digraphs package: standard/examples.tst");
 gap> LoadPackage("digraphs", false);;
 
@@ -546,6 +548,18 @@ gap> D := CirculantGraph(10, [1, 5]);
  vertices, 30 edges>
 gap> IsIsomorphicDigraph(D, MobiusLadderGraph(5));
 true
+gap> Set(Filtered(Combinations([1 .. 6]),
+> x -> IsUndirectedForest(DigraphCopy(CirculantGraph(6, x)))));
+[ [  ], [ 3 ] ]
+gap> Set(Filtered(Combinations([1 .. 6]),
+> x -> IsUndirectedForest(CirculantGraph(6, x))));
+[ [  ], [ 3 ] ]
+gap> D := CirculantGraph(6, [3]);
+<immutable undirected forest with 6 vertices>
+gap> IsUndirectedForest(D);
+true
+gap> IsUndirectedForest(DigraphCopy(D));
+true
 
 # CycleGraph
 gap> IsIsomorphicDigraph(CycleGraph(5), DigraphSymmetricClosure(CycleDigraph(5)));
@@ -841,12 +855,6 @@ gap> BurntPancakeGraph(5);
 <immutable symmetric digraph with 3840 vertices, 19200 edges>
 gap> BurntPancakeGraph(IsMutableDigraph, 1);
 <mutable digraph with 1 vertex, 1 edge>
-
-# DIGRAPHS_UnbindVariables
-gap> Unbind(D);
-gap> Unbind(G8_3);
-gap> Unbind(gr);
-gap> Unbind(grrt);
 
 #
 gap> DIGRAPHS_StopTest();

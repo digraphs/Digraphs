@@ -152,158 +152,38 @@ gap> Splash(DotDigraph(RandomDigraph(4)));
       The string returned by <C>DotDigraph</C> or
       <C>DotVertexLabelledDigraph</C> can be written to a file using
       the command <Ref Func="FileString" BookName="GAPDoc"/>.<P/>
-      <Log><![CDATA[
-gap> adj := List([1 .. 4], x -> [1, 1, 1, 1]);
-[ [ 1, 1, 1, 1 ], [ 1, 1, 1, 1 ], [ 1, 1, 1, 1 ], [ 1, 1, 1, 1 ] ]
-gap> adj[1][3] := 0;
-0
-gap> gr := DigraphByAdjacencyMatrix(adj);
-<immutable digraph with 4 vertices, 15 edges>
+      <Example><![CDATA[
 gap> D := CompleteDigraph(4);
 <immutable complete digraph with 4 vertices>
-gap> vertcolors := [];;
-gap> vertcolors[1] := "blue";; vertcolors[2] := "red";; 
-gap> vertcolors[3] := "green";; vertcolors[4] := "yellow";;
-gap> edgecolors := [];;
-gap> edgecolors[1] := [];; edgecolors[2] := [];;
-gap> edgecolors[3] := [];; edgecolors[4] := [];; 
-gap> edgecolors[1][2] := "lightblue";;
-gap> edgecolors[1][3] := "pink";;
-gap> edgecolors[1][4] := "purple";;
-gap> edgecolors[2][1] := "lightblue";;
-gap> edgecolors[2][3] := "pink";; 
-gap> edgecolors[2][4] := "purple";; 
-gap> edgecolors[3][1] := "lightblue";; 
-gap> edgecolors[3][2] := "pink";; 
-gap> edgecolors[3][4] := "purple";;
-gap> edgecolors[4][1] := "lightblue";; 
-gap> edgecolors[4][2] := "pink";;
-gap> edgecolors[4][3] := "purple";;
-gap> Print(DotColoredDigraph(D, vertcolors, edgecolors));
+gap> vertcolors := ["blue", "green", "red", "yellow"];;
+gap> Print(DotVertexLabelledDigraph(D));
 //dot
 digraph hgn{
 node [shape=circle]
-1[color=blue, style=filled]
-2[color=red, style=filled]
-3[color=green, style=filled]
-4[color=yellow, style=filled]
-1 -> 2[color=lightblue]
-1 -> 3[color=pink]
-1 -> 4[color=purple]
-2 -> 1[color=lightblue]
-2 -> 3[color=pink]
-2 -> 4[color=purple]
-3 -> 1[color=lightblue]
-3 -> 2[color=pink]
-3 -> 4[color=purple]
-4 -> 1[color=lightblue]
-4 -> 2[color=pink]
-4 -> 3[color=purple]
+1 [label="1"]
+2 [label="2"]
+3 [label="3"]
+4 [label="4"]
+1 -> 2
+1 -> 3
+1 -> 4
+2 -> 1
+2 -> 3
+2 -> 4
+3 -> 1
+3 -> 2
+3 -> 4
+4 -> 1
+4 -> 2
+4 -> 3
 }
-gap> D := EmptyDigraph(3);
-<immutable empty digraph with 3 vertices>
-gap> vertcolors := [];;
-gap> vertcolors[1] := "blue";; vertcolors[2] := "red";;
-gap> vertcolors[3] := "green";;
-gap> edgecolors := [];;
-gap> edgecolors[1] := [];; edgecolors[2] := [];; 
-gap> edgecolors[3] := [];;
-gap> Print(DotColoredDigraph(D, vertcolors, edgecolors));
-//dot
-digraph hgn{
-node [shape=circle]
-1[color=blue, style=filled]
-2[color=red, style=filled]
-3[color=green, style=filled]
-}
-gap> D := Digraph([[2], [1, 3], [2]]);
-<immutable digraph with 3 vertices, 4 edges>
-gap> vertcolors := [];;
-gap> vertcolors[1] := "blue";;
-gap> vertcolors[2] := "pink";;
-gap> vertcolors[3] := "purple";;
-gap> edgecolors := [];;
-gap> edgecolors[1] := [];; edgecolors[2] := [];;
-gap> edgecolors[3] := [];;
-gap> edgecolors[1][2] := "green";; edgecolors[2][1] := "green";;
-gap> edgecolors[2][3] := "red";; edgecolors[3][2] := "red";;
-gap> Print(DotSymmetricColoredDigraph(D, vertcolors, edgecolors));
-//dot
-graph hgn{
-node [shape=circle]
-
-1[color=blue, style=filled]
-2[color=pink, style=filled]
-3[color=purple, style=filled]
-1 -- 2[color=green]
-2 -- 3[color=red]
-}
-gap> D := Digraph([[2, 3], [1, 3], [1]]);
-<immutable digraph with 3 vertices, 5 edges>
-gap> vertcolors := [];;
-gap> vertcolors[1] := "blue";; vertcolors[2] := "red";;
-gap> vertcolors[3] := "green";;
-gap> edgecolors := [];;
-gap> edgecolors[1] := [];; edgecolors[2] := [];;
-gap> edgecolors[3] := [];;
-gap> edgecolors[1][2] := "orange";; edgecolors[1][3] := "yellow";;
-gap> edgecolors[2][1] := "orange";; edgecolors[2][3] := "pink";;
-gap> edgecolors[3][1] := "yellow";;
-gap> Print(DotColoredDigraph(D, vertcolors, edgecolors));;
-//dot
-digraph hgn{
-node [shape=circle]
-1[color=blue, style=filled]
-2[color=red, style=filled]
-3[color=green, style=filled]
-1 -> 2[color=orange]
-1 -> 3[color=yellow]
-2 -> 1[color=orange]
-2 -> 3[color=pink]
-3 -> 1[color=yellow]
-}
-gap> D := Digraph(IsMutableDigraph, [[2, 3], [1, 3], [1]]);
-<mutable digraph with 3 vertices, 5 edges>
-gap> vertcolors := [];;
-gap> vertcolors[1] := "blue";; vertcolors[2] := "red";;
-gap> vertcolors[3] := "green";;
-gap> edgecolors := [];;
-gap> edgecolors[1] := [];; edgecolors[2] := [];;
-gap> edgecolors[3] := [];;
-gap> edgecolors[1][2] := "orange";; edgecolors[1][3] := "yellow";;
-gap> edgecolors[2][1] := "orange";; edgecolors[2][3] := "pink";;
-gap> edgecolors[3][1] := "yellow";;
-gap> Print(DotColoredDigraph(D, vertcolors, edgecolors));;
-//dot
-digraph hgn{
-node [shape=circle]
-1[color=blue, style=filled]
-2[color=red, style=filled]
-3[color=green, style=filled]
-1 -> 2[color=orange]
-1 -> 3[color=yellow]
-2 -> 1[color=orange]
-2 -> 3[color=pink]
-3 -> 1[color=yellow]
-}
-gap> D;
-<mutable digraph with 3 vertices, 5 edges>
-gap> DotSymmetricDigraph(gr2){[12 .. 70]};
-" hgn{\nnode [shape=circle]\n\n1\n2\n3\n4\n1 -- 2\n2 -- 3\n3 -- 3\n3 -"
-gap> DotSymmetricDigraph(gr1);
-Error, the argument <D> must be a symmetric digraph,
-gap> D := CompleteDigraph(4);
-<immutable complete digraph with 4 vertices>
-gap> vertcolors := [];;
-gap> vertcolors[1] := "blue";; vertcolors[2] := "red";; 
-gap> vertcolors[3] := "green";; vertcolors[4] := "yellow";;
 gap> Print(DotVertexColoredDigraph(D, vertcolors));
 //dot
 digraph hgn{
 node [shape=circle]
 1[color=blue, style=filled]
-2[color=red, style=filled]
-3[color=green, style=filled]
+2[color=green, style=filled]
+3[color=red, style=filled]
 4[color=yellow, style=filled]
 1 -> 2
 1 -> 3
@@ -318,23 +198,8 @@ node [shape=circle]
 4 -> 2
 4 -> 3
 }
-gap> D := CompleteDigraph(4);
-<immutable complete digraph with 4 vertices>
-gap> edgecolors := [];;
-gap> edgecolors[1] := [];; edgecolors[2] := [];;
-gap> edgecolors[3] := [];; edgecolors[4] := [];; 
-gap> edgecolors[1][2] := "lightblue";;
-gap> edgecolors[1][3] := "pink";;
-gap> edgecolors[1][4] := "purple";;
-gap> edgecolors[2][1] := "lightblue";;
-gap> edgecolors[2][3] := "pink";; 
-gap> edgecolors[2][4] := "purple";; 
-gap> edgecolors[3][1] := "lightblue";; 
-gap> edgecolors[3][2] := "pink";; 
-gap> edgecolors[3][4] := "purple";;
-gap> edgecolors[4][1] := "lightblue";; 
-gap> edgecolors[4][2] := "pink";;
-gap> edgecolors[4][3] := "purple";;
+gap> colors := ["lightblue", "pink", "purple"];;
+gap> edgecolors := ListWithIdenticalEntries(4, colors);;
 gap> Print(DotEdgeColoredDigraph(D, edgecolors));
 //dot
 digraph hgn{
@@ -356,8 +221,49 @@ node [shape=circle]
 4 -> 2[color=pink]
 4 -> 3[color=purple]
 }
-gap> FileString("dot/k4.dot", DotDigraph(gr));
-154]]></Log>
+gap> Print(DotColoredDigraph(D, vertcolors, edgecolors));
+//dot
+digraph hgn{
+node [shape=circle]
+1[color=blue, style=filled]
+2[color=green, style=filled]
+3[color=red, style=filled]
+4[color=yellow, style=filled]
+1 -> 2[color=lightblue]
+1 -> 3[color=pink]
+1 -> 4[color=purple]
+2 -> 1[color=lightblue]
+2 -> 3[color=pink]
+2 -> 4[color=purple]
+3 -> 1[color=lightblue]
+3 -> 2[color=pink]
+3 -> 4[color=purple]
+4 -> 1[color=lightblue]
+4 -> 2[color=pink]
+4 -> 3[color=purple]
+}
+gap> FileString("k4.dot", DotDigraph(D));
+133
+gap> D := Digraph([[2, 3], [1, 3], [1]]);
+<immutable digraph with 3 vertices, 5 edges>
+gap> vertcolors := ["blue", "red", "green"];;
+gap> edgecolors := [["orange", "yellow"], ["orange", 
+> "pink"], ["yellow"]];;
+gap> Print(DotColoredDigraph(D, vertcolors, edgecolors));
+//dot
+digraph hgn{
+node [shape=circle]
+1[color=blue, style=filled]
+2[color=red, style=filled]
+3[color=green, style=filled]
+1 -> 2[color=orange]
+1 -> 3[color=yellow]
+2 -> 1[color=orange]
+2 -> 3[color=pink]
+3 -> 1[color=yellow]
+}
+gap> FileString("digraph.dot", DotDigraph(D));
+82]]></Example>
     </Description>
   </ManSection>
  <#/GAPDoc>
@@ -416,23 +322,14 @@ gap> FileString("dot/k4.dot", DotDigraph(gr));
       The string returned by <C>DotSymmetricDigraph</C> can be written to a
       file using the command <Ref Func="FileString" BookName="GAPDoc"/>.<P/>
 
-      <Log><![CDATA[
-gap> star := Digraph([[2, 2, 3, 4], [1, 1], [1], [1, 4]]);
-<immutable multidigraph with 4 vertices, 9 edges>
-gap> IsSymmetricDigraph(star);
-true
-gap> FileString("dot/star.dot", DotSymmetricDigraph(gr));
+      <Example><![CDATA[
+
 gap> D := Digraph([[2], [1, 3], [2]]);
 <immutable digraph with 3 vertices, 4 edges>
-gap> vertcolors := [];;
-gap> vertcolors[1] := "blue";;
-gap> vertcolors[2] := "pink";;
-gap> vertcolors[3] := "purple";;
-gap> edgecolors := [];;
-gap> edgecolors[1] := [];; edgecolors[2] := [];;
-gap> edgecolors[3] := [];;
-gap> edgecolors[1][2] := "green";; edgecolors[2][1] := "green";;
-gap> edgecolors[2][3] := "red";; edgecolors[3][2] := "red";;
+gap> IsSymmetricDigraph(D);
+true
+gap> vertcolors := ["blue", "pink", "purple"];;
+gap> edgecolors := [["green"], ["green", "red"], ["red"]];;
 gap> Print(DotSymmetricColoredDigraph(D, vertcolors, edgecolors));
 //dot
 graph hgn{
@@ -444,12 +341,6 @@ node [shape=circle]
 1 -- 2[color=green]
 2 -- 3[color=red]
 }
-gap> D := Digraph([[2], [1, 3], [2]]);
-<immutable digraph with 3 vertices, 4 edges>
-gap> vertcolors := [];;
-gap> vertcolors[1] := "blue";;
-gap> vertcolors[2] := "pink";;
-gap> vertcolors[3] := "purple";;
 gap> Print(DotSymmetricVertexColoredDigraph(D, vertcolors));
 //dot
 graph hgn{
@@ -461,13 +352,7 @@ node [shape=circle]
 1 -- 2
 2 -- 3
 }
-gap> D := Digraph([[2], [1, 3], [2]]);
-<immutable digraph with 3 vertices, 4 edges>
-gap> edgecolors := [];;
-gap> edgecolors[1] := [];; edgecolors[2] := [];;
-gap> edgecolors[3] := [];;
-gap> edgecolors[1][2] := "green";; edgecolors[2][1] := "green";;
-gap> edgecolors[2][3] := "red";; edgecolors[3][2] := "red";;
+
 gap> Print(DotSymmetricEdgeColoredDigraph(D, edgecolors));
 //dot
 graph hgn{
@@ -479,7 +364,7 @@ node [shape=circle]
 1 -- 2[color=green]
 2 -- 3[color=red]
 }
-83]]></Log>
+]]></Example>
     </Description>
   </ManSection>
 <#/GAPDoc>
@@ -507,12 +392,13 @@ node [shape=circle]
       The string returned by <C>DotPartialOrderDigraph</C> can be written to a
       file using the command <Ref Func="FileString" BookName="GAPDoc"/>.<P/>
 
-      <Log><![CDATA[
-gap> poset := Digraph([[1, 4], [2], [2, 3, 4], [4]);
-gap> IsPartialOrderDigraph(gr);
+      <Example><![CDATA[
+gap> poset := Digraph([[1, 4], [2], [2, 3, 4], [4]]);
+<immutable digraph with 4 vertices, 7 edges>
+gap> IsPartialOrderDigraph(poset);
 true
-gap> FileString("dot/poset.dot", DotPartialOrderDigraph(gr));
-83]]></Log>
+gap> FileString("poset.dot", DotPartialOrderDigraph(poset));
+70]]></Example>
     </Description>
   </ManSection>
 <#/GAPDoc>
@@ -548,12 +434,14 @@ gap> FileString("dot/poset.dot", DotPartialOrderDigraph(gr));
       The string returned by <C>DotPreorderDigraph</C> can be written to a
       file using the command <Ref Func="FileString" BookName="GAPDoc"/>.<P/>
 
-      <Log><![CDATA[
-gap> preset := Digraph([[1, 2, 4, 5], [1, 2, 4, 5], [3, 4], [4], [1, 2, 4, 5]);
-gap> IsPreorderDigraph(gr);
+      <Example><![CDATA[
+gap> preset := Digraph([[1, 2, 4, 5], [1, 2, 4, 5], [3, 4], [4], 
+> [1, 2, 4, 5]]);
+<immutable digraph with 5 vertices, 15 edges>
+gap> IsPreorderDigraph(preset);
 true
-gap> FileString("dot/preset.dot", DotProrderDigraph(gr));
-83]]></Log>
+gap> FileString("preset.dot", DotPreorderDigraph(preset));
+179]]></Example>
     </Description>
   </ManSection>
 <#/GAPDoc>
@@ -576,12 +464,12 @@ gap> FileString("dot/preset.dot", DotProrderDigraph(gr));
 
       See <Ref Attr="DotDigraph"/> for more details on the output.<P/>
 
-      <Log><![CDATA[
+      <Example><![CDATA[
 gap> digraph := Digraph([[2, 3], [2], [1, 3]]);
-<digraph with 3 vertices, 5 edges>
-gap> FileString("dot/my_digraph.dot",
-> DotHighlightedDigraph(digraph, [1, 2], "red", "black"));
-264]]></Log>
+<immutable digraph with 3 vertices, 5 edges>
+gap> FileString("my_digraph.dot", DotHighlightedDigraph(digraph, 
+> [1, 2], "red", "black"));
+264]]></Example>
     </Description>
   </ManSection>
 <#/GAPDoc>
