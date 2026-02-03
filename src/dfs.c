@@ -12,6 +12,7 @@
 
 #include <stdint.h>      // for uint64_t
 #include <stdlib.h>      // for NULL, free
+#include <stdio.h>      // for NULL, free
 
 #include "dfs.h"
 #include "digraphs-debug.h"
@@ -508,18 +509,17 @@ Obj FuncExecuteDFS_C(Obj self, Obj args) {
       .CallPreorder  = PreorderFunc != Fail,
       .CallPostorder = PostorderFunc != Fail,
       .CallAncestor  = AncestorFunc != Fail,
-      .CallCross     = CrossFunc != Fail};
+      .CallCross     = CrossFunc != Fail
+  };
 
   parseConfig(&dfs_args_, config);
 
   if (!dfs_conf.use_preorder) {
-    dfs_args_.preorder_partial = (bool*) safe_malloc((N + 1) * sizeof(bool));
-    memset(dfs_args_.preorder_partial, false, (N + 1) * sizeof(bool));
+    dfs_args_.preorder_partial = (bool*) safe_calloc((N + 1), sizeof(bool));
   }
 
   if (dfs_conf.partial_postorder) {
-    dfs_args_.postorder_partial = (bool*) safe_malloc((N + 1) * sizeof(bool));
-    memset(dfs_args_.postorder_partial, false, (N + 1) * sizeof(bool));
+    dfs_args_.postorder_partial = (bool*) safe_calloc((N + 1), sizeof(bool));
   }
 
   if (dfs_conf.use_parents) {
