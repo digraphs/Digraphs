@@ -71,10 +71,6 @@ function(D)
 
       # If the lowest reachable in pre from child is child's preorder counter,
       # then child could not reach any vertices visited before it
-
-      # If the lowest reachable from current (current -> child and child -> current
-      # are both edges) 
-
       if data.low[child] = record.preorder[child] then
         Add(data.bridges, [current, child]);
       fi;
@@ -92,8 +88,8 @@ function(D)
     local current, parents;
 
     current := record.current;
-    
-    if current <> 1 then # If not at the root node
+
+    if current <> 1 then  # If not at the root node
       parent := record.parents[current];
       if parent = 1 then
         data.nr_children := data.nr_children + 1;
@@ -112,7 +108,7 @@ function(D)
 
     parent := record.parents[current];
     # child is reachable from current, update low[current]
-    if child <> parent and record.preorder[child] < data.low[current] then # child <> parent and 
+    if child <> parent and record.preorder[child] < data.low[current] then
       data.low[current] := record.preorder[child];
     fi;
     data.orientation[current][child] := not data.orientation[child][current];
@@ -143,7 +139,7 @@ function(D)
              PostOrderFunc,
              AncestorCrossFunc,
              AncestorCrossFunc);
-  if data.counter = DigraphNrVertices(D) then # If connected, all visited
+  if data.counter = DigraphNrVertices(D) then  # If connected, all visited
     connected := true;
     if data.nr_children > 1 then
       # The `AddSet` is not really needed, and could just be `Add`, since 1

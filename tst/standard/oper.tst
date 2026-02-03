@@ -18,7 +18,7 @@
 #@local tclosure, u1, u2, x
 #@local p, q, idp, idt, M
 #@local conf, flags, records, results, configs, PostorderFunc, CrossFunc
-#@local PreorderFunc, AncestorFunc, record, record2, data
+#@local PreorderFunc, AncestorFunc, record, record2, data, field
 gap> START_TEST("Digraphs package: standard/oper.tst");
 gap> LoadPackage("digraphs", false);;
 
