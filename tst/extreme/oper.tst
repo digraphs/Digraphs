@@ -9,7 +9,7 @@
 #############################################################################
 ##
 
-#@local d, gr, gr2, i, layers, layers1, layers2, list, out
+#@local d, gr, gr2, i, layers, layers1, layers2, list, out, record
 gap> START_TEST("Digraphs package: extreme/oper.tst");
 gap> LoadPackage("digraphs", false);;
 
