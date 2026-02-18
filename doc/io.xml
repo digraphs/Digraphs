@@ -8,6 +8,88 @@
 #############################################################################
 ##
 
+
+<#GAPDoc Label="EncodingFormats">
+<Subsection Label="EncodingFormats">
+  <Heading>Encoding Formats</Heading>
+  <List>
+      <Mark> Graph6 </Mark>
+      <Item>
+	<E> Graph6 </E> is a graph data format for storing undirected graphs
+	with no multiple edges nor loops of size up to <M> 2^{36} - 1 </M> in
+	printable characters. Graphs that do not fit the above criteria cannot be
+  guaranteed to be accurately encoded as Graph6. The format consists of two parts. The first part
+	uses one to eight bytes to store the number of vertices. And the second
+	part is the upper half of the adjacency matrix converted into ASCII
+	characters. For a more detailed description see <URL Text='Graph6'>
+	http://cs.anu.edu.au/~bdm/data/formats.txt</URL>.
+      </Item>
+
+      <Mark> Sparse6 </Mark>
+      <Item>
+	<E> Sparse6 </E> is a graph data format for storing undirected graphs
+	with possibly multiple edges or loops. The maximal number of vertices
+	allowed is <M> 2^{36} - 1 </M>. The format consists of two parts. The
+	first part uses one to eight bytes to store the number of vertices.
+	And the second part only stores information about the edges.
+	Therefore, the <E> Sparse6 </E> format return a more compact encoding
+	then <E> Graph6 </E> for sparse graph, i.e.  graphs where the number
+	of edges is much less than the number of vertices squared. Sparse6 can
+  faithfully encode any symmetric digraph.  For a more
+	detailed description see <URL Text='Sparse6'>
+        http://cs.anu.edu.au/~bdm/data/formats.txt</URL>.
+      </Item>
+
+      <Mark> Digraph6 </Mark>
+      <Item>
+	<E>Digraph6</E> is a new format based on <E> Graph6 </E>, but designed
+	for digraphs. The entire adjacency matrix is stored, and
+	therefore there is support for directed edges and single-vertex loops.
+	However, multiple edges are not supported.
+      </Item>
+
+      <Mark> DiSparse6 </Mark>
+      <Item>
+	<E>DiSparse6</E> is a new format based on <E> Sparse6 </E>, but
+	designed for digraphs. In this format the list of edges is
+	partitioned into increasing and decreasing edges, depending whether the
+	edge has its source bigger than the range. Then both sets of edges are
+	written separately in <E> Sparse6 </E> format with a separation symbol
+	in between. Any digraph can be properly encoded with a DiSparse6 representation.
+      </Item>
+      <Mark> dreadnaut </Mark>
+      <Item>
+        <E>dreadnaut</E> is a graph data format designed for directed and undirected graphs.
+        The format supports loops but multiple edges are ignored.  The format consists of an
+        initial section that defines the graph's structural properties, such as the number of
+        vertices, the starting value for vertices, and whether the graph is directed. This is followed
+        by a list of edges. For more information and examples of the format see
+        <URL Text="nauty and Traces User's Guide">http://pallini.di.uniroma1.it/Guide.html</URL>.
+      </Item>
+      <Mark> DIMACS </Mark>
+      <Item>
+        <E>DIMACS</E> is a graph data format that can be used for symmetric digraphs.
+        For a more detailed description, see <Ref Oper="WriteDIMACSDigraph"/>
+      </Item>
+    </List>
+
+  NOTE: These functions do not signal an error if <A>digraph</A> has features that
+    the chosen format does not support. In that case the encoding may not be equal
+    to <A>digraph</A>. For example, <C>Digraph6String</C>
+    silently drops multiple edges, since Digraph6 stores only the adjacency
+    matrix:
+    <Log><![CDATA[
+gap> gr := Digraph([[2, 2], []]);
+<immutable multidigraph with 2 vertices, 2 edges>
+gap> Digraph6String(gr);
+"+AG"
+gap> DigraphFromDigraph6String(last) = gr;
+false
+]]></Log>
+
+</Subsection>
+<#/GAPDoc>
+
 <#GAPDoc Label="IteratorFromDigraphFile">
 <ManSection>
   <Func Name="IteratorFromDigraphFile" Arg="filename [, decoder]"/>
@@ -233,6 +315,10 @@ gap> DigraphFromGraph6String(IsMutableDigraph, "IheA@GUAo");
     be mutable or immutable.
     If no first argument is provided, then an immutable
     digraph is returned by default.
+
+    Note that some Digraphs will not be accurately recovered if they were 
+    encoded in an invalid format; see <Ref Subsect="EncodingFormats" Style="Number"/> for
+    full limitations. <P/>
     <Example><![CDATA[
 gap> DigraphFromGraph6String("?");
 <immutable empty digraph with 0 vertices>
@@ -496,12 +582,17 @@ gap> ReadDigraphs(filename);
   <Oper Name="DiSparse6String" Arg="digraph"/>
   <Returns>A string.</Returns>
   <Description>
-    These four functions return a highly compressed string fully describing the
+    These four functions return a highly compressed string describing the
     digraph <A>digraph</A>. <P/>
 
     Graph6 and Digraph6 are formats best used on small, dense graphs, if
     applicable. For larger, sparse graphs use <E>Sparse6</E> and
     <E>Disparse6</E> (this latter also preserves multiple edges). <P/>
+
+    A detailed description of the formats: Graph6, Digraph6,
+    Sparse6, and DiSparse6, the kinds of digraphs that each format can encode,
+    and their comparative strengths and weaknesses, is given in
+    <Ref Subsect="EncodingFormats" Style="Number"/>. <P/>
 
     See <Ref Func="WriteDigraphs"/>.
     <Example><![CDATA[
