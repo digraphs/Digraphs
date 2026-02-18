@@ -3324,6 +3324,177 @@ gap> DigraphEdges(D);
 gap> DigraphVertexLabels(D);
 [ 1, 2, 3, 6, [ 4, 5 ] ]
 
+# DigraphInsertEdge
+
+# DigraphInsertEdge: D is empty digraph test
+gap> D := NullDigraph(0);
+<immutable empty digraph with 0 vertices>
+gap> DigraphInsertEdge(D, [1,2], [3,4]);
+Error, the 1st argument <D> must not be an empty digraph
+
+# DigraphInsertEdge: D is not a symmetric digraph
+gap> D := DigraphByEdges([[1,2], [3,4], [1,3], [2,4]]);
+<immutable digraph with 4 vertices, 4 edges>
+gap> DigraphInsertEdge(D, [1,2], [3,4]);
+Error, the 1st argument <D> must be a symmetric digraph
+
+# DigraphInsertEdge: edge1 is not a list of length 2
+gap> D := DigraphByEdges(IsMutableDigraph, [[1,2], [2,1], [3,4], [4,3], [1,3], [3,1], [2,4], [4,2]]);
+<mutable digraph with 4 vertices, 8 edges>
+gap> DigraphInsertEdge(D, [], [3,4]);
+Error, the 2nd argument <edge1> must be a list of length 2
+gap> DigraphInsertEdge(D, [1], [3,4]);
+Error, the 2nd argument <edge1> must be a list of length 2
+gap> DigraphInsertEdge(D, [1,2,3], [3,4]);
+Error, the 2nd argument <edge1> must be a list of length 2
+
+# DigraphInsertEdge: edge2 is not a list of length 2
+gap> D := DigraphByEdges(IsMutableDigraph, [[1,2], [2,1], [3,4], [4,3], [1,3], [3,1], [2,4], [4,2]]);
+<mutable digraph with 4 vertices, 8 edges>
+gap> DigraphInsertEdge(D, [1,2], []);
+Error, the 3rd argument <edge2> must be a list of length 2
+gap> DigraphInsertEdge(D, [1,2], [3]);
+Error, the 3rd argument <edge2> must be a list of length 2
+gap> DigraphInsertEdge(D, [1,2], [2,3,4]);
+Error, the 3rd argument <edge2> must be a list of length 2
+
+# DigraphInsertEdge: edge1 is not an edge in D
+gap> D := DigraphByEdges(IsMutableDigraph, [[1,2], [2,1], [3,4], [4,3], [1,3], [3,1], [2,4], [4,2]]);
+<mutable digraph with 4 vertices, 8 edges>
+gap> DigraphInsertEdge(D, [1,4], [3,4]);
+Error, the 2nd argument <edge1> must be an edge of the digraph <D>
+gap> DigraphInsertEdge(D, [5,6], [3,4]);
+Error, the 2nd argument <edge1> must be an edge of the digraph <D>
+
+# DigraphInsertEdge: edge2 is not an edge in D
+gap> D := DigraphByEdges(IsMutableDigraph, [[1,2], [2,1], [3,4], [4,3], [1,3], [3,1], [2,4], [4,2]]);
+<mutable digraph with 4 vertices, 8 edges>
+gap> DigraphInsertEdge(D, [1,2], [3,2]);
+Error, the 3rd argument <edge2> must be an edge of the digraph <D>
+gap> DigraphInsertEdge(D, [1,2], [5,6]);
+Error, the 3rd argument <edge2> must be an edge of the digraph <D>
+
+# DigraphInsertEdge: edge1 and edge2 are identical
+gap> D := DigraphByEdges(IsMutableDigraph, [[1,2], [2,1], [3,4], [4,3], [1,3], [3,1], [2,4], [4,2]]);
+<mutable digraph with 4 vertices, 8 edges>
+gap> DigraphInsertEdge(D, [1,2], [1,2]);
+Error, the 2nd and 3rd argument <edge1> and <edge2> must be two different edge\
+s
+
+# DigraphInsertEdge: standard insertion (mutable digraph D)
+gap> D := DigraphByEdges(IsMutableDigraph, [[1,2], [2,1], [3,4], [4,3], [1,3], [3,1], [2,4], [4,2]]);
+<mutable digraph with 4 vertices, 8 edges>
+gap> DigraphInsertEdge(D, [1,2], [3,4]);
+<mutable digraph with 6 vertices, 14 edges>
+gap> DigraphEdges(D);
+[ [ 1, 3 ], [ 1, 5 ], [ 2, 4 ], [ 2, 5 ], [ 3, 1 ], [ 3, 6 ], [ 4, 2 ], 
+  [ 4, 6 ], [ 5, 1 ], [ 5, 2 ], [ 5, 6 ], [ 6, 3 ], [ 6, 4 ], [ 6, 5 ] ]
+
+# DigraphInsertEdge: standard insertion (immutable digraph D)
+gap> D := DigraphByEdges(IsImmutableDigraph, [[1,2], [2,1], [3,4], [4,3], [1,3], [3,1], [2,4], [4,2]]);
+<immutable digraph with 4 vertices, 8 edges>
+gap> D := DigraphInsertEdge(D, [1,2], [3,4]);
+<immutable digraph with 6 vertices, 14 edges>
+gap> DigraphEdges(D);
+[ [ 1, 3 ], [ 1, 5 ], [ 2, 4 ], [ 2, 5 ], [ 3, 1 ], [ 3, 6 ], [ 4, 2 ], 
+  [ 4, 6 ], [ 5, 1 ], [ 5, 2 ], [ 5, 6 ], [ 6, 3 ], [ 6, 4 ], [ 6, 5 ] ]
+
+# DigraphInsertEdge: triangle insertion (mutable digraph D)
+gap> D := DigraphByEdges(IsMutableDigraph, [[1,2], [2,1], [3,4], [4,3], [1,3], [3,1], [2,4], [4,2]]);
+<mutable digraph with 4 vertices, 8 edges>
+gap> DigraphInsertEdge(D, [1,2], [2,4]);
+<mutable digraph with 6 vertices, 14 edges>
+gap> DigraphEdges(D);
+[ [ 1, 3 ], [ 1, 5 ], [ 2, 5 ], [ 2, 6 ], [ 3, 4 ], [ 3, 1 ], [ 4, 3 ], 
+  [ 4, 6 ], [ 5, 1 ], [ 5, 2 ], [ 5, 6 ], [ 6, 2 ], [ 6, 4 ], [ 6, 5 ] ]
+
+# DigraphInsertEdge: triangle insertion (immutable digraph D)
+gap> D := DigraphByEdges(IsImmutableDigraph, [[1,2], [2,1], [3,4], [4,3], [1,3], [3,1], [2,4], [4,2]]);
+<immutable digraph with 4 vertices, 8 edges>
+gap> D := DigraphInsertEdge(D, [1,2], [2,4]);
+<immutable digraph with 6 vertices, 14 edges>
+gap> DigraphEdges(D);
+[ [ 1, 3 ], [ 1, 5 ], [ 2, 5 ], [ 2, 6 ], [ 3, 4 ], [ 3, 1 ], [ 4, 3 ], 
+  [ 4, 6 ], [ 5, 1 ], [ 5, 2 ], [ 5, 6 ], [ 6, 2 ], [ 6, 4 ], [ 6, 5 ] ]
+
+# DigraphReduceEdge
+
+# DigraphReduceEdge: D is empty digraph test
+gap> D := NullDigraph(0);
+<immutable empty digraph with 0 vertices>
+gap> DigraphReduceEdge(D, [1,2]);
+Error, the 1st argument <D> must not be an empty digraph
+
+# DigraphReduceEdge: D is not a symmetric digraph
+gap> D := DigraphByEdges([[1,2], [3,4], [1,3], [2,4]]);
+<immutable digraph with 4 vertices, 4 edges>
+gap> DigraphReduceEdge(D, [1,2]);
+Error, the 1st argument <D> must be a symmetric digraph
+
+# DigraphReduceEdge: edge is not a list of length 2
+gap> D := DigraphByEdges(IsMutableDigraph, [[1,2], [2,1], [3,4], [4,3], [1,3], [3,1], [2,4], [4,2]]);
+<mutable digraph with 4 vertices, 8 edges>
+gap> DigraphReduceEdge(D, []);
+Error, the 2nd argument <edge> must be a list of length 2
+gap> DigraphReduceEdge(D, [1]);
+Error, the 2nd argument <edge> must be a list of length 2
+gap> DigraphReduceEdge(D, [1,2,2]);
+Error, the 2nd argument <edge> must be a list of length 2
+
+# DigraphReduceEdge: edge is not an edge in D
+gap> D := DigraphByEdges(IsMutableDigraph, [[1,2], [2,1], [3,4], [4,3], [1,3], [3,1], [2,4], [4,2]]);
+<mutable digraph with 4 vertices, 8 edges>
+gap> DigraphReduceEdge(D, [1,4]);
+Error, the 2nd argument <edge> must be an edge of the digraph <D>
+gap> DigraphReduceEdge(D, [5,6]);
+Error, the 2nd argument <edge> must be an edge of the digraph <D>
+
+# DigraphReduceEdge: vertex at edge[1] or edge[2] does not have a degree of 3
+gap> D := DigraphByEdges(IsMutableDigraph, [[1,3], [3,1], [2,4], [4,2], [1,5], [5,1], [2,5], [5,2], [3,6], [6,3], [4,6], [6,4], [5,6], [6,5]]);
+<mutable digraph with 6 vertices, 14 edges>
+gap> DigraphReduceEdge(D, [4,6]);
+Error, the 2nd argument <edge> must be an edge where the incident vertices hav\
+e degree three
+gap> DigraphReduceEdge(D, [6,4]);
+Error, the 2nd argument <edge> must be an edge where the incident vertices hav\
+e degree three
+
+# DigraphReduceEdge: standard reduction (mutable digraph D)
+gap> D := DigraphByEdges(IsMutableDigraph, [[1,3], [3,1], [2,4], [4,2], [1,5], [5,1], [2,5], [5,2], [3,6], [6,3], [4,6], [6,4], [5,6], [6,5]]);
+<mutable digraph with 6 vertices, 14 edges>
+gap> DigraphReduceEdge(D, [5,6]);
+<mutable digraph with 4 vertices, 8 edges>
+gap> DigraphEdges(D);
+[ [ 1, 3 ], [ 1, 2 ], [ 2, 4 ], [ 2, 1 ], [ 3, 1 ], [ 3, 4 ], [ 4, 2 ], 
+  [ 4, 3 ] ]
+
+# DigraphReduceEdge: standard reduction (immutable digraph D)
+gap> D := DigraphByEdges(IsImmutableDigraph, [[1,3], [3,1], [2,4], [4,2], [1,5], [5,1], [2,5], [5,2], [3,6], [6,3], [4,6], [6,4], [5,6], [6,5]]);
+<immutable digraph with 6 vertices, 14 edges>
+gap> D := DigraphReduceEdge(D, [5,6]);
+<immutable digraph with 4 vertices, 8 edges>
+gap> DigraphEdges(D);
+[ [ 1, 3 ], [ 1, 2 ], [ 2, 4 ], [ 2, 1 ], [ 3, 1 ], [ 3, 4 ], [ 4, 2 ], 
+  [ 4, 3 ] ]
+
+# DigraphReduceEdge: triangle reduction (mutable digraph D)
+gap> D := DigraphByEdges(IsMutableDigraph, [[1,3], [3,1], [1,5], [5,1], [2,5], [5,2], [2,6], [6,2], [3,4], [4,3], [4,6], [6,4], [5,6], [6,5]]);
+<mutable digraph with 6 vertices, 14 edges>
+gap> DigraphReduceEdge(D, [5,6]);
+<mutable digraph with 4 vertices, 8 edges>
+gap> DigraphEdges(D);
+[ [ 1, 3 ], [ 1, 2 ], [ 2, 1 ], [ 2, 4 ], [ 3, 1 ], [ 3, 4 ], [ 4, 3 ], 
+  [ 4, 2 ] ]
+
+# DigraphReduceEdge: triangle reduction (immutable digraph D)
+gap> D := DigraphByEdges(IsImmutableDigraph, [[1,3], [3,1], [1,5], [5,1], [2,5], [5,2], [2,6], [6,2], [3,4], [4,3], [4,6], [6,4], [5,6], [6,5]]);
+<immutable digraph with 6 vertices, 14 edges>
+gap> D := DigraphReduceEdge(D, [5,6]);
+<immutable digraph with 4 vertices, 8 edges>
+gap> DigraphEdges(D);
+[ [ 1, 3 ], [ 1, 2 ], [ 2, 1 ], [ 2, 4 ], [ 3, 1 ], [ 3, 4 ], [ 4, 3 ], 
+  [ 4, 2 ] ]
+
 #
 gap> DIGRAPHS_StopTest();
 gap> STOP_TEST("Digraphs package: standard/oper.tst", 0);

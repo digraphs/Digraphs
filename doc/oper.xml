@@ -2076,6 +2076,84 @@ gap> DigraphVertexLabels(D);
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="DigraphInsertEdge">
+<ManSection>
+    <Oper Name="DigraphInsertEdge" Arg="digraph, edge1, edge2"
+        Label="for a symmeric digraph and two lists of positive integers"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>edge1</A> and <A>edge2</A> are distinct pairs of vertices of <A>digraph</A>,
+    then then this operation inserts a new edge between <A>edge1</A> and
+    <A>edge2</A>.
+    <A>edge1</A> and <A>edge2</A> are split up into two new edges each, which are
+    all adjacent to the inserted edge. Hence, the vertices of the inserted edge both
+    have a degree of 3.
+
+    The opposite operation is <Ref Oper="DigraphReduceEdge"/>.
+
+    A new digraph constructed from <A>digraph</A> is returned,
+    unless <A>digraph</A> belongs to <Ref Filt="IsMutableDigraph"/>;
+    in this case changes are made directly to <A>digraph</A>, which is then returned. 
+    The <A>digraph</A> must not belong to <Ref Filt="IsMultiDigraph"/>. <P/>
+
+    <Example><![CDATA[
+gap> D := DigraphByEdges([[1, 2], [2, 1], [3, 4], [4, 3]]);
+<immutable digraph with 4 vertices, 4 edges>
+gap> D2 := DigraphInsertEdge(D, [1, 2], [3, 4]);
+<immutable digraph with 6 vertices, 10 edges>
+gap> DigraphEdges(D2);
+[ [ 1, 5 ], [ 2, 5 ], [ 3, 6 ], [ 4, 6 ], [ 5, 1 ], [ 5, 2 ], [ 5, 6 ], 
+  [ 6, 3 ], [ 6, 4 ], [ 6, 5 ] ]
+gap> D := DigraphByEdges([[1, 2], [2, 1], [2, 3], [3, 2]]);
+<immutable digraph with 3 vertices, 4 edges>
+gap> D2 := DigraphInsertEdge(D, [1, 2], [2, 3]);
+<immutable digraph with 5 vertices, 10 edges>
+gap> DigraphEdges(D2);
+[ [ 1, 4 ], [ 2, 4 ], [ 2, 5 ], [ 3, 5 ], [ 4, 1 ], [ 4, 2 ], [ 4, 5 ], 
+  [ 5, 2 ], [ 5, 3 ], [ 5, 4 ] ]
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphReduceEdge">
+<ManSection>
+    <Oper Name="DigraphReduceEdge" Arg="digraph, edge"
+        Label="for a symmeric digraph and a list of positive integers"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    If <A>edge</A> is an edge of <A>digraph</A> and adjacent to four edges, then this
+    operation reduces this <A>edge</A>: <A>edge</A> will be removed, and for both
+    vertices of <A>edge</A> the two adjacent edges are combined to a single edge.
+    The vertices of <A>edge</A> must both have a degree of 3.
+
+    The opposite operation is <Ref Oper="DigraphInsertEdge"/>.
+
+    A new digraph constructed from <A>digraph</A> is returned,
+    unless <A>digraph</A> belongs to <Ref Filt="IsMutableDigraph"/>;
+    in this case changes are made directly to <A>digraph</A>, which is then returned. 
+    The <A>digraph</A> must not belong to <Ref Filt="IsMultiDigraph"/>. <P/>
+
+    <Example><![CDATA[
+gap> D := DigraphByEdges([[1, 5], [5, 1], [2, 5], [5, 2], [3, 6],
+  [6, 3], [4, 6], [6, 4], [5, 6], [6, 5]]);
+<immutable digraph with 6 vertices, 10 edges>
+gap> D2 := DigraphReduceEdge(D, [5, 6]);
+<immutable digraph with 4 vertices, 4 edges>
+gap> DigraphEdges(D2);
+[ [ 1, 2 ], [ 2, 1 ], [ 3, 4 ], [ 4, 3 ] ]
+gap> D := DigraphByEdges([[1, 4], [4, 1], [2, 4], [4, 2], [2, 5],
+  [5, 2], [3, 5], [5, 3], [4, 5], [5, 4]]);
+<immutable digraph with 5 vertices, 10 edges>
+gap> D2 := DigraphReduceEdge(D, [4, 5]);
+<immutable digraph with 3 vertices, 4 edges>
+gap> DigraphEdges(D2);
+[ [ 1, 2 ], [ 2, 1 ], [ 2, 3 ], [ 3, 2 ] ]
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="IsMatching">
 <ManSection>
   <Oper Name="IsMatching" Arg="digraph, list"/>
