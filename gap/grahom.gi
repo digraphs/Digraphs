@@ -183,6 +183,126 @@ InstallMethod(DigraphGreedyColouring, "for a digraph and a function",
 [IsDigraph, IsFunction],
 {D, func} -> DigraphGreedyColouringNC(D, func(D)));
 
+InstallMethod(DigraphColourRefinement, "for a digraph", [IsDigraph],
+function(D)
+
+  local listResult, i, round, c_min, c_max, set, Q, q, C, CD, j, P, v, B, SCD, Sets, pair, pointer, current, currentPair, newSet, colour;
+
+  c_min := 1;
+  c_max := 1;
+
+  # Queue of colours
+  Q := [1];
+
+  # Initial colouring
+  # vertices -> colour
+  # TODO: see if can change to single non-for loop line
+  C := rec();
+  for v in DigraphVertices(D) do
+    C.(v) := 1;
+  od;
+
+  # Colour classes
+  # All vertices initialised to 1
+  # colour -> vertices labelled as such
+  P := rec(1 := DigraphVertices(D));
+
+  while not IsEmpty(Q) do
+
+    # Pop colour off Q
+    q := Q[1];
+    Remove(Q, 1);
+
+    # For each v in V (all vertices in D)
+    # Get the neighbours of v that are in the colour class q
+    B := rec();
+    for v in DigraphVertices(D) do
+      B.(v) := Intersection(Union(OutNeighbours(D)[v],
+        InNeighbours(D)[v]), P.(q));
+    od;
+
+    # CD: colour of v vs number of q coloured neighbours for all v in D
+    CD := [];
+    for v in DigraphVertices(D) do
+      Add(CD, [C.(v), Length(B.(v)), v]);
+    od;
+
+    Sort(CD);
+
+    # Put into sets
+    Sets := [];
+    currentPair := [];
+    newSet := [];
+
+    j := 0;
+
+    for pair in CD do
+      current := [pair[1], pair[2]];
+
+      # If first pair OR has the same values as the prev pair:
+      if currentPair = [] or current = currentPair then
+        Add(newSet, pair[3]);
+      else
+        # Doesn't have the same values as the prev pair
+        Add(Sets, newSet);
+        newSet := [pair[3]];
+
+        # If they had the same colour but diff no. neighbours
+        if pair[1] = currentPair[1] then
+
+          # Push a new number to Q
+          j := j + 1;
+        fi;
+      fi;
+      currentPair := current;
+    od;
+    Add(Sets, newSet);
+
+    # If there is reason for recolouring
+    if j > 0 then
+
+      # Clearing P
+      # TODO: Can P be a list from the start?
+      # Would simplify this a lot vv
+      colour := c_min;
+      while colour <= c_max do
+        P.(colour) := [];
+        colour := colour + 1;
+      od;
+
+      # Pushing the last value to Q
+      # TODO: look into largest set number for optimisation
+      for i in [1 .. Length(Sets)] do
+        Add(Q, c_max + i);
+      od;
+
+      # Updating colours for the next round
+      c_min := c_max + 1;
+      c_max := c_max + Length(Sets);
+
+      # Updating C and P
+      colour := c_min;
+
+      for set in Sets do
+        P.(colour) := set;
+
+        for v in set do
+          C.(v) := colour;
+        od;
+        colour := colour + 1;
+      od;
+    fi;
+  od;
+
+  # Normalising results to a list starting at index 1
+  listResult := [];
+  for i in [c_min .. c_max] do
+    Add(listResult, P.(i));
+  od;
+  return listResult;
+
+end);
+
 InstallMethod(DigraphWelshPowellOrder, "for a digraph", [IsDigraph],
 function(D)
   local order, deg;
