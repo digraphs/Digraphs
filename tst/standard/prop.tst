@@ -192,6 +192,14 @@ gap> HasIsAcyclicDigraph(gr);
 false
 gap> IsAcyclicDigraph(gr);
 false
+gap> IsAcyclicDigraph(Digraph([[2 .. 3], [], []]));
+true
+gap> IsAcyclicDigraph(Digraph([[2 .. 4], [], [], []]));
+true
+gap> IsAcyclicDigraph(Digraph([[1 .. 3], [1 .. 3], [1 .. 3]]));
+false
+gap> IsAcyclicDigraph(Digraph([[2 .. 4], [1 .. 4], [1 .. 4], [1 .. 2]]));
+false
 
 #  IsFunctionalDigraph
 gap> IsFunctionalDigraph(multiple);
