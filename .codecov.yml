@@ -16,9 +16,6 @@ coverage:
       default:
         informational: true # Don't fail the check
 
-# Comment to post on PRs
-comment: false
-
 ignore:
  - "extern/"
  - "gap/utils.gi"
