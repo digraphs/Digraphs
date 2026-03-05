@@ -815,8 +815,8 @@ function(D)
   # If origin is an isolated or universal vertex, then recurse
   # on D[V \ {origin}]
   if Length(OutNeighboursOfVertex(D, origin)) = 0 or
-     Length(OutNeighboursOfVertex(D, origin)) = Length(V) - 1 then
-       return IsCograph(DigraphRemoveVertex(D, origin));
+      Length(OutNeighboursOfVertex(D, origin)) = Length(V) - 1 then
+    return IsCograph(DigraphRemoveVertex(D, origin));
   fi;
 
   while not ForAll(P, p -> Length(p) <= 1) do
