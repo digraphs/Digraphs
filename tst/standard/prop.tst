@@ -1274,6 +1274,56 @@ false
 gap> g;
 <mutable empty digraph with 10 vertices>
 
+# IsCograph
+gap> g := DigraphByEdges([[1, 2], [2, 3]]);
+<immutable digraph with 3 vertices, 2 edges>
+gap> IsCograph(g);
+Error, IsCograph: argument must be a symmetric digraph
+gap> g := DigraphByEdges([[1, 2], [2, 1], [1, 1]]);
+<immutable digraph with 2 vertices, 3 edges>
+gap> IsCograph(g);
+Error, IsCograph: argument must be a digraph without loops
+gap> g := DigraphByEdges([[1, 2], [1, 2], [2, 1], [2, 1]]);
+<immutable multidigraph with 2 vertices, 4 edges>
+gap> IsCograph(g);
+Error, IsCograph: argument must be a digraph without multiple edges
+gap> g := Digraph([]);
+<immutable empty digraph with 0 vertices>
+gap> IsCograph(g);
+true
+gap> g := Digraph([[]]);
+<immutable empty digraph with 1 vertex>
+gap> IsCograph(g);
+true
+gap> g := EmptyDigraph(10);
+<immutable empty digraph with 10 vertices>
+gap> IsCograph(g);
+true
+gap> g := DigraphRemoveLoops(CompleteDigraph(10));
+<immutable digraph with 10 vertices, 90 edges>
+gap> IsCograph(g);
+true
+gap> g := DigraphRemoveLoops(DigraphSymmetricClosure(CycleDigraph(4)));
+<immutable digraph with 4 vertices, 8 edges>
+gap> IsCograph(g);
+true
+gap> g := DigraphRemoveLoops(DigraphSymmetricClosure(CycleDigraph(5)));
+<immutable digraph with 5 vertices, 10 edges>
+gap> IsCograph(g);
+false
+gap> g := DigraphSymmetricClosure(DigraphByEdges([[1, 2], [2, 3], [3, 4]]));
+<immutable symmetric digraph with 4 vertices, 6 edges>
+gap> IsCograph(g);
+false
+gap> g := DigraphFromGraph6String("HtilDEa");
+<immutable symmetric digraph with 9 vertices, 34 edges>
+gap> IsCograph(g);
+true
+gap> g := DigraphFromGraph6String("K~zf~z|~Vy~i");
+<immutable symmetric digraph with 12 vertices, 108 edges>
+gap> IsCograph(g);
+true
+
 # IsJoinSemilatticeDigraph, IsMeetSemilatticeDigraph, and IsLatticeDigraph
 gap> gr := Digraph([[1, 2], [2]]);
 <immutable digraph with 2 vertices, 3 edges>
