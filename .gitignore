@@ -1,12 +1,13 @@
-*.DS_Store
-*.Plo
-*.Tpo
+_*.xml
+.ipynb_checkpoints
+.null-ls*
 *.a
 *.aux
 *.bbl
 *.blg
 *.brf
 *.digraphs
+*.DS_Store
 *.dylib
 *.g6
 *.gcda
@@ -24,6 +25,7 @@
 *.o
 *.out
 *.pdf
+*.Plo
 *.pnr
 *.pyc
 *.six
@@ -35,13 +37,11 @@
 *.tex
 *.toc
 *.top
+*.Tpo
 *.tui
 *.txt
-.ipynb_checkpoints
 /doc/*.css
 /doc/*.js
-Makefile
-_*.xml
 aclocal.m4
 autom4te.*
 bin/
@@ -58,6 +58,7 @@ doc/title.xml
 gen/
 gh-pages/
 main.xml
+Makefile
 manual.lab
 missing
 src/pkgconfig.h.in
