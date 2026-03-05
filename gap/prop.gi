@@ -786,204 +786,147 @@ function(D)
 end);
 
 InstallMethod(IsCograph,
-"for a symmetric digraph",
+"for a symmetric digraph without loops or multiple edges",
 [IsDigraph],
 function(D)
-  local verts, P, origin, adj, part, used_parts, unused_parts,
-  k, M, p, m, ma, n, v, zl, zr, new_P, t, current_part, zrpart,
-  pivot, zlpart, upd_m, pivotset, sigma, succz, precz, z, N_z, N_precz,
-  N_succz, options, list, subpart;
+  local V, P, x, N, parts, unused_parts, p, C, k, y, M, X, X_a,
+  used_pivots, C_origin, lpart, rpart, zl, zr, origin, sigma, prec,
+  succ, N_prec, N_succ;
 
-    # input must be symmetric
-    if not IsSymmetricDigraph(D) then;
+  # D must be a symmetric digraph without loops or multiple edges
+  if not IsSymmetricDigraph(D) then;
     Error("IsCograph: argument must be a symmetric digraph");
-    fi;
+  elif DigraphHasLoops(D) then;
+    Error("IsCograph: argument must be a digraph without loops");
+  elif IsMultiDigraph(D) then;
+    Error("IsCograph: argument must be a digraph without multiple edges");
+  fi;
 
-    verts := DigraphVertices(D);
-    P := [verts];
+  V := DigraphVertices(D);
 
-    # a graph with fewer than 4 vertices cannot contain P4 graph
-    if Length(verts) < 4 then
-        return true;
-    fi;
+  if Length(V) < 4 then
+    return true;
+  fi;
 
-    # set origin to be a non-isolated or universal vertex
-    origin := 1;
-    adj := OutNeighboursOfVertex(D, origin);
-    if Length(adj) = 0 or Length(adj) = Length(verts) - 1 then
-        return IsCograph(InducedSubdigraph(D, Filtered(verts, v ->
-        v <> origin)));
-    fi;
+  P := [V];
+  used_pivots := [];
+  origin := V[1];
 
-    # Algorithm 2: Partition Refinement
-    # while there exist non-singleton parts, refine using rule 1
-    while ForAll(P, part -> Length(part) <= 1) = false do
-        k := PositionProperty(P, part -> origin in part);
-        if Length(P[k]) > 1 then
-            part := [Filtered(OutNeighboursOfVertex(D, origin), p -> p
-            in P[k]), [origin], Difference(P[k], Union([origin],
-            OutNeighboursOfVertex(D, origin)))];
-            # make note of unused and used parts
-            unused_parts := [part[1], part[3]];
-            used_parts := [origin];
-            # replace the used part with our new refinement
-            Remove(P, k);
-            for p in Filtered(part, u -> u <> []) do
-                Add(P, p, k);
-            od;
-        fi;
+  # If origin is an isolated or universal vertex, then recurse
+  # on D[V \ {origin}]
+  if Length(OutNeighboursOfVertex(D, origin)) = 0 or
+     Length(OutNeighboursOfVertex(D, origin)) = Length(V) - 1 then
+    return IsCograph(DigraphRemoveVertex(D, origin));
+  fi;
 
-        # Procedure 3
-        new_P := ShallowCopy(P);
-        # while we have unused parts, pick an unused part, set an unused pivot
-        # and refine with rule 2 using the neighbours of the pivot
-        while Length(Filtered(unused_parts, u -> u <> [])) > 0 do
-            options := Filtered(unused_parts, part -> Length(part) > 0);
-            list := List(options, Minimum);
-            subpart := unused_parts[Position(list, Minimum(list))];
-            # pick our pivot to be either an unused vertex in the subpart,
-            # or if none exist, any vertex in the subpart
-            if Filtered(subpart, u -> u in used_parts) = [] then
-                pivot := Minimum(subpart);
-            else
-                pivot := subpart[part -> p in used_parts][1];
-            fi;
+  while not ForAll(P, p -> Length(p) <= 1) do
+    C_origin := P[PositionProperty(P, p -> origin in p)];
 
-            # Procedure 4
-            # M is the set of parts strictly intersected by the
-            # neighbourhood of the pivot
-            M := [];
-            current_part := ShallowCopy(new_P[PositionProperty(new_P,
-            part -> pivot in part)]);
-            pivotset := OutNeighboursOfVertex(D, pivot);
-            # Add to M any part that is strictly intersected
-            # by pivotset
-            for p in Difference(new_P, [current_part]) do
-                if Intersection(p, pivotset) <> [] and
-                Intersection(p, pivotset) <> p
-                and Intersection(p, pivotset) <> [origin] then
-                    k := ShallowCopy(Position(new_P, p));
-                    Remove(new_P, k);
-                    Add(M, p);
-                fi;
-            od;
-            # if we have parts to refine, do so
-            if M <> [] then
-                # for each part in M, split into those in pivot set
-                # and those not
-                for m in M do
-                    ma := Filtered(m, p -> p in pivotset);
-                    upd_m := [ma, Difference(m, ma)];
-                    for t in Filtered(upd_m, x -> x <> []) do
-                        Add(new_P, t, k);
-                    od;
-                    # if our part is unused, mark the new parts as unused
-                    # and mark this one as used
-                    if m in unused_parts then
-                        Remove(unused_parts, Position(unused_parts, m));
-                        if not ma in unused_parts and ma <> [] then
-                            Add(unused_parts, ma);
-                        fi;
-                        if not Difference(m, ma) in unused_parts and
-                        Difference(m, ma) <> [] then
-                            Add(unused_parts, Difference(m, ma));
-                        fi;
-                    # otherwise the new subpart not containing the pivot
-                    # is unused
-                    else
-                        if Minimum(m) in upd_m[1] then
-                            Add(unused_parts, upd_m[2]);
-                        else
-                            Add(unused_parts, upd_m[1]);
-                        fi;
-                    fi;
-                    Add(used_parts, m);
-                    Add(used_parts, pivot);
-                od;
-            fi;
-            if current_part in unused_parts then
-                Remove(unused_parts, Position(unused_parts, current_part));
-            fi;
-            Add(used_parts, current_part);
-        od;
-        P := ShallowCopy(new_P);
-        # consider the pivots either side of origin
-        zlpart := PositionProperty(P, part -> Length(part) > 1
-        and Position(P, [origin]) > Position(P, part));
-        zrpart := PositionProperty(P, part -> Length(part) > 1
-        and Position(P, [origin]) < Position(P, part));
-        # if there is no part on rhs or lhs, consider
-        # only the existing ones
-        if zlpart = fail or zrpart = fail then
-            if zlpart = fail and zrpart = fail then
-                continue;
-            elif zrpart = fail then
-                zl := ShallowCopy(Minimum(P[zlpart]));
-                origin := ShallowCopy(zl);
-            else
-                zr := ShallowCopy(Minimum(P[zrpart]));
-                origin := ShallowCopy(zr);
-            fi;
-        # if both exist, if they are adjacent in G, set
-        # origin to be the left pivot, else the right pivot
-        else
-            zl := ShallowCopy(Minimum(P[zlpart]));
-            zr := ShallowCopy(Minimum(P[zrpart]));
-            if zl in OutNeighboursOfVertex(D, zr) then
-                origin := ShallowCopy(zl);
-            else
-                origin := ShallowCopy(zr);
-            fi;
+    # Initialise
+    N := IntersectionSet(OutNeighboursOfVertex(D, origin), C_origin);
+    parts := [N, [origin], Difference(C_origin, UnionSet(N, [origin]))];
+    unused_parts := Filtered([parts[1], parts[3]], p -> Length(p) > 0);
+    k := Position(P, C_origin);
+    Remove(P, k);
+    for p in parts do
+        if Length(p) > 0 then
+            Add(P, p, k);
         fi;
     od;
+  
+    # Refine
+    while Length(unused_parts) > 0 do 
+      C := unused_parts[1];
+      y := C[1];
+      Add(used_pivots, y);
+      N := OutNeighboursOfVertex(D, y);
+      M := Filtered(P, p -> Length(IntersectionSet(p, N)) > 0 and
+                            Length(Difference(p, N)) > 0 and
+                            p <> C);
+      for X in M do
+        X_a := IntersectionSet(X, N);
+        k := Position(P, X);
+        Remove(P, k);
+        Add(P, X_a, k);
+        Add(P, Difference(X, X_a), k);
+        if X in unused_parts then
+          Remove(unused_parts, Position(unused_parts, X));
+          Add(unused_parts, X_a);
+          Add(unused_parts, Difference(X, X_a));
+        else
+          x := IntersectionSet(used_pivots, X)[1];
+          if x in X_a then
+            Add(unused_parts, Difference(X, X_a));
+          else
+            Add(unused_parts, X_a);
+          fi;
+        fi;
+      od;
+      Remove(unused_parts, Position(unused_parts, C));
+    od;
 
-  # Algorithm 5: Recognition Test
-  # add markers to either end of permutation
+    # Choose new origin
+    lpart := Filtered(P, p -> Position(P, p) < Position(P, [origin]) and
+                              Length(p) > 1);
+    rpart := Filtered(P, p -> Position(P, p) > Position(P, [origin]) and 
+                              Length(p) > 1);
+    if Length(lpart) = 0 or Length(rpart) = 0 then
+      if Length(lpart) = 0 and Length(rpart) = 0 then
+        continue;
+      elif Length(lpart) = 0 then
+        origin := IntersectionSet(used_pivots, rpart[1])[1];
+      else
+        origin := IntersectionSet(used_pivots, Last(lpart))[1];
+      fi;
+    else
+      zl := IntersectionSet(used_pivots, Last(lpart))[1];
+      zr := IntersectionSet(used_pivots, rpart[1])[1];
+      if zl in OutNeighboursOfVertex(D, zr) then
+        origin := zl;
+      else
+        origin := zr;
+      fi;
+    fi;
+  od;
+  
+  # Recognition Test
   sigma := [0];
   for p in P do
-    for v in p do
-      Add(sigma, v);
-    od;
+    Add(sigma, p[1]);
   od;
-  Add(sigma, Length(verts) + 1);
+  Add(sigma, Length(V) + 1);
 
   # move left to right
-  z := sigma[2];
-  while z <> Length(verts) + 1 do
-    # calculate neighbours of z, predecessor and
+  x := sigma[2];
+  while x <> Length(V) + 1 do
+    # calculate neighbours of x, predecessor and
     # successor
-    succz := sigma[Position(sigma, z) + 1];
-    precz := sigma[Position(sigma, z) - 1];
-    N_z := Filtered(sigma, n -> n in
-    OutNeighboursOfVertex(D, z));
-    # deal with cases where predecessor or
-    # successor is a marker
-    if precz <> 0 then
-      N_precz := Filtered(sigma, n -> n in
-      OutNeighboursOfVertex(D, precz));
+    succ := sigma[Position(sigma, x) + 1];
+    prec := sigma[Position(sigma, x) - 1];
+    N := Filtered(sigma, n -> n in OutNeighboursOfVertex(D, x));
+    # deal with cases where predecessor or successor is a marker
+    if prec <> 0 then
+      N_prec := Filtered(sigma, n -> n in OutNeighboursOfVertex(D, prec));
     else
-      N_precz := [0];
+      N_prec := [0];
     fi;
-    if succz <> Length(verts) + 1 then
-      N_succz := Filtered(sigma, n -> n in
-      OutNeighboursOfVertex(D, succz));
+    if succ <> Length(V) + 1 then
+      N_succ := Filtered(sigma, n -> n in OutNeighboursOfVertex(D, succ));
     else
-      N_succz := [0];
+      N_succ := [0];
     fi;
-    # if z shares a neighbourhood with predecessor or successor,
+    # if x shares a neighbourhood with predecessor or successor,
     # remove the predecessor and move right
-    if N_z = N_precz or Union(N_z, [z]) =
-        Union(N_precz, [precz]) then
-      Remove(sigma, Position(sigma, precz));
-    elif N_z = N_succz or Union(N_z, [z]) =
-        Union(N_succz, [succz]) then
-      z := succz;
-      Remove(sigma, Position(sigma, precz) + 1);
+    if N = N_prec or Union(N, [x]) = Union(N_prec, [prec]) then
+      Remove(sigma, Position(sigma, prec));
+    elif N = N_succ or Union(N, [x]) =  Union(N_succ, [succ]) then
+      x := succ;
+      Remove(sigma, Position(sigma, prec) + 1);
     else
-      z := succz;
+      x := succ;
     fi;
   od;
   # continue until we hit end marker
   # if only markers remain, G is a cograph
-  return Length(Difference(sigma, [0, Length(verts) + 1])) = 1;
+  return Length(Difference(sigma, [0, Length(V) + 1])) = 1;
 end);
