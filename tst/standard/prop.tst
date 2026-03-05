@@ -1323,6 +1323,14 @@ gap> g := DigraphFromGraph6String("K~zf~z|~Vy~i");
 <immutable symmetric digraph with 12 vertices, 108 edges>
 gap> IsCograph(g);
 true
+gap> D := DigraphFromGraph6String("L~~v~z|~Vz~m~[");
+<immutable symmetric digraph with 13 vertices, 134 edges>
+gap> IsCograph(D);
+true
+gap> D := DigraphFromGraph6String("L~~vffr{~f}[{x");
+<immutable symmetric digraph with 13 vertices, 118 edges>
+gap> IsCograph(D);
+true
 
 # IsJoinSemilatticeDigraph, IsMeetSemilatticeDigraph, and IsLatticeDigraph
 gap> gr := Digraph([[1, 2], [2]]);
