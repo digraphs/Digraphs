@@ -833,9 +833,9 @@ function(D)
             Add(P, p, k);
         fi;
     od;
-  
+ 
     # Refine
-    while Length(unused_parts) > 0 do 
+    while Length(unused_parts) > 0 do
       C := unused_parts[1];
       y := C[1];
       Add(used_pivots, y);
@@ -868,7 +868,7 @@ function(D)
     # Choose new origin
     lpart := Filtered(P, p -> Position(P, p) < Position(P, [origin]) and
                               Length(p) > 1);
-    rpart := Filtered(P, p -> Position(P, p) > Position(P, [origin]) and 
+    rpart := Filtered(P, p -> Position(P, p) > Position(P, [origin]) and
                               Length(p) > 1);
     if Length(lpart) = 0 or Length(rpart) = 0 then
       if Length(lpart) = 0 and Length(rpart) = 0 then
@@ -888,7 +888,7 @@ function(D)
       fi;
     fi;
   od;
-  
+ 
   # Recognition Test
   sigma := [0];
   for p in P do
