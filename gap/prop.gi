@@ -814,8 +814,8 @@ function(D)
 
   # If origin is an isolated or universal vertex, then recurse
   # on D[V \ {origin}]
-  if Length(OutNeighboursOfVertex(D, origin)) = 0 or
-     Length(OutNeighboursOfVertex(D, origin)) = Length(V) - 1 then
+  if Length(OutNeighboursOfVertex(D, origin)) = 0
+  or Length(OutNeighboursOfVertex(D, origin)) = Length(V) - 1 then
     return IsCograph(DigraphRemoveVertex(D, origin));
   fi;
 
@@ -833,7 +833,7 @@ function(D)
             Add(P, p, k);
         fi;
     od;
- 
+
     # Refine
     while Length(unused_parts) > 0 do
       C := unused_parts[1];
@@ -888,7 +888,7 @@ function(D)
       fi;
     fi;
   od;
- 
+
   # Recognition Test
   sigma := [0];
   for p in P do
@@ -919,7 +919,7 @@ function(D)
     # remove the predecessor and move right
     if N = N_prec or Union(N, [x]) = Union(N_prec, [prec]) then
       Remove(sigma, Position(sigma, prec));
-    elif N = N_succ or Union(N, [x]) =  Union(N_succ, [succ]) then
+    elif N = N_succ or Union(N, [x]) = Union(N_succ, [succ]) then
       x := succ;
       Remove(sigma, Position(sigma, prec) + 1);
     else
