@@ -717,8 +717,9 @@ DIGRAPHS_CheckReduceEdgeDigraph := function(D, edge)
                   "incident vertices have degree three");
   fi;
   if not Length(allVertexOutNeighbours) in [5, 6] then
-    ErrorNoReturn("the 2nd argument <edge> must be an edge that is adjacent ",
-                  "to four edges");
+    ErrorNoReturn("the 2nd argument <edge> must be an edge where the ",
+                  "incident vertices have a maximum of one common ",
+                  "neighbour");
   fi;
 
 end;
