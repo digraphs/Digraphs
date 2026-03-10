@@ -891,8 +891,7 @@ true
     reached starting from a single vertex under the operations of series and parallel
     composition.
     This function implements the algorithm for cograph recogntition given in
-    "Habib, M and Paul, C and Viennot (2005), A Simple Linear Time Recognition Algorithm
-    for Cographs".
+    "Habib, M., and Paul, C. (2005). A simple linear time algorithm for cograph recognition. Discrete Applied Mathematics, 145(2), 183-197."
     <P/>
 
     &MUTABLE_RECOMPUTED_PROP;
