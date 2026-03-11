@@ -61,6 +61,7 @@ main.xml
 Makefile
 manual.lab
 missing
+result/
 src/pkgconfig.h.in
 tags
 tst/out/
