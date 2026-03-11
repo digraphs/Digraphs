@@ -186,7 +186,13 @@ InstallMethod(DigraphGreedyColouring, "for a digraph and a function",
 InstallMethod(DigraphColourRefinement, "for a digraph", [IsDigraph],
 function(D)
 
-  local listResult, i, round, c_min, c_max, set, Q, q, C, CD, j, P, v, B, SCD, Sets, pair, pointer, current, currentPair, newSet, colour;
+  local listResult, i, round, c_min, c_max, set, Q, q, C, CD,
+  j, P, v, Out, In, Sets, pair, current, currentPair, newSet, colour;
+
+  # Or just remove loops?
+  if not DigraphNrLoops(D) = 0 then
+    ErrorNoReturn("the digraph cannot contain loops");
+  fi;
 
   c_min := 1;
   c_max := 1;
@@ -196,7 +202,6 @@ function(D)
 
   # Initial colouring
   # vertices -> colour
-  # TODO: see if can change to single non-for loop line
   C := rec();
   for v in DigraphVertices(D) do
     C.(v) := 1;
@@ -215,16 +220,18 @@ function(D)
 
     # For each v in V (all vertices in D)
     # Get the neighbours of v that are in the colour class q
-    B := rec();
+    Out := rec();
+    In := rec();
     for v in DigraphVertices(D) do
-      B.(v) := Intersection(Union(OutNeighbours(D)[v],
-        InNeighbours(D)[v]), P.(q));
+      Out.(v) := Intersection(OutNeighbours(D)[v], P.(q));
+      In.(v) := Intersection(InNeighbours(D)[v], P.(q));
     od;
 
-    # CD: colour of v vs number of q coloured neighbours for all v in D
+    # CD: [colour of v, number of q coloured out-neighbours of v,
+    # number of q coloured in-neighbours of v, v]
     CD := [];
     for v in DigraphVertices(D) do
-      Add(CD, [C.(v), Length(B.(v)), v]);
+      Add(CD, [C.(v), Length(Out.(v)), Length(In.(v)), v]);
     od;
 
     Sort(CD);
@@ -237,15 +244,15 @@ function(D)
     j := 0;
 
     for pair in CD do
-      current := [pair[1], pair[2]];
+      current := [pair[1], pair[2], pair[3]];
 
       # If first pair OR has the same values as the prev pair:
       if currentPair = [] or current = currentPair then
-        Add(newSet, pair[3]);
+        Add(newSet, pair[4]);
       else
         # Doesn't have the same values as the prev pair
         Add(Sets, newSet);
-        newSet := [pair[3]];
+        newSet := [pair[4]];
 
         # If they had the same colour but diff no. neighbours
         if pair[1] = currentPair[1] then
@@ -270,9 +277,13 @@ function(D)
         colour := colour + 1;
       od;
 
+      Q := [];
+
       # Pushing the last value to Q
       # TODO: look into largest set number for optimisation
       for i in [1 .. Length(Sets)] do
+
+        # TODO: make this conditional on not being the largest set?
         Add(Q, c_max + i);
       od;
 
@@ -292,6 +303,7 @@ function(D)
         colour := colour + 1;
       od;
     fi;
+
   od;
 
   # Normalising results to a list starting at index 1

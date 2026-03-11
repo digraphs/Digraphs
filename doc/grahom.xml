@@ -543,6 +543,38 @@ Transformation( [ 1, 2, 1, 2, 1, 2, 1, 2, 1, 2 ] )
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="DigraphColourRefinement">
+<ManSection>
+  <Oper Name="DigraphColourRefinement"
+        Arg="digraph"
+        Label="for a digraph"/>
+  <Returns>A list of lists of integers.</Returns>
+  <Description>
+    Colour Refinement is a method of colouring a digraph such that for a colour, every 
+    node with that colouring has an identical configuration of coloured neighbours. That is, 
+    all nodes of colour <A>q</A> have the same number of neighbours of colour <A>x</A>, and colour y</A>, etc.
+    <C>DigraphColourRefinement</C> considers the out neighbours and in neighbours of a node separately.
+    <P/>
+    This involves recolouring the digraph each iteration until it is 'refined'. It returns the colouring as a
+    2D list. For two digraphs with different colourings, we can be sure that they are not isomorphic. However, 
+    identical colourings for two digraphs does not necessarily mean they are isomorphic.
+    <P/>
+    See also
+    <Ref Oper="DigraphColouring"
+         Label="for a digraph and a number of colours"/>.
+    <P/>
+
+    <Example><![CDATA[
+gap> D := Digraph([[3], [], [1, 9], [], [10], [7, 8, 9], [6, 8], [6, 7], [3, 6, 10], [5, 9]]);;
+gap> DigraphColourRefinement(D);
+[ [ 2, 4 ], [ 1, 5 ], [ 7, 8 ], [ 3, 10 ], [ 9 ], [ 6 ] ]
+gap> DigraphColourRefinement(Digraph([[], [1], [1], [1]]));
+[ [ 1 ], [ 2, 3, 4 ] ]
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="DigraphWelshPowellOrder">
 <ManSection>
   <Attr Name="DigraphWelshPowellOrder" Arg="digraph"/>

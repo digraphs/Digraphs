@@ -2913,16 +2913,16 @@ gap> DigraphColourRefinement(D);
 [ [ 1 .. 4 ] ]
 gap> D := Digraph([[2], [3], [2, 4], [2, 5], [4, 6], [5]]);;
 gap> DigraphColourRefinement(D);
-[ [ 2, 6 ], [ 1 ], [ 3, 4, 5 ] ]
+[ [ 1 ], [ 6 ], [ 2 ], [ 3 ], [ 4 ], [ 5 ] ]
 gap> D := Digraph([[2], [3], [1]]);;
 gap> DigraphColourRefinement(D);
 [ [ 1 .. 3 ] ]
 gap> D := Digraph([[2, 4], [5], [2, 4], [5], [1, 3]]);;
 gap> DigraphColourRefinement(D);
-[ [ 2, 4 ], [ 5 ], [ 1, 3 ] ]
+[ [ 2, 4 ], [ 1, 3 ], [ 5 ] ]
 gap> D := Digraph([[4], [1, 3], [4], [5], [1, 3]]);;
 gap> DigraphColourRefinement(D);
-[ [ 1, 3 ], [ 4 ], [ 2, 5 ] ]
+[ [ 4 ], [ 1, 3 ], [ 2 ], [ 5 ] ]
 
 #
 gap> DIGRAPHS_StopTest();
