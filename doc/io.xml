@@ -316,7 +316,7 @@ gap> DigraphFromGraph6String(IsMutableDigraph, "IheA@GUAo");
     If no first argument is provided, then an immutable
     digraph is returned by default.
 
-    Note that some Digraphs will not be accurately recovered if they were 
+    Note that some digraphs will not be accurately recovered if they were 
     encoded in an invalid format; see <Ref Subsect="EncodingFormats" Style="Number"/> for
     full limitations. <P/>
     <Example><![CDATA[
