@@ -41,8 +41,6 @@ DeclareOperation("DigraphGreedyColouring", [IsDigraph, IsFunction]);
 DeclareOperation("DigraphGreedyColouring", [IsDigraph, IsHomogeneousList]);
 DeclareOperation("DigraphGreedyColouringNC", [IsDigraph, IsHomogeneousList]);
 
-DeclareOperation("DigraphColourRefinement", [IsDigraph]);
-
 DeclareAttribute("DigraphWelshPowellOrder", IsDigraph);
 DeclareAttribute("DigraphSmallestLastOrder", IsDigraph);  # TODO: document
 
