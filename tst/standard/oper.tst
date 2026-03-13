@@ -15,7 +15,7 @@
 #@local edges, edges2, func, g, gr, gr1, gr2, gr3, gr4, gri, grrt, grt, h, i
 #@local i1, i2, id, idom, in1, in2, in3, iter, j1, j2, m, m1, m2, mat, n, nbs
 #@local out, out1, out2, out3, p1, p2, path, preorder, qr, r, res, rtclosure, t
-#@local tclosure, u1, u2, x
+#@local tclosure, u1, u2, x, imE, imV
 #@local p, q, idp, idt, M
 gap> START_TEST("Digraphs package: standard/oper.tst");
 gap> LoadPackage("digraphs", false);;
@@ -3323,6 +3323,32 @@ gap> DigraphEdges(D);
   [ 5, 4 ] ]
 gap> DigraphVertexLabels(D);
 [ 1, 2, 3, 6, [ 4, 5 ] ]
+
+# Tests for DigraphRemoveVertex (immutable) and DigraphRemoveEdge (immutable).
+gap> d := EdgeWeightedDigraph([[2, 3], [3], [], []], [[5, 10], [15], [], []]);
+<immutable edge-weighted digraph with 4 vertices, 3 edges>
+gap> imE := DigraphRemoveEdge(d, 1, 3);
+<immutable edge-weighted digraph with 4 vertices, 2 edges>
+gap> IsImmutableDigraph(imE);
+true
+gap> OutNeighbours(imE);
+[ [ 2 ], [ 3 ], [  ], [  ] ]
+gap> EdgeWeights(imE);
+[ [ 5 ], [ 15 ], [  ], [  ] ]
+gap> EdgeWeights(d);
+[ [ 5, 10 ], [ 15 ], [  ], [  ] ]
+gap> imV := DigraphRemoveVertex(d, 1);
+<immutable edge-weighted digraph with 3 vertices, 1 edge>
+gap> IsImmutableDigraph(imV);
+true
+gap> OutNeighbours(imV);
+[ [ 2 ], [  ], [  ] ]
+gap> EdgeWeights(imV);
+[ [ 15 ], [  ], [  ] ]
+gap> OutNeighbours(d);
+[ [ 2, 3 ], [ 3 ], [  ], [  ] ]
+gap> EdgeWeights(d);
+[ [ 5, 10 ], [ 15 ], [  ], [  ] ]
 
 #
 gap> DIGRAPHS_StopTest();

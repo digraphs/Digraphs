@@ -520,6 +520,9 @@ true
     digraph are <C>[1..n-1]</C>, but the original labels can be
     accessed via <Ref Oper="DigraphVertexLabels"/>. <P/>
 
+    If <A>digraph</A> has edge weights, then the returned digraph will also have edge weights with the weights updated
+    to reflect the removal of the vertex and its associated edges. <P/>
+
     If <A>digraph</A> belongs to <Ref Filt="IsMutableDigraph"/>, then the
     vertex is removed directly from <A>digraph</A>. If <A>digraph</A> belongs
     to <Ref Filt="IsImmutableDigraph"/>, an immutable copy of <A>digraph</A>
@@ -701,6 +704,9 @@ true
     vertices of <A>digraph</A>, then this operation returns a digraph
     constructed from <A>digraph</A> by removing the edge specified by
     <A>edge</A> or <A>[src, ran]</A>. <P/>  
+
+    If <A>digraph</A> has edge weights then the returned digraph will also have edge weights with the weight for the
+    removed edge no longer present. <P/>
 
     If <A>digraph</A> belongs to <Ref
       Filt="IsMutableDigraph"/>, then the edge is removed directly from
