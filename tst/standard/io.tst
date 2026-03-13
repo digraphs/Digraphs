@@ -464,9 +464,15 @@ gap> gr := TCodeDecoder("12 3 0 10 6 2 8 8");
 <immutable digraph with 12 vertices, 3 edges>
 gap> OutNeighbours(gr);
 [ [ 11 ], [  ], [  ], [  ], [  ], [  ], [ 3 ], [  ], [ 9 ], [  ], [  ], [  ] ]
+#@if CompareVersionNumbers(ReplacedString(GAPInfo.Version, "dev", ""), "4.16")
+gap> TCodeDecoder(3);
+Error, no method found! For debugging hints type ?Recovery from NoMethodFound
+Error, no 1st choice method found for `TCodeDecoder' on 1 argument
+#@else
 gap> TCodeDecoder(3);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `TCodeDecoder' on 1 arguments
+#@fi
 gap> TCodeDecoder("gr 5");
 Error, the 2nd argument <s> must be a string of at least two space-separated n\
 on-negative integers,
