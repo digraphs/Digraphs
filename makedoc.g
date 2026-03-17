@@ -127,7 +127,7 @@ AutoDoc("digraphs", rec(
             \usepackage{a4wide}
             \newcommand{\bbZ}{\mathbb{Z}}
         """),
-        main := "main",
+        main := "main.xml",
         files := Files),
 
     scaffold := rec(
