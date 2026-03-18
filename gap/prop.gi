@@ -941,3 +941,8 @@ function(D)
   # if only markers remain, G is a cograph
   return Length(Difference(sigma, [0, Length(V) + 1])) = 1;
 end);
+
+InstallMethod(IsCograph,
+"for a mutable digraph",
+[IsMutableDigraph],
+D -> IsCograph(DigraphImmutableCopy(D)));

@@ -12,7 +12,7 @@
 #@local D, DigraphNrVertices, DigraphRange, DigraphSource, DigraphVertices, G
 #@local M3, M5, N5, adj, circuit, complete100, comps, g, g1, g2, g3, g4, g5, g6
 #@local gr, gr1, gr2, gr3, gr4, gr5, gr6, grid, i, id, j, loop, mat, multiple
-#@local nottrans, r, range, source, trans
+#@local mut, nottrans, r, range, source, trans
 gap> START_TEST("Digraphs package: standard/prop.tst");
 gap> LoadPackage("digraphs", false);;
 
@@ -1330,6 +1330,11 @@ true
 gap> D := DigraphFromGraph6String("L~~vffr{~f}[{x");
 <immutable symmetric digraph with 13 vertices, 118 edges>
 gap> IsCograph(D);
+true
+gap> mut := DigraphMutableCopy(D);;
+gap> IsCograph(mut);
+true
+gap> mut = D;
 true
 
 # IsJoinSemilatticeDigraph, IsMeetSemilatticeDigraph, and IsLatticeDigraph
