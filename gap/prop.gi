@@ -786,12 +786,12 @@ function(D)
 end);
 
 InstallMethod(IsCograph,
-"for a symmetric digraph without loops or multiple edges",
-[IsDigraph],
+"for an immutable digraph",
+[IsImmutableDigraph],
 function(D)
   local V, P, x, N, parts, unused_parts, p, C, k, y, M, X, X_a,
-  used_pivots, C_origin, lpart, rpart, zl, zr, origin, sigma, prec,
-  succ, N_prec, N_succ;
+        used_pivots, C_origin, po, lpart, rpart, zl, zr, origin,
+        sigma, posx, prec, succ, N_prec, N_succ;
 
   # D must be a symmetric digraph without loops or multiple edges
   if not IsSymmetricDigraph(D) then;
@@ -820,7 +820,7 @@ function(D)
   fi;
 
   while not ForAll(P, p -> Length(p) <= 1) do
-    C_origin := P[PositionProperty(P, p -> origin in p)];
+    C_origin := First(P, p -> origin in p);
 
     # Initialise
     N := IntersectionSet(OutNeighboursOfVertex(D, origin), C_origin);
@@ -841,7 +841,7 @@ function(D)
       Add(used_pivots, y);
       N := OutNeighboursOfVertex(D, y);
       M := Filtered(P, p -> Length(IntersectionSet(p, N)) > 0 and
-                            Length(Difference(p, N)) > 0 and
+                            not IsSubset(N, p) and
                             p <> C);
       for X in M do
         X_a := IntersectionSet(X, N);
@@ -866,18 +866,27 @@ function(D)
     od;
 
     # Choose new origin
-    lpart := Filtered(P, p -> Position(P, p) < Position(P, [origin]) and
-                              Length(p) > 1);
-    rpart := Filtered(P, p -> Position(P, p) > Position(P, [origin]) and
-                              Length(p) > 1);
-    if Length(lpart) = 0 or Length(rpart) = 0 then
-      if Length(lpart) = 0 and Length(rpart) = 0 then
-        continue;
-      elif Length(lpart) = 0 then
-        origin := IntersectionSet(used_pivots, rpart[1])[1];
-      else
-        origin := IntersectionSet(used_pivots, Last(lpart))[1];
+    lpart := [];
+    rpart := [];
+    po := Position(P, [origin]);
+    for p in P{[1 .. po - 1]} do
+      if Length(p) > 1 then
+        Add(lpart, p);
       fi;
+    od;
+    for p in P{[po + 1 .. Length(P)]} do
+      if Length(p) > 1 then
+        Add(rpart, p);
+      fi;
+    od;
+
+    if IsEmpty(lpart) then
+      if IsEmpty(rpart) then
+        continue;
+      fi;
+      origin := IntersectionSet(used_pivots, rpart[1])[1];
+    elif IsEmpty(rpart) then
+      origin := IntersectionSet(used_pivots, Last(lpart))[1];
     else
       zl := IntersectionSet(used_pivots, Last(lpart))[1];
       zr := IntersectionSet(used_pivots, rpart[1])[1];
@@ -897,12 +906,12 @@ function(D)
   Add(sigma, Length(V) + 1);
 
   # move left to right
-  x := sigma[2];
+  posx := 2;
+  x := sigma[posx];
   while x <> Length(V) + 1 do
-    # calculate neighbours of x, predecessor and
-    # successor
-    succ := sigma[Position(sigma, x) + 1];
-    prec := sigma[Position(sigma, x) - 1];
+    # calculate neighbours of x, predecessor and successor
+    prec := sigma[posx - 1];
+    succ := sigma[posx + 1];
     N := Filtered(sigma, n -> n in OutNeighboursOfVertex(D, x));
     # deal with cases where predecessor or successor is a marker
     if prec <> 0 then
@@ -918,11 +927,13 @@ function(D)
     # if x shares a neighbourhood with predecessor or successor,
     # remove the predecessor and move right
     if N = N_prec or Union(N, [x]) = Union(N_prec, [prec]) then
-      Remove(sigma, Position(sigma, prec));
+      Remove(sigma, posx - 1);
+      posx := posx - 1;
     elif N = N_succ or Union(N, [x]) = Union(N_succ, [succ]) then
+      Remove(sigma, posx);
       x := succ;
-      Remove(sigma, Position(sigma, prec) + 1);
     else
+      posx := posx + 1;
       x := succ;
     fi;
   od;
