@@ -881,8 +881,7 @@ true
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
     If <A>digraph</A> is a symmetric digraph without loops or multiple edges, then the
-    property returns true if <A>digraph</A> is a cograph, otherwise the property returns
-    false.
+    property returns true if <A>digraph</A> is a cograph, and false if it is not.
     <P/>
 
     A symmetric digraph without loops or multiple edges is called a <E>cograph</E>
@@ -890,9 +889,10 @@ true
     an induced subgraph. Equivalently, cographs are those graphs which may be
     reached starting from a single vertex under the operations of series and parallel
     composition.
+    <P/>
+
     This function implements the algorithm for cograph recogntition given in
-    "Habib, M., and Paul, C. (2005). A simple linear time algorithm for cograph recognition.
-    Discrete Applied Mathematics, 145(2), 183-197."
+    <Cite Key="HP05"/>.
     <P/>
 
     &MUTABLE_RECOMPUTED_PROP;
@@ -910,6 +910,10 @@ gap> D := DigraphSymmetricClosure(D);
 <immutable symmetric digraph with 4 vertices, 6 edges>
 gap> IsCograph(D);
 false
+gap> D := CompleteDigraph(5);
+<immutable complete digraph with 5 vertices>
+gap> IsCograph(D);
+true
 ]]></Example>
   </Description>
 </ManSection>
@@ -941,10 +945,6 @@ false
 gap> gr3 := Digraph(3, [1, 2, 3], [2, 3, 1]);
 <immutable digraph with 3 vertices, 3 edges>
 gap> IsFunctionalDigraph(gr3);
-true
-gap> D := CompleteDigraph(5);
-<immutable complete digraph with 5 vertices>
-gap> IsCograph(D);
 true
 ]]></Example>
   </Description>
