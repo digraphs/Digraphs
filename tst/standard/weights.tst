@@ -517,6 +517,14 @@ node [shape=circle]
 2[color=gray, style=filled]
 1 -> 2[color=black, label=10]
 }
+gap> Print(DotEdgeWeightedDigraph(gr, rec(vert := "orange")));
+//dot
+digraph hgn{
+node [shape=circle]
+1[color=orange, style=filled]
+2[color=orange, style=filled]
+1 -> 2[color=black, label=10]
+}
 
 # Cycle example
 gap> gr := EdgeWeightedDigraph(CycleDigraph(5), [[10], [4], [8], [2], [8]]);;
