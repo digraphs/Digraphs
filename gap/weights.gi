@@ -79,6 +79,11 @@ InstallMethod(EdgeWeightedDigraphTotalWeight,
 [IsDigraph and HasEdgeWeights],
 D -> Sum(EdgeWeights(D), Sum));
 
+InstallMethod(UnitEdgeWeightedDigraph, "for a digraph",
+[IsDigraph],
+D -> EdgeWeightedDigraph(D, List(OutNeighbours(D),
+                                 l -> ListWithIdenticalEntries(Length(l), 1))));
+
 #############################################################################
 # 2. Copies of edge weights
 #############################################################################
