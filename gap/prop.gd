@@ -54,6 +54,7 @@ DeclareProperty("IsPermutationDigraph", IsDigraph);
 DeclareProperty("IsDistributiveLatticeDigraph", IsDigraph);
 DeclareProperty("IsModularLatticeDigraph", IsDigraph);
 DeclareProperty("Is2EdgeTransitive", IsDigraph);
+DeclareProperty("IsCograph", IsDigraph);
 DeclareSynonymAttr("IsLatticeDigraph",
                    IsMeetSemilatticeDigraph and IsJoinSemilatticeDigraph);
 DeclareSynonymAttr("IsPreorderDigraph",

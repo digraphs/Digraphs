@@ -81,6 +81,7 @@
     <#Include Label="IsEdgeTransitive">
     <#Include Label="IsVertexTransitive">
     <#Include Label="Is2EdgeTransitive">
+    <#Include Label="IsCograph">
   </Section>
 
   
