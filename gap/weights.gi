@@ -81,12 +81,8 @@ D -> Sum(EdgeWeights(D), Sum));
 
 InstallMethod(UnitEdgeWeightedDigraph, "for a digraph",
 [IsDigraph],
-function(D)
-  local x, unitweights;
-  unitweights := List(DigraphVertices(D), x ->
-  ListWithIdenticalEntries(OutDegreeOfVertex(D, x), 1));
-  return(EdgeWeightedDigraph(D, unitweights));
-end);
+D -> EdgeWeightedDigraph(D, List(OutNeighbours(D),
+                                 l -> ListWithIdenticalEntries(Length(l), 1))));
 
 #############################################################################
 # 2. Copies of edge weights
