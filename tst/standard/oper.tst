@@ -2460,9 +2460,9 @@ gap> ConormalProduct(CycleDigraph(2), CycleDigraph(8));
 #HomomorphicProduct
 gap> D := Digraph([[2, 3], [1, 3, 3], [1, 2, 2]]);
 <immutable multidigraph with 3 vertices, 8 edges>
-gap> HomomorphicProduct(D, D);                    
+gap> HomomorphicProduct(D, D);
 Error, the 1st argument (a digraph) must not satisfy IsMultiDigraph
-gap> DigraphSymmetricClosure(CycleDigraph(6)); 
+gap> DigraphSymmetricClosure(CycleDigraph(6));
 <immutable symmetric digraph with 6 vertices, 12 edges>
 gap> HomomorphicProduct(PetersenGraph(), last);
 <immutable digraph with 60 vertices, 1080 edges>
@@ -2525,7 +2525,7 @@ gap> StrongProduct(NullDigraph(0), CompleteDigraph(3));
 <immutable empty digraph with 0 vertices>
 gap> D1 := Digraph([[2], [1, 3, 4], [2, 5], [2, 5], [3, 4]]);
 <immutable digraph with 5 vertices, 10 edges>
-gap> D2 := Digraph([[2], [1, 3, 4], [2], [2]]);              
+gap> D2 := Digraph([[2], [1, 3, 4], [2], [2]]);
 <immutable digraph with 4 vertices, 6 edges>
 gap> LexicographicProduct(D1, D2);
 <immutable digraph with 20 vertices, 190 edges>
@@ -2545,7 +2545,7 @@ gap> OutNeighbours(last);
   [ 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 20 ], 
   [ 9, 10, 11, 12, 13, 14, 15, 16, 18 ], 
   [ 9, 10, 11, 12, 13, 14, 15, 16, 18 ] ]
-gap> LexicographicProduct(ChainDigraph(3), CycleDigraph(7));   
+gap> LexicographicProduct(ChainDigraph(3), CycleDigraph(7));
 <immutable digraph with 21 vertices, 119 edges>
 
 # SwapDigraphs
@@ -3032,7 +3032,7 @@ Error, expected an edge between the 2nd and 3rd arguments (vertices) 1 and
 
 # DigraphContractEdge: Edge is a looped edge (u = v)
 gap> D := DigraphByEdges([[1, 1], [2, 1], [1, 2]]);;
-gap> DigraphVertexLabels(D);; 
+gap> DigraphVertexLabels(D);;
 gap> C := DigraphContractEdge(D, 1, 1);
 Error, The 2nd argument <u> must not be equal to the 3rd argument <v>
 gap> DigraphHasLoops(D);
@@ -3196,7 +3196,7 @@ Error, expected an edge between the 2nd and 3rd arguments (vertices) 1 and
 
 # DigraphContractEdge: Edge is a looped edge (u = v) (mutable)
 gap> D := DigraphByEdges(IsMutableDigraph, [[1, 1], [2, 1], [1, 2]]);;
-gap> DigraphVertexLabels(D);; 
+gap> DigraphVertexLabels(D);;
 gap> DigraphContractEdge(D, 1, 1);
 Error, The 2nd argument <u> must not be equal to the 3rd argument <v>
 gap> DigraphHasLoops(D);
