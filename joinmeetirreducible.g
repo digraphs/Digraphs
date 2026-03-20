@@ -1,44 +1,15 @@
+# https://doc.sagemath.org/html/en/reference/combinat/sage/combinat/posets/hasse_diagram.html#sage.combinat.posets.hasse_diagram.HasseDiagram.find_nontrivial_congruence
+
 IsJoinIrreducible := function(G, v)
-    local joinTable, row, x, y;
-    joinTable := DigraphJoinTable(G);
-
-    for y in [1..Length(joinTable)] do
-        if y = v then
-            continue;
-        fi;
-        row := joinTable[y];
-        for x in [1..Length(row)] do
-            if x = v then
-                continue;
-            fi;
-            if row[x] = v then
-                return false;
-            fi;
-        od;
-    od;
-
-    return true;
+    local hasse;
+    hasse := DigraphReflexiveTransitiveReduction(G);
+    # join-irreducible iff at most one lower cover
+    return InDegreeOfVertex(hasse, v) <= 1;
 end;
 
-
 IsMeetIrreducible := function(G, v)
-    local meetTable, row, x, y;
-    meetTable := DigraphMeetTable(G);
-
-    for y in [1..Length(meetTable)] do
-        if y = v then
-            continue;
-        fi;
-        row := meetTable[y];
-        for x in [1..Length(row)] do
-            if x = v then
-                continue;
-            fi;
-            if row[x] = v then
-                return false;
-            fi;
-        od;
-    od;
-
-    return true;
+    local hasse;
+    # meet-irreducible iff at most one upper cover
+    hasse := DigraphReflexiveTransitiveReduction(G);
+    return OutDegreeOfVertex(hasse, v) <= 1;
 end;
