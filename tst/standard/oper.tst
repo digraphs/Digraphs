@@ -17,6 +17,7 @@
 #@local out, out1, out2, out3, p1, p2, path, preorder, qr, r, res, rtclosure, t
 #@local tclosure, u1, u2, x
 #@local p, q, idp, idt, M
+#@local b2, chain, lattice, m3
 gap> START_TEST("Digraphs package: standard/oper.tst");
 gap> LoadPackage("digraphs", false);;
 
@@ -1821,6 +1822,108 @@ gap> PartialOrderDigraphJoinOfVertices(gr2, 3, 4);
 fail
 gap> PartialOrderDigraphJoinOfVertices(gr1, 3, 4);
 fail
+
+#  IsJoinIrreducible, IsMeetIrreducible
+
+# The pentagon lattice N5: 1 < {2, 3}, 3 < 4, {2, 4} < 5
+gap> gr := Digraph([[2, 3], [5], [4], [5], []]);
+<immutable digraph with 5 vertices, 5 edges>
+gap> lattice := DigraphReflexiveTransitiveClosure(gr);
+<immutable preorder digraph with 5 vertices, 13 edges>
+gap> IsJoinIrreducible(lattice, 1);
+true
+gap> IsJoinIrreducible(lattice, 2);
+true
+gap> IsJoinIrreducible(lattice, 3);
+true
+gap> IsJoinIrreducible(lattice, 4);
+true
+gap> IsJoinIrreducible(lattice, 5);
+false
+gap> IsMeetIrreducible(lattice, 1);
+false
+gap> IsMeetIrreducible(lattice, 2);
+true
+gap> IsMeetIrreducible(lattice, 3);
+true
+gap> IsMeetIrreducible(lattice, 4);
+true
+gap> IsMeetIrreducible(lattice, 5);
+true
+
+# A 4-element chain: every element is doubly irreducible
+gap> chain := DigraphReflexiveTransitiveClosure(ChainDigraph(4));
+<immutable preorder digraph with 4 vertices, 10 edges>
+gap> IsJoinIrreducible(chain, 1);
+true
+gap> IsJoinIrreducible(chain, 2);
+true
+gap> IsJoinIrreducible(chain, 3);
+true
+gap> IsJoinIrreducible(chain, 4);
+true
+gap> IsMeetIrreducible(chain, 1);
+true
+gap> IsMeetIrreducible(chain, 2);
+true
+gap> IsMeetIrreducible(chain, 3);
+true
+gap> IsMeetIrreducible(chain, 4);
+true
+
+# The Boolean lattice B2: 1 < {2, 3} < 4
+gap> b2 := DigraphReflexiveTransitiveClosure(Digraph([[2, 3], [4], [4], []]));
+<immutable preorder digraph with 4 vertices, 9 edges>
+gap> IsJoinIrreducible(b2, 1);
+true
+gap> IsJoinIrreducible(b2, 2);
+true
+gap> IsJoinIrreducible(b2, 3);
+true
+gap> IsJoinIrreducible(b2, 4);
+false
+gap> IsMeetIrreducible(b2, 1);
+false
+gap> IsMeetIrreducible(b2, 2);
+true
+gap> IsMeetIrreducible(b2, 3);
+true
+gap> IsMeetIrreducible(b2, 4);
+true
+
+# The M3 lattice: 1 < {2, 3, 4} < 5
+gap> m3 := DigraphReflexiveTransitiveClosure(Digraph([[2, 3, 4], [5], [5], [5], []]));
+<immutable preorder digraph with 5 vertices, 12 edges>
+gap> IsJoinIrreducible(m3, 1);
+true
+gap> IsJoinIrreducible(m3, 2);
+true
+gap> IsJoinIrreducible(m3, 3);
+true
+gap> IsJoinIrreducible(m3, 4);
+true
+gap> IsJoinIrreducible(m3, 5);
+false
+gap> IsMeetIrreducible(m3, 1);
+false
+gap> IsMeetIrreducible(m3, 2);
+true
+gap> IsMeetIrreducible(m3, 3);
+true
+gap> IsMeetIrreducible(m3, 4);
+true
+gap> IsMeetIrreducible(m3, 5);
+true
+
+# Error handling
+gap> IsJoinIrreducible(CycleDigraph(3), 1);
+Error, the 1st argument <D> must satisfy IsPartialOrderDigraph,
+gap> IsMeetIrreducible(CycleDigraph(3), 1);
+Error, the 1st argument <D> must satisfy IsPartialOrderDigraph,
+gap> IsJoinIrreducible(Digraph([[1]]), 2);
+Error, the 2nd argument <v> must be a vertex of the 1st argument <D>,
+gap> IsMeetIrreducible(Digraph([[1]]), 2);
+Error, the 2nd argument <v> must be a vertex of the 1st argument <D>,
 
 #  DigraphClosure
 gap> gr := Digraph([[4, 5, 6, 7, 9], [7, 3], [2, 6, 7, 9, 10],
