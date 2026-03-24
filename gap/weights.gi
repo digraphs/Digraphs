@@ -900,3 +900,63 @@ DIGRAPHS_RandomEdgeWeightedDigraphFilt);
 InstallMethod(RandomUniqueEdgeWeightedDigraph,
 "for a function, a pos int, and a rational", [IsFunction, IsPosInt, IsRat],
 DIGRAPHS_RandomEdgeWeightedDigraphFilt);
+
+#############################################################################
+# 7. Drawing edge weighted digraphs
+#############################################################################
+
+InstallMethod(DotEdgeWeightedDigraph, "for a digraph",
+[IsDigraph],
+digraph -> DotEdgeWeightedDigraph(digraph, [[], []], rec()));
+
+InstallMethod(DotEdgeWeightedDigraph, "for a digraph and a list",
+[IsDigraph, IsList],
+{digraph, path} -> DotEdgeWeightedDigraph(digraph, path, rec()));
+
+InstallMethod(DotEdgeWeightedDigraph, "for a digraph and a record",
+[IsDigraph, IsRecord],
+{digraph, colors} -> DotEdgeWeightedDigraph(digraph, [[], []], colors));
+
+InstallMethod(DotEdgeWeightedDigraph, "for a digraph, a list, and a record",
+[IsDigraph, IsList, IsRecord],
+function(digraph, path, colors)
+  local default_colors, edge, vert, source, dest, name, vertColours,
+        edgeColours, path_verts, path_edge_indices, path_length, i;
+
+  # Use default colours for any that aren't specified
+  default_colors := rec(highlight := "blue",
+                        edge      := "black",
+                        vert      := "gray",
+                        source    := "yellowgreen",
+                        dest      := "lightpink");
+  for name in RecNames(colors) do
+    if IsBound(default_colors.(name)) then
+      default_colors.(name) := colors.(name);
+    else
+      Error("3rd arg <colors> contains unsupported option named '", name, "'");
+    fi;
+  od;
+  colors := default_colors;
+
+  # fill with basic colours
+  vertColours := ListWithIdenticalEntries(DigraphNrVertices(digraph),
+                                          colors.vert);
+  edgeColours := List(OutNeighbours(digraph),
+                      outs_u -> List(outs_u, _ -> colors.edge));
+
+  # highlight the path
+  path_verts := path[1];
+  path_edge_indices := path[2];
+  path_length := Length(path_edge_indices);
+  if not IsEmpty(path_verts) then
+    for i in [1 .. path_length] do
+      edgeColours[path_verts[i]][path_edge_indices[i]] := colors.highlight;
+    od;
+    vertColours[path_verts[1]] := colors.source;
+    vertColours[path_verts[path_length + 1]] := colors.dest;
+  fi;
+
+  # draw with the weights as labels
+  return DotColoredEdgeLabelledDigraph(digraph, vertColours, edgeColours,
+                                       EdgeWeights(digraph));
+end);

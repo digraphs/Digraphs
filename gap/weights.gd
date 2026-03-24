@@ -53,3 +53,9 @@ DeclareOperation("RandomUniqueEdgeWeightedDigraph",
                  [IsFunction, IsPosInt, IsFloat]);
 DeclareOperation("RandomUniqueEdgeWeightedDigraph",
                  [IsFunction, IsPosInt, IsRat]);
+
+# 7. Drawing edge weighted digraphs
+DeclareOperation("DotEdgeWeightedDigraph", [IsDigraph]);
+DeclareOperation("DotEdgeWeightedDigraph", [IsDigraph, IsList]);
+DeclareOperation("DotEdgeWeightedDigraph", [IsDigraph, IsRecord]);
+DeclareOperation("DotEdgeWeightedDigraph", [IsDigraph, IsList, IsRecord]);

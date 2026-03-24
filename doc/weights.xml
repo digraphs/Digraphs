@@ -364,3 +364,70 @@ gap> RandomUniqueEdgeWeightedDigraph(IsEulerianDigraph, 5, 1 / 3);
   </Description>
 </ManSection>
 <#/GAPDoc>
+
+<#GAPDoc Label="DotEdgeWeightedDigraph">
+<ManSection>
+  <Oper Name="DotEdgeWeightedDigraph" Arg="digraph[, path][, colors]"/>
+  <Returns>A string.</Returns>
+  <Description>
+    This operation produces a graphical representation of the edge-weighted
+    digraph <A>digraph</A>, in <E>dot</E> format. Its output will be similar to
+    that of <Ref Attr="DotDigraph"/>, but the diagram will also show the weights
+    of the digraph's edges. <P/>
+
+    If the optional argument <A>path</A> is specified, it should be a list of
+    lists describing a path in <A>digraph</A>, in the format described in <Ref
+    Oper="DigraphPath"/>. If specified, the path's edges will be highlighted in
+    the diagram, as will its start and end vertices. <P/>
+
+    If the optional argument <A>colors</A> is specified, it should be a record
+    containing any of the following components:
+
+    <List>
+      <Item>
+        <A>vert</A>: the colour of ordinary vertices (default "grey");
+      </Item>
+      <Item>
+        <A>edge</A>: the colour of ordinary edges (default "black");
+      </Item>
+      <Item>
+        <A>highlight</A>: the colour of any edges on <A>path</A>, if any
+        (default "blue");
+      </Item>
+      <Item>
+        <A>source</A>: the colour of the first vertex in <A>path</A>, if any
+        (default "yellowgreen");
+      </Item>
+      <Item>
+        <A>dest</A>: the colour of the final vertex in <A>path</A>, if any
+        (default "lightpink").
+      </Item>
+    </List>
+
+    Each value in the record should be a string representing a colour understood
+    by the <C>GraphViz</C> software. For details about this format, see
+    <URL>https://www.graphviz.org</URL>. If any of the above components are not
+    specified, or if no <A>colors</A> argument is given, the default value will
+    be used. <P/>
+
+    The output of this operation can be passed to <Ref Func="Splash"/> to
+    attempt to display it graphically on the computer's screen. <P/>
+
+    <Example><![CDATA[
+gap> gr := EdgeWeightedDigraph([[2], [3], []], [[10], [15], []]);
+<immutable edge-weighted digraph with 3 vertices, 2 edges>
+gap> path := EdgeWeightedDigraphShortestPath(g, 2, 3);
+[ [ 2, 3 ], [ 1 ] ]
+gap> Print(DotEdgeWeightedDigraph(gr, path));
+//dot
+digraph hgn{
+node [shape=circle]
+1[color=gray, style=filled]
+2[color=yellowgreen, style=filled]
+3[color=lightpink, style=filled]
+1 -> 2[color=black, label=10]
+2 -> 3[color=blue, label=15]
+}]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
