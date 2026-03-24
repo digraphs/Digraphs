@@ -2736,11 +2736,13 @@ end);
 InstallMethod(DigraphColourRefinement, "for a digraph", [IsDigraph],
 function(D)
 
-  local listResult, i, round, c_min, c_max, set, Q, q, C, CD,
+  local listResult, i, round, c_min, c_max, set, Q, q, C, CD, iter, start,
   j, P, v, Out, In, Sets, pair, current, currentPair, newSet, colour;
 
+  start := NanosecondsSinceEpoch();
+
   # Or just remove loops?
-  if not DigraphNrLoops(D) = 0 then
+  if DigraphHasLoops(D) then
     ErrorNoReturn("the digraph cannot contain loops");
   fi;
 
@@ -2752,17 +2754,19 @@ function(D)
 
   # Initial colouring
   # vertices -> colour
-  C := [];
-  for v in DigraphVertices(D) do
-    C[v] := 1;
-  od;
+  C := List([1 .. DigraphNrVertices(D)], x -> 1);
 
   # Colour classes
   # All vertices initialised to 1
   # colour -> vertices labelled as such
-  P := rec(1 := DigraphVertices(D));
+  P := [];
+  P[1] := [1 .. DigraphNrVertices(D)];
+
+  iter := 0;
 
   while not IsEmpty(Q) do
+
+    iter := iter + 1;
 
     # Pop colour off Q
     q := Q[1];
@@ -2773,8 +2777,8 @@ function(D)
     Out := rec();
     In := rec();
     for v in DigraphVertices(D) do
-      Out.(v) := Intersection(OutNeighbours(D)[v], P.(q));
-      In.(v) := Intersection(InNeighbours(D)[v], P.(q));
+      Out.(v) := Intersection(OutNeighbours(D)[v], P[q - c_min + 1]);
+      In.(v) := Intersection(InNeighbours(D)[v], P[q - c_min + 1]);
     od;
 
     # CD: [colour of v, number of q coloured out-neighbours of v,
@@ -2785,6 +2789,7 @@ function(D)
     od;
 
     Sort(CD);
+    # Display(CD);
 
     # Put into sets
     Sets := [];
@@ -2819,23 +2824,20 @@ function(D)
     if j > 0 then
 
       # Clearing P
-      # TODO: Can P be a list from the start?
-      # Would simplify this a lot vv
-      colour := c_min;
-      while colour <= c_max do
-        P.(colour) := [];
-        colour := colour + 1;
-      od;
+      P := [];
 
       Q := [];
 
-      # Pushing the last value to Q
-      # TODO: look into largest set number for optimisation
+      # Updating Q
       for i in [1 .. Length(Sets)] do
-
-        # TODO: make this conditional on not being the largest set?
         Add(Q, c_max + i);
       od;
+
+      # Display("iter:");
+      # Display(iter);
+
+      # Display("Q:");
+      # Display(Q);
 
       # Updating colours for the next round
       c_min := c_max + 1;
@@ -2845,7 +2847,7 @@ function(D)
       colour := c_min;
 
       for set in Sets do
-        P.(colour) := set;
+        P[colour - c_min + 1] := set;
 
         for v in set do
           C[v] := colour;
@@ -2861,18 +2863,23 @@ function(D)
     C[i] := C[i] - (c_min - 1);
   od;
 
-  return C;
+  # return C;
+  # return [C, iter];
+  return [C, iter, NanosecondsSinceEpoch() - start];
 
 end);
 
-InstallMethod(DigraphColourRefinement, "for a digraph", [IsDigraph],
+InstallMethod(DigraphColourRefinement_O, "for a digraph", [IsDigraph],
 function(D)
 
-  local listResult, i, round, c_min, c_max, set, Q, q, C, CD,
-  j, P, v, Out, In, Sets, pair, current, currentPair, newSet, colour, largest;
+  local listResult, i, round, c_min, c_max, set, Q, q, C, CD, iter, start,
+  j, P, v, Out, In, Sets, pair, current, currentPair, newSet, colour, largest,
+  recolour, cell, colour_cell, to_add;
+
+  start := NanosecondsSinceEpoch();
 
   # Or just remove loops?
-  if not DigraphNrLoops(D) = 0 then
+  if DigraphHasLoops(D) then
     ErrorNoReturn("the digraph cannot contain loops");
   fi;
 
@@ -2884,17 +2891,19 @@ function(D)
 
   # Initial colouring
   # vertices -> colour
-  C := [];
-  for v in DigraphVertices(D) do
-    C[v] := 1;
-  od;
+  C := List([1 .. DigraphNrVertices(D)], x -> 1);
 
   # Colour classes
   # All vertices initialised to 1
   # colour -> vertices labelled as such
-  P := rec(1 := DigraphVertices(D));
+  P := [];
+  P[1] := [1 .. DigraphNrVertices(D)];
+
+  iter := 0;
 
   while not IsEmpty(Q) do
+
+    iter := iter + 1;
 
     # Pop colour off Q
     q := Q[1];
@@ -2905,8 +2914,8 @@ function(D)
     Out := rec();
     In := rec();
     for v in DigraphVertices(D) do
-      Out.(v) := Intersection(OutNeighbours(D)[v], P.(q));
-      In.(v) := Intersection(InNeighbours(D)[v], P.(q));
+      Out.(v) := Intersection(OutNeighbours(D)[v], P[q - c_min + 1]);
+      In.(v) := Intersection(InNeighbours(D)[v], P[q - c_min + 1]);
     od;
 
     # CD:
@@ -2923,80 +2932,103 @@ function(D)
 
     Sets := [];
     currentPair := [];
-    newSet := [];
+    colour_cell := [];
+    cell := [];
+
+    recolour := false;
 
     j := 0;
 
     for pair in CD do
       current := [pair[1], pair[2], pair[3]];
 
-      # If first pair OR has the same values as the prev pair:
-      if currentPair = [] or current = currentPair then
-        Add(newSet, pair[4]);
+      # If different colour reached:
+      if currentPair <> [] and current[1] <> currentPair[1] then
+        Add(colour_cell, cell);
+        Add(Sets, colour_cell);
+        cell := [pair[4]];
+        colour_cell := [];
       else
-        # Doesn't have the same values as the prev pair
-        Add(Sets, newSet);
-        newSet := [pair[4]];
-
-        # If they had the same colour but diff no. neighbours
-        if pair[1] = currentPair[1] then
-
-          # Push a new number to Q
-          j := j + 1;
+        # If first iteration, or same neighbour configuration:
+        if currentPair = [] or current = currentPair then
+          Add(cell, pair[4]);
+        else
+          # If same colour, but different neighbour configuration:
+          recolour := true;
+          Add(colour_cell, cell);
+          cell := [pair[4]];
         fi;
       fi;
+
       currentPair := current;
     od;
-    Add(Sets, newSet);
+    Add(colour_cell, cell);
+    Add(Sets, colour_cell);
+
+    # Display("Sets");
+    # Display(Sets);
 
     # If there is reason for recolouring
-    if j > 0 then
+    if recolour then
 
-      # Clearing P
-      # TODO: Can P be a list from the start?
-      colour := c_min;
-      while colour <= c_max do
-        P.(colour) := [];
-        colour := colour + 1;
-      od;
-
+      # Clearing P and Q
+      P := [];
       Q := [];
 
-      # Display("Recolouring. Sets:");
-      # Display(Sets);
-
-      largest := [0, 0];
-      for i in [1 .. Length(Sets)] do
-        if Length(Sets[i]) > largest[2] then
-          largest := [i, Length(Sets[i])];
-        fi;
-      od;
+      # Add to Q
+      to_add := c_max;
 
       for i in [1 .. Length(Sets)] do
-        # TODO: make this conditional on not being the largest set?
-        if i <> largest[1] then
-          Add(Q, c_max + i);
-        fi;
+
+        colour_cell := Sets[i];
+
+        # Determine the largest cell for that colour
+        largest := 1;
+        for j in [1 .. Length(colour_cell)] do
+          if Length(colour_cell[j]) > Length(colour_cell[largest]) then
+            largest := j;
+          fi;
+        od;
+
+        for j in [1 .. Length(colour_cell)] do
+          to_add := to_add + 1;
+          if j <> largest then
+            Add(Q, to_add);
+          fi;
+        od;
+
       od;
+
+      # Display("iter:");
+      # Display(iter);
 
       # Display("Q:");
       # Display(Q);
 
       # Updating colours for the next round
       c_min := c_max + 1;
-      c_max := c_max + Length(Sets);
+      c_max := to_add;
 
-      # Updating C and P
       colour := c_min;
 
-      for set in Sets do
-        P.(colour) := set;
+      # Updating C and P
+      for i in [1 .. Length(Sets)] do
+        for j in [1 .. Length(Sets[i])] do
+          Add(P, []);
+          for v in Sets[i][j] do
+            C[v] := colour;
+            Add(P[Length(P)], v);
+          od;
 
-        for v in set do
-          C[v] := colour;
+          colour := colour + 1;
+
         od;
-        colour := colour + 1;
       od;
+
+      # Display("C updated:");
+      # Display(C);
+      # Display("P updated:");
+      # Display(P);
     fi;
 
   od;
@@ -3007,5 +3039,7 @@ function(D)
   od;
 
   return C;
+  # return [C, iter];
+  # return [C, iter, NanosecondsSinceEpoch() - start];
 
 end);
