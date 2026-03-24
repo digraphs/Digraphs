@@ -161,3 +161,6 @@ DeclareOperation("PartialOrderDigraphJoinOfVertices",
                  [IsDigraph, IsPosInt, IsPosInt]);
 DeclareOperation("PartialOrderDigraphMeetOfVertices",
                  [IsDigraph, IsPosInt, IsPosInt]);
+
+DeclareOperation("IsJoinIrreducible", [IsDigraph, IsPosInt]);
+DeclareOperation("IsMeetIrreducible", [IsDigraph, IsPosInt]);

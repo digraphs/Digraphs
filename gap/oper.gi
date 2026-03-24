@@ -2720,6 +2720,38 @@ function(D, i, j)
   return fail;
 end);
 
+InstallMethod(IsJoinIrreducible,
+"for a digraph and a positive integer",
+[IsDigraph, IsPosInt],
+function(D, v)
+  local hasse;
+  if not IsPartialOrderDigraph(D) then
+    ErrorNoReturn("the 1st argument <D> must satisfy IsPartialOrderDigraph,");
+  elif not v in DigraphVertices(D) then
+    ErrorNoReturn("the 2nd argument <v> must be a vertex of the ",
+                  "1st argument <D>,");
+  fi;
+  hasse := DigraphReflexiveTransitiveReduction(DigraphMutableCopyIfMutable(D));
+  # join-irreducible iff at most one lower cover in the Hasse diagram
+  return InDegreeOfVertexNC(hasse, v) <= 1;
+end);
+
+InstallMethod(IsMeetIrreducible,
+"for a digraph and a positive integer",
+[IsDigraph, IsPosInt],
+function(D, v)
+  local hasse;
+  if not IsPartialOrderDigraph(D) then
+    ErrorNoReturn("the 1st argument <D> must satisfy IsPartialOrderDigraph,");
+  elif not v in DigraphVertices(D) then
+    ErrorNoReturn("the 2nd argument <v> must be a vertex of the ",
+                  "1st argument <D>,");
+  fi;
+  hasse := DigraphReflexiveTransitiveReduction(DigraphMutableCopyIfMutable(D));
+  # meet-irreducible iff at most one upper cover in the Hasse diagram
+  return OutDegreeOfVertexNC(hasse, v) <= 1;
+end);
+
 InstallMethod(DigraphKings, "for a digraph and a positive integer",
 [IsDigraph, IsPosInt],
 function(D, n)
