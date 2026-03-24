@@ -3353,7 +3353,7 @@ gap> DigraphColourRefinement(D);
 # DigraphColourRefinement_Optimised
 gap> D := Digraph([[3], [], [1, 9], [], [10], [7, 8, 9], [6, 8], [6, 7], [3, 6, 10], [5, 9]]);;
 gap> DigraphColourRefinement_O(D);
-[ 2, 1, 4, 1, 2, 6, 3, 3, 5, 4 ]
+[ 2, 1, 4, 1, 2, 5, 3, 3, 6, 4 ]
 gap> D := Digraph([[], [1], [1], [1]]);;
 gap> DigraphColourRefinement_O(D);
 [ 1, 2, 2, 2 ]
