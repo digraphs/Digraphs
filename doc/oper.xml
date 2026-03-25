@@ -2627,15 +2627,15 @@ true]]>
         Label="for a digraph"/>
   <Returns>A list of integers.</Returns>
   <Description>
-    Colour refinement is a method of colouring a digraph such that it is 'refined'. That is, for a colour, 
-    every node with that colouring has an identical configuration of coloured neighbours. This means that all 
-    nodes with the same colour have equal numbers of nodes of every colour.
-    <C>DigraphColourRefinement</C> considers the out neighbours and in neighbours of a node separately,
-    meaning a node must have an equal number of out-neighbours of every colour, and an equal number of
-    in-neighbours. 
+    Colour refinement is a method of colouring a digraph such that it has a 'stable colouring'. That is, for a colour, 
+    every node with that colour has an identical configuration of coloured neighbours. This means that all 
+    nodes with the same colour have equal numbers of neighbours of each colour.
+    <C>DigraphColourRefinement</C> considers the out-neighbours and in-neighbours of a node separately,
+    meaning the nodes of a certain colour must have an equal number of out-neighbours of each colour, 
+    and an equal number of in-neighbours of each colour. 
     <P/>
     <C>DigraphColourRefinement</C> returns the colouring as a list where the value at the ith position is the 
-    colour of node i.
+    colour of node i. The time complexity of this algorithm is <M>O(n^2 log n)</M>.
     <P/>
     See also
     <Ref Oper="DigraphColouring"
@@ -2645,7 +2645,7 @@ true]]>
     <Example><![CDATA[
 gap> D := Digraph([[3], [], [1, 9], [], [10], [7, 8, 9], [6, 8], [6, 7], [3, 6, 10], [5, 9]]);;
 gap> DigraphColourRefinement(D);
-[ 2, 1, 4, 1, 2, 6, 3, 3, 5, 4 ]
+[ 2, 1, 4, 1, 2, 5, 3, 3, 6, 4 ]
 gap> DigraphColourRefinement(Digraph([[], [1], [1], [1]]));
 [ 1, 2, 2, 2 ]
 ]]></Example>

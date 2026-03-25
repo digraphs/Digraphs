@@ -157,7 +157,6 @@ DeclareOperation("DominatorTree", [IsDigraph, IsPosInt]);
 DeclareOperation("DigraphCycleBasis", [IsDigraph]);
 
 DeclareOperation("DigraphColourRefinement", [IsDigraph]);
-DeclareOperation("DigraphColourRefinement_O", [IsDigraph]);
 
 # 10. Operations for vertices . . .
 DeclareOperation("PartialOrderDigraphJoinOfVertices",
