@@ -283,8 +283,8 @@ true
 gap> gr[3] := Digraph([[1, 2], [1, 2]]);
 <immutable digraph with 2 vertices, 4 edges>
 gap> WriteDigraphs(filename, Digraph([[2], []]), Graph6String);
-Error, the argument <D> must be a symmetric digraph with no loops or multiple \
-edges,
+Error, the argument <D> must be a symmetric digraph; consider encoding in Spar\
+se6 or Disparse6
 gap> OnBreak := oldOnBreak;;
 gap> IO_Close(IO.OpenFiles[Length(IO.OpenFiles)]);;
 gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/test.s6.bz2");;
@@ -320,8 +320,8 @@ gap> ReadDigraphs(f);
 gap> IO_Close(f);;
 gap> f := DigraphFile(filename, "a");;
 gap> WriteDigraphs(f, CycleDigraph(5));
-Error, the argument <D> must be a symmetric digraph with no loops or multiple \
-edges,
+Error, the argument <D> must be a symmetric digraph; consider encoding in Spar\
+se6 or Disparse6
 gap> WriteDigraphs(f, JohnsonDigraph(6, 3));
 IO_OK
 gap> IO_Close(f);;
@@ -659,8 +659,8 @@ Error, cannot open the file given as the 1st argument <name>,
 
 #  DigraphPlainTextLineDecoder: bad input
 gap> Graph6String(ChainDigraph(4));
-Error, the argument <D> must be a symmetric digraph with no loops or multiple \
-edges,
+Error, the argument <D> must be a symmetric digraph; consider encoding in Spar\
+se6 or Disparse6
 gap> DIGRAPHS_Graph6Length(-1);
 fail
 gap> DIGRAPHS_Graph6Length(68719476737);
