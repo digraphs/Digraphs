@@ -2625,17 +2625,17 @@ true]]>
   <Oper Name="DigraphColourRefinement"
         Arg="digraph"
         Label="for a digraph"/>
-  <Returns>A list of lists of integers.</Returns>
+  <Returns>A list of integers.</Returns>
   <Description>
-    Colour Refinement is a method of colouring a digraph such that for a colour, every 
-    node with that colouring has an identical configuration of coloured neighbours. That is, 
-    all nodes of colour <A>q</A> have the same number of neighbours of colour <A>x</A>, and colour y</A>, etc.
-    <C>DigraphColourRefinement</C> considers the out neighbours and in neighbours of a node separately.
+    Colour refinement is a method of colouring a digraph such that it is 'refined'. That is, for a colour, 
+    every node with that colouring has an identical configuration of coloured neighbours. This means that all 
+    nodes with the same colour have equal numbers of nodes of every colour.
+    <C>DigraphColourRefinement</C> considers the out neighbours and in neighbours of a node separately,
+    meaning a node must have an equal number of out-neighbours of every colour, and an equal number of
+    in-neighbours. 
     <P/>
-    This involves recolouring the digraph each iteration until it is 'refined'. It returns the colouring as a
-    list where the value at the ith position is the colour of node i. For two digraphs with different colourings, 
-    we can be sure that they are not isomorphic. However, identical colourings for two digraphs does not necessarily 
-    mean they are isomorphic.
+    <C>DigraphColourRefinement</C> returns the colouring as a list where the value at the ith position is the 
+    colour of node i.
     <P/>
     See also
     <Ref Oper="DigraphColouring"

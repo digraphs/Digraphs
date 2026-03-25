@@ -2736,12 +2736,13 @@ end);
 InstallMethod(DigraphColourRefinement, "for a digraph", [IsDigraph],
 function(D)
 
-  local listResult, i, round, c_min, c_max, set, Q, q, C, CD, iter, start,
-  j, P, v, Out, In, Sets, pair, current, currentPair, newSet, colour;
+  local i, c_min, c_max, Q, q, C, CD, iter, start, j, P, v, Out, In, Sets,
+  pair, current, currentPair, newSet, colour, largest, recolour, cell,
+  colour_cell, to_add;
 
+  # TODO: remove
   start := NanosecondsSinceEpoch();
 
-  # Or just remove loops?
   if DigraphHasLoops(D) then
     ErrorNoReturn("the digraph cannot contain loops");
   fi;
@@ -2762,148 +2763,10 @@ function(D)
   P := [];
   P[1] := [1 .. DigraphNrVertices(D)];
 
+  # TODO: remove
   iter := 0;
 
   while not IsEmpty(Q) do
-
-    iter := iter + 1;
-
-    # Pop colour off Q
-    q := Q[1];
-    Remove(Q, 1);
-
-    # For each v in V (all vertices in D)
-    # Get the neighbours of v that are in the colour class q
-    Out := rec();
-    In := rec();
-    for v in DigraphVertices(D) do
-      Out.(v) := Intersection(OutNeighbours(D)[v], P[q - c_min + 1]);
-      In.(v) := Intersection(InNeighbours(D)[v], P[q - c_min + 1]);
-    od;
-
-    # CD: [colour of v, number of q coloured out-neighbours of v,
-    # number of q coloured in-neighbours of v, v]
-    CD := [];
-    for v in DigraphVertices(D) do
-      Add(CD, [C[v], Length(Out.(v)), Length(In.(v)), v]);
-    od;
-
-    Sort(CD);
-    # Display(CD);
-
-    # Put into sets
-    Sets := [];
-    currentPair := [];
-    newSet := [];
-
-    j := 0;
-
-    for pair in CD do
-      current := [pair[1], pair[2], pair[3]];
-
-      # If first pair OR has the same values as the prev pair:
-      if currentPair = [] or current = currentPair then
-        Add(newSet, pair[4]);
-      else
-        # Doesn't have the same values as the prev pair
-        Add(Sets, newSet);
-        newSet := [pair[4]];
-
-        # If they had the same colour but diff no. neighbours
-        if pair[1] = currentPair[1] then
-
-          # Push a new number to Q
-          j := j + 1;
-        fi;
-      fi;
-      currentPair := current;
-    od;
-    Add(Sets, newSet);
-
-    # If there is reason for recolouring
-    if j > 0 then
-
-      # Clearing P
-      P := [];
-
-      Q := [];
-
-      # Updating Q
-      for i in [1 .. Length(Sets)] do
-        Add(Q, c_max + i);
-      od;
-
-      # Display("iter:");
-      # Display(iter);
-
-      # Display("Q:");
-      # Display(Q);
-
-      # Updating colours for the next round
-      c_min := c_max + 1;
-      c_max := c_max + Length(Sets);
-
-      # Updating C and P
-      colour := c_min;
-
-      for set in Sets do
-        P[colour - c_min + 1] := set;
-
-        for v in set do
-          C[v] := colour;
-        od;
-        colour := colour + 1;
-      od;
-    fi;
-
-  od;
-
-  # Normalising C to 1
-  for i in [1 .. Length(C)] do
-    C[i] := C[i] - (c_min - 1);
-  od;
-
-  # return C;
-  # return [C, iter];
-  return [C, iter, NanosecondsSinceEpoch() - start];
-
-end);
-
-InstallMethod(DigraphColourRefinement_O, "for a digraph", [IsDigraph],
-function(D)
-
-  local listResult, i, round, c_min, c_max, set, Q, q, C, CD, iter, start,
-  j, P, v, Out, In, Sets, pair, current, currentPair, newSet, colour, largest,
-  recolour, cell, colour_cell, to_add;
-
-  start := NanosecondsSinceEpoch();
-
-  # Or just remove loops?
-  if DigraphHasLoops(D) then
-    ErrorNoReturn("the digraph cannot contain loops");
-  fi;
-
-  c_min := 1;
-  c_max := 1;
-
-  # Queue of colours
-  Q := [1];
-
-  # Initial colouring
-  # vertices -> colour
-  C := List([1 .. DigraphNrVertices(D)], x -> 1);
-
-  # Colour classes
-  # All vertices initialised to 1
-  # colour -> vertices labelled as such
-  P := [];
-  P[1] := [1 .. DigraphNrVertices(D)];
-
-  iter := 0;
-
-  while not IsEmpty(Q) do
-
-    iter := iter + 1;
 
     # Pop colour off Q
     q := Q[1];
@@ -2927,8 +2790,6 @@ function(D)
     od;
 
     Sort(CD);
-    # Display("CD:");
-    # Display(CD);
 
     Sets := [];
     currentPair := [];
@@ -2965,11 +2826,11 @@ function(D)
     Add(colour_cell, cell);
     Add(Sets, colour_cell);
 
-    # Display("Sets");
-    # Display(Sets);
-
     # If there is reason for recolouring
     if recolour then
+
+      # TODO: remove
+      iter := iter + 1;
 
       # Clearing P and Q
       P := [];
@@ -2990,6 +2851,7 @@ function(D)
           fi;
         od;
 
+        # Add all new colours except that corresponding to the largest cell
         for j in [1 .. Length(colour_cell)] do
           to_add := to_add + 1;
           if j <> largest then
@@ -2998,12 +2860,6 @@ function(D)
         od;
 
       od;
-
-      # Display("iter:");
-      # Display(iter);
-
-      # Display("Q:");
-      # Display(Q);
 
       # Updating colours for the next round
       c_min := c_max + 1;
@@ -3024,11 +2880,6 @@ function(D)
 
         od;
       od;
-
-      # Display("C updated:");
-      # Display(C);
-      # Display("P updated:");
-      # Display(P);
     fi;
 
   od;
@@ -3039,7 +2890,8 @@ function(D)
   od;
 
   return C;
-  # return [C, iter];
+
+  # TODO: remove
   # return [C, iter, NanosecondsSinceEpoch() - start];
 
 end);
