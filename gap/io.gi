@@ -2281,6 +2281,15 @@ function(D)
   # matrix, and appends a '&' to the start.  The old '+' format can be read by
   # DigraphFromDigraph6String, but can no longer be written by this function.
 
+  if IsMultiDigraph(D) then
+    if IsSymmetricDigraph(D) then
+      ErrorNoReturn("the argument <D> must not have multiple edges ",
+                  "consider encoding in Sparse6 or Disparse6, ");
+    fi;
+    ErrorNoReturn("the argument <D> must not have multiple edges ",
+                  "consider encoding in Disparse6, ");
+  fi;
+
   list := [];
   adj := OutNeighbours(D);
   n := Length(DigraphVertices(D));
@@ -2338,7 +2347,11 @@ function(D)
   local list, n, lenlist, adj, nredges, k, blist, v, nextbit, i, j,
         bitstopad, pos, block;
   if not IsSymmetricDigraph(D) then
-    ErrorNoReturn("the argument <D> must be a symmetric digraph,");
+    if IsMultiDigraph(D) then
+      ErrorNoReturn("the argument <D> must be a symmetric digraph consider encoding in Disparse6,");
+    fi;
+    else
+      ErrorNoReturn("the argument <D> must be a symmetric digraph consider encoding in Digraph6 or Disparse6,");
   fi;
 
   list := [];
