@@ -546,7 +546,8 @@ Error, the 2nd argument <s> is not a valid disparse6 string,
 
 #  Special format characters
 gap> Sparse6String(ChainDigraph(3));
-Error, the argument <D> must be a symmetric digraph,
+Error, the argument <D> must be a symmetric digraph consider encoding in Digra\
+ph6 or Disparse6,
 gap> Sparse6String(CompleteDigraph(1));
 ":@"
 gap> gr := Digraph([[1], []]);;
