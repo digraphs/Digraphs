@@ -2732,3 +2732,154 @@ function(D, n)
   od;
   return kings;
 end);
+
+InstallMethod(DigraphColourRefinement, "for a digraph", [IsDigraph],
+function(D)
+
+  local i, c_min, c_max, Q, q, C, CD, j, P, v, Out, In, Sets,
+  pair, current, currentPair, newSet, colour, largest, recolour, cell,
+  colour_cell, to_add;
+
+  if DigraphHasLoops(D) then
+    ErrorNoReturn("the digraph cannot contain loops");
+  fi;
+
+  c_min := 1;
+  c_max := 1;
+
+  # Queue of colours
+  Q := [1];
+
+  # Initial colouring
+  # vertices -> colour
+  C := List([1 .. DigraphNrVertices(D)], x -> 1);
+
+  # Colour classes
+  # All vertices initialised to 1
+  # colour -> vertices labelled as such
+  P := [];
+  P[1] := [1 .. DigraphNrVertices(D)];
+
+  while not IsEmpty(Q) do
+
+    # Pop colour off Q
+    q := Q[1];
+    Remove(Q, 1);
+
+    # For each v (vertices) in D:
+    # Get the neighbours of v that are in the colour class q
+    Out := rec();
+    In := rec();
+    for v in DigraphVertices(D) do
+      Out.(v) := Intersection(OutNeighbours(D)[v], P[q - c_min + 1]);
+      In.(v) := Intersection(InNeighbours(D)[v], P[q - c_min + 1]);
+    od;
+
+    # CD:
+    # [colour of v, number of q coloured out-neighbours of v,
+    # number of q coloured in-neighbours of v, v]
+    CD := [];
+    for v in DigraphVertices(D) do
+      Add(CD, [C[v], Length(Out.(v)), Length(In.(v)), v]);
+    od;
+
+    Sort(CD);
+
+    Sets := [];
+    currentPair := [];
+    colour_cell := [];
+    cell := [];
+
+    recolour := false;
+
+    j := 0;
+
+    for pair in CD do
+      current := [pair[1], pair[2], pair[3]];
+
+      # If different colour reached:
+      if currentPair <> [] and current[1] <> currentPair[1] then
+        Add(colour_cell, cell);
+        Add(Sets, colour_cell);
+        cell := [pair[4]];
+        colour_cell := [];
+      else
+        # If first iteration, or same neighbour configuration:
+        if currentPair = [] or current = currentPair then
+          Add(cell, pair[4]);
+        else
+          # If same colour, but different neighbour configuration:
+          recolour := true;
+          Add(colour_cell, cell);
+          cell := [pair[4]];
+        fi;
+      fi;
+
+      currentPair := current;
+    od;
+    Add(colour_cell, cell);
+    Add(Sets, colour_cell);
+
+    # If there is reason for recolouring
+    if recolour then
+
+      # Clearing P and Q
+      P := [];
+      Q := [];
+
+      # Add to Q
+      to_add := c_max;
+
+      for i in [1 .. Length(Sets)] do
+
+        colour_cell := Sets[i];
+
+        # Determine the largest cell for that colour
+        largest := 1;
+        for j in [1 .. Length(colour_cell)] do
+          if Length(colour_cell[j]) > Length(colour_cell[largest]) then
+            largest := j;
+          fi;
+        od;
+
+        # Add all new colours except that corresponding to the largest cell
+        for j in [1 .. Length(colour_cell)] do
+          to_add := to_add + 1;
+          if j <> largest then
+            Add(Q, to_add);
+          fi;
+        od;
+
+      od;
+
+      # Updating colours for the next round
+      c_min := c_max + 1;
+      c_max := to_add;
+
+      colour := c_min;
+
+      # Updating C and P
+      for i in [1 .. Length(Sets)] do
+        for j in [1 .. Length(Sets[i])] do
+          Add(P, []);
+          for v in Sets[i][j] do
+            C[v] := colour;
+            Add(P[Length(P)], v);
+          od;
+
+          colour := colour + 1;
+
+        od;
+      od;
+    fi;
+
+  od;
+
+  # Normalising C to start at 1
+  for i in [1 .. Length(C)] do
+    C[i] := C[i] - (c_min - 1);
+  od;
+
+  return C;
+
+end);
