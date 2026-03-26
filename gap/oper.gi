@@ -2736,12 +2736,9 @@ end);
 InstallMethod(DigraphColourRefinement, "for a digraph", [IsDigraph],
 function(D)
 
-  local i, c_min, c_max, Q, q, C, CD, iter, start, j, P, v, Out, In, Sets,
+  local i, c_min, c_max, Q, q, C, CD, j, P, v, Out, In, Sets,
   pair, current, currentPair, newSet, colour, largest, recolour, cell,
   colour_cell, to_add;
-
-  # TODO: remove
-  start := NanosecondsSinceEpoch();
 
   if DigraphHasLoops(D) then
     ErrorNoReturn("the digraph cannot contain loops");
@@ -2762,9 +2759,6 @@ function(D)
   # colour -> vertices labelled as such
   P := [];
   P[1] := [1 .. DigraphNrVertices(D)];
-
-  # TODO: remove
-  iter := 0;
 
   while not IsEmpty(Q) do
 
@@ -2829,9 +2823,6 @@ function(D)
     # If there is reason for recolouring
     if recolour then
 
-      # TODO: remove
-      iter := iter + 1;
-
       # Clearing P and Q
       P := [];
       Q := [];
@@ -2890,8 +2881,5 @@ function(D)
   od;
 
   return C;
-
-  # TODO: remove
-  # return [C, iter, NanosecondsSinceEpoch() - start];
 
 end);
