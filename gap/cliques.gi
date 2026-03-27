@@ -351,7 +351,7 @@ end);
 
 InstallGlobalFunction(DigraphCliquesReps,
 function(arg...)
-  local D, include, exclude, limit, size;
+  local D, include, exclude, limit, size, group;
 
   if IsEmpty(arg) then
     ErrorNoReturn("there must be at least 1 argument,");
@@ -383,8 +383,14 @@ function(arg...)
     size := fail;
   fi;
 
+  if IsBound(arg[6]) then
+    group := arg[6];
+  else
+    group := fail;
+  fi;
+
   return CliquesFinder
-          (D, fail, [], limit, include, exclude, false, size, true);
+          (D, fail, [], limit, include, exclude, false, size, true, group);
 end);
 
 # Cliques
@@ -394,7 +400,7 @@ DigraphCliques);
 
 InstallGlobalFunction(DigraphCliques,
 function(arg...)
-  local D, include, exclude, limit, size, out;
+  local D, include, exclude, limit, size, out, group;
 
   if IsEmpty(arg) then
     ErrorNoReturn("there must be at least 1 argument,");
@@ -426,10 +432,16 @@ function(arg...)
     size := fail;
   fi;
 
+  if IsBound(arg[6]) then
+    group := arg[6];
+  else
+    group := fail;
+  fi;
+
   # use cached value if it's not a special case due to exclusion / size / etc.
   if IsList(include) and IsEmpty(include) and IsList(exclude)
       and IsEmpty(exclude) and limit = infinity and size = fail
-      and HasDigraphCliquesAttr(D) then
+      and HasDigraphCliquesAttr(D) and group = AutomorphismGroup(D) then
     return DigraphCliquesAttr(D);
   fi;
 
@@ -441,7 +453,7 @@ function(arg...)
                        exclude,
                        false,
                        size,
-                       false);
+                       group);
   # Store the result if appropriate (not special case due to params)
   if IsEmpty(include) and IsEmpty(exclude) and limit = infinity and size = fail
       and IsImmutableDigraph(D) then
@@ -495,7 +507,8 @@ function(arg...)
     return DigraphMaximalCliquesRepsAttr(D);
   fi;
 
-  out := CliquesFinder(D, fail, [], limit, include, exclude, true, size, true);
+  out := CliquesFinder(D, fail, [], limit, include, exclude, true, size, true,
+  fail);
   # Store the result if appropriate
   if IsEmpty(include) and IsEmpty(exclude) and limit = infinity and size = fail
       and IsImmutableDigraph(D) then
@@ -570,14 +583,16 @@ function(arg...)
     return MakeImmutable(out);
   fi;
 
-  return CliquesFinder(D, fail, [], limit, include, exclude, true, size, false);
+  return CliquesFinder(D, fail, [], limit, include, exclude, true, size, false,
+  fail);
 end);
 
 # A wrapper for DigraphsCliquesFinder
 # This is very hacky at the moment, so we could test C code with GAP tests
 InstallGlobalFunction(CliquesFinder,
-function(digraph, hook, user_param, limit, include, exclude, max, size, reps)
-  local n, subgraph, group, vertices, include_variant, exclude_variant,
+function(digraph, hook, user_param, limit, include, exclude, max, size, reps,
+group)
+  local n, subgraph, vertices, include_variant, exclude_variant,
         invariant_include, include_invariant, invariant_exclude,
         exclude_invariant, x, v, o, i, out, found_orbits, num_found,
         hook_wrapper;
@@ -623,7 +638,10 @@ function(digraph, hook, user_param, limit, include, exclude, max, size, reps)
 
   subgraph := DigraphMutableCopyIfMutable(digraph);
   subgraph := MaximalSymmetricSubdigraphWithoutLoops(subgraph);
-  group := AutomorphismGroup(subgraph);
+  # TODO check that group is a group or fail
+  if group = fail then
+    group := AutomorphismGroup(subgraph);
+  fi;
 
   # Investigate whether <include> and <exclude> are invariant under <group>
   vertices := DigraphVertices(digraph);
@@ -683,7 +701,7 @@ function(digraph, hook, user_param, limit, include, exclude, max, size, reps)
     fi;
   fi;
 
-  if DigraphNrVertices(digraph) < 512 then
+  if DigraphNrVertices(digraph) < 2000 then #FIXME
     if reps then
 
       if hook = fail then
@@ -702,7 +720,8 @@ function(digraph, hook, user_param, limit, include, exclude, max, size, reps)
                                    include,
                                    exclude,
                                    max,
-                                   size);
+                                   size,
+                                   group);
       return MakeImmutable(out);
     else
 
@@ -783,7 +802,8 @@ function(digraph, hook, user_param, limit, include, exclude, max, size, reps)
                             include_invariant,
                             exclude_invariant,
                             max,
-                            size);
+                            size,
+                            group);
 
       return MakeImmutable(user_param);
     fi;
@@ -805,6 +825,8 @@ function(digraph, hook, user_param, limit, include, exclude, max, size, reps)
     return MakeImmutable(out);
   fi;
 end);
+
+# TODO add group as last parameter
 
 InstallGlobalFunction(DIGRAPHS_BronKerbosch,
 function(D, hook, param, lim, inc, exc, max, size, reps, inc_var, exc_var)
