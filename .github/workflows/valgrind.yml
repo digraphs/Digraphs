@@ -27,7 +27,7 @@ jobs:
     name: Ubuntu / GAP stable-4.15 / valgrind
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: "Output g++ version . . ."
         run: g++ --version
       - name: "Install Valgrind . . ."
