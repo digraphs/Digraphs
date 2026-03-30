@@ -41,7 +41,7 @@ jobs:
       - name: Output g++ version . . .
         run: g++ --version
       - name: Install micromamba environment from environment.yml . . .
-        uses: mamba-org/setup-micromamba@v2
+        uses: mamba-org/setup-micromamba@v3
         with:
           environment-name: digraphs
           cache-environment: true
