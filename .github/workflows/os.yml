@@ -81,7 +81,7 @@ jobs:
           cd ${GAPROOT}/pkg
           ../bin/BuildPackages.sh --strict ${{ matrix.pkgs-to-build }}
       - name: Build Digraphs . . .
-        uses: gap-actions/build-pkg@v2
+        uses: gap-actions/build-pkg@v3
         env:
           ABI: ${{ matrix.ABI }}
         with:

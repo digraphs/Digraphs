@@ -67,7 +67,7 @@ jobs:
           cd ${GAPROOT}/pkg
           ../bin/BuildPackages.sh --strict io orb datastructures grape NautyTracesInterface
       - name: Build Digraphs . . .
-        uses: gap-actions/build-pkg@v2
+        uses: gap-actions/build-pkg@v3
         with:
           CONFIGFLAGS: ${{ matrix.bliss }} ${{ matrix.planarity }}
           coverage: false
@@ -115,7 +115,7 @@ jobs:
           cd ${GAPROOT}/pkg
           ../bin/BuildPackages.sh --strict io orb datastructures grape NautyTracesInterface
       - name: Build Digraphs . . .
-        uses: gap-actions/build-pkg@v2
+        uses: gap-actions/build-pkg@v3
         with:
           CONFIGFLAGS: ${{ matrix.debug }} ${{ matrix.without-intrinsics }} ${{ matrix.warnings && '--enable-compile-warnings WARNING_CXXFLAGS="-Werror" WARNING_CFLAGS="-Werror"' || '' }}
           coverage: false
