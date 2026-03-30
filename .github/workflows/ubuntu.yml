@@ -93,7 +93,7 @@ jobs:
           mode: ${{ matrix.mode }}
       - uses: gap-actions/process-coverage@v3
         if: ${{ matrix.gap-version == 'master' && matrix.mode == 'default'}}
-      - uses: codecov/codecov-action@v5
+      - uses: codecov/codecov-action@v6
         if: ${{ matrix.gap-version == 'master' && matrix.mode == 'default'}}
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
