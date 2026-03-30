@@ -55,7 +55,7 @@ jobs:
         with:
           gap-version: ${{ matrix.gap-version }}
       - name: "Build Digraphs . . ."
-        uses: gap-actions/build-pkg@v2
+        uses: gap-actions/build-pkg@v3
       - name: "Clone additional GAP packages . . ."
         run: |
           for PKG in ${{ matrix.pkgs-to-clone }}; do
