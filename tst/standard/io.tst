@@ -546,8 +546,8 @@ Error, the 2nd argument <s> is not a valid disparse6 string,
 
 #  Special format characters
 gap> Sparse6String(ChainDigraph(3));
-Error, the argument <D> must be a symmetric digraph consider encoding in Digra\
-ph6 or Disparse6,
+Error, the argument <D> must be a symmetric digraph; consider encoding in Digr\
+aph6 or Disparse6
 gap> Sparse6String(CompleteDigraph(1));
 ":@"
 gap> gr := Digraph([[1], []]);;
@@ -559,6 +559,24 @@ gap> DigraphFromSparse6String(":TdBkJ`Kq?x");
 <immutable symmetric digraph with 21 vertices, 10 edges>
 gap> Sparse6String(last);
 ":TdBkJ`Kq?"
+
+# Multiple Edges Digraph6
+gap> gr := Digraph([[1,1], [2]]);;
+gap> Digraph6String(gr);
+Error, the argument <D> must not have multiple edges consider encoding in Spar\
+se6 or Disparse6, 
+
+# Non-symmetric Digraph in Sparse6
+gap> gr := Digraph([[2], []]);;
+gap> Sparse6String(gr);
+Error, the argument <D> must be a symmetric digraph; consider encoding in Digr\
+aph6 or Disparse6
+
+# Digraph with loops in Sparse6
+gap> gr := Digraph([[1], [2]]);;
+gap> Graph6String(gr);
+Error, the argument <D> must not have loops; consider encoding in Sparse6 or D\
+isparse6
 
 #  DigraphPlainTextLineDecoder: bad input
 gap> DigraphPlainTextLineDecoder(" ", "  ", 1, ".");
