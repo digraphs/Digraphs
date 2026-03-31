@@ -561,7 +561,7 @@ gap> Sparse6String(last);
 ":TdBkJ`Kq?"
 
 # Multiple Edges Digraph6
-gap> gr := Digraph([[1,1], [2]]);;
+gap> gr := Digraph([[1, 1], [2]]);;
 gap> Digraph6String(gr);
 Error, the argument <D> must not have multiple edges consider encoding in Spar\
 se6 or Disparse6, 
