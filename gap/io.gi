@@ -2222,10 +2222,15 @@ InstallMethod(Graph6String, "for a digraph by out-neighbours",
 [IsDigraphByOutNeighboursRep],
 function(D)
   local list, adj, n, lenlist, tablen, blist, i, j, pos, block;
-  if (IsMultiDigraph(D) or not IsSymmetricDigraph(D)
-      or DigraphHasLoops(D)) then
-    ErrorNoReturn("the argument <D> must be a symmetric digraph ",
-                  "with no loops or multiple edges,");
+  if IsMultiDigraph(D) then
+    ErrorNoReturn("the argument <D> must not have multiple edges; ",
+      "consider encoding in Disparse6 or Digraph6");
+  elif not IsSymmetricDigraph(D) then
+    ErrorNoReturn("the argument <D> must be a symmetric digraph; ",
+      "consider encoding in Sparse6 or Disparse6");
+  elif DigraphHasLoops(D) then
+    ErrorNoReturn("the argument <D> must not have loops; ",
+      "consider encoding in Sparse6 or Disparse6");
   fi;
 
   list := [];
@@ -2285,6 +2290,15 @@ function(D)
   adj := OutNeighbours(D);
   n := Length(DigraphVertices(D));
 
+  if IsMultiDigraph(D) then
+    if IsSymmetricDigraph(D) then
+      ErrorNoReturn("the argument <D> must not have multiple edges ",
+                  "consider encoding in Sparse6 or Disparse6, ");
+    fi;
+    ErrorNoReturn("the argument <D> must not have multiple edges ",
+                  "consider encoding in Disparse6, ");
+  fi;
+
   # First write the special character '&'
   Add(list, -25);
 
@@ -2337,8 +2351,15 @@ InstallMethod(Sparse6String, "for a digraph by out-neighbours",
 function(D)
   local list, n, lenlist, adj, nredges, k, blist, v, nextbit, i, j,
         bitstopad, pos, block;
+
   if not IsSymmetricDigraph(D) then
-    ErrorNoReturn("the argument <D> must be a symmetric digraph,");
+    if IsMultiDigraph(D) then
+      ErrorNoReturn("the argument <D> must be a symmetric digraph; ",
+        "consider encoding in Disparse6");
+    else
+      ErrorNoReturn("the argument <D> must be a symmetric digraph; ",
+        "consider encoding in Digraph6 or Disparse6");
+    fi;
   fi;
 
   list := [];
