@@ -2736,58 +2736,58 @@ end);
 InstallMethod(DigraphColourRefinement, "for a digraph", [IsDigraph],
 function(D)
 
-  local i, c_min, c_max, Q, q, C, CD, j, P, v, Out, In, Sets,
+  local i, cMin, cMax, Q, q, C, CD, j, P, v, outNB, inNB, colourCells,
   pair, current, currentPair, newSet, colour, largest, recolour, cell,
-  colour_cell, to_add;
+  colourCell, toAdd, DVertices, DNrVertices, outNeighboursD, inNeighboursD;
 
   if DigraphHasLoops(D) then
     ErrorNoReturn("the digraph cannot contain loops");
   fi;
 
-  c_min := 1;
-  c_max := 1;
+  outNeighboursD := OutNeighbours(D);
+  inNeighboursD := InNeighbours(D);
+
+  DNrVertices := DigraphNrVertices(D);
+  DVertices := DigraphVertices(D);
+
+  cMin := 1;
+  cMax := 1;
 
   # Queue of colours
   Q := [1];
 
   # Initial colouring
   # vertices -> colour
-  C := List([1 .. DigraphNrVertices(D)], x -> 1);
+  C := ListWithIdenticalEntries(DNrVertices, 1);
 
   # Colour classes
   # All vertices initialised to 1
   # colour -> vertices labelled as such
   P := [];
-  P[1] := [1 .. DigraphNrVertices(D)];
+  P[1] := [1 .. DNrVertices];
 
   while not IsEmpty(Q) do
 
     # Pop colour off Q
-    q := Q[1];
-    Remove(Q, 1);
+    q := Remove(Q, 1);
 
     # For each v (vertices) in D:
     # Get the neighbours of v that are in the colour class q
-    Out := rec();
-    In := rec();
-    for v in DigraphVertices(D) do
-      Out.(v) := Intersection(OutNeighbours(D)[v], P[q - c_min + 1]);
-      In.(v) := Intersection(InNeighbours(D)[v], P[q - c_min + 1]);
+    outNB := EmptyPlist(DNrVertices);
+    inNB := EmptyPlist(DNrVertices);
+
+    for v in DVertices do
+      outNB[v] := Intersection(outNeighboursD[v], P[q - cMin + 1]);
+      inNB[v] := Intersection(inNeighboursD[v], P[q - cMin + 1]);
     od;
 
-    # CD:
-    # [colour of v, number of q coloured out-neighbours of v,
-    # number of q coloured in-neighbours of v, v]
-    CD := [];
-    for v in DigraphVertices(D) do
-      Add(CD, [C[v], Length(Out.(v)), Length(In.(v)), v]);
-    od;
+    CD := List(DVertices, v -> [C[v], Length(outNB[v]), Length(inNB[v]), v]);
 
     Sort(CD);
 
-    Sets := [];
+    colourCells := [];
     currentPair := [];
-    colour_cell := [];
+    colourCell := [];
     cell := [];
 
     recolour := false;
@@ -2799,10 +2799,10 @@ function(D)
 
       # If different colour reached:
       if currentPair <> [] and current[1] <> currentPair[1] then
-        Add(colour_cell, cell);
-        Add(Sets, colour_cell);
+        Add(colourCell, cell);
+        Add(colourCells, colourCell);
         cell := [pair[4]];
-        colour_cell := [];
+        colourCell := [];
       else
         # If first iteration, or same neighbour configuration:
         if currentPair = [] or current = currentPair then
@@ -2810,15 +2810,15 @@ function(D)
         else
           # If same colour, but different neighbour configuration:
           recolour := true;
-          Add(colour_cell, cell);
+          Add(colourCell, cell);
           cell := [pair[4]];
         fi;
       fi;
 
       currentPair := current;
     od;
-    Add(colour_cell, cell);
-    Add(Sets, colour_cell);
+    Add(colourCell, cell);
+    Add(colourCells, colourCell);
 
     # If there is reason for recolouring
     if recolour then
@@ -2828,41 +2828,41 @@ function(D)
       Q := [];
 
       # Add to Q
-      to_add := c_max;
+      toAdd := cMax;
 
-      for i in [1 .. Length(Sets)] do
+      for i in [1 .. Length(colourCells)] do
 
-        colour_cell := Sets[i];
+        colourCell := colourCells[i];
 
         # Determine the largest cell for that colour
         largest := 1;
-        for j in [1 .. Length(colour_cell)] do
-          if Length(colour_cell[j]) > Length(colour_cell[largest]) then
+        for j in [1 .. Length(colourCell)] do
+          if Length(colourCell[j]) > Length(colourCell[largest]) then
             largest := j;
           fi;
         od;
 
         # Add all new colours except that corresponding to the largest cell
-        for j in [1 .. Length(colour_cell)] do
-          to_add := to_add + 1;
+        for j in [1 .. Length(colourCell)] do
+          toAdd := toAdd + 1;
           if j <> largest then
-            Add(Q, to_add);
+            Add(Q, toAdd);
           fi;
         od;
 
       od;
 
       # Updating colours for the next round
-      c_min := c_max + 1;
-      c_max := to_add;
+      cMin := cMax + 1;
+      cMax := toAdd;
 
-      colour := c_min;
+      colour := cMin;
 
       # Updating C and P
-      for i in [1 .. Length(Sets)] do
-        for j in [1 .. Length(Sets[i])] do
+      for i in [1 .. Length(colourCells)] do
+        for j in [1 .. Length(colourCells[i])] do
           Add(P, []);
-          for v in Sets[i][j] do
+          for v in colourCells[i][j] do
             C[v] := colour;
             Add(P[Length(P)], v);
           od;
@@ -2875,11 +2875,6 @@ function(D)
 
   od;
 
-  # Normalising C to start at 1
-  for i in [1 .. Length(C)] do
-    C[i] := C[i] - (c_min - 1);
-  od;
-
-  return C;
+  return C - (cMin - 1);
 
 end);
