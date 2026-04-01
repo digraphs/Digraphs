@@ -2733,7 +2733,7 @@ function(D, v)
   fi;
   hasse := DigraphReflexiveTransitiveReduction(DigraphMutableCopyIfMutable(D));
   # join-irreducible iff at most one lower cover in the Hasse diagram
-  return InDegreeOfVertexNC(hasse, v) <= 1;
+  return InDegrees(hasse)[v] <= 1;
 end);
 
 InstallMethod(IsMeetIrreducible,
