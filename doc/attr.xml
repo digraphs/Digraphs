@@ -1599,23 +1599,23 @@ gap> FacialWalks(D3, rot);
     <Example><![CDATA[
 gap> D := Digraph([[]]);
 <immutable empty digraph with 1 vertex>
-gap> HamiltonianPath(D);
+gap> HamiltonianCycle(D);
 [ 1 ]
 gap> D := Digraph([[2], [1]]);
 <immutable digraph with 2 vertices, 2 edges>
-gap> HamiltonianPath(D);
+gap> HamiltonianCycle(D);
 [ 1, 2 ]
 gap> D := Digraph([[3], [], [2]]);
 <immutable digraph with 3 vertices, 2 edges>
-gap> HamiltonianPath(D);
+gap> HamiltonianCycle(D);
 fail
 gap> D := Digraph([[2], [3], [1]]);
 <immutable digraph with 3 vertices, 3 edges>
-gap> HamiltonianPath(D);
+gap> HamiltonianCycle(D);
 [ 1, 2, 3 ]
 gap> D := GeneralisedPetersenGraph(IsMutableDigraph, 5, 2);
 <mutable digraph with 10 vertices, 30 edges>
-gap> HamiltonianPath(D);
+gap> HamiltonianCycle(D);
 fail
 ]]></Example>
   </Description>
