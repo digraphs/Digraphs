@@ -2222,15 +2222,15 @@ InstallMethod(Graph6String, "for a digraph by out-neighbours",
 [IsDigraphByOutNeighboursRep],
 function(D)
   local list, adj, n, lenlist, tablen, blist, i, j, pos, block;
-  if IsMultiDigraph(D) then
-    ErrorNoReturn("the argument <D> must not have multiple edges; ",
-      "consider encoding in Disparse6 or Digraph6");
-  elif not IsSymmetricDigraph(D) then
-    ErrorNoReturn("the argument <D> must be a symmetric digraph; ",
-      "consider encoding in Sparse6 or Disparse6");
+  if not IsSymmetricDigraph(D) then
+    ErrorNoReturn("the argument <D> must be a symmetric digraph;\n",
+                  "consider encoding in Digraph6 or Disparse6");
+  elif IsMultiDigraph(D) then
+    ErrorNoReturn("the argument <D> must not have multiple edges;\n",
+                  "consider encoding in Sparse6 or Disparse6");
   elif DigraphHasLoops(D) then
-    ErrorNoReturn("the argument <D> must not have loops; ",
-      "consider encoding in Sparse6 or Disparse6");
+    ErrorNoReturn("the argument <D> must not have loops;\n",
+                  "consider encoding in Sparse6, Digraph6, or Disparse6");
   fi;
 
   list := [];
@@ -2292,11 +2292,11 @@ function(D)
 
   if IsMultiDigraph(D) then
     if IsSymmetricDigraph(D) then
-      ErrorNoReturn("the argument <D> must not have multiple edges ",
-                  "consider encoding in Sparse6 or Disparse6, ");
+      ErrorNoReturn("the argument <D> must not have multiple edges;\n",
+                  "consider encoding in Sparse6 or Disparse6");
     fi;
-    ErrorNoReturn("the argument <D> must not have multiple edges ",
-                  "consider encoding in Disparse6, ");
+    ErrorNoReturn("the argument <D> must not have multiple edges;\n",
+                  "consider encoding in Disparse6");
   fi;
 
   # First write the special character '&'
@@ -2354,10 +2354,10 @@ function(D)
 
   if not IsSymmetricDigraph(D) then
     if IsMultiDigraph(D) then
-      ErrorNoReturn("the argument <D> must be a symmetric digraph; ",
+      ErrorNoReturn("the argument <D> must be a symmetric digraph;\n",
         "consider encoding in Disparse6");
     else
-      ErrorNoReturn("the argument <D> must be a symmetric digraph; ",
+      ErrorNoReturn("the argument <D> must be a symmetric digraph;\n",
         "consider encoding in Digraph6 or Disparse6");
     fi;
   fi;
