@@ -283,8 +283,8 @@ true
 gap> gr[3] := Digraph([[1, 2], [1, 2]]);
 <immutable digraph with 2 vertices, 4 edges>
 gap> WriteDigraphs(filename, Digraph([[2], []]), Graph6String);
-Error, the argument <D> must be a symmetric digraph with no loops or multiple \
-edges,
+Error, the argument <D> must be a symmetric digraph;
+consider encoding in Digraph6 or Disparse6
 gap> OnBreak := oldOnBreak;;
 gap> IO_Close(IO.OpenFiles[Length(IO.OpenFiles)]);;
 gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/test.s6.bz2");;
@@ -320,8 +320,8 @@ gap> ReadDigraphs(f);
 gap> IO_Close(f);;
 gap> f := DigraphFile(filename, "a");;
 gap> WriteDigraphs(f, CycleDigraph(5));
-Error, the argument <D> must be a symmetric digraph with no loops or multiple \
-edges,
+Error, the argument <D> must be a symmetric digraph;
+consider encoding in Digraph6 or Disparse6
 gap> WriteDigraphs(f, JohnsonDigraph(6, 3));
 IO_OK
 gap> IO_Close(f);;
@@ -546,7 +546,8 @@ Error, the 2nd argument <s> is not a valid disparse6 string,
 
 #  Special format characters
 gap> Sparse6String(ChainDigraph(3));
-Error, the argument <D> must be a symmetric digraph,
+Error, the argument <D> must be a symmetric digraph;
+consider encoding in Digraph6 or Disparse6
 gap> Sparse6String(CompleteDigraph(1));
 ":@"
 gap> gr := Digraph([[1], []]);;
@@ -558,6 +559,24 @@ gap> DigraphFromSparse6String(":TdBkJ`Kq?x");
 <immutable symmetric digraph with 21 vertices, 10 edges>
 gap> Sparse6String(last);
 ":TdBkJ`Kq?"
+
+# Multiple Edges Digraph6
+gap> gr := Digraph([[1, 1], [2]]);;
+gap> Digraph6String(gr);
+Error, the argument <D> must not have multiple edges;
+consider encoding in Sparse6 or Disparse6
+
+# Non-symmetric Digraph in Sparse6
+gap> gr := Digraph([[2], []]);;
+gap> Sparse6String(gr);
+Error, the argument <D> must be a symmetric digraph;
+consider encoding in Digraph6 or Disparse6
+
+# Digraph with loops in Sparse6
+gap> gr := Digraph([[1], [2]]);;
+gap> Graph6String(gr);
+Error, the argument <D> must not have loops;
+consider encoding in Sparse6, Digraph6, or Disparse6
 
 #  DigraphPlainTextLineDecoder: bad input
 gap> DigraphPlainTextLineDecoder(" ", "  ", 1, ".");
@@ -659,8 +678,8 @@ Error, cannot open the file given as the 1st argument <name>,
 
 #  DigraphPlainTextLineDecoder: bad input
 gap> Graph6String(ChainDigraph(4));
-Error, the argument <D> must be a symmetric digraph with no loops or multiple \
-edges,
+Error, the argument <D> must be a symmetric digraph;
+consider encoding in Digraph6 or Disparse6
 gap> DIGRAPHS_Graph6Length(-1);
 fail
 gap> DIGRAPHS_Graph6Length(68719476737);
