@@ -2780,7 +2780,7 @@ function(D)
       outNB[v] := Intersection(outNeighboursD[v], P[q - cMin + 1]);
       inNB[v] := Intersection(inNeighboursD[v], P[q - cMin + 1]);
     od;
-
+ 
     CD := List(DVertices, v -> [C[v], Length(outNB[v]), Length(inNB[v]), v]);
 
     Sort(CD);
@@ -2794,6 +2794,11 @@ function(D)
 
     j := 0;
 
+    # Creating the multiset of colours of neighbours:
+    # This multiset is used to determine whether to refine the colouring
+    # and if so, which cells to split. The label of each vertex has no bearing
+    # in either of these decisions (as they are irrelevant to the creation or
+    # sorting of the multiset) - meaning the colouring produced is canonical.
     for pair in CD do
       current := [pair[1], pair[2], pair[3]];
 
@@ -2835,12 +2840,7 @@ function(D)
         colourCell := colourCells[i];
 
         # Determine the largest cell for that colour
-        largest := 1;
-        for j in [1 .. Length(colourCell)] do
-          if Length(colourCell[j]) > Length(colourCell[largest]) then
-            largest := j;
-          fi;
-        od;
+        largest := PositionMaximum(colourCell, Length);
 
         # Add all new colours except that corresponding to the largest cell
         for j in [1 .. Length(colourCell)] do

@@ -2637,6 +2637,10 @@ true]]>
     <C>DigraphColourRefinement</C> returns the colouring as a list where the value at the ith position is the 
     colour of node i. The time complexity of this algorithm is <M>O(n^2 log n)</M>.
     <P/>
+    Because the labels of the vertices are not used in any capacity during the refinement process (I.e. to determine which cells 
+    to refine), the colouring produced is canonical. This means that for two isomorphic digraphs, they would produce the same colouring. 
+    Identical colourings do not necessarily prove that two digraphs are isomorphic, but non-identical colourings would prove that they aren't.
+    <P/>
     See also
     <Ref Oper="DigraphColouring"
          Label="for a digraph and a number of colours"/>.
