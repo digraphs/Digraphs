@@ -2780,7 +2780,7 @@ function(D)
       outNB[v] := Intersection(outNeighboursD[v], P[q - cMin + 1]);
       inNB[v] := Intersection(inNeighboursD[v], P[q - cMin + 1]);
     od;
- 
+
     CD := List(DVertices, v -> [C[v], Length(outNB[v]), Length(inNB[v]), v]);
 
     Sort(CD);
