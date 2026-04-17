@@ -259,6 +259,12 @@ gap> DigraphUndirectedGirth(D);
 3
 gap> LollipopGraph(IsMutableDigraph, 5, 3);
 <mutable digraph with 8 vertices, 26 edges>
+gap> D := LollipopGraph(2, 4);
+<immutable connected symmetric digraph with 6 vertices, 10 edges>
+gap> DigraphUndirectedGirth(D);
+infinity
+gap> IsomorphismDigraphs(D, DigraphSymmetricClosure(ChainDigraph(6))) <> fail;
+true
 
 #  SquareGridGraph
 gap> SquareGridGraph(7, 7);
