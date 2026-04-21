@@ -959,8 +959,7 @@ InstallMethod(DigraphHash, "for a digraph", [IsDigraph], DIGRAPH_HASH);
 # To make built in Orbit function use DigraphHash
 InstallMethod(SparseIntKey, "for an object and digraph",
 [IsObject, IsDigraph],
-{coll, D} -> DigraphHash
-);
+{coll, D} -> DigraphHash);
 
 # To make orb package use DigraphHash
 InstallMethod(ChooseHashFunction, "for a digraph and positive integer",

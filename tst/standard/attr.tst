@@ -9,14 +9,14 @@
 #############################################################################
 ##
 
-#@local A, B, D, D1, D2
+#@local A, B, D, D1, D2, D3
 #@local G, H, M, M1, P, S, a, adj, adj1, adj2, adjacencies, b
 #@local circuit, complete15, comps, cycle12, e, edgeCut, erev, filename, forest
 #@local g, gNew, gr, gr1, gr2, gr3, gr4, grid, group, i, id, isGraph, j, mat
 #@local multiple, names, nbs, nonPlanar, order, planar, probs, proj, r, rd
 #@local reflextrans, reflextrans1, reflextrans2, representatives, rev, rgr
 #@local rotationSy, rotationSystem, scc, schreierVector, sink, soccer, str
-#@local temp, topo, trans, trans1, trans2, tree, wcc, x, y, z
+#@local table, temp, topo, trans, trans1, trans2, tree, wcc, x, y, z
 gap> START_TEST("Digraphs package: standard/attr.tst");
 gap> LoadPackage("digraphs", false);;
 
@@ -3484,17 +3484,33 @@ Error, the 2nd argument <digraph2> must have at most 65534 vertices, found 655\
 # This has a small chance to randomly fail. Sorry if it does!
 gap> D1 := RandomMultiDigraph(100);;
 gap> D2 := Digraph(List(OutNeighbours(D1), x -> Shuffle(ShallowCopy(x))));;
+gap> repeat D3 := RandomMultiDigraph(100); until D1 <> D3;
 gap> D1 = D2;
 true
+gap> D1 = D3;
+false
 gap> OutNeighbours(D1) = OutNeighbours(D2);
 false
 gap> DigraphHash(D1) = DigraphHash(D2);
 true
-gap> while D1 = D2 do
-> D2 := RandomMultiDigraph(100);
-> od;;
-gap> DigraphHash(D1) = DigraphHash(D2);
+gap> DigraphHash(D1) = DigraphHash(D3);
 false
+gap> table := SparseHashTable();;  # DigraphHash should be used for this
+gap> AddDictionary(table, D1);
+gap> LookupDictionary(table, D1);
+true
+gap> LookupDictionary(table, D2);
+true
+gap> LookupDictionary(table, D3);
+fail
+gap> table := HTCreate(Digraph([]));;  # DigraphHash should be used for this too
+gap> HTAdd(table, D1, "first digraph");;
+gap> HTValue(table, D1);
+"first digraph"
+gap> HTValue(table, D2);
+"first digraph"
+gap> HTValue(table, D3);
+fail
 
 #
 gap> DIGRAPHS_StopTest();
