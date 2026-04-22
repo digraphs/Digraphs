@@ -837,17 +837,19 @@ gap> DigraphTopologicalSort(D);
   <Attr Name="DigraphDegeneracy" Arg="digraph"/>
   <Returns>A non-negative integer, or <K>fail</K>.</Returns>
   <Description>
-    If <A>digraph</A> is a symmetric digraph without multiple edges - see
-    <Ref Prop="IsSymmetricDigraph"/> and <Ref Prop="IsMultiDigraph"/> - then
+    If <A>digraph</A> is a symmetric digraph without multiple edges, then
     this attribute returns the degeneracy of <A>digraph</A>. <P/>
 
-    The degeneracy of a digraph is the least integer <C>k</C> such
-    that every induced of <A>digraph</A> contains a vertex whose number of
-    neighbours (excluding itself) is at most <C>k</C>. Note that this means
-    that loops are ignored.<P/>
+    The <E>degeneracy</E> of a digraph is the least integer <M>k</M> such that
+    every induced subdigraph of <A>digraph</A> contains a vertex with no more
+    than <M>k</M> neighbours (ignoring loops). <P/>
 
     If <A>digraph</A> is not symmetric or has multiple edges then this
-    attribute returns <K>fail</K>.
+    attribute returns <K>fail</K>. See <Ref Prop="IsSymmetricDigraph"/> and
+    <Ref Prop="IsMultiDigraph"/>.<P/>
+
+    See also <Ref Attr="DigraphDegeneracyOrdering"/>.
+
     <Example><![CDATA[
 gap> D := DigraphSymmetricClosure(ChainDigraph(5));;
 gap> DigraphDegeneracy(D);
@@ -873,19 +875,19 @@ gap> DigraphDegeneracy(D);
   <Attr Name="DigraphDegeneracyOrdering" Arg="digraph"/>
   <Returns>A list of integers, or <K>fail</K>.</Returns>
   <Description>
-    If <A>digraph</A> is a digraph for which
-    <C>DigraphDegeneracy(</C><A>digraph</A><C>)</C> is a non-negative integer
-    <C>k</C> - see <Ref Attr="DigraphDegeneracy"/> - then this attribute
-    returns a degeneracy ordering of the vertices of the vertices of
-    <A>digraph</A>.<P/>
+    If <A>digraph</A> is a symmetric digraph without multiple edges, then this
+    attribute returns a degeneracy ordering of the vertices of
+    <A>digraph</A>. <P/>
 
-    A degeneracy ordering of <A>digraph</A> is a list <C>ordering</C> of the
-    vertices of <A>digraph</A> ordered such that for any
-    position <C>i</C> of the list, the vertex <C>ordering[i]</C> has at most
-    <C>k</C> neighbours in later position of the list.<P/>
+    A <E>degeneracy ordering</E> of <A>digraph</A> is a list of all the vertices
+    of <A>digraph</A>, ordered such that any vertex has at most <M>k</M>
+    neighbours that appear after it in the list.<P/>
 
-    If <C>DigraphDegeneracy(</C><A>digraph</A><C>)</C> returns <K>fail</K>,
-    then this attribute returns <K>fail</K>.
+    If <A>digraph</A> is not symmetric or has multiple edges then this
+    attribute returns <K>fail</K>. See <Ref Prop="IsSymmetricDigraph"/> and
+    <Ref Prop="IsMultiDigraph"/>.<P/>
+
+    See also <Ref Attr="DigraphDegeneracy"/>.
     <Example><![CDATA[
 gap> D := DigraphSymmetricClosure(ChainDigraph(5));;
 gap> DigraphDegeneracyOrdering(D);
