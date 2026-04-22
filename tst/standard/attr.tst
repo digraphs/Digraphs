@@ -2073,6 +2073,11 @@ gap> tree := UndirectedSpanningTree(DigraphMutableCopy(D));
 <mutable digraph with 10 vertices, 18 edges>
 gap> IsUndirectedSpanningTree(D, tree);
 true
+gap> D := Digraph(IsMutableDigraph, [[1, 2, 1, 3], [1], [4], [2, 3, 4, 3]]);;
+gap> UndirectedSpanningTree(D);
+fail
+gap> DigraphNrEdges(UndirectedSpanningForest(D));
+4
 
 # ArticulationPoints
 gap> ArticulationPoints(CycleDigraph(5));
