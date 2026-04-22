@@ -158,6 +158,8 @@ gap> DigraphMaximalIndependentSets(gr);
 [ [ 1 ] ]
 gap> DigraphIndependentSets(gr);
 [ [ 1 ] ]
+gap> DigraphIndependentSets(gr);
+[ [ 1 ] ]
 gap> DigraphMaximalIndependentSetsReps(gr, []);
 [ [ 1 ] ]
 gap> DigraphIndependentSetsReps(gr, []);
