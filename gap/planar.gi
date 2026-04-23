@@ -114,7 +114,7 @@ function(D)
     return DigraphByEdges(dualEdges);
 end);
 
-# A graph is a map graph if we can find a "witness" that is planar 
+# A graph is a map graph if we can find a "witness" that is planar
 # and bipartite that the original graph is a half-square of
 
 # for all vertices v find all ways to cover its edges using a set of cliques
@@ -296,7 +296,7 @@ end);
 
 BindGlobal("DIGRAPHS_IsMapGraphSearch",
 function(G, n)
-  local allCovers, coverCounts, indices, assignment, H, 
+  local allCovers, coverCounts, indices, assignment, H,
         halfsq, i, v, targetEdges;
 
   targetEdges := Set(DigraphEdges(G));
