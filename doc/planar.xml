@@ -464,3 +464,39 @@ true
 </ManSection>
 
 <#/GAPDoc>
+
+<#GAPDoc Label="IsMapGraph">
+<ManSection>
+  <Attr Name="IsMapGraph" Arg="D"/>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
+  <Description>
+    A map graph is a graph whose vertices can be represented as disjoint 
+    regions in the plane, where two vertices are adjacent if the 
+    corresponding regions share at least one point on their boundaries. 
+    This is a generalized notion of planar graphs by allowing any number 
+    of regions to meet at a single point rather than just along 
+    borders of non-zero length.
+    <P/>
+    A graph <A>D</A> is a map graph if and only if it is the 
+    <E>half-square</E> of some planar bipartite graph <M>H</M>. That is, 
+    <A>D</A> is the graph formed by one part of the bipartition of <M>H</M>, 
+    where two vertices in <A>D</A> are connected if they are at distance 2 in 
+    <M>H</M>.
+
+    Note that every planar graph is a map graph, but map graphs may contain 
+    arbitrarily large cliques making them a strictly larger class than planar graphs.
+
+<Example><![CDATA[
+gap> D := CompleteDigraph(5);
+<immutable complete digraph with 5 vertices>
+gap> IsPlanarDigraph(D);
+false
+gap> IsMapGraph(D);
+true
+gap> D := CompleteBipartiteDigraph(3, 7);;
+gap> IsMapGraph(D);
+false
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
