@@ -114,13 +114,14 @@ function(D)
     return DigraphByEdges(dualEdges);
 end);
 
-# A graph is a map graph if we can find a "witness" that is planar and bipartite that the original graph is a half-square of
+# A graph is a map graph if we can find a "witness" that is planar 
+# and bipartite that the original graph is a half-square of
 
 # for all vertices v find all ways to cover its edges using a set of cliques
 BindGlobal("DIGRAPHS_NbrCliqueCovers",
 function(D, v)
   local nbrs, sub, subEdges, maxCliques, mapping, cliqueCoverage,
-        covers, i, j, k, e, temp, EdgesCoveredBy, Backtrack;
+        covers, i, j, e, temp, EdgesCoveredBy, Backtrack;
   nbrs := ShallowCopy(OutNeighboursOfVertex(D, v));
   nbrs := Filtered(nbrs, x -> x <> v);
   Sort(nbrs);
@@ -193,7 +194,7 @@ function(D, v)
           Add(cov, [u]);
         fi;
       od;
-      
+
       Add(covers, cov);
       return;
     fi;
@@ -227,14 +228,13 @@ function(D, v)
   return covers;
 end);
 
-
 BindGlobal("DIGRAPHS_BuildWitness",
-function(D, n, covers)
+function(n, covers)
   local witnessMap, nextWitness, outNeighb, v, clique, canon, key, w, u;
 
   witnessMap  := rec();
   nextWitness := n + 1;
-  outNeighb     := List([1 .. n], i -> []);
+  outNeighb := List([1 .. n], i -> []);
 
   for v in [1 .. n] do
     for clique in covers[v] do
@@ -294,17 +294,17 @@ function(H, n)
   return DigraphImmutableCopy(Digraph(outgoing));
 end);
 
-
 BindGlobal("DIGRAPHS_IsMapGraphSearch",
 function(G, n)
-  local allCovers, coverCounts, indices, assignment, H, halfsq, i, v, targetEdges;
+  local allCovers, coverCounts, indices, assignment, H, 
+        halfsq, i, v, targetEdges;
 
   targetEdges := Set(DigraphEdges(G));
 
   allCovers   := List([1 .. n], v -> DIGRAPHS_NbrCliqueCovers(G, v));
   coverCounts := List(allCovers, Length);
 
-  if ForAny(allCovers, c -> IsEmpty(c)) then
+  if ForAny(allCovers, IsEmpty) then
     return false;
   fi;
 
@@ -312,7 +312,7 @@ function(G, n)
 
   while true do
     assignment := List([1 .. n], v -> allCovers[v][indices[v]]);
-    H := DIGRAPHS_BuildWitness(G, n, assignment);
+    H := DIGRAPHS_BuildWitness(n, assignment);
 
     if IsPlanarDigraph(H) then
       halfsq := DIGRAPHS_HalfSquare(H, n);
@@ -331,7 +331,9 @@ function(G, n)
         i := i - 1;
       fi;
     od;
-    if i = 0 then break; fi;
+    if i = 0 then
+      break;
+    fi;
   od;
 
   return false;
@@ -386,7 +388,7 @@ function(D)
   G := MaximalSymmetricSubdigraphWithoutLoops(D);
 
   n := DigraphNrVertices(G);
-  m := DigraphNrAdjacenciesWithoutLoops(G);  
+  m := DigraphNrAdjacenciesWithoutLoops(G);
 
   if n < 5 or m < 9 then
     return true;
