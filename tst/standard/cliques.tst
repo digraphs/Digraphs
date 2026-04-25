@@ -556,6 +556,13 @@ gap> DigraphMaximalCliques(D, [], [], infinity, 1);
 gap> Length(DigraphMaximalCliques(D, [], [], infinity, 2));
 1198
 
+# Test CliquesFinder (reps) on graph with automorphisms and isolated vertices
+gap> D := DigraphAddVertex(Digraph("hundredtwentycell"));;
+gap> Size(AutomorphismGroup(D));
+14400
+gap> Set(DigraphMaximalCliquesReps(D));
+[ [ 1, 2 ], [ 601 ] ]
+
 # Test DigraphsCliqueFinder
 gap> DigraphsCliquesFinder(0);
 Error, there must be 8 or 9 arguments, found 1,
