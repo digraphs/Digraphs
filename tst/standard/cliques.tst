@@ -543,6 +543,19 @@ gap> f := function(a, b)
 gap> CliquesFinder(gr, f, [], 4, [], [], false, 2, true);
 [ 2, 2, 2, 2 ]
 
+# Test CliquesFinder on big graphs with specific sizes specified
+gap> D := DigraphMutableCopy(Digraph("hundredtwentycell"));;
+gap> DigraphAddVertex(D);;
+gap> DigraphAddEdges(D, [[43, 601], [601, 43], [63, 601], [601, 63]]);;
+gap> DigraphAddEdges(D, [[283, 601], [601, 283], [303, 601], [601, 303]]);;
+gap> DigraphAddVertex(D);;
+gap> Set(DigraphMaximalCliques(D, [], [], infinity, 3));
+[ [ 43, 63, 601 ], [ 283, 303, 601 ] ]
+gap> DigraphMaximalCliques(D, [], [], infinity, 1);
+[ [ 602 ] ]
+gap> Length(DigraphMaximalCliques(D, [], [], infinity, 2));
+1198
+
 # Test DigraphsCliqueFinder
 gap> DigraphsCliquesFinder(0);
 Error, there must be 8 or 9 arguments, found 1,
