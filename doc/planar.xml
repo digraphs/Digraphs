@@ -479,12 +479,15 @@ true
     <P/>
     A graph <A>D</A> is a map graph if and only if it is the 
     <E>half-square</E> of some planar bipartite graph <M>H</M>. That is, 
-    <A>D</A> is the graph formed by one part of the bipartition of <M>H</M>, 
+    <A>D</A> is the graph formed by one part of the bipartitions of <M>H</M>, 
     where two vertices in <A>D</A> are connected if they are at distance 2 in 
-    <M>H</M>.
+    <M>H</M>.<P/>
 
     Note that every planar graph is a map graph, but map graphs may contain 
-    arbitrarily large cliques making them a strictly larger class than planar graphs.
+    arbitrarily large cliques making them a strictly larger class than planar graphs.<P/>
+
+    The runtime of this algorithm is at worst O(2^n * poly(n)) due to the exhaustive
+    clique-based backtracking search.
 
 <Example><![CDATA[
 gap> D := CompleteDigraph(5);

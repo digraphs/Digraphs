@@ -117,11 +117,34 @@ end);
 # A graph is a map graph if we can find a "witness" that is planar
 # and bipartite that the original graph is a half-square of
 
+BindGlobal("DIGRAPHS_EdgesCoveredBy",
+  function(clique, subEdges, mapping)
+    local covered, a, b, ia, ib, edgeIdx, temp;
+    covered := BlistList([1 .. Length(subEdges)], []);
+
+    for a in [1 .. Length(clique)] do
+      for b in [a+1 .. Length(clique)] do
+        ia := mapping[clique[a]];
+        ib := mapping[clique[b]];
+        if ia > ib then
+          temp := ia;
+          ia := ib;
+          ib := temp;
+        fi;
+        edgeIdx := PositionSorted(subEdges, [ia, ib]);
+        if edgeIdx <= Length(subEdges) and subEdges[edgeIdx] = [ia, ib] then
+          covered[edgeIdx] := true;
+        fi;
+      od;
+    od;
+    return covered;
+  end);
+
 # for all vertices v find all ways to cover its edges using a set of cliques
 BindGlobal("DIGRAPHS_NbrCliqueCovers",
 function(D, v)
   local nbrs, sub, subEdges, maxCliques, mapping, cliqueCoverage,
-        covers, i, j, e, temp, EdgesCoveredBy, Backtrack;
+        covers, i, j, e, Backtrack;
   nbrs := ShallowCopy(OutNeighboursOfVertex(D, v));
   nbrs := Filtered(nbrs, x -> x <> v);
   Sort(nbrs);
@@ -153,31 +176,7 @@ function(D, v)
     mapping[nbrs[i]] := i;
   od;
 
-  EdgesCoveredBy := function(clique)
-    local covered, a, b, ia, ib, edgeIdx;
-    covered := BlistList([1 .. Length(subEdges)], []);
-
-    for a in [1 .. Length(clique)] do
-      for b in [a + 1 .. Length(clique)] do
-        ia := mapping[clique[a]];
-        ib := mapping[clique[b]];
-
-        if ia > ib then
-          temp := ia;
-          ia := ib;
-          ib := temp;
-        fi;
-
-        edgeIdx := PositionSorted(subEdges, [ia, ib]);
-        if edgeIdx <= Length(subEdges) and subEdges[edgeIdx] = [ia, ib] then
-          covered[edgeIdx] := true;
-        fi;
-      od;
-    od;
-    return covered;
-  end;
-
-  cliqueCoverage := List(maxCliques, EdgesCoveredBy);
+  cliqueCoverage := List(maxCliques, cl->DIGRAPHS_EdgesCoveredBy(cl, subEdges, mapping));
 
   covers := [];
 
@@ -232,7 +231,7 @@ BindGlobal("DIGRAPHS_BuildWitness",
 function(n, covers)
   local witnessMap, nextWitness, outNeighb, v, clique, canon, key, w, u;
 
-  witnessMap  := rec();
+  witnessMap := HashMap();
   nextWitness := n + 1;
   outNeighb := List([1 .. n], i -> []);
 
@@ -240,25 +239,19 @@ function(n, covers)
     for clique in covers[v] do
       canon := ShallowCopy(clique);
       if not v in canon then
-        Add(canon, v);
+        AddSet(canon, v);
       fi;
-      Sort(canon);
-      key := String(canon);
 
-      if not IsBound(witnessMap.(key)) then
-        witnessMap.(key) := nextWitness;
+      if not IsBound(witnessMap[canon]) then
+        witnessMap[canon] := nextWitness;
         Add(outNeighb, []);
         nextWitness := nextWitness + 1;
       fi;
-      w := witnessMap.(key);
+      w := witnessMap[canon];
 
       for u in canon do
-        if not w in outNeighb[u] then
-          Add(outNeighb[u], w);
-        fi;
-        if not u in outNeighb[w] then
-          Add(outNeighb[w], u);
-        fi;
+        AddSet(outNeighb[u], w);
+        AddSet(outNeighb[w], u);
       od;
     od;
   od;
@@ -267,31 +260,20 @@ function(n, covers)
     Sort(outNeighb[v]);
   od;
 
-  return DigraphImmutableCopy(Digraph(outNeighb));
+  return Digraph(outNeighb);
 end);
 
 # reconstruct graph from the planar bipartite graph
 # for the inputted H we have U = [1...n] and V is the rest(all junctions)
 BindGlobal("DIGRAPHS_HalfSquare",
 function(H, n)
-  local adj, u, w, v, outgoing;
+  local out_neighbors, u, w, v, outgoing;
 
-  adj := List([1 .. n], i -> BlistList([1 .. n], []));
+  out_neighbors := List([1..n], u ->
+    Filtered(DigraphDistanceSet(H, u, 2), v -> v <= n)
+  );
 
-  for u in [1 .. n] do
-    for w in OutNeighboursOfVertex(H, u) do
-      if w > n then
-        for v in OutNeighboursOfVertex(H, w) do
-          if v <= n and v <> u then
-            adj[u][v] := true;
-          fi;
-        od;
-      fi;
-    od;
-  od;
-
-  outgoing := List([1 .. n], u -> ListBlist([1 .. n], adj[u]));
-  return DigraphImmutableCopy(Digraph(outgoing));
+  return Digraph(out_neighbors);
 end);
 
 BindGlobal("DIGRAPHS_IsMapGraphSearch",
@@ -389,16 +371,14 @@ function(D)
 
   n := DigraphNrVertices(G);
   m := DigraphNrAdjacenciesWithoutLoops(G);
-
+  # Graphs with n < 5 or m < 9 are inherently planar
+  # Direct combination of Planar Bipartite Edge Limit and Euler's formula
+  # Map graphs by definition are a superset of planar graphs
   if n < 5 or m < 9 then
     return true;
-  fi;
-
-  if m > 2 * (6 * n - 12) then
+  elif m > 2 * (6 * n - 12) then
     return false;
-  fi;
-
-  if IsPlanarDigraph(G) then
+  elif IsPlanarDigraph(G) then
     return true;
   fi;
 
