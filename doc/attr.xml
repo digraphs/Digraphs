@@ -881,7 +881,13 @@ gap> DigraphDegeneracy(D);
 
     A <E>degeneracy ordering</E> of <A>digraph</A> is a list of all the vertices
     of <A>digraph</A>, ordered such that any vertex has at most <M>k</M>
-    neighbours that appear after it in the list.<P/>
+    neighbours that appear after it in the list, where <M>k</M> is equal to
+    <C>DigraphDegeneracy(<A>digraph</A>)</C>.<P/>
+
+    The existence of this ordering acts as a demonstration that <A>digraph</A>'s
+    degeneracy is at most <M>k</M>: in any induced subdigraph, the vertex that
+    appears earliest in the degeneracy ordering must have degree at most
+    <M>k</M>.<P/>
 
     If <A>digraph</A> is not symmetric or has multiple edges then this
     attribute returns <K>fail</K>. See <Ref Prop="IsSymmetricDigraph"/> and
