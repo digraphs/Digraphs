@@ -568,6 +568,20 @@ gap> OutNeighbours(D);
 gap> OutNeighbours(C);
 [ [ 2, 3, 4 ], [ 1, 3, 4, 5 ], [ 1, 2 ], [ 5 ], [ 4 ] ]
 
+# LineDigraph for mutable digraphs: mutable output, unchanged input
+gap> D := Digraph(IsMutableDigraph, [[2, 3, 4], [1, 3, 4, 5], [1, 2], [5], [4]]);;
+gap> out := LineDigraph(D);;
+gap> IsMutableDigraph(out);
+true
+gap> D = out;
+false
+gap> D := DigraphSymmetricClosure(D);;
+gap> out := LineUndirectedDigraph(D);;
+gap> IsMutableDigraph(out);
+true
+gap> D = out;
+false
+
 #
 gap> DIGRAPHS_StopTest();
 gap> STOP_TEST("Digraphs package: testinstall.tst", 0);

@@ -21,8 +21,9 @@
     if the terminal vertex of the edge associated with <K>v</K> is the start
     vertex of the edge associated with <K>u</K>.<P/>
 
-    Note that the returned digraph is always a new immutable digraph, and the
-    argument <A>digraph</A> is never modified.
+    Note that the returned digraph is always a new digraph with the same
+    mutability as the input <A>digraph</A>. The input <A>digraph</A> is never
+    modified.
     <Example><![CDATA[
 gap> LineDigraph(CompleteDigraph(3));
 <immutable digraph with 6 vertices, 12 edges>
@@ -45,8 +46,9 @@ gap> LineDigraph(ChainDigraph(3));
     between two vertices if and only if the corresponding edges have a vertex in
     common.<P/>
 
-    Note that the returned digraph is always a new immutable digraph, and the
-    argument <A>digraph</A> is never modified.
+    Note that the returned digraph is always a new digraph with the same
+    mutability as the input <A>digraph</A>. The input <A>digraph</A> is never
+    modified.
     <Example><![CDATA[
 gap> LineUndirectedDigraph(CompleteDigraph(3));
 <immutable digraph with 3 vertices, 6 edges>
