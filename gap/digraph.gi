@@ -1314,11 +1314,11 @@ function(filt, digraph, gps, homs)
     fi;
   od;
 
-  reps := [];
+  reps := EmptyPlist(n);
   for i in [1 .. n] do
     rep := IsomorphismPermGroup(gps[i]);
     rep := rep * SmallerDegreePermutationRepresentation(Image(rep));
-    Add(reps, rep);
+    reps[i] := rep;
   od;
 
   top     := DigraphTopologicalSort(digraph);
