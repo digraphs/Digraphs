@@ -41,8 +41,8 @@ jobs:
             pkgs-to-clone: https://github.com/digraphs/graphviz.git https://github.com/gap-packages/NautyTracesInterface.git
             pkgs-to-build: io orb datastructures profiling grape NautyTracesInterface
 
-          - gap-version: v4.11  # Note: NautyTracesInterface requires GAP 4.12
-            mode: default  # There wouldn't be much point testing GAP v4.11 with only needed packages. The only difference is whether Grape is loaded.
+          - gap-version: v4.11 # Note: NautyTracesInterface requires GAP 4.12
+            mode: default # There wouldn't be much point testing GAP v4.11 with only needed packages. The only difference is whether Grape is loaded.
             pkgs-to-clone: https://github.com/digraphs/graphviz.git
             pkgs-to-build: io* orb* datastructures* profiling* grape*
 
@@ -55,7 +55,7 @@ jobs:
         with:
           gap-version: ${{ matrix.gap-version }}
       - name: "Build Digraphs . . ."
-        uses: gap-actions/build-pkg@v2
+        uses: gap-actions/build-pkg@v3
       - name: "Clone additional GAP packages . . ."
         run: |
           for PKG in ${{ matrix.pkgs-to-clone }}; do
@@ -92,7 +92,8 @@ jobs:
           testfile: tst/github_actions/extreme.g
           mode: ${{ matrix.mode }}
       - uses: gap-actions/process-coverage@v3
-      - uses: codecov/codecov-action@v5
+        if: ${{ matrix.gap-version == 'master' && matrix.mode == 'default'}}
+      - uses: codecov/codecov-action@v6
+        if: ${{ matrix.gap-version == 'master' && matrix.mode == 'default'}}
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          fail_ci_if_error: true

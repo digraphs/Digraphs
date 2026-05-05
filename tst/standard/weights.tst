@@ -9,7 +9,7 @@
 #############################################################################
 ##
 
-#@local D, d, distances, edges, gr, m, parents, r, tree
+#@local D, d, distances, edges, gr, m, parents, path, r, tree
 gap> START_TEST("Digraphs package: standard/weights.tst");
 gap> LoadPackage("digraphs", false);;
 
@@ -291,7 +291,7 @@ gap> EdgeWeightedDigraphShortestPath(d, 1, 3);
 [ [ 1, 2, 3 ], [ 1, 1 ] ]
 
 #############################################################################
-# 5. Maximum Flow
+# 5. Maximum Flow and Minimum Cut
 #############################################################################
 
 # Maximum flow: empty digraphs
@@ -384,6 +384,109 @@ gap> DigraphEdgeConnectivity(D);
 gap> D := DigraphFromGraph6String("I~~~~~~~w");;
 gap> DigraphEdgeConnectivity(D);
 9
+# Minimum cut: empty digraphs
+gap> d := EdgeWeightedDigraph([], []);
+<immutable empty edge-weighted digraph with 0 vertices>
+gap> DigraphMinimumCut(d, 1, 1);
+Error, <s> must be a vertex of <D>,
+
+# Minimum cut: single vertex (also empty digraphs)
+gap> d := EdgeWeightedDigraph([[]], [[]]);
+<immutable empty edge-weighted digraph with 1 vertex>
+gap> DigraphMinimumCut(d, 1, 1);
+Error, <s> and <t> must be distinct
+
+# Minimum cut: source = dest
+gap> d := EdgeWeightedDigraph([[2], []], [[5], []]);
+<immutable edge-weighted digraph with 2 vertices, 1 edge>
+gap> DigraphMinimumCut(d, 1, 1);
+Error, <s> and <t> must be distinct
+
+# Minimum cut: has loop
+gap> d := EdgeWeightedDigraph([[1, 2], []], [[5, 10], []]);
+<immutable edge-weighted digraph with 2 vertices, 2 edges>
+gap> DigraphMinimumCut(d, 1, 2);
+[ [ 1 ], [ 2 ] ]
+
+# Minimum cut: invalid source
+gap> d := EdgeWeightedDigraph([[1, 2], []], [[5, 10], []]);
+<immutable edge-weighted digraph with 2 vertices, 2 edges>
+gap> DigraphMinimumCut(d, 5, 2);
+Error, <s> must be a vertex of <D>,
+
+# Minimum cut: invalid sink
+gap> d := EdgeWeightedDigraph([[1, 2], []], [[5, 10], []]);
+<immutable edge-weighted digraph with 2 vertices, 2 edges>
+gap> DigraphMinimumCut(d, 1, 5);
+Error, <t> must be a vertex of <D>,
+
+# Minimum cut: sink not reachable
+gap> d := EdgeWeightedDigraph([[1], []], [[5], []]);
+<immutable edge-weighted digraph with 2 vertices, 1 edge>
+gap> DigraphMinimumCut(d, 1, 2);
+[ [ 1 ], [ 2 ] ]
+
+# Minimum cut: source has in neighbours
+gap> d := EdgeWeightedDigraph([[2], [3], []], [[5], [10], []]);
+<immutable edge-weighted digraph with 3 vertices, 2 edges>
+gap> DigraphMinimumCut(d, 2, 3);
+[ [ 2 ], [ 1, 3 ] ]
+
+# Minimum cut: sink has out-neighbours
+gap> d := EdgeWeightedDigraph([[2], [3], [2]], [[5], [10], [7]]);
+<immutable edge-weighted digraph with 3 vertices, 3 edges>
+gap> DigraphMinimumCut(d, 2, 3);
+[ [ 2 ], [ 1, 3 ] ]
+
+# Minimum cut: cycle
+gap> d := EdgeWeightedDigraph([[2], [3], [1]], [[5], [10], [7]]);
+<immutable edge-weighted digraph with 3 vertices, 3 edges>
+gap> DigraphMinimumCut(d, 1, 3);
+[ [ 1 ], [ 2, 3 ] ]
+
+# Minimum cut: example from Wikipedia
+gap> gr := EdgeWeightedDigraph([[3, 4], [], [2, 4], [2]],
+>                              [[10, 5], [], [5, 15], [10]]);;
+gap> DigraphMinimumCut(gr, 1, 2);
+[ [ 1 ], [ 2, 3, 4 ] ]
+gap> DigraphMinimumCut(gr, 3, 2);
+[ [ 3, 4 ], [ 1, 2 ] ]
+
+# Minimum cut: example from Wikipedia article on Push-label maximum flow
+gap> gr := EdgeWeightedDigraph([[2], [3, 6], [4], [1, 6], [1, 3], []],
+>                              [[12], [3, 7], [10], [5, 10], [15, 4], []]);;
+gap> DigraphMinimumCut(gr, 5, 6);
+[ [ 5, 1, 2 ], [ 3, 4, 6 ] ]
+
+# Minimum cut set: empty digraphs
+gap> d := EdgeWeightedDigraph([], []);
+<immutable empty edge-weighted digraph with 0 vertices>
+gap> DigraphMinimumCutSet(d, 1, 1);
+Error, <s> must be a vertex of <D>,
+
+# Minimum cut set: source has in neighbours
+gap> d := EdgeWeightedDigraph([[2], [3], []], [[5], [10], []]);
+<immutable edge-weighted digraph with 3 vertices, 2 edges>
+gap> DigraphMinimumCutSet(d, 2, 3);
+[ [ 2, 3 ] ]
+
+# Minimum cut set: cycle
+gap> d := EdgeWeightedDigraph([[2], [3], [1]], [[5], [10], [7]]);
+<immutable edge-weighted digraph with 3 vertices, 3 edges>
+gap> DigraphMinimumCutSet(d, 1, 3);
+[ [ 1, 2 ] ]
+
+# Minimum cut set: invalid sink
+gap> d := EdgeWeightedDigraph([[1, 2], []], [[5, 10], []]);
+<immutable edge-weighted digraph with 2 vertices, 2 edges>
+gap> DigraphMinimumCutSet(d, 1, 5);
+Error, <t> must be a vertex of <D>,
+
+# Minimum cut set: source = dest
+gap> d := EdgeWeightedDigraph([[2], []], [[5], []]);
+<immutable edge-weighted digraph with 2 vertices, 1 edge>
+gap> DigraphMinimumCutSet(d, 1, 1);
+Error, <s> and <t> must be distinct
 
 #############################################################################
 # 6. Random edge-weighted digraphs
@@ -415,6 +518,90 @@ gap> IsEulerianDigraph(D);
 true
 gap> SortedList(Flat(EdgeWeights(D))) = [1 .. DigraphNrEdges(D)];
 true
+
+#############################################################################
+# 7. Drawing edge-weighted digraphs
+#############################################################################
+
+# Trivial example
+gap> gr := EdgeWeightedDigraph([[2], []], [[10], []]);;
+gap> Print(DotEdgeWeightedDigraph(gr));
+//dot
+digraph hgn{
+node [shape=circle]
+1[color=gray, style=filled]
+2[color=gray, style=filled]
+1 -> 2[color=black, label=10]
+}
+gap> Print(DotEdgeWeightedDigraph(gr, rec(vert := "orange")));
+//dot
+digraph hgn{
+node [shape=circle]
+1[color=orange, style=filled]
+2[color=orange, style=filled]
+1 -> 2[color=black, label=10]
+}
+
+# Cycle example
+gap> gr := EdgeWeightedDigraph(CycleDigraph(5), [[10], [4], [8], [2], [8]]);;
+gap> path := DigraphPath(gr, 3, 1);
+[ [ 3, 4, 5, 1 ], [ 1, 1, 1 ] ]
+gap> Print(DotEdgeWeightedDigraph(gr, path, rec(highlight := "red")));
+//dot
+digraph hgn{
+node [shape=circle]
+1[color=lightpink, style=filled]
+2[color=gray, style=filled]
+3[color=yellowgreen, style=filled]
+4[color=gray, style=filled]
+5[color=gray, style=filled]
+1 -> 2[color=black, label=10]
+2 -> 3[color=black, label=4]
+3 -> 4[color=red, label=8]
+4 -> 5[color=red, label=2]
+5 -> 1[color=red, label=8]
+}
+
+# Large example
+gap> gr := EdgeWeightedDigraph(
+>   [[5, 7], [5], [1, 3, 6], [1, 3], [4, 5], [1, 2], [6]],
+>   [[8, 4], [12], [11, 2, 10], [3, 7], [9, 13], [1, 6], [5]]);
+<immutable edge-weighted digraph with 7 vertices, 13 edges>
+gap> path := EdgeWeightedDigraphShortestPath(gr, 1, 2);
+[ [ 1, 7, 6, 2 ], [ 2, 1, 2 ] ]
+gap> Print(DotEdgeWeightedDigraph(gr, path));
+//dot
+digraph hgn{
+node [shape=circle]
+1[color=yellowgreen, style=filled]
+2[color=lightpink, style=filled]
+3[color=gray, style=filled]
+4[color=gray, style=filled]
+5[color=gray, style=filled]
+6[color=gray, style=filled]
+7[color=gray, style=filled]
+1 -> 5[color=black, label=8]
+1 -> 7[color=blue, label=4]
+2 -> 5[color=black, label=12]
+3 -> 1[color=black, label=11]
+3 -> 3[color=black, label=2]
+3 -> 6[color=black, label=10]
+4 -> 1[color=black, label=3]
+4 -> 3[color=black, label=7]
+5 -> 4[color=black, label=9]
+5 -> 5[color=black, label=13]
+6 -> 1[color=black, label=1]
+6 -> 2[color=blue, label=6]
+7 -> 6[color=blue, label=5]
+}
+
+# Bad arguments
+gap> DotEdgeWeightedDigraph(
+>   CompleteDigraph(3),
+>   [[1, 2], [3, 4], [5, 6]],
+>   rec(vert := "blue", mrblobby := "pink")
+> );
+Error, 3rd arg <colors> contains unsupported option named 'mrblobby'
 
 #
 gap> DIGRAPHS_StopTest();

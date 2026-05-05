@@ -14,6 +14,7 @@ DeclareGlobalFunction("EdgeWeightedDigraph");
 DeclareProperty("IsNegativeEdgeWeightedDigraph", IsDigraph and HasEdgeWeights);
 DeclareAttribute("EdgeWeightedDigraphTotalWeight",
 IsDigraph and HasEdgeWeights);
+DeclareAttribute("UnitEdgeWeightedDigraph", IsDigraph);
 
 # 2. Edge Weight Copies
 DeclareOperation("EdgeWeightsMutableCopy", [IsDigraph and HasEdgeWeights]);
@@ -35,8 +36,12 @@ DeclareGlobalFunction("DIGRAPHS_Edge_Weighted_FloydWarshall");
 DeclareGlobalFunction("DIGRAPHS_Edge_Weighted_Bellman_Ford");
 DeclareGlobalFunction("DIGRAPHS_Edge_Weighted_Dijkstra");
 
-# 5. Maximum Flow
+# 5. Maximum Flow and Minimum Cut
 DeclareOperation("DigraphMaximumFlow",
+                 [IsDigraph and HasEdgeWeights, IsPosInt, IsPosInt]);
+DeclareOperation("DigraphMinimumCut",
+                 [IsDigraph and HasEdgeWeights, IsPosInt, IsPosInt]);
+DeclareOperation("DigraphMinimumCutSet",
                  [IsDigraph and HasEdgeWeights, IsPosInt, IsPosInt]);
 
 # Digraph Edge Connectivity
@@ -51,3 +56,9 @@ DeclareOperation("RandomUniqueEdgeWeightedDigraph",
                  [IsFunction, IsPosInt, IsFloat]);
 DeclareOperation("RandomUniqueEdgeWeightedDigraph",
                  [IsFunction, IsPosInt, IsRat]);
+
+# 7. Drawing edge weighted digraphs
+DeclareOperation("DotEdgeWeightedDigraph", [IsDigraph]);
+DeclareOperation("DotEdgeWeightedDigraph", [IsDigraph, IsList]);
+DeclareOperation("DotEdgeWeightedDigraph", [IsDigraph, IsRecord]);
+DeclareOperation("DotEdgeWeightedDigraph", [IsDigraph, IsList, IsRecord]);

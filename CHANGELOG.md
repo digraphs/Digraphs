@@ -4,6 +4,30 @@ Wilf A. Wilson, Michael Young et al.
 
 Licensing information can be found in the `LICENSE` file.
 
+## Version 1.14.0 (released 22/01/2026)
+
+## What's Changed
+
+- Fix some little things in the manual, etc by @wilfwilson in https://github.com/digraphs/Digraphs/pull/855
+- Re-standardise on function arguments named `D`, as opposed to `digraph` by @wilfwilson in https://github.com/digraphs/Digraphs/pull/868
+- Remove support for GAP 4.10 by @wilfwilson in https://github.com/digraphs/Digraphs/pull/866
+- Abstract RandomDigraphCons redirect methods by @mtorpey in https://github.com/digraphs/Digraphs/pull/871
+- Add `SwapDigraphs` and `DigraphsRemoveAllEdges` functions by @RheyaM in https://github.com/digraphs/Digraphs/pull/864
+- CI: stop the codecov step from failing the job on Windows, since it is buggy by @wilfwilson in https://github.com/digraphs/Digraphs/pull/875
+- ViewString for edge weights by @ap4108735 in https://github.com/digraphs/Digraphs/pull/873
+- Fix dotdigraph doc #759 by @coraaked in https://github.com/digraphs/Digraphs/pull/880
+- Implemented ^ operator for digraphs to delegate to OnDigraphs (issue #580) by @devansh2605 in https://github.com/digraphs/Digraphs/pull/876
+- Added `DigraphMinimumCutSet` by @frankiegillis in https://github.com/digraphs/Digraphs/pull/879
+
+## New Contributors
+
+- @RheyaM made their first contribution in https://github.com/digraphs/Digraphs/pull/864
+- @ap4108735 made their first contribution in https://github.com/digraphs/Digraphs/pull/873
+- @coraaked made their first contribution in https://github.com/digraphs/Digraphs/pull/880
+- @devansh2605 made their first contribution in https://github.com/digraphs/Digraphs/pull/876
+
+**Full Changelog**: https://github.com/digraphs/Digraphs/compare/v1.13.1...v1.14.0
+
 ## Version 1.13.1 (released 27/09/2025)
 
 This is a minor release of the Digraphs package, containing one bugfix:

@@ -405,14 +405,14 @@ static Obj FuncIS_ACYCLIC_DIGRAPH(Obj self, Obj adj) {
   Obj   nbs;
   UInt *stack, *ptr;
 
-  nr = LEN_PLIST(adj);
+  nr = LEN_LIST(adj);
 
   // init the buf
   ptr   = safe_calloc(nr + 1, sizeof(UInt));
   stack = safe_malloc((2 * nr + 2) * sizeof(UInt));
 
   for (i = 1; i <= nr; i++) {
-    nbs = ELM_PLIST(adj, i);
+    nbs = ELM_LIST(adj, i);
     if (LEN_LIST(nbs) == 0) {
       ptr[i] = 1;
     } else if (ptr[i] == 0) {
@@ -431,7 +431,7 @@ static Obj FuncIS_ACYCLIC_DIGRAPH(Obj self, Obj adj) {
         // Check whether:
         // 1. We've previously finished with this vertex, OR
         // 2. Whether we've now investigated all descendant branches
-        nbs = ELM_PLIST(adj, j);
+        nbs = ELM_LIST(adj, j);
         if (ptr[j] == 1 || k > (UInt) LEN_LIST(nbs)) {
           ptr[j] = 1;
           level--;
@@ -445,9 +445,9 @@ static Obj FuncIS_ACYCLIC_DIGRAPH(Obj self, Obj adj) {
         } else {  // Otherwise move onto the next available branch
           ptr[j] = 2;
           level++;
-          nbs = ELM_PLIST(adj, j);
+          nbs = ELM_LIST(adj, j);
           stack += 2;
-          stack[0] = INT_INTOBJ(CONST_ADDR_OBJ(nbs)[k]);
+          stack[0] = INT_INTOBJ(ELM_LIST(nbs, k));
           stack[1] = 1;
         }
       }
@@ -1359,10 +1359,10 @@ static Obj FuncDIGRAPH_REFLEX_TRANS_CLOSURE(Obj self, Obj digraph) {
 }
 
 static Obj FuncRANDOM_DIGRAPH(Obj self, Obj nn, Obj pp) {
-  UInt    n, i, j;
-  Double  p, q;
-  Int     len;
-  Obj     adj, adji;
+  UInt   n, i, j;
+  Double p, q;
+  Int    len;
+  Obj    adj, adji;
 
   n   = INT_INTOBJ(nn);
   p   = VAL_MACFLOAT(pp);

@@ -875,6 +875,50 @@ true
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="IsCograph">
+<ManSection>
+  <Prop Name="IsCograph" Arg="digraph"/>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
+  <Description>
+    If <A>digraph</A> is a symmetric digraph without loops or multiple edges, then the
+    property returns true if <A>digraph</A> is a cograph, and false if it is not.
+    <P/>
+
+    A symmetric digraph without loops or multiple edges is called a <E>cograph</E>
+    if it does not contain a copy of the path graph on four vertices as
+    an induced subgraph. Equivalently, cographs are those graphs which may be
+    reached starting from a single vertex under the operations of series and parallel
+    composition.
+    <P/>
+
+    This function implements the algorithm for cograph recogntition given in
+    <Cite Key="HP05"/>.
+    <P/>
+
+    &MUTABLE_RECOMPUTED_PROP;
+
+    <Example><![CDATA[
+gap> D := DigraphByEdges([[1, 2], [2, 3], [3, 4], [4, 1]]);
+<immutable digraph with 4 vertices, 4 edges>
+gap> D := DigraphSymmetricClosure(D);
+<immutable symmetric digraph with 4 vertices, 8 edges>
+gap> IsCograph(D);
+true
+gap> D := DigraphByEdges([[1, 2], [2, 3], [3, 4]]);
+<immutable digraph with 4 vertices, 3 edges>
+gap> D := DigraphSymmetricClosure(D);
+<immutable symmetric digraph with 4 vertices, 6 edges>
+gap> IsCograph(D);
+false
+gap> D := CompleteDigraph(5);
+<immutable complete digraph with 5 vertices>
+gap> IsCograph(D);
+true
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="IsFunctionalDigraph">
 <ManSection>
   <Prop Name="IsFunctionalDigraph" Arg="digraph"/>
