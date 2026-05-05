@@ -581,6 +581,7 @@ Error, Digraph given must be a symmetric digraph
 gap> D := Digraph([[1, 2, 3, 4, 5], [1, 2, 3, 4, 5], [1, 2, 3, 4, 5], [1, 2, 3, 4, 5], [1, 2, 3, 4, 5]]);;
 gap> DigraphEdgeConnectivity(D);
 4
+
 # LineDigraph for mutable digraphs: mutable output, unchanged input
 gap> D := Digraph(IsMutableDigraph, [[2, 3, 4], [1, 3, 4, 5], [1, 2], [5], [4]]);;
 gap> out := LineDigraph(D);;

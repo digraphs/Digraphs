@@ -3369,6 +3369,7 @@ gap> for v in p do
 > od;
 gap> DigraphVertices(d) = Union(neighbours, p);
 true
+
 # DigraphColourRefinement
 gap> D := Digraph([[3], [], [1, 9], [], [10], [7, 8, 9], [6, 8], [6, 7], [3, 6, 10], [5, 9]]);;
 gap> DigraphColourRefinement(D);

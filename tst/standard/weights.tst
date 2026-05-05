@@ -384,6 +384,7 @@ gap> DigraphEdgeConnectivity(D);
 gap> D := DigraphFromGraph6String("I~~~~~~~w");;
 gap> DigraphEdgeConnectivity(D);
 9
+
 # Minimum cut: empty digraphs
 gap> d := EdgeWeightedDigraph([], []);
 <immutable empty edge-weighted digraph with 0 vertices>
