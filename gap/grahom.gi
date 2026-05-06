@@ -521,8 +521,8 @@ InstallMethod(DigraphsRespectsColouring,
 [IsDigraph, IsDigraph, IsTransformation, IsList, IsList],
 function(src, ran, x, cols1, cols2)
   if Maximum(OnTuples(DigraphVertices(src), x)) > DigraphNrVertices(ran) then
-    ErrorNoReturn("the third argument <x> must map the vertices of the first ",
-                  "argument <src> into the vertices of the second argument ",
+    ErrorNoReturn("the 3rd argument <x> must map the vertices of the 1st ",
+                  "argument <src> into the vertices of the 2nd argument ",
                   "<ran>,");
   fi;
   DIGRAPHS_ValidateVertexColouring(DigraphNrVertices(src), cols1);
