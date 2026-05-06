@@ -2494,8 +2494,8 @@ gap> DigraphsRespectsColouring(D1, D2, Transformation([4, 1, 3, 4, 5]), c1, c2);
 false
 gap> DigraphsRespectsColouring(D1, D2, Transformation([6, 1, 3, 4, 5, 6]),
 > c1, c2);
-Error, the third argument <x> must map the vertices of the first argument <src\
-> into the vertices of the second argument <ran>,
+Error, the 3rd argument <x> must map the vertices of the 1st argument <src> in\
+to the vertices of the 2nd argument <ran>,
 
 # MaximalCommonSubdigraph and MinimalCommonSuperDigraph
 gap> MaximalCommonSubdigraph(NullDigraph(0), CompleteDigraph(10));
