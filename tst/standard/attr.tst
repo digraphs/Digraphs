@@ -1119,7 +1119,7 @@ gap> FacialWalks(g, rotationSy);
 [ [ 1, 2, 3, 4, 3, 2 ] ]
 gap> g := CycleDigraph(4);;
 gap> planar := PlanarEmbedding(g);
-[ [ 2 ], [ 3 ], [ 4 ], [ 1 ] ]
+[ [ 2, 4 ], [ 3, 1 ], [ 4, 2 ], [ 1, 3 ] ]
 gap> FacialWalks(g, planar);
 [ [ 1, 2, 3, 4 ] ]
 gap> nonPlanar := [[2, 4], [1, 3], [2, 4], [1, 3]];;

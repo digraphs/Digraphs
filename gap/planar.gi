@@ -47,6 +47,7 @@ function(D)
   if DIGRAPHS_HasTrivialRotationSystem(D) then;
     return OutNeighbors(D);
   fi;
+  D := DigraphSymmetricClosure(DigraphMutableCopyIfMutable(D));
   return PLANAR_EMBEDDING(D);
 end);
 
