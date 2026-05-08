@@ -1121,10 +1121,10 @@ gap> g := CycleDigraph(4);;
 gap> planar := PlanarEmbedding(g);
 [ [ 2, 4 ], [ 3, 1 ], [ 4, 2 ], [ 1, 3 ] ]
 gap> FacialWalks(g, planar);
-[ [ 1, 2, 3, 4 ] ]
+[ [ 1, 2, 3, 4 ], [ 1, 4, 3, 2 ] ]
 gap> nonPlanar := [[2, 4], [1, 3], [2, 4], [1, 3]];;
 gap> FacialWalks(g, nonPlanar);
-[ [ 1, 2, 3, 4 ] ]
+[ [ 1, 2, 3, 4 ], [ 1, 4, 3, 2 ] ]
 gap> g := CompleteMultipartiteDigraph([2, 2, 2]);;
 gap> rotationSystem := PlanarEmbedding(g);
 [ [ 3, 5, 4, 6 ], [ 6, 4, 5, 3 ], [ 6, 2, 5, 1 ], [ 1, 5, 2, 6 ], 

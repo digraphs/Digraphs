@@ -1911,8 +1911,8 @@ function(D, rotationSystem)
     return cycle;
   end;
 
-  D := DigraphRemoveLoops(DigraphRemoveAllMultipleEdges(
-       DigraphMutableCopyIfMutable(D)));
+  D := DigraphSymmetricClosure(DigraphRemoveLoops(DigraphRemoveAllMultipleEdges(
+       DigraphMutableCopyIfMutable(D))));
 
   facialWalks := [];
   remEdges := ShallowCopy(DigraphEdges(D));
