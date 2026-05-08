@@ -1107,7 +1107,7 @@ gap> FacialWalks(CycleDigraph(3), [[4], [1], [3]]);
 Error, the 2nd argument (dense list <rotationSystem>) is not a rotation system\
  for the 1st argument (digraph <D>), expected its union to be the vertices of \
 <D>,
-gap> g:=ChainDigraph(3);;
+gap> g := ChainDigraph(3);;
 gap> FacialWalks(g, PlanarEmbedding(g));
 [ [ 1, 2, 3, 2 ] ]
 gap> g := Digraph([]);;
