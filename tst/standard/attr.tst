@@ -1097,8 +1097,6 @@ gap> DigraphAllUndirectedSimpleCircuits(g);
   [ 9, 5, 6, 10 ], [ 9, 5, 7, 8, 6, 10 ] ]
 
 # FacialCycles
-gap> FacialWalks(ChainDigraph(3), []);
-Error, the 1st argument (digraph <D>) must be Eulerian
 gap> FacialWalks(CycleDigraph(3), []);
 Error, the 2nd argument (dense list <rotationSystem>) is not a rotation system\
  for the 1st argument (digraph <D>), expected a list of 3 lists,
@@ -1109,6 +1107,9 @@ gap> FacialWalks(CycleDigraph(3), [[4], [1], [3]]);
 Error, the 2nd argument (dense list <rotationSystem>) is not a rotation system\
  for the 1st argument (digraph <D>), expected its union to be the vertices of \
 <D>,
+gap> g:=ChainDigraph(3);;
+gap> FacialWalks(g, PlanarEmbedding(g));
+[ [ 1, 2, 3, 2 ] ]
 gap> g := Digraph([]);;
 gap> rotationSy := [];;
 gap> FacialWalks(g, rotationSy);
