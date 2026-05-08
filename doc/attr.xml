@@ -1535,7 +1535,7 @@ gap> DigraphAllChordlessCycles(D);
   <Oper Name="FacialWalks" Arg="digraph, list"/>
   <Returns>A list of lists of vertices.</Returns>
   <Description>
-    If <A>digraph</A> is an Eulerian digraph and <A>list</A> is a rotation system of <A>digraph</A>, 
+    If <A>digraph</A> is a digraph and <A>list</A> is a rotation system of <A>digraph</A>, 
     then <C>FacialWalks</C> returns a list of the <E>facial walks</E> in <A>digraph</A>. <P/>
 
     A rotation system defines for each vertex of a symmetric digraph the ordering of the neighbours.

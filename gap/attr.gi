@@ -1859,10 +1859,6 @@ InstallMethod(FacialWalks, "for a digraph and a dense list",
 function(D, rotationSystem)
   local FacialWalk, facialWalks, remEdges, cycle;
 
-  if not IsEulerianDigraph(D) then
-    ErrorNoReturn("the 1st argument (digraph <D>) must be Eulerian");
-  fi;
-
   if Length(rotationSystem) <> DigraphNrVertices(D)
       or not ForAll(rotationSystem, IsList) then
     ErrorNoReturn("the 2nd argument (dense list <rotationSystem>) is not a ",
