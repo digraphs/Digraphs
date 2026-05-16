@@ -3500,6 +3500,37 @@ gap> D := DigraphReduceEdge(D, [5, 6]);
 gap> DigraphEdges(D);
 [ [ 1, 3 ], [ 1, 2 ], [ 2, 1 ], [ 2, 4 ], [ 3, 1 ], [ 3, 4 ], [ 4, 3 ], 
   [ 4, 2 ] ]
+# DigraphColourRefinement
+gap> D := Digraph([[3], [], [1, 9], [], [10], [7, 8, 9], [6, 8], [6, 7], [3, 6, 10], [5, 9]]);;
+gap> DigraphColourRefinement(D);
+[ 2, 1, 4, 1, 2, 5, 3, 3, 6, 4 ]
+gap> D := Digraph([[], [1], [1], [1]]);;
+gap> DigraphColourRefinement(D);
+[ 1, 2, 2, 2 ]
+gap> D := Digraph([[1], [1], [1], [1]]);;
+gap> DigraphColourRefinement(D);
+Error, the digraph cannot contain loops
+gap> D := Digraph([[], [], [], []]);;
+gap> DigraphColourRefinement(D);
+[ 1, 1, 1, 1 ]
+gap> D := Digraph([[2], [3], [2, 4], [2, 5], [4, 6], [5]]);;
+gap> DigraphColourRefinement(D);
+[ 1, 3, 4, 5, 6, 2 ]
+gap> D := Digraph([[2], [3], [1]]);;
+gap> DigraphColourRefinement(D);
+[ 1, 1, 1 ]
+gap> D := Digraph([[2, 4], [5], [2, 4], [5], [1, 3]]);;
+gap> DigraphColourRefinement(D);
+[ 2, 1, 2, 1, 3 ]
+gap> D := Digraph([[4], [1, 3], [4], [5], [1, 3]]);;
+gap> DigraphColourRefinement(D);
+[ 2, 3, 2, 1, 4 ]
+gap> D := Digraph([]);;
+gap> DigraphColourRefinement(D);
+[  ]
+gap> D := Digraph([[2, 3, 4, 5], [], [], [], []]);;
+gap> DigraphColourRefinement(D);
+[ 2, 1, 1, 1, 1 ]
 
 #
 gap> DIGRAPHS_StopTest();

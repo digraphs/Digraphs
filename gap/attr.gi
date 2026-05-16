@@ -959,8 +959,7 @@ InstallMethod(DigraphHash, "for a digraph", [IsDigraph], DIGRAPH_HASH);
 # To make built in Orbit function use DigraphHash
 InstallMethod(SparseIntKey, "for an object and digraph",
 [IsObject, IsDigraph],
-{coll, D} -> DigraphHash
-);
+{coll, D} -> DigraphHash);
 
 # To make orb package use DigraphHash
 InstallMethod(ChooseHashFunction, "for a digraph and positive integer",
@@ -1788,22 +1787,18 @@ function(D, maxLength)
     local T, C, u, pair, x, y, labels;
     T := [];
     C := [];
+    labels := DigraphVertexLabels(D);
     for u in DigraphVertices(D) do
       for pair in Combinations(OutNeighboursOfVertex(D, u), 2) do
+        SortBy(pair, i -> labels[i]);
         x := pair[1];
         y := pair[2];
-        labels := DigraphVertexLabels(D);
-        if labels[u] < labels[x] and labels[x] < labels[y] then
+        Assert(1, labels[x] < labels[y]);
+        if labels[u] < labels[x] then
           if not IsDigraphEdge(D, x, y) then
             Add(T, [x, u, y]);
           else
             Add(C, [x, u, y]);
-          fi;
-        elif labels[u] < labels[y] and labels[y] < labels[x] then
-          if not IsDigraphEdge(D, x, y) then
-            Add(T, [y, u, x]);
-          else
-            Add(C, [y, u, x]);
           fi;
         fi;
       od;

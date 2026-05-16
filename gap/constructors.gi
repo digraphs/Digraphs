@@ -130,9 +130,7 @@ function(D, distance)
 end);
 
 # Warning: unlike the other methods the next two do not change their arguments
-# in place, and always return an immutable digraph. There is currently no
-# method for creating a mutable digraph with 4 arguments, as required by the
-# next two methods.
+# in place.
 
 InstallMethod(LineDigraph, "for a digraph", [IsDigraph],
 function(D)

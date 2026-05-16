@@ -38,7 +38,6 @@ jobs:
             pkgs-to-clone: https://github.com/digraphs/graphviz.git https://github.com/gap-packages/NautyTracesInterface.git
             pkgs-to-build: io orb datastructures grape profiling NautyTracesInterface
 
-
     steps:
       - uses: actions/checkout@v5
       - uses: gap-actions/setup-cygwin@v2
@@ -82,7 +81,7 @@ jobs:
           cd ${GAPROOT}/pkg
           ../bin/BuildPackages.sh --strict ${{ matrix.pkgs-to-build }}
       - name: Build Digraphs . . .
-        uses: gap-actions/build-pkg@v2
+        uses: gap-actions/build-pkg@v3
         env:
           ABI: ${{ matrix.ABI }}
         with:
@@ -93,22 +92,20 @@ jobs:
         uses: gap-actions/run-pkg-tests@v4
         with:
           testfile: tst/github_actions/install.g
+          coverage: "false"
       - name: Run DigraphsTestStandard . . .
         uses: gap-actions/run-pkg-tests@v4
         with:
           testfile: tst/github_actions/standard.g
+          coverage: "false"
       - name: Run DigraphsTestManualExamples . . .
         uses: gap-actions/run-pkg-tests@v4
         with:
           testfile: tst/github_actions/examples.g
+          coverage: "false"
       - name: Run DigraphsTestExtreme . . .
         uses: gap-actions/run-pkg-tests@v4
         if: ${{ runner.os != 'Windows' }}
         with:
           testfile: tst/github_actions/extreme.g
-      - uses: gap-actions/process-coverage@v3
-      - uses: codecov/codecov-action@v5
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          # codecov/codecov-action seems unreliable on Windows
-          fail_ci_if_error: ${{ runner.os != 'Windows' }}
+          coverage: "false"

@@ -521,8 +521,8 @@ InstallMethod(DigraphsRespectsColouring,
 [IsDigraph, IsDigraph, IsTransformation, IsList, IsList],
 function(src, ran, x, cols1, cols2)
   if Maximum(OnTuples(DigraphVertices(src), x)) > DigraphNrVertices(ran) then
-    ErrorNoReturn("the third argument <x> must map the vertices of the first ",
-                  "argument <src> into the vertices of the second argument ",
+    ErrorNoReturn("the 3rd argument <x> must map the vertices of the 1st ",
+                  "argument <src> into the vertices of the 2nd argument ",
                   "<ran>,");
   fi;
   DIGRAPHS_ValidateVertexColouring(DigraphNrVertices(src), cols1);
@@ -738,7 +738,7 @@ end);
 InstallMethod(MaximalCommonSubdigraph, "for a pair of digraphs",
 [IsDigraph, IsDigraph],
 function(A, B)
-  local D1, D2, MPG, nonloops, Clqus, M, l, n, m, embedding1, embedding2, iso;
+  local D1, D2, MPG, nonloops, Clqus, M, n, m, embedding1, embedding2, iso;
 
   D1 := DigraphImmutableCopy(A);
   D2 := DigraphImmutableCopy(B);
@@ -763,13 +763,7 @@ function(A, B)
   nonloops := Filtered([1 .. n * m], x -> not x in OutNeighbours(MPG)[x]);
   # We find a big clique
   Clqus := DigraphMaximalCliquesReps(MPG, [], nonloops);
-  M := 1;
-  for l in [1 .. Size(Clqus)] do
-    if Size(Clqus[l]) > Size(Clqus[M]) then
-      M := l;
-    fi;
-  od;
-
+  M := PositionMaximum(Clqus, Size);
   embedding1 := List(Clqus[M], x -> QuoInt(x - 1, m) + 1);
   embedding2 := List(Clqus[M], x -> RemInt(x - 1, m) + 1);
   return [InducedSubdigraph(D1, embedding1),

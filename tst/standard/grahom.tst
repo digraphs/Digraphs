@@ -8,9 +8,9 @@
 #############################################################################
 ##
 
-#@local D, D1, D2, DD, G, H, N5, edges, epis, f, found, gens, gr, gr1, gr2
-#@local homos, hook, mat, mono, monos, order_func, p, parts, ran, s, src, t, tt
-#@local x
+#@local D, D1, D2, DD, G, H, N5, c1, c2, edges, epis, f, found, gens, gr, gr1
+#@local gr2, homos, hook, mat, mono, monos, order_func, p, parts, ran, s, src
+#@local t, tt, x
 gap> START_TEST("Digraphs package: standard/grahom.tst");
 gap> LoadPackage("digraphs", false);;
 
@@ -168,6 +168,9 @@ gap> gr := DigraphTransitiveClosure(CompleteDigraph(2));
 gap> DigraphHasLoops(gr);
 true
 gap> GeneratorsOfEndomorphismMonoid(gr);
+[ Transformation( [ 2, 1 ] ), IdentityTransformation, 
+  Transformation( [ 1, 1 ] ) ]
+gap> GeneratorsOfEndomorphismMonoid(gr);  # recall attribute
 [ Transformation( [ 2, 1 ] ), IdentityTransformation, 
   Transformation( [ 1, 1 ] ) ]
 gap> gr := EmptyDigraph(2);
@@ -2300,6 +2303,8 @@ gap> IsDigraphHomomorphism(gr1, gr2, Transformation([1, 2]), [1, 2], [1, 1]);
 false
 gap> IsDigraphHomomorphism(gr1, gr2, Transformation([1, 2]), [1, 1], [1, 1]);
 true
+gap> IsDigraphHomomorphism(gr1, gr2, (1, 2), [1, 1], [1, 1]);
+true
 gap> IsDigraphHomomorphism(gr1, gr2, Transformation([1, 2]), [1, 1], [1, 2]);
 false
 gap> gr1 := Digraph([[], []]);
@@ -2478,7 +2483,21 @@ false
 gap> IsDigraphEmbedding(ran, src, (), [2, 1], [1, 1, 2]);
 false
 
-# MaximalCommSubdigraph and MinimalCommonSuperDigraph
+# DigraphsRespectsColouring
+gap> D1 := CompleteDigraph(4);;
+gap> D2 := ChainDigraph(5);;
+gap> c1 := [1, 2, 3, 4];;
+gap> c2 := [2, 3, 3, 4, 1];;
+gap> DigraphsRespectsColouring(D1, D2, Transformation([5, 1, 3, 4, 5]), c1, c2);
+true
+gap> DigraphsRespectsColouring(D1, D2, Transformation([4, 1, 3, 4, 5]), c1, c2);
+false
+gap> DigraphsRespectsColouring(D1, D2, Transformation([6, 1, 3, 4, 5, 6]),
+> c1, c2);
+Error, the 3rd argument <x> must map the vertices of the 1st argument <src> in\
+to the vertices of the 2nd argument <ran>,
+
+# MaximalCommonSubdigraph and MinimalCommonSuperDigraph
 gap> MaximalCommonSubdigraph(NullDigraph(0), CompleteDigraph(10));
 [ <immutable empty digraph with 0 vertices>, IdentityTransformation, 
   IdentityTransformation ]
@@ -2513,6 +2532,8 @@ gap> MinimalCommonSuperdigraph(PetersenGraph(),
 > DigraphSymmetricClosure(CycleDigraph(5)));
 [ <immutable digraph with 10 vertices, 30 edges>, IdentityTransformation, 
   IdentityTransformation ]
+gap> MaximalCommonSubdigraph(Digraph("banner"), Digraph("diamond"))[1];
+<immutable digraph with 3 vertices, 4 edges>
 gap> MaximalCommonSubdigraph(Digraph([[1, 1]]), Digraph([[1]]));
 Error, the 1st argument (a digraph) must not satisfy IsMultiDigraph
 gap> MinimalCommonSuperdigraph(Digraph([[1, 1]]), Digraph([[1]]));
