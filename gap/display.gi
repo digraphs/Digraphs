@@ -387,7 +387,9 @@ if not IsBound(Splash) then  # This function is written by A. Egri-Nagy
       # Requires GAP >= 4.11:
       # Exec(StringFormatted("cd {}; pdflatex {} 2>/dev/null 1>/dev/null", dir);
       Exec(Concatenation("cd ", dir, ";",
-                         "pdflatex ", file, " 2>/dev/null 1>/dev/null"));
+                         "pdflatex -interaction=nonstopmode ",
+                         file,
+                         " 2>/dev/null 1>/dev/null"));
     else  # type = "dot"
       # Requires GAP >= 4.11:
       # Exec(StringFormatted("{} -T {} {} -o {}", engine, filetype, inn, out));
