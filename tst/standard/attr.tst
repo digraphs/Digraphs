@@ -3289,6 +3289,23 @@ gap> D := DigraphFromGraph6String(
 gap> DigraphVertexConnectivity(D);
 7
 
+# EdgeConnectivity
+gap> D := Digraph([[4], [4], [4], [1, 2, 3]]);;
+gap> DigraphEdgeConnectivity(D);  
+1
+gap> D := RandomDigraph(1);;
+gap> DigraphEdgeConnectivity(D);
+0
+gap> D := Digraph([[2, 3], [1, 4], [1, 4], [2, 3]]);;
+gap> DigraphEdgeConnectivity(D);
+2
+gap> D := Digraph([[1, 2, 3, 4, 5], [1, 2, 3, 4, 5], [1, 2, 3, 4, 5], [1, 2, 3, 4, 5], [1, 2, 3, 4, 5]]);;
+gap> DigraphEdgeConnectivity(D);
+4
+gap> D := DigraphFromGraph6String("I~~~~~~~w");;
+gap> DigraphEdgeConnectivity(D);
+9
+
 # Semimodular lattices
 gap> D := DigraphFromDigraph6String("&C[o?");
 <immutable digraph with 4 vertices, 5 edges>

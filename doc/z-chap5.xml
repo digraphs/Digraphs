@@ -36,7 +36,6 @@
     <#Include Label="DigraphMinimumCutSet">
     <#Include Label="RandomUniqueEdgeWeightedDigraph">
     <#Include Label="DotEdgeWeightedDigraph">
-    <#Include Label="DigraphEdgeConnectivity">
   </Section>
 
   <Section><Heading>Orders</Heading>

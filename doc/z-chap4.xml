@@ -90,6 +90,7 @@
     <#Include Label="NrSpanningTrees">
     <#Include Label="DigraphDijkstra">
     <#Include Label="DigraphVertexConnectivity">
+    <#Include Label="DigraphEdgeConnectivity">
     <#Include Label="DigraphCycleBasis">
     <#Include Label="DigraphIsKing">
     <#Include Label="DigraphKings">

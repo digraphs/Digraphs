@@ -472,23 +472,6 @@ gap> d := EdgeWeightedDigraph([[2], []], [[5], []]);
 gap> DigraphMinimumCutSet(d, 1, 1);
 Error, <s> and <t> must be distinct
 
-# EdgeConnectivity
-gap> d := Digraph([[4], [4], [4], [1, 2, 3]]);;
-gap> DigraphEdgeConnectivity(d);  
-1
-gap> D := RandomDigraph(1);;
-gap> DigraphEdgeConnectivity(D);
-0
-gap> d := Digraph([[2, 3], [1, 4], [1, 4], [2, 3]]);;
-gap> DigraphEdgeConnectivity(d);
-2
-gap> D := Digraph([[1, 2, 3, 4, 5], [1, 2, 3, 4, 5], [1, 2, 3, 4, 5], [1, 2, 3, 4, 5], [1, 2, 3, 4, 5]]);;
-gap> DigraphEdgeConnectivity(D);
-4
-gap> D := DigraphFromGraph6String("I~~~~~~~w");;
-gap> DigraphEdgeConnectivity(D);
-9
-
 #############################################################################
 # 6. Random edge-weighted digraphs
 #############################################################################
