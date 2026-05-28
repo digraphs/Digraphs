@@ -173,8 +173,18 @@ Persons := [
     FirstNames     := "Reinis",
     IsAuthor       := true,
     IsMaintainer   := false,
-    Email          := "rc234@st-andrews.ac.uk",
-    GithubUsername := "reiniscirpons"),
+    Email          := "reinis.cirpons@inria.fr",
+    GithubUsername := "reiniscirpons",
+    PostalAddress  := Concatenation(
+                        "LS2N, ",
+                        "UFR Sciences et Techniques, ",
+                        "2, rue de la Houssinière, ",
+                        "BP 92208, ",
+                        "44322 Nantes Cedex 3, ",
+                        "France"),
+    Place          := "Nantes, France",
+    Institution    := "INRIA",
+    WWWHome        := "https://reinisc.id.lv/"),
 
   rec(
     LastName       := "Clayton",
