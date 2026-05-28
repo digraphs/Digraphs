@@ -1959,15 +1959,9 @@ rec( idom := [ 2, fail, 2, 2, 2 ], preorder := [ 2, 1, 3, 4, 5 ] )
   <Oper Name="DigraphDominatingSet" Arg="digraph"/>
   <Returns>A List</Returns>
   <Description>
-      This function returns a <E>dominating set</E> of <A>digraph</A>, which is
-      a subset of vertices whose neighbourhood consists of all vertices in
-      <A>digraph</A>.
-      <P/>
-
-      The neighbourhood of a set of vertices, <A>V</A>, refers to the set of
-      vertices that are adjacent to a vertex in <A>V</A>, not including any
-      vertices that exist in <A>V</A>. The domating set returned will be one of
-      potentially multiple possible dominating sets for the digraph.
+      This function returns a <E>dominating set</E> of <A>digraph</A>, i.e.
+      a subset <M>S</M> of vertices of <A>digraph</A> such that every vertex of
+      <A>digraph</A> is either in <M>S</M> or adjacent to a vertex in <M>S</M>.
   <Example><![CDATA[
 gap> D := Digraph([[2,3,4], [],[],[]]);;
 gap> DigraphDominatingSet(D);
