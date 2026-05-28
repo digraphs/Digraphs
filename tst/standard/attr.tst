@@ -3291,7 +3291,7 @@ gap> DigraphVertexConnectivity(D);
 
 # EdgeConnectivity
 gap> D := Digraph([[4], [4], [4], [1, 2, 3]]);;
-gap> DigraphEdgeConnectivity(D);  
+gap> DigraphEdgeConnectivity(D);
 1
 gap> D := RandomDigraph(1);;
 gap> DigraphEdgeConnectivity(D);
