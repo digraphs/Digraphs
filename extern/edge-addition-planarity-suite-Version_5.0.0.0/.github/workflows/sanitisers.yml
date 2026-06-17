@@ -1,0 +1,68 @@
+name: Sanitisers
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [ '**' ]
+    paths-ignore:
+      - '**/*.md'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  sanitisers:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    env:
+      CC: clang
+      CFLAGS: -fno-omit-frame-pointer -g -O1
+    strategy:
+      matrix:
+        type: [address, undefined]
+        include:
+          - type: undefined
+            environment_variables: UBSAN_OPTIONS=log_path=ubsan.log
+      fail-fast: false
+    name: ${{ matrix.type }}
+    steps:
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+      - name: Configure with -fsanitize=${{ matrix.type }} . . .
+        run: |
+          mkdir -p m4 && autoreconf -if
+          ./configure CC="$CC" CFLAGS="-fsanitize=${{ matrix.type }} $CFLAGS"
+      - name: Build . . .
+        run: make -j4
+      - name: Run tests . . .
+        run: ${{ matrix.environment_variables }} ./test-samples.sh
+      - name: Check log files
+        if: ${{ matrix.type == 'undefined' }}
+        run: |
+          if [ -f ubsan.log* ]; then
+            cat ubsan.log*
+            $(exit 1)
+          fi
+  valgrind:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    env:
+      CC: gcc
+      CFLAGS: -g -O0
+    steps:
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+      - name: Install dependencies . . .
+        run: |
+          sudo apt-get --yes update
+          sudo apt-get install -y expect libc6-dbg libtool-bin valgrind
+      - name: Configure . . .
+        run: |
+          mkdir -p m4 && autoreconf -if
+          ./configure CC="$CC" CFLAGS="$CFLAGS"
+      - name: Build . . .
+        run: make -j4
+      - name: Run tests with valgrind . . .
+        run: |
+          valgrind --version
+          unbuffer libtool --mode=execute valgrind --leak-check=full ./test-samples.sh 2>&1 | tee valgrind.log
+          echo
+          ( ! grep -i "Invalid" valgrind.log )
+          ( ! grep -E "lost: [^0]" valgrind.log )

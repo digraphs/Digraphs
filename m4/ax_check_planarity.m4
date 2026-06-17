@@ -23,7 +23,7 @@ AC_DEFUN([AX_CHECK_PLANARITY], [
           #else
           #error too old
           #endif
-          int main(void) { gp_InitGraph(0, 0); }
+          int main(void) { gp_EnsureVertexCapacity(0, 0); }
         ])], [
           AC_MSG_RESULT([yes])
         ], [
