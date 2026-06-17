@@ -1,0 +1,58 @@
+name: Compiler Version Compatibility
+# Currently, we are prioritizing gcc and clang for maximum version compatibility
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [ '**' ]
+    paths-ignore:
+      - '**/*.md'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  tests:
+    name: ${{ matrix.sys.compiler }}-${{ matrix.sys.version }}
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        sys:
+          - { compiler: gcc, version: 9 }
+          - { compiler: gcc, version: 10 }
+          - { compiler: gcc, version: 11 }
+          - { compiler: gcc, version: 12 }
+          - { compiler: gcc, version: 13 }
+          - { compiler: gcc, version: 14 }
+          - { compiler: clang, version: 14 }
+          - { compiler: clang, version: 15 }
+          - { compiler: clang, version: 16 }
+          - { compiler: clang, version: 17 }
+          - { compiler: clang, version: 18 }
+          - { compiler: clang, version: 19 }
+    steps:
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+      - name: Setup compiler . . .
+        run: |
+          sudo add-apt-repository ppa:ubuntu-toolchain-r/ppa -y
+          sudo apt-get --yes update
+          sudo apt-get install ${{ matrix.sys.compiler }}-${{ matrix.sys.version }}
+          CC=${{ matrix.sys.compiler }}-${{ matrix.sys.version }}
+          echo "CC=$CC" >> $GITHUB_ENV
+      - name: Compiler information
+        run: |
+          echo $CC
+          $CC --version
+      - name: Configure . . .
+        env:
+          CC: ${{ env.CC }}
+        run: |
+          mkdir -p m4
+          autoreconf -if 
+          ./configure CC="$CC"
+      - name: Build . . .
+        run: make -j4
+      - name: Run the tests . . .
+        run: ./test-samples.sh

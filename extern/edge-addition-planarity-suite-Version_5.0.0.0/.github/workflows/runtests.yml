@@ -1,0 +1,53 @@
+name: Tests
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [ '**' ]
+    paths-ignore:
+      - '**/*.md'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  basic-tests:
+    name: ${{ matrix.compiler }}
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    env:
+      CC: ${{ matrix.compiler }}
+    strategy:
+      fail-fast: false
+      matrix:
+        compiler: [clang, gcc]
+    steps:
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+      - name: test
+        run: |
+          echo ${{ github.event_name }}
+          echo ${{ github.event_name == 'pull_request' }}
+      - name: Configure . . .
+        run: |
+          mkdir -p m4
+          autoreconf -if 
+          ./configure CC="$CC"
+      - name: Build . . .
+        run: make -j4
+      - name: Run the tests . . .
+        run: ./test-samples.sh
+  distcheck:
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'pull_request' }}
+    env:
+      CC: gcc
+    steps:
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+      - name: Configure . . .
+        run: |
+          mkdir -p m4 
+          autoreconf -if 
+          ./configure CC="$CC"
+      - name: make distcheck . . .
+        run: make distcheck -j4

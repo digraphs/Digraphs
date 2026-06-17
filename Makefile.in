@@ -47,7 +47,8 @@ endif
 ifdef WITH_INCLUDED_PLANARITY
   KEXT_SOURCES += \
         $(PLANARITY_SUITE_DIR)/c/graphLib/graphDFSUtils.c \
-        $(PLANARITY_SUITE_DIR)/c/graphLib/graphUtils.c \
+        $(PLANARITY_SUITE_DIR)/c/graphLib/graph.c \
+        $(PLANARITY_SUITE_DIR)/c/graphLib/graphLib.c \
         $(PLANARITY_SUITE_DIR)/c/graphLib/extensionSystem/graphExtensions.c \
         $(PLANARITY_SUITE_DIR)/c/graphLib/homeomorphSearch/graphK23Search.c \
         $(PLANARITY_SUITE_DIR)/c/graphLib/homeomorphSearch/graphK23Search_Extensions.c \
@@ -70,6 +71,8 @@ ifdef WITH_INCLUDED_PLANARITY
         $(PLANARITY_SUITE_DIR)/c/graphLib/planarityRelated/graphIsolator.c \
         $(PLANARITY_SUITE_DIR)/c/graphLib/planarityRelated/graphNonplanar.c \
         $(PLANARITY_SUITE_DIR)/c/graphLib/planarityRelated/graphOuterplanarObstruction.c \
+        $(PLANARITY_SUITE_DIR)/c/graphLib/planarityRelated/graphOuterplanarity_Extensions.c \
+        $(PLANARITY_SUITE_DIR)/c/graphLib/planarityRelated/graphPlanarity_Extensions.c \
         $(PLANARITY_SUITE_DIR)/c/graphLib/planarityRelated/graphTests.c
 
   KEXT_CFLAGS += -I$(PLANARITY_SUITE_DIR) -include extern/eaps_flags.h
