@@ -22,7 +22,7 @@ jobs:
     name: compile and upload manual
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Install TeX Live . . .
         run: |
           packages=(
