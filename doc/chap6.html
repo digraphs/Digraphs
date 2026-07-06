@@ -61,6 +61,7 @@
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6.html#X7FF8935482954667">6.3-8 DigraphMinimumCut</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6.html#X854C6CFF82C57FF8">6.3-9 DigraphMinimumCutSet</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6.html#X8194E7078167A9E4">6.3-10 RandomUniqueEdgeWeightedDigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6.html#X8591F312783D85E5">6.3-11 DotEdgeWeightedDigraph</a></span>
 </div></div>
 <div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap6.html#X86424F167BD4F629">6.4 <span class="Heading">Orders</span></a>
 </span>
@@ -112,6 +113,7 @@
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6.html#X8361CA6E8401FF26">6.8-2 IsEdgeTransitive</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6.html#X7B26E4447A1611E9">6.8-3 IsVertexTransitive</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6.html#X7FB8789A7BF847E6">6.8-4 Is2EdgeTransitive</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap6.html#X7948401E7D87A2A5">6.8-5 IsCograph</a></span>
 </div></div>
 </div>
 
@@ -937,6 +939,58 @@ fail</pre></div>
 &lt;immutable edge-weighted digraph with 5 vertices, 14 edges&gt;
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">RandomUniqueEdgeWeightedDigraph(IsEulerianDigraph, 5, 1 / 3);</span>
 &lt;immutable edge-weighted digraph with 5 vertices, 6 edges&gt;</pre></div>
+
+<p><a id="X8591F312783D85E5" name="X8591F312783D85E5"></a></p>
+
+<h5>6.3-11 DotEdgeWeightedDigraph</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DotEdgeWeightedDigraph</code>( <var class="Arg">digraph</var>[, <var class="Arg">path</var>][, <var class="Arg">colors</var>] )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
+<p>Returns: A string.</p>
+
+<p>This operation produces a graphical representation of the edge-weighted digraph <var class="Arg">digraph</var>, in <em>dot</em> format. Its output will be similar to that of <code class="func">DotDigraph</code> (<a href="chap9.html#X7F9B99C478EE093A"><span class="RefLink">9.1-2</span></a>), but the diagram will also show the weights of the digraph's edges.</p>
+
+<p>If the optional argument <var class="Arg">path</var> is specified, it should be a list of lists describing a path in <var class="Arg">digraph</var>, in the format described in <code class="func">DigraphPath</code> (<a href="chap5.html#X8039170B82A32257"><span class="RefLink">5.4-23</span></a>). If specified, the path's edges will be highlighted in the diagram, as will its start and end vertices.</p>
+
+<p>If the optional argument <var class="Arg">colors</var> is specified, it should be a record containing any of the following components:</p>
+
+
+<ul>
+<li><p><var class="Arg">vert</var>: the colour of ordinary vertices (default "grey");</p>
+
+</li>
+<li><p><var class="Arg">edge</var>: the colour of ordinary edges (default "black");</p>
+
+</li>
+<li><p><var class="Arg">highlight</var>: the colour of any edges on <var class="Arg">path</var>, if any (default "blue");</p>
+
+</li>
+<li><p><var class="Arg">source</var>: the colour of the first vertex in <var class="Arg">path</var>, if any (default "yellowgreen");</p>
+
+</li>
+<li><p><var class="Arg">dest</var>: the colour of the final vertex in <var class="Arg">path</var>, if any (default "lightpink").</p>
+
+</li>
+</ul>
+<p>Each value in the record should be a string representing a colour understood by the <code class="code">GraphViz</code> software. For details about this format, see <span class="URL"><a href="https://www.graphviz.org">https://www.graphviz.org</a></span>. If any of the above components are not specified, or if no <var class="Arg">colors</var> argument is given, the default value will be used.</p>
+
+<p>The output of this operation can be passed to <code class="func">Splash</code> (<a href="chap9.html#X83B3318784E78415"><span class="RefLink">9.1-1</span></a>) to attempt to display it graphically on the computer's screen.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">gr := EdgeWeightedDigraph([[2], [3], []], [[10], [15], []]);</span>
+&lt;immutable edge-weighted digraph with 3 vertices, 2 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">path := EdgeWeightedDigraphShortestPath(g, 2, 3);</span>
+[ [ 2, 3 ], [ 1 ] ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">Print(DotEdgeWeightedDigraph(gr, path));</span>
+//dot
+digraph hgn{
+node [shape=circle]
+1[color=gray, style=filled]
+2[color=yellowgreen, style=filled]
+3[color=lightpink, style=filled]
+1 -&gt; 2[color=black, label=10]
+2 -&gt; 3[color=blue, label=15]
+}</pre></div>
 
 <p><a id="X86424F167BD4F629" name="X86424F167BD4F629"></a></p>
 
@@ -1886,6 +1940,41 @@ false
 true
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">Is2EdgeTransitive(Digraph([[2], [3, 3, 3], []]));</span>
 Error, the argument &lt;D&gt; must be a digraph with no multiple edges,
+</pre></div>
+
+<p><a id="X7948401E7D87A2A5" name="X7948401E7D87A2A5"></a></p>
+
+<h5>6.8-5 IsCograph</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; IsCograph</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;property&nbsp;)</td></tr></table></div>
+<p>Returns: <code class="keyw">true</code> or <code class="keyw">false</code>.</p>
+
+<p>If <var class="Arg">digraph</var> is a symmetric digraph without loops or multiple edges, then the property returns true if <var class="Arg">digraph</var> is a cograph, and false if it is not.</p>
+
+<p>A symmetric digraph without loops or multiple edges is called a <em>cograph</em> if it does not contain a copy of the path graph on four vertices as an induced subgraph. Equivalently, cographs are those graphs which may be reached starting from a single vertex under the operations of series and parallel composition.</p>
+
+<p>This function implements the algorithm for cograph recogntition given in <a href="chapBib.html#biBHP05">[HP05]</a>.</p>
+
+<p>If the argument <var class="Arg">digraph</var> is mutable, then the return value of this property is recomputed every time it is called.</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">D := DigraphByEdges([[1, 2], [2, 3], [3, 4], [4, 1]]);</span>
+&lt;immutable digraph with 4 vertices, 4 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">D := DigraphSymmetricClosure(D);</span>
+&lt;immutable symmetric digraph with 4 vertices, 8 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsCograph(D);</span>
+true
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">D := DigraphByEdges([[1, 2], [2, 3], [3, 4]]);</span>
+&lt;immutable digraph with 4 vertices, 3 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">D := DigraphSymmetricClosure(D);</span>
+&lt;immutable symmetric digraph with 4 vertices, 6 edges&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsCograph(D);</span>
+false
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">D := CompleteDigraph(5);</span>
+&lt;immutable complete digraph with 5 vertices&gt;
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">IsCograph(D);</span>
+true
 </pre></div>
 
 

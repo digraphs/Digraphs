@@ -59,6 +59,7 @@
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X7F16B8B3825A627A">7.2-21 IsDigraphColouring</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X7D4378F27B49C9AC">7.2-22 MaximalCommonSubdigraph</a></span>
 <span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X7B99C75B8021FCDA">7.2-23 MinimalCommonSuperdigraph</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap7_mj.html#X838258D47824EDDE">7.2-24 DigraphColourRefinement</a></span>
 </div></div>
 <div class="ContSect"><span class="tocline"><span class="nocss">&nbsp;</span><a href="chap7_mj.html#X7E1A02FE8384C03C">7.3 <span class="Heading">Homomorphisms of digraphs</span></a>
 </span>
@@ -1093,6 +1094,35 @@ true
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">MinimalCommonSuperdigraph(NullDigraph(0), CompleteDigraph(10));</span>
 [ &lt;immutable digraph with 10 vertices, 90 edges&gt;,
   IdentityTransformation, IdentityTransformation ]
+</pre></div>
+
+<p><a id="X838258D47824EDDE" name="X838258D47824EDDE"></a></p>
+
+<h5>7.2-24 DigraphColourRefinement</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&#8227; DigraphColourRefinement</code>( <var class="Arg">digraph</var> )</td><td class="tdright">(&nbsp;operation&nbsp;)</td></tr></table></div>
+<p>Returns: A list of integers.</p>
+
+<p>Colour refinement is a method of colouring a digraph such that it has a 'stable colouring'. That is, for a colour, every node with that colour has an identical configuration of coloured neighbours. This means that all nodes with the same colour have equal numbers of neighbours of each colour. <code class="code">DigraphColourRefinement</code> considers the out-neighbours and in-neighbours of a node separately, meaning the nodes of a certain colour must have an equal number of out-neighbours of each colour, and an equal number of in-neighbours of each colour.</p>
+
+<p><code class="code">DigraphColourRefinement</code> returns the colouring as a list where the value at the ith position is the colour of node i. The time complexity of this algorithm is <span class="SimpleMath">\(O(n^2 log n)\)</span>.</p>
+
+<p>Because the labels of the vertices are not used in any capacity during the refinement process (i.e. to determine which cells to refine), the colouring produced is canonical. This means that for two isomorphic digraphs, they would produce the same colouring. Identical colourings do not necessarily prove that two digraphs are isomorphic, but non-identical colourings would prove that they aren't. While the colouring produced for two isomorphic digraphs will be identical, the output of <code class="code">DigraphColourRefinement</code> will not, as the list produced is ordered by vertex labels. This is demonstrated in the examples below.</p>
+
+<p>See also <code class="func">DigraphColouring</code> (<a href="chap7_mj.html#X86D0A74B83D6B9A7"><span class="RefLink">7.3-15</span></a>).</p>
+
+
+<div class="example"><pre>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">D := Digraph([[3], [], [1, 9], [], [10], [7, 8, 9], [6, 8],</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">[6, 7], [3, 6, 10], [5, 9]]);;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphColourRefinement(D);</span>
+[ 2, 1, 4, 1, 2, 5, 3, 3, 6, 4 ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">D2 := Digraph([[6, 7], [], [8, 9], [], [10], [1, 7, 9], [6, 1],</span>
+<span class="GAPprompt">&gt;</span> <span class="GAPinput">[3], [3, 6, 10], [5, 9]]);;</span>
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphColourRefinement(D2);</span>
+[ 3, 1, 4, 1, 2, 5, 3, 2, 6, 4 ]
+<span class="GAPprompt">gap&gt;</span> <span class="GAPinput">DigraphColourRefinement(Digraph([[], [1], [1], [1]]));</span>
+[ 1, 2, 2, 2 ]
 </pre></div>
 
 <p><a id="X7E1A02FE8384C03C" name="X7E1A02FE8384C03C"></a></p>

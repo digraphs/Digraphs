@@ -300,7 +300,7 @@
 <span class="GAPprompt">gap&gt;</span> <span class="GAPinput">Digraph("Diamond");</span>
 &lt;immutable digraph with 4 vertices, 10 edges&gt;</pre></div>
 
-<p>The next example illustrates the uses of the fourth and fifth variants of this constructor. The resulting digraph is a strongly regular graph, and it is actually the point graph of the van Lint-Schrijver partial geometry, <a href="chapBib_mj.html#biBvLS81">[vLS81]</a>. The algebraic description is taken from the seminal paper of Calderbank and Kantor <a href="chapBib_mj.html#biBCK86">[CK86]</a>.</p>
+<p>The next example illustrates the uses of the fourth and fifth variants of this constructor. The resulting digraph is a strongly regular graph, and it is actually the point graph of the van Lint-Schrijver partial geometry, <a href="chapBib_mj.html#biBvLS81">[vS81]</a>. The algebraic description is taken from the seminal paper of Calderbank and Kantor <a href="chapBib_mj.html#biBCK86">[CK86]</a>.</p>
 
 
 <div class="example"><pre>
@@ -2098,7 +2098,7 @@ true
 
 <p>Given a digraph <var class="Arg">digraph</var>, the operation returns the digraph obtained by associating a vertex with each edge of <var class="Arg">digraph</var>, and creating an edge from a vertex <code class="keyw">v</code> to a vertex <code class="keyw">u</code> if and only if the terminal vertex of the edge associated with <code class="keyw">v</code> is the start vertex of the edge associated with <code class="keyw">u</code>.</p>
 
-<p>Note that the returned digraph is always a new immutable digraph, and the argument <var class="Arg">digraph</var> is never modified.</p>
+<p>Note that the returned digraph is always a new digraph with the same mutability as the input <var class="Arg">digraph</var>. The input <var class="Arg">digraph</var> is never modified.</p>
 
 
 <div class="example"><pre>
@@ -2118,7 +2118,7 @@ true
 
 <p>Given a symmetric digraph <var class="Arg">digraph</var>, the operation returns the symmetric digraph obtained by associating a vertex with each edge of <var class="Arg">digraph</var>, ignoring directions and multiplicities, and adding an edge between two vertices if and only if the corresponding edges have a vertex in common.</p>
 
-<p>Note that the returned digraph is always a new immutable digraph, and the argument <var class="Arg">digraph</var> is never modified.</p>
+<p>Note that the returned digraph is always a new digraph with the same mutability as the input <var class="Arg">digraph</var>. The input <var class="Arg">digraph</var> is never modified.</p>
 
 
 <div class="example"><pre>
