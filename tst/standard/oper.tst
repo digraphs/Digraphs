@@ -17,6 +17,7 @@
 #@local out, out1, out2, out3, p1, p2, path, preorder, qr, r, res, rtclosure, t
 #@local tclosure, u1, u2, x
 #@local p, q, idp, idt, M
+#@local b2, chain, lattice, m3
 gap> START_TEST("Digraphs package: standard/oper.tst");
 gap> LoadPackage("digraphs", false);;
 
@@ -1514,18 +1515,18 @@ gap> gr := ChainDigraph(5);
 <immutable chain digraph with 5 vertices>
 gap> DigraphRandomWalk(gr, 2, 100);
 [ [ 2, 3, 4, 5 ], [ 1, 1, 1 ] ]
-gap> DigraphRandomWalk(gr, 2, 2);  
+gap> DigraphRandomWalk(gr, 2, 2);
 [ [ 2, 3, 4 ], [ 1, 1 ] ]
 gap> DigraphRandomWalk(gr, 5, 100);
 [ [ 5 ], [  ] ]
 gap> gr := CompleteBipartiteDigraph(10, 8);;
-gap> DigraphRandomWalk(gr, 3, 0);           
+gap> DigraphRandomWalk(gr, 3, 0);
 [ [ 3 ], [  ] ]
 gap> DigraphRandomWalk(gr, 19, 5);
 Error, the 2nd argument <v> must be a vertex of the 1st argument <D>,
 gap> DigraphRandomWalk(gr, 123, 5);
 Error, the 2nd argument <v> must be a vertex of the 1st argument <D>,
-gap> DigraphRandomWalk(gr, 3, -1); 
+gap> DigraphRandomWalk(gr, 3, -1);
 Error, the 3rd argument <t> must be a non-negative int,
 
 #  DigraphLayers
@@ -1821,6 +1822,108 @@ gap> PartialOrderDigraphJoinOfVertices(gr2, 3, 4);
 fail
 gap> PartialOrderDigraphJoinOfVertices(gr1, 3, 4);
 fail
+
+#  IsJoinIrreducible, IsMeetIrreducible
+
+# The pentagon lattice N5: 1 < {2, 3}, 3 < 4, {2, 4} < 5
+gap> gr := Digraph([[2, 3], [5], [4], [5], []]);
+<immutable digraph with 5 vertices, 5 edges>
+gap> lattice := DigraphReflexiveTransitiveClosure(gr);
+<immutable preorder digraph with 5 vertices, 13 edges>
+gap> IsJoinIrreducible(lattice, 1);
+true
+gap> IsJoinIrreducible(lattice, 2);
+true
+gap> IsJoinIrreducible(lattice, 3);
+true
+gap> IsJoinIrreducible(lattice, 4);
+true
+gap> IsJoinIrreducible(lattice, 5);
+false
+gap> IsMeetIrreducible(lattice, 1);
+false
+gap> IsMeetIrreducible(lattice, 2);
+true
+gap> IsMeetIrreducible(lattice, 3);
+true
+gap> IsMeetIrreducible(lattice, 4);
+true
+gap> IsMeetIrreducible(lattice, 5);
+true
+
+# A 4-element chain: every element is doubly irreducible
+gap> chain := DigraphReflexiveTransitiveClosure(ChainDigraph(4));
+<immutable preorder digraph with 4 vertices, 10 edges>
+gap> IsJoinIrreducible(chain, 1);
+true
+gap> IsJoinIrreducible(chain, 2);
+true
+gap> IsJoinIrreducible(chain, 3);
+true
+gap> IsJoinIrreducible(chain, 4);
+true
+gap> IsMeetIrreducible(chain, 1);
+true
+gap> IsMeetIrreducible(chain, 2);
+true
+gap> IsMeetIrreducible(chain, 3);
+true
+gap> IsMeetIrreducible(chain, 4);
+true
+
+# The Boolean lattice B2: 1 < {2, 3} < 4
+gap> b2 := DigraphReflexiveTransitiveClosure(Digraph([[2, 3], [4], [4], []]));
+<immutable preorder digraph with 4 vertices, 9 edges>
+gap> IsJoinIrreducible(b2, 1);
+true
+gap> IsJoinIrreducible(b2, 2);
+true
+gap> IsJoinIrreducible(b2, 3);
+true
+gap> IsJoinIrreducible(b2, 4);
+false
+gap> IsMeetIrreducible(b2, 1);
+false
+gap> IsMeetIrreducible(b2, 2);
+true
+gap> IsMeetIrreducible(b2, 3);
+true
+gap> IsMeetIrreducible(b2, 4);
+true
+
+# The M3 lattice: 1 < {2, 3, 4} < 5
+gap> m3 := DigraphReflexiveTransitiveClosure(Digraph([[2, 3, 4], [5], [5], [5], []]));
+<immutable preorder digraph with 5 vertices, 12 edges>
+gap> IsJoinIrreducible(m3, 1);
+true
+gap> IsJoinIrreducible(m3, 2);
+true
+gap> IsJoinIrreducible(m3, 3);
+true
+gap> IsJoinIrreducible(m3, 4);
+true
+gap> IsJoinIrreducible(m3, 5);
+false
+gap> IsMeetIrreducible(m3, 1);
+false
+gap> IsMeetIrreducible(m3, 2);
+true
+gap> IsMeetIrreducible(m3, 3);
+true
+gap> IsMeetIrreducible(m3, 4);
+true
+gap> IsMeetIrreducible(m3, 5);
+true
+
+# Error handling
+gap> IsJoinIrreducible(CycleDigraph(3), 1);
+Error, the 1st argument <D> must satisfy IsPartialOrderDigraph,
+gap> IsMeetIrreducible(CycleDigraph(3), 1);
+Error, the 1st argument <D> must satisfy IsPartialOrderDigraph,
+gap> IsJoinIrreducible(Digraph([[1]]), 2);
+Error, the 2nd argument <v> must be a vertex of the 1st argument <D>,
+gap> IsMeetIrreducible(Digraph([[1]]), 2);
+Error, the 2nd argument <v> must be a vertex of the 1st argument <D>,
 
 #  DigraphClosure
 gap> gr := Digraph([[4, 5, 6, 7, 9], [7, 3], [2, 6, 7, 9, 10],
@@ -2460,9 +2563,9 @@ gap> ConormalProduct(CycleDigraph(2), CycleDigraph(8));
 #HomomorphicProduct
 gap> D := Digraph([[2, 3], [1, 3, 3], [1, 2, 2]]);
 <immutable multidigraph with 3 vertices, 8 edges>
-gap> HomomorphicProduct(D, D);                    
+gap> HomomorphicProduct(D, D);
 Error, the 1st argument (a digraph) must not satisfy IsMultiDigraph
-gap> DigraphSymmetricClosure(CycleDigraph(6)); 
+gap> DigraphSymmetricClosure(CycleDigraph(6));
 <immutable symmetric digraph with 6 vertices, 12 edges>
 gap> HomomorphicProduct(PetersenGraph(), last);
 <immutable digraph with 60 vertices, 1080 edges>
@@ -2525,7 +2628,7 @@ gap> StrongProduct(NullDigraph(0), CompleteDigraph(3));
 <immutable empty digraph with 0 vertices>
 gap> D1 := Digraph([[2], [1, 3, 4], [2, 5], [2, 5], [3, 4]]);
 <immutable digraph with 5 vertices, 10 edges>
-gap> D2 := Digraph([[2], [1, 3, 4], [2], [2]]);              
+gap> D2 := Digraph([[2], [1, 3, 4], [2], [2]]);
 <immutable digraph with 4 vertices, 6 edges>
 gap> LexicographicProduct(D1, D2);
 <immutable digraph with 20 vertices, 190 edges>
@@ -2545,7 +2648,7 @@ gap> OutNeighbours(last);
   [ 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 20 ], 
   [ 9, 10, 11, 12, 13, 14, 15, 16, 18 ], 
   [ 9, 10, 11, 12, 13, 14, 15, 16, 18 ] ]
-gap> LexicographicProduct(ChainDigraph(3), CycleDigraph(7));   
+gap> LexicographicProduct(ChainDigraph(3), CycleDigraph(7));
 <immutable digraph with 21 vertices, 119 edges>
 
 # SwapDigraphs
@@ -3032,7 +3135,7 @@ Error, expected an edge between the 2nd and 3rd arguments (vertices) 1 and
 
 # DigraphContractEdge: Edge is a looped edge (u = v)
 gap> D := DigraphByEdges([[1, 1], [2, 1], [1, 2]]);;
-gap> DigraphVertexLabels(D);; 
+gap> DigraphVertexLabels(D);;
 gap> C := DigraphContractEdge(D, 1, 1);
 Error, The 2nd argument <u> must not be equal to the 3rd argument <v>
 gap> DigraphHasLoops(D);
@@ -3196,7 +3299,7 @@ Error, expected an edge between the 2nd and 3rd arguments (vertices) 1 and
 
 # DigraphContractEdge: Edge is a looped edge (u = v) (mutable)
 gap> D := DigraphByEdges(IsMutableDigraph, [[1, 1], [2, 1], [1, 2]]);;
-gap> DigraphVertexLabels(D);; 
+gap> DigraphVertexLabels(D);;
 gap> DigraphContractEdge(D, 1, 1);
 Error, The 2nd argument <u> must not be equal to the 3rd argument <v>
 gap> DigraphHasLoops(D);
