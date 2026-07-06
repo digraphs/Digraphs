@@ -4,6 +4,33 @@ Wilf A. Wilson, Michael Young et al.
 
 Licensing information can be found in the `LICENSE` file.
 
+## Version 1.15.0 (released 06/07/2026)
+
+## What's Changed
+- kernel: fix issues with assumptions in `IS_ACYCLIC_DIGRAPH` by @james-d-mitchell in https://github.com/digraphs/Digraphs/pull/901
+- Update codecov by @Joseph-Edwards in https://github.com/digraphs/Digraphs/pull/903
+- Improve the documentation of the Digraph encoding formats by @anujthak in https://github.com/digraphs/Digraphs/pull/897
+- Implement `IsCograph` with bug fixes by @frankiegillis in https://github.com/digraphs/Digraphs/pull/904
+- Add unitedgeweight digraph by @coraaked in https://github.com/digraphs/Digraphs/pull/886
+- Edge weights #7: DotEdgeWeightedDigraph by @mtorpey in https://github.com/digraphs/Digraphs/pull/892
+- Implementing Colour Refinement by @RheyaM in https://github.com/digraphs/Digraphs/pull/905
+- attr.gi code coverage by @mtorpey in https://github.com/digraphs/Digraphs/pull/919
+- Digraph decode/encode by @anujthak in https://github.com/digraphs/Digraphs/pull/912
+- Cliques coverage by @mtorpey in https://github.com/digraphs/Digraphs/pull/923
+- Correct Mutability of LineDigraph by @mtorpey in https://github.com/digraphs/Digraphs/pull/926
+- CI: use configflags instead of CONFIGFLAGS by @fingolfin in https://github.com/digraphs/Digraphs/pull/925
+- Tests for AsSemigroup with 4 arguments by @mtorpey in https://github.com/digraphs/Digraphs/pull/927
+- grahom.gi test coverage by @mtorpey in https://github.com/digraphs/Digraphs/pull/928
+- Update pdflatex command for nonstop mode by @james-d-mitchell in https://github.com/digraphs/Digraphs/pull/933
+- Update my details in `PackageInfo.g` by @reiniscirpons in https://github.com/digraphs/Digraphs/pull/935
+- build: support EAPS 5 by @jengelh in https://github.com/digraphs/Digraphs/pull/937
+
+## New Contributors
+- @anujthak made their first contribution in
+https://github.com/digraphs/Digraphs/pull/897
+
+**Full Changelog**: https://github.com/digraphs/Digraphs/compare/v1.14.0...v1.15.0
+
 ## Version 1.14.0 (released 22/01/2026)
 
 ## What's Changed
