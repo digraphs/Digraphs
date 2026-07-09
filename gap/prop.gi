@@ -605,11 +605,11 @@ function(D)
       return true;
     fi;
   fi;
-  return HamiltonianPath(D) <> fail;
+  return HamiltonianCycle(D) <> fail;
 end);
 
 InstallMethod(IsHamiltonianDigraph, "for a digraph with hamiltonian path",
-[IsDigraph and HasHamiltonianPath], x -> HamiltonianPath(x) <> fail);
+[IsDigraph and HasHamiltonianPath], x -> HamiltonianCycle(x) <> fail);
 
 InstallMethod(IsDigraphCore, "for a digraph",
 [IsDigraph],
