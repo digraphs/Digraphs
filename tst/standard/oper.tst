@@ -14,9 +14,9 @@
 #@local TestPartialOrderDigraph2, TestUnion, a, adj, b, comps, copy, d, e
 #@local edges, edges2, func, g, gr, gr1, gr2, gr3, gr4, gri, grrt, grt, h, i
 #@local i1, i2, id, idom, in1, in2, in3, iter, j1, j2, m, m1, m2, mat, n, nbs
-#@local out, out1, out2, out3, p1, p2, path, preorder, qr, r, res, rtclosure, t
+#@local out, out1, out2, out3, p1, p2, path, preorder, qr, r, res, rtclosure, t, neighbours
 #@local tclosure, u1, u2, x
-#@local p, q, idp, idt, M
+#@local p, q, idp, idt, M, v
 gap> START_TEST("Digraphs package: standard/oper.tst");
 gap> LoadPackage("digraphs", false);;
 
@@ -133,6 +133,18 @@ true
 gap> M := DigraphMutableCopy(D);;
 gap> M ^ p = OnDigraphs(M, p);
 true
+
+# DigraphRemoveAllEdges: for a digraph
+gap> gr2 := Digraph(IsMutableDigraph, [[2, 3], [3], [4], []]);
+<mutable digraph with 4 vertices, 4 edges>
+gap> DigraphRemoveAllEdges(gr2);
+<mutable empty digraph with 4 vertices>
+gap> gr3 := Digraph(IsMutableDigraph, [[], [], [], []]);
+<mutable empty digraph with 4 vertices>
+gap> DigraphRemoveAllEdges(gr3);
+<mutable empty digraph with 4 vertices>
+gap> OutNeighbours(gr3);
+[ [  ], [  ], [  ], [  ] ]
 
 #  OnDigraphs: for a digraph and a perm
 gap> gr := Digraph([[2], [1], [3]]);
@@ -3323,6 +3335,40 @@ gap> DigraphEdges(D);
   [ 5, 4 ] ]
 gap> DigraphVertexLabels(D);
 [ 1, 2, 3, 6, [ 4, 5 ] ]
+
+# DigraphDominatingSet
+gap> d := Digraph([[2, 3], [2, 3], [1, 2, 3]]);;
+gap> p := DigraphDominatingSet(d);;
+gap> neighbours := [];;
+gap> for v in p do
+> Append(neighbours, OutNeighbours(d)[v]);
+> od;
+gap> DigraphVertices(d) = Union(neighbours, p);
+true
+gap> d := Digraph([[2, 4], [3], [1, 5], [3], [4]]);;
+gap> p := DigraphDominatingSet(d);;
+gap> neighbours := [];;
+gap> for v in p do
+> Append(neighbours, OutNeighbours(d)[v]);
+> od;
+gap> DigraphVertices(d) = Union(neighbours, p);
+true
+gap> D := Digraph([[1, 2, 3, 4, 5], [1, 2, 3, 4, 5], [1, 2, 3, 4, 5], [1, 2, 3, 4, 5], [1, 2, 3, 4, 5]]);;
+gap> p := DigraphDominatingSet(d);;
+gap> neighbours := [];;
+gap> for v in p do
+> Append(neighbours, OutNeighbours(d)[v]);
+> od;
+gap> DigraphVertices(d) = Union(neighbours, p);
+true
+gap> D := RandomDigraph(1);;
+gap> p := DigraphDominatingSet(d);;
+gap> neighbours := [];;
+gap> for v in p do
+> Append(neighbours, OutNeighbours(d)[v]);
+> od;
+gap> DigraphVertices(d) = Union(neighbours, p);
+true
 
 # DigraphColourRefinement
 gap> D := Digraph([[3], [], [1, 9], [], [10], [7, 8, 9], [6, 8], [6, 7], [3, 6, 10], [5, 9]]);;

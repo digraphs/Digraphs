@@ -2522,6 +2522,34 @@ function(D, root)
   return result;
 end);
 
+# For calculating a dominating set for a digraph
+# Algorithm 7 in :
+# https://www.cse.msu.edu/~cse835/Papers/Graph_connectivity_revised.pdf
+InstallMethod(DigraphDominatingSet, "for a digraph",
+[IsDigraph],
+function(digraph)
+  local D, seen, Vertices, neighbour, v;
+
+  Vertices := [1 .. DigraphNrVertices(digraph)];
+
+  # Shuffling not technically necessary - may be better not to?
+  Shuffle(Vertices);
+
+  seen := BlistList([1 .. DigraphNrVertices(digraph)], []);
+  D := [];
+  for v in Vertices do
+    if seen[v] = false then
+      seen[v] := true;
+      Append(D, [v]);
+      for neighbour in OutNeighbours(digraph)[v] do
+        seen[neighbour] := true;
+      od;
+    fi;
+  od;
+
+  return D;
+end);
+
 # Computes the fundamental cycle basis of a symmetric digraph
 # First, notice that the cycle space is composed of orthogonal subspaces
 # corresponding to the cycle spaces of the connected components.

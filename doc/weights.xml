@@ -272,6 +272,28 @@ gap> Sum(flow[1]);
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="DigraphEdgeConnectivity">
+<ManSection>
+  <Attr Name="DigraphEdgeConnectivity" Arg="digraph"/>
+  <Returns>An integer</Returns>
+  <Description>
+    This function returns the edge connectivity of <A>digraph</A>, a symmetric digraph.<P/> Edge Connectivity refers to the size of a minimum cut of the graph, 
+    which, for digraphs, refers to set of edges needed to be removed to ensure the graph is no longer Strongly Connected. That is, there exists two 
+    vertices, <A>A</A> and <A>B</A>, for which a path from <A>A</A> to <A>B</A> does not exist.
+
+    It makes use of the <C>DigraphMaximumFlow(<A>digraph</A>)</C> function, by constructing an edge-weighted Digraph
+    with edge weights of 1, then using the Max-flow min-cut theorem to determine the size of the minimum cut.<P/>
+    See also <Ref Attr="DigraphMaximumFlow"/>.
+    <Example><![CDATA[
+gap> d := Digraph([[4], [4], [4], [1, 2, 3]]);;
+gap> DigraphEdgeConnectivity(d);  
+1
+gap> D := RandomDigraph(1);;
+gap> DigraphEdgeConnectivity(D);
+0
+gap> d := Digraph([[2, 3], [1, 4], [1, 4], [2, 3]]);;
+gap> DigraphEdgeConnectivity(d);
+2]]></Example>
 <#GAPDoc Label="DigraphMinimumCut">
 <ManSection>
   <Attr Name="DigraphMinimumCut" Arg="digraph, s, t"/>

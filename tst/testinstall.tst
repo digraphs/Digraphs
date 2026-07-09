@@ -568,6 +568,20 @@ gap> OutNeighbours(D);
 gap> OutNeighbours(C);
 [ [ 2, 3, 4 ], [ 1, 3, 4, 5 ], [ 1, 2 ], [ 5 ], [ 4 ] ]
 
+# DigraphEdgeConnectivity
+gap> D := Digraph([[4, 5], [4, 5], [4, 5], [1, 2, 3], [1, 2, 3]]);;
+gap> DigraphEdgeConnectivity(D);
+2
+gap> D := Digraph([[], [3], [2]]);;
+gap> DigraphEdgeConnectivity(D);
+0
+gap> C := Digraph([[3, 4], [1, 3, 4], [2], [3]]);;
+gap> DigraphEdgeConnectivity(C);
+Error, Digraph given must be a symmetric digraph
+gap> D := Digraph([[1, 2, 3, 4, 5], [1, 2, 3, 4, 5], [1, 2, 3, 4, 5], [1, 2, 3, 4, 5], [1, 2, 3, 4, 5]]);;
+gap> DigraphEdgeConnectivity(D);
+4
+
 # LineDigraph for mutable digraphs: mutable output, unchanged input
 gap> D := Digraph(IsMutableDigraph, [[2, 3, 4], [1, 3, 4, 5], [1, 2], [5], [4]]);;
 gap> out := LineDigraph(D);;
