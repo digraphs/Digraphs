@@ -1427,6 +1427,48 @@ false
 gap> IsLatticeDigraph(gr);
 false
 
+#  IsBetweenCoverAndLattice
+gap> IsBetweenCoverAndLattice(Digraph([]));
+true
+gap> IsBetweenCoverAndLattice(Digraph([[]]));
+true
+gap> IsBetweenCoverAndLattice(Digraph([[1]]));
+true
+gap> IsBetweenCoverAndLattice(ChainDigraph(5));
+true
+gap> IsBetweenCoverAndLattice(DigraphReflexiveTransitiveClosure(ChainDigraph(5)));
+true
+gap> D := Digraph([[2, 3], [4], [4], []]);
+<immutable digraph with 4 vertices, 4 edges>
+gap> IsLatticeDigraph(D);
+false
+gap> IsBetweenCoverAndLattice(D);
+true
+gap> D := Digraph([[2, 3, 4], [4], [4], []]);
+<immutable digraph with 4 vertices, 5 edges>
+gap> IsBetweenCoverAndLattice(D);
+true
+gap> D := DigraphReflexiveTransitiveClosure(Digraph([[2, 3], [4], [4], []]));
+<immutable preorder digraph with 4 vertices, 9 edges>
+gap> IsLatticeDigraph(D);
+true
+gap> IsBetweenCoverAndLattice(D);
+true
+gap> D := Digraph([[3, 4], [3, 4], [5], [5], []]);
+<immutable digraph with 5 vertices, 6 edges>
+gap> IsBetweenCoverAndLattice(D);
+false
+gap> IsBetweenCoverAndLattice(CycleDigraph(3));
+false
+gap> IsBetweenCoverAndLattice(Digraph([[], []]));
+false
+gap> D := Digraph(IsMutable, [[2, 3], [4], [4], []]);
+<mutable digraph with 4 vertices, 4 edges>
+gap> IsBetweenCoverAndLattice(D);
+true
+gap> D;
+<mutable digraph with 4 vertices, 4 edges>
+
 # IsDistributiveLatticeDigraph
 gap> D := Digraph([[11, 10], [], [2], [2], [3], [4, 3], [6, 5], [7], [7],
 >      [8], [9, 8]]);

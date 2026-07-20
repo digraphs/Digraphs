@@ -55,6 +55,7 @@ DeclareProperty("IsDistributiveLatticeDigraph", IsDigraph);
 DeclareProperty("IsModularLatticeDigraph", IsDigraph);
 DeclareProperty("Is2EdgeTransitive", IsDigraph);
 DeclareProperty("IsCograph", IsDigraph);
+DeclareProperty("IsBetweenCoverAndLattice", IsDigraph);
 DeclareSynonymAttr("IsLatticeDigraph",
                    IsMeetSemilatticeDigraph and IsJoinSemilatticeDigraph);
 DeclareSynonymAttr("IsPreorderDigraph",
@@ -82,6 +83,7 @@ InstallTrueMethod(IsAcyclicDigraph, IsEmptyDigraph);
 InstallTrueMethod(IsAcyclicDigraph, IsTournament and IsTransitiveDigraph);
 InstallTrueMethod(IsAntisymmetricDigraph, IsAcyclicDigraph);
 InstallTrueMethod(IsAntisymmetricDigraph, IsDigraph and IsTournament);
+InstallTrueMethod(IsBetweenCoverAndLattice, IsLatticeDigraph);
 InstallTrueMethod(IsBipartiteDigraph, IsCompleteBipartiteDigraph);
 InstallTrueMethod(IsBipartiteDigraph, IsDigraph and IsUndirectedForest);
 InstallTrueMethod(IsCompleteMultipartiteDigraph, IsCompleteBipartiteDigraph);
