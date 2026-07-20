@@ -31,7 +31,7 @@ jobs:
       - name: Check out the repository . . .
         uses: actions/checkout@v7
       - name: Set up Python . . .
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@v7
       - name: Install ${{ matrix.linter }} with pip . . .
         run: pip install ${{ matrix.linter }}
       - name: Run ${{ matrix.linter }} on the Digraphs package . . .
