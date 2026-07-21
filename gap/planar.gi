@@ -114,6 +114,213 @@ function(D)
     return DigraphByEdges(dualEdges);
 end);
 
+# A graph is a map graph if we can find a "witness" that is planar
+# and bipartite that the original graph is a half-square of
+
+BindGlobal("DIGRAPHS_EdgesCoveredBy",
+  function(clique, subEdges, mapping)
+    local covered, a, b, ia, ib, edgeIdx, temp;
+    covered := BlistList([1 .. Length(subEdges)], []);
+
+    for a in [1 .. Length(clique)] do
+      for b in [a+1 .. Length(clique)] do
+        ia := mapping[clique[a]];
+        ib := mapping[clique[b]];
+        if ia > ib then
+          temp := ia;
+          ia := ib;
+          ib := temp;
+        fi;
+        edgeIdx := PositionSorted(subEdges, [ia, ib]);
+        if edgeIdx <= Length(subEdges) and subEdges[edgeIdx] = [ia, ib] then
+          covered[edgeIdx] := true;
+        fi;
+      od;
+    od;
+    return covered;
+  end);
+
+# for all vertices v find all ways to cover its edges using a set of cliques
+BindGlobal("DIGRAPHS_NbrCliqueCovers",
+function(D, v)
+  local nbrs, sub, subEdges, maxCliques, mapping, cliqueCoverage,
+        covers, i, j, e, Backtrack;
+  nbrs := ShallowCopy(OutNeighboursOfVertex(D, v));
+  nbrs := Filtered(nbrs, x -> x <> v);
+  Sort(nbrs);
+
+  if IsEmpty(nbrs) then
+    return [[]];
+  fi;
+  sub := InducedSubdigraph(D, nbrs);
+
+  # gets the edges in the new graph
+  subEdges := [];
+  for i in DigraphVertices(sub) do
+    for e in OutNeighboursOfVertex(sub, i) do
+      if e > i then
+        Add(subEdges, [i, e]);
+      fi;
+    od;
+  od;
+
+  if IsEmpty(subEdges) then
+    return [List(nbrs, u -> [u])];
+  fi;
+
+  maxCliques := List(DigraphMaximalCliques(sub),
+                     cl -> List(cl, idx -> nbrs[idx]));
+
+  mapping := [];
+  for i in [1 .. Length(nbrs)] do
+    mapping[nbrs[i]] := i;
+  od;
+
+  cliqueCoverage := List(maxCliques, cl->DIGRAPHS_EdgesCoveredBy(cl, subEdges, mapping));
+
+  covers := [];
+
+  # find all edge covering clique sets
+  Backtrack := function(cover, uncovered, start)
+    local newUncovered, cov, touchedVerts, u, jj;
+
+    if not ForAny(uncovered, x -> x) then
+      touchedVerts := Union(cover);
+      cov := ShallowCopy(cover);
+
+      for u in nbrs do
+        if not u in touchedVerts then
+          Add(cov, [u]);
+        fi;
+      od;
+
+      Add(covers, cov);
+      return;
+    fi;
+
+    for i in [start .. Length(maxCliques)] do
+
+      if ForAny([1 .. Length(subEdges)],
+                jj -> uncovered[jj] and cliqueCoverage[i][jj]) then
+
+        newUncovered := ShallowCopy(uncovered);
+        for j in [1 .. Length(subEdges)] do
+          if cliqueCoverage[i][j] then
+            newUncovered[j] := false;
+          fi;
+        od;
+
+        Add(cover, maxCliques[i]);
+        Backtrack(cover, newUncovered, i + 1);
+        Remove(cover);
+      fi;
+    od;
+  end;
+
+  Backtrack([], BlistList([1 .. Length(subEdges)],
+                          [1 .. Length(subEdges)]), 1);
+
+  if IsEmpty(covers) then
+    return [List(nbrs, u -> [u])];
+  fi;
+
+  return covers;
+end);
+
+BindGlobal("DIGRAPHS_BuildWitness",
+function(n, covers)
+  local witnessMap, nextWitness, outNeighb, v, clique, canon, key, w, u;
+
+  witnessMap := HashMap();
+  nextWitness := n + 1;
+  outNeighb := List([1 .. n], i -> []);
+
+  for v in [1 .. n] do
+    for clique in covers[v] do
+      canon := ShallowCopy(clique);
+      if not v in canon then
+        AddSet(canon, v);
+      fi;
+
+      if not IsBound(witnessMap[canon]) then
+        witnessMap[canon] := nextWitness;
+        Add(outNeighb, []);
+        nextWitness := nextWitness + 1;
+      fi;
+      w := witnessMap[canon];
+
+      for u in canon do
+        AddSet(outNeighb[u], w);
+        AddSet(outNeighb[w], u);
+      od;
+    od;
+  od;
+
+  for v in [1 .. Length(outNeighb)] do
+    Sort(outNeighb[v]);
+  od;
+
+  return Digraph(outNeighb);
+end);
+
+# reconstruct graph from the planar bipartite graph
+# for the inputted H we have U = [1...n] and V is the rest(all junctions)
+BindGlobal("DIGRAPHS_HalfSquare",
+function(H, n)
+  local out_neighbors, u, w, v, outgoing;
+
+  out_neighbors := List([1..n], u ->
+    Filtered(DigraphDistanceSet(H, u, 2), v -> v <= n)
+  );
+
+  return Digraph(out_neighbors);
+end);
+
+BindGlobal("DIGRAPHS_IsMapGraphSearch",
+function(G, n)
+  local allCovers, coverCounts, indices, assignment, H,
+        halfsq, i, v, targetEdges;
+
+  targetEdges := Set(DigraphEdges(G));
+
+  allCovers   := List([1 .. n], v -> DIGRAPHS_NbrCliqueCovers(G, v));
+  coverCounts := List(allCovers, Length);
+
+  if ForAny(allCovers, IsEmpty) then
+    return false;
+  fi;
+
+  indices := List([1 .. n], i -> 1);
+
+  while true do
+    assignment := List([1 .. n], v -> allCovers[v][indices[v]]);
+    H := DIGRAPHS_BuildWitness(n, assignment);
+
+    if IsPlanarDigraph(H) then
+      halfsq := DIGRAPHS_HalfSquare(H, n);
+
+      if Set(DigraphEdges(halfsq)) = targetEdges then
+        return true;
+      fi;
+    fi;
+    i := n;
+    while i >= 1 do
+      if indices[i] < coverCounts[i] then
+        indices[i] := indices[i] + 1;
+        break;
+      else
+        indices[i] := 1;
+        i := i - 1;
+      fi;
+    od;
+    if i = 0 then
+      break;
+    fi;
+  od;
+
+  return false;
+end);
+
 ########################################################################
 # 2. Properties
 ########################################################################
@@ -150,4 +357,30 @@ function(D)
     return false;
   fi;
   return IS_OUTER_PLANAR(D);
+end);
+
+InstallMethod(IsMapGraph, "for a digraph", [IsDigraph],
+function(D)
+  local G, n, m;
+
+  if IsMultiDigraph(D) then
+    ErrorNoReturn("expected a digraph with no multiple edges");
+  fi;
+
+  G := MaximalSymmetricSubdigraphWithoutLoops(D);
+
+  n := DigraphNrVertices(G);
+  m := DigraphNrAdjacenciesWithoutLoops(G);
+  # Graphs with n < 5 or m < 9 are inherently planar
+  # Direct combination of Planar Bipartite Edge Limit and Euler's formula
+  # Map graphs by definition are a superset of planar graphs
+  if n < 5 or m < 9 then
+    return true;
+  elif m > 2 * (6 * n - 12) then
+    return false;
+  elif IsPlanarDigraph(G) then
+    return true;
+  fi;
+
+  return DIGRAPHS_IsMapGraphSearch(G, n);
 end);
