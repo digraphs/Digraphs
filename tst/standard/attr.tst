@@ -13,7 +13,7 @@
 #@local G, H, M, M1, P, S, a, adj, adj1, adj2, adjacencies, b
 #@local circuit, complete15, comps, cycle12, e, edgeCut, erev, filename, forest
 #@local g, gNew, gr, gr1, gr2, gr3, gr4, grid, group, i, id, isGraph, j, mat
-#@local multiple, names, nbs, nonPlanar, order, planar, probs, proj, r, rd
+#@local multiple, names, nbs, nonPlanar, order, outs, planar, probs, proj, r, rd
 #@local reflextrans, reflextrans1, reflextrans2, representatives, rev, rgr
 #@local rotationSy, rotationSystem, scc, schreierVector, sink, soccer, str
 #@local table, temp, topo, trans, trans1, trans2, tree, wcc, x, y, z
@@ -1514,6 +1514,18 @@ gap> DigraphDegeneracy(gr);
 2
 gap> DigraphDegeneracyOrdering(gr);
 [ 6, 4, 3, 2, 5, 1 ]
+
+# DigraphDegeneracy for a more interesting graph
+# (and check the degeneracy ordering)
+gap> D := DigraphFromGraph6String("OwCWWLCE?G?@C?A??@??@");;
+gap> outs := OutNeighbours(D);;
+gap> DigraphDegeneracy(D);
+2
+gap> order := DigraphDegeneracyOrdering(D);;
+gap> ForAll([1 .. Length(order)], i ->
+> Length(Intersection(outs[order[i]], order{[i .. Length(order)]}))
+> <= DigraphDegeneracy(D));
+true
 
 #  DigraphGirth with known automorphisms
 gap> gr := Digraph([[2, 3, 4, 5], [6, 3], [6, 2], [6], [6], [1]]);;
