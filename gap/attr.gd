@@ -136,6 +136,9 @@ DeclareAttribute("DigraphMaximumMatching", IsDigraph);
 DeclareAttribute("Bridges", IsDigraph);
 DeclareAttributeThatReturnsDigraph("StrongOrientation", IsDigraph);
 
+DeclareAttribute("DigraphGreedyOutDominatingSet", IsDigraph);
+DeclareAttribute("DigraphGreedyInDominatingSet", IsDigraph);
+
 DeclareAttribute("NonUpperSemimodularPair", IsDigraph);
 DeclareAttribute("NonLowerSemimodularPair", IsDigraph);
 

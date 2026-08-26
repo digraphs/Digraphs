@@ -3522,6 +3522,59 @@ end);
 # Algorithm 6: Finding Maximum Flow within a dominating set of the digraph
 # Algorithm 7: Constructing a dominating set for use in Algorithm 6
 
+# This function computes the greedy dominating set for the subdigraph
+# of a digraph induced by a set of vertices. The neighbour_fun function
+# determines if in or out-edges are used. Pass OutNeighboursOfVertex
+# for out-edges and InNeighboursOfVertex for in-edges.
+#
+# In other words, we find a subset S of the vertices in the parameter
+# vertices such that every vertex in vertices is in S or adjacent
+# to a vertex in S.
+#
+# This is done in a greedy manner by including every vertex in
+# vertices in order, if it is not already adjacent to some
+# vertex in the current dominating set. The vertices are
+# processed in the same order as they occur in the
+# parameter vertices.
+#
+# Implements Algorithm 7 in :
+# https://www.cse.msu.edu/~cse835/Papers/Graph_connectivity_revised.pdf
+BindGlobal("DIGRAPHS_GreedyDominatingSet",
+function(digraph, vertices, neighbour_fun)
+  local S, seen, neighbour, vertex;
+
+  Assert(1,
+    neighbour_fun = OutNeighboursOfVertex or
+    neighbour_fun = InNeighboursOfVertex);
+
+  seen := BlistList(DigraphVertices(digraph), []);
+  S := [];
+  for vertex in vertices do
+    if not seen[vertex] then
+      seen[vertex] := true;
+      Add(S, vertex);
+      for neighbour in neighbour_fun(digraph, vertex) do
+        seen[neighbour] := true;
+      od;
+    fi;
+  od;
+
+  return S;
+end);
+
+InstallMethod(DigraphGreedyOutDominatingSet, "for a digraph", [IsDigraph],
+  digraph ->
+    DIGRAPHS_GreedyDominatingSet(
+      digraph,
+      DigraphVertices(digraph),
+      OutNeighboursOfVertex));
+
+InstallMethod(DigraphGreedyInDominatingSet, "for a digraph", [IsDigraph],
+  digraph ->
+    DIGRAPHS_GreedyDominatingSet(
+      digraph,
+      DigraphVertices(digraph),
+      InNeighboursOfVertex));
 # Algorithms 4-7 are used below:
 
 # Digraph EdgeConnectivity calculated with Dominating Sets (Algorithm 6-7)
@@ -3540,19 +3593,19 @@ function(digraph)
   fi;
 
   if DigraphNrVertices(digraph) = 1 or
-      DigraphNrStronglyConnectedComponents(digraph) > 1 then
+      DigraphNrConnectedComponents(digraph) > 1 then
     return 0;
   fi;
 
-  weights := List([1 .. DigraphNrVertices(digraph)],
-  x -> List([1 .. Length(OutNeighbours(digraph)[x])],
-  y -> 1));
-  EdgeD := EdgeWeightedDigraph(digraph, weights);
+  EdgeD := UnitEdgeWeightedDigraph(digraph);
 
   min := -1;
 
   # Algorithm 7: Creating a dominating set of the digraph
-  D := DigraphDominatingSet(digraph);
+  D := DIGRAPHS_GreedyDominatingSet(
+    digraph,
+    Shuffle([1 .. DigraphNrVertices(digraph)]),
+    OutNeighboursOfVertex);
 
   # Algorithm 6: Using the dominating set created to determine the Maximum Flow
 

@@ -2522,33 +2522,69 @@ function(D, root)
   return result;
 end);
 
-# For calculating a dominating set for a digraph
-# Algorithm 7 in :
-# https://www.cse.msu.edu/~cse835/Papers/Graph_connectivity_revised.pdf
-InstallMethod(DigraphDominatingSet, "for a digraph",
-[IsDigraph],
-function(digraph)
-  local D, seen, Vertices, neighbour, v;
+BindGlobal("DIGRAPHS_IsDominatingSet",
+function(digraph, vertices, neighbour_fun)
+  local seen, neighbour, vertex;
 
-  Vertices := [1 .. DigraphNrVertices(digraph)];
+  if not IsSet(vertices) then
+    return false;
+  fi;
 
-  # Shuffling not technically necessary - may be better not to?
-  Shuffle(Vertices);
-
-  seen := BlistList([1 .. DigraphNrVertices(digraph)], []);
-  D := [];
-  for v in Vertices do
-    if seen[v] = false then
-      seen[v] := true;
-      Append(D, [v]);
-      for neighbour in OutNeighbours(digraph)[v] do
-        seen[neighbour] := true;
-      od;
+  seen := BlistList(DigraphVertices(digraph), []);
+  for vertex in vertices do
+    if not IsPosInt(vertex) or vertex > DigraphNrVertices(digraph) then
+      return false;
     fi;
+    seen[vertex] := true;
+    for neighbour in neighbour_fun(digraph, vertex) do
+      seen[neighbour] := true;
+    od;
   od;
 
-  return D;
+  return ForAll(seen, x -> x);
 end);
+
+InstallMethod(IsDigraphOutDominatingSet,
+  "for a digraph and a list of vertices",
+  [IsDigraph, IsList],
+  {digraph, vertices} ->
+    DIGRAPHS_IsDominatingSet(digraph, vertices, OutNeighboursOfVertex));
+
+InstallMethod(IsDigraphInDominatingSet,
+  "for a digraph and a list of vertices",
+  [IsDigraph, IsList],
+  {digraph, vertices} ->
+    DIGRAPHS_IsDominatingSet(digraph, vertices, InNeighboursOfVertex));
+
+InstallMethod(DigraphGreedyOutDominatingSet,
+  "for a digraph and a list of vertices",
+  [IsDigraph, IsList],
+  function(digraph, vertex_order)
+    if not Length(vertex_order) = DigraphNrVertices(digraph) or
+       not Minimum(vertex_order) = 1 or
+       not Maximum(vertex_order) = DigraphNrVertices(digraph) or
+       not IsDuplicateFree(vertex_order) then
+      ErrorNoReturn("the 2nd argument must be a permuted list of vertices of ",
+                    "the 1st argument (a digraph)");
+    fi;
+    return Set(DIGRAPHS_GreedyDominatingSet(
+      digraph, vertex_order, OutNeighboursOfVertex));
+  end);
+
+InstallMethod(DigraphGreedyInDominatingSet,
+  "for a digraph and a list of vertices",
+  [IsDigraph, IsList],
+  function(digraph, vertex_order)
+    if not Length(vertex_order) = DigraphNrVertices(digraph) or
+       not Minimum(vertex_order) = 1 or
+       not Maximum(vertex_order) = DigraphNrVertices(digraph) or
+       not IsDuplicateFree(vertex_order) then
+      ErrorNoReturn("the 2nd argument must be a permuted list of vertices of ",
+                    "the 1st argument (a digraph)");
+    fi;
+    return Set(DIGRAPHS_GreedyDominatingSet(
+      digraph, vertex_order, InNeighboursOfVertex));
+  end);
 
 # Computes the fundamental cycle basis of a symmetric digraph
 # First, notice that the cycle space is composed of orthogonal subspaces
