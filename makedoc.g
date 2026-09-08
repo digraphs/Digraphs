@@ -41,7 +41,8 @@ XMLEntities := rec();
 
 # Programmatically determined entities
 
-PkgInfo := PackageInfo("digraphs")[1];
+Read("PackageInfo.g");
+PkgInfo := GAPInfo.PackageInfoCurrent;
 
 XMLEntities.VERSION := PkgInfo.Version;
 XMLEntities.GAPVERS := RemovePrefixVersion(PkgInfo.Dependencies.GAP);
@@ -55,7 +56,7 @@ od;
 XMLEntities.ARCHIVE_BASENAME := Last(SplitString(PkgInfo.ArchiveURL, "/"));
 XMLEntities.ARCHIVENAME := Concatenation(XMLEntities.ARCHIVE_BASENAME,
                                          PkgInfo.ArchiveFormats);
-XMLEntities.DIGRAPHS := PackageEntity("Digraphs");
+XMLEntities.DIGRAPHS := UrlEntity(PkgInfo.PackageName, PkgInfo.PackageWWWHome);
 
 for Pkg in Concatenation(PkgInfo.Dependencies.NeededOtherPackages,
                          PkgInfo.Dependencies.SuggestedOtherPackages) do
@@ -65,7 +66,7 @@ od;
 
 # The files containing the xml of the doc
 
-DocDir := DirectoriesPackageLibrary("digraphs", "doc")[1];
+DocDir := Directory("doc");
 Files := Filtered(DirectoryContents(DocDir),
                   x -> (not StartsWith(x, "."))
                        and (not StartsWith(x, "z-"))
@@ -120,7 +121,7 @@ with the square in the first rank and file being dark.<P/>""";
 
 # The actual call to AutoDoc
 
-AutoDoc("digraphs", rec(
+AutoDoc(DirectoryCurrent(), rec(
     autodoc := rec(scan_dirs := []),
     gapdoc := rec(
         LaTeXOptions := rec(EarlyExtraPreamble := """
