@@ -63,9 +63,7 @@ false
 gap> gr := Digraph([[2], []]);
 <immutable digraph with 2 vertices, 1 edge>
 gap> DigraphRemoveEdges(gr, [[2, 1]]);
-<immutable digraph with 2 vertices, 1 edge>
-gap> last = gr;
-true
+Error, the edge [2, 1] does not exist,
 gap> DigraphRemoveEdges(gr, [[1, 2]]);
 <immutable empty digraph with 2 vertices>
 gap> gr := DigraphFromDigraph6String("&DtGsw_");
@@ -109,6 +107,88 @@ gap> gr := DigraphRemoveEdge(gr, [2, 1]);
 <immutable digraph with 2 vertices, 1 edge>
 gap> DigraphEdges(gr);
 [ [ 1, 2 ] ]
+
+# Testing DigraphRemoveEdge(s) and DigraphRemoveVertex(ices) correctly handles valid removals and raises errors for invalid ones.
+gap> gr := Digraph([[2], [1]]);
+<immutable digraph with 2 vertices, 2 edges>
+gap> gr2 := DigraphRemoveEdge(gr, [1, 2]);
+<immutable digraph with 2 vertices, 1 edge>
+gap> DigraphEdges(gr2);
+[ [ 2, 1 ] ]
+gap> D := DigraphMutableCopy(Digraph([[2, 3], [1], [1]]));
+<mutable digraph with 3 vertices, 4 edges>
+gap> DigraphRemoveEdge(D, [1, 3]);
+<mutable digraph with 3 vertices, 3 edges>
+gap> DigraphEdges(D);
+[ [ 1, 2 ], [ 2, 1 ], [ 3, 1 ] ]
+gap> gr := Digraph([[2], [1]]);
+<immutable digraph with 2 vertices, 2 edges>
+gap> DigraphRemoveEdge(gr, [1, 1]);
+Error, the edge [1, 1] does not exist,
+gap> D := DigraphMutableCopy(gr);
+<mutable digraph with 2 vertices, 2 edges>
+gap> DigraphRemoveEdge(D, [2, 2]);
+Error, the edge [2, 2] does not exist,
+gap> gr := Digraph([[2, 3], [1], [1]]);
+<immutable digraph with 3 vertices, 4 edges>
+gap> gr2 := DigraphRemoveEdges(gr, [[1, 2], [3, 1]]);
+<immutable digraph with 3 vertices, 2 edges>
+gap> DigraphEdges(gr2);
+[ [ 1, 3 ], [ 2, 1 ] ]
+gap> D := DigraphMutableCopy(Digraph([[2, 3], [1, 3], []]));
+<mutable digraph with 3 vertices, 4 edges>
+gap> DigraphRemoveEdges(D, [[1, 2], [2, 3]]);
+<mutable digraph with 3 vertices, 2 edges>
+gap> DigraphEdges(D);
+[ [ 1, 3 ], [ 2, 1 ] ]
+gap> gr := Digraph([[2, 3], [1], [1]]);
+<immutable digraph with 3 vertices, 4 edges>
+gap> DigraphRemoveEdges(gr, [[1, 1]]);
+Error, the edge [1, 1] does not exist,
+gap> D := DigraphMutableCopy(gr);
+<mutable digraph with 3 vertices, 4 edges>
+gap> DigraphRemoveEdges(D, [[2, 3]]);
+Error, the edge [2, 3] does not exist,
+gap> gr := Digraph([[2, 3], [1, 3], [1]]);
+<immutable digraph with 3 vertices, 5 edges>
+gap> gr2 := DigraphRemoveVertex(gr, 2);
+<immutable digraph with 2 vertices, 2 edges>
+gap> DigraphEdges(gr2);
+[ [ 1, 2 ], [ 2, 1 ] ]
+gap> D := DigraphMutableCopy(Digraph([[2], [1]]));
+<mutable digraph with 2 vertices, 2 edges>
+gap> DigraphRemoveVertex(D, 1);
+<mutable empty digraph with 1 vertex>
+gap> DigraphEdges(D);
+[  ]
+gap> gr := Digraph([[2], [1]]);
+<immutable digraph with 2 vertices, 2 edges>
+gap> DigraphRemoveVertex(gr, 5);
+Error, the vertex 5 does not exist,
+gap> D := DigraphMutableCopy(gr);
+<mutable digraph with 2 vertices, 2 edges>
+gap> DigraphRemoveVertex(D, 3);
+Error, the vertex 3 does not exist,
+gap> gr := CompleteDigraph(4);
+<immutable complete digraph with 4 vertices>
+gap> gr2 := DigraphRemoveVertices(gr, [1, 3]);
+<immutable digraph with 2 vertices, 2 edges>
+gap> DigraphEdges(gr2);
+[ [ 1, 2 ], [ 2, 1 ] ]
+gap> D := DigraphMutableCopy(CompleteDigraph(3));
+<mutable digraph with 3 vertices, 6 edges>
+gap> DigraphRemoveVertices(D, [1, 2]);
+<mutable empty digraph with 1 vertex>
+gap> DigraphEdges(D);
+[  ]
+gap> gr := CompleteDigraph(4);
+<immutable complete digraph with 4 vertices>
+gap> DigraphRemoveVertices(gr, [1, 5]);
+Error, the vertex 5 does not exist,
+gap> D := DigraphMutableCopy(gr);
+<mutable digraph with 4 vertices, 12 edges>
+gap> DigraphRemoveVertices(D, [2, 10]);
+Error, the vertex 10 does not exist,
 
 # Tests for digraph operator "^" (implements D ^ p and D ^ t using OnDigraphs)
 gap> D := CycleDigraph(5);
@@ -795,7 +875,7 @@ gap> DigraphRemoveVertex(gr, 0);
 Error, no method found! For debugging hints type ?Recovery from NoMethodFound
 Error, no 1st choice method found for `DigraphRemoveVertex' on 2 arguments
 gap> DigraphRemoveVertex(gr, 15);
-<immutable digraph with 14 vertices, 54 edges>
+Error, the vertex 15 does not exist,
 gap> gr2 := DigraphRemoveVertex(gr, 10);;
 gap> DigraphNrVertices(gr2);
 13
@@ -829,7 +909,7 @@ gap> gr2 := DigraphRemoveVertices(gr, [1, 0]);
 Error, the 2nd argument <list> must be a duplicate-free list of positive integ\
 ers,
 gap> gr2 := DigraphRemoveVertices(gr, [1, 5]);
-<immutable digraph with 3 vertices, 6 edges>
+Error, the vertex 5 does not exist,
 gap> gr2 := DigraphRemoveVertices(gr, [1, 3]);
 <immutable digraph with 2 vertices, 2 edges>
 gap> IsCompleteDigraph(gr2);
@@ -2907,8 +2987,8 @@ Error, an element of the 2nd argument (roots) is not a vertex of the 1st argum\
 ent (a digraph)
 gap> D3 := CompleteDigraph(7);
 <immutable complete digraph with 7 vertices>
-gap> D3_edges := [1 .. 7];
-[ 1 .. 7 ]
+gap> D3_edges := [2 .. 7];
+[ 2 .. 7 ]
 gap> for i in D3_edges do
 >      D3 := DigraphRemoveEdge(D3, [1, i]);
 >      D3 := DigraphRemoveEdge(D3, [i, 1]);

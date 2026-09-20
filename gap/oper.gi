@@ -109,7 +109,7 @@ InstallMethod(DigraphRemoveVertex,
 function(D, u)
   local pos, w, v;
   if u > DigraphNrVertices(D) then
-    return D;
+    ErrorNoReturn("the vertex ", u, " does not exist,");
   fi;
   RemoveDigraphVertexLabel(D, u);
   if IsBound(D!.edgelabels) then
@@ -139,7 +139,7 @@ InstallMethod(DigraphRemoveVertex,
 [IsImmutableDigraph, IsPosInt],
 function(D, u)
   if u > DigraphNrVertices(D) then
-    return D;
+    ErrorNoReturn("the vertex ", u, " does not exist,");
   fi;
   return MakeImmutable(DigraphRemoveVertex(DigraphMutableCopy(D), u));
 end);
@@ -151,7 +151,13 @@ function(D, list)
   if not IsDuplicateFreeList(list) or not ForAll(list, IsPosInt) then
     ErrorNoReturn("the 2nd argument <list> must be a ",
                   "duplicate-free list of positive integers,");
-  elif not IsMutable(list) then
+  fi;
+  for v in list do
+    if v > DigraphNrVertices(D) then
+      ErrorNoReturn("the vertex ", v, " does not exist,");
+    fi;
+  od;
+  if not IsMutable(list) then
     list := ShallowCopy(list);
   fi;
   # The next line is essential since otherwise removing the 1st node,
@@ -239,10 +245,11 @@ function(D, src, ran)
                   "digraph <D> that is the 1st argument,");
   fi;
   pos := Position(D!.OutNeighbours[src], ran);
-  if pos <> fail then
-    Remove(D!.OutNeighbours[src], pos);
-    RemoveDigraphEdgeLabel(D, src, pos);
+  if pos = fail then
+    ErrorNoReturn("the edge [", src, ", ", ran, "] does not exist,");
   fi;
+  Remove(D!.OutNeighbours[src], pos);
+  RemoveDigraphEdgeLabel(D, src, pos);
   return D;
 end);
 
