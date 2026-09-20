@@ -43,20 +43,20 @@ gap> circs := DigraphAllSimpleCircuits(gr);;
 gap> Length(circs);
 1291792
 
-#  HamiltonianPath and IsHamiltonianDigraph
+#  HamiltonianCycle and IsHamiltonianDigraph
 gap> g := CompleteDigraph(20);
 <immutable complete digraph with 20 vertices>
-gap> HamiltonianPath(g);
+gap> HamiltonianCycle(g);
 [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 ]
 gap> IsDigraphMonomorphism(CycleDigraph(20), 
 >                          g,
->                          Transformation(HamiltonianPath(g)));
+>                          Transformation(HamiltonianCycle(g)));
 true
 gap> IsHamiltonianDigraph(g);
 true
 gap> g := CompleteMultipartiteDigraph([1, 9, 1, 1, 2, 1, 1, 1]);
 <immutable complete multipartite digraph with 17 vertices, 198 edges>
-gap> HamiltonianPath(g);
+gap> HamiltonianCycle(g);
 fail
 gap> IsHamiltonianDigraph(g);
 false
