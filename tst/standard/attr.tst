@@ -3455,21 +3455,147 @@ gap> TestDigraphGreedyDominatingSet(D, A);
 true
 
 # EdgeConnectivity
-gap> D := Digraph([[4], [4], [4], [1, 2, 3]]);;
+gap> D := Digraph([[4], [4], [4], [1, 2, 3]]);
+<immutable digraph with 4 vertices, 6 edges>
 gap> DigraphEdgeConnectivity(D);
 1
+gap> D := Digraph(IsMutableDigraph, [[4], [4], [4], [1, 2, 3]]);
+<mutable digraph with 4 vertices, 6 edges>
+gap> DigraphEdgeConnectivity(D);
+1
+gap> D;
+<mutable digraph with 4 vertices, 6 edges>
 gap> D := RandomDigraph(1);;
 gap> DigraphEdgeConnectivity(D);
 0
 gap> D := Digraph([[2, 3], [1, 4], [1, 4], [2, 3]]);;
 gap> DigraphEdgeConnectivity(D);
 2
-gap> D := Digraph([[1, 2, 3, 4, 5], [1, 2, 3, 4, 5], [1, 2, 3, 4, 5], [1, 2, 3, 4, 5], [1, 2, 3, 4, 5]]);;
+gap> D := Digraph([[2], [1], [4, 5], [3, 5], [3, 4]]);;
+gap> DigraphEdgeConnectivity(D);
+0
+gap> D := Digraph([[1, 2], [3, 4], [], []]);;
+gap> DigraphEdgeConnectivity(D);
+Error, the argument <digraph> must be a symmetric digraph,
+gap> D := Digraph([
+> [1, 2, 3, 4, 5],
+> [1, 2, 3, 4, 5],
+> [1, 2, 3, 4, 5],
+> [1, 2, 3, 4, 5],
+> [1, 2, 3, 4, 5]]);;
 gap> DigraphEdgeConnectivity(D);
 4
 gap> D := DigraphFromGraph6String("I~~~~~~~w");;
 gap> DigraphEdgeConnectivity(D);
 9
+gap> D := CompleteDigraph(10);;
+gap> DigraphEdgeConnectivity(D);
+9
+gap> D := CirculantGraph(10, [1, 2, 3, 4]);;
+gap> DigraphEdgeConnectivity(D);
+8
+gap> D := DigraphFromGraph6String("L~~~?CB?wb`N@^");
+<immutable symmetric digraph with 13 vertices, 78 edges>
+gap> DigraphEdgeConnectivity(D);
+6
+gap> # House of Graphs 56962
+gap> D := DigraphFromGraph6String("~?Al~~emZB}NFxEqSvjWcNg?oqBqGEz@fMcVKe_t\
+> ALNC?|x@PnotaNoD[n|JqbNvM`D|\\`WfeLkb]bVebVBY]XnWuU[jt_mxfe\\JovHwyTncfrO\
+> }bc[oNxliT~SLhb^uQ[vUlS|S]S^rbA{lpm@~sDlilMngww^QuiNhOceMBkDwJPUFDs`ES@q{\
+> qDJfTSoUkRMd@LRY`TrxHxGKousyIWmATYW{aoHqN`K|OxgsY]TMNI[_[MkRrYiAzCV|TdvmO\
+> QH]aQk[f\\aIlf_euUdoxnq\\e{aeoSfF}rokQeLplSljymFwO?}Jgf_T_zc\\iUhpQakmOvu\
+> nRlAjnURDDlNWdZL^FU?FUiqRbl`XJBCF^sqtPJppR{[DKUXGtcxw|lyEgVc]Nw_xTnymPuUA\
+> UWsOvrtyF[MHE[rxk?vjHVOWeriaMFjlFQJkTJBotQdhuthm?X|OPjqvW\\n@bEkc`xlV\\L@\
+> JKZuA\\OuiYXv]ckNKOfWu^zqiCAtTY\\JW\\{rvX`i?lKzkELngbealXxbDoseptMBF^J]gH\
+> Udojhi]Ci\\onSJL[TXt|DYio[abXH|SvvP`[qmDCqYsxlJpTAmu|elAFgDiwfi\\BYo}Gdvi\
+> KQjG^}Q\\lXiVW@KRYWEhWUd|DbK`v{SmoaSLTV{xzDk?xBbKVOqXy]D{dX]IJHbZWBL[[Xv|\
+> GUjx`wQadJ@\\pT\\dtTZEdIkMD}sQ{L{AxXLuKCN`dV_h}uXMRu`wg[C[m]l\\DHihlbnCQX\
+> C\\]Yqh{HSVUcjwapAxmX]{CBx\\TpDiYtqEV{\\tSPFmK`TTJ}A^zyaYFQ@yzenO^CBXmgQJ\
+> U]kmcXidDdyLAxPxl@zN{HkNVzCHG_uouzEL|aJxLRiBDolfVEMH[\\WIc}n{?h`DW{`hzUsy\
+> `QKiU~PBOwKy^NTUnG\\hRigQ[^Zp[_BE{^{yEVXqTDxQaYktbZyW~mKUwsHnFBMs|KJOWJmP\
+> HMvkOzDVVqK{gUq|q[ZVGOj]Jj]AeF{@AZtHNcPPu{Meu[NG]FDctzmTbcDIsa@UzD|fR||nQ\
+> ]akLUFjCnUjoouSk^xXs^wKiSRhdLPMbr]HKbRvgt_mGLQIvzIgZ]GEZGv]Hgs\\bZQrGSjwo\
+> Na\\nxOlIPJzci_tiXNLOheV{@ttOK|wCso|[Lqi`bisZuAXlJ]pTLGqiv@iHmNSh\\u]@PpP\
+> ThUfFoq{WX\\Uw[zwGRILrtSoV`lr@QV~sdPX@c`ufRQBXsuLNBL~oxkROHGJllS[WtlQNWZF\
+> bqTp]t~cUooCS\\coxJ_VWZ[MJ\\QRNdJAbLlO_um@MV^PgWn\\rqOOkeSa{BG|ioU~IUyj_n\
+> UBTm?BmFYJgQ[~iWhLUWz_uEhoSiFXBfh_\\vFVNQLEKlVwC?}{FAyQ^{?N~~?G}~?BbGE]^w\
+> ?@e?ilw@cyBiBhy{Xz]@|ZIi^`fDepVPBfBuhrUWKLLpnuvGKSZbLMQql[U~D\\E`N]lrLI_q\
+> y\\opBm\\agRlymuhRGf{DDA{ivCeRaJzCN}ezhSOn]hHEAzQK]W~YIjZpb`Tx^YFc@dRe}Gq\
+> ?oKw~mu|diw\\VMiS?[zPptRLsvMglwT[PwQY~Y_BK`Wen^thiJK|EnkwEjDMch[LHDC|eZ\\\
+> SQIf^i]qVXMXQ_OBoL~kp^xWKibLymGjh\\yARI_X^VPU[IUPvuh`O{o^e]SNW`dxPMc~FDUj\
+> bJwDJuHuXwnoBEBQrP^nK^@W~@jhgeqHZMDZGJAzqbJpSB~bThidRHVvMPptBOpefzQjXq?{d\
+> \\mpVMC~@pPN_gz_neeqSB~QZTTK_^zSXk~@hfXVpkgdqZ\\Dk@L?CL|LXzpk`HtGaR^{gcUv\
+> xgDmYSbQtomrogVJTwBZT]aGynPpQQEWIZzzIkPOUaDy~xk]N_LRE[XVLkQKuIeGrNSvSXLC[\
+> eolfwJtJIAdm_tLcfheEGjvVXgrgf`WQweQenOxC~MrXP{cDoCxC]]nmuXRkSEUoY`OwxBHBV\
+> ~UHA{mYbPE~Er_bxjoF@xBS|N[_cllJeFcZQQML]e{eKzEe`mX]yCVbF?luhBLJNMB[]rfp?u\
+> MSx}m?IwLn~Ae|qWVh@OAkENbVhJ?lzTBBDML\\k}[tQc\\Ow`H^@fsoNhZCovA_InnlJccms\
+> TXdB_nGgcsJ}Z|HFk]TAZmHsI\\eaLTaH{XduuTPXF\\AdUBNgwZSHyleAxXvhk[HdrfLvouM\
+> ROW?jK}NygGDC}~?y_Y]NW~hYNWoUooL_fNMQpC^\\fKtOM{[FvgqCkjlcm[tDkEch?|plyBt\
+> S\\exRYE`uhHlOIIU}BTz]dBCVxhtCu{\\QCL~H?w}oeedPbV^PEmQfEEC}]es{gx?RnwW{@V\
+> [G]s\\xjQKzJPQ[x|dTolDW`urQPDDn{`\\X[]QnFnq@Rd}`LP_mbQwazSoe[LFznEmO_[uxz\
+> ^@pWUDPHxwLez@tCFBi[~Fz?NrlPrO}_mdLIkdG]ILIMkk^r|w`JMB}NN_}?xw}A[cKW]E@`|\
+> r`Vfw^MO");
+<immutable symmetric digraph with 173 vertices, 14878 edges>
+gap> DigraphEdgeConnectivity(D);
+86
+gap> # House of Graphs 51424
+gap> D := DigraphFromGraph6String("~?Aa~~~~~~~~~~~~~~~~~~~~~~~~~~~~~}yb~Yh~p\
+> L~}E^~uw^~jh^~kM~~tJn~~~|h~~~qv|rt~fzZV~Nw{~~N|sL~~~Yc~~~wNr~~~bK~~~{z{\\l\
+> ey|yZri}]qzxm^V[\\|ff{{Zn\\h~jhvZmV~Munxil~Mx^uVJ~eu{vtjzxjuryu|~cvzVY^^|R\
+> n]mXz~x\\[tVnz|xYzInnv}}Jx\\b^~Z~Q|jcz~n^{JNc}~n^~gr]L||}~}nT|vMd~qU^i}zNB\
+> ~kNZ^f}FF~Krt{uZ^Mymxu^Xrftujmuy|gzvUvy\\^r{hnvL^wt~uuF}]\\NrN~zUmi~d|drn}\
+> tVT^s}wz\\~tfk|uVg~mn~M^LmxlR|t~}rltinvpL~vur]yT^vgr~znT\\|ovmJnz|nrU}yRvP\
+> v|}v}hn[]^ZRv^l~xd}quzquz|v~op~eEA~~~~~~oM?Xx|~~~~~~U~xls{^^K]_lL^|fmMfnkf\
+> SSjmh~fxq~NBwKrmvwtr{unjY^g`t^qVZti}nI}gblnLT}tvrfS{sT}nfT]{zurT]dE~ms{~VF\
+> zblK}cf|uZZtt]yZpZjD^vVrK~N]FfbNwN~ldVv]ZI~jTZIj~janm}VD~VavDf~vNiye}vovkk\
+> [nvtrt\\U^jyR|Eer}zlR|ubvhu}hA^n]}lVm{VlZftaE}zz|hvtJm{T~[_tz}n|XzyF^YJ}yP\
+> Jz|^}a~eEWF~~{e{N~~~gOE]X}~~~uO{~~~s}lzuZRBOfv^tz}yrxz^eZQQc^j}v^|rfmtrzTH\
+> e@|~V^l}zfnJl{xEXAz~j^r|zrn{Krvw?]Fv~m~f|{zB{r|wWE]~f{^v}~c~]oQ_zVi~]}~vm~\
+> }Jz{_sB]lVzvv}|v~{KBB~K]^}F|x~~u^~{J{{?r`ff}}^~nN~~yOAC}t}yh}v~nl~}~va@?vq\
+> ~\\TnZ~vu~~^}znvF][n]vDkorm_tDSL~kmusz{yLscmtCkKp\\~E|[{m|ivQg\\pgdQRZ}fYz\
+> [\\}TupS\\hSU`Rm{nj\\t\\nXZcLTlPJBPz^Ftzku|mMsckvaKgk^]tv^LY}jL[XwiNhF@H|z\
+> MzzJZt[yhZQX\\W[GZzttlnil|W|FsIwjdEH]zty]^VJyxZJiRS\\bEO~\\uNm}rMZ|ic[mhJM\
+> dAm~Zd|vrRX~dWjFeKrY_f^zrrrB|}W^wrfaKxe`w^}NK{rrv~_^cuXpNFcEFf~\\SnmV^Iy~c\
+> qm`SveCY~nZRVuM~Dt~RP\\_izTCT~^mfygvnsV^adlkct[SL|^zX|TMvybnwS{yeInBA}n~W_\
+> ?^}N~~~F~?p~oK?n~~|`~}?FB~~~_B~w?~oLN~~q|~rNMU@wFp~zoGE^[^~pi}jVytYQLB~|sE\
+> sGZs|z}t^Jty{]EHQ~|uCxGMul}~jVhff}]KKBv~raXoBs[~|}yzxme^hICv^Vyg@qVq~M~njn\
+> Xte}bOK}y~kOEo}lz\\}~S~jGeG}Y]n~yxRCIZZzzn~Q~spEC|dl^~tslGHjVvv^~gvNoN?`~x\
+> z~fwoW[Zx}^^~yIKB{Nvfff{^~b?WxF~xn~}S?SvXvjfj|]~qCidemn~z~\\G?kzfl\\l^jv~G\
+> HTXUt~~^}x}r~rMG]WFA@`{v}}{^~uNXX}{N{rhe@`MW@n~x^B}^nr}c}rkn{lGhCQsGn~Vjul\
+> z}zufNj[t}f`DaBM@F~yx}fl~]}YxzmuY^r?dI_Epvl}|qvy~myvflveU~QCJP?[flnzmk~t}v\
+> q~KyvaMCneZdSOj~}lfY~zzLy~I|NcUG^XfQw_f~|]VT~vvUx~cz~KB@W^}B@eU~x~dx~f^{]^\
+> x_hBmN^R\\p@TRy|~rT|^|}S~zIAoZhvtf\\GDT]n^|hnV~^hV~kc_E^fs~rNE?L~b~rR~rv{[\
+> ~~WnnkggDTCFlT\\zd\\^~\\tlN~v~g^^[SSAiaF[i|vQz^}zjin~n~[Z_@~er{?B~r@~{o^}~\
+> ~KJ~^~^EF~_ER?BNG^~aF~z~[B~|~z~}ogORVVwArSyzrM]u~vvJVv|~|z`aAMmn_Sqj\\uiu{\
+> z}}zR^^n~nv?cajOO]~H{ve}ttnr}v{ft~y~~?bDSgOl~EzZX~Jy^r|z{Zm~t~~_IGh@clx]m{\
+> n[vVnV~lJ|l~|^~wAPD_ck}Nt]tmmr|j~{l]z^}n~~?HQ@KiuLzVLzyzh|^|mZ^t~N~~{?aoBK\
+> Zcz]Yz^\\tZy~xu]}z{~~~w");
+<immutable symmetric digraph with 162 vertices, 17010 edges>
+gap> DigraphEdgeConnectivity(D);
+105
+gap> # House of Graphs 55829
+gap> D := DigraphFromGraph6String("~?@|}rFEJGsFGZ?oKoo^_F?jpHZHIecTFH_BZ??y?\
+> q}gEjWJ`[ojDWo{F_\\Jw?El]??~{??A~~??CAxVO{DXj`Y_Taj\\`HXLZcQTQUyQPUIloi?qw\
+> vDd?tXZIV_BoufcF_{phwhK@floqZ?W]vBCEPqppfS@hLpo^Ic@EfzKSe?eP}{EDHj?}E^gRXS\
+> Bw]^?n?vw?~F?_~Fw?Nz?TJ{@WA`}[l^?i@O^en{?F_N?{qh^J_@@r{[l]j?CDfxT~_{?EEFxa\
+> h^jj[?B~?dj|\\Z??~oD~_{|g?F}?O^f~FF`_?whLXn}o{?M?eqmV}o{?M?V_Z{~F`_?wD~~?}\
+> @wW?M?n~vw?o{?M?@h^jj\\T~~Z^yl^jj\\T~~Z^r~_{|n}F~lnpcte~~NuV~|wUqmV~{}Y~~m\
+> AFx~px~X|~voN_Z{~~bxn~z?^~wFo~~{p~y?^~vw?~~~MN{?F~~~~f`~wwX?@~~~~}Ff~oH_?N\
+> ~~~}~~?N}??@_Taj\\DuVZ\\wMQHJHj[TknZZo[aQTQUybrUu|o[`QIpTmaxjlmwMOOVIyFDZN\
+> eu}KWiDXj`XTX|ZVpbIKe?ruxwQ}un@qBUoEFl{oY|lmBcEY?qwvTFrUvuKWhi_YkltBxllzEK\
+> grw?{LnwEZlmpbN?O{FeLNoNlk}KXw@?sew{NcU~x~?HbqEPqpxfPT~t}?[JbGALN}WkJ~y}?R\
+> sPWAXF~oXH~}^?M[GYVwAoT^{ovyKWh`yl^?iDT~eJ^PbIKNN}?Bo^w]Wu|EK{?{YVqw?T^~EF\
+> {BcANzTjtW?in~IJ{BcCV|N}Bo?^w^eE}@qBK~BHj?}E^keNz]?RvoFUqgFo{}Wp~joBf]?x{B\
+> ^_B{^Kw~V?N}G[AFw~?@~Xxpvm?^N_wB~}??F~~_@~M?^~o??B{~w{{K}FBN?Nfo^_HLXn~o{d\
+> }@LoA]}Fw?uTq~}FbVoHm?[zo~?F_Z{~f`xgwXw@~pB{?IVyyvDB~ooqBcANzFuDj|\\ZIB~pO\
+> qBcCV|FuDJ|\\ZgM^z?eEKSo{N{gl^jj[Df~OH`bIKND~KN{FflN?~p_qBcEX}FuK~o]]vBB~o\
+> Copf_Fb^f@HjL~u^g@~o?[_rtw^XguTq~vfo@~o?[_rywnhgB{~ww~k?~w?pfe@b|^GN?vx}~F\
+> ?N}?KXx`_}}q@~~?}F~w?No@bNKNFL}OF~z{?^~_FF?@qBN~bFe_N~wFoNB{poroB~}?w?L|N~\
+> vw?o{~M@LoB~}F??q}F~~~~_?^w??w@~~B{??^`~~~~pwW?M??[_r~w}pgAN~~~}o{?M??KXx`\
+> w~xq?_");
+<immutable symmetric digraph with 125 vertices, 8000 edges>
+gap> DigraphEdgeConnectivity(D);
+64
 
 # Semimodular lattices
 gap> D := DigraphFromDigraph6String("&C[o?");

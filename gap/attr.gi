@@ -3589,7 +3589,7 @@ function(digraph)
 
   # check for symmetric digraph
   if not IsSymmetricDigraph(digraph) then
-    ErrorNoReturn("Digraph given must be a symmetric digraph");
+    ErrorNoReturn("the argument <digraph> must be a symmetric digraph,");
   fi;
 
   if DigraphNrVertices(digraph) = 1 or
@@ -3597,7 +3597,7 @@ function(digraph)
     return 0;
   fi;
 
-  EdgeD := UnitEdgeWeightedDigraph(digraph);
+  EdgeD := UnitEdgeWeightedDigraph(DigraphImmutableCopyIfMutable(digraph));
 
   min := -1;
 
