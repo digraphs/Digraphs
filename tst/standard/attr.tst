@@ -549,6 +549,24 @@ gap> DIGRAPH_ConnectivityDataForVertex(gr, 2);;
 gap> DigraphShortestDistances(gr);
 [ [ 0, 1, 1 ], [ 1, 0, 1 ], [ 1, 1, 0 ] ]
 
+#  UnweightedBellmanFord
+gap> gr := Digraph([[1, 2], [3], [1, 2], [4]]);
+<immutable digraph with 4 vertices, 6 edges>
+gap> UnweightedBellmanFord(gr, 2);
+[ [ 2, 0, 1, fail ], [ 3, fail, 2, fail ] ]
+gap> gr := CycleDigraph(IsMutableDigraph, 3);
+<mutable digraph with 3 vertices, 3 edges>
+gap> UnweightedBellmanFord(gr, 3);
+[ [ 1, 2, 0 ], [ 3, 1, fail ] ]
+gap> gr := Digraph([[], []]);
+<immutable empty digraph with 2 vertices>
+gap> UnweightedBellmanFord(gr, 2);
+[ [ fail, 0 ], [ fail, fail ] ]
+gap> gr := Digraph([[1], [2], [3], [4]]);
+<immutable digraph with 4 vertices, 4 edges>
+gap> UnweightedBellmanFord(gr, 2);
+[ [ fail, 0, fail, fail ], [ fail, fail, fail, fail ] ]
+
 #  OutNeighbours and InNeighbours
 gap> gr := Digraph(rec(DigraphNrVertices := 10,
 >                      DigraphSource := [1, 1, 5, 5, 7, 10],

@@ -48,6 +48,7 @@ DeclareAttribute("DigraphDegeneracy", IsDigraph);
 DeclareAttribute("DigraphDegeneracyOrdering", IsDigraph);
 DeclareAttribute("DIGRAPHS_Degeneracy", IsDigraph);
 DeclareAttribute("DigraphShortestDistances", IsDigraph);
+DeclareOperation("UnweightedBellmanFord", [IsDigraph, IsPosInt]);
 DeclareAttribute("DigraphDiameter", IsDigraph);
 DeclareAttribute("DigraphGirth", IsDigraph);
 DeclareAttribute("DigraphOddGirth", IsDigraph);
