@@ -1596,11 +1596,10 @@ function(D, edges)
   return true;
 end);
 
-InstallMethod(IsKParadoxical, "for a tournament and a non-negative int",
+InstallMethod(IsKParadoxical, "for a tournament and an integer",
 [IsDigraph, IsInt],
 function(D, k)
-  local n, subset, blists;
-  n := DigraphNrVertices(D);
+  local n, inn_blist, dfs;
 
   if not IsTournament(D) then
     ErrorNoReturn("the 1st argument <D> must be a tournament,");
@@ -1610,6 +1609,8 @@ function(D, k)
     ErrorNoReturn("the 2nd argument <k> must be non-negative,");
   fi;
 
+  n := DigraphNrVertices(D);
+
   if n = 0 then
     return false;
   fi;
@@ -1618,20 +1619,35 @@ function(D, k)
     return true;
   fi;
 
+  if k = 1 then
+    return IsParadoxical(D);
+  fi;
+
   # this minimum number of vertices needed for k-paradox is given by
   # Szekeres, E.; Szekeres, G. (1965), "On a problem of Schütte and Erdős"
   if n < (k+2) * (2^(k-1)) - 1 then
     return false;
   fi;
 
-  blists := List(InNeighbours(D), inn -> BlistList([1..n], inn));
-  for subset in Combinations(blists, k) do
-    if SizeBlist(IntersectionBlist(subset)) = 0 then
-      return false;
-    fi;
-  od;
+  inn_blist := List(InNeighbours(D), inn -> BlistList([1..n], inn));
 
-  return true;
+  dfs := function(prev, depth, common)
+    local vertex, ncommon;
+    for vertex in [prev+1 .. n-k+depth+1] do
+      ncommon := IntersectionBlist(common, inn_blist[vertex]);
+      if SizeBlist(ncommon) = 0 then
+        return false;
+      fi;
+      if depth+1 < k then
+        if not dfs(vertex, depth+1, ncommon) then
+          return false;
+        fi;
+      fi;
+    od;
+    return true;
+  end;
+
+  return dfs(0, 0, BlistList([1 .. n], [1 .. n]));
 end);
 
 #############################################################################
