@@ -192,17 +192,19 @@ InstallMethod(GraphvizColoredEdgeLabelledDigraph,
 "for a digraph, vertex colors, edge colors, and edge labels",
 [IsDigraph, IsList, IsList, IsList],
 function(D, n_colors, e_colors, weights)
-  local gv, head, tail, edge, pos;
+  local gv, out, edge, v, i;
 
-  gv := GraphvizColoredDigraph(D, n_colors, e_colors);
-  for edge in GraphvizEdges(gv) do
-    # TODO the next two lines are a bit fragile
-    head := Int(GraphvizName(GraphvizHead(edge)));
-    tail := Int(GraphvizName(GraphvizTail(edge)));
+  DIGRAPHS_ErrorIfNotEdgeColoring(D, e_colors);
+  gv := GraphvizVertexColoredDigraph(
+          NullDigraph(DigraphNrVertices(D)), n_colors);
+  out := OutNeighbours(D);
 
-    # TODO the next line is not amazing
-    pos  := Position(OutNeighboursOfVertex(D, head), tail);
-    GraphvizSetAttr(edge, "label", weights[head][pos]);
+  for v in DigraphVertices(D) do
+    for i in [1 .. Length(out[v])] do
+      edge := GraphvizAddEdge(gv, v, out[v][i]);
+      GraphvizSetAttr(edge, "color", e_colors[v][i]);
+      GraphvizSetAttr(edge, "label", weights[v][i]);
+    od;
   od;
   return gv;
 end);

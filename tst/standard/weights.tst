@@ -526,6 +526,13 @@ digraph hgn {
 	1 -> 2 [color=black, label=10]
 }
 
+# Parallel edges and loops retain distinct weights when highlighting a path.
+gap> gr := EdgeWeightedDigraph([[1, 2, 1, 2], []], [[3, 10, 7, 20], []]);;
+gap> path := [[1, 2], [4]];;
+gap> List(GraphvizEdges(GraphvizEdgeWeightedDigraph(gr, path)),
+> e -> [GraphvizAttrs(e)["color"], GraphvizAttrs(e)["label"]]);
+[ [ "black", "3" ], [ "black", "10" ], [ "black", "7" ], [ "blue", "20" ] ]
+
 # Cycle example
 gap> gr := EdgeWeightedDigraph(CycleDigraph(5), [[10], [4], [8], [2], [8]]);;
 gap> path := DigraphPath(gr, 3, 1);
