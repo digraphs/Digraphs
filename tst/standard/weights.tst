@@ -511,19 +511,19 @@ true
 gap> gr := EdgeWeightedDigraph([[2], []], [[10], []]);;
 gap> Print(DotEdgeWeightedDigraph(gr));
 //dot
-digraph hgn{
-node [shape=circle]
-1[color=gray, style=filled]
-2[color=gray, style=filled]
-1 -> 2[color=black, label=10]
+digraph hgn {
+	node [shape=circle] 
+	1 [color=gray, style=filled]
+	2 [color=gray, style=filled]
+	1 -> 2 [color=black, label=10]
 }
 gap> Print(DotEdgeWeightedDigraph(gr, rec(vert := "orange")));
 //dot
-digraph hgn{
-node [shape=circle]
-1[color=orange, style=filled]
-2[color=orange, style=filled]
-1 -> 2[color=black, label=10]
+digraph hgn {
+	node [shape=circle] 
+	1 [color=orange, style=filled]
+	2 [color=orange, style=filled]
+	1 -> 2 [color=black, label=10]
 }
 
 # Cycle example
@@ -532,18 +532,18 @@ gap> path := DigraphPath(gr, 3, 1);
 [ [ 3, 4, 5, 1 ], [ 1, 1, 1 ] ]
 gap> Print(DotEdgeWeightedDigraph(gr, path, rec(highlight := "red")));
 //dot
-digraph hgn{
-node [shape=circle]
-1[color=lightpink, style=filled]
-2[color=gray, style=filled]
-3[color=yellowgreen, style=filled]
-4[color=gray, style=filled]
-5[color=gray, style=filled]
-1 -> 2[color=black, label=10]
-2 -> 3[color=black, label=4]
-3 -> 4[color=red, label=8]
-4 -> 5[color=red, label=2]
-5 -> 1[color=red, label=8]
+digraph hgn {
+	node [shape=circle] 
+	1 [color=lightpink, style=filled]
+	2 [color=gray, style=filled]
+	3 [color=yellowgreen, style=filled]
+	4 [color=gray, style=filled]
+	5 [color=gray, style=filled]
+	1 -> 2 [color=black, label=10]
+	2 -> 3 [color=black, label=4]
+	3 -> 4 [color=red, label=8]
+	4 -> 5 [color=red, label=2]
+	5 -> 1 [color=red, label=8]
 }
 
 # Large example
@@ -555,28 +555,28 @@ gap> path := EdgeWeightedDigraphShortestPath(gr, 1, 2);
 [ [ 1, 7, 6, 2 ], [ 2, 1, 2 ] ]
 gap> Print(DotEdgeWeightedDigraph(gr, path));
 //dot
-digraph hgn{
-node [shape=circle]
-1[color=yellowgreen, style=filled]
-2[color=lightpink, style=filled]
-3[color=gray, style=filled]
-4[color=gray, style=filled]
-5[color=gray, style=filled]
-6[color=gray, style=filled]
-7[color=gray, style=filled]
-1 -> 5[color=black, label=8]
-1 -> 7[color=blue, label=4]
-2 -> 5[color=black, label=12]
-3 -> 1[color=black, label=11]
-3 -> 3[color=black, label=2]
-3 -> 6[color=black, label=10]
-4 -> 1[color=black, label=3]
-4 -> 3[color=black, label=7]
-5 -> 4[color=black, label=9]
-5 -> 5[color=black, label=13]
-6 -> 1[color=black, label=1]
-6 -> 2[color=blue, label=6]
-7 -> 6[color=blue, label=5]
+digraph hgn {
+	node [shape=circle] 
+	1 [color=yellowgreen, style=filled]
+	2 [color=lightpink, style=filled]
+	3 [color=gray, style=filled]
+	4 [color=gray, style=filled]
+	5 [color=gray, style=filled]
+	6 [color=gray, style=filled]
+	7 [color=gray, style=filled]
+	1 -> 5 [color=black, label=8]
+	1 -> 7 [color=blue, label=4]
+	2 -> 5 [color=black, label=12]
+	3 -> 1 [color=black, label=11]
+	3 -> 3 [color=black, label=2]
+	3 -> 6 [color=black, label=10]
+	4 -> 1 [color=black, label=3]
+	4 -> 3 [color=black, label=7]
+	5 -> 4 [color=black, label=9]
+	5 -> 5 [color=black, label=13]
+	6 -> 1 [color=black, label=1]
+	6 -> 2 [color=blue, label=6]
+	7 -> 6 [color=blue, label=5]
 }
 
 # Bad arguments

@@ -44,6 +44,14 @@ DeclareOperation("GraphvizVertexLabelledDigraph", [IsDigraph]);
 DeclareOperation("GraphvizVertexLabelledGraph", [IsDigraph]);
 
 #############################################################################
+# Edge labelled graphs and digraphs
+#############################################################################
+
+DeclareOperation("GraphvizColoredEdgeLabelledDigraph",
+[IsDigraph, IsList, IsList, IsList]);
+# TODO impl DeclareOperation("GraphvizColoredEdgeLabelledGraph", [IsDigraph]);
+
+#############################################################################
 # Partial and preorder digraphs
 #############################################################################
 

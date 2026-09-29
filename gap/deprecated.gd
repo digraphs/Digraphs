@@ -33,3 +33,6 @@ DeclareOperation("DotHighlightedDigraph",
 DeclareOperation("DotHighlightedGraph", [IsDigraph, IsList]);
 DeclareOperation("DotHighlightedGraph",
                  [IsDigraph, IsList, IsString, IsString]);
+
+DeclareOperation("DotColoredEdgeLabelledDigraph",
+                 [IsDigraph, IsList, IsList, IsList]);

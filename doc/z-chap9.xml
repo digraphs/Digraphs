@@ -10,6 +10,9 @@
     <#Include Label="GraphvizVertexLabelledDigraph">
     <#Include Label="DotVertexLabelledDigraph">
 
+    <#Include Label="GraphvizColoredEdgeLabelledDigraph">
+    <#Include Label="DotColoredEdgeLabelledDigraph">
+
     <#Include Label="GraphvizPartialOrderDigraph">
     <#Include Label="DotPartialOrderDigraph">
 

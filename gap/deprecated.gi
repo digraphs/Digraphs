@@ -10,7 +10,7 @@
 
 BindGlobal("_PrintDeprecated", function(old, arg...)
   Info(InfoWarning, 1, "`", old, "` is deprecated and will be removed in v3",
-       " use `", Concatenation(List(arg, AsString)), "` instead!");
+       " use `", Concatenation(List(arg, String)), "` instead!");
 end);
 
 InstallMethod(DotDigraph, "for a digraph", [IsDigraph],
@@ -113,4 +113,13 @@ function(D, list)
   _PrintDeprecated("DotHighlightedDigraph",
                    "GraphvizHighlightedDigraph");
   return AsString(GraphvizHighlightedDigraph(D, list, "black", "grey"));
+end);
+
+InstallMethod(DotColoredEdgeLabelledDigraph,
+"for a digraph by out-neighbours and three lists",
+[IsDigraphByOutNeighboursRep, IsList, IsList, IsList],
+function(D, vert, edge, weight)
+  _PrintDeprecated("DotColoredEdgeLabelledDigraph",
+                   "GraphvizColoredEdgeLabelledDigraph");
+  return AsString(GraphvizColoredEdgeLabelledDigraph(D, vert, edge, weight));
 end);

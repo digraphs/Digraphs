@@ -183,6 +183,29 @@ InstallMethod(GraphvizVertexLabelledGraph, "for a digraph",
 D -> GraphvizSetNodeLabels(GraphvizGraph(D), DigraphVertexLabels(D)));
 
 #############################################################################
+# Edge labelled graphs and digraphs
+#############################################################################
+
+InstallMethod(GraphvizColoredEdgeLabelledDigraph,
+"for a digraph, vertex colors, edge colors, and edge labels",
+[IsDigraph, IsList, IsList, IsList],
+function(D, n_colors, e_colors, weights)
+  local gv, head, tail, edge, pos;
+
+  gv := GraphvizColoredDigraph(D, n_colors, e_colors);
+  for edge in GraphvizEdges(gv) do
+    # TODO the next two lines are a bit fragile
+    head := Int(GraphvizName(GraphvizHead(edge)));
+    tail := Int(GraphvizName(GraphvizTail(edge)));
+
+    # TODO the next line is not amazing
+    pos  := Position(OutNeighboursOfVertex(D, head), tail);
+    GraphvizSetAttr(edge, "label", weights[head][pos]);
+  od;
+  return gv;
+end);
+
+#############################################################################
 # Partial and preorder digraphs
 #############################################################################
 
