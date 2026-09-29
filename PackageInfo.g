@@ -568,7 +568,7 @@ PackageDoc := rec(
 ),
 
 Dependencies := rec(
-  GAP := ">=4.11.0",
+  GAP := ">=4.12.0",
   NeededOtherPackages := [["IO", ">=4.5.1"],
                           ["orb", ">=4.8.2"],
                           ["GraphvizForGAP", ">=0.0.0"],
