@@ -1097,7 +1097,7 @@ gap> DigraphAllUndirectedSimpleCircuits(g);
   [ 9, 5, 6, 10 ], [ 9, 5, 7, 8, 6, 10 ] ]
 
 # FacialCycles
-gap> g:=DigraphSymmetricClosure(CycleDigraph(3));;
+gap> g := DigraphSymmetricClosure(CycleDigraph(3));;
 gap> FacialWalks(g, []);
 Error, the 2nd argument (dense list <rotationSystem>) is not a rotation system\
  for the 1st argument (digraph <D>), expected a list of 3 lists,
