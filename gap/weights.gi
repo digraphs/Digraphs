@@ -905,6 +905,8 @@ DIGRAPHS_RandomEdgeWeightedDigraphFilt);
 # 7. Drawing edge weighted digraphs
 #############################################################################
 
+# TODO move these to display.gi
+
 InstallMethod(DotEdgeWeightedDigraph, "for a digraph",
 [IsDigraph],
 digraph -> DotEdgeWeightedDigraph(digraph, [[], []], rec()));

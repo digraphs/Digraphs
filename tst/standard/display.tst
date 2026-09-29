@@ -431,19 +431,19 @@ gap> gr := Digraph(r);
 <immutable multidigraph with 3 vertices, 4 edges>
 gap> dot := DotVertexLabelledDigraph(gr);;
 gap> dot;
-"//dot\ndigraph hgn {\n\tnode [shape=circle] \n\t1 [label=1]\n\t2 [label=2]\n\
-\t3 [label=3]\n\t1 -> 1\n\t1 -> 2\n\t1 -> 2\n\t1 -> 3\n}\n"
+"//dot\ndigraph hgn {\n\tnode [shape=circle] \n\t1 [label=\"1\"]\n\t2 [label=\
+\"2\"]\n\t3 [label=\"3\"]\n\t1 -> 1\n\t1 -> 2\n\t1 -> 2\n\t1 -> 3\n}\n"
 gap> SetDigraphVertexLabel(gr, 1, 2);
 gap> dot := DotVertexLabelledDigraph(gr);;
 gap> dot;
-"//dot\ndigraph hgn {\n\tnode [shape=circle] \n\t1 [label=2]\n\t2 [label=2]\n\
-\t3 [label=3]\n\t1 -> 1\n\t1 -> 2\n\t1 -> 2\n\t1 -> 3\n}\n"
+"//dot\ndigraph hgn {\n\tnode [shape=circle] \n\t1 [label=\"2\"]\n\t2 [label=\
+\"2\"]\n\t3 [label=\"3\"]\n\t1 -> 1\n\t1 -> 2\n\t1 -> 2\n\t1 -> 3\n}\n"
 
 # Splash
 gap> Splash(1);
 Error, the 1st argument must be a string or graphviz graph, found integer
 gap> Splash("string", 0);
-Error, the 2nd argument must be a record,
+Error, the 2nd argument must be a record
 gap> Splash("string");
 Error, the component "type" of the 2nd argument <a record>  must be "dot" or "\
 latex",
@@ -646,7 +646,7 @@ gap> GraphvizEdgeColoredGraph(ChainDigraph(3), ["blue"]);
 Error, the argument (a digraph) must be symmetric
 gap> D := DigraphSymmetricClosure(ChainDigraph(3));;
 gap> GraphvizVertexLabelledGraph(D);
-<graphviz graph hgn with 3 nodes and 2 edges>
+<graphviz graph "hgn" with 3 nodes and 2 edges>
 gap> GraphvizEdgeColoredGraph(D, List(DigraphVertices(D), ReturnFail));
 Error, the 2nd argument (edge colors) must be a list of lists, found boolean o\
 r fail in position 1
