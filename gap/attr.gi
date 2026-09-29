@@ -1859,6 +1859,10 @@ InstallMethod(FacialWalks, "for a digraph and a dense list",
 function(D, rotationSystem)
   local FacialWalk, facialWalks, remEdges, cycle;
 
+  if not IsSymmetricDigraph(D) then
+    ErrorNoReturn("the argument <D> must be a symmetric digraph,");
+  fi;
+
   if Length(rotationSystem) <> DigraphNrVertices(D)
       or not ForAll(rotationSystem, IsList) then
     ErrorNoReturn("the 2nd argument (dense list <rotationSystem>) is not a ",
@@ -1907,8 +1911,8 @@ function(D, rotationSystem)
     return cycle;
   end;
 
-  D := DigraphSymmetricClosure(DigraphRemoveLoops(DigraphRemoveAllMultipleEdges(
-       DigraphMutableCopyIfMutable(D))));
+  D := DigraphRemoveLoops(DigraphRemoveAllMultipleEdges(
+       DigraphMutableCopyIfMutable(D)));
 
   facialWalks := [];
   remEdges := ShallowCopy(DigraphEdges(D));

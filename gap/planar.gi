@@ -44,7 +44,10 @@ end);
 
 InstallMethod(PlanarEmbedding, "for a digraph", [IsDigraph],
 function(D)
-  D := DigraphSymmetricClosure(DigraphMutableCopyIfMutable(D));
+  if not IsSymmetricDigraph(D) then
+    ErrorNoReturn("the argument <D> must be a symmetric digraph,");
+  fi;
+  D := DigraphMutableCopyIfMutable(D);
   if DIGRAPHS_HasTrivialRotationSystem(D) then;
     return OutNeighbors(D);
   fi;

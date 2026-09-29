@@ -88,7 +88,7 @@ true
 gap> D := Digraph([[3, 5, 10], [8, 9, 10], [1, 4], [3, 6], [1, 7, 11], [4, 7],
 > [6, 8], [2, 7], [2, 11], [1, 2], [5, 9]]);
 <immutable digraph with 11 vertices, 25 edges>
-gap> PlanarEmbedding(D);
+gap> PlanarEmbedding(DigraphSymmetricClosure(D));
 [ [ 3, 10, 5 ], [ 10, 8, 9 ], [ 4, 1 ], [ 6, 3 ], [ 1, 11, 7 ], [ 7, 4 ], 
   [ 5, 8, 6 ], [ 7, 2 ], [ 2, 11 ], [ 1, 2 ], [ 9, 5 ] ]
 gap> D := Digraph([[2, 4, 7, 9, 10], [1, 3, 4, 6, 9, 10], [6, 10], 
@@ -97,7 +97,7 @@ gap> D := Digraph([[2, 4, 7, 9, 10], [1, 3, 4, 6, 9, 10], [6, 10],
 <immutable digraph with 10 vertices, 50 edges>
 gap> IsPlanarDigraph(D);
 false
-gap> PlanarEmbedding(D);
+gap> PlanarEmbedding(DigraphSymmetricClosure(D));
 fail
 gap> D := NullDigraph(0);
 <immutable empty digraph with 0 vertices>
