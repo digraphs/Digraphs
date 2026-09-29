@@ -438,7 +438,7 @@ gap> GraphvizHighlightedDigraph(D, [1, 2], "red", "black");
 gap> D := DigraphSymmetricClosure(D);
 <immutable symmetric digraph with 3 vertices, 6 edges>
 gap> GraphvizHighlightedGraph(D, [1, 2], "red", "black");
-<graphviz graph with 3 nodes and 2 edges>]]></Example>
+<graphviz graph with 3 nodes and 4 edges>]]></Example>
     </Description>
   </ManSection>
 <#/GAPDoc>

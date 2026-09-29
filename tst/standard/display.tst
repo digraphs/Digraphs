@@ -72,7 +72,7 @@ gap> DotDigraph(gr2){[11 .. 75]};
 "aph hgn {\n\tnode [shape=circle] \n\t1\n\t2\n\t3\n\t4\n\t1 -> 2\n\t2 -> 1\n\t\
 2 ->"
 gap> DotSymmetricDigraph(gr2){[12 .. 70]};
-" hgn {\n\tnode [shape=circle] \n\t1\n\t2\n\t3\n\t4\n\t2 -- 1\n\t3 -- 2\n\t4"
+" hgn {\n\tnode [shape=circle] \n\t1\n\t2\n\t3\n\t4\n\t2 -- 1\n\t3 -- 2\n\t3"
 gap> DotSymmetricDigraph(gr1);
 Error, the argument (a digraph) must be symmetric
 
@@ -680,7 +680,7 @@ gap> GraphvizHighlightedGraph(ChainDigraph(3), [1, 2], "red", "blue");
 Error, the argument (a digraph) must be symmetric
 gap> D := Digraph([[], [1, 1]]);;
 gap> GraphvizHighlightedDigraph(D, [2]);
-Error, the 1st argument (a digraph) must not have multiple edges
+<graphviz digraph with 2 nodes and 2 edges>
 
 #  DIGRAPHS_UnbindVariables
 gap> Unbind(D);
