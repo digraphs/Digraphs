@@ -21,6 +21,9 @@
 
     <#Include Label="GraphvizHighlightedDigraph">
     <#Include Label="DotHighlightedDigraph">
+    
+    <#Include Label="GraphvizEdgeWeightedDigraph">
+    <#Include Label="DotEdgeWeightedDigraph">
   </Section>
 
   <Section><Heading>Reading and writing digraphs to a file</Heading>

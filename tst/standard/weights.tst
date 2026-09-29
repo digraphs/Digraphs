@@ -585,7 +585,7 @@ gap> DotEdgeWeightedDigraph(
 >   [[1, 2], [3, 4], [5, 6]],
 >   rec(vert := "blue", mrblobby := "pink")
 > );
-Error, 3rd arg <colors> contains unsupported option named 'mrblobby'
+Error, the 3rd argument <colors> contains unsupported option named 'mrblobby'
 
 #
 gap> DIGRAPHS_StopTest();

@@ -70,3 +70,12 @@ DeclareOperation("GraphvizHighlightedDigraph",
 DeclareOperation("GraphvizHighlightedGraph", [IsDigraph, IsList]);
 DeclareOperation("GraphvizHighlightedGraph",
                  [IsDigraph, IsList, IsString, IsString]);
+
+#############################################################################
+# Weighted digraphs
+#############################################################################
+
+DeclareOperation("GraphvizEdgeWeightedDigraph", [IsDigraph]);
+DeclareOperation("GraphvizEdgeWeightedDigraph", [IsDigraph, IsList]);
+DeclareOperation("GraphvizEdgeWeightedDigraph", [IsDigraph, IsRecord]);
+DeclareOperation("GraphvizEdgeWeightedDigraph", [IsDigraph, IsList, IsRecord]);

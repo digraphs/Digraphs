@@ -36,3 +36,8 @@ DeclareOperation("DotHighlightedGraph",
 
 DeclareOperation("DotColoredEdgeLabelledDigraph",
                  [IsDigraph, IsList, IsList, IsList]);
+
+DeclareOperation("DotEdgeWeightedDigraph", [IsDigraph]);
+DeclareOperation("DotEdgeWeightedDigraph", [IsDigraph, IsList]);
+DeclareOperation("DotEdgeWeightedDigraph", [IsDigraph, IsRecord]);
+DeclareOperation("DotEdgeWeightedDigraph", [IsDigraph, IsList, IsRecord]);

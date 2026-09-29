@@ -123,3 +123,40 @@ function(D, vert, edge, weight)
                    "GraphvizColoredEdgeLabelledDigraph");
   return AsString(GraphvizColoredEdgeLabelledDigraph(D, vert, edge, weight));
 end);
+
+#############################################################################
+# Weighted digraphs
+#############################################################################
+
+InstallMethod(DotEdgeWeightedDigraph, "for a digraph",
+[IsDigraph],
+function(digraph)
+  _PrintDeprecated("DotEdgeWeightedDigraph",
+                   "GraphvizEdgeWeightedDigraph");
+  return AsString(GraphvizEdgeWeightedDigraph(digraph));
+end);
+
+InstallMethod(DotEdgeWeightedDigraph, "for a digraph and a list",
+[IsDigraph, IsList],
+function(digraph, path)
+  _PrintDeprecated("DotEdgeWeightedDigraph",
+                   "GraphvizEdgeWeightedDigraph");
+  return AsString(GraphvizEdgeWeightedDigraph(digraph, path));
+end);
+
+InstallMethod(DotEdgeWeightedDigraph, "for a digraph and a record",
+[IsDigraph, IsRecord],
+function(digraph, colors)
+  _PrintDeprecated("DotEdgeWeightedDigraph",
+                   "GraphvizEdgeWeightedDigraph");
+  return AsString(GraphvizEdgeWeightedDigraph(digraph, colors));
+end);
+
+InstallMethod(DotEdgeWeightedDigraph, "for a digraph, a list, and a record",
+[IsDigraph, IsList, IsRecord],
+function(digraph, path, colors)
+  _PrintDeprecated("DotEdgeWeightedDigraph",
+                   "GraphvizEdgeWeightedDigraph");
+  return AsString(GraphvizEdgeWeightedDigraph(
+    digraph, path, colors));
+end);
