@@ -276,9 +276,7 @@ BindGlobal("DIGRAPHS_GraphvizHighlight",
 function(D, gv, hi_verts, hi, lo)
   local node, color, out, nodes, edge, v, i, j;
 
-  if IsMultiDigraph(D) then
-    ErrorNoReturn("the 1st argument (a digraph) must not have multiple edges");
-  elif not IsSubset(DigraphVertices(D), hi_verts) then
+  if not IsSubset(DigraphVertices(D), hi_verts) then
     ErrorNoReturn("the 2nd argument (list) must consist of vertices ",
                   "of the 1st argument (a digraph)");
   fi;
