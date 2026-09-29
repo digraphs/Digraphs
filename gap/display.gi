@@ -49,7 +49,7 @@ function(D)
   od;
   for x in DigraphVertices(D) do
     for y in OutNeighboursOfVertexNC(D, x) do
-      if x > y then
+      if x >= y then
         GraphvizAddEdge(gv, x, y);
       fi;
     od;
@@ -118,7 +118,7 @@ function(D, gv, colors)
   out := OutNeighbours(D);
   for n in DigraphVertices(D) do
     for i in [1 .. Length(out[n])] do
-      if IsGraphvizDigraph(gv) or n > out[n][i] then
+      if IsGraphvizDigraph(gv) or n >= out[n][i] then
         e := GraphvizAddEdge(gv, n, out[n][i]);
         GraphvizSetAttr(e, "color", colors[n][i]);
       fi;
@@ -302,7 +302,7 @@ function(D, gv, hi_verts, hi, lo)
 
   for i in DigraphVertices(D) do
     for j in out[i] do
-      if IsGraphvizDigraph(gv) or i > j then
+      if IsGraphvizDigraph(gv) or i >= j then
         edge := GraphvizAddEdge(gv, nodes[i], nodes[j]);
         if i in hi_verts and j in hi_verts then
           color := hi;
