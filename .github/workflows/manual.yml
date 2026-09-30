@@ -38,7 +38,14 @@ jobs:
       - uses: gap-actions/setup-gap@v3
         with:
           gap-version: latest
+      - name: Build GraphvizForGAP manual . . .
+        run: |
+          git clone https://github.com/digraphs/graphviz.git "${GAPROOT}/pkg/graphviz"
+          cd "${GAPROOT}/pkg/graphviz"
+          NOPDF=1 $GAP makedoc.g
       - uses: gap-actions/build-pkg-docs@v2
+        with:
+          use-latex: true
       - name: Upload compiled manuals . . .
         uses: actions/upload-artifact@v7
         with:

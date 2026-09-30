@@ -1,380 +1,288 @@
 #############################################################################
 ##
 #W  display.xml
-#Y  Copyright (C) 2011-17                                James D. Mitchell
+#Y  Copyright (C) 2014-24                                James D. Mitchell
 ##
 ##  Licensing information can be found in the README file of this package.
 ##
 #############################################################################
 ##
 
-
-<#GAPDoc Label="Splash">
+<#GAPDoc Label="DotDigraph">
   <ManSection>
-    <Func Name="Splash" Arg="str, [opts]"/>
-    <Returns>Nothing.</Returns>
+    <Attr Name="DotDigraph" Arg="D"/>
+    <Attr Name="DotSymmetricDigraph" Arg="D"/>
+    <Returns>A string.</Returns>
     <Description>
-      This function attempts to convert the string <A>str</A> into a pdf
-      document and open this document, i.e. to splash it all over your monitor.<P/>
-
-      The string <A>str</A> must correspond to a valid <C>dot</C> or
-      <C>LaTeX</C> text file and you must have have <C>GraphViz</C> and
-      <C>pdflatex</C> installed on your computer.  For details about these file
-      formats, see <URL>https://www.latex-project.org</URL> and
-      <URL>https://www.graphviz.org</URL>.<P/>
-
-      This function is provided to allow convenient, immediate viewing of the
-      pictures produced by the function <Ref Attr="DotDigraph"/>.<P/>
-
-      The optional second argument <A>opts</A> should be a record with
-      components corresponding to various options, given below.
-
+      <B>WARNING!</B> As of v2.0.0 of &Digraphs; these functions are
+      deprecated in favour of:
       <List>
-        <Mark>path</Mark>
-        <Item>
-          this should be a string representing the path to the directory where
-          you want <C>Splash</C> to do its work. The default value of this
-          option is <C>"~/"</C>.
-        </Item>
-
-        <Mark>directory</Mark>
-        <Item>
-          this should be a string representing the name of the directory in
-          <C>path</C> where you want <C>Splash</C> to do its work. This function
-          will create this directory if does not already exist. <P/>
-
-          The default value of this option is <C>"tmp.viz"</C> if the option
-          <C>path</C> is present, and the result of
-          <Ref Func="DirectoryTemporary" BookName="ref"/> is used otherwise.
-        </Item>
-
-        <Mark>filename</Mark>
-        <Item>
-          this should be a string representing the name of the file where
-          <A>str</A> will be written.  The default value of this option is
-          <C>"vizpicture"</C>.
-        </Item>
-
-        <Mark>viewer</Mark>
-        <Item>
-          this should be a string representing the name of the program which
-          should open the files produced by <C>GraphViz</C> or <C>pdflatex</C>.
-        </Item>
-
-        <Mark>type</Mark>
-        <Item>
-          this option can be used to specify that the string <A>str</A> contains
-          a &LaTeX; or <C>dot</C> document. You can specify this option in
-          <A>str</A> directly by making the first line <C>"%latex"</C> or
-          <C>"//dot"</C>.  There is no default value for this option, this
-          option must be specified in <A>str</A> or in <A>opt.type</A>.
-        </Item>
-
-        <Mark>engine</Mark>
-        <Item>
-          this option can be used to specify the GraphViz engine to use
-          to render a <C>dot</C> document. The valid choices are <C>"dot"</C>,
-          <C>"neato"</C>, <C>"circo"</C>, <C>"twopi"</C>, <C>"fdp"</C>,
-          <C>"sfdp"</C>, and <C>"patchwork"</C>. Please refer to the
-          GraphViz documentation for details on these engines.
-          The default value for this option is <C>"dot"</C>, and it
-          must be specified in <A>opt.engine</A>.
-        </Item>
-
-        <Mark>filetype</Mark>
-        <Item>
-          this should be a string representing the type of file which
-          <C>Splash</C> should produce. For &LaTeX; files, this option is
-          ignored and the default value <C>"pdf"</C> is used.
-        </Item>
+          <Item><Ref Oper="GraphvizDigraph"/></Item>
+          <Item><Ref Oper="GraphvizGraph"/></Item>
       </List>
-
-      This function was written by Attila Egri-Nagy and Manuel Delgado with some
-      minor changes by J. D. Mitchell.<P/>
-      <Log><![CDATA[
-gap> Splash(DotDigraph(RandomDigraph(4)));
-]]></Log>
+      They return the strings
+      <C>AsString(GraphvizDigraph(<A>D</A>))</C> and
+      <C>AsString(GraphvizGraph(<A>D</A>))</C>, respectively.
+      <C>DotSymmetricDigraph</C> requires <A>D</A> to be symmetric.
     </Description>
   </ManSection>
 <#/GAPDoc>
 
-<#GAPDoc Label="DotDigraph">
+<#GAPDoc Label="GraphvizDigraph">
   <ManSection>
-    <Attr Name="DotDigraph" Arg="digraph"/>
-    <Oper Name="DotColoredDigraph" Arg="digraph, vert, edge"/>
-    <Oper Name="DotColoredEdgeLabelledDigraph" Arg="digraph, vert, edge, labels"/>
-    <Oper Name="DotVertexLabelledDigraph" Arg="digraph"/>
-    <Oper Name="DotVertexColoredDigraph" Arg="digraph, vert"/>
-    <Oper Name="DotEdgeColoredDigraph" Arg="digraph, edge"/>
-    <Returns>A string.</Returns>
+    <Oper Name="GraphvizDigraph" Arg="D"/>
+    <Oper Name="GraphvizGraph" Arg="D"/>
+    <Returns>A &GRAPHVIZFORGAP; object.</Returns>
     <Description>
-      <C>DotDigraph</C> produces a graphical representation of the digraph
-      <A>digraph</A>. Vertices are displayed as circles, numbered consistently
-      with <A>digraph</A>. Edges are displayed as arrowed lines between
-      vertices, with the arrowhead of each line pointing towards the range
-      of the edge.<P/>
+      <Ref Oper="GraphvizDigraph"/> and <Ref Oper="GraphvizGraph"/> return
+      mutable &GAP; objects representing graphviz objects, which provide a
+      flexible means of tailoring pictures of graphs and digraphs to your
+      needs.
+      <P/>
 
-      <C>DotColoredDigraph</C> differs from <C>DotDigraph</C> only in
-      that the values in given in the two lists are used to color the vertices and
-      edges of the graph when displayed. The list for vertex colours should be
-      a list of length equal to the number of vertices, containing strings that
-      are accepted by the graphviz software, which is the one used for graph
-      representation. The list for edge colours should be a list of lists
-      with the same shape of the outneighbours of the digraph that contains strings 
-      that correspond to colours accepted by the graphviz software. If the lists 
-      are not the appropriate size, or have holes then the function will return
-      an error.<P/>
+      <C>GraphvizDigraph</C> and <C>GraphvizGraph</C> produce &GRAPHVIZFORGAP;
+      objects representing the digraph <A>D</A>. Vertices are displayed as
+      circles, numbered consistently with <A>D</A>. For <C>GraphvizDigraph</C>,
+      edges are displayed as arrowed lines between vertices, with the arrowhead
+      of each line pointing towards the range of the edge. For
+      <C>GraphvizGraph</C>, edges are displayed without an arrowhead.
+      <C>GraphvizGraph</C> requires <A>D</A> to be symmetric; see
+      <Ref Prop="IsSymmetricDigraph"/>.
+      <P/>
 
-      <C>DotColoredEdgeLabelledDigraph</C> differs from <C>DotColoredDigraph</C>
-      only in that the values given in the third list <A>labels</A> is used to
-      label the edges of the graph when displayed. The list <A>labels</A> should
-      be a list of equal length to the lists for vertex and edge colours. If the
-      lists are not the appropriate size, or have holes, then the function will
-      return an error.<P/>
+      To display the result, use
+      <Ref Func="Splash" BookName="GraphvizForGAP"/>. Its documentation
+      describes the optional record controlling the output directory,
+      filename, viewer, rendering engine, and file type.
+      <Log><![CDATA[
+gap> Splash(GraphvizDigraph(D));
+]]></Log>
+      To write the Graphviz source to a file, use
+      <C>FileString("digraph.dot", AsString(GraphvizDigraph(D)))</C>;
+      see <Ref Func="FileString" BookName="GAPDoc"/>.
+      <P/>
 
-      <C>DotVertexColoredDigraph</C> differs from <C>DotDigraph</C> only in
-      that the values in given in the list are used to color the vertices
-      of the graph when displayed. The list for vertex colours should be
-      a list of length equal to the number of vertices, containing strings that
-      are accepted by the graphviz software, which is the one used for graph
-      representation. If the list is not the appropriate size, or has holes 
-      then the function will return an error.<P/>
-
-      <C>DotEdgeColoredDigraph</C> differs from <C>DotDigraph</C> only in
-      that the values in given in the list are used to color the vertices and
-      edges of the graph when displayed. The list for edge colours should be a list
-      of lists with the same shape of the outneighbours of the digraph that contains
-      strings that correspond to colours accepted by the graphviz software. If the 
-      list is not the appropriate size, or has holes then the function will return
-      an error.<P/>
-
-      <C>DotVertexLabelledDigraph</C> differs from <C>DotDigraph</C> only in
-      that the values in <Ref Oper="DigraphVertexLabels"/> are used to label
-      the vertices in the produced picture rather than the numbers <C>1</C> to
-      the number of vertices of the digraph. <P/>
-
-      The output is in <C>dot</C> format (also known as <C>GraphViz</C>)
-      format. For details about this file format, and information about how to
-      display or edit this format see <URL>https://www.graphviz.org</URL>. <P/>
-
-      The string returned by <C>DotDigraph</C> or
-      <C>DotVertexLabelledDigraph</C> can be written to a file using
-      the command <Ref Func="FileString" BookName="GAPDoc"/>.<P/>
-
-      See also <Ref Oper="DotEdgeWeightedDigraph"/>. <P/>
       <Example><![CDATA[
-gap> D := CompleteDigraph(4);
-<immutable complete digraph with 4 vertices>
-gap> vertcolors := ["blue", "green", "red", "yellow"];;
-gap> Print(DotVertexLabelledDigraph(D));
-//dot
-digraph hgn{
-node [shape=circle]
-1 [label="1"]
-2 [label="2"]
-3 [label="3"]
-4 [label="4"]
-1 -> 2
-1 -> 3
-1 -> 4
-2 -> 1
-2 -> 3
-2 -> 4
-3 -> 1
-3 -> 2
-3 -> 4
-4 -> 1
-4 -> 2
-4 -> 3
-}
-gap> Print(DotVertexColoredDigraph(D, vertcolors));
-//dot
-digraph hgn{
-node [shape=circle]
-1[color=blue, style=filled]
-2[color=green, style=filled]
-3[color=red, style=filled]
-4[color=yellow, style=filled]
-1 -> 2
-1 -> 3
-1 -> 4
-2 -> 1
-2 -> 3
-2 -> 4
-3 -> 1
-3 -> 2
-3 -> 4
-4 -> 1
-4 -> 2
-4 -> 3
-}
-gap> colors := ["lightblue", "pink", "purple"];;
-gap> edgecolors := ListWithIdenticalEntries(4, colors);;
-gap> Print(DotEdgeColoredDigraph(D, edgecolors));
-//dot
-digraph hgn{
-node [shape=circle]
-1
-2
-3
-4
-1 -> 2[color=lightblue]
-1 -> 3[color=pink]
-1 -> 4[color=purple]
-2 -> 1[color=lightblue]
-2 -> 3[color=pink]
-2 -> 4[color=purple]
-3 -> 1[color=lightblue]
-3 -> 2[color=pink]
-3 -> 4[color=purple]
-4 -> 1[color=lightblue]
-4 -> 2[color=pink]
-4 -> 3[color=purple]
-}
-gap> Print(DotColoredDigraph(D, vertcolors, edgecolors));
-//dot
-digraph hgn{
-node [shape=circle]
-1[color=blue, style=filled]
-2[color=green, style=filled]
-3[color=red, style=filled]
-4[color=yellow, style=filled]
-1 -> 2[color=lightblue]
-1 -> 3[color=pink]
-1 -> 4[color=purple]
-2 -> 1[color=lightblue]
-2 -> 3[color=pink]
-2 -> 4[color=purple]
-3 -> 1[color=lightblue]
-3 -> 2[color=pink]
-3 -> 4[color=purple]
-4 -> 1[color=lightblue]
-4 -> 2[color=pink]
-4 -> 3[color=purple]
-}
-gap> FileString("k4.dot", DotDigraph(D));
-133
-gap> D := Digraph([[2, 3], [1, 3], [1]]);
-<immutable digraph with 3 vertices, 5 edges>
-gap> vertcolors := ["blue", "red", "green"];;
-gap> edgecolors := [["orange", "yellow"], ["orange", 
-> "pink"], ["yellow"]];;
-gap> Print(DotColoredDigraph(D, vertcolors, edgecolors));
-//dot
-digraph hgn{
-node [shape=circle]
-1[color=blue, style=filled]
-2[color=red, style=filled]
-3[color=green, style=filled]
-1 -> 2[color=orange]
-1 -> 3[color=yellow]
-2 -> 1[color=orange]
-2 -> 3[color=pink]
-3 -> 1[color=yellow]
-}
-gap> FileString("digraph.dot", DotDigraph(D));
-82]]></Example>
+gap> D := CompleteDigraph(IsMutable, 4);
+<mutable digraph with 4 vertices, 12 edges>
+gap> gv := GraphvizGraph(D);
+<graphviz graph "hgn" with 4 nodes and 6 edges>
+gap> AsString(gv);
+"//dot\ngraph hgn {\n\tnode [shape=circle] \n\t1\n\t2\n\t3\n\t4\n\t2 -\
+- 1\n\t3 -- 1\n\t3 -- 2\n\t4 -- 1\n\t4 -- 2\n\t4 -- 3\n}\n"
+gap> DigraphRemoveEdge(D, 1, 3);
+<mutable digraph with 4 vertices, 11 edges>
+gap> gv := GraphvizDigraph(D);
+<graphviz digraph "hgn" with 4 nodes and 11 edges>
+gap> AsString(gv);
+"//dot\ndigraph hgn {\n\tnode [shape=circle] \n\t1\n\t2\n\t3\n\t4\n\t1\
+ -> 2\n\t1 -> 4\n\t2 -> 1\n\t2 -> 3\n\t2 -> 4\n\t3 -> 1\n\t3 -> 2\n\t3\
+ -> 4\n\t4 -> 1\n\t4 -> 2\n\t4 -> 3\n}\n"
+]]></Example>
     </Description>
   </ManSection>
- <#/GAPDoc>
+<#/GAPDoc>
 
-<#GAPDoc Label="DotSymmetricDigraph">
+<#GAPDoc Label="GraphvizColoredDigraph">
   <ManSection>
-    <Attr Name="DotSymmetricDigraph" Arg="digraph"/>
-    <Oper Name="DotSymmetricColoredDigraph" Arg="digraph, vert, edge"/>
-    <Oper Name="DotSymmetricVertexColoredDigraph" Arg="digraph, vert"/>
-    <Oper Name="DotSymmetricEdgeColoredDigraph" Arg="digraph, edge"/>
-    <Returns>A string.</Returns>
+    <Oper Name="GraphvizVertexColoredDigraph" Arg="D, colors"/>
+    <Oper Name="GraphvizVertexColoredGraph" Arg="D, colors"/>
+    <Oper Name="GraphvizEdgeColoredDigraph" Arg="D, colors"/>
+    <Oper Name="GraphvizEdgeColoredGraph" Arg="D, colors"/>
+    <Oper Name="GraphvizColoredDigraph" Arg="D, vert_colors, edge_colors"/>
+    <Oper Name="GraphvizColoredGraph" Arg="D, vert_colors, edge_colors"/>
+    <Returns>A &GRAPHVIZFORGAP; object.</Returns>
     <Description>
-      This function produces a graphical representation of the symmetric
-      digraph <A>digraph</A>. <C>DotSymmetricDigraph</C> will return an
-      error if <A>digraph</A> is not a symmetric digraph. See
-      <Ref Prop="IsSymmetricDigraph"/>.<P/>
+      These operations produce colored &GRAPHVIZFORGAP; objects representing
+      the digraph <A>D</A> according to the specified colors. The variants ending
+      in <C>Graph</C> require <A>D</A> to be symmetric.
+      For all of these functions valid colors are strings containing:
+      <List>
+          <Mark>RGB</Mark>
+          <Item>
+              An RGB color code consisting of 6 hexadecimal digits preceded by
+              a <C>#</C>. For example, <C>#ff00ff</C>.
+          </Item>
+          <Mark>GraphViz 2.4.11 X11 Color Scheme</Mark>
+          <Item>
+              One of the color strings specified at:
+              <URL>http://graphviz.org/doc/info/colors.html</URL>
+          </Item>
+      </List>
 
-      The function <C>DotSymmetricColoredDigraph</C> differs from <C>DotDigraph</C>
-      only in that the values given in the two lists are used to color the vertices
-      and edges of the graph when displayed. The list for vertex colours should be
-      a list of length equal to the number of vertices, containing strings that
-      are accepted by the graphviz software, which is the one used for graph
-      representation.  The list for edge colours should be a list of lists
-      with the same shape of the outneighbours of the digraph that contains strings 
-      that correspond to colours accepted by the graphviz software.
-      If the list is not the appropriate size, or has holes then the function
-      will return an error.  <P/>
+      <C>GraphvizVertexColoredDigraph</C> and <C>GraphvizVertexColoredGraph</C>
+      require their argument <A>colors</A> to be a list of length equal to the
+      number of vertices of <A>D</A> consisting of strings representing colors
+      as described above.
+      <P/>
 
-      The function <C>DotSymmetricVertexColoredDigraph</C> differs from <C>DotDigraph</C>
-      only in that the values in given in the list is used to color the vertices
-      of the graph when displayed. The list for vertex colours should be
-      a list of length equal to the number of vertices, containing strings that
-      are accepted by the graphviz software, which is the one used for graph
-      representation. If the list is not the appropriate size, or has holes 
-      then the function will return an error.  <P/>
+      <C>GraphvizEdgeColoredDigraph</C> and <C>GraphvizEdgeColoredGraph</C>
+      require their argument <A>colors</A> to be a list of lists with the same
+      shape of the out-neighbours of the digraph <A>D</A> consisting of strings
+      representing colors as described above.
+      <P/>
 
-      The function <C>DotSymmetricEdgeColoredDigraph</C> differs from <C>DotDigraph</C>
-      only in that the values given in the list are used to color the edges
-      of the graph when displayed. The list for edge colours should be
-      a list of lists with the same shape of the outneighbours, containing strings that
-      are accepted by the graphviz software, which is the one used for graph
-      representation. If the list is not the appropriate size, or has holes 
-      then the function will return an error.  <P/>
+      <C>GraphvizColoredDigraph</C> and <C>GraphvizColoredGraph</C> require
+      their arguments:
+      <List>
+          <Mark><A>vert_colors</A></Mark>
+          <Item>
+            to represent vertex colors as described for
+              <C>GraphvizVertexColoredDigraph</C>;
+          </Item>
+          <Mark><A>edge_colors</A></Mark>
+          <Item>
+            to represent edge colors as described for
+              <C>GraphvizEdgeColoredDigraph</C>;
+          </Item>
+      </List>
 
-      Vertices are displayed as circles, numbered consistently with
-      <A>digraph</A>. Since <A>digraph</A> is symmetric, for every non-loop
-      edge there is a complementary edge with opposite source and range.
-      <C>DotSymmetricDigraph</C> displays each pair of complementary edges
-      as a single line between the relevant vertices, with no arrowhead.<P/>
+      See the &GRAPHVIZFORGAP; package documentation for more details.
+      <P/>
 
-      The output is in <C>dot</C> format (also known as <C>GraphViz</C>)
-      format. For details about this file format, and information about how
-      to display or edit this format see
-      <URL>https://www.graphviz.org</URL>. <P/>
-
-      The string returned by <C>DotSymmetricDigraph</C> can be written to a
-      file using the command <Ref Func="FileString" BookName="GAPDoc"/>.<P/>
-
+      See also <Ref Func="Splash" BookName="GraphvizForGAP"/>
       <Example><![CDATA[
-
 gap> D := Digraph([[2], [1, 3], [2]]);
 <immutable digraph with 3 vertices, 4 edges>
-gap> IsSymmetricDigraph(D);
-true
-gap> vertcolors := ["blue", "pink", "purple"];;
-gap> edgecolors := [["green"], ["green", "red"], ["red"]];;
-gap> Print(DotSymmetricColoredDigraph(D, vertcolors, edgecolors));
-//dot
-graph hgn{
-node [shape=circle]
-
-1[color=blue, style=filled]
-2[color=pink, style=filled]
-3[color=purple, style=filled]
-1 -- 2[color=green]
-2 -- 3[color=red]
-}
-gap> Print(DotSymmetricVertexColoredDigraph(D, vertcolors));
-//dot
-graph hgn{
-node [shape=circle]
-
-1[color=blue, style=filled]
-2[color=pink, style=filled]
-3[color=purple, style=filled]
-1 -- 2
-2 -- 3
-}
-
-gap> Print(DotSymmetricEdgeColoredDigraph(D, edgecolors));
-//dot
-graph hgn{
-node [shape=circle]
-
-1
-2
-3
-1 -- 2[color=green]
-2 -- 3[color=red]
-}
+gap> vert_colors := ["blue", "pink", "purple"];;
+gap> edge_colors := [["green"], ["green", "red"], ["red"]];;
+gap> GraphvizVertexColoredDigraph(D, vert_colors);
+<graphviz digraph "hgn" with 3 nodes and 4 edges>
+gap> GraphvizVertexColoredGraph(D, vert_colors);
+<graphviz graph "hgn" with 3 nodes and 2 edges>
+gap> GraphvizEdgeColoredDigraph(D, edge_colors);
+<graphviz digraph "hgn" with 3 nodes and 4 edges>
+gap> GraphvizEdgeColoredGraph(D, edge_colors);
+<graphviz graph "hgn" with 3 nodes and 2 edges>
+gap> GraphvizColoredDigraph(D, vert_colors, edge_colors);
+<graphviz digraph "hgn" with 3 nodes and 4 edges>
+gap> GraphvizColoredGraph(D, vert_colors, edge_colors);
+<graphviz graph "hgn" with 3 nodes and 2 edges>
 ]]></Example>
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DotColoredDigraph">
+  <ManSection>
+    <Oper Name="DotVertexColoredDigraph" Arg="D, colors"/>
+    <Oper Name="DotSymmetricVertexColoredDigraph" Arg="D, colors"/>
+    <Oper Name="DotEdgeColoredDigraph" Arg="D, colors"/>
+    <Oper Name="DotSymmetricEdgeColoredDigraph" Arg="D, colors"/>
+    <Oper Name="DotColoredDigraph" Arg="D, vert_colors, edge_colors"/>
+    <Oper Name="DotSymmetricColoredDigraph" Arg="D, vert_colors, edge_colors"/>
+    <Returns>A string.</Returns>
+    <Description>
+      <B>WARNING!</B> As of v2.0.0 of &Digraphs; these functions are
+      deprecated in favour of the following operations, respectively:
+      <List>
+        <Item><Ref Oper="GraphvizVertexColoredDigraph"/></Item>
+        <Item><Ref Oper="GraphvizVertexColoredGraph"/></Item>
+        <Item><Ref Oper="GraphvizEdgeColoredDigraph"/></Item>
+        <Item><Ref Oper="GraphvizEdgeColoredGraph"/></Item>
+        <Item><Ref Oper="GraphvizColoredDigraph"/></Item>
+        <Item><Ref Oper="GraphvizColoredGraph"/></Item>
+      </List>
+      Each takes the same arguments as its replacement and returns
+      <C>AsString</C> applied to the resulting &GRAPHVIZFORGAP; object.
+      For example,
+      <C>DotColoredDigraph(D, vert_colors, edge_colors)</C> returns
+      <C>AsString(GraphvizColoredDigraph(D, vert_colors, edge_colors))</C>.
+      The <C>DotSymmetric</C> variants require <A>D</A> to be symmetric.
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="GraphvizVertexLabelledDigraph">
+  <ManSection>
+    <Oper Name="GraphvizVertexLabelledDigraph" Arg="D"/>
+    <Oper Name="GraphvizVertexLabelledGraph" Arg="D"/>
+    <Returns>A &GRAPHVIZFORGAP; object.</Returns>
+    <Description>
+      These operations produce the same pictures as
+      <Ref Oper="GraphvizDigraph"/> and <Ref Oper="GraphvizGraph"/>,
+      respectively, using <Ref Oper="DigraphVertexLabels"/> to label the
+      vertices instead of their numbers. Labels are converted to strings.
+      <C>GraphvizVertexLabelledGraph</C> requires <A>D</A> to be symmetric.
+      <P/>
+
+      Use <Ref Oper="SetDigraphVertexLabels"/> to set the vertex labels.
+      The resulting object can be displayed using
+      <Ref Func="Splash" BookName="GraphvizForGAP"/>.
+      <Example><![CDATA[
+gap> D := Digraph([[2], [1]]);;
+gap> SetDigraphVertexLabels(D, ["left", "right"]);
+gap> GraphvizVertexLabelledDigraph(D);
+<graphviz digraph "hgn" with 2 nodes and 2 edges>
+gap> GraphvizVertexLabelledGraph(D);
+<graphviz graph "hgn" with 2 nodes and 1 edge>
+]]></Example>
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DotVertexLabelledDigraph">
+  <ManSection>
+    <Oper Name="DotVertexLabelledDigraph" Arg="D"/>
+    <Returns>A string.</Returns>
+    <Description>
+      <B>WARNING!</B> As of v2.0.0 of &Digraphs; this function is
+      deprecated in favour of:
+      <List>
+          <Item><Ref Oper="GraphvizVertexLabelledDigraph"/></Item>
+      </List>
+      It returns
+      <C>AsString(GraphvizVertexLabelledDigraph(<A>D</A>))</C>, using
+      <Ref Oper="DigraphVertexLabels"/> as the vertex labels.
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="GraphvizColoredEdgeLabelledDigraph">
+  <ManSection>
+    <Oper Name="GraphvizColoredEdgeLabelledDigraph"
+          Arg="D, vert_colors, edge_colors, labels"/>
+    <Returns>A &GRAPHVIZFORGAP; object.</Returns>
+    <Description>
+      This operation produces the same picture as
+      <Ref Oper="GraphvizColoredDigraph"/>, with labels on the edges.
+      The arguments <A>vert_colors</A> and <A>edge_colors</A> specify colors
+      as described there. The argument <A>labels</A> must be a list of lists
+      with the same shape as <C>OutNeighbours(<A>D</A>)</C>:
+      <C>labels[i][j]</C> labels the edge from vertex <C>i</C> to
+      <C>OutNeighbours(D)[i][j]</C>.
+      <P/>
+
+      See also <Ref Oper="DotEdgeWeightedDigraph"/> for displaying edge
+      weights and highlighting a path.
+      <Example><![CDATA[
+gap> D := Digraph([[2], [3], []]);;
+gap> vert_colors := ["blue", "red", "green"];;
+gap> edge_colors := [["black"], ["black"], []];;
+gap> labels := [[5], [7], []];;
+gap> GraphvizColoredEdgeLabelledDigraph(D, vert_colors,
+> edge_colors, labels);
+<graphviz digraph "hgn" with 3 nodes and 2 edges>
+]]></Example>
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DotColoredEdgeLabelledDigraph">
+  <ManSection>
+    <Oper Name="DotColoredEdgeLabelledDigraph"
+          Arg="D, vert_colors, edge_colors, labels"/>
+    <Returns>A string.</Returns>
+    <Description>
+      <B>WARNING!</B> As of v2.0.0 of &Digraphs; this function is
+      deprecated in favour of:
+      <List>
+          <Item><Ref Oper="GraphvizColoredEdgeLabelledDigraph"/></Item>
+      </List>
+      It takes the same arguments and returns
+      <C>AsString(GraphvizColoredEdgeLabelledDigraph(D, vert_colors,
+      edge_colors, labels))</C>. In particular, both <A>edge_colors</A> and
+      <A>labels</A> have the same shape as <C>OutNeighbours(<A>D</A>)</C>.
     </Description>
   </ManSection>
 <#/GAPDoc>
@@ -384,31 +292,43 @@ node [shape=circle]
     <Attr Name="DotPartialOrderDigraph" Arg="digraph"/>
     <Returns>A string.</Returns>
     <Description>
-      This function produces a graphical representation of a partial order
-      digraph <A>digraph</A>. <C>DotPartialOrderDigraph</C> will return an error
-      if <A>digraph</A> is not a partial order digraph. See <Ref
-        Prop="IsPartialOrderDigraph"/>.<P/>
+      <B>WARNING!</B> As of v2.0.0 of &Digraphs; these functions are
+      deprecated in favour of:
+      <List>
+          <Item><Ref Attr="GraphvizPartialOrderDigraph"/></Item>
+      </List>
+      It returns
+      <C>AsString(GraphvizPartialOrderDigraph(<A>digraph</A>))</C>.
+    </Description>
+  </ManSection>
+<#/GAPDoc>
 
-      Since <A>digraph</A> is a partial order, it is both reflexive and
-      transitive. The output of <C>DotPartialOrderDigraph</C> is the
-      <Ref Attr="DotDigraph"/> of the
-      <Ref Oper="DigraphReflexiveTransitiveReduction"/> of <A>digraph</A>.<P/>
+<#GAPDoc Label="GraphvizPartialOrderDigraph">
+  <ManSection>
+    <Attr Name="GraphvizPartialOrderDigraph" Arg="D"/>
+    <Returns>A &GRAPHVIZFORGAP; object.</Returns>
+    <Description>
+      This function produces a &GRAPHVIZFORGAP; object representing a partial
+      order digraph <A>D</A>. <C>GraphvizPartialOrderDigraph</C> will return an
+      error if <A>D</A> is not a partial order digraph. See <Ref
+      Prop="IsPartialOrderDigraph"/>.<P/>
 
-      The output is in <C>dot</C> format (also known as <C>GraphViz</C>)
-      format. For details about this file format, and information about how
-      to display or edit this format see
-      <URL>https://www.graphviz.org</URL>. <P/>
+      Since <A>D</A> is a partial order, it is both reflexive and
+      transitive. The output of <C>GraphvizPartialOrderDigraph</C> is the
+      <Ref Oper="GraphvizDigraph"/> of the
+      <Ref Oper="DigraphReflexiveTransitiveReduction"/> of <A>D</A>.<P/>
 
-      The string returned by <C>DotPartialOrderDigraph</C> can be written to a
-      file using the command <Ref Func="FileString" BookName="GAPDoc"/>.<P/>
+      See the &GRAPHVIZFORGAP; package documentation for more details.
+      <P/>
 
+      See also <Ref Func="Splash" BookName="GraphvizForGAP"/>
       <Example><![CDATA[
-gap> poset := Digraph([[1, 4], [2], [2, 3, 4], [4]]);
+gap> D := Digraph([[1, 4], [2], [2, 3, 4], [4]]);
 <immutable digraph with 4 vertices, 7 edges>
-gap> IsPartialOrderDigraph(poset);
+gap> IsPartialOrderDigraph(D);
 true
-gap> FileString("poset.dot", DotPartialOrderDigraph(poset));
-70]]></Example>
+gap> GraphvizPartialOrderDigraph(D);
+<graphviz digraph "hgn" with 4 nodes and 3 edges>]]></Example>
     </Description>
   </ManSection>
 <#/GAPDoc>
@@ -419,67 +339,192 @@ gap> FileString("poset.dot", DotPartialOrderDigraph(poset));
     <Attr Name="DotQuasiorderDigraph" Arg="digraph"/>
     <Returns>A string.</Returns>
     <Description>
-      This function produces a graphical representation of a preorder
-      digraph <A>digraph</A>. <C>DotPreorderDigraph</C> will return an error
-      if <A>digraph</A> is not a preorder digraph. See <Ref
+      <B>WARNING!</B> As of v2.0.0 of &Digraphs; these functions are
+      deprecated in favour of:
+      <List>
+          <Item><Ref Attr="GraphvizPreorderDigraph"/></Item>
+          <Item><Ref Attr="GraphvizQuasiorderDigraph"/></Item>
+      </List>
+      They return
+      <C>AsString(GraphvizPreorderDigraph(<A>digraph</A>))</C>.
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="GraphvizPreorderDigraph">
+  <ManSection>
+    <Attr Name="GraphvizPreorderDigraph" Arg="D"/>
+    <Attr Name="GraphvizQuasiorderDigraph" Arg="D"/>
+    <Returns>A &GRAPHVIZFORGAP; object.</Returns>
+    <Description>
+      These functions produce &GRAPHVIZFORGAP; objects representing a preorder
+      digraph <A>D</A>. These functions will give an error
+      if <A>D</A> is not a preorder digraph. See <Ref
         Prop="IsPreorderDigraph"/>.<P/>
 
       A preorder digraph is reflexive and transitive but in general it is
       not anti-symmetric and may have strongly connected components
       containing more than one vertex. The <Ref Oper="QuotientDigraph"/>
-      <A>Q</A> obtained by forming the quotient of <A>digraph</A> by the
+      <A>Q</A> obtained by forming the quotient of <A>D</A> by the
       partition of its vertices into the strongly connected components
       satisfies <Ref Prop="IsPartialOrderDigraph"/>. Thus every vertex of
-      <A>Q</A> corresponds to a strongly connected component of <A>digraph</A>.
-      The output of <C>DotPreorderDigraph</C> displays the 
+      <A>Q</A> corresponds to a strongly connected component of <A>D</A>.
+      The output of <C>GraphvizPreorderDigraph</C> displays the
       <Ref Oper="DigraphReflexiveTransitiveReduction"/> of <A>Q</A> with
       vertices displayed as rounded rectangles labelled by all of the vertices
-      of <A>digraph</A> in the corresponding strongly connected component. <P/>
+      of <A>D</A> in the corresponding strongly connected component.
+      <P/>
 
-      The output is in <C>dot</C> format (also known as <C>GraphViz</C>)
-      format. For details about this file format, and information about how
-      to display or edit this format see
-      <URL>https://www.graphviz.org</URL>. <P/>
+      See the &GRAPHVIZFORGAP; package documentation for more details.
+      <P/>
 
-      The string returned by <C>DotPreorderDigraph</C> can be written to a
-      file using the command <Ref Func="FileString" BookName="GAPDoc"/>.<P/>
+      See also <Ref Func="Splash" BookName="GraphvizForGAP"/>
 
       <Example><![CDATA[
-gap> preset := Digraph([[1, 2, 4, 5], [1, 2, 4, 5], [3, 4], [4], 
+gap> D := Digraph([[1, 2, 4, 5], [1, 2, 4, 5], [3, 4], [4],
 > [1, 2, 4, 5]]);
 <immutable digraph with 5 vertices, 15 edges>
-gap> IsPreorderDigraph(preset);
+gap> IsPreorderDigraph(D);
 true
-gap> FileString("preset.dot", DotPreorderDigraph(preset));
-179]]></Example>
+gap> GraphvizPreorderDigraph(D);
+<graphviz digraph "graphname" with 3 nodes and 2 edges>]]></Example>
     </Description>
   </ManSection>
 <#/GAPDoc>
 
 <#GAPDoc Label="DotHighlightedDigraph">
   <ManSection>
-    <Oper Name="DotHighlightedDigraph" Arg="digraph, verts [, colour1, colour2]"/>
+      <Oper Name="DotHighlightedDigraph"
+          Arg="digraph, verts [, color1, color2]"/>
     <Returns>A string.</Returns>
     <Description>
-      <C>DotHighlightedDigraph</C> produces a graphical representation of the
-      digraph <A>digraph</A>, where the vertices in the list <A>verts</A>, and
-      edges between them, are drawn with colour <A>colour1</A> and all other
-      vertices and edges in <A>digraph</A> are drawn with colour <A>colour2</A>.
-      If <A>colour1</A> and <A>colour2</A> are not given then
-      <C>DotHighlightedDigraph</C> uses black and grey respectively. <P/>
-
-      Note that <C>DotHighlightedDigraph</C> does not validate the colours
-      <A>colour1</A> and <A>colour2</A> - consult the GraphViz documentation to
-      see what is available.
-
-      See <Ref Attr="DotDigraph"/> for more details on the output.<P/>
-
-      <Example><![CDATA[
-gap> digraph := Digraph([[2, 3], [2], [1, 3]]);
-<immutable digraph with 3 vertices, 5 edges>
-gap> FileString("my_digraph.dot", DotHighlightedDigraph(digraph, 
-> [1, 2], "red", "black"));
-264]]></Example>
+      <B>WARNING!</B> As of v2.0.0 of &Digraphs; these functions are
+      deprecated in favour of:
+      <List>
+          <Item><Ref Oper="GraphvizHighlightedDigraph"/></Item>
+          <Item><Ref Oper="GraphvizHighlightedGraph"/></Item>
+      </List>
+      It takes the same arguments as <C>GraphvizHighlightedDigraph</C>
+      and returns <C>AsString</C> applied to the resulting &GRAPHVIZFORGAP;
+      object. The default colors are <C>"black"</C> and <C>"grey"</C>.
     </Description>
   </ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="GraphvizHighlightedDigraph">
+  <ManSection>
+      <Oper Name="GraphvizHighlightedDigraph"
+          Arg="D, verts [, color1, color2]"/>
+      <Oper Name="GraphvizHighlightedGraph"
+          Arg="D, verts [, color1, color2]"/>
+    <Returns>A &GRAPHVIZFORGAP; object.</Returns>
+    <Description>
+      These functions produce &GRAPHVIZFORGAP; objects representing the digraph
+      <A>D</A>, where the vertices in the list <A>verts</A>, and edges
+      between them, are drawn with color <A>color1</A> and all other vertices
+      and edges in <A>D</A> are drawn with color <A>color2</A>. If
+      <A>color1</A> and <A>color2</A> are not given, then these functions
+      use <C>"black"</C> and <C>"grey"</C> respectively.
+      <P/>
+
+      See <Ref Oper="GraphvizDigraph"/> and <Ref Oper="GraphvizGraph"/>
+      for more details on the output.
+
+      <Example><![CDATA[
+gap> D := Digraph([[2, 3], [2], [1, 3]]);
+<immutable digraph with 3 vertices, 5 edges>
+gap> GraphvizHighlightedDigraph(D, [1, 2], "red", "black");
+<graphviz digraph with 3 nodes and 5 edges>
+gap> D := DigraphSymmetricClosure(D);
+<immutable symmetric digraph with 3 vertices, 6 edges>
+gap> GraphvizHighlightedGraph(D, [1, 2], "red", "black");
+<graphviz graph with 3 nodes and 4 edges>]]></Example>
+    </Description>
+  </ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="GraphvizEdgeWeightedDigraph">
+<ManSection>
+  <Oper Name="GraphvizEdgeWeightedDigraph" Arg="digraph[, path][, colors]"/>
+  <Returns>A string.</Returns>
+  <Description>
+    These operations produces &GRAPHVIZFORGAP; objects representing the
+    edge-weighted digraph <A>digraph</A>, in <E>dot</E> format. Its output will
+    be similar to that of <Ref Attr="GraphvizDigraph"/>, but the diagram will
+    also show the weights of the digraph's edges. <P/>
+
+    If the optional argument <A>path</A> is specified, it should be a list of
+    lists describing a path in <A>digraph</A>, in the format described in <Ref
+    Oper="DigraphPath"/>. If specified, the path's edges will be highlighted in
+    the diagram, as will its start and end vertices. <P/>
+
+    If the optional argument <A>colors</A> is specified, it should be a record
+    containing any of the following components:
+
+    <List>
+      <Item>
+        <A>vert</A>: the colour of ordinary vertices (default "grey");
+      </Item>
+      <Item>
+        <A>edge</A>: the colour of ordinary edges (default "black");
+      </Item>
+      <Item>
+        <A>highlight</A>: the colour of any edges on <A>path</A>, if any
+        (default "blue");
+      </Item>
+      <Item>
+        <A>source</A>: the colour of the first vertex in <A>path</A>, if any
+        (default "yellowgreen");
+      </Item>
+      <Item>
+        <A>dest</A>: the colour of the final vertex in <A>path</A>, if any
+        (default "lightpink").
+      </Item>
+    </List>
+
+    Each value in the record should be a string representing a colour
+    understood by the <C>GraphViz</C> software. For details about this format,
+    see <URL>https://www.graphviz.org</URL>. If any of the above components are
+    not specified, or if no <A>colors</A> argument is given, the default value
+    will be used. <P/>
+
+    The output of this operation can be passed to
+    <Ref Func="Splash" BookName="GraphvizForGAP"/> to
+    attempt to display it graphically on the computer's screen. <P/>
+
+    <Example><![CDATA[
+gap> gr := EdgeWeightedDigraph([[2], [3], []], [[10], [15], []]);;
+gap> path := EdgeWeightedDigraphShortestPath(gr, 2, 3);
+[ [ 2, 3 ], [ 1 ] ]
+gap> Print(AsString(GraphvizEdgeWeightedDigraph(gr, path)));
+//dot
+digraph hgn {
+	node [shape=circle]
+	1 [color=gray, style=filled]
+	2 [color=yellowgreen, style=filled]
+	3 [color=lightpink, style=filled]
+	1 -> 2 [color=black, label=10]
+	2 -> 3 [color=blue, label=15]
+}
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DotEdgeWeightedDigraph">
+<ManSection>
+  <Oper Name="DotEdgeWeightedDigraph" Arg="digraph[, path][, colors]"/>
+  <Returns>A string.</Returns>
+  <Description>
+      <B>WARNING!</B> As of v2.0.0 of &Digraphs; these functions are
+    deprecated in favour of:
+    <List>
+      <Item><Ref Oper="GraphvizEdgeWeightedDigraph"/>.</Item>
+    </List>
+
+    <C>DotEdgeWeightedDigraph</C> takes the same arguments as <C>GraphvizHighlightedDigraph</C>
+    and returns <C>AsString</C> applied to the resulting &GRAPHVIZFORGAP;
+    object. 
+  </Description>
+</ManSection>
 <#/GAPDoc>
