@@ -2548,7 +2548,7 @@ InstallMethod(DigraphCycleBasis, "for a digraph",
 [IsDigraph],
 function(G)
   local OutNbr, InNbr, n, partialSum, m, visited, unusedEdges, i, c, s, stack,
-    z, u, v, p, B;
+    u, v, p, B;
 
   # Check for loops
   if DigraphHasLoops(G) then
@@ -2631,14 +2631,7 @@ function(G)
   # - unusedEdges : The list of unused edges to be converted to a basis vector
   # - visited : The result of the depth first search above
 
-  # TODO : In the case the Digraph package requires GAP 4.12 or over,
-  # remove the following if statement.
-  if CompareVersionNumbers(GAPInfo.Version, "4.12") then
-    B := List([1 .. c], i -> NewZeroVector(IsGF2VectorRep, GF(2), m));
-  else
-    z := List([1 .. m], i -> Zero(GF(2)));
-    B := List([1 .. c], i -> Vector(GF(2), z));
-  fi;
+  B := List([1 .. c], i -> NewZeroVector(IsGF2VectorRep, GF(2), m));
 
   for i in [1 .. c] do
     u := unusedEdges[i][1];
