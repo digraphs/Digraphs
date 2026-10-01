@@ -58,13 +58,17 @@ Error, the 2nd argument <k> must be non-negative,
 gap> gr := Digraph([[2], [3], [1]]);;
 gap> IsKParadoxical(gr, 1);
 true
+gap> gr := Digraph([[ 2, 4, 7 ], [ 4, 5, 7 ], [ 1, 2, 4, 6, 7 ],
+>                   [  ], [ 1, 3, 4, 6, 7 ], [ 1, 2, 4, 7 ], [ 4 ] ]);;
+gap> IsKParadoxical(gr, 2);
+false
 gap> gr := p -> Digraph(
 >      List([0 .. p - 1],
 >           x -> List(Set(List([1 .. (p - 1) / 2], i -> i ^ 2 mod p)),
 >                     s -> (x + s) mod p + 1)));;
 gap> IsKParadoxical(gr(19), 3);
 true
-gap> IsKParadoxical(gr(7), 7);
+gap> IsKParadoxical(gr(19), 4);
 false
 
 #  DigraphRemoveLoops
