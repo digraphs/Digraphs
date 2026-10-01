@@ -31,10 +31,6 @@ _STANDREWSMATHS := Concatenation(["Mathematical Institute, North Haugh, ",
 _STANDREWSCS := Concatenation(["Jack Cole Building, North Haugh, ",
                                "St Andrews, Fife, KY16 9SX, Scotland"]);
 
-if not CompareVersionNumbers(GAPInfo.Version, "4.12") then
-  IsKernelExtensionAvailable := fail;
-fi;
-
 SetPackageInfo(rec(
 PackageName := "Digraphs",
 Subtitle := "Graphs, digraphs, and multidigraphs in GAP",
@@ -612,25 +608,11 @@ Extensions := [
       filename := "gap/nauty.g")],
 
 AvailabilityTest := function()
-  local digraphs_so;
-
-  if CompareVersionNumbers(GAPInfo.Version, "4.12") then
-    if not IsKernelExtensionAvailable("digraphs") then
-      LogPackageLoadingMessage(PACKAGE_WARNING,
-                              ["the kernel module is not compiled, ",
-                               "the package cannot be loaded."]);
-      return fail;
-    fi;
-  else
-    # TODO this clause can be removed once Digraphs requires GAP>=4.12.1
-    digraphs_so := Filename(DirectoriesPackagePrograms("digraphs"),
-                            "digraphs.so");
-    if (not "digraphs" in SHOW_STAT()) and digraphs_so = fail then
-       LogPackageLoadingMessage(PACKAGE_WARNING,
-                                ["the kernel module is not compiled, ",
-                                 "the package cannot be loaded."]);
-      return fail;
-    fi;
+  if not IsKernelExtensionAvailable("digraphs") then
+    LogPackageLoadingMessage(PACKAGE_WARNING,
+                             ["the kernel module is not compiled, ",
+                              "the package cannot be loaded."]);
+    return fail;
   fi;
   return true;
 end,
@@ -668,10 +650,6 @@ AutoDoc := rec(
             ~.AutoDoc.TitlePage.Abstract,
             "&Digraphs;", "<Strong>Digraphs</Strong>"),
             "&GAP;", "<Strong>GAP</Strong>")));
-
-if not CompareVersionNumbers(GAPInfo.Version, "4.12") then
-  Unbind(IsKernelExtensionAvailable);
-fi;
 
 MakeReadWriteGlobal("_RecogsFunnyWWWURLFunction");
 MakeReadWriteGlobal("_RecogsFunnyNameFormatterFunction");
