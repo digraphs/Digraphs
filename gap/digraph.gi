@@ -236,12 +236,13 @@ end);
 InstallMethod(DigraphCons, "for IsMutableDigraph and a record",
 [IsMutableDigraph, IsRecord],
 function(_, record)
-  local D, cmp, labels, i;
+  local D, cmp, labels, i, adj;
 
-  if IsGraph(record) then
+  if DIGRAPHS_IsGrapeGraph(record) then
     # IsGraph is a function not a filter, so we cannot have a separate method
+    adj := ValueGlobal("Adjacency");
     D := DigraphNC(IsMutableDigraph,
-                   List(Vertices(record), x -> Adjacency(record, x)));
+                   List(ValueGlobal("Vertices")(record), x -> adj(record, x)));
     if IsBound(record.names) then
       SetDigraphVertexLabels(D, StructuralCopy(record.names));
     fi;
@@ -382,7 +383,7 @@ InstallMethod(DigraphCons, "for IsImmutableDigraph and a record",
 function(_, record)
   local D;
   D := MakeImmutable(DigraphCons(IsMutableDigraph, record));
-  if IsGraph(record) then
+  if DIGRAPHS_IsGrapeGraph(record) then
     # IsGraph is a function not a filter, so we cannot have a separate method
     # for this.
     if not IsTrivial(record.group) then
