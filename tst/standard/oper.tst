@@ -58,8 +58,8 @@ Error, the 2nd argument <k> must be non-negative,
 gap> gr := Digraph([[2], [3], [1]]);;
 gap> IsKParadoxical(gr, 1);
 true
-gap> gr := Digraph([[ 2, 4, 7 ], [ 4, 5, 7 ], [ 1, 2, 4, 6, 7 ],
->                   [  ], [ 1, 3, 4, 6, 7 ], [ 1, 2, 4, 7 ], [ 4 ] ]);;
+gap> gr := Digraph([[2, 4, 7], [4, 5, 7], [1, 2, 4, 6, 7],
+>                   [], [1, 3, 4, 6, 7], [1, 2, 4, 7], [4]]);;
 gap> IsKParadoxical(gr, 2);
 false
 gap> gr := p -> Digraph(
