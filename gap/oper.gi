@@ -1625,21 +1625,21 @@ function(D, k)
 
   # this minimum number of vertices needed for k-paradox is given by
   # Szekeres, E.; Szekeres, G. (1965), "On a problem of Schütte and Erdős"
-  if n < (k+2) * (2^(k-1)) - 1 then
+  if n < (k + 2) * (2 ^ (k - 1)) - 1 then
     return false;
   fi;
 
-  inn_blist := List(InNeighbours(D), inn -> BlistList([1..n], inn));
+  inn_blist := List(InNeighbours(D), inn -> BlistList([1 .. n], inn));
 
   dfs := function(prev, depth, common)
     local vertex, ncommon;
-    for vertex in [prev+1 .. n-k+depth+1] do
+    for vertex in [prev + 1 .. n - k + depth + 1] do
       ncommon := IntersectionBlist(common, inn_blist[vertex]);
       if SizeBlist(ncommon) = 0 then
         return false;
       fi;
-      if depth+1 < k then
-        if not dfs(vertex, depth+1, ncommon) then
+      if depth + 1 < k then
+        if not dfs(vertex, depth + 1, ncommon) then
           return false;
         fi;
       fi;
