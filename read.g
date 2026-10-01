@@ -20,15 +20,8 @@ function()
   return omit;
 end);
 
-_NautyTracesInterfaceVersion :=
-  First(PackageInfo("digraphs")[1].Dependencies.SuggestedOtherPackages,
-        x -> x[1] = "NautyTracesInterface")[2];
-
-BindGlobal("DIGRAPHS_NautyAvailable",
-  IsPackageMarkedForLoading("NautyTracesInterface",
-                            _NautyTracesInterfaceVersion));
-
-Unbind(_NautyTracesInterfaceVersion);
+# set to true by gap/nauty.g once NautyTracesInterface is loaded
+BindGlobal("DIGRAPHS_NautyAvailable", false);
 
 ReadPackage("digraphs", "gap/utils.gi");
 ReadPackage("digraphs", "gap/digraph.gi");

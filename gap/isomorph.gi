@@ -130,38 +130,9 @@ end);
 
 BindGlobal("BLISS_DATA_NO_COLORS", D -> BLISS_DATA(D, fail, fail));
 
-if DIGRAPHS_NautyAvailable then
-  BindGlobal("NAUTY_DATA",
-  function(D, colors)
-    local data;
-    if colors <> false then
-      colors := DIGRAPHS_ValidateVertexColouring(DigraphNrVertices(D),
-                                                 colors);
-      colors := NautyColorData(colors);
-    fi;
-    if DigraphHasNoVertices(D) then
-      # This circumvents Issue #17 in NautyTracesInterface, whereby a graph
-      # with 0 vertices causes a seg fault.
-      return [Group(()), ()];
-    fi;
-    data := NautyDense(DigraphSource(D),
-                       DigraphRange(D),
-                       DigraphNrVertices(D),
-                       not IsSymmetricDigraph(D),
-                       colors);
-    if IsEmpty(data[1]) then
-      data[1] := [()];
-    fi;
-    data[1] := Group(data[1]);
-    data[2] := data[2] ^ -1;
-    return data;
-  end);
-
-  BindGlobal("NAUTY_DATA_NO_COLORS", D -> NAUTY_DATA(D, false));
-else
-  BindGlobal("NAUTY_DATA", ReturnFail);
-  BindGlobal("NAUTY_DATA_NO_COLORS", ReturnFail);
-fi;
+# replaced by gap/nauty.g once NautyTracesInterface is loaded
+BindGlobal("NAUTY_DATA", ReturnFail);
+BindGlobal("NAUTY_DATA_NO_COLORS", D -> NAUTY_DATA(D, false));
 
 # Canonical labellings
 
