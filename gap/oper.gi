@@ -2560,8 +2560,8 @@ InstallMethod(DigraphGreedyOutDominatingSet,
   "for a digraph and a list of vertices",
   [IsDigraph, IsList],
   function(digraph, vertex_order)
-    if not Length(vertex_order) = DigraphNrVertices(digraph) or
-       not Set(vertex_order) = DigraphVertices(digraph) then
+    if Length(vertex_order) <> DigraphNrVertices(digraph) or
+       Set(vertex_order) <> DigraphVertices(digraph) then
       ErrorNoReturn("the 2nd argument must be a permuted list of vertices of ",
                     "the 1st argument (a digraph)");
     fi;
@@ -2573,8 +2573,8 @@ InstallMethod(DigraphGreedyInDominatingSet,
   "for a digraph and a list of vertices",
   [IsDigraph, IsList],
   function(digraph, vertex_order)
-    if not Length(vertex_order) = DigraphNrVertices(digraph) or
-       not Set(vertex_order) = DigraphVertices(digraph) then
+    if Length(vertex_order) <> DigraphNrVertices(digraph) or
+       Set(vertex_order) <> DigraphVertices(digraph) then
       ErrorNoReturn("the 2nd argument must be a permuted list of vertices of ",
                     "the 1st argument (a digraph)");
     fi;

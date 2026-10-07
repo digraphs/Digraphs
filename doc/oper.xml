@@ -2015,7 +2015,7 @@ false
       ordering <A>order</A>) vertex that is not in <M>S</M> and not and
       out-neighbour of <M>S</M>.
 
-      See also <Ref Oper="IsDigraphOutDominatingSet"/> for a further
+      See also <Ref Oper="IsDigraphOutDominatingSet"/> for further
       information on dominating sets, and <Ref
       Attr="DigraphGreedyOutDominatingSet"/> for the attribute version of this
       function that finds a greedy out-dominating set with respect to the
@@ -2025,7 +2025,7 @@ false
       in-dominating set</E> of <A>digraph</A> with respect to the ordering
       that the list <A>order</A> induces on the vertices in
       <A>digraph</A>. This is equivalently the greedy out-dominating set of
-      the <Ref Attr="DigraphDual"/> of <A>digraph</A>.
+      the <Ref Attr="DigraphReverse"/> of <A>digraph</A>.
 
       See also <Ref Oper="IsDigraphInDominatingSet"/> and <Ref
       Attr="DigraphGreedyInDominatingSet"/>.

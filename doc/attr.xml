@@ -2719,7 +2719,7 @@ gap> Length(M);
       <M>S</M> and repeatedly adding to <M>S</M> the least vertex that is not
       in <M>S</M> and not and out-neighbour of <M>S</M>.
 
-      See also <Ref Oper="IsDigraphOutDominatingSet"/> for a further
+      See also <Ref Oper="IsDigraphOutDominatingSet"/> for further
       information on dominating sets, and <Ref
       Oper="DigraphGreedyOutDominatingSet"/> for a version of this function
       that finds a greedy out-dominating set with respect to an arbitrary
@@ -2729,7 +2729,7 @@ gap> Length(M);
       in-dominating set</E> of <A>digraph</A> with respect to the ordering
       <M>1 &lt; 2 &lt; ... &lt; n</M> where <M>n</M> is the number of vertices in
       <A>digraph</A>. This is equivalently the greedy out-dominating set of
-      the <Ref Attr="DigraphDual"/> of <A>digraph</A>.
+      the <Ref Attr="DigraphReverse"/> of <A>digraph</A>.
 
       See also <Ref Oper="IsDigraphInDominatingSet"/> and <Ref
       Oper="DigraphGreedyInDominatingSet"/>.

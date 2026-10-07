@@ -3527,15 +3527,12 @@ end);
 # determines if in or out-edges are used. Pass OutNeighboursOfVertex
 # for out-edges and InNeighboursOfVertex for in-edges.
 #
-# In other words, we find a subset S of the vertices in the parameter
-# vertices such that every vertex in vertices is in S or adjacent
-# to a vertex in S.
-#
-# This is done in a greedy manner by including every vertex in
-# vertices in order, if it is not already adjacent to some
-# vertex in the current dominating set. The vertices are
-# processed in the same order as they occur in the
-# parameter vertices.
+# In other words, we find a subset S of the vertices in the parameter vertices
+# such that every vertex in vertices is in S or adjacent to a vertex in S. This
+# is done in a greedy manner by including every vertex in vertices in order, if
+# it is not already adjacent to some vertex in the current dominating set. The
+# vertices are processed in the same order as they occur in the parameter
+# vertices.
 #
 # Implements Algorithm 7 in :
 # https://www.cse.msu.edu/~cse835/Papers/Graph_connectivity_revised.pdf
@@ -3597,8 +3594,6 @@ function(digraph)
     return 0;
   fi;
 
-  EdgeD := UnitEdgeWeightedDigraph(DigraphImmutableCopyIfMutable(digraph));
-
   min := -1;
 
   # Algorithm 7: Creating a dominating set of the digraph
@@ -3609,6 +3604,7 @@ function(digraph)
 
   # Algorithm 6: Using the dominating set created to determine the Maximum Flow
 
+  EdgeD := UnitEdgeWeightedDigraph(DigraphImmutableCopyIfMutable(digraph));
   if Length(D) > 1 then
 
     v := D[1];
@@ -3642,9 +3638,7 @@ function(digraph)
     od;
   fi;
 
-  return Minimum(min,
-    Minimum(Minimum(OutDegrees(EdgeD)),
-    Minimum(InDegrees(EdgeD))));
+  return Minimum(min, Minimum(OutDegrees(EdgeD)), Minimum(InDegrees(EdgeD)));
 end);
 
 # The following function is a transliteration from python to GAP of
