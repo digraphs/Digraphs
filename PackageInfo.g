@@ -34,8 +34,8 @@ _STANDREWSCS := Concatenation(["Jack Cole Building, North Haugh, ",
 SetPackageInfo(rec(
 PackageName := "Digraphs",
 Subtitle := "Graphs, digraphs, and multidigraphs in GAP",
-Version := "1.14.0",
-Date := "22/01/2026",  # dd/mm/yyyy format
+Version := "1.15.0",
+Date := "06/07/2026",  # dd/mm/yyyy format
 License := "GPL-3.0-or-later",
 ArchiveFormats := ".tar.gz",
 
@@ -491,6 +491,14 @@ Persons := [
     IsMaintainer   := false,
     Email          := "bspiers972@outlook.com",
     GithubUsername := "bspiers"),
+
+  rec(
+    LastName       := "Thakur",
+    FirstNames     := "Anuj",
+    IsAuthor       := true,
+    IsMaintainer   := false,
+    Email          := "anujthakur@berkeley.edu",
+    GithubUsername := "anujthak"),
 
   rec(
     LastName       := "Tsalakou",
