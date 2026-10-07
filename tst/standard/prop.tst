@@ -418,20 +418,20 @@ false
 
 #  IsParadoxical
 gap> gr := Digraph([[2], [1]]);;
-gap> IsParadoxical(gr);
+gap> IsParadoxicalTournament(gr);
 Error, the argument <D> must be a tournament,
 gap> gr := EmptyDigraph(0);;
-gap> IsParadoxical(gr);
+gap> IsParadoxicalTournament(gr);
 false
 gap> gr := Digraph([[2, 3], [3], []]);;
 gap> IsTournament(gr);
 true
-gap> IsParadoxical(gr);
+gap> IsParadoxicalTournament(gr);
 false
 gap> gr := Digraph([[2], [3], [1]]);;
 gap> IsTournament(gr);
 true
-gap> IsParadoxical(gr);
+gap> IsParadoxicalTournament(gr);
 true
 
 #  IsStronglyConnectedDigraph

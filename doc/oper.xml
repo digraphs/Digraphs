@@ -2133,16 +2133,16 @@ true
 </ManSection>
 <#/GAPDoc>
 
-<#GAPDoc Label="IsKParadoxical">
+<#GAPDoc Label="IsKParadoxicalTournament">
 <ManSection>
-  <Oper Name="IsKParadoxical" Arg="digraph, int"/>
+  <Oper Name="IsKParadoxicalTournament" Arg="digraph, int"/>
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
     A tournament <A>D</A> is <M>k</M>-<E>paradoxical</E> if for every set
     <M>S</M> of <A>k</A> vertices there is a vertex outside <M>S</M> which
     is an in-neighbour of every vertex in <M>S</M>, i.e. there is one player
     who beats all the players of <M>S</M>. This is a generalisation of
-    <Ref Oper="IsParadoxical"/>.
+    <Ref Oper="IsParadoxicalTournament"/>.
     <P/>
     If <A>D</A> has no vertices, then the answer is <K>false</K>. If <A>D</A>
     has at least one vertex and <A>k</A> is <C>0</C> then the answer is
@@ -2153,9 +2153,9 @@ true
     <Example><![CDATA[
 gap> D := Digraph([[2, 3, 5], [3, 4, 6], [4, 5, 7], [5, 6, 1],
 >                  [6, 7, 2], [7, 1, 3], [1, 2, 4]]);;
-gap> IsKParadoxical(D, 2);
+gap> IsKParadoxicalTournament(D, 2);
 true
-gap> IsKParadoxical(D, 3);
+gap> IsKParadoxicalTournament(D, 3);
 false]]></Example>
   </Description>
 </ManSection>

@@ -26,7 +26,7 @@ DeclareProperty("IsCompleteBipartiteDigraph", IsDigraph);
 DeclareProperty("IsCompleteMultipartiteDigraph", IsDigraph);
 DeclareProperty("IsCompleteDigraph", IsDigraph);
 DeclareProperty("IsTournament", IsDigraph);
-DeclareProperty("IsParadoxical", IsDigraph);
+DeclareProperty("IsParadoxicalTournament", IsDigraph);
 DeclareProperty("IsChainDigraph", IsDigraph);
 DeclareProperty("IsCycleDigraph", IsDigraph);
 DeclareProperty("IsDigraphCore", IsDigraph);

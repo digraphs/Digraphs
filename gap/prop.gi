@@ -339,7 +339,7 @@ function(D)
   return IsAntisymmetricDigraph(D);
 end);
 
-InstallMethod(IsParadoxical, "for a tournament",
+InstallMethod(IsParadoxicalTournament, "for a tournament",
 [IsDigraph],
 function(D)
   if not IsTournament(D) then

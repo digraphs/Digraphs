@@ -1596,10 +1596,10 @@ function(D, edges)
   return true;
 end);
 
-InstallMethod(IsKParadoxical, "for a tournament and an integer",
+InstallMethod(IsKParadoxicalTournament, "for a tournament and an integer",
 [IsDigraph, IsInt],
 function(D, k)
-  local n, inn_blist, dfs;
+  local n, inn_blist, backtrack;
 
   if not IsTournament(D) then
     ErrorNoReturn("the 1st argument <D> must be a tournament,");
@@ -1620,7 +1620,7 @@ function(D, k)
   fi;
 
   if k = 1 then
-    return IsParadoxical(D);
+    return IsParadoxicalTournament(D);
   fi;
 
   # this minimum number of vertices needed for k-paradox is given by
@@ -1631,7 +1631,7 @@ function(D, k)
 
   inn_blist := List(InNeighbours(D), inn -> BlistList([1 .. n], inn));
 
-  dfs := function(prev, depth, common)
+  backtrack := function(prev, depth, common)
     local vertex, ncommon;
     for vertex in [prev + 1 .. n - k + depth + 1] do
       ncommon := IntersectionBlist(common, inn_blist[vertex]);
@@ -1639,7 +1639,7 @@ function(D, k)
         return false;
       fi;
       if depth + 1 < k then
-        if not dfs(vertex, depth + 1, ncommon) then
+        if not backtrack(vertex, depth + 1, ncommon) then
           return false;
         fi;
       fi;
@@ -1647,7 +1647,7 @@ function(D, k)
     return true;
   end;
 
-  return dfs(0, 0, BlistList([1 .. n], [1 .. n]));
+  return backtrack(0, 0, BlistList([1 .. n], [1 .. n]));
 end);
 
 #############################################################################

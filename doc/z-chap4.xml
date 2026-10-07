@@ -18,7 +18,7 @@
     <#Include Label="DigraphOutEdges">
     <#Include Label="IsDigraphEdge">
     <#Include Label="IsMatching">
-    <#Include Label="IsKParadoxical">
+    <#Include Label="IsKParadoxicalTournament">
     <#Include Label="DigraphMaximalMatching">
     <#Include Label="DigraphMaximumMatching">
   </Section>
