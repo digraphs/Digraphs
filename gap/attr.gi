@@ -1508,6 +1508,37 @@ function(D)
   return DIGRAPH_DIAMETER(D);
 end);
 
+InstallMethod(DIGRAPHS_DistanceMetrics, "for a digraph",
+[IsDigraph],
+function(D)
+  local eccentricities, minecc, maxecc;
+  if not IsStronglyConnectedDigraph(D) or DigraphNrVertices(D) = 0 then
+    return rec(
+      DigraphRadius    := fail,
+      DigraphCentre    := fail,
+      DigraphPeriphery := fail);
+  fi;
+  eccentricities := List(DigraphShortestDistances(D), Maximum);
+  minecc := Minimum(eccentricities);
+  maxecc := Maximum(eccentricities);
+  return rec(
+    DigraphRadius    := minecc,
+    DigraphCentre    := Positions(eccentricities, minecc),
+    DigraphPeriphery := Positions(eccentricities, maxecc));
+end);
+
+InstallMethod(DigraphRadius, "for a digraph",
+[IsDigraph],
+D -> DIGRAPHS_DistanceMetrics(D).DigraphRadius);
+
+InstallMethod(DigraphCentre, "for a digraph",
+[IsDigraph],
+D -> DIGRAPHS_DistanceMetrics(D).DigraphCentre);
+
+InstallMethod(DigraphPeriphery, "for a digraph",
+[IsDigraph],
+D -> DIGRAPHS_DistanceMetrics(D).DigraphPeriphery);
+
 InstallMethod(DigraphUndirectedGirth, "for a digraph", [IsDigraph],
 function(D)
   # This is only defined on undirected graphs (i.e. symmetric digraphs)
@@ -3718,3 +3749,4 @@ D -> DIGRAPHS_IsJoinSemilatticeAndJoinTable(D)[2]);
 InstallMethod(DigraphMeetTable, "for a digraph",
 [IsDigraph],
 D -> DIGRAPHS_IsMeetSemilatticeAndMeetTable(D)[2]);
+
