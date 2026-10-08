@@ -2703,6 +2703,47 @@ gap> Length(M);
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="AttrDigraphGreedyOutDominatingSet">
+<ManSection>
+  <Attr Name="DigraphGreedyOutDominatingSet" Arg="digraph"/>
+  <Attr Name="DigraphGreedyInDominatingSet" Arg="digraph"/>
+  <Returns>A list of positive integers</Returns>
+  <Description>
+      <C>DigraphGreedyOutDominatingSet</C> returns the unique <E>greedy
+      out-dominating set</E> of <A>digraph</A> with respect to the ordering
+      <M>1 &lt; 2 &lt; ... &lt; n</M> where <M>n</M> is the number of vertices in
+      <A>digraph</A>. An <E>out-dominating set</E> is a subset <M>S</M> of
+      vertices of <A>digraph</A> such that every vertex of <A>digraph</A> is
+      either in <M>S</M> or an out-neighbour of a vertex in <M>S</M>. Such a
+      set is <E>greedy</E>, if it is obtained by starting with an empty set
+      <M>S</M> and repeatedly adding to <M>S</M> the least vertex that is not
+      in <M>S</M> and not and out-neighbour of <M>S</M>.
+
+      See also <Ref Oper="IsDigraphOutDominatingSet"/> for further
+      information on dominating sets, and <Ref
+      Oper="DigraphGreedyOutDominatingSet"/> for a version of this function
+      that finds a greedy out-dominating set with respect to an arbitrary
+      ordering on vertices.
+
+      Similarly, <C>DigraphGreedyInDominatingSet</C> returns the unique <E>greedy
+      in-dominating set</E> of <A>digraph</A> with respect to the ordering
+      <M>1 &lt; 2 &lt; ... &lt; n</M> where <M>n</M> is the number of vertices in
+      <A>digraph</A>. This is equivalently the greedy out-dominating set of
+      the <Ref Attr="DigraphReverse"/> of <A>digraph</A>.
+
+      See also <Ref Oper="IsDigraphInDominatingSet"/> and <Ref
+      Oper="DigraphGreedyInDominatingSet"/>.
+  <Example><![CDATA[
+gap> D := Digraph([[2, 4], [3], [1, 5], [3], [4]]);;
+gap> A := DigraphGreedyOutDominatingSet(D);
+[ 1, 3 ]
+gap> A := DigraphGreedyInDominatingSet(D);
+[ 1, 2, 4 ]
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="DigraphVertexConnectivity">
 <ManSection>
   <Attr Name="DigraphVertexConnectivity" Arg="digraph"/>
@@ -2773,6 +2814,40 @@ gap> DigraphVertexConnectivity(CycleDigraph(2));
 1
 gap> DigraphVertexConnectivity(CompleteDigraph(5));
 4
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphEdgeConnectivity">
+<ManSection>
+  <Attr Name="DigraphEdgeConnectivity" Arg="digraph"/>
+  <Returns>An integer</Returns>
+  <Description>
+    This function returns the edge connectivity of a symmetric digraph
+    <A>digraph</A>.<P/>
+
+    The edge connectivity of a symmetric digraph is the size <M>k</M>  of the
+    smallest set of edges whose removal would make the digraph disconnected
+    (in the sense of <Ref Prop="IsConnectedDigraph"/>).<P/>
+
+    The implementation makes use of the
+    <C>DigraphMaximumFlow(<A>digraph</A>)</C> function, assuming each edge has
+    weight 1, then using the max-flow min-cut theorem to determine the size of
+    the minimum cut. See also <Ref Attr="DigraphMaximumFlow"/>.<P/>
+
+    The edge connectivity of any symmetric bridgeless digraph is at least 2.
+    See also <Ref Prop="IsBridgelessDigraph"/>.
+    <Example><![CDATA[
+gap> d := Digraph([[4], [4], [4], [1, 2, 3]]);;
+gap> DigraphEdgeConnectivity(d);
+1
+gap> D := RandomDigraph(1);;
+gap> DigraphEdgeConnectivity(D);
+0
+gap> d := Digraph([[2, 3], [1, 4], [1, 4], [2, 3]]);;
+gap> DigraphEdgeConnectivity(d);
+2
 ]]></Example>
   </Description>
 </ManSection>

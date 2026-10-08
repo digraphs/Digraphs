@@ -2522,6 +2522,66 @@ function(D, root)
   return result;
 end);
 
+BindGlobal("DIGRAPHS_IsDominatingSet",
+function(digraph, vertices, neighbour_fun)
+  local seen, neighbour, vertex;
+
+  if not IsSet(vertices) then
+    return false;
+  fi;
+
+  seen := BlistList(DigraphVertices(digraph), []);
+  for vertex in vertices do
+    if not IsPosInt(vertex) or vertex > DigraphNrVertices(digraph) then
+      return false;
+    fi;
+    seen[vertex] := true;
+    for neighbour in neighbour_fun(digraph, vertex) do
+      seen[neighbour] := true;
+    od;
+  od;
+
+  return ForAll(seen, x -> x);
+end);
+
+InstallMethod(IsDigraphOutDominatingSet,
+  "for a digraph and a list of vertices",
+  [IsDigraph, IsList],
+  {digraph, vertices} ->
+    DIGRAPHS_IsDominatingSet(digraph, vertices, OutNeighboursOfVertex));
+
+InstallMethod(IsDigraphInDominatingSet,
+  "for a digraph and a list of vertices",
+  [IsDigraph, IsList],
+  {digraph, vertices} ->
+    DIGRAPHS_IsDominatingSet(digraph, vertices, InNeighboursOfVertex));
+
+InstallMethod(DigraphGreedyOutDominatingSet,
+  "for a digraph and a list of vertices",
+  [IsDigraph, IsList],
+  function(digraph, vertex_order)
+    if Length(vertex_order) <> DigraphNrVertices(digraph) or
+       Set(vertex_order) <> DigraphVertices(digraph) then
+      ErrorNoReturn("the 2nd argument must be a permuted list of vertices of ",
+                    "the 1st argument (a digraph)");
+    fi;
+    return Set(DIGRAPHS_GreedyDominatingSet(
+      digraph, vertex_order, OutNeighboursOfVertex));
+  end);
+
+InstallMethod(DigraphGreedyInDominatingSet,
+  "for a digraph and a list of vertices",
+  [IsDigraph, IsList],
+  function(digraph, vertex_order)
+    if Length(vertex_order) <> DigraphNrVertices(digraph) or
+       Set(vertex_order) <> DigraphVertices(digraph) then
+      ErrorNoReturn("the 2nd argument must be a permuted list of vertices of ",
+                    "the 1st argument (a digraph)");
+    fi;
+    return Set(DIGRAPHS_GreedyDominatingSet(
+      digraph, vertex_order, InNeighboursOfVertex));
+  end);
+
 # Computes the fundamental cycle basis of a symmetric digraph
 # First, notice that the cycle space is composed of orthogonal subspaces
 # corresponding to the cycle spaces of the connected components.

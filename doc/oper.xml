@@ -1954,6 +1954,92 @@ rec( idom := [ 2, fail, 2, 2, 2 ], preorder := [ 2, 1, 3, 4, 5 ] )
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="IsDigraphOutDominatingSet">
+<ManSection>
+  <Oper Name="IsDigraphOutDominatingSet" Arg="digraph, list"/>
+  <Oper Name="IsDigraphInDominatingSet" Arg="digraph, list"/>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
+  <Description>
+    If <A>digraph</A> is a digraph and <A>list</A> is a strictly sorted list of
+    vertices of <A>digraph</A>, then <C>IsDigraphOutDominatingSet</C>
+    returns <K>true</K> if <A>list</A> is an out-dominating set of <A>digraph</A>.
+    Similarly, the operation <C>IsDigraphInDominatingSet</C> returns <K>true</K>
+    if <A>list</A> is an in-dominating set of <A>digraph</A>.
+    Otherwise, each of these operations return <K>false</K>.
+    <P/>
+
+    An <E>out-dominating set</E> of <A>digraph</A> is a subset <M>S</M> of
+    vertices of <A>digraph</A> such that every vertex of <A>digraph</A> is
+    either in <M>S</M> or an out-neighbour of a vertex in <M>S</M>.
+    An <E>in-dominating set</E> of <A>digraph</A> is a subset <M>S</M> of
+    vertices of <A>digraph</A> such that every vertex of <A>digraph</A> is
+    either in <M>S</M> or an in-neighbour of a vertex in <M>S</M>.
+
+  <Example><![CDATA[
+gap> D := Digraph([[2, 4], [3], [1, 5], [3], [4]]);;
+gap> IsDigraphOutDominatingSet(D, [1, 3]);
+true
+gap> IsDigraphOutDominatingSet(D, [1, 3, 5]);
+true
+gap> IsDigraphOutDominatingSet(D, [3, 5]);
+false
+gap> IsDigraphOutDominatingSet(D, [3, 1, 5, 2, 4]);
+false
+gap> IsDigraphInDominatingSet(D, [3, 4]);
+true
+gap> IsDigraphInDominatingSet(D, [1, 3, 5]);
+true
+gap> IsDigraphInDominatingSet(D, [3, 5]);
+false
+gap> IsDigraphInDominatingSet(D, [3, 1, 5, 2, 4]);
+false
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="OperDigraphGreedyOutDominatingSet">
+<ManSection>
+  <Oper Name="DigraphGreedyOutDominatingSet" Arg="digraph, order"/>
+  <Oper Name="DigraphGreedyInDominatingSet" Arg="digraph, order"/>
+  <Returns>A list of positive integers</Returns>
+  <Description>
+      <C>DigraphGreedyOutDominatingSet</C> returns the unique <E>greedy
+      out-dominating set</E> of <A>digraph</A> with respect to the ordering
+      that the list <A>order</A> induced on the vertices in
+      <A>digraph</A>. An <E>out-dominating set</E> is a subset <M>S</M> of
+      vertices of <A>digraph</A> such that every vertex of <A>digraph</A> is
+      either in <M>S</M> or an out-neighbour of a vertex in <M>S</M>. Such a
+      set is <E>greedy</E>, if it is obtained by starting with an empty set
+      <M>S</M> and repeatedly adding to <M>S</M> the least (with respect to the
+      ordering <A>order</A>) vertex that is not in <M>S</M> and not and
+      out-neighbour of <M>S</M>.
+
+      See also <Ref Oper="IsDigraphOutDominatingSet"/> for further
+      information on dominating sets, and <Ref
+      Attr="DigraphGreedyOutDominatingSet"/> for the attribute version of this
+      function that finds a greedy out-dominating set with respect to the
+      ordering <M>1 &lt; 2 &lt; ... &lt; n </M> on the vertices of <A>digraph</A>.
+
+      Similarly, <C>DigraphGreedyInDominatingSet</C> returns the unique <E>greedy
+      in-dominating set</E> of <A>digraph</A> with respect to the ordering
+      that the list <A>order</A> induces on the vertices in
+      <A>digraph</A>. This is equivalently the greedy out-dominating set of
+      the <Ref Attr="DigraphReverse"/> of <A>digraph</A>.
+
+      See also <Ref Oper="IsDigraphInDominatingSet"/> and <Ref
+      Attr="DigraphGreedyInDominatingSet"/>.
+  <Example><![CDATA[
+gap> D := Digraph([[2, 4], [3], [1, 5], [3], [4]]);;
+gap> DigraphGreedyOutDominatingSet(D, [2, 1, 3, 4, 5]);
+[ 1, 2, 5 ]
+gap> DigraphGreedyInDominatingSet(D, [5, 1, 3, 4, 2]);
+[ 1, 2, 4, 5 ]
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="PartialOrderDigraphMeetOfVertices">
 <ManSection>
   <Oper Name="PartialOrderDigraphMeetOfVertices"

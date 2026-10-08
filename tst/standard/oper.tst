@@ -10,13 +10,13 @@
 ##
 
 #@local C, D, D1, D2, D3, D3_edges, DD
-#@local G, G1, L, TestPartialOrderDigraph
+#@local G, G1, L, TestPartialOrderDigraph 
 #@local TestPartialOrderDigraph2, TestUnion, a, adj, b, comps, copy, d, e
 #@local edges, edges2, func, g, gr, gr1, gr2, gr3, gr4, gri, grrt, grt, h, i
 #@local i1, i2, id, idom, in1, in2, in3, iter, j1, j2, m, m1, m2, mat, n, nbs
-#@local out, out1, out2, out3, p1, p2, path, preorder, qr, r, res, rtclosure, t
+#@local out, out1, out2, out3, p1, p2, path, preorder, qr, r, res, rtclosure, t, neighbours
 #@local tclosure, u1, u2, x
-#@local p, q, idp, idt, M
+#@local p, q, idp, idt, M, v
 gap> START_TEST("Digraphs package: standard/oper.tst");
 gap> LoadPackage("digraphs", false);;
 
@@ -133,6 +133,18 @@ true
 gap> M := DigraphMutableCopy(D);;
 gap> M ^ p = OnDigraphs(M, p);
 true
+
+# DigraphRemoveAllEdges: for a digraph
+gap> gr2 := Digraph(IsMutableDigraph, [[2, 3], [3], [4], []]);
+<mutable digraph with 4 vertices, 4 edges>
+gap> DigraphRemoveAllEdges(gr2);
+<mutable empty digraph with 4 vertices>
+gap> gr3 := Digraph(IsMutableDigraph, [[], [], [], []]);
+<mutable empty digraph with 4 vertices>
+gap> DigraphRemoveAllEdges(gr3);
+<mutable empty digraph with 4 vertices>
+gap> OutNeighbours(gr3);
+[ [  ], [  ], [  ], [  ] ]
 
 #  OnDigraphs: for a digraph and a perm
 gap> gr := Digraph([[2], [1], [3]]);
@@ -3355,6 +3367,592 @@ gap> DigraphColourRefinement(D);
 gap> D := Digraph([[2, 3, 4, 5], [], [], [], []]);;
 gap> DigraphColourRefinement(D);
 [ 2, 1, 1, 1, 1 ]
+
+# IsDigraphOutDominatingSet
+gap> d := Digraph([[2, 3], [2, 3], [1, 2, 3]]);;
+gap> IsDigraphOutDominatingSet(d, [1]);
+true
+gap> IsDigraphOutDominatingSet(d, [3]);
+true
+gap> IsDigraphOutDominatingSet(d, [1, 2]);
+true
+gap> IsDigraphOutDominatingSet(d, [2]);
+false
+gap> IsDigraphOutDominatingSet(d, []);
+false
+gap> IsDigraphOutDominatingSet(d, [2, 1]);
+false
+gap> IsDigraphOutDominatingSet(d, [1, 4]);
+false
+gap> IsDigraphOutDominatingSet(d, [1, 2, "abc"]);
+false
+gap> d := Digraph([[2, 4], [3], [1, 5], [3], [4]]);;
+gap> IsDigraphOutDominatingSet(d, [1, 3]);
+true
+gap> IsDigraphOutDominatingSet(d, [1, 3, 5]);
+true
+gap> IsDigraphOutDominatingSet(d, [1, 2, 5]);
+true
+gap> IsDigraphOutDominatingSet(d, [2, 3, 5]);
+true
+gap> IsDigraphOutDominatingSet(d, [2, 3, 4]);
+true
+gap> IsDigraphOutDominatingSet(d, [3, 1]);
+false
+gap> IsDigraphOutDominatingSet(d, [3, 1, 5, 2, 4]);
+false
+gap> IsDigraphOutDominatingSet(d, [3, 5]);
+false
+gap> IsDigraphOutDominatingSet(d, [5, 3]);
+false
+gap> d := Digraph([
+> [1, 2, 3, 4, 5],
+> [1, 2, 3, 4, 5],
+> [1, 2, 3, 4, 5],
+> [1, 2, 3, 4, 5],
+> [1, 2, 3, 4, 5]]);;
+gap> IsDigraphOutDominatingSet(d, [1]);
+true
+gap> IsDigraphOutDominatingSet(d, [1, 3]);
+true
+gap> IsDigraphOutDominatingSet(d, [1, 3, 5]);
+true
+gap> IsDigraphOutDominatingSet(d, []);
+false
+gap> IsDigraphOutDominatingSet(d, [3, 1]);
+false
+gap> IsDigraphOutDominatingSet(d, [5, 1, 3]);
+false
+gap> d := DigraphFromSparse6String(":~?@O_GA?`OQCa?]FaoiIb_\
+> uLcpIQd`UTePaZCXwXeXiYeyIjIimcIyegJi_dJi[lJICgHxwdHHs`Hxs\
+> [Hh[ad`s[e@[UcqKid@{hdPORhaq_HhGPbryMNRqOBoyKE@yJEgsKAwc^\
+> IW_PNwgHAGW_OwSZLg[E@WKOJwKOFGGbIgCdHGG@@N");
+<immutable symmetric digraph with 80 vertices, 240 edges>
+gap> p := [1, 5, 8, 11, 14, 17, 18, 19, 22, 25, 27, 29, \
+> 30, 31, 32, 35, 37, 38, 39, 40, 41, 42, 43, 45, 64, 65, \
+> 73, 74];;
+gap> IsDigraphOutDominatingSet(d, p);
+true
+gap> p := [1, 5, 8, 11, 14, 17, 18, 19, 22, 25, 27, 29, \
+> 30, 31, 32, 35, 37, 38, 39, 40, 41, 42, 43, 45, 64, 65, \
+> 73];;
+gap> IsDigraphOutDominatingSet(d, p);
+false
+gap> p := [1, 5, 8, 11, 14, 17, 18, 19, 22, 25, 27, \
+> 30, 31, 32, 35, 37, 38, 39, 40, 41, 42, 43, 45, 64, 65, \
+> 73, 74];;
+gap> IsDigraphOutDominatingSet(d, p);
+false
+gap> p := [2, 3, 4, 5, 9, 10, 11, 12, 13, 14, 15, 17, \
+> 18, 19, 21, 23, 24, 25, 27, 29, 30, 31, 32, 35, 37, \
+> 38, 42, 44, 48, 49, 50, 51, 53, 54, 58, 60, 61, 62, \
+> 64, 66, 73, 74, 75, 78];;
+gap> IsDigraphOutDominatingSet(d, p);
+true
+gap> p := [2, 3, 4, 5, 9, 10, 11, 12, 13, 14, \
+> 18, 19, 21, 23, 24, 25, 27, 29, 30, 31, 32, 35, 37, \
+> 38, 50, 51, 53, 54, 58, 60, 61, 62, \
+> 64, 66, 73, 74, 75];;
+gap> IsDigraphOutDominatingSet(d, p);
+false
+gap> d := DigraphFromSparse6String(":~?AA_C?_CD?cD_sE`OH`KL\
+> @cO@kOawUA[TAcVASQBCRAsTAc^Bk]a[SasTcwNCCMB{]Cc\\C[eCcdC[\
+> [CSZCKYCSXCK]bk_EK^ESdcseckvEswEk|Fcz`_JACI@kK@WIaG}aG|`{\
+> MdOqdGpdoodwld_wdWvd?scwrfSxepNehMfczf`CfXDfpRfhQ`LPJDOJD\
+> SITTI\\FHlEHdJH|IHtDHLCHDBI|AIt_Jl^Jt[KdZK\\YKTXKLgKtdK|n\
+> LThm@mlhnlpolhnmHklXqltl`@sNCFMXv`@wMsFMxt__A_gBNkBAP?_GN\
+> @sC?O@");
+<immutable symmetric digraph with 130 vertices, 390 edges>
+gap> p := [1, 5, 7, 10, 13, 15, 16, 17, 19, 20, 21, 22, 23, \
+> 30, 31, 38, 39, 46, 47, 48, 49, 52, 53, 58, 59, 60, 61, \
+> 65, 67, 68, 71, 72, 75, 76, 81, 82, 87, 88, 92, 93, 98, \
+> 99, 102, 103, 110, 111, 112, 113, 118, 119, 122, 123, 127];;
+gap> IsDigraphOutDominatingSet(d, p);
+true
+gap> p := [1, 5, 7, 10, 13, 15, 16, 17, 19, 20, 21, 22, 23, \
+> 30, 31, 38, 39, 46, 47, 48, 49, 52, 53, 58, 59, 60, 61, \
+> 65, 67, 68, 71, 72, 75, 76, 81, 82, 87, 88, 92, 93, 98, \
+> 99, 102, 103, 110, 111, 112, 113, 118, 119, 122, 123];;
+gap> IsDigraphOutDominatingSet(d, p);
+false
+gap> p := [1, 5, 7, 10, 13, 15, 16, 17, 19, 20, 21, 22, 24, \
+> 30, 31, 38, 39, 46, 47, 48, 49, 52, 53, 58, 59, 60, 61, \
+> 65, 67, 68, 71, 72, 75, 76, 81, 82, 87, 88, 92, 93, 98, \
+> 99, 102, 103, 110, 111, 112, 113, 118, 119, 122, 123, 127];;
+gap> IsDigraphOutDominatingSet(d, p);
+false
+gap> p := [2, 3, 4, 5, 7, 10, 14, 15, 16, 18, 19, 20, 21, 22, \
+> 23, 26, 27, 32, 33, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, \
+> 54, 55, 56, 57, 62, 63, 64, 65, 66, 77, 78, 79, 80, 83, 84, \
+> 85, 86, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 108, \
+> 109, 110, 111, 112, 113, 114, 115, 122, 123, 124, 125, 127];;
+gap> IsDigraphOutDominatingSet(d, p);
+true
+gap> p := [2, 3, 4, 5, 7, 10, 14, 15, 16, 18, 19, 20, 21, 22, \
+> 23, 26, 27, 32, 33, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, \
+> 54, 55, 56, 57, 62, 63, 64, 77, 78, 79, 80, 83, 84, \
+> 85, 86, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 108, \
+> 109, 110, 111, 112, 113, 114, 115, 122, 123, 124, 125];;
+gap> IsDigraphOutDominatingSet(d, p);
+false
+gap> p := [2, 3, 4, 5, 7, 10, 14, 15, 16, 18, 19, 20, 21, 22, \
+> 24, 26, 27, 32, 33, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, \
+> 54, 55, 56, 57, 65, 66, 77, 78, 79, 80, 83, 84, \
+> 85, 86, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 108, \
+> 109, 110, 111, 112, 113, 114, 115, 122, 123, 124, 125, 127];;
+gap> IsDigraphOutDominatingSet(d, p);
+false
+gap> d := DigraphFromSparse6String(":u_OGCSHCc@xCa]MfsILOfM\
+> fSATIjLJEX`_nLKrAhqYKDQpOeNJJQpMAKbagcKXFDOHgyQeWgbydLVSs\
+> ZDUtVhUodrEEoVp?WEAAV^");
+<immutable symmetric digraph with 54 vertices, 162 edges>
+gap> p := [1, 5, 8, 10, 11, 12, 13, 14, 15, 17, 19, 20, 26, \
+> 36, 38, 40, 43, 44, 46, 47, 52];;
+gap> IsDigraphOutDominatingSet(d, p);
+true
+gap> p := [1, 5, 8, 10, 11, 12, 13, 14, 15, 17, 19, 20, 26, \
+> 36, 38, 40, 43, 44, 46, 47];;
+gap> IsDigraphOutDominatingSet(d, p);
+false
+gap> p := [1, 5, 8, 10, 11, 12, 13, 14, 15, 17, 19, 20, \
+> 36, 38, 40, 43, 44, 46, 47, 52];;
+gap> IsDigraphOutDominatingSet(d, p);
+false
+gap> p := [2, 3, 4, 5, 6, 8, 10, 11, 12, 13, 14, 16, 18, \
+> 20, 22, 23, 24, 25, 26, 30, 33, 37, 38, 39, 44, 46, \
+> 47, 48, 50, 52];;
+gap> IsDigraphOutDominatingSet(d, p);
+true
+gap> p := [2, 3, 4, 5, 6, 8, 10, 11, 12, 13, 14, 16, \
+> 20, 22, 23, 24, 25, 26, 30, 33, 37, 38, 39, 44, 46, \
+> 47, 48, 50, 52];;
+gap> IsDigraphOutDominatingSet(d, p);
+false
+gap> p := [2, 3, 4, 5, 6, 11, 12, 13, 14, 16, 18, \
+> 20, 22, 23, 24, 25, 26, 30, 33, 37, 38, 39, 44, 46, \
+> 47, 48, 50];;
+gap> IsDigraphOutDominatingSet(d, p);
+false
+gap> p := [4, 7, 8, 13, 16, 19, 26, 27, 32, 38, 39, 44, \
+> 45, 50, 54];;
+gap> IsDigraphOutDominatingSet(d, p);
+true
+gap> p := [4, 7, 8, 13, 16, 19, 26, 27, 32, 38, 39, 44, \
+> 45, 50, 52];;
+gap> IsDigraphOutDominatingSet(d, p);
+false
+gap> p := [4, 7, 8, 13, 16, 19, 26, 27, 32, 38, 39, 44, \
+> 45, 50];;
+gap> IsDigraphOutDominatingSet(d, p);
+false
+gap> p := [1 .. 10];;
+gap> IsDigraphOutDominatingSet(d, p);
+false
+
+# IsDigraphInDominatingSet
+gap> d := Digraph([[2, 3], [2, 3], [1, 2, 3]]);;
+gap> IsDigraphInDominatingSet(d, [2]);
+true
+gap> IsDigraphInDominatingSet(d, [3]);
+true
+gap> IsDigraphInDominatingSet(d, [1, 2]);
+true
+gap> IsDigraphInDominatingSet(d, []);
+false
+gap> IsDigraphInDominatingSet(d, [1]);
+false
+gap> IsDigraphInDominatingSet(d, [2, 1]);
+false
+gap> IsDigraphInDominatingSet(d, [1, 4]);
+false
+gap> IsDigraphInDominatingSet(d, [1, 2, "abc"]);
+false
+gap> d := Digraph([[2, 4], [3], [1, 5], [3], [4]]);;
+gap> IsDigraphInDominatingSet(d, [3, 4]);
+true
+gap> IsDigraphInDominatingSet(d, [1, 3, 5]);
+true
+gap> IsDigraphInDominatingSet(d, [1, 2, 4]);
+true
+gap> IsDigraphInDominatingSet(d, [3, 1]);
+false
+gap> IsDigraphInDominatingSet(d, [3, 1, 5, 2, 4]);
+false
+gap> IsDigraphInDominatingSet(d, [3, 5]);
+false
+gap> IsDigraphInDominatingSet(d, [5, 3]);
+false
+gap> d := Digraph([
+> [1, 2, 3, 4, 5],
+> [1, 2, 3, 4, 5],
+> [1, 2, 3, 4, 5],
+> [1, 2, 3, 4, 5],
+> [1, 2, 3, 4, 5]]);;
+gap> IsDigraphInDominatingSet(d, [1]);
+true
+gap> IsDigraphInDominatingSet(d, [1, 3]);
+true
+gap> IsDigraphInDominatingSet(d, [1, 3, 5]);
+true
+gap> IsDigraphInDominatingSet(d, []);
+false
+gap> IsDigraphInDominatingSet(d, [3, 1]);
+false
+gap> IsDigraphInDominatingSet(d, [5, 1, 3]);
+false
+gap> d := DigraphFromSparse6String(":~?@O_GA?`OQCa?]FaoiIb_\
+> uLcpIQd`UTePaZCXwXeXiYeyIjIimcIyegJi_dJi[lJICgHxwdHHs`Hxs\
+> [Hh[ad`s[e@[UcqKid@{hdPORhaq_HhGPbryMNRqOBoyKE@yJEgsKAwc^\
+> IW_PNwgHAGW_OwSZLg[E@WKOJwKOFGGbIgCdHGG@@N");
+<immutable symmetric digraph with 80 vertices, 240 edges>
+gap> p := [1, 5, 8, 11, 14, 17, 18, 19, 22, 25, 27, 29, \
+> 30, 31, 32, 35, 37, 38, 39, 40, 41, 42, 43, 45, 64, 65, \
+> 73, 74];;
+gap> IsDigraphInDominatingSet(d, p);
+true
+gap> p := [1, 5, 8, 11, 14, 17, 18, 19, 22, 25, 27, 29, \
+> 30, 31, 32, 35, 37, 38, 39, 40, 41, 42, 43, 45, 64, 65, \
+> 73];;
+gap> IsDigraphInDominatingSet(d, p);
+false
+gap> p := [1, 5, 8, 11, 14, 17, 18, 19, 22, 25, 27, \
+> 30, 31, 32, 35, 37, 38, 39, 40, 41, 42, 43, 45, 64, 65, \
+> 73, 74];;
+gap> IsDigraphInDominatingSet(d, p);
+false
+gap> p := [2, 3, 4, 5, 9, 10, 11, 12, 13, 14, 15, 17, \
+> 18, 19, 21, 23, 24, 25, 27, 29, 30, 31, 32, 35, 37, \
+> 38, 42, 44, 48, 49, 50, 51, 53, 54, 58, 60, 61, 62, \
+> 64, 66, 73, 74, 75, 78];;
+gap> IsDigraphInDominatingSet(d, p);
+true
+gap> p := [2, 3, 4, 5, 9, 10, 11, 12, 13, 14, \
+> 18, 19, 21, 23, 24, 25, 27, 29, 30, 31, 32, 35, 37, \
+> 38, 50, 51, 53, 54, 58, 60, 61, 62, \
+> 64, 66, 73, 74, 75];;
+gap> IsDigraphInDominatingSet(d, p);
+false
+gap> d := DigraphFromSparse6String(":~?AA_C?_CD?cD_sE`OH`KL\
+> @cO@kOawUA[TAcVASQBCRAsTAc^Bk]a[SasTcwNCCMB{]Cc\\C[eCcdC[\
+> [CSZCKYCSXCK]bk_EK^ESdcseckvEswEk|Fcz`_JACI@kK@WIaG}aG|`{\
+> MdOqdGpdoodwld_wdWvd?scwrfSxepNehMfczf`CfXDfpRfhQ`LPJDOJD\
+> SITTI\\FHlEHdJH|IHtDHLCHDBI|AIt_Jl^Jt[KdZK\\YKTXKLgKtdK|n\
+> LThm@mlhnlpolhnmHklXqltl`@sNCFMXv`@wMsFMxt__A_gBNkBAP?_GN\
+> @sC?O@");
+<immutable symmetric digraph with 130 vertices, 390 edges>
+gap> p := [1, 5, 7, 10, 13, 15, 16, 17, 19, 20, 21, 22, 23, \
+> 30, 31, 38, 39, 46, 47, 48, 49, 52, 53, 58, 59, 60, 61, \
+> 65, 67, 68, 71, 72, 75, 76, 81, 82, 87, 88, 92, 93, 98, \
+> 99, 102, 103, 110, 111, 112, 113, 118, 119, 122, 123, 127];;
+gap> IsDigraphInDominatingSet(d, p);
+true
+gap> p := [1, 5, 7, 10, 13, 15, 16, 17, 19, 20, 21, 22, 23, \
+> 30, 31, 38, 39, 46, 47, 48, 49, 52, 53, 58, 59, 60, 61, \
+> 65, 67, 68, 71, 72, 75, 76, 81, 82, 87, 88, 92, 93, 98, \
+> 99, 102, 103, 110, 111, 112, 113, 118, 119, 122, 123];;
+gap> IsDigraphInDominatingSet(d, p);
+false
+gap> p := [1, 5, 7, 10, 13, 15, 16, 17, 19, 20, 21, 22, 24, \
+> 30, 31, 38, 39, 46, 47, 48, 49, 52, 53, 58, 59, 60, 61, \
+> 65, 67, 68, 71, 72, 75, 76, 81, 82, 87, 88, 92, 93, 98, \
+> 99, 102, 103, 110, 111, 112, 113, 118, 119, 122, 123, 127];;
+gap> IsDigraphInDominatingSet(d, p);
+false
+gap> p := [2, 3, 4, 5, 7, 10, 14, 15, 16, 18, 19, 20, 21, 22, \
+> 23, 26, 27, 32, 33, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, \
+> 54, 55, 56, 57, 62, 63, 64, 65, 66, 77, 78, 79, 80, 83, 84, \
+> 85, 86, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 108, \
+> 109, 110, 111, 112, 113, 114, 115, 122, 123, 124, 125, 127];;
+gap> IsDigraphInDominatingSet(d, p);
+true
+gap> p := [2, 3, 4, 5, 7, 10, 14, 15, 16, 18, 19, 20, 21, 22, \
+> 23, 26, 27, 32, 33, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, \
+> 54, 55, 56, 57, 62, 63, 64, 77, 78, 79, 80, 83, 84, \
+> 85, 86, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 108, \
+> 109, 110, 111, 112, 113, 114, 115, 122, 123, 124, 125];;
+gap> IsDigraphInDominatingSet(d, p);
+false
+gap> p := [2, 3, 4, 5, 7, 10, 14, 15, 16, 18, 19, 20, 21, 22, \
+> 24, 26, 27, 32, 33, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, \
+> 54, 55, 56, 57, 65, 66, 77, 78, 79, 80, 83, 84, \
+> 85, 86, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 108, \
+> 109, 110, 111, 112, 113, 114, 115, 122, 123, 124, 125, 127];;
+gap> IsDigraphInDominatingSet(d, p);
+false
+gap> d := DigraphFromSparse6String(":u_OGCSHCc@xCa]MfsILOfM\
+> fSATIjLJEX`_nLKrAhqYKDQpOeNJJQpMAKbagcKXFDOHgyQeWgbydLVSs\
+> ZDUtVhUodrEEoVp?WEAAV^");
+<immutable symmetric digraph with 54 vertices, 162 edges>
+gap> p := [1, 5, 8, 10, 11, 12, 13, 14, 15, 17, 19, 20, 26, \
+> 36, 38, 40, 43, 44, 46, 47, 52];;
+gap> IsDigraphInDominatingSet(d, p);
+true
+gap> p := [1, 5, 8, 10, 11, 12, 13, 14, 15, 17, 19, 20, 26, \
+> 36, 38, 40, 43, 44, 46, 47];;
+gap> IsDigraphInDominatingSet(d, p);
+false
+gap> p := [1, 5, 8, 10, 11, 12, 13, 14, 15, 17, 19, 20, \
+> 36, 38, 40, 43, 44, 46, 47, 52];;
+gap> IsDigraphInDominatingSet(d, p);
+false
+gap> p := [2, 3, 4, 5, 6, 8, 10, 11, 12, 13, 14, 16, 18, \
+> 20, 22, 23, 24, 25, 26, 30, 33, 37, 38, 39, 44, 46, \
+> 47, 48, 50, 52];;
+gap> IsDigraphInDominatingSet(d, p);
+true
+gap> p := [2, 3, 4, 5, 6, 8, 10, 11, 12, 13, 14, 16, \
+> 20, 22, 23, 24, 25, 26, 30, 33, 37, 38, 39, 44, 46, \
+> 47, 48, 50, 52];;
+gap> IsDigraphInDominatingSet(d, p);
+false
+gap> p := [2, 3, 4, 5, 6, 11, 12, 13, 14, 16, 18, \
+> 20, 22, 23, 24, 25, 26, 30, 33, 37, 38, 39, 44, 46, \
+> 47, 48, 50];;
+gap> IsDigraphInDominatingSet(d, p);
+false
+gap> p := [4, 7, 8, 13, 16, 19, 26, 27, 32, 38, 39, 44, \
+> 45, 50, 54];;
+gap> IsDigraphInDominatingSet(d, p);
+true
+gap> p := [4, 7, 8, 13, 16, 19, 26, 27, 32, 38, 39, 44, \
+> 45, 50, 52];;
+gap> IsDigraphInDominatingSet(d, p);
+false
+gap> p := [4, 7, 8, 13, 16, 19, 26, 27, 32, 38, 39, 44, \
+> 45, 50];;
+gap> IsDigraphInDominatingSet(d, p);
+false
+gap> p := [1 .. 10];;
+gap> IsDigraphInDominatingSet(d, p);
+false
+
+# DigraphGreedyOutDominatingSet
+gap> d := Digraph([[2, 3], [2, 3], [1, 2, 3]]);;
+gap> DigraphGreedyOutDominatingSet(d, [1, 2, 3]);
+[ 1 ]
+gap> DigraphGreedyOutDominatingSet(d, [1, 3, 2]);
+[ 1 ]
+gap> DigraphGreedyOutDominatingSet(d, [2, 1, 3]);
+[ 1, 2 ]
+gap> DigraphGreedyOutDominatingSet(d, [2, 3, 1]);
+[ 1, 2 ]
+gap> DigraphGreedyOutDominatingSet(d, [3, 1, 2]);
+[ 3 ]
+gap> DigraphGreedyOutDominatingSet(d, [3, 2, 1]);
+[ 3 ]
+gap> DigraphGreedyOutDominatingSet(d, [1, 2]);
+Error, the 2nd argument must be a permuted list of vertices of the 1st argumen\
+t (a digraph)
+gap> DigraphGreedyOutDominatingSet(d, [1, 2, 3, 3]);
+Error, the 2nd argument must be a permuted list of vertices of the 1st argumen\
+t (a digraph)
+gap> DigraphGreedyOutDominatingSet(d, ["a", "b", "c"]);
+Error, the 2nd argument must be a permuted list of vertices of the 1st argumen\
+t (a digraph)
+gap> DigraphGreedyOutDominatingSet(d, [2, 3, 4]);
+Error, the 2nd argument must be a permuted list of vertices of the 1st argumen\
+t (a digraph)
+gap> DigraphGreedyOutDominatingSet(d, []);
+Error, the 2nd argument must be a permuted list of vertices of the 1st argumen\
+t (a digraph)
+gap> d := Digraph([[2, 4], [3], [1, 5], [3], [4]]);;
+gap> DigraphGreedyOutDominatingSet(d, [1, 2, 3, 4, 5]);
+[ 1, 3 ]
+gap> DigraphGreedyOutDominatingSet(d, [2, 1, 3, 4, 5]);
+[ 1, 2, 5 ]
+gap> DigraphGreedyOutDominatingSet(d, [2, 5, 1, 3, 4]);
+[ 1, 2, 5 ]
+gap> DigraphGreedyOutDominatingSet(d, [5, 1, 3, 4, 2]);
+[ 1, 3, 5 ]
+gap> d := DigraphFromSparse6String(":~?@O_GA?`OQCa?]FaoiIb_\
+> uLcpIQd`UTePaZCXwXeXiYeyIjIimcIyegJi_dJi[lJICgHxwdHHs`Hxs\
+> [Hh[ad`s[e@[UcqKid@{hdPORhaq_HhGPbryMNRqOBoyKE@yJEgsKAwc^\
+> IW_PNwgHAGW_OwSZLg[E@WKOJwKOFGGbIgCdHGG@@N");
+<immutable symmetric digraph with 80 vertices, 240 edges>
+gap> g := (1, 9, 27, 79, 50, 72, 11, 17, 77, 25, 18, 42, \
+> 63, 57, 62, 64, 48, 40, 39, 34, 8, 65, 38, 75, 70, 52, \
+> 41, 49, 22, 3, 45, 7, 37, 30)(2, 31, 80, 24, 51, 21, 73, \
+> 6, 28, 55, 13, 66, 26, 59, 44, 46, 29, 67, 78, 61, 68, \
+> 53, 43, 19, 10, 16, 54)(5, 15, 69, 23, 14)(12, 58, 20, \
+> 36, 35, 71, 33, 60, 56, 32, 47, 74, 76);;
+gap> DigraphGreedyOutDominatingSet(d, OnTuples([1 .. 80], g));
+[ 2, 3, 4, 5, 9, 10, 11, 15, 16, 17, 27, 28, 31, 32, 37, 42, 45, 48, 49, 51, 
+  53, 54, 55, 56, 57, 58, 60, 62, 63, 69, 73, 75 ]
+gap> g := (1, 44, 71, 66, 73, 29, 68, 50, 63, 49, 59, 75, \
+> 47, 36, 79, 33, 48, 74, 24, 20, 25, 77, 10, 19, 72, 9, \
+> 23, 8, 54, 37)(2, 5, 18, 16, 21, 61, 53, 56, 55, 4, 42, \
+> 39, 76, 12, 32, 14, 46, 52, 38, 27, 78, 65, 67, 57, 45, \
+> 11, 3, 13, 17, 7, 40, 70, 34, 15, 51, 22, 31, 60, 80, 26, \
+> 35, 58, 41, 30, 64, 43, 6, 62);;
+gap> DigraphGreedyOutDominatingSet(d, OnTuples([1 .. 80], g));
+[ 3, 4, 5, 8, 13, 15, 16, 17, 18, 19, 23, 24, 25, 31, 32, 34, 35, 40, 42, 44, 
+  48, 49, 54, 58, 60, 61, 62, 68, 72, 74, 79 ]
+gap> d := DigraphFromSparse6String(":~?AA_C?_CD?cD_sE`OH`KL\
+> @cO@kOawUA[TAcVASQBCRAsTAc^Bk]a[SasTcwNCCMB{]Cc\\C[eCcdC[\
+> [CSZCKYCSXCK]bk_EK^ESdcseckvEswEk|Fcz`_JACI@kK@WIaG}aG|`{\
+> MdOqdGpdoodwld_wdWvd?scwrfSxepNehMfczf`CfXDfpRfhQ`LPJDOJD\
+> SITTI\\FHlEHdJH|IHtDHLCHDBI|AIt_Jl^Jt[KdZK\\YKTXKLgKtdK|n\
+> LThm@mlhnlpolhnmHklXqltl`@sNCFMXv`@wMsFMxt__A_gBNkBAP?_GN\
+> @sC?O@");
+<immutable symmetric digraph with 130 vertices, 390 edges>
+gap> g := (1, 121, 127, 123, 51, 64, 113, 38, 2, 87, 70, 58, \
+> 129, 52, 6, 101, 33, 73, 37, 98, 63, 65, 69, 20, 61, 18, \
+> 62, 94, 11, 130, 97, 55, 48, 74, 89, 90, 122, 41, 9, 83, \
+> 102, 15, 84, 45, 8, 119, 46, 4, 50, 72, 95, 29, 24, 80, 31, \
+> 85, 118, 103, 106, 16, 116, 96, 42, 59, 91, 126, 92, 53, 67, \
+> 100, 60, 105, 39, 82, 124, 109, 40, 111, 104, 49, 47, 88, \
+> 44, 68, 19, 66)(3, 57, 114, 125, 93, 25, 26, 120, 7, 12, 112, \
+> 115, 36, 43, 22, 75, 23, 56, 107, 34, 13, 110, 117, 81, 108, \
+> 86, 5, 32)(10, 128, 35, 14, 77, 99, 21)(17, 71, 28, 78)(27, \
+> 76)(30, 54, 79);;
+gap> DigraphGreedyOutDominatingSet(d, OnTuples([1 .. 130], g));
+[ 1, 6, 8, 9, 11, 12, 13, 17, 20, 21, 22, 23, 26, 32, 33, 42, 44, 45, 46, 48, 
+  50, 54, 55, 56, 57, 60, 62, 67, 71, 73, 77, 78, 79, 80, 83, 85, 87, 90, 91, 
+  98, 102, 103, 104, 105, 112, 114, 116, 119, 120, 121, 126, 128, 129, 130 ]
+gap> g := (1, 70, 120, 119, 50, 116, 45, 96, 130, 51, 52, 7, 80, \
+> 77, 4, 37, 95, 28, 62, 124, 18, 33, 53, 8, 42, 22, 101, 81, 14, \
+> 31, 128, 125, 27, 129, 5, 85, 41, 87, 25, 55, 38, 24, 71, 19, \
+> 84, 113, 92, 58, 17, 65, 64, 29)(2, 112, 6, 90, 32, 93, 3, 15, \
+> 107, 67, 30, 127, 115, 47, 103, 94, 44, 108, 56, 88, 21, 114, \
+> 75, 60, 122, 123, 66, 99, 74, 86, 16, 72, 63, 46, 89, 102, 97, 78, \
+> 34, 69, 83, 43, 98, 111, 12, 10, 59, 82, 40, 13, 121, 100, 117, \
+> 109, 104)(9, 20, 48, 26, 49, 126, 118, 79)(11, 36, 91, 68, 57, 35, \
+> 23)(39, 106, 110, 61, 73);;
+gap> DigraphGreedyOutDominatingSet(d, OnTuples([1 .. 130], g));
+[ 1, 7, 10, 13, 17, 19, 20, 25, 30, 31, 36, 37, 38, 40, 41, 46, 47, 48, 49, 
+  52, 53, 55, 59, 62, 63, 65, 70, 71, 72, 75, 76, 80, 83, 84, 85, 90, 91, 99, 
+  100, 101, 102, 108, 112, 114, 116, 120, 121, 127, 129, 130 ]
+gap> d := DigraphFromSparse6String(":u_OGCSHCc@xCa]MfsILOfM\
+> fSATIjLJEX`_nLKrAhqYKDQpOeNJJQpMAKbagcKXFDOHgyQeWgbydLVSs\
+> ZDUtVhUodrEEoVp?WEAAV^");
+<immutable symmetric digraph with 54 vertices, 162 edges>
+gap> g := (1, 5, 14, 49, 17, 51, 8, 27, 46, 48, 23, 25, 41, 10, 39, \
+> 28, 40, 6, 33, 36, 7, 42, 37, 26, 12, 31, 20, 45, 15, 29, 38, 30, \
+> 22, 50, 18, 19, 47, 16, 9, 54, 43)(2, 21, 44, 53, 13)(3, 52)(11, \
+> 35)(24, 34, 32);;
+gap> DigraphGreedyOutDominatingSet(d, OnTuples([1 .. 54], g));
+[ 1, 5, 9, 14, 16, 19, 21, 22, 28, 32, 33, 34, 35, 39, 41, 42, 45, 51, 52, 54 
+ ]
+gap> g := (1, 15, 12, 46, 21, 17, 4, 11, 16, 9, 10, 14)(2, 50, 3, 23, \
+> 43, 29)(5, 42, 54)(6, 24, 34, 35, 7, 39, 20, 26, 49, 36, 33, 30, 41, \
+> 22, 52, 25, 8, 51, 32, 31, 37, 27, 47, 40, 13, 53, 28, 38, 18)(44, 48);;
+gap> DigraphGreedyOutDominatingSet(d, OnTuples([1 .. 54], g));
+[ 1, 6, 8, 10, 11, 12, 14, 15, 20, 24, 25, 26, 30, 37, 39, 43, 44, 47, 50, 
+  52, 53 ]
+
+# DigraphGreedyInDominatingSet
+gap> d := Digraph([[2, 3], [2, 3], [1, 2, 3]]);;
+gap> DigraphGreedyInDominatingSet(d, [1, 2, 3]);
+[ 1, 2 ]
+gap> DigraphGreedyInDominatingSet(d, [1, 3, 2]);
+[ 1, 2 ]
+gap> DigraphGreedyInDominatingSet(d, [2, 1, 3]);
+[ 2 ]
+gap> DigraphGreedyInDominatingSet(d, [2, 3, 1]);
+[ 2 ]
+gap> DigraphGreedyInDominatingSet(d, [3, 1, 2]);
+[ 3 ]
+gap> DigraphGreedyInDominatingSet(d, [3, 2, 1]);
+[ 3 ]
+gap> DigraphGreedyInDominatingSet(d, [1, 2]);
+Error, the 2nd argument must be a permuted list of vertices of the 1st argumen\
+t (a digraph)
+gap> DigraphGreedyInDominatingSet(d, [1, 2, 3, 3]);
+Error, the 2nd argument must be a permuted list of vertices of the 1st argumen\
+t (a digraph)
+gap> DigraphGreedyInDominatingSet(d, ["a", "b", "c"]);
+Error, the 2nd argument must be a permuted list of vertices of the 1st argumen\
+t (a digraph)
+gap> DigraphGreedyInDominatingSet(d, [2, 3, 4]);
+Error, the 2nd argument must be a permuted list of vertices of the 1st argumen\
+t (a digraph)
+gap> DigraphGreedyInDominatingSet(d, []);
+Error, the 2nd argument must be a permuted list of vertices of the 1st argumen\
+t (a digraph)
+gap> d := Digraph([[2, 4], [3], [1, 5], [3], [4]]);;
+gap> DigraphGreedyInDominatingSet(d, [1, 2, 3, 4, 5]);
+[ 1, 2, 4 ]
+gap> DigraphGreedyInDominatingSet(d, [2, 1, 3, 4, 5]);
+[ 2, 3, 5 ]
+gap> DigraphGreedyInDominatingSet(d, [2, 5, 1, 3, 4]);
+[ 2, 4, 5 ]
+gap> DigraphGreedyInDominatingSet(d, [5, 1, 3, 4, 2]);
+[ 1, 2, 4, 5 ]
+gap> d := DigraphFromSparse6String(":~?@O_GA?`OQCa?]FaoiIb_\
+> uLcpIQd`UTePaZCXwXeXiYeyIjIimcIyegJi_dJi[lJICgHxwdHHs`Hxs\
+> [Hh[ad`s[e@[UcqKid@{hdPORhaq_HhGPbryMNRqOBoyKE@yJEgsKAwc^\
+> IW_PNwgHAGW_OwSZLg[E@WKOJwKOFGGbIgCdHGG@@N");
+<immutable symmetric digraph with 80 vertices, 240 edges>
+gap> g := (1, 9, 27, 79, 50, 72, 11, 17, 77, 25, 18, 42, \
+> 63, 57, 62, 64, 48, 40, 39, 34, 8, 65, 38, 75, 70, 52, \
+> 41, 49, 22, 3, 45, 7, 37, 30)(2, 31, 80, 24, 51, 21, 73, \
+> 6, 28, 55, 13, 66, 26, 59, 44, 46, 29, 67, 78, 61, 68, \
+> 53, 43, 19, 10, 16, 54)(5, 15, 69, 23, 14)(12, 58, 20, \
+> 36, 35, 71, 33, 60, 56, 32, 47, 74, 76);;
+gap> DigraphGreedyInDominatingSet(d, OnTuples([1 .. 80], g));
+[ 2, 3, 4, 5, 9, 10, 11, 15, 16, 17, 27, 28, 31, 32, 37, 42, 45, 48, 49, 51, 
+  53, 54, 55, 56, 57, 58, 60, 62, 63, 69, 73, 75 ]
+gap> g := (1, 44, 71, 66, 73, 29, 68, 50, 63, 49, 59, 75, \
+> 47, 36, 79, 33, 48, 74, 24, 20, 25, 77, 10, 19, 72, 9, \
+> 23, 8, 54, 37)(2, 5, 18, 16, 21, 61, 53, 56, 55, 4, 42, \
+> 39, 76, 12, 32, 14, 46, 52, 38, 27, 78, 65, 67, 57, 45, \
+> 11, 3, 13, 17, 7, 40, 70, 34, 15, 51, 22, 31, 60, 80, 26, \
+> 35, 58, 41, 30, 64, 43, 6, 62);;
+gap> DigraphGreedyInDominatingSet(d, OnTuples([1 .. 80], g));
+[ 3, 4, 5, 8, 13, 15, 16, 17, 18, 19, 23, 24, 25, 31, 32, 34, 35, 40, 42, 44, 
+  48, 49, 54, 58, 60, 61, 62, 68, 72, 74, 79 ]
+gap> d := DigraphFromSparse6String(":~?AA_C?_CD?cD_sE`OH`KL\
+> @cO@kOawUA[TAcVASQBCRAsTAc^Bk]a[SasTcwNCCMB{]Cc\\C[eCcdC[\
+> [CSZCKYCSXCK]bk_EK^ESdcseckvEswEk|Fcz`_JACI@kK@WIaG}aG|`{\
+> MdOqdGpdoodwld_wdWvd?scwrfSxepNehMfczf`CfXDfpRfhQ`LPJDOJD\
+> SITTI\\FHlEHdJH|IHtDHLCHDBI|AIt_Jl^Jt[KdZK\\YKTXKLgKtdK|n\
+> LThm@mlhnlpolhnmHklXqltl`@sNCFMXv`@wMsFMxt__A_gBNkBAP?_GN\
+> @sC?O@");
+<immutable symmetric digraph with 130 vertices, 390 edges>
+gap> g := (1, 121, 127, 123, 51, 64, 113, 38, 2, 87, 70, 58, \
+> 129, 52, 6, 101, 33, 73, 37, 98, 63, 65, 69, 20, 61, 18, \
+> 62, 94, 11, 130, 97, 55, 48, 74, 89, 90, 122, 41, 9, 83, \
+> 102, 15, 84, 45, 8, 119, 46, 4, 50, 72, 95, 29, 24, 80, 31, \
+> 85, 118, 103, 106, 16, 116, 96, 42, 59, 91, 126, 92, 53, 67, \
+> 100, 60, 105, 39, 82, 124, 109, 40, 111, 104, 49, 47, 88, \
+> 44, 68, 19, 66)(3, 57, 114, 125, 93, 25, 26, 120, 7, 12, 112, \
+> 115, 36, 43, 22, 75, 23, 56, 107, 34, 13, 110, 117, 81, 108, \
+> 86, 5, 32)(10, 128, 35, 14, 77, 99, 21)(17, 71, 28, 78)(27, \
+> 76)(30, 54, 79);;
+gap> DigraphGreedyInDominatingSet(d, OnTuples([1 .. 130], g));
+[ 1, 6, 8, 9, 11, 12, 13, 17, 20, 21, 22, 23, 26, 32, 33, 42, 44, 45, 46, 48, 
+  50, 54, 55, 56, 57, 60, 62, 67, 71, 73, 77, 78, 79, 80, 83, 85, 87, 90, 91, 
+  98, 102, 103, 104, 105, 112, 114, 116, 119, 120, 121, 126, 128, 129, 130 ]
+gap> g := (1, 70, 120, 119, 50, 116, 45, 96, 130, 51, 52, 7, 80, \
+> 77, 4, 37, 95, 28, 62, 124, 18, 33, 53, 8, 42, 22, 101, 81, 14, \
+> 31, 128, 125, 27, 129, 5, 85, 41, 87, 25, 55, 38, 24, 71, 19, \
+> 84, 113, 92, 58, 17, 65, 64, 29)(2, 112, 6, 90, 32, 93, 3, 15, \
+> 107, 67, 30, 127, 115, 47, 103, 94, 44, 108, 56, 88, 21, 114, \
+> 75, 60, 122, 123, 66, 99, 74, 86, 16, 72, 63, 46, 89, 102, 97, 78, \
+> 34, 69, 83, 43, 98, 111, 12, 10, 59, 82, 40, 13, 121, 100, 117, \
+> 109, 104)(9, 20, 48, 26, 49, 126, 118, 79)(11, 36, 91, 68, 57, 35, \
+> 23)(39, 106, 110, 61, 73);;
+gap> DigraphGreedyInDominatingSet(d, OnTuples([1 .. 130], g));
+[ 1, 7, 10, 13, 17, 19, 20, 25, 30, 31, 36, 37, 38, 40, 41, 46, 47, 48, 49, 
+  52, 53, 55, 59, 62, 63, 65, 70, 71, 72, 75, 76, 80, 83, 84, 85, 90, 91, 99, 
+  100, 101, 102, 108, 112, 114, 116, 120, 121, 127, 129, 130 ]
+gap> d := DigraphFromSparse6String(":u_OGCSHCc@xCa]MfsILOfM\
+> fSATIjLJEX`_nLKrAhqYKDQpOeNJJQpMAKbagcKXFDOHgyQeWgbydLVSs\
+> ZDUtVhUodrEEoVp?WEAAV^");
+<immutable symmetric digraph with 54 vertices, 162 edges>
+gap> g := (1, 5, 14, 49, 17, 51, 8, 27, 46, 48, 23, 25, 41, 10, 39, \
+> 28, 40, 6, 33, 36, 7, 42, 37, 26, 12, 31, 20, 45, 15, 29, 38, 30, \
+> 22, 50, 18, 19, 47, 16, 9, 54, 43)(2, 21, 44, 53, 13)(3, 52)(11, \
+> 35)(24, 34, 32);;
+gap> DigraphGreedyInDominatingSet(d, OnTuples([1 .. 54], g));
+[ 1, 5, 9, 14, 16, 19, 21, 22, 28, 32, 33, 34, 35, 39, 41, 42, 45, 51, 52, 54 
+ ]
+gap> g := (1, 15, 12, 46, 21, 17, 4, 11, 16, 9, 10, 14)(2, 50, 3, 23, \
+> 43, 29)(5, 42, 54)(6, 24, 34, 35, 7, 39, 20, 26, 49, 36, 33, 30, 41, \
+> 22, 52, 25, 8, 51, 32, 31, 37, 27, 47, 40, 13, 53, 28, 38, 18)(44, 48);;
+gap> DigraphGreedyInDominatingSet(d, OnTuples([1 .. 54], g));
+[ 1, 6, 8, 10, 11, 12, 14, 15, 20, 24, 25, 26, 30, 37, 39, 43, 44, 47, 50, 
+  52, 53 ]
 
 #
 gap> DIGRAPHS_StopTest();

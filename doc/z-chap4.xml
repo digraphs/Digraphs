@@ -76,6 +76,9 @@
     <#Include Label="DigraphAbsorptionExpectedSteps">
     <#Include Label="Dominators">
     <#Include Label="DominatorTree">
+    <#Include Label="IsDigraphOutDominatingSet">
+    <#Include Label="AttrDigraphGreedyOutDominatingSet">
+    <#Include Label="OperDigraphGreedyOutDominatingSet">
     <#Include Label="IteratorOfPaths">
     <#Include Label="DigraphAllSimpleCircuits">
     <#Include Label="DigraphLongestSimpleCircuit">
@@ -89,6 +92,7 @@
     <#Include Label="NrSpanningTrees">
     <#Include Label="DigraphDijkstra">
     <#Include Label="DigraphVertexConnectivity">
+    <#Include Label="DigraphEdgeConnectivity">
     <#Include Label="DigraphCycleBasis">
     <#Include Label="DigraphIsKing">
     <#Include Label="DigraphKings">
