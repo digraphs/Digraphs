@@ -158,16 +158,14 @@ gap> for x in iter do od;
   <Returns>An IO file object.</Returns>
   <Description>
     If <A>filename</A> is a string representing the name of a file, then
-    <C>DigraphFile</C> returns an &IO; package file object for that file.
-    <P/>
+    <C>DigraphFile</C> returns an &IO; package file object for that file. <P/>
 
     If the optional argument <A>coder</A> is specified and is a function which
     either encodes a digraph as a string, or decodes a string into a digraph,
     then this function will be used when reading or writing to the returned
     file object. If the optional argument <A>coder</A> is not specified, then
     the encoding will be deduced from the file extension; see
-    <C>EncodingFormats</C> (<Ref Subsect="EncodingFormats" Style="Number"/>).
-    <P/>
+    <Ref Subsect="EncodingFormats" Style="Number"/>. <P/>
 
     If the optional argument <A>mode</A> is specified, then it must be one of:
     <C>"w"</C> (for write), <C>"a"</C> (for append), or <C>"r"</C> (for read).
@@ -175,16 +173,14 @@ gap> for x in iter do od;
 
     If <A>filename</A> ends in one of: <C>.gz</C>, <C>.bz2</C>, or
     <C>.xz</C>, then the digraphs which are read from, or written to, the
-    returned file object are decompressed, or compressed, appropriately.
-    <P/>
+    returned file object are decompressed, or compressed, appropriately. <P/>
 
     The file object returned by <C>DigraphFile</C> can be given as the first
     argument for either of the functions <Ref Func="ReadDigraphs"/> or
     <Ref Func="WriteDigraphs"/>. The purpose of this is to reduce the overhead
     of recreating the file object inside the functions
     <Ref Func="ReadDigraphs"/> or <Ref Func="WriteDigraphs"/> when, for
-    example, reading or writing many digraphs in a loop.
-    <P/>
+    example, reading or writing many digraphs in a loop. <P/>
 
     <Example><![CDATA[
 gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/man.d6.gz");;
@@ -268,18 +264,18 @@ gap> DigraphFromGraph6String(IsMutableDigraph, "IheA@GUAo");
     DiSparse6 format, then the corresponding function returns a digraph. In the
     case of either Graph6 or Sparse6, formats which do not support directed
     edges, this will be a digraph such that for every edge, the edge going in
-    the opposite direction is also present.<P/>
+    the opposite direction is also present. <P/>
 
     Each of these functions takes an optional first argument <A>filt</A>,
     which should be either <Ref Filt="IsMutableDigraph"/> or
     <Ref Filt="IsImmutableDigraph"/>, and which specifies whether the output
     digraph shall be mutable or immutable. If no first argument is provided,
-    then an immutable digraph is returned by default.
+    then an immutable digraph is returned by default. <P/>
 
     Note that some digraphs will not be accurately recovered if they were 
     encoded in an invalid format; see
-    <C>EncodingFormats</C> (<Ref Subsect="EncodingFormats" Style="Number"/>)
-    for full limitations. <P/>
+    <Ref Subsect="EncodingFormats" Style="Number"/> for full limitations. <P/>
+
     <Example><![CDATA[
 gap> DigraphFromGraph6String("?");
 <immutable empty digraph with 0 vertices>
@@ -310,22 +306,21 @@ gap> DigraphFromDiSparse6String(".CaWBGA?b");
     If <A>filename</A> is a string containing the name of a file containing
     encoded digraphs or an &IO; file object created using <Ref
     Func="DigraphFile"/>, then <C>ReadDigraphs</C> returns the digraphs
-    encoded in the file as a list.
-    <P/>
+    encoded in the file as a list. <P/>
 
     If <A>filename</A> ends in one of: <C>.gz</C>, <C>.bz2</C>, or <C>.xz</C>,
-    then the file is decompressed appropriately. If the optional argument
-    <A>decoder</A> is specified and is a function which decodes a string into a
-    digraph, then <C>ReadDigraphs</C> will use <A>decoder</A> to decode the
-    digraphs contained in <A>filename</A>. If the optional argument
-    <A>decoder</A> is not specified, then <C>ReadDigraphs</C> will deduce which
-    decoder to use based the file extension; see
-    <C>EncodingFormats</C> (<Ref Subsect="EncodingFormats" Style="Number"/>).
-    <P/>
+    then the file is decompressed appropriately. <P/>
+    
+    If the optional argument <A>decoder</A> is specified and is a function
+    which decodes a string into a digraph, then <C>ReadDigraphs</C> will use
+    <A>decoder</A> to decode the digraphs contained in <A>filename</A>. <P/>
+    
+    If the optional argument <A>decoder</A> is not specified, then
+    <C>ReadDigraphs</C> will deduce which decoder to use based the file
+    extension; see <Ref Subsect="EncodingFormats" Style="Number"/>. <P/>
 
     If the optional argument <A>n</A> is specified, then <C>ReadDigraphs</C>
-    returns the <A>n</A>th digraph encoded in the file <A>filename</A>.
-    <P/>
+    returns the <A>n</A>th digraph encoded in the file <A>filename</A>. <P/>
 
     <Example><![CDATA[
 gap> ReadDigraphs(
@@ -361,16 +356,17 @@ gap> ReadDigraphs(
     If <A>digraphs</A> is a list of digraphs or a digraph and <A>filename</A>
     is a string or an &IO; file object created using <Ref Func="DigraphFile"/>,
     then <C>WriteDigraphs</C> writes the digraphs to the file represented by
-    <A>filename</A>.
-    <P/>
+    <A>filename</A>. <P/>
+
     If <A>filename</A> ends in one of: <C>.gz</C>, <C>.bz2</C>, or <C>.xz</C>,
-    then the file is compressed appropriately. If the file ends with an
-    extension in
-    <C>EncodingFormats</C> (<Ref Subsect="EncodingFormats" Style="Number"/>),
-    the corresponding graph format will be used to encode it. If such an
-    extension is not included, an appropriate format will be chosen
-    intelligently, and an extension appended, to minimise file size.
-    <P/>
+    then the file is compressed appropriately. <P/>
+    
+    If the file ends with an extension in
+    <Ref Subsect="EncodingFormats" Style="Number"/>, the corresponding graph
+    format will be used to encode it. <P/>
+
+    If such an extension is not included, an appropriate format will be chosen
+    intelligently, and an extension appended, to minimise file size. <P/>
 
     For more verbose information on the progress of the function, set the info
     level of <A>InfoDigraphs</A> to 1 or higher, using <C>SetInfoLevel</C>.<P/>
@@ -416,8 +412,7 @@ gap> ReadDigraphs(filename);
     A detailed description of the formats: Graph6, Digraph6,
     Sparse6, and DiSparse6, the kinds of digraphs that each format can encode,
     and their comparative strengths and weaknesses, is given in
-    <C>EncodingFormats</C> (<Ref Subsect="EncodingFormats" Style="Number"/>).
-    <P/>
+    <Ref Subsect="EncodingFormats" Style="Number"/>. <P/>
 
     See <Ref Func="WriteDigraphs"/>.
     <Example><![CDATA[
@@ -485,14 +480,13 @@ gap> dec(last);
     describing the edges of that digraph. <A>DigraphFromPlainTextString</A>
     takes such a string and returns the digraph which it describes. The
     encoding method is described in
-    <C>EncodingFormats</C> (<Ref Subsect="EncodingFormats" Style="Number"/>).
-    
+    <Ref Subsect="EncodingFormats" Style="Number"/>. <P/>
+
     The operation <C>DigraphFromPlainTextString</C> takes an optional first
     argument <Ref Filt="IsMutableDigraph"/> or
     <Ref Filt="IsImmutableDigraph"/>, which specifies whether the output
     digraph shall be mutable or immutable. If no first argument is provided,
-    then an immutable digraph is returned by default.
-    <P/>
+    then an immutable digraph is returned by default. <P/>
 
     <Example><![CDATA[
 gap> gr := Digraph([[2, 3], [1], [1]]);
