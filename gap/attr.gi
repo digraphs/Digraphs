@@ -1508,16 +1508,15 @@ function(D)
   return DIGRAPH_DIAMETER(D);
 end);
 
-InstallMethod(DigraphDistanceMetrics, "for a digraph",
+InstallMethod(DIGRAPHS_DistanceMetrics, "for a digraph",
 [IsDigraph],
 function(D)
   local eccentricities, minecc, maxecc;
-  if not IsStronglyConnectedDigraph(D) then
-    ErrorNoReturn("the argument <D> (a digraph) must be strongly connected,");
-  fi;
-  if DigraphNrVertices(D) = 0 then
-    ErrorNoReturn("the argument <D> (a digraph) must have at least one ",
-                  "vertex,");
+  if not IsStronglyConnectedDigraph(D) or DigraphNrVertices(D) = 0 then
+    return rec(
+      DigraphRadius    := fail,
+      DigraphCentre    := fail,
+      DigraphPeriphery := fail);
   fi;
   eccentricities := List(DigraphShortestDistances(D), Maximum);
   minecc := Minimum(eccentricities);
@@ -1530,15 +1529,15 @@ end);
 
 InstallMethod(DigraphRadius, "for a digraph",
 [IsDigraph],
-D -> DigraphDistanceMetrics(D).DigraphRadius);
+D -> DIGRAPHS_DistanceMetrics(D).DigraphRadius);
 
 InstallMethod(DigraphCentre, "for a digraph",
 [IsDigraph],
-D -> DigraphDistanceMetrics(D).DigraphCentre);
+D -> DIGRAPHS_DistanceMetrics(D).DigraphCentre);
 
 InstallMethod(DigraphPeriphery, "for a digraph",
 [IsDigraph],
-D -> DigraphDistanceMetrics(D).DigraphPeriphery);
+D -> DIGRAPHS_DistanceMetrics(D).DigraphPeriphery);
 
 InstallMethod(DigraphUndirectedGirth, "for a digraph", [IsDigraph],
 function(D)

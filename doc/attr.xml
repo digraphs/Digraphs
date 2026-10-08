@@ -1005,11 +1005,13 @@ gap> DigraphRadius(D);
 <#GAPDoc Label="DigraphCentre">
 <ManSection>
   <Attr Name="DigraphCentre" Arg="digraph"/>
+  <Attr Name="DigraphCenter" Arg="digraph"/>
   <Returns>A list of vertices.</Returns>
   <Description>
     The <E>centre</E> of a strongly connected digraph is the set of vertices
     whose eccentricity equals the radius (see <Ref Attr="DigraphRadius"/>).
-    The result is returned as a sorted list.
+    The result is returned as a sorted list. <Ref Attr="DigraphCenter"/> is a
+    synonym for <Ref Attr="DigraphCentre"/>.
     <P/>
     If <A>digraph</A> is not strongly connected, or contains no vertices, then
     an error is raised.

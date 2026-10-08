@@ -3389,13 +3389,13 @@ true
 gap> B[14, 15] = z;
 true
 
-# DigraphDistanceMetrics
-gap> DigraphDistanceMetrics(ChainDigraph(3));
-Error, the argument <D> (a digraph) must be strongly connected,
-gap> DigraphDistanceMetrics(EmptyDigraph(0));
-Error, the argument <D> (a digraph) must have at least one vertex,
-gap> DigraphRadius(CycleDigraph(5));
-4
+# DigraphRadius, DigraphCentre, and DigraphPeriphery
+gap> DigraphRadius(ChainDigraph(2));
+fail
+gap> DigraphRadius(EmptyDigraph(0));
+fail
+gap> DigraphRadius(CycleDigraph(3));
+2
 gap> D := Digraph([[2], [1, 3], [2, 4], [3]]);;
 gap> DigraphRadius(D);
 2
@@ -3403,9 +3403,10 @@ gap> DigraphCentre(D);
 [ 2, 3 ]
 gap> DigraphPeriphery(D);
 [ 1, 4 ]
-gap> D := Digraph([[1, 1]]);;
-gap> DigraphRadius(D);
+gap> DigraphRadius(Digraph([[1, 1]]));
 0
+gap> DigraphCenter;
+<Attribute "DigraphCentre">
 
 # DigraphAbsorptionProbabilities
 gap> gr := Digraph([[2, 3, 4], [3], [2], []]);
