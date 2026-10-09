@@ -65,6 +65,7 @@ DeclareAttribute("DigraphAllUndirectedSimpleCircuits", IsDigraph);
 DeclareOperation("DigraphAllChordlessCyclesOfMaximalLength",
     [IsDigraph, IsInt]);
 DeclareAttribute("DigraphAllChordlessCycles", IsDigraph);
+DeclareOperation("IsDigraphRotationSystem", [IsDigraph, IsList]);
 DeclareOperation("FacialWalks", [IsDigraph, IsList]);
 DeclareAttribute("HamiltonianPath", IsDigraph);
 DeclareAttribute("DigraphPeriod", IsDigraph);

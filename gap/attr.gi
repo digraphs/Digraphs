@@ -1853,6 +1853,37 @@ InstallMethod(DigraphAllChordlessCycles, "for a digraph",
 [IsDigraph],
 D -> DigraphAllChordlessCyclesOfMaximalLength(D, INTOBJ_MAX));
 
+# Checks if a given list is a rotation system for a given digraph
+InstallMethod(IsDigraphRotationSystem, "for a digraph and a list",
+[IsDigraph, IsList],
+function(digraph, rotationSystem)
+
+    local D, i, v;
+
+    if not IsSymmetricDigraph(digraph) then
+      ErrorNoReturn("the argument <D> must be a symmetric digraph,");
+    fi;
+
+    if Length(rotationSystem) <> DigraphNrVertices(digraph) then
+        return false;
+    fi;
+
+    D := DigraphRemoveLoops(DigraphRemoveAllMultipleEdges(
+        DigraphMutableCopyIfMutable(digraph)));
+
+    for i in [1 .. Length(rotationSystem)] do
+      if Length(rotationSystem[i]) <> Length(OutNeighboursOfVertex(D, i)) then
+        return false;
+      fi;
+       for v in rotationSystem[i] do
+           if not IsDigraphEdge(D, i, v) then
+               return false;
+           fi;
+        od;
+    od;
+    return true;
+end);
+
 # Compute for a given rotation system the facial walks
 InstallMethod(FacialWalks, "for a digraph and a dense list",
 [IsDigraph, IsDenseList],
@@ -1863,17 +1894,9 @@ function(D, rotationSystem)
     ErrorNoReturn("the argument <D> must be a symmetric digraph,");
   fi;
 
-  if Length(rotationSystem) <> DigraphNrVertices(D)
-      or not ForAll(rotationSystem, IsList) then
-    ErrorNoReturn("the 2nd argument (dense list <rotationSystem>) is not a ",
-                  "rotation system for the 1st argument (digraph <D>), ",
-                  "expected a list of ", DigraphNrVertices(D), " lists,");
-  fi;
-
-  if Union(rotationSystem) <> DigraphVertices(D) then
-    ErrorNoReturn("the 2nd argument (dense list <rotationSystem>) is not a ",
-                  "rotation system for the 1st argument (digraph <D>), ",
-                  "expected its union to be the vertices of <D>,");
+    if not IsDigraphRotationSystem(D, rotationSystem) then
+    ErrorNoReturn("the 2nd argument (list <rotationSystem>) is not a rotation ",
+              "system for the 1st argument (digraph <D>)");
   fi;
 
   # computes a facial cycles starting with the edge 'startEdge'
@@ -3639,6 +3662,7 @@ function(digraph)
   fi;
 
   return Minimum(min, Minimum(OutDegrees(EdgeD)), Minimum(InDegrees(EdgeD)));
+
 end);
 
 # The following function is a transliteration from python to GAP of

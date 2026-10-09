@@ -1097,18 +1097,47 @@ gap> DigraphAllUndirectedSimpleCircuits(g);
   [ 4, 3, 9, 5, 7, 8, 6, 10 ], [ 4, 3, 9, 10 ], [ 5, 6, 8, 7 ], 
   [ 9, 5, 6, 10 ], [ 9, 5, 7, 8, 6, 10 ] ]
 
-# FacialCycles
+# IsDigraphRotationSystem
 gap> g := DigraphSymmetricClosure(CycleDigraph(3));;
-gap> FacialWalks(g, []);
-Error, the 2nd argument (dense list <rotationSystem>) is not a rotation system\
- for the 1st argument (digraph <D>), expected a list of 3 lists,
-gap> FacialWalks(g, [1]);
-Error, the 2nd argument (dense list <rotationSystem>) is not a rotation system\
- for the 1st argument (digraph <D>), expected a list of 3 lists,
-gap> FacialWalks(g, [[4], [1], [3]]);
-Error, the 2nd argument (dense list <rotationSystem>) is not a rotation system\
- for the 1st argument (digraph <D>), expected its union to be the vertices of \
-<D>,
+gap> IsDigraphRotationSystem(g, []);
+false
+gap> IsDigraphRotationSystem(g, [1]);
+false
+gap> IsDigraphRotationSystem(g, [[4], [1], [3]]);
+false
+gap> g := DigraphSymmetricClosure(ChainDigraph(3));;
+gap> IsDigraphRotationSystem(g, PlanarEmbedding(g));
+true
+gap> g := Digraph([]);;
+gap> rotationSy := [];;
+gap> IsDigraphRotationSystem(g, rotationSy);
+true
+gap> g := Digraph([[2], [1, 3], [2, 4], [3]]);;;
+gap> rotationSy := [[2], [1, 3], [2, 4], [3]];;
+gap> IsDigraphRotationSystem(g, rotationSy);
+true
+gap> g := DigraphSymmetricClosure(CycleDigraph(4));;
+gap> planar := PlanarEmbedding(g);
+[ [ 2, 4 ], [ 3, 1 ], [ 4, 2 ], [ 1, 3 ] ]
+gap> IsDigraphRotationSystem(g, planar);
+true
+gap> nonPlanar := [[2, 4], [1, 3], [2, 4], [1, 3]];;
+gap> IsDigraphRotationSystem(g, nonPlanar);
+true
+gap> g := CompleteMultipartiteDigraph([2, 2, 2]);;
+gap> rotationSystem := PlanarEmbedding(g);
+[ [ 3, 5, 4, 6 ], [ 6, 4, 5, 3 ], [ 6, 2, 5, 1 ], [ 1, 5, 2, 6 ], 
+  [ 1, 3, 2, 4 ], [ 1, 4, 2, 3 ] ]
+gap> IsDigraphRotationSystem(g, rotationSystem);
+true
+gap> g := Digraph([[2, 3, 4], [1, 3, 5], [1, 2, 4], [1, 3, 5], [2, 4, 6], [5, 7, 9], [6, 8, 10], [7, 9, 10], [6, 8, 10], [7, 8, 9]]);;
+gap> rotationSy := PlanarEmbedding(g);
+[ [ 2, 4, 3 ], [ 3, 5, 1 ], [ 1, 4, 2 ], [ 1, 5, 3 ], [ 2, 4, 6 ], 
+  [ 5, 7, 9 ], [ 8, 10, 6 ], [ 9, 10, 7 ], [ 6, 10, 8 ], [ 7, 8, 9 ] ]
+gap> IsDigraphRotationSystem(g, rotationSy);
+true
+
+# FacialCycles
 gap> g := DigraphSymmetricClosure(ChainDigraph(3));;
 gap> FacialWalks(g, PlanarEmbedding(g));
 [ [ 1, 2, 3, 2 ] ]
