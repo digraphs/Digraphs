@@ -1547,10 +1547,10 @@ gap> DigraphAllChordlessCycles(D);
     <Example><![CDATA[
 gap> D1 := DigraphSymmetricClosure(CycleDigraph(4));;
 gap> planar := PlanarEmbedding(D1);;
-gap> IsDigraphRotationSystem(D1,planar);
+gap> IsDigraphRotationSystem(D1, planar);
 true
 gap> nonPlanar := [[2, 4], [1, 3], [2, 4], [1, 3]];;
-gap> IsDigraphRotationSystem(D1,nonPlanar);
+gap> IsDigraphRotationSystem(D1, nonPlanar);
 true
 ]]></Example>
   </Description>
