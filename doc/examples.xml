@@ -1064,7 +1064,7 @@ gap> D := CirculantGraph(6, [2, 3]);
  with 6 vertices, 18 edges>
 gap> AutomorphismGroup(D) = DihedralGroup(IsPermGroup, 12);
 true
-gap> HamiltonianPath(D);
+gap> HamiltonianCycle(D);
 [ 1, 3, 5, 2, 6, 4 ]
 gap> IsCompleteDigraph(CirculantGraph(6, [1, 2, 3]));
 true]]></Example>

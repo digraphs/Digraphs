@@ -67,6 +67,7 @@ DeclareOperation("DigraphAllChordlessCyclesOfMaximalLength",
 DeclareAttribute("DigraphAllChordlessCycles", IsDigraph);
 DeclareOperation("FacialWalks", [IsDigraph, IsList]);
 DeclareAttribute("HamiltonianPath", IsDigraph);
+DeclareAttribute("HamiltonianCycle", IsDigraph);
 DeclareAttribute("DigraphPeriod", IsDigraph);
 DeclareAttribute("DigraphLoops", IsDigraph);
 

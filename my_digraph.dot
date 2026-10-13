@@ -1,0 +1,23 @@
+//dot
+digraph hgn{
+subgraph lowverts{
+node [shape=circle, color=black]
+ edge [color=black]
+3
+}
+subgraph highverts{
+node [shape=circle, color=red]
+ edge [color=red]
+1
+2
+}
+subgraph lowverts{
+3 -> 1
+3 -> 3
+}
+subgraph highverts{
+1 -> 2
+1 -> 3 [color=black]
+2 -> 2
+}
+}
