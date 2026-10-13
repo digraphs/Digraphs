@@ -8,15 +8,17 @@ gap> DIGRAPHS_StartTest();
 # DIGRAPHS_DeclareObsoleteSynonym
 gap> DIGRAPHS_DeclareObsoleteSynonym(ChainDigraph, Digraph);
 Error, the 1st argument <oldname> must be a string,
-gap> DIGRAPHS_DeclareObsoleteSynonym("ConstructDigraph", "Digraph");
+gap> DIGRAPHS_DeclareObsoleteSynonym("Mycustomname", "Digraph");
 Error, the 2nd argument <func> must be a function,
-gap> DIGRAPHS_DeclareObsoleteSynonym("ConstructDigraph", Digraph);;
+gap> DIGRAPHS_DeclareObsoleteSynonym("Mycustomname", Digraph);;
 gap> prevlevel := InfoLevel(InfoWarning);;
 gap> SetInfoLevel(InfoWarning, 1);;
-gap> ConstructDigraph([[2], [1]]);
-#I  "ConstructDigraph" is obsolete and will be removed in a future version; use "Digraph" instead,
+gap> Mycustomname([[2], [1]]);
+#I  "Mycustomname" is obsolete and will be removed in a future version; use "Digraph" instead,
 <immutable digraph with 2 vertices, 2 edges>
 gap> SetInfoLevel(InfoWarning, prevlevel);;
+gap> MakeReadWriteGlobal("Mycustomname");
+gap> UnbindGlobal("Mycustomname");;
 
 #
 gap> DIGRAPHS_StopTest();
