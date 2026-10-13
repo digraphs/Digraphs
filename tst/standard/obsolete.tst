@@ -1,3 +1,26 @@
+#@local 
+gap> START_TEST("Digraphs package: standard/obsolete.tst");
+gap> LoadPackage("digraphs", false);;
+
+#
+gap> DIGRAPHS_StartTest();
+
+# DIGRAPHS_DeclareObsoleteSynonym
+gap> DIGRAPHS_DeclareObsoleteSynonym(ChainDigraph, Digraph);
+Error, the 1st argument <oldname> must be a string,
+gap> DIGRAPHS_DeclareObsoleteSynonym("ConstructDigraph", "Digraph");
+Error, the 2nd argument <func> must be a function,
+gap> DIGRAPHS_DeclareObsoleteSynonym("ConstructDigraph", Digraph);;
+gap> SetInfoLevel(InfoWarning, 1);
+gap> ConstructDigraph([[2], [1]]);
+#I  "ConstructDigraph" is obsolete and will be removed in a future version; use "Digraph" instead,
+<immutable digraph with 2 vertices, 2 edges>
+gap> SetInfoLevel(InfoWarning, 0);
+
+#
+gap> DIGRAPHS_StopTest();
+gap> STOP_TEST("Digraphs package: standard/obsolete.tst", 0);
+
 
 ##  AutomorphismGroup: for a digraph with multiple edges
 #
