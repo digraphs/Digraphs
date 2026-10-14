@@ -14,7 +14,8 @@ gap> DIGRAPHS_DeclareObsoleteSynonym("Mycustomname", Digraph);;
 gap> prevlevel := InfoLevel(InfoWarning);;
 gap> SetInfoLevel(InfoWarning, 1);;
 gap> Mycustomname([[2], [1]]);
-#I  "Mycustomname" is obsolete and will be removed in a future version; use "Digraph" instead,
+#I  "Mycustomname" is obsolete and will be removed in a future version;
+#I  use "Digraph" instead
 <immutable digraph with 2 vertices, 2 edges>
 gap> SetInfoLevel(InfoWarning, prevlevel);;
 gap> MakeReadWriteGlobal("Mycustomname");

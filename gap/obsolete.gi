@@ -9,7 +9,8 @@ function(oldname, func)
 
   BindGlobal(oldname, function(arg...)
     Info(InfoWarning, 1, "\"", oldname, "\" is obsolete and will be removed ",
-         "in a future version; use \"", NameFunction(func), "\" instead,");
+         "in a future version;");
+    Info(InfoWarning, 1, "use \"", NameFunction(func), "\" instead");
     return CallFuncList(func, arg);
   end);
 end);
