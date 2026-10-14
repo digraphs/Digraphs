@@ -260,9 +260,9 @@ gap> gr := Digraph([1 .. 10], ReturnTrue);
 gap> Digraph("Diamond");
 <immutable digraph with 4 vertices, 10 edges>]]></Example>
 
-      The next example illustrates the uses of the fourth and fifth variants of
-      this constructor. The resulting digraph is a strongly regular graph, and
-      it is actually the point graph of the van Lint-Schrijver partial
+      The next example illustrates the uses of the variants of this constructor
+      involving functions. The resulting digraph is a strongly regular graph,
+      and it is actually the point graph of the van Lint-Schrijver partial
       geometry, <Cite Key="vLS81"/>.  The algebraic description
       is taken from the seminal paper of Calderbank and Kantor <Cite
         Key="CK86"/>.
