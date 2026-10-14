@@ -13,19 +13,19 @@
 <Subsection Label="EncodingFormats">
   <Heading>Encoding Formats</Heading>
   <List>
-      <Mark> Graph6 </Mark>
+      <Mark> Graph6 (<C>.g6</C>) </Mark>
       <Item>
 	<E> Graph6 </E> is a graph data format for storing undirected graphs
 	with no multiple edges nor loops of size up to <M> 2^{36} - 1 </M> in
 	printable characters. Graphs that do not fit the above criteria cannot be
-  guaranteed to be accurately encoded as Graph6. The format consists of two parts. The first part
-	uses one to eight bytes to store the number of vertices. And the second
-	part is the upper half of the adjacency matrix converted into ASCII
-	characters. For a more detailed description see <URL Text='Graph6'>
-	http://cs.anu.edu.au/~bdm/data/formats.txt</URL>.
+  guaranteed to be accurately encoded as Graph6. The format consists of two
+  parts. The first part uses one to eight bytes to store the number of
+  vertices. And the second part is the upper half of the adjacency matrix
+  converted into ASCII characters. For a more detailed description see
+  <URL Text='Graph6'>http://cs.anu.edu.au/~bdm/data/formats.txt</URL>.
       </Item>
 
-      <Mark> Sparse6 </Mark>
+      <Mark> Sparse6 (<C>.s6</C>) </Mark>
       <Item>
 	<E> Sparse6 </E> is a graph data format for storing undirected graphs
 	with possibly multiple edges or loops. The maximal number of vertices
@@ -40,7 +40,7 @@
         http://cs.anu.edu.au/~bdm/data/formats.txt</URL>.
       </Item>
 
-      <Mark> Digraph6 </Mark>
+      <Mark> Digraph6 (<C>.d6</C>) </Mark>
       <Item>
 	<E>Digraph6</E> is a new format based on <E> Graph6 </E>, but designed
 	for digraphs. The entire adjacency matrix is stored, and
@@ -48,36 +48,62 @@
 	However, multiple edges are not supported.
       </Item>
 
-      <Mark> DiSparse6 </Mark>
+      <Mark> DiSparse6 (<C>.ds6</C>) </Mark>
       <Item>
 	<E>DiSparse6</E> is a new format based on <E> Sparse6 </E>, but
 	designed for digraphs. In this format the list of edges is
 	partitioned into increasing and decreasing edges, depending whether the
 	edge has its source bigger than the range. Then both sets of edges are
 	written separately in <E> Sparse6 </E> format with a separation symbol
-	in between. Any digraph can be properly encoded with a DiSparse6 representation.
+	in between. Any digraph can be properly encoded with a DiSparse6
+  representation.
       </Item>
-      <Mark> dreadnaut </Mark>
+
+      <Mark> dreadnaut (<C>.dre</C>) </Mark>
       <Item>
-        <E>dreadnaut</E> is a graph data format designed for directed and undirected graphs.
-        The format supports loops but multiple edges are ignored.  The format consists of an
-        initial section that defines the graph's structural properties, such as the number of
-        vertices, the starting value for vertices, and whether the graph is directed. This is followed
-        by a list of edges. For more information and examples of the format see
-        <URL Text="nauty and Traces User's Guide">http://pallini.di.uniroma1.it/Guide.html</URL>.
+  <E>dreadnaut</E> is a graph data format designed for directed and undirected
+  graphs. The format supports loops but multiple edges are ignored.  The format
+  consists of an initial section that defines the graph's structural
+  properties, such as the number of vertices, the starting value for vertices,
+  and whether the graph is directed. This is followed by a list of edges. For
+  more information and examples of the format see
+  <URL Text="nauty and Traces User's Guide">
+  http://pallini.di.uniroma1.it/Guide.html</URL>.
       </Item>
-      <Mark> DIMACS </Mark>
+
+      <Mark> DIMACS (<C>.dimacs</C>) </Mark>
       <Item>
-        <E>DIMACS</E> is a graph data format that can be used for symmetric digraphs.
-        For a more detailed description, see <Ref Oper="WriteDIMACSDigraph"/>
+  <E>DIMACS</E> is a graph data format that can be used for symmetric digraphs.
+  For a more detailed description, see <Ref Oper="WriteDIMACSDigraph"/>.
       </Item>
+
+      <Mark> pickled (<C>.p</C> or <C>.pickle</C>) </Mark>
+      <Item>
+  Digraphs are pickled using the &IO; package. This is particularly good when
+  the <Ref Attr="DigraphGroup"/> is non-trivial.
+      </Item>
+
+      <Mark> plain text (<C>.txt</C>) </Mark>
+      <Item>
+  This is a human-readable format which stores graphs as pairs of vertices
+  describing edges in a graph. By convention, the vertices making up one
+  edge are separated by a single space, and pairs of vertices are
+  separated by two spaces. By default, vertices also start at 0, not 1. For
+  example, <C>Digraph([[1, 3], [4], [], [4]])</C> becomes
+  <C>0 0&#160; 0 2&#160; 1 3&#160; 3 3</C>.
+  <Ref Oper="ReadPlainTextDigraph"/> provides more control over the choice of
+  delimiter, and the vertex index offset.
+  <P/>
+  Note that the number of vertices of a digraph is not stored, and so vertices
+  which are not connected to any edge may be lost.
+      </Item>
+
     </List>
 
-  NOTE: These functions do not signal an error if <A>digraph</A> has features that
-    the chosen format does not support. In that case the encoding may not be equal
-    to <A>digraph</A>. For example, <C>Digraph6String</C>
-    silently drops multiple edges, since Digraph6 stores only the adjacency
-    matrix:
+    NOTE: These functions do not signal an error if <A>digraph</A> has features
+    that the chosen format does not support. In that case the encoding may not
+    be equal to <A>digraph</A>. For example, <C>Digraph6String</C> silently
+    drops multiple edges, since Digraph6 stores only the adjacency matrix:
     <Log><![CDATA[
 gap> gr := Digraph([[2, 2], []]);
 <immutable multidigraph with 2 vertices, 2 edges>
@@ -98,7 +124,7 @@ false
     If <A>filename</A> is a string representing the name of a file containing
     encoded digraphs, then <C>IteratorFromDigraphFile</C> returns an iterator
     for which the value of <Ref Oper="NextIterator" BookName="ref"/> is the
-    next digraph encoded in the file.
+    next digraph encoded in the file; see <Ref Func="DigraphFile"/>.
     <P/>
 
     If the optional argument <A>decoder</A> is specified and is a function
@@ -108,9 +134,8 @@ false
 
     The purpose of this function is to easily allow looping over digraphs
     encoded in a file when loading all of the encoded digraphs would require
-    too much memory. <P/>
-
-    To see what file types are available, see <Ref Func="WriteDigraphs"/>.
+    too much memory.
+    <P/>
 
     <Example><![CDATA[
 gap> filename := Filename(DirectoryTemporary(), "man.d6.gz");;
@@ -133,18 +158,14 @@ gap> for x in iter do od;
   <Returns>An IO file object.</Returns>
   <Description>
     If <A>filename</A> is a string representing the name of a file, then
-    <C>DigraphFile</C> returns an &IO; package file object for that file.
-    <P/>
+    <C>DigraphFile</C> returns an &IO; package file object for that file. <P/>
 
-    If the optional argument <A>coder</A> is specified
-    and is a function which either encodes a digraph as a string, or decodes a
-    string into a digraph, then this function will be used when reading or
-    writing to the returned file object. If the optional argument <A>coder</A>
-    is not specified, then the encoding of the digraphs in the returned file
-    object must be specified in the the file extension. The file extension must
-    be one of: <C>.g6</C>, <C>.s6</C>, <C>.d6</C>, <C>.ds6</C>, <C>.txt</C>,
-    <C>.p</C>, or <C>.pickle</C>; more details of these file formats is given
-    below. <P/>
+    If the optional argument <A>coder</A> is specified and is a function which
+    either encodes a digraph as a string, or decodes a string into a digraph,
+    then this function will be used when reading or writing to the returned
+    file object. If the optional argument <A>coder</A> is not specified, then
+    the encoding will be deduced from the file extension; see
+    <Ref Subsect="EncodingFormats" Style="Number"/>. <P/>
 
     If the optional argument <A>mode</A> is specified, then it must be one of:
     <C>"w"</C> (for write), <C>"a"</C> (for append), or <C>"r"</C> (for read).
@@ -152,77 +173,14 @@ gap> for x in iter do od;
 
     If <A>filename</A> ends in one of: <C>.gz</C>, <C>.bz2</C>, or
     <C>.xz</C>, then the digraphs which are read from, or written to, the
-    returned file object are decompressed, or compressed, appropriately.
-    <P/>
+    returned file object are decompressed, or compressed, appropriately. <P/>
 
     The file object returned by <C>DigraphFile</C> can be given as the first
-    argument for either of the functions <Ref Func="ReadDigraphs"/> or <Ref
-      Func="WriteDigraphs"/>. The purpose of this is to reduce the overhead of
-    recreating the file object inside the functions <Ref Func="ReadDigraphs"/>
-    or <Ref Func="WriteDigraphs"/> when, for example, reading or writing many
-    digraphs in a loop.
-    <P/>
-
-    The currently supported file formats, and associated filename extensions,
-    are:
-    <List>
-      <Mark>graph6 (.g6)</Mark>
-      <Item>
-	A standard and widely-used format for undirected graphs, with no support
-	for loops or multiple edges.  Only symmetric graphs are allowed -- each
-	edge is combined with its converse edge to produce a single undirected
-	edge.  This format is best used for "dense" graphs -- those with many
-	edges per vertex.
-      </Item>
-      <Mark>sparse6 (.s6)</Mark>
-      <Item>
-	Unlike graph6, sparse6 has support for loops and multiple edges.
-	However, its use is still limited to symmetric graphs.  This format is
-	better-suited to "sparse" graphs -- those with few edges per vertex.
-      </Item>
-      <Mark>digraph6 (.d6)</Mark>
-      <Item>
-	This format is based on graph6, but stores direction information -
-	therefore is not limited to symmetric graphs.  Loops are allowed, but
-	multiple edges are not.  Best compression with "dense" graphs.
-      </Item>
-      <Mark>disparse6 (.ds6)</Mark>
-      <Item>
-	Any type of digraph can be encoded in disparse6: directions, loops, and
-	multiple edges are all allowed.  Similar to sparse6, this has the best
-	compression rate with "sparse" graphs.
-      </Item>
-      <Mark>plain text (.txt)</Mark>
-      <Item>
-	This is a human-readable format which stores graphs in the form
-        <C>0 7  0 8  1 7  2 8  3 8  4 8  5 8  6 8</C> i.e. pairs of vertices
-        describing edges in a graph. More specifically, the vertices making up
-        one edge must be separated by a single space, and pairs of vertices must
-        be separated by two spaces. <P/>
-
-        See <Ref Oper="ReadPlainTextDigraph"/> for a more flexible way to store
-        digraphs in a plain text file. <P/>
-      </Item>
-
-      <Mark>pickled (<F>.p</F> or <F>.pickle</F>)</Mark>
-      <Item>
-        Digraphs are pickled using the &IO; package. This is particularly good
-        when the <Ref Attr="DigraphGroup"/> is non-trivial.
-      </Item>
-      <Mark>dreadnaut (.dre)</Mark>
-      <Item>
-        A graph format designed for directed and undirected graphs.
-        The format supports loops but multiple edges are ignored.  The format consists of an
-        initial section that defines the graph's structural properties, such as the number of
-        vertices, the starting value for vertices, and whether the graph is directed. This is followed
-        by a list of edges. For more information and examples of the format see
-        <URL Text="nauty and Traces User's Guide">http://pallini.di.uniroma1.it/Guide.html</URL>.<P/>
-      </Item>
-      <Mark> DIMACS (.dimacs) </Mark>
-      <Item>
-        A graph format that can be used for symmetric digraphs. For a more detailed description, see <Ref Oper="WriteDIMACSDigraph"/>
-      </Item>
-    </List>
+    argument for either of the functions <Ref Func="ReadDigraphs"/> or
+    <Ref Func="WriteDigraphs"/>. The purpose of this is to reduce the overhead
+    of recreating the file object inside the functions
+    <Ref Func="ReadDigraphs"/> or <Ref Func="WriteDigraphs"/> when, for
+    example, reading or writing many digraphs in a loop. <P/>
 
     <Example><![CDATA[
 gap> filename := Filename(DirectoryTemporary(), "man.d6.gz");;
@@ -306,19 +264,18 @@ gap> DigraphFromGraph6String(IsMutableDigraph, "IheA@GUAo");
     DiSparse6 format, then the corresponding function returns a digraph. In the
     case of either Graph6 or Sparse6, formats which do not support directed
     edges, this will be a digraph such that for every edge, the edge going in
-    the opposite direction is also present.<P/>
+    the opposite direction is also present. <P/>
 
     Each of these functions takes an optional first argument <A>filt</A>,
-    which should be either <Ref Filt="IsMutableDigraph"/>
-    or <Ref Filt="IsImmutableDigraph"/>,
-    and which specifies whether the output digraph shall
-    be mutable or immutable.
-    If no first argument is provided, then an immutable
-    digraph is returned by default.
+    which should be either <Ref Filt="IsMutableDigraph"/> or
+    <Ref Filt="IsImmutableDigraph"/>, and which specifies whether the output
+    digraph shall be mutable or immutable. If no first argument is provided,
+    then an immutable digraph is returned by default. <P/>
 
     Note that some digraphs will not be accurately recovered if they were 
-    encoded in an invalid format; see <Ref Subsect="EncodingFormats" Style="Number"/> for
-    full limitations. <P/>
+    encoded in an invalid format; see
+    <Ref Subsect="EncodingFormats" Style="Number"/> for full limitations. <P/>
+
     <Example><![CDATA[
 gap> DigraphFromGraph6String("?");
 <immutable empty digraph with 0 vertices>
@@ -348,96 +305,22 @@ gap> DigraphFromDiSparse6String(".CaWBGA?b");
   <Description>
     If <A>filename</A> is a string containing the name of a file containing
     encoded digraphs or an &IO; file object created using <Ref
-      Func="DigraphFile"/>, then <C>ReadDigraphs</C> returns the digraphs
-    encoded in the file as a list.  Note that if <A>filename</A> is a
-    compressed file, which has been compressed appropriately to give a filename
-    extension of <C>.gz</C>, <C>.bz2</C>, or <C>.xz</C>, then
-    <C>ReadDigraphs</C> can read <A>filename</A> without it first needing to be
-    decompressed.
-    <P/>
+    Func="DigraphFile"/>, then <C>ReadDigraphs</C> returns the digraphs
+    encoded in the file as a list. <P/>
 
-    If the optional argument <A>decoder</A> is specified
-    and is a function which decodes a string into a digraph,
-    then <C>ReadDigraphs</C> will use <A>decoder</A> to decode the digraphs
-    contained in <A>filename</A>.<P/>
+    If <A>filename</A> ends in one of: <C>.gz</C>, <C>.bz2</C>, or <C>.xz</C>,
+    then the file is decompressed appropriately. <P/>
+    
+    If the optional argument <A>decoder</A> is specified and is a function
+    which decodes a string into a digraph, then <C>ReadDigraphs</C> will use
+    <A>decoder</A> to decode the digraphs contained in <A>filename</A>. <P/>
+    
+    If the optional argument <A>decoder</A> is not specified, then
+    <C>ReadDigraphs</C> will deduce which decoder to use based the file
+    extension; see <Ref Subsect="EncodingFormats" Style="Number"/>. <P/>
 
     If the optional argument <A>n</A> is specified, then <C>ReadDigraphs</C>
-    returns the <A>n</A>th digraph encoded in the file <A>filename</A>.
-    <P/>
-
-    If the optional argument <A>decoder</A> is not specified, then
-    <C>ReadDigraphs</C> will deduce which decoder to use based on the filename
-    extension of <A>filename</A> (after removing the compression-related
-    filename extensions <C>.gz</C>, <C>.bz2</C>, and <C>.xz</C>).  For example,
-    if the filename extension is <C>.g6</C>, then <C>ReadDigraphs</C> will use
-    the graph6 decoder <Ref Oper="DigraphFromGraph6String"/>.
-    <P/>
-
-    The currently supported file formats, and associated filename extensions,
-    are:
-    <List>
-      <Mark>graph6 (.g6)</Mark>
-      <Item>
-	A standard and widely-used format for undirected graphs, with no support
-	for loops or multiple edges.  Only symmetric graphs are allowed -- each
-	edge is combined with its converse edge to produce a single undirected
-	edge.  This format is best used for "dense" graphs -- those with many
-	edges per vertex.
-      </Item>
-      <Mark>sparse6 (.s6)</Mark>
-      <Item>
-	Unlike graph6, sparse6 has support for loops and multiple edges.
-	However, its use is still limited to symmetric graphs.  This format is
-	better-suited to "sparse" graphs -- those with few edges per vertex.
-      </Item>
-      <Mark>digraph6 (.d6)</Mark>
-      <Item>
-	This format is based on graph6, but stores direction information -
-	therefore is not limited to symmetric graphs.  Loops are allowed, but
-	multiple edges are not.  Best compression with "dense" graphs.
-      </Item>
-      <Mark>disparse6 (.ds6)</Mark>
-      <Item>
-	Any type of digraph can be encoded in disparse6: directions, loops, and
-	multiple edges are all allowed.  Similar to sparse6, this has the best
-	compression rate with "sparse" graphs.
-      </Item>
-      <Mark>plain text (.txt)</Mark>
-      <Item>
-	This is a human-readable format which stores graphs in the form
-        <C>0 7  0 8  1 7  2 8  3 8  4 8  5 8  6 8</C> i.e. pairs of vertices
-        describing edges in a graph. More specifically, the vertices making up
-        one edge must be separated by a single space, and pairs of vertices must
-        be separated by two spaces. <P/>
-
-        See <Ref Oper="ReadPlainTextDigraph"/> for a more flexible way to store
-        digraphs in a plain text file. <P/>
-<!--
-        Just so I remember:
-        <C>ReadPlainTextDigraph("data-local/soc-Epinions1.txt.gz", "\t", 1,
-        '#');</C>
--->
-      </Item>
-
-      <Mark>pickled (<F>.p</F> or <F>.pickle</F>)</Mark>
-      <Item>
-        Digraphs are pickled using the &IO; package. This is particularly good
-        when the <Ref Attr="DigraphGroup"/> is non-trivial. <P/>
-      </Item>
-      <Mark>dreadnaut (.dre)</Mark>
-      <Item>
-        A graph format designed for directed and undirected graphs.
-        The format supports loops but multiple edges are ignored.  The format consists of an
-        initial section that defines the graph's structural properties, such as the number of
-        vertices, the starting value for vertices, and whether the graph is directed. This is followed
-        by a list of edges. For more information and examples of the format see
-        <URL Text="nauty and Traces User's Guide">http://pallini.di.uniroma1.it/Guide.html</URL>. <P/>
-      </Item>
-      <Mark> DIMACS (.dimacs) </Mark>
-      <Item>
-        A graph format that can be used for symmetric digraphs. For a more detailed description, see <Ref Oper="WriteDIMACSDigraph"/>
-      </Item>
-    </List>
+    returns the <A>n</A>th digraph encoded in the file <A>filename</A>. <P/>
 
     <Example><![CDATA[
 gap> ReadDigraphs(
@@ -473,83 +356,20 @@ gap> ReadDigraphs(
     If <A>digraphs</A> is a list of digraphs or a digraph and <A>filename</A>
     is a string or an &IO; file object created using <Ref Func="DigraphFile"/>,
     then <C>WriteDigraphs</C> writes the digraphs to the file represented by
-    <A>filename</A>.  If the supplied filename ends in one of the extensions
-    <C>.gz</C>, <C>.bz2</C>, or <C>.xz</C>, then the file will be compressed
-    appropriately.  Excluding these extensions, if the file ends with an
-    extension in the list below, the corresponding graph format will be used to
-    encode it.  If such an extension is not included, an appropriate format
-    will be chosen intelligently, and an extension appended, to minimise file
-    size.
-    <P/>
+    <A>filename</A>. <P/>
 
-    <!-- TODO: encode and mode. -->
+    If <A>filename</A> ends in one of: <C>.gz</C>, <C>.bz2</C>, or <C>.xz</C>,
+    then the file is compressed appropriately. <P/>
+    
+    If the file ends with an extension in
+    <Ref Subsect="EncodingFormats" Style="Number"/>, the corresponding graph
+    format will be used to encode it. <P/>
+
+    If such an extension is not included, an appropriate format will be chosen
+    intelligently, and an extension appended, to minimise file size. <P/>
 
     For more verbose information on the progress of the function, set the info
     level of <A>InfoDigraphs</A> to 1 or higher, using <C>SetInfoLevel</C>.<P/>
-
-    The currently supported file formats are:
-    <List>
-      <Mark>graph6 (.g6)</Mark>
-      <Item>
-	A standard and widely-used format for undirected graphs, with no support
-	for loops or multiple edges.  Only symmetric graphs are allowed -- each
-	edge is combined with its converse edge to produce a single undirected
-	edge.  This format is best used for "dense" graphs -- those with many
-	edges per vertex.
-      </Item>
-      <Mark>sparse6 (.s6)</Mark>
-      <Item>
-	Unlike graph6, sparse6 has support for loops and multiple edges.
-	However, its use is still limited to symmetric graphs.  This format is
-	better-suited to "sparse" graphs -- those with few edges per vertex.
-      </Item>
-      <Mark>digraph6 (.d6)</Mark>
-      <Item>
-	This format is based on graph6, but stores direction information -
-	therefore is not limited to symmetric graphs.  Loops are allowed, but
-	multiple edges are not.  Best compression with "dense" graphs.
-      </Item>
-      <Mark>disparse6 (.ds6)</Mark>
-      <Item>
-	Any type of digraph can be encoded in disparse6: directions, loops, and
-	multiple edges are all allowed.  Similar to sparse6, this has the best
-	compression rate with "sparse" graphs.
-      </Item>
-
-      <Mark>plain text (.txt)</Mark>
-      <Item>
-	This is a human-readable format which stores graphs in the form
-        <C>0 7  0 8  1 7  2 8  3 8  4 8  5 8  6 8</C> i.e. pairs of vertices
-        describing edges in a graph. More specifically, the vertices making up
-        one edge must be separated by a single space, and pairs of vertices must
-        be separated by two spaces. <P/>
-
-        See <Ref Oper="ReadPlainTextDigraph"/> for a more flexible way to store
-        digraphs in a plain text file. <P/>
-<!--
-        Just so I remember:
-        <C>ReadPlainTextDigraph("data-local/soc-Epinions1.txt.gz", "\t", 1, '#');</C>
--->
-      </Item>
-      <Mark>pickled (<F>.p</F> or <F>.pickle</F>)</Mark>
-      <Item>
-        Digraphs are pickled using the &IO; package. This is particularly good
-        when the <Ref Attr="DigraphGroup"/> is non-trivial.
-      </Item>
-      <Mark>dreadnaut (.dre)</Mark>
-      <Item>
-        A graph format designed for directed and undirected graphs.
-        The format supports loops but multiple edges are ignored.  The format consists of an
-        initial section that defines the graph's structural properties, such as the number of
-        vertices, the starting value for vertices, and whether the graph is directed. This is followed
-        by a list of edges. For more information and examples of the format see
-        <URL Text="nauty and Traces User's Guide">http://pallini.di.uniroma1.it/Guide.html</URL>. <P/>
-      </Item>
-      <Mark> DIMACS (.dimacs) </Mark>
-      <Item>
-        A graph format that can be used for symmetric digraphs. For a more detailed description, see <Ref Oper="WriteDIMACSDigraph"/>
-      </Item>
-    </List>
 
     <Example><![CDATA[
 gap> grs := [];;
@@ -657,22 +477,16 @@ gap> dec(last);
   <Returns>A string.</Returns>
   <Description>
     <A>PlainTextString</A> takes a single digraph, and returns a string
-    describing the edges of that digraph.  <A>DigraphFromPlainTextString</A>
-    takes such a string and returns the digraph which it describes.  Each edge
-    is written as a pair of integers separated by a single space.  The edges
-    themselves are separated by a double space.  Vertex numbers are reduced by
-    1 when they are encoded, so that vertices in the string are labelled
-    starting at 0.<P/>
+    describing the edges of that digraph. <A>DigraphFromPlainTextString</A>
+    takes such a string and returns the digraph which it describes. The
+    encoding method is described in
+    <Ref Subsect="EncodingFormats" Style="Number"/>. <P/>
 
-    Note that the number of vertices of a digraph is not stored, and so vertices
-    which are not connected to any edge may be lost.<P/>
-
-    
-    The operation <C>DigraphFromPlainTextString</C>
-    takes an optional first argument <Ref Filt="IsMutableDigraph"/>
-    or <Ref Filt="IsImmutableDigraph"/>, which specifies whether the output digraph shall
-    be mutable or immutable. If no first argument is provided, then an immutable
-    digraph is returned by default.
+    The operation <C>DigraphFromPlainTextString</C> takes an optional first
+    argument <Ref Filt="IsMutableDigraph"/> or
+    <Ref Filt="IsImmutableDigraph"/>, which specifies whether the output
+    digraph shall be mutable or immutable. If no first argument is provided,
+    then an immutable digraph is returned by default. <P/>
 
     <Example><![CDATA[
 gap> gr := Digraph([[2, 3], [1], [1]]);
