@@ -62,3 +62,5 @@ DeclareOperation("DIMACSString", [IsDigraph]);
 DeclareGlobalFunction("WritePlainTextDigraph");
 DeclareGlobalFunction("DreadnautString");
 DeclareGlobalFunction("DigraphPlainTextLineEncoder");
+DeclareOperation("LADString", [IsDigraph]);
+DeclareOperation("DigraphFromLADString", [IsString]);

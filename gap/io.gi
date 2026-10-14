@@ -2602,3 +2602,55 @@ end);
 
 InstallMethod(PlainTextString, "for a digraph", [IsDigraph],
 D -> DigraphPlainTextLineEncoder("  ", " ", -1)(D));
+
+InstallMethod(LADString, "for a digraph", [IsDigraph],
+function(D)
+  local result, nbs, v;
+  if IsMultiDigraph(D) then
+    ErrorNoReturn("the argument <D> must not have multiple edges");
+  elif DigraphHasLoops(D) then
+    ErrorNoReturn("the arguement <D> must not have loops");
+  fi;
+  result := StringFormatted("{}\n", DigraphNrVertices(D));
+  for nbs in OutNeighbours(D) do
+    Append(result, String(Length(nbs)));
+    for v in SortedList(nbs) do
+      Append(result, " ");
+      Append(result, String(v-1));
+    od;
+    Append(result, "\n");
+  od;
+  return result;
+end);
+
+InstallMethod(DigraphFromLADString, "for a String", [IsString],
+function(s)
+  
+  #validating and parsing the string into seperate lines
+  local lines, n, nbs, line, i, v;
+  lines := Filtered(SplitString(s, "\n"), x -> not IsEmpty(x));
+  if IsEmpty(lines) then
+    ErrorNoReturn("the argument <s> must be a non-empty string");
+  fi;
+  n := Int(NormalizedWhitespace(lines[1]));
+  if n = fail or n < 0 or Length(lines) <> n + 1 then
+    ErrorNoReturn("the first line of <s> must be the number of vertices followed by one line per vertex");
+  fi;
+
+  #Convert LAD to Digraph
+  nbs := [];
+  for i in [1 .. n] do
+    line := List(SplitString(NormalizedWhitespace(lines[i+1]), " "), Int);
+    if IsEmpty(line) or line[1] <> Length(line) - 1 then
+      ErrorNoReturn("line ", i+1, " of <s> is not valid");
+    fi;
+    Remove(line, 1);
+    for v in line do
+      if v < 0 or v >= n then
+        ErrorNoReturn("line ", i+1, " of <s> has a vertex out of range");
+      fi;
+    od;
+    Add(nbs, line + 1); #converting from 0 indexed to 1 indexed
+  od;
+  return ConvertToImmutableDigraphNC(nbs);
+  end);
