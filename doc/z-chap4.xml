@@ -91,6 +91,7 @@
     <#Include Label="DigraphDegeneracyOrdering">
     <#Include Label="HamiltonianPath">
     <#Include Label="NrSpanningTrees">
+    <#Include Label="DigraphShortestPaths">
     <#Include Label="DigraphDijkstra">
     <#Include Label="DigraphVertexConnectivity">
     <#Include Label="DigraphEdgeConnectivity">
