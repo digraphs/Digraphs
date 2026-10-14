@@ -339,6 +339,20 @@ function(D)
   return IsAntisymmetricDigraph(D);
 end);
 
+InstallMethod(IsParadoxicalTournament, "for a tournament",
+[IsDigraph],
+function(D)
+  if not IsTournament(D) then
+    ErrorNoReturn("the argument <D> must be a tournament,");
+  fi;
+
+  if DigraphNrVertices(D) = 0 then
+    return false;
+  else
+    return not ForAny(InNeighbours(D), IsEmpty);
+  fi;
+end);
+
 InstallMethod(IsEmptyDigraph, "for a digraph with known number of edges",
 [IsDigraph and HasDigraphNrEdges],
 D -> DigraphNrEdges(D) = 0);

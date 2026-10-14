@@ -21,6 +21,7 @@
     <#Include Label="IsReflexiveDigraph">
     <#Include Label="IsSymmetricDigraph">
     <#Include Label="IsTournament">
+    <#Include Label="IsParadoxicalTournament">
     <#Include Label="IsTransitiveDigraph">
   </Section>
 

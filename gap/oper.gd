@@ -117,6 +117,7 @@ DeclareOperation("IsPerfectMatching", [IsDigraph, IsHomogeneousList]);
 DeclareOperation("IsDigraphPath",
                  [IsDigraph, IsHomogeneousList, IsHomogeneousList]);
 DeclareOperation("IsDigraphPath", [IsDigraph, IsList]);
+DeclareOperation("IsKParadoxicalTournament", [IsDigraph, IsInt]);
 
 DeclareOperation("IsDigraphOutDominatingSet", [IsDigraph, IsList]);
 DeclareSynonym("IsDigraphDominatingSet", IsDigraphOutDominatingSet);
