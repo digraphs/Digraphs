@@ -480,6 +480,25 @@ function(name)
   return DigraphFromDiSparse6String(DIGRAPHS_NamedDigraphs.(name));
 end);
 
+InstallMethod(Digraph, "for a list and a list", [IsList, IsList],
+function(vertex_labels, edges)
+  local D, nrverts;
+
+  if not IsDuplicateFreeList(vertex_labels) then
+    ErrorNoReturn("<vertex_labels> contains duplicate labels,");
+  fi;
+  if not (IsSubset(vertex_labels, Union(edges))) then
+    ErrorNoReturn("<edges> references a label that isn't in <vertex_labels>,");
+  fi;
+
+  nrverts := Length(vertex_labels);
+  D := DigraphByEdges(List(edges,
+                           x -> [Position(vertex_labels, x[1]),
+                                 Position(vertex_labels, x[2])]), nrverts);
+  SetDigraphVertexLabels(D, vertex_labels);
+  return D;
+end);
+
 InstallMethod(ListNamedDigraphs,
 "for a string and a pos int",
 [IsString, IsPosInt],

@@ -70,6 +70,7 @@ DeclareOperation("Digraph", [IsList]);
 DeclareOperation("Digraph", [IsList, IsFunction]);
 DeclareOperation("Digraph", [IsInt, IsList, IsList]);
 DeclareOperation("Digraph", [IsList, IsList, IsList]);
+DeclareOperation("Digraph", [IsList, IsList]);
 
 DeclareOperation("ListNamedDigraphs", [IsString]);
 DeclareOperation("ListNamedDigraphs", [IsString, IsPosInt]);
