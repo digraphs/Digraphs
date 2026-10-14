@@ -230,6 +230,19 @@ gap> if DIGRAPHS_IsGrapeLoaded() then
 > fi;
 gap> gr := Digraph(IsMutableDigraph, [1 .. 3], [3, 2, 1], [2, 3, 2]);
 <mutable digraph with 3 vertices, 3 edges>
+gap> Digraph(["a", "b"], [["a", "a"]]);
+<immutable digraph with 2 vertices, 1 edge>
+gap> Digraph(["a", "b"], [["a", "a"], ["a", "a"]]);
+<immutable multidigraph with 2 vertices, 2 edges>
+gap> D1 := Digraph([[1], -1, "abc", true],
+>                 [[-1, [1]], ["abc", -1]]);;
+gap> D2 := Digraph([[], [1], [2], []]);;
+gap> IsIsomorphicDigraph(D1, D2);
+true
+gap> Digraph([1, 2], [[2, 3]]);
+Error, <edges> references a label that isn't in <vertex_labels>,
+gap> Digraph([1, 1], []);
+Error, <vertex_labels> contains duplicate labels,
 
 #  Digraph (by an integer and a function)
 gap> divides := function(a, b)
