@@ -127,7 +127,7 @@ BindGlobal("DIGRAPHS_EdgesCoveredBy",
     covered := BlistList([1 .. Length(subEdges)], []);
 
     for a in [1 .. Length(clique)] do
-      for b in [a+1 .. Length(clique)] do
+      for b in [a + 1 .. Length(clique)] do
         ia := mapping[clique[a]];
         ib := mapping[clique[b]];
         if ia > ib then
@@ -180,7 +180,8 @@ function(D, v)
     mapping[nbrs[i]] := i;
   od;
 
-  cliqueCoverage := List(maxCliques, cl->DIGRAPHS_EdgesCoveredBy(cl, subEdges, mapping));
+  cliqueCoverage := List(maxCliques,
+                         cl -> DIGRAPHS_EdgesCoveredBy(cl, subEdges, mapping));
 
   covers := [];
 
@@ -233,7 +234,7 @@ end);
 
 BindGlobal("DIGRAPHS_BuildWitness",
 function(n, covers)
-  local witnessMap, nextWitness, outNeighb, v, clique, canon, key, w, u;
+  local witnessMap, nextWitness, outNeighb, v, clique, canon, w, u;
 
   witnessMap := HashMap();
   nextWitness := n + 1;
@@ -271,11 +272,10 @@ end);
 # for the inputted H we have U = [1...n] and V is the rest(all junctions)
 BindGlobal("DIGRAPHS_HalfSquare",
 function(H, n)
-  local out_neighbors, u, w, v, outgoing;
+  local out_neighbors, u, v;
 
-  out_neighbors := List([1..n], u ->
-    Filtered(DigraphDistanceSet(H, u, 2), v -> v <= n)
-  );
+  out_neighbors := List([1 .. n], u ->
+    Filtered(DigraphDistanceSet(H, u, 2), v -> v <= n));
 
   return Digraph(out_neighbors);
 end);
