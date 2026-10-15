@@ -944,6 +944,36 @@ gap> DigraphShortestDistances(D);
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="UnweightedBellmanFord">
+<ManSection>
+  <Attr Name="UnweightedBellmanFord" Arg="digraph","source"/>
+  <Returns>A list of integers or <K>fail</K>.</Returns>
+  <Description>
+    If <A>digraph</A> is a digraph with <M>n</M> vertices, then this
+    function returns a list with two sublists of <M>n</M> entries, where each entry is
+    either a non-negative integer, or <K>fail</K>.  <P/>
+
+    If there is a directed path from <A>source</A> to vertex <C>i</C>, then for each i-th entry the first sublist contains 
+    the length of the shortest directed path to that i-th vertex and second sublist contains the vertex preceding that i-th 
+    vertex. If no such directed path exists, then the value of i is <C>fail</C>.  
+    We use the convention that the distance from every vertex to
+    itself is <C>0</C> for all vertices <C>i</C>.
+    <P/>
+
+    <Example><![CDATA[
+gap> D := Digraph([[1, 2], [3], [1, 2], [4]]);
+<immutable digraph with 4 vertices, 6 edges>
+gap> UnweightedBellmanFord(D, 2)
+[ [ 2, 0, 1, fail ], [ 3, fail, 2, fail ] ]
+gap> D := CycleDigraph(IsMutableDigraph, 3);
+<mutable digraph with 3 vertices, 3 edges>
+gap> UnweightedBellmanFord(D, 3);
+[ [ 1, 2, 0 ], [ 3, 1, fail ] ]
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="DigraphDiameter">
 <ManSection>
   <Attr Name="DigraphDiameter" Arg="digraph"/>
