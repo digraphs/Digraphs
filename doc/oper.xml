@@ -709,22 +709,22 @@ true
     the edge is returned.
     <P/>
 
-    Note that if <A>digraph</A> belongs to <Ref Filt="IsImmutableDigraph"/>,
-    then a new copy of <A>digraph</A> will be returned even if <A>edge</A> or 
-    <A>[src, ran]</A> does not define an edge of <A>digraph</A>.<P/>
+    An error is raised if <A>edge</A> or <A>[src, ran]</A> does not define an
+    edge of <A>digraph</A>.<P/>
 
     <Example><![CDATA[
 gap> D := CycleDigraph(250000);
 <immutable cycle digraph with 250000 vertices>
 gap> D := DigraphRemoveEdge(D, [250000, 1]);
 <immutable digraph with 250000 vertices, 249999 edges>
-gap> new := DigraphRemoveEdge(D, [25000, 2]);;
+gap> new := DigraphRemoveEdge(D, [1, 2]);
+<immutable digraph with 250000 vertices, 249998 edges>
 gap> new = D;
-true
+false
 gap> IsIdenticalObj(new, D);
 false
 gap> D := DigraphMutableCopy(D);;
-gap> new := DigraphRemoveEdge(D, 2500, 2);;
+gap> new := DigraphRemoveEdge(D, 2, 3);;
 gap> IsIdenticalObj(new, D);
 true]]>
 </Example>
@@ -756,10 +756,8 @@ true]]>
       Filt="IsImmutableDigraph"/>, the edge is removed from an immutable copy of
     <A>digraph</A> and this new digraph is returned.<P/>
 
-    Note that if <A>edges</A> is empty, then this operation
-    will always return <A>digraph</A> rather than a copy. Also, if any element
-    of <A>edges</A> is invalid (i.e. does not define an edge of <A>digraph</A>)
-    then that element will simply be ignored.
+    An error is raised if any element of <A>edges</A> is invalid (i.e does not 
+    define an edge of <A>digraph</A>).
 
     <Example><![CDATA[
 gap> D := CycleDigraph(250000);
@@ -768,8 +766,8 @@ gap> D := DigraphRemoveEdges(D, [[250000, 1]]);
 <immutable digraph with 250000 vertices, 249999 edges>
 gap> D := DigraphMutableCopy(D);
 <mutable digraph with 250000 vertices, 249999 edges>
-gap> new := DigraphRemoveEdges(D, [[1, 2], [2, 3], [3, 100]]);
-<mutable digraph with 250000 vertices, 249997 edges>
+gap> new := DigraphRemoveEdges(D, [[1, 2], [2, 3], [3, 4]]);
+<mutable digraph with 250000 vertices, 249996 edges>
 gap> new = D;
 true
 ]]></Example>

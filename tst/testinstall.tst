@@ -247,7 +247,7 @@ gap> gr2 := DigraphClosure(gr, 7);;
 gap> gr = gr2;
 true
 gap> gr := DigraphRemoveEdge(gr, [1, 2]);;
-gap> gr := DigraphRemoveEdges(gr, [[1, 2], [2, 1]]);;
+gap> gr := DigraphRemoveEdges(gr, [[2, 1]]);;
 gap> DigraphNrEdges(gr);
 40
 gap> DigraphNrAdjacencies(gr);
