@@ -47,6 +47,7 @@
   </Section>
 
   <Section><Heading>Reachability and connectivity</Heading>
+    <#Include Label="DigraphEccentricities">
     <#Include Label="DigraphDiameter">
     <#Include Label="DigraphRadius">
     <#Include Label="DigraphCentre">
