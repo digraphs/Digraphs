@@ -48,7 +48,11 @@
   </Section>
 
   <Section><Heading>Reachability and connectivity</Heading>
+    <#Include Label="DigraphEccentricities">
     <#Include Label="DigraphDiameter">
+    <#Include Label="DigraphRadius">
+    <#Include Label="DigraphCentre">
+    <#Include Label="DigraphPeriphery">
     <#Include Label="DigraphShortestDistance">
     <#Include Label="DigraphShortestDistances">
     <#Include Label="DigraphLongestDistanceFromVertex">

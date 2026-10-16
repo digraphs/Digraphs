@@ -3711,6 +3711,42 @@ true
 gap> B[14, 15] = z;
 true
 
+# DigraphEccentricities, DigraphRadius, DigraphCentre, and DigraphPeriphery
+gap> D := ChainDigraph(2);;
+gap> DigraphEccentricities(D);
+fail
+gap> DigraphRadius(D);
+fail
+gap> DigraphCentre(D);
+fail
+gap> DigraphPeriphery(D);
+fail
+gap> D := EmptyDigraph(0);;
+gap> DigraphEccentricities(D);
+fail
+gap> DigraphRadius(D);
+fail
+gap> DigraphCentre(D);
+fail
+gap> DigraphPeriphery(D);
+fail
+gap> D := Digraph([[2], [1, 3], [2, 4], [3]]);;
+gap> DigraphRadius(D);
+2
+gap> DigraphDiameter(D);
+3
+gap> DigraphCentre(D);
+[ 2, 3 ]
+gap> DigraphPeriphery(D);
+[ 1, 4 ]
+gap> D := Digraph([[1, 1]]);;
+gap> DigraphRadius(D);
+0
+gap> DigraphCentre(D) = DigraphPeriphery(D);
+true
+gap> DigraphCenter = DigraphCenter;
+true
+
 # DigraphAbsorptionProbabilities
 gap> gr := Digraph([[2, 3, 4], [3], [2], []]);
 <immutable digraph with 4 vertices, 5 edges>

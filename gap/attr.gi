@@ -1508,6 +1508,42 @@ function(D)
   return DIGRAPH_DIAMETER(D);
 end);
 
+InstallMethod(DigraphEccentricities, "for a digraph",
+[IsDigraph],
+function(D)
+  if not IsStronglyConnectedDigraph(D) or DigraphNrVertices(D) = 0 then
+    return fail;
+  fi;
+  return List(DigraphShortestDistances(D), Maximum);
+end);
+
+InstallMethod(DigraphRadius, "for a digraph",
+[IsDigraph],
+function(D)
+  if not IsStronglyConnectedDigraph(D) or DigraphNrVertices(D) = 0 then
+    return fail;
+  fi;
+  return Minimum(DigraphEccentricities(D));
+end);
+
+InstallMethod(DigraphCentre, "for a digraph",
+[IsDigraph],
+function(D)
+  if not IsStronglyConnectedDigraph(D) or DigraphNrVertices(D) = 0 then
+    return fail;
+  fi;
+  return Positions(DigraphEccentricities(D), DigraphRadius(D));
+end);
+
+InstallMethod(DigraphPeriphery, "for a digraph",
+[IsDigraph],
+function(D)
+  if not IsStronglyConnectedDigraph(D) or DigraphNrVertices(D) = 0 then
+    return fail;
+  fi;
+  return Positions(DigraphEccentricities(D), DigraphDiameter(D));
+end);
+
 InstallMethod(DigraphUndirectedGirth, "for a digraph", [IsDigraph],
 function(D)
   # This is only defined on undirected graphs (i.e. symmetric digraphs)
