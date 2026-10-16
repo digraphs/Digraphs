@@ -332,6 +332,20 @@ Error, the 1st argument (list of edges) must be pairs of positive integers but\
 gap> DigraphByEdges([12], 10);
 Error, the 1st argument (list of edges) must be a list of lists, but found int\
 eger in position 1
+gap> DigraphByEdges(["a", "b"], [["a", "a"]]);
+<immutable digraph with 2 vertices, 1 edge>
+gap> DigraphByEdges(["a", "b"], [["a", "a"], ["a", "a"]]);
+<immutable multidigraph with 2 vertices, 2 edges>
+gap> D1 := DigraphByEdges([[1], -1, "abc", true],
+>                         [[-1, [1]], ["abc", -1]]);;
+gap> D2 := Digraph([[], [1], [2], []]);;
+gap> IsIsomorphicDigraph(D1, D2);
+true
+gap> DigraphByEdges([1, 2], [[2, 3]]);
+Error, invalid edge [ 2, 3 ] in <edges> at position 
+1; edges must reference vertices from [ 1, 2 ],
+gap> DigraphByEdges([1, 1, 2], [1, 2]);
+Error, <vertex_labels> contains duplicate labels: [ 1 ],
 
 #  DigraphByAdjacencyMatrix (by an integer matrix)
 
