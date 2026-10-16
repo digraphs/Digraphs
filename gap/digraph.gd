@@ -70,7 +70,6 @@ DeclareOperation("Digraph", [IsList]);
 DeclareOperation("Digraph", [IsList, IsFunction]);
 DeclareOperation("Digraph", [IsInt, IsList, IsList]);
 DeclareOperation("Digraph", [IsList, IsList, IsList]);
-DeclareOperation("Digraph", [IsList, IsList]);
 
 DeclareOperation("ListNamedDigraphs", [IsString]);
 DeclareOperation("ListNamedDigraphs", [IsString, IsPosInt]);
@@ -91,6 +90,7 @@ DeclareOperation("DigraphByEdges", [IsFunction, IsList]);
 DeclareOperation("DigraphByEdges", [IsFunction, IsList, IsInt]);
 DeclareOperation("DigraphByEdges", [IsList]);
 DeclareOperation("DigraphByEdges", [IsList, IsInt]);
+DeclareOperation("DigraphByEdges", [IsList, IsList]);
 
 DeclareConstructor("DigraphByInNeighboursCons", [IsDigraph, IsList]);
 DeclareConstructor("DigraphByInNeighboursConsNC", [IsDigraph, IsList]);
