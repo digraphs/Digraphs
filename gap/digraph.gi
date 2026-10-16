@@ -980,7 +980,7 @@ function(vertex_labels, edges)
                   duplicates, ",");
   fi;
 
-  # get first invalid edge - misformed
+  # get first invalid edge - malformed
   badpos := PositionProperty(edges, e -> not IsList(e) or Length(e) <> 2);
   if badpos <> fail then
     ErrorNoReturn("invalid edge ", edges[badpos], " in position ", badpos,
