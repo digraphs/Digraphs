@@ -950,7 +950,8 @@ gap> DigraphShortestDistances(D);
   <Returns>A list of non-negative integers or <C>fail</C>.</Returns>
   <Description>
     This function returns a list of the eccentricities of each vertex in
-    <A>digraph</A>. The <E>eccentricity</E> of a vertex <A>v</A> is the maximum
+    <A>digraph</A>. If <A>digraph</A> is strongly connected and has at least 1
+    vertex, then the <E>eccentricity</E> of a vertex <A>v</A> is the maximum
     shortest distance between <A>v</A> and any other vertex; see
     <Ref Oper="DigraphShortestDistance"
     Label="for a digraph and two vertices"/>. <P/>
@@ -963,6 +964,8 @@ gap> DigraphEccentricities(Digraph([[2], [1, 3], [2]]));
 gap> DigraphEccentricities(CycleDigraph(3));
 [ 2, 2, 2 ]
 gap> DigraphEccentricities(ChainDigraph(2));
+fail
+gap> DigraphEccentricities(EmptyDigraph(0));
 fail
 ]]></Example>
   </Description>

@@ -1510,7 +1510,12 @@ end);
 
 InstallMethod(DigraphEccentricities, "for a digraph",
 [IsDigraph],
-D -> List(DigraphShortestDistances(D), Maximum));
+function(D)
+  if not IsStronglyConnectedDigraph(D) or DigraphNrVertices(D) = 0 then
+    return fail;
+  fi;
+  return List(DigraphShortestDistances(D), Maximum);
+end);
 
 InstallMethod(DigraphRadius, "for a digraph",
 [IsDigraph],

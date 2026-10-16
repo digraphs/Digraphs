@@ -3389,8 +3389,10 @@ true
 gap> B[14, 15] = z;
 true
 
-# DigraphRadius, DigraphCentre, and DigraphPeriphery
+# DigraphEccentricities, DigraphRadius, DigraphCentre, and DigraphPeriphery
 gap> D := ChainDigraph(2);;
+gap> DigraphEccentricities(D);
+fail
 gap> DigraphRadius(D);
 fail
 gap> DigraphCentre(D);
@@ -3398,6 +3400,8 @@ fail
 gap> DigraphPeriphery(D);
 fail
 gap> D := EmptyDigraph(0);;
+gap> DigraphEccentricities(D);
+fail
 gap> DigraphRadius(D);
 fail
 gap> DigraphCentre(D);
