@@ -49,7 +49,7 @@ DeclareAttribute("DigraphDegeneracyOrdering", IsDigraph);
 DeclareAttribute("DIGRAPHS_Degeneracy", IsDigraph);
 DeclareAttribute("DigraphShortestDistances", IsDigraph);
 DeclareAttribute("DigraphDiameter", IsDigraph);
-DeclareAttribute("DIGRAPHS_DistanceMetrics", IsDigraph);
+DeclareAttribute("DigraphEccentricities", IsDigraph);
 DeclareAttribute("DigraphRadius", IsDigraph);
 DeclareAttribute("DigraphCentre", IsDigraph);
 DeclareSynonymAttr("DigraphCenter", DigraphCentre);

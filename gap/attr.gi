@@ -1508,36 +1508,36 @@ function(D)
   return DIGRAPH_DIAMETER(D);
 end);
 
-InstallMethod(DIGRAPHS_DistanceMetrics, "for a digraph",
+InstallMethod(DigraphEccentricities, "for a digraph",
 [IsDigraph],
-function(D)
-  local eccentricities, minecc, maxecc;
-  if not IsStronglyConnectedDigraph(D) or DigraphNrVertices(D) = 0 then
-    return rec(
-      DigraphRadius    := fail,
-      DigraphCentre    := fail,
-      DigraphPeriphery := fail);
-  fi;
-  eccentricities := List(DigraphShortestDistances(D), Maximum);
-  minecc := Minimum(eccentricities);
-  maxecc := Maximum(eccentricities);
-  return rec(
-    DigraphRadius    := minecc,
-    DigraphCentre    := Positions(eccentricities, minecc),
-    DigraphPeriphery := Positions(eccentricities, maxecc));
-end);
+D -> List(DigraphShortestDistances(D), Maximum));
 
 InstallMethod(DigraphRadius, "for a digraph",
 [IsDigraph],
-D -> DIGRAPHS_DistanceMetrics(D).DigraphRadius);
+function(D)
+  if not IsStronglyConnectedDigraph(D) or DigraphNrVertices(D) = 0 then
+    return fail;
+  fi;
+  return Minimum(DigraphEccentricities(D));
+end);
 
 InstallMethod(DigraphCentre, "for a digraph",
 [IsDigraph],
-D -> DIGRAPHS_DistanceMetrics(D).DigraphCentre);
+function(D)
+  if not IsStronglyConnectedDigraph(D) or DigraphNrVertices(D) = 0 then
+    return fail;
+  fi;
+  return Positions(DigraphEccentricities(D), DigraphRadius(D));
+end);
 
 InstallMethod(DigraphPeriphery, "for a digraph",
 [IsDigraph],
-D -> DIGRAPHS_DistanceMetrics(D).DigraphPeriphery);
+function(D)
+  if not IsStronglyConnectedDigraph(D) or DigraphNrVertices(D) = 0 then
+    return fail;
+  fi;
+  return Positions(DigraphEccentricities(D), DigraphDiameter(D));
+end);
 
 InstallMethod(DigraphUndirectedGirth, "for a digraph", [IsDigraph],
 function(D)
@@ -3612,4 +3612,3 @@ D -> DIGRAPHS_IsJoinSemilatticeAndJoinTable(D)[2]);
 InstallMethod(DigraphMeetTable, "for a digraph",
 [IsDigraph],
 D -> DIGRAPHS_IsMeetSemilatticeAndMeetTable(D)[2]);
-
