@@ -240,9 +240,10 @@ gap> D2 := Digraph([[], [1], [2], []]);;
 gap> IsIsomorphicDigraph(D1, D2);
 true
 gap> Digraph([1, 2], [[2, 3]]);
-Error, <edges> references a label that isn't in <vertex_labels>,
+Error, invalid edge [ 2, 3 ] in <edges> at position 
+1; edges must reference vertices from [ 1, 2 ],
 gap> Digraph([1, 1], []);
-Error, <vertex_labels> contains duplicate labels,
+Error, <vertex_labels> contains duplicate labels: [ 1 ],
 
 #  Digraph (by an integer and a function)
 gap> divides := function(a, b)

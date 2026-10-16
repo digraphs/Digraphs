@@ -482,13 +482,30 @@ end);
 
 InstallMethod(Digraph, "for a list and a list", [IsList, IsList],
 function(vertex_labels, edges)
-  local D, nrverts;
+  local label_counts, duplicates, badpos, labels, D, nrverts;
 
-  if not IsDuplicateFreeList(vertex_labels) then
-    ErrorNoReturn("<vertex_labels> contains duplicate labels,");
+  label_counts := Collected(vertex_labels);
+  duplicates := List(Filtered(label_counts, x -> x[2] > 1), x -> x[1]);
+  if not IsEmpty(duplicates) then
+    ErrorNoReturn("<vertex_labels> contains duplicate labels: ",
+                  duplicates, ",");
   fi;
-  if not (IsSubset(vertex_labels, Union(edges))) then
-    ErrorNoReturn("<edges> references a label that isn't in <vertex_labels>,");
+
+  # get first invalid edge - misformed
+  badpos := PositionProperty(edges, e -> not IsList(e) or Length(e) <> 2);
+  if badpos <> fail then
+    ErrorNoReturn("invalid edge ", edges[badpos], " in position ", badpos,
+                  " in <edges>; edges must be pairs of elements,");
+  fi;
+
+  #  get first invalid edge - bad reference
+  labels := Set(vertex_labels);  # set makes it faster to check containment
+  badpos := PositionProperty(edges,
+                             e -> not (e[1] in labels and e[2] in labels));
+  if badpos <> fail then
+    ErrorNoReturn("invalid edge ", edges[badpos], " in <edges> at position ",
+                  badpos, "; edges must reference vertices from ",
+                  vertex_labels, ",");
   fi;
 
   nrverts := Length(vertex_labels);
