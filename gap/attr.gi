@@ -2409,6 +2409,49 @@ function(D)
   return DigraphVertexLabels(D);
 end);
 
+InstallMethod(DigraphMaximalQuotients, "for a digraph", [IsDigraph],
+function(D)
+  local n, aut, orbs, pairs_to_merge, candidates, c, distinct_canons,
+  max_quotients;
+
+  n := DigraphNrVertices(D);
+  if n < 2 then
+    return [];
+  elif IsEmptyDigraph(D) then
+    return [EmptyDigraph(n - 1)];
+  fi;
+
+  # This is to ensure compatibility with AutomorphismGroup and QuotientDigraph.
+  if IsMultiDigraph(D) then
+    aut := AutomorphismGroup(DigraphRemoveAllMultipleEdges(D));
+  else
+    aut := AutomorphismGroup(D);
+  fi;
+
+  # Creating orbit representatives.
+  orbs := Orbits(aut, Combinations(DigraphVertices(D), 2), OnSets);
+  pairs_to_merge := List(orbs, Representative);
+
+  # Creating list of candidate maximal quotients.
+  candidates := List(pairs_to_merge,
+      pair -> QuotientDigraph(D, Concatenation([pair],
+          List(Difference(DigraphVertices(D), pair), v -> [v]))));
+
+  # Filtering candidate list based on isomorphism.
+  distinct_canons := Set([]);
+  max_quotients := [];
+
+  for c in candidates do
+    AddSet(distinct_canons, BlissCanonicalDigraph(c));
+    
+    if Length(distinct_canons) > Length(max_quotients) then
+      Add(max_quotients, c);
+    fi;
+  od;
+
+  return max_quotients;
+end);
+
 InstallMethod(CharacteristicPolynomial, "for a digraph", [IsDigraph],
 D -> CharacteristicPolynomial(AdjacencyMatrix(D)));
 

@@ -2535,6 +2535,74 @@ gap> D := Digraph([[2], [1, 3], []]);;
 gap> DigraphCore(D);
 [ 1, 2 ]
 
+# DigraphMaximalQuotients
+gap> DigraphMaximalQuotients(EmptyDigraph(0));
+[  ]
+gap> DigraphMaximalQuotients(EmptyDigraph(1));
+[  ]
+gap> DigraphMaximalQuotients(EmptyDigraph(5));
+[ <immutable empty digraph with 4 vertices> ]
+gap> DigraphMaximalQuotients(ChainDigraph(2)) = [Digraph([[1]])];
+true
+gap> DigraphMaximalQuotients(CompleteDigraph(2)) = [Digraph([[1]])];
+true
+gap> mq := DigraphMaximalQuotients(CompleteDigraph(5));;
+gap> Length(mq) = 1;
+true
+gap> DigraphNrVertices(mq[1]) = 4;
+true
+gap> DigraphNrEdges(mq[1]) = 13;
+true
+gap> DigraphNrLoops(mq[1]) = 1;
+true
+gap> mq := DigraphMaximalQuotients(ChainDigraph(3));;
+gap> Length(mq) = 3;
+true
+gap> ForAll([Digraph([[1, 2], []]), Digraph([[2], [2]]), Digraph([[2], [1]])],
+>       d -> ForAny(mq, q -> IsIsomorphicDigraph(d, q)));
+true
+gap> mq := DigraphMaximalQuotients(Digraph([[2], [], []]));;
+gap> Length(mq) = 2;
+true
+gap> ForAll([Digraph([[1], []]), Digraph([[2], []])],
+>       d -> ForAny(mq, q -> IsIsomorphicDigraph(d, q)));
+true
+gap> mq := DigraphMaximalQuotients(CycleDigraph(4));;
+gap> Length(mq) = 2;
+true
+gap> ForAll([Digraph([[2], [2, 3], [1]]), Digraph([[2], [1, 3], [2]])], 
+>       d -> ForAny(mq, q -> IsIsomorphicDigraph(d, q)));
+true
+gap> D := Digraph([[2, 2], [3], [3]]);
+<immutable multidigraph with 3 vertices, 4 edges>
+gap> mq := DigraphMaximalQuotients(D);;
+gap> Length(mq) = 3;
+true
+gap> ForAny(mq, q -> IsMultiDigraph(q));
+false
+gap> ForAll([Digraph([[1, 2], [2]]), Digraph([[2], [2]]), Digraph([[2], [1, 2]])],
+>       d -> ForAny(mq, q -> IsIsomorphicDigraph(d, q)));
+true
+gap> mq := DigraphMaximalQuotients(BinaryTree(3));;
+gap> Length(mq) = 7;
+true
+gap> ForAll(Combinations(mq, 2), p -> not IsIsomorphicDigraph(p[1], p[2]));
+true
+gap> ForAll(mq, q -> DigraphNrVertices(q) = 6);
+true
+gap> D := RandomDigraph(6, 0.6);;
+gap> mq := DigraphMaximalQuotients(D);;
+gap> ForAll(mq, q -> DigraphNrVertices(q) = 5);
+true
+gap> ForAll(Combinations(mq, 2), p -> not IsIsomorphicDigraph(p[1], p[2]));
+true
+gap> mq2 := DigraphMaximalQuotients(OnDigraphs(D, (1, 2, 3, 4, 5, 6)));;
+gap> Length(mq) = Length(mq2);
+true
+gap> ForAll(mq, q -> ForAny(mq2, r -> IsIsomorphicDigraph(q, r)))
+>     and ForAll(mq2, q -> ForAny(mq, r -> IsIsomorphicDigraph(q, r)));
+true
+
 # MaximalAntiSymmetricSubdigraph
 gap> MaximalAntiSymmetricSubdigraph(Digraph([[2, 2], [1]]));
 <immutable antisymmetric digraph with 2 vertices, 1 edge>
