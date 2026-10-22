@@ -1536,11 +1536,29 @@ gap> DigraphAllChordlessCycles(D);
   <Oper Name="IsDigraphRotationSystem" Arg="digraph, list"/>
   <Returns>A boolean.</Returns>
   <Description>
-    If <A>digraph</A> is a symmetric digraph and <A>list</A> is a rotation system of <A>digraph</A>, 
-    then <C>IsDigraphRotationSystem</C> returns <C>true</C> if <A>list</A> is a rotation system for
-    <A>digraph</A>, and <C>false</C> otherwise.
-    <A>list</A> is a rotation system of <A>digraph</A> if <A>list</A> has an entry for each vertex
-    <C>v</C> containing all neighbours of <C>v</C>.
+    <C>IsDigraphRotationSystem</C> returns <C>true</C> if <A>digraph</A> is a symmetric digraph
+    and <A>list</A> is a rotation system of <A>digraph</A>, and <C>false</C> otherwise.
+    A rotation system of <A>digraph</A> describes, for every vertex, a cyclic
+    ordering of its neighbours. More precisely, <A>list</A> is a rotation
+    system of <A>digraph</A> if and only if:
+    <List>
+      <Item>
+        <A>list</A> has length <C>DigraphNrVertices(<A>digraph</A>)</C>,
+        i.e. there is exactly one entry for every vertex; and
+      </Item>
+      <Item>
+        for every vertex <C>v</C>, the entry <C><A>list</A>[v]</C> is a list
+        which contains every neighbour of <C>v</C> exactly once, and no other
+        vertices.
+      </Item>
+    </List>
+    The order of the entries in <C><A>list</A>[v]</C> is interpreted
+    cyclically: the successor of the last neighbour is the first one. Hence
+    two lists which differ only by cyclic shifts of their entries describe
+    the same rotation system.
+    Every rotation system defines an embedding of <A>digraph</A> into an
+    orientable surface, whose faces are given by
+    <Ref Oper="FacialWalks"/>.
     
     The operation <C>IsDigraphRotationSystem</C> ignores multiple edges and loops.<P/>
     Here are some examples:

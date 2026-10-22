@@ -1857,14 +1857,11 @@ D -> DigraphAllChordlessCyclesOfMaximalLength(D, INTOBJ_MAX));
 InstallMethod(IsDigraphRotationSystem, "for a digraph and a list",
 [IsDigraph, IsList],
 function(digraph, rotationSystem)
-
     local D, i, v;
 
     if not IsSymmetricDigraph(digraph) then
       ErrorNoReturn("the argument <D> must be a symmetric digraph,");
-    fi;
-
-    if Length(rotationSystem) <> DigraphNrVertices(digraph) then
+    elif Length(rotationSystem) <> DigraphNrVertices(digraph) then
         return false;
     fi;
 
