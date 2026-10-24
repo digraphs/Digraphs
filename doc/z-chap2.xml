@@ -36,6 +36,7 @@
     <#Include Label="UndirectedSpanningTree">
     <#Include Label="DigraphShortestPathSpanningTree">
     <#Include Label="QuotientDigraph">
+    <#Include Label="DigraphMaximalQuotients">
     <#Include Label="DigraphReverse">
     <#Include Label="DigraphDual">
     <#Include Label="DigraphSymmetricClosure">

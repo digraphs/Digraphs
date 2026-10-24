@@ -2441,9 +2441,10 @@ function(D)
   distinct_canons := Set([]);
   max_quotients := [];
 
+  # This part could be optimised.
   for c in candidates do
     AddSet(distinct_canons, BlissCanonicalDigraph(c));
-    
+
     if Length(distinct_canons) > Length(max_quotients) then
       Add(max_quotients, c);
     fi;

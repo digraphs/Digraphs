@@ -13,8 +13,8 @@
 #@local G, H, M, M1, P, S, a, adj, adj1, adj2, adjacencies, b
 #@local circuit, complete15, comps, cycle12, e, edgeCut, erev, filename, forest
 #@local g, gNew, gr, gr1, gr2, gr3, gr4, grid, group, i, id, isGraph, j, mat
-#@local multiple, names, nbs, nonPlanar, order, planar, probs, proj, r, rd
-#@local reflextrans, reflextrans1, reflextrans2, representatives, rev, rgr
+#@local mq, mq2, multiple, names, nbs, nonPlanar, order, planar, probs, proj, r
+#@local rd, reflextrans, reflextrans1, reflextrans2, representatives, rev, rgr
 #@local rotationSy, rotationSystem, scc, schreierVector, sink, soccer, str
 #@local table, temp, topo, trans, trans1, trans2, tree, wcc, x, y, z
 gap> START_TEST("Digraphs package: standard/attr.tst");
@@ -2557,7 +2557,7 @@ true
 gap> mq := DigraphMaximalQuotients(CycleDigraph(4));;
 gap> Length(mq) = 2;
 true
-gap> ForAll([Digraph([[2], [2, 3], [1]]), Digraph([[2], [1, 3], [2]])], 
+gap> ForAll([Digraph([[2], [2, 3], [1]]), Digraph([[2], [1, 3], [2]])],
 >       d -> ForAny(mq, q -> IsIsomorphicDigraph(d, q)));
 true
 gap> D := Digraph([[2, 2], [3], [3]]);
@@ -2565,9 +2565,10 @@ gap> D := Digraph([[2, 2], [3], [3]]);
 gap> mq := DigraphMaximalQuotients(D);;
 gap> Length(mq) = 3;
 true
-gap> ForAny(mq, q -> IsMultiDigraph(q));
+gap> ForAny(mq, IsMultiDigraph);
 false
-gap> ForAll([Digraph([[1, 2], [2]]), Digraph([[2], [2]]), Digraph([[2], [1, 2]])],
+gap> ForAll([Digraph([[1, 2], [2]]), Digraph([[2], [2]]),
+>       Digraph([[2], [1, 2]])],
 >       d -> ForAny(mq, q -> IsIsomorphicDigraph(d, q)));
 true
 gap> mq := DigraphMaximalQuotients(BinaryTree(3));;
@@ -2577,11 +2578,13 @@ gap> ForAll(Combinations(mq, 2), p -> not IsIsomorphicDigraph(p[1], p[2]));
 true
 gap> ForAll(mq, q -> DigraphNrVertices(q) = 6);
 true
-gap> D := RandomDigraph(6, 0.6);;
+gap> D := Digraph([[2, 3], [3], [1, 4], [5], [1], [2, 6]]);;
 gap> mq := DigraphMaximalQuotients(D);;
 gap> ForAll(mq, q -> DigraphNrVertices(q) = 5);
 true
 gap> ForAll(Combinations(mq, 2), p -> not IsIsomorphicDigraph(p[1], p[2]));
+true
+gap> OnDigraphs(D, (1, 2, 3, 4, 5, 6)) <> D;
 true
 gap> mq2 := DigraphMaximalQuotients(OnDigraphs(D, (1, 2, 3, 4, 5, 6)));;
 gap> Length(mq) = Length(mq2);

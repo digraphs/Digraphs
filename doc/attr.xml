@@ -1819,6 +1819,46 @@ gap> DigraphCore(D);
   </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="DigraphMaximalQuotients">
+<ManSection>
+  <Attr Name="DigraphMaximalQuotients" Arg="digraph"/>
+  <Returns>A list of digraphs.</Returns>
+  <Description>
+    If <A>digraph</A> is a digraph with <C>n</C> vertices, then this
+    attribute returns a list containing all maximal quotients of
+    <A>digraph</A>, up to isomorphism.
+    <P/>
+
+    A <E>maximal quotient</E> of <A>digraph</A> is a quotient (see
+    <Ref Oper="QuotientDigraph"/>) obtained by amalgamating precisely two
+    vertices of <A>digraph</A>. In particular, each maximal quotient of
+    <A>digraph</A> has <C>n - 1</C> vertices. If <A>digraph</A> has fewer
+    than two vertices, an empty list is returned.
+
+    <Example><![CDATA[
+gap> D := CycleDigraph(4);
+<immutable cycle digraph with 4 vertices>
+gap> DigraphVertices(D);
+[ 1 .. 4 ]
+gap> DigraphEdges(D);
+[ [ 1, 2 ], [ 2, 3 ], [ 3, 4 ], [ 4, 1 ] ]
+gap> mq := DigraphMaximalQuotients(D);
+[ <immutable digraph with 3 vertices, 4 edges>, 
+  <immutable digraph with 3 vertices, 4 edges> ]
+gap> List(mq, DigraphNrVertices);
+[ 3, 3 ]
+gap> List(mq, DigraphEdges);
+[ [ [ 1, 1 ], [ 1, 2 ], [ 2, 3 ], [ 3, 1 ] ], 
+  [ [ 1, 2 ], [ 1, 3 ], [ 2, 1 ], [ 3, 1 ] ] ]
+gap> DigraphMaximalQuotients(EmptyDigraph(1));
+[  ]
+gap> DigraphMaximalQuotients(EmptyDigraph(5));
+[ <immutable empty digraph with 4 vertices> ]
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="CharacteristicPolynomial">
 <ManSection>
   <Attr Name="CharacteristicPolynomial" Arg="digraph"/>
