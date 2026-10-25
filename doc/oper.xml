@@ -1957,6 +1957,7 @@ rec( idom := [ 2, fail, 2, 2, 2 ], preorder := [ 2, 1, 3, 4, 5 ] )
 <#GAPDoc Label="IsDigraphOutDominatingSet">
 <ManSection>
   <Oper Name="IsDigraphOutDominatingSet" Arg="digraph, list"/>
+  <Oper Name="IsDigraphDominatingSet" Arg="digraph, list"/>
   <Oper Name="IsDigraphInDominatingSet" Arg="digraph, list"/>
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
@@ -1973,7 +1974,10 @@ rec( idom := [ 2, fail, 2, 2, 2 ], preorder := [ 2, 1, 3, 4, 5 ] )
     either in <M>S</M> or an out-neighbour of a vertex in <M>S</M>.
     An <E>in-dominating set</E> of <A>digraph</A> is a subset <M>S</M> of
     vertices of <A>digraph</A> such that every vertex of <A>digraph</A> is
-    either in <M>S</M> or an in-neighbour of a vertex in <M>S</M>.
+    either in <M>S</M> or an in-neighbour of a vertex in <M>S</M>. <P/>
+
+    <Ref Oper="IsDigraphDominatingSet"/> is a synonym for
+    <Ref Oper="IsDigraphOutDominatingSet"/>.
 
   <Example><![CDATA[
 gap> D := Digraph([[2, 4], [3], [1, 5], [3], [4]]);;
