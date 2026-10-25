@@ -30,6 +30,7 @@
     <#Include Label="EdgeWeightedDigraph">
     <#Include Label="UnitEdgeWeightedDigraph">
     <#Include Label="EdgeWeightedDigraphTotalWeight">
+    <#Include Label="IsNegativeEdgeWeightedDigraph">
     <#Include Label="EdgeWeightedDigraphMinimumSpanningTree">
     <#Include Label="EdgeWeightedDigraphShortestPaths">
     <#Include Label="EdgeWeightedDigraphShortestPath">

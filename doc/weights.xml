@@ -112,6 +112,24 @@ gap> EdgeWeightedDigraphTotalWeight(D);
     </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="IsNegativeEdgeWeightedDigraph">
+    <ManSection>
+    <Prop Name="IsNegativeEdgeWeightedDigraph" Arg="digraph"/>
+    <Returns>A boolean.</Returns>
+    <Description>
+        This returns <C>true</C> if <A>digraph</A> contains at least one edge
+        with negative weight, and <C>false</C> otherwise.
+    <Example><![CDATA[
+gap> D := EdgeWeightedDigraph([[2], [1]], [[5], [10]]);;
+gap> IsNegativeEdgeWeightedDigraph(D);
+false
+gap> D := EdgeWeightedDigraph([[2], [1]], [[-5], [10]]);;
+gap> IsNegativeEdgeWeightedDigraph(D);
+true]]></Example>
+    </Description>
+    </ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="EdgeWeightedDigraphMinimumSpanningTree">
     <ManSection>
     <Attr Name="EdgeWeightedDigraphMinimumSpanningTree" Arg="digraph"/>
