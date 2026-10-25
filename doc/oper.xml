@@ -2290,6 +2290,7 @@ gap> DigraphDijkstra(D, 1, 2);
 <#GAPDoc Label="ModularProduct">
 <ManSection>
   <Oper Name="ModularProduct" Arg="D1, D2"/>
+  <Oper Name="DigraphModularProduct" Arg="D1, D2"/>
   <Returns>A digraph.</Returns>
   <Description>
   If <A>D1</A> and <A>D2</A> are digraphs without multiple edges, then
@@ -2313,7 +2314,10 @@ gap> DigraphDijkstra(D, 1, 2);
   </List>
 
   Notably, the complete (with loops) subdigraphs of <C>MPD</C> are
-  precisely the partial isomorphisms from <A>D1</A> to <A>D2</A>.
+  precisely the partial isomorphisms from <A>D1</A> to <A>D2</A>. <P/>
+
+  <Ref Oper="DigraphModularProduct"/> is a synonym for
+  <Ref Oper="ModularProduct"/>.
 
   <Example><![CDATA[
 gap> ModularProduct(Digraph([[1], [1, 2]]), Digraph([[], [2]]));
@@ -2333,6 +2337,7 @@ gap> ModularProduct(NullDigraph(0), CompleteDigraph(10));
 <#GAPDoc Label="StrongProduct">
 <ManSection>
   <Oper Name="StrongProduct" Arg="D1, D2"/>
+  <Oper Name="DigraphStrongProduct" Arg="D1, D2"/>
   <Returns>A digraph.</Returns>
   <Description>
   If <A>D1</A> and <A>D2</A> are digraphs without multiple edges,
@@ -2360,7 +2365,10 @@ gap> ModularProduct(NullDigraph(0), CompleteDigraph(10));
   </List>
 
   The SPD of two paths of lengths <C>m</C> and <C>n</C> is also the king's graph
-  for an <C>m</C> by <C>n</C> board. 
+  for an <C>m</C> by <C>n</C> board. <P/>
+
+  <Ref Oper="DigraphStrongProduct"/> is a synonym for
+  <Ref Oper="StrongProduct"/>.
 
   <Example><![CDATA[
 gap> D1 := Digraph([[2], [1, 3, 4], [2, 5], [2, 5], [3, 4]]);
@@ -2380,6 +2388,7 @@ gap> StrongProduct(DigraphSymmetricClosure(ChainDigraph(3)),
 <#GAPDoc Label="ConormalProduct">
 <ManSection>
   <Oper Name="ConormalProduct" Arg="D1, D2"/>
+  <Oper Name="DigraphConormalProduct" Arg="D1, D2"/>
   <Returns>A digraph.</Returns>
   <Description>
   If <A>D1</A> and <A>D2</A> are digraphs without multiple edges,
@@ -2398,7 +2407,10 @@ gap> StrongProduct(DigraphSymmetricClosure(ChainDigraph(3)),
     <Item>
       There is an edge from <C>b</C> to <C>d</C> in <A>D2</A>.
     </Item>
-  </List>
+  </List> </P>
+
+  <Ref Oper="DigraphConormalProduct"/> is a synonym for
+  <Ref Oper="ConormalProduct"/>.
 
   <Example><![CDATA[
 gap> ConormalProduct(DigraphSymmetricClosure(CycleDigraph(7)),
@@ -2414,6 +2426,7 @@ gap> ConormalProduct(NullDigraph(0), CompleteDigraph(10));
 <#GAPDoc Label="HomomorphicProduct">
 <ManSection>
   <Oper Name="HomomorphicProduct" Arg="D1, D2"/>
+  <Oper Name="DigraphHomomorphicProduct" Arg="D1, D2"/>
   <Returns>A digraph.</Returns>
   <Description>
   If <A>D1</A> and <A>D2</A> are digraphs without multiple edges,
@@ -2433,7 +2446,10 @@ gap> ConormalProduct(NullDigraph(0), CompleteDigraph(10));
       There is an edge from <C>a</C> to <C>c</C> in <A>D1</A> and no edge from
       <C>b</C> to <C>d</C> in <A>D2</A>.
     </Item>
-  </List>
+  </List> <P/>
+
+  <Ref Oper="DigraphHomomorphicProduct"/> is a synonym for
+  <Ref Oper="HomomorphicProduct"/>.
 
   <Example><![CDATA[
 gap> HomomorphicProduct(PetersenGraph(),
@@ -2476,6 +2492,7 @@ gap> OutNeighbours(D1);
 <#GAPDoc Label="LexicographicProduct">
 <ManSection>
   <Oper Name="LexicographicProduct" Arg="D1, D2"/>
+  <Oper Name="DigraphLexicographicProduct" Arg="D1, D2"/>
   <Returns>A digraph.</Returns>
   <Description>
   If <A>D1</A> and <A>D2</A> are digraphs without multiple edges,
@@ -2495,7 +2512,10 @@ gap> OutNeighbours(D1);
       The vertices <C>a</C> and <C>c</C> of <A>D1</A> are equal and there is
       an edge from <C>b</C> to <C>d</C> in <A>D2</A>.
     </Item>
-  </List>
+  </List> <P/>
+
+  <Ref Oper="DigraphLexicographicProduct"/> is a synonym for
+  <Ref Oper="LexicographicProduct"/>.
 
   <Example><![CDATA[
 gap> LexicographicProduct(DigraphSymmetricClosure(CycleDigraph(3)),
