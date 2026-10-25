@@ -2411,7 +2411,7 @@ gap> StrongProduct(DigraphSymmetricClosure(ChainDigraph(3)),
     <Item>
       There is an edge from <C>b</C> to <C>d</C> in <A>D2</A>.
     </Item>
-  </List> </P>
+  </List> <P/>
 
   <Ref Oper="DigraphConormalProduct"/> is a synonym for
   <Ref Oper="ConormalProduct"/>.
