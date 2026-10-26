@@ -42,7 +42,7 @@ DeclareOperation("DigraphGreedyColouring", [IsDigraph, IsHomogeneousList]);
 DeclareOperation("DigraphGreedyColouringNC", [IsDigraph, IsHomogeneousList]);
 
 DeclareAttribute("DigraphWelshPowellOrder", IsDigraph);
-DeclareAttribute("DigraphSmallestLastOrder", IsDigraph);  # TODO: document
+DeclareAttribute("DigraphSmallestLastOrder", IsDigraph);
 
 DeclareOperation("IsDigraphEndomorphism", [IsDigraph, IsTransformation]);
 DeclareOperation("IsDigraphHomomorphism",
