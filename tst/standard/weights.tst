@@ -39,7 +39,7 @@ ceeding the length of the argument,
 
 # check all elements of weights are list
 gap> d := EdgeWeightedDigraph([[1], []], [5, []]);
-Error, the 2nd argument (list) must be a list of lists,
+Error, the 2nd argument <weights> must be a list of lists,
 
 # string for digraphs
 gap> d := EdgeWeightedDigraph([["a"], []], [[2], []]);
