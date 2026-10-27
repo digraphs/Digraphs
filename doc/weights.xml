@@ -24,7 +24,7 @@
     of <C>EdgeWeights</C> which is a mutable list of mutable lists.<P/>
 
     The edge weights of a digraph cannot be computed and must be set either
-    using <C>SetEdgeWeights</C> or <Ref Func="EdgeWeightedDigraph" />.<P/>
+    using <C>SetEdgeWeights</C> or <Ref Oper="EdgeWeightedDigraph" />.<P/>
     <Example><![CDATA[
 gap> gr := EdgeWeightedDigraph([[2], [3], [1]], [[5], [10], [15]]);
 <immutable edge-weighted digraph with 3 vertices, 3 edges>
@@ -47,15 +47,18 @@ Error, List Assignment: <list> must be a mutable list
 
 <#GAPDoc Label="EdgeWeightedDigraph">
     <ManSection>
-    <Func Name="EdgeWeightedDigraph" Arg="digraph, weights"/>
+    <Oper Name="EdgeWeightedDigraph" Arg="digraph, weights"/>
     <Returns>A digraph or <K>fail</K></Returns>
     <Description>
-        The argument <A>digraph</A> may be a digraph or a list of lists of integers, floats or rationals.<P/>
+        This function returns an immutable digraph with EdgeWeights set to
+        <A>weights</A>. <P/>
 
-        <A>weights</A> must be a list of lists of integers, floats or rationals
-         of an equal size and shape to <C>OutNeighbours(digraph)</C>, otherwise it will fail.<P/>
+        The argument <A>digraph</A> must be an immutable digraph, or a list of
+        lists of positive integers representing outneighbours. <P/>
 
-        This will create a digraph and set the EdgeWeights to <A>weights</A>.<P/>
+        The argument <A>weights</A> must be a list of lists of integers, floats
+        or rationals, of an equal size and shape to
+        <C>OutNeighbours(digraph)</C>. <P/>
 
         See <Ref Attr="EdgeWeights"/>.
     <Example><![CDATA[
@@ -72,17 +75,14 @@ gap> EdgeWeights(g);
 
 <#GAPDoc Label="UnitEdgeWeightedDigraph">
     <ManSection>
-    <Func Name="UnitEdgeWeightedDigraph" Arg="digraph"/>
+    <Oper Name="UnitEdgeWeightedDigraph" Arg="digraph"/>
     <Returns>A digraph</Returns>
     <Description>
-        <!-- TODO update/remove mutability when issue #860 is resolved -->
-        If <A>digraph</A> is immutable, <C>UnitEdgeWeightedDigraph</C> returns
-        an immutable edge-weighted copy of <A>digraph</A>, with all edge weights
-        set to 1. If <A>digraph</A> is mutable, the returned digraph will be
-        mutable, but will not have edge weights. <P/>
+        If <A>digraph</A> is an immutable digraph,
+        <C>UnitEdgeWeightedDigraph</C> returns an immutable edge-weighted copy
+        of <A>digraph</A>, with all edge weights set to 1. <P/>
 
         See <Ref Attr="EdgeWeights"/>.
-    <!-- TODO update/remove D2 example when issue #860 is resolved -->
     <Example><![CDATA[
 gap> D := Digraph([[2], [1, 3], [1]]);
 <immutable digraph with 3 vertices, 4 edges>
@@ -90,11 +90,6 @@ gap> D1 := UnitEdgeWeightedDigraph(D);
 <immutable edge-weighted digraph with 3 vertices, 4 edges>
 gap> EdgeWeights(D1);
 [ [ 1 ], [ 1, 1 ], [ 1 ] ]
-gap> D2 := Digraph(IsMutableDigraph, [[2], [1, 3], [1]]);;
-gap> UnitEdgeWeightedDigraph(D2);
-<mutable digraph with 3 vertices, 4 edges>
-gap> HasEdgeWeights(D2);
-false
 ]]></Example>
     </Description>
     </ManSection>
@@ -309,7 +304,7 @@ fail]]></Example>
     the number of vertices of the digraph, and <M>e</M> is the number of
     edges. <P/>
 
-    See <Ref Attr="EdgeWeights" Func="EdgeWeightedDigraph"/>.
+    See <Ref Attr="EdgeWeights"/>.
     <Example><![CDATA[
 gap> g := EdgeWeightedDigraph([[2, 2], [3], []], [[3, 2], [1], []]);
 <immutable edge-weighted multidigraph with 3 vertices, 3 edges>
@@ -339,7 +334,7 @@ gap> Sum(flow[1]);
     This attribute is computed by using <Ref Func="DigraphMaximumFlow"/> and the
     max-cut min-flow theorem.<P/>
 
-    See <Ref Attr="EdgeWeights" Func="EdgeWeightedDigraph"/>.
+    See <Ref Attr="EdgeWeights"/>.
     <Example><![CDATA[
 gap> g := EdgeWeightedDigraph([[2, 2], [3], []], [[3, 2], [1], []]);
 <immutable edge-weighted multidigraph with 3 vertices, 3 edges>
@@ -368,7 +363,7 @@ gap> DigraphMinimumCut(g, 1, 3);
 
     This attribute is computed by using <Ref Func="DigraphMinimumCut"/>.<P/>
 
-    See <Ref Attr="EdgeWeights" Func="EdgeWeightedDigraph"/>.
+    See <Ref Attr="EdgeWeights"/>.
     <Example><![CDATA[
 gap> g := EdgeWeightedDigraph([[2, 2], [3], []], [[3, 2], [1], []]);
 <immutable edge-weighted multidigraph with 3 vertices, 3 edges>
