@@ -80,7 +80,7 @@ InstallMethod(EdgeWeightedDigraphTotalWeight,
 D -> Sum(EdgeWeights(D), Sum));
 
 InstallMethod(UnitEdgeWeightedDigraph, "for a digraph",
-[IsDigraph],
+[IsDigraph and IsImmutableDigraph],
 D -> EdgeWeightedDigraph(D, List(OutNeighbours(D),
                                  l -> ListWithIdenticalEntries(Length(l), 1))));
 
