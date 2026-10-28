@@ -11,6 +11,8 @@
 # 1. Edge Weights
 DeclareAttribute("EdgeWeights", IsDigraph);
 DeclareOperation("EdgeWeightedDigraph",
+                 [IsDigraph and IsMutableDigraph, IsList]);
+DeclareOperation("EdgeWeightedDigraph",
                  [IsDigraph and IsImmutableDigraph, IsList]);
 DeclareOperation("EdgeWeightedDigraph", [IsList, IsList]);
 DeclareProperty("IsNegativeEdgeWeightedDigraph", IsDigraph and HasEdgeWeights);

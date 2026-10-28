@@ -13,10 +13,10 @@
 #############################################################################
 
 InstallMethod(EdgeWeightedDigraph,
-"for a digraph and a list",
-[IsDigraph and IsImmutableDigraph, IsList],
+"for a mutable digraph and a list",
+[IsDigraph and IsMutableDigraph, IsList],
 function(D, weights)
-  local outNeighbours, outNeighbourWeights, u, i, newD;
+  local outNeighbours, outNeighbourWeights, u, i;
 
   # check all elements of weights is a list
   if not ForAll(weights, IsList) then
@@ -50,15 +50,22 @@ function(D, weights)
     od;
   od;
 
-  newD := DigraphCopy(D);
-  SetEdgeWeights(newD, weights);
-  return newD;
+  SetEdgeWeights(D, weights);
+  MakeImmutable(D);
+  return D;
 end);
+
+InstallMethod(EdgeWeightedDigraph,
+"for an immutable digraph and a list",
+[IsDigraph and IsImmutableDigraph, IsList],
+{D, weights} -> EdgeWeightedDigraph(DigraphMutableCopy(D), weights));
 
 InstallMethod(EdgeWeightedDigraph,
 "for a list and a list",
 [IsList, IsList],
-{D, weights} -> EdgeWeightedDigraph(Digraph(D), weights));
+{outneighbours, weights} -> EdgeWeightedDigraph(Digraph(IsMutableDigraph,
+                                                        outneighbours),
+                                                weights));
 
 InstallMethod(IsNegativeEdgeWeightedDigraph, "for a digraph with edge weights",
 [IsDigraph and HasEdgeWeights],
