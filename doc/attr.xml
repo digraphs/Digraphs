@@ -952,21 +952,44 @@ gap> DigraphShortestDistances(D);
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="DigraphEccentricities">
+<ManSection>
+  <Attr Name="DigraphEccentricities" Arg="digraph"/>
+  <Returns>A list of non-negative integers or <C>fail</C>.</Returns>
+  <Description>
+    This function returns a list of the eccentricities of each vertex in
+    <A>digraph</A>. If <A>digraph</A> is strongly connected and has at least 1
+    vertex, then the <E>eccentricity</E> of a vertex <A>v</A> is the maximum
+    shortest distance between <A>v</A> and any other vertex; see
+    <Ref Oper="DigraphShortestDistance"
+    Label="for a digraph and two vertices"/>. <P/>
+
+    If <A>digraph</A> is not strongly connected, then the value <C>fail</C>
+    is returned.
+    <Example><![CDATA[
+gap> DigraphEccentricities(Digraph([[2], [1, 3], [2]]));
+[ 2, 1, 2 ]
+gap> DigraphEccentricities(CycleDigraph(3));
+[ 2, 2, 2 ]
+gap> DigraphEccentricities(ChainDigraph(2));
+fail
+gap> DigraphEccentricities(EmptyDigraph(0));
+fail
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="DigraphDiameter">
 <ManSection>
   <Attr Name="DigraphDiameter" Arg="digraph"/>
-  <Returns>An integer or <C>fail</C>.</Returns>
+  <Returns>A non-negative integer or <C>fail</C>.</Returns>
   <Description>
-    This function returns the diameter of the digraph <A>digraph</A>.
-    <P/>
-
-    If a digraph <A>digraph</A> is strongly connected and has at least 1
-    vertex, then the <E>diameter</E> is the maximum shortest distance between
-    any pair of distinct vertices. Otherwise then the diameter of
-    <A>digraph</A> is undefined, and this function returns the value
-    <C>fail</C>. <P/>
-
-    See <Ref Attr="DigraphShortestDistances"/>. <P/>
+    This function returns the <E>diameter</E> of <A>digraph</A>. If
+    <A>digraph</A> is strongly connected and has at least 1 vertex, then its
+    diameter is the maximum eccentricity over its vertices; see
+    <Ref Attr="DigraphEccentricities"/>. Otherwise, the diameter of
+    <A>digraph</A> is undefined, and the value <C>fail</C> is returned.
     <Example><![CDATA[
 gap> D := Digraph([[2], [3], [4, 5], [5], [1, 2, 3, 4, 5]]);
 <immutable digraph with 5 vertices, 10 edges>
@@ -982,6 +1005,75 @@ gap> D := GeneralisedPetersenGraph(IsMutableDigraph, 6, 2);
 <mutable digraph with 12 vertices, 36 edges>
 gap> DigraphDiameter(D);
 4
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphRadius">
+<ManSection>
+  <Attr Name="DigraphRadius" Arg="digraph"/>
+  <Returns>A non-negative integer or <C>fail</C>.</Returns>
+  <Description>
+    This function returns the <E>radius</E> of <A>digraph</A>. If
+    <A>digraph</A> is strongly connected and has at least 1 vertex, then its
+    radius is the minimum eccentricity over its vertices; see
+    <Ref Attr="DigraphEccentricities"/>. Otherwise, the radius of
+    <A>digraph</A> is undefined, and the value <C>fail</C> is returned.
+    <Example><![CDATA[
+gap> D := CycleDigraph(5);;
+gap> DigraphRadius(D);
+4
+gap> D := CompleteDigraph(5);;
+gap> DigraphRadius(D);
+1
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphCentre">
+<ManSection>
+  <Attr Name="DigraphCentre" Arg="digraph"/>
+  <Attr Name="DigraphCenter" Arg="digraph"/>
+  <Returns>A list of vertices or <C>fail</C>.</Returns>
+  <Description>
+    This function returns the <E>centre</E> of <A>digraph</A>. If <A>digraph</A> is
+    strongly connected and has at least 1 vertex, then its centre is the
+    set of all vertices whose eccentricities equal the <E>radius</E> of
+    <A>digraph</A>; see <Ref Attr="DigraphRadius"/>. Otherwise, the
+    centre of <A>digraph</A> is undefined, and the value <C>fail</C> is
+    returned. <P/>
+
+    <Ref Attr="DigraphCenter"/> is a synonym for <Ref Attr="DigraphCentre"/>.
+    <Example><![CDATA[
+gap> D := Digraph([[2], [1, 3], [2, 4], [3]]);;
+gap> DigraphRadius(D);
+2
+gap> DigraphCentre(D);
+[ 2, 3 ]
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphPeriphery">
+<ManSection>
+  <Attr Name="DigraphPeriphery" Arg="digraph"/>
+  <Returns>A list of vertices or <C>fail</C>.</Returns>
+  <Description>
+    This function returns the <E>periphery</E> of <A>digraph</A>. If
+    <A>digraph</A> is strongly connected and has at least 1 vertex, then its
+    periphery is the set of all vertices whose eccentricities equal the
+    <E>diameter</E> of <A>digraph</A>; see <Ref Attr="DigraphDiameter"/>.
+    Otherwise, the periphery of <A>digraph</A> is undefined, and the
+    value <C>fail</C> is returned.
+    <Example><![CDATA[
+gap> D := Digraph([[2], [1, 3], [2, 4], [3]]);;
+gap> DigraphDiameter(D);
+3
+gap> DigraphPeriphery(D);
+[ 1, 4 ]
 ]]></Example>
   </Description>
 </ManSection>
