@@ -50,8 +50,8 @@ function(D, weights)
     od;
   od;
 
-  SetEdgeWeights(D, weights);
   MakeImmutable(D);
+  SetEdgeWeights(D, weights);
   return D;
 end);
 

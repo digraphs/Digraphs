@@ -28,6 +28,13 @@ gap> d := EdgeWeightedDigraph(Digraph([[2], []]), [[5], []]);
 gap> EdgeWeightedDigraphTotalWeight(d);
 5
 
+# mutable converted to immutable
+gap> d := Digraph(IsMutableDigraph, [[2], []]);
+<mutable digraph with 2 vertices, 1 edge>
+gap> EdgeWeightedDigraph(d, [[5], []]);;
+gap> d;
+<immutable edge-weighted digraph with 2 vertices, 1 edge>
+
 # weight not valid
 gap> d := EdgeWeightedDigraph([[2], []], [["a"], []]);
 Error, out-neighbour weights must be integers, floats, or rationals,
