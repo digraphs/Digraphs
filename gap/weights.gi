@@ -12,19 +12,15 @@
 # 1. Edge Weights
 #############################################################################
 
-InstallGlobalFunction(EdgeWeightedDigraph,
+InstallMethod(EdgeWeightedDigraph,
+"for a mutable digraph and a list",
+[IsDigraph and IsMutableDigraph, IsList],
 function(D, weights)
   local outNeighbours, outNeighbourWeights, u, i;
 
-  if IsDigraph(D) then
-    D := DigraphCopy(D);
-  else
-    D := Digraph(D);
-  fi;
-
   # check all elements of weights is a list
-  if not ForAll(weights, IsListOrCollection) then
-    ErrorNoReturn("the 2nd argument (list) must be a list of lists,");
+  if not ForAll(weights, IsList) then
+    ErrorNoReturn("the 2nd argument <weights> must be a list of lists,");
   fi;
 
   # check number there is an edge weight list for vertex u
@@ -54,9 +50,22 @@ function(D, weights)
     od;
   od;
 
+  MakeImmutable(D);
   SetEdgeWeights(D, weights);
   return D;
 end);
+
+InstallMethod(EdgeWeightedDigraph,
+"for an immutable digraph and a list",
+[IsDigraph and IsImmutableDigraph, IsList],
+{D, weights} -> EdgeWeightedDigraph(DigraphMutableCopy(D), weights));
+
+InstallMethod(EdgeWeightedDigraph,
+"for a list and a list",
+[IsList, IsList],
+{outneighbours, weights} -> EdgeWeightedDigraph(Digraph(IsMutableDigraph,
+                                                        outneighbours),
+                                                weights));
 
 InstallMethod(IsNegativeEdgeWeightedDigraph, "for a digraph with edge weights",
 [IsDigraph and HasEdgeWeights],

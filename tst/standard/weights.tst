@@ -28,6 +28,13 @@ gap> d := EdgeWeightedDigraph(Digraph([[2], []]), [[5], []]);
 gap> EdgeWeightedDigraphTotalWeight(d);
 5
 
+# mutable converted to immutable
+gap> d := Digraph(IsMutableDigraph, [[2], []]);
+<mutable digraph with 2 vertices, 1 edge>
+gap> EdgeWeightedDigraph(d, [[5], []]);;
+gap> d;
+<immutable edge-weighted digraph with 2 vertices, 1 edge>
+
 # weight not valid
 gap> d := EdgeWeightedDigraph([[2], []], [["a"], []]);
 Error, out-neighbour weights must be integers, floats, or rationals,
@@ -39,7 +46,7 @@ ceeding the length of the argument,
 
 # check all elements of weights are list
 gap> d := EdgeWeightedDigraph([[1], []], [5, []]);
-Error, the 2nd argument (list) must be a list of lists,
+Error, the 2nd argument <weights> must be a list of lists,
 
 # string for digraphs
 gap> d := EdgeWeightedDigraph([["a"], []], [[2], []]);
@@ -64,6 +71,28 @@ Error, the number of out-neighbours and weights for the vertex 1 must be equal\
 gap> d := EdgeWeightedDigraph([[2], []], [[5, 10], []]);
 Error, the number of out-neighbours and weights for the vertex 1 must be equal\
 ,
+
+# UnitEdgeWeightedDigraph
+gap> D := UnitEdgeWeightedDigraph(Digraph([[2], [1, 3], [1]]));
+<immutable edge-weighted digraph with 3 vertices, 4 edges>
+gap> EdgeWeights(D);
+[ [ 1 ], [ 1, 1 ], [ 1 ] ]
+gap> D := UnitEdgeWeightedDigraph(Digraph([[3, 4], [1, 3, 4], [2, 4], [1, 2, 3]]));
+<immutable edge-weighted digraph with 4 vertices, 10 edges>
+gap> EdgeWeights(D);
+[ [ 1, 1 ], [ 1, 1, 1 ], [ 1, 1 ], [ 1, 1, 1 ] ]
+gap> D := UnitEdgeWeightedDigraph(EmptyDigraph(4));
+<immutable empty edge-weighted digraph with 4 vertices>
+gap> EdgeWeights(D);
+[ [  ], [  ], [  ], [  ] ]
+gap> D := UnitEdgeWeightedDigraph(EdgeWeightedDigraph([[2], []], [[5], []]));
+<immutable edge-weighted digraph with 2 vertices, 1 edge>
+gap> EdgeWeights(D);
+[ [ 1 ], [  ] ]
+gap> D := Digraph(IsMutable, [[2], [1, 3], [1]]);;
+gap> UnitEdgeWeightedDigraph(D);;
+gap> D;
+<immutable edge-weighted digraph with 3 vertices, 4 edges>
 
 #############################################################################
 # 2. Copies of edge weights
