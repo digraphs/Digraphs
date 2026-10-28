@@ -222,10 +222,12 @@ end);
 BindGlobal("WholeFileDecoders", HashSet());
 AddSet(WholeFileDecoders, "DigraphFromDreadnautString");
 AddSet(WholeFileDecoders, "DigraphFromDIMACSString");
+AddSet(WholeFileDecoders, "DigraphFromLADString");
 
 BindGlobal("WholeFileEncoders", HashSet());
 AddSet(WholeFileEncoders, "DreadnautString");
 AddSet(WholeFileEncoders, "DIMACSString");
+AddSet(WholeFileEncoders, "LADString");
 
 InstallGlobalFunction(IsWholeFileDecoder,
   decoder -> NameFunction(decoder) in WholeFileDecoders);
@@ -297,6 +299,8 @@ function(filename)
     return DigraphFromDreadnautString;
   elif extension = "dimacs" then
     return DigraphFromDIMACSString;
+  elif extension = "lad" then
+    return DigraphFromLADString;
   fi;
 
   return fail;
@@ -335,6 +339,8 @@ function(filename)
     return DreadnautString;
   elif extension = "dimacs" then
     return DIMACSString;
+  elif extension = "lad" then
+    return LADString;
   fi;
   return fail;
 end);
@@ -2632,22 +2638,25 @@ function(s)
     ErrorNoReturn("the argument <s> must be a non-empty string");
   fi;
   n := Int(NormalizedWhitespace(lines[1]));
-  if n = fail or n < 0 or Length(lines) <> n + 1 then
-    ErrorNoReturn("the first line of <s> must be the number of vertices ",
-                  "followed by one line per vertex");
+  if n = fail or n < 0 then
+    ErrorNoReturn("the first line of <s> must be the number of vertices");
+  elif Length(lines) <> n + 1 then
+    ErrorNoReturn("<s> must have exactly one line per vertex after the first");
   fi;
 
   # Convert LAD to Digraph
   nbs := [];
   for i in [1 .. n] do
     line := List(SplitString(NormalizedWhitespace(lines[i + 1]), " "), Int);
-    if IsEmpty(line) or line[1] <> Length(line) - 1 then
+    if IsEmpty(line) or fail in line or line[1] <> Length(line) - 1 then
       ErrorNoReturn("line ", i + 1, " of <s> is not valid");
     fi;
     Remove(line, 1);
     for v in line do
       if v < 0 or v >= n then
         ErrorNoReturn("line ", i + 1, " of <s> has a vertex out of range");
+      elif v = i - 1 then
+        ErrorNoReturn("line ", i + 1, " of <s> contains a loop"); 
       fi;
     od;
     Add(nbs, line + 1);  # converting from 0 indexed to 1 indexed

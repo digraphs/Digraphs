@@ -988,3 +988,36 @@ gap> DigraphFromDIMACSString(last);
   </Description>
 </ManSection>
 <#/GAPDoc>
+
+<#GAPDoc Label="LADString">
+<ManSection>
+  <Oper Name="LADString" Arg="D"/>
+  <Returns>A string.</Returns>
+  <Description>
+    Returns a string representing the digraph <A>D</A> in the LAD format.
+    The first line contains the number of vertices <C>n</C> and it is followed by <C>n</C> lines, one per vertex.
+    Each of these lines consists of the out-degree of the vertex followed by its out-neighbours, all separated by spaces.
+    Vertices are numbered from <C>0</C>.
+    <P/>
+
+    The digraph <A>D</A> must not have multiple edges or loops.
+    <Example><![CDATA[
+gap> LADString(CompleteDigraph(3));
+"3\n2 1 2\n2 0 2\n2 0 1\n"]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="DigraphFromLADString">
+<ManSection>
+  <Oper Name="DigraphFromLADString" Arg="s"/>
+  <Returns>A digraph.</Returns>
+  <Description>
+    Returns the digraph represented by the string <A>s</A> in the LAD format (see <Ref Oper="LADString"/>).
+    An error is raised if <A>s</A> is not a valid LAD string or if it describes a digraph with loops.
+    <Example><![CDATA[
+gap> DigraphFromLADString("3\n2 1 2\n2 0 2\n2 0 1\n");
+<immutable digraph with 3 vertices, 6 edges>]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
