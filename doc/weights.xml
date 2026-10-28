@@ -50,7 +50,7 @@ Error, List Assignment: <list> must be a mutable list
     <Oper Name="EdgeWeightedDigraph" Arg="digraph, weights"/>
     <Returns>A digraph or <K>fail</K></Returns>
     <Description>
-        This function returns an immutable digraph with EdgeWeights set to
+        This function returns an immutable digraph with edge weights set to
         <A>weights</A>. <P/>
 
         The argument <A>digraph</A> must be an immutable digraph, or a list of
