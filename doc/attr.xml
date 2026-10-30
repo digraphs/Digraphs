@@ -1825,16 +1825,26 @@ gap> DigraphCore(D);
   <Returns>A list of digraphs.</Returns>
   <Description>
     If <A>digraph</A> is a digraph with <C>n</C> vertices, then this
-    attribute returns a list containing all maximal quotients of
-    <A>digraph</A>, up to isomorphism.
+    attribute returns a list containing all maximal proper quotients of
+    <A>digraph</A>, up to isomorphism. That is, the list contains precisely
+    one representative from each isomorphism class of maximal proper quotients
+    of <A>digraph</A>.
     <P/>
 
-    A <E>maximal quotient</E> of <A>digraph</A> is a quotient (see
+    A <E>maximal proper quotient</E> of <A>digraph</A> is a quotient (see
     <Ref Oper="QuotientDigraph"/>) obtained by amalgamating precisely two
-    vertices of <A>digraph</A>. In particular, each maximal quotient of
+    vertices of <A>digraph</A>. Thus, each maximal proper quotient of
     <A>digraph</A> has <C>n - 1</C> vertices. If <A>digraph</A> has fewer
     than two vertices, an empty list is returned.
+    <P/>
 
+    The quotients are defined as in <Ref Oper="QuotientDigraph"/>. In
+    particular, they never contain multiple edges, even if <A>digraph</A>
+    does. However, loops may appear through identifying two adjacent vertices.
+    <P/>
+
+    The attribute has at least <C>O(n ^ 2)</C> complexity, where <C>n</C>
+    is the number of vertices of <A>digraph</A>.
     <Example><![CDATA[
 gap> D := CycleDigraph(4);
 <immutable cycle digraph with 4 vertices>

@@ -2429,6 +2429,7 @@ function(D)
   fi;
 
   # Creating orbit representatives.
+  # TODO: Use EnumeratorOfCombinations here once available.
   orbs := Orbits(aut, Combinations(DigraphVertices(D), 2), OnSets);
   pairs_to_merge := List(orbs, Representative);
 
