@@ -2414,6 +2414,8 @@ function(D)
   local n, aut, orbs, pairs_to_merge, candidates, c, distinct_canons,
   max_quotients;
 
+  D := DigraphImmutableCopyIfMutable(D);
+
   n := DigraphNrVertices(D);
   if n < 2 then
     return [];
