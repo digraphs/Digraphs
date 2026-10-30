@@ -343,9 +343,9 @@ gap> IsIsomorphicDigraph(D1, D2);
 true
 gap> DigraphByEdges([1, 2], [[2, 3]]);
 Error, invalid edge [ 2, 3 ] in <edges> at position 
-1; edges must reference vertices from [ 1, 2 ],
+1; edges must only contain items from <vertex_labels> (= [ 1, 2 ])
 gap> DigraphByEdges([1, 1, 2], [1, 2]);
-Error, <vertex_labels> contains duplicate labels: [ 1 ],
+Error, <vertex_labels> contains duplicate labels: [ 1 ]
 
 #  DigraphByAdjacencyMatrix (by an integer matrix)
 
