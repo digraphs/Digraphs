@@ -1,6 +1,6 @@
-## Contributing to the Semigroups package for GAP
+## Contributing to the Digraphs package for GAP
 
-#### Copyright (C) 2011-2022 James D. Mitchell
+#### Copyright (C) by Jan De Beule, Julius Jonušas, James D. Mitchell, Wilf A. Wilson, Michael Young et al.
 #### Licensing information is available in the LICENSE file.   
 
 We invite everyone to contribute by submitting patches, pull requests, and bug
@@ -10,8 +10,8 @@ reports. We would like to make the contributing process as easy as possible.
 
 * Before you report an issue, or wish to add functionality, please try
   and check to see if there are existing
-  [issues](https://github.com/semigroups/Semigroups/issues) or
-  [pull requests](https://github.com/semigroups/Semigroups/pulls).
+  [issues](https://github.com/digraphs/Digraphs/issues) or
+  [pull requests](https://github.com/digraphs/Digraphs/pulls).
   We do not want you wasting your time duplicating somebody else's work.
 * For substantial changes it is also advisable to contact us before
   you start work to discuss your ideas.
@@ -28,14 +28,9 @@ reports. We would like to make the contributing process as easy as possible.
 
 ### Branches for contributions
 
-Bugfixes and technical changes should be made in branches off the next release
-branch, in a fork of the repository.  Releases are currently made from
-`stable-3.1` branch.  If there is more than one open branch with this type of
-name, then please use the lowest numbered such branch.
-
-New features should be developed in branches off the `master` branch, in
-a fork of the repository. You should regularly merge/rebase the `master` branch
-into your feature branch.
+Bugfixes, technical changes, and new features should be developed in branches 
+off the `main` branch, in a fork of the repository. You should regularly
+merge/rebase the `main` branch into your feature branch.
 
 When you think your changes are ready to go into
 a release, please make a pull request.
@@ -63,12 +58,12 @@ Before asking us to merge your code please ensure that:
 * there should be no whitespace after an opening bracket or before a closing
   bracket
 * there should be exactly one space after a comma `,` except if it is at the end
-  of line
+  of a line
 * there should not be adjacent empty lines
 * there should not be variables which are declared but not used
 * everything declared in the file `gap/blah.gd` should be documented in the file
   `doc/blah.xml`.  If a function or method is for internal use only, then its
-  name should have the prefix `SEMIGROUPS_` or it should have the suffix `NC`.
+  name should have the prefix `DIGRAPHS_` or one of the suffixes `NC` or `Cons`.
   If a function or method is for use in one file only, then it should be
   assigned using `BindGlobal` in that file. 
 * functions should only be assigned using the `foo := function()` syntax if they
@@ -79,12 +74,6 @@ Before asking us to merge your code please ensure that:
   argument, found [something else]")`.
 * functions and variables which will be unbound after they are read must have
  an underscore '_' at the start.
-* non-user operations must start SEMIGROUPS_
-* other non-user functions, variables etc should be stored inside the
- SEMIGROUPS global record (so that they do not pollute GAP with lots of
- internal names of functions). Remember that record look up can be expensive so
- if you need to use a function in SEMIGROUPS in a tight loop, then put it into
- a local variable.
 
 Adapted from the contributing files for
 [GAP](https://github.com/gap-system/gap/blob/master/CONTRIBUTING.md)
