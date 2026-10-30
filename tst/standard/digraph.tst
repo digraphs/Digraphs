@@ -334,6 +334,10 @@ Error, the 1st argument (list of edges) must be a list of lists, but found int\
 eger in position 1
 gap> DigraphByEdges(["a", "b"], [["a", "a"]]);
 <immutable digraph with 2 vertices, 1 edge>
+gap> DigraphByEdges(IsMutableDigraph, ["a", "b"], [["a", "a"]]);
+<mutable digraph with 2 vertices, 1 edge>
+gap> DigraphByEdges(IsImmutableDigraph, ["a", "b"], [["a", "a"]]);
+<immutable digraph with 2 vertices, 1 edge>
 gap> DigraphByEdges(["a", "b"], [["a", "a"], ["a", "a"]]);
 <immutable multidigraph with 2 vertices, 2 edges>
 gap> D1 := DigraphByEdges([[1], -1, "abc", true],

@@ -88,6 +88,8 @@ DeclareConstructor("DigraphByEdgesCons", [IsDigraph, IsList, IsInt]);
 
 DeclareOperation("DigraphByEdges", [IsFunction, IsList]);
 DeclareOperation("DigraphByEdges", [IsFunction, IsList, IsInt]);
+DeclareOperation("DigraphByEdges", [IsFunction, IsList, IsList]);
+DeclareOperation("DigraphByEdgesNC", [IsFunction, IsList, IsList]);
 DeclareOperation("DigraphByEdges", [IsList]);
 DeclareOperation("DigraphByEdges", [IsList, IsInt]);
 DeclareOperation("DigraphByEdges", [IsList, IsList]);

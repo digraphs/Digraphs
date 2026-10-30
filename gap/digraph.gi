@@ -969,18 +969,25 @@ InstallMethod(DigraphByEdges, "for a function, a list, and an integer",
 InstallMethod(DigraphByEdges, "for a function and a list",
 [IsFunction, IsList], DigraphByEdgesCons);
 
-InstallMethod(DigraphByEdgesNC, "for a list and a list", [IsList, IsList],
-function(vertex_labels, edges)
+InstallMethod(DigraphByEdgesNC, "for a function, a list, and a list",
+[IsFunction, IsList, IsList],
+function(filt, vertex_labels, edges)
   local D;
-  D := DigraphByEdges(List(edges, x -> [Position(vertex_labels, x[1]),
+  D := DigraphByEdges(filt,
+                      List(edges, x -> [Position(vertex_labels, x[1]),
                                         Position(vertex_labels, x[2])]),
                       Length(vertex_labels));
   SetDigraphVertexLabels(D, vertex_labels);
   return D;
 end);
 
-InstallMethod(DigraphByEdges, "for a list and a list", [IsList, IsList],
-function(vertex_labels, edges)
+InstallMethod(DigraphByEdgesNC, "for a list and a list", [IsList, IsList],
+{vertex_labels, edges} -> DigraphByEdgesNC(IsImmutableDigraph, vertex_labels,
+                                           edges));
+
+InstallMethod(DigraphByEdges, "for a function, a list, and a list",
+[IsFunction, IsList, IsList],
+function(filt, vertex_labels, edges)
   local label_counts, duplicates, badpos, labels;
 
   if not IsDuplicateFreeList(vertex_labels) then
@@ -1006,8 +1013,13 @@ function(vertex_labels, edges)
                   " <vertex_labels> (= ", vertex_labels, ")");
   fi;
 
-  return DigraphByEdgesNC(vertex_labels, edges);
+  return DigraphByEdgesNC(filt, vertex_labels, edges);
 end);
+
+InstallMethod(DigraphByEdges, "for a list and a list",
+[IsList, IsList],
+{vertex_labels, edges} -> DigraphByEdges(IsImmutableDigraph, vertex_labels,
+                                         edges));
 
 InstallMethod(DigraphByInNeighboursCons, "for IsMutableDigraph, and a list",
 [IsMutableDigraph, IsList],
