@@ -475,6 +475,24 @@ gap> C := DigraphContractEdge(D, 2, 1);
 gap> DigraphEdges(C);
 [ [ 2, 1 ] ]
 
+# DigraphInsertEdge
+gap> D := DigraphByEdges(IsMutableDigraph, [[1, 2], [2, 1], [3, 4], [4, 3], [1, 3], [3, 1], [2, 4], [4, 2]]);
+<mutable digraph with 4 vertices, 8 edges>
+gap> DigraphInsertEdge(D, [1, 2], [3, 4]);
+<mutable digraph with 6 vertices, 14 edges>
+gap> DigraphEdges(D);
+[ [ 1, 3 ], [ 1, 5 ], [ 2, 4 ], [ 2, 5 ], [ 3, 1 ], [ 3, 6 ], [ 4, 2 ], 
+  [ 4, 6 ], [ 5, 1 ], [ 5, 2 ], [ 5, 6 ], [ 6, 3 ], [ 6, 4 ], [ 6, 5 ] ]
+
+# DigraphReduceEdge
+gap> D := DigraphByEdges(IsMutableDigraph, [[1, 3], [3, 1], [2, 4], [4, 2], [1, 5], [5, 1], [2, 5], [5, 2], [3, 6], [6, 3], [4, 6], [6, 4], [5, 6], [6, 5]]);
+<mutable digraph with 6 vertices, 14 edges>
+gap> DigraphReduceEdge(D, [5, 6]);
+<mutable digraph with 4 vertices, 8 edges>
+gap> DigraphEdges(D);
+[ [ 1, 3 ], [ 1, 2 ], [ 2, 4 ], [ 2, 1 ], [ 3, 1 ], [ 3, 4 ], [ 4, 2 ], 
+  [ 4, 3 ] ]
+
 # Issue #704 SubdigraphsMonomorphisms bug
 gap> d := Digraph([[2, 3, 4, 5], [1, 3, 4], [1, 2, 4, 5], [1, 2, 3, 5], 
 > [1, 3, 4]]);;

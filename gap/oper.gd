@@ -38,6 +38,10 @@ DeclareOperation("DigraphClosure", [IsDigraph, IsPosInt]);
 DeclareOperation("DigraphContractEdge", [IsDigraph, IsPosInt, IsPosInt]);
 DeclareOperation("DigraphContractEdge", [IsDigraph, IsDenseList]);
 
+DeclareOperation("DigraphInsertEdge", [IsDigraph, IsDenseList, IsDenseList]);
+
+DeclareOperation("DigraphReduceEdge", [IsDigraph, IsDenseList]);
+
 # 3. Ways of combining digraphs . . .
 DeclareGlobalFunction("DigraphDisjointUnion");
 DeclareGlobalFunction("DigraphJoin");
