@@ -2656,7 +2656,7 @@ function(s)
       if v < 0 or v >= n then
         ErrorNoReturn("line ", i + 1, " of <s> has a vertex out of range");
       elif v = i - 1 then
-        ErrorNoReturn("line ", i + 1, " of <s> contains a loop"); 
+        ErrorNoReturn("line ", i + 1, " of <s> contains a loop");
       fi;
     od;
     Add(nbs, line + 1);  # converting from 0 indexed to 1 indexed
