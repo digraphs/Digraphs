@@ -128,14 +128,23 @@ DeclareOperation("AsMonoid", [IsFunction, IsDigraph]);
 DeclareOperation("AsSemigroup",
                  [IsFunction, IsDigraph, IsDenseList, IsDenseList]);
 
-# 10. Random digraphs . . .
+# 10. 	``Random digraphs . . .
+DeclareOperation("RandomDigraphOutNeighbours", [IsInt, IsFloat]);
+DeclareOperation("RandomDigraphOutNeighbours", [IsRandomSource, IsInt, IsFloat]);
+
 DeclareConstructor("RandomDigraphCons", [IsDigraph, IsInt]);
 DeclareConstructor("RandomDigraphCons", [IsDigraph, IsInt, IsRat]);
 DeclareConstructor("RandomDigraphCons", [IsDigraph, IsInt, IsFloat]);
+#DeclareConstructor("RandomDigraphCons", [IsDigraph, IsRandomSource, IsInt]);
+#DeclareConstructor("RandomDigraphCons", [IsDigraph, IsRandomSource, IsInt, IsRat]);
+#DeclareConstructor("RandomDigraphCons", [IsDigraph, IsRandomSource, IsInt, IsFloat]);
 
 DeclareOperation("RandomDigraph", [IsInt]);
 DeclareOperation("RandomDigraph", [IsInt, IsRat]);
 DeclareOperation("RandomDigraph", [IsInt, IsFloat]);
+#DeclareOperation("RandomDigraph", [IsRandomSource, IsInt]);
+#DeclareOperation("RandomDigraph", [IsRandomSource, IsInt, IsRat]);
+#DeclareOperation("RandomDigraph", [IsRandomSource, IsInt, IsFloat]);
 DeclareOperation("RandomDigraph", [IsFunction, IsInt]);
 DeclareOperation("RandomDigraph", [IsFunction, IsInt, IsRat]);
 DeclareOperation("RandomDigraph", [IsFunction, IsInt, IsFloat]);

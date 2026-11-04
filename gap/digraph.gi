@@ -1395,7 +1395,30 @@ end);
 
 ########################################################################
 # 10. Random digraphs
-########################################################################
+######################################################################### 
+
+         
+InstallMethodWithRandomSource(RandomDigraphOutNeighbours,
+"for a random source and an integer and a float",
+[IsRandomSource, IsInt, IsFloat],
+function(rs, n, p)
+  local adj, i, j, q;
+    if p < 0.0 or p > 1.0 then
+      ErrorNoReturn("the 3rd argument <p> must be between 0 and 1");
+    fi;
+    adj := List([ 1 .. n], i -> []);
+     for i  in [1 .. n] do    
+       for j in [1 .. n] do
+          q := Float(Random(rs, 0, 2 ^ 52 - 1 + n ^ 2)) / Float(2 ^ 52 + n ^ 2); 
+          #We think adding n^2 will increase resolution for large digraphs
+          if q < p then
+            Add(adj[i], j);
+          fi;
+       od;
+     od;
+     return adj;
+end);
+
 
 # Methods for probability unspecified or given as a rational
 for filter in ["IsMutableDigraph",
@@ -1406,25 +1429,26 @@ for filter in ["IsMutableDigraph",
                "IsStronglyConnectedDigraph",
                "IsAcyclicDigraph",
                "IsSymmetricDigraph"] do
+
   InstallMethod(RandomDigraphCons,
   Concatenation("for ", filter, " and an integer"),
   [EvalString(filter), IsInt],
-  {f, n} -> RandomDigraphCons(f, n, Float(Random(0, n ^ 2) / n ^ 2)));
+  {f, n} -> RandomDigraphCons(f, n, Float(Random(0, n ^ 2) / (n ^ 2))));
 
   InstallMethod(RandomDigraphCons,
   Concatenation("for ", filter, ", an integer, and a rational"),
   [EvalString(filter), IsInt, IsRat],
-  {f, n, p} -> RandomDigraphCons(f, n, Float(p)));
+  {f, n, p} -> RandomDigraphCons(f, n , Float(p)));
 od;
 
-InstallMethod(RandomDigraphCons,
-"for IsMutableDigraph, a positive integer, and a float",
-[IsMutableDigraph, IsPosInt, IsFloat],
-function(_, n, p)
+InstallMethodWithRandomSource(RandomDigraphCons,
+"for a random source and IsMutableDigraph, a positive integer, and a float",
+[IsRandomSource, IsMutableDigraph, IsPosInt, IsFloat],
+function(rs, _, n, p)
   if p < 0.0 or 1.0 < p then
     ErrorNoReturn("the 2nd argument <p> must be between 0 and 1,");
   fi;
-  return DigraphNC(IsMutableDigraph, RANDOM_DIGRAPH(n, p));
+  return DigraphNC(IsMutableDigraph, RandomDigraphOutNeighbours(rs, n, p));
 end);
 
 # This function takes an existing adjacency list after solely creating
