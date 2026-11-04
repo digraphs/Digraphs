@@ -82,7 +82,7 @@ gap> EdgeWeights(g);
     <Returns>A digraph</Returns>
     <Description>
         This function returns an immutable digraph with all edge weights
-        set to 1. If <A>digraph</A> is a mutable digraph,
+        set to <C>1</C>. If <A>digraph</A> is a mutable digraph,
         then it is also modified in place. <P/>
         See <Ref Attr="EdgeWeights"/>.
     <Example><![CDATA[

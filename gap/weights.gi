@@ -20,7 +20,7 @@ function(D, weights)
 
   # check all elements of weights is a list
   if not ForAll(weights, IsList) then
-    ErrorNoReturn("the 2nd argument <weights> must be a list of lists,");
+    ErrorNoReturn("the 2nd argument <weights> must be a list of lists");
   fi;
 
   # check number there is an edge weight list for vertex u
