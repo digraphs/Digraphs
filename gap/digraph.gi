@@ -1441,15 +1441,26 @@ for filter in ["IsMutableDigraph",
   {f, n, p} -> RandomDigraphCons(f, n , Float(p)));
 od;
 
-InstallMethodWithRandomSource(RandomDigraphCons,
-"for a random source and IsMutableDigraph, a positive integer, and a float",
-[IsRandomSource, IsMutableDigraph, IsPosInt, IsFloat],
-function(rs, _, n, p)
+InstallMethod(RandomDigraphCons,
+"for a random source and IsMutableDigraph, a integer, and a float",
+[IsMutableDigraph, IsRandomSource, IsInt, IsFloat],
+function(_, rs, n, p)
   if p < 0.0 or 1.0 < p then
     ErrorNoReturn("the 2nd argument <p> must be between 0 and 1,");
   fi;
   return DigraphNC(IsMutableDigraph, RandomDigraphOutNeighbours(rs, n, p));
 end);
+
+InstallMethod(RandomDigraphCons,
+"IsMutableDigraph, an integer, and a float",
+[IsMutableDigraph, IsInt, IsFloat],
+function(_, n, p)
+  if p < 0.0 or 1.0 < p then
+    ErrorNoReturn("the 2nd argument <p> must be between 0 and 1,");
+  fi;
+  return RandomDigraphCons(IsMutableDigraph, GlobalMersenneTwister, n, p);
+end);
+
 
 # This function takes an existing adjacency list after solely creating
 # a Hamiltonian cycle or tree, and randomly adds edges between all
