@@ -969,6 +969,58 @@ InstallMethod(DigraphByEdges, "for a function, a list, and an integer",
 InstallMethod(DigraphByEdges, "for a function and a list",
 [IsFunction, IsList], DigraphByEdgesCons);
 
+InstallMethod(DigraphByEdgesNC, "for a function, a list, and a list",
+[IsFunction, IsList, IsList],
+function(filt, vertex_labels, edges)
+  local D;
+  D := DigraphByEdges(filt,
+                      List(edges, x -> [Position(vertex_labels, x[1]),
+                                        Position(vertex_labels, x[2])]),
+                      Length(vertex_labels));
+  SetDigraphVertexLabels(D, vertex_labels);
+  return D;
+end);
+
+InstallMethod(DigraphByEdgesNC, "for a list and a list", [IsList, IsList],
+{vertex_labels, edges} -> DigraphByEdgesNC(IsImmutableDigraph, vertex_labels,
+                                           edges));
+
+InstallMethod(DigraphByEdges, "for a function, a list, and a list",
+[IsFunction, IsList, IsList],
+function(filt, vertex_labels, edges)
+  local label_counts, duplicates, badpos, labels;
+
+  if not IsDuplicateFreeList(vertex_labels) then
+    label_counts := Collected(vertex_labels);
+    duplicates := List(Filtered(label_counts, x -> x[2] > 1), x -> x[1]);
+    ErrorNoReturn("<vertex_labels> contains duplicate labels: ", duplicates);
+  fi;
+
+  # get first invalid edge - malformed
+  badpos := PositionProperty(edges, e -> not IsList(e) or Length(e) <> 2);
+  if badpos <> fail then
+    ErrorNoReturn("invalid edge ", edges[badpos], " in position ", badpos,
+                  " in <edges>; edges must be lists of length 2");
+  fi;
+
+  #  get first invalid edge - bad reference
+  labels := Set(vertex_labels);  # set makes it faster to check containment
+  badpos := PositionProperty(edges,
+                             e -> not (e[1] in labels and e[2] in labels));
+  if badpos <> fail then
+    ErrorNoReturn("invalid edge ", edges[badpos], " in <edges> at position ",
+                  badpos, "; edges must only contain items from",
+                  " <vertex_labels> (= ", vertex_labels, ")");
+  fi;
+
+  return DigraphByEdgesNC(filt, vertex_labels, edges);
+end);
+
+InstallMethod(DigraphByEdges, "for a list and a list",
+[IsList, IsList],
+{vertex_labels, edges} -> DigraphByEdges(IsImmutableDigraph, vertex_labels,
+                                         edges));
+
 InstallMethod(DigraphByInNeighboursCons, "for IsMutableDigraph, and a list",
 [IsMutableDigraph, IsList],
 function(_, list)
