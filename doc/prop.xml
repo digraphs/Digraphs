@@ -1665,11 +1665,14 @@ false]]></Example>
 <#GAPDoc Label="Is2EdgeTransitive">
 <ManSection>
   <Prop Name="Is2EdgeTransitive" Arg="digraph"/>
+  <Prop Name="IsTwoEdgeTransitive" Arg="digraph"/>
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
     If <A>digraph</A> is a digraph without multiple edges, then <C>Is2EdgeTransitive</C>
     returns <K>true</K> if <A>digraph</A> is 2-edge transitive, and <K>false</K>
-    otherwise. If <A>digraph</A> has multiple edges, then <C>Is2EdgeTransitive</C> returns an error.
+    otherwise. If <A>digraph</A> has multiple edges, then <C>Is2EdgeTransitive</C> returns an error. <P/>
+
+    <Ref Prop="IsTwoEdgeTransitive"/> is a synonym for <Ref Prop="Is2EdgeTransitive"/>. <P/>
 
     A digraph is <E>2-edge transitive</E> if its automorphism group
     acts transitively on 2-edges via the action

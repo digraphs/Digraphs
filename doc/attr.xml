@@ -1209,6 +1209,7 @@ gap> DigraphUndirectedGirth(D);
 <#GAPDoc Label="ArticulationPoints">
 <ManSection>
   <Attr Name="ArticulationPoints" Arg="digraph"/>
+  <Attr Name="CutVertices" Arg="digraph"/>
   <Returns>A list of vertices.</Returns>
   <Description>
     A connected digraph is <E>biconnected</E> if it is still connected (in the
@@ -1233,6 +1234,9 @@ gap> DigraphUndirectedGirth(D);
     <M>3</M> nodes, then at least one of the nodes incident to the bridge is
     an articulation point.  The converse does not hold, there are digraphs
     with articulation points, but no bridges.
+    <P/>
+
+    <Ref Attr="CutVertices"/> is a synonym for <Ref Attr="ArticulationPoints"/>.
     <P/>
 
     See also <Ref Prop="IsBiconnectedDigraph"/> and 
