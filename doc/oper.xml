@@ -1057,7 +1057,7 @@ gap> QuotientDigraph(EmptyDigraph(0), []);
 <ManSection>
   <Oper Name="DigraphHalfSquare" Arg="digraph, list"/>
   <Oper Name="DigraphHalfSquares" Arg="digraph, list"/>
-  <Returns>A digraph.</Returns>
+  <Returns>A digraph or a list of digraphs.</Returns>
   <Description>
     If <A>digraph</A> is a bipartite digraph <M>D</M>, and <A>list</A> is a list
     of vertices <M>U</M> as one of the two sides of <M>D</M> (see
