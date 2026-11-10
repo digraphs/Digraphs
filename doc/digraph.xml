@@ -761,7 +761,7 @@ gap> List(D, Size);
 
 <#GAPDoc Label="RandomDigraph">
 <ManSection>
-  <Oper Name="RandomDigraph" Arg="[filt, ]n[, p]"/>
+  <Oper Name="RandomDigraph" Arg="[filt, ][rs, ]n[, p]"/>
   <Returns>A digraph.</Returns>
   <Description>
     &STANDARD_FILT_TEXT;
@@ -788,12 +788,18 @@ gap> List(D, Size);
     For <Ref Filt='IsAcyclicDigraph'/> and <Ref Filt='IsSymmetricDigraph'/>, edges are added between any 
       pairs of vertices with probability approximately <A>p</A>.<P/>
 
+    If the optional second argument <A>rs</A> is a random source (see <Ref Sect="Random Sources"/>) then it 
+    is used to generate the random choices made when creating the digraph. If <A>rs<A/> is not specified, then the 
+    global random source <C>GlobalMersenneTwister<C/> is used. Two calls with the same arguments and random sources 
+    in the same state return the same digraph, which makes it possible to reproduce a random digraph by resetting the 
+    random source. <P/>
+
     If <A>n</A> is a positive integer, then this function returns a random
     digraph with <A>n</A> vertices and without multiple edges. The result
     may or may not have loops. If using <Ref Filt='IsAcyclicDigraph'/>, the resulting graph 
       will not have any loops by definition.<P/>
 
-    If the optional second argument <A>p</A> is a float with value
+    If the optional fourth argument <A>p</A> is a float with value
     <M>0 \leq </M> <A> p </A> <M> \leq 1</M>, then an edge will exist between each
     pair of vertices with probability approximately <A>p</A>.
     If <A>p</A> is not specified, then a random probability will be assumed

@@ -1396,7 +1396,6 @@ end);
 ########################################################################
 # 10. Random digraphs
 ######################################################################### 
-
          
 InstallMethodWithRandomSource(RandomDigraphOutNeighbours,
 "for a random source and an integer and a float",
@@ -1407,10 +1406,11 @@ function(rs, n, p)
       ErrorNoReturn("the 3rd argument <p> must be between 0 and 1");
     fi;
     adj := List([ 1 .. n], i -> []);
-     for i  in [1 .. n] do    
+     for i  in [1 .. n] do
        for j in [1 .. n] do
-          q := Float(Random(rs, 0, 2 ^ 52 - 1 + n ^ 2)) / Float(2 ^ 52 + n ^ 2); 
-          #We think adding n^2 will increase resolution for large digraphs
+          q := Float(Random(rs, 0, 2 ^ 52 - 1 + n ^ 2)) / Float(2 ^ 52 + n ^ 2);
+          #We think adding n^2 will increase resolution for
+          #large digraphs
           if q < p then
             Add(adj[i], j);
           fi;
@@ -1418,7 +1418,6 @@ function(rs, n, p)
      od;
      return adj;
 end);
-
 
 # Methods for probability unspecified or given as a rational
 for filter in ["IsMutableDigraph",
@@ -1438,15 +1437,27 @@ for filter in ["IsMutableDigraph",
   InstallMethod(RandomDigraphCons,
   Concatenation("for ", filter, ", an integer, and a rational"),
   [EvalString(filter), IsInt, IsRat],
-  {f, n, p} -> RandomDigraphCons(f, n , Float(p)));
+  {f, n, p} -> RandomDigraphCons(f, n, Float(p)));
+
+  InstallMethod(RandomDigraphCons,
+  Concatenation("for ", filter, ", a random source, and an integer"),
+  [EvalString(filter), IsRandomSource, IsInt],
+  {f, rs, n} ->
+    RandomDigraphCons(f, rs, n, Float(Random(rs, 0, n ^ 2) / (n ^ 2))));
+
+  InstallMethod(RandomDigraphCons,
+  Concatenation("for ", filter, ", a random source, an integer, and a rational"),
+  [EvalString(filter), IsRandomSource, IsInt, IsRat],
+  {f, rs, n, p} -> RandomDigraphCons(f, rs, n, Float(p)));
+
 od;
 
 InstallMethod(RandomDigraphCons,
-"for a random source and IsMutableDigraph, a integer, and a float",
+"for IsMutableDigraph, a random source, an integer, and a float",
 [IsMutableDigraph, IsRandomSource, IsInt, IsFloat],
 function(_, rs, n, p)
   if p < 0.0 or 1.0 < p then
-    ErrorNoReturn("the 2nd argument <p> must be between 0 and 1,");
+    ErrorNoReturn("the probability <p> must be between 0 and 1,");
   fi;
   return DigraphNC(IsMutableDigraph, RandomDigraphOutNeighbours(rs, n, p));
 end);
@@ -1456,11 +1467,10 @@ InstallMethod(RandomDigraphCons,
 [IsMutableDigraph, IsInt, IsFloat],
 function(_, n, p)
   if p < 0.0 or 1.0 < p then
-    ErrorNoReturn("the 2nd argument <p> must be between 0 and 1,");
+    ErrorNoReturn("the probability <p> must be between 0 and 1,");
   fi;
   return RandomDigraphCons(IsMutableDigraph, GlobalMersenneTwister, n, p);
 end);
-
 
 # This function takes an existing adjacency list after solely creating
 # a Hamiltonian cycle or tree, and randomly adds edges between all
@@ -1770,6 +1780,16 @@ function(_, n, p)
 end);
 
 InstallMethod(RandomDigraphCons,
+"for IsImmutableDigraph, a random source, a positive integer, and a float",
+[IsImmutableDigraph, IsRandomSource, IsPosInt, IsFloat],
+function(_, rs, n, p)
+  local D;
+  D := MakeImmutable(RandomDigraphCons(IsMutableDigraph, rs, n, p));
+  SetIsMultiDigraph(D, false);
+  return D;
+end);
+
+InstallMethod(RandomDigraphCons,
 "for IsImmutableDigraph, a positive integer, and a float",
 [IsImmutableDigraph, IsPosInt, IsFloat],
 function(_, n, p)
@@ -1788,6 +1808,18 @@ InstallMethod(RandomDigraph, "for a pos int and a rational", [IsPosInt, IsRat],
 InstallMethod(RandomDigraph, "for a pos int and a float", [IsPosInt, IsFloat],
 {n, p} -> RandomDigraphCons(IsImmutableDigraph, n, p));
 
+InstallMethod(RandomDigraph, "for a random source and a pos int", 
+[IsRandomSource, IsPosInt], 
+{rs, n} -> RandomDigraphCons(IsImmutableDigraph, rs, n));
+
+InstallMethod(RandomDigraph, "for a random source, a pos int and a rational", 
+[IsRandomSource, IsPosInt, IsRat],
+{rs, n, p} -> RandomDigraphCons(IsImmutableDigraph, rs, n, p));
+
+InstallMethod(RandomDigraph, "for a random source, a pos int and a float", 
+[IsRandomSource, IsPosInt, IsFloat],
+{rs, n, p} -> RandomDigraphCons(IsImmutableDigraph, rs, n, p));
+
 InstallMethod(RandomDigraph, "for a func and a pos int", [IsFunction, IsPosInt],
 RandomDigraphCons);
 
@@ -1796,6 +1828,15 @@ InstallMethod(RandomDigraph, "for a func, a pos int, and a rational",
 
 InstallMethod(RandomDigraph, "for a func, a pos int, and a float",
 [IsFunction, IsPosInt, IsFloat], RandomDigraphCons);
+
+InstallMethod(RandomDigraph, "for a func, a random source, a pos int",
+[IsFunction, IsRandomSource, IsPosInt], RandomDigraphCons);
+
+InstallMethod(RandomDigraph, "for a func, a random source, a pos int and a rational",
+[IsFunction, IsRandomSource, IsPosInt, IsRat], RandomDigraphCons);
+
+InstallMethod(RandomDigraph, "for a func, a random source, a pos int and a float",
+[IsFunction, IsRandomSource, IsPosInt, IsFloat], RandomDigraphCons);
 
 InstallMethod(RandomMultiDigraph, "for a pos int", [IsPosInt],
 n -> RandomMultiDigraph(n, Random([1 .. (n * (n - 1)) / 2])));

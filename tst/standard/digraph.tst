@@ -2091,3 +2091,5 @@ gap> graph := RandomDigraph(IsEulerianDigraph, 10);;
 #
 gap> DIGRAPHS_StopTest();
 gap> STOP_TEST("Digraphs package: standard/digraph.tst", 0);
+
+#Random Digraph with Random Source
