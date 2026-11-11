@@ -1062,7 +1062,7 @@ gap> QuotientDigraph(EmptyDigraph(0), []);
     If <A>digraph</A> is a bipartite digraph <M>D</M>, and <A>list</A> is a list
     of vertices <M>U</M> as one of the two sides of <M>D</M> (see
     <Ref Prop="IsBipartiteDigraph"/>, <Ref Attr="DigraphBicomponents"/>), then
-    <C>DigraphHalfSquare"</C> returns the bipartite half or half-square of
+    <C>DigraphHalfSquare</C> returns the bipartite half or half-square of
     <A>digraph</A> with respect to <A>list</A>. If <A>digraph</A> is not
     bipartite, or <A>list</A> is not a side of <A>digraph</A>, then an
     error is raised. <P/>
