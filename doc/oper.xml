@@ -1062,19 +1062,19 @@ gap> QuotientDigraph(EmptyDigraph(0), []);
     If <A>digraph</A> is a bipartite digraph <M>D</M>, and <A>list</A> is a list
     of vertices <M>U</M> as one of the two sides of <M>D</M> (see
     <Ref Prop="IsBipartiteDigraph"/>, <Ref Attr="DigraphBicomponents"/>), then
-    <Ref Oper="DigraphHalfSquare"/> returns the bipartite half or half-square of
+    <C>DigraphHalfSquare"</C> returns the bipartite half or half-square of
     <A>digraph</A> with respect to <A>list</A>. If <A>digraph</A> is not
     bipartite, or <A>list</A> is not a side of <A>digraph</A>, then an
     error is raised. <P/>
 
     The half-square of <M>D</M> with respect to <M>U</M> is a digraph whose
     vertices are the elements of <M>U</M>, with an edge from <M>u_1</M> to
-    <M>u_2</M> if and only if there exists a directed path <M>u_1 \to x \to u_2</M> in
-    <M>D</M>. The vertices are labelled <M>1, \ldots, |</M><A>U</A><M>|</M>,
+    <M>u_2</M> if and only if there exists a directed path <M>u_1 \to x \to
+    u_2</M> in <M>D</M>. The vertices are <M>1, \ldots, |</M><A>U</A><M>|</M>,
     where the vertex <M>i</M> corresponds to the <M>i</M>-th smallest element of
     <A>U</A>. <P/>
 
-    <Ref Oper="DigraphHalfSquares"/> returns a list containing two digraphs, the
+    <C>DigraphHalfSquares</C> returns a list containing two digraphs, the
     half square of <A>digraph</A> with respect to <A>list</A>, and the half
     square with respect to the vertices of <A>digraph</A> not in <A>list</A>,
     i.e. the half squares of both sides of the bipartition.

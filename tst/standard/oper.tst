@@ -503,8 +503,7 @@ gap> DigraphBicomponents(D);
 gap> DigraphHalfSquare(D, [6]);
 Error, the 2nd argument <U> must be a list of vertices of <D>
 gap> DigraphHalfSquare(D, [1, 3]);
-Error, the digraph <D> is not bipartite with respect to the vertex set <U>; ve\
-rtices 4 and 5 are adjacent and lie outside <U>
+Error, the digraph <D> is not bipartite with respect to the vertex set <U>
 gap> OutNeighbours(DigraphHalfSquare(D, [1, 3, 5]));
 [ [ 2 ], [ 3 ], [  ] ]
 gap> OutNeighbours(DigraphHalfSquare(D, [2, 4]));

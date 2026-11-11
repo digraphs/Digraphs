@@ -1277,7 +1277,7 @@ InstallMethod(DigraphHalfSquareNC, "for a digraph and a list",
 function(D, U)
   local pos, i, u, w, x, sharecommon, outnbs;
 
-  # for vertex relabelling from D to U
+  # for vertex re-numbering from D to U
   pos := ListWithIdenticalEntries(DigraphNrVertices(D), 0);
   for i in [1 .. Length(U)] do
     pos[U[i]] := i;
@@ -1305,7 +1305,7 @@ end);
 InstallMethod(DigraphHalfSquare, "for a digraph and a list",
 [IsDigraph, IsList],
 function(D, U)
-  local v, w, nU, inU, whereverts;
+  local nU;
 
   if not IsBipartiteDigraph(D) then
     ErrorNoReturn("the 1st argument <D> must be a bipartite digraph");
@@ -1316,27 +1316,20 @@ function(D, U)
     ErrorNoReturn("the 2nd argument <U> must be a list of vertices of <D>");
   fi;
 
-  # check if U is a bicomponent of D, i.e. no edges between vertices in U
+  # check if the set U and its complement D \ U are bicomponents, i.e. no edges
+  # between vertices in the same set
   # can't do 'U in DigraphBicomponents(D)' because the partition isn't unique
-  inU := BlistList([1 .. DigraphNrVertices(D)], nU);
-  for v in DigraphVertices(D) do
-    for w in OutNeighboursOfVertex(D, v) do
-      if inU[v] = inU[w] then
-        whereverts := "lie in <U>";
-        if not inU[v] then
-          whereverts := "lie outside <U>";
-        fi;
-        ErrorNoReturn("the digraph <D> is not bipartite with respect to ",
-                      "the vertex set <U>; vertices ", v, " and ", w,
-                      " are adjacent and ", whereverts);
-      fi;
-    od;
-  od;
+  if not (IsIndependentSet(D, nU) and
+          IsIndependentSet(D, Difference(DigraphVertices(D), nU))) then
+    ErrorNoReturn("the digraph <D> is not bipartite with respect to the vertex",
+                  " set <U>");
+  fi;
 
   return DigraphHalfSquareNC(D, nU);
 end);
 
-InstallMethod(DigraphHalfSquares, "for a digraph", [IsDigraph, IsList],
+InstallMethod(DigraphHalfSquares, "for a digraph and a list",
+[IsDigraph, IsList],
 function(D, U)
   local complement;
   complement := Difference(DigraphVertices(D), U);
