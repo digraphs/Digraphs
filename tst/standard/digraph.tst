@@ -2093,3 +2093,71 @@ gap> DIGRAPHS_StopTest();
 gap> STOP_TEST("Digraphs package: standard/digraph.tst", 0);
 
 #Random Digraph with Random Source
+
+gap> RandomDigraph(IsConnectedDigraph, 10);
+<immutable digraph with 10 vertices, 10 edges>
+gap> RandomDigraph(IsStronglyConnectedDigraph, 10);
+<immutable digraph with 10 vertices, 27 edges>
+gap> RandomDigraph(IsAcyclicDigraph, 10);
+<immutable digraph with 10 vertices, 10 edges>
+gap> RandomDigraph(IsSymmetricDigraph, 10);
+<immutable digraph with 10 vertices, 81 edges>
+gap> RandomDigraph(IsMutableDigraph, 10, 1/2);
+<mutable digraph with 10 vertices, 49 edges>
+gap> RandomDigraph(IsImmutableDigraph, 10, 1/2);
+<immutable digraph with 10 vertices, 49 edges>
+gap> RandomDigraph(IsHamiltonianDigraph, 10, 1/2);
+<immutable digraph with 10 vertices, 53 edges>
+gap> RandomDigraph(IsEulerianDigraph, 10, 1/2);
+<immutable digraph with 10 vertices, 33 edges>
+gap> RandomDigraph(IsConnectedDigraph, 10, 1/2);
+<immutable digraph with 10 vertices, 53 edges>
+gap> RandomDigraph(IsStronglyConnectedDigraph, 10, 1/2);
+<immutable digraph with 10 vertices, 55 edges>
+gap> RandomDigraph(IsAcyclicDigraph, 10, 1/2);
+<immutable digraph with 10 vertices, 21 edges>
+gap> RandomDigraph(IsSymmetricDigraph, 10, 1/2);
+<immutable digraph with 10 vertices, 53 edges>
+gap> RandomDigraph(IsSymmetricDigraph, 10, 0.5);
+<immutable digraph with 10 vertices, 53 edges>
+gap> RandomDigraph(IsSymmetricDigraph, 10, 0.5);
+<immutable digraph with 10 vertices, 61 edges>
+gap> RandomDigraph(IsMutableDigraph, 10, 0.5);
+<mutable digraph with 10 vertices, 53 edges>
+gap> RandomDigraph(IsImmutableDigraph, 10, 0.5);
+<immutable digraph with 10 vertices, 47 edges>
+gap> RandomDigraph(IsHamiltonianDigraph, 10, 0.5);
+<immutable digraph with 10 vertices, 52 edges>
+gap> RandomDigraph(IsEulerianDigraph, 10, 0.5);
+<immutable digraph with 10 vertices, 29 edges>
+gap> RandomDigraph(IsConnectedDigraph, 10, 0.5);
+<immutable digraph with 10 vertices, 49 edges>
+gap> RandomDigraph(IsStronglyConnectedDigraph, 10, 0.5);
+<immutable digraph with 10 vertices, 49 edges>
+gap> RandomDigraph(IsAcyclicDigraph, 10, 0.5);
+<immutable digraph with 10 vertices, 23 edges>
+gap> RandomDigraph(IsSymmetricDigraph, 10, 0.5);
+<immutable digraph with 10 vertices, 46 edges>
+gap> RandomDigraph(IsMutableDigraph, GlobalMersenneTwister, 10, 0.5);
+<mutable digraph with 10 vertices, 45 edges>
+gap> RandomDigraph(IsImmutableDigraph, GlobalMersenneTwister, 10, 0.5);
+<immutable digraph with 10 vertices, 53 edges>
+gap> RandomDigraph(IsHamiltonianDigraph, GlobalMersenneTwister, 10, 0.5);
+<immutable digraph with 10 vertices, 53 edges>
+gap> RandomDigraph(IsEulerianDigraph, GlobalMersenneTwister, 10, 0.5);
+<immutable digraph with 10 vertices, 26 edges>
+gap> RandomDigraph(IsConnectedDigraph, GlobalMersenneTwister, 10, 0.5);
+<immutable digraph with 10 vertices, 51 edges>
+gap> RandomDigraph(IsStronglyConnectedDigraph, GlobalMersenneTwister, 10, 0.5);
+<immutable digraph with 10 vertices, 50 edges>
+gap> RandomDigraph(IsAcyclicDigraph, GlobalMersenneTwister, 10, 0.5);
+<immutable digraph with 10 vertices, 28 edges>
+gap> RandomDigraph(IsSymmetricDigraph, GlobalMersenneTwister, 10, 0.5);
+<immutable digraph with 10 vertices, 43 edges>
+gap> RandomDigraph(GlobalMersenneTwister, 10, 0.5);
+<immutable digraph with 10 vertices, 56 edges>
+gap> Reset(GlobalMersenneTwister);;
+gap> RandomDigraph(GlobalMersenneTwister, 10, 0.5);
+<immutable digraph with 10 vertices, 56 edges>
+gap> last = last3;
+true

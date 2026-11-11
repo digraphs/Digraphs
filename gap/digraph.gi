@@ -1430,16 +1430,6 @@ for filter in ["IsMutableDigraph",
                "IsSymmetricDigraph"] do
 
   InstallMethod(RandomDigraphCons,
-  Concatenation("for ", filter, " and an integer"),
-  [EvalString(filter), IsInt],
-  {f, n} -> RandomDigraphCons(f, n, Float(Random(0, n ^ 2) / (n ^ 2))));
-
-  InstallMethod(RandomDigraphCons,
-  Concatenation("for ", filter, ", an integer, and a rational"),
-  [EvalString(filter), IsInt, IsRat],
-  {f, n, p} -> RandomDigraphCons(f, n, Float(p)));
-
-  InstallMethod(RandomDigraphCons,
   Concatenation("for ", filter, ", a random source, and an integer"),
   [EvalString(filter), IsRandomSource, IsInt],
   {f, rs, n} ->
@@ -1462,20 +1452,10 @@ function(_, rs, n, p)
   return DigraphNC(IsMutableDigraph, RandomDigraphOutNeighbours(rs, n, p));
 end);
 
-InstallMethod(RandomDigraphCons,
-"IsMutableDigraph, an integer, and a float",
-[IsMutableDigraph, IsInt, IsFloat],
-function(_, n, p)
-  if p < 0.0 or 1.0 < p then
-    ErrorNoReturn("the probability <p> must be between 0 and 1,");
-  fi;
-  return RandomDigraphCons(IsMutableDigraph, GlobalMersenneTwister, n, p);
-end);
-
 # This function takes an existing adjacency list after solely creating
 # a Hamiltonian cycle or tree, and randomly adds edges between all
 # remaining vertices in the graph.
-BindGlobal("DIGRAPHS_FillOutGraph", function(n, p, adjacencyList)
+BindGlobal("DIGRAPHS_FillOutGraph", function(rs, n, p, adjacencyList)
     local vertices, probability, i, j;
 
     vertices := [1 .. n];
@@ -1484,7 +1464,7 @@ BindGlobal("DIGRAPHS_FillOutGraph", function(n, p, adjacencyList)
     for i in vertices do
         for j in vertices do
             if (not (j in adjacencyList[i])) then
-                 if Float(Random(probability) / 100) < p then
+                 if Float(Random(rs, probability) / 100) < p then
                     Add(adjacencyList[i], j);
                  fi;
             fi;
@@ -1495,9 +1475,9 @@ BindGlobal("DIGRAPHS_FillOutGraph", function(n, p, adjacencyList)
 end);
 
 InstallMethod(RandomDigraphCons,
-"for IsHamiltonianDigraph, a positive integer, and a float",
-[IsHamiltonianDigraph, IsPosInt, IsFloat],
-function(_, n, p)
+"for IsHamiltonianDigraph, a random source, a positive integer, and a float",
+[IsHamiltonianDigraph, IsRandomSource, IsPosInt, IsFloat],
+function(_, rs, n, p)
     local adjacencyList, vertices, i, startVertex, hamiltonianCycle, x, j;
 
     adjacencyList := EmptyPlist(n);
@@ -1510,14 +1490,14 @@ function(_, n, p)
 
     # Edge Case
     if n = 1 then
-        if Float(Random([0 .. 99]) / 100) < p then
+        if Float(Random(rs, [0 .. 99]) / 100) < p then
             Add(adjacencyList[1], 1);
         fi;
         return DigraphNC(adjacencyList);
     fi;
 
     # Starting from a random vertex, we create a Hamiltonian cycle
-    startVertex := Remove(vertices, Random(vertices));
+    startVertex := Remove(vertices, Random(rs, vertices));
     hamiltonianCycle := EmptyPlist(n);
     hamiltonianCycle[1] := startVertex;
 
@@ -1527,7 +1507,7 @@ function(_, n, p)
         # Create a random edge from the last vertex in the cycle
         # to a random vertex not in the cycle
         i := hamiltonianCycle[x];
-        j := Remove(vertices, Random([1 .. Length(vertices)]));
+        j := Remove(vertices, Random(rs, [1 .. Length(vertices)]));
         Add(hamiltonianCycle, j);
         Add(adjacencyList[i], j);
     od;
@@ -1536,15 +1516,15 @@ function(_, n, p)
 
     # Once we have created a Hamiltonian cycle, fill out the rest of the graph
     # with random edges according to p
-    adjacencyList := DIGRAPHS_FillOutGraph(n, p, adjacencyList);
+    adjacencyList := DIGRAPHS_FillOutGraph(rs, n, p, adjacencyList);
 
     return DigraphNC(adjacencyList);
 end);
 
 InstallMethod(RandomDigraphCons,
-"for IsEulerianDigraph, a positive integer, and a float",
-[IsEulerianDigraph, IsPosInt, IsFloat],
-function(_, n, p)
+"for IsEulerianDigraph, a random source, a positive integer, and a float",
+[IsEulerianDigraph, IsRandomSource, IsPosInt, IsFloat],
+function(_, rs, n, p)
     local adjacencyList, vertices, probability, startVertex, circuitVertex, i,
     continueCircuit, verticesToConsider, connectedVertices, verticesToCheck;
 
@@ -1559,14 +1539,14 @@ function(_, n, p)
 
     # Edge Case
     if n = 1 then
-        if Float(Random(probability) / 100) < p then
+        if Float(Random(rs, probability) / 100) < p then
             Add(adjacencyList[1], 1);
         fi;
         return DigraphNC(adjacencyList);
     fi;
 
     # Starting from a random vertex, we create an Eulerian circuit
-    startVertex := Random(vertices);
+    startVertex := Random(rs, vertices);
     circuitVertex := startVertex;
     continueCircuit := true;
 
@@ -1587,7 +1567,7 @@ function(_, n, p)
         while Length(verticesToConsider[circuitVertex]) > 0 do
             # From the remaining vertices to check, select a random one to see
             # if an edge will be added
-            i := Random(verticesToConsider[circuitVertex]);
+            i := Random(rs, verticesToConsider[circuitVertex]);
             Remove(verticesToConsider[circuitVertex],
             Position(verticesToConsider[circuitVertex], i));
 
@@ -1600,7 +1580,7 @@ function(_, n, p)
                     Add(connectedVertices, i);
                     circuitVertex := i;
                     break;
-                elif Float(Random(probability) / 100) < p then
+                elif Float(Random(rs, probability) / 100) < p then
                     Add(adjacencyList[circuitVertex], i);
                     circuitVertex := i;
                     break;
@@ -1626,7 +1606,7 @@ function(_, n, p)
             verticesToCheck := [1 .. n];
             while Length(verticesToCheck) > 0 do
                 i := Remove(verticesToCheck,
-                            Random([1 .. Length(verticesToCheck)]));
+                            Random(rs, [1 .. Length(verticesToCheck)]));
                 if (not (i in adjacencyList[circuitVertex])) then
                     Add(adjacencyList[circuitVertex], i);
                     circuitVertex := i;
@@ -1641,9 +1621,9 @@ function(_, n, p)
 end);
 
 InstallMethod(RandomDigraphCons,
-"for IsConnectedDigraph, a positive integer, and a float",
-[IsConnectedDigraph, IsPosInt, IsFloat],
-function(_, n, p)
+"for IsConnectedDigraph, a random source, a positive integer, and a float",
+[IsConnectedDigraph, IsRandomSource, IsPosInt, IsFloat],
+function(_, rs, n, p)
     local adjacencyList, vertices, startVertex, tree, x, i, j;
 
     adjacencyList := EmptyPlist(n);
@@ -1656,29 +1636,29 @@ function(_, n, p)
 
     # Starting from a random vertex, we first create a tree to guarantee
     # connectivity
-    startVertex := Remove(vertices, Random(vertices));
+    startVertex := Remove(vertices, Random(rs, vertices));
     tree := [startVertex];
 
     # While there are n-1 remaining vertices to be added to the tree
     for x in [1 .. n - 1] do
         # Create an edge from a random vertex in the tree, to a random vertex
         # outside of it
-        i := Random(tree);
-        j := Remove(vertices, Random([1 .. Length(vertices)]));
+        i := Random(rs, tree);
+        j := Remove(vertices, Random(rs, [1 .. Length(vertices)]));
         Add(tree, j);
         Add(adjacencyList[i], j);
     od;
 
     # Once the tree has been created, we fill out the rest of the graph with
     # random edges according to p
-    adjacencyList := DIGRAPHS_FillOutGraph(n, p, adjacencyList);
+    adjacencyList := DIGRAPHS_FillOutGraph(rs, n, p, adjacencyList);
     return DigraphNC(adjacencyList);
 end);
 
 InstallMethod(RandomDigraphCons,
-"for IsStronglyConnectedDigraph, a positive integer, and a float",
-[IsStronglyConnectedDigraph, IsPosInt, IsFloat],
-function(_, n, p)
+"for IsStronglyConnectedDigraph, a random source, a positive integer, and a float",
+[IsStronglyConnectedDigraph, IsRandomSource, IsPosInt, IsFloat],
+function(_, rs, n, p)
   local d, adjMatrix, stronglyConnectedComponents,
   scc_a, scc_b, i, random_u, random_v;
 
@@ -1693,8 +1673,8 @@ function(_, n, p)
       scc_b := stronglyConnectedComponents.comps[i + 1];
 
       # add a connection from u to v
-      random_u := Random(scc_a);
-      random_v := Random(scc_b);
+      random_u := Random(rs, scc_a);
+      random_v := Random(rs, scc_b);
 
       adjMatrix[random_u][random_v] := 1;
   od;
@@ -1705,8 +1685,8 @@ function(_, n, p)
   scc_b := stronglyConnectedComponents.comps[1];
 
   # add a connection from u to v
-  random_u := Random(scc_a);
-  random_v := Random(scc_b);
+  random_u := Random(rs, scc_a);
+  random_v := Random(rs, scc_b);
 
   adjMatrix[random_u][random_v] := 1;
 
@@ -1714,9 +1694,9 @@ function(_, n, p)
 end);
 
 InstallMethod(RandomDigraphCons,
-"for IsAcyclicDigraph, a positive integer, and a float",
-[IsAcyclicDigraph, IsPosInt, IsFloat],
-function(_, n, p)
+"for IsAcyclicDigraph, a random source, a positive integer, and a float",
+[IsAcyclicDigraph, IsRandomSource, IsPosInt, IsFloat],
+function(_, rs, n, p)
     local adjacencyList, vertices, probability, i, j;
 
     adjacencyList := EmptyPlist(n);
@@ -1737,7 +1717,7 @@ function(_, n, p)
     # From position i in the list, we consider all vertices j to the right of i
     for i in vertices do
         for j in [i + 1 .. n] do
-            if Float(Random(probability) / 100) < p then
+            if Float(Random(rs, probability) / 100) < p then
                 Add(adjacencyList[vertices[i]], vertices[j]);
             fi;
         od;
@@ -1747,9 +1727,9 @@ function(_, n, p)
 end);
 
 InstallMethod(RandomDigraphCons,
-"for IsSymmetricDigraph, a positive integer, and a float",
-[IsSymmetricDigraph, IsPosInt, IsFloat],
-function(_, n, p)
+"for IsSymmetricDigraph, a random source, a positive integer, and a float",
+[IsSymmetricDigraph, IsRandomSource, IsPosInt, IsFloat],
+function(_, rs, n, p)
     local adjacencyList, vertices, probability, i, j;
 
     adjacencyList := EmptyPlist(n);
@@ -1763,7 +1743,7 @@ function(_, n, p)
 
     for i in vertices do
         for j in [i .. n] do
-            if Float(Random(probability) / 100) < p then
+            if Float(Random(rs, probability) / 100) < p then
                 # If it's a self-loop, only add one edge otherwise we would
                 # have a multi-edge.
                 if i = j then
@@ -1789,24 +1769,14 @@ function(_, rs, n, p)
   return D;
 end);
 
-InstallMethod(RandomDigraphCons,
-"for IsImmutableDigraph, a positive integer, and a float",
-[IsImmutableDigraph, IsPosInt, IsFloat],
-function(_, n, p)
-  local D;
-  D := MakeImmutable(RandomDigraphCons(IsMutableDigraph, n, p));
-  SetIsMultiDigraph(D, false);
-  return D;
-end);
-
 InstallMethod(RandomDigraph, "for a pos int", [IsPosInt],
-n -> RandomDigraphCons(IsImmutableDigraph, n));
+n -> RandomDigraphCons(IsImmutableDigraph, GlobalMersenneTwister, n));
 
 InstallMethod(RandomDigraph, "for a pos int and a rational", [IsPosInt, IsRat],
-{n, p} -> RandomDigraphCons(IsImmutableDigraph, n, p));
+{n, p} -> RandomDigraphCons(IsImmutableDigraph, GlobalMersenneTwister, n, Float(p)));
 
 InstallMethod(RandomDigraph, "for a pos int and a float", [IsPosInt, IsFloat],
-{n, p} -> RandomDigraphCons(IsImmutableDigraph, n, p));
+{n, p} -> RandomDigraphCons(IsImmutableDigraph, GlobalMersenneTwister, n, p));
 
 InstallMethod(RandomDigraph, "for a random source and a pos int", 
 [IsRandomSource, IsPosInt], 
@@ -1821,13 +1791,15 @@ InstallMethod(RandomDigraph, "for a random source, a pos int and a float",
 {rs, n, p} -> RandomDigraphCons(IsImmutableDigraph, rs, n, p));
 
 InstallMethod(RandomDigraph, "for a func and a pos int", [IsFunction, IsPosInt],
-RandomDigraphCons);
+{f, n} -> RandomDigraphCons(f, GlobalMersenneTwister, n));
 
 InstallMethod(RandomDigraph, "for a func, a pos int, and a rational",
-[IsFunction, IsPosInt, IsRat], RandomDigraphCons);
+[IsFunction, IsPosInt, IsRat], 
+{f, n, p} -> RandomDigraphCons(f, GlobalMersenneTwister, n, Float(p)));
 
 InstallMethod(RandomDigraph, "for a func, a pos int, and a float",
-[IsFunction, IsPosInt, IsFloat], RandomDigraphCons);
+[IsFunction, IsPosInt, IsFloat], 
+{f, n, p} -> RandomDigraphCons(f, GlobalMersenneTwister, n, p));
 
 InstallMethod(RandomDigraph, "for a func, a random source, a pos int",
 [IsFunction, IsRandomSource, IsPosInt], RandomDigraphCons);
