@@ -252,7 +252,8 @@ node [shape=circle]
 4 -> 2[color=pink]
 4 -> 3[color=purple]
 }
-gap> FileString("k4.dot", DotDigraph(D));
+gap> filename := Filename(DirectoryTemporary(), "k4.dot");;
+gap> FileString(filename, DotDigraph(D));
 133
 gap> D := Digraph([[2, 3], [1, 3], [1]]);
 <immutable digraph with 3 vertices, 5 edges>
@@ -272,7 +273,8 @@ node [shape=circle]
 2 -> 3[color=pink]
 3 -> 1[color=yellow]
 }
-gap> FileString("digraph.dot", DotDigraph(D));
+gap> filename := Filename(DirectoryTemporary(), "digraph.dot");;
+gap> FileString(filename, DotDigraph(D));
 82]]></Example>
     </Description>
   </ManSection>
@@ -407,7 +409,8 @@ gap> poset := Digraph([[1, 4], [2], [2, 3, 4], [4]]);
 <immutable digraph with 4 vertices, 7 edges>
 gap> IsPartialOrderDigraph(poset);
 true
-gap> FileString("poset.dot", DotPartialOrderDigraph(poset));
+gap> filename := Filename(DirectoryTemporary(), "poset.dot");;
+gap> FileString(filename, DotPartialOrderDigraph(poset));
 70]]></Example>
     </Description>
   </ManSection>
@@ -450,7 +453,8 @@ gap> preset := Digraph([[1, 2, 4, 5], [1, 2, 4, 5], [3, 4], [4],
 <immutable digraph with 5 vertices, 15 edges>
 gap> IsPreorderDigraph(preset);
 true
-gap> FileString("preset.dot", DotPreorderDigraph(preset));
+gap> filename := Filename(DirectoryTemporary(), "preset.dot");;
+gap> FileString(filename, DotPreorderDigraph(preset));
 179]]></Example>
     </Description>
   </ManSection>
@@ -477,7 +481,8 @@ gap> FileString("preset.dot", DotPreorderDigraph(preset));
       <Example><![CDATA[
 gap> digraph := Digraph([[2, 3], [2], [1, 3]]);
 <immutable digraph with 3 vertices, 5 edges>
-gap> FileString("my_digraph.dot", DotHighlightedDigraph(digraph, 
+gap> filename := Filename(DirectoryTemporary(), "my_digraph.dot");;
+gap> FileString(filename, DotHighlightedDigraph(digraph,
 > [1, 2], "red", "black"));
 264]]></Example>
     </Description>

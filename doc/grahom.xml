@@ -563,6 +563,36 @@ gap> DigraphWelshPowellOrder(Digraph([[4], [9], [9], [],
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="DigraphSmallestLastOrder">
+<ManSection>
+  <Attr Name="DigraphSmallestLastOrder" Arg="digraph"/>
+  <Returns> A list of vertices.</Returns>
+  <Description>
+    <C>DigraphSmallestLastOrder</C> returns a list <C>order</C> containing each
+    of the vertices of <A>digraph</A> in smallest-last order, defined as
+    follows: <P/>
+
+    Let <M>D_n</M> be <A>digraph</A>. For <M>i = n, n-1, \ldots, 1</M>, the
+    vertex <C>order[i]</C> is a vertex of minimum degree in <M>D_i</M>, and
+    <M>D_{i-1}</M> is the subdigraph of <M>D_i</M> induced by removing
+    <C>order[i]</C>. The degree of a vertex here is the sum of the number of
+    out- and in-neighbours. <P/>
+
+    The result is not unique in general, since there may be several vertices
+    of minimum degree at any step; <C>DigraphSmallestLastOrder</C> tiebreaks
+    by taking the smallest such vertex.
+    <Example><![CDATA[
+gap> D1 := Digraph([[2], [1, 3], [2]]);;
+gap> DigraphSmallestLastOrder(D1);
+[ 3, 2, 1 ]
+gap> D2 := CompleteDigraph(3);;
+gap> DigraphSmallestLastOrder(D2);
+[ 3, 2, 1 ]
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="DigraphEmbedding">
 <ManSection>
   <Oper Name="DigraphEmbedding" Arg="digraph1, digraph2"/>

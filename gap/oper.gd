@@ -117,6 +117,11 @@ DeclareOperation("IsPerfectMatching", [IsDigraph, IsHomogeneousList]);
 DeclareOperation("IsDigraphPath",
                  [IsDigraph, IsHomogeneousList, IsHomogeneousList]);
 DeclareOperation("IsDigraphPath", [IsDigraph, IsList]);
+DeclareOperation("IsKParadoxicalTournament", [IsDigraph, IsInt]);
+
+DeclareOperation("IsDigraphOutDominatingSet", [IsDigraph, IsList]);
+DeclareSynonym("IsDigraphDominatingSet", IsDigraphOutDominatingSet);
+DeclareOperation("IsDigraphInDominatingSet", [IsDigraph, IsList]);
 
 # 9. Connectivity . . .
 DeclareOperation("DigraphIsKing", [IsDigraph, IsPosInt, IsPosInt]);
@@ -154,6 +159,8 @@ DeclareOperation("IsOrderIdeal", [IsDigraph, IsList]);
 DeclareOperation("IsOrderFilter", [IsDigraph, IsList]);
 DeclareOperation("Dominators", [IsDigraph, IsPosInt]);
 DeclareOperation("DominatorTree", [IsDigraph, IsPosInt]);
+DeclareOperation("DigraphGreedyOutDominatingSet", [IsDigraph, IsList]);
+DeclareOperation("DigraphGreedyInDominatingSet", [IsDigraph, IsList]);
 DeclareOperation("DigraphCycleBasis", [IsDigraph]);
 
 DeclareOperation("DigraphColourRefinement", [IsDigraph]);

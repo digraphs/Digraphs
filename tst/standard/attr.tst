@@ -13,10 +13,12 @@
 #@local G, H, M, M1, P, S, a, adj, adj1, adj2, adjacencies, b
 #@local circuit, complete15, comps, cycle12, e, edgeCut, erev, filename, forest
 #@local g, gNew, gr, gr1, gr2, gr3, gr4, grid, group, i, id, isGraph, j, mat
-#@local mq, mq1, mq_all, multiple, names, nbs, nonPlanar, order, planar, probs
-#@local proj, r, rd, reflextrans, reflextrans1, reflextrans2, representatives
-#@local rev, rgr, rotationSy, rotationSystem, scc, schreierVector, sink, soccer
-#@local str, table, temp, topo, trans, trans1, trans2, tree, wcc, x, y, z
+#@local mq, mq1, mq_all, multiple, names, nbs, nonPlanar, order, outs, planar
+#@local probs, proj, r, rd
+#@local reflextrans, reflextrans1, reflextrans2, representatives, rev, rgr
+#@local rotationSy, rotationSystem, scc, schreierVector, sink, soccer, str
+#@local table, temp, topo, trans, trans1, trans2, tree, wcc, x, y, z
+#@local TestDigraphGreedyDominatingSet
 gap> START_TEST("Digraphs package: standard/attr.tst");
 gap> LoadPackage("digraphs", false);;
 
@@ -1096,18 +1098,47 @@ gap> DigraphAllUndirectedSimpleCircuits(g);
   [ 4, 3, 9, 5, 7, 8, 6, 10 ], [ 4, 3, 9, 10 ], [ 5, 6, 8, 7 ], 
   [ 9, 5, 6, 10 ], [ 9, 5, 7, 8, 6, 10 ] ]
 
-# FacialCycles
+# IsDigraphRotationSystem
 gap> g := DigraphSymmetricClosure(CycleDigraph(3));;
-gap> FacialWalks(g, []);
-Error, the 2nd argument (dense list <rotationSystem>) is not a rotation system\
- for the 1st argument (digraph <D>), expected a list of 3 lists,
-gap> FacialWalks(g, [1]);
-Error, the 2nd argument (dense list <rotationSystem>) is not a rotation system\
- for the 1st argument (digraph <D>), expected a list of 3 lists,
-gap> FacialWalks(g, [[4], [1], [3]]);
-Error, the 2nd argument (dense list <rotationSystem>) is not a rotation system\
- for the 1st argument (digraph <D>), expected its union to be the vertices of \
-<D>,
+gap> IsDigraphRotationSystem(g, []);
+false
+gap> IsDigraphRotationSystem(g, [1]);
+false
+gap> IsDigraphRotationSystem(g, [[4], [1], [3]]);
+false
+gap> g := DigraphSymmetricClosure(ChainDigraph(3));;
+gap> IsDigraphRotationSystem(g, PlanarEmbedding(g));
+true
+gap> g := Digraph([]);;
+gap> rotationSy := [];;
+gap> IsDigraphRotationSystem(g, rotationSy);
+true
+gap> g := Digraph([[2], [1, 3], [2, 4], [3]]);;;
+gap> rotationSy := [[2], [1, 3], [2, 4], [3]];;
+gap> IsDigraphRotationSystem(g, rotationSy);
+true
+gap> g := DigraphSymmetricClosure(CycleDigraph(4));;
+gap> planar := PlanarEmbedding(g);
+[ [ 2, 4 ], [ 3, 1 ], [ 4, 2 ], [ 1, 3 ] ]
+gap> IsDigraphRotationSystem(g, planar);
+true
+gap> nonPlanar := [[2, 4], [1, 3], [2, 4], [1, 3]];;
+gap> IsDigraphRotationSystem(g, nonPlanar);
+true
+gap> g := CompleteMultipartiteDigraph([2, 2, 2]);;
+gap> rotationSystem := PlanarEmbedding(g);
+[ [ 3, 5, 4, 6 ], [ 6, 4, 5, 3 ], [ 6, 2, 5, 1 ], [ 1, 5, 2, 6 ], 
+  [ 1, 3, 2, 4 ], [ 1, 4, 2, 3 ] ]
+gap> IsDigraphRotationSystem(g, rotationSystem);
+true
+gap> g := Digraph([[2, 3, 4], [1, 3, 5], [1, 2, 4], [1, 3, 5], [2, 4, 6], [5, 7, 9], [6, 8, 10], [7, 9, 10], [6, 8, 10], [7, 8, 9]]);;
+gap> rotationSy := PlanarEmbedding(g);
+[ [ 2, 4, 3 ], [ 3, 5, 1 ], [ 1, 4, 2 ], [ 1, 5, 3 ], [ 2, 4, 6 ], 
+  [ 5, 7, 9 ], [ 8, 10, 6 ], [ 9, 10, 7 ], [ 6, 10, 8 ], [ 7, 8, 9 ] ]
+gap> IsDigraphRotationSystem(g, rotationSy);
+true
+
+# FacialCycles
 gap> g := DigraphSymmetricClosure(ChainDigraph(3));;
 gap> FacialWalks(g, PlanarEmbedding(g));
 [ [ 1, 2, 3, 2 ] ]
@@ -1516,6 +1547,18 @@ gap> DigraphDegeneracy(gr);
 2
 gap> DigraphDegeneracyOrdering(gr);
 [ 6, 4, 3, 2, 5, 1 ]
+
+# DigraphDegeneracy for a more interesting graph
+# (and check the degeneracy ordering)
+gap> D := DigraphFromGraph6String("OwCWWLCE?G?@C?A??@??@");;
+gap> outs := OutNeighbours(D);;
+gap> DigraphDegeneracy(D);
+2
+gap> order := DigraphDegeneracyOrdering(D);;
+gap> ForAll([1 .. Length(order)], i ->
+> Length(Intersection(outs[order[i]], order{[i .. Length(order)]}))
+> <= DigraphDegeneracy(D));
+true
 
 #  DigraphGirth with known automorphisms
 gap> gr := Digraph([[2, 3, 4, 5], [6, 3], [6, 2], [6], [6], [1]]);;
@@ -3427,6 +3470,313 @@ gap> D := DigraphFromGraph6String(
 gap> DigraphVertexConnectivity(D);
 7
 
+# DigraphGreedyOutDominatingSet
+gap> TestDigraphGreedyDominatingSet :=
+> {D, A} -> ForAll(
+>   DigraphVertices(D),
+>   x -> IsDigraphOutDominatingSet(
+>     InducedSubdigraph(DigraphImmutableCopy(D), [1 .. x]),
+>     Filtered(A, y -> y <= x)));;
+gap> D := Digraph([[2, 3], [2, 3], [1, 2, 3]]);;
+gap> A := DigraphGreedyOutDominatingSet(D);
+[ 1 ]
+gap> IsDigraphOutDominatingSet(D, A);
+true
+gap> TestDigraphGreedyDominatingSet(D, A);
+true
+gap> D := Digraph([[2, 4], [3], [1, 5], [3], [4]]);;
+gap> A := DigraphGreedyOutDominatingSet(D);
+[ 1, 3 ]
+gap> IsDigraphOutDominatingSet(D, A);
+true
+gap> TestDigraphGreedyDominatingSet(D, A);
+true
+gap> D := Digraph(IsMutableDigraph, [[2, 4], [3], [1, 5], [3], [4]]);;
+gap> A := DigraphGreedyOutDominatingSet(D);
+[ 1, 3 ]
+gap> IsDigraphOutDominatingSet(D, A);
+true
+gap> TestDigraphGreedyDominatingSet(D, A);
+true
+gap> D = Digraph(IsMutableDigraph, [[2, 4], [3], [1, 5], [3], [4]]);
+true
+gap> D := Digraph([
+> [1, 2, 3, 4, 5],
+> [1, 2, 3, 4, 5],
+> [1, 2, 3, 4, 5],
+> [1, 2, 3, 4, 5],
+> [1, 2, 3, 4, 5]]);;
+gap> A := DigraphGreedyOutDominatingSet(D);
+[ 1 ]
+gap> IsDigraphOutDominatingSet(D, A);
+true
+gap> TestDigraphGreedyDominatingSet(D, A);
+true
+gap> D := DigraphFromSparse6String(":~?@O_GA?`OQCa?]FaoiIb_\
+> uLcpIQd`UTePaZCXwXeXiYeyIjIimcIyegJi_dJi[lJICgHxwdHHs`Hxs\
+> [Hh[ad`s[e@[UcqKid@{hdPORhaq_HhGPbryMNRqOBoyKE@yJEgsKAwc^\
+> IW_PNwgHAGW_OwSZLg[E@WKOJwKOFGGbIgCdHGG@@N");
+<immutable symmetric digraph with 80 vertices, 240 edges>
+gap> A := DigraphGreedyOutDominatingSet(D);
+[ 1, 5, 8, 11, 14, 17, 18, 19, 22, 25, 27, 29, 30, 31, 32, 35, 37, 38, 39, 
+  40, 41, 42, 43, 45, 64, 65, 73, 74 ]
+gap> IsDigraphOutDominatingSet(D, A);
+true
+gap> TestDigraphGreedyDominatingSet(D, A);
+true
+gap> D := DigraphFromSparse6String(":~?AA_C?_CD?cD_sE`OH`KL\
+> @cO@kOawUA[TAcVASQBCRAsTAc^Bk]a[SasTcwNCCMB{]Cc\\C[eCcdC[\
+> [CSZCKYCSXCK]bk_EK^ESdcseckvEswEk|Fcz`_JACI@kK@WIaG}aG|`{\
+> MdOqdGpdoodwld_wdWvd?scwrfSxepNehMfczf`CfXDfpRfhQ`LPJDOJD\
+> SITTI\\FHlEHdJH|IHtDHLCHDBI|AIt_Jl^Jt[KdZK\\YKTXKLgKtdK|n\
+> LThm@mlhnlpolhnmHklXqltl`@sNCFMXv`@wMsFMxt__A_gBNkBAP?_GN\
+> @sC?O@");
+<immutable symmetric digraph with 130 vertices, 390 edges>
+gap> A := DigraphGreedyOutDominatingSet(D);
+[ 1, 5, 7, 10, 13, 15, 16, 17, 19, 20, 21, 22, 23, 30, 31, 38, 39, 46, 47, 
+  48, 49, 52, 53, 58, 59, 60, 61, 65, 67, 68, 71, 72, 75, 76, 81, 82, 87, 88, 
+  92, 93, 98, 99, 102, 103, 110, 111, 112, 113, 118, 119, 122, 123, 127 ]
+gap> IsDigraphOutDominatingSet(D, A);
+true
+gap> TestDigraphGreedyDominatingSet(D, A);
+true
+gap> D := DigraphFromSparse6String(":u_OGCSHCc@xCa]MfsILOfM\
+> fSATIjLJEX`_nLKrAhqYKDQpOeNJJQpMAKbagcKXFDOHgyQeWgbydLVSs\
+> ZDUtVhUodrEEoVp?WEAAV^");
+<immutable symmetric digraph with 54 vertices, 162 edges>
+gap> A := DigraphGreedyOutDominatingSet(D);
+[ 1, 5, 8, 10, 11, 12, 13, 14, 15, 17, 19, 20, 26, 36, 38, 40, 43, 44, 46, 
+  47, 52 ]
+gap> IsDigraphOutDominatingSet(D, A);
+true
+gap> TestDigraphGreedyDominatingSet(D, A);
+true
+
+# DigraphGreedyInDominatingSet
+gap> TestDigraphGreedyDominatingSet :=
+> {D, A} -> ForAll(
+>   DigraphVertices(D),
+>   x -> IsDigraphInDominatingSet(
+>     InducedSubdigraph(DigraphImmutableCopy(D), [1 .. x]),
+>     Filtered(A, y -> y <= x)));;
+gap> D := Digraph([[2, 3], [2, 3], [1, 2, 3]]);;
+gap> A := DigraphGreedyInDominatingSet(D);
+[ 1, 2 ]
+gap> IsDigraphInDominatingSet(D, A);
+true
+gap> TestDigraphGreedyDominatingSet(D, A);
+true
+gap> D := Digraph([[2, 4], [3], [1, 5], [3], [4]]);;
+gap> A := DigraphGreedyInDominatingSet(D);
+[ 1, 2, 4 ]
+gap> IsDigraphInDominatingSet(D, A);
+true
+gap> TestDigraphGreedyDominatingSet(D, A);
+true
+gap> D := Digraph(IsMutableDigraph, [[2, 4], [3], [1, 5], [3], [4]]);;
+gap> A := DigraphGreedyInDominatingSet(D);
+[ 1, 2, 4 ]
+gap> IsDigraphInDominatingSet(D, A);
+true
+gap> TestDigraphGreedyDominatingSet(D, A);
+true
+gap> D = Digraph(IsMutableDigraph, [[2, 4], [3], [1, 5], [3], [4]]);
+true
+gap> D := Digraph([
+> [1, 2, 3, 4, 5],
+> [1, 2, 3, 4, 5],
+> [1, 2, 3, 4, 5],
+> [1, 2, 3, 4, 5],
+> [1, 2, 3, 4, 5]]);;
+gap> A := DigraphGreedyInDominatingSet(D);
+[ 1 ]
+gap> IsDigraphInDominatingSet(D, A);
+true
+gap> TestDigraphGreedyDominatingSet(D, A);
+true
+gap> D := DigraphFromSparse6String(":~?@O_GA?`OQCa?]FaoiIb_\
+> uLcpIQd`UTePaZCXwXeXiYeyIjIimcIyegJi_dJi[lJICgHxwdHHs`Hxs\
+> [Hh[ad`s[e@[UcqKid@{hdPORhaq_HhGPbryMNRqOBoyKE@yJEgsKAwc^\
+> IW_PNwgHAGW_OwSZLg[E@WKOJwKOFGGbIgCdHGG@@N");
+<immutable symmetric digraph with 80 vertices, 240 edges>
+gap> A := DigraphGreedyInDominatingSet(D);
+[ 1, 5, 8, 11, 14, 17, 18, 19, 22, 25, 27, 29, 30, 31, 32, 35, 37, 38, 39, 
+  40, 41, 42, 43, 45, 64, 65, 73, 74 ]
+gap> IsDigraphInDominatingSet(D, A);
+true
+gap> TestDigraphGreedyDominatingSet(D, A);
+true
+gap> D := DigraphFromSparse6String(":~?AA_C?_CD?cD_sE`OH`KL\
+> @cO@kOawUA[TAcVASQBCRAsTAc^Bk]a[SasTcwNCCMB{]Cc\\C[eCcdC[\
+> [CSZCKYCSXCK]bk_EK^ESdcseckvEswEk|Fcz`_JACI@kK@WIaG}aG|`{\
+> MdOqdGpdoodwld_wdWvd?scwrfSxepNehMfczf`CfXDfpRfhQ`LPJDOJD\
+> SITTI\\FHlEHdJH|IHtDHLCHDBI|AIt_Jl^Jt[KdZK\\YKTXKLgKtdK|n\
+> LThm@mlhnlpolhnmHklXqltl`@sNCFMXv`@wMsFMxt__A_gBNkBAP?_GN\
+> @sC?O@");
+<immutable symmetric digraph with 130 vertices, 390 edges>
+gap> A := DigraphGreedyInDominatingSet(D);
+[ 1, 5, 7, 10, 13, 15, 16, 17, 19, 20, 21, 22, 23, 30, 31, 38, 39, 46, 47, 
+  48, 49, 52, 53, 58, 59, 60, 61, 65, 67, 68, 71, 72, 75, 76, 81, 82, 87, 88, 
+  92, 93, 98, 99, 102, 103, 110, 111, 112, 113, 118, 119, 122, 123, 127 ]
+gap> IsDigraphInDominatingSet(D, A);
+true
+gap> TestDigraphGreedyDominatingSet(D, A);
+true
+gap> D := DigraphFromSparse6String(":u_OGCSHCc@xCa]MfsILOfM\
+> fSATIjLJEX`_nLKrAhqYKDQpOeNJJQpMAKbagcKXFDOHgyQeWgbydLVSs\
+> ZDUtVhUodrEEoVp?WEAAV^");
+<immutable symmetric digraph with 54 vertices, 162 edges>
+gap> A := DigraphGreedyInDominatingSet(D);
+[ 1, 5, 8, 10, 11, 12, 13, 14, 15, 17, 19, 20, 26, 36, 38, 40, 43, 44, 46, 
+  47, 52 ]
+gap> IsDigraphInDominatingSet(D, A);
+true
+gap> TestDigraphGreedyDominatingSet(D, A);
+true
+
+# EdgeConnectivity
+gap> D := Digraph([[4], [4], [4], [1, 2, 3]]);
+<immutable digraph with 4 vertices, 6 edges>
+gap> DigraphEdgeConnectivity(D);
+1
+gap> D := Digraph(IsMutableDigraph, [[4], [4], [4], [1, 2, 3]]);
+<mutable digraph with 4 vertices, 6 edges>
+gap> DigraphEdgeConnectivity(D);
+1
+gap> D;
+<mutable digraph with 4 vertices, 6 edges>
+gap> D := RandomDigraph(1);;
+gap> DigraphEdgeConnectivity(D);
+0
+gap> D := Digraph([[2, 3], [1, 4], [1, 4], [2, 3]]);;
+gap> DigraphEdgeConnectivity(D);
+2
+gap> D := Digraph([[2], [1], [4, 5], [3, 5], [3, 4]]);;
+gap> DigraphEdgeConnectivity(D);
+0
+gap> D := Digraph([[1, 2], [3, 4], [], []]);;
+gap> DigraphEdgeConnectivity(D);
+Error, the argument <digraph> must be a symmetric digraph,
+gap> D := Digraph([
+> [1, 2, 3, 4, 5],
+> [1, 2, 3, 4, 5],
+> [1, 2, 3, 4, 5],
+> [1, 2, 3, 4, 5],
+> [1, 2, 3, 4, 5]]);;
+gap> DigraphEdgeConnectivity(D);
+4
+gap> D := DigraphFromGraph6String("I~~~~~~~w");;
+gap> DigraphEdgeConnectivity(D);
+9
+gap> D := CompleteDigraph(10);;
+gap> DigraphEdgeConnectivity(D);
+9
+gap> D := CirculantGraph(10, [1, 2, 3, 4]);;
+gap> DigraphEdgeConnectivity(D);
+8
+gap> D := DigraphFromGraph6String("L~~~?CB?wb`N@^");
+<immutable symmetric digraph with 13 vertices, 78 edges>
+gap> DigraphEdgeConnectivity(D);
+6
+gap> # House of Graphs 56962
+gap> D := DigraphFromGraph6String("~?Al~~emZB}NFxEqSvjWcNg?oqBqGEz@fMcVKe_t\
+> ALNC?|x@PnotaNoD[n|JqbNvM`D|\\`WfeLkb]bVebVBY]XnWuU[jt_mxfe\\JovHwyTncfrO\
+> }bc[oNxliT~SLhb^uQ[vUlS|S]S^rbA{lpm@~sDlilMngww^QuiNhOceMBkDwJPUFDs`ES@q{\
+> qDJfTSoUkRMd@LRY`TrxHxGKousyIWmATYW{aoHqN`K|OxgsY]TMNI[_[MkRrYiAzCV|TdvmO\
+> QH]aQk[f\\aIlf_euUdoxnq\\e{aeoSfF}rokQeLplSljymFwO?}Jgf_T_zc\\iUhpQakmOvu\
+> nRlAjnURDDlNWdZL^FU?FUiqRbl`XJBCF^sqtPJppR{[DKUXGtcxw|lyEgVc]Nw_xTnymPuUA\
+> UWsOvrtyF[MHE[rxk?vjHVOWeriaMFjlFQJkTJBotQdhuthm?X|OPjqvW\\n@bEkc`xlV\\L@\
+> JKZuA\\OuiYXv]ckNKOfWu^zqiCAtTY\\JW\\{rvX`i?lKzkELngbealXxbDoseptMBF^J]gH\
+> Udojhi]Ci\\onSJL[TXt|DYio[abXH|SvvP`[qmDCqYsxlJpTAmu|elAFgDiwfi\\BYo}Gdvi\
+> KQjG^}Q\\lXiVW@KRYWEhWUd|DbK`v{SmoaSLTV{xzDk?xBbKVOqXy]D{dX]IJHbZWBL[[Xv|\
+> GUjx`wQadJ@\\pT\\dtTZEdIkMD}sQ{L{AxXLuKCN`dV_h}uXMRu`wg[C[m]l\\DHihlbnCQX\
+> C\\]Yqh{HSVUcjwapAxmX]{CBx\\TpDiYtqEV{\\tSPFmK`TTJ}A^zyaYFQ@yzenO^CBXmgQJ\
+> U]kmcXidDdyLAxPxl@zN{HkNVzCHG_uouzEL|aJxLRiBDolfVEMH[\\WIc}n{?h`DW{`hzUsy\
+> `QKiU~PBOwKy^NTUnG\\hRigQ[^Zp[_BE{^{yEVXqTDxQaYktbZyW~mKUwsHnFBMs|KJOWJmP\
+> HMvkOzDVVqK{gUq|q[ZVGOj]Jj]AeF{@AZtHNcPPu{Meu[NG]FDctzmTbcDIsa@UzD|fR||nQ\
+> ]akLUFjCnUjoouSk^xXs^wKiSRhdLPMbr]HKbRvgt_mGLQIvzIgZ]GEZGv]Hgs\\bZQrGSjwo\
+> Na\\nxOlIPJzci_tiXNLOheV{@ttOK|wCso|[Lqi`bisZuAXlJ]pTLGqiv@iHmNSh\\u]@PpP\
+> ThUfFoq{WX\\Uw[zwGRILrtSoV`lr@QV~sdPX@c`ufRQBXsuLNBL~oxkROHGJllS[WtlQNWZF\
+> bqTp]t~cUooCS\\coxJ_VWZ[MJ\\QRNdJAbLlO_um@MV^PgWn\\rqOOkeSa{BG|ioU~IUyj_n\
+> UBTm?BmFYJgQ[~iWhLUWz_uEhoSiFXBfh_\\vFVNQLEKlVwC?}{FAyQ^{?N~~?G}~?BbGE]^w\
+> ?@e?ilw@cyBiBhy{Xz]@|ZIi^`fDepVPBfBuhrUWKLLpnuvGKSZbLMQql[U~D\\E`N]lrLI_q\
+> y\\opBm\\agRlymuhRGf{DDA{ivCeRaJzCN}ezhSOn]hHEAzQK]W~YIjZpb`Tx^YFc@dRe}Gq\
+> ?oKw~mu|diw\\VMiS?[zPptRLsvMglwT[PwQY~Y_BK`Wen^thiJK|EnkwEjDMch[LHDC|eZ\\\
+> SQIf^i]qVXMXQ_OBoL~kp^xWKibLymGjh\\yARI_X^VPU[IUPvuh`O{o^e]SNW`dxPMc~FDUj\
+> bJwDJuHuXwnoBEBQrP^nK^@W~@jhgeqHZMDZGJAzqbJpSB~bThidRHVvMPptBOpefzQjXq?{d\
+> \\mpVMC~@pPN_gz_neeqSB~QZTTK_^zSXk~@hfXVpkgdqZ\\Dk@L?CL|LXzpk`HtGaR^{gcUv\
+> xgDmYSbQtomrogVJTwBZT]aGynPpQQEWIZzzIkPOUaDy~xk]N_LRE[XVLkQKuIeGrNSvSXLC[\
+> eolfwJtJIAdm_tLcfheEGjvVXgrgf`WQweQenOxC~MrXP{cDoCxC]]nmuXRkSEUoY`OwxBHBV\
+> ~UHA{mYbPE~Er_bxjoF@xBS|N[_cllJeFcZQQML]e{eKzEe`mX]yCVbF?luhBLJNMB[]rfp?u\
+> MSx}m?IwLn~Ae|qWVh@OAkENbVhJ?lzTBBDML\\k}[tQc\\Ow`H^@fsoNhZCovA_InnlJccms\
+> TXdB_nGgcsJ}Z|HFk]TAZmHsI\\eaLTaH{XduuTPXF\\AdUBNgwZSHyleAxXvhk[HdrfLvouM\
+> ROW?jK}NygGDC}~?y_Y]NW~hYNWoUooL_fNMQpC^\\fKtOM{[FvgqCkjlcm[tDkEch?|plyBt\
+> S\\exRYE`uhHlOIIU}BTz]dBCVxhtCu{\\QCL~H?w}oeedPbV^PEmQfEEC}]es{gx?RnwW{@V\
+> [G]s\\xjQKzJPQ[x|dTolDW`urQPDDn{`\\X[]QnFnq@Rd}`LP_mbQwazSoe[LFznEmO_[uxz\
+> ^@pWUDPHxwLez@tCFBi[~Fz?NrlPrO}_mdLIkdG]ILIMkk^r|w`JMB}NN_}?xw}A[cKW]E@`|\
+> r`Vfw^MO");
+<immutable symmetric digraph with 173 vertices, 14878 edges>
+gap> DigraphEdgeConnectivity(D);
+86
+gap> # House of Graphs 51424
+gap> D := DigraphFromGraph6String("~?Aa~~~~~~~~~~~~~~~~~~~~~~~~~~~~~}yb~Yh~p\
+> L~}E^~uw^~jh^~kM~~tJn~~~|h~~~qv|rt~fzZV~Nw{~~N|sL~~~Yc~~~wNr~~~bK~~~{z{\\l\
+> ey|yZri}]qzxm^V[\\|ff{{Zn\\h~jhvZmV~Munxil~Mx^uVJ~eu{vtjzxjuryu|~cvzVY^^|R\
+> n]mXz~x\\[tVnz|xYzInnv}}Jx\\b^~Z~Q|jcz~n^{JNc}~n^~gr]L||}~}nT|vMd~qU^i}zNB\
+> ~kNZ^f}FF~Krt{uZ^Mymxu^Xrftujmuy|gzvUvy\\^r{hnvL^wt~uuF}]\\NrN~zUmi~d|drn}\
+> tVT^s}wz\\~tfk|uVg~mn~M^LmxlR|t~}rltinvpL~vur]yT^vgr~znT\\|ovmJnz|nrU}yRvP\
+> v|}v}hn[]^ZRv^l~xd}quzquz|v~op~eEA~~~~~~oM?Xx|~~~~~~U~xls{^^K]_lL^|fmMfnkf\
+> SSjmh~fxq~NBwKrmvwtr{unjY^g`t^qVZti}nI}gblnLT}tvrfS{sT}nfT]{zurT]dE~ms{~VF\
+> zblK}cf|uZZtt]yZpZjD^vVrK~N]FfbNwN~ldVv]ZI~jTZIj~janm}VD~VavDf~vNiye}vovkk\
+> [nvtrt\\U^jyR|Eer}zlR|ubvhu}hA^n]}lVm{VlZftaE}zz|hvtJm{T~[_tz}n|XzyF^YJ}yP\
+> Jz|^}a~eEWF~~{e{N~~~gOE]X}~~~uO{~~~s}lzuZRBOfv^tz}yrxz^eZQQc^j}v^|rfmtrzTH\
+> e@|~V^l}zfnJl{xEXAz~j^r|zrn{Krvw?]Fv~m~f|{zB{r|wWE]~f{^v}~c~]oQ_zVi~]}~vm~\
+> }Jz{_sB]lVzvv}|v~{KBB~K]^}F|x~~u^~{J{{?r`ff}}^~nN~~yOAC}t}yh}v~nl~}~va@?vq\
+> ~\\TnZ~vu~~^}znvF][n]vDkorm_tDSL~kmusz{yLscmtCkKp\\~E|[{m|ivQg\\pgdQRZ}fYz\
+> [\\}TupS\\hSU`Rm{nj\\t\\nXZcLTlPJBPz^Ftzku|mMsckvaKgk^]tv^LY}jL[XwiNhF@H|z\
+> MzzJZt[yhZQX\\W[GZzttlnil|W|FsIwjdEH]zty]^VJyxZJiRS\\bEO~\\uNm}rMZ|ic[mhJM\
+> dAm~Zd|vrRX~dWjFeKrY_f^zrrrB|}W^wrfaKxe`w^}NK{rrv~_^cuXpNFcEFf~\\SnmV^Iy~c\
+> qm`SveCY~nZRVuM~Dt~RP\\_izTCT~^mfygvnsV^adlkct[SL|^zX|TMvybnwS{yeInBA}n~W_\
+> ?^}N~~~F~?p~oK?n~~|`~}?FB~~~_B~w?~oLN~~q|~rNMU@wFp~zoGE^[^~pi}jVytYQLB~|sE\
+> sGZs|z}t^Jty{]EHQ~|uCxGMul}~jVhff}]KKBv~raXoBs[~|}yzxme^hICv^Vyg@qVq~M~njn\
+> Xte}bOK}y~kOEo}lz\\}~S~jGeG}Y]n~yxRCIZZzzn~Q~spEC|dl^~tslGHjVvv^~gvNoN?`~x\
+> z~fwoW[Zx}^^~yIKB{Nvfff{^~b?WxF~xn~}S?SvXvjfj|]~qCidemn~z~\\G?kzfl\\l^jv~G\
+> HTXUt~~^}x}r~rMG]WFA@`{v}}{^~uNXX}{N{rhe@`MW@n~x^B}^nr}c}rkn{lGhCQsGn~Vjul\
+> z}zufNj[t}f`DaBM@F~yx}fl~]}YxzmuY^r?dI_Epvl}|qvy~myvflveU~QCJP?[flnzmk~t}v\
+> q~KyvaMCneZdSOj~}lfY~zzLy~I|NcUG^XfQw_f~|]VT~vvUx~cz~KB@W^}B@eU~x~dx~f^{]^\
+> x_hBmN^R\\p@TRy|~rT|^|}S~zIAoZhvtf\\GDT]n^|hnV~^hV~kc_E^fs~rNE?L~b~rR~rv{[\
+> ~~WnnkggDTCFlT\\zd\\^~\\tlN~v~g^^[SSAiaF[i|vQz^}zjin~n~[Z_@~er{?B~r@~{o^}~\
+> ~KJ~^~^EF~_ER?BNG^~aF~z~[B~|~z~}ogORVVwArSyzrM]u~vvJVv|~|z`aAMmn_Sqj\\uiu{\
+> z}}zR^^n~nv?cajOO]~H{ve}ttnr}v{ft~y~~?bDSgOl~EzZX~Jy^r|z{Zm~t~~_IGh@clx]m{\
+> n[vVnV~lJ|l~|^~wAPD_ck}Nt]tmmr|j~{l]z^}n~~?HQ@KiuLzVLzyzh|^|mZ^t~N~~{?aoBK\
+> Zcz]Yz^\\tZy~xu]}z{~~~w");
+<immutable symmetric digraph with 162 vertices, 17010 edges>
+gap> DigraphEdgeConnectivity(D);
+105
+gap> # House of Graphs 55829
+gap> D := DigraphFromGraph6String("~?@|}rFEJGsFGZ?oKoo^_F?jpHZHIecTFH_BZ??y?\
+> q}gEjWJ`[ojDWo{F_\\Jw?El]??~{??A~~??CAxVO{DXj`Y_Taj\\`HXLZcQTQUyQPUIloi?qw\
+> vDd?tXZIV_BoufcF_{phwhK@floqZ?W]vBCEPqppfS@hLpo^Ic@EfzKSe?eP}{EDHj?}E^gRXS\
+> Bw]^?n?vw?~F?_~Fw?Nz?TJ{@WA`}[l^?i@O^en{?F_N?{qh^J_@@r{[l]j?CDfxT~_{?EEFxa\
+> h^jj[?B~?dj|\\Z??~oD~_{|g?F}?O^f~FF`_?whLXn}o{?M?eqmV}o{?M?V_Z{~F`_?wD~~?}\
+> @wW?M?n~vw?o{?M?@h^jj\\T~~Z^yl^jj\\T~~Z^r~_{|n}F~lnpcte~~NuV~|wUqmV~{}Y~~m\
+> AFx~px~X|~voN_Z{~~bxn~z?^~wFo~~{p~y?^~vw?~~~MN{?F~~~~f`~wwX?@~~~~}Ff~oH_?N\
+> ~~~}~~?N}??@_Taj\\DuVZ\\wMQHJHj[TknZZo[aQTQUybrUu|o[`QIpTmaxjlmwMOOVIyFDZN\
+> eu}KWiDXj`XTX|ZVpbIKe?ruxwQ}un@qBUoEFl{oY|lmBcEY?qwvTFrUvuKWhi_YkltBxllzEK\
+> grw?{LnwEZlmpbN?O{FeLNoNlk}KXw@?sew{NcU~x~?HbqEPqpxfPT~t}?[JbGALN}WkJ~y}?R\
+> sPWAXF~oXH~}^?M[GYVwAoT^{ovyKWh`yl^?iDT~eJ^PbIKNN}?Bo^w]Wu|EK{?{YVqw?T^~EF\
+> {BcANzTjtW?in~IJ{BcCV|N}Bo?^w^eE}@qBK~BHj?}E^keNz]?RvoFUqgFo{}Wp~joBf]?x{B\
+> ^_B{^Kw~V?N}G[AFw~?@~Xxpvm?^N_wB~}??F~~_@~M?^~o??B{~w{{K}FBN?Nfo^_HLXn~o{d\
+> }@LoA]}Fw?uTq~}FbVoHm?[zo~?F_Z{~f`xgwXw@~pB{?IVyyvDB~ooqBcANzFuDj|\\ZIB~pO\
+> qBcCV|FuDJ|\\ZgM^z?eEKSo{N{gl^jj[Df~OH`bIKND~KN{FflN?~p_qBcEX}FuK~o]]vBB~o\
+> Copf_Fb^f@HjL~u^g@~o?[_rtw^XguTq~vfo@~o?[_rywnhgB{~ww~k?~w?pfe@b|^GN?vx}~F\
+> ?N}?KXx`_}}q@~~?}F~w?No@bNKNFL}OF~z{?^~_FF?@qBN~bFe_N~wFoNB{poroB~}?w?L|N~\
+> vw?o{~M@LoB~}F??q}F~~~~_?^w??w@~~B{??^`~~~~pwW?M??[_r~w}pgAN~~~}o{?M??KXx`\
+> w~xq?_");
+<immutable symmetric digraph with 125 vertices, 8000 edges>
+gap> DigraphEdgeConnectivity(D);
+64
+
 # Semimodular lattices
 gap> D := DigraphFromDigraph6String("&C[o?");
 <immutable digraph with 4 vertices, 5 edges>
@@ -3527,6 +3877,42 @@ true
 gap> A[1, 10] = y;
 true
 gap> B[14, 15] = z;
+true
+
+# DigraphEccentricities, DigraphRadius, DigraphCentre, and DigraphPeriphery
+gap> D := ChainDigraph(2);;
+gap> DigraphEccentricities(D);
+fail
+gap> DigraphRadius(D);
+fail
+gap> DigraphCentre(D);
+fail
+gap> DigraphPeriphery(D);
+fail
+gap> D := EmptyDigraph(0);;
+gap> DigraphEccentricities(D);
+fail
+gap> DigraphRadius(D);
+fail
+gap> DigraphCentre(D);
+fail
+gap> DigraphPeriphery(D);
+fail
+gap> D := Digraph([[2], [1, 3], [2, 4], [3]]);;
+gap> DigraphRadius(D);
+2
+gap> DigraphDiameter(D);
+3
+gap> DigraphCentre(D);
+[ 2, 3 ]
+gap> DigraphPeriphery(D);
+[ 1, 4 ]
+gap> D := Digraph([[1, 1]]);;
+gap> DigraphRadius(D);
+0
+gap> DigraphCentre(D) = DigraphPeriphery(D);
+true
+gap> DigraphCenter = DigraphCenter;
 true
 
 # DigraphAbsorptionProbabilities

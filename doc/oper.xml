@@ -1954,6 +1954,96 @@ rec( idom := [ 2, fail, 2, 2, 2 ], preorder := [ 2, 1, 3, 4, 5 ] )
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="IsDigraphOutDominatingSet">
+<ManSection>
+  <Oper Name="IsDigraphOutDominatingSet" Arg="digraph, list"/>
+  <Oper Name="IsDigraphDominatingSet" Arg="digraph, list"/>
+  <Oper Name="IsDigraphInDominatingSet" Arg="digraph, list"/>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
+  <Description>
+    If <A>digraph</A> is a digraph and <A>list</A> is a strictly sorted list of
+    vertices of <A>digraph</A>, then <C>IsDigraphOutDominatingSet</C>
+    returns <K>true</K> if <A>list</A> is an out-dominating set of <A>digraph</A>.
+    Similarly, the operation <C>IsDigraphInDominatingSet</C> returns <K>true</K>
+    if <A>list</A> is an in-dominating set of <A>digraph</A>.
+    Otherwise, each of these operations return <K>false</K>.
+    <P/>
+
+    An <E>out-dominating set</E> of <A>digraph</A> is a subset <M>S</M> of
+    vertices of <A>digraph</A> such that every vertex of <A>digraph</A> is
+    either in <M>S</M> or an out-neighbour of a vertex in <M>S</M>.
+    An <E>in-dominating set</E> of <A>digraph</A> is a subset <M>S</M> of
+    vertices of <A>digraph</A> such that every vertex of <A>digraph</A> is
+    either in <M>S</M> or an in-neighbour of a vertex in <M>S</M>. <P/>
+
+    <Ref Oper="IsDigraphDominatingSet"/> is a synonym for
+    <Ref Oper="IsDigraphOutDominatingSet"/>.
+
+  <Example><![CDATA[
+gap> D := Digraph([[2, 4], [3], [1, 5], [3], [4]]);;
+gap> IsDigraphOutDominatingSet(D, [1, 3]);
+true
+gap> IsDigraphOutDominatingSet(D, [1, 3, 5]);
+true
+gap> IsDigraphOutDominatingSet(D, [3, 5]);
+false
+gap> IsDigraphOutDominatingSet(D, [3, 1, 5, 2, 4]);
+false
+gap> IsDigraphInDominatingSet(D, [3, 4]);
+true
+gap> IsDigraphInDominatingSet(D, [1, 3, 5]);
+true
+gap> IsDigraphInDominatingSet(D, [3, 5]);
+false
+gap> IsDigraphInDominatingSet(D, [3, 1, 5, 2, 4]);
+false
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
+<#GAPDoc Label="OperDigraphGreedyOutDominatingSet">
+<ManSection>
+  <Oper Name="DigraphGreedyOutDominatingSet" Arg="digraph, order"/>
+  <Oper Name="DigraphGreedyInDominatingSet" Arg="digraph, order"/>
+  <Returns>A list of positive integers</Returns>
+  <Description>
+      <C>DigraphGreedyOutDominatingSet</C> returns the unique <E>greedy
+      out-dominating set</E> of <A>digraph</A> with respect to the ordering
+      that the list <A>order</A> induced on the vertices in
+      <A>digraph</A>. An <E>out-dominating set</E> is a subset <M>S</M> of
+      vertices of <A>digraph</A> such that every vertex of <A>digraph</A> is
+      either in <M>S</M> or an out-neighbour of a vertex in <M>S</M>. Such a
+      set is <E>greedy</E>, if it is obtained by starting with an empty set
+      <M>S</M> and repeatedly adding to <M>S</M> the least (with respect to the
+      ordering <A>order</A>) vertex that is not in <M>S</M> and not and
+      out-neighbour of <M>S</M>.
+
+      See also <Ref Oper="IsDigraphOutDominatingSet"/> for further
+      information on dominating sets, and <Ref
+      Attr="DigraphGreedyOutDominatingSet"/> for the attribute version of this
+      function that finds a greedy out-dominating set with respect to the
+      ordering <M>1 &lt; 2 &lt; ... &lt; n </M> on the vertices of <A>digraph</A>.
+
+      Similarly, <C>DigraphGreedyInDominatingSet</C> returns the unique <E>greedy
+      in-dominating set</E> of <A>digraph</A> with respect to the ordering
+      that the list <A>order</A> induces on the vertices in
+      <A>digraph</A>. This is equivalently the greedy out-dominating set of
+      the <Ref Attr="DigraphReverse"/> of <A>digraph</A>.
+
+      See also <Ref Oper="IsDigraphInDominatingSet"/> and <Ref
+      Attr="DigraphGreedyInDominatingSet"/>.
+  <Example><![CDATA[
+gap> D := Digraph([[2, 4], [3], [1, 5], [3], [4]]);;
+gap> DigraphGreedyOutDominatingSet(D, [2, 1, 3, 4, 5]);
+[ 1, 2, 5 ]
+gap> DigraphGreedyInDominatingSet(D, [5, 1, 3, 4, 2]);
+[ 1, 2, 4, 5 ]
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="PartialOrderDigraphMeetOfVertices">
 <ManSection>
   <Oper Name="PartialOrderDigraphMeetOfVertices"
@@ -2133,9 +2223,38 @@ true
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="IsKParadoxicalTournament">
+<ManSection>
+  <Oper Name="IsKParadoxicalTournament" Arg="digraph, int"/>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
+  <Description>
+    A tournament <A>D</A> is <M>k</M>-<E>paradoxical</E> if for every set
+    <M>S</M> of <A>k</A> vertices there is a vertex outside <M>S</M> which
+    is an in-neighbour of every vertex in <M>S</M>, i.e. there is one player
+    who beats all the players of <M>S</M>. This is a generalisation of
+    <Ref Oper="IsParadoxicalTournament"/>.
+    <P/>
+    If <A>D</A> has no vertices, then the answer is <K>false</K>. If <A>D</A>
+    has at least one vertex and <A>k</A> is <C>0</C> then the answer is
+    <K>true</K>.
+    <P/>
+    If <A>k</A> is negative or <A>D</A> is not a tournament (see
+    <Ref Prop="IsTournament"/>), then an error is raised.
+    <Example><![CDATA[
+gap> D := Digraph([[2, 3, 5], [3, 4, 6], [4, 5, 7], [5, 6, 1],
+>                  [6, 7, 2], [7, 1, 3], [1, 2, 4]]);;
+gap> IsKParadoxicalTournament(D, 2);
+true
+gap> IsKParadoxicalTournament(D, 3);
+false]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="DigraphDijkstra">
 <ManSection>
-  <Oper Name="DigraphDijkstra" Arg="digraph, source, target" Label="for a source and target"/>
+  <Oper Name="DigraphDijkstra" Arg="digraph, source, target"
+  Label="for a source and target"/>
   <Oper Name="DigraphDijkstra" Arg="digraph, source" Label="for a source"/>
   <Returns>Two lists.</Returns>
   <Description>
@@ -2175,6 +2294,7 @@ gap> DigraphDijkstra(D, 1, 2);
 <#GAPDoc Label="ModularProduct">
 <ManSection>
   <Oper Name="ModularProduct" Arg="D1, D2"/>
+  <Oper Name="DigraphModularProduct" Arg="D1, D2"/>
   <Returns>A digraph.</Returns>
   <Description>
   If <A>D1</A> and <A>D2</A> are digraphs without multiple edges, then
@@ -2198,7 +2318,10 @@ gap> DigraphDijkstra(D, 1, 2);
   </List>
 
   Notably, the complete (with loops) subdigraphs of <C>MPD</C> are
-  precisely the partial isomorphisms from <A>D1</A> to <A>D2</A>.
+  precisely the partial isomorphisms from <A>D1</A> to <A>D2</A>. <P/>
+
+  <Ref Oper="DigraphModularProduct"/> is a synonym for
+  <Ref Oper="ModularProduct"/>.
 
   <Example><![CDATA[
 gap> ModularProduct(Digraph([[1], [1, 2]]), Digraph([[], [2]]));
@@ -2218,6 +2341,7 @@ gap> ModularProduct(NullDigraph(0), CompleteDigraph(10));
 <#GAPDoc Label="StrongProduct">
 <ManSection>
   <Oper Name="StrongProduct" Arg="D1, D2"/>
+  <Oper Name="DigraphStrongProduct" Arg="D1, D2"/>
   <Returns>A digraph.</Returns>
   <Description>
   If <A>D1</A> and <A>D2</A> are digraphs without multiple edges,
@@ -2245,7 +2369,10 @@ gap> ModularProduct(NullDigraph(0), CompleteDigraph(10));
   </List>
 
   The SPD of two paths of lengths <C>m</C> and <C>n</C> is also the king's graph
-  for an <C>m</C> by <C>n</C> board. 
+  for an <C>m</C> by <C>n</C> board. <P/>
+
+  <Ref Oper="DigraphStrongProduct"/> is a synonym for
+  <Ref Oper="StrongProduct"/>.
 
   <Example><![CDATA[
 gap> D1 := Digraph([[2], [1, 3, 4], [2, 5], [2, 5], [3, 4]]);
@@ -2265,6 +2392,7 @@ gap> StrongProduct(DigraphSymmetricClosure(ChainDigraph(3)),
 <#GAPDoc Label="ConormalProduct">
 <ManSection>
   <Oper Name="ConormalProduct" Arg="D1, D2"/>
+  <Oper Name="DigraphConormalProduct" Arg="D1, D2"/>
   <Returns>A digraph.</Returns>
   <Description>
   If <A>D1</A> and <A>D2</A> are digraphs without multiple edges,
@@ -2283,7 +2411,10 @@ gap> StrongProduct(DigraphSymmetricClosure(ChainDigraph(3)),
     <Item>
       There is an edge from <C>b</C> to <C>d</C> in <A>D2</A>.
     </Item>
-  </List>
+  </List> <P/>
+
+  <Ref Oper="DigraphConormalProduct"/> is a synonym for
+  <Ref Oper="ConormalProduct"/>.
 
   <Example><![CDATA[
 gap> ConormalProduct(DigraphSymmetricClosure(CycleDigraph(7)),
@@ -2299,6 +2430,7 @@ gap> ConormalProduct(NullDigraph(0), CompleteDigraph(10));
 <#GAPDoc Label="HomomorphicProduct">
 <ManSection>
   <Oper Name="HomomorphicProduct" Arg="D1, D2"/>
+  <Oper Name="DigraphHomomorphicProduct" Arg="D1, D2"/>
   <Returns>A digraph.</Returns>
   <Description>
   If <A>D1</A> and <A>D2</A> are digraphs without multiple edges,
@@ -2318,7 +2450,10 @@ gap> ConormalProduct(NullDigraph(0), CompleteDigraph(10));
       There is an edge from <C>a</C> to <C>c</C> in <A>D1</A> and no edge from
       <C>b</C> to <C>d</C> in <A>D2</A>.
     </Item>
-  </List>
+  </List> <P/>
+
+  <Ref Oper="DigraphHomomorphicProduct"/> is a synonym for
+  <Ref Oper="HomomorphicProduct"/>.
 
   <Example><![CDATA[
 gap> HomomorphicProduct(PetersenGraph(),
@@ -2361,6 +2496,7 @@ gap> OutNeighbours(D1);
 <#GAPDoc Label="LexicographicProduct">
 <ManSection>
   <Oper Name="LexicographicProduct" Arg="D1, D2"/>
+  <Oper Name="DigraphLexicographicProduct" Arg="D1, D2"/>
   <Returns>A digraph.</Returns>
   <Description>
   If <A>D1</A> and <A>D2</A> are digraphs without multiple edges,
@@ -2380,7 +2516,10 @@ gap> OutNeighbours(D1);
       The vertices <C>a</C> and <C>c</C> of <A>D1</A> are equal and there is
       an edge from <C>b</C> to <C>d</C> in <A>D2</A>.
     </Item>
-  </List>
+  </List> <P/>
+
+  <Ref Oper="DigraphLexicographicProduct"/> is a synonym for
+  <Ref Oper="LexicographicProduct"/>.
 
   <Example><![CDATA[
 gap> LexicographicProduct(DigraphSymmetricClosure(CycleDigraph(3)),

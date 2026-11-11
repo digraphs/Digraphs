@@ -18,6 +18,7 @@
     <#Include Label="DigraphOutEdges">
     <#Include Label="IsDigraphEdge">
     <#Include Label="IsMatching">
+    <#Include Label="IsKParadoxicalTournament">
     <#Include Label="DigraphMaximalMatching">
     <#Include Label="DigraphMaximumMatching">
   </Section>
@@ -47,7 +48,11 @@
   </Section>
 
   <Section><Heading>Reachability and connectivity</Heading>
+    <#Include Label="DigraphEccentricities">
     <#Include Label="DigraphDiameter">
+    <#Include Label="DigraphRadius">
+    <#Include Label="DigraphCentre">
+    <#Include Label="DigraphPeriphery">
     <#Include Label="DigraphShortestDistance">
     <#Include Label="DigraphShortestDistances">
     <#Include Label="DigraphLongestDistanceFromVertex">
@@ -76,6 +81,9 @@
     <#Include Label="DigraphAbsorptionExpectedSteps">
     <#Include Label="Dominators">
     <#Include Label="DominatorTree">
+    <#Include Label="IsDigraphOutDominatingSet">
+    <#Include Label="AttrDigraphGreedyOutDominatingSet">
+    <#Include Label="OperDigraphGreedyOutDominatingSet">
     <#Include Label="IteratorOfPaths">
     <#Include Label="DigraphAllSimpleCircuits">
     <#Include Label="DigraphLongestSimpleCircuit">
@@ -89,6 +97,7 @@
     <#Include Label="NrSpanningTrees">
     <#Include Label="DigraphDijkstra">
     <#Include Label="DigraphVertexConnectivity">
+    <#Include Label="DigraphEdgeConnectivity">
     <#Include Label="DigraphCycleBasis">
     <#Include Label="DigraphIsKing">
     <#Include Label="DigraphKings">

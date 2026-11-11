@@ -49,6 +49,11 @@ DeclareAttribute("DigraphDegeneracyOrdering", IsDigraph);
 DeclareAttribute("DIGRAPHS_Degeneracy", IsDigraph);
 DeclareAttribute("DigraphShortestDistances", IsDigraph);
 DeclareAttribute("DigraphDiameter", IsDigraph);
+DeclareAttribute("DigraphEccentricities", IsDigraph);
+DeclareAttribute("DigraphRadius", IsDigraph);
+DeclareAttribute("DigraphCentre", IsDigraph);
+DeclareSynonymAttr("DigraphCenter", DigraphCentre);
+DeclareAttribute("DigraphPeriphery", IsDigraph);
 DeclareAttribute("DigraphGirth", IsDigraph);
 DeclareAttribute("DigraphOddGirth", IsDigraph);
 DeclareAttribute("DigraphUndirectedGirth", IsDigraph);
@@ -65,6 +70,7 @@ DeclareAttribute("DigraphAllUndirectedSimpleCircuits", IsDigraph);
 DeclareOperation("DigraphAllChordlessCyclesOfMaximalLength",
     [IsDigraph, IsInt]);
 DeclareAttribute("DigraphAllChordlessCycles", IsDigraph);
+DeclareOperation("IsDigraphRotationSystem", [IsDigraph, IsList]);
 DeclareOperation("FacialWalks", [IsDigraph, IsList]);
 DeclareAttribute("HamiltonianPath", IsDigraph);
 DeclareAttribute("DigraphPeriod", IsDigraph);
@@ -79,6 +85,7 @@ DeclareAttribute("DigraphMaximalQuotients", IsDigraph);
 DeclareAttribute("CharacteristicPolynomial", IsDigraph);
 DeclareAttribute("NrSpanningTrees", IsDigraph);
 DeclareAttribute("DigraphVertexConnectivity", IsDigraph);
+DeclareAttribute("DigraphEdgeConnectivity", IsDigraph);
 
 # AsGraph must be mutable for grape to function properly
 DeclareAttribute("AsGraph", IsDigraph, "mutable");
@@ -135,6 +142,9 @@ DeclareAttribute("DigraphMaximumMatching", IsDigraph);
 
 DeclareAttribute("Bridges", IsDigraph);
 DeclareAttributeThatReturnsDigraph("StrongOrientation", IsDigraph);
+
+DeclareAttribute("DigraphGreedyOutDominatingSet", IsDigraph);
+DeclareAttribute("DigraphGreedyInDominatingSet", IsDigraph);
 
 DeclareAttribute("NonUpperSemimodularPair", IsDigraph);
 DeclareAttribute("NonLowerSemimodularPair", IsDigraph);

@@ -1508,6 +1508,42 @@ function(D)
   return DIGRAPH_DIAMETER(D);
 end);
 
+InstallMethod(DigraphEccentricities, "for a digraph",
+[IsDigraph],
+function(D)
+  if not IsStronglyConnectedDigraph(D) or DigraphNrVertices(D) = 0 then
+    return fail;
+  fi;
+  return List(DigraphShortestDistances(D), Maximum);
+end);
+
+InstallMethod(DigraphRadius, "for a digraph",
+[IsDigraph],
+function(D)
+  if not IsStronglyConnectedDigraph(D) or DigraphNrVertices(D) = 0 then
+    return fail;
+  fi;
+  return Minimum(DigraphEccentricities(D));
+end);
+
+InstallMethod(DigraphCentre, "for a digraph",
+[IsDigraph],
+function(D)
+  if not IsStronglyConnectedDigraph(D) or DigraphNrVertices(D) = 0 then
+    return fail;
+  fi;
+  return Positions(DigraphEccentricities(D), DigraphRadius(D));
+end);
+
+InstallMethod(DigraphPeriphery, "for a digraph",
+[IsDigraph],
+function(D)
+  if not IsStronglyConnectedDigraph(D) or DigraphNrVertices(D) = 0 then
+    return fail;
+  fi;
+  return Positions(DigraphEccentricities(D), DigraphDiameter(D));
+end);
+
 InstallMethod(DigraphUndirectedGirth, "for a digraph", [IsDigraph],
 function(D)
   # This is only defined on undirected graphs (i.e. symmetric digraphs)
@@ -1853,6 +1889,34 @@ InstallMethod(DigraphAllChordlessCycles, "for a digraph",
 [IsDigraph],
 D -> DigraphAllChordlessCyclesOfMaximalLength(D, INTOBJ_MAX));
 
+# Checks if a given list is a rotation system for a given digraph
+InstallMethod(IsDigraphRotationSystem, "for a digraph and a list",
+[IsDigraph, IsList],
+function(digraph, rotationSystem)
+    local D, i, v;
+
+    if not IsSymmetricDigraph(digraph) then
+      ErrorNoReturn("the argument <D> must be a symmetric digraph,");
+    elif Length(rotationSystem) <> DigraphNrVertices(digraph) then
+        return false;
+    fi;
+
+    D := DigraphRemoveLoops(DigraphRemoveAllMultipleEdges(
+        DigraphMutableCopyIfMutable(digraph)));
+
+    for i in [1 .. Length(rotationSystem)] do
+      if Length(rotationSystem[i]) <> Length(OutNeighboursOfVertex(D, i)) then
+        return false;
+      fi;
+       for v in rotationSystem[i] do
+           if not IsDigraphEdge(D, i, v) then
+               return false;
+           fi;
+        od;
+    od;
+    return true;
+end);
+
 # Compute for a given rotation system the facial walks
 InstallMethod(FacialWalks, "for a digraph and a dense list",
 [IsDigraph, IsDenseList],
@@ -1863,17 +1927,9 @@ function(D, rotationSystem)
     ErrorNoReturn("the argument <D> must be a symmetric digraph,");
   fi;
 
-  if Length(rotationSystem) <> DigraphNrVertices(D)
-      or not ForAll(rotationSystem, IsList) then
-    ErrorNoReturn("the 2nd argument (dense list <rotationSystem>) is not a ",
-                  "rotation system for the 1st argument (digraph <D>), ",
-                  "expected a list of ", DigraphNrVertices(D), " lists,");
-  fi;
-
-  if Union(rotationSystem) <> DigraphVertices(D) then
-    ErrorNoReturn("the 2nd argument (dense list <rotationSystem>) is not a ",
-                  "rotation system for the 1st argument (digraph <D>), ",
-                  "expected its union to be the vertices of <D>,");
+    if not IsDigraphRotationSystem(D, rotationSystem) then
+    ErrorNoReturn("the 2nd argument (list <rotationSystem>) is not a rotation ",
+              "system for the 1st argument (digraph <D>)");
   fi;
 
   # computes a facial cycles starting with the edge 'startEdge'
@@ -3549,6 +3605,144 @@ function(D)
   # deal with these at the start. So this assert should pass.
   Assert(1, kappa_min <> fail);
   return kappa_min;
+end);
+
+#############################################################################
+# Digraph Edge Connectivity
+#############################################################################
+
+# Algorithms constructed off the algorithms detailed in:
+# https://www.cse.msu.edu/~cse835/Papers/Graph_connectivity_revised.pdf
+# Each Algorithm uses a different method to decrease the time complexity,
+# of calculating Edge Connectivity, though all make use of DigraphMaximumFlow()
+# due to the Max-Flow, Min-Cut Theorem
+
+# Algorithm 1: Calculating the Maximum Flow of every possible source and sink
+# Algorithm 2: Calculating the Maximum Flow to all sinks of an arbitrary source
+# Algorithm 3: Finding Maximum Flow within the non-leaves of a Spanning Tree
+# Algorithm 4: Constructing a spanning tree with a high number of leaves
+# Algorithm 5: Using the spanning tree^ to find Maximum Flow within non-leaves
+# Algorithm 6: Finding Maximum Flow within a dominating set of the digraph
+# Algorithm 7: Constructing a dominating set for use in Algorithm 6
+
+# This function computes the greedy dominating set for the subdigraph
+# of a digraph induced by a set of vertices. The neighbour_fun function
+# determines if in or out-edges are used. Pass OutNeighboursOfVertex
+# for out-edges and InNeighboursOfVertex for in-edges.
+#
+# In other words, we find a subset S of the vertices in the parameter vertices
+# such that every vertex in vertices is in S or adjacent to a vertex in S. This
+# is done in a greedy manner by including every vertex in vertices in order, if
+# it is not already adjacent to some vertex in the current dominating set. The
+# vertices are processed in the same order as they occur in the parameter
+# vertices.
+#
+# Implements Algorithm 7 in :
+# https://www.cse.msu.edu/~cse835/Papers/Graph_connectivity_revised.pdf
+BindGlobal("DIGRAPHS_GreedyDominatingSet",
+function(digraph, vertices, neighbour_fun)
+  local S, seen, neighbour, vertex;
+
+  Assert(1,
+    neighbour_fun = OutNeighboursOfVertex or
+    neighbour_fun = InNeighboursOfVertex);
+
+  seen := BlistList(DigraphVertices(digraph), []);
+  S := [];
+  for vertex in vertices do
+    if not seen[vertex] then
+      seen[vertex] := true;
+      Add(S, vertex);
+      for neighbour in neighbour_fun(digraph, vertex) do
+        seen[neighbour] := true;
+      od;
+    fi;
+  od;
+
+  return S;
+end);
+
+InstallMethod(DigraphGreedyOutDominatingSet, "for a digraph", [IsDigraph],
+  digraph ->
+    DIGRAPHS_GreedyDominatingSet(
+      digraph,
+      DigraphVertices(digraph),
+      OutNeighboursOfVertex));
+
+InstallMethod(DigraphGreedyInDominatingSet, "for a digraph", [IsDigraph],
+  digraph ->
+    DIGRAPHS_GreedyDominatingSet(
+      digraph,
+      DigraphVertices(digraph),
+      InNeighboursOfVertex));
+# Algorithms 4-7 are used below:
+
+# Digraph EdgeConnectivity calculated with Dominating Sets (Algorithm 6-7)
+InstallMethod(DigraphEdgeConnectivity, "for a symmetric digraph",
+[IsDigraph],
+function(digraph)
+  # Form an identical but edge weighted digraph with all edge weights as 1:
+  local weights, i, u, v, w, neighbourhood, EdgeD,
+    maxFlow, min, sum, a, b, V, added, st, non_leaf, max,
+    notAddedNeighbours, notadded, NextVertex, NeighboursV,
+    neighbour, Edges, D, VerticesLeft, VerticesED;
+
+  # check for symmetric digraph
+  if not IsSymmetricDigraph(digraph) then
+    ErrorNoReturn("the argument <digraph> must be a symmetric digraph,");
+  fi;
+
+  if DigraphNrVertices(digraph) = 1 or
+      DigraphNrConnectedComponents(digraph) > 1 then
+    return 0;
+  fi;
+
+  min := -1;
+
+  # Algorithm 7: Creating a dominating set of the digraph
+  D := DIGRAPHS_GreedyDominatingSet(
+    digraph,
+    Shuffle([1 .. DigraphNrVertices(digraph)]),
+    OutNeighboursOfVertex);
+
+  # Algorithm 6: Using the dominating set created to determine the Maximum Flow
+
+  EdgeD := UnitEdgeWeightedDigraph(DigraphImmutableCopyIfMutable(digraph));
+  if Length(D) > 1 then
+
+    v := D[1];
+    for i in [2 .. Length(D)] do
+      w := D[i];
+      a := DigraphMaximumFlow(EdgeD, v, w)[v];
+      b := DigraphMaximumFlow(EdgeD, w, v)[w];
+
+      sum := Minimum(Sum(a), Sum(b));
+      if (sum < min or min = -1) then
+        min := sum;
+      fi;
+    od;
+
+  else
+    # If the dominating set of EdgeD is of Length 1,
+    # the above algorithm will not work
+    # Revert to iterating through all vertices of the original digraph
+
+    u := 1;
+
+    for v in [2 .. DigraphNrVertices(EdgeD)] do
+      a := DigraphMaximumFlow(EdgeD, u, v)[u];
+      b := DigraphMaximumFlow(EdgeD, v, u)[v];
+
+      sum := Minimum(Sum(a), Sum(b));
+      if (sum < min or min = -1) then
+        min := sum;
+      fi;
+
+    od;
+  fi;
+
+  return Minimum(min, Minimum(OutDegrees(EdgeD)), Minimum(InDegrees(EdgeD)));
+
 end);
 
 # The following function is a transliteration from python to GAP of

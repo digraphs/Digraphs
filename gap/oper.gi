@@ -1596,6 +1596,60 @@ function(D, edges)
   return true;
 end);
 
+InstallMethod(IsKParadoxicalTournament, "for a tournament and an integer",
+[IsDigraph, IsInt],
+function(D, k)
+  local n, inn_blist, backtrack;
+
+  if not IsTournament(D) then
+    ErrorNoReturn("the 1st argument <D> must be a tournament,");
+  fi;
+
+  if k < 0 then
+    ErrorNoReturn("the 2nd argument <k> must be non-negative,");
+  fi;
+
+  n := DigraphNrVertices(D);
+
+  if n = 0 then
+    return false;
+  fi;
+
+  if k = 0 then
+    return true;
+  fi;
+
+  if k = 1 then
+    return IsParadoxicalTournament(D);
+  fi;
+
+  # this minimum number of vertices needed for k-paradox is given by
+  # Szekeres, E.; Szekeres, G. (1965), "On a problem of Schütte and Erdős"
+  if n < (k + 2) * (2 ^ (k - 1)) - 1 then
+    return false;
+  fi;
+
+  inn_blist := List(InNeighbours(D), inn -> BlistList([1 .. n], inn));
+
+  backtrack := function(prev, depth, common)
+    local vertex, ncommon;
+    for vertex in [prev + 1 .. n - k + depth + 1] do
+      ncommon := IntersectionBlist(common, inn_blist[vertex]);
+      if SizeBlist(ncommon) = 0 then
+        return false;
+      fi;
+      if depth + 1 < k then
+        if not backtrack(vertex, depth + 1, ncommon) then
+          return false;
+        fi;
+      fi;
+    od;
+    return true;
+  end;
+
+  return backtrack(0, 0, BlistList([1 .. n], [1 .. n]));
+end);
+
 #############################################################################
 # 9.  Connectivity
 #############################################################################
@@ -2521,6 +2575,66 @@ function(D, root)
   od;
   return result;
 end);
+
+BindGlobal("DIGRAPHS_IsDominatingSet",
+function(digraph, vertices, neighbour_fun)
+  local seen, neighbour, vertex;
+
+  if not IsSet(vertices) then
+    return false;
+  fi;
+
+  seen := BlistList(DigraphVertices(digraph), []);
+  for vertex in vertices do
+    if not IsPosInt(vertex) or vertex > DigraphNrVertices(digraph) then
+      return false;
+    fi;
+    seen[vertex] := true;
+    for neighbour in neighbour_fun(digraph, vertex) do
+      seen[neighbour] := true;
+    od;
+  od;
+
+  return ForAll(seen, x -> x);
+end);
+
+InstallMethod(IsDigraphOutDominatingSet,
+  "for a digraph and a list of vertices",
+  [IsDigraph, IsList],
+  {digraph, vertices} ->
+    DIGRAPHS_IsDominatingSet(digraph, vertices, OutNeighboursOfVertex));
+
+InstallMethod(IsDigraphInDominatingSet,
+  "for a digraph and a list of vertices",
+  [IsDigraph, IsList],
+  {digraph, vertices} ->
+    DIGRAPHS_IsDominatingSet(digraph, vertices, InNeighboursOfVertex));
+
+InstallMethod(DigraphGreedyOutDominatingSet,
+  "for a digraph and a list of vertices",
+  [IsDigraph, IsList],
+  function(digraph, vertex_order)
+    if Length(vertex_order) <> DigraphNrVertices(digraph) or
+       Set(vertex_order) <> DigraphVertices(digraph) then
+      ErrorNoReturn("the 2nd argument must be a permuted list of vertices of ",
+                    "the 1st argument (a digraph)");
+    fi;
+    return Set(DIGRAPHS_GreedyDominatingSet(
+      digraph, vertex_order, OutNeighboursOfVertex));
+  end);
+
+InstallMethod(DigraphGreedyInDominatingSet,
+  "for a digraph and a list of vertices",
+  [IsDigraph, IsList],
+  function(digraph, vertex_order)
+    if Length(vertex_order) <> DigraphNrVertices(digraph) or
+       Set(vertex_order) <> DigraphVertices(digraph) then
+      ErrorNoReturn("the 2nd argument must be a permuted list of vertices of ",
+                    "the 1st argument (a digraph)");
+    fi;
+    return Set(DIGRAPHS_GreedyDominatingSet(
+      digraph, vertex_order, InNeighboursOfVertex));
+  end);
 
 # Computes the fundamental cycle basis of a symmetric digraph
 # First, notice that the cycle space is composed of orthogonal subspaces

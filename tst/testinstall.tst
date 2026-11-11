@@ -541,24 +541,6 @@ gap> AutomorphismGroup(D)
 > = Group([(1, 2, 3), (1, 2), (4, 5, 6), (4, 5), (1, 4)(2, 5)(3, 6)]);
 true
 
-# UnitEdgeWeightedDigraph
-gap> D := UnitEdgeWeightedDigraph(Digraph([[2], [1, 3], [1]]));
-<immutable edge-weighted digraph with 3 vertices, 4 edges>
-gap> EdgeWeights(D);
-[ [ 1 ], [ 1, 1 ], [ 1 ] ]
-gap> D := UnitEdgeWeightedDigraph(Digraph([[3, 4], [1, 3, 4], [2, 4], [1, 2, 3]]));
-<immutable edge-weighted digraph with 4 vertices, 10 edges>
-gap> EdgeWeights(D);
-[ [ 1, 1 ], [ 1, 1, 1 ], [ 1, 1 ], [ 1, 1, 1 ] ]
-gap> D := UnitEdgeWeightedDigraph(EmptyDigraph(4));
-<immutable empty edge-weighted digraph with 4 vertices>
-gap> EdgeWeights(D);
-[ [  ], [  ], [  ], [  ] ]
-gap> D := UnitEdgeWeightedDigraph(EdgeWeightedDigraph([[2], []], [[5], []]));
-<immutable edge-weighted digraph with 2 vertices, 1 edge>
-gap> EdgeWeights(D);
-[ [ 1 ], [  ] ]
-
 # SwapDigraphs
 gap> C := Digraph(IsMutableDigraph, [[4], [5], [1, 2], [], []]);;
 gap> D := Digraph(IsMutableDigraph, [[2, 3, 4], [1, 3, 4, 5], [1, 2], [5], [4]]);;
@@ -581,6 +563,20 @@ gap> IsMutableDigraph(out);
 true
 gap> D = out;
 false
+
+# DigraphEdgeConnectivity
+gap> D := Digraph([[4, 5], [4, 5], [4, 5], [1, 2, 3], [1, 2, 3]]);;
+gap> DigraphEdgeConnectivity(D);
+2
+gap> D := Digraph([[], [3], [2]]);;
+gap> DigraphEdgeConnectivity(D);
+0
+gap> C := Digraph([[3, 4], [1, 3, 4], [2], [3]]);;
+gap> DigraphEdgeConnectivity(C);
+Error, the argument <digraph> must be a symmetric digraph,
+gap> D := Digraph([[1, 2, 3, 4, 5], [1, 2, 3, 4, 5], [1, 2, 3, 4, 5], [1, 2, 3, 4, 5], [1, 2, 3, 4, 5]]);;
+gap> DigraphEdgeConnectivity(D);
+4
 
 #
 gap> DIGRAPHS_StopTest();
