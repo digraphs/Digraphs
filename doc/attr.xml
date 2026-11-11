@@ -1993,8 +1993,8 @@ gap> DigraphCore(D);
     does. However, loops may appear through identifying two adjacent vertices.
     <P/>
 
-    The attribute has at least <C>O(n ^ 2)</C> complexity, where <C>n</C>
-    is the number of vertices of <A>digraph</A>.
+    The attribute has at least quadratic complexity in the number of vertices
+    of <A>digraph</A>.
     <Example><![CDATA[
 gap> D := CycleDigraph(4);
 <immutable cycle digraph with 4 vertices>
