@@ -76,6 +76,9 @@ DeclareOperation("OnMultiDigraphs", [IsDigraph, IsPerm, IsPerm]);
 # 5. Substructures and quotients . . .
 DeclareOperation("QuotientDigraph", [IsDigraph, IsList]);
 DeclareOperation("InducedSubdigraph", [IsDigraph, IsList]);
+DeclareOperation("DigraphHalfSquareNC", [IsDigraph, IsList]);
+DeclareOperation("DigraphHalfSquare", [IsDigraph, IsList]);
+DeclareOperation("DigraphHalfSquares", [IsDigraph, IsList]);
 
 # 6. In and out degrees, neighbours, and edges of vertices . . .
 DeclareOperation("InDegreeOfVertex", [IsDigraph, IsPosInt]);

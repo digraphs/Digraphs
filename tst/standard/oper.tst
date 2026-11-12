@@ -10,7 +10,7 @@
 ##
 
 #@local C, D, D1, D2, D3, D3_edges, DD
-#@local G, G1, L, TestPartialOrderDigraph 
+#@local G, G1, L, L1, TestPartialOrderDigraph 
 #@local TestPartialOrderDigraph2, TestUnion, a, adj, b, comps, copy, d, e
 #@local edges, edges2, func, g, gr, gr1, gr2, gr3, gr4, gri, grrt, grt, h, i
 #@local i1, i2, id, idom, in1, in2, in3, iter, j1, j2, m, m1, m2, mat, n, nbs
@@ -490,6 +490,40 @@ gap> qr := QuotientDigraph(gr, [[1], [2, 3, 5, 7], [4, 6, 8]]);
 <immutable digraph with 3 vertices, 8 edges>
 gap> OutNeighbours(qr);
 [ [ 2, 3 ], [ 1, 2, 3 ], [ 1, 2, 3 ] ]
+
+#  DigraphHalfSquare[s]
+gap> D := Digraph([[2], [3], [1]]);;
+gap> DigraphHalfSquare(D, [1]);
+Error, the 1st argument <D> must be a bipartite digraph
+gap> DigraphHalfSquares(D, [1]);
+Error, the 1st argument <D> must be a bipartite digraph
+gap> D := ChainDigraph(5);;
+gap> DigraphBicomponents(D);
+[ [ 1, 3, 5 ], [ 2, 4 ] ]
+gap> DigraphHalfSquare(D, [6]);
+Error, the 2nd argument <U> must be a list of vertices of <D>
+gap> DigraphHalfSquare(D, [1, 3]);
+Error, the digraph <D> is not bipartite with respect to the vertex set <U>
+gap> OutNeighbours(DigraphHalfSquare(D, [1, 3, 5]));
+[ [ 2 ], [ 3 ], [  ] ]
+gap> OutNeighbours(DigraphHalfSquare(D, [2, 4]));
+[ [ 2 ], [  ] ]
+gap> D := DigraphSymmetricClosure(ChainDigraph(5));;
+gap> OutNeighbours(DigraphHalfSquare(D, [1, 3, 5]));
+[ [ 2 ], [ 1, 3 ], [ 2 ] ]
+gap> D := CompleteBipartiteDigraph(3, 3);;
+gap> D1 := DigraphHalfSquare(D, DigraphBicomponents(D)[1]);;
+gap> IsIsomorphicDigraph(D1, CompleteDigraph(3));
+true
+gap> D := CompleteBipartiteDigraph(2, 4);;
+gap> L := DigraphHalfSquares(D, DigraphBicomponents(D)[1]);;
+gap> IsIsomorphicDigraph(L[1], CompleteDigraph(2));
+true
+gap> IsIsomorphicDigraph(L[2], CompleteDigraph(4));
+true
+gap> L1 := DigraphHalfSquares(D, DigraphBicomponents(D)[2]);;
+gap> L = Reversed(L1);
+true
 
 #  DigraphInEdges and DigraphOutEdges: for a vertex
 gap> gr := Digraph([[2, 2, 2, 2, 2], [1, 1, 1, 1], [1], [3, 2]]);
