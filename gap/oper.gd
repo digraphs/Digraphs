@@ -132,9 +132,9 @@ DeclareOperation("DigraphKings", [IsDigraph, IsPosInt]);
 
 DeclareOperation("DigraphFloydWarshall",
                  [IsDigraph, IsFunction, IsObject, IsObject]);
-DeclareOperation("DigraphDijkstra",
+DeclareOperation("DigraphShortestPaths",
                  [IsDigraph, IsPosInt]);
-DeclareOperation("DigraphDijkstra",
+DeclareOperation("DigraphShortestPaths",
                  [IsDigraph, IsPosInt, IsPosInt]);
 
 DeclareOperation("DigraphConnectedComponent", [IsDigraph, IsPosInt]);

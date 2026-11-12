@@ -14,3 +14,5 @@ function(oldname, func)
     return CallFuncList(func, arg);
   end);
 end);
+
+DIGRAPHS_DeclareObsoleteSynonym("DigraphDijkstra", DigraphShortestPaths);
