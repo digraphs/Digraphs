@@ -1272,6 +1272,70 @@ InstallMethod(QuotientDigraph,
 {D, partition} ->
 MakeImmutable(QuotientDigraph(DigraphMutableCopy(D), partition)));
 
+InstallMethod(DigraphHalfSquareNC, "for a digraph and a list",
+[IsDigraph, IsList],
+function(D, U)
+  local pos, i, u, w, x, sharecommon, outnbs;
+
+  # for vertex re-numbering from D to U
+  pos := ListWithIdenticalEntries(DigraphNrVertices(D), 0);
+  for i in [1 .. Length(U)] do
+    pos[U[i]] := i;
+  od;
+
+  # two vertices u, x are joined if they share a common neighbour w in
+  # the other side of the bipartition, i.e. there exists a path u -> w -> x
+  outnbs := [];
+  for i in [1 .. Length(U)] do
+    u := U[i];
+    sharecommon := [];
+    for w in OutNeighboursOfVertex(D, u) do
+      for x in OutNeighboursOfVertex(D, w) do
+        if x <> u then
+          Add(sharecommon, pos[x]);
+        fi;
+      od;
+    od;
+    Add(outnbs, Set(sharecommon));
+  od;
+
+  return Digraph(outnbs);
+end);
+
+InstallMethod(DigraphHalfSquare, "for a digraph and a list",
+[IsDigraph, IsList],
+function(D, U)
+  local nU;
+
+  if not IsBipartiteDigraph(D) then
+    ErrorNoReturn("the 1st argument <D> must be a bipartite digraph");
+  fi;
+
+  nU := Set(U);
+  if not IsSubset(DigraphVertices(D), nU) then
+    ErrorNoReturn("the 2nd argument <U> must be a list of vertices of <D>");
+  fi;
+
+  # check if the set U and its complement D \ U are bicomponents, i.e. no edges
+  # between vertices in the same set
+  # can't do 'U in DigraphBicomponents(D)' because the partition isn't unique
+  if not (IsIndependentSet(D, nU) and
+          IsIndependentSet(D, Difference(DigraphVertices(D), nU))) then
+    ErrorNoReturn("the digraph <D> is not bipartite with respect to the vertex",
+                  " set <U>");
+  fi;
+
+  return DigraphHalfSquareNC(D, nU);
+end);
+
+InstallMethod(DigraphHalfSquares, "for a digraph and a list",
+[IsDigraph, IsList],
+function(D, U)
+  local complement;
+  complement := Difference(DigraphVertices(D), U);
+  return [DigraphHalfSquare(D, U), DigraphHalfSquare(D, complement)];
+end);
+
 #############################################################################
 # 6. In and out degrees, neighbours, and edges of vertices
 #############################################################################

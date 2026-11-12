@@ -1053,6 +1053,51 @@ gap> QuotientDigraph(EmptyDigraph(0), []);
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="DigraphHalfSquare">
+<ManSection>
+  <Oper Name="DigraphHalfSquare" Arg="digraph, list"/>
+  <Oper Name="DigraphHalfSquares" Arg="digraph, list"/>
+  <Returns>A digraph or a list of digraphs.</Returns>
+  <Description>
+    If <A>digraph</A> is a bipartite digraph <M>D</M>, and <A>list</A> is a list
+    of vertices <M>U</M> as one of the two sides of <M>D</M> (see
+    <Ref Prop="IsBipartiteDigraph"/>, <Ref Attr="DigraphBicomponents"/>), then
+    <C>DigraphHalfSquare</C> returns the bipartite half or half-square of
+    <A>digraph</A> with respect to <A>list</A>. If <A>digraph</A> is not
+    bipartite, or <A>list</A> is not a side of <A>digraph</A>, then an
+    error is raised. <P/>
+
+    The half-square of <M>D</M> with respect to <M>U</M> is a digraph whose
+    vertices are the elements of <M>U</M>, with an edge from <M>u_1</M> to
+    <M>u_2</M> if and only if there exists a directed path <M>u_1 \to x \to
+    u_2</M> in <M>D</M>. The vertices are <M>1, \ldots, |</M><A>U</A><M>|</M>,
+    where the vertex <M>i</M> corresponds to the <M>i</M>-th smallest element of
+    <A>U</A>. <P/>
+
+    <C>DigraphHalfSquares</C> returns a list containing two digraphs, the
+    half square of <A>digraph</A> with respect to <A>list</A>, and the half
+    square with respect to the vertices of <A>digraph</A> not in <A>list</A>,
+    i.e. the half squares of both sides of the bipartition.
+    <Example><![CDATA[
+gap> D := ChainDigraph(5);;
+gap> DigraphBicomponents(D);
+[ [ 1, 3, 5 ], [ 2, 4 ] ]
+gap> D1 := DigraphHalfSquare(D, [1, 3, 5]);;
+gap> OutNeighbours(D1);
+[ [ 2 ], [ 3 ], [  ] ]
+gap> D := DigraphSymmetricClosure(ChainDigraph(5));;
+gap> OutNeighbours(DigraphHalfSquare(D, [1, 3, 5]));
+[ [ 2 ], [ 1, 3 ], [ 2 ] ]
+gap> D := DigraphHalfSquares(CompleteBipartiteDigraph(2, 4), [1, 2]);;
+gap> IsIsomorphicDigraph(D[1], CompleteDigraph(2));
+true
+gap> IsIsomorphicDigraph(D[2], CompleteDigraph(4));
+true
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="IsDigraphEdge">
 <ManSection>
   <Oper Name="IsDigraphEdge" Arg="digraph, list"
