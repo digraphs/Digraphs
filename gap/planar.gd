@@ -31,6 +31,7 @@ DeclareAttribute("DualPlanarGraph", IsDigraph);
 
 DeclareProperty("IsPlanarDigraph", IsDigraph);
 DeclareProperty("IsOuterPlanarDigraph", IsDigraph);
+DeclareProperty("IsMapGraph", IsDigraph);
 
 # True methods . . .
 
@@ -41,3 +42,4 @@ InstallTrueMethod(IsHamiltonianDigraph,
 InstallTrueMethod(IsPlanarDigraph, IsChainDigraph);
 InstallTrueMethod(IsPlanarDigraph, IsCycleDigraph);
 InstallTrueMethod(IsPlanarDigraph, IsOuterPlanarDigraph);
+InstallTrueMethod(IsMapGraph, IsPlanarDigraph);
