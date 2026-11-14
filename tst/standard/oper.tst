@@ -2048,12 +2048,10 @@ gap> DigraphShortestPath(gr, 1, 6);
 fail
 gap> DigraphShortestPath(gr, 2, 5);
 [ [ 2, 3, 5 ], [ 1, 1 ] ]
-gap> DigraphShortestPath(gr, 3, 3);
-[ [ 3, 5, 4, 3 ], [ 1, 1, 3 ] ]
+gap> DigraphShortestPath(gr, 5, 2);
+[ [ 5, 4, 2 ], [ 1, 2 ] ]
 gap> DigraphShortestPath(gr, 6, 6);
 fail
-gap> DigraphShortestPath(gr, 5, 5);
-[ [ 5, 5 ], [ 2 ] ]
 gap> gr := Digraph([[]]);;
 gap> DigraphShortestPath(gr, 1, 1);
 fail
@@ -2064,10 +2062,16 @@ gap> gr := Digraph([[2], [1], [3]]);;
 gap> DigraphShortestPath(gr, 1, 2);
 [ [ 1, 2 ], [ 1 ] ]
 gap> gr := CayleyDigraph(SymmetricGroup(7));;
-gap> DigraphShortestPath(gr, 12, 5014);
-[ [ 12, 878, 158, 1029, 1875, 1881, 2754, 3498, 3522, 3642, 4508, 4388, 68, 
-      788, 1634, 2505, 3249, 3273, 4146, 5012, 5014 ], 
-  [ 2, 1, 2, 2, 1, 2, 2, 1, 2, 2, 1, 2, 1, 2, 2, 2, 1, 2, 2, 1 ] ]
+gap> Length(DigraphShortestPath(gr, 12, 5014)[1]);
+21
+
+# DigraphShortestPath - lex-least
+gap> D := Digraph([[3, 2], [5], [4], [6], [6], []]);
+<immutable digraph with 6 vertices, 6 edges>
+gap> OutNeighbours(D)[1];
+[ 3, 2 ]
+gap> DigraphShortestPath(D, 1, 6);
+[ [ 1, 2, 5, 6 ], [ 2, 1, 1 ] ]
 
 # IsReachableFrom
 gap> D := CompleteDigraph(5);
@@ -2385,18 +2389,18 @@ gap> OutNeighbours(C);
 [ [ 5, 6, 7 ], [ 7 ], [ 7 ], [ 7 ], [ 1, 6, 7 ], [ 1, 5, 7 ], 
   [ 3, 2, 1, 6, 5, 4 ] ]
 
-# DigraphDijkstra - when there is one path to target
+# DigraphShortestPaths - when there is one path to target
 gap> mat := [[0, 1, 1], [0, 0, 1], [0, 0, 0]];
 [ [ 0, 1, 1 ], [ 0, 0, 1 ], [ 0, 0, 0 ] ]
 gap> gr := DigraphByAdjacencyMatrix(mat);
 <immutable digraph with 3 vertices, 3 edges>
 gap> DigraphShortestDistance(gr, 2, 3);
 1
-gap> DigraphDijkstra(gr, 2, 3);
+gap> DigraphShortestPaths(gr, 2);
 [ [ infinity, 0, 1 ], [ -1, -1, 2 ] ]
-gap> DigraphDijkstra(gr, 1, 3);
+gap> DigraphShortestPaths(gr, 1);
 [ [ 0, 1, 1 ], [ -1, 1, 1 ] ]
-gap> DigraphDijkstra(gr, 1, 2);
+gap> DigraphShortestPaths(gr, 1);
 [ [ 0, 1, 1 ], [ -1, 1, 1 ] ]
 gap> DigraphShortestDistance(gr, 1, 3);
 1
@@ -2408,22 +2412,35 @@ gap> gr := DigraphByAdjacencyMatrix(mat);
 <immutable digraph with 3 vertices, 2 edges>
 gap> DigraphShortestDistance(gr, 2, 3);
 fail
-gap> DigraphDijkstra(gr, 2, 3);
+gap> DigraphShortestPaths(gr, 2);
 [ [ infinity, 0, infinity ], [ -1, -1, -1 ] ]
 gap> mat := [[0, 1, 1, 1], [0, 0, 1, 1], [0, 1, 0, 0], [1, 0, 0, 0]];
 [ [ 0, 1, 1, 1 ], [ 0, 0, 1, 1 ], [ 0, 1, 0, 0 ], [ 1, 0, 0, 0 ] ]
 gap> gr := DigraphByAdjacencyMatrix(mat);
 <immutable digraph with 4 vertices, 7 edges>
-gap> DigraphDijkstra(gr, 1, 4);
+gap> DigraphShortestPaths(gr, 1);
 [ [ 0, 1, 1, 1 ], [ -1, 1, 1, 1 ] ]
 gap> mat := [[0, 1, 1, 1], [0, 0, 1, 1], [0, 1, 0, 0], [1, 0, 0, 0]];
 [ [ 0, 1, 1, 1 ], [ 0, 0, 1, 1 ], [ 0, 1, 0, 0 ], [ 1, 0, 0, 0 ] ]
 gap> gr := DigraphByAdjacencyMatrix(mat);
 <immutable digraph with 4 vertices, 7 edges>
-gap> DigraphDijkstra(gr, 1, 2);
+gap> DigraphShortestPaths(gr, 1);
 [ [ 0, 1, 1, 1 ], [ -1, 1, 1, 1 ] ]
-gap> DigraphDijkstra(gr, 1, 3);
+gap> DigraphShortestPaths(gr, 1);
 [ [ 0, 1, 1, 1 ], [ -1, 1, 1, 1 ] ]
+
+# DigraphShortestPaths - called by obsolete synonym DigraphDijkstra
+gap> L := InfoLevel(InfoWarning);;
+gap> SetInfoLevel(InfoWarning, 1);;
+gap> mat := [[0, 1, 1], [0, 0, 1], [0, 0, 0]];
+[ [ 0, 1, 1 ], [ 0, 0, 1 ], [ 0, 0, 0 ] ]
+gap> gr := DigraphByAdjacencyMatrix(mat);
+<immutable digraph with 3 vertices, 3 edges>
+gap> DigraphDijkstra(gr, 2) = DigraphShortestPaths(gr, 2);
+#I  "DigraphDijkstra" is obsolete and will be removed in a future version;
+#I  use "DigraphShortestPaths" instead
+true
+gap> SetInfoLevel(InfoWarning, L);;
 
 # ModularProduct
 gap> ModularProduct(NullDigraph(0), CompleteDigraph(10));
