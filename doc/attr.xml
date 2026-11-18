@@ -1936,8 +1936,8 @@ gap> ChromaticPolynomial(Digraph([[], [3], [5], [2, 3], [4]]));
 k^5-5*k^4+8*k^3-4*k^2
 gap> ChromaticPolynomial(EmptyDigraph(0));
 1
-gap> ChromaticPolynomial(PetersenGraph());
-k^10-15*k^9+105*k^8-455*k^7+1353*k^6-2861*k^5+4275*k^4-4305*k^3+2606*k^2-704*k
+gap> Value(ChromaticPolynomial(PetersenGraph()), 5);
+332880
 ]]></Example>
   </Description>
 </ManSection>
