@@ -190,17 +190,7 @@ end);
 
 InstallGlobalFunction(DigraphsTestExtreme,
 function(arg...)
-  local file, opts, dir;
-  file := Filename(DirectoriesPackageLibrary("digraphs", "digraphs-lib"),
-                   "extreme.d6.gz");
-  if file = fail then
-    ErrorNoReturn("the file pkg/digraphs/digraphs-lib/extreme.d6.gz is ",
-                  "required for these tests to run. Please install the ",
-                  "most recent 'digraphs-lib' release archive from ",
-                  "https://github.com/digraphs/digraphs-lib ",
-                  "and try again,");
-  fi;
-
+  local opts, dir;
   if Length(arg) = 1 and IsRecord(arg[1]) then
     opts := ShallowCopy(arg[1]);
   elif Length(arg) <> 0 then

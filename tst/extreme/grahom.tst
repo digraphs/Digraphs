@@ -283,9 +283,9 @@ gap> for gr in graph5
 > od;
 
 #  GeneratorsOfEndomorphismMonoid9
-# Check some symmetric digraphs from digraphs-lib
+# Check some symmetric digraphs from data
 gap> gr := ReadDigraphs(
-> Concatenation(DIGRAPHS_Dir(), "/digraphs-lib/sts.g6.gz"), 1);
+> Concatenation(DIGRAPHS_Dir(), "/data/sts.g6.gz"), 1);
 <immutable symmetric digraph with 26 vertices, 390 edges>
 gap> gens := GeneratorsOfEndomorphismMonoid(gr);;
 gap> adj := AdjacencyMatrix(gr);;
@@ -293,7 +293,7 @@ gap> ForAll(gens, t -> ForAll(DigraphEdges(gr),
 >      x -> adj[x[1] ^ t][x[2] ^ t] = 1));
 true
 gap> gr := ReadDigraphs(
-> Concatenation(DIGRAPHS_Dir(), "/digraphs-lib/sts.g6.gz"), 2);
+> Concatenation(DIGRAPHS_Dir(), "/data/sts.g6.gz"), 2);
 <immutable symmetric digraph with 35 vertices, 630 edges>
 gap> gens := GeneratorsOfEndomorphismMonoid(gr);;
 gap> adj := AdjacencyMatrix(gr);;
@@ -301,7 +301,7 @@ gap> ForAll(gens, t -> ForAll(DigraphEdges(gr),
 >      x -> adj[x[1] ^ t][x[2] ^ t] = 1));
 true
 gap> gr := ReadDigraphs(
-> Concatenation(DIGRAPHS_Dir(), "/digraphs-lib/sts.g6.gz"), 21);
+> Concatenation(DIGRAPHS_Dir(), "/data/sts.g6.gz"), 21);
 <immutable symmetric digraph with 7 vertices, 42 edges>
 gap> gens := GeneratorsOfEndomorphismMonoid(gr);;
 gap> adj := AdjacencyMatrix(gr);;
@@ -309,7 +309,7 @@ gap> ForAll(gens, t -> ForAll(DigraphEdges(gr),
 >      x -> adj[x[1] ^ t][x[2] ^ t] = 1));
 true
 gap> gr := ReadDigraphs(
-> Concatenation(DIGRAPHS_Dir(), "/digraphs-lib/sts.g6.gz"), 25);
+> Concatenation(DIGRAPHS_Dir(), "/data/sts.g6.gz"), 25);
 <immutable symmetric digraph with 12 vertices, 108 edges>
 gap> GeneratorsOfEndomorphismMonoid(gr);;
 
