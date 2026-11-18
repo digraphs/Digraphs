@@ -1898,6 +1898,51 @@ gap> ChromaticNumber(CompleteDigraph(10) : byskov);
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="ChromaticPolynomial">
+<ManSection>
+  <Attr Name="ChromaticPolynomial" Arg="digraph"/>
+  <Returns>A polynomial with integer coefficients.</Returns>
+  <Description>
+    If <A>digraph</A> is a digraph without loops (see <Ref
+      Prop="DigraphHasLoops"/>), then this attribute returns the chromatic
+    polynomial of <A>digraph</A>. Edge directions and multiple edges are
+    ignored, and an error is raised if <A>digraph</A> contains loops.
+    <P/>
+
+    The chromatic polynomial of an undirected graph is a polynomial
+    whose value at each non-negative integer <C>k</C> is the number of
+    <E>proper k-colourings</E> of the graph. A <E>proper k-colouring</E> of a
+    graph is a labelling of its vertices with at most <C>k</C> colours in such
+    a way that adjacent vertices have different labels.
+    <P/>
+
+    The result is a monic polynomial in the indeterminate <C>k</C>, with
+    degree equal to the number of vertices of <A>digraph</A>. The chromatic
+    number (see <Ref Oper="ChromaticNumber"/>) is the least non-negative
+    integer that is not a root of the chromatic polynomial.
+    <P/>
+
+    For families of graphs where closed-form expressions are known, these
+    formulae are used to determine the polynomial. Otherwise, it is computed
+    recursively using the deletion-contraction formula.
+    <Example><![CDATA[
+gap> ChromaticPolynomial(EmptyDigraph(10));
+k^10
+gap> ChromaticPolynomial(CompleteDigraph(5));
+k^5-10*k^4+35*k^3-50*k^2+24*k
+gap> ChromaticPolynomial(BinaryTree(3));
+k^7-6*k^6+15*k^5-20*k^4+15*k^3-6*k^2+k
+gap> ChromaticPolynomial(Digraph([[], [3], [5], [2, 3], [4]]));
+k^5-5*k^4+8*k^3-4*k^2
+gap> ChromaticPolynomial(EmptyDigraph(0));
+1
+gap> ChromaticPolynomial(PetersenGraph());
+k^10-15*k^9+105*k^8-455*k^7+1353*k^6-2861*k^5+4275*k^4-4305*k^3+2606*k^2-704*k
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="DigraphBicomponents">
 <ManSection>
   <Attr Name="DigraphBicomponents" Arg="digraph"/>
