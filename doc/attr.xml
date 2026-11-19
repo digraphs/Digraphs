@@ -1898,6 +1898,51 @@ gap> ChromaticNumber(CompleteDigraph(10) : byskov);
 </ManSection>
 <#/GAPDoc>
 
+<#GAPDoc Label="ChromaticPolynomial">
+<ManSection>
+  <Attr Name="ChromaticPolynomial" Arg="digraph"/>
+  <Returns>A polynomial with integer coefficients.</Returns>
+  <Description>
+    If <A>digraph</A> is a digraph without loops (see <Ref
+      Prop="DigraphHasLoops"/>), then this attribute returns the chromatic
+    polynomial of <A>digraph</A>. Edge directions and multiple edges are
+    ignored, and an error is raised if <A>digraph</A> contains loops.
+    <P/>
+
+    The chromatic polynomial of an undirected graph is a polynomial
+    whose value at each non-negative integer <C>k</C> is the number of
+    <E>proper k-colourings</E> of the graph. A <E>proper k-colouring</E> of a
+    graph is a labelling of its vertices using a set of <C>k</C> colours, such
+    that adjacent vertices have different labels.
+    <P/>
+
+    The polynomial is returned as a univariate polynomial over the integers
+    in the indeterminate x_1, representing <C>k</C>. The chromatic number (see
+    <Ref Attr="ChromaticNumber"/>) is the least non-negative integer that is
+    not a root of the chromatic polynomial.
+    <P/>
+
+    For families of graphs where closed-form expressions are known, these
+    formulae are used to determine the polynomial. Otherwise, it is computed
+    recursively using the deletion-contraction formula.
+    <Example><![CDATA[
+gap> ChromaticPolynomial(EmptyDigraph(10));
+x_1^10
+gap> ChromaticPolynomial(CompleteDigraph(5));
+x_1^5-10*x_1^4+35*x_1^3-50*x_1^2+24*x_1
+gap> ChromaticPolynomial(BinaryTree(3));
+x_1^7-6*x_1^6+15*x_1^5-20*x_1^4+15*x_1^3-6*x_1^2+x_1
+gap> ChromaticPolynomial(Digraph([[], [3], [5], [2, 3], [4]]));
+x_1^5-5*x_1^4+8*x_1^3-4*x_1^2
+gap> ChromaticPolynomial(EmptyDigraph(0));
+1
+gap> Value(ChromaticPolynomial(PetersenGraph()), 5);
+332880
+]]></Example>
+  </Description>
+</ManSection>
+<#/GAPDoc>
+
 <#GAPDoc Label="DigraphBicomponents">
 <ManSection>
   <Attr Name="DigraphBicomponents" Arg="digraph"/>

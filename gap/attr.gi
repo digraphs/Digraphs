@@ -841,6 +841,125 @@ function(D)
   return chrom;
 end);
 
+InstallMethod(ChromaticPolynomial, "for a digraph", [IsDigraph],
+function(D)
+  local r, k, memo_dict, ChooseEdge, ConnectedPoly, ChromaticPoly, G;
+
+  r := PolynomialRing(Integers);
+  k := IndeterminatesOfPolynomialRing(r)[1];
+  memo_dict := NewDictionary("", true);
+
+  # Helper for choosing best edge to minimise recursion depth.
+  ChooseEdge := function(C)
+    local nbs, u, v, best_edge, best_score, score;
+
+    nbs := List(OutNeighbours(C), Set);
+    best_edge := fail;
+    best_score := [-1, 1];
+
+    for u in DigraphVertices(C) do
+      for v in nbs[u] do
+        if u < v then
+          # Ideally: many triangles and/or dense neighbourhoods.
+          score := [Length(Intersection(nbs[u], nbs[v])),
+                    Length(nbs[u]) + Length(nbs[v])];
+          if score > best_score then
+            best_score := score;
+            best_edge := [u, v];
+          fi;
+        fi;
+      od;
+    od;
+
+    return best_edge;
+  end;
+
+  # Helper for finding the chromatic polynomial of a given connected graph.
+  ConnectedPoly := function(C)
+    local n, m, degs, e, u, v, w, C_m, C_del, C_cont, key, val, poly;
+
+    n := DigraphNrVertices(C);
+    # Using symmetric closure: should divide by 2.
+    m := DigraphNrEdges(C) / 2;
+    degs := OutDegrees(C);
+
+    # Base cases, closed-form expressions.
+    if n = 1 then
+      return k;
+    elif m = (n * (n - 1)) / 2 then
+      return Product([0 .. n - 1], i -> k - i);
+    elif m = n and ForAll(degs, d -> d = 2) then
+      return (k - 1) ^ n + (-1) ^ n * (k - 1);
+    elif m = n - 1 then
+      return k * (k - 1) ^ (n - 1);
+    fi;
+
+    # Memoisation.
+    key := String(List(OutNeighbours(BlissCanonicalDigraph(C)), Set));
+    val := LookupDictionary(memo_dict, key);
+    if val <> fail then
+      return val;
+    fi;
+
+    # General case: deletion-contraction recurrence.
+    e := ChooseEdge(C);
+    u := e[1];
+    v := e[2];
+
+    C_m := DigraphMutableCopy(C);
+    DigraphRemoveEdge(C_m, u, v);
+    DigraphRemoveEdge(C_m, v, u);
+
+    C_del := DigraphImmutableCopy(C_m);
+
+    for w in OutNeighbours(C_del)[v] do
+      if w <> u and not IsDigraphEdge(C_m, u, w) then
+        DigraphAddEdge(C_m, u, w);
+        DigraphAddEdge(C_m, w, u);
+      fi;
+    od;
+    DigraphRemoveVertex(C_m, v);
+
+    C_cont := DigraphImmutableCopy(C_m);
+
+    poly := ChromaticPoly(C_del) - ChromaticPoly(C_cont);
+    AddDictionary(memo_dict, key, poly);
+    return poly;
+  end;
+
+  # Helper for computing the chromatic polynomial of a given graph
+  # (for recursion).
+  ChromaticPoly := function(H)
+    local res, comps, c;
+
+    comps := DigraphConnectedComponents(H).comps;
+    if Length(comps) = 1 then
+      return ConnectedPoly(H);
+    fi;
+
+    res := One(r);
+    for c in comps do
+      res := res * ConnectedPoly(InducedSubdigraph(H, c));
+    od;
+
+    return res;
+  end;
+
+  # Combining everything above, computing chromatic polynomial:
+  if DigraphHasLoops(D) then
+    ErrorNoReturn("the argument <D> must be a digraph with no loops,");
+  elif DigraphNrEdges(D) = 0 then
+    return k ^ DigraphNrVertices(D);
+  fi;
+
+  # Algorithm requires a simple, undirected graph.
+  G := DigraphMutableCopy(D);
+  DigraphRemoveAllMultipleEdges(G);
+  DigraphSymmetricClosure(G);
+
+  return ChromaticPoly(DigraphImmutableCopy(G));
+end);
+
 #
 # The following method is currently useless, as the OutNeighbours are computed
 # and set whenever a digraph is created.  It could be reinstated later if we
