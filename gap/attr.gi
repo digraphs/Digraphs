@@ -845,8 +845,8 @@ InstallMethod(ChromaticPolynomial, "for a digraph", [IsDigraph],
 function(D)
   local r, k, memo_dict, ChooseEdge, ConnectedPoly, ChromaticPoly, G;
 
-  r := PolynomialRing(Integers, ["x_1", "k"]);
-  k := IndeterminatesOfPolynomialRing(r)[2];
+  r := PolynomialRing(Integers);
+  k := IndeterminatesOfPolynomialRing(r)[1];
   memo_dict := NewDictionary("", true);
 
   # Helper for choosing best edge to minimise recursion depth.

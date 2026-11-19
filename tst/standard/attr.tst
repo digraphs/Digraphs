@@ -2023,7 +2023,7 @@ gap> ChromaticPolynomial(D);
 1
 gap> D := EmptyDigraph(1);;
 gap> ChromaticPolynomial(D);
-k
+x_1
 gap> D := Digraph([[1]]);;
 gap> ChromaticPolynomial(D);
 Error, the argument <D> must be a digraph with no loops,
@@ -2035,41 +2035,43 @@ gap> ChromaticPolynomial(D);
 Error, the argument <D> must be a digraph with no loops,
 gap> D := CompleteDigraph(2);;
 gap> ChromaticPolynomial(D);
-k^2-k
+x_1^2-x_1
 gap> D := Digraph([[2, 2, 2], []]);;
 gap> ChromaticPolynomial(D);
-k^2-k
+x_1^2-x_1
 gap> D := EmptyDigraph(2);;
 gap> ChromaticPolynomial(D);
-k^2
+x_1^2
 gap> D := EmptyDigraph(10);;
 gap> ChromaticPolynomial(D);
-k^10
+x_1^10
 gap> D := CompleteDigraph(4);;
 gap> ChromaticPolynomial(D);
-k^4-6*k^3+11*k^2-6*k
+x_1^4-6*x_1^3+11*x_1^2-6*x_1
 gap> D := BinaryTree(3);;
 gap> ChromaticPolynomial(D);
-k^7-6*k^6+15*k^5-20*k^4+15*k^3-6*k^2+k
+x_1^7-6*x_1^6+15*x_1^5-20*x_1^4+15*x_1^3-6*x_1^2+x_1
 gap> D := ChainDigraph(7);;
 gap> ChromaticPolynomial(D);
-k^7-6*k^6+15*k^5-20*k^4+15*k^3-6*k^2+k
+x_1^7-6*x_1^6+15*x_1^5-20*x_1^4+15*x_1^3-6*x_1^2+x_1
 gap> D := CycleDigraph(5);;
 gap> ChromaticPolynomial(D);
-k^5-5*k^4+10*k^3-10*k^2+4*k
+x_1^5-5*x_1^4+10*x_1^3-10*x_1^2+4*x_1
 gap> D := Digraph([[2, 4], [3, 4], [4], []]);;
 gap> ChromaticPolynomial(D);
-k^4-5*k^3+8*k^2-4*k
+x_1^4-5*x_1^3+8*x_1^2-4*x_1
 gap> D := Digraph([[2, 3], [3], [4, 5], [5], []]);;
 gap> ChromaticPolynomial(D);
-k^5-6*k^4+13*k^3-12*k^2+4*k
+x_1^5-6*x_1^4+13*x_1^3-12*x_1^2+4*x_1
 gap> D := DigraphDisjointUnion(BinaryTree(3),
 >       Digraph([[2, 4], [3, 4], [4], []]));;
 gap> ChromaticPolynomial(D);
-k^11-11*k^10+53*k^9-147*k^8+259*k^7-301*k^6+231*k^5-113*k^4+32*k^3-4*k^2
+x_1^11-11*x_1^10+53*x_1^9-147*x_1^8+259*x_1^7-301*x_1^6+231*x_1^5-113*x_1^4+32\
+*x_1^3-4*x_1^2
 gap> D := PetersenGraph();;
 gap> ChromaticPolynomial(D);
-k^10-15*k^9+105*k^8-455*k^7+1353*k^6-2861*k^5+4275*k^4-4305*k^3+2606*k^2-704*k
+x_1^10-15*x_1^9+105*x_1^8-455*x_1^7+1353*x_1^6-2861*x_1^5+4275*x_1^4-4305*x_1^\
+3+2606*x_1^2-704*x_1
 gap> ChromaticPolynomial(D) = ChromaticPolynomial(OnDigraphs(D, (1, 3, 5, 7)));
 true
 gap> D := DigraphMutableCopy(PetersenGraph());;
@@ -2079,7 +2081,7 @@ gap> D = D1;
 true
 gap> D := DigraphDisjointUnion(EmptyDigraph(5), ChainDigraph(3));;
 gap> ChromaticPolynomial(D);
-k^8-2*k^7+k^6
+x_1^8-2*x_1^7+x_1^6
 gap> D1 := Digraph([[2, 4], [3, 4], [4], []]);;
 gap> D := DigraphDisjointUnion(D1, D1, D1, D1);;
 gap> ChromaticPolynomial(D) = ChromaticPolynomial(D1) ^ 4;
