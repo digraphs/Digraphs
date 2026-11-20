@@ -583,9 +583,9 @@ Error, no 1st choice method found for `RandomDigraph' on 1 arguments
 gap> RandomDigraph(4, 0);
 <immutable empty digraph with 4 vertices>
 gap> RandomDigraph(10, 1.01);
-Error, the 2nd argument <p> must be between 0 and 1,
+Error, the probability <p> must be between 0 and 1,
 gap> RandomDigraph(10, -0.01);
-Error, the 2nd argument <p> must be between 0 and 1,
+Error, the probability <p> must be between 0 and 1,
 gap> RandomDigraph(10, 1 / 10);;
 
 # RandomDigraph(IsImmutableDigraph, ...)
@@ -606,9 +606,9 @@ Error, no 1st choice method found for `RandomDigraph' on 2 arguments
 gap> RandomDigraph(IsImmutableDigraph, 4, 0);
 <immutable empty digraph with 4 vertices>
 gap> RandomDigraph(IsImmutableDigraph, 10, 1.01);
-Error, the 2nd argument <p> must be between 0 and 1,
+Error, the probability <p> must be between 0 and 1,
 gap> RandomDigraph(IsImmutableDigraph, 10, -0.01);
-Error, the 2nd argument <p> must be between 0 and 1,
+Error, the probability <p> must be between 0 and 1,
 gap> RandomDigraph(IsImmutableDigraph, 10, 1 / 10);;
 
 # RandomDigraph(IsMutableDigraph, ...)
@@ -629,9 +629,9 @@ Error, no 1st choice method found for `RandomDigraph' on 2 arguments
 gap> RandomDigraph(IsMutableDigraph, 4, 0);
 <mutable empty digraph with 4 vertices>
 gap> RandomDigraph(IsMutableDigraph, 10, 1.01);
-Error, the 2nd argument <p> must be between 0 and 1,
+Error, the probability <p> must be between 0 and 1,
 gap> RandomDigraph(IsMutableDigraph, 10, -0.01);
-Error, the 2nd argument <p> must be between 0 and 1,
+Error, the probability <p> must be between 0 and 1,
 gap> RandomDigraph(IsMutableDigraph, 10, 1 / 10);;
 
 #  RandomMultiDigraph
@@ -2094,35 +2094,35 @@ gap> STOP_TEST("Digraphs package: standard/digraph.tst", 0);
 
 #Random Digraph with Random Source
 
-gap> graph := RandomDigraph(IsMutableDigraph, GlobalMersenneTwister, 10, 0.5);
+gap> graph := RandomDigraph(IsMutableDigraph, GlobalMersenneTwister, 10, 0.5);;
      if not IsMutableDigraph(graph) then
        Print("False");
      fi;
-gap> graph := RandomDigraph(IsImmutableDigraph, GlobalMersenneTwister, 10, 0.5);
+gap> graph := RandomDigraph(IsImmutableDigraph, GlobalMersenneTwister, 10, 0.5);;
      if not IsImmutableDigraph(graph) then
        Print("False");
      fi;
-gap> graph := RandomDigraph(IsHamiltonianDigraph, GlobalMersenneTwister, 10, 0.5);
+gap> graph := RandomDigraph(IsHamiltonianDigraph, GlobalMersenneTwister, 10, 0.5);;
      if not IsHamiltonianDigraph(graph) then
        Print("False");
      fi;
-gap> graph := RandomDigraph(IsEulerianDigraph, GlobalMersenneTwister, 10, 0.5);
+gap> graph := RandomDigraph(IsEulerianDigraph, GlobalMersenneTwister, 10, 0.5);;
      if not IsEulerianDigraph(graph) then
        Print("False");
      fi;
-gap> graph := RandomDigraph(IsConnectedDigraph, GlobalMersenneTwister, 10, 0.5);
+gap> graph := RandomDigraph(IsConnectedDigraph, GlobalMersenneTwister, 10, 0.5);;
      if not IsConnectedDigraph(graph) then
        Print("False");
      fi;
-gap> graph := RandomDigraph(IsStronglyConnectedDigraph, GlobalMersenneTwister, 10, 0.5);
+gap> graph := RandomDigraph(IsStronglyConnectedDigraph, GlobalMersenneTwister, 10, 0.5);;
      if not IsStronglyConnectedDigraph(graph) then
        Print("False");
      fi;
-gap> graph := RandomDigraph(IsAcyclicDigraph, GlobalMersenneTwister, 10, 0.5);
+gap> graph := RandomDigraph(IsAcyclicDigraph, GlobalMersenneTwister, 10, 0.5);;
      if not IsAcyclicDigraph(graph) then
        Print("False");
      fi;gap> 
-gap> graph := RandomDigraph(IsSymmetricDigraph, GlobalMersenneTwister, 10, 0.5);
+gap> graph := RandomDigraph(IsSymmetricDigraph, GlobalMersenneTwister, 10, 0.5);;
      if not IsSymmetricDigraph(graph) then
        Print("False");
      fi;

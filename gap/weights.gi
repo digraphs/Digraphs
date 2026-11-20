@@ -879,15 +879,15 @@ end);
 
 InstallMethod(RandomUniqueEdgeWeightedDigraph,
 "for a pos int", [IsPosInt],
-n -> RandomUniqueEdgeWeightedDigraph(IsImmutableDigraph, n));
+n -> RandomUniqueEdgeWeightedDigraph(IsImmutableDigraph, GlobalMersenneTwister, n));
 
 InstallMethod(RandomUniqueEdgeWeightedDigraph,
 "for a pos int and a float", [IsPosInt, IsFloat],
-{n, p} -> RandomUniqueEdgeWeightedDigraph(IsImmutableDigraph, n, p));
+{n, p} -> RandomUniqueEdgeWeightedDigraph(IsImmutableDigraph, GlobalMersenneTwister, n, p));
 
 InstallMethod(RandomUniqueEdgeWeightedDigraph,
 "for a pos int and a rational", [IsPosInt, IsRat],
-{n, p} -> RandomUniqueEdgeWeightedDigraph(IsImmutableDigraph, n, p));
+{n, p} -> RandomUniqueEdgeWeightedDigraph(IsImmutableDigraph, GlobalMersenneTwister, n, p));
 
 InstallMethod(RandomUniqueEdgeWeightedDigraph,
 "for a function and a pos int", [IsFunction, IsPosInt],

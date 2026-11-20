@@ -1395,8 +1395,8 @@ end);
 
 ########################################################################
 # 10. Random digraphs
-######################################################################### 
-         
+#########################################################################
+
 InstallMethodWithRandomSource(RandomDigraphOutNeighbours,
 "for a random source and an integer and a float",
 [IsRandomSource, IsInt, IsFloat],
@@ -1436,7 +1436,8 @@ for filter in ["IsMutableDigraph",
     RandomDigraphCons(f, rs, n, Float(Random(rs, 0, n ^ 2) / (n ^ 2))));
 
   InstallMethod(RandomDigraphCons,
-  Concatenation("for ", filter, ", a random source, an integer, and a rational"),
+  Concatenation("for ", filter,
+  ", a random source, an integer, and a rational"),
   [EvalString(filter), IsRandomSource, IsInt, IsRat],
   {f, rs, n, p} -> RandomDigraphCons(f, rs, n, Float(p)));
 
@@ -1655,8 +1656,8 @@ function(_, rs, n, p)
     return DigraphNC(adjacencyList);
 end);
 
-InstallMethod(RandomDigraphCons,
-"for IsStronglyConnectedDigraph, a random source, a positive integer, and a float",
+InstallMethod(RandomDigraphCons, "for IsStronglyConnectedDigraph,
+a random source, a positive integer, and a float",
 [IsStronglyConnectedDigraph, IsRandomSource, IsPosInt, IsFloat],
 function(_, rs, n, p)
   local d, adjMatrix, stronglyConnectedComponents,
@@ -1773,20 +1774,21 @@ InstallMethod(RandomDigraph, "for a pos int", [IsPosInt],
 n -> RandomDigraphCons(IsImmutableDigraph, GlobalMersenneTwister, n));
 
 InstallMethod(RandomDigraph, "for a pos int and a rational", [IsPosInt, IsRat],
-{n, p} -> RandomDigraphCons(IsImmutableDigraph, GlobalMersenneTwister, n, Float(p)));
+{n, p} ->
+RandomDigraphCons(IsImmutableDigraph, GlobalMersenneTwister, n, Float(p)));
 
 InstallMethod(RandomDigraph, "for a pos int and a float", [IsPosInt, IsFloat],
 {n, p} -> RandomDigraphCons(IsImmutableDigraph, GlobalMersenneTwister, n, p));
 
-InstallMethod(RandomDigraph, "for a random source and a pos int", 
-[IsRandomSource, IsPosInt], 
+InstallMethod(RandomDigraph, "for a random source and a pos int",
+[IsRandomSource, IsPosInt],
 {rs, n} -> RandomDigraphCons(IsImmutableDigraph, rs, n));
 
-InstallMethod(RandomDigraph, "for a random source, a pos int and a rational", 
+InstallMethod(RandomDigraph, "for a random source, a pos int and a rational",
 [IsRandomSource, IsPosInt, IsRat],
 {rs, n, p} -> RandomDigraphCons(IsImmutableDigraph, rs, n, p));
 
-InstallMethod(RandomDigraph, "for a random source, a pos int and a float", 
+InstallMethod(RandomDigraph, "for a random source, a pos int and a float",
 [IsRandomSource, IsPosInt, IsFloat],
 {rs, n, p} -> RandomDigraphCons(IsImmutableDigraph, rs, n, p));
 
@@ -1794,20 +1796,22 @@ InstallMethod(RandomDigraph, "for a func and a pos int", [IsFunction, IsPosInt],
 {f, n} -> RandomDigraphCons(f, GlobalMersenneTwister, n));
 
 InstallMethod(RandomDigraph, "for a func, a pos int, and a rational",
-[IsFunction, IsPosInt, IsRat], 
+[IsFunction, IsPosInt, IsRat],
 {f, n, p} -> RandomDigraphCons(f, GlobalMersenneTwister, n, Float(p)));
 
 InstallMethod(RandomDigraph, "for a func, a pos int, and a float",
-[IsFunction, IsPosInt, IsFloat], 
+[IsFunction, IsPosInt, IsFloat],
 {f, n, p} -> RandomDigraphCons(f, GlobalMersenneTwister, n, p));
 
 InstallMethod(RandomDigraph, "for a func, a random source, a pos int",
 [IsFunction, IsRandomSource, IsPosInt], RandomDigraphCons);
 
-InstallMethod(RandomDigraph, "for a func, a random source, a pos int and a rational",
+InstallMethod(RandomDigraph,
+"for a func, a random source, a pos int and a rational",
 [IsFunction, IsRandomSource, IsPosInt, IsRat], RandomDigraphCons);
 
-InstallMethod(RandomDigraph, "for a func, a random source, a pos int and a float",
+InstallMethod(RandomDigraph,
+"for a func, a random source, a pos int and a float",
 [IsFunction, IsRandomSource, IsPosInt, IsFloat], RandomDigraphCons);
 
 InstallMethod(RandomMultiDigraph, "for a pos int", [IsPosInt],
