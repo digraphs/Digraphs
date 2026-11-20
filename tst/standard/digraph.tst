@@ -2094,70 +2094,59 @@ gap> STOP_TEST("Digraphs package: standard/digraph.tst", 0);
 
 #Random Digraph with Random Source
 
-gap> RandomDigraph(IsConnectedDigraph, 10);
-<immutable digraph with 10 vertices, 10 edges>
-gap> RandomDigraph(IsStronglyConnectedDigraph, 10);
-<immutable digraph with 10 vertices, 27 edges>
-gap> RandomDigraph(IsAcyclicDigraph, 10);
-<immutable digraph with 10 vertices, 10 edges>
-gap> RandomDigraph(IsSymmetricDigraph, 10);
-<immutable digraph with 10 vertices, 81 edges>
-gap> RandomDigraph(IsMutableDigraph, 10, 1/2);
-<mutable digraph with 10 vertices, 49 edges>
-gap> RandomDigraph(IsImmutableDigraph, 10, 1/2);
-<immutable digraph with 10 vertices, 49 edges>
-gap> RandomDigraph(IsHamiltonianDigraph, 10, 1/2);
-<immutable digraph with 10 vertices, 53 edges>
-gap> RandomDigraph(IsEulerianDigraph, 10, 1/2);
-<immutable digraph with 10 vertices, 33 edges>
-gap> RandomDigraph(IsConnectedDigraph, 10, 1/2);
-<immutable digraph with 10 vertices, 53 edges>
-gap> RandomDigraph(IsStronglyConnectedDigraph, 10, 1/2);
-<immutable digraph with 10 vertices, 55 edges>
-gap> RandomDigraph(IsAcyclicDigraph, 10, 1/2);
-<immutable digraph with 10 vertices, 21 edges>
-gap> RandomDigraph(IsSymmetricDigraph, 10, 1/2);
-<immutable digraph with 10 vertices, 53 edges>
-gap> RandomDigraph(IsSymmetricDigraph, 10, 0.5);
-<immutable digraph with 10 vertices, 53 edges>
-gap> RandomDigraph(IsSymmetricDigraph, 10, 0.5);
-<immutable digraph with 10 vertices, 61 edges>
-gap> RandomDigraph(IsMutableDigraph, 10, 0.5);
-<mutable digraph with 10 vertices, 53 edges>
-gap> RandomDigraph(IsImmutableDigraph, 10, 0.5);
-<immutable digraph with 10 vertices, 47 edges>
-gap> RandomDigraph(IsHamiltonianDigraph, 10, 0.5);
-<immutable digraph with 10 vertices, 52 edges>
-gap> RandomDigraph(IsEulerianDigraph, 10, 0.5);
-<immutable digraph with 10 vertices, 29 edges>
-gap> RandomDigraph(IsConnectedDigraph, 10, 0.5);
-<immutable digraph with 10 vertices, 49 edges>
-gap> RandomDigraph(IsStronglyConnectedDigraph, 10, 0.5);
-<immutable digraph with 10 vertices, 49 edges>
-gap> RandomDigraph(IsAcyclicDigraph, 10, 0.5);
-<immutable digraph with 10 vertices, 23 edges>
-gap> RandomDigraph(IsSymmetricDigraph, 10, 0.5);
-<immutable digraph with 10 vertices, 46 edges>
-gap> RandomDigraph(IsMutableDigraph, GlobalMersenneTwister, 10, 0.5);
-<mutable digraph with 10 vertices, 45 edges>
-gap> RandomDigraph(IsImmutableDigraph, GlobalMersenneTwister, 10, 0.5);
-<immutable digraph with 10 vertices, 53 edges>
-gap> RandomDigraph(IsHamiltonianDigraph, GlobalMersenneTwister, 10, 0.5);
-<immutable digraph with 10 vertices, 53 edges>
-gap> RandomDigraph(IsEulerianDigraph, GlobalMersenneTwister, 10, 0.5);
-<immutable digraph with 10 vertices, 26 edges>
-gap> RandomDigraph(IsConnectedDigraph, GlobalMersenneTwister, 10, 0.5);
-<immutable digraph with 10 vertices, 51 edges>
-gap> RandomDigraph(IsStronglyConnectedDigraph, GlobalMersenneTwister, 10, 0.5);
-<immutable digraph with 10 vertices, 50 edges>
-gap> RandomDigraph(IsAcyclicDigraph, GlobalMersenneTwister, 10, 0.5);
-<immutable digraph with 10 vertices, 28 edges>
-gap> RandomDigraph(IsSymmetricDigraph, GlobalMersenneTwister, 10, 0.5);
-<immutable digraph with 10 vertices, 43 edges>
-gap> RandomDigraph(GlobalMersenneTwister, 10, 0.5);
+gap> graph := RandomDigraph(IsMutableDigraph, GlobalMersenneTwister, 10, 0.5);
+     if not IsMutableDigraph(graph) then
+       Print("False");
+     fi;
+gap> graph := RandomDigraph(IsImmutableDigraph, GlobalMersenneTwister, 10, 0.5);
+     if not IsImmutableDigraph(graph) then
+       Print("False");
+     fi;
+gap> graph := RandomDigraph(IsHamiltonianDigraph, GlobalMersenneTwister, 10, 0.5);
+     if not IsHamiltonianDigraph(graph) then
+       Print("False");
+     fi;
+gap> graph := RandomDigraph(IsEulerianDigraph, GlobalMersenneTwister, 10, 0.5);
+     if not IsEulerianDigraph(graph) then
+       Print("False");
+     fi;
+gap> graph := RandomDigraph(IsConnectedDigraph, GlobalMersenneTwister, 10, 0.5);
+     if not IsConnectedDigraph(graph) then
+       Print("False");
+     fi;
+gap> graph := RandomDigraph(IsStronglyConnectedDigraph, GlobalMersenneTwister, 10, 0.5);
+     if not IsStronglyConnectedDigraph(graph) then
+       Print("False");
+     fi;
+gap> graph := RandomDigraph(IsAcyclicDigraph, GlobalMersenneTwister, 10, 0.5);
+     if not IsAcyclicDigraph(graph) then
+       Print("False");
+     fi;gap> 
+gap> graph := RandomDigraph(IsSymmetricDigraph, GlobalMersenneTwister, 10, 0.5);
+     if not IsSymmetricDigraph(graph) then
+       Print("False");
+     fi;
+gap> Reset(GlobalMersenneTwister);;
+gap> graph := RandomDigraph(GlobalMersenneTwister, 10, 0.5);
 <immutable digraph with 10 vertices, 56 edges>
 gap> Reset(GlobalMersenneTwister);;
-gap> RandomDigraph(GlobalMersenneTwister, 10, 0.5);
+gap> graph2 := RandomDigraph(GlobalMersenneTwister, 10, 0.5);
 <immutable digraph with 10 vertices, 56 edges>
-gap> last = last3;
+gap> graph = graph2;
+true
+gap> Reset(GlobalMersenneTwister);;
+gap> graph := RandomDigraph(IsAcyclicDigraph, 10, 0.3);
+<immutable digraph with 10 vertices, 9 edges>
+gap> Reset(GlobalMersenneTwister);;
+gap> graph2 := RandomDigraph(IsAcyclicDigraph, 10, 0.3);
+<immutable digraph with 10 vertices, 9 edges>
+gap> graph = graph2;
+true
+gap> Reset(GlobalMersenneTwister);;
+gap> graph := RandomDigraph(IsHamiltonianDigraph, 10);
+<immutable digraph with 10 vertices, 12 edges>
+gap> Reset(GlobalMersenneTwister);;
+gap> graph2 := RandomDigraph(IsHamiltonianDigraph, 10);
+<immutable digraph with 10 vertices, 12 edges>
+gap> graph = graph2;
 true

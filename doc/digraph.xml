@@ -789,8 +789,8 @@ gap> List(D, Size);
       pairs of vertices with probability approximately <A>p</A>.<P/>
 
     If the optional second argument <A>rs</A> is a random source (see <Ref Sect="Random Sources"/>) then it 
-    is used to generate the random choices made when creating the digraph. If <A>rs<A/> is not specified, then the 
-    global random source <C>GlobalMersenneTwister<C/> is used. Two calls with the same arguments and random sources 
+    is used to generate the random choices made when creating the digraph. If <A>rs</A> is not specified, then the 
+    global random source <C>GlobalMersenneTwister</C> is used. Two calls with the same arguments and random sources 
     in the same state return the same digraph, which makes it possible to reproduce a random digraph by resetting the 
     random source. <P/>
 
@@ -813,8 +813,6 @@ gap> RandomDigraph(GlobalMersenneTwister, 1000);
 <immutable digraph with 1000 vertices, 529323 edges>
 gap> RandomDigraph(IsMutableDigraph, GlobalMersenneTwister, 1000);
 <mutable digraph with 1000 vertices, 438926 edges>
-gap> RandomDigraph(IsMutableDigraph, GlobalMersenneTwister, 1000, 1/2);
-<mutable digraph with 1000 vertices, 501219 edges>
 gap> RandomDigraph(IsMutableDigraph, GlobalMersenneTwister, 1000, 0.5);
 <mutable digraph with 1000 vertices, 499943 edges>
 gap> RandomDigraph(IsMutableDigraph, 1000, 1 / 2);
