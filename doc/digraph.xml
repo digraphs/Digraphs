@@ -812,7 +812,7 @@ gap> RandomDigraph(10000, 0.023);
 gap> RandomDigraph(GlobalMersenneTwister, 1000);
 <immutable digraph with 1000 vertices, 529323 edges>
 gap> RandomDigraph(IsMutableDigraph, GlobalMersenneTwister, 1000);
-<mutable digraph with 1000 vertices, 438926 edges>
+<mutable digraph with 1000 vertices, 438926 edges> 
 gap> RandomDigraph(IsMutableDigraph, GlobalMersenneTwister, 1000, 0.5);
 <mutable digraph with 1000 vertices, 499943 edges>
 gap> RandomDigraph(IsMutableDigraph, 1000, 1 / 2);
