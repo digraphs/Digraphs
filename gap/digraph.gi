@@ -1402,7 +1402,7 @@ BindGlobal("DIGRAPHS_RandomOutNeighbours", function(rs, n, p)
     if p < 0.0 or p > 1.0 then
       ErrorNoReturn("the 3rd argument <p> must be between 0 and 1");
     fi;
-    adj := List([ 1 .. n], i -> []);
+    adj := List([1 .. n], i -> []);
      for i  in [1 .. n] do
        for j in [1 .. n] do
           q := Float(Random(rs, 0, 2 ^ 52 - 1 + n ^ 2)) / Float(2 ^ 52 + n ^ 2);
@@ -1448,7 +1448,7 @@ for filter in ["IsMutableDigraph",
     RandomDigraphCons(f, n, Float(Random(0, n ^ 2) / (n ^ 2))));
 
   InstallMethod(RandomDigraphCons,
-  Concatenation("for ", filter,", an integer, and a rational"),
+  Concatenation("for ", filter, ", an integer, and a rational"),
   [EvalString(filter), IsInt, IsRat],
   {f, n, p} -> RandomDigraphCons(f, n, Float(p)));
 
@@ -1855,12 +1855,14 @@ function(_, n, p)
 
     # Once the tree has been created, we fill out the rest of the graph with
     # random edges according to p
-    adjacencyList := DIGRAPHS_FillOutGraph(GlobalMersenneTwister, n, p, adjacencyList);
+    adjacencyList := 
+    DIGRAPHS_FillOutGraph(GlobalMersenneTwister, n, p, adjacencyList);
     return DigraphNC(adjacencyList);
 end);
 
-InstallMethod(RandomDigraphCons, 
-"for IsStronglyConnectedDigraph, a random source, a positive integer, and a float",
+InstallMethod(RandomDigraphCons,
+Concatenation("for IsStronglyConnectedDigraph, a random source,"
+, "a positive integer, and a float"),
 [IsStronglyConnectedDigraph, IsRandomSource, IsPosInt, IsFloat],
 function(_, rs, n, p)
   local d, adjMatrix, stronglyConnectedComponents,
@@ -1897,7 +1899,7 @@ function(_, rs, n, p)
   return DigraphByAdjacencyMatrix(adjMatrix);
 end);
 
-InstallMethod(RandomDigraphCons, 
+InstallMethod(RandomDigraphCons,
 "for IsStronglyConnectedDigraph, a positive integer, and a float",
 [IsStronglyConnectedDigraph, IsPosInt, IsFloat],
 function(_, n, p)
@@ -2066,7 +2068,6 @@ function(_, n, p)
 
     return DigraphNC(adjacencyList);
 end);
-
 
 InstallMethod(RandomDigraphCons,
 "for IsImmutableDigraph, a random source, a positive integer, and a float",

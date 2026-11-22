@@ -2088,44 +2088,40 @@ gap> graph := RandomDigraph(IsEulerianDigraph, 10);;
 >     Print("False");
 >   fi;
 
-#
-gap> DIGRAPHS_StopTest();
-gap> STOP_TEST("Digraphs package: standard/digraph.tst", 0);
-
 #Random Digraph with Random Source
 
 gap> graph := RandomDigraph(IsMutableDigraph, GlobalMersenneTwister, 10, 0.5);;
-     if not IsMutableDigraph(graph) then
-       Print("False");
-     fi;
+>    if not IsMutableDigraph(graph) then
+>      Print("False");
+>    fi;
 gap> graph := RandomDigraph(IsImmutableDigraph, GlobalMersenneTwister, 10, 0.5);;
-     if not IsImmutableDigraph(graph) then
-       Print("False");
-     fi;
+>    if not IsImmutableDigraph(graph) then
+>      Print("False");
+>    fi;
 gap> graph := RandomDigraph(IsHamiltonianDigraph, GlobalMersenneTwister, 10, 0.5);;
-     if not IsHamiltonianDigraph(graph) then
-       Print("False");
-     fi;
+>    if not IsHamiltonianDigraph(graph) then
+>      Print("False");
+>    fi;
 gap> graph := RandomDigraph(IsEulerianDigraph, GlobalMersenneTwister, 10, 0.5);;
-     if not IsEulerianDigraph(graph) then
-       Print("False");
-     fi;
+>    if not IsEulerianDigraph(graph) then
+>      Print("False");
+>    fi;
 gap> graph := RandomDigraph(IsConnectedDigraph, GlobalMersenneTwister, 10, 0.5);;
-     if not IsConnectedDigraph(graph) then
-       Print("False");
-     fi;
+>    if not IsConnectedDigraph(graph) then
+>      Print("False");
+>    fi;
 gap> graph := RandomDigraph(IsStronglyConnectedDigraph, GlobalMersenneTwister, 10, 0.5);;
-     if not IsStronglyConnectedDigraph(graph) then
-       Print("False");
-     fi;
+>    if not IsStronglyConnectedDigraph(graph) then
+>      Print("False");
+>    fi;
 gap> graph := RandomDigraph(IsAcyclicDigraph, GlobalMersenneTwister, 10, 0.5);;
-     if not IsAcyclicDigraph(graph) then
-       Print("False");
-     fi;gap> 
+>    if not IsAcyclicDigraph(graph) then
+>      Print("False");
+>    fi;
 gap> graph := RandomDigraph(IsSymmetricDigraph, GlobalMersenneTwister, 10, 0.5);;
-     if not IsSymmetricDigraph(graph) then
-       Print("False");
-     fi;
+>    if not IsSymmetricDigraph(graph) then
+>      Print("False");
+>    fi;
 gap> Reset(GlobalMersenneTwister);;
 gap> graph := RandomDigraph(GlobalMersenneTwister, 10, 0.5);
 <immutable digraph with 10 vertices, 56 edges>
@@ -2150,3 +2146,7 @@ gap> graph2 := RandomDigraph(IsHamiltonianDigraph, 10);
 <immutable digraph with 10 vertices, 12 edges>
 gap> graph = graph2;
 true
+
+#
+gap> DIGRAPHS_StopTest();
+gap> STOP_TEST("Digraphs package: standard/digraph.tst", 0);
