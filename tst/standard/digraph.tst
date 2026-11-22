@@ -2063,6 +2063,10 @@ gap> graph := RandomDigraph(IsAcyclicDigraph, 10);;
 >   fi;
 
 # Random Eulerian Digraph
+gap> graph := RandomDigraph(IsEulerianDigraph, 10);;
+>   if not IsEulerianDigraph(graph) then
+>     Print("False");
+>   fi;
 gap> graph := RandomDigraph(IsEulerianDigraph, 1, 0);;
 >   if DigraphNrEdges(graph) <> 0 then
 >     Print("False");
@@ -2083,10 +2087,6 @@ gap> for p in [1 .. 9] do
 >     Print("False");
 >   fi;
 > od;
-gap> graph := RandomDigraph(IsEulerianDigraph, 10);;
->   if not IsEulerianDigraph(graph) then
->     Print("False");
->   fi;
 
 #Random Digraph with Random Source
 
