@@ -2089,7 +2089,6 @@ gap> for p in [1 .. 9] do
 > od;
 
 #Random Digraph with Random Source
-
 gap> graph := RandomDigraph(IsMutableDigraph, GlobalMersenneTwister, 10, 0.5);;
 >    if not IsMutableDigraph(graph) then
 >      Print("False");
