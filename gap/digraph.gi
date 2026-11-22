@@ -1855,7 +1855,7 @@ function(_, n, p)
 
     # Once the tree has been created, we fill out the rest of the graph with
     # random edges according to p
-    adjacencyList := 
+    adjacencyList :=
     DIGRAPHS_FillOutGraph(GlobalMersenneTwister, n, p, adjacencyList);
     return DigraphNC(adjacencyList);
 end);
