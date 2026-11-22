@@ -141,12 +141,18 @@ function(G)
     edgeindex[edges[e][1]][edges[e][2]] := e;
   od;
 
-  Backtrack := function(witness, covered, prevk, cache, forbidden, depth)
+  Backtrack := function(witness, covered, prevk, cache, forbidden, witnessedges,
+                        depth)
     local added, k, clique, i, j, newcovered, v;
 
     k := Position(covered, false, prevk);
     if k = fail then
       return true;
+    fi;
+
+    # from lemma 2.3 of "Map Graphs" paper
+    if depth > 3 * n - 6 or witnessedges > 2 * (n + depth) - 4 then
+      return false;
     fi;
 
     # cache[k] is all cliques containing edges[k], in descending order of size
@@ -181,12 +187,13 @@ function(G)
         # directly modifying !.OutNeighbours avoids unnecessary safety checks
         Add(witness!.OutNeighbours, ShallowCopy(clique));
         for v in clique do
-          Add(witness!.OutNeighbours[v], n + depth);
+          Add(witness!.OutNeighbours[v], n + depth + 1);
         od;
 
         # adding vertices to non-planar witness will never make it planar
         if IsPlanarDigraph(witness) and
-            Backtrack(witness, newcovered, k, cache, forbidden, depth + 1) then
+            Backtrack(witness, newcovered, k, cache, forbidden,
+                      witnessedges + Length(clique), depth + 1) then
           return true;
         fi;
 
@@ -207,7 +214,7 @@ function(G)
   end;
 
   return Backtrack(EmptyDigraph(IsMutableDigraph, n), List(edges, ReturnFalse),
-                   0, [], [], 1);
+                   0, [], [], 0, 0);
 end);
 
 ########################################################################

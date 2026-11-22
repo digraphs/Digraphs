@@ -474,12 +474,12 @@ true
   <Attr Name="IsMapGraph" Arg="D"/>
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
-    A map graph is a graph whose vertices can be represented as disjoint 
-    regions in the plane, where two vertices are adjacent if the 
-    corresponding regions share at least one point on their boundaries. 
-    This is a generalized notion of planar graphs by allowing any number 
-    of regions to meet at a single point rather than just along 
-    borders of non-zero length. <P/>
+    A map graph is an undirected graph whose vertices can be represented as
+    disjoint regions in the plane, where two vertices are adjacent if the
+    corresponding regions share at least one point on their boundaries. This is
+    a generalized notion of planar graphs by allowing any number of regions to
+    meet at a single point rather than just along borders of non-zero length.
+    <P/>
 
     A graph <A>D</A> is a map graph if and only if it is the 
     <E>half-square</E> of some planar bipartite graph <M>H</M>. That is, 
@@ -492,7 +492,8 @@ true
     graphs. <P/>
 
     The time complexity of this algorithm is <M>2^{O(n\omega)}</M>, where
-    <M>\omega</M> is the number of cliques in the graph.
+    <M>n</M> is the number of vertices of <A>D</A>, and <M>\omega</M> is the
+    number of vertices in the largest clique of <A>D</A>.
 
 <Example><![CDATA[
 gap> D := CompleteDigraph(5);;
