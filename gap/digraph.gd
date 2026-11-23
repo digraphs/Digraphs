@@ -129,10 +129,6 @@ DeclareOperation("AsSemigroup",
                  [IsFunction, IsDigraph, IsDenseList, IsDenseList]);
 
 # 10.   ``Random digraphs . . .
-DeclareOperation("RandomDigraphOutNeighbours", [IsInt, IsFloat]);
-DeclareOperation("RandomDigraphOutNeighbours",
-                [IsRandomSource, IsInt, IsFloat]);
-
 DeclareConstructor("RandomDigraphCons", [IsDigraph, IsInt]);
 DeclareConstructor("RandomDigraphCons", [IsDigraph, IsInt, IsRat]);
 DeclareConstructor("RandomDigraphCons", [IsDigraph, IsInt, IsFloat]);
