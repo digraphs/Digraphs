@@ -1810,7 +1810,7 @@ end);
 # as soon as it is found. returns two lists; for each vertex, the index v is:
 # - distance from source vertex
 # - previous vertex on shortest path from source
-InstallGlobalFunction(DIGRAPHS_ShortestPathsBFS,
+BindGlobal("DIGRAPHS_ShortestPathsBFS",
 function(neighbours, source, target)
   local dist, previous, queue, i, a, b;
 
@@ -1841,7 +1841,7 @@ InstallMethod(DigraphShortestPath,
 "for a digraph and two vertices",
 [IsDigraph, IsPosInt, IsPosInt],
 function(D, u, v)
-  local verts, reversed, a, distanceto, neighbours, vertices, edges, best, w, i;
+  local verts, reversed, a, distancetotarget, neighbours, vertices, edges, best, w, i;
 
   verts := DigraphVertices(D);
   if not (u in verts and v in verts) then
@@ -1851,9 +1851,7 @@ function(D, u, v)
 
   if u = v then
     return fail;
-  fi;
-
-  if IsDigraphEdge(D, u, v) then
+  elif IsDigraphEdge(D, u, v) then
     return [[u, v], [Position(OutNeighboursOfVertex(D, u), v)]];
   elif HasIsTransitiveDigraph(D) and IsTransitiveDigraph(D) then
     # If it's a known transitive digraph, just check whether the edge exists
@@ -1866,7 +1864,8 @@ function(D, u, v)
   fi;
 
   # the rest of this method is to guarantee that the returned path is lex-least
-  # otherwise could generate path by just walking backwards via predecessors
+  # w.r.t. the list of vertices (v_1, v_2... v_n), otherwise could generate path
+  # by just walking backwards via predecessors
 
   # want to walk forwards from u to v, which requires knowing the distance to
   # v instead of from u, therefore have to call the BFS on the reverse of D
@@ -1879,8 +1878,8 @@ function(D, u, v)
       Add(reversed[w], a);
     od;
   od;
-  distanceto := DIGRAPHS_ShortestPathsBFS(reversed, v, u)[1];
-  if distanceto[u] = infinity then
+  distancetotarget := DIGRAPHS_ShortestPathsBFS(reversed, v, u)[1];
+  if distancetotarget[u] = infinity then
     return fail;
   fi;
 
@@ -1893,7 +1892,7 @@ function(D, u, v)
     # OutNeighbours aren't necessarily in order, so is slightly more involved
     for i in [1 .. Length(neighbours[a])] do
       w := neighbours[a][i];
-      if distanceto[w] = distanceto[a] - 1
+      if distancetotarget[w] = distancetotarget[a] - 1
           and (best = fail or w < neighbours[a][best]) then
         best := i;
       fi;

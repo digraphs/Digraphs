@@ -147,7 +147,6 @@ DeclareOperation("DigraphDistanceSet", [IsDigraph, IsPosInt, IsList]);
 DeclareOperation("DigraphShortestDistance", [IsDigraph, IsPosInt, IsPosInt]);
 DeclareOperation("DigraphShortestDistance", [IsDigraph, IsList, IsList]);
 DeclareOperation("DigraphShortestDistance", [IsDigraph, IsList]);
-DeclareGlobalFunction("DIGRAPHS_ShortestPathsBFS");
 DeclareOperation("DigraphShortestPath", [IsDigraph, IsPosInt, IsPosInt]);
 DeclareOperation("DigraphShortestPaths", [IsDigraph, IsPosInt]);
 DeclareOperation("DigraphShortestPathSpanningTree", [IsDigraph, IsPosInt]);

@@ -1622,19 +1622,36 @@ true
   <Oper Name="DigraphShortestPath" Arg="digraph, u, v"/>
   <Returns>A pair of lists, or <K>fail</K>.</Returns>
   <Description>
-    Returns the lexicographically least shortest directed path in the digraph
-    <A>digraph</A> from vertex <A>u</A> to vertex <A>v</A>, if such a path
-    exists. If <C><A>u</A> = <A>v</A></C> or no path exists, this operation
-    returns <K>fail</K>. See Section <Ref Subsect="Definitions" Style="Text"/>
-    for the definition of a directed path. See <Ref Oper="DigraphPath"/> for
-    details on the output. <P/>
+    Returns the shortest non-trivial directed path in the digraph <A>digraph</A>
+    from vertex <A>u</A> to vertex <A>v</A>, or <K>fail</K> if no such path
+    exists. A directed path (or directed cycle) of non-zero length <C>n-1</C>,
+    <M>(v_1, e_1, v_2, e_2, ..., e_{n-1}, v_n)</M>, is represented by a pair of
+    lists <C>[v, a]</C> as follows:
+
+    <List>
+      <Item>
+        <C>v</C> is the list <M>[v_1, v_2, ..., v_n]</M>.
+      </Item>
+      <Item>
+        <C>a</C> is the list of positive integers <M>[a_1, a_2, ..., a_{n-1}]</M>
+        where for each each <M>i &lt; n</M>, <M>a_i</M> is the position of
+        <M>v_{i+1}</M> in
+        <C>OutNeighboursOfVertex(</C><A>digraph</A><C>,</C><M>v_i</M><C>)</C>
+        corresponding to the edge <M>e_i</M>.  This can be useful if the
+        position of a vertex in a list of out-neighours is significant, for
+        example in orbit digraphs.
+      </Item>
+    </List>
+
+    The path returned is lexicographically least with respect to <C>v</C>. <P/>
 
     The method for <C>DigraphShortestPath</C> has worst case complexity of
     <M>O(m + n)</M> where <M>m</M> is the number of edges and <M>n</M> the
     number of vertices in <A>digraph</A>. <P/>
 
     See <Ref Oper="DigraphShortestPaths"/>. See also the
-    weighted operation <Ref Oper="EdgeWeightedDigraphShortestPath"/>.
+    analogous operation for edge weighted digraphs
+    <Ref Oper="EdgeWeightedDigraphShortestPath"/> .
 <Example><![CDATA[
 gap> D := Digraph([[1, 2], [3], [2, 4], [1], [2, 4]]);
 <immutable digraph with 5 vertices, 8 edges>
@@ -2256,9 +2273,8 @@ false]]></Example>
     <A>v</A>, then its distance is <K>infinity</K>, and its parent is <C>-1</C>.
     <P/>
 
-    For a simple way of finding the shortest path between two specific vertices,
-    see <Ref Oper="DigraphShortestPath"/>. See also the weighted operation
-    <Ref Oper="EdgeWeightedDigraphShortestPath"/>.
+    See <Ref Oper="DigraphShortestPath"/>. See also the analogous operation for
+    edge weighted digraphs <Ref Oper="EdgeWeightedDigraphShortestPaths"/>.
     <Example><![CDATA[
 gap> D := Digraph([[2, 3], [3], []]);
 <immutable digraph with 3 vertices, 3 edges>
