@@ -843,40 +843,15 @@ end);
 
 InstallMethod(ChromaticPolynomial, "for a digraph", [IsDigraph],
 function(D)
-  local r, k, memo_dict, ChooseEdge, ConnectedPoly, ChromaticPoly, G;
+  local r, k, memo_dict, ConnectedPoly, ChromaticPoly, G;
 
   r := PolynomialRing(Integers);
   k := IndeterminatesOfPolynomialRing(r)[1];
   memo_dict := HashMap(DigraphHash);
 
-  # Helper for choosing best edge to minimise recursion depth.
-  ChooseEdge := function(C)
-    local nbs, u, v, best_edge, best_score, score;
-
-    nbs := List(OutNeighbours(C), Set);
-    best_edge := fail;
-    best_score := [-1, 1];
-
-    for u in DigraphVertices(C) do
-      for v in nbs[u] do
-        if u < v then
-          # Ideally: many triangles and/or dense neighbourhoods.
-          score := [Length(Intersection(nbs[u], nbs[v])),
-                    Length(nbs[u]) + Length(nbs[v])];
-          if score > best_score then
-            best_score := score;
-            best_edge := [u, v];
-          fi;
-        fi;
-      od;
-    od;
-
-    return best_edge;
-  end;
-
   # Helper for finding the chromatic polynomial of a given connected graph.
   ConnectedPoly := function(C)
-    local n, m, degs, e, u, v, w, C_m, C_del, C_cont, key, val, poly;
+    local n, m, degs, u, v, w, C_m, C_del, C_cont, key, val, poly;
 
     n := DigraphNrVertices(C);
     # Using symmetric closure: should divide by 2.
@@ -902,9 +877,8 @@ function(D)
     fi;
 
     # General case: deletion-contraction recurrence.
-    e := ChooseEdge(C);
-    u := e[1];
-    v := e[2];
+    u := PositionMinimum(degs);
+    v := OutNeighbours(C)[u][1];
 
     C_m := DigraphMutableCopy(C);
     DigraphRemoveEdge(C_m, u, v);
