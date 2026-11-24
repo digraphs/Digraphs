@@ -923,7 +923,7 @@ function(D)
     C_cont := DigraphImmutableCopy(C_m);
 
     poly := ChromaticPoly(C_del) - ChromaticPoly(C_cont);
-    AddDictionary(memo_dict, key, poly);
+    memo_dict[key] := poly;
     return poly;
   end;
 
