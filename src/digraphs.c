@@ -1358,35 +1358,6 @@ static Obj FuncDIGRAPH_REFLEX_TRANS_CLOSURE(Obj self, Obj digraph) {
       digraph, FW_FUNC_REFLEX_TRANS_CLOSURE, 0, 1, false, false, false);
 }
 
-static Obj FuncRANDOM_DIGRAPH(Obj self, Obj nn, Obj pp) {
-  UInt   n, i, j;
-  Double p, q;
-  Int    len;
-  Obj    adj, adji;
-
-  n   = INT_INTOBJ(nn);
-  p   = VAL_MACFLOAT(pp);
-  adj = NEW_PLIST(T_PLIST_TAB, n);
-  SET_LEN_PLIST(adj, n);
-
-  for (i = 1; i <= n; i++) {
-    SET_ELM_PLIST(adj, i, NEW_PLIST(T_PLIST_EMPTY, 0));
-    CHANGED_BAG(adj);
-  }
-
-  for (i = 1; i <= n; i++) {
-    for (j = 1; j <= n; j++) {
-      q = (double) rand() / RAND_MAX;
-      if (q < p) {
-        adji = ELM_PLIST(adj, i);
-        len  = LEN_PLIST(adji);
-        ASS_LIST(adji, len + 1, INTOBJ_INT(j));
-      }
-    }
-  }
-  return adj;
-}
-
 static Obj FuncRANDOM_MULTI_DIGRAPH(Obj self, Obj nn, Obj mm) {
   UInt n, m, i, j, k;
   Int  len;
