@@ -2165,7 +2165,6 @@ static StructGVarFunc GVarFuncs[] = {
     GVAR_FUNC(IS_TRANSITIVE_DIGRAPH, 1, "digraph"),
     GVAR_FUNC(DIGRAPH_TRANS_CLOSURE, 1, "digraph"),
     GVAR_FUNC(DIGRAPH_REFLEX_TRANS_CLOSURE, 1, "digraph"),
-    GVAR_FUNC(RANDOM_DIGRAPH, 2, "nn, limm"),
     GVAR_FUNC(RANDOM_MULTI_DIGRAPH, 2, "nn, mm"),
     GVAR_FUNC(DIGRAPH_EQUALS, 2, "digraph1, digraph2"),
     GVAR_FUNC(DIGRAPH_LT, 2, "digraph1, digraph2"),
