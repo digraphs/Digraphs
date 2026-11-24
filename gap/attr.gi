@@ -895,8 +895,8 @@ function(D)
     fi;
 
     # Memoisation.
-    key := String(List(OutNeighbours(BlissCanonicalDigraph(C)), Set));
-    val := LookupDictionary(memo_dict, key);
+    key := BlissCanonicalDigraph(C);
+    val := memo_dict[key];
     if val <> fail then
       return val;
     fi;
