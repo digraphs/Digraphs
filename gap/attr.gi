@@ -847,7 +847,7 @@ function(D)
 
   r := PolynomialRing(Integers);
   k := IndeterminatesOfPolynomialRing(r)[1];
-  memo_dict := NewDictionary("", true);
+  memo_dict := HashMap(DigraphHash);
 
   # Helper for choosing best edge to minimise recursion depth.
   ChooseEdge := function(C)
