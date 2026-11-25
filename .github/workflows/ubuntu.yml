@@ -60,11 +60,6 @@ jobs:
         run: |
           cd ${GAPROOT}/pkg
           ../bin/BuildPackages.sh --strict ${{ matrix.pkgs-to-build }}
-      - name: "Install digraphs-lib . . ."
-        uses: actions/checkout@v7
-        with:
-          repository: digraphs/digraphs-lib
-          path: digraphs-lib
       - name: "Run DigraphsTestInstall . . ."
         uses: gap-actions/run-pkg-tests@v4
         with:

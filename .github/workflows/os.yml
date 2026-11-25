@@ -86,8 +86,6 @@ jobs:
           ABI: ${{ matrix.ABI }}
         with:
           ABI: ${{ matrix.ABI }}
-      - name: Install digraphs-lib . . .
-        run: git clone https://github.com/digraphs/digraphs-lib.git
       - name: Run DigraphsTestInstall . . .
         uses: gap-actions/run-pkg-tests@v4
         with:
