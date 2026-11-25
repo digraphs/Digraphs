@@ -2049,8 +2049,10 @@ false
 
 <#GAPDoc Label="OperDigraphGreedyOutDominatingSet">
 <ManSection>
-  <Oper Name="DigraphGreedyOutDominatingSet" Arg="digraph, order"/>
-  <Oper Name="DigraphGreedyInDominatingSet" Arg="digraph, order"/>
+  <Oper Name="DigraphGreedyOutDominatingSet" Arg="digraph, order"
+        Label="for a digraph and a list of positive integers"/>
+  <Oper Name="DigraphGreedyInDominatingSet" Arg="digraph, order"
+        Label="for a digraph and a list of positive integers"/>
   <Returns>A list of positive integers</Returns>
   <Description>
       <C>DigraphGreedyOutDominatingSet</C> returns the unique <E>greedy
@@ -2062,22 +2064,23 @@ false
       set is <E>greedy</E>, if it is obtained by starting with an empty set
       <M>S</M> and repeatedly adding to <M>S</M> the least (with respect to the
       ordering <A>order</A>) vertex that is not in <M>S</M> and not and
-      out-neighbour of <M>S</M>.
+      out-neighbour of <M>S</M>. <P/>
 
-      See also <Ref Oper="IsDigraphOutDominatingSet"/> for further
-      information on dominating sets, and <Ref
-      Attr="DigraphGreedyOutDominatingSet"/> for the attribute version of this
-      function that finds a greedy out-dominating set with respect to the
-      ordering <M>1 &lt; 2 &lt; ... &lt; n </M> on the vertices of <A>digraph</A>.
+      See also <Ref Oper="IsDigraphOutDominatingSet"/>
+      for further information on dominating sets, and
+      <Ref Attr="DigraphGreedyOutDominatingSet" Label="for a digraph"/>
+      for the attribute version of this function that finds a greedy
+      out-dominating set with respect to the ordering
+      <M>1 &lt; 2 &lt; ... &lt; n </M> on the vertices of <A>digraph</A>. <P/>
 
       Similarly, <C>DigraphGreedyInDominatingSet</C> returns the unique <E>greedy
       in-dominating set</E> of <A>digraph</A> with respect to the ordering
       that the list <A>order</A> induces on the vertices in
       <A>digraph</A>. This is equivalently the greedy out-dominating set of
-      the <Ref Attr="DigraphReverse"/> of <A>digraph</A>.
+      the <Ref Attr="DigraphReverse"/> of <A>digraph</A>. <P/>
 
-      See also <Ref Oper="IsDigraphInDominatingSet"/> and <Ref
-      Attr="DigraphGreedyInDominatingSet"/>.
+      See also <Ref Oper="IsDigraphInDominatingSet"/> and
+      <Ref Attr="DigraphGreedyInDominatingSet" Label="for a digraph"/>.
   <Example><![CDATA[
 gap> D := Digraph([[2, 4], [3], [1, 5], [3], [4]]);;
 gap> DigraphGreedyOutDominatingSet(D, [2, 1, 3, 4, 5]);
