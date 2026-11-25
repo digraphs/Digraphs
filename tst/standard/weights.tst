@@ -267,7 +267,7 @@ arguments
 # Shortest path: same vertex
 gap> d := EdgeWeightedDigraph([[2], [3], [1]], [[-3], [-5], [-7]]);;
 gap> EdgeWeightedDigraphShortestPath(d, 2, 2);
-fail
+[ [ 2 ], [  ] ]
 
 # Shortest paths: Johnson
 gap> d := EdgeWeightedDigraph([[2], [3], [], [], []], [[3], [5], [], [], []]);

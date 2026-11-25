@@ -1761,6 +1761,8 @@ function(D, u, v)
   if not (u in verts and v in verts) then
     ErrorNoReturn("the 2nd and 3rd arguments <u> and <v> must be ",
                   "vertices of the 1st argument <D>,");
+  elif u = v then
+    return [[u], []];
   elif IsDigraphEdge(D, u, v) then
     return [[u, v], [Position(OutNeighboursOfVertex(D, u), v)]];
   elif HasIsTransitiveDigraph(D) and IsTransitiveDigraph(D) then
@@ -1841,7 +1843,8 @@ InstallMethod(DigraphShortestPath,
 "for a digraph and two vertices",
 [IsDigraph, IsPosInt, IsPosInt],
 function(D, u, v)
-  local verts, reversed, a, distancetotarget, neighbours, vertices, edges, best, w, i;
+  local verts, reversed, a, distancetotarget, neighbours, vertices, edges, best,
+        w, i;
 
   verts := DigraphVertices(D);
   if not (u in verts and v in verts) then
@@ -1850,7 +1853,7 @@ function(D, u, v)
   fi;
 
   if u = v then
-    return fail;
+    return [[u], []];
   elif IsDigraphEdge(D, u, v) then
     return [[u, v], [Position(OutNeighboursOfVertex(D, u), v)]];
   elif HasIsTransitiveDigraph(D) and IsTransitiveDigraph(D) then

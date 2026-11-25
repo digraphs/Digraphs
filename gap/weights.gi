@@ -280,7 +280,7 @@ function(D, source, dest)
 
   # No trivial paths
   if source = dest then
-    return fail;
+    return [[source], []];
   fi;
 
   # Get shortest paths information for this source vertex

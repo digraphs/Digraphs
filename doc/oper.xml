@@ -1430,12 +1430,11 @@ true
   <Oper Name="IsReachable" Arg="digraph, u, v"/>
   <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
-    This operation returns <K>true</K> if there exists a non-trivial directed
-    walk from vertex <A>u</A> to vertex <A>v</A> in the digraph <A>digraph</A>,
-    and <K>false</K> if there does not exist such a directed walk.  See Section
+    This operation returns <K>true</K> if there exists a walk from vertex
+    <A>u</A> to vertex <A>v</A> in the digraph <A>digraph</A>, and <K>false</K>
+    if there does not exist such a directed walk.  See Section
     <Ref Subsect="Definitions" Style="Number" /> for the definition of a
-    non-trivial directed walk.
-    <P/>
+    directed walk. <P/>
 
     The method for <C>IsReachable</C> has worst case complexity of <M>O(m +
       n)</M> where <M>m</M> is the number of edges and <M>n</M> the number of
@@ -1451,7 +1450,7 @@ false
 gap> IsReachable(D, 3, 3);
 true
 gap> IsReachable(D, 1, 1);
-false
+true
 ]]></Example>
   </Description>
 </ManSection>
@@ -1464,10 +1463,10 @@ false
   <Returns>A list.</Returns>
   <Description>
     This operation returns a list of the vertices <C>v</C>, for which there
-    exists a non-trivial directed walk from the vertex <A>root</A>, or any of
+    exists a directed walk from the vertex <A>root</A>, or any of
     the list of vertices <A>list</A>, to vertex <C>v</C> in the digraph
     <A>digraph</A>. See Section <Ref Subsect="Definitions" Style="Number" />
-    for the definition of a non-trivial directed walk.
+    for the definition of a directed walk.
     <P/>
 
     The method for <C>VerticesReachableFrom</C> has worst case complexity of
@@ -1476,7 +1475,7 @@ false
     <P/>
 
     This function returns an error if <A>root</A>, or any vertex in <A>list</A>,
-    is not a vertices of <A>digraph</A>.
+    is not a vertex of <A>digraph</A>.
 
 <Example><![CDATA[
 gap> D := CompleteDigraph(5);
@@ -1521,17 +1520,15 @@ gap> VerticesReachableFrom(D, [3, 4]);
   <Oper Name="DigraphPath" Arg="digraph, u, v"/>
   <Returns>A pair of lists, or <K>fail</K>.</Returns>
   <Description>
-    If there exists a non-trivial directed path (or a non-trivial cycle, in the
-    case that <A>u</A> <C>=</C> <A>v</A>) from vertex <A>u</A> to vertex
-    <A>v</A> in the digraph <A>digraph</A>, then this operation returns such a
-    directed path (or directed cycle). Otherwise, this operation returns
-    <K>fail</K>.  See Section <Ref Subsect="Definitions" Style="Text"/> for the
-    definition of a directed path and a directed cycle.
-    <P/>
+    If there exists a directed path from vertex <A>u</A> to vertex <A>v</A> in
+    the digraph <A>digraph</A>, then this operation returns such a directed
+    path. If <M><A>u</A> = <A>v</A></M> then the trivial path is returned. If
+    no path exists, then this operation returns <K>fail</K>. See Section
+    <Ref Subsect="Definitions" Style="Text"/> for the definition of a directed
+    path and a directed cycle.  <P/>
 
-    A directed path (or directed cycle) of non-zero length <C>n-1</C>,
-    <M>(v_1, e_1, v_2, e_2, ..., e_{n-1}, v_n)</M>,
-    is represented by a pair of lists <C>[v,a]</C> as follows:
+    A directed path <M>(v_1, e_1, v_2, e_2, ..., e_{n-1}, v_n)</M> is
+    represented by a pair of lists <C>[v, a]</C> as follows:
 
     <List>
       <Item>
@@ -1548,6 +1545,9 @@ gap> VerticesReachableFrom(D, [3, 4]);
       </Item>
     </List>
 
+    The trivial path when <M><A>u</A> = <A>v</A></M> is represented by
+    <M>[[u], []]</M>. <P/>
+
     The method for <C>DigraphPath</C> has worst case complexity of <M>O(m +
       n)</M> where <M>m</M> is the number of edges and <M>n</M> the number of
       vertices in <A>digraph</A>.<P/>
@@ -1562,9 +1562,9 @@ gap> DigraphPath(D, 1, 3);
 gap> DigraphPath(D, 2, 1);
 fail
 gap> DigraphPath(D, 3, 3);
-[ [ 3, 3 ], [ 2 ] ]
+[ [ 3 ], [  ] ]
 gap> DigraphPath(D, 1, 1);
-fail
+[ [ 1 ], [  ] ]
 ]]></Example>
   </Description>
 </ManSection>
@@ -1656,7 +1656,7 @@ true
 gap> D := Digraph([[1, 2], [3], [2, 4], [1], [2, 4]]);
 <immutable digraph with 5 vertices, 8 edges>
 gap> DigraphShortestPath(D, 1, 1);
-fail
+[ [ 1 ], [  ] ]
 gap> DigraphShortestPath(D, 5, 1);
 [ [ 5, 4, 1 ], [ 2, 1 ] ]
 ]]></Example>

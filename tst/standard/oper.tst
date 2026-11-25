@@ -1386,7 +1386,7 @@ true
 gap> IsReachable(gr1, 1, 3);
 false
 gap> IsReachable(gr1, 4, 4);
-false
+true
 gap> gr1 := Digraph([[2], [1], [3], []]);;
 gap> DigraphStronglyConnectedComponents(gr1);
 rec( comps := [ [ 1, 2 ], [ 3 ], [ 4 ] ], id := [ 1, 1, 2, 3 ] )
@@ -1421,7 +1421,7 @@ gap> gr := ChainDigraph(10);
 gap> DigraphPath(gr, 1, 2);
 [ [ 1, 2 ], [ 1 ] ]
 gap> DigraphPath(gr, 1, 1);
-fail
+[ [ 1 ], [  ] ]
 gap> DigraphPath(gr, 2, 1);
 fail
 gap> DigraphPath(gr, 3, 8);
@@ -2016,11 +2016,10 @@ gap> DigraphShortestPath(gr, 2, 5);
 [ [ 2, 3, 5 ], [ 1, 1 ] ]
 gap> DigraphShortestPath(gr, 5, 2);
 [ [ 5, 4, 2 ], [ 1, 2 ] ]
+gap> DigraphShortestPath(gr, 5, 5);
+[ [ 5 ], [  ] ]
 gap> DigraphShortestPath(gr, 6, 6);
-fail
-gap> gr := Digraph([[]]);;
-gap> DigraphShortestPath(gr, 1, 1);
-fail
+[ [ 6 ], [  ] ]
 gap> gr := Digraph([[], []]);;
 gap> DigraphShortestPath(gr, 2, 1);
 fail
