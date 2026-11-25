@@ -1825,6 +1825,8 @@ function(D, u, v)
   if not (u in verts and v in verts) then
     ErrorNoReturn("the 2nd and 3rd arguments <u> and <v> must be ",
                   "vertices of the 1st argument <D>,");
+  elif u = v then
+    return [[u], []];
   elif IsDigraphEdge(D, u, v) then
     return [[u, v], [Position(OutNeighboursOfVertex(D, u), v)]];
   elif HasIsTransitiveDigraph(D) and IsTransitiveDigraph(D) then
@@ -1870,12 +1872,43 @@ function(D, nodes, edges)
   return true;
 end);
 
+# BFS search from source vertex outwards. if target is not 'fail' then stops
+# as soon as it is found. returns two lists; for each vertex, the index v is:
+# - distance from source vertex
+# - previous vertex on shortest path from source
+BindGlobal("DIGRAPHS_ShortestPathsBFS",
+function(neighbours, source, target)
+  local dist, previous, queue, i, a, b;
+
+  dist := ListWithIdenticalEntries(Length(neighbours), infinity);
+  previous := ListWithIdenticalEntries(Length(neighbours), -1);
+
+  dist[source] := 0;
+  queue := [source];
+  i := 1;
+  while i <= Length(queue) do
+    a := queue[i];
+    i := i + 1;
+    for b in neighbours[a] do
+      if dist[b] = infinity then
+        dist[b] := dist[a] + 1;
+        previous[b] := a;
+        if b = target then
+          return [dist, previous];
+        fi;
+        Add(queue, b);
+      fi;
+    od;
+  od;
+  return [dist, previous];
+end);
+
 InstallMethod(DigraphShortestPath,
-"for a digraph by out-neighbours and two pos ints",
-[IsDigraphByOutNeighboursRep, IsPosInt, IsPosInt],
+"for a digraph and two vertices",
+[IsDigraph, IsPosInt, IsPosInt],
 function(D, u, v)
-  local current, next, parent, distance, falselist, verts, nbs, path, edge,
-  n, a, b, i;
+  local verts, reversed, a, distancetotarget, neighbours, vertices, edges, best,
+        w, i;
 
   verts := DigraphVertices(D);
   if not (u in verts and v in verts) then
@@ -1883,7 +1916,9 @@ function(D, u, v)
                   "vertices of the 1st argument <D>,");
   fi;
 
-  if IsDigraphEdge(D, u, v) then
+  if u = v then
+    return [[u], []];
+  elif IsDigraphEdge(D, u, v) then
     return [[u, v], [Position(OutNeighboursOfVertex(D, u), v)]];
   elif HasIsTransitiveDigraph(D) and IsTransitiveDigraph(D) then
     # If it's a known transitive digraph, just check whether the edge exists
@@ -1895,98 +1930,57 @@ function(D, u, v)
     return fail;
   fi;
 
-  nbs      := OutNeighbours(D);
-  distance := ListWithIdenticalEntries(Length(verts), -1);
+  # the rest of this method is to guarantee that the returned path is lex-least
+  # w.r.t. the list of vertices (v_1, v_2... v_n), otherwise could generate path
+  # by just walking backwards via predecessors
 
-  #  Setting up objects useful in the function.
-  parent    := [];
-  current   := [u];
-  edge      := [];
-  next      := BlistList([1 .. Length(verts)], []);
-  falselist := BlistList([1 .. Length(verts)], []);
-
-  n := 0;
-  while current <> [] do
-    n := n + 1;
-    for a in current do
-        for i in [1 .. Length(nbs[a])] do
-          b := nbs[a][i];
-          if distance[b] = -1 then
-            distance[b] := n;
-            next[b]     := true;
-            parent[b]   := a;
-            edge[b]     := i;
-          fi;
-
-          if b = v then
-            path := [[], []];
-            # Finds the path
-            for i in [1 .. n] do
-              Add(path[1], b);
-              Add(path[2], edge[b]);
-              b := parent[b];
-            od;
-            Add(path[1], u);  # Adds the starting vertex to the list of vertices
-            return [Reversed(path[1]), Reversed(path[2])];
-          fi;
-        od;
-      od;
-      current := ListBlist(verts, next);
-      IntersectBlist(next, falselist);
+  # want to walk forwards from u to v, which requires knowing the distance to
+  # v instead of from u, therefore have to call the BFS on the reverse of D
+  # could use DigraphReverse(), but if D is mutable it gets changed in place,
+  # so would have to be un-reversed afterwards
+  neighbours := OutNeighbours(D);
+  reversed := List([1 .. Length(neighbours)], x -> []);
+  for a in [1 .. Length(neighbours)] do
+    for w in neighbours[a] do
+      Add(reversed[w], a);
     od;
+  od;
+  distancetotarget := DIGRAPHS_ShortestPathsBFS(reversed, v, u)[1];
+  if distancetotarget[u] = infinity then
     return fail;
-end);
-
-BindGlobal("DIGRAPHS_DijkstraST",
-function(digraph, source, target)
-  local dist, prev, queue, u, v, alt;
-
-  if not source in DigraphVertices(digraph) then
-    ErrorNoReturn("the 2nd argument <source> must be a vertex of the ",
-                  "1st argument <digraph>");
-  elif target <> fail and not target in DigraphVertices(digraph) then
-    ErrorNoReturn("the 3rd argument <target> must be a vertex of the ",
-                  "1st argument <digraph>");
   fi;
 
-  dist := [];
-  prev := [];
-  queue := BinaryHeap({x, y} -> x[1] < y[1]);
-
-  for v in DigraphVertices(digraph) do
-    dist[v] := infinity;
-    prev[v] := -1;
-  od;
-
-  dist[source] := 0;
-  Push(queue, [0, source]);
-
-  while not IsEmpty(queue) do
-    u := Pop(queue);
-    u := u[2];
-    # TODO: this has a small performance impact for DigraphDijkstraS,
-    #       but do we care?
-    if u = target then
-      return [dist, prev];
-    fi;
-    for v in OutNeighbours(digraph)[u] do
-      alt := dist[u] + DigraphEdgeLabel(digraph, u, v);
-      if alt < dist[v] then
-        dist[v] := alt;
-        prev[v] := u;
-        Push(queue, [dist[v], v]);
+  vertices := [u];
+  edges := [];
+  a := u;
+  while a <> v do
+    best := fail;
+    # find smallest vertex that brings us one step closer to v
+    # OutNeighbours aren't necessarily in order, so is slightly more involved
+    for i in [1 .. Length(neighbours[a])] do
+      w := neighbours[a][i];
+      if distancetotarget[w] = distancetotarget[a] - 1
+          and (best = fail or w < neighbours[a][best]) then
+        best := i;
       fi;
     od;
+    Add(edges, best);
+    a := neighbours[a][best];
+    Add(vertices, a);
   od;
-  return [dist, prev];
+  return [vertices, edges];
 end);
 
-InstallMethod(DigraphDijkstra, "for a digraph, a vertex, and a vertex",
-[IsDigraph, IsPosInt, IsPosInt], DIGRAPHS_DijkstraST);
-
-InstallMethod(DigraphDijkstra, "for a digraph, and a vertex",
+InstallMethod(DigraphShortestPaths, "for a digraph and a vertex",
 [IsDigraph, IsPosInt],
-{digraph, source} -> DIGRAPHS_DijkstraST(digraph, source, fail));
+function(D, source)
+  if not source in DigraphVertices(D) then
+    ErrorNoReturn("the 2nd argument <source> must be a vertex of the ",
+                  "1st argument <D>");
+  fi;
+
+  return DIGRAPHS_ShortestPathsBFS(OutNeighbours(D), source, fail);
+end);
 
 InstallMethod(IteratorOfPaths,
 "for a digraph by out-neighbours and two pos ints",

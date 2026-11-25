@@ -132,10 +132,6 @@ DeclareOperation("DigraphKings", [IsDigraph, IsPosInt]);
 
 DeclareOperation("DigraphFloydWarshall",
                  [IsDigraph, IsFunction, IsObject, IsObject]);
-DeclareOperation("DigraphDijkstra",
-                 [IsDigraph, IsPosInt]);
-DeclareOperation("DigraphDijkstra",
-                 [IsDigraph, IsPosInt, IsPosInt]);
 
 DeclareOperation("DigraphConnectedComponent", [IsDigraph, IsPosInt]);
 DeclareOperation("DigraphStronglyConnectedComponent", [IsDigraph, IsPosInt]);
@@ -155,6 +151,7 @@ DeclareOperation("DigraphShortestDistance", [IsDigraph, IsPosInt, IsPosInt]);
 DeclareOperation("DigraphShortestDistance", [IsDigraph, IsList, IsList]);
 DeclareOperation("DigraphShortestDistance", [IsDigraph, IsList]);
 DeclareOperation("DigraphShortestPath", [IsDigraph, IsPosInt, IsPosInt]);
+DeclareOperation("DigraphShortestPaths", [IsDigraph, IsPosInt]);
 DeclareOperation("DigraphShortestPathSpanningTree", [IsDigraph, IsPosInt]);
 DeclareOperation("VerticesReachableFrom", [IsDigraph, IsPosInt]);
 DeclareOperation("VerticesReachableFrom", [IsDigraph, IsList]);
