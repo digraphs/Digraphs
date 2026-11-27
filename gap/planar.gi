@@ -129,7 +129,7 @@ end);
 #
 # this function generates witnesses by a backtrack search, each step adding
 # potential borderings until all edges have been covered
-BindGlobal("DIGRAPHS_IsMapGraphSearch",
+BindGlobal("DIGRAPHS_FindMapWitness",
 function(G)
   local n, edges, edgeindex, e, Backtrack;
 
@@ -141,18 +141,12 @@ function(G)
     edgeindex[edges[e][1]][edges[e][2]] := e;
   od;
 
-  Backtrack := function(witness, covered, prevk, cache, forbidden, witnessedges,
-                        depth)
-    local added, k, clique, i, j, newcovered, v;
+  Backtrack := function(witness, edgescovered, prevk, cache, forbidden, depth)
+    local added, k, clique, i, j, newcovered, v, result;
 
-    k := Position(covered, false, prevk);
+    k := Position(edgescovered, false, prevk);
     if k = fail then
-      return true;
-    fi;
-
-    # from lemma 2.3 of "Map Graphs" paper
-    if depth > 3 * n - 6 or witnessedges > 2 * (n + depth) - 4 then
-      return false;
+      return DigraphImmutableCopy(witness);
     fi;
 
     # cache[k] is all cliques containing edges[k], in descending order of size
@@ -170,13 +164,14 @@ function(G)
       #  {x, y} -> Length(x) > Length(y));
     fi;
 
-    # forbidding of cliques is used to prevent duplication in the search tree
-    # e.g. want to avoid one branch going c1, c2, and another going c2, c1
+    # the order in which you choose cliques to make a witness doesn't matter. so
+    # if adding a clique to the current witness was unsuccessful, forbid using
+    # it at a later point from the current witness
     added := [];
 
     for clique in cache[k] do
       if not clique in forbidden then
-        newcovered := ShallowCopy(covered);
+        newcovered := ShallowCopy(edgescovered);
         for i in [1 .. Length(clique) - 1] do
           for j in [i + 1 .. Length(clique)] do
             newcovered[edgeindex[clique[i]][clique[j]]] := true;
@@ -190,11 +185,16 @@ function(G)
           Add(witness!.OutNeighbours[v], n + depth + 1);
         od;
 
+        AddSet(forbidden, clique);
+        AddSet(added, clique);
+
         # adding vertices to non-planar witness will never make it planar
-        if IsPlanarDigraph(witness) and
-            Backtrack(witness, newcovered, k, cache, forbidden,
-                      witnessedges + Length(clique), depth + 1) then
-          return true;
+        if IsPlanarDigraph(witness) then
+          result := Backtrack(witness, newcovered, k, cache, forbidden,
+                              depth + 1);
+          if result <> fail then
+            return result;
+          fi;
         fi;
 
         # cleanup junction and associated edges, again avoiding safety checks
@@ -202,19 +202,16 @@ function(G)
         for v in clique do
           Remove(witness!.OutNeighbours[v]);
         od;
-
-        AddSet(forbidden, clique);
-        AddSet(added, clique);
       fi;
     od;
 
     SubtractSet(forbidden, added);
 
-    return false;
+    return fail;
   end;
 
   return Backtrack(EmptyDigraph(IsMutableDigraph, n), List(edges, ReturnFalse),
-                   0, [], [], 0, 0);
+                   0, [], [], 0);
 end);
 
 ########################################################################
@@ -261,25 +258,19 @@ function(D)
 
   G := MaximalSymmetricSubdigraphWithoutLoops(D);
 
-  if IsPlanarDigraph(G) then
-    return true;
-  fi;
-
-  # map is a bunch of countries meeting at a point, like a pizza
-  if IsCompleteDigraph(G) then
-    return true;
-  fi;
-
-  # from "Map Graphs" (arXiv:cs/9910013): if G has no clique of size
-  # four, then it is a map graph if and only if it is a planar graph.
-  if CliqueNumber(G) < 4 then
-    return false;
-  fi;
-
   # each disjoint component is map graph <=> entire graph is map graph
   for comp in DigraphConnectedComponents(G).comps do
     H := InducedSubdigraph(G, comp);
-    if not IsPlanarDigraph(H) and not DIGRAPHS_IsMapGraphSearch(H) then
+
+    # complete digraph is a map where countries meet at a point, like a pizza
+    # planar digraphs are a subset of map graphs
+    if IsCompleteDigraph(H) or IsPlanarDigraph(H) then
+      continue;
+    fi;
+
+    # from "Map Graphs" (arXiv:cs/9910013): if G has no clique of size
+    # four, then it is a map graph if and only if it is a planar graph.
+    if CliqueNumber(H) < 4 or DIGRAPHS_FindMapWitness(H) = fail then
       return false;
     fi;
   od;

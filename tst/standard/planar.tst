@@ -297,7 +297,7 @@ gap> D := Digraph([
 >  [2, 3, 4, 5, 7], [1, 3, 4, 5, 6], [1, 2, 4, 6, 7],  
 >  [1, 2, 3, 5, 6, 7], [1, 2, 4], [2, 3, 4], [1, 3, 4]
 > ]);;
-gap> DIGRAPHS_IsMapGraphSearch(D);  # bypass early return from planarity test
+gap> DIGRAPHS_FindMapWitness(D) <> fail;  # bypass early return from planarity test
 true
 
 #
