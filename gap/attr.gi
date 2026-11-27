@@ -2533,7 +2533,8 @@ function(D)
     SetDigraphReverseAttr(D, C);
     return C;
   fi;
-  D!.OutNeighbours := inn;
+  C := ConvertToMutableDigraphNC(inn);
+  SwapDigraphs(D, C);
   ClearDigraphEdgeLabels(D);
   return D;
 end);
@@ -3147,7 +3148,7 @@ function(D)
   if DigraphNrEdges(C) <> 2 * (DigraphNrVertices(D) - 1) then
     return fail;
   fi;
-  D!.OutNeighbours := OutNeighbors(C);
+  SwapDigraphs(D, C);
   return D;
 end);
 
