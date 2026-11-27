@@ -39,6 +39,7 @@
     <#Include Label="DigraphMinimumCutSet">
     <#Include Label="RandomUniqueEdgeWeightedDigraph">
     <#Include Label="DotEdgeWeightedDigraph">
+    <#Include Label="DigraphImmutableCopyNoWeights">
   </Section>
 
   <Section><Heading>Orders</Heading>
