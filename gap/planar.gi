@@ -118,6 +118,102 @@ function(D)
     return DigraphByEdges(dualEdges);
 end);
 
+# algorithm is based on "Map Graphs" (arXiv:cs/9910013) characterisation:
+# for every map graph G, there exists a witness graph H, such that H is planar
+# and bipartite, and that G is a half-square of H
+#
+# the witness H's two sides are analogous to:
+# - vertices for the countries of the map
+# - vertices for borderings of two or more countries
+# each edge is between a country and a border it is part of
+#
+# this function generates witnesses by a backtrack search, each step adding
+# potential borderings until all edges have been covered
+BindGlobal("DIGRAPHS_FindMapWitness",
+function(G)
+  local n, edges, edgeindex, e, Backtrack;
+
+  n := DigraphNrVertices(G);
+
+  edges := Filtered(DigraphEdges(G), e -> e[1] < e[2]);
+  edgeindex := List([1 .. n], e -> []);
+  for e in [1 .. Length(edges)] do
+    edgeindex[edges[e][1]][edges[e][2]] := e;
+  od;
+
+  Backtrack := function(witness, edgescovered, prevk, cache, forbidden, depth)
+    local added, k, clique, i, j, newcovered, v, result;
+
+    k := Position(edgescovered, false, prevk);
+    if k = fail then
+      return DigraphImmutableCopy(witness);
+    fi;
+
+    # cache[k] is all cliques containing edges[k], in descending order of size
+    # because larger cliques cover more, so find witness faster
+    if not IsBound(cache[k]) then
+      cache[k] := Set(Concatenation(List(
+        CliquesFinder(G, fail, [], infinity, edges[k], [], true, fail, false),
+        maxcl -> List(Combinations(Difference(maxcl, edges[k])),
+                      cl -> Set(Concatenation(edges[k], cl))))));
+      SortBy(cache[k], cl -> -Length(cl));
+
+      # TODO: check if this version is faster once #966 is fixed
+      # cache[k] := SortedList(
+      #  CliquesFinder(G, fail, [], infinity, edges[k], [], false, fail, false),
+      #  {x, y} -> Length(x) > Length(y));
+    fi;
+
+    # the order in which you choose cliques to make a witness doesn't matter. so
+    # if adding a clique to the current witness was unsuccessful, forbid using
+    # it at a later point from the current witness
+    added := [];
+
+    for clique in cache[k] do
+      if not clique in forbidden then
+        newcovered := ShallowCopy(edgescovered);
+        for i in [1 .. Length(clique) - 1] do
+          for j in [i + 1 .. Length(clique)] do
+            newcovered[edgeindex[clique[i]][clique[j]]] := true;
+          od;
+        od;
+
+        # add new junction point in witness, make clique countries connect to it
+        # directly modifying !.OutNeighbours avoids unnecessary safety checks
+        Add(witness!.OutNeighbours, ShallowCopy(clique));
+        for v in clique do
+          Add(witness!.OutNeighbours[v], n + depth + 1);
+        od;
+
+        AddSet(forbidden, clique);
+        AddSet(added, clique);
+
+        # adding vertices to non-planar witness will never make it planar
+        if IsPlanarDigraph(witness) then
+          result := Backtrack(witness, newcovered, k, cache, forbidden,
+                              depth + 1);
+          if result <> fail then
+            return result;
+          fi;
+        fi;
+
+        # cleanup junction and associated edges, again avoiding safety checks
+        Remove(witness!.OutNeighbours);
+        for v in clique do
+          Remove(witness!.OutNeighbours[v]);
+        od;
+      fi;
+    od;
+
+    SubtractSet(forbidden, added);
+
+    return fail;
+  end;
+
+  return Backtrack(EmptyDigraph(IsMutableDigraph, n), List(edges, ReturnFalse),
+                   0, [], [], 0);
+end);
+
 ########################################################################
 # 2. Properties
 ########################################################################
@@ -154,4 +250,29 @@ function(D)
     return false;
   fi;
   return IS_OUTER_PLANAR(D);
+end);
+
+InstallMethod(IsMapGraph, "for a digraph", [IsDigraph],
+function(D)
+  local G, comp, H;
+
+  G := MaximalSymmetricSubdigraphWithoutLoops(D);
+
+  # each disjoint component is map graph <=> entire graph is map graph
+  for comp in DigraphConnectedComponents(G).comps do
+    H := InducedSubdigraph(G, comp);
+
+    # complete digraph is a map where countries meet at a point, like a pizza
+    # planar digraphs are a subset of map graphs
+    if IsCompleteDigraph(H) or IsPlanarDigraph(H) then
+      continue;
+    fi;
+
+    # from "Map Graphs" (arXiv:cs/9910013): if G has no clique of size
+    # four, then it is a map graph if and only if it is a planar graph.
+    if CliqueNumber(H) < 4 or DIGRAPHS_FindMapWitness(H) = fail then
+      return false;
+    fi;
+  od;
+  return true;
 end);

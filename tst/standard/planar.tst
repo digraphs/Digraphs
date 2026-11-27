@@ -273,6 +273,33 @@ true
 gap> IS_PLANAR(CompleteDigraph(2));
 true
 
+# IsMapGraph
+gap> IsMapGraph(Digraph([[2, 2], [1, 1]]));
+true
+gap> IsMapGraph(EmptyDigraph(0));
+true
+gap> IsPlanarDigraph(CompleteDigraph(5));
+false
+gap> IsMapGraph(CompleteDigraph(5));
+true
+gap> IsMapGraph(CompleteDigraph(100));
+true
+gap> D := DigraphFromGraph6String("FU~~w");;
+gap> IsPlanarDigraph(D);
+false
+gap> IsMapGraph(D);
+true
+gap> IsMapGraph(DigraphFromGraph6String("FF~~w"));
+false
+gap> IsMapGraph(CompleteMultipartiteDigraph([3, 3]));
+false
+gap> D := Digraph([
+>  [2, 3, 4, 5, 7], [1, 3, 4, 5, 6], [1, 2, 4, 6, 7],  
+>  [1, 2, 3, 5, 6, 7], [1, 2, 4], [2, 3, 4], [1, 3, 4]
+> ]);;
+gap> DIGRAPHS_FindMapWitness(D) <> fail;  # bypass early return from planarity test
+true
+
 #
 gap> DIGRAPHS_StopTest();
 gap> STOP_TEST("Digraphs package: standard/planar.tst", 0);
