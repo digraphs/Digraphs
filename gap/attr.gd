@@ -77,6 +77,7 @@ DeclareAttribute("DigraphPeriod", IsDigraph);
 DeclareAttribute("DigraphLoops", IsDigraph);
 
 DeclareAttribute("ChromaticNumber", IsDigraph);
+DeclareAttribute("ChromaticPolynomial", IsDigraph);
 DeclareAttribute("DigraphBicomponents", IsDigraph);
 DeclareAttribute("DIGRAPHS_Bipartite", IsDigraph);
 DeclareAttribute("DigraphCore", IsDigraph);
