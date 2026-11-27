@@ -269,8 +269,7 @@ InstallMethod(DigraphRemoveEdge,
 function(D, src, ran)
   local newD, weights, pos, outs;
 
-  newD := DigraphImmutableCopyNoWeights(D);
-  newD := DigraphMutableCopy(newD);
+  newD := DigraphMutableCopy(D);
   DigraphRemoveEdge(newD, src, ran);
   MakeImmutable(newD);
 
