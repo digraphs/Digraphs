@@ -9,14 +9,12 @@
 #############################################################################
 ##
 
-#@local C, D, D1, D2, D3, D3_edges, DD
-#@local G, G1, L, L1, TestPartialOrderDigraph 
-#@local TestPartialOrderDigraph2, TestUnion, a, adj, b, comps, copy, d, e
-#@local edges, edges2, func, g, gr, gr1, gr2, gr3, gr4, gri, grrt, grt, h, i
-#@local i1, i2, id, idom, in1, in2, in3, iter, j1, j2, m, m1, m2, mat, n, nbs
-#@local out, out1, out2, out3, p1, p2, path, preorder, qr, r, res, rtclosure, t, neighbours
-#@local tclosure, u1, u2, x
-#@local p, q, idp, idt, M, v
+#@local C, D, D1, D2, D3, D3_edges, DD, G, G1, L, L1, M
+#@local TestPartialOrderDigraph, TestPartialOrderDigraph2, TestUnion, a, adj, b
+#@local comps, copy, d, e, edges, edges2, func, g, gr, gr1, gr2, gr3, gr4, gri
+#@local grrt, grt, h, i, i1, i2, id, idom, idp, idt, imE, imV, in1, in2, in3
+#@local iter, j1, j2, m, m1, m2, mat, n, nbs, out, out1, out2, out3, p, p1, p2
+#@local path, preorder, q, qr, r, res, rtclosure, t, tclosure, u1, u2, x
 gap> START_TEST("Digraphs package: standard/oper.tst");
 gap> LoadPackage("digraphs", false);;
 
@@ -4017,6 +4015,32 @@ gap> g := (1, 15, 12, 46, 21, 17, 4, 11, 16, 9, 10, 14)(2, 50, 3, 23, \
 gap> DigraphGreedyInDominatingSet(d, OnTuples([1 .. 54], g));
 [ 1, 6, 8, 10, 11, 12, 14, 15, 20, 24, 25, 26, 30, 37, 39, 43, 44, 47, 50, 
   52, 53 ]
+
+# Tests for DigraphRemoveVertex (immutable) and DigraphRemoveEdge (immutable).
+gap> d := EdgeWeightedDigraph([[2, 3], [3], [], []], [[5, 10], [15], [], []]);
+<immutable edge-weighted digraph with 4 vertices, 3 edges>
+gap> imE := DigraphRemoveEdge(d, 1, 3);
+<immutable edge-weighted digraph with 4 vertices, 2 edges>
+gap> IsImmutableDigraph(imE);
+true
+gap> OutNeighbours(imE);
+[ [ 2 ], [ 3 ], [  ], [  ] ]
+gap> EdgeWeights(imE);
+[ [ 5 ], [ 15 ], [  ], [  ] ]
+gap> EdgeWeights(d);
+[ [ 5, 10 ], [ 15 ], [  ], [  ] ]
+gap> imV := DigraphRemoveVertex(d, 1);
+<immutable edge-weighted digraph with 3 vertices, 1 edge>
+gap> IsImmutableDigraph(imV);
+true
+gap> OutNeighbours(imV);
+[ [ 2 ], [  ], [  ] ]
+gap> EdgeWeights(imV);
+[ [ 15 ], [  ], [  ] ]
+gap> OutNeighbours(d);
+[ [ 2, 3 ], [ 3 ], [  ], [  ] ]
+gap> EdgeWeights(d);
+[ [ 5, 10 ], [ 15 ], [  ], [  ] ]
 
 #
 gap> DIGRAPHS_StopTest();

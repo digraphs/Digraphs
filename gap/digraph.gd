@@ -156,3 +156,5 @@ DeclareOperation("RandomLattice", [IsFunction, IsPosInt]);
 # in the not-too-distant future!
 DeclareOperation("RandomMultiDigraph", [IsPosInt]);
 DeclareOperation("RandomMultiDigraph", [IsPosInt, IsPosInt]);
+
+DeclareOperation("DigraphImmutableCopyNoWeights", [IsDigraph]);
