@@ -1634,11 +1634,10 @@ gap> DigraphAllChordlessCycles(D);
 </ManSection>
 <#/GAPDoc>
 
-
-<#GAPDoc Label="DigraphIsRotationSystem">
+<#GAPDoc Label="IsDigraphRotationSystem">
 <ManSection>
   <Oper Name="IsDigraphRotationSystem" Arg="digraph, list"/>
-  <Returns>A boolean.</Returns>
+  <Returns><K>true</K> or <K>false</K>.</Returns>
   <Description>
     <C>IsDigraphRotationSystem</C> returns <C>true</C> if <A>digraph</A> is a symmetric digraph
     and <A>list</A> is a rotation system of <A>digraph</A>, and <C>false</C> otherwise.
@@ -1659,13 +1658,14 @@ gap> DigraphAllChordlessCycles(D);
     The order of the entries in <C><A>list</A>[v]</C> is interpreted
     cyclically: the successor of the last neighbour is the first one. Hence
     two lists which differ only by cyclic shifts of their entries describe
-    the same rotation system.
+    the same rotation system. <P/>
+
     Every rotation system defines an embedding of <A>digraph</A> into an
     orientable surface, whose faces are given by
-    <Ref Oper="FacialWalks"/>.
-    
-    The operation <C>IsDigraphRotationSystem</C> ignores multiple edges and loops.<P/>
-    Here are some examples:
+    <Ref Oper="FacialWalks"/>. <P/>
+
+    The operation <C>IsDigraphRotationSystem</C> ignores multiple edges and loops.
+
     <Example><![CDATA[
 gap> D1 := DigraphSymmetricClosure(CycleDigraph(4));;
 gap> planar := PlanarEmbedding(D1);;
@@ -2905,8 +2905,8 @@ gap> Length(M);
 
 <#GAPDoc Label="AttrDigraphGreedyOutDominatingSet">
 <ManSection>
-  <Attr Name="DigraphGreedyOutDominatingSet" Arg="digraph"/>
-  <Attr Name="DigraphGreedyInDominatingSet" Arg="digraph"/>
+  <Attr Name="DigraphGreedyOutDominatingSet" Arg="digraph" Label="for a digraph"/>
+  <Attr Name="DigraphGreedyInDominatingSet" Arg="digraph" Label="for a digraph"/>
   <Returns>A list of positive integers</Returns>
   <Description>
       <C>DigraphGreedyOutDominatingSet</C> returns the unique <E>greedy
@@ -2917,22 +2917,24 @@ gap> Length(M);
       either in <M>S</M> or an out-neighbour of a vertex in <M>S</M>. Such a
       set is <E>greedy</E>, if it is obtained by starting with an empty set
       <M>S</M> and repeatedly adding to <M>S</M> the least vertex that is not
-      in <M>S</M> and not and out-neighbour of <M>S</M>.
+      in <M>S</M> and not and out-neighbour of <M>S</M>. <P/>
 
-      See also <Ref Oper="IsDigraphOutDominatingSet"/> for further
-      information on dominating sets, and <Ref
-      Oper="DigraphGreedyOutDominatingSet"/> for a version of this function
-      that finds a greedy out-dominating set with respect to an arbitrary
-      ordering on vertices.
+      See also <Ref Oper="IsDigraphOutDominatingSet"/> for further information
+      on dominating sets, and
+      <Ref Oper="DigraphGreedyOutDominatingSet"
+           Label="for a digraph and a list of positive integers"/>
+      for a version of this function that finds a greedy out-dominating set with
+      respect to an arbitrary ordering on vertices. <P/>
 
       Similarly, <C>DigraphGreedyInDominatingSet</C> returns the unique <E>greedy
       in-dominating set</E> of <A>digraph</A> with respect to the ordering
       <M>1 &lt; 2 &lt; ... &lt; n</M> where <M>n</M> is the number of vertices in
       <A>digraph</A>. This is equivalently the greedy out-dominating set of
-      the <Ref Attr="DigraphReverse"/> of <A>digraph</A>.
+      the <Ref Attr="DigraphReverse"/> of <A>digraph</A>. <P/>
 
-      See also <Ref Oper="IsDigraphInDominatingSet"/> and <Ref
-      Oper="DigraphGreedyInDominatingSet"/>.
+      See also <Ref Oper="IsDigraphInDominatingSet"/> and
+      <Ref Oper="DigraphGreedyInDominatingSet"
+           Label="for a digraph and a list of positive integers"/>.
   <Example><![CDATA[
 gap> D := Digraph([[2, 4], [3], [1, 5], [3], [4]]);;
 gap> A := DigraphGreedyOutDominatingSet(D);
