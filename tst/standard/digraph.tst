@@ -601,9 +601,9 @@ Error, no 1st choice method found for `RandomDigraph' on 1 arguments
 gap> RandomDigraph(4, 0);
 <immutable empty digraph with 4 vertices>
 gap> RandomDigraph(10, 1.01);
-Error, the 2nd argument <p> must be between 0 and 1,
+Error, the probability <p> must be between 0 and 1,
 gap> RandomDigraph(10, -0.01);
-Error, the 2nd argument <p> must be between 0 and 1,
+Error, the probability <p> must be between 0 and 1,
 gap> RandomDigraph(10, 1 / 10);;
 
 # RandomDigraph(IsImmutableDigraph, ...)
@@ -624,9 +624,9 @@ Error, no 1st choice method found for `RandomDigraph' on 2 arguments
 gap> RandomDigraph(IsImmutableDigraph, 4, 0);
 <immutable empty digraph with 4 vertices>
 gap> RandomDigraph(IsImmutableDigraph, 10, 1.01);
-Error, the 2nd argument <p> must be between 0 and 1,
+Error, the probability <p> must be between 0 and 1,
 gap> RandomDigraph(IsImmutableDigraph, 10, -0.01);
-Error, the 2nd argument <p> must be between 0 and 1,
+Error, the probability <p> must be between 0 and 1,
 gap> RandomDigraph(IsImmutableDigraph, 10, 1 / 10);;
 
 # RandomDigraph(IsMutableDigraph, ...)
@@ -647,9 +647,9 @@ Error, no 1st choice method found for `RandomDigraph' on 2 arguments
 gap> RandomDigraph(IsMutableDigraph, 4, 0);
 <mutable empty digraph with 4 vertices>
 gap> RandomDigraph(IsMutableDigraph, 10, 1.01);
-Error, the 2nd argument <p> must be between 0 and 1,
+Error, the probability <p> must be between 0 and 1,
 gap> RandomDigraph(IsMutableDigraph, 10, -0.01);
-Error, the 2nd argument <p> must be between 0 and 1,
+Error, the probability <p> must be between 0 and 1,
 gap> RandomDigraph(IsMutableDigraph, 10, 1 / 10);;
 
 #  RandomMultiDigraph
@@ -2081,6 +2081,10 @@ gap> graph := RandomDigraph(IsAcyclicDigraph, 10);;
 >   fi;
 
 # Random Eulerian Digraph
+gap> graph := RandomDigraph(IsEulerianDigraph, 10);;
+>   if not IsEulerianDigraph(graph) then
+>     Print("False");
+>   fi;
 gap> graph := RandomDigraph(IsEulerianDigraph, 1, 0);;
 >   if DigraphNrEdges(graph) <> 0 then
 >     Print("False");
@@ -2101,10 +2105,64 @@ gap> for p in [1 .. 9] do
 >     Print("False");
 >   fi;
 > od;
-gap> graph := RandomDigraph(IsEulerianDigraph, 10);;
->   if not IsEulerianDigraph(graph) then
->     Print("False");
->   fi;
+
+#Random Digraph with Random Source
+gap> graph := RandomDigraph(IsMutableDigraph, GlobalMersenneTwister, 10, 0.5);;
+>    if not IsMutableDigraph(graph) then
+>      Print("False");
+>    fi;
+gap> graph := RandomDigraph(IsImmutableDigraph, GlobalMersenneTwister, 10, 0.5);;
+>    if not IsImmutableDigraph(graph) then
+>      Print("False");
+>    fi;
+gap> graph := RandomDigraph(IsHamiltonianDigraph, GlobalMersenneTwister, 10, 0.5);;
+>    if not IsHamiltonianDigraph(graph) then
+>      Print("False");
+>    fi;
+gap> graph := RandomDigraph(IsEulerianDigraph, GlobalMersenneTwister, 10, 0.5);;
+>    if not IsEulerianDigraph(graph) then
+>      Print("False");
+>    fi;
+gap> graph := RandomDigraph(IsConnectedDigraph, GlobalMersenneTwister, 10, 0.5);;
+>    if not IsConnectedDigraph(graph) then
+>      Print("False");
+>    fi;
+gap> graph := RandomDigraph(IsStronglyConnectedDigraph, GlobalMersenneTwister, 10, 0.5);;
+>    if not IsStronglyConnectedDigraph(graph) then
+>      Print("False");
+>    fi;
+gap> graph := RandomDigraph(IsAcyclicDigraph, GlobalMersenneTwister, 10, 0.5);;
+>    if not IsAcyclicDigraph(graph) then
+>      Print("False");
+>    fi;
+gap> graph := RandomDigraph(IsSymmetricDigraph, GlobalMersenneTwister, 10, 0.5);;
+>    if not IsSymmetricDigraph(graph) then
+>      Print("False");
+>    fi;
+gap> Reset(GlobalMersenneTwister);;
+gap> graph := RandomDigraph(GlobalMersenneTwister, 10, 0.5);
+<immutable digraph with 10 vertices, 56 edges>
+gap> Reset(GlobalMersenneTwister);;
+gap> graph2 := RandomDigraph(GlobalMersenneTwister, 10, 0.5);
+<immutable digraph with 10 vertices, 56 edges>
+gap> graph = graph2;
+true
+gap> Reset(GlobalMersenneTwister);;
+gap> graph := RandomDigraph(IsAcyclicDigraph, 10, 0.3);
+<immutable digraph with 10 vertices, 9 edges>
+gap> Reset(GlobalMersenneTwister);;
+gap> graph2 := RandomDigraph(IsAcyclicDigraph, 10, 0.3);
+<immutable digraph with 10 vertices, 9 edges>
+gap> graph = graph2;
+true
+gap> Reset(GlobalMersenneTwister);;
+gap> graph := RandomDigraph(IsHamiltonianDigraph, 10);
+<immutable digraph with 10 vertices, 12 edges>
+gap> Reset(GlobalMersenneTwister);;
+gap> graph2 := RandomDigraph(IsHamiltonianDigraph, 10);
+<immutable digraph with 10 vertices, 12 edges>
+gap> graph = graph2;
+true
 
 #
 gap> DIGRAPHS_StopTest();
