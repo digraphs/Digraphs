@@ -39,7 +39,7 @@ function(D, label)
   return D;
 end);
 
-InstallMethod(DigraphAddVertex, "for a immutable digraph and an object",
+InstallMethod(DigraphAddVertex, "for an immutable digraph and an object",
 [IsImmutableDigraph, IsObject],
 {D, label} -> MakeImmutable(DigraphAddVertex(DigraphMutableCopy(D), label)));
 
@@ -247,7 +247,7 @@ function(D, src, ran)
 end);
 
 InstallMethod(DigraphRemoveEdge,
-"for a immutable digraph and two positive integers",
+"for an immutable digraph and two positive integers",
 [IsImmutableDigraph, IsPosInt, IsPosInt],
 {D, src, ran}
 -> MakeImmutable(DigraphRemoveEdge(DigraphMutableCopy(D), src, ran)));
@@ -262,7 +262,7 @@ function(D, edge)
 end);
 
 InstallMethod(DigraphRemoveEdge,
-"for a immutable digraph and a list",
+"for an immutable digraph and a list",
 [IsImmutableDigraph, IsList],
 {D, edge} -> MakeImmutable(DigraphRemoveEdge(DigraphMutableCopy(D), edge)));
 
@@ -1031,7 +1031,7 @@ function(D, p)
   return D;
 end);
 
-InstallMethod(OnDigraphsNC, "for a immutable digraph and a perm",
+InstallMethod(OnDigraphsNC, "for an immutable digraph and a perm",
 [IsImmutableDigraph, IsPerm],
 function(D, p)
   local out, permed;
@@ -1076,7 +1076,7 @@ function(D, t)
   return D;
 end);
 
-InstallMethod(OnDigraphsNC, "for a immutable digraph and a transformation",
+InstallMethod(OnDigraphsNC, "for an immutable digraph and a transformation",
 [IsImmutableDigraph, IsTransformation],
 function(D, t)
   local old, new, v;
