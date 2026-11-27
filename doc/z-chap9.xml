@@ -19,6 +19,8 @@
     <#Include Label="Graph6String">
     <#Include Label="DigraphFromDreadnautString">
     <#Include Label="DIMACSString">
+    <#Include Label="LADString">
+    <#Include Label="DigraphFromLADString">
     <#Include Label="DigraphFile">
     <#Include Label="ReadDigraphs">
     <#Include Label="WriteDigraphs">

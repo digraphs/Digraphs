@@ -1090,6 +1090,59 @@ gap> DigraphFromDreadnautString("$=1n3dg\n1 : 2 3.\nf=[1\nf=2");
 Error, Unexpected character 'f' in partition specification (line 4)
 gap> IO_Close(file);;
 
+# LADString and DigraphFromLADString
+gap> D := CompleteDigraph(3);;
+gap> str := LADString(D);
+"3\n2 1 2\n2 0 2\n2 0 1\n"
+gap> DigraphFromLADString(str) = D;
+true
+gap> D := EmptyDigraph(0);;
+gap> LADString(D);
+"0\n"
+gap> DigraphFromLADString(LADString(D)) = D;
+true
+gap> D := EmptyDigraph(4);;
+gap> DigraphFromLADString(LADString(D)) = D;
+true
+gap> D := Digraph([[2], [], [1]]);;
+gap> LADString(D);
+"3\n1 1\n0\n1 0\n"
+gap> DigraphFromLADString(LADString(D)) = D;
+true
+
+# LADString: bad input
+gap> LADString(Digraph([[2, 2], []]));
+Error, the argument <D> must not have multiple edges
+gap> LADString(Digraph([[1], []]));
+Error, the argument <D> must not have loops
+
+# DigraphFromLADString: bad input
+gap> DigraphFromLADString("");
+Error, the argument <s> must be a non-empty string
+gap> DigraphFromLADString("abc\n");
+Error, the first line of <s> must be the number of vertices
+gap> DigraphFromLADString("2\n1 1\n");
+Error, <s> must have exactly one line per vertex after the first
+gap> DigraphFromLADString("2\n1 5\n0\n");
+Error, line 2 of <s> has a vertex out of range
+gap> DigraphFromLADString("2\n2 1\n0\n");
+Error, line 2 of <s> is not valid
+gap> DigraphFromLADString("2\n1 x\n0\n");
+Error, line 2 of <s> is not valid
+
+# LAD files
+gap> filename := Concatenation(DIGRAPHS_Dir(), "/tst/out/test.lad");;
+gap> D := CompleteDigraph(3);;
+gap> WriteDigraphs(filename, D, "w");
+IO_OK
+gap> ReadDigraphs(filename)[1] = D;
+true
+gap> WriteDigraphs(filename, D);
+Error, LADString is a whole file encoder and so the argument <mode> must be "w\
+".
+gap> DigraphFromLADString("1\n1 0\n");
+Error, line 2 of <s> contains a loop
+
 # Ensure all files introduced by tests are closed
 gap> IO.OpenFiles = files;
 true
