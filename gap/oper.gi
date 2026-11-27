@@ -144,8 +144,7 @@ function(D, u)
     return D;
   fi;
 
-  newD := DigraphImmutableCopyNoWeights(D);
-  newD := DigraphMutableCopy(newD);
+  newD := DigraphMutableCopy(D);
   DigraphRemoveVertex(newD, u);
   MakeImmutable(newD);
 
